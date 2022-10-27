@@ -37,7 +37,7 @@ namespace STORE
 
     void vTransform3(void);
 
-    void vHand_10_CondensePipeline  (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_10_CondenseInfo  (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_20_TableAnalysis  (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_30_StreamAnalysis  (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_40_PredicatePullup (bool bPrintHand, bool bPrintXform, bool bTrace);

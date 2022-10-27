@@ -36,7 +36,7 @@ namespace STORE
 
     void vH30_T20_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace);
 
-    void vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool bTrace);
+    void vH40_T10_Convert_where_rpnCalc_To_calcBool(bool bPrint, bool bTrace);
     void vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace);
     void vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace);
     void vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace);
@@ -46,8 +46,8 @@ namespace STORE
     void vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
     void vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
 
-    void vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace);
-    void vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace);
+    void vH60_T10_Add_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace);
+    void vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bool bPrint, bool bTrace);
     void vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace);
     void vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace);
     void vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace);

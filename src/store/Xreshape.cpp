@@ -308,7 +308,7 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T10_Add_indexJoin_UnderAllJoinable_table(void)
+void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -333,7 +333,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderAllJoinable_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(void)
+void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -402,6 +402,8 @@ void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  M.p_boolCalc = M.p_filter->pSub_boolCalc();
+
   M_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
 
 }
@@ -412,6 +414,9 @@ void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
 void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! T_bFilter_IsEmpty(M.p_filter))
+    return;
 
   M.p_MainCard->vRemoveChild(M.p_filter);
   DELETE_CARD(M.p_filter);
@@ -880,6 +885,8 @@ void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  M.p_stream = M.p_scan->pSub_stream();
+
   M_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
 }
 
@@ -909,6 +916,14 @@ void Xreshape::vR_H80_T30_Mark_scan_pred_bounds(void)
 void Xreshape::vR_H80_T40_Mark_scan_filter_term_WhichMatchIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! (M.p_index = _pCard_Index(M.p_indexList->pGetChild(0))))
+    return;
+  if (! (M.p_idxColList = (M.p_index->pSub_idxColList())))
+    return;
+
+  //M.p_idxColList->vDump();
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

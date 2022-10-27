@@ -90,7 +90,7 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  vHand_10_CondensePipeline(C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
+  vHand_10_CondenseInfo    (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
   vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -106,7 +106,7 @@ void Transformer::vTransform3(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_10_CondensePipeline(bool bPrintHand, bool bPrintXform, bool bTrace)
+void Transformer::vHand_10_CondenseInfo(bool bPrintHand, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -181,7 +181,7 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
   m_pCardCtl->vPrintProperties(CK_STREAM, false);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
-  m_pTransforms->vH40_T10_Convert_where_calc_To_where_calcBool  (bPrintXform, bTrace);
+  m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_calcBool     (bPrintXform, bTrace);
   m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table             (bPrintXform, bTrace);
   m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter(bPrintXform, bTrace);
   m_pTransforms->vH40_T40_Delete_Empty_where                    (bPrintXform, bTrace);
@@ -219,8 +219,8 @@ void Transformer::vHand_60_InitialJoin(bool bPrintHand, bool bPrintXform, bool b
 
   m_pCardCtl->vPrintSubCards(CK_FILTER, true);
 
-  m_pTransforms->vH60_T10_Add_indexJoin_UnderAllJoinable_table(bPrintXform, bTrace);
-  m_pTransforms->vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bPrintXform, bTrace);
+  m_pTransforms->vH60_T10_Add_indexJoin_UnderAllFiltered_table(bPrintXform, bTrace);
+  m_pTransforms->vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bPrintXform, bTrace);
   m_pTransforms->vH60_T30_Add_joinPred_UnderAll_indexJoin(bPrintXform, bTrace);
   m_pTransforms->vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bPrintXform, bTrace);
   m_pTransforms->vH60_T50_Delete_Empty_filter(bPrintXform, bTrace);
