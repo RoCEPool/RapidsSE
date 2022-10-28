@@ -36,7 +36,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bCueingDisabled = false;
 
   m_pPermGen   = nullptr;
-  m_cTableSyn  = 'a';
 
   m_pColumn    = nullptr;
   m_pIdxVec    = nullptr;

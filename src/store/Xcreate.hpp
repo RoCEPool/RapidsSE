@@ -20,7 +20,7 @@ namespace STORE
     Card_IndexList*  C_pProduce_indexList_ofTable(Table* pTable);
     Card_Size*       C_pProduce_size_ofTable(Table* pTable);
     Card_Stream*     C_pProduce_stream_ofTable(Table* pTable);
-    Card_TablePtn*   C_pProduce_tablePtn_ofTable(Table* pTable, char cTableSyn);
+    Card_TablePtn*   C_pProduce_tablePtn_ofTable(Card_Table* p_table, Table* pTable, char cTableSyn);
 
     // must be last
     Footer m_xFooter;

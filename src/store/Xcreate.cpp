@@ -271,9 +271,13 @@ Card_Stream* Xcreate::C_pProduce_stream_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* produce <tablePtn> of table                                                */
 /*----------------------------------------------------------------------------*/
-Card_TablePtn* Xcreate::C_pProduce_tablePtn_ofTable(Table* pTable, char cTableSyn)
+Card_TablePtn* Xcreate::C_pProduce_tablePtn_ofTable(Card_Table* p_table, Table* , char )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
+  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+  char cTableSyn = p_table->cValue();
 
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pPtnColumn = pPtnDef->pGetColumn(0);

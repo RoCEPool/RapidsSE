@@ -35,7 +35,6 @@ namespace STORE
 
 
     PermGen*    m_pPermGen;
-    char        m_cTableSyn;
 
     Column*     m_pColumn;
     IdxVec*     m_pIdxVec;

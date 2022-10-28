@@ -105,7 +105,7 @@ void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                    Access Metadata Hand 20 */
+/*                                                     Table Analysis Hand 20 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -115,17 +115,7 @@ void Xreshape::vR_H20_T10_Add_tableSyn_ForAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-  M.p_table->vMark1(MARK_CHANGED);
-  char cTableSyn_actual = m_cTableSyn;
-  if (m_pTable->bIsReplicated())
-    cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
-
-  M.p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
-
-  m_cTableSyn++;
-
+  M_vTable_syn(M.p_table);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +127,7 @@ void Xreshape::vR_H20_T20_Add_tablePtn_UnderAll_table(void)
 
   m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-  M.p_tablePtn = C_pProduce_tablePtn_ofTable(m_pTable, m_cTableSyn);
+  M.p_tablePtn = C_pProduce_tablePtn_ofTable(M.p_table,m_pTable, m_cTableSyn);
 
   M.p_table->vAppend(M.p_tablePtn);
 }

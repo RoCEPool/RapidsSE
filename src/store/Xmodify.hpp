@@ -13,6 +13,9 @@ namespace STORE
   {
   public:
 
+    char m_cTableSyn;
+
+  public:
     void M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     bool M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
@@ -22,6 +25,8 @@ namespace STORE
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
     void M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+
+    void M_vTable_syn(Card_Table* p_table);
 
     // predicate pull-up
     void vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);

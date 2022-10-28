@@ -4,6 +4,7 @@
 
 #include "Xmodify.hpp"
 
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -19,6 +20,7 @@ Xmodify::Xmodify(eCN eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  m_cTableSyn = 'a';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +200,27 @@ void Xmodify::M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream*
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* add table and index                                                        */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTable_syn(Card_Table* p_table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
+
+  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+
+  p_table->vMark1(MARK_CHANGED);
+
+  char cTableSyn_actual = m_cTableSyn;
+  if (pTable->bIsReplicated())
+    cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
+  p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
+
+  m_cTableSyn++;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Predicate Pull-Up -------------------------------------------------------*/
