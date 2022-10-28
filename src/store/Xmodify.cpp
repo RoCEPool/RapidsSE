@@ -231,6 +231,30 @@ void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTable_IndexJoin(Card_Table* p_table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
+
+  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+
+  Card_IndexList* p_indexList = C_pProduce_indexList_ofTable(pTable);
+
+  while (Card_Index* p_index = _pCard_Index(p_indexList->pPopChild())) {
+    Card* p_indexJoin = new Card_IndexJoin;
+    p_indexJoin->vAppend(p_index);
+    Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
+    p_table->vAppend(p_comment);
+    p_table->vAppend(p_indexJoin);
+  }
+
+  DELETE_CARD(p_indexList);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vTable_syn(Card_Table* p_table)

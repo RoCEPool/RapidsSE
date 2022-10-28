@@ -286,22 +286,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_tableNm = M.p_table->pSub_tableNm();
-  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-  M.p_indexList = C_pProduce_indexList_ofTable(m_pTable);
-
-  while ((M.p_index = _pCard_Index(M.p_indexList->pPopChild()))) {
-    M.p_indexJoin = new Card_IndexJoin;
-    M.p_indexJoin->vAppend(M.p_index);
-    //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
-    M.p_comment = new Card_Comment(SEP_SCRATCH);
-    M.p_table->vAppend(M.p_comment);
-    M.p_table->vAppend(M.p_indexJoin);
-  }
-
-  G_vDeleteMember(CK_INDEXLIST);
-
+  M_vTable_IndexJoin(M.p_table);
 }
 
 /*----------------------------------------------------------------------------*/
