@@ -57,9 +57,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   m_pTransformIterList = new TransformIterList;
 
-  m_iOrdLo = 1;
-  m_iOrdHi = C_UNKNOWN;
-  m_nStreamCols = C_UNKNOWN;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 

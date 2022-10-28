@@ -231,7 +231,6 @@ Card_Size* Xcreate::C_pProduce_size_ofTable(Table* pTable)
   return p_size;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* produce composite <stream> of table                                        */
 /*----------------------------------------------------------------------------*/
@@ -271,7 +270,7 @@ Card_Stream* Xcreate::C_pProduce_stream_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* produce <tablePtn> of table                                                */
 /*----------------------------------------------------------------------------*/
-Card_TablePtn* Xcreate::C_pProduce_tablePtn_ofTable(Card_Table* p_table, Table* , char )
+Card_TablePtn* Xcreate::C_pProduce_tablePtn_ofTable(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -293,7 +292,6 @@ Card_TablePtn* Xcreate::C_pProduce_tablePtn_ofTable(Card_Table* p_table, Table* 
 
   return p_tablePtn;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

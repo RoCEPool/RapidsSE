@@ -12,8 +12,17 @@ namespace STORE
   class Xmodify : public Xcreate
   {
   public:
-
+    i8   m_iOrdLo;
+    i8   m_iOrdHi;
+    i8   m_nStreamCols;
     char m_cTableSyn;
+
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    Xmodify(eCN eClass);
+   ~Xmodify(void) noexcept(false);
 
   public:
     void M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
@@ -25,6 +34,8 @@ namespace STORE
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
     void M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+
+    void M_vStream_OrdinalRange(Card_Stream* p_stream);
 
     void M_vTable_syn(Card_Table* p_table);
 
@@ -41,13 +52,6 @@ namespace STORE
     void vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing, Card_PRED* pCard_pred);
     void vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
     void vPullUp_MovePredToFilter(Card_Filter* p_filter, Card_PRED* p_pred);
-
-    // must be last
-    Footer m_xFooter;
-
-  public:
-    Xmodify(eCN eClass);
-   ~Xmodify(void) noexcept(false);
 
     Footer* aFooter(void);
   };

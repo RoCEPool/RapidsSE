@@ -20,7 +20,10 @@ Xmodify::Xmodify(eCN eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_cTableSyn = 'a';
+  m_iOrdLo      = 1;
+  m_iOrdHi      = C_UNKNOWN;
+  m_nStreamCols = C_UNKNOWN;
+  m_cTableSyn   = 'a';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,6 +201,33 @@ void Xmodify::M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream*
 
     pCard_idxCol->vMark1(MARK_CHANGED);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // <scan>/<stream>:iOrdLo,iOrdHi
+  i8 nStreamCols = p_stream->pSub_stmColList()->nChildCards();
+  p_stream->Y_vSet(P_OrdLo, m_iOrdLo);
+  m_iOrdHi = m_iOrdLo + nStreamCols - 1;
+  p_stream->Y_vSet(P_OrdHi, m_iOrdHi);
+
+  p_stream->vMark1(MARK_CHANGED);
+
+  CardIter xCI(p_stream->pSub_stmColList());
+  i8 iOrdinal = m_iOrdLo;
+  while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
+    Card_StmColOrd* p_stmColOrd = new Card_StmColOrd;
+    p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
+    p_stmCol->vAppend(p_stmColOrd);
+    iOrdinal++;
+  }
+
+  m_iOrdLo = m_iOrdHi + 1;
 }
 
 /*----------------------------------------------------------------------------*/

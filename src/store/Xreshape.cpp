@@ -125,9 +125,7 @@ void Xreshape::vR_H20_T20_Add_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-  M.p_tablePtn = C_pProduce_tablePtn_ofTable(M.p_table,m_pTable, m_cTableSyn);
+  M.p_tablePtn = C_pProduce_tablePtn_ofTable(M.p_table);
 
   M.p_table->vAppend(M.p_tablePtn);
 }
@@ -157,24 +155,7 @@ void Xreshape::vR_H30_T20_Calc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  // <scan>/<stream>:iOrdLo,iOrdHi
-  m_nStreamCols = M.p_stream->pSub_stmColList()->nChildCards();
-  M.p_stream->Y_vSet(P_OrdLo, m_iOrdLo);
-  m_iOrdHi = m_iOrdLo + m_nStreamCols - 1;
-  M.p_stream->Y_vSet(P_OrdHi, m_iOrdHi);
-
-  M.p_stream->vMark1(MARK_CHANGED);
-
-  CardIter xCI(M.p_stream->pSub_stmColList());
-  i8 iOrdinal = m_iOrdLo;
-  while ((M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))) {
-    M.p_stmColOrd = new Card_StmColOrd;
-    M.p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
-    M.p_stmCol->vAppend(M.p_stmColOrd);
-    iOrdinal++;
-  }
-
-  m_iOrdLo = m_iOrdHi + 1;
+  M_vStream_OrdinalRange(M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
