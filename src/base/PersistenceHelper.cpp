@@ -6,21 +6,10 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "CmdLineArgs.hpp"
-#include <sys/time.h>
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
 extern CmdLineArgs  gxCmdLineArgs;
-
-static long long milliseconds(void) {
-  struct timeval tv;
-  long long mst;
-
-  gettimeofday(&tv, NULL);
-  mst = ((long long)tv.tv_sec)*1000000;
-  mst += tv.tv_usec;
-  return mst/1000;
-}
 
 /*----------------------------------------------------------------------------*/
 /* read all the buffer pool buffers from file                                 */
@@ -88,8 +77,8 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
   for(i8 i = 0; i < iSize; i++)
     azBuffer[i] = RndLib::iInteger(0,100);
 
-  long long start;
-  start = milliseconds();
+  i8 start;
+  start = Timer::iGetTimeOfDay();
 
   Timer oTimer;
   oTimer.vStart();
@@ -125,7 +114,7 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
 
   vTrace("New Timer: Partition %lld took %lld ms to write to disk\n"_Stz,
          iPtnOfNode,
-         (milliseconds() - start));
+         (Timer::iGetTimeOfDay() - start)/1000000);
 
 }
 
@@ -187,8 +176,8 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   }
 
   ASSERT(iPtnOfNode >= 0);
-  long long start;
-  start = milliseconds();
+  i8 start;
+  start =Timer::iGetTimeOfDay();
 
   Timer oTimer;
   oTimer.vStart();
@@ -204,7 +193,6 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
     vWriteHeap(AM::pHeaps()->Persistent.m_pLarge, pFile);
   }
 
-  
 //  vTrace("Writing persistent tiny heap\n"_Stz);
   vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pTiny, pFile);
   
@@ -223,13 +211,13 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   delete pFile;
 
   oTimer.vUpdate();
-  vTrace("Partition %lld took %lldms to write heap buffers to disk\n"_Stz,
+  vTrace("Rdtscp: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
          iPtnOfNode,
          oTimer.iMilliseconds());
 
-  vTrace("New Timer: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
+  vTrace("GetTimeOfDay: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
          iPtnOfNode,
-         (milliseconds() - start));
+         (Timer::iGetTimeOfDay() - start)/1000000);
 }
 
 /*============================================================================*/

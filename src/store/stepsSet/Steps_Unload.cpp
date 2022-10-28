@@ -61,7 +61,7 @@ void Step::vUnloadToDisk(void)
                          iPtnOfNode);
 
     PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
-//    PersistenceHelper::vWriteDiskTest(sFilePath.szStz(), 16);
+//    PersistenceHelper::vWriteDiskTest(sFilePath.szStz(), 4);
 
     vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
   }

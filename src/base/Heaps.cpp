@@ -495,6 +495,7 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 void Heaps::vInit(void)
 {
   if(gxCmdLineArgs.m_xSysArgs.m_bReload) {
+    i8 start = Timer::iGetTimeOfDay();
     Timer oTimer;
 //    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       oTimer.vStart();
@@ -504,7 +505,8 @@ void Heaps::vInit(void)
 
 //    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       oTimer.vUpdate();
-      vTrace("Loading of Persistent Heaps from disk took %lldms\n"_Stz,oTimer.iMilliseconds());
+      vTrace("Rdtscp: Loading of Persistent Heaps from disk took %lldms\n"_Stz, oTimer.iMilliseconds());
+      vTrace("GetTimeOfDay: Loading of Persistent Heaps from disk took %lldms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
 //    }
   } else {
     // create the persistent heaps
