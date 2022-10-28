@@ -400,6 +400,28 @@ void Xmodify::M_vTable_syn(Card_Table* p_table)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Stz* szTerm = p_term->sz();
+  if (!szTerm->bIsStreamColOrd())
+    return;
+
+  i8 i_IdxCol = C_UNKNOWN;
+
+  Card_IdxCol* p_idxCol =
+      _pCard_IdxCol(p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol));
+  if (! p_idxCol)
+    return;
+
+  p_term->vMark1('I');
+  p_term->vMark2(i_IdxCol);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Predicate Pull-Up -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

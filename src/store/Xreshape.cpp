@@ -829,31 +829,11 @@ void Xreshape::vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
   if (! (M.p_idxColList = (M.p_index->pSub_idxColList())))
     return;
 
-  //M.p_idxColList->vDump();
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfPredBounds = [this](Card* pCard) {
     Card_Term* p_term = _pCard_Term(pCard);
-
-    Stz* szTerm = p_term->sz();
-    if (!szTerm->bIsStreamColOrd())
-      return C_CONTINUE_RECURSION;
-
-    vTracer("Checking %s %s\n"_Stz,p_term->sz(),p_term->szBearing());
-
-    i8 i_IdxCol = C_UNKNOWN;
-
-    if (! (M.p_idxCol =
-               _pCard_IdxCol(M.p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol))))
-      return C_CONTINUE_RECURSION;
-
-    vTracer("Matches %s.%lld // marked with I%lld\n"_Stz,
-            M.p_idxCol->pSub_idxColNm()->szValue(),i_IdxCol,i_IdxCol);
-
-    p_term->vMark1('I');
-    p_term->vMark2(i_IdxCol);
+    M_vTerm_MarkIfMatchesAn_idxCol(p_term, M.p_idxColList);
     return C_CONTINUE_RECURSION;
   };
 

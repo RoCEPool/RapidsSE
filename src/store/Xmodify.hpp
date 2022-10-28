@@ -44,6 +44,8 @@ namespace STORE
     void M_vTable_IndexJoin(Card_Table* p_table);
     void M_vTable_syn(Card_Table* p_table);
 
+    void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
+
     // predicate pull-up
     void vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);
     void vPullUp_MarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);

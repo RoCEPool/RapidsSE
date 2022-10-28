@@ -29,6 +29,7 @@ namespace STORE
 
     bool        m_bPrintHand;
     bool        m_bPrintXform;
+    bool        m_bPrintXformForce;
     bool        m_bInteractive;
     b8          m_bBeenCued;
     b8          m_bCueingDisabled;
@@ -87,6 +88,7 @@ namespace STORE
     void vPrintHand(bool bPrintHand);
     bool bPrintXform(void);
     void vPrintXform(bool bPrintXform);
+    void vPrintXformForce(bool bPrintXformForce);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);

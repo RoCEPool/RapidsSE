@@ -90,14 +90,16 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  vHand_10_CondenseInfo    (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
+  m_pTransforms->vPrintXformForce(true);
+
+  vHand_10_CondenseInfo    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_50_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
-  vHand_60_InitialJoin     (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_Y);
-  vHand_70_JoinOrdering    (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_Y);
-  vHand_80_IndexScan       (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_Y);
+  vHand_60_IndexJoin       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  vHand_70_JoinOrdering    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  vHand_80_IndexScan       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_90_StreamOrdering  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_A0_FilterRefinement(C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_Z0_RestatePipeline (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -121,11 +123,11 @@ void Transformer::vHand_10_CondenseInfo(bool bPrintHand, bool bPrintXform, bool 
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vH10_T10_Delete_Redundant_stage(bPrintXform, bTrace);
-    m_pTransforms->vH10_T15_Hide_Ignorable_stage(bPrintXform, bTrace);
-    m_pTransforms->vH10_T20_Delete_absJoin(bPrintXform, bTrace);
-    m_pTransforms->vH10_T30_Delete_combined(bPrintXform, bTrace);
-    m_pTransforms->vH10_T40_Delete_send(bPrintXform, bTrace);
+    m_pTransforms->vH10_T10_Delete_Redundant_stages(bPrintXform, bTrace);
+    m_pTransforms->vH10_T15_Hide_Ignorable_stages(bPrintXform, bTrace);
+    m_pTransforms->vH10_T20_Delete_All_absJoin(bPrintXform, bTrace);
+    m_pTransforms->vH10_T30_Delete_All_combined(bPrintXform, bTrace);
+    m_pTransforms->vH10_T40_Delete_All_send(bPrintXform, bTrace);
     m_pTransforms->vH10_T50_Cull_scan_Leaving_table(bPrintXform, bTrace);
   }
 
@@ -144,7 +146,7 @@ void Transformer::vHand_20_TableAnalysis(bool bPrintHand, bool bPrintXform, bool
 
   m_pCardCtl->vPrintSubCards(CK_STREAM, true);
 
-  m_pTransforms->vH20_T10_Add_tableSyn_ForAll_table(bPrintXform, bTrace);
+  m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table(bPrintXform, bTrace);
   m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table(bPrintXform, bTrace);
 
   vEndHand();
@@ -211,7 +213,7 @@ void Transformer::vHand_50_FlattenExists(bool bPrintHand, bool bPrintXform, bool
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_60_InitialJoin(bool bPrintHand, bool bPrintXform, bool bTrace)
+void Transformer::vHand_60_IndexJoin(bool bPrintHand, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -219,11 +221,11 @@ void Transformer::vHand_60_InitialJoin(bool bPrintHand, bool bPrintXform, bool b
 
   m_pCardCtl->vPrintSubCards(CK_FILTER, true);
 
-  m_pTransforms->vH60_T10_Add_indexJoin_UnderAllFiltered_table(bPrintXform, bTrace);
-  m_pTransforms->vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bPrintXform, bTrace);
-  m_pTransforms->vR_H60_T30_Add_bounds_UnderAllFiltered_table(bPrintXform, bTrace);
-  m_pTransforms->vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bPrintXform, bTrace);
-  m_pTransforms->vH60_T50_Delete_Empty_filter(bPrintXform, bTrace);
+  m_pTransforms->vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bPrintXform, bTrace);
+  m_pTransforms->vH60_T20_Affix_idxColOdn_ToAll_idxCol(bPrintXform, bTrace);
+  m_pTransforms->vH60_T30_Add_bounds_UnderAllFiltered_table(bPrintXform, bTrace);
+  m_pTransforms->vH60_T40_Cull_pred_MovedTo_table_bounds(bPrintXform, bTrace);
+  m_pTransforms->vH60_T50_Delete_Empty_table_filter(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -296,9 +298,9 @@ void Transformer::vHand_80_IndexScan(bool bPrintHand, bool bPrintXform, bool bTr
  *
  */
 
-  m_pTransforms->vH80_T10_Add_indexList_Under_scan(bPrintXform, bTrace);
-  m_pTransforms->vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bPrintXform, bTrace);
-  m_pTransforms->vH80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(bPrintXform, bTrace);
+  m_pTransforms->vH80_T10_Add_Scratch_indexList_Under_scan(bPrintXform, bTrace);
+  m_pTransforms->vH80_T20_Affix_idxColOdn_ToAll_idxCol(bPrintXform, bTrace);
+  m_pTransforms->vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(bPrintXform, bTrace);
   m_pTransforms->vH80_T40_Mark_IndexMatchOf_scan_filter_terms(bPrintXform, bTrace);
   m_pTransforms->vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(bPrintXform, bTrace);
   m_pTransforms->vH80_T60_Cull_Marked_filter_cmpPred(bPrintXform, bTrace);

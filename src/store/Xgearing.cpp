@@ -29,6 +29,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   m_bPrintHand = false;
   m_bPrintXform = false;
+  m_bPrintXformForce = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
@@ -117,15 +118,17 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
   else
     sPrompt.vSprint(""_Stz, szHand);
 
-  if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
-    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (szTagCue->bSame(szHand) && szTransformation) {
-      printf("%s\n", sPrompt.azChar());
-      return OA_CONTINUE_TRANSFORMING;
-    }
-    if ( szTransformation && (! szTagCue->bSame(szTransformation))) {
-      printf("%s\n", sPrompt.azChar());
-      return OA_CONTINUE_TRANSFORMING;
+  if (! m_bPrintXformForce) {
+    if (!m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
+      Stz *szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
+      if (szTagCue->bSame(szHand) && szTransformation) {
+        printf("%s\n", sPrompt.azChar());
+        return OA_CONTINUE_TRANSFORMING;
+      }
+      if (szTransformation && (!szTagCue->bSame(szTransformation))) {
+        printf("%s\n", sPrompt.azChar());
+        return OA_CONTINUE_TRANSFORMING;
+      }
     }
   }
 
@@ -268,7 +271,7 @@ void Xgearing::vPrintBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! m_bPrintXform)
+  if (! m_bPrintXform && ! m_bPrintXformForce)
     return;
 
   for (;;) {
@@ -327,6 +330,16 @@ void Xgearing::vPrintXform(bool bPrintXform)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_bPrintXform = bPrintXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set print phase force                                                      */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vPrintXformForce(bool bPrintXformForce)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_bPrintXformForce = bPrintXformForce;
 }
 
 /*----------------------------------------------------------------------------*/

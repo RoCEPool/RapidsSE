@@ -23,14 +23,14 @@ namespace STORE
 
     //void vAdd_columnRef_Under_term(bool bPrint, bool bTrace);
 
-    void vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace);
-    void vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace);
-    void vH10_T20_Delete_absJoin(bool bPrint, bool bTrace);
-    void vH10_T30_Delete_combined(bool bPrint, bool bTrace);
-    void vH10_T40_Delete_send(bool bPrint, bool bTrace);
+    void vH10_T10_Delete_Redundant_stages(bool bPrint, bool bTrace);
+    void vH10_T15_Hide_Ignorable_stages(bool bPrint, bool bTrace);
+    void vH10_T20_Delete_All_absJoin(bool bPrint, bool bTrace);
+    void vH10_T30_Delete_All_combined(bool bPrint, bool bTrace);
+    void vH10_T40_Delete_All_send(bool bPrint, bool bTrace);
     void vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace);
 
-    void vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace);
+    void vH20_T10_Affix_tableSyn_ToAll_table(bool bPrint, bool bTrace);
     void vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace);
     void vH30_T10_Add_stream_UnderAll_table(bool bPrint, bool bTrace);
 
@@ -46,11 +46,11 @@ namespace STORE
     void vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
     void vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
 
-    void vH60_T10_Add_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace);
-    void vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bool bPrint, bool bTrace);
-    void vR_H60_T30_Add_bounds_UnderAllFiltered_table(bool bPrint, bool bTrace);
-    void vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace);
-    void vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace);
+    void vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace);
+    void vH60_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace);
+    void vH60_T30_Add_bounds_UnderAllFiltered_table(bool bPrint, bool bTrace);
+    void vH60_T40_Cull_pred_MovedTo_table_bounds(bool bPrint, bool bTrace);
+    void vH60_T50_Delete_Empty_table_filter(bool bPrint, bool bTrace);
 
     void vH70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool bTrace);
     void vH70_T10_Extract_joinPredList(bool bPrint, bool bTrace);
@@ -68,9 +68,9 @@ namespace STORE
     void vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace);
     void vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace);
 
-    void vH80_T10_Add_indexList_Under_scan(bool bPrint, bool bTrace);
-    void vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, bool bTrace);
-    void vH80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(bool bPrint, bool bTrace);
+    void vH80_T10_Add_Scratch_indexList_Under_scan(bool bPrint, bool bTrace);
+    void vH80_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace);
+    void vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(bool bPrint, bool bTrace);
     void vH80_T40_Mark_IndexMatchOf_scan_filter_terms(bool bPrint, bool bTrace);
     void vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(bool bPrint, bool bTrace);
     void vH80_T60_Cull_Marked_filter_cmpPred(bool bPrint, bool bTrace);
