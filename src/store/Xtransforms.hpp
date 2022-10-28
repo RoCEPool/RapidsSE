@@ -68,12 +68,12 @@ namespace STORE
     void vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace);
     void vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace);
 
-    void vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace);
+    void vH80_T10_Add_indexList_Under_scan(bool bPrint, bool bTrace);
     void vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, bool bTrace);
-    void vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace);
-    void vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace);
-    void vH80_T50_Add_scanPred(bool bPrint, bool bTrace);
-    void vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace);
+    void vH80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(bool bPrint, bool bTrace);
+    void vH80_T40_Mark_IndexMatchOf_scan_filter_terms(bool bPrint, bool bTrace);
+    void vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(bool bPrint, bool bTrace);
+    void vH80_T60_Cull_Marked_filter_cmpPred(bool bPrint, bool bTrace);
     void vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace);
 
     void vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace);

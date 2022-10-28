@@ -955,7 +955,7 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T10_Add_indexList_Under_scan(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -964,7 +964,7 @@ void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_TABLENM)) {
-    vR_H80_T10_Insert_indexList_ToAll_scan();
+    vR_H80_T10_Add_indexList_Under_scan();
   }
 
   vEndTransform();
@@ -993,7 +993,7 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, b
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1002,7 +1002,7 @@ void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
-    vR_H80_T30_Mark_scan_pred_bounds();
+    vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred();
   }
 
   vEndTransform();
@@ -1012,7 +1012,7 @@ void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T40_Mark_IndexMatchOf_scan_filter_terms(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1021,7 +1021,7 @@ void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bo
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
-    vR_H80_T40_Mark_scan_filter_term_WhichMatchIndex();
+    vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms();
   }
 
   vEndTransform();
@@ -1031,7 +1031,7 @@ void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1040,7 +1040,7 @@ void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
-    vR_H80_T50_Add_scanPred();
+    vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
   }
 
   vEndTransform();
@@ -1050,7 +1050,7 @@ void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T60_Cull_Marked_filter_cmpPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1059,7 +1059,7 @@ void Xtransforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
-    vR_H80_T60_Cull_Marked_cmpPred();
+    vR_H80_T60_Cull_Marked_filter_cmpPred();
   }
 
   vEndTransform();

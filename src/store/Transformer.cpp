@@ -284,6 +284,7 @@ void Transformer::vHand_80_IndexScan(bool bPrintHand, bool bPrintXform, bool bTr
 
   m_pCardCtl->vPrintByKind(CK_STREAM, true);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
+  m_pCardCtl->vPrintSubCards(CK_FILTER, true);
 
   /*
  *
@@ -295,12 +296,12 @@ void Transformer::vHand_80_IndexScan(bool bPrintHand, bool bPrintXform, bool bTr
  *
  */
 
-  m_pTransforms->vH80_T10_Insert_indexList_ToAll_scan(bPrintXform, bTrace);
+  m_pTransforms->vH80_T10_Add_indexList_Under_scan(bPrintXform, bTrace);
   m_pTransforms->vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bPrintXform, bTrace);
-  m_pTransforms->vH80_T30_Mark_scan_pred_bounds(bPrintXform, bTrace);
-  m_pTransforms->vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bPrintXform, bTrace);
-  m_pTransforms->vH80_T50_Add_scanPred(bPrintXform, bTrace);
-  m_pTransforms->vH80_T60_Cull_Marked_cmpPred(bPrintXform, bTrace);
+  m_pTransforms->vH80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(bPrintXform, bTrace);
+  m_pTransforms->vH80_T40_Mark_IndexMatchOf_scan_filter_terms(bPrintXform, bTrace);
+  m_pTransforms->vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(bPrintXform, bTrace);
+  m_pTransforms->vH80_T60_Cull_Marked_filter_cmpPred(bPrintXform, bTrace);
   m_pTransforms->vH80_T70_Promote_scan_To_indexScan(bPrintXform, bTrace);
 
   vEndHand();

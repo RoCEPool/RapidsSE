@@ -780,7 +780,7 @@ void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H80_T10_Insert_indexList_ToAll_scan(void)
+void Xreshape::vR_H80_T10_Add_indexList_Under_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -800,7 +800,7 @@ void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H80_T30_Mark_scan_pred_bounds(void)
+void Xreshape::vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -820,7 +820,7 @@ void Xreshape::vR_H80_T30_Mark_scan_pred_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H80_T40_Mark_scan_filter_term_WhichMatchIndex(void)
+void Xreshape::vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -865,7 +865,7 @@ void Xreshape::vR_H80_T40_Mark_scan_filter_term_WhichMatchIndex(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H80_T50_Add_scanPred(void)
+void Xreshape::vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -924,7 +924,7 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H80_T60_Cull_Marked_cmpPred(void)
+void Xreshape::vR_H80_T60_Cull_Marked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

@@ -54,12 +54,12 @@ namespace STORE
     void vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void);
     void vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b(void);
     void vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void);
-    void vR_H80_T10_Insert_indexList_ToAll_scan(void);
+    void vR_H80_T10_Add_indexList_Under_scan(void);
     void vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void);
-    void vR_H80_T30_Mark_scan_pred_bounds(void);
-    void vR_H80_T40_Mark_scan_filter_term_WhichMatchIndex(void);
-    void vR_H80_T50_Add_scanPred(void);
-    void vR_H80_T60_Cull_Marked_cmpPred(void);
+    void vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void);
+    void vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void);
+    void vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void);
+    void vR_H80_T60_Cull_Marked_filter_cmpPred(void);
     void vR_H80_T70_Promote_scan_To_indexScan(void);
     void vR_H80_T70_Promote_scan_To_indexScan_b(void);
     void vR_H80_T70_Promote_scan_To_indexScan_c(void);

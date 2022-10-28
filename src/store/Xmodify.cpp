@@ -53,7 +53,7 @@ void Xmodify::M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
   Card_PRED* pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
   while (pCard_pred &&
-      M_bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) &&
+         M_bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) &&
          p_boolCalc->nChildCards()) {
     pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
   }
