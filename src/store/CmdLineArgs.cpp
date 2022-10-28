@@ -630,7 +630,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Usage: --node <name> <ip-addr> <internal_port> <wireline_port>\n"_Stz);
         return false;
       }
-      m_xSysArgs.m_xNodeDefn[i_BootNode].m_iWLPortNo    = argv[i_Arg].iToI8();
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNoWL    = argv[i_Arg].iToI8();
 
       i_BootNode++;
       //TODO: Arjun check if we are supposed to use i_BootNode here.
@@ -1450,7 +1450,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
       m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
       m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
       m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo,
-      m_xSysArgs.m_xNodeDefn[i_Index].m_iWLPortNo);
+      m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNoWL);
   }
 
   for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {

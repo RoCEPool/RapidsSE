@@ -63,7 +63,7 @@ void Step::vNodeNew(void)
   m_pDataStack->vPopStr(sIpAddr,__func__);
   
   i8 iPortNo   = m_pDataStack->iPopInt(__func__);
-  i8 iWLPortNo = m_pDataStack->iPopInt(__func__);
+  i8 iPortNoWL = m_pDataStack->iPopInt(__func__);
 
   i8 nKnownNodes = AM::pGrid()->nKnownNodes();
   i8 nPtnsPerNode = AM::SYSARGS::nPtnsPerNode();
@@ -73,7 +73,7 @@ void Step::vNodeNew(void)
                          nPtnsPerNode,
                          sIpAddr,
                          iPortNo,
-                         iWLPortNo,
+                         iPortNoWL,
                          AM::szRegionName());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -298,7 +298,7 @@ void Step::vNodePortWL(void)
 
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pNode->iPortNo());
+  m_pDataStack->vPushInt(pNode->iPortNoWL());
 
   EXIT();
 }

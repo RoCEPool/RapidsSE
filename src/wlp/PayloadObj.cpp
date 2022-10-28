@@ -29,8 +29,11 @@ PayloadObj::PayloadObj(void)
 
   m_nPayloadBytes = 0;
   m_caPayload[0] = 0;
-  
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caPayload, C_MAX_PAYLOAD_BYTES, CN_PAYLOADOBJ);
   _checkInitialised_(CN_PAYLOADOBJ);
+#endif
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PAYLOADOBJ,_FOOTER_);
 }

@@ -517,7 +517,7 @@ void Engine::vCheckGrid(void)
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz(),
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo,
-             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iWLPortNo
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNoWL
              );
      
      if (! gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
@@ -531,7 +531,7 @@ void Engine::vCheckGrid(void)
 
      if (gxCmdLineArgs.m_xSysArgs.m_bGridTest) {
        vTestPort(gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
-       vTestPort(gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iWLPortNo);
+       vTestPort(gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNoWL);
      }
    }
 
@@ -581,7 +581,7 @@ void Engine::vCheckPort(void)
   iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iPortNo;
   vTestPort(iPort);
 
-  iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iWLPortNo;
+  iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iPortNoWL;
   vTestPort(iPort);
 }
 
@@ -1888,7 +1888,7 @@ void Engine::vCreateGridOfNodes(void)
                            AM::SYSARGS::nPtnsPerNode(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress,
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo,
-                           gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iWLPortNo,
+                           gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNoWL,
                            AM::szRegionName());
 
     AM::pGrid()->vAddNode(pNode);

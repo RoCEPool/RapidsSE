@@ -94,7 +94,7 @@ void Grid::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 void Grid::vAddDetectedNode(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
-                            i8 iPortNo, i8 iWLPortNo, Stz* szRegionNm)
+                            i8 iPortNo, i8 iPortNoWL, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
@@ -103,7 +103,7 @@ void Grid::vAddDetectedNode(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
                          AM::SYSARGS::nPtnsPerNode(),
                          szIPAddr,
                          iPortNo,
-                         iWLPortNo,
+                         iPortNoWL,
                          szRegionNm);
 
   if (! m_pNodes->pFind(pNode)) {

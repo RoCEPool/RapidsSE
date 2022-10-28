@@ -181,7 +181,7 @@ void vHeartInit(void) {
                                     (Stz *) xHeartbeat.m_acNodeName,
                                     (Stz *) xHeartbeat.m_acAddr,
                                     xHeartbeat.m_iPort,
-                                    xHeartbeat.m_iWLPort,
+                                    xHeartbeat.m_iPortWL,
                                     (Stz *) xHeartbeat.m_acRegionName);
             
             vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);

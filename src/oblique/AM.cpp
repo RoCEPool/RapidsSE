@@ -615,7 +615,7 @@ i8 AM::GRID::nKnownNodes(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
-                             i8 iPortNo, i8 iWLPortNo, Stz* szRegionNm)
+                             i8 iPortNo, i8 iPortNoWL, Stz* szRegionNm)
 {
   _static_
   
@@ -626,7 +626,7 @@ void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
     if (! pDetectedNode) {
       AM::pGrid()->vAddDetectedNode(iNodeId, szNodeNm,
                                     szIPAddr, iPortNo,
-                                    iWLPortNo, szRegionNm);
+                                    iPortNoWL, szRegionNm);
     }
   }
 }

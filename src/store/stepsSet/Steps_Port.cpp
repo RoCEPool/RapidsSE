@@ -74,7 +74,7 @@ void Step::vPortAcceptConnection_reg(void)
            "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
   
   // return the socket
-  Socket* pNewSocket = new Socket(this,iSocketId);
+  Socket* pNewSocket = new Socket(this,iSocketId, pPort);
   
   m_pDataStack->vPushPtr(pNewSocket);
   

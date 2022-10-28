@@ -36,6 +36,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
+    Socket(Object* pIsFor, int iSocketId, Port* pFromPort);
     Socket(Object* pIsFor, int iSocketId);
    ~Socket(void) noexcept(false);
       
