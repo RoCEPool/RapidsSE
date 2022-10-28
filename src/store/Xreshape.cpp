@@ -784,7 +784,7 @@ void Xreshape::vR_H80_T10_Add_indexList_Under_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vScan_Bounds(M.p_scan);
+  M_vScan_Add_indexList(M.p_scan);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -873,46 +873,7 @@ void Xreshape::vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 
   auto bfAdd = [this](Card* pCard) {
     M.p_cmpPred = _pCard_CmpPred(pCard);
-    if (! ('L' == M.p_cmpPred->cMark1() || 'U' == M.p_cmpPred->cMark1()) )
-      return true;
-
-    vTracer("Testing %s\n"_Stz,M.p_cmpPred->szBearing());
-
-    M.p_bounds = M.p_scan->pSub_bounds();
-    if (! M.p_bounds) {
-      G_vNewMember(CK_BOUNDS);
-      //G_vAppendChild(CK_SCAN,CK_BOUNDS);
-      M.p_scan->vInsertBefore(M.p_bounds,M.p_filter);
-    }
-
-    if ('L' == M.p_cmpPred->cMark1()) {
-      M.p_lBound = M.p_bounds->pSub_lBound();
-      if (! M.p_lBound) {
-        G_vNewMember(CK_LBOUND);
-        G_vAppendChild(CK_BOUNDS, CK_LBOUND);
-      }
-      //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
-      G_vDuplicateMember(CK_CMPPRED);
-      StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
-      //M.p_lBound->vAppend(m_pCard_dup);
-      G_vAppendChild(CK_LBOUND, m_pCard_dup);
-      vTracer("Added cmpPred as lower-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
-    }
-    else
-    if ('U' == M.p_cmpPred->cMark1()) {
-      M.p_uBound = M.p_bounds->pSub_uBound();
-      if (! M.p_uBound) {
-        G_vNewMember(CK_UBOUND);
-        G_vAppendChild(CK_BOUNDS, CK_UBOUND);
-      }
-      //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
-      G_vDuplicateMember(CK_CMPPRED);
-      StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
-      //M.p_uBound->vAppend(m_pCard_dup);
-      G_vAppendChild(CK_UBOUND, m_pCard_dup);
-      vTracer("Added cmpPred as upper-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
-    }
-
+    M_vScan_Add_cmpPred_To_bounds(M.p_scan, M.p_cmpPred);
     return C_CONTINUE_RECURSION;
   };
 

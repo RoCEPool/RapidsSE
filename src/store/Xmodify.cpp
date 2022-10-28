@@ -206,7 +206,49 @@ void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Strea
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vScan_Bounds(Card_Scan* p_scan)
+void Xmodify::M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! ('L' ==p_cmpPred->cMark1() || 'U' == p_cmpPred->cMark1()) )
+    return;
+
+  Card_Filter* p_filter = p_scan->pSub_filter();
+
+  Card_Bounds* p_bounds = p_scan->pSub_bounds();
+  if (! p_bounds) {
+    p_bounds = new Card_Bounds;
+    p_scan->vInsertBefore(p_bounds,p_filter);
+  }
+
+  if ('L' == p_cmpPred->cMark1()) {
+    Card_LBound* p_lBound = p_bounds->pSub_lBound();
+    if (! p_lBound) {
+      p_lBound = new Card_LBound;
+      p_bounds->vAppend(p_lBound);
+    }
+    Card_CmpPred* p_cmpPred_dup = _pCard_CmpPred(p_cmpPred->pDupCardAndSubCards());
+    StrLib::vInsertChar(p_cmpPred_dup->pGetChild(0)->sz()->azChar()+1,'I');
+    p_lBound->vAppend(p_cmpPred_dup);
+  }
+  else
+  if ('U' == p_cmpPred->cMark1()) {
+    Card_UBound* p_uBound = p_bounds->pSub_uBound();
+    if (! p_uBound) {
+      p_uBound = new Card_UBound;
+      p_bounds->vAppend(p_uBound);
+    }
+    Card_CmpPred* p_cmpPred_dup = _pCard_CmpPred(p_cmpPred->pDupCardAndSubCards());
+    StrLib::vInsertChar(p_cmpPred_dup->pGetChild(0)->sz()->azChar()+1,'I');
+    p_uBound->vAppend(p_cmpPred_dup);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vScan_Add_indexList(Card_Scan* p_scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
