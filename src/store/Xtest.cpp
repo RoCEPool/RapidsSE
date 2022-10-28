@@ -522,6 +522,26 @@ bool Xtest::T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bStage_Reinstate(eCK eMain, eCK eSubsequent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (CK_STAGE == eMain || CK_STAGE == eSubsequent)
+    return false;
+
+  if (CK_FILTER == eMain && CK_INDEXJOIN == eSubsequent)
+    return false;
+
+  if (CK_INDEXJOIN == eMain &&
+      (CK_PROJECT == eSubsequent || CK_FILTER == eSubsequent))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
 Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
