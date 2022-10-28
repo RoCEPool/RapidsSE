@@ -33,7 +33,9 @@ namespace STORE
 
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
-    void M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+    void M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+
+    void M_vScan_Bounds(Card_Scan* p_scan);
 
     void M_vStream_OrdinalRange(Card_Stream* p_stream);
 

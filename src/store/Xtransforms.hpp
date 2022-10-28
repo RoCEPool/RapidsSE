@@ -69,7 +69,7 @@ namespace STORE
     void vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace);
 
     void vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace);
-    void vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace);
+    void vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, bool bTrace);
     void vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace);
     void vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace);
     void vH80_T50_Add_scanPred(bool bPrint, bool bTrace);

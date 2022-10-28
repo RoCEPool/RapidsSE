@@ -178,7 +178,7 @@ void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 /*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
+void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -201,6 +201,26 @@ void Xmodify::M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream*
 
     pCard_idxCol->vMark1(MARK_CHANGED);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vScan_Bounds(Card_Scan* p_scan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_TableNm* p_tableNm = p_scan->pSub_tableNm();
+  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+
+  Card_IndexList* p_indexList = C_pProduce_indexList_ofTable(pTable);
+  if (! p_indexList)
+    return;
+
+  Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
+  p_scan->vAppend(p_comment);
+
+  p_scan->vAppend(p_indexList);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -974,7 +974,7 @@ void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -982,8 +982,8 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (G_bEachMainWithSub(CK_SCAN, CK_IDXCOLLIST)) {
-    vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord();
+  while (G_bEachMainWith2Sub(CK_SCAN, CK_STREAM, CK_IDXCOLLIST)) {
+    vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal();
   }
 
   vEndTransform();

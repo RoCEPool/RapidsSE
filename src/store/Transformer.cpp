@@ -296,7 +296,7 @@ void Transformer::vHand_80_IndexScan(bool bPrintHand, bool bPrintXform, bool bTr
  */
 
   m_pTransforms->vH80_T10_Insert_indexList_ToAll_scan(bPrintXform, bTrace);
-  m_pTransforms->vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bPrintXform, bTrace);
+  m_pTransforms->vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bPrintXform, bTrace);
   m_pTransforms->vH80_T30_Mark_scan_pred_bounds(bPrintXform, bTrace);
   m_pTransforms->vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bPrintXform, bTrace);
   m_pTransforms->vH80_T50_Add_scanPred(bPrintXform, bTrace);

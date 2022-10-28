@@ -300,7 +300,7 @@ void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
   M.p_stmColList = M.p_table->pSub_stmColList();
   M.p_idxColList = M.p_indexJoin->pSub_idxColList();
 
-  M_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
+  M_vIdxColList_ToOrdinals(M.p_idxColList, M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,26 +784,17 @@ void Xreshape::vR_H80_T10_Insert_indexList_ToAll_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-  if ((M.p_indexList = C_pProduce_indexList_ofTable(m_pTable))) {
-    M.p_comment = new Card_Comment(SEP_SCRATCH);
-    M.p_scan->vAppend(M.p_comment);
-
-    M.p_scan->vAppend(M.p_indexList);
-  }
+  M_vScan_Bounds(M.p_scan);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(void)
+void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_stream = M.p_scan->pSub_stream();
-
-  M_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
+  M_vIdxColList_ToOrdinals(M.p_idxColList, M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -878,8 +869,6 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_bounds = nullptr;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfAdd = [this](Card* pCard) {
@@ -889,6 +878,7 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
 
     vTracer("Testing %s\n"_Stz,M.p_cmpPred->szBearing());
 
+    M.p_bounds = M.p_scan->pSub_bounds();
     if (! M.p_bounds) {
       G_vNewMember(CK_BOUNDS);
       //G_vAppendChild(CK_SCAN,CK_BOUNDS);
@@ -896,7 +886,6 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
     }
 
     if ('L' == M.p_cmpPred->cMark1()) {
-
       M.p_lBound = M.p_bounds->pSub_lBound();
       if (! M.p_lBound) {
         G_vNewMember(CK_LBOUND);
@@ -950,7 +939,6 @@ void Xreshape::vR_H80_T60_Cull_Marked_cmpPred(void)
   vTracer("Deleting empty <filter> %s\n"_Stz,M.p_filter->szBearing());
   M.p_MainCard->vRemoveSubCard(M.p_filter);
   DELETE_CARD(M.p_filter);
-
 }
 
 /*----------------------------------------------------------------------------*/
