@@ -306,65 +306,11 @@ void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T30_Add_joinPred_UnderAll_indexJoin(void)
+void Xreshape::vR_H60_T30_Add_bounds_UnderFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-
-  //M.p_table->vDump();
-
-  M.p_boolCalc = M.p_filter->pSub_boolCalc();
-  M.p_cmpPred  = M.p_boolCalc->pSub_predCmp();
-  m_pTerm_0    = _pCard_Term(M.p_cmpPred->pGetChild(0));
-  m_pTerm_1    = _pCard_Term(M.p_cmpPred->pGetChild(1));
-
-  if (!T_bTerm_IsStreamColOrdinal(m_pTerm_0) ||
-      !T_bTerm_IsStreamColOrdinal(m_pTerm_1))
-    return;
-
-
-  // - - - -
-
-  M.p_bounds = new Card_Bounds;
-  M.p_indexJoin = M.p_table->pSub_indexJoin();
-  M.p_stream = M.p_table->pSub_stream();
-  M.p_table->vInsertAfter(M.p_bounds, M.p_stream);
-
-  M.p_term = new Card_Term("BOUND"_Stz);
-  M.p_bounds->vAppend(M.p_term);
-
-  // - - - -
-
-  // one of {pCard_term_0,pCard_term_1} is $In
-
-  M.p_stream = M.p_table->pSub_stream();
-  i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
-  i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
-
-  i8 i_iOrdLo_0 = E_iTerm_StreamColNo(m_pTerm_0);
-  i8 i_iOrdLo_1 = E_iTerm_StreamColNo(m_pTerm_1);
-
-  if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-    M.p_term = new Card_Term("$I1"_Stz);
-    M.p_bounds->vAppend(M.p_term);
-    M.p_term = new Card_Term(m_pTerm_1->sz());
-    M.p_bounds->vAppend(M.p_term);
-  }
-  else
-  if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-    M.p_term = new Card_Term("$I1"_Stz);
-    M.p_bounds->vAppend(M.p_term);
-    M.p_term = new Card_Term(m_pTerm_1->sz());
-    M.p_bounds->vAppend(M.p_term);
-  }
-  else {
-    NEVER_REACH
-  }
-
-  M.p_cmpPred->vMark1(MARK_UPWARDS);
-  M.p_term = new Card_Term(M.p_cmpPred->sz());
-  M.p_bounds->vAppend(M.p_term);
-
+  M_vTable_Bounds(M.p_table, M.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -377,7 +323,6 @@ void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
   M.p_boolCalc = M.p_filter->pSub_boolCalc();
 
   M_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
-
 }
 
 /*----------------------------------------------------------------------------*/

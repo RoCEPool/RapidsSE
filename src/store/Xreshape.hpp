@@ -34,7 +34,7 @@ namespace STORE
     void vR_H50_T40_Resolve_Parameter_Terms(void);
     void vR_H60_T10_Add_indexJoin_UnderFiltered_table(void);
     void vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void);
-    void vR_H60_T30_Add_joinPred_UnderAll_indexJoin(void);
+    void vR_H60_T30_Add_bounds_UnderFiltered_table(void);
     void vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void);
     void vR_H60_T50_Delete_Empty_filter(void);
     void vR_H70_T00_Extract_tableList_From_queryBoard(void);

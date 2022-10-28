@@ -221,7 +221,7 @@ void Transformer::vHand_60_InitialJoin(bool bPrintHand, bool bPrintXform, bool b
 
   m_pTransforms->vH60_T10_Add_indexJoin_UnderAllFiltered_table(bPrintXform, bTrace);
   m_pTransforms->vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bPrintXform, bTrace);
-  m_pTransforms->vH60_T30_Add_joinPred_UnderAll_indexJoin(bPrintXform, bTrace);
+  m_pTransforms->vR_H60_T30_Add_bounds_UnderAllFiltered_table(bPrintXform, bTrace);
   m_pTransforms->vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bPrintXform, bTrace);
   m_pTransforms->vH60_T50_Delete_Empty_filter(bPrintXform, bTrace);
 

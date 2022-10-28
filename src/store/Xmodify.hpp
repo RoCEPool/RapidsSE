@@ -37,6 +37,7 @@ namespace STORE
 
     void M_vStream_OrdinalRange(Card_Stream* p_stream);
 
+    void M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter);
     void M_vTable_IndexJoin(Card_Table* p_table);
     void M_vTable_syn(Card_Table* p_table);
 

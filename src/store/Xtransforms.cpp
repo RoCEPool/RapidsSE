@@ -532,18 +532,18 @@ void Xtransforms::vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bool bPrin
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a <joinPred> under each <indexJoin>                                    */
+/* add <bounds> under each filtered <table>                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
+void Xtransforms::vR_H60_T30_Add_bounds_UnderAllFiltered_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vDescription("add a <joinPred> under each <indexJoin>"_Stz);
+  vDescription("add <bounds> under each filtered <table>"_Stz);
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T30_Add_joinPred_UnderAll_indexJoin();
+    vR_H60_T30_Add_bounds_UnderFiltered_table();
   }
 
   vEndTransform();
