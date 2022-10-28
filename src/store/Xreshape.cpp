@@ -224,13 +224,32 @@ void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
   G_vNewMember(CK_KEYEXISTS);
 
   M.pDeck->vInsertAfter(M.p_keyExists,M.p_stage);
+
   RASSERT(G_bEachMain());
 
   while (G_bSubsequentToMain(C_UPDATE_MEMBER)) {
     M.pDeck->vRemove(M.p_SubsequentToMain);
     G_vAppendChild(CK_KEYEXISTS, M.p_SubsequentToMain);
   }
+  M.pDeck->vRenumberRecursive();
+  M.pDeck->vDump();
 
+  Card_Table* p_table = _pCard_Table(M.p_keyExists->pFindChild(CK_TABLE));
+  M.p_keyExists->vRemoveChild(p_table);
+  M.pDeck->vRenumberRecursive();
+  M.pDeck->vDump();
+
+  M.pDeck->vReplaceChild(M.p_keyExists,p_table);
+  M.pDeck->vRenumberRecursive();
+  M.pDeck->vDump();
+
+  p_table->vAppend(M.p_keyExists);
+  M.pDeck->vRenumberRecursive();
+  M.pDeck->vDump();
+
+  p_table->vPromoteSubs(M.p_keyExists);
+  M.pDeck->vRenumberRecursive();
+  M.pDeck->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

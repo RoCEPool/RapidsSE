@@ -90,12 +90,12 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pTransforms->vPrintXformForce(true);
 
   vHand_10_CondenseInfo    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  m_pTransforms->vPrintXformForce(true);
   vHand_50_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_60_IndexJoin       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_70_JoinOrdering    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -146,11 +146,18 @@ void Transformer::vHand_20_TableAnalysis(bool bPrintHand, bool bPrintXform, bool
 
   m_pCardCtl->vPrintSubCards(CK_STREAM, true);
 
-  m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table(bPrintXform, bTrace);
-  m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table(bPrintXform, bTrace);
+  for (i8 i_SubBoard = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
+       i_SubBoard++) {
+
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+
+    m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table(bPrintXform, bTrace);
+    m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table(bPrintXform, bTrace);
+  }
 
   vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,8 +171,15 @@ void Transformer::vHand_30_StreamAnalysis(bool bPrintHand, bool bPrintXform, boo
 
   m_pTransforms->vSetPrintByKind(CK_STREAM, true);
 
-  m_pTransforms->vH30_T10_Add_stream_UnderAll_table(bPrintXform, bTrace);
-  m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
+  for (i8 i_SubBoard = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
+       i_SubBoard++) {
+
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+
+    m_pTransforms->vH30_T10_Add_stream_UnderAll_table(bPrintXform, bTrace);
+    m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
+  }
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -189,7 +203,7 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
   m_pTransforms->vH40_T40_Delete_Empty_where                    (bPrintXform, bTrace);
 
   vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/

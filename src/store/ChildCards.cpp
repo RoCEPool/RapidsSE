@@ -263,6 +263,19 @@ Card* ChildCards::pPopChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vPromoteSubs(Card* pChildCard)
+{
+  Card* p_after = pChildCard;
+
+  while (Card* pSub = pChildCard->pPop()) {
+    vInsertAfter(pSub,p_after);
+    p_after = pSub;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vRemoveChild(Card* pChildCard)
@@ -318,6 +331,18 @@ void ChildCards::vReplaceChild(Card* pChildCard, Card* pWithCard)
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   vReplace(pChildCard, pWithCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace immediate child with given card                                    */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRotateChild(Card* pChildCard)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  vRemoveChild(pChildCard);
+
+  vPush(pChildCard);
 }
 
 /*----------------------------------------------------------------------------*/

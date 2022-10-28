@@ -20,7 +20,7 @@ __aFooterFunction(Xcreate)
 Xcreate::Xcreate(eCN eClass)
 : Xtest(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -29,7 +29,7 @@ Xcreate::Xcreate(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xcreate::~Xcreate(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 

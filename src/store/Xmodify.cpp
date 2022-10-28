@@ -18,7 +18,7 @@ __aFooterFunction(Xmodify)
 Xmodify::Xmodify(eCN eClass)
 : Xcreate(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_iOrdLo      = 1;
   m_iOrdHi      = C_UNKNOWN;
@@ -31,7 +31,7 @@ Xmodify::Xmodify(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xmodify::~Xmodify(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 

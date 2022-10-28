@@ -18,7 +18,7 @@ __aFooterFunction(Xtest)
 Xtest::Xtest(eCN eClass)
 : Xextract(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -27,7 +27,7 @@ Xtest::Xtest(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xtest::~Xtest(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
