@@ -9,11 +9,13 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value
     and s_nationkey = n_nationkey
     and n_name = 'GERMANY'
     group by ps_partkey having sum(ps_supplycost * ps_availqty) > (
+
     select sum(ps_supplycost * ps_availqty) * 0.0000010000
     from partsupp, supplier, nation
     where ps_suppkey = s_suppkey
     and s_nationkey = n_nationkey
     and n_name = 'GERMANY' )
+
     order by value asc;
 
 */
@@ -152,13 +154,18 @@ begin
     | next
 
   stage stageMarkerD on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    project " type DECIMAL as INNERRESULT )  $1 sum"
+    | combined 0
+    | next
+
+  stage stageMarkerD on origin :
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
   stage stageMarkerE on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "BOUND $I1"
-    | project " type INTEGER as PS_PARTKEY J1_PS_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY J1_PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT 0.000001  *  "
+    | project " type INTEGER as PS_PARTKEY J1_PS_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY J1_PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -234,6 +241,11 @@ begin
 
   stage stageMarkerD on all nodes :
     project " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+ stage stageMarkerD on origin :
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -320,12 +332,12 @@ begin
   stage stageMarkerD on all nodes :
     project " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
-    | next broadcast
-
-  stage stageMarkerD on all partitions :
-    project " type DECIMAL as INNERRESULT )  $1 sum  0.000001  * "
-    | combined 0
     | next
+
+  stage stageMarkerD on origin :
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    | combined 0
+    | next broadcast
 
   stage stageMarkerA on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1"
