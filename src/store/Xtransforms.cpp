@@ -1193,8 +1193,10 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 
   while (G_bEachMain()) {
     G_vSubsequentToMain();
-    vR_HZ0_T20_Reinstate_combined();
-    G_vSkipNextMain();
+    if (T_bCombined_Reinstate(M.e_MainCard, M.e_SubsequentToMain)) {
+      vR_HZ0_T20_Reinstate_combined();
+      G_vSkipNextMain();
+    }
   }
 
   vEndTransform();

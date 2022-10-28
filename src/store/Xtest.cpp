@@ -373,6 +373,29 @@ bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (CK_INDEXJOIN == eMain && (CK_AGGREG  == eSubsequent ||
+                                CK_FILTER  == eSubsequent ||
+                                CK_PROJECT == eSubsequent))
+    return false;
+
+  if (CK_AGGREG    == eMain ||
+      CK_FILTER    == eMain ||
+      CK_INDEXSCAN == eMain ||
+      CK_INDEXJOIN == eMain ||
+      CK_PROJECT   == eMain ||
+      CK_SORT      == eMain )
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

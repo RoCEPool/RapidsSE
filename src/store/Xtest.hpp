@@ -32,6 +32,8 @@ namespace STORE
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
+    bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
+
     bool            T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
     bool            T_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
