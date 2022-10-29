@@ -386,6 +386,7 @@ bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
       CK_FILTER    == eMain ||
       CK_INDEXSCAN == eMain ||
       CK_INDEXJOIN == eMain ||
+      CK_KEYEXISTS == eMain ||
       CK_PROJECT   == eMain ||
       CK_SORT      == eMain )
     return true;

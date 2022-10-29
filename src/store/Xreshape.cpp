@@ -305,8 +305,8 @@ void Xreshape::vR_H50_T30_Resolve_Parameter_Linkage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.p_stmColOrd = M.p_stmCol->pSub_stmColOrd();
-  M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());
-  M.p_param->vAppend(M.p_stmColOrd);
+  //M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());
+  M.p_param->vAppend(M.p_stmColOrd->pDupCardAndSubCards());
 
 }
 
@@ -813,6 +813,7 @@ void Xreshape::vR_H70_T99_Convert_table_To_EEop(void)
     M.p_indexJoin->vAppend(M.p_index);
 
     M.p_indexJoin->vCard(CK_KEYEXISTS);
+    DELETE_CARD(M.p_keyExists);
     return;
   }
 

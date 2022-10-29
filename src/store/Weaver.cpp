@@ -213,11 +213,12 @@ void Weaver::vOp(Card* pCard)
     case CK_HAVING:     vArgHaving   (sOpArgs, _pCard_Having(pCard));   break;
     case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard)); break;
     case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard)); break;
+    case CK_KEYEXISTS:  vArgKeyExists(sOpArgs,_pCard_KeyExists(pCard)); break;
     case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit(pCard));     break;
     case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));   break;
     case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));      break;
     case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));      break;
-    case CK_WHERE:      vArgWhere    (sOpArgs,_pCard_Where(pCard));    break;
+    case CK_WHERE:      vArgWhere    (sOpArgs,_pCard_Where(pCard));     break;
 
     default:
       vTrace("  skipping %s\n"_Stz,aCK[eCard]);
@@ -358,12 +359,34 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
 
   Card_IndexNm* p_indexNm = pCard_IndexScan->pSub_indexNm();
   s4K sRpnExpr;
-  
-  vRpnIndexScan3(sRpnExpr,pCard_IndexScan);
+
+  vRpnIndexScan(sRpnExpr, pCard_IndexScan);
   
   szOpArgs->vCatSprint("%s %s\n"_Stz,p_tableNm->szValue(),p_indexNm->szValue());
   szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : keyExists <tableNm> <indexNm> <keyExpr> <expr>                     */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_TableNm* p_tableNm = pCard_KeyExists->pSub_tableNm();
+  Card_IndexNm* p_indexNm = pCard_KeyExists->pSub_indexNm();
+
+  s4K sRpnExpr;
+  vRpnKeyExists(sRpnExpr,pCard_KeyExists);
+
+  s4K sRpnTest = " type boolean 1 1 == "_Stz;
+
+  szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
+      ,p_tableNm->szValue()
+      ,p_indexNm->szValue()
+      ,sRpnExpr.szStz()
+      ,sRpnTest.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -635,16 +658,39 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_Bounds *pCard_joinPred = pCard_KeyExists->pSub_bounds();
+  if (pCard_joinPred) {
+    i8 nSubs = pCard_joinPred->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card *pSubCard = pCard_joinPred->pGet(i_Sub);
+
+      if (!pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term *p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
+    }
+    return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
+void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   Card_CmpPred* p_predCmp;
   Card_Term*    p_term;
 
-  Card_LBound* p_lBound = p_indexScan->pSub_lBound();
+  Card_LBound* p_lBound = pCard_IndexScan->pSub_lBound();
   if (p_lBound) {
     szRpnExpr->vConcat(" LBOUND"_Stz);
 
@@ -660,7 +706,7 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
   }
 
-  Card_UBound* p_uBound = p_indexScan->pSub_uBound();
+  Card_UBound* p_uBound = pCard_IndexScan->pSub_uBound();
   if (p_uBound) {
     szRpnExpr->vConcat(" UBOUND"_Stz);
 

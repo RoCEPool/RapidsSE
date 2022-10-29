@@ -59,6 +59,7 @@ namespace STORE
     void vR_H70_T94_Estimate_network(void);
     void vR_H70_T96_Estimate_joinOrder(void);
     void vR_H70_T98_Extract_joinOrderSeq(void);
+
     void vR_H70_T99_Convert_table_To_EEop(void);
     void vR_H70_T99_Convert_table_To_EEop_b(void);
     void vR_H70_T99_Convert_table_To_EEop_c(void);
