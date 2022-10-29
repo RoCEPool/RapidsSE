@@ -257,7 +257,6 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
   G_vPopIter();
 
   M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
-  M.p_tstPred->vMark1(MARK_LEFTWARDS);
   G_vSkipNextMain();
   //vPrintBoard(false,__LINE__);
 
@@ -321,6 +320,28 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
   M.p_stmColOrd = M.p_param->pSub_stmColOrd();
   M.p_term->vValue(M.p_stmColOrd->szValue());
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H50_T50_Cull_Exists_Call(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M_vBoolCalc_CullPred(M.p_boolCalc,MARK_CALLSUB);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H50_T60_Delete_Empty_where(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (0 == M.p_boolCalc->nChildCards()) {
+    G_vRemoveDeleteMain(CK_WHERE);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

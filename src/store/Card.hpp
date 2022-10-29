@@ -127,6 +127,7 @@ static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
 static char MARK_ASSIGNED   = '@';
 static char MARK_BLANK      = ' ';
+static char MARK_CALLSUB    = '~';
 static char MARK_CHANGED    = '`';
 static char MARK_DOWNWARDS  = 'v';
 static char MARK_LEFTWARDS  = '<';

@@ -400,12 +400,14 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
-    Stz* szSubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
-    vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
+    M.p_tstPred->vMark1(MARK_CALLSUB);
 
-    Board* pSubQueryBoard = m_pBench->pGetBoard(szSubQueryNm);
+    M.sz_SubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
+    vTracer("SubQueryNm: %s\n"_Stz,M.sz_SubQueryNm);
+
+    Board* pSubQueryBoard = m_pBench->pGetBoard(M.sz_SubQueryNm);
     if (! pSubQueryBoard) {
-      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      vTracer("DID NOT FIND Board: %s\n"_Stz,M.sz_SubQueryNm);
       continue;
     }
 
@@ -500,6 +502,45 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
   vEndTransform();
   vPrintBoard();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H50_T50_Cull_Exists_Call();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <where> if it is effectively empty                                  */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("delete <where> if it is effectively empty"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H50_T60_Delete_Empty_where();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -927,7 +968,7 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> or <indexJoin>                      */
+/* convert all <table> into either <scan> or <indexJoin> or <keyExists>       */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 {

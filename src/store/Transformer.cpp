@@ -84,7 +84,7 @@ Xtransforms* Transformer::pTransforms(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* transform 2                                                                */
+/* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
 void Transformer::vTransform3(void)
 {
@@ -226,6 +226,8 @@ void Transformer::vHand_50_FlattenExists(bool bPrintHand, bool bPrintXform, bool
   m_pTransforms->vH50_T20_Copy_Up_SubQueries(bPrintXform, bTrace);
   m_pTransforms->vH50_T30_Resolve_Parameter_Linkage(bPrintXform, bTrace);
   m_pTransforms->vH50_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
+  m_pTransforms->vH50_T50_Cull_Exists_Call(bPrintXform, bTrace);
+  m_pTransforms->vH50_T60_Delete_Empty_where(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);

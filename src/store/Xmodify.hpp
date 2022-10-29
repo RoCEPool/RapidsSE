@@ -26,6 +26,8 @@ namespace STORE
   public:
     void M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     bool M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
+    //void M_vBoolCalc_DrillDown(Card_BoolCalc* p_bool, std::function<bool(Card* pCard)> bfApply);
+    //void M_vBoolCalc_Drilldown(Card_PRED* p_pred, std::function<bool(Card* pCard)> bfApply);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
@@ -46,6 +48,8 @@ namespace STORE
 
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
     void M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd);
+
+    // generalised drill down
 
     // predicate pull-up
     void vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);

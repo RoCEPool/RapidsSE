@@ -31,6 +31,8 @@ namespace STORE
     Card * p_SubMember;
     eCK    e_SubMember;
 
+    Stz*   sz_SubQueryNm;
+
     Card_AbsJoin *          p_absJoin;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;

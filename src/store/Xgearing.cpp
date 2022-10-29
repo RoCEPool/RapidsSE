@@ -1036,6 +1036,8 @@ void Xgearing::G_vClearRegisters(void)
 
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
+
+  M.sz_SubQueryNm      = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

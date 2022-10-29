@@ -45,6 +45,8 @@ namespace STORE
     void vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);
     void vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
     void vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
+    void vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace);
+    void vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace);
 
     void vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace);
     void vH60_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace);
