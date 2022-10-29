@@ -35,7 +35,6 @@ namespace STORE
 
 
     PermGen*    m_pPermGen;
-    char        m_cTableSyn;
 
     Column*     m_pColumn;
     IdxVec*     m_pIdxVec;
@@ -58,9 +57,6 @@ namespace STORE
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
 
-    i8 m_iOrdLo;
-    i8 m_iOrdHi;
-    i8 m_nStreamCols;
 
 
     TransformIterList* m_pTransformIterList;

@@ -110,7 +110,7 @@ namespace STORE
 static Stz* P_AggLevel     = "eAggLevel"_Stz;
 static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
-static Stz* P_Exclude      = "bExclude"_Stz;
+static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
@@ -119,7 +119,7 @@ static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_ParamOrd     = "szParamOrd"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* P_Rank         = "X_iCandIndex_Rank"_Stz;
+static Stz* P_Rank         = "iRank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
@@ -273,6 +273,7 @@ namespace STORE
     void vPropertiesEnsure(void);
 
     void vRenumberRecursive(Card* pParent=nullptr);
+    void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
 

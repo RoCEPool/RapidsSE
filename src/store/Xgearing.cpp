@@ -36,7 +36,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bCueingDisabled = false;
 
   m_pPermGen   = nullptr;
-  m_cTableSyn  = 'a';
 
   m_pColumn    = nullptr;
   m_pIdxVec    = nullptr;
@@ -58,9 +57,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   m_pTransformIterList = new TransformIterList;
 
-  m_iOrdLo = 1;
-  m_iOrdHi = C_UNKNOWN;
-  m_nStreamCols = C_UNKNOWN;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 

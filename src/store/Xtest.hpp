@@ -15,16 +15,11 @@ namespace STORE
 
     bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
 
-    bool T_bTerm_IsIndexColOrdinal(Card_Term* p_term);
-    bool T_bTerm_IsParamOrdinal(Card_Term* p_term);
-    bool T_bTerm_IsStreamColOrdinal(Card_Term* p_term);
-    bool T_bTerm_IsTableColOrdinal(Card_Term* p_term);
-
     bool T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
     bool T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
     bool T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex);
 
-    bool T_bPRED_HasBounds (Card_PRED* p_PRED, Index* pIndex);
+    bool        T_bPRED_HasBounds (Card_PRED* p_PRED, Index* pIndex);
     static bool T_bPRED_IsPred(Card* pArgCard);
 
     Card_CmpPred* T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
@@ -37,16 +32,29 @@ namespace STORE
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
-    bool X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
-    Card_CoPtnJoin* X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
-    bool X_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
+    bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
 
-    bool X_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
-    Card_StmCol* X_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
-    Card_Table* X_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
-    bool X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
+    bool            T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
+    Card_CoPtnJoin* T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
+    bool            T_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
 
-    bool X_bFilter_IsEmptyFilter(Card_Filter* p_filter);
+    bool T_bFilter_IsEmpty(Card_Filter* p_filter);
+
+    bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
+
+    bool T_bStage_IsIgnorable(Card_Stage* p_stage);
+    bool T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior);
+    bool T_bStage_Reinstate(eCK eMain, eCK eSubsequent);
+
+    Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
+
+    Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
+    bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
+
+    bool T_bTerm_IsIndexColOrdinal(Card_Term* p_term);
+    bool T_bTerm_IsParamOrdinal(Card_Term* p_term);
+    bool T_bTerm_IsStreamColOrdinal(Card_Term* p_term);
+    bool T_bTerm_IsTableColOrdinal(Card_Term* p_term);
 
     // must be last
     Footer m_xFooter;

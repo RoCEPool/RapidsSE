@@ -48,7 +48,7 @@ Card_StmColList::~Card_StmColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-//Card_StmCol* Card::X_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo)
+//Card_StmCol* Card::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 //

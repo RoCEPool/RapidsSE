@@ -41,7 +41,7 @@ Xextract::~Xextract(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::G_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
+i8 Xextract::E_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -57,7 +57,7 @@ i8 Xextract::G_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /* get table syn of column ref                                                */
 /*----------------------------------------------------------------------------*/
-char Xextract::G_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+char Xextract::E_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -73,7 +73,7 @@ char Xextract::G_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Xextract::G_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
+char Xextract::E_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
   Stz* szColumnRef = p_columnRef->sz();
@@ -88,11 +88,11 @@ char Xextract::G_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xextract::G_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+void Xextract::E_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  psTableSyn->vSprint("%c"_Stz, G_cColumnRef_TableSyn_x(p_columnRef));
+  psTableSyn->vSprint("%c"_Stz, E_cColumnRef_TableSyn_x(p_columnRef));
 }
 
 
@@ -100,7 +100,7 @@ void Xextract::G_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTa
 /*----------------------------------------------------------------------------*/
 /* get rank                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
+i8 Xextract::E_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -112,7 +112,7 @@ i8 Xextract::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 /*----------------------------------------------------------------------------*/
 /* set rank                                                                   */
 /*----------------------------------------------------------------------------*/
-void Xextract::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
+void Xextract::E_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -124,11 +124,11 @@ void Xextract::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
-ePB Xextract::G_eTerm_Bound(Card_Term* p_term)
+ePB Xextract::E_eTerm_Bound(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  eRO eRelOp = this->G_eTerm_RelOp(p_term);
+  eRO eRelOp = this->E_eTerm_RelOp(p_term);
 
   switch (eRelOp) {
     case RO_LESS_THAN:     return PB_UBOUND;
@@ -138,7 +138,7 @@ ePB Xextract::G_eTerm_Bound(Card_Term* p_term)
     case RO_GREATER_THAN:  return PB_LBOUND;
 
     default:
-      vTrace("%s(%lld): unexpected G_eTerm_RelOp %lld %s\n"_Stz
+      vTrace("%s(%lld): unexpected E_eTerm_RelOp %lld %s\n"_Stz
           ,__func__
           ,(i8)__LINE__
           ,(i8)eRelOp
@@ -151,7 +151,7 @@ ePB Xextract::G_eTerm_Bound(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get ordinal index value  (i.e. $In)                                        */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::G_iTerm_IndexColNo(Card_Term* p_term)
+i8 Xextract::E_iTerm_IndexColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -163,7 +163,7 @@ i8 Xextract::G_iTerm_IndexColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Xextract::G_eTerm_RelOp(Card_Term* p_term)
+eRO Xextract::E_eTerm_RelOp(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -183,7 +183,7 @@ eRO Xextract::G_eTerm_RelOp(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get stream column number n  (i.e. $n)                                      */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::G_iTerm_StreamColNo(Card_Term* p_term)
+i8 Xextract::E_iTerm_StreamColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -195,7 +195,7 @@ i8 Xextract::G_iTerm_StreamColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table column number n (i.e. $$c.n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::G_iTerm_TableColNo(Card_Term* p_term)
+i8 Xextract::E_iTerm_TableColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -207,7 +207,7 @@ i8 Xextract::G_iTerm_TableColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $$c.n)                                           */
 /*----------------------------------------------------------------------------*/
-char Xextract::G_cTerm_TableSyn(Card_Term* p_term)
+char Xextract::E_cTerm_TableSyn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -221,7 +221,7 @@ char Xextract::G_cTerm_TableSyn(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
-eTE Xextract::G_eTerm_TermEval(Card_Term* p_term)
+eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

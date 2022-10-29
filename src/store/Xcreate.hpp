@@ -13,14 +13,14 @@ namespace STORE
   {
   public:
 
-    Card_IndexList* A_pProduce_indexList_ofTable(Table* pTable);
-    Card_Size*      A_pProduce_size_ofTable(Table* pTable);
-    Card_Stream*    A_pProduce_stream_ofTable(Table* pTable);
-    Card_TablePtn*  A_pProduce_tablePtn_ofTable(Table* pTable, char cTableSyn);
+    Card_BoolCalc*   C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
-    Card_BoolCalc*  X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
+    Card_StmColList* C_pDerive_streamColList(Card_ELIST* p_ELIST);
 
-    Card_StmColList* X_pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
+    Card_IndexList*  C_pProduce_indexList_ofTable(Table* pTable);
+    Card_Size*       C_pProduce_size_ofTable(Table* pTable);
+    Card_Stream*     C_pProduce_stream_ofTable(Table* pTable);
+    Card_TablePtn*   C_pProduce_tablePtn_ofTable(Card_Table* p_table);
 
     // must be last
     Footer m_xFooter;
