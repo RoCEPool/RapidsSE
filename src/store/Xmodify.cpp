@@ -314,7 +314,31 @@ void Xmodify::M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
+void Xmodify::M_vTable_Add_IndexJoin(Card_Table* p_table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
+
+  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+
+  Card_IndexList* p_indexList = C_pProduce_indexList_ofTable(pTable);
+
+  while (Card_Index* p_index = _pCard_Index(p_indexList->pPopChild())) {
+    Card* p_indexJoin = new Card_IndexJoin;
+    p_indexJoin->vAppend(p_index);
+    Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
+    p_table->vAppend(p_comment);
+    p_table->vAppend(p_indexJoin);
+  }
+
+  DELETE_CARD(p_indexList);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTable_Extract_BoundsFromFilter(Card_Table* p_table, Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -373,33 +397,9 @@ void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_IndexJoin(Card_Table* p_table)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
-
-  Table* pTable = A_pAccess_Table(p_tableNm->sz());
-
-  Card_IndexList* p_indexList = C_pProduce_indexList_ofTable(pTable);
-
-  while (Card_Index* p_index = _pCard_Index(p_indexList->pPopChild())) {
-    Card* p_indexJoin = new Card_IndexJoin;
-    p_indexJoin->vAppend(p_index);
-    Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
-    p_table->vAppend(p_comment);
-    p_table->vAppend(p_indexJoin);
-  }
-
-  DELETE_CARD(p_indexList);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add table and index                                                        */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_syn(Card_Table* p_table)
+void Xmodify::M_vTable_Set_Syn(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

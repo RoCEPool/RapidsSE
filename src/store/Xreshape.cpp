@@ -115,7 +115,7 @@ void Xreshape::vR_H20_T10_Add_tableSyn_ForAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vTable_syn(M.p_table);
+  M_vTable_Set_Syn(M.p_table);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,7 +399,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vTable_IndexJoin(M.p_table);
+  M_vTable_Add_IndexJoin(M.p_table);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,7 +423,7 @@ void Xreshape::vR_H60_T30_Add_bounds_UnderFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vTable_Bounds(M.p_table, M.p_filter);
+  M_vTable_Extract_BoundsFromFilter(M.p_table, M.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/

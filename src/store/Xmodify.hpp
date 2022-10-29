@@ -42,9 +42,9 @@ namespace STORE
     void M_vStream_OrdinalRange(Card_Stream* p_stream);
     void M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
-    void M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter);
-    void M_vTable_IndexJoin(Card_Table* p_table);
-    void M_vTable_syn(Card_Table* p_table);
+    void M_vTable_Add_IndexJoin(Card_Table* p_table);
+    void M_vTable_Extract_BoundsFromFilter(Card_Table* p_table, Card_Filter* p_filter);
+    void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
     void M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd);
