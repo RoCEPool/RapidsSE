@@ -21,10 +21,13 @@ namespace STORE
     char E_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef);
     void E_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
 
+    i8   E_iStream_OrdLo(Card_Stream* p_stream);
+    i8   E_iStream_OrdHi(Card_Stream* p_stream);
+
     ePB  E_eTerm_Bound(Card_Term* p_term);
     i8   E_iTerm_IndexColNo(Card_Term* p_term);
     eRO  E_eTerm_RelOp(Card_Term* p_term);
-    i8   E_iTerm_StreamColNo(Card_Term* p_term);
+    i8   E_iTerm_StreamColOdn(Card_Term* p_term);
     i8   E_iTerm_TableColNo(Card_Term* p_term);
     char E_cTerm_TableSyn(Card_Term* p_term);
     eTE  E_eTerm_TermEval(Card_Term* p_term);

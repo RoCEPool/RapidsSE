@@ -1389,9 +1389,9 @@ bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Befo
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = M.pDeck->pGetChild(i_Main);
+    M.p_MainCard = M.pDeck->pGetChild(i_Main);
 
-    if (! pMain->bIsCard(eOfMainKind))
+    if (! M.p_MainCard->bIsCard(eOfMainKind))
       continue;
 
     if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind)))

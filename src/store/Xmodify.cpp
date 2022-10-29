@@ -294,6 +294,17 @@ void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xmodify::M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_stream->Y_vSet(P_OrdLo,iLo);
+  p_stream->Y_vSet(P_OrdHi,iHi);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -326,8 +337,8 @@ void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
   i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
   i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
 
-  i8 i_iOrdLo_0 = E_iTerm_StreamColNo(pTerm_0);
-  i8 i_iOrdLo_1 = E_iTerm_StreamColNo(pTerm_1);
+  i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
+  i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
 
   if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
     p_term = new Card_Term("$I1"_Stz);
@@ -418,6 +429,16 @@ void Xmodify::M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList*
 
   p_term->vMark1('I');
   p_term->vMark2(i_IdxCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_term->vValueSprint("$%lld"_Stz,iStmColOrd);
 }
 
 /*----------------------------------------------------------------------------*/

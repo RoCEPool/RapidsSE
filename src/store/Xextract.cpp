@@ -119,6 +119,29 @@ void Xextract::E_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
   p_candIndex->Y_vSet(P_Rank, iRank);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get stream ordinal low                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iStream_OrdLo(Card_Stream* p_stream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iOrdLo = p_stream->Y_iVal(P_OrdLo);
+
+  return iOrdLo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream ordinal high                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iStream_OrdHi(Card_Stream* p_stream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iOrdHi = p_stream->Y_iVal(P_OrdHi);
+
+  return iOrdHi;
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -181,9 +204,9 @@ eRO Xextract::E_eTerm_RelOp(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stream column number n  (i.e. $n)                                      */
+/* get stream column ordinal n  (i.e. $n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::E_iTerm_StreamColNo(Card_Term* p_term)
+i8 Xextract::E_iTerm_StreamColOdn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

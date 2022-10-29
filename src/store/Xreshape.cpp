@@ -255,10 +255,54 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 
   m_pCard_temp = M.p_table->pDupCardAndSubCards();
   G_vPopIter();
+
   M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
   M.p_tstPred->vMark1(MARK_LEFTWARDS);
   G_vSkipNextMain();
   //vPrintBoard(false,__LINE__);
+
+
+  if (! G_bResolveCardWithSub(CK_TABLE,CK_STREAM,m_pCard_temp))
+    return;
+
+  Card_Stream* p_stream_keyExists = m_pCard_temp->pSub_stream();
+
+  i8 iOrdLo = E_iStream_OrdLo(p_stream_keyExists);
+  i8 iOrdHi = E_iStream_OrdHi(p_stream_keyExists);
+
+  i8 iOrdLo_corrected = E_iStream_OrdHi(M.p_stream) + iOrdLo;
+  i8 iOrdHi_corrected = E_iStream_OrdHi(M.p_stream) + iOrdHi;
+
+  M_vStream_Set_OrdinalRange(p_stream_keyExists,iOrdLo_corrected,iOrdHi_corrected);
+
+
+
+
+
+  /*
+ if (! G_bResolveCardWithSub(CK_TABLE,CK_STREAM,m_pCard_temp))
+   return;
+
+ m_iOrdHi = M.p_stream->Y_iVal(P_OrdHi);
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ auto bfCorrect_StmColOdn = [this](Card* pCard) {
+   Card_Term* p_term = _pCard_Term(pCard);
+
+   i8 iStmColOdn = E_iTerm_StreamColOdn(p_term);
+   i8 iStmColOdn_corrected = m_iOrdHi + iStmColOdn - 1;
+   M_vTerm_Set_StmColOdn(p_term,iStmColOdn_corrected);
+
+   return C_CONTINUE_RECURSION;
+ };
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ m_pCard_temp->vApplyRecursive(CK_TERM, bfCorrect_StmColOdn);
+ */
+
+
 }
 
 /*----------------------------------------------------------------------------*/
