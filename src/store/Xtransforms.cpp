@@ -970,7 +970,7 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin> or <keyExists>       */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T99_Convert_table_To_EEop(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -980,21 +980,31 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
 
   while (G_bEachMain(CK_TABLE)) {
 
-    M.p_bounds = M.p_table->pSub_bounds();
+    M.p_bounds     = M.p_table->pSub_bounds();
+    M.p_index     = M.p_table->pSub_index();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
-    M.p_index = M.p_table->pSub_index();
+    M.p_keyExists = M.p_table->pSub_keyExists();
 
-    vR_H70_T99_Convert_table_To_scan_Or_indexJoin();
+    vR_H70_T99_Convert_table_To_EEop();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
-    vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b();
+    vR_H70_T99_Convert_table_To_EEop_b();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
-    vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c();
+    vR_H70_T99_Convert_table_To_EEop_c();
+  }
+
+  G_vRestart();
+  while (G_bEachMain(CK_KEYEXISTS)) {
+    if (M.p_keyExists) {
+      i8 i_Child;
+      M.p_comment = _pCard_Comment(M.p_keyExists->pFindChild(CK_COMMENT, i_Child));
+      M.p_comment->vValue(SEP_DERIVED);
+    }
   }
 
   vEndTransform();

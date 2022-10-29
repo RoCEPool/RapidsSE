@@ -781,7 +781,7 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void)
+void Xreshape::vR_H70_T99_Convert_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -800,22 +800,40 @@ void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void)
     return;
   }
 
-  M.p_table->vRemoveSubCard(M.p_indexJoin);
-  M.p_indexJoin->vTransferChildren(M.p_table);
+  if (M.p_keyExists) {
+    M.p_table->vRemoveSubCard(M.p_keyExists);
 
-  M.pBoard->pDeck()->vReplace(M.p_table,M.p_indexJoin);
-  M.p_indexJoin->vInsert(M.p_table);
+    M.p_table->vRemoveSubCard(M.p_indexJoin);
+    M.p_indexJoin->vTransferChildren(M.p_table);
 
-  M.p_indexJoin->vRemoveSubCard(M.p_index);
-  M.p_indexJoin->vAppend(M.p_index);
+    M.pBoard->pDeck()->vReplace(M.p_table, M.p_indexJoin);
+    M.p_indexJoin->vInsert(M.p_table);
 
+    M.p_indexJoin->vRemoveSubCard(M.p_index);
+    M.p_indexJoin->vAppend(M.p_index);
+
+    M.p_indexJoin->vCard(CK_KEYEXISTS);
+    return;
+  }
+
+  if (M.p_indexJoin) {
+    M.p_table->vRemoveSubCard(M.p_indexJoin);
+    M.p_indexJoin->vTransferChildren(M.p_table);
+
+    M.pBoard->pDeck()->vReplace(M.p_table, M.p_indexJoin);
+    M.p_indexJoin->vInsert(M.p_table);
+
+    M.p_indexJoin->vRemoveSubCard(M.p_index);
+    M.p_indexJoin->vAppend(M.p_index);
+    return;
+  }
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b(void)
+void Xreshape::vR_H70_T99_Convert_table_To_EEop_b(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -832,7 +850,7 @@ void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void)
+void Xreshape::vR_H70_T99_Convert_table_To_EEop_c(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

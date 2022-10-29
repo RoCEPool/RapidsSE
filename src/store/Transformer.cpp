@@ -292,7 +292,7 @@ void Transformer::vHand_70_JoinOrdering(bool bPrintHand, bool bPrintXform, bool 
   m_pTransforms->vH70_T98_Extract_joinOrderSeq(bPrintXform, bTrace);
 */
 
-  m_pTransforms->vH70_T99_Convert_table_To_scan_Or_indexJoin(bPrintXform, bTrace);
+  m_pTransforms->vH70_T99_Convert_table_To_EEop(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);

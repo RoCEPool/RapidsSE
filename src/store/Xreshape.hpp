@@ -59,9 +59,9 @@ namespace STORE
     void vR_H70_T94_Estimate_network(void);
     void vR_H70_T96_Estimate_joinOrder(void);
     void vR_H70_T98_Extract_joinOrderSeq(void);
-    void vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void);
-    void vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b(void);
-    void vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void);
+    void vR_H70_T99_Convert_table_To_EEop(void);
+    void vR_H70_T99_Convert_table_To_EEop_b(void);
+    void vR_H70_T99_Convert_table_To_EEop_c(void);
 
     void vR_H80_T10_Add_indexList_Under_scan(void);
     void vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void);
@@ -77,7 +77,7 @@ namespace STORE
 
     void vR_HA0_T10_Individuate_scan_filter(void);
     void vR_HA0_T10_Individuate_indexJoin_filter_b(void);
-    
+
     void vR_HZ0_T10_Reinstate_stages(void);
     void vR_HZ0_T20_Reinstate_combined(void);
 

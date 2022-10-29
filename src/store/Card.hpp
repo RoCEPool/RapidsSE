@@ -68,6 +68,8 @@ namespace STORE
   class Card_JoinOrderSeq;
   class Card_JoinPredList;
 
+  class Card_KeyExists;
+
   class Card_LBound;
   class Card_Limit;
 
@@ -395,6 +397,7 @@ namespace STORE
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bounds*        pSub_bounds(void);
+    Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
@@ -404,8 +407,8 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_KeyExists*     pSub_keyExists(void);
     Card_LBound*        pSub_lBound(void);
-    Card_CmpPred*       pSub_predCmp(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);

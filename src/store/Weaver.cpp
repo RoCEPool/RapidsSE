@@ -648,7 +648,7 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
   if (p_lBound) {
     szRpnExpr->vConcat(" LBOUND"_Stz);
 
-    p_predCmp = p_lBound->pSub_predCmp();
+    p_predCmp = p_lBound->pSub_cmpPred();
 
     //p_term = _pCard_Term(p_predCmp->pGetChild(0));
 
@@ -664,7 +664,7 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
   if (p_uBound) {
     szRpnExpr->vConcat(" UBOUND"_Stz);
 
-    p_predCmp = p_uBound->pSub_predCmp();
+    p_predCmp = p_uBound->pSub_cmpPred();
 
     //p_term = _pCard_Term(p_predCmp->pGetChild(0));
 

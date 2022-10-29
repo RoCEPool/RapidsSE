@@ -1851,7 +1851,7 @@ Card_Bounds* Card::pSub_bounds(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CmpPred.hpp"
-Card_CmpPred* Card::pSub_predCmp(void)
+Card_CmpPred* Card::pSub_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1975,6 +1975,19 @@ Card_IndexNm* Card::pSub_indexNm(void)
   Card_IndexNm* p_indexNm =
       _pCard_IndexNm(pFindSubCard(CK_INDEXNM));
   return p_indexNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_KeyExists.hpp"
+Card_KeyExists* Card::pSub_keyExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_KeyExists* p_keyExists =
+      _pCard_KeyExists(pFindSubCard(CK_KEYEXISTS));
+  return p_keyExists;
 }
 
 /*----------------------------------------------------------------------------*/

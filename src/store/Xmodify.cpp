@@ -321,7 +321,7 @@ void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
   //M.p_table->vDump();
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  Card_CmpPred* p_cmpPred = p_boolCalc->pSub_predCmp();
+  Card_CmpPred* p_cmpPred = p_boolCalc->pSub_cmpPred();
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
