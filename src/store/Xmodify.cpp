@@ -22,7 +22,6 @@ Xmodify::Xmodify(eCN eClass)
 
   m_iOrdLo      = 1;
   m_iOrdHi      = C_UNKNOWN;
-  m_nStreamCols = C_UNKNOWN;
   m_cTableSyn   = 'a';
 }
 
@@ -694,6 +693,18 @@ void Xmodify::vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new,
   p_filter_new->vAppend(p_calcBool);
 
   p_calcBool->vAppend(p_pred);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vStreamAnalysisReset(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_iOrdLo      = 1;
+  m_iOrdHi      = C_UNKNOWN;
+  m_cTableSyn   = 'a';
 }
 
 /*============================================================================*/

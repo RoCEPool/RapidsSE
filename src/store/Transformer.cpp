@@ -182,7 +182,7 @@ void Transformer::vHand_30_StreamAnalysis(bool bPrintHand, bool bPrintXform, boo
   }
 
   vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,10 +197,17 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
   m_pCardCtl->vPrintProperties(CK_STREAM, false);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
-  m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_boolCalc(bPrintXform, bTrace);
-  m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table             (bPrintXform, bTrace);
-  m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter(bPrintXform, bTrace);
-  m_pTransforms->vH40_T40_Delete_Empty_where                    (bPrintXform, bTrace);
+  for (i8 i_SubBoard = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
+       i_SubBoard++) {
+
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+
+    m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_boolCalc(bPrintXform, bTrace);
+    m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table(bPrintXform, bTrace);
+    m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter(bPrintXform, bTrace);
+    m_pTransforms->vH40_T40_Delete_Empty_where(bPrintXform, bTrace);
+  }
 
   vEndHand();
   vPrintBench(BK_SUBPIPE);

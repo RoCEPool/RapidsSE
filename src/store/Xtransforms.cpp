@@ -228,6 +228,8 @@ void Xtransforms::vH30_T10_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
+  vStreamAnalysisReset();
+
   // E <scan>
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     vR_H30_T10_Add_stream_UnderAll_table();
@@ -368,14 +370,14 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 
     G_vPushIter(pSubQueryBoard);
 
-    vPrintBoard();
+    //vPrintBoard();
 
     if (G_bEachMain(CK_STAGE)) {
       vTracer("SubQuery Stage: %s\n"_Stz, M.p_stage->szBearing());
 
       vR_H50_T10_Rework_Exists_SubQueries();
     }
-    vPrintBoard();
+    vPrintBoard(true,__LINE__);
 
     G_vPopIter();
   }
@@ -411,9 +413,9 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
     G_vPushIter(pSubQueryBoard);
 
-    vPrintBoard();
+    //vPrintBoard(false,__LINE__);
 
-    if (G_bEachMain(CK_KEYEXISTS)) {
+    if (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
       vR_H50_T20_Copy_Up_SubQueries();
 
@@ -438,13 +440,13 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (G_bEachMain(CK_KEYEXISTS)) {
+  while (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
     vTracer("Resolving %s"_Stz,M.p_MainCard->szBearing());
-    if (!G_bPlumbForSubMember(CK_KEYEXISTS, CK_PARAM))
+    if (!G_bPlumbForSubMember(CK_TABLE, CK_PARAM))
       continue;
 
-    if (!G_bResolveCard(CK_STMCOL, M.p_param->sz(), M.p_keyExists))
+    if (!G_bResolveCard(CK_STMCOL, M.p_param->sz(), M.p_table))
       continue;
 
     vR_H50_T30_Resolve_Parameter_Linkage();
@@ -465,22 +467,33 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (G_bEachMainWith2Sub(CK_KEYEXISTS, CK_PARAMLIST, CK_RPNCALC)) {
+  while (G_bEachMainWith2Sub(CK_TABLE, CK_BOOLCALC, CK_PARAMLIST)) {
 
     vTracer("Resolving Terms\n  %s\n  %s  \n"_Stz,
-            M.p_keyExists->szBearing(),
-            M.p_paramList->szBearing(),
-            M.p_rpnCalc->szBearing());
+            M.p_table->szBearing(),
+            M.p_boolCalc->szBearing(),
+            M.p_paramList->szBearing());
 
-    CardIter xCI(M.p_rpnCalc);
-    while ((M.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (!T_bTerm_IsParamOrdinal(M.p_term))
+    CardIter xBOOLCALC(M.p_boolCalc);
+    while ((M.p_SubMember = xBOOLCALC.pEachChild())) {
+      if (! M.p_SubMember->bIsCard(CK_CMPPRED))
         continue;
+      M.p_cmpPred = _pCard_CmpPred(M.p_SubMember);
 
-      if (!G_bFindPpy(CK_PARAMLIST, P_ParamOrd, CK_PARAM))
-        continue;
+      CardIter xCMPPRED(M.p_cmpPred);
+      while ((M.p_SubMember = xCMPPRED.pEachChild())) {
+        if (!M.p_SubMember->bIsCard(CK_TERM))
+          continue;
+        M.p_term = _pCard_Term(M.p_SubMember);
 
-      vR_H50_T40_Resolve_Parameter_Terms();
+        if (!T_bTerm_IsParamOrdinal(M.p_term))
+          continue;
+
+        if (!G_bFindPpy(CK_PARAMLIST, P_ParamOrd, CK_PARAM))
+          continue;
+
+        vR_H50_T40_Resolve_Parameter_Terms();
+      }
     }
   }
 

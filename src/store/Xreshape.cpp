@@ -231,25 +231,19 @@ void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
     M.pDeck->vRemove(M.p_SubsequentToMain);
     G_vAppendChild(CK_KEYEXISTS, M.p_SubsequentToMain);
   }
-  M.pDeck->vRenumberRecursive();
-  M.pDeck->vDump();
+//  M.pDeck->vRenumberRecursive();
+//  M.pDeck->vDump();
 
   Card_Table* p_table = _pCard_Table(M.p_keyExists->pFindChild(CK_TABLE));
   M.p_keyExists->vRemoveChild(p_table);
-  M.pDeck->vRenumberRecursive();
-  M.pDeck->vDump();
 
   M.pDeck->vReplaceChild(M.p_keyExists,p_table);
-  M.pDeck->vRenumberRecursive();
-  M.pDeck->vDump();
 
   p_table->vAppend(M.p_keyExists);
-  M.pDeck->vRenumberRecursive();
-  M.pDeck->vDump();
 
   p_table->vPromoteSubs(M.p_keyExists);
-  M.pDeck->vRenumberRecursive();
-  M.pDeck->vDump();
+
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,13 +253,12 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_pCard_temp = M.p_keyExists->pDupCardAndSubCards();
+  m_pCard_temp = M.p_table->pDupCardAndSubCards();
   G_vPopIter();
   M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
   M.p_tstPred->vMark1(MARK_LEFTWARDS);
   G_vSkipNextMain();
-  //vPrintBoard();
-
+  //vPrintBoard(false,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

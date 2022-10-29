@@ -73,7 +73,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eOA eCueUser(Stz* szHand, Stz* szTransformation= nullptr);
+    eOA eCueUser(Stz* szHand, Stz* szTransformation=nullptr, i8 iLineNo=C_UNKNOWN);
 
     void vEndTransform(void);
 
@@ -83,7 +83,7 @@ namespace STORE
     Stz* szHand(void);
     void vHand(const char* asHand);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
-    void vPrintBoard(void);
+    void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
     bool bPrintHand(void);
     void vPrintHand(bool bPrintHand);
     bool bPrintXform(void);

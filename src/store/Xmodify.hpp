@@ -14,7 +14,6 @@ namespace STORE
   public:
     i8   m_iOrdLo;
     i8   m_iOrdHi;
-    i8   m_nStreamCols;
     char m_cTableSyn;
 
     // must be last
@@ -59,6 +58,8 @@ namespace STORE
     void vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing, Card_PRED* pCard_pred);
     void vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
     void vPullUp_MovePredToFilter(Card_Filter* p_filter, Card_PRED* p_pred);
+
+    void vStreamAnalysisReset(void);
 
     Footer* aFooter(void);
   };

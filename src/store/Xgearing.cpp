@@ -101,7 +101,7 @@ Board* Xgearing::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                  */
 /*----------------------------------------------------------------------------*/
-eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
+eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -117,6 +117,9 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
     sPrompt.vSprint("%s"_Stz, szHand, szTransformation);
   else
     sPrompt.vSprint(""_Stz, szHand);
+
+  if (C_UNKNOWN != iLineNo)
+    sPrompt.vCatSprint(" [%lld]"_Stz,iLineNo);
 
   if (! m_bPrintXformForce) {
     if (!m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
@@ -267,11 +270,11 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vPrintBoard(void)
+void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! m_bPrintXform && ! m_bPrintXformForce)
+  if (! C_UNKNOWN != iLineNo && ! m_bPrintXform && ! m_bPrintXformForce)
     return;
 
   for (;;) {
@@ -279,8 +282,13 @@ void Xgearing::vPrintBoard(void)
                           szTransformation(),
                           szDescription());
 
-    if (OA_REPRINT_BOARD != eCueUser(szHand(), szTransformation()))
+    if (! bCue)
       break;
+
+    if (OA_REPRINT_BOARD != eCueUser(szHand(),
+                                     szTransformation(),
+                                     iLineNo))
+        break;
   }
 }
 
