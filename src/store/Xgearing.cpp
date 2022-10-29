@@ -1381,6 +1381,54 @@ bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
   return b;
 }
 
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = M.pDeck->pGetChild(i_Main);
+
+    if (! pMain->bIsCard(eOfMainKind))
+      continue;
+
+    if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind)))
+      continue;
+
+    M.e_MainCard = M.p_MainCard->eCard();
+    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
+    M.e_SubOfMain = M.p_SubOfMain->eCard();
+    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
+    return true;
+  }
+
+  M.p_MainCard  = nullptr;
+  M.e_MainCard  = CK_NONE;
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+  M.p_SubOfMain = nullptr;
+  M.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind, nullptr, __func__);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Before = M.pDeck->iFindChild(pBefore);
+  if (C_UNKNOWN == i_Before)
+    return false;
+
+  bool b = G_bResolveCardWithSub(eOfMainKind, eAndSubKind, i_Before);
+
+  return b;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find sub of member with given property                                     */
