@@ -224,6 +224,10 @@ void Transformer::vHand_50_FlattenExists(bool bPrintHand, bool bPrintXform, bool
 
   m_pTransforms->vH50_T10_Rework_Exists_SubQueries(bPrintXform, bTrace);
   m_pTransforms->vH50_T20_Copy_Up_SubQueries(bPrintXform, bTrace);
+
+  m_pTransforms->vH50_T24_Correct_Streams(bPrintXform, bTrace);
+  m_pTransforms->vH50_T26_Correct_Predicates(bPrintXform, bTrace);
+
   m_pTransforms->vH50_T30_Resolve_Parameter_Linkage(bPrintXform, bTrace);
   m_pTransforms->vH50_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
   m_pTransforms->vH50_T50_Cull_Exists_Call(bPrintXform, bTrace);

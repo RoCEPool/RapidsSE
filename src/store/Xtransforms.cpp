@@ -434,6 +434,44 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
+    vR_H50_T24_Corrects_Streams();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
+    vR_H50_T26_Corrects_Predicates();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

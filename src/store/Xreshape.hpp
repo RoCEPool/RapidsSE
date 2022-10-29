@@ -34,6 +34,8 @@ namespace STORE
 
     void vR_H50_T10_Rework_Exists_SubQueries(void);
     void vR_H50_T20_Copy_Up_SubQueries(void);
+    void vR_H50_T24_Corrects_Streams(void);
+    void vR_H50_T26_Corrects_Predicates(void);
     void vR_H50_T30_Resolve_Parameter_Linkage(void);
     void vR_H50_T40_Resolve_Parameter_Terms(void);
     void vR_H50_T50_Cull_Exists_Call(void);

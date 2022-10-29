@@ -258,13 +258,22 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 
   M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
   G_vSkipNextMain();
-  //vPrintBoard(false,__LINE__);
 
+  //vPrintBoard(false,__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H50_T24_Corrects_Streams(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Stream* p_stream_keyExists = M.p_table->pSub_stream();
 
   if (! G_bResolveCardWithSub(CK_TABLE,CK_STREAM,m_pCard_temp))
     return;
 
-  Card_Stream* p_stream_keyExists = m_pCard_temp->pSub_stream();
 
   i8 iOrdLo = E_iStream_OrdLo(p_stream_keyExists);
   i8 iOrdHi = E_iStream_OrdHi(p_stream_keyExists);
@@ -274,7 +283,7 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 
   M_vStream_Set_OrdinalRange(p_stream_keyExists,iOrdLo_corrected,iOrdHi_corrected);
 
-
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfCorrect_StmColOdn = [this, iOrdLo_corrected](Card* pCard)
@@ -294,6 +303,40 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 
   m_pCard_temp->vApplyRecursive(CK_TERM, bfCorrect_StmColOdn);
 
+*/
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H50_T26_Corrects_Predicates(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Stream* p_stream_keyExists = M.p_table->pSub_stream();
+  i8 iStmOrdLo_stream = E_iStream_OrdLo(p_stream_keyExists);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfCorrect_StmColOdn = [this, iStmOrdLo_stream](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (! T_bTerm_IsStreamColOrdinal(p_term))
+      return C_CONTINUE_RECURSION;
+
+    i8 iStmColOdn_term = E_iTerm_StreamColOdn(p_term);
+    i8 iStmColOdn_corrected = iStmOrdLo_stream + iStmColOdn_term - 1;
+    M_vTerm_Set_StmColOdn(p_term,iStmColOdn_corrected);
+
+    // TODO: M_vTerm_MarkAs_Changed();
+    p_term->vMark1(MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  M.p_boolCalc->vApplyRecursive(CK_TERM, bfCorrect_StmColOdn);
 
 }
 

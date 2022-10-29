@@ -43,6 +43,8 @@ namespace STORE
 
     void vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace);
     void vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);
+    void vH50_T24_Correct_Streams(bool bPrint, bool bTrace);
+    void vH50_T26_Correct_Predicates(bool bPrint, bool bTrace);
     void vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
     void vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
     void vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace);

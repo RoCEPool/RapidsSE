@@ -13,6 +13,10 @@ create index O_idx0 on orders(O_ORDERKEY);
 _supplier
 create index S_idx0 on supplier(S_SUPPKEY);
 
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv" ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /cue = "vPhase_10_ReducePipeline"
@@ -25,7 +29,7 @@ create index S_idx0 on supplier(S_SUPPKEY);
 /pipelineName = "r4_exists"
 select
   count(*)
-  from orders, lineitem
+   from orders, lineitem
   where L_ORDERKEY = O_ORDERKEY
     and exists ( select *
                    from supplier

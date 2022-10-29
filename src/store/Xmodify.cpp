@@ -359,7 +359,7 @@ void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
   if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
     p_term = new Card_Term("$I1"_Stz);
     p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_1->sz());
+    p_term = new Card_Term(pTerm_0->sz());
     p_bounds->vAppend(p_term);
   }
   else {
