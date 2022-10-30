@@ -36,6 +36,9 @@ namespace STORE
 
     void M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
+    bool bPredRecursive(Card_PRED* p_pred,
+                        std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
+
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Add_indexList(Card_Scan* p_scan);
 

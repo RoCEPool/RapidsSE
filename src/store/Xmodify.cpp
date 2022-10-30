@@ -212,6 +212,47 @@ void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Strea
 }
 
 /*----------------------------------------------------------------------------*/
+/* visit all sub-cards of pred and apply lambda function                      */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bPredRecursive(Card_PRED* p_pred,
+                             std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  bool bContinue;
+
+  eCK eCard = p_pred->eCard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // only call term once
+
+  if (CK_TERM == eCard) {
+    bContinue = bfApply(p_pred,true);
+    return bContinue;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // apply pred function for downwards
+  bContinue = bfApply(p_pred,false);
+  if (! bContinue)
+    return false;
+
+  // descend into children
+  i8 nSubCards = p_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_pred->pGetChild(i_Child);
+    bContinue = bPredRecursive(static_cast<Card_PRED *>(pSubCard), bfApply);
+    if (! bContinue)
+      return false;
+  }
+
+  // apply pred function for upwards
+  bContinue = bfApply(p_pred,true);
+  return bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred)

@@ -33,7 +33,8 @@ select
   where L_ORDERKEY = O_ORDERKEY
     and exists ( select *
                    from supplier
-                  where S_SUPPKEY = L_SUPPKEY )
+                  where S_SUPPKEY = L_SUPPKEY
+                    and S_NATIONKEY = 1 )
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
