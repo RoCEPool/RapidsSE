@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* Card_Constraint.cpp -- Filter                                                  */
+/*============================================================================*/
+
+#include "Card_Constraint.hpp"
+
+#include "Card_Expr.hpp"
+#include "Card_RpnCalc.hpp"
+#include "Card_BoolCalc.hpp"
+#include "Card_CmpPred.hpp"
+#include "Card_Term.hpp"
+#include "Card_Type.hpp"
+#include "Card_SubSet.hpp"
+#include "Card_AndPred.hpp"
+#include "Card_OrPred.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction_Card(STORE,Card_Constraint,CK_CONSTRAINT)
+__aNewFunction(Card_Constraint,CN_CARD)
+__vDeleteFunction(Card_Constraint,CN_CARD)
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Constraint::Card_Constraint(void)
+: Card(CK_FILTER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Constraint::~Card_Constraint(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

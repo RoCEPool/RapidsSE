@@ -40,6 +40,7 @@ namespace STORE
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
+    Card_Constraint *       p_constraint;
     Card_CoPtnJoin *        p_coPtnJoin;
     Card_CoPtnJoinList *    p_coPtnJoinList;
     Card_CoPtnPred *        p_coPtnPred;

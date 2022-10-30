@@ -774,6 +774,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_CMPPRED:          return M.p_cmpPred;
     case CK_COMBINED:         return M.p_combined;
     case CK_COMMENT:          return M.p_comment;
+    case CK_CONSTRAINT:       return M.p_constraint;
     case CK_COPTNJOIN:        return M.p_coPtnJoin;
     case CK_COPTNJOINLIST:    return M.p_coPtnJoinList;
     case CK_COPTNPRED:        return M.p_coPtnPred;
@@ -945,6 +946,7 @@ void Xgearing::G_vClearMembers(void)
   M.p_cmpPred          = nullptr;
   M.p_combined         = nullptr;
   M.p_comment          = nullptr;
+  M.p_constraint       = nullptr;
   M.p_coPtnJoin        = nullptr;
   M.p_coPtnJoinList    = nullptr;
   M.p_coPtnPred        = nullptr;
@@ -1213,6 +1215,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
+    case CK_CONSTRAINT:       *((Card**)&M.p_constraint)       = pCard; break;
     case CK_COPTNJOIN:        *((Card**)&M.p_coPtnJoin)        = pCard; break;
     case CK_COPTNJOINLIST:    *((Card**)&M.p_coPtnJoinList)    = pCard; break;
     case CK_COPTNPRED:        *((Card**)&M.p_coPtnPred)        = pCard; break;
@@ -1488,6 +1491,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
     case CK_COMBINED:         return "M.p_combined"_Stz;
     case CK_COMMENT:          return "M.p_comment"_Stz;
+    case CK_CONSTRAINT:       return "M.p_constraint"_Stz;
     case CK_COPTNJOIN:        return "M.p_coPtnJoin"_Stz;
     case CK_COPTNJOINLIST:    return "M.p_coPtnJoinList"_Stz;
     case CK_COPTNPRED:        return "M.p_coPtnPred"_Stz;
