@@ -29,9 +29,14 @@ namespace STORE
     //void M_vBoolCalc_DrillDown(Card_BoolCalc* p_bool, std::function<bool(Card* pCard)> bfApply);
     //void M_vBoolCalc_Drilldown(Card_PRED* p_pred, std::function<bool(Card* pCard)> bfApply);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
+    void M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
 
     void M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter);
     void M_vBounds_Extract_FromFilter2(Card_Table* p_table, Card_Filter* p_filter);
+
+    void M_vCard_Mark_Changed(Card* pCard);
+    void M_vCard_Set_Value(Card* pCard, Stz* szValue);
+    void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 

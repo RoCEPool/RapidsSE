@@ -141,6 +141,42 @@ void Xmodify::M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pre
 }
 
 /*----------------------------------------------------------------------------*/
+/* resolve the parameters terms in given boolCalc                             */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
+                                             Card_ParamList* p_paramList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfXYZ = [this,p_paramList](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (! T_bTerm_IsParamOrdinal(p_term))
+      return C_CONTINUE_RECURSION;
+
+    Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOrd));
+    if (! p_param)
+      return false;
+
+    Card_StmColOrd* p_stmColOrd = p_param->pSub_stmColOrd();
+    M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter)
@@ -290,6 +326,37 @@ void Xmodify::M_vBounds_Extract_FromFilter2(Card_Table* p_table, Card_Filter* p_
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Mark_Changed(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  pCard->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  pCard->vValue(szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  pCard->vValue(szValue);
+  pCard->vMark1(cMark1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
@@ -376,7 +443,7 @@ bool Xmodify::M_bPredRecursive(Card_PRED* p_pred,
   // only call term once
 
   if (CK_TERM == eCard) {
-    bContinue = bfApply(p_pred,true);
+    bContinue = bfApply(p_pred,false);
     return bContinue;
   }
 

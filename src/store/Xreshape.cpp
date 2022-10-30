@@ -360,6 +360,9 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  M_vBoolCalc_Resolve_Parameters(M.p_boolCalc, M.p_paramList);
+
+  /*
   CardIter xBOOLCALC(M.p_boolCalc);
   while ((M.p_SubMember = xBOOLCALC.pEachChild())) {
     if (! M.p_SubMember->bIsCard(CK_CMPPRED))
@@ -382,6 +385,7 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
       M.p_term->vValue(M.p_stmColOrd->szValue());
     }
   }
+  */
 
 }
 
