@@ -380,13 +380,17 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
   s4K sRpnExpr;
   vRpnKeyExists(sRpnExpr,pCard_KeyExists);
 
-  s4K sRpnTest = " type boolean 1 1 == "_Stz;
+  s4K sRpnConstraint;
+  if (pCard_KeyExists->pSub_filter())
+    vRpnKeyExists_constaint(sRpnConstraint,pCard_KeyExists);
+  else
+    sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
       ,p_tableNm->szValue()
       ,p_indexNm->szValue()
       ,sRpnExpr.szStz()
-      ,sRpnTest.szStz());
+      ,sRpnConstraint.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -664,11 +668,11 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Bounds *pCard_joinPred = pCard_KeyExists->pSub_bounds();
-  if (pCard_joinPred) {
-    i8 nSubs = pCard_joinPred->nChildCards();
+  Card_Bounds *pCard_bounds = pCard_KeyExists->pSub_bounds();
+  if (pCard_bounds) {
+    i8 nSubs = pCard_bounds->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card *pSubCard = pCard_joinPred->pGet(i_Sub);
+      Card *pSubCard = pCard_bounds->pGet(i_Sub);
 
       if (!pSubCard->bIsCard(CK_TERM))
         continue;
@@ -678,6 +682,20 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
     }
     return;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnKeyExists_constaint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_Filter *pCard_filter = pCard_KeyExists->pSub_filter();
+  if (! pCard_filter)
+    return;
+
+  vRpnFilter(szRpnExpr,pCard_filter);
 }
 
 /*----------------------------------------------------------------------------*/
