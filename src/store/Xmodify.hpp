@@ -32,7 +32,6 @@ namespace STORE
     void M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
 
     void M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter);
-    void M_vBounds_Extract_FromFilter2(Card_Table* p_table, Card_Filter* p_filter);
 
     void M_vCard_Mark_Changed(Card* pCard);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue);

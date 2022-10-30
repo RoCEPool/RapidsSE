@@ -186,67 +186,6 @@ void Xmodify::M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_f
   //M.p_table->vDump();
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  Card_CmpPred* p_cmpPred = p_boolCalc->pSub_cmpPred();
-  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-  if (!T_bTerm_IsStreamColOrdinal(pTerm_0) ||
-      !T_bTerm_IsStreamColOrdinal(pTerm_1))
-    return;
-
-  // - - - -
-
-  Card_Bounds* p_bounds = new Card_Bounds;
-  Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
-  Card_Stream* p_stream = p_table->pSub_stream();
-  p_table->vInsertAfter(p_bounds, p_stream);
-
-  Card_Term* p_term = new Card_Term("BOUND"_Stz);
-  p_bounds->vAppend(p_term);
-
-  // - - - -
-
-  // one of {pCard_term_0,pCard_term_1} is $In
-
-  i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
-  i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
-
-  i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
-  i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
-
-  if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-    p_term = new Card_Term("$I1"_Stz);
-    p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_1->sz());
-    p_bounds->vAppend(p_term);
-  }
-  else
-  if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-    p_term = new Card_Term("$I1"_Stz);
-    p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_0->sz());
-    p_bounds->vAppend(p_term);
-  }
-  else {
-    NEVER_REACH
-  }
-
-  p_term = new Card_Term(p_cmpPred->sz());
-  p_bounds->vAppend(p_term);
-
-  p_cmpPred->vMark1(MARK_UPWARDS);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vBounds_Extract_FromFilter2(Card_Table* p_table, Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  //M.p_table->vDump();
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
   RASSERT(1 == p_boolCalc->nChildCards());
 
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
