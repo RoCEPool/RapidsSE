@@ -360,8 +360,28 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_stmColOrd = M.p_param->pSub_stmColOrd();
-  M.p_term->vValue(M.p_stmColOrd->szValue());
+  CardIter xBOOLCALC(M.p_boolCalc);
+  while ((M.p_SubMember = xBOOLCALC.pEachChild())) {
+    if (! M.p_SubMember->bIsCard(CK_CMPPRED))
+      continue;
+    M.p_cmpPred = _pCard_CmpPred(M.p_SubMember);
+
+    CardIter xCMPPRED(M.p_cmpPred);
+    while ((M.p_SubMember = xCMPPRED.pEachChild())) {
+      if (!M.p_SubMember->bIsCard(CK_TERM))
+        continue;
+      M.p_term = _pCard_Term(M.p_SubMember);
+
+      if (!T_bTerm_IsParamOrdinal(M.p_term))
+        continue;
+
+      if (!G_bFindPpy(CK_PARAMLIST, P_ParamOrd, CK_PARAM))
+        continue;
+
+      M.p_stmColOrd = M.p_param->pSub_stmColOrd();
+      M.p_term->vValue(M.p_stmColOrd->szValue());
+    }
+  }
 
 }
 
@@ -423,7 +443,7 @@ void Xreshape::vR_H60_T30_Add_bounds_UnderFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vTable_Extract_BoundsFromFilter(M.p_table, M.p_filter);
+  M_vBounds_Extract_FromFilter(M.p_table, M.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/

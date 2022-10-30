@@ -514,27 +514,8 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
             M.p_boolCalc->szBearing(),
             M.p_paramList->szBearing());
 
-    CardIter xBOOLCALC(M.p_boolCalc);
-    while ((M.p_SubMember = xBOOLCALC.pEachChild())) {
-      if (! M.p_SubMember->bIsCard(CK_CMPPRED))
-        continue;
-      M.p_cmpPred = _pCard_CmpPred(M.p_SubMember);
+    vR_H50_T40_Resolve_Parameter_Terms();
 
-      CardIter xCMPPRED(M.p_cmpPred);
-      while ((M.p_SubMember = xCMPPRED.pEachChild())) {
-        if (!M.p_SubMember->bIsCard(CK_TERM))
-          continue;
-        M.p_term = _pCard_Term(M.p_SubMember);
-
-        if (!T_bTerm_IsParamOrdinal(M.p_term))
-          continue;
-
-        if (!G_bFindPpy(CK_PARAMLIST, P_ParamOrd, CK_PARAM))
-          continue;
-
-        vR_H50_T40_Resolve_Parameter_Terms();
-      }
-    }
   }
 
   vEndTransform();

@@ -30,14 +30,17 @@ namespace STORE
     //void M_vBoolCalc_Drilldown(Card_PRED* p_pred, std::function<bool(Card* pCard)> bfApply);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
+    void M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter);
+    void M_vBounds_Extract_FromFilter2(Card_Table* p_table, Card_Filter* p_filter);
+
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
     void M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
-    bool bPredRecursive(Card_PRED* p_pred,
-                        std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
+    bool M_bPredRecursive(Card_PRED* p_pred,
+                          std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
 
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Add_indexList(Card_Scan* p_scan);
@@ -46,7 +49,6 @@ namespace STORE
     void M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
     void M_vTable_Add_IndexJoin(Card_Table* p_table);
-    void M_vTable_Extract_BoundsFromFilter(Card_Table* p_table, Card_Filter* p_filter);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);

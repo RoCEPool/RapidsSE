@@ -141,6 +141,155 @@ void Xmodify::M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pre
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  //M.p_table->vDump();
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  Card_CmpPred* p_cmpPred = p_boolCalc->pSub_cmpPred();
+  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+  if (!T_bTerm_IsStreamColOrdinal(pTerm_0) ||
+      !T_bTerm_IsStreamColOrdinal(pTerm_1))
+    return;
+
+  // - - - -
+
+  Card_Bounds* p_bounds = new Card_Bounds;
+  Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
+  Card_Stream* p_stream = p_table->pSub_stream();
+  p_table->vInsertAfter(p_bounds, p_stream);
+
+  Card_Term* p_term = new Card_Term("BOUND"_Stz);
+  p_bounds->vAppend(p_term);
+
+  // - - - -
+
+  // one of {pCard_term_0,pCard_term_1} is $In
+
+  i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
+  i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
+
+  i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
+  i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
+
+  if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+    p_term = new Card_Term("$I1"_Stz);
+    p_bounds->vAppend(p_term);
+    p_term = new Card_Term(pTerm_1->sz());
+    p_bounds->vAppend(p_term);
+  }
+  else
+  if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
+    p_term = new Card_Term("$I1"_Stz);
+    p_bounds->vAppend(p_term);
+    p_term = new Card_Term(pTerm_0->sz());
+    p_bounds->vAppend(p_term);
+  }
+  else {
+    NEVER_REACH
+  }
+
+  p_term = new Card_Term(p_cmpPred->sz());
+  p_bounds->vAppend(p_term);
+
+  p_cmpPred->vMark1(MARK_UPWARDS);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBounds_Extract_FromFilter2(Card_Table* p_table, Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  //M.p_table->vDump();
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  RASSERT(1 == p_boolCalc->nChildCards());
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfXYZ = [this,p_table](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_TERMINATE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_CMPPRED))
+      return C_CONTINUE_RECURSION;
+
+    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
+
+    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+    if (! T_bTerm_IsStreamColOrdinal(pTerm_0) ||
+        ! T_bTerm_IsStreamColOrdinal(pTerm_1))
+      return C_CONTINUE_RECURSION;
+
+    // - - - -
+
+    Card_Bounds* p_bounds = p_table->pSub_bounds();
+    if (! p_bounds)
+      p_bounds = new Card_Bounds;
+    Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
+    Card_Stream* p_stream = p_table->pSub_stream();
+    p_table->vInsertAfter(p_bounds, p_stream);
+
+    Card_Term* p_term = new Card_Term("BOUND"_Stz);
+    p_bounds->vAppend(p_term);
+
+    // - - - -
+
+    // one of {pCard_term_0,pCard_term_1} is $In
+
+    i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
+    i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
+
+    i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
+    i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
+
+    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bounds->vAppend(p_term);
+      p_term = new Card_Term(pTerm_1->sz());
+      p_bounds->vAppend(p_term);
+    }
+    else
+    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bounds->vAppend(p_term);
+      p_term = new Card_Term(pTerm_0->sz());
+      p_bounds->vAppend(p_term);
+    }
+    else {
+      NEVER_REACH
+    }
+
+    p_term = new Card_Term(p_cmpPred->sz());
+    p_bounds->vAppend(p_term);
+
+    p_cmpPred->vMark1(MARK_UPWARDS);
+
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
@@ -214,7 +363,7 @@ void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Strea
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of pred and apply lambda function                      */
 /*----------------------------------------------------------------------------*/
-bool Xmodify::bPredRecursive(Card_PRED* p_pred,
+bool Xmodify::M_bPredRecursive(Card_PRED* p_pred,
                              std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -242,7 +391,7 @@ bool Xmodify::bPredRecursive(Card_PRED* p_pred,
   i8 nSubCards = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = p_pred->pGetChild(i_Child);
-    bContinue = bPredRecursive(static_cast<Card_PRED *>(pSubCard), bfApply);
+    bContinue = M_bPredRecursive(static_cast<Card_PRED *>(pSubCard), bfApply);
     if (! bContinue)
       return false;
   }
@@ -374,67 +523,6 @@ void Xmodify::M_vTable_Add_IndexJoin(Card_Table* p_table)
   }
 
   DELETE_CARD(p_indexList);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_Extract_BoundsFromFilter(Card_Table* p_table, Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  //M.p_table->vDump();
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  Card_CmpPred* p_cmpPred = p_boolCalc->pSub_cmpPred();
-  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-  if (!T_bTerm_IsStreamColOrdinal(pTerm_0) ||
-      !T_bTerm_IsStreamColOrdinal(pTerm_1))
-    return;
-
-  // - - - -
-
-  Card_Bounds* p_bounds = new Card_Bounds;
-  Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
-  Card_Stream* p_stream = p_table->pSub_stream();
-  p_table->vInsertAfter(p_bounds, p_stream);
-
-  Card_Term* p_term = new Card_Term("BOUND"_Stz);
-  p_bounds->vAppend(p_term);
-
-  // - - - -
-
-  // one of {pCard_term_0,pCard_term_1} is $In
-
-  i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
-  i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
-
-  i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
-  i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
-
-  if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-    p_term = new Card_Term("$I1"_Stz);
-    p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_1->sz());
-    p_bounds->vAppend(p_term);
-  }
-  else
-  if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-    p_term = new Card_Term("$I1"_Stz);
-    p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_0->sz());
-    p_bounds->vAppend(p_term);
-  }
-  else {
-    NEVER_REACH
-  }
-
-  p_term = new Card_Term(p_cmpPred->sz());
-  p_bounds->vAppend(p_term);
-
-  p_cmpPred->vMark1(MARK_UPWARDS);
 }
 
 /*----------------------------------------------------------------------------*/
