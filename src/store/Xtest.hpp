@@ -51,11 +51,6 @@ namespace STORE
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
 
-    bool T_bTerm_IsIndexColOrdinal(Card_Term* p_term);  // $In
-    bool T_bTerm_IsParamOrdinal(Card_Term* p_term);     // $Pn
-    bool T_bTerm_IsStreamColOrdinal(Card_Term* p_term); // $n
-    bool T_bTerm_IsTableColOrdinal(Card_Term* p_term);  // $c.n
-
     bool T_bValue_IsIndexColOrdinal(Stz* szValue);  // $In
     bool T_bValue_IsParamOrdinal(Stz* szValue);     // $Pn
     bool T_bValue_IsStreamColOrdinal(Stz* szValue); // $n

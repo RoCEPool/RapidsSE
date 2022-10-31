@@ -1019,7 +1019,7 @@ void Xreshape::vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! T_bTerm_IsStreamColOrdinal(p_term))
+    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     G_bResolveSubCard(CK_STMCOL,CK_STMCOLORD,p_term->szValue(),i_Main+1);

@@ -158,7 +158,7 @@ void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! T_bTerm_IsParamOrdinal(p_term))
+    if (! T_bValue_IsParamOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOrd));
@@ -206,8 +206,8 @@ void Xmodify::M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_f
     Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
     Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-    if (! T_bTerm_IsStreamColOrdinal(pTerm_0) ||
-        ! T_bTerm_IsStreamColOrdinal(pTerm_1))
+    if (! T_bValue_IsStreamColOrdinal(pTerm_0->szValue()) ||
+        ! T_bValue_IsStreamColOrdinal(pTerm_1->szValue()))
       return C_CONTINUE_RECURSION;
 
     // - - - -
