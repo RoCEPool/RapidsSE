@@ -1656,7 +1656,7 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
    stage stageMarker1264 on all partitions :
       indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
      | ordAgg &quot; ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  &quot;
-     | filter  &quot; type BOOLEAN  SUM_QTY 100.00  &gt;  &quot;
+     | filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
      | combined 0
      | next broadcast
 
