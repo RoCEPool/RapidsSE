@@ -1712,8 +1712,8 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
 
   stage stageMarker2543 on all partitions :
     scan rapidsse public part
-    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos;  != &lt;&gt;
-              }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not &lt;&gt; and
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos;  != !f
+              }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not !f and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and&quot;
     | project &quot;type INTEGER as P_PARTKEY P_PARTKEY ,
                type VARCHAR as P_BRAND P_BRAND ,

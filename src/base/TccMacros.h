@@ -3,12 +3,25 @@
 /*============================================================================*/
 #pragma once
 
-#define _FILTERCHECK(sLabel)                            \
+#define _FILTER_EXIT_ON_FALSE(sLabel)                   \
   bFilterResult = *(--paW);                             \
   if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {        \
     return 0;                                           \
   }                                                     \
   if ( bFilterResult ) {                                \
+    *paW++ = (i8)bFilterResult;                         \
+  }                                                     \
+  else {                                                \
+    aCombinedT->m_iProcessRow = 0;                      \
+    goto sLabel;                                        \
+  }
+
+#define _FILTER_EXIT_ON_TRUE(sLabel)                    \
+  bFilterResult = *(--paW);                             \
+  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {        \
+    return 0;                                           \
+  }                                                     \
+  if ( ! bFilterResult ) {                              \
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \

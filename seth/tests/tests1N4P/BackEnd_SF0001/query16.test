@@ -781,8 +781,8 @@ pipeline unamed
 
   stage stageMarker2543 on all partitions :
     scan rapidsse public part
-    | filter " type BOOLEAN  P_BRAND 'Brand#45'  != <>
-              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not <> and
+    | filter " type BOOLEAN  P_BRAND 'Brand#45'  != !f
+              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not !f and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type VARCHAR as P_BRAND P_BRAND ,

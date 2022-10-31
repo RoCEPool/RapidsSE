@@ -87,7 +87,9 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
         (pTkn->bSame("LEFT_OUTER"_Stz) ||
          pTkn->bSame("BOUND"_Stz) ||
          pTkn->bSame("UBOUND"_Stz) ||
-         pTkn->bSame("LBOUND"_Stz))
+         pTkn->bSame("LBOUND"_Stz) ||
+         pTkn->bSame("!f"_Stz) ||
+         pTkn->bSame("!t"_Stz))
         ) {
       pTkn = pTknVec->pNextToken();
       continue;
@@ -424,6 +426,13 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip logical operator
     if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip !f / !t (early exit from logical)
+    if (pTkn->bSame("!f"_Stz) || pTkn->bSame("!t"_Stz)) {
       pTkn = pTknVec->pNextToken();
       continue;
     }

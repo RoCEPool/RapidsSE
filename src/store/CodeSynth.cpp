@@ -3500,10 +3500,19 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // <> operator
-    if (pTkn->bSame("<>"_Stz)) {
+    // !f operator (exit early if true (OR))
+    if (pTkn->bSame("!t"_Stz)) {
       s4K sOperation;
-      sOperation.vSprintCat("_FILTERCHECK(%s)"_Stz, sLabelNext);
+      sOperation.vSprintCat("_FILTER_EXIT_ON_TRUE(%s)"_Stz, sLabelNext);
+      pExprStack->vPushStz(sOperation);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // !f operator (exit early if false (AND))
+    if (pTkn->bSame("!f"_Stz)) {
+      s4K sOperation;
+      sOperation.vSprintCat("_FILTER_EXIT_ON_FALSE(%s)"_Stz, sLabelNext);
       pExprStack->vPushStz(sOperation);
       continue;
     }
