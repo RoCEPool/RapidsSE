@@ -26,9 +26,9 @@ OptimiserFun __Opt_d
         "default"_Stz,      // name of the opt function
         "d"_Stz,            // command first word
         nullptr,            // command second word
-        bOpt_help,          // function to call
+        bOpt_default,       // function to call
         0,0,                // spare
-        "default"_Stz,
+        "set default printing"_Stz,
         "usage???"_Stz
     );
 
@@ -39,7 +39,8 @@ bool STORE::bOpt_expanded(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
 {
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vFormExpanded();
+  //pOptimiser->pCardCtl()->vFormExpanded();
+  pOptimiser->pCardCtl()->vSetSubsPrintEverything();
 
   return true;
 }
@@ -51,7 +52,7 @@ OptimiserFun __Opt_e
         nullptr,            // command second word
         bOpt_expanded,      // function to call
         0,0,                // spare
-        "expanded"_Stz,
+        "set expanded printing"_Stz,
         "usage???"_Stz
     );
 
@@ -108,7 +109,7 @@ OptimiserFun __Opt_l
         nullptr,            // command second word
         bOpt_longer,        // function to call
         0,0,                // spare
-        "longer"_Stz,
+        "set longer printing"_Stz,
         "usage???"_Stz
     );
 
@@ -131,9 +132,36 @@ OptimiserFun __Opt_s
         nullptr,            // command second word
         bOpt_shorter,       // function to call
         0,0,                // spare
-        "longer"_Stz,
+        "set shorter printing"_Stz,
         "usage???"_Stz
     );
+
+/*----------------------------------------------------------------------------*/
+/* weave                                                                      */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  vTrace("bOpt_weave\n"_Stz);
+
+  UNUSED(pTknVec);
+
+  vTrace("%s\n"_Stz,pOptimiser->szWeave());
+
+  //reOptAct = OA_INPUT_AGAIN;
+
+  return true;
+}
+
+OptimiserFun __Opt_w
+(
+  "weave"_Stz,        // name of the opt function
+  "w"_Stz,            // command first word
+  nullptr,            // command second word
+  bOpt_weave,         // function to call
+  0,0,                // spare
+  "weave pipeline statement"_Stz,
+  "usage???"_Stz
+);
 
 /*----------------------------------------------------------------------------*/
 /* disable                                                                    */
@@ -156,47 +184,9 @@ OptimiserFun __Opt_z
         nullptr,            // command second word
         bOpt_toEnd,         // function to call
         0,0,                // spare
-        "disable further cueing"_Stz,
+        "run to end"_Stz,
         "usage???"_Stz
     );
-
-/*----------------------------------------------------------------------------*/
-/* weave                                                                      */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_weave\n"_Stz);
-
-  UNUSED(pTknVec);
-
-  vTrace("%s\n"_Stz,pOptimiser->szWeave());
-
-  //reOptAct = OA_INPUT_AGAIN;
-
-  return true;
-}
-
-OptimiserFun __Opt_weave_0
-(
-  "weave"_Stz,        // name of the opt function
-  "weave"_Stz,        // command first word
-  nullptr,            // command second word
-  bOpt_weave,         // function to call
-  0,0,                // spare
-  "weave statement from cards"_Stz,
-  "usage???"_Stz
-);
-
-OptimiserFun __Opt_weave_1
-(
-  "weave"_Stz,        // name of the opt function
-  "w"_Stz,            // command first word
-  nullptr,            // command second word
-  bOpt_weave,         // function to call
-  0,0,                // spare
-  "weave statement from cards"_Stz,
-  "usage???"_Stz
-);
 
 
 /*============================================================================*/

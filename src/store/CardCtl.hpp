@@ -89,6 +89,7 @@ namespace STORE
     void vSetLongerForm(void);
     void vSetShorterForm(void);
     void vSetSubsPrintAll(void);
+    void vSetSubsPrintEverything(void);
     void vSetSubsPrintNone(void);
 
   protected:

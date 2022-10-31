@@ -557,6 +557,24 @@ void CardCtl::vSetSubsPrintAll(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardCtl::vSetSubsPrintEverything(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+    m_xaCardCtl[i_Card].m_bPrintName       = true;
+    m_xaCardCtl[i_Card].m_bPrintNo         = true;
+    m_xaCardCtl[i_Card].m_bPrintValue      = true;
+    m_xaCardCtl[i_Card].m_bPrintProperties = true;
+    m_xaCardCtl[i_Card].m_bPrintPptName    = true;
+    m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
+    m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardCtl::vSetSubsPrintNone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
