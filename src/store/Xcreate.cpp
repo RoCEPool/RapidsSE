@@ -81,8 +81,11 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   Card_AndPred* p_andPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
+  Card_ExePred* p_exePred = nullptr;
   Card_TstPred* p_tstPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
+
+  Card_Term*    p_subQueryNm = nullptr;
 
   Card_SubSet*  pCard_SubExpr = new Card_SubSet;
 
@@ -125,6 +128,16 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_boolCalc->vAppend(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term);
+        break;
+
+      case TE_EXECUTE:
+        p_exePred = new Card_ExePred;
+        p_subQueryNm = _pCard_Term(p_rpnCalc->pPop());
+        p_exePred->vValue(p_subQueryNm->sz());
+        p_boolCalc->vAppend(p_exePred);
+        p_exePred = nullptr;
+        DELETE_CARD(p_term);
+        DELETE_CARD(p_subQueryNm);
         break;
 
       case TE_EXISTS:
