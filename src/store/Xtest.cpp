@@ -729,7 +729,43 @@ bool Xtest::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term a stream-column ordinal?  (i.e. $n)                                */
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsIndexColOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a parameter ordinal?  (i.e. $Pn)                                  */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsParamOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a stream-column ordinal?  (i.e. $n)                               */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
 {
@@ -739,6 +775,28 @@ bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
   char acSecond = szValue->azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsTableColOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+  char acFifth  = szValue->azChar()[4];
+
+  if ('$' == acFirst && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
     return true;
   else
     return false;
