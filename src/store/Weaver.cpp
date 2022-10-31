@@ -381,8 +381,8 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
   vRpnKeyExists(sRpnExpr,pCard_KeyExists);
 
   s4K sRpnConstraint;
-  if (pCard_KeyExists->pSub_filter())
-    vRpnKeyExists_constaint(sRpnConstraint,pCard_KeyExists);
+  if (pCard_KeyExists->pSub_constraint())
+    vRpnKeyExists_constraint(sRpnConstraint, pCard_KeyExists);
   else
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
@@ -687,15 +687,26 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vRpnKeyExists_constaint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
+void Weaver::vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Filter *pCard_filter = pCard_KeyExists->pSub_filter();
-  if (! pCard_filter)
+  Card_Constraint *pCard_constraint = pCard_KeyExists->pSub_constraint();
+  if (! pCard_constraint)
     return;
 
-  vRpnFilter(szRpnExpr,pCard_filter);
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

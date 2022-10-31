@@ -989,7 +989,7 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin> or <keyExists>       */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH70_T99_Convert_table_To_EEop(bool bPrint, bool bTrace)
+void Xtransforms::vH75_T10_Convert_table_To_EEop(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1004,17 +1004,17 @@ void Xtransforms::vH70_T99_Convert_table_To_EEop(bool bPrint, bool bTrace)
     M.p_indexJoin = M.p_table->pSub_indexJoin();
     M.p_keyExists = M.p_table->pSub_keyExists();
 
-    vR_H70_T99_Convert_table_To_EEop();
+    vR_H75_T10_Convert_table_To_EEop();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
-    vR_H70_T99_Convert_table_To_EEop_b();
+    vR_H75_T10_Convert_table_To_EEop_b();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
-    vR_H70_T99_Convert_table_To_EEop_c();
+    vR_H75_T10_Convert_table_To_EEop_c();
   }
 
   G_vRestart();
@@ -1024,6 +1024,63 @@ void Xtransforms::vH70_T99_Convert_table_To_EEop(bool bPrint, bool bTrace)
       M.p_comment = _pCard_Comment(M.p_keyExists->pFindChild(CK_COMMENT, i_Child));
       M.p_comment->vValue(SEP_DERIVED);
     }
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T20_Convert_keyExists_filter_To_bounds(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
+    vR_H75_T20_Convert_keyExists_filter_To_bounds();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T30_Correct_stmColOdn_Of_keyExists_stream(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((description))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_STREAM)) {
+    vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
+    vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();
   }
 
   vEndTransform();

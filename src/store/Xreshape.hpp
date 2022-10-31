@@ -62,9 +62,12 @@ namespace STORE
     void vR_H70_T96_Estimate_joinOrder(void);
     void vR_H70_T98_Extract_joinOrderSeq(void);
 
-    void vR_H70_T99_Convert_table_To_EEop(void);
-    void vR_H70_T99_Convert_table_To_EEop_b(void);
-    void vR_H70_T99_Convert_table_To_EEop_c(void);
+    void vR_H75_T10_Convert_table_To_EEop(void);
+    void vR_H75_T10_Convert_table_To_EEop_b(void);
+    void vR_H75_T10_Convert_table_To_EEop_c(void);
+    void vR_H75_T20_Convert_keyExists_filter_To_bounds(void);
+    void vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
+    void vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void);
 
     void vR_H80_T10_Add_indexList_Under_scan(void);
     void vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void);

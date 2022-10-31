@@ -1876,6 +1876,19 @@ Card_ColumnRef* Card::pSub_columnRef(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Constraint.hpp"
+Card_Constraint* Card::pSub_constraint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Constraint* p_constraint =
+      _pCard_Constraint(pFindSubCard(CK_CONSTRAINT));
+  return p_constraint;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Filter.hpp"
 Card_Filter* Card::pSub_filter(void)
 {
@@ -2079,6 +2092,19 @@ Card_StmColList* Card::pSub_stmColList(void)
   Card_StmColList* p_streamColList =
       _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
   return p_streamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StmColNm.hpp"
+Card_StmColNm* Card::pSub_stmColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmColNm* p_streamColNm =
+      _pCard_StmColNm(pFindSubCard(CK_STMCOLNM));
+  return p_streamColNm;
 }
 
 /*----------------------------------------------------------------------------*/

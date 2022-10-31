@@ -99,6 +99,7 @@ void Transformer::vTransform3(void)
   vHand_50_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_60_IndexJoin       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_70_JoinOrdering    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  vHand_75_EE_operators    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_80_IndexScan       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_90_StreamOrdering  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_A0_FilterRefinement(C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -296,7 +297,27 @@ void Transformer::vHand_70_JoinOrdering(bool bPrintHand, bool bPrintXform, bool 
   m_pTransforms->vH70_T98_Extract_joinOrderSeq(bPrintXform, bTrace);
 */
 
-  m_pTransforms->vH70_T99_Convert_table_To_EEop(bPrintXform, bTrace);
+  vEndHand();
+  vPrintBench(BK_SUBPIPE,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_75_EE_operators(bool bPrintHand, bool bPrintXform, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
+
+  m_pCardCtl->vPrintSubCards(CK_BOUNDS, true);
+  m_pCardCtl->vPrintSubCards(CK_FILTER, true);
+  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
+
+  m_pTransforms->vH75_T10_Convert_table_To_EEop                  (bPrintXform, bTrace);
+  m_pTransforms->vH75_T20_Convert_keyExists_filter_To_bounds     (bPrintXform, bTrace);
+  m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream(bPrintXform, bTrace);
+  m_pTransforms->vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);

@@ -70,7 +70,11 @@ namespace STORE
     void vH70_T94_Estimate_network(bool bPrint, bool bTrace);
     void vH70_T96_Estimate_joinOrder(bool bPrint, bool bTrace);
     void vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace);
-    void vH70_T99_Convert_table_To_EEop(bool bPrint, bool bTrace);
+
+    void vH75_T10_Convert_table_To_EEop(bool bPrint, bool bTrace);
+    void vH75_T20_Convert_keyExists_filter_To_bounds(bool bPrint, bool bTrace);
+    void vH75_T30_Correct_stmColOdn_Of_keyExists_stream(bool bPrint, bool bTrace);
+    void vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(bool bPrint, bool bTrace);
 
     void vH80_T10_Add_Scratch_indexList_Under_scan(bool bPrint, bool bTrace);
     void vH80_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace);

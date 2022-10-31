@@ -283,27 +283,6 @@ void Xreshape::vR_H50_T24_Corrects_Streams(void)
 
   M_vStream_Set_OrdinalRange(p_stream_keyExists,iOrdLo_corrected,iOrdHi_corrected);
 
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bfCorrect_StmColOdn = [this, iOrdLo_corrected](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-    if (! T_bTerm_IsStreamColOrdinal(p_term))
-      return C_CONTINUE_RECURSION;
-
-    i8 iStmColOdn = E_iTerm_StreamColOdn(p_term);
-    i8 iStmColOdn_corrected = iOrdLo_corrected + iStmColOdn - 1;
-    M_vTerm_Set_StmColOdn(p_term,iStmColOdn_corrected);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCard_temp->vApplyRecursive(CK_TERM, bfCorrect_StmColOdn);
-
-*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,7 +300,7 @@ void Xreshape::vR_H50_T26_Corrects_Predicates(void)
   auto bfCorrect_StmColOdn = [this, iStmOrdLo_stream](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
-    if (! T_bTerm_IsStreamColOrdinal(p_term))
+    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iStmColOdn_term = E_iTerm_StreamColOdn(p_term);
@@ -821,7 +800,7 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H70_T99_Convert_table_To_EEop(void)
+void Xreshape::vR_H75_T10_Convert_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -874,7 +853,7 @@ void Xreshape::vR_H70_T99_Convert_table_To_EEop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H70_T99_Convert_table_To_EEop_b(void)
+void Xreshape::vR_H75_T10_Convert_table_To_EEop_b(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -891,7 +870,7 @@ void Xreshape::vR_H70_T99_Convert_table_To_EEop_b(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H70_T99_Convert_table_To_EEop_c(void)
+void Xreshape::vR_H75_T10_Convert_table_To_EEop_c(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -899,6 +878,87 @@ void Xreshape::vR_H70_T99_Convert_table_To_EEop_c(void)
   M.p_comment = _pCard_Comment(M.p_indexJoin->pFindChild(CK_COMMENT,i_Child));
   M.p_comment->vValue(SEP_DERIVED);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H75_T20_Convert_keyExists_filter_To_bounds(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  M.p_filter->vCard(CK_CONSTRAINT);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 iOrdLo_stream = E_iStream_OrdLo(M.p_stream);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this, iOrdLo_stream](Card* pCard)
+  {
+    Card_StmColOrd* p_stmColOrd = _pCard_StmColOrd(pCard);
+    if (! T_bValue_IsStreamColOrdinal(p_stmColOrd->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    i8 iStmColOdn = E_iValue_StreamColOdn(p_stmColOrd->szValue());
+    i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
+    M_vCard_Set_StmColOdn(p_stmColOrd,iStmColOdn_corrected);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  M.p_stream->vApplyRecursive(CK_STMCOLORD, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 i_Main = M.pDeck->iFindChild(M.p_MainCard);
+
+  Card_BoolCalc* p_boolCalc = M.p_constraint->pSub_boolCalc();
+  RASSERT(1 == p_boolCalc->nChildCards());
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this,i_Main](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (! T_bTerm_IsStreamColOrdinal(p_term))
+      return C_CONTINUE_RECURSION;
+
+    G_bResolveSubCard(CK_STMCOL,CK_STMCOLORD,p_term->szValue(),i_Main+1);
+
+    Card_StmColNm* p_stmColNm = M.p_stmCol->pSub_stmColNm();
+
+    M_vCard_Set_Value(p_term,p_stmColNm->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/

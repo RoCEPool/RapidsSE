@@ -34,6 +34,7 @@ namespace STORE
     void M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter);
 
     void M_vCard_Mark_Changed(Card* pCard);
+    void M_vCard_Set_StmColOdn(Card* p_card, i8 iStmColOrd);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 

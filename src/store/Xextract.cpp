@@ -266,6 +266,18 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   else return TE_OTHER;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get stream column ordinal n  (i.e. $n)                                     */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iValue_StreamColOdn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

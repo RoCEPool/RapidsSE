@@ -35,6 +35,7 @@ namespace STORE
   class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
+  class Card_Constraint;
   class Card_CoPtnJoin;
   class Card_CoPtnJoinList;
   class Card_CoPtnPred;
@@ -95,6 +96,7 @@ namespace STORE
   class Card_Stream;
   class Card_StmCol;
   class Card_StmColList;
+  class Card_StmColNm;
   class Card_StmColOrd;
   class Card_SubSet;
 
@@ -314,6 +316,7 @@ namespace STORE
     Card_Bounds*        pSub_bounds(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
+    Card_Constraint*    pSub_constraint(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
@@ -330,6 +333,7 @@ namespace STORE
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
     Card_StmColList*    pSub_stmColList(void);
+    Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOrd*     pSub_stmColOrd(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);

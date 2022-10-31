@@ -277,6 +277,16 @@ void Xmodify::M_vCard_Mark_Changed(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_StmColOdn(Card* p_card, i8 iStmColOrd)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_card->vValueSprint("$%lld"_Stz,iStmColOrd);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

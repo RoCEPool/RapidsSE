@@ -34,7 +34,7 @@ select
     and exists ( select *
                    from supplier
                   where S_SUPPKEY = L_SUPPKEY
-                     )
+                    and S_NATIONKEY = 1 )
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

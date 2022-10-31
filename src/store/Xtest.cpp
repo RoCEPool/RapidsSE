@@ -728,6 +728,23 @@ bool Xtest::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
     return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is term a stream-column ordinal?  (i.e. $n)                                */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
