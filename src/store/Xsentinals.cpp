@@ -45,7 +45,7 @@ Xsentinals::~Xsentinals(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Xsentinals::vCopyFrom(_Xsentinels* aFrom)
 {
-  MemLib::vCopy(aXregs(),
+  MemLib::vCopy(aXsentinels(),
                 aFrom,
                 sizeof(_Xsentinels),
                 CN_TRANSFORMITER);
@@ -54,11 +54,10 @@ void Xsentinals::vCopyFrom(_Xsentinels* aFrom)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-_Xsentinels* Xsentinals::aXregs(void)
+_Xsentinels* Xsentinals::aXsentinels(void)
 {
-  return &M;
+  return &G;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -102,7 +102,7 @@ namespace STORE
                    , public ListItem_t<Xsentinals>
   {
   public:
-    _Xsentinels M;
+    _Xsentinels G;
 
     // must be last
     Footer m_xFooter;
@@ -117,7 +117,7 @@ namespace STORE
 
     void vCopyFrom(_Xsentinels* aTransformIterMembers);
 
-    _Xsentinels* aXregs(void);
+    _Xsentinels* aXsentinels(void);
 
     Footer* aFooter(void);
   };
