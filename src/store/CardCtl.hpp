@@ -26,16 +26,11 @@ namespace STORE
     bool m_bPrune;           // prune sub-card printing at this point
   };
 
-  struct _TfmCtl
-  {
-    bool m_bTfmPrint;       // print transform?
-  };
-
   class CardCtl : public Object
   {
   protected:
     _CardCtl m_xaCardCtl[CK_ENUMS];
-    _TfmCtl  m_xaTrfCtl;
+    _CardCtl m_xaCardCtl_save[CK_ENUMS];
 
   protected:
     // must be last
@@ -75,6 +70,8 @@ namespace STORE
     void vPrune(i8 i_Card, bool bPrune);
 
     void vReset(void);
+    void vRestore(void);
+    void vSave(void);
 
   protected:
     Footer* aFooter(void);

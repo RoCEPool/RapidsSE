@@ -23,6 +23,7 @@ CardCtl::CardCtl(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
   
   vReset();
+  vSave();
 
   _checkInitialised_(CN_CARDCTL);
 
@@ -371,7 +372,7 @@ void CardCtl::vPrune(i8 i_Card, bool bPrune)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardCtl::vReset(void)
 {
@@ -393,8 +394,6 @@ void CardCtl::vReset(void)
 
     m_xaCardCtl[i_Card].m_bPrune     = false;
   }
-
-  m_xaTrfCtl.m_bTfmPrint = true;
 
   vPrintValue(CK_ANDPRED, false);
   vPrintProperties(CK_ANDPRED, false);
@@ -425,6 +424,28 @@ void CardCtl::vReset(void)
   vPrintName(CK_TERM,false);
   vPrintNo(CK_TERM,false);
   vPrintProperties(CK_TERM,false);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vRestore(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                       <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_save,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vSave(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                            <--
+  MemLib::vCopy(m_xaCardCtl_save,m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
 }
 
 /*============================================================================*/
