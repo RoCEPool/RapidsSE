@@ -96,6 +96,7 @@ void Transformer::vTransform3(void)
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   m_pTransforms->vPrintXformForce(true);
+  vHand_50_FlattenCall     (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_55_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_60_IndexJoin       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_70_JoinOrdering    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -212,6 +213,14 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
 
   vEndHand();
   vPrintBench(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_50_FlattenCall(bool bPrintHand, bool bPrintXform, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
