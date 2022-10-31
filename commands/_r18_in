@@ -19,7 +19,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vHand_10_CondenseInfo"
+/cue = "vH40_T10_Convert_where_rpnCalc_To_boolCalc"
 /transliterated
 /transform
 /transform3

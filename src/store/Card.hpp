@@ -46,6 +46,7 @@ namespace STORE
 
   class Card_EBound;
   class Card_ELIST;
+  class Card_ExePred;
   class Card_Exists;
   class Card_Expr;
 
