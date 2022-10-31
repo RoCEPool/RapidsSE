@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Call,CK_EXISTS)
+__pCastFunction_Card(STORE,Card_Call,CK_CALL)
 __aNewFunction(Card_Call,CN_CARD)
 __vDeleteFunction(Card_Call,CN_CARD)
 
@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Call,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Call::Card_Call(void)
-: Card(CK_EXISTS)
+: Card(CK_CALL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

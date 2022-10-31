@@ -40,6 +40,7 @@ namespace STORE
 
     Card* pOp_AbsJoin  (TagSet* pArgTags);
     Card* pOp_Aggreg   (TagSet* pArgTags);
+    Card* pOp_Call     (TagSet* pArgTags);
     Card* pOp_Combined (TagSet* pArgTags);
     Card* pOp_Consume  (TagSet* pArgTags);
     Card* pOp_Debug    (TagSet* pArgTags);
