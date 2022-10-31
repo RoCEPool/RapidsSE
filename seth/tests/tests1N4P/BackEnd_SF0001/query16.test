@@ -14,7 +14,7 @@ select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
      from supplier
      where s_comment like '%Customer%Complaints%' )
      group by p_brand, p_type, p_size
-     order by supplier_cnt desc, p_brand, p_type, p_size;
+     order by supplier_cnt, p_brand, p_type, p_size;
 
 */
 
@@ -221,7 +221,7 @@ begin
     | sink
     | first
 end ;
-*/
+
 
 // JOIN ORDER : partsupp -> part
 pipeline unamed
@@ -285,7 +285,7 @@ begin
                     | combined 0
                        | next
 
-stage stageMarker2555_b on origin :
+  stage stageMarker2555_b on origin :
     aggreg " groupBy  type VARCHAR as p_brand $1 ,
                        type VARCHAR as p_type $2 ,
                        type INTEGER as p_size $3
@@ -294,8 +294,9 @@ stage stageMarker2555_b on origin :
                        type VARCHAR  as p_type $K2 ,
                        type INTEGER  as p_size $K3 ,
                        type INTEGER  as supplier_cnt ) $4 COUNT"
-        | combined 0
-        | next
+    | combined 0
+    | next
+
   stage stageMarker2555_c on origin :
       sort " type INTEGER $4 DESC  ,
              type VARCHAR as p_brand $1 ASC  ,
@@ -310,41 +311,7 @@ stage stageMarker2555_b on origin :
     | first
 end ;
 
-rows:
- ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
- ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
- ('Brand#11','STANDARD POLISHED TIN'   ,45 ,1)
- ('Brand#13','MEDIUM ANODIZED STEEL'   ,36 ,1)
- ('Brand#13','SMALL BRUSHED NICKEL'    ,19 ,1)
- ('Brand#14','SMALL ANODIZED NICKEL'   ,45 ,1)
- ('Brand#15','LARGE ANODIZED BRASS'    ,45 ,1)
- ('Brand#21','LARGE BURNISHED COPPER'  ,19 ,1)
- ('Brand#23','ECONOMY BRUSHED COPPER'  , 9 ,1)
- ('Brand#24','MEDIUM PLATED STEEL'     ,19 ,1)
- ('Brand#25','MEDIUM PLATED BRASS'     ,45 ,1)
- ('Brand#25','SMALL BURNISHED COPPER'  , 3 ,1)
- ('Brand#31','ECONOMY PLATED STEEL'    ,23 ,1)
- ('Brand#31','PROMO POLISHED TIN'      ,23 ,1)
- ('Brand#32','MEDIUM BURNISHED BRASS'  ,49 ,1)
- ('Brand#33','LARGE BRUSHED TIN'       ,36 ,1)
- ('Brand#33','SMALL BURNISHED NICKEL'  , 3 ,1)
- ('Brand#34','LARGE PLATED BRASS'      ,45 ,1)
- ('Brand#34','MEDIUM BRUSHED COPPER'   , 9 ,1)
- ('Brand#34','SMALL PLATED BRASS'      ,14 ,1)
- ('Brand#35','STANDARD ANODIZED STEEL' ,23 ,1)
- ('Brand#43','MEDIUM ANODIZED BRASS'   ,14 ,1)
- ('Brand#43','PROMO POLISHED BRASS'    ,19 ,1)
- ('Brand#43','SMALL BRUSHED NICKEL'    , 9 ,1)
- ('Brand#44','SMALL PLATED COPPER'     ,19 ,1)
- ('Brand#51','ECONOMY POLISHED STEEL'  ,49 ,1)
- ('Brand#52','MEDIUM BURNISHED TIN'    ,45 ,1)
- ('Brand#52','SMALL BURNISHED NICKEL'  ,14 ,1)
- ('Brand#53','LARGE BURNISHED NICKEL'  ,23 ,1)
- ('Brand#53','MEDIUM BRUSHED COPPER'   , 3 ,1)
- ('Brand#53','STANDARD PLATED STEEL'   ,45 ,1)
- ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
- ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
- ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
+*/
 
 // JOIN ORDER : partsupp -> part
 pipeline unamed
@@ -555,20 +522,45 @@ begin
                    type VARCHAR  as p_type $K2 ,
                    type INTEGER  as p_size $K3 ,
                    type INTEGER  as ps_suppkey $K4 "
+    | hash " type INTEGER PS_SUPPKEY"
     | combined 0
-    | next
+    | next hashcast
 
-  stage CNTDST_a on origin :
-    aggreg " groupBy  type VARCHAR as p_brand $1 ,
-                      type VARCHAR as p_type $2 ,
-                      type INTEGER as p_size $3
-                      aggregates
-                      type VARCHAR  as p_brand $K1 ,
-                      type VARCHAR  as p_type $K2 ,
-                      type INTEGER  as p_size $K3 ,
-                      type INTEGER  as supplier_cnt ) $4 COUNT"
-    | combined 0
-    | next
+  stage CNTDST_a on all partitions :
+      aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                         type VARCHAR as p_type $2 ,
+                         type INTEGER as p_size $3
+                         aggregates
+                         type VARCHAR  as p_brand $K1 ,
+                         type VARCHAR  as p_type $K2 ,
+                         type INTEGER  as p_size $K3 ,
+                         type INTEGER  as supplier_cnt ) $4 COUNT"
+      | combined 0
+      | next
+
+    stage CNTDST_b on all nodes :
+      aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                         type VARCHAR as p_type $2 ,
+                         type INTEGER as p_size $3
+                         aggregates
+                         type VARCHAR  as p_brand $K1 ,
+                         type VARCHAR  as p_type $K2 ,
+                         type INTEGER  as p_size $K3 ,
+                         type INTEGER  as supplier_cnt ) $4 SUM"
+      | combined 0
+      | next
+
+    stage CNTDST_c on origin :
+      aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                             type VARCHAR as p_type $2 ,
+                             type INTEGER as p_size $3
+                             aggregates
+                             type VARCHAR  as p_brand $K1 ,
+                             type VARCHAR  as p_type $K2 ,
+                             type INTEGER  as p_size $K3 ,
+                             type INTEGER  as supplier_cnt ) $4 SUM"
+      | combined 0
+      | next
 
   stage SORT_a on origin :
       sort " type INTEGER $4 DESC  ,
@@ -639,8 +631,8 @@ begin
     | next hashcast
 
   stage stageMarker2549 on all partitions :
-    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
-                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  != !f
+                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not !f and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 J1_PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
@@ -771,7 +763,7 @@ rows:
 
 
 // moved filters and added projections early
-//sf10 : 1.3s
+//sf10 : 793ms
 pipeline unamed
   begin
   stage stageStart on origin :
@@ -781,7 +773,7 @@ pipeline unamed
 
   stage stageMarker2543 on all partitions :
     scan rapidsse public part
-    | filter " type BOOLEAN  P_BRAND 'Brand#45'  != !f
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' != !f
               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not !f and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
@@ -806,19 +798,22 @@ pipeline unamed
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                        type VARCHAR as P_TYPE P_TYPE ,
-                       type INTEGER as P_SIZE P_SIZE
+                       type INTEGER as P_SIZE P_SIZE ,
+                       type INTEGER as PS_SUPPKEY PS_SUPPKEY
                aggregates
                        type VARCHAR  as P_BRAND $K1 ,
                        type VARCHAR  as P_TYPE $K2 ,
                        type INTEGER  as P_SIZE $K3 ,
-                       type INTEGER  as PS_SUPPKEY $K4 "
+                       type INTEGER  as PS_SUPPKEY $K4"
+
     | combined 0
     | next
 
   stage stageMarker2552 on all nodes :
     aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                      type VARCHAR as P_TYPE P_TYPE ,
-                     type INTEGER as P_SIZE P_SIZE
+                     type INTEGER as P_SIZE P_SIZE ,
+                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
              aggregates
                     type VARCHAR  as P_BRAND $K1 ,
                     type VARCHAR  as P_TYPE $K2 ,
@@ -830,7 +825,8 @@ pipeline unamed
   stage stageMarker2555 on origin :
     aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                      type VARCHAR as P_TYPE P_TYPE ,
-                     type INTEGER as P_SIZE P_SIZE
+                     type INTEGER as P_SIZE P_SIZE ,
+                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
              aggregates
                     type VARCHAR  as P_BRAND $K1 ,
                     type VARCHAR  as P_TYPE $K2 ,
@@ -860,7 +856,7 @@ pipeline unamed
                      type VARCHAR  as P_BRAND $K1 ,
                      type VARCHAR  as P_TYPE $K2 ,
                      type INTEGER  as P_SIZE $K3 ,
-                     type INTEGER  as supplier_cnt ) supplier_cnt COUNT"
+                     type INTEGER  as supplier_cnt ) supplier_cnt SUM"
     | combined 0
     | next
 
@@ -927,7 +923,7 @@ rows:
 
 
 /*
-sf10: 4.9
+sf10: 1.0s
 
 pipeline unamed
   begin
@@ -959,17 +955,17 @@ pipeline unamed
       | next
 
     stage stageMarker2549 on all partitions :
-      aggreg " groupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 ,   type INTEGER  as P_SIZE $K3 ,  type INTEGER  as PS_SUPPKEY $K4 "
+      aggreg " groupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER  as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 ,   type INTEGER  as P_SIZE $K3 ,  type INTEGER  as PS_SUPPKEY $K4 "
       | combined 0
       | next
 
     stage stageMarker2552 on all nodes :
-      aggreg " groupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 ,   type INTEGER  as P_SIZE $K3 ,  type INTEGER  as PS_SUPPKEY $K4 "
+      aggreg " groupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER  as PS_SUPPKEY PS_SUPPKEY  aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 ,   type INTEGER  as P_SIZE $K3 ,  type INTEGER  as PS_SUPPKEY $K4 "
       | combined 0
       | next
 
     stage stageMarker2555 on origin :
-      aggreg " groupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 ,   type INTEGER  as P_SIZE $K3 ,  type INTEGER  as PS_SUPPKEY $K4 "
+      aggreg " groupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER  as PS_SUPPKEY PS_SUPPKEY  aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 ,   type INTEGER  as P_SIZE $K3 ,  type INTEGER  as PS_SUPPKEY $K4 "
       | hash " type INTEGER PS_SUPPKEY"
       | combined 0
       | next hashcast
@@ -980,7 +976,7 @@ pipeline unamed
       | next
 
     stage CNTDST_b on all nodes :
-      aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt COUNT"
+      aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
       | combined 0
       | next
 
