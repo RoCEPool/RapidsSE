@@ -17,6 +17,7 @@ enum eCK // card kind
   /* */ CK_BOOLCALC,
   /* */ CK_BOUNDS,
 
+  /* */ CK_CALL,
   /* */ CK_CANDINDEX,
   /* */ CK_CMPPRED,
   /* */ CK_COLUMNREF,
@@ -137,6 +138,7 @@ static Stz* aCK[]
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
+  /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
@@ -257,6 +259,7 @@ static Stz* aCK_short[]
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
+  /* */ "call"_Stz,            // CK_CALL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
