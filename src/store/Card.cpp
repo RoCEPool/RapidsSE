@@ -1851,7 +1851,7 @@ Card_Bounds* Card::pSub_bounds(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CmpPred.hpp"
-Card_CmpPred* Card::pSub_predCmp(void)
+Card_CmpPred* Card::pSub_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1871,6 +1871,19 @@ Card_ColumnRef* Card::pSub_columnRef(void)
   Card_ColumnRef* p_columnRef =
       _pCard_ColumnRef(pFindSubCard(CK_COLUMNREF));
   return p_columnRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Constraint.hpp"
+Card_Constraint* Card::pSub_constraint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Constraint* p_constraint =
+      _pCard_Constraint(pFindSubCard(CK_CONSTRAINT));
+  return p_constraint;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1980,6 +1993,19 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_KeyExists.hpp"
+Card_KeyExists* Card::pSub_keyExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_KeyExists* p_keyExists =
+      _pCard_KeyExists(pFindSubCard(CK_KEYEXISTS));
+  return p_keyExists;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_LBound.hpp"
 Card_LBound* Card::pSub_lBound(void)
 {
@@ -2066,6 +2092,19 @@ Card_StmColList* Card::pSub_stmColList(void)
   Card_StmColList* p_streamColList =
       _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
   return p_streamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StmColNm.hpp"
+Card_StmColNm* Card::pSub_stmColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmColNm* p_streamColNm =
+      _pCard_StmColNm(pFindSubCard(CK_STMCOLNM));
+  return p_streamColNm;
 }
 
 /*----------------------------------------------------------------------------*/

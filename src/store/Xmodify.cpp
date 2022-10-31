@@ -18,11 +18,10 @@ __aFooterFunction(Xmodify)
 Xmodify::Xmodify(eCN eClass)
 : Xcreate(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_iOrdLo      = 1;
   m_iOrdHi      = C_UNKNOWN;
-  m_nStreamCols = C_UNKNOWN;
   m_cTableSyn   = 'a';
 }
 
@@ -31,7 +30,7 @@ Xmodify::Xmodify(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xmodify::~Xmodify(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -92,6 +91,15 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
     }
     return false;
   }
+  else
+  if (CK_TSTPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
+      delete p_pred;
+      return true;
+    }
+    return false;
+  }
 
   RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
 
@@ -130,6 +138,171 @@ void Xmodify::M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pre
 
     delete pParentCard;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve the parameters terms in given boolCalc                             */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
+                                             Card_ParamList* p_paramList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfXYZ = [this,p_paramList](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (! T_bTerm_IsParamOrdinal(p_term))
+      return C_CONTINUE_RECURSION;
+
+    Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOrd));
+    if (! p_param)
+      return false;
+
+    Card_StmColOrd* p_stmColOrd = p_param->pSub_stmColOrd();
+    M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  //M.p_table->vDump();
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  RASSERT(1 == p_boolCalc->nChildCards());
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfXYZ = [this,p_table](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_TERMINATE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_CMPPRED))
+      return C_CONTINUE_RECURSION;
+
+    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
+
+    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+    if (! T_bTerm_IsStreamColOrdinal(pTerm_0) ||
+        ! T_bTerm_IsStreamColOrdinal(pTerm_1))
+      return C_CONTINUE_RECURSION;
+
+    // - - - -
+
+    Card_Bounds* p_bounds = p_table->pSub_bounds();
+    if (! p_bounds)
+      p_bounds = new Card_Bounds;
+    Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
+    Card_Stream* p_stream = p_table->pSub_stream();
+    p_table->vInsertAfter(p_bounds, p_stream);
+
+    Card_Term* p_term = new Card_Term("BOUND"_Stz);
+    p_bounds->vAppend(p_term);
+
+    // - - - -
+
+    // one of {pCard_term_0,pCard_term_1} is $In
+
+    i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
+    i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
+
+    i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
+    i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
+
+    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bounds->vAppend(p_term);
+      p_term = new Card_Term(pTerm_1->sz());
+      p_bounds->vAppend(p_term);
+    }
+    else
+    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bounds->vAppend(p_term);
+      p_term = new Card_Term(pTerm_0->sz());
+      p_bounds->vAppend(p_term);
+    }
+    else {
+      NEVER_REACH
+    }
+
+    p_term = new Card_Term(p_cmpPred->sz());
+    p_bounds->vAppend(p_term);
+
+    p_cmpPred->vMark1(MARK_UPWARDS);
+
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Mark_Changed(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  pCard->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_StmColOdn(Card* p_card, i8 iStmColOrd)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_card->vValueSprint("$%lld"_Stz,iStmColOrd);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  pCard->vValue(szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  pCard->vValue(szValue);
+  pCard->vMark1(cMark1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,9 +377,92 @@ void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Strea
 }
 
 /*----------------------------------------------------------------------------*/
+/* visit all sub-cards of pred and apply lambda function                      */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::M_bPredRecursive(Card_PRED* p_pred,
+                             std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  bool bContinue;
+
+  eCK eCard = p_pred->eCard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // only call term once
+
+  if (CK_TERM == eCard) {
+    bContinue = bfApply(p_pred,false);
+    return bContinue;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // apply pred function for downwards
+  bContinue = bfApply(p_pred,false);
+  if (! bContinue)
+    return false;
+
+  // descend into children
+  i8 nSubCards = p_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_pred->pGetChild(i_Child);
+    bContinue = M_bPredRecursive(static_cast<Card_PRED *>(pSubCard), bfApply);
+    if (! bContinue)
+      return false;
+  }
+
+  // apply pred function for upwards
+  bContinue = bfApply(p_pred,true);
+  return bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vScan_Bounds(Card_Scan* p_scan)
+void Xmodify::M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! ('L' ==p_cmpPred->cMark1() || 'U' == p_cmpPred->cMark1()) )
+    return;
+
+  Card_Filter* p_filter = p_scan->pSub_filter();
+
+  Card_Bounds* p_bounds = p_scan->pSub_bounds();
+  if (! p_bounds) {
+    p_bounds = new Card_Bounds;
+    p_scan->vInsertBefore(p_bounds,p_filter);
+  }
+
+  if ('L' == p_cmpPred->cMark1()) {
+    Card_LBound* p_lBound = p_bounds->pSub_lBound();
+    if (! p_lBound) {
+      p_lBound = new Card_LBound;
+      p_bounds->vAppend(p_lBound);
+    }
+    Card_CmpPred* p_cmpPred_dup = _pCard_CmpPred(p_cmpPred->pDupCardAndSubCards());
+    StrLib::vInsertChar(p_cmpPred_dup->pGetChild(0)->sz()->azChar()+1,'I');
+    p_lBound->vAppend(p_cmpPred_dup);
+  }
+  else
+  if ('U' == p_cmpPred->cMark1()) {
+    Card_UBound* p_uBound = p_bounds->pSub_uBound();
+    if (! p_uBound) {
+      p_uBound = new Card_UBound;
+      p_bounds->vAppend(p_uBound);
+    }
+    Card_CmpPred* p_cmpPred_dup = _pCard_CmpPred(p_cmpPred->pDupCardAndSubCards());
+    StrLib::vInsertChar(p_cmpPred_dup->pGetChild(0)->sz()->azChar()+1,'I');
+    p_uBound->vAppend(p_cmpPred_dup);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vScan_Add_indexList(Card_Scan* p_scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -253,68 +509,18 @@ void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_Bounds(Card_Table* p_table, Card_Filter* p_filter)
+void Xmodify::M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  //M.p_table->vDump();
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  Card_CmpPred* p_cmpPred = p_boolCalc->pSub_predCmp();
-  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-  if (!T_bTerm_IsStreamColOrdinal(pTerm_0) ||
-      !T_bTerm_IsStreamColOrdinal(pTerm_1))
-    return;
-
-  // - - - -
-
-  Card_Bounds* p_bounds = new Card_Bounds;
-  Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
-  Card_Stream* p_stream = p_table->pSub_stream();
-  p_table->vInsertAfter(p_bounds, p_stream);
-
-  Card_Term* p_term = new Card_Term("BOUND"_Stz);
-  p_bounds->vAppend(p_term);
-
-  // - - - -
-
-  // one of {pCard_term_0,pCard_term_1} is $In
-
-  i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
-  i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
-
-  i8 i_iOrdLo_0 = E_iTerm_StreamColNo(pTerm_0);
-  i8 i_iOrdLo_1 = E_iTerm_StreamColNo(pTerm_1);
-
-  if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-    p_term = new Card_Term("$I1"_Stz);
-    p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_1->sz());
-    p_bounds->vAppend(p_term);
-  }
-  else
-  if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-    p_term = new Card_Term("$I1"_Stz);
-    p_bounds->vAppend(p_term);
-    p_term = new Card_Term(pTerm_1->sz());
-    p_bounds->vAppend(p_term);
-  }
-  else {
-    NEVER_REACH
-  }
-
-  p_term = new Card_Term(p_cmpPred->sz());
-  p_bounds->vAppend(p_term);
-
-  p_cmpPred->vMark1(MARK_UPWARDS);
+  p_stream->Y_vSet(P_OrdLo,iLo);
+  p_stream->Y_vSet(P_OrdHi,iHi);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_IndexJoin(Card_Table* p_table)
+void Xmodify::M_vTable_Add_IndexJoin(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -336,9 +542,9 @@ void Xmodify::M_vTable_IndexJoin(Card_Table* p_table)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add table and index                                                        */
+/* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_syn(Card_Table* p_table)
+void Xmodify::M_vTable_Set_Syn(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -355,6 +561,38 @@ void Xmodify::M_vTable_syn(Card_Table* p_table)
   p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
 
   m_cTableSyn++;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Stz* szTerm = p_term->sz();
+  if (!szTerm->bIsStreamColOrd())
+    return;
+
+  i8 i_IdxCol = C_UNKNOWN;
+
+  Card_IdxCol* p_idxCol =
+      _pCard_IdxCol(p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol));
+  if (! p_idxCol)
+    return;
+
+  p_term->vMark1('I');
+  p_term->vMark2(i_IdxCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_term->vValueSprint("$%lld"_Stz,iStmColOrd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -630,6 +868,18 @@ void Xmodify::vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new,
   p_filter_new->vAppend(p_calcBool);
 
   p_calcBool->vAppend(p_pred);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vStreamAnalysisReset(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_iOrdLo      = 1;
+  m_iOrdHi      = C_UNKNOWN;
+  m_cTableSyn   = 'a';
 }
 
 /*============================================================================*/

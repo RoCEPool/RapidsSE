@@ -18,7 +18,7 @@ __aFooterFunction(Xtest)
 Xtest::Xtest(eCN eClass)
 : Xextract(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -27,7 +27,7 @@ Xtest::Xtest(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xtest::~Xtest(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -386,6 +386,7 @@ bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
       CK_FILTER    == eMain ||
       CK_INDEXSCAN == eMain ||
       CK_INDEXJOIN == eMain ||
+      CK_KEYEXISTS == eMain ||
       CK_PROJECT   == eMain ||
       CK_SORT      == eMain )
     return true;
@@ -726,6 +727,23 @@ bool Xtest::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
   else
     return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is term a stream-column ordinal?  (i.e. $n)                                */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

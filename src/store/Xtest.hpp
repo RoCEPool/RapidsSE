@@ -56,6 +56,8 @@ namespace STORE
     bool T_bTerm_IsStreamColOrdinal(Card_Term* p_term);
     bool T_bTerm_IsTableColOrdinal(Card_Term* p_term);
 
+    bool T_bValue_IsStreamColOrdinal(Stz* szValue);
+
     // must be last
     Footer m_xFooter;
 

@@ -29,6 +29,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   m_bPrintHand = false;
   m_bPrintXform = false;
+  m_bPrintXformForce = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
@@ -100,7 +101,7 @@ Board* Xgearing::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                  */
 /*----------------------------------------------------------------------------*/
-eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
+eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -117,15 +118,20 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
   else
     sPrompt.vSprint(""_Stz, szHand);
 
-  if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
-    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (szTagCue->bSame(szHand) && szTransformation) {
-      printf("%s\n", sPrompt.azChar());
-      return OA_CONTINUE_TRANSFORMING;
-    }
-    if ( szTransformation && (! szTagCue->bSame(szTransformation))) {
-      printf("%s\n", sPrompt.azChar());
-      return OA_CONTINUE_TRANSFORMING;
+  if (C_UNKNOWN != iLineNo)
+    sPrompt.vCatSprint(" [%lld]"_Stz,iLineNo);
+
+  if (! m_bPrintXformForce) {
+    if (!m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
+      Stz *szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
+      if (szTagCue->bSame(szHand) && szTransformation) {
+        printf("%s\n", sPrompt.azChar());
+        return OA_CONTINUE_TRANSFORMING;
+      }
+      if (szTransformation && (!szTagCue->bSame(szTransformation))) {
+        printf("%s\n", sPrompt.azChar());
+        return OA_CONTINUE_TRANSFORMING;
+      }
     }
   }
 
@@ -264,11 +270,11 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vPrintBoard(void)
+void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! m_bPrintXform)
+  if (! C_UNKNOWN != iLineNo && ! m_bPrintXform && ! m_bPrintXformForce)
     return;
 
   for (;;) {
@@ -276,8 +282,13 @@ void Xgearing::vPrintBoard(void)
                           szTransformation(),
                           szDescription());
 
-    if (OA_REPRINT_BOARD != eCueUser(szHand(), szTransformation()))
+    if (! bCue)
       break;
+
+    if (OA_REPRINT_BOARD != eCueUser(szHand(),
+                                     szTransformation(),
+                                     iLineNo))
+        break;
   }
 }
 
@@ -327,6 +338,16 @@ void Xgearing::vPrintXform(bool bPrintXform)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_bPrintXform = bPrintXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set print phase force                                                      */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vPrintXformForce(bool bPrintXformForce)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_bPrintXformForce = bPrintXformForce;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -753,6 +774,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_CMPPRED:          return M.p_cmpPred;
     case CK_COMBINED:         return M.p_combined;
     case CK_COMMENT:          return M.p_comment;
+    case CK_CONSTRAINT:       return M.p_constraint;
     case CK_COPTNJOIN:        return M.p_coPtnJoin;
     case CK_COPTNJOINLIST:    return M.p_coPtnJoinList;
     case CK_COPTNPRED:        return M.p_coPtnPred;
@@ -924,6 +946,7 @@ void Xgearing::G_vClearMembers(void)
   M.p_cmpPred          = nullptr;
   M.p_combined         = nullptr;
   M.p_comment          = nullptr;
+  M.p_constraint       = nullptr;
   M.p_coPtnJoin        = nullptr;
   M.p_coPtnJoinList    = nullptr;
   M.p_coPtnPred        = nullptr;
@@ -1015,6 +1038,8 @@ void Xgearing::G_vClearRegisters(void)
 
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
+
+  M.sz_SubQueryNm      = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1190,6 +1215,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
+    case CK_CONSTRAINT:       *((Card**)&M.p_constraint)       = pCard; break;
     case CK_COPTNJOIN:        *((Card**)&M.p_coPtnJoin)        = pCard; break;
     case CK_COPTNJOINLIST:    *((Card**)&M.p_coPtnJoinList)    = pCard; break;
     case CK_COPTNPRED:        *((Card**)&M.p_coPtnPred)        = pCard; break;
@@ -1360,6 +1386,78 @@ bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
   return b;
 }
 
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    M.p_MainCard = M.pDeck->pGetChild(i_Main);
+
+    if (! M.p_MainCard->bIsCard(eOfMainKind))
+      continue;
+
+    if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind)))
+      continue;
+
+    M.e_MainCard = M.p_MainCard->eCard();
+    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
+    M.e_SubOfMain = M.p_SubOfMain->eCard();
+    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
+    return true;
+  }
+
+  M.p_MainCard  = nullptr;
+  M.e_MainCard  = CK_NONE;
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+  M.p_SubOfMain = nullptr;
+  M.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind, nullptr, __func__);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Before = M.pDeck->iFindChild(pBefore);
+  if (C_UNKNOWN == i_Before)
+    return false;
+
+  bool b = G_bResolveCardWithSub(eOfMainKind, eAndSubKind, i_Before);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve card (r-l) with grand-sub with given value before given i_Before   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card* pMain = M.pDeck->pGetChild(i_Main);
+
+    if (m_pCard_resolved = pMain->pFindValueRecursive(eGrandSub,szWithValue,m_pCard_parent)) {
+
+      if (m_pCard_resolved = pMain->pFindParent(m_pCard_resolved)) {
+        G_vUpdateMember(eCard, m_pCard_resolved, __func__);
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* find sub of member with given property                                     */
@@ -1417,6 +1515,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
     case CK_COMBINED:         return "M.p_combined"_Stz;
     case CK_COMMENT:          return "M.p_comment"_Stz;
+    case CK_CONSTRAINT:       return "M.p_constraint"_Stz;
     case CK_COPTNJOIN:        return "M.p_coPtnJoin"_Stz;
     case CK_COPTNJOINLIST:    return "M.p_coPtnJoinList"_Stz;
     case CK_COPTNPRED:        return "M.p_coPtnPred"_Stz;

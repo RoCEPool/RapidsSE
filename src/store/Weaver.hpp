@@ -52,6 +52,7 @@ namespace STORE
     void vArgHaving   (Stz* szOpArgs,  Card_Having*    pCard_Having);
     void vArgIndexJoin(Stz* szOpArgs,  Card_IndexJoin* pCard_IndexJoin);
     void vArgIndexScan(Stz* szOpArgs,  Card_IndexScan* pCard_IndexScan);
+    void vArgKeyExists(Stz* szOpArgs,  Card_KeyExists* pCard_KeyExists);
     void vArgLimit    (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
     void vArgOrdAgg   (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
     void vArgProject  (Stz* szOpArgs,  Card_Project*   pCard_Project);
@@ -64,7 +65,9 @@ namespace STORE
     void vRpnFilter   (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
     void vRpnHaving   (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
-    void vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
+    void vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
+    void vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists);
+    void vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists);
     void vRpnLimit    (Stz* szRpnExpr, Card_Limit*     pCard_Limit);
     void vRpnProject  (Stz* szRpnExpr, Card_Project*   pCard_Project);
     void vRpnScan     (Stz* szRpnExpr, Card_Scan*      pCard_Scan);

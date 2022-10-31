@@ -13,20 +13,19 @@
 
 #include "Card_AbsJoin.hpp"
 #include "Card_AggElist.hpp"
-#include "Card_Level.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_Aggregates.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
-#include "Card_Deck.hpp"
-
-#include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
+#include "Card_Bounds.hpp"
+
 #include "Card_CandIndex.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Combined.hpp"
 #include "Card_Comment.hpp"
+#include "Card_Constraint.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CoPtnJoin.hpp"
 #include "Card_CoPtnJoinList.hpp"
@@ -37,6 +36,7 @@
 #include "Card_CrossPtnPred.hpp"
 
 #include "Card_Debug.hpp"
+#include "Card_Deck.hpp"
 #include "Card_Direction.hpp"
 
 #include "Card_EBound.hpp"
@@ -62,12 +62,12 @@
 
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrderSeq.hpp"
-#include "Card_Bounds.hpp"
 #include "Card_JoinPredList.hpp"
 
 #include "Card_KeyExists.hpp"
 
 #include "Card_LBound.hpp"
+#include "Card_Level.hpp"
 #include "Card_Limit.hpp"
 #include "Card_LinksTo.hpp"
 
@@ -88,6 +88,7 @@
 #include "Card_PtndJoinSet.hpp"
 
 #include "Card_RBound.hpp"
+#include "Card_RpnCalc.hpp"
 #include "Card_RpnTerms.hpp"
 
 #include "Card_SbyElist.hpp"

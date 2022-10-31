@@ -29,6 +29,7 @@ namespace STORE
 
     bool        m_bPrintHand;
     bool        m_bPrintXform;
+    bool        m_bPrintXformForce;
     bool        m_bInteractive;
     b8          m_bBeenCued;
     b8          m_bCueingDisabled;
@@ -72,7 +73,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eOA eCueUser(Stz* szHand, Stz* szTransformation= nullptr);
+    eOA eCueUser(Stz* szHand, Stz* szTransformation=nullptr, i8 iLineNo=C_UNKNOWN);
 
     void vEndTransform(void);
 
@@ -82,11 +83,12 @@ namespace STORE
     Stz* szHand(void);
     void vHand(const char* asHand);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
-    void vPrintBoard(void);
+    void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
     bool bPrintHand(void);
     void vPrintHand(bool bPrintHand);
     bool bPrintXform(void);
     void vPrintXform(bool bPrintXform);
+    void vPrintXformForce(bool bPrintXformForce);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
@@ -154,6 +156,9 @@ namespace STORE
 
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
+    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);
+    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore);
+    bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 

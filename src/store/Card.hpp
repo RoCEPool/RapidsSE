@@ -35,6 +35,7 @@ namespace STORE
   class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
+  class Card_Constraint;
   class Card_CoPtnJoin;
   class Card_CoPtnJoinList;
   class Card_CoPtnPred;
@@ -68,6 +69,8 @@ namespace STORE
   class Card_JoinOrderSeq;
   class Card_JoinPredList;
 
+  class Card_KeyExists;
+
   class Card_LBound;
   class Card_Limit;
 
@@ -93,6 +96,7 @@ namespace STORE
   class Card_Stream;
   class Card_StmCol;
   class Card_StmColList;
+  class Card_StmColNm;
   class Card_StmColOrd;
   class Card_SubSet;
 
@@ -127,6 +131,7 @@ static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
 static char MARK_ASSIGNED   = '@';
 static char MARK_BLANK      = ' ';
+static char MARK_CALLSUB    = '~';
 static char MARK_CHANGED    = '`';
 static char MARK_DOWNWARDS  = 'v';
 static char MARK_LEFTWARDS  = '<';
@@ -306,95 +311,12 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-/*############################################################################*/
-#ifndef NEW_XLATOR
-/*############################################################################*/
-
-
-    Card_CmpPred* pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound);
-    bool bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
-
-    bool bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
-    void vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
-    void vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
-
-    i8   iCandIndex_Rank(Card_CandIndex* p_candIndex);
-    void vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
-
-    void vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
-    bool bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    Card_CmpPred* pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound);
-    bool bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex);
-    bool bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
-
-    bool bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
-    i8   iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef);
-    char cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);
-    char cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef);
-    void vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
-
-    bool bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
-    Card_CoPtnJoin* pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
-    bool bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
-
-    Card_StmColList* pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
-
-    void vExpr_AsEnsure(Card_Expr* p_expr);
-
-    void vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
-    bool bFilter_IsEmptyFilter(Card_Filter* p_filter);
-
-    void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
-
-    void vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin);
-
-    void vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc);
-
-    void vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex);
-
-    Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
-    bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
-
-    void vPRED_CullByKids(Card_PRED* p_PRED);
-    Card_CmpPred* pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
-    bool bPRED_HasBounds (Card_PRED* p_PRED, Index* pIndex);
-    static bool bPRED_IsPred(Card* pArgCard);
-
-    bool bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
-    void vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList);
-
-    Card_Term* pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms);
-    Card_Term* pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms);
-
-
-    Card_StmCol* pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
-
-
-    ePB  eTerm_Bound(Card_Term* p_term);
-    i8   iTerm_IndexColNo(Card_Term* p_term);
-    bool bTerm_IsIndexColOrdinal(Card_Term* p_term);
-    bool bTerm_IsParamOrdinal(Card_Term* p_term);
-    bool bTerm_IsStreamColOrdinal(Card_Term* p_term);
-    bool bTerm_IsTableColOrdinal(Card_Term* p_term);
-    eRO  eTerm_RelOp(Card_Term* p_term);
-    i8   iTerm_StreamColNo(Card_Term* p_term);
-    i8   iTerm_TableColNo(Card_Term* p_term);
-    char cTerm_TableSyn(Card_Term* p_term);
-    eTE  eTerm_TermEval(Card_Term* p_term);
-
-/*############################################################################*/
-#endif
-/*############################################################################*/
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bounds*        pSub_bounds(void);
+    Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
+    Card_Constraint*    pSub_constraint(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
@@ -403,14 +325,15 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_KeyExists*     pSub_keyExists(void);
     Card_LBound*        pSub_lBound(void);
-    Card_CmpPred*       pSub_predCmp(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
     Card_StmColList*    pSub_stmColList(void);
+    Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOrd*     pSub_stmColOrd(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);

@@ -49,7 +49,7 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* linearize board by deleting all redundant <stage>'s                        */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T10_Delete_Redundant_stages(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -77,7 +77,7 @@ void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* lhide ignorable <stage>'s                                                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T15_Hide_Ignorable_stages(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -96,7 +96,7 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T20_Delete_All_absJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -115,7 +115,7 @@ void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T30_Delete_All_combined(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -134,7 +134,7 @@ void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <send>'s                                                */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T40_Delete_All_send(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -177,7 +177,7 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tableSyn> to all <table>'s                                          */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
+void Xtransforms::vH20_T10_Affix_tableSyn_ToAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -227,6 +227,8 @@ void Xtransforms::vH30_T10_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   vDescription("add a <stream> under every <table>"_Stz);
   vTransform(__func__);
   vTracing(bPrint,bTrace);
+
+  vStreamAnalysisReset();
 
   // E <scan>
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
@@ -368,14 +370,14 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 
     G_vPushIter(pSubQueryBoard);
 
-    vPrintBoard();
+    //vPrintBoard();
 
     if (G_bEachMain(CK_STAGE)) {
       vTracer("SubQuery Stage: %s\n"_Stz, M.p_stage->szBearing());
 
       vR_H50_T10_Rework_Exists_SubQueries();
     }
-    vPrintBoard();
+    vPrintBoard(true,__LINE__);
 
     G_vPopIter();
   }
@@ -398,12 +400,14 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
-    Stz* szSubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
-    vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
+    M.p_tstPred->vMark1(MARK_CALLSUB);
 
-    Board* pSubQueryBoard = m_pBench->pGetBoard(szSubQueryNm);
+    M.sz_SubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
+    vTracer("SubQueryNm: %s\n"_Stz,M.sz_SubQueryNm);
+
+    Board* pSubQueryBoard = m_pBench->pGetBoard(M.sz_SubQueryNm);
     if (! pSubQueryBoard) {
-      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      vTracer("DID NOT FIND Board: %s\n"_Stz,M.sz_SubQueryNm);
       continue;
     }
 
@@ -411,9 +415,9 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
     G_vPushIter(pSubQueryBoard);
 
-    vPrintBoard();
+    //vPrintBoard(false,__LINE__);
 
-    if (G_bEachMain(CK_KEYEXISTS)) {
+    if (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
       vR_H50_T20_Copy_Up_SubQueries();
 
@@ -421,6 +425,44 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
     else {
       G_vPopIter();
     }
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
+    vR_H50_T24_Corrects_Streams();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
+    vR_H50_T26_Corrects_Predicates();
   }
 
   vEndTransform();
@@ -438,13 +480,13 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (G_bEachMain(CK_KEYEXISTS)) {
+  while (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
     vTracer("Resolving %s"_Stz,M.p_MainCard->szBearing());
-    if (!G_bPlumbForSubMember(CK_KEYEXISTS, CK_PARAM))
+    if (!G_bPlumbForSubMember(CK_TABLE, CK_PARAM))
       continue;
 
-    if (!G_bResolveCard(CK_STMCOL, M.p_param->sz(), M.p_keyExists))
+    if (!G_bResolveCard(CK_STMCOL, M.p_param->sz(), M.p_table))
       continue;
 
     vR_H50_T30_Resolve_Parameter_Linkage();
@@ -465,28 +507,59 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (G_bEachMainWith2Sub(CK_KEYEXISTS, CK_PARAMLIST, CK_RPNCALC)) {
+  while (G_bEachMainWith2Sub(CK_TABLE, CK_BOOLCALC, CK_PARAMLIST)) {
 
     vTracer("Resolving Terms\n  %s\n  %s  \n"_Stz,
-            M.p_keyExists->szBearing(),
-            M.p_paramList->szBearing(),
-            M.p_rpnCalc->szBearing());
+            M.p_table->szBearing(),
+            M.p_boolCalc->szBearing(),
+            M.p_paramList->szBearing());
 
-    CardIter xCI(M.p_rpnCalc);
-    while ((M.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (!T_bTerm_IsParamOrdinal(M.p_term))
-        continue;
+    vR_H50_T40_Resolve_Parameter_Terms();
 
-      if (!G_bFindPpy(CK_PARAMLIST, P_ParamOrd, CK_PARAM))
-        continue;
-
-      vR_H50_T40_Resolve_Parameter_Terms();
-    }
   }
 
   vEndTransform();
   vPrintBoard();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H50_T50_Cull_Exists_Call();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <where> if it is effectively empty                                  */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("delete <where> if it is effectively empty"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H50_T60_Delete_Empty_where();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -496,7 +569,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add an <indexJoin> under all <table>'s which are joinable                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T10_Add_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -515,7 +588,7 @@ void Xtransforms::vH60_T10_Add_indexJoin_UnderAllFiltered_table(bool bPrint, boo
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -534,7 +607,7 @@ void Xtransforms::vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bool bPrin
 /*----------------------------------------------------------------------------*/
 /* add <bounds> under each filtered <table>                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vR_H60_T30_Add_bounds_UnderAllFiltered_table(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T30_Add_bounds_UnderAllFiltered_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -553,7 +626,7 @@ void Xtransforms::vR_H60_T30_Add_bounds_UnderAllFiltered_table(bool bPrint, bool
 /*----------------------------------------------------------------------------*/
 /* remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>    */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T40_Cull_pred_MovedTo_table_bounds(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -572,7 +645,7 @@ void Xtransforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool
 /*----------------------------------------------------------------------------*/
 /* delete any <table>/<filter> which is effectively empty                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T50_Delete_Empty_table_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -914,9 +987,9 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> or <indexJoin>                      */
+/* convert all <table> into either <scan> or <indexJoin> or <keyExists>       */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
+void Xtransforms::vH75_T10_Convert_table_To_EEop(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -926,21 +999,88 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
 
   while (G_bEachMain(CK_TABLE)) {
 
-    M.p_bounds = M.p_table->pSub_bounds();
+    M.p_bounds     = M.p_table->pSub_bounds();
+    M.p_index     = M.p_table->pSub_index();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
-    M.p_index = M.p_table->pSub_index();
+    M.p_keyExists = M.p_table->pSub_keyExists();
 
-    vR_H70_T99_Convert_table_To_scan_Or_indexJoin();
+    vR_H75_T10_Convert_table_To_EEop();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
-    vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b();
+    vR_H75_T10_Convert_table_To_EEop_b();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
-    vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c();
+    vR_H75_T10_Convert_table_To_EEop_c();
+  }
+
+  G_vRestart();
+  while (G_bEachMain(CK_KEYEXISTS)) {
+    if (M.p_keyExists) {
+      i8 i_Child;
+      M.p_comment = _pCard_Comment(M.p_keyExists->pFindChild(CK_COMMENT, i_Child));
+      M.p_comment->vValue(SEP_DERIVED);
+    }
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T20_Convert_keyExists_filter_To_bounds(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
+    vR_H75_T20_Convert_keyExists_filter_To_bounds();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T30_Correct_stmColOdn_Of_keyExists_stream(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((description))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_STREAM)) {
+    vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint,bTrace);
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
+    vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();
   }
 
   vEndTransform();
@@ -955,7 +1095,7 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T10_Add_indexList_Under_scan(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T10_Add_Scratch_indexList_Under_scan(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -974,7 +1114,7 @@ void Xtransforms::vH80_T10_Add_indexList_Under_scan(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -993,7 +1133,7 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_ordinal(bool bPrint, b
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
