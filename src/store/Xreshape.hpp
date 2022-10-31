@@ -35,7 +35,10 @@ namespace STORE
     void vR_H50_T10_Extract_subSet_Of_call(void);
     void vR_H50_T20_Yank_Subset(void);
     void vR_H50_T20_Put_Yanked(void);
-    void vR_H50_T30(void);
+    void vR_H50_T30_RemoveDelete_call(void);
+    void vR_H50_T40(void);
+    void vR_H50_T50(void);
+    void vR_H50_T60(void);
 
     void vR_H55_T10_Rework_Exists_SubQueries(void);
     void vR_H55_T20_Copy_Up_SubQueries(void);

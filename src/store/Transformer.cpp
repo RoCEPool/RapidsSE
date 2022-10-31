@@ -104,6 +104,7 @@ void Transformer::vTransform3(void)
   vHand_80_IndexScan       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_90_StreamOrdering  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_A0_FilterRefinement(C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+
   vHand_Z0_RestatePipeline (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
 }
 

@@ -44,6 +44,9 @@ namespace STORE
     void vH50_T10_Extract_subSet_Of_call(bool bPrint, bool bTrace);
     void vH50_T20_Copy_Called_Subset(bool bPrint, bool bTrace);
     void vH50_T30(bool bPrint, bool bTrace);
+    void vH50_T40(bool bPrint, bool bTrace);
+    void vH50_T50(bool bPrint, bool bTrace);
+    void vH50_T60(bool bPrint, bool bTrace);
 
     void vH55_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace);
     void vH55_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);

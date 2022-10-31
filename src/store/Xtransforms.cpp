@@ -416,7 +416,62 @@ void Xtransforms::vH50_T30(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint, bTrace);
 
-  vR_H50_T30();
+  while (G_bEachMain(CK_CALL)) {
+    vR_H50_T30_RemoveDelete_call();
+  }
+
+  vSetPrintSubCards(CK_PROJELIST,true);
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T40(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  vR_H50_T40();
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T50(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  vR_H50_T50();
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T60(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  vR_H50_T60();
 
   vEndTransform();
   vPrintBoard();
