@@ -222,9 +222,15 @@ void Transformer::vHand_50_FlattenCall(bool bPrintHand, bool bPrintXform, bool b
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vH50_T10(bPrintXform, bTrace);
-  m_pTransforms->vH50_T20(bPrintXform, bTrace);
+  vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
+
+  m_pTransforms->vH50_T10_Extract_subSet_Of_call(bPrintXform, bTrace);
+  m_pTransforms->vH50_T20_Copy_Called_Subset(bPrintXform, bTrace);
   m_pTransforms->vH50_T30(bPrintXform, bTrace);
+
+  vEndHand();
+  vPrintBench(BK_SUBPIPE);
+
 }
 
 /*----------------------------------------------------------------------------*/

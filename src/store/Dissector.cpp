@@ -275,6 +275,8 @@ Card* Dissector::pOp_Call(TagSet* pArgTags)
 
   Stz* szSubPipeNm = szArgsStz(pArgTags,0);
 
+  StrLib::vStrip(szSubPipeNm->azChar(),' ');
+
   Card_Call* pCard_Call = new Card_Call;
   pCard_Call->vValue(szSubPipeNm);
 

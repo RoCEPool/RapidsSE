@@ -347,7 +347,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T10(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T10_Extract_subSet_Of_call(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -355,7 +355,19 @@ void Xtransforms::vH50_T10(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint, bTrace);
 
-  vR_H50_T10();
+  while (G_bEachMain(CK_CALL)) {
+
+    Stz* szSubQueryNm = G.p_call->szValue();
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H50_T10_Extract_subSet_Of_call();
+    vPrintBoard(true,__LINE__);
+    G_vPopBoard();
+  }
 
   vEndTransform();
   vPrintBoard();
@@ -364,7 +376,7 @@ void Xtransforms::vH50_T10(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T20(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T20_Copy_Called_Subset(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -372,7 +384,22 @@ void Xtransforms::vH50_T20(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint, bTrace);
 
-  vR_H50_T20();
+  while (G_bEachMain(CK_CALL)) {
+
+    Stz* szSubQueryNm = G.p_call->szValue();
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H50_T20_Yank_Subset();
+
+    G_vPopBoard();
+
+    vR_H50_T20_Put_Yanked();
+  }
+
 
   vEndTransform();
   vPrintBoard();

@@ -55,6 +55,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_pCard_popped   = nullptr;
   m_pCard_resolved = nullptr;
   m_pCard_temp     = nullptr;
+  m_pCard_yanked   = nullptr;
 
   m_pTransformIterList = new TransformIterList;
 
@@ -1129,6 +1130,47 @@ void Xgearing::G_vPushIter(void)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
+void Xgearing::G_vPushBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Xsentinals* pTransformIterSave = new Xsentinals;
+
+  pTransformIterSave->vCopyFrom(this->aXsentinels());
+
+  m_pTransformIterList->vPush(pTransformIterSave);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pBoard = pBoard;
+  G.pDeck  = G.pBoard->pDeck();
+
+  G.xBI.vChangeBoard(G.pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bPushBoard(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
+  if (! pSubQueryBoard) {
+    vTracer("DID NOT FIND Board: %s\n"_Stz,szBoardNm);
+    return false;
+  }
+
+  vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
+
+  G_vPushIter(pSubQueryBoard);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
 void Xgearing::G_vPushIter(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -1147,6 +1189,20 @@ void Xgearing::G_vPushIter(Board* pBoard)
   G.xBI.vChangeBoard(G.pBoard);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* pop/restore M iterator from iter stack                                     */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPopBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
+
+  this->vCopyFrom(pTransformIterRestore->aXsentinels());
+
+  delete pTransformIterRestore;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */

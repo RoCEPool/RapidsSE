@@ -217,17 +217,36 @@ void Xreshape::vR_H40_T40_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T10(void)
+void Xreshape::vR_H50_T10_Extract_subSet_Of_call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 1);
+
+  G.pDeck->vPush(G.p_subSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T20(void)
+void Xreshape::vR_H50_T20_Yank_Subset(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCard_yanked = G.pDeck->pFindChild(CK_SUBSET);
+
+  G.pDeck->vRemoveChild(m_pCard_yanked);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H50_T20_Put_Yanked(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
