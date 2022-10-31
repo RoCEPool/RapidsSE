@@ -386,7 +386,7 @@ rows:
   (61,'Customer#000000061',0.00,1536.24,'PERU','9kndve4EAJxhg3veF BfXr7AqOsT39o gtqjaYE','27-626-559-8599','egular packages shall have to impress along the ')
   (13,'Customer#000000013',0.00,3857.34,'CANADA','nsXQu0oVjD7PM659uC3SRSp','13-761-547-5974','ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
 
-sleep 2;
+sleep 4;
 success
 
 pipeline Q10

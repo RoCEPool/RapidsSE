@@ -504,6 +504,20 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline3</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_PARTKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxL_PARTKEY ON lineitem (l_partkey);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Required for pipeline17</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxO_ORDERKEY ON orders (o_orderkey);</stringProp>
@@ -752,6 +766,19 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxL_PARTKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index lineItem IxL_PARTKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadOrders" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload orders paths
@@ -773,6 +800,19 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxO_CUSTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_CUSTKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxO_ORDERKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index orders IxO_ORDERKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1466,6 +1506,15 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
               <stringProp name="filename">p3.csv</stringProp>
             </ResultCollector>
             <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename"></stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+              <stringProp name="FileSaver.variablename">p3_</stringProp>
+            </ResultSaver>
+            <hashTree/>
           </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
@@ -1638,6 +1687,315 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
               <stringProp name="filename">p16.csv</stringProp>
             </ResultCollector>
             <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p16_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop_a" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p16_a" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline unamed
+  begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2543 on all partitions :
+    scan rapidsse public part
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; != !f
+              }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not !f and
+              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and&quot;
+    | project &quot;type INTEGER as P_PARTKEY P_PARTKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE&quot;
+    | combined 0
+    | next
+
+  stage stageMarker2546 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;  // J1 - PARTSUPP
+    | project &quot;type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE&quot;
+    | hash &quot; type INTEGER PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2549 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
+                       type VARCHAR as P_TYPE P_TYPE ,
+                       type INTEGER as P_SIZE P_SIZE ,
+                       type INTEGER as PS_SUPPKEY PS_SUPPKEY
+               aggregates
+                       type VARCHAR  as P_BRAND $K1 ,
+                       type VARCHAR  as P_TYPE $K2 ,
+                       type INTEGER  as P_SIZE $K3 ,
+                       type INTEGER  as PS_SUPPKEY $K4&quot;
+
+    | combined 0
+    | next
+
+  stage stageMarker2552 on all nodes :
+    aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
+                     type VARCHAR as P_TYPE P_TYPE ,
+                     type INTEGER as P_SIZE P_SIZE ,
+                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR  as P_BRAND $K1 ,
+                    type VARCHAR  as P_TYPE $K2 ,
+                    type INTEGER  as P_SIZE $K3 ,
+                    type INTEGER  as PS_SUPPKEY $K4 &quot;
+    | combined 0
+    | next
+
+  stage stageMarker2555 on origin :
+    aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
+                     type VARCHAR as P_TYPE P_TYPE ,
+                     type INTEGER as P_SIZE P_SIZE ,
+                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR  as P_BRAND $K1 ,
+                    type VARCHAR  as P_TYPE $K2 ,
+                    type INTEGER  as P_SIZE $K3 ,
+                    type INTEGER  as PS_SUPPKEY $K4 &quot;
+    | hash &quot; type INTEGER PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage CNTDST_a on all partitions :
+    aggreg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
+                       type VARCHAR as P_TYPE P_TYPE ,
+                       type INTEGER as P_SIZE P_SIZE
+                       aggregates
+                       type VARCHAR  as P_BRAND $K1 ,
+                       type VARCHAR  as P_TYPE $K2 ,
+                       type INTEGER  as P_SIZE $K3 ,
+                       type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT&quot;
+    | combined 0
+    | next
+
+  stage CNTDST_b on all nodes :
+    aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
+                     type VARCHAR as P_TYPE P_TYPE ,
+                     type INTEGER as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR  as P_BRAND $K1 ,
+                     type VARCHAR  as P_TYPE $K2 ,
+                     type INTEGER  as P_SIZE $K3 ,
+                     type INTEGER  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage CNTDST_c on origin :
+    aggreg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
+                      type VARCHAR as P_TYPE P_TYPE ,
+                      type INTEGER as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR  as P_BRAND $K1 ,
+                      type VARCHAR  as P_TYPE $K2 ,
+                      type INTEGER  as P_SIZE $K3 ,
+                      type INTEGER  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage SORT_a on origin :
+    sort &quot; type INTEGER $4 DESC  ,
+           type VARCHAR as P_BRAND P_BRAND ASC ,
+           type VARCHAR as P_TYPE P_TYPE ASC ,
+           type INTEGER as P_SIZE P_SIZE ASC &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">moved filter and project early (part) and added &lt;&gt; in filter to exit early
+Requires the following indexes:
+CREATE INDEX IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p16.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p16_a_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P17Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p17" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Q17
+  begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+ stage stageMarker1237 on all partitions :
+     scan rapidsse public part
+     | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#23&apos;  ==  P_CONTAINER &apos;MED BOX&apos;  ==  and&quot;
+     | project &quot;type INTEGER as P_PARTKEY P_PARTKEY&quot;
+     | combined 0
+     | next broadcast
+
+  stage stageMarker1222 on all partitions :
+    indexJoin lineitem IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+    | ordagg &quot; ordgroupBy type integer P_PARTKEY aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  J1_L_QUANTITY sum  , type INTEGER )  J1_L_QUANTITY count  &quot;
+    | combined 0
+    | next
+
+  stage stageMarker1222 on all nodes :
+    aggreg &quot; groupBy type integer P_PARTKEY aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  &quot;
+    | combined 0
+    | next
+
+  stage stageMarker1222 on origin :
+    aggreg &quot; groupBy type integer P_PARTKEY aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  &quot;
+    | combined 0
+    | next
+
+  stage stageQ17_1_d on origin :
+    project &quot; type integer as P_PARTKEY P_PARTKEY , type DECIMAL as AV $2 $3 casttype DECIMAL cast / 0.2 *&quot;
+    | combined 0
+    | next broadcast
+
+  stage stageQ17_2_a on all partitions :
+    indexJoin lineitem IxL_PARTKEY &quot;bound $I1 $L1 ==&quot;
+    | filter &quot; type BOOLEAN  J1_L_QUANTITY AV &lt;  &quot;
+    | project &quot; type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  &quot;
+    | combined 0
+    | next
+
+  stage stageQ17_2_b on all nodes :
+    project &quot; type decimal as avg_yearly ) $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage stageQ17_2_c on origin :
+    project &quot; type DECIMAL as avg_yearly ) $1 sum 7.0 / &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+CREATE INDEX IxLPARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p18.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p17_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
           </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P18Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -1787,7 +2145,7 @@ CREATE INDEX IxO_ORDERKEY ON ORDERS(O_ORDERKEY);</stringProp>
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">p18</stringProp>
+              <stringProp name="FileSaver.filename">p18_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>

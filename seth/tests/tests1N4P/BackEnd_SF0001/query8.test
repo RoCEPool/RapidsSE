@@ -232,7 +232,7 @@ end ;
 
 rows: (1996,0.00)
 
-sleep 2;
+sleep 4;
 success
 
 //region->nation->customer->orders->lineitem->part->supplier->nation
@@ -328,7 +328,7 @@ end ;
 
 rows: (1996,0.00)
 
-sleep 2;
+sleep 4;
 success
 
 CLEANUP {
