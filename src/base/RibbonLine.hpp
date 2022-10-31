@@ -27,7 +27,10 @@ namespace BASE
     
     RibbonLine(void);
    ~RibbonLine(void) noexcept(false);
-    
+
+    void vInsert(i8 i_Char, char cChr);
+    void vInsert(i8 i_Char, Stz* szText);
+
     void vPut(i8 i_Char, char cChr);
     void vPut(i8 i_Char, Stz* szStz);
     void vPut(i8 i_Char, char cChr, i8 nTimes);

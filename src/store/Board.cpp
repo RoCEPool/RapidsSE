@@ -159,6 +159,11 @@ void Board::vPinBanners(Ribbon* pRibbon)
 
   pRibbon->vPutTextRight(szHand, 1);
   pRibbon->vPutTextRight(szXfrom,2);
+
+  s32 sLeftMargin;
+  sLeftMargin.vSprint("%lld "_Stz,m_i_SubBoard);
+  pRibbon->vInsertCharsV(0,0,sLeftMargin);
+  //pRibbon->vDrawV(0,0,"x"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

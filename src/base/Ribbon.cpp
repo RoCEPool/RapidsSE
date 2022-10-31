@@ -151,6 +151,34 @@ void Ribbon::vHeatSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert chars vertically                                                    */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vInsertCharsV(BASE::i8 i_FromLine, BASE::i8 i_Char, char cChar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  i8 nLines = nItems();
+  for (i8 i_Line = i_FromLine; i_Line < nLines; i_Line++) {
+    RibbonLine* pRibbonLine = pGet(i_Line);
+    pRibbonLine->vInsert(i_Char,cChar);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert chars vertically                                                    */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vInsertCharsV(BASE::i8 i_FromLine, BASE::i8 i_Char, Stz* szChars)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  i8 nLines = nItems();
+  for (i8 i_Line = i_FromLine; i_Line < nLines; i_Line++) {
+    RibbonLine* pRibbonLine = pGet(i_Line);
+    pRibbonLine->vInsert(i_Char,szChars);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin at first vertical lane                                               */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vLaneFirst(void)
