@@ -207,7 +207,7 @@ begin
 end ;
 rows: 20
 
-sleep 2;
+sleep 4;
 success
 
 //supplier->nation->partsupp
@@ -297,7 +297,7 @@ begin
 end ;
 rows: 20
 
-sleep 2;
+sleep 4;
 success
 
 //nation->supplier->partsupp
