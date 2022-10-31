@@ -96,7 +96,7 @@ void Transformer::vTransform3(void)
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   m_pTransforms->vPrintXformForce(true);
-  vHand_50_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  vHand_55_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_60_IndexJoin       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_70_JoinOrdering    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_75_EE_operators    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -217,22 +217,22 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_50_FlattenExists(bool bPrintHand, bool bPrintXform, bool bTrace)
+void Transformer::vHand_55_FlattenExists(bool bPrintHand, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vH50_T10_Rework_Exists_SubQueries(bPrintXform, bTrace);
-  m_pTransforms->vH50_T20_Copy_Up_SubQueries(bPrintXform, bTrace);
+  m_pTransforms->vH55_T10_Rework_Exists_SubQueries(bPrintXform, bTrace);
+  m_pTransforms->vH55_T20_Copy_Up_SubQueries(bPrintXform, bTrace);
 
-  m_pTransforms->vH50_T24_Correct_Streams(bPrintXform, bTrace);
-  m_pTransforms->vH50_T26_Correct_Predicates(bPrintXform, bTrace);
+  m_pTransforms->vH55_T24_Correct_Streams(bPrintXform, bTrace);
+  m_pTransforms->vH55_T26_Correct_Predicates(bPrintXform, bTrace);
 
-  m_pTransforms->vH50_T30_Resolve_Parameter_Linkage(bPrintXform, bTrace);
-  m_pTransforms->vH50_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
-  m_pTransforms->vH50_T50_Cull_Exists_Call(bPrintXform, bTrace);
-  m_pTransforms->vH50_T60_Delete_Empty_where(bPrintXform, bTrace);
+  m_pTransforms->vH55_T30_Resolve_Parameter_Linkage(bPrintXform, bTrace);
+  m_pTransforms->vH55_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
+  m_pTransforms->vH55_T50_Cull_Exists_Call(bPrintXform, bTrace);
+  m_pTransforms->vH55_T60_Delete_Empty_where(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);

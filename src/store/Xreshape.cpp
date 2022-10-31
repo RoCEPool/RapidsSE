@@ -217,7 +217,7 @@ void Xreshape::vR_H40_T40_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
+void Xreshape::vR_H55_T10_Rework_Exists_SubQueries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -249,7 +249,7 @@ void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
+void Xreshape::vR_H55_T20_Copy_Up_SubQueries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -265,7 +265,7 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T24_Corrects_Streams(void)
+void Xreshape::vR_H55_T24_Corrects_Streams(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -288,7 +288,7 @@ void Xreshape::vR_H50_T24_Corrects_Streams(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T26_Corrects_Predicates(void)
+void Xreshape::vR_H55_T26_Corrects_Predicates(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -322,7 +322,7 @@ void Xreshape::vR_H50_T26_Corrects_Predicates(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T30_Resolve_Parameter_Linkage(void)
+void Xreshape::vR_H55_T30_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -334,7 +334,7 @@ void Xreshape::vR_H50_T30_Resolve_Parameter_Linkage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
+void Xreshape::vR_H55_T40_Resolve_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -344,7 +344,7 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T50_Cull_Exists_Call(void)
+void Xreshape::vR_H55_T50_Cull_Exists_Call(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -354,7 +354,7 @@ void Xreshape::vR_H50_T50_Cull_Exists_Call(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T60_Delete_Empty_where(void)
+void Xreshape::vR_H55_T60_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

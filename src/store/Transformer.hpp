@@ -41,7 +41,7 @@ namespace STORE
     void vHand_20_TableAnalysis   (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_30_StreamAnalysis  (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_40_PredicatePullup (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_50_FlattenExists   (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_55_FlattenExists   (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_60_IndexJoin       (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_70_JoinOrdering    (bool bPrintHand, bool bPrintXform, bool bTrace);
     void vHand_75_EE_operators    (bool bPrintHand, bool bPrintXform, bool bTrace);

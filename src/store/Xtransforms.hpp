@@ -41,14 +41,14 @@ namespace STORE
     void vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace);
     void vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace);
 
-    void vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace);
-    void vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);
-    void vH50_T24_Correct_Streams(bool bPrint, bool bTrace);
-    void vH50_T26_Correct_Predicates(bool bPrint, bool bTrace);
-    void vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
-    void vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
-    void vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace);
-    void vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace);
+    void vH55_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace);
+    void vH55_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);
+    void vH55_T24_Correct_Streams(bool bPrint, bool bTrace);
+    void vH55_T26_Correct_Predicates(bool bPrint, bool bTrace);
+    void vH55_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
+    void vH55_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
+    void vH55_T50_Cull_Exists_Call(bool bPrint, bool bTrace);
+    void vH55_T60_Delete_Empty_where(bool bPrint, bool bTrace);
 
     void vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bool bPrint, bool bTrace);
     void vH60_T20_Affix_idxColOdn_ToAll_idxCol(bool bPrint, bool bTrace);

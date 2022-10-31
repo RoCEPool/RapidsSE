@@ -347,7 +347,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -375,7 +375,7 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
     if (G_bEachMain(CK_STAGE)) {
       vTracer("SubQuery Stage: %s\n"_Stz, G.p_stage->szBearing());
 
-      vR_H50_T10_Rework_Exists_SubQueries();
+      vR_H55_T10_Rework_Exists_SubQueries();
     }
     vPrintBoard(true,__LINE__);
 
@@ -390,7 +390,7 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -419,7 +419,7 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
     if (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
-      vR_H50_T20_Copy_Up_SubQueries();
+      vR_H55_T20_Copy_Up_SubQueries();
 
     }
     else {
@@ -434,7 +434,7 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T24_Correct_Streams(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -443,7 +443,7 @@ void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
-    vR_H50_T24_Corrects_Streams();
+    vR_H55_T24_Corrects_Streams();
   }
 
   vEndTransform();
@@ -453,7 +453,7 @@ void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T26_Correct_Predicates(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -462,7 +462,7 @@ void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
-    vR_H50_T26_Corrects_Predicates();
+    vR_H55_T26_Corrects_Predicates();
   }
 
   vEndTransform();
@@ -472,7 +472,7 @@ void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -489,7 +489,7 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
     if (!G_bResolveCard(CK_STMCOL, G.p_param->sz(), G.p_table))
       continue;
 
-    vR_H50_T30_Resolve_Parameter_Linkage();
+    vR_H55_T30_Resolve_Parameter_Linkage();
   }
 
   vEndTransform();
@@ -499,7 +499,7 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -514,7 +514,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
             G.p_boolCalc->szBearing(),
             G.p_paramList->szBearing());
 
-    vR_H50_T40_Resolve_Parameter_Terms();
+    vR_H55_T40_Resolve_Parameter_Terms();
 
   }
 
@@ -525,7 +525,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -534,7 +534,7 @@ void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
   vTracing(bPrint, bTrace);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H50_T50_Cull_Exists_Call();
+    vR_H55_T50_Cull_Exists_Call();
   }
 
   vEndTransform();
@@ -544,7 +544,7 @@ void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T60_Delete_Empty_where(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -553,7 +553,7 @@ void Xtransforms::vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H50_T60_Delete_Empty_where();
+    vR_H55_T60_Delete_Empty_where();
   }
 
   vEndTransform();
