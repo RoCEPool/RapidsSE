@@ -12,7 +12,7 @@ namespace STORE
   struct _CardCtl
   {
     bool m_bHeatNext;        // print card on new horizontal heat/row
-    s32  m_sHideHeat;        // has this property for horizontal non-print
+    s32  m_sHideHeat;        // hide this heat (when it starts with this card)
 
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
@@ -30,6 +30,12 @@ namespace STORE
   {
   protected:
     _CardCtl m_xaCardCtl[CK_ENUMS];
+
+    _CardCtl m_xaCardCtl_default[CK_ENUMS];
+    _CardCtl m_xaCardCtl_expanded[CK_ENUMS];
+    _CardCtl m_xaCardCtl_longer[CK_ENUMS];
+    _CardCtl m_xaCardCtl_shorter[CK_ENUMS];
+
     _CardCtl m_xaCardCtl_save[CK_ENUMS];
 
   protected:
@@ -42,6 +48,11 @@ namespace STORE
   
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
+
+    void vFormDefault(void);
+    void vFormExpanded(void);
+    void vFormLonger(void);
+    void vFormShorter(void);
 
     bool bNextHoriz(i8 i_Card);
     void vNextHorizon(i8 i_Card, bool bNextHoriz);
@@ -72,6 +83,13 @@ namespace STORE
     void vReset(void);
     void vRestore(void);
     void vSave(void);
+
+    void vSetDefaultForm(void);
+    void vSetExpandedForm(void);
+    void vSetLongerForm(void);
+    void vSetShorterForm(void);
+    void vSetSubsPrintAll(void);
+    void vSetSubsPrintNone(void);
 
   protected:
     Footer* aFooter(void);
