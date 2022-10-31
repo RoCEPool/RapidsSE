@@ -41,6 +41,10 @@ namespace STORE
     void vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace);
     void vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace);
 
+    void vH50_T10(bool bPrint, bool bTrace);
+    void vH50_T20(bool bPrint, bool bTrace);
+    void vH50_T30(bool bPrint, bool bTrace);
+
     void vH55_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace);
     void vH55_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);
     void vH55_T24_Correct_Streams(bool bPrint, bool bTrace);

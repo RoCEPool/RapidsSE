@@ -221,6 +221,10 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
 void Transformer::vHand_50_FlattenCall(bool bPrintHand, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vH50_T10(bPrintXform, bTrace);
+  m_pTransforms->vH50_T20(bPrintXform, bTrace);
+  m_pTransforms->vH50_T30(bPrintXform, bTrace);
 }
 
 /*----------------------------------------------------------------------------*/

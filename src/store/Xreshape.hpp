@@ -32,6 +32,10 @@ namespace STORE
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);
 
+    void vR_H50_T10(void);
+    void vR_H50_T20(void);
+    void vR_H50_T30(void);
+
     void vR_H55_T10_Rework_Exists_SubQueries(void);
     void vR_H55_T20_Copy_Up_SubQueries(void);
     void vR_H55_T24_Corrects_Streams(void);
