@@ -32,14 +32,22 @@ namespace STORE
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);
 
-    void vR_H50_T10_Rework_Exists_SubQueries(void);
-    void vR_H50_T20_Copy_Up_SubQueries(void);
-    void vR_H50_T24_Corrects_Streams(void);
-    void vR_H50_T26_Corrects_Predicates(void);
-    void vR_H50_T30_Resolve_Parameter_Linkage(void);
-    void vR_H50_T40_Resolve_Parameter_Terms(void);
-    void vR_H50_T50_Cull_Exists_Call(void);
-    void vR_H50_T60_Delete_Empty_where(void);
+    void vR_H50_T10_Extract_subSet_Of_call(void);
+    void vR_H50_T20_Yank_Subset(void);
+    void vR_H50_T20_Put_Yanked(void);
+    void vR_H50_T30_RemoveDelete_call(void);
+    void vR_H50_T40(void);
+    void vR_H50_T50(void);
+    void vR_H50_T60(void);
+
+    void vR_H55_T10_Rework_Exists_SubQueries(void);
+    void vR_H55_T20_Copy_Up_SubQueries(void);
+    void vR_H55_T24_Corrects_Streams(void);
+    void vR_H55_T26_Corrects_Predicates(void);
+    void vR_H55_T30_Resolve_Parameter_Linkage(void);
+    void vR_H55_T40_Resolve_Parameter_Terms(void);
+    void vR_H55_T50_Cull_Exists_Call(void);
+    void vR_H55_T60_Delete_Empty_where(void);
 
     void vR_H60_T10_Add_indexJoin_UnderFiltered_table(void);
     void vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void);

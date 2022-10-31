@@ -24,6 +24,8 @@ namespace STORE
     i8   E_iStream_OrdLo(Card_Stream* p_stream);
     i8   E_iStream_OrdHi(Card_Stream* p_stream);
 
+    Card_SubSet* E_pSubset_ChildrenBetween(Card* pCard, i8 i_From, i8 i_Till=C_UNKNOWN);
+
     ePB  E_eTerm_Bound(Card_Term* p_term);
     i8   E_iTerm_IndexColNo(Card_Term* p_term);
     eRO  E_eTerm_RelOp(Card_Term* p_term);

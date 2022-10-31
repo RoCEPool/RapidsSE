@@ -568,6 +568,34 @@ Card_SubSet* Card::pDupSubCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* duplicate the sub cards                                                    */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Card::pDupSubCards(i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+
+  Card_SubSet* pCard_SubSet = new Card_SubSet;
+
+  i8 nChildren = this->nChildCards();
+  RASSERT(i_From >= 0 && i_From < nChildren);
+
+  i8 i_Break = (C_UNKNOWN == i_Till) ? nChildren : i_Till + 1;
+  if (i_Break > nChildren)
+    i_Break = nChildren;
+  RASSERT(i_Break >= 0 && i_Break <= nChildren);
+
+  for (i8 i_Child = i_From; i_Child < i_Break; i_Child++) {
+    Card* pChild = pGetChild(i_Child);
+
+    Card* pChild_dup = pChild->pDupCardAndSubCards();
+    pCard_SubSet->vAppend(pChild_dup);
+  }
+
+  return pCard_SubSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card equivalent to some other card?                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bEquivalentTo(Card* pCard_OTHER)

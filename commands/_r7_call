@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _r7_call -- sub_query test                                                 */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
+
+_orders
+create index O_idx0 on orders(O_ORDERKEY);
+
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/cue = "vH50_T10_Extract_subSet_Of_call"
+/transliterated
+/transform
+/transform3
+/interactive
+/weave
+/weaved
+/pipelineName = "r7_call"
+select count(*)
+  from (select *
+          from orders, lineitem
+         where L_ORDERKEY = O_ORDERKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

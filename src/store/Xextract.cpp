@@ -143,6 +143,17 @@ i8 Xextract::E_iStream_OrdHi(Card_Stream* p_stream)
   return iOrdHi;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get stream ordinal high                                                    */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Xextract::E_pSubset_ChildrenBetween(Card* pCard, i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_SubSet* p_subSet = pCard->pDupSubCards(i_From,i_Till);
+
+  return p_subSet;
+}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */

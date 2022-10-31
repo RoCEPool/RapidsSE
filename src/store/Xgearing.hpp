@@ -54,6 +54,7 @@ namespace STORE
     Card* m_pCard_popped;
     Card* m_pCard_resolved;
     Card* m_pCard_temp;
+    Card* m_pCard_yanked;
 
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
@@ -146,8 +147,11 @@ namespace STORE
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(eCK eCard);
     void G_vClearRegistersIf(Card* pCard);
+    void G_vPushBoard(Board* pBoard);
+    bool G_bPushBoard(Stz* szBoardNm);
     void G_vPushIter(void);
     void G_vPushIter(Board* pBoard);
+    void G_vPopBoard(void);
     void G_vPopIter(void);
     void G_vRestart(void);
 

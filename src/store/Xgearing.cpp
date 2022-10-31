@@ -55,14 +55,15 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_pCard_popped   = nullptr;
   m_pCard_resolved = nullptr;
   m_pCard_temp     = nullptr;
+  m_pCard_yanked   = nullptr;
 
   m_pTransformIterList = new TransformIterList;
 
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
-  M.pBoard = nullptr;
-  M.pDeck = nullptr;
+  G.pBoard = nullptr;
+  G.pDeck = nullptr;
 
   G_vClearMembers();
   G_vClearRegisters();
@@ -95,7 +96,7 @@ Board* Xgearing::pBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return M.pBoard;
+  return G.pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +219,7 @@ void Xgearing::vEndTransform(void)
 
   m_bTrace = false;
 
-  M.pDeck->vRenumberRecursive();
+  G.pDeck->vRenumberRecursive();
 
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
 }
@@ -278,7 +279,7 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
     return;
 
   for (;;) {
-    M.pBoard->vPrintBoard(szHand(),
+    G.pBoard->vPrintBoard(szHand(),
                           szTransformation(),
                           szDescription());
 
@@ -377,9 +378,9 @@ void Xgearing::vTransform(const char* azTransformation,
   m_sTransformation = azTransformation;
   m_bPrintXform = bPrintTransformation;
 
-  M.pBoard->vTransformNoInc();
+  G.pBoard->vTransformNoInc();
 
-  M.xBI.vRestart();
+  G.xBI.vRestart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,10 +410,10 @@ void Xgearing::vUsingBoard(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.pBoard = m_pBench->pGetBoard(eBoard,i_SubBoard);
-  M.pDeck  = M.pBoard->pDeck();
+  G.pBoard = m_pBench->pGetBoard(eBoard,i_SubBoard);
+  G.pDeck  = G.pBoard->pDeck();
 
-  M.xBI.vChangeBoard(M.pBoard);
+  G.xBI.vChangeBoard(G.pBoard);
 }
 
 
@@ -568,13 +569,13 @@ bool Xgearing::G_bEachMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_MainCard = M.xBI.pEachMain())) {
-    M.e_MainCard = M.p_MainCard->eCard();
-    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
+  if ((G.p_MainCard = G.xBI.pEachMain())) {
+    G.e_MainCard = G.p_MainCard->eCard();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
 
-  M.e_MainCard = CK_NONE;
+  G.e_MainCard = CK_NONE;
   return false;
 }
 
@@ -585,13 +586,13 @@ bool Xgearing::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
-    M.e_MainCard = M.p_MainCard->eCard();
-    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
+  if ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+    G.e_MainCard = G.p_MainCard->eCard();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
 
-  M.e_MainCard = CK_NONE;
+  G.e_MainCard = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
   return false;
 }
@@ -603,22 +604,22 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
-    if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind)))
+  while ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
-    M.e_MainCard = M.p_MainCard->eCard();
-    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
-    M.e_SubOfMain = M.p_SubOfMain->eCard();
-    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
+    G.e_MainCard = G.p_MainCard->eCard();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
     return true;
   }
 
-  M.p_MainCard  = nullptr;
-  M.e_MainCard  = CK_NONE;
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  M.p_SubOfMain = nullptr;
-  M.e_SubOfMain = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
   G_vUpdateMember(eAndSubKind, nullptr, __func__);
   return false;
 }
@@ -631,7 +632,7 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubVa
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   while (G_bEachMainWithSub(eOfMainKind, eAndSubKind)) {
-    if (M.p_SubOfMain->szValue()->bSame(szSubValue))
+    if (G.p_SubOfMain->szValue()->bSame(szSubValue))
       return true;
   }
 
@@ -647,29 +648,29 @@ bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
-    if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind1)))
+  while ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
-    if (! (M.p_Sub2OfMain = M.p_MainCard->pFindSubCard(eAndSubKind2)))
+    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
       continue;
 
-    M.e_MainCard = M.p_MainCard->eCard();
-    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
-    M.e_SubOfMain = M.p_SubOfMain->eCard();
-    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
-    M.e_Sub2OfMain = M.p_Sub2OfMain->eCard();
-    G_vUpdateMember(M.e_Sub2OfMain, M.p_Sub2OfMain, __func__);
+    G.e_MainCard = G.p_MainCard->eCard();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
+    G_vUpdateMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
     return true;
   }
 
-  M.p_MainCard  = nullptr;
-  M.e_MainCard  = CK_NONE;
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  M.p_SubOfMain = nullptr;
-  M.e_SubOfMain = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
   G_vUpdateMember(eAndSubKind1, nullptr, __func__);
-  M.p_Sub2OfMain = nullptr;
-  M.e_Sub2OfMain = CK_NONE;
+  G.p_Sub2OfMain = nullptr;
+  G.e_Sub2OfMain = CK_NONE;
   G_vUpdateMember(eAndSubKind2, nullptr, __func__);
   return false;
 }
@@ -681,7 +682,7 @@ void Xgearing::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.xBI.vForward();
+  G.xBI.vForward();
 
   if (bClearMembers)
     G_vClearMembers();
@@ -697,7 +698,7 @@ bool Xgearing::G_bMoreMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (M.xBI.bMore())
+  if (G.xBI.bMore())
     return true;
 
   return false;
@@ -710,7 +711,7 @@ void Xgearing::G_vRemoveMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.xBI.vRemoveCurr(eCrossCheck);
+  G.xBI.vRemoveCurr(eCrossCheck);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -720,10 +721,10 @@ void Xgearing::G_vRemoveDeleteMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.xBI.vRemoveDeleteCurr(eCrossCheck);
+  G.xBI.vRemoveDeleteCurr(eCrossCheck);
 
-  M.p_MainCard = nullptr;
-  M.e_MainCard = CK_NONE;
+  G.p_MainCard = nullptr;
+  G.e_MainCard = CK_NONE;
 
   G_vUpdateMember(eCrossCheck, nullptr, __func__);
 }
@@ -735,14 +736,14 @@ bool Xgearing::G_bSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_SubsequentToMain = M.xBI.pNextMain())) {
-    M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
+  if ((G.p_SubsequentToMain = G.xBI.pNextMain())) {
+    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
-      G_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain, __func__);
+      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
     return true;
   }
 
-  M.e_SubsequentToMain = CK_NONE;
+  G.e_SubsequentToMain = CK_NONE;
   return false;
 }
 
@@ -767,68 +768,69 @@ Card* Xgearing::G_pGetMember(eCK eMember)
 
   switch (eMember) {
 
-    case CK_ABSJOIN:          return M.p_absJoin;
-    case CK_AGGREG:           return M.p_aggreg;
-    case CK_BOOLCALC:         return M.p_boolCalc;
-    case CK_BOUNDS:           return M.p_bounds;
-    case CK_CMPPRED:          return M.p_cmpPred;
-    case CK_COMBINED:         return M.p_combined;
-    case CK_COMMENT:          return M.p_comment;
-    case CK_CONSTRAINT:       return M.p_constraint;
-    case CK_COPTNJOIN:        return M.p_coPtnJoin;
-    case CK_COPTNJOINLIST:    return M.p_coPtnJoinList;
-    case CK_COPTNPRED:        return M.p_coPtnPred;
-    case CK_COPTNPREDLIST:    return M.p_coPtnPredList;
-    case CK_CROSSPTNJOIN:     return M.p_crossPtnJoin;
-    case CK_CROSSPTNJOINLIST: return M.p_crossPtnJoinList;
-    case CK_EXPR:             return M.p_expr;
-    case CK_FILTER:           return M.p_filter;
-    case CK_GBYELIST:         return M.p_gbyElist;
-    case CK_IDXCOL:           return M.p_idxCol;
-    case CK_IDXCOLLIST:       return M.p_idxColList;
-    case CK_IDXCOLNM:         return M.p_idxColNm;
-    case CK_INDEX:            return M.p_index;
-    case CK_INDEXJOIN:        return M.p_indexJoin;
-    case CK_INDEXLIST:        return M.p_indexList;
-    case CK_INDEXNM:          return M.p_indexNm;
-    case CK_INDEXSCAN:        return M.p_indexScan;
-    case CK_JOINORDER:        return M.p_joinOrder;
-    case CK_JOINORDERSEQ:     return M.p_joinOrderSeq;
-    case CK_JOINPREDLIST:     return M.p_joinPredList;
-    case CK_KEYEXISTS:        return M.p_keyExists;
-    case CK_LBOUND:           return M.p_lBound;
-    case CK_PARAM:            return M.p_param;
-    case CK_PARAMLIST:        return M.p_paramList;
-    case CK_PARTITION:        return M.p_partition;
-    case CK_PERMUTATION:      return M.p_permutation;
-    case CK_PROJECT:          return M.p_project;
-    case CK_PTNCOL:           return M.p_ptnCol;
-    case CK_PTNCOLLIST:       return M.p_ptnColList;
-    case CK_PTNCOLNM:         return M.p_ptnColNm;
-    case CK_PTNDJOIN:         return M.p_ptndJoin;
-    case CK_PTNDJOINSET:      return M.p_ptndJoinSet;
-    case CK_RPNCALC:          return M.p_rpnCalc;
-    case CK_SBYELIST:         return M.p_sbyElist;
-    case CK_SCAN:             return M.p_scan;
-    case CK_SEND:             return M.p_send;
-    case CK_SIZE:             return M.p_size;
-    case CK_SORT:             return M.p_sort;
-    case CK_STAGE:            return M.p_stage;
-    case CK_STMCOL:           return M.p_stmCol;
-    case CK_STMCOLLIST:       return M.p_stmColList;
-    case CK_STMCOLNM:         return M.p_stmColNm;
-    case CK_STMCOLORD:        return M.p_stmColOrd;
-    case CK_STREAM:           return M.p_stream;
-    case CK_SUBSET:           return M.p_subSet;
-    case CK_TABLE:            return M.p_table;
-    case CK_TABLELIST:        return M.p_tableList;
-    case CK_TABLENM:          return M.p_tableNm;
-    case CK_TABLEPTN:         return M.p_tablePtn;
-    case CK_TERM:             return M.p_term;
-    case CK_TOPOLOGY:         return M.p_topology;
-    case CK_TSTPRED:          return M.p_tstPred;
-    case CK_UBOUND:           return M.p_uBound;
-    case CK_WHERE:            return M.p_where;
+    case CK_ABSJOIN:          return G.p_absJoin;
+    case CK_AGGREG:           return G.p_aggreg;
+    case CK_BOOLCALC:         return G.p_boolCalc;
+    case CK_BOUNDS:           return G.p_bounds;
+    case CK_CALL:             return G.p_call;
+    case CK_CMPPRED:          return G.p_cmpPred;
+    case CK_COMBINED:         return G.p_combined;
+    case CK_COMMENT:          return G.p_comment;
+    case CK_CONSTRAINT:       return G.p_constraint;
+    case CK_COPTNJOIN:        return G.p_coPtnJoin;
+    case CK_COPTNJOINLIST:    return G.p_coPtnJoinList;
+    case CK_COPTNPRED:        return G.p_coPtnPred;
+    case CK_COPTNPREDLIST:    return G.p_coPtnPredList;
+    case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
+    case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
+    case CK_EXPR:             return G.p_expr;
+    case CK_FILTER:           return G.p_filter;
+    case CK_GBYELIST:         return G.p_gbyElist;
+    case CK_IDXCOL:           return G.p_idxCol;
+    case CK_IDXCOLLIST:       return G.p_idxColList;
+    case CK_IDXCOLNM:         return G.p_idxColNm;
+    case CK_INDEX:            return G.p_index;
+    case CK_INDEXJOIN:        return G.p_indexJoin;
+    case CK_INDEXLIST:        return G.p_indexList;
+    case CK_INDEXNM:          return G.p_indexNm;
+    case CK_INDEXSCAN:        return G.p_indexScan;
+    case CK_JOINORDER:        return G.p_joinOrder;
+    case CK_JOINORDERSEQ:     return G.p_joinOrderSeq;
+    case CK_JOINPREDLIST:     return G.p_joinPredList;
+    case CK_KEYEXISTS:        return G.p_keyExists;
+    case CK_LBOUND:           return G.p_lBound;
+    case CK_PARAM:            return G.p_param;
+    case CK_PARAMLIST:        return G.p_paramList;
+    case CK_PARTITION:        return G.p_partition;
+    case CK_PERMUTATION:      return G.p_permutation;
+    case CK_PROJECT:          return G.p_project;
+    case CK_PTNCOL:           return G.p_ptnCol;
+    case CK_PTNCOLLIST:       return G.p_ptnColList;
+    case CK_PTNCOLNM:         return G.p_ptnColNm;
+    case CK_PTNDJOIN:         return G.p_ptndJoin;
+    case CK_PTNDJOINSET:      return G.p_ptndJoinSet;
+    case CK_RPNCALC:          return G.p_rpnCalc;
+    case CK_SBYELIST:         return G.p_sbyElist;
+    case CK_SCAN:             return G.p_scan;
+    case CK_SEND:             return G.p_send;
+    case CK_SIZE:             return G.p_size;
+    case CK_SORT:             return G.p_sort;
+    case CK_STAGE:            return G.p_stage;
+    case CK_STMCOL:           return G.p_stmCol;
+    case CK_STMCOLLIST:       return G.p_stmColList;
+    case CK_STMCOLNM:         return G.p_stmColNm;
+    case CK_STMCOLORD:        return G.p_stmColOrd;
+    case CK_STREAM:           return G.p_stream;
+    case CK_SUBSET:           return G.p_subSet;
+    case CK_TABLE:            return G.p_table;
+    case CK_TABLELIST:        return G.p_tableList;
+    case CK_TABLENM:          return G.p_tableNm;
+    case CK_TABLEPTN:         return G.p_tablePtn;
+    case CK_TERM:             return G.p_term;
+    case CK_TOPOLOGY:         return G.p_topology;
+    case CK_TSTPRED:          return G.p_tstPred;
+    case CK_UBOUND:           return G.p_uBound;
+    case CK_WHERE:            return G.p_where;
 
    default:
       NEVER_REACH
@@ -842,14 +844,14 @@ bool Xgearing::G_bHasPriorToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_PriorToMain = M.xBI.pPrevMain())) {
-    M.e_PriorToMain = M.p_PriorToMain->eCard();
+  if ((G.p_PriorToMain = G.xBI.pPrevMain())) {
+    G.e_PriorToMain = G.p_PriorToMain->eCard();
     if (bUpdateMember)
-      G_vUpdateMember(M.e_PriorToMain, M.p_PriorToMain, __func__);
+      G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
     return true;
   }
 
-  M.e_PriorToMain = CK_NONE;
+  G.e_PriorToMain = CK_NONE;
   return false;
 }
 
@@ -860,14 +862,14 @@ bool Xgearing::G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_PriorToMain = M.xBI.pPrevMainIf(eOfPriorKind))) {
-    M.e_PriorToMain = M.p_PriorToMain->eCard();
+  if ((G.p_PriorToMain = G.xBI.pPrevMainIf(eOfPriorKind))) {
+    G.e_PriorToMain = G.p_PriorToMain->eCard();
     if (bUpdateMember)
-      G_vUpdateMember(M.e_PriorToMain, M.p_PriorToMain, __func__);
+      G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
     return true;
   }
 
-  M.e_PriorToMain = CK_NONE;
+  G.e_PriorToMain = CK_NONE;
   if (bUpdateMember)
     G_vUpdateMember(eOfPriorKind, nullptr, __func__);
 
@@ -881,14 +883,14 @@ bool Xgearing::G_bHasSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_SubsequentToMain = M.xBI.pNextMain())) {
-    M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
+  if ((G.p_SubsequentToMain = G.xBI.pNextMain())) {
+    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
-      G_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain, __func__);
+      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
     return true;
   }
 
-  M.e_SubsequentToMain = CK_NONE;
+  G.e_SubsequentToMain = CK_NONE;
   return false;
 }
 
@@ -899,14 +901,14 @@ bool Xgearing::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMembe
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_SubsequentToMain = M.xBI.pNextMainIf(eOfSubsequentKind))) {
-    M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
+  if ((G.p_SubsequentToMain = G.xBI.pNextMainIf(eOfSubsequentKind))) {
+    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
-      G_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain, __func__);
+      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
     return true;
   }
 
-  M.e_SubsequentToMain = CK_NONE;
+  G.e_SubsequentToMain = CK_NONE;
   if (bUpdateMember)
     G_vUpdateMember(eOfSubsequentKind, nullptr, __func__);
   return false;
@@ -939,69 +941,70 @@ void Xgearing::G_vClearMembers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_absJoin          = nullptr;
-  M.p_aggreg           = nullptr;
-  M.p_boolCalc         = nullptr;
-  M.p_bounds           = nullptr;
-  M.p_cmpPred          = nullptr;
-  M.p_combined         = nullptr;
-  M.p_comment          = nullptr;
-  M.p_constraint       = nullptr;
-  M.p_coPtnJoin        = nullptr;
-  M.p_coPtnJoinList    = nullptr;
-  M.p_coPtnPred        = nullptr;
-  M.p_coPtnPredList    = nullptr;
-  M.p_crossPtnJoin     = nullptr;
-  M.p_crossPtnJoinList = nullptr;
-  M.p_expr             = nullptr;
-  M.p_filter           = nullptr;
-  M.p_gbyElist         = nullptr;
-  M.p_idxCol           = nullptr;
-  M.p_idxColList       = nullptr;
-  M.p_idxColNm         = nullptr;
-  M.p_index            = nullptr;
-  M.p_indexJoin        = nullptr;
-  M.p_indexList        = nullptr;
-  M.p_indexNm          = nullptr;
-  M.p_indexScan        = nullptr;
-  M.p_joinOrder        = nullptr;
-  M.p_joinOrderSeq     = nullptr;
-  M.p_joinPredList     = nullptr;
-  M.p_keyExists        = nullptr;
-  M.p_lBound           = nullptr;
-  M.p_param            = nullptr;
-  M.p_paramList        = nullptr;
-  M.p_partition        = nullptr;
-  M.p_permutation      = nullptr;
-  M.p_permutation_low  = nullptr;
-  M.p_project          = nullptr;
-  M.p_ptnCol           = nullptr;
-  M.p_ptnColList       = nullptr;
-  M.p_ptnColNm         = nullptr;
-  M.p_ptndJoin         = nullptr;
-  M.p_ptndJoinSet      = nullptr;
-  M.p_rpnCalc          = nullptr;
-  M.p_sbyElist         = nullptr;
-  M.p_scan             = nullptr;
-  M.p_send             = nullptr;
-  M.p_size             = nullptr;
-  M.p_sort             = nullptr;
-  M.p_stage            = nullptr;
-  M.p_stmCol           = nullptr;
-  M.p_stmColList       = nullptr;
-  M.p_stmColNm         = nullptr;
-  M.p_stmColOrd        = nullptr;
-  M.p_stream           = nullptr;
-  M.p_subSet           = nullptr;
-  M.p_table            = nullptr;
-  M.p_tableList        = nullptr;
-  M.p_tableNm          = nullptr;
-  M.p_tablePtn         = nullptr;
-  M.p_term             = nullptr;
-  M.p_topology         = nullptr;
-  M.p_tstPred          = nullptr;
-  M.p_uBound           = nullptr;
-  M.p_where            = nullptr;
+  G.p_absJoin          = nullptr;
+  G.p_aggreg           = nullptr;
+  G.p_boolCalc         = nullptr;
+  G.p_bounds           = nullptr;
+  G.p_call             = nullptr;
+  G.p_cmpPred          = nullptr;
+  G.p_combined         = nullptr;
+  G.p_comment          = nullptr;
+  G.p_constraint       = nullptr;
+  G.p_coPtnJoin        = nullptr;
+  G.p_coPtnJoinList    = nullptr;
+  G.p_coPtnPred        = nullptr;
+  G.p_coPtnPredList    = nullptr;
+  G.p_crossPtnJoin     = nullptr;
+  G.p_crossPtnJoinList = nullptr;
+  G.p_expr             = nullptr;
+  G.p_filter           = nullptr;
+  G.p_gbyElist         = nullptr;
+  G.p_idxCol           = nullptr;
+  G.p_idxColList       = nullptr;
+  G.p_idxColNm         = nullptr;
+  G.p_index            = nullptr;
+  G.p_indexJoin        = nullptr;
+  G.p_indexList        = nullptr;
+  G.p_indexNm          = nullptr;
+  G.p_indexScan        = nullptr;
+  G.p_joinOrder        = nullptr;
+  G.p_joinOrderSeq     = nullptr;
+  G.p_joinPredList     = nullptr;
+  G.p_keyExists        = nullptr;
+  G.p_lBound           = nullptr;
+  G.p_param            = nullptr;
+  G.p_paramList        = nullptr;
+  G.p_partition        = nullptr;
+  G.p_permutation      = nullptr;
+  G.p_permutation_low  = nullptr;
+  G.p_project          = nullptr;
+  G.p_ptnCol           = nullptr;
+  G.p_ptnColList       = nullptr;
+  G.p_ptnColNm         = nullptr;
+  G.p_ptndJoin         = nullptr;
+  G.p_ptndJoinSet      = nullptr;
+  G.p_rpnCalc          = nullptr;
+  G.p_sbyElist         = nullptr;
+  G.p_scan             = nullptr;
+  G.p_send             = nullptr;
+  G.p_size             = nullptr;
+  G.p_sort             = nullptr;
+  G.p_stage            = nullptr;
+  G.p_stmCol           = nullptr;
+  G.p_stmColList       = nullptr;
+  G.p_stmColNm         = nullptr;
+  G.p_stmColOrd        = nullptr;
+  G.p_stream           = nullptr;
+  G.p_subSet           = nullptr;
+  G.p_table            = nullptr;
+  G.p_tableList        = nullptr;
+  G.p_tableNm          = nullptr;
+  G.p_tablePtn         = nullptr;
+  G.p_term             = nullptr;
+  G.p_topology         = nullptr;
+  G.p_tstPred          = nullptr;
+  G.p_uBound           = nullptr;
+  G.p_where            = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1022,24 +1025,24 @@ void Xgearing::G_vClearRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_PriorToMain      = nullptr;
-  M.e_PriorToMain      = CK_NONE;
-  M.p_MainCard         = nullptr;
-  M.e_MainCard         = CK_NONE;
-  M.p_SubOfMain        = nullptr;
-  M.e_SubOfMain        = CK_NONE;
-  M.p_Sub2OfMain       = nullptr;
-  M.e_Sub2OfMain       = CK_NONE;
-  M.p_SubsequentToMain = nullptr;
-  M.e_SubsequentToMain = CK_NONE;
+  G.p_PriorToMain      = nullptr;
+  G.e_PriorToMain      = CK_NONE;
+  G.p_MainCard         = nullptr;
+  G.e_MainCard         = CK_NONE;
+  G.p_SubOfMain        = nullptr;
+  G.e_SubOfMain        = CK_NONE;
+  G.p_Sub2OfMain       = nullptr;
+  G.e_Sub2OfMain       = CK_NONE;
+  G.p_SubsequentToMain = nullptr;
+  G.e_SubsequentToMain = CK_NONE;
 
-  M.p_SubMember        = nullptr;
-  M.e_SubMember        = CK_NONE;
+  G.p_SubMember        = nullptr;
+  G.e_SubMember        = CK_NONE;
 
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
 
-  M.sz_SubQueryNm      = nullptr;
+  G.sz_SubQueryNm      = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1049,35 +1052,35 @@ void Xgearing::G_vClearRegistersIf(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (eCard == M.e_PriorToMain ||
-       (M.p_PriorToMain && eCard == M.p_PriorToMain->eCard())) {
-    M.p_PriorToMain = nullptr;
-    M.e_PriorToMain = CK_NONE;
+  if (eCard == G.e_PriorToMain ||
+       (G.p_PriorToMain && eCard == G.p_PriorToMain->eCard())) {
+    G.p_PriorToMain = nullptr;
+    G.e_PriorToMain = CK_NONE;
   }
-  if (eCard == M.e_MainCard ||
-       (M.p_MainCard && eCard == M.p_MainCard->eCard())) {
-    M.p_MainCard = nullptr;
-    M.e_MainCard = CK_NONE;
+  if (eCard == G.e_MainCard ||
+       (G.p_MainCard && eCard == G.p_MainCard->eCard())) {
+    G.p_MainCard = nullptr;
+    G.e_MainCard = CK_NONE;
   }
-  if (eCard == M.e_SubOfMain ||
-       (M.p_SubOfMain && eCard == M.p_SubOfMain->eCard())) {
-    M.p_SubOfMain = nullptr;
-    M.e_SubOfMain = CK_NONE;
+  if (eCard == G.e_SubOfMain ||
+       (G.p_SubOfMain && eCard == G.p_SubOfMain->eCard())) {
+    G.p_SubOfMain = nullptr;
+    G.e_SubOfMain = CK_NONE;
   }
-  if (eCard == M.e_Sub2OfMain ||
-      (M.p_Sub2OfMain && eCard == M.p_Sub2OfMain->eCard())) {
-    M.p_Sub2OfMain = nullptr;
-    M.e_Sub2OfMain = CK_NONE;
+  if (eCard == G.e_Sub2OfMain ||
+      (G.p_Sub2OfMain && eCard == G.p_Sub2OfMain->eCard())) {
+    G.p_Sub2OfMain = nullptr;
+    G.e_Sub2OfMain = CK_NONE;
   }
-  if (eCard == M.e_SubsequentToMain ||
-       (M.p_SubsequentToMain && eCard == M.p_SubsequentToMain->eCard())) {
-    M.p_SubsequentToMain = nullptr;
-    M.e_SubsequentToMain = CK_NONE;
+  if (eCard == G.e_SubsequentToMain ||
+       (G.p_SubsequentToMain && eCard == G.p_SubsequentToMain->eCard())) {
+    G.p_SubsequentToMain = nullptr;
+    G.e_SubsequentToMain = CK_NONE;
   }
-  if (eCard == M.e_SubMember ||
-       (M.p_SubMember && eCard == M.p_SubMember->eCard())) {
-    M.p_SubMember = nullptr;
-    M.e_SubMember = CK_NONE;
+  if (eCard == G.e_SubMember ||
+       (G.p_SubMember && eCard == G.p_SubMember->eCard())) {
+    G.p_SubMember = nullptr;
+    G.e_SubMember = CK_NONE;
   }
 }
 
@@ -1088,25 +1091,25 @@ void Xgearing::G_vClearRegistersIf(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (pCard == M.p_PriorToMain) {
-    M.p_PriorToMain = nullptr;
-    M.e_PriorToMain = CK_NONE;
+  if (pCard == G.p_PriorToMain) {
+    G.p_PriorToMain = nullptr;
+    G.e_PriorToMain = CK_NONE;
   }
-  if (pCard == M.p_MainCard) {
-    M.p_MainCard = nullptr;
-    M.e_MainCard = CK_NONE;
+  if (pCard == G.p_MainCard) {
+    G.p_MainCard = nullptr;
+    G.e_MainCard = CK_NONE;
   }
-  if (pCard == M.p_SubOfMain) {
-    M.p_SubOfMain = nullptr;
-    M.e_SubOfMain = CK_NONE;
+  if (pCard == G.p_SubOfMain) {
+    G.p_SubOfMain = nullptr;
+    G.e_SubOfMain = CK_NONE;
   }
-  if (pCard == M.p_SubsequentToMain) {
-    M.p_SubsequentToMain = nullptr;
-    M.e_SubsequentToMain = CK_NONE;
+  if (pCard == G.p_SubsequentToMain) {
+    G.p_SubsequentToMain = nullptr;
+    G.e_SubsequentToMain = CK_NONE;
   }
-  if (pCard == M.p_SubMember) {
-    M.p_SubMember = nullptr;
-    M.e_SubMember = CK_NONE;
+  if (pCard == G.p_SubMember) {
+    G.p_SubMember = nullptr;
+    G.e_SubMember = CK_NONE;
   }
 }
 
@@ -1119,9 +1122,50 @@ void Xgearing::G_vPushIter(void)
 
   Xsentinals* pTransformIterSave = new Xsentinals;
 
-  pTransformIterSave->vCopyFrom(this->aXregs());
+  pTransformIterSave->vCopyFrom(this->aXsentinels());
 
   m_pTransformIterList->vPush(pTransformIterSave);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPushBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Xsentinals* pTransformIterSave = new Xsentinals;
+
+  pTransformIterSave->vCopyFrom(this->aXsentinels());
+
+  m_pTransformIterList->vPush(pTransformIterSave);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pBoard = pBoard;
+  G.pDeck  = G.pBoard->pDeck();
+
+  G.xBI.vChangeBoard(G.pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bPushBoard(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
+  if (! pSubQueryBoard) {
+    vTracer("DID NOT FIND Board: %s\n"_Stz,szBoardNm);
+    return false;
+  }
+
+  vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
+
+  G_vPushIter(pSubQueryBoard);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1133,18 +1177,32 @@ void Xgearing::G_vPushIter(Board* pBoard)
 
   Xsentinals* pTransformIterSave = new Xsentinals;
 
-  pTransformIterSave->vCopyFrom(this->aXregs());
+  pTransformIterSave->vCopyFrom(this->aXsentinels());
 
   m_pTransformIterList->vPush(pTransformIterSave);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  M.pBoard = pBoard;
-  M.pDeck  = M.pBoard->pDeck();
+  G.pBoard = pBoard;
+  G.pDeck  = G.pBoard->pDeck();
 
-  M.xBI.vChangeBoard(M.pBoard);
+  G.xBI.vChangeBoard(G.pBoard);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* pop/restore M iterator from iter stack                                     */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPopBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
+
+  this->vCopyFrom(pTransformIterRestore->aXsentinels());
+
+  delete pTransformIterRestore;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
@@ -1155,7 +1213,7 @@ void Xgearing::G_vPopIter(void)
 
   Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
 
-  this->vCopyFrom(pTransformIterRestore->aXregs());
+  this->vCopyFrom(pTransformIterRestore->aXsentinels());
 
   delete pTransformIterRestore;
 }
@@ -1168,7 +1226,7 @@ void Xgearing::G_vRestart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.xBI.vRestart();
+  G.xBI.vRestart();
 
   G_vClearMembers();
   G_vClearRegisters();
@@ -1208,68 +1266,69 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
   switch (eMember) {
 
-    case CK_ABSJOIN:          *((Card**)&M.p_absJoin)          = pCard; break;
-    case CK_AGGREG:           *((Card**)&M.p_aggreg)           = pCard; break;
-    case CK_BOOLCALC:         *((Card**)&M.p_boolCalc)         = pCard; break;
-    case CK_BOUNDS:           *((Card**)&M.p_bounds)           = pCard; break;
-    case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
-    case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
-    case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
-    case CK_CONSTRAINT:       *((Card**)&M.p_constraint)       = pCard; break;
-    case CK_COPTNJOIN:        *((Card**)&M.p_coPtnJoin)        = pCard; break;
-    case CK_COPTNJOINLIST:    *((Card**)&M.p_coPtnJoinList)    = pCard; break;
-    case CK_COPTNPRED:        *((Card**)&M.p_coPtnPred)        = pCard; break;
-    case CK_COPTNPREDLIST:    *((Card**)&M.p_coPtnPredList)    = pCard; break;
-    case CK_CROSSPTNJOIN:     *((Card**)&M.p_crossPtnJoin)     = pCard; break;
-    case CK_CROSSPTNJOINLIST: *((Card**)&M.p_crossPtnJoinList) = pCard; break;
-    case CK_EXPR:             *((Card**)&M.p_expr)             = pCard; break;
-    case CK_FILTER:           *((Card**)&M.p_filter)           = pCard; break;
-    case CK_GBYELIST:         *((Card**)&M.p_gbyElist)         = pCard; break;
-    case CK_IDXCOL:           *((Card**)&M.p_idxCol)           = pCard; break;
-    case CK_IDXCOLLIST:       *((Card**)&M.p_idxColList)       = pCard; break;
-    case CK_IDXCOLNM:         *((Card**)&M.p_idxColNm)         = pCard; break;
-    case CK_INDEX:            *((Card**)&M.p_index)            = pCard; break;
-    case CK_INDEXJOIN:        *((Card**)&M.p_indexJoin)        = pCard; break;
-    case CK_INDEXLIST:        *((Card**)&M.p_indexList)        = pCard; break;
-    case CK_INDEXNM:          *((Card**)&M.p_indexNm)          = pCard; break;
-    case CK_INDEXSCAN:        *((Card**)&M.p_indexScan)        = pCard; break;
-    case CK_JOINORDER:        *((Card**)&M.p_joinOrder)        = pCard; break;
-    case CK_JOINORDERSEQ:     *((Card**)&M.p_joinOrderSeq)     = pCard; break;
-    case CK_JOINPREDLIST:     *((Card**)&M.p_joinPredList)     = pCard; break;
-    case CK_KEYEXISTS:        *((Card**)&M.p_keyExists)        = pCard; break;
-    case CK_LBOUND:           *((Card**)&M.p_lBound)           = pCard; break;
-    case CK_PARAM:            *((Card**)&M.p_param)            = pCard; break;
-    case CK_PARAMLIST:        *((Card**)&M.p_paramList)        = pCard; break;
-    case CK_PARTITION:        *((Card**)&M.p_partition)        = pCard; break;
-    case CK_PERMUTATION:      *((Card**)&M.p_permutation)      = pCard; break;
-    case CK_PROJECT:          *((Card**)&M.p_project)          = pCard; break;
-    case CK_PTNCOL:           *((Card**)&M.p_ptnCol)           = pCard; break;
-    case CK_PTNCOLLIST:       *((Card**)&M.p_ptnColList)       = pCard; break;
-    case CK_PTNCOLNM:         *((Card**)&M.p_ptnColNm)         = pCard; break;
-    case CK_PTNDJOIN:         *((Card**)&M.p_ptndJoin)         = pCard; break;
-    case CK_PTNDJOINSET:      *((Card**)&M.p_ptndJoinSet)      = pCard; break;
-    case CK_RPNCALC:          *((Card**)&M.p_rpnCalc)          = pCard; break;
-    case CK_SBYELIST:         *((Card**)&M.p_sbyElist)         = pCard; break;
-    case CK_SCAN:             *((Card**)&M.p_scan)             = pCard; break;
-    case CK_SEND:             *((Card**)&M.p_send)             = pCard; break;
-    case CK_SIZE:             *((Card**)&M.p_size)             = pCard; break;
-    case CK_SORT:             *((Card**)&M.p_sort)             = pCard; break;
-    case CK_STAGE:            *((Card**)&M.p_stage)            = pCard; break;
-    case CK_STMCOL:           *((Card**)&M.p_stmCol)           = pCard; break;
-    case CK_STMCOLLIST:       *((Card**)&M.p_stmColList)       = pCard; break;
-    case CK_STMCOLNM:         *((Card**)&M.p_stmColNm)         = pCard; break;
-    case CK_STMCOLORD:        *((Card**)&M.p_stmColOrd)        = pCard; break;
-    case CK_STREAM:           *((Card**)&M.p_stream)           = pCard; break;
-    case CK_SUBSET:           *((Card**)&M.p_subSet)           = pCard; break;
-    case CK_TABLE:            *((Card**)&M.p_table)            = pCard; break;
-    case CK_TABLELIST:        *((Card**)&M.p_tableList)        = pCard; break;
-    case CK_TABLENM:          *((Card**)&M.p_tableNm)          = pCard; break;
-    case CK_TABLEPTN:         *((Card**)&M.p_tablePtn)         = pCard; break;
-    case CK_TERM:             *((Card**)&M.p_term)             = pCard; break;
-    case CK_TOPOLOGY:         *((Card**)&M.p_topology)         = pCard; break;
-    case CK_TSTPRED:          *((Card**)&M.p_tstPred)          = pCard; break;
-    case CK_UBOUND:           *((Card**)&M.p_uBound)           = pCard; break;
-    case CK_WHERE:            *((Card**)&M.p_where)            = pCard; break;
+    case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
+    case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
+    case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
+    case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
+    case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
+    case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;
+    case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
+    case CK_COMMENT:          *((Card**)&G.p_comment)          = pCard; break;
+    case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
+    case CK_COPTNJOIN:        *((Card**)&G.p_coPtnJoin)        = pCard; break;
+    case CK_COPTNJOINLIST:    *((Card**)&G.p_coPtnJoinList)    = pCard; break;
+    case CK_COPTNPRED:        *((Card**)&G.p_coPtnPred)        = pCard; break;
+    case CK_COPTNPREDLIST:    *((Card**)&G.p_coPtnPredList)    = pCard; break;
+    case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
+    case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
+    case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
+    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
+    case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
+    case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
+    case CK_IDXCOLNM:         *((Card**)&G.p_idxColNm)         = pCard; break;
+    case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
+    case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard; break;
+    case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
+    case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
+    case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard; break;
+    case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
+    case CK_JOINORDERSEQ:     *((Card**)&G.p_joinOrderSeq)     = pCard; break;
+    case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
+    case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
+    case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
+    case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
+    case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
+    case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
+    case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
+    case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
+    case CK_PTNCOL:           *((Card**)&G.p_ptnCol)           = pCard; break;
+    case CK_PTNCOLLIST:       *((Card**)&G.p_ptnColList)       = pCard; break;
+    case CK_PTNCOLNM:         *((Card**)&G.p_ptnColNm)         = pCard; break;
+    case CK_PTNDJOIN:         *((Card**)&G.p_ptndJoin)         = pCard; break;
+    case CK_PTNDJOINSET:      *((Card**)&G.p_ptndJoinSet)      = pCard; break;
+    case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
+    case CK_SBYELIST:         *((Card**)&G.p_sbyElist)         = pCard; break;
+    case CK_SCAN:             *((Card**)&G.p_scan)             = pCard; break;
+    case CK_SEND:             *((Card**)&G.p_send)             = pCard; break;
+    case CK_SIZE:             *((Card**)&G.p_size)             = pCard; break;
+    case CK_SORT:             *((Card**)&G.p_sort)             = pCard; break;
+    case CK_STAGE:            *((Card**)&G.p_stage)            = pCard; break;
+    case CK_STMCOL:           *((Card**)&G.p_stmCol)           = pCard; break;
+    case CK_STMCOLLIST:       *((Card**)&G.p_stmColList)       = pCard; break;
+    case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
+    case CK_STMCOLORD:        *((Card**)&G.p_stmColOrd)        = pCard; break;
+    case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
+    case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
+    case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
+    case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
+    case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
+    case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
+    case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
+    case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
+    case CK_TSTPRED:          *((Card**)&G.p_tstPred)          = pCard; break;
+    case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
+    case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
 
     default:
       NEVER_REACH
@@ -1302,10 +1361,10 @@ bool Xgearing::G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMem
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
-    M.e_SubMember = M.p_SubMember->eCard();
+  if ((G.p_SubMember = pMember->pFindSubCard(eSubCard))) {
+    G.e_SubMember = G.p_SubMember->eCard();
     if (bUpdateMember)
-      G_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
+      G_vUpdateMember(G.e_SubMember, G.p_SubMember, __func__);
     return true;
   }
 
@@ -1336,11 +1395,11 @@ bool Xgearing::G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool b
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_SubMember = pMember->pFindSubCard(eSub))) {
-    if (M.p_SubMember->bSame(szValue)) {
-      M.e_SubMember = M.p_SubMember->eCard();
+  if ((G.p_SubMember = pMember->pFindSubCard(eSub))) {
+    if (G.p_SubMember->bSame(szValue)) {
+      G.e_SubMember = G.p_SubMember->eCard();
       if (bUpdateMember)
-        G_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
+        G_vUpdateMember(G.e_SubMember, G.p_SubMember, __func__);
       return true;
     }
   }
@@ -1359,7 +1418,7 @@ bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card* pMain = M.pDeck->pGetChild(i_Main);
+    Card* pMain = G.pDeck->pGetChild(i_Main);
 
     if (m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent)) {
       G_vUpdateMember(eCard, m_pCard_resolved, __func__);
@@ -1377,7 +1436,7 @@ bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 i_Before = M.pDeck->iFindChild(pBefore);
+  i8 i_Before = G.pDeck->iFindChild(pBefore);
   if (C_UNKNOWN == i_Before)
     return false;
 
@@ -1394,26 +1453,26 @@ bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Befo
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    M.p_MainCard = M.pDeck->pGetChild(i_Main);
+    G.p_MainCard = G.pDeck->pGetChild(i_Main);
 
-    if (! M.p_MainCard->bIsCard(eOfMainKind))
+    if (! G.p_MainCard->bIsCard(eOfMainKind))
       continue;
 
-    if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind)))
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
-    M.e_MainCard = M.p_MainCard->eCard();
-    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
-    M.e_SubOfMain = M.p_SubOfMain->eCard();
-    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
+    G.e_MainCard = G.p_MainCard->eCard();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
     return true;
   }
 
-  M.p_MainCard  = nullptr;
-  M.e_MainCard  = CK_NONE;
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  M.p_SubOfMain = nullptr;
-  M.e_SubOfMain = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
   G_vUpdateMember(eAndSubKind, nullptr, __func__);
   return false;
 }
@@ -1426,7 +1485,7 @@ bool Xgearing::G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBe
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 i_Before = M.pDeck->iFindChild(pBefore);
+  i8 i_Before = G.pDeck->iFindChild(pBefore);
   if (C_UNKNOWN == i_Before)
     return false;
 
@@ -1443,7 +1502,7 @@ bool Xgearing::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card* pMain = M.pDeck->pGetChild(i_Main);
+    Card* pMain = G.pDeck->pGetChild(i_Main);
 
     if (m_pCard_resolved = pMain->pFindValueRecursive(eGrandSub,szWithValue,m_pCard_parent)) {
 
@@ -1508,67 +1567,68 @@ Stz* Xgearing::szMemberNm(eCK eMember)
 
   switch (eMember) {
 
-    case CK_ABSJOIN:          return "M.p_absJoin"_Stz;
-    case CK_AGGREG:           return "M.p_aggreg"_Stz;
-    case CK_BOOLCALC:         return "M.p_boolCalc"_Stz;
-    case CK_BOUNDS:           return "M.p_bounds"_Stz;
-    case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
-    case CK_COMBINED:         return "M.p_combined"_Stz;
-    case CK_COMMENT:          return "M.p_comment"_Stz;
-    case CK_CONSTRAINT:       return "M.p_constraint"_Stz;
-    case CK_COPTNJOIN:        return "M.p_coPtnJoin"_Stz;
-    case CK_COPTNJOINLIST:    return "M.p_coPtnJoinList"_Stz;
-    case CK_COPTNPRED:        return "M.p_coPtnPred"_Stz;
-    case CK_COPTNPREDLIST:    return "M.p_coPtnPredList"_Stz;
-    case CK_CROSSPTNJOIN:     return "M.p_crossPtnJoin"_Stz;
-    case CK_CROSSPTNJOINLIST: return "M.p_crossPtnJoinList"_Stz;
-    case CK_EXPR:             return "M.p_expr"_Stz;
-    case CK_FILTER:           return "M.p_filter"_Stz;
-    case CK_GBYELIST:         return "M.p_gbyElist"_Stz;
-    case CK_IDXCOLLIST:       return "M.p_idxColList"_Stz;
-    case CK_IDXCOLNM:         return "M.p_idxColNm"_Stz;
-    case CK_INDEX:            return "M.p_index"_Stz;
-    case CK_INDEXJOIN:        return "M.p_indexJoin"_Stz;
-    case CK_INDEXLIST:        return "M.p_indexList"_Stz;
-    case CK_INDEXNM:          return "M.p_indexNm"_Stz;
-    case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
-    case CK_JOINORDER:        return "M.p_joinOrder"_Stz;
-    case CK_JOINORDERSEQ:     return "M.p_joinOrderSeq"_Stz;
-    case CK_JOINPREDLIST:     return "M.p_joinPredList"_Stz;
-    case CK_KEYEXISTS:        return "M.p_keyExists"_Stz;
-    case CK_LBOUND:           return "M.p_lBound"_Stz;
-    case CK_PARAM:            return "M.p_param"_Stz;
-    case CK_PARAMLIST:        return "M.p_paramList"_Stz;
-    case CK_PARTITION:        return "M.p_partition"_Stz;
-    case CK_PERMUTATION:      return "M.p_permutation"_Stz;
-    case CK_PROJECT:          return "M.p_project"_Stz;
-    case CK_PTNCOL:           return "M.p_ptnCol"_Stz;
-    case CK_PTNCOLLIST:       return "M.p_ptnColList"_Stz;
-    case CK_PTNCOLNM:         return "M.p_ptnColNm"_Stz;
-    case CK_PTNDJOIN:         return "M.p_ptndJoin"_Stz;
-    case CK_PTNDJOINSET:      return "M.p_ptndJoinSet"_Stz;
-    case CK_RPNCALC:          return "M.p_rpnCalc"_Stz;
-    case CK_SBYELIST:         return "M.p_sbyElist"_Stz;
-    case CK_SCAN:             return "M.p_scan"_Stz;
-    case CK_SEND:             return "M.p_send"_Stz;
-    case CK_SIZE:             return "M.p_size"_Stz;
-    case CK_SORT:             return "M.p_sort"_Stz;
-    case CK_STAGE:            return "M.p_stage"_Stz;
-    case CK_STMCOL:           return "M.p_stmCol"_Stz;
-    case CK_STMCOLLIST:       return "M.p_stmColList"_Stz;
-    case CK_STMCOLNM:         return "M.p_stmColNm"_Stz;
-    case CK_STMCOLORD:        return "M.p_stmColOrd"_Stz;
-    case CK_STREAM:           return "M.p_stream"_Stz;
-    case CK_SUBSET:           return "M.p_subSet"_Stz;
-    case CK_TABLE:            return "M.p_table"_Stz;
-    case CK_TABLELIST:        return "M.p_tableList"_Stz;
-    case CK_TABLENM:          return "M.p_tableNm"_Stz;
-    case CK_TABLEPTN:         return "M.p_tablePtn"_Stz;
-    case CK_TERM:             return "M.p_term"_Stz;
-    case CK_TOPOLOGY:         return "M.p_topology"_Stz;
-    case CK_TSTPRED:          return "M.p_tstPred"_Stz;
-    case CK_UBOUND:           return "M.p_uBound"_Stz;
-    case CK_WHERE:            return "M.p_where"_Stz;
+    case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
+    case CK_AGGREG:           return "G.p_aggreg"_Stz;
+    case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
+    case CK_BOUNDS:           return "G.p_bounds"_Stz;
+    case CK_CALL:             return "G.p_call"_Stz;
+    case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
+    case CK_COMBINED:         return "G.p_combined"_Stz;
+    case CK_COMMENT:          return "G.p_comment"_Stz;
+    case CK_CONSTRAINT:       return "G.p_constraint"_Stz;
+    case CK_COPTNJOIN:        return "G.p_coPtnJoin"_Stz;
+    case CK_COPTNJOINLIST:    return "G.p_coPtnJoinList"_Stz;
+    case CK_COPTNPRED:        return "G.p_coPtnPred"_Stz;
+    case CK_COPTNPREDLIST:    return "G.p_coPtnPredList"_Stz;
+    case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
+    case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
+    case CK_EXPR:             return "G.p_expr"_Stz;
+    case CK_FILTER:           return "G.p_filter"_Stz;
+    case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
+    case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
+    case CK_IDXCOLNM:         return "G.p_idxColNm"_Stz;
+    case CK_INDEX:            return "G.p_index"_Stz;
+    case CK_INDEXJOIN:        return "G.p_indexJoin"_Stz;
+    case CK_INDEXLIST:        return "G.p_indexList"_Stz;
+    case CK_INDEXNM:          return "G.p_indexNm"_Stz;
+    case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
+    case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
+    case CK_JOINORDERSEQ:     return "G.p_joinOrderSeq"_Stz;
+    case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
+    case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
+    case CK_LBOUND:           return "G.p_lBound"_Stz;
+    case CK_PARAM:            return "G.p_param"_Stz;
+    case CK_PARAMLIST:        return "G.p_paramList"_Stz;
+    case CK_PARTITION:        return "G.p_partition"_Stz;
+    case CK_PERMUTATION:      return "G.p_permutation"_Stz;
+    case CK_PROJECT:          return "G.p_project"_Stz;
+    case CK_PTNCOL:           return "G.p_ptnCol"_Stz;
+    case CK_PTNCOLLIST:       return "G.p_ptnColList"_Stz;
+    case CK_PTNCOLNM:         return "G.p_ptnColNm"_Stz;
+    case CK_PTNDJOIN:         return "G.p_ptndJoin"_Stz;
+    case CK_PTNDJOINSET:      return "G.p_ptndJoinSet"_Stz;
+    case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
+    case CK_SBYELIST:         return "G.p_sbyElist"_Stz;
+    case CK_SCAN:             return "G.p_scan"_Stz;
+    case CK_SEND:             return "G.p_send"_Stz;
+    case CK_SIZE:             return "G.p_size"_Stz;
+    case CK_SORT:             return "G.p_sort"_Stz;
+    case CK_STAGE:            return "G.p_stage"_Stz;
+    case CK_STMCOL:           return "G.p_stmCol"_Stz;
+    case CK_STMCOLLIST:       return "G.p_stmColList"_Stz;
+    case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
+    case CK_STMCOLORD:        return "G.p_stmColOrd"_Stz;
+    case CK_STREAM:           return "G.p_stream"_Stz;
+    case CK_SUBSET:           return "G.p_subSet"_Stz;
+    case CK_TABLE:            return "G.p_table"_Stz;
+    case CK_TABLELIST:        return "G.p_tableList"_Stz;
+    case CK_TABLENM:          return "G.p_tableNm"_Stz;
+    case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
+    case CK_TERM:             return "G.p_term"_Stz;
+    case CK_TOPOLOGY:         return "G.p_topology"_Stz;
+    case CK_TSTPRED:          return "G.p_tstPred"_Stz;
+    case CK_UBOUND:           return "G.p_uBound"_Stz;
+    case CK_WHERE:            return "G.p_where"_Stz;
 
     default:
       NEVER_REACH

@@ -179,6 +179,7 @@ void Dissector::vOp(i8 i_OpSpec)
 
        if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_AbsJoin  (pArgTags);
   else if (szOpNm->bSame("aggreg"_Stz))       pCard = pOp_Aggreg   (pArgTags);
+  else if (szOpNm->bSame("call"_Stz))         pCard = pOp_Call     (pArgTags);
   else if (szOpNm->bSame("combined"_Stz))     pCard = pOp_Combined (pArgTags);
   else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume  (pArgTags);
   else if (szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug    (pArgTags);
@@ -261,6 +262,25 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   delete pCard_RpnTerms;
     
   return pCard_Aggreg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : call <szSubPipe>                                                 */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_Call(TagSet* pArgTags)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  pArgTags->vDumpSet(true);
+
+  Stz* szSubPipeNm = szArgsStz(pArgTags,0);
+
+  StrLib::vStrip(szSubPipeNm->azChar(),' ');
+
+  Card_Call* pCard_Call = new Card_Call;
+  pCard_Call->vValue(szSubPipeNm);
+
+  return pCard_Call;
 }
 
 /*----------------------------------------------------------------------------*/

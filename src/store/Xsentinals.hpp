@@ -37,6 +37,7 @@ namespace STORE
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
+    Card_Call *             p_call;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
@@ -102,7 +103,7 @@ namespace STORE
                    , public ListItem_t<Xsentinals>
   {
   public:
-    _Xsentinels M;
+    _Xsentinels G;
 
     // must be last
     Footer m_xFooter;
@@ -117,7 +118,7 @@ namespace STORE
 
     void vCopyFrom(_Xsentinels* aTransformIterMembers);
 
-    _Xsentinels* aXregs(void);
+    _Xsentinels* aXsentinels(void);
 
     Footer* aFooter(void);
   };

@@ -57,13 +57,13 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(bool bPrint, bool bTrace)
   vTransform((char *) (__func__), C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  //M.pDeck->vDump(0,(Stz*)(__func__));
+  //G.pDeck->vDump(0,(Stz*)(__func__));
 
   Card_Stage* p_stage_PRIOR = nullptr;
 
   while (G_bEachMain(CK_STAGE)) {
-    if (! T_bStage_IsRedundant(M.p_stage,p_stage_PRIOR))   {
-      p_stage_PRIOR = M.p_stage;
+    if (! T_bStage_IsRedundant(G.p_stage,p_stage_PRIOR))   {
+      p_stage_PRIOR = G.p_stage;
       continue;
     }
 
@@ -341,13 +341,151 @@ void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                    Flatten Exists Hand 50 */
+/*                                                       Flatten Call Hand 50 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T10_Extract_subSet_Of_call(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  while (G_bEachMain(CK_CALL)) {
+
+    Stz* szSubQueryNm = G.p_call->szValue();
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H50_T10_Extract_subSet_Of_call();
+    vPrintBoard(true,__LINE__);
+    G_vPopBoard();
+  }
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T20_Copy_Called_Subset(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  while (G_bEachMain(CK_CALL)) {
+
+    Stz* szSubQueryNm = G.p_call->szValue();
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H50_T20_Yank_Subset();
+
+    G_vPopBoard();
+
+    vR_H50_T20_Put_Yanked();
+  }
+
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T30(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  while (G_bEachMain(CK_CALL)) {
+    vR_H50_T30_RemoveDelete_call();
+  }
+
+  vSetPrintSubCards(CK_PROJELIST,true);
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T40(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  vR_H50_T40();
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T50(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  vR_H50_T50();
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T60(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vDescription("((replace with an explanation))"_Stz);
+  vTransform(__func__);
+  vTracing(bPrint, bTrace);
+
+  vR_H50_T60();
+
+  vEndTransform();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    Flatten Exists Hand 55 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH55_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -357,7 +495,7 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
-    Stz* szSubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
+    Stz* szSubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
 
     Board* pSubQueryBoard = m_pBench->pGetBoard(szSubQueryNm);
@@ -373,9 +511,9 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
     //vPrintBoard();
 
     if (G_bEachMain(CK_STAGE)) {
-      vTracer("SubQuery Stage: %s\n"_Stz, M.p_stage->szBearing());
+      vTracer("SubQuery Stage: %s\n"_Stz, G.p_stage->szBearing());
 
-      vR_H50_T10_Rework_Exists_SubQueries();
+      vR_H55_T10_Rework_Exists_SubQueries();
     }
     vPrintBoard(true,__LINE__);
 
@@ -390,7 +528,7 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -400,14 +538,14 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
-    M.p_tstPred->vMark1(MARK_CALLSUB);
+    G.p_tstPred->vMark1(MARK_CALLSUB);
 
-    M.sz_SubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
-    vTracer("SubQueryNm: %s\n"_Stz,M.sz_SubQueryNm);
+    G.sz_SubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
+    vTracer("SubQueryNm: %s\n"_Stz,G.sz_SubQueryNm);
 
-    Board* pSubQueryBoard = m_pBench->pGetBoard(M.sz_SubQueryNm);
+    Board* pSubQueryBoard = m_pBench->pGetBoard(G.sz_SubQueryNm);
     if (! pSubQueryBoard) {
-      vTracer("DID NOT FIND Board: %s\n"_Stz,M.sz_SubQueryNm);
+      vTracer("DID NOT FIND Board: %s\n"_Stz,G.sz_SubQueryNm);
       continue;
     }
 
@@ -419,7 +557,7 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
     if (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
-      vR_H50_T20_Copy_Up_SubQueries();
+      vR_H55_T20_Copy_Up_SubQueries();
 
     }
     else {
@@ -434,7 +572,7 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T24_Correct_Streams(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -443,7 +581,7 @@ void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
-    vR_H50_T24_Corrects_Streams();
+    vR_H55_T24_Corrects_Streams();
   }
 
   vEndTransform();
@@ -453,7 +591,7 @@ void Xtransforms::vH50_T24_Correct_Streams(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T26_Correct_Predicates(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -462,7 +600,7 @@ void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
-    vR_H50_T26_Corrects_Predicates();
+    vR_H55_T26_Corrects_Predicates();
   }
 
   vEndTransform();
@@ -472,7 +610,7 @@ void Xtransforms::vH50_T26_Correct_Predicates(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -482,14 +620,14 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 
   while (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
-    vTracer("Resolving %s"_Stz,M.p_MainCard->szBearing());
+    vTracer("Resolving %s"_Stz,G.p_MainCard->szBearing());
     if (!G_bPlumbForSubMember(CK_TABLE, CK_PARAM))
       continue;
 
-    if (!G_bResolveCard(CK_STMCOL, M.p_param->sz(), M.p_table))
+    if (!G_bResolveCard(CK_STMCOL, G.p_param->sz(), G.p_table))
       continue;
 
-    vR_H50_T30_Resolve_Parameter_Linkage();
+    vR_H55_T30_Resolve_Parameter_Linkage();
   }
 
   vEndTransform();
@@ -499,7 +637,7 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -510,11 +648,11 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
   while (G_bEachMainWith2Sub(CK_TABLE, CK_BOOLCALC, CK_PARAMLIST)) {
 
     vTracer("Resolving Terms\n  %s\n  %s  \n"_Stz,
-            M.p_table->szBearing(),
-            M.p_boolCalc->szBearing(),
-            M.p_paramList->szBearing());
+            G.p_table->szBearing(),
+            G.p_boolCalc->szBearing(),
+            G.p_paramList->szBearing());
 
-    vR_H50_T40_Resolve_Parameter_Terms();
+    vR_H55_T40_Resolve_Parameter_Terms();
 
   }
 
@@ -525,7 +663,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -534,7 +672,7 @@ void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
   vTracing(bPrint, bTrace);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H50_T50_Cull_Exists_Call();
+    vR_H55_T50_Cull_Exists_Call();
   }
 
   vEndTransform();
@@ -544,7 +682,7 @@ void Xtransforms::vH50_T50_Cull_Exists_Call(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace)
+void Xtransforms::vH55_T60_Delete_Empty_where(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -553,7 +691,7 @@ void Xtransforms::vH50_T60_Delete_Empty_where(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H50_T60_Delete_Empty_where();
+    vR_H55_T60_Delete_Empty_where();
   }
 
   vEndTransform();
@@ -682,13 +820,13 @@ void Xtransforms::vH70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool b
   //--nn--------------==
   // tableList
 
-  BoardIter xBI_query(M.pBoard);
+  BoardIter xBI_query(G.pBoard);
 
-  M.p_tableList = new Card_TableList;
-  M.pDeck->vAppendMain(M.p_tableList);
+  G.p_tableList = new Card_TableList;
+  G.pDeck->vAppendMain(G.p_tableList);
 
-  while ( (M.p_MainCard = xBI_query.pEachMain()) ) {
-    if (! (M.p_table = M.p_MainCard->pSub_table()))
+  while ( (G.p_MainCard = xBI_query.pEachMain()) ) {
+    if (! (G.p_table = G.p_MainCard->pSub_table()))
       continue;
 
     vR_H70_T00_Extract_tableList_From_queryBoard();
@@ -714,13 +852,13 @@ void Xtransforms::vH70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
   //--nn--------------==
   // joinPredList
 
-  M.p_joinPredList = new Card_JoinPredList;
-  M.pDeck->vAppendMain(M.p_joinPredList);
+  G.p_joinPredList = new Card_JoinPredList;
+  G.pDeck->vAppendMain(G.p_joinPredList);
 
-  BoardIter xBI_query(M.pBoard);
-  while ((M.p_MainCard = xBI_query.pEachMain(CK_FILTER))) {
-    M.p_boolCalc = M.p_MainCard->pSub_boolCalc();
-    if (!M.p_boolCalc)
+  BoardIter xBI_query(G.pBoard);
+  while ((G.p_MainCard = xBI_query.pEachMain(CK_FILTER))) {
+    G.p_boolCalc = G.p_MainCard->pSub_boolCalc();
+    if (!G.p_boolCalc)
       continue;
 
     vR_H70_T10_Extract_joinPredList();
@@ -746,20 +884,20 @@ void Xtransforms::vH70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
   //--nn--------------==
   // coPptnPredList
 
-  M.p_coPtnPredList = new Card_CoPtnPredList;
-  M.pDeck->vAppendMain(M.p_coPtnPredList);
+  G.p_coPtnPredList = new Card_CoPtnPredList;
+  G.pDeck->vAppendMain(G.p_coPtnPredList);
 
-  M.p_tableList =
-      _pCard_TableList(M.pDeck->pFindChild(CK_TABLELIST));
-  M.p_joinPredList =
-      _pCard_JoinPredList(M.pDeck->pFindChild(CK_JOINPREDLIST));
+  G.p_tableList =
+      _pCard_TableList(G.pDeck->pFindChild(CK_TABLELIST));
+  G.p_joinPredList =
+      _pCard_JoinPredList(G.pDeck->pFindChild(CK_JOINPREDLIST));
 
-  i8 nJoinPreds = M.p_joinPredList->nChildCards();
+  i8 nJoinPreds = G.p_joinPredList->nChildCards();
   for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
-    M.p_cmpPred =
-        _pCard_CmpPred(M.p_joinPredList->pGetChild(i_joinPred));
+    G.p_cmpPred =
+        _pCard_CmpPred(G.p_joinPredList->pGetChild(i_joinPred));
 
-    if (!T_bTableList_PredCmpIsCoPtn(M.p_tableList, M.p_cmpPred))
+    if (!T_bTableList_PredCmpIsCoPtn(G.p_tableList, G.p_cmpPred))
       continue;
 
     vR_H70_T20_Compute_coPtnPredList();
@@ -810,8 +948,8 @@ void Xtransforms::vH70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
   vR_H70_T40_Compute_crossPtnJoinList();
 
 
-//  M.p_comment = new Card_Comment("((TO BE CODED))"_Stz);
-//  M.p_crossPtnJoinList->vAppend(M.p_comment);
+//  G.p_comment = new Card_Comment("((TO BE CODED))"_Stz);
+//  G.p_crossPtnJoinList->vAppend(G.p_comment);
 
   vEndTransform();
   vPrintBoard();
@@ -910,7 +1048,7 @@ void Xtransforms::vH70_T90_Setup_costEst(bool bPrint, bool bTrace)
 
   //vSetupCostEstBoard();
 
-  //m_pBoard_costEst->vDuplicateBoard(M.pBoard);
+  //m_pBoard_costEst->vDuplicateBoard(G.pBoard);
 
   vR_H70_T90_Setup_costEst();
 
@@ -999,10 +1137,10 @@ void Xtransforms::vH75_T10_Convert_table_To_EEop(bool bPrint, bool bTrace)
 
   while (G_bEachMain(CK_TABLE)) {
 
-    M.p_bounds     = M.p_table->pSub_bounds();
-    M.p_index     = M.p_table->pSub_index();
-    M.p_indexJoin = M.p_table->pSub_indexJoin();
-    M.p_keyExists = M.p_table->pSub_keyExists();
+    G.p_bounds     = G.p_table->pSub_bounds();
+    G.p_index     = G.p_table->pSub_index();
+    G.p_indexJoin = G.p_table->pSub_indexJoin();
+    G.p_keyExists = G.p_table->pSub_keyExists();
 
     vR_H75_T10_Convert_table_To_EEop();
   }
@@ -1019,10 +1157,10 @@ void Xtransforms::vH75_T10_Convert_table_To_EEop(bool bPrint, bool bTrace)
 
   G_vRestart();
   while (G_bEachMain(CK_KEYEXISTS)) {
-    if (M.p_keyExists) {
+    if (G.p_keyExists) {
       i8 i_Child;
-      M.p_comment = _pCard_Comment(M.p_keyExists->pFindChild(CK_COMMENT, i_Child));
-      M.p_comment->vValue(SEP_DERIVED);
+      G.p_comment = _pCard_Comment(G.p_keyExists->pFindChild(CK_COMMENT, i_Child));
+      G.p_comment->vValue(SEP_DERIVED);
     }
   }
 
@@ -1218,7 +1356,7 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
-    //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
+    //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,G.p_scan->szBearing());
     vR_H80_T70_Promote_scan_To_indexScan();
   }
 
@@ -1314,7 +1452,7 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
   i8 i_Stage = 1;
   G_vRestart();
   while (G_bEachMain(CK_STAGE))
-    M.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
+    G.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
 
   vEndTransform();
   vPrintBoard();
@@ -1333,7 +1471,7 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 
   while (G_bEachMain()) {
     G_vSubsequentToMain();
-    if (T_bCombined_Reinstate(M.e_MainCard, M.e_SubsequentToMain)) {
+    if (T_bCombined_Reinstate(G.e_MainCard, G.e_SubsequentToMain)) {
       vR_HZ0_T20_Reinstate_combined();
       G_vSkipNextMain();
     }
