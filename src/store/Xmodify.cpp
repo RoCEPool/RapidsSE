@@ -92,6 +92,15 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
     return false;
   }
   else
+  if (CK_EXEPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
+      delete p_pred;
+      return true;
+    }
+    return false;
+  }
+  else
   if (CK_TSTPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
       M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
@@ -782,29 +791,30 @@ bool Xmodify::bPullUp_MovePredDrillDown(Card_PRED* pCard_pred,
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (MARK_ASSIGNED == pCard_pred->cMark1()) {
-    Card* pMainCard;
 
+    Card *pMainCard;
     char cTableSyn = pCard_pred->cMark2();
-    Card_Table* pCard_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
+    Card_Table *pCard_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
 
-    Card_Filter* pCard_filter_existing = pMainCard->pSub_filter();
+    if (pCard_table) {
+      Card_Filter *pCard_filter_existing = pMainCard->pSub_filter();
 
-    if (pCard_filter_existing) {
-      pCard_filter_existing->vMark1(pCard_table->cMark1());
-      pCard_filter_existing->vMark2(pCard_table->cMark2());
-      vPullUp_MovePredToFilter(pCard_filter_existing, pCard_pred);
+      if (pCard_filter_existing) {
+        pCard_filter_existing->vMark1(pCard_table->cMark1());
+        pCard_filter_existing->vMark2(pCard_table->cMark2());
+        vPullUp_MovePredToFilter(pCard_filter_existing, pCard_pred);
+      } else {
+        Card_Filter *pCard_filter_new = new Card_Filter;
+        pCard_filter_new->vMark1(pCard_table->cMark1());
+        pCard_filter_new->vMark2(pCard_table->cMark2());
+        pMainCard->vAppend(pCard_filter_new);
+        vPullUp_MovePredToFilter(pCard_filter_new, pCard_pred);
+      }
+
+      M_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
+
+      return true;
     }
-    else {
-      Card_Filter* pCard_filter_new = new Card_Filter;
-      pCard_filter_new->vMark1(pCard_table->cMark1());
-      pCard_filter_new->vMark2(pCard_table->cMark2());
-      pMainCard->vAppend(pCard_filter_new);
-      vPullUp_MovePredToFilter(pCard_filter_new, pCard_pred);
-    }
-
-    M_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
-
-    return true;
   }
 
   i8 nSubCards = pCard_pred->nChildCards();
