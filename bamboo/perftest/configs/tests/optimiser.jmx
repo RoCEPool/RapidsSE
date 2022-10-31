@@ -504,6 +504,20 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline3</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxO_ORDERKEY ON orders (o_orderkey);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Required for pipeline18</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_CUSTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxO_CUSTKEY ON orders(o_custkey);</stringProp>
@@ -1590,6 +1604,154 @@ end ;</stringProp>
               <stringProp name="TestPlan.comments">Requires the following indexes:
 CREATE INDEX IxPS_PARTKEY ON partsupp(PS_PARTKEY);
 CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p16.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P18Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p18" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query18
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+
+   stage stageMarker1264 on all partitions :
+      indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
+     | ordAgg &quot; ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  &quot;
+     | filter  &quot; type BOOLEAN  SUM_QTY 100.00  &gt;  &quot;
+     | combined 0
+     | next broadcast
+
+   stage stageMarker1279 on all partitions :
+     indexJoin orders IxO_ORDERKEY &quot;bound $I1 $L1 ==&quot;
+     | project &quot;type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage stageMarker1276 on all partitions :
+     indexJoin customer IxC_CUSTKEY &quot;bound $I1 $L1 ==&quot;
+     | project &quot;type VARCHAR as C_NAME J1_C_NAME ,
+                type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage stageMarker1285 on all partitions :
+     aggreg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
+                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                        type DATE as O_ORDERDATE O_ORDERDATE ,
+                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                        aggregates
+                        type VARCHAR as C_NAME $K1 ,
+                        type INTEGER as C_CUSTKEY $K2 ,
+                        type INTEGER as O_ORDERKEY $K3 ,
+                        type DATE as O_ORDERDATE $K4 ,
+                        type DECIMAL as O_TOTALPRICE $K5 ,
+                        type DECIMAL as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage stageMarker1288 on all nodes :
+     aggreg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
+                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                             type DATE as O_ORDERDATE O_ORDERDATE ,
+                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                             aggregates
+                             type VARCHAR as C_NAME $K1 ,
+                             type INTEGER as C_CUSTKEY $K2 ,
+                             type INTEGER as O_ORDERKEY $K3 ,
+                             type DATE as O_ORDERDATE $K4 ,
+                             type DECIMAL as O_TOTALPRICE $K5 ,
+                             type DECIMAL as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage stageMarker1291 on origin :
+     aggreg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
+                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                             type DATE as O_ORDERDATE O_ORDERDATE ,
+                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                             aggregates
+                             type VARCHAR as C_NAME $K1 ,
+                             type INTEGER as C_CUSTKEY $K2 ,
+                             type INTEGER as O_ORDERKEY $K3 ,
+                             type DATE as O_ORDERDATE $K4 ,
+                             type DECIMAL as O_TOTALPRICE $K5 ,
+                             type DECIMAL as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage stageMarker1291 on origin :
+     sort &quot; type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+     | limit 100
+     | combined 0
+     | next
+
+   stage stageLast on origin :
+     output
+     | sink
+     | first
+ end ;
+ </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+CREATE INDEX IxL_ORDERKEY ON LINEITEM(L_ORDERKEY);
+CREATE INDEX IxO_ORDERKEY ON ORDERS(O_ORDERKEY);</stringProp>
             </JDBCSampler>
             <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
