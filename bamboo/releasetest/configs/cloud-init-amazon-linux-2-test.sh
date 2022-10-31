@@ -1,13 +1,29 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
-# This is a cloud-init script used for configuring a CentOS Stream 8 machine for running (not building) RapidsSE.
+# This is a cloud-init script used for configuring a Amazon Linux 2 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
+# We wrap everything in a subshell to redirect all output through the tee command
+# and to a file of our choosing.
+CLOUD_INIT_OUTPUT="/cloud-init-output.log"
+TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
+
+{
+  if which tee &>/dev/null; then
+    echo "Cloud init output being written out to file: ${CLOUD_INIT_OUTPUT}"
+  else
+    echo "ERROR: no tee utility available"
+    TEE_CMD=("echo")
+  fi
+} > "${CLOUD_INIT_OUTPUT}"
+chmod a+r "${CLOUD_INIT_OUTPUT}"
+
+{
 echo
-echo "*********************************************************"
+echo ""
 echo "Starting the cloud-init setup script for Amazon Linux 2."
-echo "*********************************************************"
+echo ""
 
 readonly AL2="amazon2"
 readonly AL2_USER="ec2-user"
@@ -25,14 +41,14 @@ if [ -f /etc/system-release ]; then
     OS_DIST="${AL2}"
     OS_USER="${AL2_USER}"
     OS_HOME_DIR="${AL2_HOME_DIR}"
-  fi;
+  fi
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  >&2 echo "****** Cloud init error *******"
-  >&2 echo "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
-  >&2 echo "OS_VER = ${OS_VER}"
-  >&2 echo "****** Cloud init error *******"
+  echo >&2 "****** Cloud init error *******"
+  echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
+  echo >&2 "OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
   exit 1
 fi
 
@@ -40,7 +56,7 @@ echo "OS_DIST = ${OS_DIST}"
 echo "OS_USER = ${OS_USER}"
 echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
-# -----------------------------------------
+
 # Set up SSH. We do this early so that we can still login if something goes wrong later on.
 echo
 echo "*** Installing a common internal SSH key ***"
@@ -51,11 +67,11 @@ SSH_DIR="${OS_HOME_DIR}/.ssh"
 
 mkdir -p "${SSH_DIR}" || exit
 
-cat << EOF >> "${SSH_DIR}/authorized_keys"
+cat <<EOF >>"${SSH_DIR}/authorized_keys"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@localhost
 EOF
 
-cat << EOF > ${SSH_DIR}/id_rsa
+cat <<EOF >${SSH_DIR}/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAx5U8rMXdtvIq0AeiIkI+yxxQrcS0Q9o7GE3DZIfQ3CKmd4Co
 xiJOjplxNSzIQgYeWNXuQx0xngTyIG9gpXI9jfpWSPh/0+NmLLtIVK5ZRI07DN+T
@@ -85,17 +101,17 @@ zeAErhWRpUkqMr7HoAL+ZaEuzdNZbr6bz+EibfRJxz67Tf68AT6wyQ==
 -----END RSA PRIVATE KEY-----
 EOF
 
-cat << EOF > "${SSH_DIR}/id_rsa.pub"
+cat <<EOF >"${SSH_DIR}/id_rsa.pub"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@${HOSTNAME}
 EOF
 
-cat << EOF >> "${SSH_DIR}/known_hosts"
+cat <<EOF >>"${SSH_DIR}/known_hosts"
 nat,192.168.0.5 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNQ+5ZJflMCBWm+cvzjKtJK47OsD8bi42hyp7z//PE6ucc2CWrDZDjMI/Vw8T+oRT+8HaS23YPoXrrLAFUlJTuQ=
 EOF
 
-cat << EOF > "${SSH_DIR}/config"
+cat <<EOF >"${SSH_DIR}/config"
 Host *
-  StrictHostKeyChecking no
+StrictHostKeyChecking no
 EOF
 
 chmod 700 "${SSH_DIR}"
@@ -107,7 +123,7 @@ chmod 644 "${SSH_DIR}/known_hosts"
 
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
-# -----------------------------------------
+
 
 # Partition, format and mount the instance stores if they are not already mounted.
 # This needs to be done whenever the instance is stopped, but not when it is rebooted.
@@ -115,76 +131,76 @@ chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 echo
 echo "*** Installing the SSD mount script ***"
 echo
-cat << 'EOF' >> "/etc/rc.d/rc.local"
+cat <<'EOF' >>"/etc/rc.d/rc.local"
 
-# -----------------------------------------
+
 # Setup the SSDs on each boot
 
 LOCAL_USER="ec2-user"
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
-  # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
-  # e.g. /dev/nvme0n1 --> nvme0n1
-  # We don't want to partition/format this disk!
-  root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
+# Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
+# e.g. /dev/nvme0n1 --> nvme0n1
+# We don't want to partition/format this disk!
+root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
 
-  # Get the list of block devices in the system.
-  ssds=($(lsblk -d -n -o NAME))
-  counter=0
+# Get the list of block devices in the system.
+ssds=($(lsblk -d -n -o NAME))
+counter=0
 
-  for device in "${ssds[@]}"
-  do
-    # ignore block devices that are a subset of the device the root filesystem is mounted on.
-    if [[ "${root_device}" =~ ^"${device}".* ]]
-    then
-      # ignore this device
-      echo "Ignoring root device ${device}"
-      continue
-    fi
+for device in "${ssds[@]}"
+do
+  # ignore block devices that are a subset of the device the root filesystem is mounted on.
+  if [[ "${root_device}" =~ ^"${device}".* ]]
+  then
+    # ignore this device
+    echo "Ignoring root device ${device}"
+    continue
+  fi
 
-    # ignore non-nvme devices
-    if ! [[ "${device}" =~ ^nvme.* ]]
-    then
-      # ignore this device
-      echo "Ignoring device ${device}"
-      continue
-    fi
+  # ignore non-nvme devices
+  if ! [[ "${device}" =~ ^nvme.* ]]
+  then
+    # ignore this device
+    echo "Ignoring device ${device}"
+    continue
+  fi
 
-    device="/dev/${device}"
+  device="/dev/${device}"
 
-    echo "Partitioning device ${device}"
+  echo "Partitioning device ${device}"
 
-    (
-      echo "o"  # Create DOS partition table
-      echo "n"  # Create a new partition
-      echo "p"  # New partition is a primary partition
-      echo "1"  # Partition #1
-      echo ""   # Start the new partition at the first sector
-      echo ""   # Make the new partition as big as possible
-      echo "w"  # write the changes and exit
-    ) | fdisk "${device}" || exit
+  (
+    echo "o"  # Create DOS partition table
+    echo "n"  # Create a new partition
+    echo "p"  # New partition is a primary partition
+    echo "1"  # Partition #1
+    echo ""   # Start the new partition at the first sector
+    echo ""   # Make the new partition as big as possible
+    echo "w"  # write the changes and exit
+  ) | fdisk "${device}" || exit
 
-    sleep 1
+  sleep 1
 
-    # Get the partition name
-    partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
+  # Get the partition name
+  partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
 
-    echo "Formatting partition ${partition}"
-    counter=$((counter + 1))
-    mount_point="/mnt/disk${counter}"
+  echo "Formatting partition ${partition}"
+  counter=$((counter + 1))
+  mount_point="/mnt/disk${counter}"
 
-    mkfs.ext4 -E nodiscard -m0 "${partition}" || exit
+  mkfs.ext4 -E nodiscard -m0 "${partition}" || exit
 
-    echo "Mounting partition ${partition} to ${mount_point}"
+  echo "Mounting partition ${partition} to ${mount_point}"
 
-    mkdir -p "${mount_point}"
-    mount -o discard "${partition}" "${mount_point}" || exit
-    chown -R "${LOCAL_USER}":wheel "${mount_point}"
-    chmod g+w "${mount_point}"
+  mkdir -p "${mount_point}"
+  mount -o discard "${partition}" "${mount_point}" || exit
+  chown -R "${LOCAL_USER}":wheel "${mount_point}"
+  chmod g+w "${mount_point}"
 
-    MOUNTS+=("${mount_point}")
-  done
+  MOUNTS+=("${mount_point}")
+done
 fi
 EOF
 
@@ -195,7 +211,7 @@ echo
 chmod +x /etc/rc.d/rc.local
 bash /etc/rc.d/rc.local
 
-# -----------------------------------------
+
 # Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 if [ "${SHM_SIZE}" -eq 0 ]; then
@@ -209,25 +225,24 @@ echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 } >>/etc/fstab
 mount -o remount /dev/shm
 
-# -----------------------------------------
+
 # DNS (Route 53) resolution
 # This will force unqualified names to tried with the .local domain name and
 # then be looked up in DNS.
 echo
 echo "*** Setting DNS domain name search qualifier ***"
 echo
-echo "search local" >> /etc/resolv.conf
+echo "search local" >>/etc/resolv.conf
 
-# -----------------------------------------
+
 # /etc/hosts shortcuts
 echo
 echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
 echo
-echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
+echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
 # Otherwise it costs us money when we transfer data via the elastic IP associated with
 # this URL.
 
-# ----------------------------------------------------------------------------------------
 # Setting IGMP to v2 instead of v3 (for multicast) for all network devices
 echo
 echo "*** Setting IGMP to v2 ***"
@@ -236,19 +251,19 @@ echo
 {
   echo
   echo "# Enable Multicast on AWS"
-} >> /etc/sysctl.conf
+} >>/etc/sysctl.conf
 
 # Get a list of all network devices
 mapfile -t netDevices < <(ip -o -4 addr | awk '{print $2}')
 
 for device in "${netDevices[@]}"; do
   sysctl net.ipv4.conf."${device}".force_igmp_version=2
-  echo "net.ipv4.conf.${device}.force_igmp_version=2" >> /etc/sysctl.conf
+  echo "net.ipv4.conf.${device}.force_igmp_version=2" >>/etc/sysctl.conf
 done
 
-echo "" >> /etc/sysctl.conf
+echo "" >>/etc/sysctl.conf
 
-# -----------------------------------------
+
 # Change permissions to allow for writing to /opt
 echo
 echo "*** Setting /opt permissions ***"
@@ -256,7 +271,7 @@ echo
 chown root:wheel /opt
 chmod g+w /opt
 
-# -----------------------------------------
+
 # Apply any package updates
 echo
 echo "*** Installing updates and necessary packages ***"
@@ -274,14 +289,14 @@ yum install -y vim unzip
 # Nice to have
 yum install -y java-11-amazon-corretto-headless iperf3 iotop telnet nload nethogs bmon iftop jq
 
-# -----------------------------------------
+
 # Vim annoyances
 echo
 echo "*** Setting vim preferences ***"
 echo
 
 vimrc="${OS_HOME_DIR}/.vimrc"
-cat << EOF > "${vimrc}"
+cat <<EOF >"${vimrc}"
 set ts=2
 set sw=2
 set noai
@@ -297,7 +312,7 @@ EOF
 
 chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
-# -----------------------------------------
+
 # Bash prompt
 echo
 echo "*** Setting bash preferences ***"
@@ -309,21 +324,22 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
   echo '#export PS1="[\u@\h \W]\$ '
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
   echo ""
-} >> "${bash_profile}"
+} >>"${bash_profile}"
 
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
-# -----------------------------------------
+
 # Git setup
 sudo -H -u "${OS_USER}" git lfs install
 
-# -----------------------------------------
+
 # Indicate cloud-init has completed by dropping a file in /tmp
-echo "$(date) Completed cloud-init script" > /tmp/cloud-init-complete
+echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
 
 echo
-echo "**************************************"
+echo ""
 echo "Completed the cloud-init setup script!"
-echo "**************************************"
+echo ""
 echo
 
+} 2>&1 | "${TEE_CMD[@]}"

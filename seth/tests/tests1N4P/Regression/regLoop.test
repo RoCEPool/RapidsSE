@@ -182,7 +182,7 @@ CLEANUP {
   drop table MANUFACTURER;
   mute
 
-  drop table RETURNS;
+  drop table RETURNITEMS;
   mute
 
   bye;

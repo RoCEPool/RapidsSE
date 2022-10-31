@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eWK.h"
+#include "eWC.h"
 
 namespace BASE
 {
@@ -18,9 +19,9 @@ namespace BASE
 
     s32       m_sWordNm;      // the name of this word
     eWK       m_eWord;        // kind of word
+    eWC       m_eWordCategory;// category of word enum
 
     bool      m_bBreakPt;     // this work gas a break point set
-    Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
@@ -31,6 +32,7 @@ namespace BASE
     bool      m_bPersistent;  // is on persistent heap
     i8        m_iTrace;       // trace level
     TagSet*   m_pWrdTagSet;   // optional tag set
+    bool      m_bTableBit;    // is this word part of the table dic
 
     //*
     //* the following two must be together in this order
@@ -61,7 +63,7 @@ namespace BASE
   
    public:
     void* operator new(size_t, Dic* pDic);
-    void* operator new(size_t, Dic* pDic, bool bPersistent);
+//    void* operator new(size_t, Dic* pDic, bool bPersistent);
     void  operator delete(void* pWordAddress);
   
     Word(Stz* szName);
@@ -73,11 +75,12 @@ namespace BASE
     byte* ayAllot(i8 iBytes);
     bool  bBreakPt(void);
     void  vBreakPt(bool bBreakPt);
-    Word* pCategory(void);
-    void  vCategory(Word* pCategory);
+    eWC   eCategoryEnum(void);
+    void  vCategoryEnum(eWC eCategory);
     CodeBlock* pCodeBlock(void);
     i8    nCodeBlockUsed(void);
     void  vContentDump(void);
+    void  vDic(Dic* pDic);
     Dic*  pDic(void);
     void* aEncodeArg(CodeCell* aArgCell);
     void  vEncodeCall(fpSTEPFN* afpEntryStep);
@@ -109,6 +112,8 @@ namespace BASE
     i8    iParams(void);
     Word* pPrevWord(void);
     void  vResetCodeBlock(void);
+    SkipNode* pSkipNode(void);
+    bool  bTableBit(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);

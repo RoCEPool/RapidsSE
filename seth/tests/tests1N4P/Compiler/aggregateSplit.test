@@ -700,49 +700,50 @@ rows: (*,'aggregateSplit','
                            » location: all partitions
                            » table: (rapidsse.public.nation)')
 
+// TODO: enable when columnrefs are supported in LIKE patterns and escape expressions
 -- LIKE
-EXPLAIN STAGE aggregatesplit SELECT MIN(n_name) LIKE MAX(n_name) FROM nation;
-rows: (*,'aggregateSplit','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
-
--> stageMarker
-   » location: origin
-   » routing: unicast
-
--> -> projectOp
-      » column: (Expr = (MIN(MIN(MIN(rapidsse.public.nation.n_name)))) LIKE (MAX(MAX(MAX(rapidsse.public.nation.n_name)))) ; Ordinal Expr = $2 LIKE $1)
-
--> -> -> stageMarker
-         » location: origin
-         » routing: unicast
-
--> -> -> -> projectOp
-            » location: origin
-            » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_name))) ; Ordinal Expr = MAX($1))
-            » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_name))) ; Ordinal Expr = MIN($2))
-
--> -> -> -> -> stageMarker
-               » location: all nodes
-               » routing: unicast
-
--> -> -> -> -> -> projectOp
-                  » location: all nodes
-                  » column: (Expr = MAX(MAX(rapidsse.public.nation.n_name)) ; Ordinal Expr = MAX($1))
-                  » column: (Expr = MIN(MIN(rapidsse.public.nation.n_name)) ; Ordinal Expr = MIN($2))
-
--> -> -> -> -> -> -> stageMarker
-                     » location: all partitions
-                     » routing: local node
-
--> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = MAX(rapidsse.public.nation.n_name) ; Ordinal Expr = MAX($2))
-                        » column: (Expr = MIN(rapidsse.public.nation.n_name) ; Ordinal Expr = MIN($2))
-
--> -> -> -> -> -> -> -> -> tableScanOp
-                           » location: all partitions
-                           » table: (rapidsse.public.nation)')
+//EXPLAIN STAGE aggregatesplit SELECT MIN(n_name) LIKE MAX(n_name) FROM nation;
+//rows: (*,'aggregateSplit','
+//∆ mainSubquery
+//  » table alias: __subquery0002
+//  » correlated columns: (none)
+//
+//-> stageMarker
+//   » location: origin
+//   » routing: unicast
+//
+//-> -> projectOp
+//      » column: (Expr = (MIN(MIN(MIN(rapidsse.public.nation.n_name)))) LIKE (MAX(MAX(MAX(rapidsse.public.nation.n_name)))) ; Ordinal Expr = $2 LIKE $1)
+//
+//-> -> -> stageMarker
+//         » location: origin
+//         » routing: unicast
+//
+//-> -> -> -> projectOp
+//            » location: origin
+//            » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_name))) ; Ordinal Expr = MAX($1))
+//            » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_name))) ; Ordinal Expr = MIN($2))
+//
+//-> -> -> -> -> stageMarker
+//               » location: all nodes
+//               » routing: unicast
+//
+//-> -> -> -> -> -> projectOp
+//                  » location: all nodes
+//                  » column: (Expr = MAX(MAX(rapidsse.public.nation.n_name)) ; Ordinal Expr = MAX($1))
+//                  » column: (Expr = MIN(MIN(rapidsse.public.nation.n_name)) ; Ordinal Expr = MIN($2))
+//
+//-> -> -> -> -> -> -> stageMarker
+//                     » location: all partitions
+//                     » routing: local node
+//
+//-> -> -> -> -> -> -> -> projectOp
+//                        » column: (Expr = MAX(rapidsse.public.nation.n_name) ; Ordinal Expr = MAX($2))
+//                        » column: (Expr = MIN(rapidsse.public.nation.n_name) ; Ordinal Expr = MIN($2))
+//
+//-> -> -> -> -> -> -> -> -> tableScanOp
+//                           » location: all partitions
+//                           » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

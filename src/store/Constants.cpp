@@ -58,7 +58,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
   Word* pNewWord = new(AM::DIC::pRoot()) Word(szName);
   
-  pNewWord->vCategory(AM::pConstantRoot());
+  pNewWord->vCategoryEnum(AM::pConstantRoot()->eCategoryEnum());
   
   SenCell xVar;
   xVar = iVal;
@@ -299,6 +299,14 @@ void Constants::vAddConstantsCpp(void)
   /* 10 */ vAddConstant("DE_LNK"_Stz,  DT_LNK);
   /* 12 */ vAddConstant("DE_SOCK"_Stz, DT_SOCK);
 
+  // DK_ : dic kind
+  /*  0 */ vAddConstant("DK_NONE"_Stz,        DK_NONE);
+  /*  1 */ vAddConstant("DK_CATALOG"_Stz,     DK_CATALOG);
+  /*  2 */ vAddConstant("DK_FOLDER"_Stz,      DK_FOLDER);
+  /*  3 */ vAddConstant("DK_SCHEMA"_Stz,      DK_SCHEMA);
+  /*  4 */ vAddConstant("DK_TABLE"_Stz,       DK_TABLE);
+  /*  5 */ vAddConstant("DK_TENANT"_Stz,      DK_TENANT);
+
   // DL_ : ddl lock
   /*  0 */ vAddConstant("DL_NONE"_Stz,       DL_NONE);
   /*  1 */ vAddConstant("DL_GRAB_READ"_Stz,  DL_GRAB_READ);
@@ -424,8 +432,8 @@ void Constants::vAddConstantsCpp(void)
   /* 60 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH);
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
-  
-  
+
+
   vAddConstant("EG_NONE"_Stz, EG_NONE);
 
   vAddConstant("EG_AA"_Stz,   EG_AA);
@@ -539,6 +547,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("C_MAX_FLT_PRECISION"_Stz, C_MAX_FLT_PRECISION);
   /*  0 */ vAddConstant("C_MAX_INT_PRECISION"_Stz, C_MAX_INT_PRECISION);
   /*  0 */ vAddConstant("C_MAX_VCH_PRECISION"_Stz, C_MAX_VCH_PRECISION);
+
+  /*  0 */ vAddConstant("C_MAX_INDEX_NAME_LENGTH"_Stz, C_MAX_INDEX_NAME_LENGTH);
+  /*  0 */ vAddConstant("C_MAX_TABLE_NAME_LENGTH"_Stz, C_MAX_TABLE_NAME_LENGTH);
   
   // NS_ : node state
   /*  0 */ vAddConstant("NS_NONE"_Stz,      NS_NONE);
@@ -629,6 +640,25 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("UK_FILTER"_Stz,     UK_FILTER);
   /*  0 */ vAddConstant("UK_KEY"_Stz,        UK_KEY);
   /*  0 */ vAddConstant("UK_PROJECT"_Stz,    UK_PROJECT);
+
+  // WC_ : word category
+  /*  0 */ vAddConstant("WC_NONE"_Stz,         WC_NONE);
+  /*  0 */ vAddConstant("WC_CATALOG"_Stz,      WC_CATALOG);
+  /*  0 */ vAddConstant("WC_CMDSYNTAX"_Stz,    WC_CMDSYNTAX);
+  /*  0 */ vAddConstant("WC_CMDTAGS"_Stz,      WC_CMDTAGS);
+  /*  0 */ vAddConstant("WC_DEMON"_Stz,        WC_DEMON);
+  /*  0 */ vAddConstant("WC_FOLDER"_Stz,       WC_FOLDER);
+  /*  0 */ vAddConstant("WC_HANDLER"_Stz,      WC_HANDLER);
+  /*  0 */ vAddConstant("WC_INCLUDE"_Stz,      WC_INCLUDE);
+  /*  0 */ vAddConstant("WC_INDEX"_Stz,        WC_INDEX);
+  /*  0 */ vAddConstant("WC_OPERATOR"_Stz,     WC_OPERATOR);
+  /*  0 */ vAddConstant("WC_PROCEDURE"_Stz,    WC_PROCEDURE);
+  /*  0 */ vAddConstant("WC_PROMPT"_Stz,       WC_PROMPT);
+  /*  0 */ vAddConstant("WC_ROOTCONSTANT"_Stz, WC_ROOTCONSTANT);
+  /*  0 */ vAddConstant("WC_SCHEMA"_Stz,       WC_SCHEMA);
+  /*  0 */ vAddConstant("WC_TABLE"_Stz,        WC_TABLE);
+  /*  0 */ vAddConstant("WC_TENANT"_Stz,       WC_TENANT);
+  /*  0 */ vAddConstant("WC_WORD"_Stz,         WC_WORD);
 
   // WK_ : word type
   /*  0 */ vAddConstant("WK_NONE"_Stz,       WK_NONE);

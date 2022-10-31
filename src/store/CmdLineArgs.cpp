@@ -82,6 +82,8 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_sNodeName     = "node"_Stz;
   m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
+  for(i8 i=0; i<C_MAX_PTNSPERNODE; i++)
+    m_xSysArgs.m_sReloadFilePath[i] = ""_Stz;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
   m_xSysArgs.m_sRegionName   = ""_Stz;
   m_xSysArgs.m_sRegionPrefix = "/SE"_Stz;
@@ -761,7 +763,17 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--reload"_Stz)) {
+      /* Note: We currently assume m_nPtnsPerNode has the correct value.
+         Number of file paths given is also correct.
+         The first path given is the path to the saveFile_<node-name>_0.
+         This is because, we need to load the persistent heaps before the rest
+         of the heap buffers.
+       */
       m_xSysArgs.m_bReload = true;
+      for(i8 i = 0; i < m_xSysArgs.m_nPtnsPerNode; i++)
+      {
+        m_xSysArgs.m_sReloadFilePath[i] = (Stz*)argv[++i_Arg];
+      }
       continue;
     }
 

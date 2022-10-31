@@ -37,12 +37,11 @@
 : word.show params| pWord |
 
   pWord word.name@     locals| sWordName |
-  pWord word.category@ locals| pCatg     |
-  pCatg word.name@     locals| sCatgName |
+  pWord word.categoryString@ locals| eCatg |
 
   pWord word.tagSet@   locals| pWordTags |
 
-  sWordName sCatgName "%12v : %24v" .putf
+  sWordName eCatg "%12v : %24v" .putf
 
   pWordTags if
     pWordTags tagSet.asStr "  %v" .putf
@@ -54,13 +53,13 @@
 /*----------------------------------------------------------------------------*/
 /* set word as a c++ object and encode push of the c++ object as the routine  */
 /*----------------------------------------------------------------------------*/
-: word.cppObject! params| pwObject pObject pwCatg |
+: word.cppObject! params| pwObject pObject eCatg |
 
   WK_CPPOBJECT pwObject word.kind!
 
   pObject pwObject word.object!
 
-  pwCatg pwObject word.category!
+  eCatg pwObject word.category!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -83,14 +82,14 @@
 /*----------------------------------------------------------------------------*/
 /* show all words that of given catg                                          */
 /*----------------------------------------------------------------------------*/
-: word::ofCatg params| pCatg |
+: word::ofCatg params| eCatg |
 
   dic::root dic.lastWord dup
   iterate                                 // iterate word cursor
 
     object@ locals| pWord |
 
-    pWord word.category@ pCatg equal if
+    pWord word.category@ eCatg equal if
       pWord word.show
     then
 
@@ -117,15 +116,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get a sorted arrangement of all words which are of given category          */
+/* get a sorted arrangement of all words which are of given category enum (eWC)*/
 /*----------------------------------------------------------------------------*/
-: arrange::wordsOfCatg params| pCatg |
+: arrange::wordsOfCatg params| eCatg |
 
   arrange::new locals| pArrange |
 
   iterate-words
 
-    word@ word.category@ pCatg equal if
+    word@ word.category@ eCatg equal if
       word@ word.name@ word@ pArrange arrange.insert
     then
 

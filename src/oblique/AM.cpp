@@ -3383,22 +3383,20 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
 {
   _static_
   
-  Word* pKind = nullptr;
+  eDK eKind = DK_NONE;
   
   Object* pObject = pWord->pObject();
   if (! pObject)
     return;
-  
-  Word* pCategory = pWord->pCategory();
 
   if (CN_DIC == pObject->eGetClassNo())
-    pKind = ((Dic*)pObject)->pDicKind();
+    eKind = ((Dic*)pObject)->eDicKind();
   
   vTrace("%s%s %s %s\n"_Stz,
          Stz::szTab(i_Depth),
          pWord->szWordNm(),
-         pCategory ? pCategory->szWordNm() : "n/a"_Stz,
-         pKind ? pKind->szWordNm() : "n/a"_Stz
+         aWC[pWord->eCategoryEnum()]->azChar(),
+         aDK[eKind]->azChar()
          );
 
   if (CN_DIC == pObject->eGetClassNo())

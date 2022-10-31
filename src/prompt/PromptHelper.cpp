@@ -140,6 +140,7 @@ void PromptHelper::vDisableFuncs(void)
       case PF_DELTA:           { pFunc->m_bEnabled = false; continue; }
       case PF_DELTARESET:      { pFunc->m_bEnabled = false; continue; }
       case PF_DESCRIBE:        { pFunc->m_bEnabled = false; continue; }
+      case PF_DICTREE:        { pFunc->m_bEnabled = false; continue; }
       case PF_DSV:             { pFunc->m_bEnabled = false; continue; }
       case PF_DUMPTOKENS:      { pFunc->m_bEnabled = false; continue; }
       case PF_EDIT:            { pFunc->m_bEnabled = false; continue; }

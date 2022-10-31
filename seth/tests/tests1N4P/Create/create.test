@@ -131,6 +131,33 @@ create table t (
 );
 failure contains: 'EC_INVALID_COMMAND'
 
+
+// Table name cannot be a reserved word
+create table create (col1 INTEGER);
+failure contains: 'EC_RESERVED_WORD'
+
+create table on (col1 INTEGER);
+failure contains: 'EC_RESERVED_WORD'
+
+create table JOIN (col1 INTEGER);
+failure contains: 'EC_RESERVED_WORD'
+
+// case insensitive
+create table join (col1 INTEGER);
+failure contains: 'EC_RESERVED_WORD'
+
+
+// index names are also checked against the reserved word list
+create index left on _test (jA);
+failure contains: 'EC_RESERVED_WORD'
+
+create index JOIN on _test (jA);
+failure contains: 'EC_RESERVED_WORD'
+
+create index join on _test (jA);
+failure contains: 'EC_RESERVED_WORD'
+
+
 CLEANUP {
 
   drop table _test;

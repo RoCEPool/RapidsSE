@@ -57,7 +57,7 @@ PoolBuffer::PoolBuffer(eCN eClassNo)
   ASSERT(m_iBufferNo >= gpBufferPool->iBufferFirst());
   ASSERT(m_iBufferNo <= gpBufferPool->iBufferLast());
   
-  m__spare = C_UNKNOWN;
+  m_pThis = this;
 
   _checkInitialised_(CN_FREEPOOLBUFFER);
   

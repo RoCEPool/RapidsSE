@@ -194,71 +194,77 @@ EXPLAIN SELECT 'abc_def' LIKE 'abc##_def' ESCAPE '##' FROM NATION LIMIT 1;
 failure contains: 'ESCAPE clause can only contain a single character'
 
 -- Test that escape works with a columnRef when explained
-EXPLAIN SELECT * FROM likeTest WHERE col1 like 'a_b_c%' ESCAPE col2;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
-
--> statementMarker: select
-   » queryText: "SELECT * FROM likeTest WHERE col1 like ''a_b_c%'' ESCAPE col2"
-
--> -> projectOp
-      » column: (Alias = COL1 ; Expr = rapidsse.public.likeTest.COL1 ; Ordinal Expr = $1)
-      » column: (Alias = COL2 ; Expr = rapidsse.public.likeTest.COL2 ; Ordinal Expr = $2)
-
--> -> -> filterOp
-         » expr: (rapidsse.public.likeTest.col1 LIKE ''a_b_c%'' ESCAPE rapidsse.public.likeTest.col2)
-         » ordinal expr: ($1 LIKE ''a_b_c%'' ESCAPE $2)
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.likeTest)')
-
+// TODO: Enable when supported.
+//EXPLAIN SELECT * FROM likeTest WHERE col1 like 'a_b_c%' ESCAPE col2;
+//rows: (*,'explainPlan','
+//∆ mainSubquery
+//  » table alias: __subquery0002
+//  » correlated columns: (none)
+//
+//-> statementMarker: select
+//   » queryText: "SELECT * FROM likeTest WHERE col1 like ''a_b_c%'' ESCAPE col2"
+//
+//-> -> projectOp
+//      » column: (Alias = COL1 ; Expr = rapidsse.public.likeTest.COL1 ; Ordinal Expr = $1)
+//      » column: (Alias = COL2 ; Expr = rapidsse.public.likeTest.COL2 ; Ordinal Expr = $2)
+//
+//-> -> -> filterOp
+//         » expr: (rapidsse.public.likeTest.col1 LIKE ''a_b_c%'' ESCAPE rapidsse.public.likeTest.col2)
+//         » ordinal expr: ($1 LIKE ''a_b_c%'' ESCAPE $2)
+//
+//-> -> -> -> tableScanOp
+//            » table: (rapidsse.public.likeTest)')
+// TODO: Disable when no longer required
+SELECT * FROM likeTest WHERE col1 like 'a_b_c%' ESCAPE col2;
+failure contains: 'Expression must be a literal: LIKE escape expression'
 
 -- Runtime test: that escape works with a columnRef (so long as it is one character - a runtime check)
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '<some_columnRef>' FROM NATION LIMIT 1;
-// TODO:
 
+
+// TODO: Enable when supported
 -- Test that escape works with a subquery when explained
+//EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 1) FROM NATION LIMIT 1;
+//rows: (*,'explainPlan','
+//∆ exprSubquery
+//  » table alias: __subquery0003
+//  » correlated columns: (none)
+//
+//-> mainSubquery
+//   » table alias: __subquery0002
+//   » correlated columns: (none)
+//
+//-> -> statementMarker: select
+//      » queryText: "SELECT ''#'' FROM nation LIMIT 1"
+//
+//-> -> -> limitOp
+//         » limit: (1)
+//
+//-> -> -> -> projectOp
+//            » column: (Expr = ''#'' ; Ordinal Expr = ''#'')
+//
+//-> -> -> -> -> tableScanOp
+//               » table: (rapidsse.public.nation)
+//
+//∆ mainSubquery
+//  » table alias: __subquery0004
+//  » correlated columns: (none)
+//
+//-> statementMarker: select
+//   » queryText: "SELECT ''abc_def'' LIKE ''abc#_def'' ESCAPE (SELECT ''#'' FROM nation LIMIT 1) FROM NATION LIMIT 1"
+//
+//-> -> limitOp
+//      » limit: (1)
+//
+//-> -> -> projectOp
+//         » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003() ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003())
+//
+//-> -> -> -> tableScanOp
+//            » table: (rapidsse.public.nation)')
+// TODO: Disable when no longer required
 EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 1) FROM NATION LIMIT 1;
-rows: (*,'explainPlan','
-∆ exprSubquery
-  » table alias: __subquery0003
-  » correlated columns: (none)
-
--> mainSubquery
-   » table alias: __subquery0002
-   » correlated columns: (none)
-
--> -> statementMarker: select
-      » queryText: "SELECT ''#'' FROM nation LIMIT 1"
-
--> -> -> limitOp
-         » limit: (1)
-
--> -> -> -> projectOp
-            » column: (Expr = ''#'' ; Ordinal Expr = ''#'')
-
--> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)
-
-∆ mainSubquery
-  » table alias: __subquery0004
-  » correlated columns: (none)
-
--> statementMarker: select
-   » queryText: "SELECT ''abc_def'' LIKE ''abc#_def'' ESCAPE (SELECT ''#'' FROM nation LIMIT 1) FROM NATION LIMIT 1"
-
--> -> limitOp
-      » limit: (1)
-
--> -> -> projectOp
-         » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003() ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003())
-
--> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
-
+failure contains: 'Expression must be a literal: LIKE escape expression'
 
 -- Runtime test: that escape works with a subquery (so long as it is one character - a runtime check)
 // TODO: Enable when supported
@@ -271,10 +277,11 @@ rows: (*,'explainPlan','
 //SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 2) FROM NATION LIMIT 1;
 // TODO: runtime error - more than one row returned for expression subquery
 
+// TODO: Enable when supported (currently escape pattern must be a literal)
 -- Test that escape gives an error when it is implemented as a subquery
 -- that returns multiple columns (planner check)
-EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#', n_name FROM nation LIMIT 2) FROM NATION LIMIT 1;
-failure contains: 'Subquery cannot project more than one column'
+//EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#', n_name FROM nation LIMIT 2) FROM NATION LIMIT 1;
+//failure contains: 'Subquery cannot project more than one column'
 
 -- Runtime test: that the escape character can be matched by duplicating it (1)
 SELECT 'abc#def' LIKE 'abc##def' ESCAPE '#' FROM NATION LIMIT 1;
@@ -378,6 +385,17 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)')
+
+
+
+// TODO: Remove when no longer required
+-- LIKE pattern and escape exprs must be literals
+EXPLAIN SELECT n_name FROM nation WHERE n_name LIKE n_region;
+failure contains: 'Expression must be a literal: LIKE pattern'
+
+// TODO: Remove when no longer required
+EXPLAIN SELECT n_name FROM nation WHERE n_name LIKE 'A%' ESCAPE n_name LIMIT 1;
+failure contains: 'Expression must be a literal: LIKE escape expression'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

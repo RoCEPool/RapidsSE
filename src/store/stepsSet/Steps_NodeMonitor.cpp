@@ -40,6 +40,7 @@ void Step::vNodeMonitorInspectGrid(void)
 
   Grid* pGrid = AM::pGrid();
   pGrid->vGrabRead();
+  bool bGridHealthy = true;
 
   SkipListNL* pNodes = pGrid->pSkipList();
   SkipNode *pCursor;
@@ -58,6 +59,8 @@ void Step::vNodeMonitorInspectGrid(void)
 
       if (pNode && (pNode->eState() == NS_INACTIVE)) {
 
+         bGridHealthy = false;
+
        /**
         ** PARTICIPANT JOBS HANDLING TO BE CODED
         **
@@ -67,7 +70,7 @@ void Step::vNodeMonitorInspectGrid(void)
 
         JobList *pPtpJobList = AM::pParticipatingJobs();
 
-        pPtpJobList->vGrabLock();
+        pPtpJobList->vGrabWriteLock();
 
         pCursor = pPtpJobList->pFirst();
 
@@ -82,7 +85,7 @@ void Step::vNodeMonitorInspectGrid(void)
           // get the next job
           pCursor = pPtpJobList->pNext(pCursor);
 
-          pPtpJobList->vDropLock();
+          pPtpJobList->vDropWriteLock();
 
           JobId tJobId = pJob->tDistId();
           vTrace("**************Aborting Participating Job %04lld.%04lld ; %s\n"_Stz,
@@ -91,9 +94,9 @@ void Step::vNodeMonitorInspectGrid(void)
                  aJP[pJob->eJobPhase()]);
 
           AM::JOB::vPtpJobNodeFailure(tJobId);
-          pPtpJobList->vGrabLock();
+          pPtpJobList->vGrabWriteLock();
         }
-        pPtpJobList->vDropLock();
+        pPtpJobList->vDropWriteLock();
 
       **/
 
@@ -132,6 +135,8 @@ void Step::vNodeMonitorInspectGrid(void)
     }
 
   pGrid->vDropRead();
+
+  m_pDataStack->vPushInt(bGridHealthy);
 
   EXIT();
 }
