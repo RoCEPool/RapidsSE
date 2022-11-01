@@ -792,6 +792,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
        */
       m_xSysArgs.m_bReload = true;
       m_xSysArgs.m_sReloadDir = (Stz*)argv[++i_Arg];
+      if( ! StrLib::bEnds(m_xSysArgs.m_sReloadDir.azChar(), '/'))
+      {
+        m_xSysArgs.m_sReloadDir.vAppend('/');
+      }
       continue;
     }
 

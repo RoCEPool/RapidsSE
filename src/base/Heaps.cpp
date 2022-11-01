@@ -460,6 +460,38 @@ Heap* Heaps::pEachHeap(eHT& reLastHeap)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Find Ptn0 reload file path                                                 */
+/*----------------------------------------------------------------------------*/
+void Heaps::vFindPtn0FilePath(Stz *szFilePath)
+{
+  i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
+  if(nDiskpaths <= 0)
+  {
+    vTrace("SE was not started with the '--disk <path-to-disk-root>' option. Cannot reload.\n"_Stz);
+    return;
+  }
+
+  for(i8 i = 0; i < nDiskpaths; i++)
+  {
+    s256 szTmp = "";
+    szTmp.vSprint("%s%ssaveFile_%s_0"_Stz,
+                  gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i].szStz(),
+                  gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+
+    if(File::bExists(szTmp))
+    {
+      szFilePath->vCopy(szTmp);
+      return;
+    }
+  }
+
+  vTrace("Unable to find %ssaveFile_%s_0 in given root disk directories.\n"
+         "Check the paths given with '--disk <path-to-disk-root>' and '--reload <dir>' argument.\n"_Stz,
+         gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+}
+/*----------------------------------------------------------------------------*/
 /* iterate each heap                                                          */
 /*----------------------------------------------------------------------------*/
 Heap* Heaps::pGetHeap(eHT eHeap)
@@ -613,7 +645,12 @@ void Heaps::vReloadPHeaps(void)
   // Main thread first loads these in, before spawning threads to read
   // the rest of the buffers.
 
-  s256 szNode0Path = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[0];
+  s256 szNode0Path = "";
+  vFindPtn0FilePath(szNode0Path);
+
+  RASSERT( ! szNode0Path.bIsEmpty());
+
+//  s256 szNode0Path = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[0];
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   bool bResult = pFile->bOpenRead(szNode0Path);
@@ -727,11 +764,23 @@ void Heaps::vReloadPHeaps(void)
 [[noreturn]] void *vLoadHeapBuffers(void *pFuncObj)
 {
   i8 iPtnNo = (i8) pFuncObj;
+  i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
 
-  Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo];
+  s256 szFilePath = "";
+  szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
+                     gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo % nDiskpaths].szStz(),
+                     gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                     iPtnNo);
+
+  if( ! File::bExists(szFilePath))
+  {
+    vTrace("%s does not exist. Please check the arguments for --disk and --reload options given\n"_Stz, szFilePath.szStz());
+    THROW("Could not open savefile. Please check the arguments for --disk and --reload options given\n"_Stz);
+  }
 
   if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("Thread got filepath %s\n"_Stz, szFilePath);
+    vTrace("Thread got filepath %s\n"_Stz, szFilePath.szStz());
 
   char caObjectHeader[sizeof(Object) + 128];
   Header* aHeader = (Header*) & caObjectHeader[0];
@@ -765,7 +814,8 @@ void Heaps::vReloadPHeaps(void)
       nBytes = pFile->nReadBytes(aBody, nSizeBody);
       RASSERT(nBytes == nSizeBody);
     } else {
-      THROW("Thread %lld read a non-heap buffer...\n"_Stz);
+      vTrace("Thread %lld read a non-heap buffer...\n"_Stz, iPtnNo);
+      THROW("Thread read a non-heap buffer...\n"_Stz);
     }
 
     nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
