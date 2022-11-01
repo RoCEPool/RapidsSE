@@ -93,6 +93,7 @@ namespace STORE
     Card_TableList *        p_tableList;
     Card_TableNm *          p_tableNm;
     Card_TablePtn *         p_tablePtn;
+    Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
     Card_Topology *         p_topology;
     Card_TstPred *          p_tstPred;

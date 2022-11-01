@@ -104,6 +104,7 @@ namespace STORE
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
+  class Card_TblColOdn;
   class Card_Term;
   class Card_Topology;
   class Card_Type;
@@ -340,6 +341,7 @@ namespace STORE
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
+    Card_TblColOdn*     pSub_tblColOdn(void);
     Card_Topology*      pSub_topology(void);
     Card_UBound*        pSub_uBound(void);
 
