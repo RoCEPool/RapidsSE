@@ -287,7 +287,7 @@ void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (eToSubs == m_eCard) {
+  if (CK_NONE == eToSubs || eToSubs == m_eCard) {
     bool bContinue = bfApply(this);
     if (! bContinue)
       return;
@@ -663,6 +663,25 @@ Card* Card::pFindParent(Card* pSubCard)
     Card* pParent = pTestCard->pFindParent(pSubCard);
     if (pParent)
       return pParent;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt find card                                                          */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindCardRecursive(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsCard(eCard))
+    return this;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindCardRecursive(eCard))
+      return pFoundCard;
   }
 
   return nullptr;

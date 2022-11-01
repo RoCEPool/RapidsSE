@@ -927,6 +927,42 @@ bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 }
 
 /*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given i_After                               */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bLocateCard(eCK eLocate, eCK eSubLocate, Stz* szWithValue, i8 i_After)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = G.pDeck->nChildCards();
+  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
+    Card *pMain = G.pDeck->pGetChild(i_Main);
+
+    G.p_Located = pMain->pFindCardRecursive(eLocate);
+    if (! G.p_Located)
+      continue;
+
+    G.e_Located = eLocate;
+
+    G.p_SubLocated = G.p_Located->pFindValueRecursive(eSubLocate,szWithValue,G.p_SubLocatedParent);
+    if (G.p_SubLocated) {
+      G.e_SubLocated = eSubLocate;
+      G.e_SubLocatedParent = G.p_SubLocatedParent ? G.p_SubLocatedParent->eCard() : CK_NONE;
+      return true;
+    }
+
+  }
+
+  G.p_Located = nullptr;
+  G.e_Located = CK_NONE;
+  G.p_SubLocated = nullptr;
+  G.e_SubLocated = CK_NONE;
+  G.p_SubLocatedParent = nullptr;
+  G.e_SubLocatedParent = CK_NONE;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given card                                  */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
@@ -1029,10 +1065,16 @@ void Xgearing::G_vClearRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.p_Located          = nullptr;
+  G.e_Located          = CK_NONE;
   G.p_PriorToMain      = nullptr;
   G.e_PriorToMain      = CK_NONE;
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
+  G.p_SubLocated       = nullptr;
+  G.e_SubLocated       = CK_NONE;
+  G.p_SubLocatedParent = nullptr;
+  G.e_SubLocatedParent = CK_NONE;
   G.p_SubOfMain        = nullptr;
   G.e_SubOfMain        = CK_NONE;
   G.p_Sub2OfMain       = nullptr;

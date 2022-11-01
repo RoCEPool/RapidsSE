@@ -32,8 +32,8 @@ namespace STORE
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
-    bool T_bCard_ConvertableToStmColOdn(Card* p_card);
-    bool T_bCard_ConvertableToTblColOdn(Card* p_card);
+    i8 T_iCard_ConvertableTo_StmColOdn(Card* p_card);
+    i8 T_iCard_ConvertableTo_TblColOdn(Card* p_card);
 
     bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
 

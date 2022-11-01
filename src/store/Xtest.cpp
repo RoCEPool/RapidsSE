@@ -371,9 +371,9 @@ bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* back to stream column ordinal $n                                           */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCard_ConvertableToStmColOdn(Card* p_card)
+i8 Xtest::T_iCard_ConvertableTo_StmColOdn(Card* p_card)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -381,15 +381,16 @@ bool Xtest::T_bCard_ConvertableToStmColOdn(Card* p_card)
 
   switch (eCard) {
 
-    default:
-      return false;
+    case CK_TERM: return C_YES;
+
+    default:      return C_MAYBE;
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* to table column ordinal $c.n                                               */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCard_ConvertableToTblColOdn(Card* p_card)
+i8 Xtest::T_iCard_ConvertableTo_TblColOdn(Card* p_card)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -397,8 +398,9 @@ bool Xtest::T_bCard_ConvertableToTblColOdn(Card* p_card)
 
   switch (eCard) {
 
-    default:
-      return false;
+    case CK_TERM: return C_YES;
+
+    default:      return C_MAYBE;
   }
 }
 

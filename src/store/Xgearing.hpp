@@ -140,6 +140,7 @@ namespace STORE
     bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
+    bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     void G_vClearMembers(void);

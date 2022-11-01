@@ -158,6 +158,10 @@ namespace STORE
   static const bool C_TERMINATE_RECURSION = false;
   static const bool C_TRACE_N             = false;
 
+  static const i8 C_NO    = 0;
+  static const i8 C_MAYBE = 1;
+  static const i8 C_YES   = 2;
+
   class Card : public Object
              , public ChildCards
   {
@@ -235,7 +239,9 @@ namespace STORE
 
     bool bEquivalentTo(Card* pCard_OTHER);
 
+    Card* pFindCardRecursive(eCK eCard);
     Card* pFindParent(Card* pSubCard);
+    Card* pFindValueRecursive(eCK eCard, Stz* szValue);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
