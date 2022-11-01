@@ -984,7 +984,7 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 
     i8 iStmColOdn = E_iValue_StreamColOdn(p_stmColOrd->szValue());
     i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
-    M_vCard_Set_StmColOdn(p_stmColOrd,iStmColOdn_corrected);
+    M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn_corrected);
 
     return C_CONTINUE_RECURSION;
   };

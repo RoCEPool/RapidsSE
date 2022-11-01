@@ -286,11 +286,41 @@ void Xmodify::M_vCard_Mark_Changed(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_StmColOdn(Card* p_card, i8 iStmColOrd)
+void Xmodify::M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  p_card->vValueSprint("$%lld"_Stz,iStmColOrd);
+  p_card->vValueSprint("$I%lld"_Stz, iIdxColOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_card->vValueSprint("$P%lld"_Stz, iParamOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_card->vValueSprint("$%lld"_Stz, iStmColOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_TableColOrdinal(Card* p_card, char cSyn, i8 iTblColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_card->vValueSprint("$%c.%lld"_Stz, cSyn, iTblColOdn);
 }
 
 /*----------------------------------------------------------------------------*/
