@@ -1830,6 +1830,7 @@ void vDdlLockAssertNone(void);
   void vSocketObjectDelete(void);
   void vSocketObjectIsNotNull(void);
   void vSocketNew(void);
+  void vSocketCopy(void);
   void vSocketRecvObject(void);
   void vSocketRecvWLMsg(void);
   void vSocketSendObject(void);

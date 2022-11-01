@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_init ( -- )
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
   <ansSocket> >int >ptr to Socket[]

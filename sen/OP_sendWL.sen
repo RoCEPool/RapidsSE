@@ -5,33 +5,28 @@
 " OP_sendWL.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* send the operand in the PipeIn[] register                                  */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: PipeIn[].sendTo \handler
+: sendWL_StartMarker \handler
 
-  0 locals| pParcel |
+  "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
-  PipeIn[]\clear locals| pOperand |
+  // Make a copy of the socket where we retain the same file descriptor.
+  <ansSocket> >int >ptr socket::copy to Socket[]
+;
 
-  // we do not expect to see a job
-  pOperand object.class@ CN_JOB != ASSERT
+/*----------------------------------------------------------------------------*/
+/* send the data in the payload in the PipeIn[] register                      */
+/*----------------------------------------------------------------------------*/
+: sendWL_Payload \handler
 
-  //pOperand object.preSendWord@ if
-  //  pOperand object.preSendWord@ execute
-  //then
+  PipeIn[]\clear locals| pPayloadObj |
 
-  pOperand object.class@ CN_PARCEL == if
-    pOperand to pParcel
-    pParcel parcel.label
-  else
-    pOperand operand.toParcel to pParcel
-  then
+  // We expect to see a PayloadObj
+  pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
-  pParcel parcel.sendOut
-
-  pParcel parcel::delete
-
-  // calling op_loop continues
+  pPayloadObj Socket[].sendWLMsg    // TODO
+  pPayloadObj payload::delete
 
   true
   //stk
@@ -58,7 +53,7 @@
 : sendWL_CLEANING \handler
 
   LogicUnit[].cleanup
-  PipeIn[].sendTo
+//PipeIn[].sendTo
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_EXITING \handler
 
-  PipeIn[].sendTo discard
+//PipeIn[].sendTo discard
 
   [op].ackJobTask
 
@@ -80,11 +75,18 @@
 
   _lu_initialise_
 
+  // This line ensures that if there are lots of events to be processed then
+  // the operator does not yield until the input queue is empty or it has
+  // processed a lot of events. i.e. try to process all events on the input
+  // queue if possible.
   999999999999 [task].operandYield!
 
   op__topology
 
-  find: PipeIn[].sendTo [op].handlerAll!
+//find: PipeIn[].sendTo [op].handlerAll!
+
+  find: sendWL_StartMarker EV_M_START       [op].handler!
+  find: sendWL_Payload     EV_M_PAYLOAD     [op].handler!
 
   find: sendWL_CANCELLING  EV_M_CANCELLING  [op].handler!
   find: sendWL_CLEANING    EV_M_CLEANING    [op].handler!

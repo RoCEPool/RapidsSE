@@ -51,7 +51,8 @@ void Step::vAddSteps_Socket(void)
 {
 
   vAddStep("socket::new"_Stz,        &Step::vSocketNew);
-  
+  vAddStep("socket::copy"_Stz,       &Step::vSocketCopy);
+
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
   vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
   vAddStep("Socket[].connect"_Stz,   &Step::vSocketConnect);
@@ -250,6 +251,25 @@ void Step::vSocketNew(void)
   
   m_pDataStack->vPushPtr(pSocket);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket::copy: duplicate a socket, keeping the same file descriptor         */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketCopy(void)
+{
+  ENTRY();
+
+  SysCall oSysCall;
+  Socket* pSocket;
+
+  Socket* pOther = _pSocket(m_pDataStack->pPopPtr(__func__));
+
+  pSocket = new Socket(pOther->m_pIsFor,pOther->m_iSocketFd, pOther);
+
+  m_pDataStack->vPushPtr(pSocket);
+
   EXIT();
 }
 
