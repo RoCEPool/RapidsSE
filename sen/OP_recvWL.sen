@@ -21,8 +21,9 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_recvNext
 
-  nullptr to recvWL[]
+  Socket[].object.isNotNull not assert
 
+  // The received object is saved in Socket[].object
   Socket[].recvWLMsg
 
   Socket[].success@ not if
@@ -30,25 +31,13 @@
     exit
   then
 
-  Socket[].object@\clear to recvWL[]
-
-  Socket[].success@
-;
-
-/*----------------------------------------------------------------------------*/
-/* recv loop: receive a job (possibly with operand), dispatch it              */
-/*----------------------------------------------------------------------------*/
-: recvWL_dispatch ( -- )
-
-  // null object (low memory or socket closed)
-  recvWL[].isNull if
-    exit
+  Socket[].object.isNotNull if
+    Socket[].object@\clear [op].pipeout
+    Socket[].success@
+  else
+    // null object (low memory or socket closed)
+    false
   then
-
-  recvWL[]
-    nullptr to recvWL[]
-
-  [op].pipeout
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,8 +54,6 @@
     not if
       exit
     then
-
-    recvWL_dispatch
 
   again
 ;
@@ -87,7 +74,20 @@
   // loop, receiving and executing jobs
   recvWL_loop
 
-  HAZARD
+  Socket[].close
+  Socket[].clientAddr@ "Connection closed to client at address %v" .printf
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CLIENT_DISCONNECT ...                                     */
+/*----------------------------------------------------------------------------*/
+: recvWL_ClientDisconnectMarker \handler
+
+  Socket[].object.isNotNull if
+    Socket[].object.delete
+  then
+
+  Socket[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -100,6 +100,7 @@
   op__topology
 
   find: recvWL_StartMarker EV_M_START [op].handler!
+//find: recvWL_ClientDisconnectMarker EV_M_CLIENT_DISCONNECT [op].handler!
 
   // get the pipeline job of the operator
   [op].job@ locals| pPipelineJob |

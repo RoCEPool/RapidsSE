@@ -55,6 +55,7 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
   vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
   vAddStep("Socket[].connect"_Stz,   &Step::vSocketConnect);
+  vAddStep("Socket[].delete"_Stz,    &Step::vSocketDelete);
   vAddStep("Socket[].dropWrite"_Stz, &Step::vSocketDropWrite);
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
   vAddStep("Socket[].grabWrite"_Stz, &Step::vSocketGrabWrite);
@@ -62,12 +63,15 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
   vAddStep("Socket[].object@\\clear"_Stz, &Step::vSocketObjectFetchClear);
+  vAddStep("Socket[].object.delete"_Stz, &Step::vSocketObjectDelete);
+  vAddStep("Socket[].object.isNotNull"_Stz, &Step::vSocketObjectIsNotNull);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
   vAddStep("Socket[].recvWLMsg"_Stz, &Step::vSocketRecvWLMsg);
   vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
+  vAddStep("Socket[].clientAddr@"_Stz,&Step::vSocketClientAddrFetch);
 
 }
 
@@ -148,16 +152,30 @@ void Step::vSocketConnect(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* socket.delete: delete and clear the socket object                          */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketDelete(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+  delete pSocket;
+  m_pLogicUnit->m_xpSocket = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* socket.dropWrite: drop socket write lock                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketDropWrite(void)
 {
   ENTRY();
-  
+
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
   pSocket->vDropWrite();
-  
+
   EXIT();
 }
 
@@ -264,6 +282,39 @@ void Step::vSocketObjectFetchClear(void)
   pSocket->vReceivedObject(nullptr);
   
   m_pDataStack->vPushPtr(pObject);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object.delete: delete the socket object                           */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectDelete(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  Object* pObject = pSocket->pReceivedObject();
+  pSocket->vReceivedObject(nullptr);
+  delete pObject;
+
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object.isNotNull: test if the socket object is not null           */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectIsNotNull(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  Object* pObject = pSocket->pReceivedObject();
+
+  m_pDataStack->vPushInt(pObject != nullptr ? 1 : 0);
 
   EXIT();
 }
@@ -392,6 +443,23 @@ void Step::vSocketSuccessStore(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].clientAddr@ -- fetch client address of socket                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketClientAddrFetch(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  s256 sBuf;
+  pSocket->vClientAddr(sBuf);
+
+  m_pDataStack->vPushStz(sBuf.szStz());
+
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

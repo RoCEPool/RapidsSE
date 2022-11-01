@@ -48,6 +48,8 @@ namespace BASE
     bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
     bool bSendWLMsg(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
 
+    void vClientAddr(s256& sBuf);
+
   private:
   
     bool    bHeaderRecv(void);

@@ -1572,6 +1572,7 @@ void vDdlLockAssertNone(void);
   void vRecvWLIsNotNull(void);
   void vRecvWLIsNull(void);
   void vRecvWLSet(void);
+  void vRecvWLDelete(void);
 
   // reference timer
   void vRefTimerReset(void);
@@ -1819,12 +1820,15 @@ void vDdlLockAssertNone(void);
   void vSocketClose(void);
   void vSocketConnect(void);
   void vSocketGet(void);
+  void vSocketDelete(void);
   void vSocketDropWrite(void);
   void vSocketGrabWrite(void);
   void vSocketIsNotNull(void);
   void vSocketIsNull(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
+  void vSocketObjectDelete(void);
+  void vSocketObjectIsNotNull(void);
   void vSocketNew(void);
   void vSocketRecvObject(void);
   void vSocketRecvWLMsg(void);
@@ -1832,6 +1836,7 @@ void vDdlLockAssertNone(void);
   void vSocketSet(void);
   void vSocketSuccessFetch(void);
   void vSocketSuccessStore(void);
+  void vSocketClientAddrFetch(void);
 
 
   // sql compiler

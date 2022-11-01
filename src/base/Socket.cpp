@@ -366,6 +366,16 @@ bool Socket::bSendWLMsg(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Writes the address and port of the connecting client to the buffer         */
+/*----------------------------------------------------------------------------*/
+void Socket::vClientAddr(s256& sBuf)
+{
+  sBuf.vSprint("%s:%d"_Stz,
+               inet_ntoa(this->m_xClientAddr.sin_addr),
+               ntohs(this->m_xClientAddr.sin_port));
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
