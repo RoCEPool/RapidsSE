@@ -2209,6 +2209,19 @@ Card_TablePtn* Card::pSub_tablePtn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_TblColOdn.hpp"
+Card_TblColOdn* Card::pSub_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TblColOdn* p_tblColOdn =
+      _pCard_TblColOdn(pFindSubCard(CK_TABLEPTN));
+  return p_tblColOdn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Topology.hpp"
 Card_Topology* Card::pSub_topology(void)
 {
