@@ -316,11 +316,11 @@ void Xmodify::M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_TableColOrdinal(Card* p_card, char cSyn, i8 iTblColOdn)
+void Xmodify::M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  p_card->vValueSprint("$%c.%lld"_Stz, cSyn, iTblColOdn);
+  p_card->vValueSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,7 +521,7 @@ void Xmodify::M_vScan_Add_indexList(Card_Scan* p_scan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
+void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream, char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -538,12 +538,15 @@ void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
   i8 iStmColOdn = m_iOrdLo;
   while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
     Card_StmColOdn* p_stmColOrd = new Card_StmColOdn;
-    //p_stmColOrd->vValueSprint("$%lld"_Stz, iStmColOdn);
     M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn);
     p_stmCol->vAppend(p_stmColOrd);
 
-    iStmColOdn++;
+    Card_TblColOdn* p_tblColOrd = new Card_TblColOdn;
+    M_vCard_Set_TableColOrdinal(p_tblColOrd, cTblSyn, iTblColOdn);
+    p_stmCol->vAppend(p_tblColOrd);
 
+    iStmColOdn++;
+    iTblColOdn++;
   }
 
   m_iOrdLo = m_iOrdHi + 1;

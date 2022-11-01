@@ -155,7 +155,7 @@ void Xreshape::vR_H30_T20_Calc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vStream_OrdinalRange(G.p_stream);
+  M_vStream_OrdinalRange(G.p_stream, G.p_table->cValue());
 }
 
 /*----------------------------------------------------------------------------*/

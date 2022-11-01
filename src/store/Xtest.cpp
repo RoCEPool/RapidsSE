@@ -373,6 +373,38 @@ bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Xtest::T_bCard_ConvertableToStmColOdn(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK eCard = p_card->eCard();
+
+  switch (eCard) {
+
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bCard_ConvertableToTblColOdn(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK eCard = p_card->eCard();
+
+  switch (eCard) {
+
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

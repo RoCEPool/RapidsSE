@@ -37,7 +37,7 @@ namespace STORE
     void M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn);
     void M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn);
     void M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn);
-    void M_vCard_Set_TableColOrdinal(Card* p_card, char cSyn, i8 iTblColOdn);
+    void M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 
@@ -53,7 +53,7 @@ namespace STORE
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Add_indexList(Card_Scan* p_scan);
 
-    void M_vStream_OrdinalRange(Card_Stream* p_stream);
+    void M_vStream_OrdinalRange(Card_Stream* p_stream, char cTblSyn);
     void M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
     void M_vTable_Add_IndexJoin(Card_Table* p_table);
