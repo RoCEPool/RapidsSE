@@ -77,17 +77,19 @@ void CmdLineArgs::vInit(void)
 #endif
   
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
+  for(i8 i=0; i<C_MAX_PTNSPERNODE; i++)
+    m_xSysArgs.m_sDiskRootDir[i] = ""_Stz;
+  m_xSysArgs.m_nDiskPaths    = 0;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
   m_xSysArgs.m_sLogFile      = ""_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
   m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
-  for(i8 i=0; i<C_MAX_PTNSPERNODE; i++)
-    m_xSysArgs.m_sReloadFilePath[i] = ""_Stz;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
   m_xSysArgs.m_sRegionName   = ""_Stz;
   m_xSysArgs.m_sRegionPrefix = "/SE"_Stz;
   m_xSysArgs.m_iRegionSize   = (4 * 1_GB);
+  m_xSysArgs.m_sReloadDir    = "";
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
@@ -242,6 +244,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   i8 i_BootNode = 0;
   i8 i_HeartbeatNode = 0;
+  i8 i_DiskPath = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
@@ -352,6 +355,26 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--disk"_Stz)) {
+      /* Note: This is the path to a disk root directory. Under this directory,
+       * we search for or add the dir/saveFile that is used during unload/reload.
+       */
+      m_xSysArgs.m_sDiskRootDir[i_DiskPath] = (Stz*)argv[++i_Arg];
+      if( ! Dir::bExists(m_xSysArgs.m_sDiskRootDir[i_DiskPath]))
+      {
+        vTrace("Disk directory %s does not exist!!\n"_Stz,
+               m_xSysArgs.m_sDiskRootDir[i_DiskPath].szStz());
+        return false;
+      }
+      if( ! StrLib::bEnds(m_xSysArgs.m_sDiskRootDir[i_DiskPath].azChar(), '/'))
+      {
+        m_xSysArgs.m_sDiskRootDir[i_DiskPath].vAppend('/');
+      }
+      i_DiskPath++;
       continue;
     }
 
@@ -763,17 +786,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--reload"_Stz)) {
-      /* Note: We currently assume m_nPtnsPerNode has the correct value.
-         Number of file paths given is also correct.
-         The first path given is the path to the saveFile_<node-name>_0.
-         This is because, we need to load the persistent heaps before the rest
-         of the heap buffers.
+      /* Note:  We take the name of the reload directory path, relative to the
+       * disk paths given in --disk argument. This assumes that each disk
+       * path given has this directory, which contains the files for reload.
        */
       m_xSysArgs.m_bReload = true;
-      for(i8 i = 0; i < m_xSysArgs.m_nPtnsPerNode; i++)
-      {
-        m_xSysArgs.m_sReloadFilePath[i] = (Stz*)argv[++i_Arg];
-      }
+      m_xSysArgs.m_sReloadDir = (Stz*)argv[++i_Arg];
       continue;
     }
 
@@ -1055,6 +1073,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Save the number of disk paths given (used for unload/reload).
+  m_xSysArgs.m_nDiskPaths = i_DiskPath;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

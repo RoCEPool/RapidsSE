@@ -613,7 +613,7 @@ void Heaps::vReloadPHeaps(void)
   // Main thread first loads these in, before spawning threads to read
   // the rest of the buffers.
 
-  s256 szNode0Path = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath[0];
+  s256 szNode0Path = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[0];
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   bool bResult = pFile->bOpenRead(szNode0Path);
@@ -728,7 +728,7 @@ void Heaps::vReloadPHeaps(void)
 {
   i8 iPtnNo = (i8) pFuncObj;
 
-  Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath[iPtnNo];
+  Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo];
 
   if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Thread got filepath %s\n"_Stz, szFilePath);
