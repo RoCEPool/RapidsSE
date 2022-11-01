@@ -373,6 +373,38 @@ bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Xtest::T_bCard_ConvertableToStmColOdn(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK eCard = p_card->eCard();
+
+  switch (eCard) {
+
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bCard_ConvertableToTblColOdn(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK eCard = p_card->eCard();
+
+  switch (eCard) {
+
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -649,15 +681,13 @@ bool Xtest::T_bFilter_IsEmpty(Card_Filter* p_filter)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
+bool Xtest::T_bValue_IsIndexColOrdinal(Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
 
   if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
       && StrLib::bIsDigit(acThird))
@@ -667,17 +697,15 @@ bool Xtest::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term a parameter ordinal?  (i.e. $Pn)                                   */
+/* is value a parameter ordinal?  (i.e. $Pn)                                  */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsParamOrdinal(Card_Term* p_term)
+bool Xtest::T_bValue_IsParamOrdinal(Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
 
   if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
       && StrLib::bIsDigit(acThird))
@@ -687,49 +715,23 @@ bool Xtest::T_bTerm_IsParamOrdinal(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term a stream-column ordinal?  (i.e. $n)                                */
+/* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
+bool Xtest::T_bValue_IsResultOrdinal(Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Stz* szTerm = p_term->szValue();
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
 
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term an table-column ordinal?  (i.e. $$c.n)                             */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-  char acFourth = szTerm->azChar()[3];
-  char acFifth  = szTerm->azChar()[4];
-
-  if ('$' == acFirst && '$' == acSecond
-      && StrLib::bIsAlpha(acThird)
-      && '.' == acFourth
-      && StrLib::bIsDigit(acFifth))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term a stream-column ordinal?  (i.e. $n)                                */
+/* is value a stream-column ordinal?  (i.e. $n)                               */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
 {
@@ -739,6 +741,28 @@ bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
   char acSecond = szValue->azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsTableColOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+  char acFifth  = szValue->azChar()[4];
+
+  if ('$' == acFirst && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
     return true;
   else
     return false;

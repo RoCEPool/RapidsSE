@@ -94,7 +94,7 @@ void Transformer::vTransform3(void)
   vHand_10_CondenseInfo    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
-  vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  vHand_40_PredicatePullup (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
   m_pTransforms->vPrintXformForce(true);
   vHand_50_FlattenCall     (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_55_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);

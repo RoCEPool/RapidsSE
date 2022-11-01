@@ -95,6 +95,9 @@ namespace STORE
     void vR_HZ0_T10_Reinstate_stages(void);
     void vR_HZ0_T20_Reinstate_combined(void);
 
+    void vR_Convert_All_StmColOrd_to_TblColOrd(void);
+    void vR_Convert_All_TblColOrd_to_StmColOrd(void);
+
     // must be last
     Footer m_xFooter;
 

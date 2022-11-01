@@ -10,40 +10,51 @@
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
-/* disable                                                                    */
+/* default                                                                    */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_disable(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+bool STORE::bOpt_default(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
-  vTrace("bOpt_weave\n"_Stz);
+  reOptAct = OA_REPRINT_BOARD;
 
-  UNUSED(pTknVec);
-
-  reOptAct = OA_DISABLE_CUEING;
+  pOptimiser->pCardCtl()->vFormDefault();
 
   return true;
 }
 
-OptimiserFun __Opt_disable_0
-(
-  "disable"_Stz,      // name of the opt function
-  "disable"_Stz,      // command first word
-  nullptr,            // command second word
-  bOpt_disable,       // function to call
-  0,0,                // spare
-  "disable further cueing"_Stz,
-  "usage???"_Stz
-);
+OptimiserFun __Opt_d
+    (
+        "default"_Stz,      // name of the opt function
+        "d"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_default,       // function to call
+        0,0,                // spare
+        "set default printing"_Stz,
+        "usage???"_Stz
+    );
 
-OptimiserFun __Opt_disable_1
-(
-  "disable"_Stz,      // name of the opt function
-  "d"_Stz,            // command first word
-  nullptr,            // command second word
-  bOpt_disable,       // function to call
-  0,0,                // spare
-  "disable further cueing"_Stz,
-  "usage???"_Stz
-);
+/*----------------------------------------------------------------------------*/
+/* expanded                                                                   */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_expanded(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  reOptAct = OA_REPRINT_BOARD;
+
+  //pOptimiser->pCardCtl()->vFormExpanded();
+  pOptimiser->pCardCtl()->vSetSubsPrintEverything();
+
+  return true;
+}
+
+OptimiserFun __Opt_e
+    (
+        "expanded"_Stz,     // name of the opt function
+        "e"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_expanded,      // function to call
+        0,0,                // spare
+        "set expanded printing"_Stz,
+        "usage???"_Stz
+    );
 
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
@@ -57,7 +68,7 @@ bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
   return true;
 }
 
-OptimiserFun __Opt_help_0
+OptimiserFun __Opt_h_0
 (
   "help"_Stz,         // name of the opt function
   "?"_Stz,            // command first word
@@ -68,16 +79,62 @@ OptimiserFun __Opt_help_0
  "usage???"_Stz
 );
 
-OptimiserFun __Opt_help_1
+OptimiserFun __Opt_h_1
 (
   "help"_Stz,         // name of the opt function
-  "help"_Stz,         // command first word
+  "h"_Stz,            // command first word
   nullptr,            // command second word
   bOpt_help,          // function to call
   0,0,                // spare
   "help"_Stz,
   "usage???"_Stz
 );
+
+/*----------------------------------------------------------------------------*/
+/* longer                                                                     */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_longer(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  reOptAct = OA_REPRINT_BOARD;
+
+  pOptimiser->pCardCtl()->vFormLonger();
+
+  return true;
+}
+
+OptimiserFun __Opt_l
+    (
+        "longer"_Stz,       // name of the opt function
+        "l"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_longer,        // function to call
+        0,0,                // spare
+        "set longer printing"_Stz,
+        "usage???"_Stz
+    );
+
+/*----------------------------------------------------------------------------*/
+/* shorter                                                                    */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  reOptAct = OA_REPRINT_BOARD;
+
+  pOptimiser->pCardCtl()->vFormShorter();
+
+  return true;
+}
+
+OptimiserFun __Opt_s
+    (
+        "shorter"_Stz,      // name of the opt function
+        "s"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_shorter,       // function to call
+        0,0,                // spare
+        "set shorter printing"_Stz,
+        "usage???"_Stz
+    );
 
 /*----------------------------------------------------------------------------*/
 /* weave                                                                      */
@@ -95,27 +152,41 @@ bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
   return true;
 }
 
-OptimiserFun __Opt_weave_0
-(
-  "weave"_Stz,        // name of the opt function
-  "weave"_Stz,        // command first word
-  nullptr,            // command second word
-  bOpt_weave,         // function to call
-  0,0,                // spare
-  "weave statement from cards"_Stz,
-  "usage???"_Stz
-);
-
-OptimiserFun __Opt_weave_1
+OptimiserFun __Opt_w
 (
   "weave"_Stz,        // name of the opt function
   "w"_Stz,            // command first word
   nullptr,            // command second word
   bOpt_weave,         // function to call
   0,0,                // spare
-  "weave statement from cards"_Stz,
+  "weave pipeline statement"_Stz,
   "usage???"_Stz
 );
+
+/*----------------------------------------------------------------------------*/
+/* disable                                                                    */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_toEnd(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  vTrace("bOpt_weave\n"_Stz);
+
+  UNUSED(pTknVec);
+
+  reOptAct = OA_DISABLE_CUEING;
+
+  return true;
+}
+
+OptimiserFun __Opt_z
+    (
+        "toEnd"_Stz,        // name of the opt function
+        "z"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_toEnd,         // function to call
+        0,0,                // spare
+        "run to end"_Stz,
+        "usage???"_Stz
+    );
 
 
 /*============================================================================*/

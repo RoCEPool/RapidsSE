@@ -37,6 +37,7 @@ enum eCK // card kind
   /* */ CK_DIRECTION,
 
   /* */ CK_EBOUND,
+  /* */ CK_EXEPRED,
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   /* */ CK_EXPRBOOL,
@@ -101,7 +102,7 @@ enum eCK // card kind
   /* */ CK_STMCOL,
   /* */ CK_STMCOLLIST,
   /* */ CK_STMCOLNM,
-  /* */ CK_STMCOLORD,
+  /* */ CK_STMCOLODN,
   /* */ CK_STREAM,
   /* */ CK_SUBSET,
 
@@ -109,6 +110,7 @@ enum eCK // card kind
   /* */ CK_TABLELIST,
   /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
+  /* */ CK_TBLCOLODN,
   /* */ CK_TERM,
   /* */ CK_TOPOLOGY,
   /* */ CK_TSTPRED,
@@ -158,6 +160,7 @@ static Stz* aCK[]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
   /* */ "CK_EBOUND"_Stz,       // CK_EBOUND
+  /* */ "CK_EXEPRED"_Stz,      // CK_EXEPRED
   /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
@@ -222,7 +225,7 @@ static Stz* aCK[]
   /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
   /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
-  /* */ "CK_STMCOLORD"_Stz,    // CK_STMCOLORD
+  /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
@@ -230,6 +233,7 @@ static Stz* aCK[]
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
+  /* */ "CK_TBLCOLODN"_Stz,    // CK_TBLCOLODN
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
   /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
@@ -279,6 +283,7 @@ static Stz* aCK_short[]
   /* */ "direction"_Stz,       // CK_DIRECTION
 
   /* */ "ebound"_Stz,          // CK_EBOUND
+  /* */ "exePred"_Stz,         // CK_EXEPRED
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprBool"_Stz,        // CK_EXPRBOOL
@@ -343,7 +348,7 @@ static Stz* aCK_short[]
   /* */ "stmCol"_Stz,          // CK_STMCOL
   /* */ "stmColList"_Stz,      // CK_STMCOLLIST
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
-  /* */ "stmColOrd"_Stz,       // CK_STMCOLORD
+  /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "subSet"_Stz,          // CK_SUBSET
 
@@ -351,6 +356,7 @@ static Stz* aCK_short[]
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
+  /* */ "tblColOdn"_Stz,       // CK_TBLCOLODN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "topology"_Stz,        // CK_TOPOLOGY
   /* */ "tstPred"_Stz,         // CK_TSTPRED

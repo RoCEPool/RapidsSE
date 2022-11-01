@@ -52,6 +52,9 @@ namespace BASE
     void vHeatSet(void);
     void vHeatNext(void);
 
+    void vInsertCharsV(i8 i_Line, i8 i_Char, char cChar=' ');
+    void vInsertCharsV(i8 i_Line, i8 i_Char, Stz* szText="  "_Stz);
+
     void vLaneFirst(void);
     void vLaneNext(void);
 

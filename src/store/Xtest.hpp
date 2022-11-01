@@ -32,6 +32,9 @@ namespace STORE
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
+    bool T_bCard_ConvertableToStmColOdn(Card* p_card);
+    bool T_bCard_ConvertableToTblColOdn(Card* p_card);
+
     bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
 
     bool            T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
@@ -51,12 +54,11 @@ namespace STORE
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
 
-    bool T_bTerm_IsIndexColOrdinal(Card_Term* p_term);
-    bool T_bTerm_IsParamOrdinal(Card_Term* p_term);
-    bool T_bTerm_IsStreamColOrdinal(Card_Term* p_term);
-    bool T_bTerm_IsTableColOrdinal(Card_Term* p_term);
-
-    bool T_bValue_IsStreamColOrdinal(Stz* szValue);
+    bool T_bValue_IsIndexColOrdinal(Stz* szValue);  // $In
+    bool T_bValue_IsParamOrdinal(Stz* szValue);     // $Pn
+    bool T_bValue_IsResultOrdinal(Stz* szValue);    // #n
+    bool T_bValue_IsStreamColOrdinal(Stz* szValue); // $n
+    bool T_bValue_IsTableColOrdinal(Stz* szValue);  // $c.n
 
     // must be last
     Footer m_xFooter;

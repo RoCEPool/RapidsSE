@@ -275,7 +275,7 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! C_UNKNOWN != iLineNo && ! m_bPrintXform && ! m_bPrintXformForce)
+  if ((C_UNKNOWN == iLineNo) && (! m_bPrintXform) && (! m_bPrintXformForce))
     return;
 
   for (;;) {
@@ -783,6 +783,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_COPTNPREDLIST:    return G.p_coPtnPredList;
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
     case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
+    case CK_EXEPRED:          return G.p_exePred;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
     case CK_GBYELIST:         return G.p_gbyElist;
@@ -819,13 +820,14 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_STMCOL:           return G.p_stmCol;
     case CK_STMCOLLIST:       return G.p_stmColList;
     case CK_STMCOLNM:         return G.p_stmColNm;
-    case CK_STMCOLORD:        return G.p_stmColOrd;
+    case CK_STMCOLODN:        return G.p_stmColOdn;
     case CK_STREAM:           return G.p_stream;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
     case CK_TABLENM:          return G.p_tableNm;
     case CK_TABLEPTN:         return G.p_tablePtn;
+    case CK_TBLCOLODN:        return G.p_tblColOdn;
     case CK_TERM:             return G.p_term;
     case CK_TOPOLOGY:         return G.p_topology;
     case CK_TSTPRED:          return G.p_tstPred;
@@ -956,6 +958,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_coPtnPredList    = nullptr;
   G.p_crossPtnJoin     = nullptr;
   G.p_crossPtnJoinList = nullptr;
+  G.p_exePred          = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_gbyElist         = nullptr;
@@ -993,13 +996,14 @@ void Xgearing::G_vClearMembers(void)
   G.p_stmCol           = nullptr;
   G.p_stmColList       = nullptr;
   G.p_stmColNm         = nullptr;
-  G.p_stmColOrd        = nullptr;
+  G.p_stmColOdn        = nullptr;
   G.p_stream           = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
   G.p_tableNm          = nullptr;
   G.p_tablePtn         = nullptr;
+  G.p_tblColOdn        = nullptr;
   G.p_term             = nullptr;
   G.p_topology         = nullptr;
   G.p_tstPred          = nullptr;
@@ -1281,6 +1285,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COPTNPREDLIST:    *((Card**)&G.p_coPtnPredList)    = pCard; break;
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
+    case CK_EXEPRED:          *((Card**)&G.p_exePred)          = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
@@ -1317,13 +1322,14 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOL:           *((Card**)&G.p_stmCol)           = pCard; break;
     case CK_STMCOLLIST:       *((Card**)&G.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
-    case CK_STMCOLORD:        *((Card**)&G.p_stmColOrd)        = pCard; break;
+    case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
     case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
+    case CK_TBLCOLODN:        *((Card**)&G.p_tblColOdn)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
     case CK_TSTPRED:          *((Card**)&G.p_tstPred)          = pCard; break;
@@ -1420,7 +1426,7 @@ bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card* pMain = G.pDeck->pGetChild(i_Main);
 
-    if (m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent)) {
+    if ((m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent))) {
       G_vUpdateMember(eCard, m_pCard_resolved, __func__);
       return true;
     }
@@ -1504,9 +1510,9 @@ bool Xgearing::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card* pMain = G.pDeck->pGetChild(i_Main);
 
-    if (m_pCard_resolved = pMain->pFindValueRecursive(eGrandSub,szWithValue,m_pCard_parent)) {
+    if ((m_pCard_resolved = pMain->pFindValueRecursive(eGrandSub,szWithValue,m_pCard_parent))) {
 
-      if (m_pCard_resolved = pMain->pFindParent(m_pCard_resolved)) {
+      if ((m_pCard_resolved = pMain->pFindParent(m_pCard_resolved))) {
         G_vUpdateMember(eCard, m_pCard_resolved, __func__);
         return true;
       }
@@ -1582,6 +1588,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_COPTNPREDLIST:    return "G.p_coPtnPredList"_Stz;
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
     case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
+    case CK_EXEPRED:          return "G.p_exePred"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
@@ -1617,13 +1624,14 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_STMCOL:           return "G.p_stmCol"_Stz;
     case CK_STMCOLLIST:       return "G.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
-    case CK_STMCOLORD:        return "G.p_stmColOrd"_Stz;
+    case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
     case CK_STREAM:           return "G.p_stream"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
     case CK_TABLENM:          return "G.p_tableNm"_Stz;
     case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
+    case CK_TBLCOLODN:        return "G.p_tblColOdn"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
     case CK_TSTPRED:          return "G.p_tstPred"_Stz;

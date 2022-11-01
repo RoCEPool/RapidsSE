@@ -159,6 +159,11 @@ void Board::vPinBanners(Ribbon* pRibbon)
 
   pRibbon->vPutTextRight(szHand, 1);
   pRibbon->vPutTextRight(szXfrom,2);
+
+  s32 sLeftMargin;
+  sLeftMargin.vSprint("%lld "_Stz,m_i_SubBoard);
+  pRibbon->vInsertCharsV(0,0,sLeftMargin);
+  //pRibbon->vDrawV(0,0,"x"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,14 +237,9 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprint("Transform: %02lld of board %s (%s %s [%lld]) Query=%s"_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
                    iTransformNo,
                    m_sBoardNm.szStz(),
-
-                   aBT[m_eBoardType],
-                   aBK[m_eBoard],
-                   m_i_SubBoard,
-
                    m_pOptimiser->szQueryNm());
 
   pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);

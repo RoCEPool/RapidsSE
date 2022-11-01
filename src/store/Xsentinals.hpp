@@ -48,6 +48,7 @@ namespace STORE
     Card_CoPtnPredList *    p_coPtnPredList;
     Card_CrossPtnJoin *     p_crossPtnJoin;
     Card_CrossPtnJoinList * p_crossPtnJoinList;
+    Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
     Card_GbyElist *         p_gbyElist;
@@ -85,13 +86,14 @@ namespace STORE
     Card_StmCol *           p_stmCol;
     Card_StmColList *       p_stmColList;
     Card_StmColNm *         p_stmColNm;
-    Card_StmColOrd *        p_stmColOrd;
+    Card_StmColOdn *        p_stmColOdn;
     Card_Stream *           p_stream;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;
     Card_TableList *        p_tableList;
     Card_TableNm *          p_tableNm;
     Card_TablePtn *         p_tablePtn;
+    Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
     Card_Topology *         p_topology;
     Card_TstPred *          p_tstPred;

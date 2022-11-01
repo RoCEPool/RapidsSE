@@ -155,7 +155,7 @@ void Xreshape::vR_H30_T20_Calc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vStream_OrdinalRange(G.p_stream);
+  M_vStream_OrdinalRange(G.p_stream, G.p_table->cValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -380,7 +380,7 @@ void Xreshape::vR_H55_T26_Corrects_Predicates(void)
 
     i8 iStmColOdn_term = E_iTerm_StreamColOdn(p_term);
     i8 iStmColOdn_corrected = iStmOrdLo_stream + iStmColOdn_term - 1;
-    M_vTerm_Set_StmColOdn(p_term,iStmColOdn_corrected);
+    M_vCard_Set_StreamColOrdinal(p_term, iStmColOdn_corrected);
 
     // TODO: M_vTerm_MarkAs_Changed();
     p_term->vMark1(MARK_CHANGED);
@@ -401,9 +401,9 @@ void Xreshape::vR_H55_T30_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.p_stmColOrd = G.p_stmCol->pSub_stmColOrd();
-  //G.p_stmColOrd->vValue(G.p_stmColOrd->szValue());
-  G.p_param->vAppend(G.p_stmColOrd->pDupCardAndSubCards());
+  G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
+  //G.p_stmColOdn->vValue(G.p_stmColOdn->szValue());
+  G.p_param->vAppend(G.p_stmColOdn->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -978,20 +978,20 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 
   auto bLambdaFn = [this, iOrdLo_stream](Card* pCard)
   {
-    Card_StmColOrd* p_stmColOrd = _pCard_StmColOrd(pCard);
+    Card_StmColOdn* p_stmColOrd = _pCard_StmColOdn(pCard);
     if (! T_bValue_IsStreamColOrdinal(p_stmColOrd->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iStmColOdn = E_iValue_StreamColOdn(p_stmColOrd->szValue());
     i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
-    M_vCard_Set_StmColOdn(p_stmColOrd,iStmColOdn_corrected);
+    M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn_corrected);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_stream->vApplyRecursive(CK_STMCOLORD, bLambdaFn);
+  G.p_stream->vApplyRecursive(CK_STMCOLODN, bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1019,10 +1019,10 @@ void Xreshape::vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! T_bTerm_IsStreamColOrdinal(p_term))
+    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    G_bResolveSubCard(CK_STMCOL,CK_STMCOLORD,p_term->szValue(),i_Main+1);
+    G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, p_term->szValue(), i_Main + 1);
 
     Card_StmColNm* p_stmColNm = G.p_stmCol->pSub_stmColNm();
 

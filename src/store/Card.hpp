@@ -46,6 +46,7 @@ namespace STORE
 
   class Card_EBound;
   class Card_ELIST;
+  class Card_ExePred;
   class Card_Exists;
   class Card_Expr;
 
@@ -97,12 +98,13 @@ namespace STORE
   class Card_StmCol;
   class Card_StmColList;
   class Card_StmColNm;
-  class Card_StmColOrd;
+  class Card_StmColOdn;
   class Card_SubSet;
 
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
+  class Card_TblColOdn;
   class Card_Term;
   class Card_Topology;
   class Card_Type;
@@ -335,10 +337,11 @@ namespace STORE
     Card_Stream*        pSub_stream(void);
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);
-    Card_StmColOrd*     pSub_stmColOrd(void);
+    Card_StmColOdn*     pSub_stmColOdn(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
+    Card_TblColOdn*     pSub_tblColOdn(void);
     Card_Topology*      pSub_topology(void);
     Card_UBound*        pSub_uBound(void);
 

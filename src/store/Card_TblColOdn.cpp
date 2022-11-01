@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_StmColOrd.cpp -- Stream Column Name                                    */
+/* Card_TblColOdn.cpp -- Stream Column Name                                    */
 /*============================================================================*/
 
-#include "Card_StmColOrd.hpp"
+#include "Card_TblColOdn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StmColOrd,CK_STMCOLORD)
-__aNewFunction(Card_StmColOrd,CN_CARD)
-__vDeleteFunction(Card_StmColOrd,CN_CARD)
+__pCastFunction_Card(STORE, Card_TblColOdn, CK_TBLCOLODN)
+__aNewFunction(Card_TblColOdn, CN_CARD)
+__vDeleteFunction(Card_TblColOdn, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StmColOrd::Card_StmColOrd(void)
-: Card(CK_STMCOLORD)
+Card_TblColOdn::Card_TblColOdn(void)
+: Card(CK_TBLCOLODN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -29,7 +29,7 @@ Card_StmColOrd::Card_StmColOrd(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StmColOrd::~Card_StmColOrd(void) noexcept(false)
+Card_TblColOdn::~Card_TblColOdn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -41,6 +41,7 @@
 #include "Card_Direction.hpp"
 
 #include "Card_EBound.hpp"
+#include "Card_ExePred.hpp"
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 
@@ -99,7 +100,7 @@
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StmColNm.hpp"
-#include "Card_StmColOrd.hpp"
+#include "Card_StmColOdn.hpp"
 #include "Card_Stream.hpp"
 #include "Card_SubSet.hpp"
 
@@ -107,6 +108,7 @@
 #include "Card_TableList.hpp"
 #include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"
+#include "Card_TblColOdn.hpp"
 #include "Card_Term.hpp"
 #include "Card_Topology.hpp"
 #include "Card_TstPred.hpp"

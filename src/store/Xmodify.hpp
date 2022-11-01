@@ -34,7 +34,10 @@ namespace STORE
     void M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter);
 
     void M_vCard_Mark_Changed(Card* pCard);
-    void M_vCard_Set_StmColOdn(Card* p_card, i8 iStmColOrd);
+    void M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn);
+    void M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn);
+    void M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn);
+    void M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 
@@ -50,14 +53,13 @@ namespace STORE
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Add_indexList(Card_Scan* p_scan);
 
-    void M_vStream_OrdinalRange(Card_Stream* p_stream);
+    void M_vStream_OrdinalRange(Card_Stream* p_stream, char cTblSyn);
     void M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
     void M_vTable_Add_IndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
-    void M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd);
 
     // generalised drill down
 
