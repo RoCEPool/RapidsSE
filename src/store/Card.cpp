@@ -2138,13 +2138,13 @@ Card_StmColNm* Card::pSub_stmColNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StmColOrd.hpp"
-Card_StmColOrd* Card::pSub_stmColOrd(void)
+#include "Card_StmColOdn.hpp"
+Card_StmColOdn* Card::pSub_stmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StmColOrd* p_streamColOrd =
-      _pCard_StmColOrd(pFindSubCard(CK_STMCOLORD));
+  Card_StmColOdn* p_streamColOrd =
+      _pCard_StmColOdn(pFindSubCard(CK_STMCOLODN));
   return p_streamColOrd;
 }
 

@@ -174,7 +174,7 @@ void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
     if (! p_param)
       return false;
 
-    Card_StmColOrd* p_stmColOrd = p_param->pSub_stmColOrd();
+    Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
     M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
@@ -536,7 +536,7 @@ void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
   CardIter xCI(p_stream->pSub_stmColList());
   i8 iOrdinal = m_iOrdLo;
   while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
-    Card_StmColOrd* p_stmColOrd = new Card_StmColOrd;
+    Card_StmColOdn* p_stmColOrd = new Card_StmColOdn;
     p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
     p_stmCol->vAppend(p_stmColOrd);
     iOrdinal++;

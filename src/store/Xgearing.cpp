@@ -820,7 +820,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_STMCOL:           return G.p_stmCol;
     case CK_STMCOLLIST:       return G.p_stmColList;
     case CK_STMCOLNM:         return G.p_stmColNm;
-    case CK_STMCOLORD:        return G.p_stmColOrd;
+    case CK_STMCOLODN:        return G.p_stmColOdn;
     case CK_STREAM:           return G.p_stream;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
@@ -995,7 +995,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_stmCol           = nullptr;
   G.p_stmColList       = nullptr;
   G.p_stmColNm         = nullptr;
-  G.p_stmColOrd        = nullptr;
+  G.p_stmColOdn        = nullptr;
   G.p_stream           = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
@@ -1320,7 +1320,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOL:           *((Card**)&G.p_stmCol)           = pCard; break;
     case CK_STMCOLLIST:       *((Card**)&G.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
-    case CK_STMCOLORD:        *((Card**)&G.p_stmColOrd)        = pCard; break;
+    case CK_STMCOLODN: *((Card**)&G.p_stmColOdn)        = pCard; break;
     case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
@@ -1621,7 +1621,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_STMCOL:           return "G.p_stmCol"_Stz;
     case CK_STMCOLLIST:       return "G.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
-    case CK_STMCOLORD:        return "G.p_stmColOrd"_Stz;
+    case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
     case CK_STREAM:           return "G.p_stream"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
