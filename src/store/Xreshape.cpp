@@ -380,7 +380,7 @@ void Xreshape::vR_H55_T26_Corrects_Predicates(void)
 
     i8 iStmColOdn_term = E_iTerm_StreamColOdn(p_term);
     i8 iStmColOdn_corrected = iStmOrdLo_stream + iStmColOdn_term - 1;
-    M_vTerm_Set_StmColOdn(p_term,iStmColOdn_corrected);
+    M_vCard_Set_StreamColOrdinal(p_term, iStmColOdn_corrected);
 
     // TODO: M_vTerm_MarkAs_Changed();
     p_term->vMark1(MARK_CHANGED);

@@ -534,12 +534,16 @@ void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream)
   p_stream->vMark1(MARK_CHANGED);
 
   CardIter xCI(p_stream->pSub_stmColList());
-  i8 iOrdinal = m_iOrdLo;
+  i8 iTblColOdn = 1;
+  i8 iStmColOdn = m_iOrdLo;
   while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
     Card_StmColOdn* p_stmColOrd = new Card_StmColOdn;
-    p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
+    //p_stmColOrd->vValueSprint("$%lld"_Stz, iStmColOdn);
+    M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn);
     p_stmCol->vAppend(p_stmColOrd);
-    iOrdinal++;
+
+    iStmColOdn++;
+
   }
 
   m_iOrdLo = m_iOrdHi + 1;
@@ -622,16 +626,6 @@ void Xmodify::M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList*
 
   p_term->vMark1('I');
   p_term->vMark2(i_IdxCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  p_term->vValueSprint("$%lld"_Stz,iStmColOrd);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -60,7 +60,6 @@ namespace STORE
     void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
-    void M_vTerm_Set_StmColOdn(Card_Term* p_term, i8 iStmColOrd);
 
     // generalised drill down
 
