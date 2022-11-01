@@ -82,6 +82,11 @@ INCLUDE 'query6.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running tpch query 7...';
+INCLUDE 'query6.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running tpch query 8...';
 INCLUDE 'query8.test';
 INCLUDE 'sleep.test';
