@@ -16,7 +16,7 @@ bool STORE::bOpt_default(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct
 {
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vFormDefault();
+  pOptimiser->pCardCtl()->vUseDefault();
 
   return true;
 }
@@ -39,7 +39,7 @@ bool STORE::bOpt_expanded(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
 {
   reOptAct = OA_REPRINT_BOARD;
 
-  //pOptimiser->pCardCtl()->vFormExpanded();
+  //pOptimiser->pCardCtl()->vUseExpanded();
   pOptimiser->pCardCtl()->vSetSubsPrintEverything();
 
   return true;
@@ -97,7 +97,7 @@ bool STORE::bOpt_longer(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vFormLonger();
+  pOptimiser->pCardCtl()->vUseLonger();
 
   return true;
 }
@@ -120,7 +120,7 @@ bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct
 {
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vFormShorter();
+  pOptimiser->pCardCtl()->vUseShorter();
 
   return true;
 }

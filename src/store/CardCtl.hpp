@@ -35,6 +35,8 @@ namespace STORE
     _CardCtl m_xaCardCtl_expanded[CK_ENUMS];
     _CardCtl m_xaCardCtl_longer[CK_ENUMS];
     _CardCtl m_xaCardCtl_shorter[CK_ENUMS];
+    _CardCtl m_xaCardCtl_xform[CK_ENUMS];
+    _CardCtl m_xaCardCtl_xhand[CK_ENUMS];
 
     _CardCtl m_xaCardCtl_save[CK_ENUMS];
 
@@ -48,11 +50,6 @@ namespace STORE
   
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
-
-    void vFormDefault(void);
-    void vFormExpanded(void);
-    void vFormLonger(void);
-    void vFormShorter(void);
 
     bool bNextHoriz(i8 i_Card);
     void vNextHorizon(i8 i_Card, bool bNextHoriz);
@@ -82,15 +79,25 @@ namespace STORE
 
     void vReset(void);
     void vRestore(void);
-    void vSave(void);
 
-    void vSetDefaultForm(void);
-    void vSetExpandedForm(void);
-    void vSetLongerForm(void);
-    void vSetShorterForm(void);
+    void vSave(void);
+    void vSaveDefault(void);
+    void vSaveExpanded(void);
+    void vSaveLonger(void);
+    void vSaveShorter(void);
+    void vSaveXform(void);
+    void vSaveXhand(void);
+
     void vSetSubsPrintAll(void);
     void vSetSubsPrintEverything(void);
     void vSetSubsPrintNone(void);
+
+    void vUseDefault(void);
+    void vUseExpanded(void);
+    void vUseLonger(void);
+    void vUseShorter(void);
+    void vUseXform(void);
+    void vUseXhand(void);
 
   protected:
     Footer* aFooter(void);
