@@ -126,12 +126,12 @@ void Transformer::vHand_10_CondenseInfo(bool bPrintHand, bool bPrintXform, bool 
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vH10_T10_Delete_Redundant_stages(bPrintXform, bTrace);
-    m_pTransforms->vH10_T15_Hide_Ignorable_stages(bPrintXform, bTrace);
-    m_pTransforms->vH10_T20_Delete_All_absJoin(bPrintXform, bTrace);
-    m_pTransforms->vH10_T30_Delete_All_combined(bPrintXform, bTrace);
-    m_pTransforms->vH10_T40_Delete_All_send(bPrintXform, bTrace);
-    m_pTransforms->vH10_T50_Cull_scan_Leaving_table(bPrintXform, bTrace);
+    m_pTransforms->vH10_T10_Delete_Redundant_stages();
+    m_pTransforms->vH10_T15_Hide_Ignorable_stages();
+    m_pTransforms->vH10_T20_Delete_All_absJoin();
+    m_pTransforms->vH10_T30_Delete_All_combined();
+    m_pTransforms->vH10_T40_Delete_All_send();
+    m_pTransforms->vH10_T50_Cull_scan_Leaving_table();
   }
 
   vEndHand();
@@ -153,8 +153,8 @@ void Transformer::vHand_20_TableAnalysis(bool bPrintHand, bool bPrintXform, bool
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table(bPrintXform, bTrace);
-    m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table(bPrintXform, bTrace);
+    m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table();
+    m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table();
   }
 
   vEndHand();
@@ -176,8 +176,8 @@ void Transformer::vHand_30_StreamAnalysis(bool bPrintHand, bool bPrintXform, boo
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vH30_T10_Add_stream_UnderAll_table(bPrintXform, bTrace);
-    m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
+    m_pTransforms->vH30_T10_Add_stream_UnderAll_table();
+    m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream();
   }
 
   vEndHand();
@@ -199,10 +199,10 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_boolCalc(bPrintXform, bTrace);
-    m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table(bPrintXform, bTrace);
-    m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter(bPrintXform, bTrace);
-    m_pTransforms->vH40_T40_Delete_Empty_where(bPrintXform, bTrace);
+    m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_boolCalc();
+    m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table();
+    m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter();
+    m_pTransforms->vH40_T40_Delete_Empty_where();
   }
 
   vEndHand();
@@ -218,9 +218,9 @@ void Transformer::vHand_50_FlattenCall(bool bPrintHand, bool bPrintXform, bool b
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vH50_T10_Extract_subSet_Of_call(bPrintXform, bTrace);
-  m_pTransforms->vH50_T20_Copy_Called_Subset(bPrintXform, bTrace);
-  m_pTransforms->vH50_T30(bPrintXform, bTrace);
+  m_pTransforms->vH50_T10_Extract_subSet_Of_call();
+  m_pTransforms->vH50_T20_Copy_Called_Subset();
+  m_pTransforms->vH50_T30();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE);
@@ -236,16 +236,16 @@ void Transformer::vHand_55_FlattenExists(bool bPrintHand, bool bPrintXform, bool
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vH55_T10_Rework_Exists_SubQueries(bPrintXform, bTrace);
-  m_pTransforms->vH55_T20_Copy_Up_SubQueries(bPrintXform, bTrace);
+  m_pTransforms->vH55_T10_Rework_Exists_SubQueries();
+  m_pTransforms->vH55_T20_Copy_Up_SubQueries();
 
-  m_pTransforms->vH55_T24_Correct_Streams(bPrintXform, bTrace);
-  m_pTransforms->vH55_T26_Correct_Predicates(bPrintXform, bTrace);
+  m_pTransforms->vH55_T24_Correct_Streams();
+  m_pTransforms->vH55_T26_Correct_Predicates();
 
-  m_pTransforms->vH55_T30_Resolve_Parameter_Linkage(bPrintXform, bTrace);
-  m_pTransforms->vH55_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
-  m_pTransforms->vH55_T50_Cull_Exists_Call(bPrintXform, bTrace);
-  m_pTransforms->vH55_T60_Delete_Empty_where(bPrintXform, bTrace);
+  m_pTransforms->vH55_T30_Resolve_Parameter_Linkage();
+  m_pTransforms->vH55_T40_Resolve_Parameter_Terms();
+  m_pTransforms->vH55_T50_Cull_Exists_Call();
+  m_pTransforms->vH55_T60_Delete_Empty_where();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -260,11 +260,11 @@ void Transformer::vHand_60_IndexJoin(bool bPrintHand, bool bPrintXform, bool bTr
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bPrintXform, bTrace);
-  m_pTransforms->vH60_T20_Affix_idxColOdn_ToAll_idxCol(bPrintXform, bTrace);
-  m_pTransforms->vH60_T30_Add_bounds_UnderAllFiltered_table(bPrintXform, bTrace);
-  m_pTransforms->vH60_T40_Cull_pred_MovedTo_table_bounds(bPrintXform, bTrace);
-  m_pTransforms->vH60_T50_Delete_Empty_table_filter(bPrintXform, bTrace);
+  m_pTransforms->vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table();
+  m_pTransforms->vH60_T20_Affix_idxColOdn_ToAll_idxCol();
+  m_pTransforms->vH60_T30_Add_bounds_UnderAllFiltered_table();
+  m_pTransforms->vH60_T40_Cull_pred_MovedTo_table_bounds();
+  m_pTransforms->vH60_T50_Delete_Empty_table_filter();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -284,26 +284,26 @@ void Transformer::vHand_70_JoinOrdering(bool bPrintHand, bool bPrintXform, bool 
   // PARTITION BOARD
 
   //
-  m_pTransforms->vH70_T00_Extract_tableList_From_queryBoard(bPrintXform, bTrace);
+  m_pTransforms->vH70_T00_Extract_tableList_From_queryBoard();
 
   // add <term/<columnRef> to all ordinal <term>
   //m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
 
-  m_pTransforms->vH70_T10_Extract_joinPredList(bPrintXform, bTrace);
-  m_pTransforms->vH70_T20_Compute_coPtnPredList(bPrintXform, bTrace);
-  m_pTransforms->vH70_T30_Compute_coPtnJoinList(bPrintXform, bTrace);
-  m_pTransforms->vH70_T40_Compute_crossPtnJoinList(bPrintXform, bTrace);
-  m_pTransforms->vH70_T50_Compute_ptndJoinSet(bPrintXform, bTrace);
+  m_pTransforms->vH70_T10_Extract_joinPredList();
+  m_pTransforms->vH70_T20_Compute_coPtnPredList();
+  m_pTransforms->vH70_T30_Compute_coPtnJoinList();
+  m_pTransforms->vH70_T40_Compute_crossPtnJoinList();
+  m_pTransforms->vH70_T50_Compute_ptndJoinSet();
 
-  m_pTransforms->vH70_T60_Copy_ptndJoinSet(bPrintXform, bTrace);
-  m_pTransforms->vH70_T70_Generate_ptndPermutations(bPrintXform, bTrace);
-  m_pTransforms->vH70_T80_Remove_invalidPermutations(bPrintXform, bTrace);
+  m_pTransforms->vH70_T60_Copy_ptndJoinSet();
+  m_pTransforms->vH70_T70_Generate_ptndPermutations();
+  m_pTransforms->vH70_T80_Remove_invalidPermutations();
 
-  m_pTransforms->vH70_T90_Setup_costEst(bPrintXform, bTrace);
-  m_pTransforms->vH70_T92_Estimate_ptndJoins(bPrintXform, bTrace);
-  m_pTransforms->vH70_T94_Estimate_network(bPrintXform, bTrace);
-  m_pTransforms->vH70_T96_Estimate_joinOrder(bPrintXform, bTrace);
-  m_pTransforms->vH70_T98_Extract_joinOrderSeq(bPrintXform, bTrace);
+  m_pTransforms->vH70_T90_Setup_costEst();
+  m_pTransforms->vH70_T92_Estimate_ptndJoins();
+  m_pTransforms->vH70_T94_Estimate_network();
+  m_pTransforms->vH70_T96_Estimate_joinOrder();
+  m_pTransforms->vH70_T98_Extract_joinOrderSeq();
 */
 
   vEndHand();
@@ -319,10 +319,10 @@ void Transformer::vHand_75_EE_operators(bool bPrintHand, bool bPrintXform, bool 
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vH75_T10_Convert_table_To_EEop                  (bPrintXform, bTrace);
-  m_pTransforms->vH75_T20_Convert_keyExists_filter_To_bounds     (bPrintXform, bTrace);
-  m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream(bPrintXform, bTrace);
-  m_pTransforms->vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(bPrintXform, bTrace);
+  m_pTransforms->vH75_T10_Convert_table_To_EEop                  ();
+  m_pTransforms->vH75_T20_Convert_keyExists_filter_To_bounds     ();
+  m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
+  m_pTransforms->vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -347,13 +347,13 @@ void Transformer::vHand_80_IndexScan(bool bPrintHand, bool bPrintXform, bool bTr
  *
  */
 
-  m_pTransforms->vH80_T10_Add_Scratch_indexList_Under_scan(bPrintXform, bTrace);
-  m_pTransforms->vH80_T20_Affix_idxColOdn_ToAll_idxCol(bPrintXform, bTrace);
-  m_pTransforms->vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(bPrintXform, bTrace);
-  m_pTransforms->vH80_T40_Mark_IndexMatchOf_scan_filter_terms(bPrintXform, bTrace);
-  m_pTransforms->vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(bPrintXform, bTrace);
-  m_pTransforms->vH80_T60_Cull_Marked_filter_cmpPred(bPrintXform, bTrace);
-  m_pTransforms->vH80_T70_Promote_scan_To_indexScan(bPrintXform, bTrace);
+  m_pTransforms->vH80_T10_Add_Scratch_indexList_Under_scan();
+  m_pTransforms->vH80_T20_Affix_idxColOdn_ToAll_idxCol();
+  m_pTransforms->vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred();
+  m_pTransforms->vH80_T40_Mark_IndexMatchOf_scan_filter_terms();
+  m_pTransforms->vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
+  m_pTransforms->vH80_T60_Cull_Marked_filter_cmpPred();
+  m_pTransforms->vH80_T70_Promote_scan_To_indexScan();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -368,7 +368,7 @@ void Transformer::vHand_90_StreamOrdering(bool bPrintHand, bool bPrintXform, boo
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vH90_T10_Remove_sort_IfSameAs_gby(bPrintXform, bTrace);
+  m_pTransforms->vH90_T10_Remove_sort_IfSameAs_gby();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -383,7 +383,7 @@ void Transformer::vHand_A0_FilterRefinement(bool bPrintHand, bool bPrintXform, b
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vHA0_T10_Individuate_filter(bPrintXform, bTrace);
+  m_pTransforms->vHA0_T10_Individuate_filter();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -398,8 +398,8 @@ void Transformer::vHand_Z0_RestatePipeline(bool bPrintHand, bool bPrintXform, bo
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vHZ0_T10_Reinstate_stages(bPrintXform, bTrace);
-  m_pTransforms->vHZ0_T20_Reinstate_combined(bPrintXform, bTrace);
+  m_pTransforms->vHZ0_T10_Reinstate_stages();
+  m_pTransforms->vHZ0_T20_Reinstate_combined();
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
