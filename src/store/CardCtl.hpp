@@ -29,6 +29,9 @@ namespace STORE
   class CardCtl : public Object
   {
   protected:
+    b8 m_bCued;
+    b8 m_bCueDisabled;
+
     _CardCtl m_xaCardCtl[CK_ENUMS];
 
     _CardCtl m_xaCardCtl_default[CK_ENUMS];
@@ -50,6 +53,11 @@ namespace STORE
   
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
+
+    bool bCued(void);
+    void vCued(bool bCued);
+    bool bCueDisabled(void);
+    void vCueDisabled(bool bCueDisabled);
 
     bool bNextHoriz(i8 i_Card);
     void vNextHorizon(i8 i_Card, bool bNextHoriz);

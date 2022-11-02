@@ -21,7 +21,10 @@ CardCtl::CardCtl(void)
 : Object(CN_CARDCTL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-  
+
+  m_bCued = false;
+  m_bCueDisabled = false;
+
   vReset();
 
   vSave();
@@ -59,6 +62,47 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bCued(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  return m_bCued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vCued(bool bCued)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_bCued = bCued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bCueDisabled(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  return m_bCueDisabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vCueDisabled(bool bCueDisabled)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_bCueDisabled = bCueDisabled;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get bNextHoriz for card                                                    */

@@ -30,9 +30,6 @@ namespace STORE
     bool        m_bPrintHand;
     bool        m_bPrintXform;
     bool        m_bPrintXformForce;
-    bool        m_bInteractive;
-    b8          m_bBeenCued;
-    b8          m_bCueingDisabled;
 
 
     PermGen*    m_pPermGen;

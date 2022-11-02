@@ -417,6 +417,7 @@ void Transformer::vEndHand(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vTransformation("n/a"_Stz);
+  m_pCardCtl->vUseXhand();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,6 +432,7 @@ void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* 
   m_pTransforms->vUsingBoard(eBoard, i_SubBoard);
 
   m_pBench->vClearMarks();
+
 }
 
 /*----------------------------------------------------------------------------*/

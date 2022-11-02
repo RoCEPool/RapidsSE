@@ -32,9 +32,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bPrintXformForce = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
-  m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
-  m_bBeenCued = false;
-  m_bCueingDisabled = false;
 
   m_pPermGen   = nullptr;
 
@@ -108,7 +105,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
 
   TokenVec* pTknVec = nullptr;
 
-  if (m_bCueingDisabled)
+  if (m_pCardCtl->bCueDisabled())
     return OA_CONTINUE_TRANSFORMING;
 
   s256 sPrompt;
@@ -123,7 +120,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
     sPrompt.vCatSprint(" [%lld]"_Stz,iLineNo);
 
   if (! m_bPrintXformForce) {
-    if (!m_bBeenCued && AM::JOB::bHasTag(C_GLEAN_CUE_FROM)) {
+    if (!m_pCardCtl->bCued() && AM::JOB::bHasTag(C_GLEAN_CUE_FROM)) {
       Stz *szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
       if (szTagCue->bSame(szHand) && szTransformation) {
         printf("%s\n", sPrompt.azChar());
@@ -138,7 +135,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
 
   sPrompt.vConcat(" >> "_Stz);
 
-  m_bBeenCued = true;
+  m_pCardCtl->vCued(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -185,7 +182,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
     goto L_Input;
 
   if (OA_DISABLE_CUEING == eOptAct)
-    m_bCueingDisabled = true;
+    m_pCardCtl->vCueDisabled(true);
 
   return eOptAct;
 }
@@ -379,6 +376,8 @@ void Xgearing::vTransform(const char* azTransformation,
   m_bPrintXform = bPrintTransformation;
 
   G.pBoard->vTransformNoInc();
+
+  m_pCardCtl->vUseXform();
 
   G.xBI.vRestart();
 }
