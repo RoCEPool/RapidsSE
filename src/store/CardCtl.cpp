@@ -64,6 +64,32 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* print bench ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bBenchPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print board ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bBoardPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cued                                                                   */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bCued(void)
@@ -101,6 +127,40 @@ void CardCtl::vCueDisabled(bool bCueDisabled)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_bCueDisabled = bCueDisabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (szXhand && szXform)
+    sPrompt->vSprint("%s :: %s"_Stz, szXhand, szXform);
+  else if (szXhand)
+    sPrompt->vSprint("%s"_Stz, szXhand, szXform);
+  else
+    sPrompt->vSprint(""_Stz);
+
+  if (m_bCueDisabled)
+    return false;
+
+  if (m_bCued)
+    return true;
+
+  if (! AM::JOB::bHasTag(C_GLEAN_CUE_FROM))
+    return false;
+
+  Stz* szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
+  vTrace("cue %s : %s : %s\n"_Stz,szTagCue,szXhand,szXform);
+  if (   (szTagCue->bSame(szXhand) && szXform->bSame("n/a"_Stz))
+      || (szXform && szTagCue->bSame(szXform))) {
+    m_bCued = true;
+    return true;
+  }
+
+  return false;
 }
 
 

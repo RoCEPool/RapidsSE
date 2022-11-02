@@ -435,32 +435,6 @@ void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* 
 
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Transformer::bPrintBench(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
-
-  /*
-  Stz* szHand = m_pTransforms->szHand();
-
-  if (AM::JOB::bHasTag(C_GLEAN_CUE_FROM_Stz)) {
-    Stz* szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM_Stz);
-    if (szTagCue->bSame((Stz*)szHand))
-      return true;
-  }
-
-  bool bPrintXform = m_pTransforms->bPrintXform();
-  
-  return bPrintXform;
-  */
-
-  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
-    return true;
-
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -469,8 +443,7 @@ void Transformer::vPrintBench(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(eBoard,i_SubBoard);
+  m_pTransforms->vPrintBench(eBoard,i_SubBoard);
 }
 
 /*============================================================================*/

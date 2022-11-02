@@ -248,6 +248,11 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  if (! m_pCardCtl->bBenchPrint())
+    return;
+
+  s256 sPrompt;
+
   for (;;) {
     if (C_UNKNOWN != i_SubBoard) {
       Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
@@ -258,6 +263,11 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
         Board *pBoard = m_pBench->pGetBoard(eBoard, i_Sub);
         pBoard->vPrintBoard(szHand());
       }
+    }
+
+    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation,sPrompt)) {
+      printf("%s\n", sPrompt.azChar());
+      break;
     }
 
     if (OA_REPRINT_BOARD != eCueUser(szHand()))
@@ -272,16 +282,20 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((C_UNKNOWN == iLineNo) && (! m_bPrintXform) && (! m_bPrintXformForce))
+  if (! m_pCardCtl->bBenchPrint())
     return;
+
+  s256 sPrompt;
 
   for (;;) {
     G.pBoard->vPrintBoard(szHand(),
                           szTransformation(),
                           szDescription());
 
-    if (! bCue)
+    if (! m_pCardCtl->bCueUser(szHand(),szTransformation(),sPrompt)) {
+      printf("%s\n", sPrompt.azChar());
       break;
+    }
 
     if (OA_REPRINT_BOARD != eCueUser(szHand(),
                                      szTransformation(),
