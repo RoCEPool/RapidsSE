@@ -16,9 +16,9 @@ procText:
     stage stageA on origin :
         start
       | recvWL
-//      | adaptorWL
-//      | sendWL
-      | eatAll
+      | adaptorWL
+      | sendWL
+      | sink    // ?? Do I need this ??
       | stageA
 
   end

@@ -475,6 +475,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
+  { CN_PAYLOADLIST,              sizeof(PayloadList),        HT_T_TINY    ,FILL },
   { CN_PAYLOADOBJ,               sizeof(WLP::PayloadObj),    HT_T_LARGE   ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },

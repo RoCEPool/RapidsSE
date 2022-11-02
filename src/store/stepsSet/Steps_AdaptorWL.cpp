@@ -10,66 +10,32 @@
 
 #include "LogicUnit.hpp"
 //#include "AdaptorWL.hpp"
+#include "PayloadObj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AdaptorWL(void)
 {
-  vAddStep("AdaptorWL[].processEventA"_Stz,  &Step::vAdaptorProcessEventA);
-  vAddStep("AdaptorWL[].processEventB"_Stz,  &Step::vAdaptorProcessEventB);
-  vAddStep("AdaptorWL[].action1"_Stz,  &Step::vAdaptorWLAction1);
-  vAddStep("AdaptorWL[].action2"_Stz,  &Step::vAdaptorWLAction2);
-  
-  vAddStep("AdaptorWL[].delete"_Stz,   &Step::vAdaptorWLDelete);
   vAddStep("AdaptorWL[].new"_Stz,      &Step::vAdaptorWLNew);
+  vAddStep("AdaptorWL[].delete"_Stz,   &Step::vAdaptorWLDelete);
+
+  vAddStep("AdaptorWL[].decodePayload"_Stz,     &Step::vAdaptorWLDecodePayload);
+  vAddStep("AdaptorWL[].processWLMsg"_Stz, &Step::vAdaptorWLProcessWLMsg);
+  vAddStep("AdaptorWL[].keepProcessingMsg@"_Stz,&Step::vAdaptorWLKeepProcessingMsgFetch);
+  vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz, &Step::vAdaptorWLHasPayloadToSendFetch);
+  vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz, &Step::vAdaptorWLNextPayloadToSendFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].processEventA -- do wireline adaptor action A                  */
+/* adaptorWL[].new -- create new wire line adaptor                            */
 /*----------------------------------------------------------------------------*/
-void Step::vAdaptorProcessEventA(void)
+void Step::vAdaptorWLNew(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpAdaptorWL->vProcessEventA();
-  
-  EXIT();
-}
+  m_pLogicUnit->m_xpAdaptorWL = new AdaptorWL;
 
-/*----------------------------------------------------------------------------*/
-/* adaptorWL[].processEventB -- do wireline adaptor action B                  */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorProcessEventB(void)
-{
-  ENTRY();
-
-  //m_pLogicUnit->m_xpAdaptorWL->vProcessEventB();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* adaptorWL[].action1 -- do wireline adaptor action 1                        */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLAction1(void)
-{
-  ENTRY();
-
-  m_pLogicUnit->m_xpAdaptorWL->vAction1();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* adaptorWL[].action2 -- do wireline adaptor action 2                        */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLAction2(void)
-{
-  ENTRY();
-
-  m_pLogicUnit->m_xpAdaptorWL->vAction2();
-  
   EXIT();
 }
 
@@ -81,18 +47,87 @@ void Step::vAdaptorWLDelete(void)
   ENTRY();
 
   m_pLogicUnit->m_xpAdaptorWL.vDeleteComponent();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].decodePayload -- Decode a PayloadObj to a wireline message     */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLDecodePayload(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
+
+  // TODO: How do we get any serialised errors and put them on the stack?
+  pAdaptorWL->vDecodePayload(pPayloadObj);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].new -- create new wire line adaptor                            */
+/* adaptorWL[].processWLMessage -- Process a decoded wireline message         */
 /*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLNew(void)
+void Step::vAdaptorWLProcessWLMsg(void)
 {
   ENTRY();
-          
-  m_pLogicUnit->m_xpAdaptorWL = new AdaptorWL;
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  pAdaptorWL->vProcessWLMsg();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].keepProcessingMsg@ -- keep processing current WL message?      */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLKeepProcessingMsgFetch(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  m_pDataStack->vPushBol(pAdaptorWL->bKeepProcessingMsg());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].hasPayloadToSend@ -- True if there is a PayloadObj on the stack*/
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLHasPayloadToSendFetch(void)
+{
+  ENTRY();
+
+  if (m_pDataStack->nValues() == 0) {
+    m_pDataStack->vPushBol(0);
+    return;
+  }
+
+  Object* pObject = m_pDataStack->aPeekItem(0)->pObj();
+  m_pDataStack->vPushBol(CN_PAYLOADOBJ == pObject->eGetClassNo() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].nextPayloadToSend@ -- Puts next payload to send on the stack   */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLNextPayloadToSendFetch(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  ASSERT(pAdaptorWL->bHasPayloadToSend());
+
+  WLP::PayloadObj* pPayload = pAdaptorWL->pNextPayloadToSend();
+  ASSERT(pPayload);
+  ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
+
+  m_pDataStack->vPushPtr(pPayload);
 
   EXIT();
 }

@@ -6,13 +6,20 @@
 #include "BASE.h"
 
 #include "ApiHelper.hpp"
+#include "PayloadObj.hpp"
 
 namespace STORE
 {
+  typedef ListExo_t<CN_PAYLOADLIST, WLP::PayloadObj> PayloadList;
+
   class AdaptorWL : public Object
                   , public ApiHelper
   {
   private:
+    // Current State
+    // Current decoded message
+    PayloadList* m_pPayloadSendList;
+    bool m_bContinueProcessingMsg;
    
     // must be last
     Footer m_xFooter;
@@ -26,9 +33,11 @@ namespace STORE
   
     static void vRepair(Object* pObject);
 
-    void vProcessEventA(void);
-    void vAction1(void);
-    void vAction2(void);
+    void vDecodePayload(WLP::PayloadObj* pPayload);
+    void vProcessWLMsg(void);
+    bool bKeepProcessingMsg(void);
+    bool bHasPayloadToSend(void);
+    WLP::PayloadObj* pNextPayloadToSend(void);
 
   private:
   

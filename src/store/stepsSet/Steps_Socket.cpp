@@ -42,6 +42,8 @@
 #include "MY.hpp"
 #include "Op.hpp"
 
+#include "PayloadObj.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -63,12 +65,13 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
-  vAddStep("Socket[].object@\\clear"_Stz, &Step::vSocketObjectFetchClear);
-  vAddStep("Socket[].object.delete"_Stz, &Step::vSocketObjectDelete);
+  vAddStep("Socket[].object@\\clear"_Stz,   &Step::vSocketObjectFetchClear);
+  vAddStep("Socket[].object.delete"_Stz,    &Step::vSocketObjectDelete);
   vAddStep("Socket[].object.isNotNull"_Stz, &Step::vSocketObjectIsNotNull);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
   vAddStep("Socket[].recvWLMsg"_Stz, &Step::vSocketRecvWLMsg);
   vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
+  vAddStep("Socket[].sendWLMsg"_Stz,&Step::vSocketSendWLMsg);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
@@ -406,6 +409,28 @@ void Step::vSocketSendObject(void)
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
   bool bResult = pSocket->bSendObject(pObject,oSysCall,SY_NONE);
+
+  m_pDataStack->vPushInt(bResult);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].sendWLMsg: send wireline message via a socket                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSendWLMsg(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayload = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
+
+  SysCall oSysCall;
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  bool bResult = pSocket->bSendWLMsg(pPayload,oSysCall,SY_NONE);
 
   m_pDataStack->vPushInt(bResult);
 

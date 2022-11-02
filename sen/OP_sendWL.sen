@@ -25,8 +25,14 @@
   // We expect to see a PayloadObj
   pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
-  pPayloadObj Socket[].sendWLMsg    // TODO
-  pPayloadObj payload::delete
+  pPayloadObj Socket[].sendWLMsg not if
+    Socket[].clientAddr@  "Error sending wireline message to client at %v" .printf
+    Socket[].close
+    ErrorMarker[].newErrorMarker
+    ErrorMarker[].pipeOut
+  then
+
+  pPayloadObj payloadObj::delete
 
   true
   //stk
@@ -36,37 +42,46 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_CANCELLING operand                                        */
-/*----------------------------------------------------------------------------*/
-: sendWL_CANCELLING \handler
-
-  PipeIn[].sendTo discard
-
-  PipeIn[].drain
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING operand                                          */
 /*----------------------------------------------------------------------------*/
 : sendWL_CLEANING \handler
 
+  "in sendWL_CLEANING" .
+
+
+  Socket[].close
+  Socket[].object.isNotNull if
+    Socket[].object.delete
+  then
+
+  Socket[].delete
+
   LogicUnit[].cleanup
-//PipeIn[].sendTo
+  PipeIn[].pipeOut
+  true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_EXITING operand                                           */
-/*----------------------------------------------------------------------------*/
-: sendWL_EXITING \handler
+///*----------------------------------------------------------------------------*/
+///* handler for EV_M_CANCELLING operand                                        */
+///*----------------------------------------------------------------------------*/
+//: sendWL_CANCELLING \handler
+//
+//  PipeIn[].drain
+//
+//  true
+//;
 
-//PipeIn[].sendTo discard
-
-  [op].ackJobTask
-
-  false // calling op_loop exits
-;
+///*----------------------------------------------------------------------------*/
+///* handler for EV_M_EXITING operand                                           */
+///*----------------------------------------------------------------------------*/
+//: sendWL_EXITING \handler
+//
+////PipeIn[].sendTo discard
+//
+//  [op].ackJobTask
+//
+//  false // calling op_loop exits
+//;
 
 /*----------------------------------------------------------------------------*/
 /* execute for send request                           (on node where spawned) */
@@ -86,11 +101,11 @@
 //find: PipeIn[].sendTo [op].handlerAll!
 
   find: sendWL_StartMarker EV_M_START       [op].handler!
-  find: sendWL_Payload     EV_M_PAYLOAD     [op].handler!
-
-  find: sendWL_CANCELLING  EV_M_CANCELLING  [op].handler!
+  find: sendWL_Payload     EV_D_PAYLOAD     [op].handler!
   find: sendWL_CLEANING    EV_M_CLEANING    [op].handler!
-  find: sendWL_EXITING     EV_M_EXITING     [op].handler!
+
+//find: sendWL_CANCELLING  EV_M_CANCELLING  [op].handler!
+//find: sendWL_EXITING     EV_M_EXITING     [op].handler!
 
   op__loop
 

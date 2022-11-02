@@ -24,7 +24,10 @@ AdaptorWL::AdaptorWL(void)
 : Object(CN_ADAPTORWL)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
-  
+
+  m_pPayloadSendList = new PayloadList();
+  m_bContinueProcessingMsg = false;
+
   _checkInitialised_(CN_ADAPTORWL);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
@@ -36,6 +39,8 @@ AdaptorWL::AdaptorWL(void)
 AdaptorWL::~AdaptorWL(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
+  m_pPayloadSendList->vDeleteAll();
+  delete m_pPayloadSendList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,30 +60,50 @@ void AdaptorWL::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* action 0                                                                   */
+/* Decode the payload into a wireline message                                 */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vProcessEventA(void)
+void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  
+  // TODO
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* action 1                                                                   */
+/* Process or continue processing the current decoded wireline message        */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vAction1(void)
+void AdaptorWL::vProcessWLMsg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  
+  // TODO
 }
 
 /*----------------------------------------------------------------------------*/
-/* action 2                                                                   */
+/* Return true if vProcessWLMsg() needs to be called again                    */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vAction2(void)
+bool AdaptorWL::bKeepProcessingMsg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  
+  return m_bContinueProcessingMsg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return true if there is at least 1 PayloadObj to be sent                   */
+/*----------------------------------------------------------------------------*/
+bool AdaptorWL::bHasPayloadToSend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
+
+  return (m_pPayloadSendList->nItems() > 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the next PayloadObj to be sent                                      */
+/*----------------------------------------------------------------------------*/
+WLP::PayloadObj* AdaptorWL::pNextPayloadToSend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
+  return m_pPayloadSendList->pPop();
 }
 
 

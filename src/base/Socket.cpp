@@ -344,12 +344,10 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 /*----------------------------------------------------------------------------*/
 /* send an object                                                             */
 /*----------------------------------------------------------------------------*/
-bool Socket::bSendWLMsg(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
+bool Socket::bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& roSysCall, eSY eSendWhy)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  ASSERT(pObject->eGetClassNo() == CN_PAYLOADOBJ);
-
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pObject);
+  ASSERT(pPayloadObj->eGetClassNo() == CN_PAYLOADOBJ);
 
   roSysCall.vClear();
 

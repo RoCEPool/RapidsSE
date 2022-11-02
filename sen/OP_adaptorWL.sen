@@ -12,32 +12,79 @@
 
   //"adaptorWL_StartMarker- EV_M_START" .verbose
 
+  AdaptorWL[].new
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_CLIENTEVENT ...                                                       */
+/* on EV_D_PAYLOAD ...                                                        */
 /*----------------------------------------------------------------------------*/
-: adaptorWL_clientEvent \handler
+: adaptorWL_Payload \handler
 
-  //"adaptorWL_StartMarker- EV_M_WIRELINE" .verbose
+  //"adaptorWL_Payload- EV_D_PAYLOAD" .verbose
 
-  AdaptorWL[].processEventA
+  PipeIn[]\clear locals| pPayloadObj |
+
+  // Decode the payload to a message. This might generate payloads to be sent.
+  pPayloadObj AdaptorWL[].decodePayload
+  pPayloadObj payloadObj::delete
+
+  begin
+    AdaptorWL[].hasPayloadToSend@
+  while
+    [op].pipeOut
+  repeat
+
+  begin
+    // Processing a message may generate 1 or more payloads to be sent.
+    // These are placed on the stack.
+    AdaptorWL[].processWLMsg
+
+    // Pipeout any payloads that were just generated so they can be sent straight away
+    begin
+      AdaptorWL[].hasPayloadToSend@
+    while
+      AdaptorWL[].nextPayloadToSend@ [op].pipeOut
+    repeat
+
+    // Processing a message may also need multiple turns (e.g. for processing
+    // a large result set).
+    AdaptorWL[].keepProcessingMsg@
+  while
+  repeat
+
+//AdaptorWL[].hasApiQuery@ if
+//  // TODO: Submit query through API
+//then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_APIEVENT ...                                                       */
+/* handler for EV_M_CLEANING operand                                          */
 /*----------------------------------------------------------------------------*/
-: adaptorWL_apiEvent \handler
+: adaptorWL_Cleaning \handler
 
-  //"adaptorWL_StartMarker- EV_M_WIRELINE" .verbose
+  "adaptorWL_Cleaning- EV_M_CLEANING" .verbose
 
-  AdaptorWL[].processEventB
+  AdaptorWL[].delete
 
+  LogicUnit[].cleanup
+  PipeIn[].pipeOut
   true
 ;
+
+///*----------------------------------------------------------------------------*/
+///* on EV_M_APIEVENT ...                                                       */
+///*----------------------------------------------------------------------------*/
+//: adaptorWL_apiEvent \handler
+//
+//  //"adaptorWL_apiEvent- EV_M_APIEVENT" .verbose
+//
+//  AdaptorWL[].processEventB
+//
+//  true
+//;
 
 /*----------------------------------------------------------------------------*/
 /* entry point                                                                */
@@ -48,9 +95,11 @@
 
   op__topology
 
+  find: adaptorWL_StartMarker EV_M_START       [op].handler!
+  find: adaptorWL_Payload     EV_D_PAYLOAD     [op].handler!
+  find: adaptorWL_Cleaning    EV_M_CLEANING    [op].handler!
 
-  find: adaptorWL_StartMarker EV_M_START     [op].handler!
-//find: adaptorWL_WireLine    EV_M_WIRELINE  [op].handler!
+//find: adaptorWL_apiEvent    EV_M_APIEVENT    [op].handler!
 
   op__loop
 

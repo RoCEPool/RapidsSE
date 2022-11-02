@@ -26,12 +26,13 @@ public:
   void vAccumSumStore(void);
 
   // adaptorWL
-  void vAdaptorProcessEventA(void);
-  void vAdaptorProcessEventB(void);
-  void vAdaptorWLAction1(void);
-  void vAdaptorWLAction2(void);
-  void vAdaptorWLDelete(void);
   void vAdaptorWLNew(void);
+  void vAdaptorWLDelete(void);
+  void vAdaptorWLDecodePayload(void);
+  void vAdaptorWLProcessWLMsg(void);
+  void vAdaptorWLKeepProcessingMsgFetch(void);
+  void vAdaptorWLHasPayloadToSendFetch(void);
+  void vAdaptorWLNextPayloadToSendFetch(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);
@@ -1641,6 +1642,9 @@ void vDdlLockAssertNone(void);
   void vParcelSendOut(void);
   void vParcelSet(void);
 
+  // PayloadObj
+  void vPayloadObjDelete(void);
+
   // reg Pipein
   void vPipeinBide(void);
   void vPipeinBideNext(void);
@@ -1834,6 +1838,7 @@ void vDdlLockAssertNone(void);
   void vSocketRecvObject(void);
   void vSocketRecvWLMsg(void);
   void vSocketSendObject(void);
+  void vSocketSendWLMsg(void);
   void vSocketSet(void);
   void vSocketSuccessFetch(void);
   void vSocketSuccessStore(void);

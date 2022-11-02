@@ -154,6 +154,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PageIn();
   Step::vAddSteps_PageOut();
   Step::vAddSteps_Parcel();
+  Step::vAddSteps_PayloadObj();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();

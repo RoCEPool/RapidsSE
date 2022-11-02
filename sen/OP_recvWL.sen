@@ -72,20 +72,31 @@
   // loop, receiving and executing jobs
   recvWL_loop
 
+  // If we get here then there was a problem receiving the next message from the client.
   Socket[].close
   Socket[].clientAddr@ "Connection closed to client at address %v" .printf
+
+  ErrorMarker[].newErrorMarker
+  ErrorMarker[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_CLIENT_DISCONNECT ...                                     */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
-: recvWL_ClientDisconnectMarker \handler
+: recvWL_CLEANING \handler
 
+  "in recvWL_CLEANING" .
+
+  Socket[].close
   Socket[].object.isNotNull if
     Socket[].object.delete
   then
 
   Socket[].delete
+
+  LogicUnit[].cleanup
+  PipeIn[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -97,8 +108,8 @@
 
   op__topology
 
-  find: recvWL_StartMarker EV_M_START [op].handler!
-//find: recvWL_ClientDisconnectMarker EV_M_CLIENT_DISCONNECT [op].handler!
+  find: recvWL_StartMarker EV_M_START     [op].handler!
+  find: recvWL_CLEANING    EV_M_CLEANING  [op].handler!
 
   // get the pipeline job of the operator
   [op].job@ locals| pPipelineJob |

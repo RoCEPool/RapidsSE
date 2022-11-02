@@ -12,6 +12,7 @@
 #include "eSY.h"
 #include "Port.hpp"
 #include "WlpHeader.hpp"
+#include "PayloadObj.hpp"
 
 namespace BASE
 {
@@ -46,7 +47,7 @@ namespace BASE
     Object* pRecvWLMsg(void);
 
     bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
-    bool bSendWLMsg(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
+    bool bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
 
     void vClientAddr(s256& sBuf);
 
