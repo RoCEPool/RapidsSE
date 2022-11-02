@@ -432,9 +432,7 @@ void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* 
   m_pTransforms->vUsingBoard(eBoard, i_SubBoard);
 
   m_pBench->vClearMarks();
-
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

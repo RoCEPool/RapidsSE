@@ -71,7 +71,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eOA eCueUser(Stz* szHand, Stz* szTransformation=nullptr, i8 iLineNo=C_UNKNOWN);
+    eOA eCueUser(Stz* szPrompt);
 
     void vEndTransform(void);
 

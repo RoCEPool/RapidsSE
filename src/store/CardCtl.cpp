@@ -132,16 +132,20 @@ void CardCtl::vCueDisabled(bool bCueDisabled)
 /*----------------------------------------------------------------------------*/
 /* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt)
+bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  if (szXhand && szXform)
-    sPrompt->vSprint("%s :: %s"_Stz, szXhand, szXform);
-  else if (szXhand)
-    sPrompt->vSprint("%s"_Stz, szXhand, szXform);
-  else
-    sPrompt->vSprint(""_Stz);
+  sPrompt->vSprint(""_Stz);
+
+  if (szXhand)
+    sPrompt->vCatSprint("%s"_Stz, szXhand);
+
+  if (szXform && ! szXform->bSame("n/a"_Stz))
+    sPrompt->vCatSprint(" :: %s"_Stz, szXform);
+
+  if (C_UNKNOWN != iLineNo)
+    sPrompt->vCatSprint(" [%lld]"_Stz, iLineNo);
 
   if (m_bCueDisabled)
     return false;
@@ -153,7 +157,6 @@ bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt)
     return false;
 
   Stz* szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
-  vTrace("cue %s : %s : %s\n"_Stz,szTagCue,szXhand,szXform);
   if (   (szTagCue->bSame(szXhand) && szXform->bSame("n/a"_Stz))
       || (szXform && szTagCue->bSame(szXform))) {
     m_bCued = true;

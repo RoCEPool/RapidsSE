@@ -99,7 +99,7 @@ Board* Xgearing::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                  */
 /*----------------------------------------------------------------------------*/
-eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
+eOA Xgearing::eCueUser(Stz* szPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -108,32 +108,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
   if (m_pCardCtl->bCueDisabled())
     return OA_CONTINUE_TRANSFORMING;
 
-  s256 sPrompt;
-  if (szHand && szTransformation)
-    sPrompt.vSprint("%s :: %s"_Stz, szHand, szTransformation);
-  else if (szHand)
-    sPrompt.vSprint("%s"_Stz, szHand, szTransformation);
-  else
-    sPrompt.vSprint(""_Stz, szHand);
-
-  if (C_UNKNOWN != iLineNo)
-    sPrompt.vCatSprint(" [%lld]"_Stz,iLineNo);
-
-  if (! m_bPrintXformForce) {
-    if (!m_pCardCtl->bCued() && AM::JOB::bHasTag(C_GLEAN_CUE_FROM)) {
-      Stz *szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
-      if (szTagCue->bSame(szHand) && szTransformation) {
-        printf("%s\n", sPrompt.azChar());
-        return OA_CONTINUE_TRANSFORMING;
-      }
-      if (szTransformation && (!szTagCue->bSame(szTransformation))) {
-        printf("%s\n", sPrompt.azChar());
-        return OA_CONTINUE_TRANSFORMING;
-      }
-    }
-  }
-
-  sPrompt.vConcat(" >> "_Stz);
+  szPrompt->vConcat(" >> "_Stz);
 
   m_pCardCtl->vCued(true);
 
@@ -142,7 +117,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
   L_Input:
 
   s4K sInput;
-  Cue::vGetInput(sPrompt,sInput);
+  Cue::vGetInput(szPrompt,sInput);
 
   if (0 == sInput.nLength())
     return OA_CONTINUE_TRANSFORMING;
@@ -265,12 +240,12 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
       }
     }
 
-    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation,sPrompt)) {
+    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation,sPrompt,C_UNKNOWN)) {
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    if (OA_REPRINT_BOARD != eCueUser(szHand()))
+    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
 }
@@ -282,7 +257,7 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! m_pCardCtl->bBenchPrint())
+  if (! m_pCardCtl->bBoardPrint())
     return;
 
   s256 sPrompt;
@@ -292,14 +267,12 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
                           szTransformation(),
                           szDescription());
 
-    if (! m_pCardCtl->bCueUser(szHand(),szTransformation(),sPrompt)) {
+    if (! m_pCardCtl->bCueUser(szHand(),szTransformation(),sPrompt,iLineNo)) {
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    if (OA_REPRINT_BOARD != eCueUser(szHand(),
-                                     szTransformation(),
-                                     iLineNo))
+    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
 }
