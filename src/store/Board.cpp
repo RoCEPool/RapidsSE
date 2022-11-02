@@ -142,11 +142,11 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('-',true);
   pRibbon->vDrawH('=');
 
-  Stz* szXhand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
-  Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXform();
+  //Stz* szXhand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
+  //Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXform();
 
-  pRibbon->vPutTextRight(szXhand,1);
-  pRibbon->vPutTextRight(szXfrom,2);
+  pRibbon->vPutTextRight(szXhand(),1);
+  pRibbon->vPutTextRight(szXform(),2);
 
   s32 sLeftMargin;
   sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
@@ -229,9 +229,9 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    m_sBoardNm.szStz(),
                    m_pOptimiser->szQueryNm());
 
-  Stz* szXdesc = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXdesc();
+  //Stz* szXdesc = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXdesc();
 
-  pRibbon->vSprint("%s"_Stz,szXdesc ? szXdesc : ""_Stz);
+  pRibbon->vSprint("%s"_Stz,szXdesc());
   pRibbon->vTitleLines();
 }
 

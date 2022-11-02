@@ -165,8 +165,11 @@ void CardCtl::vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform, i8 i_Boar
 
   sPrompt->vSprint(""_Stz);
 
+  if (C_UNKNOWN != i_Board)
+    sPrompt->vCatSprint("%lld "_Stz, i_Board);
+
   if (szXhand && szXform && ! szXform->bSame(C_NA)) {
-    sPrompt->vCatSprint("%lld %s :: %s"_Stz, i_Board, szXhand, szXform);
+    sPrompt->vCatSprint("%s :: %s"_Stz, szXhand, szXform);
   }
   else
   if (szXhand)
