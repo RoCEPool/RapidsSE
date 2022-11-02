@@ -237,7 +237,8 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
       }
     }
 
-    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation,sPrompt,C_UNKNOWN)) {
+    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation)) {
+      m_pCardCtl->vFormPrompt(sPrompt,m_sHand,m_sTransformation,i_SubBoard,C_UNKNOWN);
       printf("%s\n", sPrompt.azChar());
       break;
     }
@@ -264,11 +265,13 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
                           szTransformation(),
                           szDescription());
 
-    if (! m_pCardCtl->bCueUser(szHand(),szTransformation(),sPrompt,iLineNo)) {
+    if (! m_pCardCtl->bCueUser(szHand(),szTransformation())) {
+      m_pCardCtl->vFormPrompt(sPrompt,m_sHand,m_sTransformation,G.pBoard->i_SubBoard(),iLineNo);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
+    m_pCardCtl->vFormPrompt(sPrompt,m_sHand,m_sTransformation,G.pBoard->i_SubBoard(),iLineNo);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }

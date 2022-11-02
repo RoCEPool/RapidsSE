@@ -133,20 +133,9 @@ void CardCtl::vCueDisabled(bool bCueDisabled)
 /*----------------------------------------------------------------------------*/
 /* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo)
+bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  sPrompt->vSprint(""_Stz);
-
-  if (szXhand)
-    sPrompt->vCatSprint("%s"_Stz, szXhand);
-
-  if (szXform && ! szXform->bSame(C_NA))
-    sPrompt->vCatSprint(" :: %s"_Stz, szXform);
-
-  if (C_UNKNOWN != iLineNo)
-    sPrompt->vCatSprint(" [%lld]"_Stz, iLineNo);
 
   if (m_bCueDisabled)
     return false;
@@ -167,6 +156,26 @@ bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform, i8 i_Board, i8 iLineNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  sPrompt->vSprint(""_Stz);
+
+  if (szXhand && szXform && ! szXform->bSame(C_NA)) {
+    sPrompt->vCatSprint("%lld %s :: %s"_Stz, i_Board, szXhand, szXform);
+  }
+  else
+  if (szXhand)
+    sPrompt->vCatSprint("%s"_Stz, szXhand);
+
+  if (C_UNKNOWN != iLineNo)
+    sPrompt->vCatSprint(" [%lld]"_Stz, iLineNo);
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* get bNextHoriz for card                                                    */
