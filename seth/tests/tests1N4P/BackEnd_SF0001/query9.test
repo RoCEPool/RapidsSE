@@ -215,7 +215,7 @@ pipeline unamed
   end ;
 rows: 41
 
-
+/*
 //SF10: 37s
 pipeline Query9
   begin
@@ -290,6 +290,7 @@ pipeline Query9
   end ;
 
 rows: 41
+*/
 
 CLEANUP {
   bye;
