@@ -78,7 +78,7 @@ namespace STORE
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    void vTransform(const char* azTransformation);
+    void vTransform(const char* azFunc, Stz* szXdesc);
 
     void vUsingBoard(eBK eBoard, i8 i_Board);
 

@@ -53,8 +53,7 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("linearize board by deleting all duplicate <stage>'s"_Stz);
-  vTransform((char *) (__func__));
+  vTransform(__func__, "linearize board by deleting all duplicate <stage>'s"_Stz);
 
   //G.pDeck->vDump(0,(Stz*)(__func__));
 
@@ -73,14 +72,13 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lhide ignorable <stage>'s                                                  */
+/* hide ignorable <stage>'s                                                   */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH10_T15_Hide_Ignorable_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("hide ignorable <stage>'s"_Stz);
-  vTransform((char *) (__func__));
+  vTransform(__func__, "hide ignorable <stage>'s"_Stz);
 
   while (G_bEachMain(CK_STAGE)) {
     vR_H10_T15_Hide_Ignorable_stage();
@@ -96,8 +94,7 @@ void Xtransforms::vH10_T20_Delete_All_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("delete superfluous <absJoin>'s"_Stz);
-  vTransform((char *) (__func__));
+  vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
   while (G_bEachMain(CK_ABSJOIN)) {
     vR_H10_T20_Delete_absJoin();
@@ -113,8 +110,7 @@ void Xtransforms::vH10_T30_Delete_All_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("delete superfluous <combined>'s"_Stz);
-  vTransform((char *) (__func__));
+  vTransform(__func__, "delete superfluous <combined>'s"_Stz);
 
   while (G_bEachMain(CK_COMBINED)) {
     vR_H10_T30_Delete_combined();
@@ -130,8 +126,7 @@ void Xtransforms::vH10_T40_Delete_All_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("delete superfluous <send>'s"_Stz);
-  vTransform((char *) (__func__));
+  vTransform(__func__, "delete superfluous <send>'s"_Stz);
 
   while (G_bEachMain(CK_SEND)) {
     vR_H10_T40_Delete_send();
@@ -147,8 +142,7 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("replace all <scan>'s with their children"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "replace all <scan>'s with their children"_Stz);
 
   while (G_bEachMain(CK_SCAN)) {
     vR_H10_T50_Cull_scan_Leaving_table();
@@ -169,8 +163,7 @@ void Xtransforms::vH20_T10_Affix_tableSyn_ToAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("add a <tableSyn> to all <table>'s"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     vR_H20_T10_Add_tableSyn_ForAll_table();
@@ -186,8 +179,7 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("add a <tablePtn> under every <table>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "add a <tablePtn> under every <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     vR_H20_T20_Add_tablePtn_UnderAll_table();
@@ -208,8 +200,7 @@ void Xtransforms::vH30_T10_Add_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("add a <stream> under every <table>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "add a <stream> under every <table>"_Stz);
 
   vStreamAnalysisReset();
 
@@ -228,8 +219,7 @@ void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("calculate the ordinal $low..$high range for each <stream>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
     vR_H30_T20_Calc_ordinalRange_ForAll_stream();
@@ -250,8 +240,7 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("convert <where>//<calc> into <where>//<calcBool> "_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "convert <where>//<calc> into <where>//<calcBool> "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     vR_H40_T10_Convert_where_rpnCalc_To_boolCalc();
@@ -267,8 +256,7 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("inspect <where>//<pred> and attempt to find source <table>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "inspect <where>//<pred> and attempt to find source <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T20_Mark_where_pred_Wrt_table();
@@ -284,8 +272,7 @@ void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T30_Move_Marked_where_pred_To_table_filter();
@@ -301,8 +288,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("delete <where> if it is effectively empty"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "delete <where> if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T40_Delete_Empty_where();
@@ -323,8 +309,7 @@ void Xtransforms::vH50_T10_Extract_subSet_Of_call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMain(CK_CALL)) {
 
@@ -350,8 +335,7 @@ void Xtransforms::vH50_T20_Copy_Called_Subset(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMain(CK_CALL)) {
 
@@ -380,8 +364,7 @@ void Xtransforms::vH50_T30(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMain(CK_CALL)) {
     vR_H50_T30_RemoveDelete_call();
@@ -399,8 +382,7 @@ void Xtransforms::vH50_T40(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H50_T40();
 
@@ -414,8 +396,7 @@ void Xtransforms::vH50_T50(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H50_T50();
 
@@ -429,8 +410,7 @@ void Xtransforms::vH50_T60(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H50_T60();
 
@@ -449,8 +429,7 @@ void Xtransforms::vH55_T10_Rework_Exists_SubQueries(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
@@ -490,8 +469,7 @@ void Xtransforms::vH55_T20_Copy_Up_SubQueries(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
@@ -532,8 +510,7 @@ void Xtransforms::vH55_T24_Correct_Streams(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
     vR_H55_T24_Corrects_Streams();
@@ -549,8 +526,7 @@ void Xtransforms::vH55_T26_Correct_Predicates(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
     vR_H55_T26_Corrects_Predicates();
@@ -566,8 +542,7 @@ void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
 
@@ -591,12 +566,11 @@ void Xtransforms::vH55_T40_Resolve_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_BOOLCALC, CK_PARAMLIST)) {
 
-    vTracer("Resolving Terms\n  %s\n  %s  \n"_Stz,
+    vTracer("Resolving Terms\n  %s\n  %s  %s\n"_Stz,
             G.p_table->szBearing(),
             G.p_boolCalc->szBearing(),
             G.p_paramList->szBearing());
@@ -615,8 +589,7 @@ void Xtransforms::vH55_T50_Cull_Exists_Call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H55_T50_Cull_Exists_Call();
@@ -632,8 +605,7 @@ void Xtransforms::vH55_T60_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("delete <where> if it is effectively empty"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "delete <where> if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H55_T60_Delete_Empty_where();
@@ -655,8 +627,7 @@ void Xtransforms::vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("add an <indexJoin> under all <table>'s which are joinable"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "add an <indexJoin> under all <table>'s which are joinable"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_H60_T10_Add_indexJoin_UnderFiltered_table();
@@ -672,8 +643,7 @@ void Xtransforms::vH60_T20_Affix_idxColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_INDEXJOIN)) {
     vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal();
@@ -689,8 +659,7 @@ void Xtransforms::vH60_T30_Add_bounds_UnderAllFiltered_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("add <bounds> under each filtered <table>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "add <bounds> under each filtered <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_H60_T30_Add_bounds_UnderFiltered_table();
@@ -706,8 +675,7 @@ void Xtransforms::vH60_T40_Cull_pred_MovedTo_table_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred();
@@ -723,8 +691,7 @@ void Xtransforms::vH60_T50_Delete_Empty_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("delete any <table>/<filter> which is effectively empty"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     vR_H60_T50_Delete_Empty_filter();
@@ -745,8 +712,7 @@ void Xtransforms::vH70_T00_Extract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPartitionBoard();
 
@@ -775,8 +741,7 @@ void Xtransforms::vH70_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPartitionBoard();
 
@@ -805,8 +770,7 @@ void Xtransforms::vH70_T20_Compute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPartitionBoard();
 
@@ -842,8 +806,7 @@ void Xtransforms::vH70_T30_Compute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPartitionBoard();
 
@@ -862,8 +825,7 @@ void Xtransforms::vH70_T40_Compute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPartitionBoard();
 
@@ -886,8 +848,7 @@ void Xtransforms::vH70_T50_Compute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPartitionBoard();
 
@@ -906,8 +867,7 @@ void Xtransforms::vH70_T60_Copy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupPermuteBoard();
 
@@ -923,8 +883,7 @@ void Xtransforms::vH70_T70_Generate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
 //  PermGen::vTest(4);
 
@@ -943,8 +902,7 @@ void Xtransforms::vH70_T80_Remove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H70_T80_Remove_invalidPermutations();
 
@@ -958,8 +916,7 @@ void Xtransforms::vH70_T90_Setup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   //vSetupCostEstBoard();
 
@@ -977,8 +934,7 @@ void Xtransforms::vH70_T92_Estimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H70_T92_Estimate_ptndJoins();
 
@@ -992,8 +948,7 @@ void Xtransforms::vH70_T94_Estimate_network(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H70_T94_Estimate_network();
 
@@ -1007,8 +962,7 @@ void Xtransforms::vH70_T96_Estimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H70_T96_Estimate_joinOrder();
 
@@ -1022,8 +976,7 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   vR_H70_T98_Extract_joinOrderSeq();
 
@@ -1037,8 +990,7 @@ void Xtransforms::vH75_T10_Convert_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("convert all <table> into either <scan> or <indexJoin>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
   while (G_bEachMain(CK_TABLE)) {
 
@@ -1079,8 +1031,7 @@ void Xtransforms::vH75_T20_Convert_keyExists_filter_To_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("convert all <table> into either <scan> or <indexJoin>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
     vR_H75_T20_Convert_keyExists_filter_To_bounds();
@@ -1096,8 +1047,7 @@ void Xtransforms::vH75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vXdesc("((description))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((description))"_Stz);
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_STREAM)) {
     vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream();
@@ -1113,8 +1063,7 @@ void Xtransforms::vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("convert all <table> into either <scan> or <indexJoin>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
     vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();
@@ -1135,8 +1084,7 @@ void Xtransforms::vH80_T10_Add_Scratch_indexList_Under_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("append <indexList> to <scan>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "append <indexList> to <scan>"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_TABLENM)) {
     vR_H80_T10_Add_indexList_Under_scan();
@@ -1152,8 +1100,7 @@ void Xtransforms::vH80_T20_Affix_idxColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_STREAM, CK_IDXCOLLIST)) {
     vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal();
@@ -1169,8 +1116,7 @@ void Xtransforms::vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
     vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred();
@@ -1186,8 +1132,7 @@ void Xtransforms::vH80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("mark <SCAN>//<filter>//<term> ordinals which match index"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "mark <SCAN>//<filter>//<term> ordinals which match index"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
     vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms();
@@ -1203,8 +1148,7 @@ void Xtransforms::vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
     vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
@@ -1220,8 +1164,7 @@ void Xtransforms::vH80_T60_Cull_Marked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
     vR_H80_T60_Cull_Marked_filter_cmpPred();
@@ -1237,8 +1180,7 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
     //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,G.p_scan->szBearing());
@@ -1270,8 +1212,7 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
 
   while (G_bEachMain(CK_SORT)) {
     if (! G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
@@ -1294,8 +1235,7 @@ void Xtransforms::vHA0_T10_Individuate_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     vR_HA0_T10_Individuate_scan_filter();
@@ -1321,8 +1261,7 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("reinstate stages"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "reinstate stages"_Stz);
 
   while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
     vR_HZ0_T10_Reinstate_stages();
@@ -1343,8 +1282,7 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXdesc("((replace with an explanation))"_Stz);
-  vTransform(__func__);
+  vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMain()) {
     G_vSubsequentToMain();

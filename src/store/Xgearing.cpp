@@ -266,12 +266,13 @@ void Xgearing::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vTransform(const char* azTransformation)
+void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vXform((Stz*)azTransformation);
-  G.pBoard->vXform((Stz*)azTransformation);
+  vXform((Stz*)azFunc);
+  G.pBoard->vXform((Stz*)azFunc);
+  vXdesc(szXdesc);
 
   m_iXform++;
   G.pBoard->vXform(m_iXform);
