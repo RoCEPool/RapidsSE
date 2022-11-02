@@ -198,13 +198,13 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
       }
     }
 
-    if (! m_pCardCtl->bCueUser(szXhand(), m_sXform)) {
-      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), m_sXform, i_Board, C_UNKNOWN);
+    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), i_Board, C_UNKNOWN);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), m_sXform, i_Board, C_UNKNOWN);
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), i_Board, C_UNKNOWN);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
@@ -226,12 +226,12 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
     G.pBoard->vPrintBoard(szXdesc());
 
     if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), m_sXform, G.pBoard->i_SubBoard(), iLineNo);
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_SubBoard(), iLineNo);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), m_sXform, G.pBoard->i_SubBoard(), iLineNo);
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_SubBoard(), iLineNo);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
@@ -268,7 +268,7 @@ void Xgearing::vTransform(const char* azTransformation)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_sXform = azTransformation;
+  vXform((Stz*)azTransformation);
 
   G.pBoard->vTransformNoInc();
 
@@ -276,8 +276,8 @@ void Xgearing::vTransform(const char* azTransformation)
 
   G.xBI.vRestart();
 
-  if (m_pCardCtl->bTracing(szXhand(), m_sXform)) {
-    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), m_sXform.szStz());
+  if (m_pCardCtl->bTracing(szXhand(), szXform())) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
     m_iTrace = 0;
   }
 
