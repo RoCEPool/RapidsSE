@@ -141,6 +141,7 @@ eOA Xgearing::eCueUser(Stz* szPrompt)
   if (! pOptFun) {
     vTrace("Unknown command\n"_Stz);
     delete pTknVec;
+    pTknVec = nullptr;
     goto L_Input;
   }
 
@@ -194,26 +195,6 @@ void Xgearing::vEndTransform(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Xgearing::szHand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_sHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vHand(const char* asHand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_sHand = asHand;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print all bards of bench                                                   */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
@@ -228,21 +209,22 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
   for (;;) {
     if (C_UNKNOWN != i_SubBoard) {
       Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
-      pBoard->vPrintBoard(szHand());
+      pBoard->vPrintBoard(szXhand());
     }
     else {
       for (i8 i_Sub = 0; m_pBench->bBoardExists(eBoard, i_Sub); i_Sub++) {
         Board *pBoard = m_pBench->pGetBoard(eBoard, i_Sub);
-        pBoard->vPrintBoard(szHand());
+        pBoard->vPrintBoard(szXhand());
       }
     }
 
-    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation)) {
-      m_pCardCtl->vFormPrompt(sPrompt,m_sHand,m_sTransformation,i_SubBoard,C_UNKNOWN);
+    if (! m_pCardCtl->bCueUser(szXhand(),m_sTransformation)) {
+      m_pCardCtl->vFormPrompt(sPrompt,szXhand(),m_sTransformation,i_SubBoard,C_UNKNOWN);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
+    m_pCardCtl->vFormPrompt(sPrompt,szXhand(),m_sTransformation,i_SubBoard,C_UNKNOWN);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
@@ -261,17 +243,15 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
   s256 sPrompt;
 
   for (;;) {
-    G.pBoard->vPrintBoard(szHand(),
-                          szTransformation(),
-                          szDescription());
+    G.pBoard->vPrintBoard(szDescription());
 
-    if (! m_pCardCtl->bCueUser(szHand(),szTransformation())) {
-      m_pCardCtl->vFormPrompt(sPrompt,m_sHand,m_sTransformation,G.pBoard->i_SubBoard(),iLineNo);
+    if (! m_pCardCtl->bCueUser(szXhand(), szTransformation())) {
+      m_pCardCtl->vFormPrompt(sPrompt,szXhand(),m_sTransformation,G.pBoard->i_SubBoard(),iLineNo);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt,m_sHand,m_sTransformation,G.pBoard->i_SubBoard(),iLineNo);
+    m_pCardCtl->vFormPrompt(sPrompt,szXhand(),m_sTransformation,G.pBoard->i_SubBoard(),iLineNo);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
@@ -317,8 +297,8 @@ void Xgearing::vTransform(const char* azTransformation,
 
   G.xBI.vRestart();
 
-  if (m_pCardCtl->bTracing(m_sHand,m_sTransformation)) {
-    vTrace("\n\nTracing %s::%s\n"_Stz, m_sHand.szStz(), m_sTransformation.szStz());
+  if (m_pCardCtl->bTracing(szXhand(),m_sTransformation)) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), m_sTransformation.szStz());
     m_iTrace = 0;
   }
 
@@ -357,7 +337,25 @@ void Xgearing::vUsingBoard(eBK eBoard, i8 i_SubBoard)
   G.xBI.vChangeBoard(G.pBoard);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Xgearing::szXhand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  return m_sHand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vXhand(const char* asXhand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_sHand = asXhand;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

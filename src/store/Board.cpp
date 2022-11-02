@@ -154,7 +154,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('-',true);
   pRibbon->vDrawH('=');
 
-  Stz* szHand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szHand();
+  Stz* szHand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
   Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szTransformation();
 
   pRibbon->vPutTextRight(szHand, 1);
@@ -249,9 +249,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szHand,
-                        Stz* szTransformation,
-                        Stz* szDescription)
+void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 

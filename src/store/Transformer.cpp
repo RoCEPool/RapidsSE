@@ -426,7 +426,7 @@ void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* 
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vHand(azHand);
+  m_pTransforms->vXhand(azHand);
   m_pTransforms->vUsingBoard(eBoard, i_SubBoard);
 
   m_pBench->vClearMarks();

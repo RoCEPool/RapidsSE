@@ -74,9 +74,7 @@ namespace STORE
     Stz* szDescription(void);
     void vDescription(Stz* szDescription);
 
-    Stz* szHand(void);
-    void vHand(const char* asHand);
-    void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
+   void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
     void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
@@ -88,6 +86,9 @@ namespace STORE
     void vTransformation(Stz* szTransformation);
 
     void vUsingBoard(eBK eBoard, i8 i_SubBoard);
+
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
 
   protected:
     bool bIsTracing(void);
