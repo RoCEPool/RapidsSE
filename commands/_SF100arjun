@@ -15,13 +15,13 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
 create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
 create index IxL_SUPPKEY   ON Lineitem (L_SUPPKEY)   ;
-create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+//create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
 create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
 create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
 create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
-create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
-create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
-create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+//create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+//create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
+//create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
 create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 dload lineitem paths

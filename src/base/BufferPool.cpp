@@ -612,11 +612,6 @@ bool BufferPool::bReloadSanityCheckAddr(void* aAddress)
     return false;
   }
 
-  m_nFreeCount--;
-  m_nAllocCount++;
-
-  ++m_ixHeapBuffers;
-
   return true;
 }
 
@@ -662,20 +657,12 @@ void BufferPool::vReInitialise(bool bTouch, bool bProgress)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 
   UNUSED(bTouch);
-//  m_nAllocCount = 0;
-  //m_nFreeCount  = m_nBuffers;
+
+  m_okLock.vGrabWrite();
+
   i8 iFreeCount = 0;
-//  m_nFreeCount  = 0;
+  i8 iAllocCount = 0;
   m_iFreeHead   = 0;
-
-  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*iBufferFirst(),*iBufferLast());
-
-//  bn nBuffer = iBufferFirst();
-//  for (FreePoolBuffer* pFreePoolBuffer : *this) {
-//    pFreePoolBuffer->vBufferNo(nBuffer);
-//    nBuffer++;
-//    pFreePoolBuffer->vNextFree(nBuffer);
-//  }
 
   i8 iBufferMod;
   FreePoolBuffer* pPrevPoolBuffer = nullptr;
@@ -692,21 +679,13 @@ void BufferPool::vReInitialise(bool bTouch, bool bProgress)
     FreePoolBuffer* pFreePoolBuffer = pToFreePoolBuffer(i_PoolBuffer);
     if(pFreePoolBuffer->eGetClassNo() != CN_FREEPOOLBUFFER) {
       i_PoolBuffer = iBufferNext(i_PoolBuffer);
+      iAllocCount++;
+      ++m_ixHeapBuffers;
       continue;
     }
 
     if(m_iFreeHead == 0)
       m_iFreeHead = i_PoolBuffer;
-
-//    pFreePoolBuffer->vSetMagic();
-//    pFreePoolBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
-
-    //pFreePoolBuffer->aFooter()->vSetFooter();
-//    if (bTouch)
-//      pFreePoolBuffer->vZeroData();
-//
-//    pFreePoolBuffer->vSetFooter();
-//    pFreePoolBuffer->vBufferNo(i_PoolBuffer);
 
     if(pPrevPoolBuffer != nullptr) {
       pPrevPoolBuffer->vNextFree(i_PoolBuffer);
@@ -715,27 +694,18 @@ void BufferPool::vReInitialise(bool bTouch, bool bProgress)
     pPrevPoolBuffer = pFreePoolBuffer;
 
     i_PoolBuffer = iBufferNext(i_PoolBuffer);
-//    pFreePoolBuffer->vNextFree(i_PoolBuffer);
 
     iFreeCount++;
   }
 
-  RASSERT(iFreeCount == m_nFreeCount);
+  RASSERT((iAllocCount + iFreeCount + 1) == m_nBuffers);
 
-//  RASSERT(pPrevPoolBuffer->iBufferNo() == gpBufferPool->iBufferLast());
+  m_nAllocCount = iAllocCount;
+  m_nFreeCount = iFreeCount;
 
-//  FreePoolBuffer* pLastBuffer = gpBufferPool->pToFreePoolBuffer(gpBufferPool->iBufferLast());
-
-//  pLastBuffer->vSetMagic();
-//  pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
-  //pLastBuffer->aFooter()->vSetFooter();
-//  if (bTouch)
-//    pLastBuffer->vZeroData();
-
-//  pLastBuffer->vSetFooter();
-//  pLastBuffer->vBufferNo(gpBufferPool->iBufferLast());
   pPrevPoolBuffer->vNextFree(C_NIL);
 
+  m_okLock.vDropWrite();
   //vDump();
 }
 
