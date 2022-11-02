@@ -18,9 +18,9 @@ namespace STORE
   {
   protected:
 
-    s32         m_sHand;
-    s256        m_sTransformation;
-    s256        m_sDescription;
+    s32         m_sXhand;
+    s256        m_sXform;
+    s256        m_sXdesc;
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
@@ -71,22 +71,22 @@ namespace STORE
 
     void vEndTransform(void);
 
-    Stz* szDescription(void);
-    void vDescription(Stz* szDescription);
 
-   void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
+    void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    void vTransform(const char* azTransformation, bool bPrintTransformation=true);
-    Stz* szTransformation(void);
-    void vTransformation(Stz* szTransformation);
+    void vTransform(const char* azTransformation);
 
-    void vUsingBoard(eBK eBoard, i8 i_SubBoard);
+    void vUsingBoard(eBK eBoard, i8 i_Board);
 
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szDescription);
+    Stz* szXform(void);
+    void vXform(Stz* szTransformation);
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
 

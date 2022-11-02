@@ -155,7 +155,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('=');
 
   Stz* szHand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
-  Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szTransformation();
+  Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXform();
 
   pRibbon->vPutTextRight(szHand, 1);
   pRibbon->vPutTextRight(szXfrom,2);
