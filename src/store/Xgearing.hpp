@@ -17,17 +17,15 @@ namespace STORE
   class Xgearing : public Xsentinals
   {
   protected:
+    Bench*      m_pBench;
+    CardCtl*    m_pCardCtl;
+
+    i8          m_iXform;
+    i8          m_iTrace;
 
     s32         m_sXhand;
     s256        m_sXform;
     s256        m_sXdesc;
-
-    Bench*      m_pBench;
-    CardCtl*    m_pCardCtl;
-    bool        m_bTrace;
-    i8          m_iTrace;
-
-    i8          m_iXform;
 
     PermGen*    m_pPermGen;
 
@@ -74,7 +72,7 @@ namespace STORE
 
 
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
+    void vPrintBoard(i8 iLineNo=C_UNKNOWN);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);

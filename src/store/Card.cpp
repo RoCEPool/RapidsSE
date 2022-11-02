@@ -1056,8 +1056,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
   if (0 == iDepth)
     vPrintHeader(pRibbon);
 
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (m_pLastPrintParent != pParent) {
     if (MARK_BLANK == m_cMark1)
@@ -1076,13 +1076,15 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (rbPrune)
     return;
 
-  if (! pCardCtl->bPrintSubCards(m_eCard))
+  if (! bPrintBelow)
+    bPrintBelow = pCardCtl->bPrintBelow(m_eCard);
+
+  if ( (! pCardCtl->bPrintSubCards(m_eCard)) && (! bPrintBelow))
     return;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();

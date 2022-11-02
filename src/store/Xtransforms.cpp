@@ -70,7 +70,6 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +87,6 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stages(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,7 +104,6 @@ void Xtransforms::vH10_T20_Delete_All_absJoin(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +121,6 @@ void Xtransforms::vH10_T30_Delete_All_combined(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +138,6 @@ void Xtransforms::vH10_T40_Delete_All_send(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +155,6 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +177,6 @@ void Xtransforms::vH20_T10_Affix_tableSyn_ToAll_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +194,6 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,7 +219,6 @@ void Xtransforms::vH30_T10_Add_stream_UnderAll_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +236,6 @@ void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,7 +258,6 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,7 +275,6 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,7 +292,6 @@ void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,7 +309,6 @@ void Xtransforms::vH40_T40_Delete_Empty_where(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,12 +336,11 @@ void Xtransforms::vH50_T10_Extract_subSet_Of_call(void)
     }
 
     vR_H50_T10_Extract_subSet_Of_call();
-    vPrintBoard(true,__LINE__);
+    vPrintBoard(__LINE__);
     G_vPopBoard();
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,7 +371,6 @@ void Xtransforms::vH50_T20_Copy_Called_Subset(void)
 
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,7 +390,6 @@ void Xtransforms::vH50_T30(void)
   vSetPrintSubCards(CK_PROJELIST,true);
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -422,7 +405,6 @@ void Xtransforms::vH50_T40(void)
   vR_H50_T40();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,7 +420,6 @@ void Xtransforms::vH50_T50(void)
   vR_H50_T50();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,7 +435,6 @@ void Xtransforms::vH50_T60(void)
   vR_H50_T60();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,13 +474,12 @@ void Xtransforms::vH55_T10_Rework_Exists_SubQueries(void)
 
       vR_H55_T10_Rework_Exists_SubQueries();
     }
-    vPrintBoard(true,__LINE__);
+    vPrintBoard(__LINE__);
 
     G_vPopIter();
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 
@@ -544,7 +523,6 @@ void Xtransforms::vH55_T20_Copy_Up_SubQueries(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -562,7 +540,6 @@ void Xtransforms::vH55_T24_Correct_Streams(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -580,7 +557,6 @@ void Xtransforms::vH55_T26_Correct_Predicates(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -606,7 +582,6 @@ void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -631,7 +606,6 @@ void Xtransforms::vH55_T40_Resolve_Parameter_Terms(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -649,7 +623,6 @@ void Xtransforms::vH55_T50_Cull_Exists_Call(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -667,7 +640,6 @@ void Xtransforms::vH55_T60_Delete_Empty_where(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 
@@ -691,7 +663,6 @@ void Xtransforms::vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -709,7 +680,6 @@ void Xtransforms::vH60_T20_Affix_idxColOdn_ToAll_idxCol(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -727,7 +697,6 @@ void Xtransforms::vH60_T30_Add_bounds_UnderAllFiltered_table(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -745,7 +714,6 @@ void Xtransforms::vH60_T40_Cull_pred_MovedTo_table_bounds(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -763,7 +731,6 @@ void Xtransforms::vH60_T50_Delete_Empty_table_filter(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -799,7 +766,6 @@ void Xtransforms::vH70_T00_Extract_tableList_From_queryBoard(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,7 +796,6 @@ void Xtransforms::vH70_T10_Extract_joinPredList(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -868,7 +833,6 @@ void Xtransforms::vH70_T20_Compute_coPtnPredList(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -889,7 +853,6 @@ void Xtransforms::vH70_T30_Compute_coPtnJoinList(void)
   vR_H70_T30_Compute_coPtnJoinList();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -914,7 +877,6 @@ void Xtransforms::vH70_T40_Compute_crossPtnJoinList(void)
 //  G.p_crossPtnJoinList->vAppend(G.p_comment);
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -935,7 +897,6 @@ void Xtransforms::vH70_T50_Compute_ptndJoinSet(void)
   vR_H70_T50_Compute_ptndJoinSet();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -953,7 +914,6 @@ void Xtransforms::vH70_T60_Copy_ptndJoinSet(void)
   vR_H70_T60_Copy_ptndJoinSet();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -974,7 +934,6 @@ void Xtransforms::vH70_T70_Generate_ptndPermutations(void)
   vR_H70_T70_Generate_ptndPermutations();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -990,7 +949,6 @@ void Xtransforms::vH70_T80_Remove_invalidPermutations(void)
   vR_H70_T80_Remove_invalidPermutations();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1010,7 +968,6 @@ void Xtransforms::vH70_T90_Setup_costEst(void)
   vR_H70_T90_Setup_costEst();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1026,7 +983,6 @@ void Xtransforms::vH70_T92_Estimate_ptndJoins(void)
   vR_H70_T92_Estimate_ptndJoins();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1042,7 +998,6 @@ void Xtransforms::vH70_T94_Estimate_network(void)
   vR_H70_T94_Estimate_network();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1058,7 +1013,6 @@ void Xtransforms::vH70_T96_Estimate_joinOrder(void)
   vR_H70_T96_Estimate_joinOrder();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1074,7 +1028,6 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(void)
   vR_H70_T98_Extract_joinOrderSeq();
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1117,7 +1070,6 @@ void Xtransforms::vH75_T10_Convert_table_To_EEop(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1135,7 +1087,6 @@ void Xtransforms::vH75_T20_Convert_keyExists_filter_To_bounds(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1153,7 +1104,6 @@ void Xtransforms::vH75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1171,7 +1121,6 @@ void Xtransforms::vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1194,7 +1143,6 @@ void Xtransforms::vH80_T10_Add_Scratch_indexList_Under_scan(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1212,7 +1160,6 @@ void Xtransforms::vH80_T20_Affix_idxColOdn_ToAll_idxCol(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1230,7 +1177,6 @@ void Xtransforms::vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1248,7 +1194,6 @@ void Xtransforms::vH80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1266,7 +1211,6 @@ void Xtransforms::vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1284,7 +1228,6 @@ void Xtransforms::vH80_T60_Cull_Marked_filter_cmpPred(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1313,7 +1256,6 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1338,7 +1280,6 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1366,7 +1307,6 @@ void Xtransforms::vHA0_T10_Individuate_filter(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1394,7 +1334,6 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(void)
     G.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
 
   vEndTransform();
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1416,7 +1355,6 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(void)
   }
 
   vEndTransform();
-  vPrintBoard();
 }
 
 

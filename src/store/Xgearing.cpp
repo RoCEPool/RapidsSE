@@ -24,13 +24,13 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
-  m_bTrace = false;
-  m_iTrace   = 0;
 
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
 
   m_iXform     = 0;
+  m_iTrace     = 0;
+
   m_pPermGen   = nullptr;
 
   m_pColumn    = nullptr;
@@ -168,11 +168,12 @@ void Xgearing::vEndTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_bTrace = false;
-
   G.pDeck->vRenumberRecursive();
 
+  //m_pCardCtl->vUseXform();
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
+
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +215,7 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
+void Xgearing::vPrintBoard(i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -281,7 +282,6 @@ void Xgearing::vTransform(const char* azTransformation)
 
   if (m_pCardCtl->bTracing(szXhand(), szXform())) {
     vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
-    m_iTrace = 0;
   }
 
 }
@@ -373,7 +373,7 @@ bool Xgearing::bIsTracing(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_bTrace;
+  return m_pCardCtl->bTracing(szXhand(),szXform());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -414,7 +414,7 @@ void Xgearing::G_vAppendChild(eCK eParent, eCK eChild)
 
   pParent->vAppend(pChild);
 
-  if (! m_bTrace)
+  if (! bIsTracing())
     return;
 
   vTrace("  %s\n"_Stz,__func__);
@@ -433,7 +433,7 @@ void Xgearing::G_vAppendChild(eCK eParent, Card* pChild)
 
   pParent->vAppend(pChild);
 
-  if (! m_bTrace)
+  if (! bIsTracing())
     return;
 
   vTrace("  %s\n"_Stz,__func__);
@@ -452,7 +452,7 @@ void Xgearing::G_vDuplicateMember(eCK eMember)
 
   m_pCard_dup = pMember->pDupCardAndSubCards();
 
-  if (! m_bTrace)
+  if (! bIsTracing())
     return;
 
   vTrace("  %s %s from %s\n"_Stz,
@@ -1309,7 +1309,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
       NEVER_REACH
   }
 
-  if (! m_bTrace)
+  if (! bIsTracing())
     return;
 
   vTrace("  %s %s\n"_Stz,asFuncNm,szT(eMember));
