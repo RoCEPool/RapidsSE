@@ -2351,6 +2351,142 @@ CREATE INDEX IxC_CUSTKEY ON CUSTOMER(C_CUSTKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P19Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p19" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query19
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public part
+   | filter &quot; type BOOLEAN P_BRAND &apos;Brand#12&apos;  == 
+                } &apos;SM CASE&apos;  &apos;M BOX&apos;  &apos;SM PACK&apos;  &apos;SM PKG&apos;  #4  P_CONTAINER in  and 
+                }  1  5  P_SIZE between  and 
+                P_BRAND &apos;Brand#23&apos;  == 
+                }  &apos;MED BAG&apos;  &apos;MED BOX&apos;  &apos;MED PKG&apos;  &apos;MED PACK&apos;  #4 P_CONTAINER in and 
+                }  1  10  P_SIZE between  and  or P_BRAND &apos;Brand#34&apos;  == 
+                }  &apos;LG CASE&apos;  &apos;LG BOX&apos;  &apos;LG PACK&apos;  &apos;LG PKG&apos;  #4  P_CONTAINER in  and 
+                }  1  15  P_SIZE between  and or  &quot;
+   | project &quot; type INTEGER as P_PARTKEY P_PARTKEY , 
+               type VARCHAR as P_BRAND P_BRAND , 
+               type VARCHAR as P_CONTAINER P_CONTAINER , 
+               type INTEGER AS P_SIZE P_SIZE&quot;
+   | combined 0
+   | next broadcast
+
+ stage S02 on all partitions :
+   indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 p_partkey ==&quot; //J1
+   | project &quot; type INTEGER as L_PARTKEY j1_l_partkey , 
+               type DECIMAL as L_QUANTITY J1_L_QUANTITY , 
+               type DECIMAL as L_DISCOUNT J1_L_DISCOUNT , 
+               type DECIMAL as l_extendedprice j1_l_extendedprice  , 
+               type VARCHAR as L_SHIPMODE J1_L_SHIPMODE , 
+               type VARCHAR as L_SHIPINSTRUCT J1_L_SHIPINSTRUCT , 
+               type INTEGER as P_SIZE P_SIZE , 
+               type VARCHAR as P_BRAND P_BRAND , 
+               type varchar as P_CONTAINER P_CONTAINER&quot;
+   | filter &quot; type BOOLEAN P_BRAND &apos;Brand#12&apos;  == 
+                }  &apos;SM CASE&apos;  &apos;M BOX&apos;  &apos;SM PACK&apos;  &apos;SM PKG&apos;  #4  P_CONTAINER in  and 
+                }  L_QUANTITY 1.0 &gt;= L_QUANTITY 11.0 &lt;= and and 
+                }  1  5  P_SIZE between  and 
+                }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in  and 
+                L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and 
+                P_BRAND &apos;Brand#23&apos;  == 
+                }  &apos;MED BAG&apos;  &apos;MED BOX&apos;  &apos;MED PKG&apos;  &apos;MED PACK&apos;  #4 P_CONTAINER in and 
+                }  L_QUANTITY 10.0 &gt;= L_QUANTITY 20.0 &lt;= and and 
+                }  1  10  P_SIZE between  and 
+                }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in  and L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and  or 
+                P_BRAND &apos;Brand#34&apos;  == 
+                }  &apos;LG CASE&apos;  &apos;LG BOX&apos;  &apos;LG PACK&apos;  &apos;LG PKG&apos;  #4  P_CONTAINER in  and  
+                }  L_QUANTITY 20.0 &gt;= L_QUANTITY 30.0 &lt;= and and }  1  15  P_SIZE between  and 
+                }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in  and 
+                L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and  or  &quot;
+   | combined 0
+   | next
+
+stage S03 on all partitions :
+   project &quot; type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  &quot;
+   | combined 0
+   | next
+
+ stage S04 on all nodes :
+   project &quot; type DECIMAL )  $1 sum  &quot;
+   | combined 0
+   | next
+
+ stage S05 on origin :
+   project &quot; type DECIMAL as revenue )  $1 sum  &quot;
+   | combined 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p18.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p19_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
