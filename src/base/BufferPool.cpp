@@ -591,6 +591,36 @@ void BufferPool::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Sanity check address during reload before overwriting buffer               */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bReloadSanityCheckAddr(void* aAddress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  RASSERT(m_okLock.bIsLocked() == 0);
+
+  if (aAddress)
+    if( ! bValidAddress(aAddress)) {
+      vTrace("BufferPool::bReloadSanityCheckAddr: Got invalid address!\n"_Stz);
+      return false;
+    }
+
+  FreePoolBuffer* pFreePoolBuffer = reinterpret_cast<FreePoolBuffer*>(aAddress);
+
+  if ( ! pFreePoolBuffer->eGetClassNo() == CN_FREEPOOLBUFFER ) {
+    vTrace("BufferPool::bReloadSanityCheckAddr: Heap Buffer address in Buffer Pool free chain was not free\n"_Stz);
+    return false;
+  }
+
+  m_nFreeCount--;
+  m_nAllocCount++;
+
+  ++m_ixHeapBuffers;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Use a specific buffer by address from free chain for alloc                 */
 /*----------------------------------------------------------------------------*/
 PoolBuffer* BufferPool::pReAllocHeapBuffer(void *aAddress)
@@ -622,6 +652,91 @@ PoolBuffer* BufferPool::pReAllocOtherBuffer(void *aAddress)
   ++m_ixOtherBuffers;
 
   return _pPoolBuffer(pHeapBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Reinitialise all pool buffers in the pool after reload                     */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vReInitialise(bool bTouch, bool bProgress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  UNUSED(bTouch);
+//  m_nAllocCount = 0;
+  //m_nFreeCount  = m_nBuffers;
+  i8 iFreeCount = 0;
+//  m_nFreeCount  = 0;
+  m_iFreeHead   = 0;
+
+  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*iBufferFirst(),*iBufferLast());
+
+//  bn nBuffer = iBufferFirst();
+//  for (FreePoolBuffer* pFreePoolBuffer : *this) {
+//    pFreePoolBuffer->vBufferNo(nBuffer);
+//    nBuffer++;
+//    pFreePoolBuffer->vNextFree(nBuffer);
+//  }
+
+  i8 iBufferMod;
+  FreePoolBuffer* pPrevPoolBuffer = nullptr;
+  i8 i_PoolBuffer = iBufferFirst();
+  while (C_NIL != i_PoolBuffer) {
+
+    if (bProgress) {
+      iBufferMod = i_PoolBuffer % 1000;
+      if (! iBufferMod) {
+        fflush(stdout);
+      }
+    }
+
+    FreePoolBuffer* pFreePoolBuffer = pToFreePoolBuffer(i_PoolBuffer);
+    if(pFreePoolBuffer->eGetClassNo() != CN_FREEPOOLBUFFER) {
+      i_PoolBuffer = iBufferNext(i_PoolBuffer);
+      continue;
+    }
+
+    if(m_iFreeHead == 0)
+      m_iFreeHead = i_PoolBuffer;
+
+//    pFreePoolBuffer->vSetMagic();
+//    pFreePoolBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
+
+    //pFreePoolBuffer->aFooter()->vSetFooter();
+//    if (bTouch)
+//      pFreePoolBuffer->vZeroData();
+//
+//    pFreePoolBuffer->vSetFooter();
+//    pFreePoolBuffer->vBufferNo(i_PoolBuffer);
+
+    if(pPrevPoolBuffer != nullptr) {
+      pPrevPoolBuffer->vNextFree(i_PoolBuffer);
+    }
+
+    pPrevPoolBuffer = pFreePoolBuffer;
+
+    i_PoolBuffer = iBufferNext(i_PoolBuffer);
+//    pFreePoolBuffer->vNextFree(i_PoolBuffer);
+
+    iFreeCount++;
+  }
+
+  RASSERT(iFreeCount == m_nFreeCount);
+
+//  RASSERT(pPrevPoolBuffer->iBufferNo() == gpBufferPool->iBufferLast());
+
+//  FreePoolBuffer* pLastBuffer = gpBufferPool->pToFreePoolBuffer(gpBufferPool->iBufferLast());
+
+//  pLastBuffer->vSetMagic();
+//  pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
+  //pLastBuffer->aFooter()->vSetFooter();
+//  if (bTouch)
+//    pLastBuffer->vZeroData();
+
+//  pLastBuffer->vSetFooter();
+//  pLastBuffer->vBufferNo(gpBufferPool->iBufferLast());
+  pPrevPoolBuffer->vNextFree(C_NIL);
+
+  //vDump();
 }
 
 /*----------------------------------------------------------------------------*/

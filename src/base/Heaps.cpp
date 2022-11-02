@@ -490,6 +490,7 @@ void Heaps::vFindPtn0FilePath(Stz *szFilePath)
          "Check the paths given with '--disk <path-to-disk-root>' and '--reload <dir>' argument.\n"_Stz,
          gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+  THROW("Unable to find saveFile_<node-name>_0!!\n"_Stz);
 }
 /*----------------------------------------------------------------------------*/
 /* iterate each heap                                                          */
@@ -667,7 +668,8 @@ void Heaps::vReloadPHeaps(void)
 
     switch(pPoolBufferHeader->eGetClassNo()) {
       case CN_TINYPERSISTENT: {
-        PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
 
         MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
         aBody = aAdd<void *>(pBuffer, nSizeHeader);
@@ -680,7 +682,8 @@ void Heaps::vReloadPHeaps(void)
       }
 
       case CN_SMALLPERSISTENT: {
-        PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
 
         MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
         aBody = aAdd<void *>(pBuffer, nSizeHeader);
@@ -693,7 +696,8 @@ void Heaps::vReloadPHeaps(void)
       }
 
       case CN_MEDIUMPERSISTENT: {
-        PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
 
         MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
         aBody = aAdd<void *>(pBuffer, nSizeHeader);
@@ -706,7 +710,8 @@ void Heaps::vReloadPHeaps(void)
       }
 
       case CN_LARGEPERSISTENT: {
-        PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
 
         MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
         aBody = aAdd<void *>(pBuffer, nSizeHeader);
@@ -756,6 +761,8 @@ void Heaps::vReloadPHeaps(void)
   Persistent.m_pSmall->vDropWriteLock();
   Persistent.m_pMedium->vDropWriteLock();
   Persistent.m_pLarge->vDropWriteLock();
+
+  gpBufferPool->vReInitialise(false, true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -807,7 +814,10 @@ void Heaps::vReloadPHeaps(void)
 
     if(pPoolBufferHeader->eGetClassNo() == CN_HEAPBUFFER)
     {
-      HeapBuffer* pHeapBuffer = (HeapBuffer*)(gpBufferPool->pReAllocHeapBuffer(pPoolBufferHeader->m_pThis));
+      RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+      PoolBuffer *pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBufferHeader->m_pThis);
+
+//      HeapBuffer* pHeapBuffer = (HeapBuffer*)(gpBufferPool->pReAllocHeapBuffer(pPoolBufferHeader->m_pThis));
 
       MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
       aBody = aAdd<void *>(pHeapBuffer, nSizeHeader);
