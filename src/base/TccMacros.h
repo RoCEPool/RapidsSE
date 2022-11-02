@@ -405,30 +405,9 @@
     iArg1 = *(--paW);                                                       \
     if (eErrorCode != EC_NONE ||                                            \
         iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = 0;                                                         \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        iArg2 = *(--paW);                                                   \
-        if (iArg1 == iArg2) {                                               \
-           bFilterResult = 1;                                               \
-           break;                                                           \
-        }                                                                   \
-      }                                                                     \
       while(iInCount-- > 0) {                                               \
         iArg2 = *(--paW);                                                   \
       }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
-  }
-
-#define _INX_INTINT(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
       *(paW++) = 0;                                                         \
     }                                                                       \
     else {                                                                  \
