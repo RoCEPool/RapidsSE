@@ -1409,57 +1409,57 @@ end ;</stringProp>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p3" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">pipeline unamed
+              <stringProp name="query">pipeline Query3
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage stageMarker6340 on all partitions :
+  stage S01 on all partitions :
     indexscan Customer IxC_CUSTKEY &quot;LBOUND $I1 0 &gt;=&quot;
     | filter &quot;type BOOLEAN C_MKTSEGMENT &apos;BUILDING&apos; ==&quot;
     | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
     | combined 0
     | next
 
-  stage stageMarker6343 on all partitions :
-    indexjoin Orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;   // J1 - Orders
+  stage S02 on all partitions :
+    indexjoin Orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
     | filter &quot;type BOOLEAN J1_O_ORDERDATE DATE &apos;1995-03-15&apos; &lt;&quot;
-    | project &quot;type INTEGER as J1_O_ORDERKEY J1_O_ORDERKEY ,
-               type DATE as J1_O_ORDERDATE J1_O_ORDERDATE ,
-               type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY&quot;
-    | hash expr type INTEGER J1_O_ORDERKEY
+    | project &quot;type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+               type DATE as O_ORDERDATE J1_O_ORDERDATE ,
+               type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY&quot;
+    | hash expr type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
 
   stage stageNew2 on all partitions :
-    sort &quot;type INTEGER J1_O_ORDERKEY ASC&quot;
+    sort &quot;type INTEGER O_ORDERKEY ASC&quot;
     | combined 0
     | next
 
-  stage stageMarker6346 on all partitions :
-    indexjoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 J1_O_ORDERKEY ==&quot;  // J2 - Lineitem
-    | filter &quot;type BOOLEAN J2_L_SHIPDATE DATE &apos;1995-03-15&apos; &gt;&quot;
-    | ordAgg &quot; ordGroupBy type INTEGER J2_L_ORDERKEY
-                        aggregates
-                        type INTEGER as J2_L_ORDERKEY $K1 ,
-                        type DECIMAL as REVENUE )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
-                        type DATE as J1_O_ORDERDATE  J1_O_ORDERDATE ,
-                        type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY &quot;
+  stage S03 on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+    | filter &quot;type BOOLEAN J1_L_SHIPDATE DATE &apos;1995-03-15&apos; &gt;&quot;
+    | ordAgg &quot; ordGroupBy type INTEGER J1_L_ORDERKEY
+               aggregates type INTEGER as L_ORDERKEY $K1 ,
+                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1. J1_L_DISCOUNT -  *  sum  ,
+                          type DATE as O_ORDERDATE  O_ORDERDATE ,
+                          type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY &quot;
     | combined 0
     | next
 
-   stage stageNew on origin :
+   stage S04 on origin :
     top &quot;TOP type DECIMAL Revenue&quot; 10
     | combined 0
     | next
 
-  stage stageLast on origin :
+  stage S05 on origin :
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1524,7 +1524,7 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -1696,7 +1696,7 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop_a" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop_a" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -1886,7 +1886,7 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p17" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">pipeline Q17
+              <stringProp name="query">pipeline Query17
   begin
   stage stageStart on origin :
     start
