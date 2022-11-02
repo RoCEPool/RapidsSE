@@ -18,12 +18,12 @@ load part "../tpch/sf_0001/part.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "OTvAppend_indexList_To_scan"
+/glean_cue_from = "OTvAppend_indexList_To_scan"
 /jobTags
 /transliterated
 /transform
 /transform1
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "r14"

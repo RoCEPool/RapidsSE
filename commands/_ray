@@ -24,7 +24,7 @@ select *
 /jobTags
 /transliterated
 /optimise
-/interactive
+/glean_interactive
 /weave
 /weaved
 select sum(n_nationKey) from nation;

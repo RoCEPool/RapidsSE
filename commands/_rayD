@@ -18,7 +18,7 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 /*
 /transliterated
 /transform
-/interactive
+/glean_interactive
 /weave
 /weaved
 select * from orders;
@@ -30,7 +30,7 @@ select * from orders;
 /jobTags
 /transliterated
 /transform
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "rayD"
@@ -44,7 +44,7 @@ select *
 /jobTags
 /transliterated
 /transform
-/interactive
+/glean_interactive
 /weave
 /weaved
 select

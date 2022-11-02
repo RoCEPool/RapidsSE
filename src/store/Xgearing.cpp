@@ -32,9 +32,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bPrintXformForce = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
-  m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
-  m_bBeenCued = false;
-  m_bCueingDisabled = false;
 
   m_pPermGen   = nullptr;
 
@@ -102,50 +99,25 @@ Board* Xgearing::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                  */
 /*----------------------------------------------------------------------------*/
-eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
+eOA Xgearing::eCueUser(Stz* szPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   TokenVec* pTknVec = nullptr;
 
-  if (m_bCueingDisabled)
+  if (m_pCardCtl->bCueDisabled())
     return OA_CONTINUE_TRANSFORMING;
 
-  s256 sPrompt;
-  if (szHand && szTransformation)
-    sPrompt.vSprint("%s :: %s"_Stz, szHand, szTransformation);
-  else if (szHand)
-    sPrompt.vSprint("%s"_Stz, szHand, szTransformation);
-  else
-    sPrompt.vSprint(""_Stz, szHand);
+  szPrompt->vConcat(" >> "_Stz);
 
-  if (C_UNKNOWN != iLineNo)
-    sPrompt.vCatSprint(" [%lld]"_Stz,iLineNo);
-
-  if (! m_bPrintXformForce) {
-    if (!m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
-      Stz *szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-      if (szTagCue->bSame(szHand) && szTransformation) {
-        printf("%s\n", sPrompt.azChar());
-        return OA_CONTINUE_TRANSFORMING;
-      }
-      if (szTransformation && (!szTagCue->bSame(szTransformation))) {
-        printf("%s\n", sPrompt.azChar());
-        return OA_CONTINUE_TRANSFORMING;
-      }
-    }
-  }
-
-  sPrompt.vConcat(" >> "_Stz);
-
-  m_bBeenCued = true;
+  m_pCardCtl->vCued(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L_Input:
 
   s4K sInput;
-  Cue::vGetInput(sPrompt,sInput);
+  Cue::vGetInput(szPrompt,sInput);
 
   if (0 == sInput.nLength())
     return OA_CONTINUE_TRANSFORMING;
@@ -185,7 +157,7 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
     goto L_Input;
 
   if (OA_DISABLE_CUEING == eOptAct)
-    m_bCueingDisabled = true;
+    m_pCardCtl->vCueDisabled(true);
 
   return eOptAct;
 }
@@ -251,6 +223,11 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  if (! m_pCardCtl->bBenchPrint())
+    return;
+
+  s256 sPrompt;
+
   for (;;) {
     if (C_UNKNOWN != i_SubBoard) {
       Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
@@ -263,7 +240,12 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
       }
     }
 
-    if (OA_REPRINT_BOARD != eCueUser(szHand()))
+    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation,sPrompt,C_UNKNOWN)) {
+      printf("%s\n", sPrompt.azChar());
+      break;
+    }
+
+    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
 }
@@ -275,20 +257,22 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((C_UNKNOWN == iLineNo) && (! m_bPrintXform) && (! m_bPrintXformForce))
+  if (! m_pCardCtl->bBoardPrint())
     return;
+
+  s256 sPrompt;
 
   for (;;) {
     G.pBoard->vPrintBoard(szHand(),
                           szTransformation(),
                           szDescription());
 
-    if (! bCue)
+    if (! m_pCardCtl->bCueUser(szHand(),szTransformation(),sPrompt,iLineNo)) {
+      printf("%s\n", sPrompt.azChar());
       break;
+    }
 
-    if (OA_REPRINT_BOARD != eCueUser(szHand(),
-                                     szTransformation(),
-                                     iLineNo))
+    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
 }
@@ -379,6 +363,8 @@ void Xgearing::vTransform(const char* azTransformation,
   m_bPrintXform = bPrintTransformation;
 
   G.pBoard->vTransformNoInc();
+
+  m_pCardCtl->vUseXform();
 
   G.xBI.vRestart();
 }
@@ -927,6 +913,42 @@ bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 }
 
 /*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given i_After                               */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bLocateCard(eCK eLocate, eCK eSubLocate, Stz* szWithValue, i8 i_After)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = G.pDeck->nChildCards();
+  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
+    Card *pMain = G.pDeck->pGetChild(i_Main);
+
+    G.p_Located = pMain->pFindCardRecursive(eLocate);
+    if (! G.p_Located)
+      continue;
+
+    G.e_Located = eLocate;
+
+    G.p_SubLocated = G.p_Located->pFindValueRecursive(eSubLocate,szWithValue,G.p_SubLocatedParent);
+    if (G.p_SubLocated) {
+      G.e_SubLocated = eSubLocate;
+      G.e_SubLocatedParent = G.p_SubLocatedParent ? G.p_SubLocatedParent->eCard() : CK_NONE;
+      return true;
+    }
+
+  }
+
+  G.p_Located = nullptr;
+  G.e_Located = CK_NONE;
+  G.p_SubLocated = nullptr;
+  G.e_SubLocated = CK_NONE;
+  G.p_SubLocatedParent = nullptr;
+  G.e_SubLocatedParent = CK_NONE;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given card                                  */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
@@ -1029,10 +1051,16 @@ void Xgearing::G_vClearRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.p_Located          = nullptr;
+  G.e_Located          = CK_NONE;
   G.p_PriorToMain      = nullptr;
   G.e_PriorToMain      = CK_NONE;
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
+  G.p_SubLocated       = nullptr;
+  G.e_SubLocated       = CK_NONE;
+  G.p_SubLocatedParent = nullptr;
+  G.e_SubLocatedParent = CK_NONE;
   G.p_SubOfMain        = nullptr;
   G.e_SubOfMain        = CK_NONE;
   G.p_Sub2OfMain       = nullptr;

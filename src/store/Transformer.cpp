@@ -90,6 +90,10 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
+  m_pCardCtl->vReset();
+  m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
+  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
+  //m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
 
   vHand_10_CondenseInfo    (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -116,9 +120,6 @@ void Transformer::vHand_10_CondenseInfo(bool bPrintHand, bool bPrintXform, bool 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
-
-  m_pCardCtl->vReset();
-  m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
 
   for (i8 i_SubBoard = 0;
        m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
@@ -147,8 +148,6 @@ void Transformer::vHand_20_TableAnalysis(bool bPrintHand, bool bPrintXform, bool
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-
   for (i8 i_SubBoard = 0;
        m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
        i_SubBoard++) {
@@ -172,8 +171,6 @@ void Transformer::vHand_30_StreamAnalysis(bool bPrintHand, bool bPrintXform, boo
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pTransforms->vSetPrintByKind(CK_STREAM, true);
-
   for (i8 i_SubBoard = 0;
        m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
        i_SubBoard++) {
@@ -196,9 +193,6 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
-
-  m_pCardCtl->vPrintProperties(CK_STREAM, false);
-  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
   for (i8 i_SubBoard = 0;
        m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
@@ -267,8 +261,6 @@ void Transformer::vHand_60_IndexJoin(bool bPrintHand, bool bPrintXform, bool bTr
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pCardCtl->vPrintSubCards(CK_FILTER, true);
-
   m_pTransforms->vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(bPrintXform, bTrace);
   m_pTransforms->vH60_T20_Affix_idxColOdn_ToAll_idxCol(bPrintXform, bTrace);
   m_pTransforms->vH60_T30_Add_bounds_UnderAllFiltered_table(bPrintXform, bTrace);
@@ -287,8 +279,6 @@ void Transformer::vHand_70_JoinOrdering(bool bPrintHand, bool bPrintXform, bool 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
-
-  m_pCardCtl->vPrintSubCards(CK_FILTER, false);
 
 /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -330,10 +320,6 @@ void Transformer::vHand_75_EE_operators(bool bPrintHand, bool bPrintXform, bool 
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pCardCtl->vPrintSubCards(CK_BOUNDS, true);
-  m_pCardCtl->vPrintSubCards(CK_FILTER, true);
-  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-
   m_pTransforms->vH75_T10_Convert_table_To_EEop                  (bPrintXform, bTrace);
   m_pTransforms->vH75_T20_Convert_keyExists_filter_To_bounds     (bPrintXform, bTrace);
   m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream(bPrintXform, bTrace);
@@ -351,10 +337,6 @@ void Transformer::vHand_80_IndexScan(bool bPrintHand, bool bPrintXform, bool bTr
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
-
-  m_pCardCtl->vPrintByKind(CK_STREAM, true);
-  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
-  m_pCardCtl->vPrintSubCards(CK_FILTER, true);
 
   /*
  *
@@ -417,9 +399,6 @@ void Transformer::vHand_Z0_RestatePipeline(bool bPrintHand, bool bPrintXform, bo
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
-
   m_pTransforms->vHZ0_T10_Reinstate_stages(bPrintXform, bTrace);
   m_pTransforms->vHZ0_T20_Reinstate_combined(bPrintXform, bTrace);
 
@@ -438,6 +417,7 @@ void Transformer::vEndHand(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vTransformation("n/a"_Stz);
+  m_pCardCtl->vUseXhand();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -457,32 +437,11 @@ void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Transformer::bPrintBench(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
-
-  Stz* szHand = m_pTransforms->szHand();
-
-  if (AM::JOB::bHasTag("<cue>"_Stz)) {
-    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (szTagCue->bSame((Stz*)szHand))
-      return true;
-  }
-
-  bool bPrintXform = m_pTransforms->bPrintXform();
-  
-  return bPrintXform;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Transformer::vPrintBench(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(eBoard,i_SubBoard);
+  m_pTransforms->vPrintBench(eBoard,i_SubBoard);
 }
 
 /*============================================================================*/

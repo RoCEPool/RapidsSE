@@ -131,6 +131,11 @@ static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
+static Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
+static Stz* C_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;
+static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
+static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
+
 static char MARK_ASSIGNED   = '@';
 static char MARK_BLANK      = ' ';
 static char MARK_CALLSUB    = '~';
@@ -157,6 +162,10 @@ namespace STORE
   static const bool C_QUIET_XFORM         = false;
   static const bool C_TERMINATE_RECURSION = false;
   static const bool C_TRACE_N             = false;
+
+  static const i8 C_NO    = 0;
+  static const i8 C_MAYBE = 1;
+  static const i8 C_YES   = 2;
 
   class Card : public Object
              , public ChildCards
@@ -235,7 +244,9 @@ namespace STORE
 
     bool bEquivalentTo(Card* pCard_OTHER);
 
+    Card* pFindCardRecursive(eCK eCard);
     Card* pFindParent(Card* pSubCard);
+    Card* pFindValueRecursive(eCK eCard, Stz* szValue);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);

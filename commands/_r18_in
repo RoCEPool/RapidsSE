@@ -19,11 +19,11 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vH40_T10_Convert_where_rpnCalc_To_boolCalc"
+/glean_cue_from = "vH40_T10_Convert_where_rpnCalc_To_boolCalc"
 /transliterated
 /transform
 /transform3
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "r18_in"

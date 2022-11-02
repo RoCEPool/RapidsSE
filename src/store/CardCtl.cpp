@@ -21,16 +21,29 @@ CardCtl::CardCtl(void)
 : Object(CN_CARDCTL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-  
+
+  m_bCued = false;
+  m_bCueDisabled = false;
+
   vReset();
 
-  //                                 <--
-  MemLib::vCopy(m_xaCardCtl_default, m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
-  MemLib::vCopy(m_xaCardCtl_expanded,m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
-  MemLib::vCopy(m_xaCardCtl_longer,  m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
-  MemLib::vCopy(m_xaCardCtl_shorter, m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
-
-  MemLib::vCopy(m_xaCardCtl_save,    m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+  vSave();
+  vSaveDefault();
+  vSaveExpanded();
+  vSaveLonger();
+  vSaveShorter();
+  vSaveXform();
+  vSaveXhand();
+//                                     <--
+//  MemLib::vCopy(m_xaCardCtl_default, m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//  MemLib::vCopy(m_xaCardCtl_expanded,m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//  MemLib::vCopy(m_xaCardCtl_longer,  m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//  MemLib::vCopy(m_xaCardCtl_shorter, m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//  MemLib::vCopy(m_xaCardCtl_shorter, m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//  MemLib::vCopy(m_xaCardCtl_xform,   m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//  MemLib::vCopy(m_xaCardCtl_xhand,   m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+//
+//  MemLib::vCopy(m_xaCardCtl_save,    m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
 
   _checkInitialised_(CN_CARDCTL);
 
@@ -51,48 +64,108 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* print bench ?                                                              */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vFormDefault(void)
+bool CardCtl::bBenchPrint(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  //                        <--
-  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_default,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* print board ?                                                              */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vFormExpanded(void)
+bool CardCtl::bBoardPrint(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  //                        <--
-  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_expanded,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get cued                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vFormLonger(void)
+bool CardCtl::bCued(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  //                        <--
-  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_longer,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+  return m_bCued;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vFormShorter(void)
+void CardCtl::vCued(bool bCued)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  //                        <--
-  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_shorter,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+  m_bCued = bCued;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bCueDisabled(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  return m_bCueDisabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vCueDisabled(bool bCueDisabled)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_bCueDisabled = bCueDisabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  sPrompt->vSprint(""_Stz);
+
+  if (szXhand)
+    sPrompt->vCatSprint("%s"_Stz, szXhand);
+
+  if (szXform && ! szXform->bSame("n/a"_Stz))
+    sPrompt->vCatSprint(" :: %s"_Stz, szXform);
+
+  if (C_UNKNOWN != iLineNo)
+    sPrompt->vCatSprint(" [%lld]"_Stz, iLineNo);
+
+  if (m_bCueDisabled)
+    return false;
+
+  if (m_bCued)
+    return true;
+
+  if (! AM::JOB::bHasTag(C_GLEAN_CUE_FROM))
+    return false;
+
+  Stz* szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
+  if (   (szTagCue->bSame(szXhand) && szXform->bSame("n/a"_Stz))
+      || (szXform && szTagCue->bSame(szXform))) {
+    m_bCued = true;
+    return true;
+  }
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get bNextHoriz for card                                                    */
@@ -502,7 +575,7 @@ void CardCtl::vSave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vSetDefaultForm(void)
+void CardCtl::vSaveDefault(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
 
@@ -513,7 +586,7 @@ void CardCtl::vSetDefaultForm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vSetExpandedForm(void)
+void CardCtl::vSaveExpanded(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
 
@@ -524,7 +597,7 @@ void CardCtl::vSetExpandedForm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vSetLongerForm(void)
+void CardCtl::vSaveLonger(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
 
@@ -535,12 +608,34 @@ void CardCtl::vSetLongerForm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vSetShorterForm(void)
+void CardCtl::vSaveShorter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
 
   //                                <--
   MemLib::vCopy(m_xaCardCtl_shorter,m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vSaveXform(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                              <--
+  MemLib::vCopy(m_xaCardCtl_xform,m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vSaveXhand(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                              <--
+  MemLib::vCopy(m_xaCardCtl_xhand,m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -581,6 +676,72 @@ void CardCtl::vSetSubsPrintNone(void)
 
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
     m_xaCardCtl[i_Card].m_bPrintSubCards = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vUseDefault(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                        <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_default,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vUseExpanded(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                        <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_expanded,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vUseLonger(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                        <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_longer,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vUseShorter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                        <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_shorter,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vUseXform(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                        <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_xform,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vUseXhand(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  //                        <--
+  MemLib::vCopy(m_xaCardCtl,m_xaCardCtl_xhand,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
 }
 
 /*============================================================================*/

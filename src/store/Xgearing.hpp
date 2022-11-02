@@ -30,9 +30,6 @@ namespace STORE
     bool        m_bPrintHand;
     bool        m_bPrintXform;
     bool        m_bPrintXformForce;
-    bool        m_bInteractive;
-    b8          m_bBeenCued;
-    b8          m_bCueingDisabled;
 
 
     PermGen*    m_pPermGen;
@@ -74,7 +71,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eOA eCueUser(Stz* szHand, Stz* szTransformation=nullptr, i8 iLineNo=C_UNKNOWN);
+    eOA eCueUser(Stz* szPrompt);
 
     void vEndTransform(void);
 
@@ -140,6 +137,7 @@ namespace STORE
     bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
+    bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     void G_vClearMembers(void);

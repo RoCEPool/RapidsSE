@@ -1259,6 +1259,61 @@ void Xreshape::vR_HZ0_T20_Reinstate_combined(void)
   G.pDeck->vInsertAfter(G.p_combined, G.p_MainCard);
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vRR_Convert_All_TblColOrd_to_StmColOrd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    if (C_YES == T_iCard_ConvertableTo_StmColOdn(pCard)) {
+      if (G_bLocateCard(CK_STREAM,CK_TBLCOLODN,pCard->szValue(),C_UNKNOWN)) {
+        G.p_stmColOdn = G.p_SubLocatedParent->pSub_stmColOdn();
+        M_vCard_Set_Value(pCard,G.p_stmColOdn->szValue());
+      }
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pDeck->vApplyRecursive(CK_NONE,bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vRR_Convert_All_StmColOrd_to_TblColOrd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    if (C_YES == T_iCard_ConvertableTo_TblColOdn(pCard)) {
+      if (G_bLocateCard(CK_STREAM,CK_STMCOLODN,pCard->szValue(),C_UNKNOWN)) {
+        G.p_tblColOdn = G.p_SubLocatedParent->pSub_tblColOdn();
+        M_vCard_Set_Value(pCard,G.p_tblColOdn->szValue());
+      }
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pDeck->vApplyRecursive(CK_NONE,bLambdaFn);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

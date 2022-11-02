@@ -17,10 +17,16 @@ namespace STORE
     Board*      pBoard;
     Card_Deck*  pDeck;
 
+    Card * p_Located;
+    eCK    e_Located;
     Card * p_PriorToMain;
     eCK    e_PriorToMain;
     Card * p_MainCard;
     eCK    e_MainCard;
+    Card * p_SubLocated;
+    eCK    e_SubLocated;
+    Card * p_SubLocatedParent;
+    eCK    e_SubLocatedParent;
     Card * p_SubOfMain;
     eCK    e_SubOfMain;
     Card * p_Sub2OfMain;
