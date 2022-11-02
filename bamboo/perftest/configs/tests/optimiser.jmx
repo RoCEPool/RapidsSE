@@ -630,6 +630,20 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline7</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxR_REGIONKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxR_REGIONKEY ON region (r_regionkey);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Required for pipeline7</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
               <boolProp name="ResultCollector.error_logging">false</boolProp>
               <objProp>
@@ -1042,6 +1056,19 @@ dload lineitem paths
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="TestPlan.comments">Note: This is not a distributed load because the table is so small.</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxR_REGIONKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index region IxR_REGIONKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
@@ -1595,6 +1622,166 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>
               <boolProp name="FileSaver.skipautonumber">false</boolProp>
               <stringProp name="FileSaver.variablename">p3_</stringProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P5Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p5" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query5
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage S00 on all partitions :
+    scan rapidsse public Orders
+    | filter &quot; type BOOLEAN O_ORDERDATE DATE &apos;1994-01-01&apos;  &gt;=
+                            O_ORDERDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
+    | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY&quot;
+    | combined 0
+    | next
+
+  stage S01 on all partitions :
+    indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
+    | project &quot;type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY&quot;
+    | hash &quot;type INTEGER O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+    | project &quot;type INTEGER as C_NATIONKEY C_NATIONKEY ,
+                   type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+                   type DECIMAL as L_EXTENDEDPRICE J1_L_EXTENDEDPRICE ,
+                   type DECIMAL as L_DISCOUNT J1_L_DISCOUNT&quot;
+    | hash &quot;type INTEGER L_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY expr &quot;bound $I1 L_SUPPKEY ==&quot;
+    | filter &quot; type BOOLEAN C_NATIONKEY J1_S_NATIONKEY == &quot;
+    | project &quot;type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER as S_NATIONKEY J1_S_NATIONKEY&quot;
+    | hash &quot;type INTEGER S_NATIONKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S04 on all partitions :
+    indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
+    | project &quot;type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY&quot;
+    | hash &quot;type INTEGER N_REGIONKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+    indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
+    | filter &quot; type BOOLEAN J1_R_NAME &apos;ASIA&apos;  ==  &quot;
+    | project &quot;type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR as N_NAME N_NAME&quot;
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    aggreg &quot; groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+                        type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    aggreg &quot; groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+                        type DECIMAL as REVENUE ) REVENUE sum  &quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    aggreg &quot; groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+             type DECIMAL as REVENUE ) REVENUE sum  &quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort &quot; type DECIMAL REVENUE ASC  &quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY)  ;
+create index IxC_CUSTKEY ON Customer (C_CUSTKEY)   ;
+create index IxS_SUPPKEY ON Suppliermer (S_SUPPKEY)   ;
+create index IxN_NATIONKEY ON Nation (N_NATIONKEY)   ;
+create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p5.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename"></stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+              <stringProp name="FileSaver.variablename">p5_</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
