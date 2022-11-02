@@ -27,10 +27,6 @@ namespace STORE
     bool        m_bTrace;
     i8          m_iTrace;
 
-    bool        m_bPrintHand;
-    bool        m_bPrintXform;
-    bool        m_bPrintXformForce;
-
 
     PermGen*    m_pPermGen;
 
@@ -82,11 +78,6 @@ namespace STORE
     void vHand(const char* asHand);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
     void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
-    bool bPrintHand(void);
-    void vPrintHand(bool bPrintHand);
-    bool bPrintXform(void);
-    void vPrintXform(bool bPrintXform);
-    void vPrintXformForce(bool bPrintXformForce);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);

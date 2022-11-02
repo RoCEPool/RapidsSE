@@ -27,9 +27,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bTrace = false;
   m_iTrace   = 0;
 
-  m_bPrintHand = false;
-  m_bPrintXform = false;
-  m_bPrintXformForce = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
 
@@ -286,56 +283,6 @@ void Xgearing::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get print phase                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::bPrintHand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_bPrintHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print phase                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintHand(bool bPrintHand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintHand = bPrintHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get print phase                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::bPrintXform(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_bPrintHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print phase                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintXform(bool bPrintXform)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintXform = bPrintXform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print phase force                                                      */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintXformForce(bool bPrintXformForce)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintXformForce = bPrintXformForce;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set card print properties                                                  */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vSetPrintProperties(eCK eCard, bool bPrintProperties)
@@ -360,13 +307,18 @@ void Xgearing::vTransform(const char* azTransformation,
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_sTransformation = azTransformation;
-  m_bPrintXform = bPrintTransformation;
 
   G.pBoard->vTransformNoInc();
 
   m_pCardCtl->vUseXform();
 
   G.xBI.vRestart();
+
+  if (m_pCardCtl->bTracing(m_sHand,m_sTransformation)) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, m_sHand.szStz(), m_sTransformation.szStz());
+    m_iTrace = 0;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,8 +376,6 @@ bool Xgearing::bIsTracing(void)
 void Xgearing::vTracing(bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintXform = bPrintXform;
 
   m_bTrace = bTrace;
 

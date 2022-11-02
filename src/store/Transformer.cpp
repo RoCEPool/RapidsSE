@@ -99,7 +99,6 @@ void Transformer::vTransform3(void)
   vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
-  m_pTransforms->vPrintXformForce(true);
   vHand_50_FlattenCall     (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_55_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_60_IndexJoin       (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -428,7 +427,6 @@ void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vHand(azHand);
-  m_pTransforms->vPrintHand(bPrintHand);
   m_pTransforms->vUsingBoard(eBoard, i_SubBoard);
 
   m_pBench->vClearMarks();
