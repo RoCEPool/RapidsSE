@@ -90,8 +90,8 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pCardCtl->vReset();
-  m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
+  //m_pCardCtl->vReset();
+  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
   //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
   //m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
 
@@ -142,8 +142,7 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
     m_pTransforms->vH10_T50_Cull_scan_Leaving_table();
   }
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE);
+  vEndHand(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,8 +166,7 @@ void Transformer::vHand_20_TableAnalysis(i8 iBelow, ...)
     m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table();
   }
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE);
+  vEndHand(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,8 +190,7 @@ void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
     m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream();
   }
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE);
+  vEndHand(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,8 +216,7 @@ void Transformer::vHand_40_PredicatePullup(i8 iBelow, ...)
     m_pTransforms->vH40_T40_Delete_Empty_where();
   }
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE);
+  vEndHand(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,9 +234,7 @@ void Transformer::vHand_50_FlattenCall(i8 iBelow, ...)
   m_pTransforms->vH50_T20_Copy_Called_Subset();
   m_pTransforms->vH50_T30();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE);
-
+  vEndHand(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,8 +259,7 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
   m_pTransforms->vH55_T50_Cull_Exists_Call();
   m_pTransforms->vH55_T60_Delete_Empty_where();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,8 +279,7 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
   m_pTransforms->vH60_T40_Cull_pred_MovedTo_table_bounds();
   m_pTransforms->vH60_T50_Delete_Empty_table_filter();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,8 +320,7 @@ void Transformer::vHand_70_JoinOrdering(i8 iBelow, ...)
   m_pTransforms->vH70_T98_Extract_joinOrderSeq();
 */
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,8 +339,7 @@ void Transformer::vHand_75_EE_operators(i8 iBelow, ...)
   m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
   m_pTransforms->vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,8 +371,7 @@ void Transformer::vHand_80_IndexScan(i8 iBelow, ...)
   m_pTransforms->vH80_T60_Cull_Marked_filter_cmpPred();
   m_pTransforms->vH80_T70_Promote_scan_To_indexScan();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,8 +387,7 @@ void Transformer::vHand_90_StreamOrdering(i8 iBelow, ...)
 
   m_pTransforms->vH90_T10_Remove_sort_IfSameAs_gby();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,8 +403,7 @@ void Transformer::vHand_A0_FilterRefinement(i8 iBelow, ...)
 
   m_pTransforms->vHA0_T10_Individuate_filter();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,8 +420,7 @@ void Transformer::vHand_Z0_RestatePipeline(i8 iBelow, ...)
   m_pTransforms->vHZ0_T10_Reinstate_stages();
   m_pTransforms->vHZ0_T20_Reinstate_combined();
 
-  vEndHand();
-  vPrintBench(BK_SUBPIPE,0);
+  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -443,12 +429,14 @@ void Transformer::vHand_Z0_RestatePipeline(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vEndHand(void)
+void Transformer::vEndHand(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   //m_pTransforms->vXform(C_NA);
   m_pCardCtl->vUseXhand();
+
+  m_pTransforms->vPrintBench(eBoard, i_Board);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,16 +450,6 @@ void Transformer::vHand(eBK eBoard, i8 i_Board, const char* azHand)
   m_pTransforms->vXhand(azHand);
 
   m_pBench->vClearMarks();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transformer::vPrintBench(eBK eBoard, i8 i_SubBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
-
-  m_pTransforms->vPrintBench(eBoard,i_SubBoard);
 }
 
 /*============================================================================*/

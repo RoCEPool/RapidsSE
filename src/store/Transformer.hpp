@@ -51,9 +51,8 @@ namespace STORE
     void vHand_A0_FilterRefinement(i8 iBelow, ...);
     void vHand_Z0_RestatePipeline (i8 iBelow, ...);
 
-    void vEndHand(void);
+    void vEndHand(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vHand(eBK eBoard, i8 i_Board, const char* azHand);
-    void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
 
     Footer* aFooter(void);
   };

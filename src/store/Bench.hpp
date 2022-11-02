@@ -27,7 +27,7 @@ namespace STORE
     bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
-    Board* pGetBoard(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
     Board* pGetBoard(Stz* szBoardNm);
     Optimiser* pOptimiser(void);
 

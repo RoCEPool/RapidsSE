@@ -100,16 +100,16 @@ void Bench::vClearMarks(void)
 /*----------------------------------------------------------------------------*/
 /* get board of given kind                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(eBK eBoard, i8 i_SubBoard)
+Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   i8 nBoards = this->nItems();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
+  for (i8 i_each = 0; i_each < nBoards; i_each++) {
+    Board *pBoard = this->pGet(i_each);
 
-    if (eBoard == pBoard->eBoard() && (C_UNKNOWN == i_SubBoard ||
-                                       i_SubBoard == pBoard->i_Board()))
+    if (eBoard == pBoard->eBoard() && (C_UNKNOWN == i_Board ||
+                                       i_Board == pBoard->i_Board()))
       return pBoard;
   }
 
