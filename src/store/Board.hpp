@@ -139,7 +139,7 @@ namespace STORE
   protected:
     s32         m_sBoardNm;
     eBK         m_eBoard;
-    i8          m_i_SubBoard;
+    i8          m_i_Board;
     eBT         m_eBoardType;
 
     Card_Deck*  m_pCard_Deck;
@@ -148,7 +148,6 @@ namespace STORE
     Bench*      m_pBench;
 
     i8          m_iTransformNo;
-    b8          m_bBeenCued;
 
   private:
     // must be last
@@ -158,10 +157,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench);
+    Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
     eBK eBoard(void);
+    i8 i_Board(void);
     Stz* szBoardNm(void);
     void vBoardNm(Stz* szBoardNm);
 
@@ -169,19 +169,13 @@ namespace STORE
     void vClearMarks(void);
 
     Card_Deck* pDeck(void);
-    void vDuplicateBoard(Board* pBoard_arg);
 
     void vPinBanners(Ribbon* pRibbon);
-
-    void vPinCards(Ribbon* pRibbon,
-                   i8 iPrintNo,
-                   Stz* szExplain=nullptr);
+    void vPinCards(Ribbon* pRibbon);
     void vPinTitle(Ribbon* pRibbon,
                    i8 iTransformNo,
                    Stz* szExplain=nullptr);
     void vPrintBoard(Stz* szDescription=nullptr);
-
-    i8 i_SubBoard(void);
 
     void vTransformNoInc(void);
 

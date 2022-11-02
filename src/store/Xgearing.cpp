@@ -226,12 +226,12 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
     G.pBoard->vPrintBoard(szXdesc());
 
     if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_SubBoard(), iLineNo);
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_Board(), iLineNo);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_SubBoard(), iLineNo);
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_Board(), iLineNo);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }

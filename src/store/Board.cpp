@@ -27,14 +27,14 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench)
+Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, eBT eBoardType, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_sBoardNm     = szBoardNm;
   m_eBoard       = eBoard;
-  m_i_SubBoard   = i_SubBoard;
+  m_i_Board   = i_Board;
   m_eBoardType   = eBoardType;
 
   m_pBench       = pBench;
@@ -44,7 +44,6 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* p
   m_pCard_Deck  = new Card_Deck;
 
   m_iTransformNo = C_UNKNOWN;
-  m_bBeenCued = false;
 
   _checkInitialised_(CN_BOARD);
 
@@ -134,17 +133,6 @@ Card_Deck* Board::pDeck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vDuplicateBoard(Board* pBoard_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Deck->nItems(); i_Main_arg++)
-    m_pCard_Deck->vAppendMain(pBoard_arg->m_pCard_Deck->pGetChild(i_Main_arg)->pDupCardAndSubCards());
-}
-
-/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinBanners(Ribbon* pRibbon)
@@ -154,14 +142,14 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('-',true);
   pRibbon->vDrawH('=');
 
-  Stz* szHand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
+  Stz* szXhand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
   Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXform();
 
-  pRibbon->vPutTextRight(szHand, 1);
+  pRibbon->vPutTextRight(szXhand,1);
   pRibbon->vPutTextRight(szXfrom,2);
 
   s32 sLeftMargin;
-  sLeftMargin.vSprint("%lld "_Stz,m_i_SubBoard);
+  sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
   pRibbon->vInsertCharsV(0,0,sLeftMargin);
   //pRibbon->vDrawV(0,0,"x"_Stz);
 }
@@ -169,8 +157,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinCards(Ribbon* pRibbon,
-                      i8 iPrintNo, Stz* szDescription)
+void Board::vPinCards(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -238,11 +225,13 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
-                   iTransformNo,
+                   m_iTransformNo,
                    m_sBoardNm.szStz(),
                    m_pOptimiser->szQueryNm());
 
-  pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);
+  Stz* szXdesc = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXdesc();
+
+  pRibbon->vSprint("%s"_Stz,szXdesc ? szXdesc : ""_Stz);
   pRibbon->vTitleLines();
 }
 
@@ -257,7 +246,7 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinTitle(pRibbon, m_iTransformNo, szDescription);
 
-  vPinCards(pRibbon, m_iTransformNo, szDescription);
+  vPinCards(pRibbon);
 
   vPinBanners(pRibbon);
 
@@ -269,11 +258,11 @@ void Board::vPrintBoard(Stz* szDescription)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Board::i_SubBoard(void)
+i8 Board::i_Board(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  return m_i_SubBoard;
+  return m_i_Board;
 }
 
 /*----------------------------------------------------------------------------*/

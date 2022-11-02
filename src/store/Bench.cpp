@@ -109,7 +109,7 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_SubBoard)
     Board *pBoard = this->pGet(i_Board);
 
     if (eBoard == pBoard->eBoard() && (C_UNKNOWN == i_SubBoard ||
-                                       i_SubBoard == pBoard->i_SubBoard()))
+                                       i_SubBoard == pBoard->i_Board()))
       return pBoard;
   }
 
