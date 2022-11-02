@@ -371,21 +371,6 @@ bool Xgearing::bIsTracing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vTracing(bool bPrintXform, bool bTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bTrace = bTrace;
-
-  if (m_bTrace) {
-    vTrace("\n\nTracing %s\n"_Stz, m_sTransformation.szStz());
-    m_iTrace = 0;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* conditionally trace                                                        */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vTracer(Stz* szFormat, ...)

@@ -92,7 +92,6 @@ namespace STORE
   protected:
     bool bIsTracing(void);
 
-    void vTracing(bool bPrintXform, bool bTrace);
     void vTracer(Stz* szFormat, ...);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
