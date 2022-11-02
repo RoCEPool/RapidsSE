@@ -15,11 +15,11 @@ load orders   "../tpch/sf_0001/orders.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vH50_T10_Extract_subSet_Of_call"
+/glean_cue_from = "vH50_T10_Extract_subSet_Of_call"
 /transliterated
 /transform
 /transform3
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "r7_call"

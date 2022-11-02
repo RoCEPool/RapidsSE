@@ -131,6 +131,11 @@ static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
+static Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
+static Stz* C_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;
+static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
+static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
+
 static char MARK_ASSIGNED   = '@';
 static char MARK_BLANK      = ' ';
 static char MARK_CALLSUB    = '~';

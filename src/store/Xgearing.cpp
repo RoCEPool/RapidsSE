@@ -123,8 +123,8 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation, i8 iLineNo)
     sPrompt.vCatSprint(" [%lld]"_Stz,iLineNo);
 
   if (! m_bPrintXformForce) {
-    if (!m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
-      Stz *szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
+    if (!m_bBeenCued && AM::JOB::bHasTag(C_GLEAN_CUE_FROM)) {
+      Stz *szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
       if (szTagCue->bSame(szHand) && szTransformation) {
         printf("%s\n", sPrompt.azChar());
         return OA_CONTINUE_TRANSFORMING;

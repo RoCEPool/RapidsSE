@@ -61,13 +61,13 @@ tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// /cue = "$"
-/cue = "OT_vAppend_preliminary_indexJoin"
+// /glean_cue_from = "$"
+/glean_cue_from = "OT_vAppend_preliminary_indexJoin"
 /jobTags
 /transliterated
 /transform
 /transform2
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "r5"

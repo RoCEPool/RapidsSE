@@ -10,7 +10,7 @@ _tpchCreate
 /transliterated
 /transform
 /transform2
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "r9"

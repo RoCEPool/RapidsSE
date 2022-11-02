@@ -19,11 +19,11 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vPhase_10_ReducePipeline"
+/glean_cue_from = "vPhase_10_ReducePipeline"
 /transliterated
 /transform
 /transform3
-/interactive
+/glean_interactive
 /weave
 /weaved
 /pipelineName = "r4_exists"

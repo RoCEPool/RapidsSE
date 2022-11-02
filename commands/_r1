@@ -13,8 +13,8 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 /transliterated
 /transform
 /transform2
-/interactive
-/cue = "$"
+/glean_interactive
+/glean_cue_from = "$"
 /weave
 /weaved
 /pipelineName = "r1"
