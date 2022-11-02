@@ -43,7 +43,7 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, eBT eBoardType, Bench* pBen
 
   m_pCard_Deck  = new Card_Deck;
 
-  m_iTransformNo = C_UNKNOWN;
+  m_iXform = C_UNKNOWN;
 
   _checkInitialised_(CN_BOARD);
 
@@ -225,7 +225,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
-                   m_iTransformNo,
+                   m_iXform,
                    m_sBoardNm.szStz(),
                    m_pOptimiser->szQueryNm());
 
@@ -244,7 +244,7 @@ void Board::vPrintBoard(Stz* szDescription)
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this);
 
-  vPinTitle(pRibbon, m_iTransformNo, szDescription);
+  vPinTitle(pRibbon, m_iXform, szDescription);
 
   vPinCards(pRibbon);
 
@@ -266,13 +266,83 @@ i8 Board::i_Board(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-void Board::vTransformNoInc(void)
+Stz* Board::szXdesc(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_iTransformNo++;
+  return m_sXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+void Board::vXdesc(Stz* szDescription)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sXdesc = szDescription;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Board::iXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_iXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+void Board::vXform(i8 iXform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_iXform = iXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Board::szXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_sXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+void Board::vXform(Stz* szTransformation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sXform = szTransformation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Board::szXhand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_sXhand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void Board::vXhand(const char* asXhand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sXhand = asXhand;
 }
 
 /*============================================================================*/

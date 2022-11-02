@@ -27,6 +27,7 @@ namespace STORE
     bool        m_bTrace;
     i8          m_iTrace;
 
+    i8          m_iXform;
 
     PermGen*    m_pPermGen;
 

@@ -30,6 +30,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
 
+  m_iXform     = 0;
   m_pPermGen   = nullptr;
 
   m_pColumn    = nullptr;
@@ -171,7 +172,7 @@ void Xgearing::vEndTransform(void)
 
   G.pDeck->vRenumberRecursive();
 
-  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
+  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,8 +270,10 @@ void Xgearing::vTransform(const char* azTransformation)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vXform((Stz*)azTransformation);
+  G.pBoard->vXform((Stz*)azTransformation);
 
-  G.pBoard->vTransformNoInc();
+  m_iXform++;
+  G.pBoard->vXform(m_iXform);
 
   m_pCardCtl->vUseXform();
 
@@ -314,6 +317,7 @@ void Xgearing::vXdesc(Stz* szDescription)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_sXdesc = szDescription;
+  G.pBoard->vXdesc(szDescription);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,6 +358,8 @@ void Xgearing::vXhand(const char* asXhand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_sXhand = asXhand;
+
+  G.pBoard->vXhand(asXhand);
 }
 
 /*----------------------------------------------------------------------------*/

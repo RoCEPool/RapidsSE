@@ -422,12 +422,12 @@ void Transformer::vEndHand(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* azHand)
+void Transformer::vHand(eBK eBoard, i8 i_Board, bool bPrintHand, const char* azHand)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  m_pTransforms->vUsingBoard(eBoard, i_Board);
   m_pTransforms->vXhand(azHand);
-  m_pTransforms->vUsingBoard(eBoard, i_SubBoard);
 
   m_pBench->vClearMarks();
 }

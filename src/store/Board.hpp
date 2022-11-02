@@ -147,7 +147,10 @@ namespace STORE
     Optimiser*  m_pOptimiser;
     Bench*      m_pBench;
 
-    i8          m_iTransformNo;
+    s32         m_sXhand;
+    s256        m_sXform;
+    i8          m_iXform;
+    s256        m_sXdesc;
 
   private:
     // must be last
@@ -177,7 +180,14 @@ namespace STORE
                    Stz* szExplain=nullptr);
     void vPrintBoard(Stz* szDescription=nullptr);
 
-    void vTransformNoInc(void);
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szDescription);
+    i8   iXform(void);
+    void vXform(i8   iXform);
+    Stz* szXform(void);
+    void vXform(Stz* szTransformation);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
 
   private:
     Footer* aFooter(void);
