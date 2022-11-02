@@ -389,76 +389,101 @@ rows:
 sleep 4;
 success
 
-pipeline Q10
-    begin
+//SF0001: 93ms
+pipeline Query10
+begin
 
-      stage first on origin :
-        start
-        | pulse once
-        | next
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
 
+  stage S01 on all partitions :
+    indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
+    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | combined 0
+    | next
 
-      // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
-      stage Gs_ORDERS on all partitions :
+  stage S02 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as C_NAME J1_C_NAME ,
+               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
+               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+               type VARCHAR as C_PHONE J1_C_PHONE ,
+               type VARCHAR as C_COMMENT J1_C_COMMENT"
+    | combined 0
+    | next
 
-        indexScan Orders IxO_ORDERDATE
-            "lbound date '1993-10-01' >=  ubound date '1994-01-01' < "
+  stage S03 on all partitions :
+    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as C_NAME C_NAME ,
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT"
+    | hash expr type INTEGER O_ORDERKEY
+    | combined 0
+    | next hashcast
 
-        | project
-            "type INTEGER as _custkey  O_CUSTKEY , type INTEGER as _orderkey O_ORDERKEY"
+  stage S03 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | aggreg  "groupby    type INTEGER O_CUSTKEY
+               aggregates type INTEGER as O_CUSTKEY $K1 ,
+                          type VARCHAR as C_NAME C_NAME ,
+                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
+                          type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                          type VARCHAR as N_NAME N_NAME ,
+                          type VARCHAR as C_ADDRESS C_ADDRESS ,
+                          type VARCHAR as C_PHONE C_PHONE ,
+                          type VARCHAR as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
 
-        | combined 0
-        | next
+  stage S04 on all nodes :
+    aggreg "groupby    type INTEGER O_CUSTKEY
+            aggregates type INTEGER as O_CUSTKEY $K1 ,
+                       type VARCHAR as C_NAME C_NAME ,
+                       type DECIMAL as REVENUE ) REVENUE  sum ,
+                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR as N_NAME N_NAME ,
+                       type VARCHAR as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR as C_PHONE C_PHONE ,
+                       type VARCHAR as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
 
-    //UC
+  stage S05 on origin :
+    aggreg "groupby    type INTEGER O_CUSTKEY
+            aggregates type INTEGER as O_CUSTKEY $K1 ,
+                       type VARCHAR as C_NAME C_NAME ,
+                       type DECIMAL as REVENUE ) REVENUE  sum ,
+                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR as N_NAME N_NAME ,
+                       type VARCHAR as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR as C_PHONE C_PHONE ,
+                       type VARCHAR as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
 
-      // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
-      stage Gj_CUSTOMER on all partitions :
-        indexJoin Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
-        | project expr  type INTEGER as _custkey _custkey ,  type INTEGER as _orderkey _orderkey , type VARCHAR as c_name j1_c_name , type DECIMAL as c_acctbal J1_C_ACCTBAL , type INTEGER as J1_C_NATIONKEY j1_c_nationkey , type VARCHAR as c_address j1_c_address , type VARCHAR as c_phone j1_c_phone , type VARCHAR as c_comment j1_c_comment
-        | combined 0
-        | next
+  stage S06 on origin :
+    sort " type DECIMAL REVENUE ASC  "
+    | limit 100
+    | combined 0
+    | next
 
-   stage Gj_NATION on all partitions :
-      indexjoin Nation IxN_NATIONKEY "BOUND $I1 J1_C_NATIONKEY ==" // J2 - Nation
-      | project expr type INTEGER as _custkey _custkey ,  type INTEGER as _orderkey _orderkey , type VARCHAR as c_name c_name , type DECIMAL as c_acctbal c_acctbal , type VARCHAR as n_name J2_n_name , type VARCHAR as c_address c_address , type VARCHAR as c_phone c_phone , type VARCHAR as c_comment c_comment
-      | hash expr type INTEGER _orderkey
-      | combined 0
-      | next hashcast
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;
 
-    //HC
-
-      // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
-      stage Gj_LINEITEM on all partitions :
-        indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
-        | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-        | aggreg expr groupby type INTEGER _custkey aggregates type INTEGER as _custkey $K1 , type VARCHAR as c_name c_name , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum , type DECIMAL as c_acctbal c_acctbal , type VARCHAR as n_name n_name , type VARCHAR as c_address c_address , type VARCHAR as c_phone c_phone , type VARCHAR as c_comment c_comment
-        | combined 0
-        | next
-
-      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-      stage G_AGG_N on all nodes :
-        aggreg expr groupby type INTEGER _custkey aggregates type INTEGER as _custkey $K1 , type VARCHAR as c_name c_name , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as c_acctbal c_acctbal , type VARCHAR as n_name n_name , type VARCHAR as c_address c_address , type VARCHAR as c_phone c_phone , type VARCHAR as c_comment c_comment
-        | combined 0
-        | next
-
-      stage G_GAG_O on origin :
-        aggreg expr groupby type INTEGER _custkey aggregates type INTEGER as _custkey $K1 , type VARCHAR as c_name c_name , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as c_acctbal c_acctbal , type VARCHAR as n_name n_name , type VARCHAR as c_address c_address , type VARCHAR as c_phone c_phone , type VARCHAR as c_comment c_comment
-        | combined 0
-        | next
-
-      stage stageNew on origin :
-        sort " type DECIMAL $3 ASC  "
-        | limit 100
-        | combined 0
-        | next
-
-      stage last on origin :
-        output
-        | sink
-        | first
-
-    end ;
 
 rows:
   (43,'Customer#000000043',-12450.59,9904.28,'ROMANIA','ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd','29-316-665-2897','ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')

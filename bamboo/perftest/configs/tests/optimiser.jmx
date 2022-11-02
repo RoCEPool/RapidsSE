@@ -532,6 +532,20 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline3, pipeline7</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERDATE" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxO_ORDERDATE ON orders(o_orderdate);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Required for pipeline3, pipeline7</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxO_ORDERKEY ON orders (o_orderkey);</stringProp>
@@ -829,6 +843,19 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxO_CUSTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_CUSTKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxO_ORDERDATE" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index orders IxO_ORDERDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1571,6 +1598,164 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P10Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p10" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query10
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Orders IxO_ORDERDATE &quot;LBOUND date &apos;1993-10-01&apos; &gt;=  UBOUND date &apos;1994-01-01&apos; &lt; &quot;
+    | project &quot;type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY&quot;
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
+    | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as C_NAME J1_C_NAME ,
+               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
+               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+               type VARCHAR as C_PHONE J1_C_PHONE ,
+               type VARCHAR as C_COMMENT J1_C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    indexjoin Nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
+    | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as C_NAME C_NAME ,
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT&quot;
+    | hash expr type INTEGER O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+    | filter  &quot;type BOOLEAN J1_L_RETURNFLAG &apos;R&apos; ==&quot;
+    | aggreg  &quot;groupby    type INTEGER O_CUSTKEY
+               aggregates type INTEGER as O_CUSTKEY $K1 ,
+                          type VARCHAR as C_NAME C_NAME ,
+                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
+                          type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                          type VARCHAR as N_NAME N_NAME ,
+                          type VARCHAR as C_ADDRESS C_ADDRESS ,
+                          type VARCHAR as C_PHONE C_PHONE ,
+                          type VARCHAR as C_COMMENT C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg &quot;groupby    type INTEGER O_CUSTKEY
+            aggregates type INTEGER as O_CUSTKEY $K1 ,
+                       type VARCHAR as C_NAME C_NAME ,
+                       type DECIMAL as REVENUE ) REVENUE  sum ,
+                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR as N_NAME N_NAME ,
+                       type VARCHAR as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR as C_PHONE C_PHONE ,
+                       type VARCHAR as C_COMMENT C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg &quot;groupby    type INTEGER O_CUSTKEY
+            aggregates type INTEGER as O_CUSTKEY $K1 ,
+                       type VARCHAR as C_NAME C_NAME ,
+                       type DECIMAL as REVENUE ) REVENUE  sum ,
+                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR as N_NAME N_NAME ,
+                       type VARCHAR as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR as C_PHONE C_PHONE ,
+                       type VARCHAR as C_COMMENT C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort &quot; type DECIMAL REVENUE ASC  &quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+create index IxO_ORDERDATE  ON Orders (O_ORDERDATE)  ;
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+create index IxN_NATION  ON Orders  (N_NATIONKEY)  ;
+create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
+</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p10.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename"></stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+              <stringProp name="FileSaver.variablename">p10_</stringProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
@@ -1922,7 +2107,7 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
                   <connectTime>true</connectTime>
                 </value>
               </objProp>
-              <stringProp name="filename">p16.csv</stringProp>
+              <stringProp name="filename">p16_a.csv</stringProp>
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
@@ -2050,7 +2235,7 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
                   <connectTime>true</connectTime>
                 </value>
               </objProp>
-              <stringProp name="filename">p18.csv</stringProp>
+              <stringProp name="filename">p17.csv</stringProp>
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
@@ -2182,7 +2367,7 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
                   <connectTime>true</connectTime>
                 </value>
               </objProp>
-              <stringProp name="filename">p18.csv</stringProp>
+              <stringProp name="filename">p7.csv</stringProp>
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
@@ -2475,7 +2660,7 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
                   <connectTime>true</connectTime>
                 </value>
               </objProp>
-              <stringProp name="filename">p18.csv</stringProp>
+              <stringProp name="filename">p19.csv</stringProp>
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
