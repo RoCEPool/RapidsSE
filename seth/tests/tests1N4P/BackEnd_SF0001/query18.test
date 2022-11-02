@@ -121,21 +121,21 @@ end ;
 
 */
 
-pipeline unnamed
- begin
-   stage stageStart on origin :
+pipeline Query18
+begin
+   stage S00 on origin :
      start
      | pulse once
      | next
 
-   stage stageMarker1264 on all partitions :
+   stage S01 on all partitions :
       indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
      | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
      | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
      | combined 0
      | next broadcast
 
-   stage stageMarker1279 on all partitions :
+   stage S02 on all partitions :
      indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
      | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
@@ -145,7 +145,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1276 on all partitions :
+   stage S03 on all partitions :
      indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
      | project "type VARCHAR as C_NAME J1_C_NAME ,
                 type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
@@ -156,7 +156,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1285 on all partitions :
+   stage S04 on all partitions :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
                         type INTEGER as C_CUSTKEY C_CUSTKEY ,
                         type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -172,7 +172,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1288 on all nodes :
+   stage S05 on all nodes :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
                              type INTEGER as C_CUSTKEY C_CUSTKEY ,
                              type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -188,7 +188,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1291 on origin :
+   stage S06 on origin :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
                              type INTEGER as C_CUSTKEY C_CUSTKEY ,
                              type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -204,13 +204,13 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1291 on origin :
+   stage S07 on origin :
      sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
-     //| limit 100
+     | limit 100
      | combined 0
      | next
 
-   stage stageLast on origin :
+   stage S08 on origin :
      output
      | sink
      | first
@@ -298,21 +298,22 @@ contains rows:
  ('Customer#000000088',88,838,  DATE '1996-02-18',37579.19,163.00)
  ('Customer#000000028',28,178,  DATE '1995-09-09',37704.79,107.00)
 
-pipeline unnamed
- begin
-   stage stageStart on origin :
+// same
+pipeline Query18
+begin
+   stage S00 on origin :
      start
      | pulse once
      | next
 
-   stage stageMarker1264 on all partitions :
+   stage S01 on all partitions :
       indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
      | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
      | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
      | combined 0
      | next broadcast
 
-   stage stageMarker1279 on all partitions :
+   stage S02 on all partitions :
      indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
      | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
@@ -322,7 +323,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1276 on all partitions :
+   stage S03 on all partitions :
      indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
      | project "type VARCHAR as C_NAME J1_C_NAME ,
                 type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
@@ -333,7 +334,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1285 on all partitions :
+   stage S04 on all partitions :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
                         type INTEGER as C_CUSTKEY C_CUSTKEY ,
                         type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -349,7 +350,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1288 on all nodes :
+   stage S05 on all nodes :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
                              type INTEGER as C_CUSTKEY C_CUSTKEY ,
                              type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -365,7 +366,7 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1291 on origin :
+   stage S06 on origin :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
                              type INTEGER as C_CUSTKEY C_CUSTKEY ,
                              type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -381,13 +382,13 @@ pipeline unnamed
      | combined 0
      | next
 
-   stage stageMarker1291 on origin :
+   stage S07 on origin :
      sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
      //| limit 100
      | combined 0
      | next
 
-   stage stageLast on origin :
+   stage S08 on origin :
      output
      | sink
      | first
