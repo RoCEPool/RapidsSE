@@ -37,23 +37,22 @@ namespace STORE
 
     void vTransform3(void);
 
-    void vHand_10_CondenseInfo    (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_20_TableAnalysis   (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_30_StreamAnalysis  (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_40_PredicatePullup (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_50_FlattenCall     (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_55_FlattenExists   (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_60_IndexJoin       (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_70_JoinOrdering    (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_75_EE_operators    (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_80_IndexScan       (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_90_StreamOrdering  (bool bPrintHand, bool bPrintXform, bool bTrace);
-    void vHand_A0_FilterRefinement(bool bPrintHand, bool bPrintXform, bool bTrace);
-
-    void vHand_Z0_RestatePipeline (bool bPrintHand, bool bPrint, bool bTrace);
+    void vHand_10_CondenseInfo    (i8 iBelow, ...);
+    void vHand_20_TableAnalysis   (i8 iBelow, ...);
+    void vHand_30_StreamAnalysis  (i8 iBelow, ...);
+    void vHand_40_PredicatePullup (i8 iBelow, ...);
+    void vHand_50_FlattenCall     (i8 iBelow, ...);
+    void vHand_55_FlattenExists   (i8 iBelow, ...);
+    void vHand_60_IndexJoin       (i8 iBelow, ...);
+    void vHand_70_JoinOrdering    (i8 iBelow, ...);
+    void vHand_75_EE_operators    (i8 iBelow, ...);
+    void vHand_80_IndexScan       (i8 iBelow, ...);
+    void vHand_90_StreamOrdering  (i8 iBelow, ...);
+    void vHand_A0_FilterRefinement(i8 iBelow, ...);
+    void vHand_Z0_RestatePipeline (i8 iBelow, ...);
 
     void vEndHand(void);
-    void vHand(eBK eBoard, i8 i_Board, bool bPrintHand, const char* azHand);
+    void vHand(eBK eBoard, i8 i_Board, const char* azHand);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
 
     Footer* aFooter(void);

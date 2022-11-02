@@ -72,6 +72,7 @@ namespace STORE
 
     bool bPrintBelow(i8 i_Card);
     void vPrintBelow(i8 i_Card, bool bPrintBelow);
+    void vPrintBelow(i8 iBelow, va_list xVarArgs);
     bool bPrintByKind(i8 i_Card);
     void vPrintByKind(i8 i_Card, bool bPrintByKind);
     Stz* szHorizExclude(i8 i_Card);

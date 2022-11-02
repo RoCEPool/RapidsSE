@@ -237,6 +237,28 @@ void CardCtl::vPrintBelow(i8 i_Card, bool bPrintBelow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set bPrintBelow for card                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintBelow(i8 iBelow, va_list xVarArgs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (CK_NONE == iBelow)
+    return;
+
+  m_xaCardCtl[iBelow].m_bPrintBelow = true;
+
+  for (;;) {
+    iBelow = (i8)va_arg(xVarArgs,eCK);
+    if (CK_NONE == iBelow)
+      return;
+    m_xaCardCtl[iBelow].m_bPrintBelow = true;
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get bPrintByKind for card                                                  */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintByKind(i8 i_Card)

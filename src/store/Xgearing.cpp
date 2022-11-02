@@ -200,13 +200,13 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
       }
     }
 
-    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), i_Board, C_UNKNOWN);
+    if (! m_pCardCtl->bCueUser(szXhand(), C_NA)) {
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), C_NA, i_Board, C_UNKNOWN);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), i_Board, C_UNKNOWN);
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), C_NA, i_Board, C_UNKNOWN);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
