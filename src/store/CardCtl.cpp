@@ -24,6 +24,7 @@ CardCtl::CardCtl(void)
 
   m_bCued = false;
   m_bCueDisabled = false;
+  m_bTrace = false;
 
   vReset();
 
@@ -141,7 +142,7 @@ bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo)
   if (szXhand)
     sPrompt->vCatSprint("%s"_Stz, szXhand);
 
-  if (szXform && ! szXform->bSame("n/a"_Stz))
+  if (szXform && ! szXform->bSame(C_NA))
     sPrompt->vCatSprint(" :: %s"_Stz, szXform);
 
   if (C_UNKNOWN != iLineNo)
@@ -157,7 +158,7 @@ bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo)
     return false;
 
   Stz* szTagCue = AM::JOB::szTagValue(C_GLEAN_CUE_FROM);
-  if (   (szTagCue->bSame(szXhand) && szXform->bSame("n/a"_Stz))
+  if (   (szTagCue->bSame(szXhand) && szXform->bSame(C_NA))
       || (szXform && szTagCue->bSame(szXform))) {
     m_bCued = true;
     return true;
@@ -505,7 +506,7 @@ void CardCtl::vReset(void)
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
 
     m_xaCardCtl[i_Card].m_bHeatNext = false;
-    m_xaCardCtl[i_Card].m_sHideHeat = "n/a"_Stz;
+    m_xaCardCtl[i_Card].m_sHideHeat = C_NA;
 
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
@@ -677,6 +678,49 @@ void CardCtl::vSetSubsPrintNone(void)
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
     m_xaCardCtl[i_Card].m_bPrintSubCards = false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  return m_bTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cued                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vTrace(bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_bTrace = bTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cued                                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bTracing(Stz* szXhand, Stz* szXform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (m_bTrace)
+    return true;
+
+  if (! AM::JOB::bHasTag(C_GLEAN_TRACE))
+    return false;
+
+  Stz* szTagTrace = AM::JOB::szTagValue(C_GLEAN_TRACE);
+  if (   (szTagTrace->bSame(szXhand) && szXform->bSame(C_NA))
+         || (szXform && szTagTrace->bSame(szXform))) {
+    return true;
+  }
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

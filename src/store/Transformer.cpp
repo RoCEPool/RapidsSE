@@ -416,7 +416,7 @@ void Transformer::vEndHand(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vTransformation("n/a"_Stz);
+  m_pTransforms->vTransformation(C_NA);
   m_pCardCtl->vUseXhand();
 }
 
