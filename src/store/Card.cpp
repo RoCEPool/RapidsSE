@@ -1045,7 +1045,8 @@ void Card::vMoveToLastChild(Card* pChildCard)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent, bool& rbPrune)
+void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
+                               Card* pParent, bool& rbPrune, bool bPrintBelow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1087,7 +1088,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent, bool& 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCardRecursive(pRibbon, iDepth + 1, this, rbPrune);
+    pSubCard->vPrintCardRecursive(pRibbon, iDepth + 1, this, rbPrune, bPrintBelow);
   }
 
   delete pSubCard_I;

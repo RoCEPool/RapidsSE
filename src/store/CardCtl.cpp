@@ -209,6 +209,34 @@ void CardCtl::vNextHorizon(i8 i_Card, bool bNextHoriz)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bPrintBelow for card                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bPrintBelow(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bPrintBelow = m_xaCardCtl[i_Card].m_bPrintBelow;
+
+  return bPrintBelow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPrintBelow for card                                                   */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintBelow(i8 i_Card, bool bPrintBelow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintBelow = bPrintBelow;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintBelow = bPrintBelow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get bPrintByKind for card                                                  */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintByKind(i8 i_Card)
@@ -520,6 +548,7 @@ void CardCtl::vReset(void)
     m_xaCardCtl[i_Card].m_bHeatNext = false;
     m_xaCardCtl[i_Card].m_sHideHeat = C_NA;
 
+    m_xaCardCtl[i_Card].m_bPrintBelow      = false;
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
     m_xaCardCtl[i_Card].m_bPrintNo         = true;

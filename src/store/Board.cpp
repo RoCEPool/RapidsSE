@@ -201,7 +201,7 @@ void Board::vPinCards(Ribbon* pRibbon)
       pSubRibbon->vLaneNext();
 
     bool bPrune = false;
-    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
+    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune,false);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

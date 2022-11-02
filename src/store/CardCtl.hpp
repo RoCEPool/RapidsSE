@@ -14,6 +14,7 @@ namespace STORE
     bool m_bHeatNext;        // print card on new horizontal heat/row
     s32  m_sHideHeat;        // hide this heat (when it starts with this card)
 
+    bool m_bPrintBelow;      // force print of subcards below this one
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
     bool m_bPrintNo;         // print no of card
@@ -69,6 +70,8 @@ namespace STORE
     bool bNextHoriz(i8 i_Card);
     void vNextHorizon(i8 i_Card, bool bNextHoriz);
 
+    bool bPrintBelow(i8 i_Card);
+    void vPrintBelow(i8 i_Card, bool bPrintBelow);
     bool bPrintByKind(i8 i_Card);
     void vPrintByKind(i8 i_Card, bool bPrintByKind);
     Stz* szHorizExclude(i8 i_Card);
