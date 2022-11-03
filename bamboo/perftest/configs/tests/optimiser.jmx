@@ -1542,12 +1542,12 @@ begin
     | combined 0
     | next hashcast
 
-  stage stageNew2 on all partitions :
+  stage S03 on all partitions :
     sort &quot;type INTEGER O_ORDERKEY ASC&quot;
     | combined 0
     | next
 
-  stage S03 on all partitions :
+  stage S04 on all partitions :
     indexjoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
     | filter &quot;type BOOLEAN J1_L_SHIPDATE DATE &apos;1995-03-15&apos; &gt;&quot;
     | ordAgg &quot; ordGroupBy type INTEGER J1_L_ORDERKEY
@@ -1558,12 +1558,12 @@ begin
     | combined 0
     | next
 
-   stage S04 on origin :
+   stage S05 on origin :
     top &quot;TOP type DECIMAL Revenue&quot; 10
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S06 on origin :
     output
     | sink
     | first
@@ -1776,12 +1776,11 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename"></stringProp>
+              <stringProp name="FileSaver.filename">p5_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>
               <boolProp name="FileSaver.skipautonumber">false</boolProp>
-              <stringProp name="FileSaver.variablename">p5_</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
@@ -1934,12 +1933,11 @@ create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
             </ResultCollector>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename"></stringProp>
+              <stringProp name="FileSaver.filename">p10_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>
               <boolProp name="FileSaver.skipautonumber">false</boolProp>
-              <stringProp name="FileSaver.variablename">p10_</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
