@@ -6,6 +6,8 @@
 
 namespace WLP
 {
+  static const i8 C_WLPHEADER_SIZE = 8;
+
   union WlpHeader {
     struct {
       i8 m_iMsgSize : 32;
@@ -14,7 +16,9 @@ namespace WLP
     };
 
     i8 m_iAsI8;
+
+    char* pcMsgBody() { return ((char*) &m_iAsI8) + C_WLPHEADER_SIZE; };
   };
 
-  static const i8 C_WLPHEADER_SIZE = 8;
+  static_assert(sizeof(WlpHeader) == C_WLPHEADER_SIZE, "Expecting sizeof(WlpHeader) == C_WLPHEADER_SIZE");
 }

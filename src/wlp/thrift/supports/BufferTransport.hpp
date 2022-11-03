@@ -20,8 +20,12 @@ namespace WLP
     u8    m_iNext;
 
   public:
+    BufferTransport();
     BufferTransport(char* pcBuf, u8 iLen);
     ~BufferTransport() override;
+
+    void vRemoveBuffer();
+    void vUseBuffer(char* pcBuf, u8 iLen);
 
     WlpHeader* pAllocHeader(com::rapidsdata::wirelineprotocol::messages::v5::MessageTypes::type eType);
     i8 iBytesWritten();

@@ -8,19 +8,37 @@
 #include "ApiHelper.hpp"
 #include "PayloadObj.hpp"
 
+// Forward declarations (outside namespace STORE scope)
+namespace WLP { class BufferTransport; }
+namespace apache { namespace thrift { class TBase; }}
+namespace apache { namespace thrift { namespace transport { class TTransport; }}}
+namespace apache { namespace thrift { namespace protocol { template <typename TYPE> class TCompactProtocolT; }}}
+
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
+  struct MessageTypes;
+}}}}}
+
 namespace STORE
 {
+  // Forward declarations (inside namespace STORE scope)
   typedef ListExo_t<CN_PAYLOADLIST, WLP::PayloadObj> PayloadList;
+
 
   class AdaptorWL : public Object
                   , public ApiHelper
   {
   private:
-    // Current State
-    // Current decoded message
+    // Current State enum
+    apache::thrift::TBase* m_pCurrentMsg;
+    i8 m_iCurrentMsgType;
     PayloadList* m_pPayloadSendList;
     bool m_bContinueProcessingMsg;
-   
+    bool m_bProtocolError;
+
+    // For thrift serialisation and deserialisation
+    std::shared_ptr<WLP::BufferTransport> m_pTransport;
+    std::shared_ptr<apache::thrift::protocol::TCompactProtocolT<apache::thrift::transport::TTransport>> m_pProtocol;
+
     // must be last
     Footer m_xFooter;
 
@@ -36,11 +54,13 @@ namespace STORE
     void vDecodePayload(WLP::PayloadObj* pPayload);
     void vProcessWLMsg(void);
     bool bKeepProcessingMsg(void);
+    bool bHasProtocolError(void);
     bool bHasPayloadToSend(void);
     WLP::PayloadObj* pNextPayloadToSend(void);
 
   private:
-  
+
+    void vDeserialiseMsg(i8 iMessageType);
     Footer* aFooter(void);
 
   };

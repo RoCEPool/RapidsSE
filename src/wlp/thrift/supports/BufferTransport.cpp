@@ -11,6 +11,16 @@ using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
+BufferTransport::BufferTransport()
+    : apache::thrift::transport::TTransport(),
+      m_pcBuf(nullptr), m_iLen(0), m_iNext(0)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Constructor                                                                */
+/*----------------------------------------------------------------------------*/
 BufferTransport::BufferTransport(char* pcBuf, u8 iLen)
 : apache::thrift::transport::TTransport(),
   m_pcBuf(pcBuf), m_iLen(iLen), m_iNext(0)
@@ -22,12 +32,34 @@ BufferTransport::BufferTransport(char* pcBuf, u8 iLen)
 BufferTransport::~BufferTransport()
 {}
 
+/*----------------------------------------------------------------------------*/
+/* Removes the association with a given buffer ptr                            */
+/*----------------------------------------------------------------------------*/
+void BufferTransport::vRemoveBuffer()
+{
+  m_pcBuf = nullptr;
+  m_iLen = 0;
+  m_iNext = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Use a new underlying buffer. Resets the cursor.                            */
+/*----------------------------------------------------------------------------*/
+void BufferTransport::vUseBuffer(char* pcBuf, u8 iLen)
+{
+  ASSERT(!m_pcBuf);
+  m_pcBuf = pcBuf;
+  m_iLen = iLen;
+  m_iNext = 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Allocate a byte for a wireline message header and return a ptr to it       */
 /*----------------------------------------------------------------------------*/
 WlpHeader* BufferTransport::pAllocHeader(MessageTypes::type eType)
 {
+  ASSERT(m_pcBuf);
+
   WlpHeader* pHeader = (WlpHeader*) (m_pcBuf + m_iNext);
   m_iNext += sizeof(WlpHeader);
 
@@ -94,6 +126,8 @@ void BufferTransport::close()
 /*----------------------------------------------------------------------------*/
 uint32_t BufferTransport::read_virt(uint8_t* pBuf, uint32_t iLen)
 {
+  ASSERT(m_pcBuf);
+
   i8 iRemaining = (i8)(m_iLen - m_iNext);
 
   if (iLen == 0 || iRemaining == 0) {
@@ -115,6 +149,8 @@ uint32_t BufferTransport::read_virt(uint8_t* pBuf, uint32_t iLen)
 /*----------------------------------------------------------------------------*/
 void BufferTransport::write_virt(const uint8_t* piBuf, uint32_t iLen)
 {
+  ASSERT(m_pcBuf);
+
   i8 iRemaining = (i8)(m_iLen - m_iNext);
   if (iLen > iRemaining) {
     throw apache::thrift::transport::TTransportException( "Buffer is full.");
@@ -143,6 +179,8 @@ void BufferTransport::write_virt(const uint8_t* piBuf, uint32_t iLen)
 /*----------------------------------------------------------------------------*/
 const uint8_t* BufferTransport::borrow_virt(uint8_t* pBuf, uint32_t* piLen)
 {
+  ASSERT(m_pcBuf);
+
   if (!piLen) {
     return nullptr;
   }
@@ -170,6 +208,8 @@ const uint8_t* BufferTransport::borrow_virt(uint8_t* pBuf, uint32_t* piLen)
 /*----------------------------------------------------------------------------*/
 void BufferTransport::consume_virt(uint32_t iLen)
 {
+  ASSERT(m_pcBuf);
+
   m_iNext += iLen;
 
   if (m_iNext > m_iLen) {

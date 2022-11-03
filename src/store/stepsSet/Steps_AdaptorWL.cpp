@@ -9,8 +9,6 @@
 #include "Steps.hpp"
 
 #include "LogicUnit.hpp"
-//#include "AdaptorWL.hpp"
-#include "PayloadObj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
