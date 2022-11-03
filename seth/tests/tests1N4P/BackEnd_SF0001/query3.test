@@ -534,12 +534,12 @@ begin
     | combined 0
     | next hashcast
 
-  stage stageNew2 on all partitions :
+  stage S03 on all partitions :
     sort "type INTEGER O_ORDERKEY ASC"
     | combined 0
     | next
 
-  stage S03 on all partitions :
+  stage S04 on all partitions :
     indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter "type BOOLEAN J1_L_SHIPDATE DATE '1995-03-15' >"
     | ordAgg " ordGroupBy type INTEGER J1_L_ORDERKEY
@@ -550,12 +550,12 @@ begin
     | combined 0
     | next
 
-   stage S04 on origin :
+   stage S05 on origin :
     top "TOP type DECIMAL Revenue" 10
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S06 on origin :
     output
     | sink
     | first
