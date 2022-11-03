@@ -102,6 +102,7 @@
 #include "DecimalLiteral.hpp"
 #include "FloatLiteral.hpp"
 #include "IntegerLiteral.hpp"
+#include "IntervalLiteral.hpp"
 #include "NullLiteral.hpp"
 #include "StringLiteral.hpp"
 #include "TimeLiteral.hpp"
@@ -1352,6 +1353,11 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     if (IntegerLiteral::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" %lld "_Stz, IntegerLiteral::iValue(pOrdinalExpr));
+    }
+
+    if (IntervalLiteral::bIsOfType(pOrdinalExpr)) {
+      Ivl xIvl = IntervalLiteral::xValue(pOrdinalExpr);
+      sPipeline->vCatSprint(" %lld "_Stz, xIvl.operator i8());
     }
 
     if (NullLiteral::bIsOfType(pOrdinalExpr)) {
