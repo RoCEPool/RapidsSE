@@ -12,8 +12,10 @@ DIR=$(dirname "$0")
 # Find the latest version directory that matches "v<num>".
 LATEST_THRIFT_DIR="$(find -E "${DIR}" -type d -regex ".*/v[0-9]+" -maxdepth 1 | sort -n -k 2 -t v | tail -n 1)"
 echo "Latest thrift dir is: ${LATEST_THRIFT_DIR}"
+COMPAT_THRIFT_DIR="${DIR}/compatibility"
 
 THRIFT_FILES=$(find "${LATEST_THRIFT_DIR}" -type f -name "*.thrift" -print0  | xargs -0)
+THRIFT_FILES+=$(find "${COMPAT_THRIFT_DIR}" -type f -name "*.thrift" -print0  | xargs -0)
 OUTPUT_DIR="${DIR}/../generated"
 
 # Check for thrift support
@@ -36,7 +38,7 @@ COUNTER=0
 for f in ${THRIFT_FILES}
 do
   echo -n "Compiling ${f}... "
-  thrift -r --out "${OUTPUT_DIR}" --gen cpp "${f}"
+  #thrift -r --out "${OUTPUT_DIR}" --gen cpp "${f}"
   echo "Done."
 
   COUNTER="$((COUNTER + 1))"
