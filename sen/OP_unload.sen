@@ -5,35 +5,39 @@
 " OP_unload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_START ...                                                     INIT */
-/*----------------------------------------------------------------------------*/
-: unload_StartMarker \handler
-
-  EV_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* on EV_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : unload_DataPulse \handler
 
   EV_M_DATAPULSE_handler
+
+  <filePath> locals| sFilePath |
+
+  sFilePath unload.toFile
+
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_CSVBUFFER ...                                                 EACH */
+/* handler for EV_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
-: unload_CsvBuffer \handler
+: unload_Path \handler
 
-  EV_D_CSVBUFFER_handler
-;
+  PipeIn[]\clear to InfoSet[]
 
-/*----------------------------------------------------------------------------*/
-/* on EV_M_EOS ...                                                        END */
-/*----------------------------------------------------------------------------*/
-: unload_EosMarker \handler
+  C_TDEF_PATH infoSetRow:getFirstRow
 
-  EV_M_EOS_handler
+  // extract the values
+  0 InfoSet[].colVal@ locals| sPath   |
+  1 InfoSet[].colVal@ locals| iPathNo |
+  2 InfoSet[].colVal@ locals| iPathOf |
+
+  // unload to disk
+  iPathOf iPathNo sPath unload.toDisk
+
+  InfoSet[].delete
+  nullptr to InfoSetRow[]
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,10 +52,7 @@
 
   op__topology
 
-  find: unload_CsvBuffer   EV_D_CSVBUFFER [op].handler!
-  find: unload_EosMarker   EV_M_EOS       [op].handler!
-  find: unload_DataPulse   EV_M_DATAPULSE [op].handler!
-  find: unload_StartMarker EV_M_START     [op].handler!
+  find: unload_Path  EV_I_PATH  [op].handler!
 
   op__loop
 

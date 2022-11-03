@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* the schema category                                                        */
 /*----------------------------------------------------------------------------*/
-: \schema \\category ;
+: \schema \\category WC_SCHEMA ;
 
 /*----------------------------------------------------------------------------*/
 /* pop the schema folder                                                      */
@@ -45,16 +45,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is a schema                                                     */
-/*----------------------------------------------------------------------------*/
-: Path[].checkIsSchema ( word )
-
-  dup word.category@ find: \folder equal not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ find: \schema equal if true exit then
-  EC_NOT_A_SCHEMA false
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a removable schema folder                                 */
 /*----------------------------------------------------------------------------*/
 : checkRemoveSchema ( "<schemaNm>" --  true | errorCode false )
@@ -86,7 +76,7 @@
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make the schema
  sSchemaNm folder::makeFolder
-   find: \schema swap execute dic.kind!
+   DK_SCHEMA swap execute dic.kind!
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make tables folder

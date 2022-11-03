@@ -628,7 +628,7 @@ affected: 0
 
 // Source file: ../queries/ctas/xctas22.sql
 // Result file: ../queries/ctas/results/ctas22.res
-create table newtab as select count(m_qualitycode) as NumOfQuality from manufacturer a join returns b on a.m_mfgkey = b.m_mfgkey where r_returndate >= timestamp '2013-12-27 12:00:00' and r_returndate <= timestamp '2013-12-28 12:00:00' and m_specialorders = 'Y' and NumOfQuality > 2;
+create table newtab as select count(m_qualitycode) as NumOfQuality from manufacturer a join returnitems b on a.m_mfgkey = b.m_mfgkey where r_returndate >= timestamp '2013-12-27 12:00:00' and r_returndate <= timestamp '2013-12-28 12:00:00' and m_specialorders = 'Y' and NumOfQuality > 2;
 affected: 0
 
 
@@ -1712,7 +1712,7 @@ ordered rows:
 
 // Source file: ../queries/ctas/xctas70.sql
 // Result file: none
-create table newtab as select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returns on o_orderkey = returns.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2015-12-31 12:00:00' and o_clerk <> 'green';
+create table newtab as select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returnitems on o_orderkey = returnitems.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2015-12-31 12:00:00' and o_clerk <> 'green';
 failure: 'Result file missing'
 
 
@@ -2338,7 +2338,7 @@ ordered rows:
 
 // Source file: ../queries/ctas/xctas61.sql
 // Result file: ../queries/ctas/results/ctas61.res
-create table newtab as select r.r_restock, r.r_condition, m.m_qualitycode, m.m_specialorders from returns r join manufacturer m on m.m_mfgkey = r.m_mfgkey where r.r_returndate >= timestamp '2013-01-01 12:00:00' and r.r_returndate <= timestamp '2014-12-28 12:00:00' and m.m_nationkey between 1 and 10 and r.r_returnmfg = 'Y';
+create table newtab as select r.r_restock, r.r_condition, m.m_qualitycode, m.m_specialorders from returnitems r join manufacturer m on m.m_mfgkey = r.m_mfgkey where r.r_returndate >= timestamp '2013-01-01 12:00:00' and r.r_returndate <= timestamp '2014-12-28 12:00:00' and m.m_nationkey between 1 and 10 and r.r_returnmfg = 'Y';
 affected: 0
 
 

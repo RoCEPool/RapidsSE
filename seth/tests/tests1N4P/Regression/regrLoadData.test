@@ -65,7 +65,7 @@ success
 Load REGION "../DATA/Load/region.csv" ;
 success
 
-Load RETURNS "../DATA/Load/returns.csv";
+Load RETURNITEMS "../DATA/Load/returnitems.csv";
 success
 
 CLEANUP {
@@ -130,7 +130,7 @@ CLEANUP {
   drop table region;
   mute
   
-  drop table returns;
+  drop table returnitems;
   mute
 
   drop table limitRow;

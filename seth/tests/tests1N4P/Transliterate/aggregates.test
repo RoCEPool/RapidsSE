@@ -106,24 +106,60 @@ SELECT SUM(n_regionkey) FROM nation having SUM(n_regionkey) > 50;
 rows: 
   (53)
 
+SELECT count(n_regionkey) + null FROM nation;
+rows:
+  (null)
+
 SELECT SUM(n_regionkey)/2 FROM nation having SUM(n_regionkey)/2 > 25;
 rows:
   (26)
+
+SELECT SUM(n_regionkey) + null FROM nation;
+rows:
+  (null)
+
+SELECT null - SUM(n_regionkey) FROM nation;
+rows:
+  (null)
 
 SELECT count(n_regionkey) FROM nation having count(n_regionkey) * 2 = 54;
 rows:
   (27)
 
+SELECT null - count(n_regionkey) FROM nation;
+rows:
+  (null)
+
 SELECT MIN(n_regionkey) FROM nation having MIN(n_regionkey) != 0;
 rows: 0
+
+SELECT MIN(n_regionkey) + null FROM nation;
+rows:
+  (null)
+
+SELECT MIN(n_regionkey) / null FROM nation;
+rows:
+  (null)
 
 SELECT MAX(n_regionkey) FROM nation having MAX(n_regionkey)*2 > 7;
 rows:
   (4)
 
+SELECT MAX(n_regionkey) + null FROM nation;
+rows:
+  (null)
+
+SELECT MAX(n_regionkey) * null FROM nation;
+rows:
+  (null)
+
 SELECT AVG(n_regionkey) FROM nation having AVG(n_regionkey) = 1.96;
 rows:
  (1.96)
+
+SELECT AVG(n_regionkey) + null FROM nation;
+rows:
+  (null)
 
 -- basic select of aggregation
 SELECT SUM(n_regionkey) FROM nation;

@@ -352,6 +352,65 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert object into list which already has a SkipNode                       */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bInsertWithNode(void* aObjectInsert,
+                                 SkipNode* pSkipNode,
+                                 bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  bool bEqualTo;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+
+  // get a positioned prior vector
+  SkipNode* pNode =
+      pPosition(aObjectInsert,bEqualTo,aPriorVec,bTrace,m_fpCompare);
+  RASSERT(pNode); // logic check
+
+  Object* pObjectInsert = (Object*)aObjectInsert;
+
+  // do not insert duplicates into a list of unique keys
+  if (bEqualTo && m_bUniqueKey) {
+    return false;
+  }
+
+  // choose a random level for the new node
+  i8 iNodeLevel = iRandomLevel();
+  if (iNodeLevel > m_iHeight) {
+    iNodeLevel = ++m_iHeight;
+    aPriorVec[iNodeLevel] = m_pHead;
+  }
+
+  if (bTrace) {
+    vTrace("\niNodeLevel %lld\n"_Stz,iNodeLevel);
+  }
+
+  // Reset the members for this SkipNode and set the Object
+  pSkipNode->vInit(pObjectInsert, iNodeLevel);
+  m_pNewly = pSkipNode;
+  RASSERT(m_pNewly);
+
+  // put new node into the list according the prior vector for random level
+  do {
+    m_pNewly->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
+    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = m_pNewly;
+  } while (--iNodeLevel >= 0);
+
+  // one more object in the list
+  m_nItems++;
+
+
+#ifdef _VALIDATE_SKIPLIST
+  vValidate();
+#endif
+
+
+  // succesful insert
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get numbr of objects in list                                               */
 /*----------------------------------------------------------------------------*/
 i8 SkipListNL::nItems(void)

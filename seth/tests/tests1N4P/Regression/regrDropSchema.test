@@ -62,7 +62,7 @@
  drop table region;
  success
 
- drop table returns;
+ drop table returnitems;
  success
 
 CLEANUP {
@@ -127,7 +127,7 @@ CLEANUP {
   drop table region;
   mute
   
-  drop table returns;
+  drop table returnitems;
   mute
 
   bye;

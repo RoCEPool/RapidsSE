@@ -95,6 +95,7 @@ enum eEC : u2 // error codes
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
+  EC_EXPR_MUST_BE_LITERAL,          // SQL Compiler Subsystem
   EC_EXPR_NESTED_AGGREGATE,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
@@ -217,6 +218,7 @@ enum eEC : u2 // error codes
   /* _Q_ */
 
   /* _R_ */
+  EC_RESERVED_WORD,
   EC_RESPONSE_PENDING,
 
   /* _S_ */
@@ -356,10 +358,11 @@ static Stz* aEC[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",         // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",        // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_LITERAL          */ (Stz*)"EC_EXPR_MUST_BE_LITERAL",         // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",           // SQL Compiler Subsystem
-  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",           // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",       // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
@@ -477,6 +480,7 @@ static Stz* aEC[] =
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"definition contains a reserved word",
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
@@ -611,10 +615,11 @@ static Stz* aEC2[] = // error code
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",           // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",          // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_LITERAL          */ (Stz*)"EC_EXPR_MUST_BE_LITERAL",           // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",             // SQL Compiler Subsystem
-  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",             // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",         // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ (Stz*)"EC_FOLDER_IN_USE",
@@ -732,6 +737,7 @@ static Stz* aEC2[] = // error code
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"EC_RESERVED_WORD",
   /* EC_RESPONSE_PENDING              */ (Stz*)"EC_RESPONSE_PENDING",
 
   /* _S_ */
@@ -876,6 +882,7 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"Cannot have a literal expression in the GROUP BY list",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"Predicate expression must have a boolean result",          // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"Join predicate expression must be an equi-join and contain an equality comparison",           // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_LITERAL          */ (Stz*)"Expression must be a literal",                             // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"Nested aggregate expressions are not permitted",           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression does not appear in the GROUP BY list or as part of an aggregate", // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"Invalid expression because it is not being projected",     // SQL Compiler Subsystem
@@ -996,6 +1003,7 @@ static Stz* aErrorMsg[] =
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"definition contains a reserved word",
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
