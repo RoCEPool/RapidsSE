@@ -36,7 +36,9 @@ enum eFM : u2 // function macros
   /*  */ FM_DIV_UNKANY,           // unk / any
 
   // modulo
+  /*  */ FM_MOD_ANYUNK,          // any % unk
   /*  */ FM_MOD_INTINT,          // int % int
+  /*  */ FM_MOD_UNKANY,          // unk % any
 
   // multiply
   /*  */ FM_MUL_ANYUNK,           // any + unk
@@ -71,15 +73,15 @@ enum eFM : u2 // function macros
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // between operators
 
+  /*  */ FM_BET_ANYUNK,           // between any unk
   /*  */ FM_BET_BCDBCD,           // between bcd bcd
   /*  */ FM_BET_DTEDTE,           // between dte dte
   /*  */ FM_BET_FLTFLT,           // between flt flt
   /*  */ FM_BET_INTINT,           // between int int
   /*  */ FM_BET_TMETME,           // between bcd bcd
   /*  */ FM_BET_TSPTSP,           // between tme tme
-  /*  */ FM_BET_UNKXYZ,           // between tsp tsp
+  /*  */ FM_BET_UNKANY,           // between unk any
   /*  */ FM_BET_VCHVCH,           // between vch vch
-  /*  */ FM_BET_XYZUNK,           // between xyz unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
@@ -168,6 +170,7 @@ enum eFM : u2 // function macros
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // in expression operators
 
+  /*  */ FM_INX_ANYUNK,           // any in unk,...
   /*  */ FM_INX_BCDBCD,           // bcd in bcd,...
   /*  */ FM_INX_BOLBOL,           // bol in bol,...
   /*  */ FM_INX_DTEDTE,           // dte in dte,...
@@ -178,8 +181,7 @@ enum eFM : u2 // function macros
   /*  */ FM_INX_TMETME,           // tme in tme,...
   /*  */ FM_INX_TSPTSP,           // tsp in tsp,...
   /*  */ FM_INX_VCHVCH,           // vch in vch,...
-  /*  */ FM_INX_UNKXYZ,           // unk in xyz,...
-  /*  */ FM_INX_XYZUNK,           // xyz in unk,...
+  /*  */ FM_INX_UNKANY,           // unk in any,...
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
@@ -367,7 +369,9 @@ static Stz* aFM[]
   /*  */ "_DIV_UNKANY"_Stz,
 
   // modulo
+  /*  */ "_MOD_ANYUNK"_Stz,
   /*  */ "_MOD_INTINT"_Stz,
+  /*  */ "_MOD_UNKANY"_Stz,
 
   // multiply
   /*  */ "_MUL_ANYUNK"_Stz,
@@ -402,15 +406,16 @@ static Stz* aFM[]
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // between operators
 
+  /*  */ "_BET_ANYUNK"_Stz,
   /*  */ "_BET_BCDBCD"_Stz,
   /*  */ "_BET_DTEDTE"_Stz,
   /*  */ "_BET_FLTFLT"_Stz,
   /*  */ "_BET_INTINT"_Stz,
   /*  */ "_BET_TMETME"_Stz,
   /*  */ "_BET_TSPTSP"_Stz,
-  /*  */ "_BET_UNKXYZ"_Stz,
+  /*  */ "_BET_UNKANY"_Stz,
   /*  */ "_BET_VCHVCH"_Stz,
-  /*  */ "_BET_XYZUNK"_Stz,
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
@@ -495,9 +500,10 @@ static Stz* aFM[]
   /*  */ "_YEAR_DTE"_Stz,
   /*  */ "_YEAR_TSP"_Stz,
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // in expression operators
 
+  /*  */ "_INX_ANYUNK"_Stz,
   /*  */ "_INX_BCDBCD"_Stz,
   /*  */ "_INX_BOLBOL"_Stz,
   /*  */ "_INX_DTEDTE"_Stz,
@@ -508,8 +514,7 @@ static Stz* aFM[]
   /*  */ "_INX_TMETME"_Stz,
   /*  */ "_INX_TSPTSP"_Stz,
   /*  */ "_INX_VCHVCH"_Stz,
-  /*  */ "_INX_UNKXYZ"_Stz,
-  /*  */ "_INX_XYZUNK"_Stz,
+  /*  */ "_INX_UNKANY"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
