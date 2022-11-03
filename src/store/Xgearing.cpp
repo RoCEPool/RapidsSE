@@ -27,12 +27,10 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bTrace = false;
   m_iTrace   = 0;
 
-  m_bPrintHand = false;
-  m_bPrintXform = false;
-  m_bPrintXformForce = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
 
+  m_iXform     = 0;
   m_pPermGen   = nullptr;
 
   m_pColumn    = nullptr;
@@ -144,6 +142,7 @@ eOA Xgearing::eCueUser(Stz* szPrompt)
   if (! pOptFun) {
     vTrace("Unknown command\n"_Stz);
     delete pTknVec;
+    pTknVec = nullptr;
     goto L_Input;
   }
 
@@ -163,26 +162,6 @@ eOA Xgearing::eCueUser(Stz* szPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Xgearing::szDescription(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_sDescription;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vDescription(Stz* szDescription)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_sDescription = szDescription;
-}
-
-/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vEndTransform(void)
@@ -193,33 +172,13 @@ void Xgearing::vEndTransform(void)
 
   G.pDeck->vRenumberRecursive();
 
-  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Xgearing::szHand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_sHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vHand(const char* asHand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_sHand = asHand;
+  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print all bards of bench                                                   */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
+void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -229,22 +188,24 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
   s256 sPrompt;
 
   for (;;) {
-    if (C_UNKNOWN != i_SubBoard) {
-      Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
-      pBoard->vPrintBoard(szHand());
+    if (C_UNKNOWN != i_Board) {
+      Board *pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+      pBoard->vPrintBoard(szXhand());
     }
     else {
-      for (i8 i_Sub = 0; m_pBench->bBoardExists(eBoard, i_Sub); i_Sub++) {
-        Board *pBoard = m_pBench->pGetBoard(eBoard, i_Sub);
-        pBoard->vPrintBoard(szHand());
+      for (i8 i_Each = 0; m_pBench->bBoardExists(eBoard, i_Each); i_Each++) {
+        Board *pBoard = m_pBench->pGetBoard(eBoard, i_Each);
+        pBoard->vPrintBoard(szXhand());
       }
     }
 
-    if (! m_pCardCtl->bCueUser(m_sHand,m_sTransformation,sPrompt,C_UNKNOWN)) {
+    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), i_Board, C_UNKNOWN);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), i_Board, C_UNKNOWN);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
@@ -263,15 +224,15 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
   s256 sPrompt;
 
   for (;;) {
-    G.pBoard->vPrintBoard(szHand(),
-                          szTransformation(),
-                          szDescription());
+    G.pBoard->vPrintBoard(szXdesc());
 
-    if (! m_pCardCtl->bCueUser(szHand(),szTransformation(),sPrompt,iLineNo)) {
+    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_Board(), iLineNo);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_Board(), iLineNo);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
@@ -283,56 +244,6 @@ void Xgearing::vPrintBoard(bool bCue, i8 iLineNo)
 void Xgearing::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 {
   m_pCardCtl->vPrintByKind(eCard,bPrintByKind);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get print phase                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::bPrintHand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_bPrintHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print phase                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintHand(bool bPrintHand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintHand = bPrintHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get print phase                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::bPrintXform(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_bPrintHand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print phase                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintXform(bool bPrintXform)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintXform = bPrintXform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print phase force                                                      */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintXformForce(bool bPrintXformForce)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintXformForce = bPrintXformForce;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,55 +265,102 @@ void Xgearing::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vTransform(const char* azTransformation,
-                          bool bPrintTransformation)
+void Xgearing::vTransform(const char* azTransformation)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_sTransformation = azTransformation;
-  m_bPrintXform = bPrintTransformation;
+  vXform((Stz*)azTransformation);
+  G.pBoard->vXform((Stz*)azTransformation);
 
-  G.pBoard->vTransformNoInc();
+  m_iXform++;
+  G.pBoard->vXform(m_iXform);
 
   m_pCardCtl->vUseXform();
 
   G.xBI.vRestart();
-}
 
-/*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Xgearing::szTransformation(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  if (m_pCardCtl->bTracing(szXhand(), szXform())) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
+    m_iTrace = 0;
+  }
 
-  return m_sTransformation;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vTransformation(Stz* szTransformation)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_sTransformation = szTransformation;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vUsingBoard(eBK eBoard, i8 i_SubBoard)
+void Xgearing::vUsingBoard(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.pBoard = m_pBench->pGetBoard(eBoard,i_SubBoard);
+  G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
   G.pDeck  = G.pBoard->pDeck();
 
   G.xBI.vChangeBoard(G.pBoard);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Xgearing::szXdesc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  return m_sXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vXdesc(Stz* szDescription)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_sXdesc = szDescription;
+  G.pBoard->vXdesc(szDescription);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Xgearing::szXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  return m_sXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vXform(Stz* szTransformation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_sXform = szTransformation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Xgearing::szXhand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  return m_sXhand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vXhand(const char* asXhand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_sXhand = asXhand;
+
+  G.pBoard->vXhand(asXhand);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -416,23 +374,6 @@ bool Xgearing::bIsTracing(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return m_bTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vTracing(bool bPrintXform, bool bTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_bPrintXform = bPrintXform;
-
-  m_bTrace = bTrace;
-
-  if (m_bTrace) {
-    vTrace("\n\nTracing %s\n"_Stz, m_sTransformation.szStz());
-    m_iTrace = 0;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

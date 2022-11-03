@@ -31,6 +31,7 @@ namespace STORE
   protected:
     b8 m_bCued;
     b8 m_bCueDisabled;
+    b8 m_bTrace;
 
     _CardCtl m_xaCardCtl[CK_ENUMS];
 
@@ -61,7 +62,9 @@ namespace STORE
     void vCued(bool bCued);
     bool bCueDisabled(void);
     void vCueDisabled(bool bCueDisabled);
-    bool bCueUser(Stz* szXhand, Stz* szXform, String* sPrompt, i8 iLineNo);
+    bool bCueUser(Stz* szXhand, Stz* szXform);
+
+    void vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform, i8 i_Board, i8 iLineNo);
 
     bool bNextHoriz(i8 i_Card);
     void vNextHorizon(i8 i_Card, bool bNextHoriz);
@@ -103,6 +106,10 @@ namespace STORE
     void vSetSubsPrintAll(void);
     void vSetSubsPrintEverything(void);
     void vSetSubsPrintNone(void);
+
+    bool bTrace(void);
+    void vTrace(bool bTrace);
+    bool bTracing(Stz* szXhand, Stz* szXform);
 
     void vUseDefault(void);
     void vUseExpanded(void);

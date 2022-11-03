@@ -18,19 +18,16 @@ namespace STORE
   {
   protected:
 
-    s32         m_sHand;
-    s256        m_sTransformation;
-    s256        m_sDescription;
+    s32         m_sXhand;
+    s256        m_sXform;
+    s256        m_sXdesc;
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
     bool        m_bTrace;
     i8          m_iTrace;
 
-    bool        m_bPrintHand;
-    bool        m_bPrintXform;
-    bool        m_bPrintXformForce;
-
+    i8          m_iXform;
 
     PermGen*    m_pPermGen;
 
@@ -75,33 +72,28 @@ namespace STORE
 
     void vEndTransform(void);
 
-    Stz* szDescription(void);
-    void vDescription(Stz* szDescription);
 
-    Stz* szHand(void);
-    void vHand(const char* asHand);
-    void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
+    void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(bool bCue=true, i8 iLineNo=C_UNKNOWN);
-    bool bPrintHand(void);
-    void vPrintHand(bool bPrintHand);
-    bool bPrintXform(void);
-    void vPrintXform(bool bPrintXform);
-    void vPrintXformForce(bool bPrintXformForce);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    void vTransform(const char* azTransformation, bool bPrintTransformation=true);
-    Stz* szTransformation(void);
-    void vTransformation(Stz* szTransformation);
+    void vTransform(const char* azTransformation);
 
-    void vUsingBoard(eBK eBoard, i8 i_SubBoard);
+    void vUsingBoard(eBK eBoard, i8 i_Board);
+
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szDescription);
+    Stz* szXform(void);
+    void vXform(Stz* szTransformation);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
 
   protected:
     bool bIsTracing(void);
 
-    void vTracing(bool bPrintXform, bool bTrace);
     void vTracer(Stz* szFormat, ...);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
