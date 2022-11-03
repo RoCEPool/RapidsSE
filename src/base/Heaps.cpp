@@ -538,8 +538,8 @@ void Heaps::vInit(void)
 
 //    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       oTimer.vUpdate();
-      vTrace("Rdtscp: Loading of Persistent Heaps from disk took %lldms\n"_Stz, oTimer.iMilliseconds());
-      vTrace("GetTimeOfDay: Loading of Persistent Heaps from disk took %lldms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
+      vTrace("Rdtscp: Loading of Persistent Heaps from disk took %lld ms\n"_Stz, oTimer.iMilliseconds());
+      vTrace("GetTimeOfDay: Loading of Persistent Heaps from disk took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
 //    }
   } else {
     // create the persistent heaps
@@ -762,7 +762,15 @@ void Heaps::vReloadPHeaps(void)
   Persistent.m_pMedium->vDropWriteLock();
   Persistent.m_pLarge->vDropWriteLock();
 
+  i8 start = Timer::iGetTimeOfDay();
+  Timer oTimer;
+  oTimer.vStart();
+
   gpBufferPool->vReInitialise(false, true);
+
+  oTimer.vUpdate();
+  vTrace("Rdtscp: Free chain recreate took %lld ms\n"_Stz, oTimer.iMilliseconds());
+  vTrace("GetTimeOfDay: Free chain recreate took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
 }
 
 /*----------------------------------------------------------------------------*/
