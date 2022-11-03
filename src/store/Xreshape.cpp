@@ -180,6 +180,39 @@ void Xreshape::vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szStmColOdn = p_term->szValue();
+    if (! G_bResolveSubCard(CK_STREAM,CK_STMCOLODN,szStmColOdn,G.i_MainCard))
+      return C_CONTINUE_RECURSION;
+
+    RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
+
+    G.p_tblColOdn = m_pCard_parent->pSub_tblColOdn();
+    M_vCard_Set_Value(p_term, G.p_tblColOdn->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_MainCard->vApplyRecursive(CK_TERM, bLambdaFn);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

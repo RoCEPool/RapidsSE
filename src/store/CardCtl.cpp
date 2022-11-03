@@ -743,6 +743,24 @@ void CardCtl::vSetSubsPrintNone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vShowSettings(i8 i_Card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  vTrace("Card Settings %lld %s\n"_Stz, i_Card, aCK[i_Card]);
+
+  vTrace("  m_bPrintName       %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintName       ? "true" : "false");
+  vTrace("  m_bPrintNo         %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintNo         ? "true" : "false");
+  vTrace("  m_bPrintValue      %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintValue      ? "true" : "false");
+  vTrace("  m_bPrintProperties %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintProperties ? "true" : "false");
+  vTrace("  m_bPrintPptName    %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintPptName    ? "true" : "false");
+  vTrace("  m_bPrintSubCards   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubCards   ? "true" : "false");
+  vTrace("  m_bPrintSubShort   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubShort   ? "true" : "false");
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cued                                                                   */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bTrace(void)
@@ -755,7 +773,7 @@ bool CardCtl::bTrace(void)
 /*----------------------------------------------------------------------------*/
 /* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vTrace(bool bTrace)
+void CardCtl::vTraceing(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 

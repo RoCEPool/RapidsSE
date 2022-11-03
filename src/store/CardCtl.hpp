@@ -111,8 +111,10 @@ namespace STORE
     void vSetSubsPrintEverything(void);
     void vSetSubsPrintNone(void);
 
+    void vShowSettings(i8 i_Card);
+
     bool bTrace(void);
-    void vTrace(bool bTrace);
+    void vTraceing(bool bTrace);
     bool bTracing(Stz* szXhand, Stz* szXform);
 
     void vUseDefault(void);

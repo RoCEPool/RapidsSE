@@ -1050,7 +1050,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (CK_CMPPRED == m_eCard)
+  if (CK_RPNCALC == m_eCard)
     vDebugPoint();
 
   if (0 == iDepth)
@@ -1081,10 +1081,14 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
   if (rbPrune)
     return;
 
+  if (CK_RPNCALC == m_eCard)
+    vDebugPoint();
+
   if (! bPrintBelow)
     bPrintBelow = pCardCtl->bPrintBelow(m_eCard);
 
-  if ( (! pCardCtl->bPrintSubCards(m_eCard)) && (! bPrintBelow))
+  bool bPrintSubCards = pCardCtl->bPrintSubCards(m_eCard);
+  if ( (! bPrintSubCards) && (! bPrintBelow))
     return;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
@@ -2218,7 +2222,7 @@ Card_TblColOdn* Card::pSub_tblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TblColOdn* p_tblColOdn =
-      _pCard_TblColOdn(pFindSubCard(CK_TABLEPTN));
+      _pCard_TblColOdn(pFindSubCard(CK_TBLCOLODN));
   return p_tblColOdn;
 }
 

@@ -35,6 +35,7 @@ namespace STORE
     eTE  E_eTerm_TermEval(Card_Term* p_term);
 
     i8   E_iValue_StreamColOdn(Stz* szValue);
+    i8   E_iValue_TableColOdn(Stz* szValue);
 
 
     // must be last

@@ -28,6 +28,7 @@ namespace STORE
     void vR_H30_T20_Calc_ordinalRange_ForAll_stream(void);
 
     void vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void);
     void vR_H40_T20_Mark_where_pred_Wrt_table(void);
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);

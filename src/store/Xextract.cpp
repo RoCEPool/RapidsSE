@@ -291,6 +291,17 @@ i8 Xextract::E_iValue_StreamColOdn(Stz* szValue)
   return i_Col;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get table column ordinal n  (i.e. $c.n)                                    */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iValue_TableColOdn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
+}
 
 /*============================================================================*/
 /* end                                                                        */

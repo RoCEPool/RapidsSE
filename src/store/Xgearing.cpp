@@ -174,6 +174,9 @@ void Xgearing::vEndTransform(void)
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
 
   vPrintBoard();
+
+  //m_pCardCtl->vUseDefault();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +280,7 @@ void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
   m_iXform++;
   G.pBoard->vXform(m_iXform);
 
-  m_pCardCtl->vUseXform();
+  //m_pCardCtl->vUseXform();
 
   G.xBI.vRestart();
 
@@ -499,6 +502,7 @@ bool Xgearing::G_bEachMain(void)
 
   if ((G.p_MainCard = G.xBI.pEachMain())) {
     G.e_MainCard = G.p_MainCard->eCard();
+    G.i_MainCard = G.xBI.i_Child();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
@@ -715,6 +719,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
     case CK_GBYELIST:         return G.p_gbyElist;
+    case CK_HAVING:           return G.p_having;
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
     case CK_IDXCOLNM:         return G.p_idxColNm;
@@ -926,6 +931,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_gbyElist         = nullptr;
+  G.p_having           = nullptr;
   G.p_idxCol           = nullptr;
   G.p_idxColList       = nullptr;
   G.p_idxColNm         = nullptr;
@@ -999,6 +1005,7 @@ void Xgearing::G_vClearRegisters(void)
   G.e_PriorToMain      = CK_NONE;
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
+  G.i_MainCard         = C_UNKNOWN;
   G.p_SubLocated       = nullptr;
   G.e_SubLocated       = CK_NONE;
   G.p_SubLocatedParent = nullptr;
@@ -1259,6 +1266,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
+    case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
     case CK_IDXCOLNM:         *((Card**)&G.p_idxColNm)         = pCard; break;

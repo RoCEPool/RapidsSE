@@ -712,7 +712,7 @@ char Xmodify::cPullup_FindTableForPred(Card_PRED* p_pred,
   i8 nTable    = 0;
   char cWhichTable = C_UNKNOWN;
 
-  //vTrace("iAssignPredLeft candidate %p\n"_Stz,p_pred);
+  //vTraceing("iAssignPredLeft candidate %p\n"_Stz,p_pred);
   //p_pred->vDump();
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
