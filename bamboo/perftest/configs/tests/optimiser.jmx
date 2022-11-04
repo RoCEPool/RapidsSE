@@ -588,6 +588,20 @@ group by
               <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxP_PARTKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxP_PARTKEY ON part(p_partkey);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_CUSTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxC_CUSTKEY ON customer(c_custkey);</stringProp>
@@ -959,6 +973,19 @@ dload lineitem paths
   &quot;/mnt/disk2/data1/tpch/sf${SF}/part/part.tbl&quot;
   &quot;/mnt/disk2/data2/tpch/sf${SF}/part/part.tbl&quot;
 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxP_PARTKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index part IxP_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1601,16 +1628,17 @@ begin
 
   stage S04 on all partitions :
     indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
-    | filter &quot; type BOOLEAN  J1_R_NAME &apos;AFRICA&apos;  == &quot;
-    | project &quot;type INTEGER as PS_PARTKEY PS_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
-               type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-               type VARCHAR as S_NAME S_NAME ,
-               type VARCHAR as N_NAME N_NAME ,
-               type VARCHAR as S_ADDRESS S_ADDRESS ,
-               type VARCHAR as S_PHONE S_PHONE ,
-               type VARCHAR as S_COMMENT S_COMMENT &quot;
+    | filter &quot; type BOOLEAN  J1_R_NAME &apos;EUROPE&apos;  == &quot;
+    | aggreg &quot; GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+                 aggregates
+                 type INTEGER as PS_PARTKEY $K1 ,
+                 type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                 type VARCHAR as S_NAME S_NAME ,
+                 type VARCHAR as N_NAME N_NAME ,
+                 type VARCHAR as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR as S_PHONE S_PHONE ,
+                 type VARCHAR as S_COMMENT S_COMMENT &quot;
     | combined 0
     | next
 
@@ -1625,13 +1653,27 @@ begin
              type VARCHAR as S_ADDRESS S_ADDRESS ,
              type VARCHAR as S_PHONE S_PHONE ,
              type VARCHAR as S_COMMENT S_COMMENT &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg &quot; GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+             aggregates
+             type INTEGER as PS_PARTKEY $K1 ,
+             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+             type VARCHAR as S_NAME S_NAME ,
+             type VARCHAR as N_NAME N_NAME ,
+             type VARCHAR as S_ADDRESS S_ADDRESS ,
+             type VARCHAR as S_PHONE S_PHONE ,
+             type VARCHAR as S_COMMENT S_COMMENT &quot;
     | hash &quot;type INTEGER PS_PARTKEY&quot;
     | combined 0
     | next hashcast
 
-  stage S06 on all partitions :
+  stage S07 on all partitions :
     indexJoin part IxP_PARTKEY &quot;BOUND $I1 PS_PARTKEY ==&quot; //J1
-    | filter &quot; type BOOLEAN  }  J1_P_TYPE &apos;%STEEL&apos;  6 matchTrailing
+    | filter &quot; type BOOLEAN  }  J1_P_TYPE &apos;%BRASS&apos;  6 matchTrailing
              J1_P_SIZE 20 == and&quot;
     | project &quot; type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
@@ -1650,7 +1692,7 @@ begin
     | combined 0
     | next
 
-  stage S07 on all nodes :
+  stage S08 on all nodes :
    sort &quot; type DECIMAL as S_ACCTBAL S_ACCTBAL ASC ,
              type VARCHAR as N_NAME N_NAME ASC ,
              type VARCHAR as S_NAME S_NAME ASC ,
@@ -1658,7 +1700,7 @@ begin
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S09 on origin :
      sort &quot; type DECIMAL as s_acctbal s_acctbal ASC ,
                type VARCHAR as N_NAME N_NAME ASC ,
                type VARCHAR as S_NAME S_NAME ASC ,
@@ -1667,12 +1709,11 @@ begin
       | combined 0
       | next
 
-  stage S09 on origin :
+  stage S10 on origin :
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1681,10 +1722,11 @@ end ;
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">create index IxL_PARTKEY  ON Lineitem (L_PARTKEY)  ;
-create index IxS_SUPPKEY  ON Supplier  (xS_SUPPKEYUSTKEY)  ;
+              <stringProp name="TestPlan.comments">create index IxPS_PARTKEY  ON partsupp (PS_PARTKEY)  ;
+create index IxS_SUPPKEY  ON Supplier  (S_SUPPKEY)  ;
 create index IxN_NATIONKEY  ON Nation (N_NATIONKEY)   ;
-create index IxR_REGIONKEY  ON Nation (R_REGIONKEY)   ;</stringProp>
+create index IxR_REGIONKEY  ON Nation (R_REGIONKEY)   ;
+create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
             </JDBCSampler>
             <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
@@ -2024,7 +2066,7 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
-     | filter &quot; type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. &lt; and&quot;
+     | filter &quot; type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. &lt; and&quot;
      | project &quot; type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  &quot;
      | combined 0
      | next

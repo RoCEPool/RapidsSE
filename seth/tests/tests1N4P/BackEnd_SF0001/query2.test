@@ -19,8 +19,7 @@
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE' )
-      order by p_partkey;
-       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
+       order by s_acctbal asc, n_name, s_name, p_partkey limit 100;
 
   -- verfified
   rows: 0
@@ -44,7 +43,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'AFRICA' )
-       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
+       order by s_acctbal asc, n_name, s_name, p_partkey limit 100;
 
 verified
    4641.08 | Supplier#000000004 | MOROCCO | 24 | Manufacturer#5 | Bk7ah4CK8SYQTepEmvMkkgMwg | 25-843-787-7479 | riously even requests above the exp
@@ -166,14 +165,14 @@ begin
 end ;
 */
 
-pipeline unamed
+pipeline Query2
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage stageMarker4609 on all partitions :
+  stage S01 on all partitions :
     indexscan partsupp IxPS_PARTKEY "LBOUND $I1 0 >="
     | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
                 type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
@@ -182,110 +181,123 @@ begin
     | combined 0
     | next hashcast
 
-  stage stageMarker4612 on all partitions :
+  stage S02 on all partitions :
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
                type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
-               type DECIMAL as s_acctbal J1_s_acctbal ,
-               type VARCHAR as s_name J1_s_name ,
-               type VARCHAR as s_address J1_s_address ,
-               type VARCHAR as s_phone J1_s_phone ,
-               type VARCHAR as s_comment J1_s_comment "
+               type DECIMAL as S_ACCTBAL J1_S_ACCTBAL ,
+               type VARCHAR as S_NAME J1_S_NAME ,
+               type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
+               type VARCHAR as S_PHONE J1_S_PHONE ,
+               type VARCHAR as S_COMMENT J1_S_COMMENT "
     | combined 0
     | next
 
-  stage stageMarker4615 on all partitions :
+  stage S03 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY ,
-               type DECIMAL as s_acctbal s_acctbal ,
-               type VARCHAR as s_name s_name ,
-               type VARCHAR as n_name J1_n_name ,
-               type VARCHAR as s_address s_address ,
-               type VARCHAR as s_phone s_phone ,
-               type VARCHAR as s_comment s_comment "
+               type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+               type VARCHAR as S_NAME S_NAME ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as S_ADDRESS S_ADDRESS ,
+               type VARCHAR as S_PHONE S_PHONE ,
+               type VARCHAR as S_COMMENT S_COMMENT "
 
     | combined 0
     | next
 
-  stage stageMarker4618 on all partitions :
+  stage S04 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
     | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
-               type DECIMAL as s_acctbal s_acctbal ,
-               type VARCHAR as s_name s_name ,
-               type VARCHAR as r_name J1_r_name ,
-               type VARCHAR as n_name n_name ,
-               type VARCHAR as s_address s_address ,
-               type VARCHAR as s_phone s_phone ,
-               type VARCHAR as s_comment s_comment "
+    | aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+                 aggregates
+                 type INTEGER as PS_PARTKEY $K1 ,
+                 type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                 type VARCHAR as S_NAME S_NAME ,
+                 type VARCHAR as N_NAME N_NAME ,
+                 type VARCHAR as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR as S_PHONE S_PHONE ,
+                 type VARCHAR as S_COMMENT S_COMMENT "
     | combined 0
     | next
 
-  stage stageMarker4624 on all nodes :
-    aggreg " GroupBy type INTEGER as ps_partkey $1
+  stage S05 on all nodes :
+    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
              aggregates
-             type INTEGER as ps_partkey $K1 ,
+             type INTEGER as PS_PARTKEY $K1 ,
              type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
-             type DECIMAL as s_acctbal s_acctbal ,
-             type VARCHAR as s_name s_name ,
-             type VARCHAR as r_name r_name ,
-             type VARCHAR as n_name n_name ,
-             type VARCHAR as s_address s_address ,
-             type VARCHAR as s_phone s_phone ,
-             type VARCHAR as s_comment s_comment "
-    | hash "type INTEGER ps_partkey"
+             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+             type VARCHAR as S_NAME S_NAME ,
+             type VARCHAR as N_NAME N_NAME ,
+             type VARCHAR as S_ADDRESS S_ADDRESS ,
+             type VARCHAR as S_PHONE S_PHONE ,
+             type VARCHAR as S_COMMENT S_COMMENT "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+             aggregates
+             type INTEGER as PS_PARTKEY $K1 ,
+             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+             type VARCHAR as S_NAME S_NAME ,
+             type VARCHAR as N_NAME N_NAME ,
+             type VARCHAR as S_ADDRESS S_ADDRESS ,
+             type VARCHAR as S_PHONE S_PHONE ,
+             type VARCHAR as S_COMMENT S_COMMENT "
+    | hash "type INTEGER PS_PARTKEY"
     | combined 0
     | next hashcast
 
-  stage stageMarker4618 on all partitions :
-    indexJoin part IxP_PARTKEY "BOUND $I1 ps_partkey ==" //J1
+  stage S07 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
     | filter " type BOOLEAN  }  J1_P_TYPE '%STEEL'  6 matchTrailing
              J1_P_SIZE 20 == and"
-    | project " type DECIMAL as s_acctbal s_acctbal ,
-                type VARCHAR as s_name s_name ,
-                type VARCHAR as n_name n_name ,
-                type INTEGER as p_partkey J1_p_partkey ,
-                type VARCHAR as p_mfgr J1_p_mfgr ,
-                type VARCHAR as s_address s_address ,
-                type VARCHAR as s_phone s_phone ,
-                type VARCHAR as s_comment s_comment "
+    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR as N_NAME N_NAME ,
+                type INTEGER as P_PARTKEY J1_P_PARTKEY ,
+                type VARCHAR as P_MFGR J1_P_MFGR ,
+                type VARCHAR as S_ADDRESS S_ADDRESS ,
+                type VARCHAR as S_PHONE S_PHONE ,
+                type VARCHAR as S_COMMENT S_COMMENT "
 
-    | sort " type DECIMAL as s_acctbal s_acctbal ASC  ,
-             type VARCHAR as n_name n_name ASC  ,
-             type VARCHAR as s_name s_name ASC  ,
-             type INTEGER as p_partkey p_partkey ASC  "
+    | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  ,
+             type VARCHAR as N_NAME N_NAME ASC  ,
+             type VARCHAR as S_NAME S_NAME ASC  ,
+             type INTEGER as P_PARTKEY P_PARTKEY ASC  "
 
     | combined 0
     | next
 
-  stage stageMarker4618_a on all nodes :
-   sort " type DECIMAL as s_acctbal s_acctbal ASC ,
-             type VARCHAR as n_name n_name ASC ,
-             type VARCHAR as s_name s_name ASC ,
-             type INTEGER as p_partkey p_partkey ASC"
+  stage S08 on all nodes :
+   sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC ,
+             type VARCHAR as N_NAME N_NAME ASC ,
+             type VARCHAR as S_NAME S_NAME ASC ,
+             type INTEGER as P_PARTKEY P_PARTKEY ASC"
     | combined 0
     | next
 
-  stage stageMarker4618_b on origin :
+  stage S09 on origin :
      sort " type DECIMAL as s_acctbal s_acctbal ASC ,
-               type VARCHAR as n_name n_name ASC ,
-               type VARCHAR as s_name s_name ASC ,
+               type VARCHAR as N_NAME N_NAME ASC ,
+               type VARCHAR as S_NAME S_NAME ASC ,
                type INTEGER as p_partkey p_partkey ASC"
       | limit 100
       | combined 0
       | next
 
-  stage stageLast on origin :
+  stage S10 on origin :
     output
     | sink
-    | stageStart
+    | first
 end ;
 
 rows:

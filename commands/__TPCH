@@ -249,7 +249,7 @@ QUERY 2
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /////////////////////////
-//SF001:  53ms         //
+//SF001:  117ms        //
 //SF1:    864ms        //
 /////////////////////////
 
@@ -281,37 +281,42 @@ begin
 
   stage S04 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+    | filter " type BOOLEAN  J1_R_NAME 'EUROPE'  == "
+    | aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
     | combined 0
     | next
 
   stage S05 on all nodes :
     aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
     | hash "type INTEGER PS_PARTKEY"
     | combined 0
     | next hashcast
 
-  stage S06 on all partitions :
+  stage S07 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
-    | filter " type BOOLEAN  }  J1_P_TYPE '%STEEL'  6 matchTrailing J1_P_SIZE 20 == and"
+    | filter " type BOOLEAN  }  J1_P_TYPE '%BRASS'  6 matchTrailing J1_P_SIZE 20 == and"
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type INTEGER as P_PARTKEY J1_P_PARTKEY , type VARCHAR as P_MFGR J1_P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
     | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  , type VARCHAR as N_NAME N_NAME ASC  , type VARCHAR as S_NAME S_NAME ASC  , type INTEGER as P_PARTKEY P_PARTKEY ASC  "
     | combined 0
     | next
 
-  stage S07 on all nodes :
+  stage S08 on all nodes :
    sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC , type VARCHAR as N_NAME N_NAME ASC , type VARCHAR as S_NAME S_NAME ASC , type INTEGER as P_PARTKEY P_PARTKEY ASC"
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S09 on origin :
      sort " type DECIMAL as s_acctbal s_acctbal ASC , type VARCHAR as N_NAME N_NAME ASC , type VARCHAR as S_NAME S_NAME ASC , type INTEGER as p_partkey p_partkey ASC"
       | limit 100
       | combined 0
       | next
 
-  stage S09 on origin :
+  stage S10 on origin :
     output
     | sink
     | first
@@ -365,16 +370,17 @@ begin
 
   stage S04 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
-               type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-               type VARCHAR as S_NAME S_NAME ,
-               type VARCHAR as N_NAME N_NAME ,
-               type VARCHAR as S_ADDRESS S_ADDRESS ,
-               type VARCHAR as S_PHONE S_PHONE ,
-               type VARCHAR as S_COMMENT S_COMMENT "
+    | filter " type BOOLEAN  J1_R_NAME 'EUROPE'  == "
+    | aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+                 aggregates
+                 type INTEGER as PS_PARTKEY $K1 ,
+                 type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                 type VARCHAR as S_NAME S_NAME ,
+                 type VARCHAR as N_NAME N_NAME ,
+                 type VARCHAR as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR as S_PHONE S_PHONE ,
+                 type VARCHAR as S_COMMENT S_COMMENT "
     | combined 0
     | next
 
@@ -389,13 +395,27 @@ begin
              type VARCHAR as S_ADDRESS S_ADDRESS ,
              type VARCHAR as S_PHONE S_PHONE ,
              type VARCHAR as S_COMMENT S_COMMENT "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+             aggregates
+             type INTEGER as PS_PARTKEY $K1 ,
+             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+             type VARCHAR as S_NAME S_NAME ,
+             type VARCHAR as N_NAME N_NAME ,
+             type VARCHAR as S_ADDRESS S_ADDRESS ,
+             type VARCHAR as S_PHONE S_PHONE ,
+             type VARCHAR as S_COMMENT S_COMMENT "
     | hash "type INTEGER PS_PARTKEY"
     | combined 0
     | next hashcast
 
-  stage S06 on all partitions :
+  stage S07 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
-    | filter " type BOOLEAN  }  J1_P_TYPE '%STEEL'  6 matchTrailing
+    | filter " type BOOLEAN  }  J1_P_TYPE '%BRASS'  6 matchTrailing
              J1_P_SIZE 20 == and"
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
@@ -414,7 +434,7 @@ begin
     | combined 0
     | next
 
-  stage S07 on all nodes :
+  stage S08 on all nodes :
    sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC ,
              type VARCHAR as N_NAME N_NAME ASC ,
              type VARCHAR as S_NAME S_NAME ASC ,
@@ -422,7 +442,7 @@ begin
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S09 on origin :
      sort " type DECIMAL as s_acctbal s_acctbal ASC ,
                type VARCHAR as N_NAME N_NAME ASC ,
                type VARCHAR as S_NAME S_NAME ASC ,
@@ -431,7 +451,7 @@ begin
       | combined 0
       | next
 
-  stage S09 on origin :
+  stage S10 on origin :
     output
     | sink
     | first
@@ -444,6 +464,7 @@ QUERY 3
 /////////////////////////
 //SF001: 78ms          //
 //SF1:   580ms         //
+//sf10:  2201ms        //
 /////////////////////////
 
 /time pipeline Query3
@@ -549,7 +570,7 @@ QUERY 5
 /////////////////////////
 //SF0001: 138ms        //
 //SF1:    759ms        //
-//SF10:          //
+//SF10:   4977ms       //
 /////////////////////////
 
 /time pipeline Query5
@@ -731,6 +752,7 @@ QUERY 6
 /////////////////////////
 //SF001: 35ms          //
 //SF1:   230ms         //
+//SF10:  709ms         //
 /////////////////////////
 
 /time pipeline Query6
@@ -742,7 +764,7 @@ QUERY 6
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
-     | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
+     | filter " type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. < and"
      | project " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
@@ -772,7 +794,7 @@ pipeline Query6
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
-     | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
+     | filter " type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. < and"
      | project " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
@@ -800,7 +822,7 @@ QUERY 7
 /////////////////////////
 //SF0001: 120ms        //
 //SF1:    649ms        //
-//SF10:          //
+//SF10:   4288ms       //
 /////////////////////////
 
 /time pipeline Query7
@@ -981,7 +1003,7 @@ QUERY 10
 /////////////////////////
 //SF0001: 81ms         //
 //SF1:    904ms        //
-//SF10:          //
+//SF10:   4772ms       //
 /////////////////////////
 
 /time pipeline Query10
@@ -1142,7 +1164,7 @@ QUERY 17
 /////////////////////////
 //SF001: 93ms          //
 //SF1:   51ms          //
-//SF10:           //
+//SF10:  447ms         //
 /////////////////////////
 
 /time pipeline Query17
@@ -1278,7 +1300,7 @@ QUERY 18
 /////////////////////////
 //SF001: 88ms          //
 //SF1:   384ms         //
-//SF10:           //
+//SF10:  1262ms        //
 /////////////////////////
 
 /time pipeline Query18
@@ -1436,7 +1458,7 @@ QUERY 19
 /////////////////////////
 //SF001: 81ms          //
 //SF1:   95ms          //
-//SF10:          //
+//SF10:  609ms         //
 /////////////////////////
 
 /time pipeline Query19
