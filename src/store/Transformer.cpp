@@ -281,7 +281,8 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
   m_pTransforms->vH55_T10_Collapse_Exists_SubQueries();
   m_pTransforms->vH55_T20_Copy_Up_ExistsSubQueries();
   m_pTransforms->vH55_T30_Adjust_Stream_OrdinalRange();
-  m_pTransforms->vH55_T40_Adjust_BoolCalc_Terms();
+  //m_pTransforms->vH55_T40_Adjust_BoolCalc_Terms();
+  m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
   m_pTransforms->vH55_T50_Produce_Parameter_Linkage();
   m_pTransforms->vH55_T60_Substitute_Parameter_Terms();
   m_pTransforms->vH55_T70_Cull_Marked_CallSub();
@@ -376,7 +377,6 @@ void Transformer::vHand_75_EE_operators(i8 iBelow, ...)
 
   m_pTransforms->vH75_T10_Morph_table_To_EEop();
   m_pTransforms->vH75_T20_Morph_keyExists_filter_To_constraint();
-  m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
   m_pTransforms->vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
 
   m_pTransforms->vH75_T99_End();
