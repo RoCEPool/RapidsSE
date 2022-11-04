@@ -54,6 +54,8 @@ namespace STORE
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
 
+    bool T_bTblColSyn_Same(char cTblSyn0, char cTblSyn1);
+
     bool T_bValue_IsIndexColOrdinal(Stz* szValue);  // $In
     bool T_bValue_IsParamOrdinal(Stz* szValue);     // $Pn
     bool T_bValue_IsResultOrdinal(Stz* szValue);    // #n

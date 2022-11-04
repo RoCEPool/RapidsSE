@@ -791,6 +791,43 @@ bool Xmodify::bPullUp_StreamContainsPred(Card_Stream* p_stream,
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this table+stream?                                  */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bPullUp_StreamContainsPred2(Card_Table* p_table,
+                                          Card_Stream* p_stream,
+                                          Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK ePredCard = pCard_PRED->eCard();
+
+  char cTableSyn = p_table->cValue();
+
+  if (CK_TERM == ePredCard) {
+
+    Stz* szTerm = pCard_PRED->sz();
+    if (! T_bValue_IsTableColOrdinal(szTerm))
+      return false;
+
+    char cTblColSyn = E_cValue_TableColSyn(szTerm);
+    if (! T_bTblColSyn_Same(cTableSyn,cTblColSyn))
+      return false;
+
+    return true;
+  }
+
+  i8 nSubCards = pCard_PRED->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
+
+    if (!bPullUp_StreamContainsPred2(p_table, p_stream, static_cast<Card_PRED *>(pSubCard)))
+      return false;
+  }
+
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
