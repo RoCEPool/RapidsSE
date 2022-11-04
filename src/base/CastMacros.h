@@ -155,7 +155,6 @@
         cnt--;                                                             \
       }                                                                    \
                                                                            \
-      bcdArg1.m_iSpare = 0;                                                \
       bcdArg1.m_iMantissa = iMantissa;                                     \
       bcdArg1.m_iScale = cnt;                                              \
                                                                            \
@@ -200,7 +199,6 @@
         cnt--;                                                             \
       }                                                                    \
                                                                            \
-      bcdArg1.m_iSpare = 0;                                                \
       bcdArg1.m_iMantissa = iMantissa;                                     \
       bcdArg1.m_iScale = iScale;                                           \
                                                                            \

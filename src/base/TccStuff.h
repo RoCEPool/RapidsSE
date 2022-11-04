@@ -8,9 +8,8 @@
 union Bcd_T
 {
   struct {
-    i8 m_iSpare: 8; // usually 0
     i8 m_iScale: 8; //
-    i8 m_iMantissa: 48; // 2's complement
+    i8 m_iMantissa: 56; // 2's complement
   };
   i8 m_iBcd;
   i8 m_iAsI8;
