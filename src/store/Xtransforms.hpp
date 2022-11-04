@@ -37,21 +37,21 @@ namespace STORE
     void vH20_T00_Begin(void);
     void vH20_T10_Affix_tableSyn_ToAll_table(void);
     void vH20_T20_Add_tablePtn_UnderAll_table(void);
-    void vH20_T30_Add_stream_UnderAll_table(void);
     void vH20_T99_End(void);
 
     // vHand_30_StreamAnalysis
     void vH30_T00_Begin(void);
+    void vH30_T10_Add_stream_UnderAll_table(void);
     void vH30_T20_Calc_ordinalRange_ForAll_stream(void);
+    void vH30_T30_Convert_where_rpnCalc_To_boolCalc(void);
+    void vH40_T30_Convert_stmColOdn_To_tblColOdn(void);
     void vH30_T99_End(void);
 
     // vHand_40_PredicatePullup
     void vH40_T00_Begin(void);
-    void vH40_T10_Convert_where_rpnCalc_To_boolCalc(void);
-    void vH40_T15_Convert_stmColOdn_To_tblColOdn(void);
-    void vH40_T20_AtMark_where_pred_Wrt_table(void);
-    void vH40_T30_Move_AtMarked_where_pred_To_table_filter(void);
-    void vH40_T40_Delete_Empty_where(void);
+    void vH40_T10_AtMark_where_pred_Wrt_table(void);
+    void vH40_T20_Move_AtMarked_where_pred_To_table_filter(void);
+    void vH40_T30_Delete_Empty_where(void);
     void vH40_T99_End(void);
 
     // vHand_50_FlattenCall
@@ -68,12 +68,12 @@ namespace STORE
     void vH55_T00_Begin(void);
     void vH55_T10_Rework_Exists_SubQueries(void);
     void vH55_T20_Copy_Up_SubQueries(void);
-    void vH55_T24_Correct_Streams(void);
-    void vH55_T26_Correct_Predicates(void);
-    void vH55_T30_Resolve_Parameter_Linkage(void);
-    void vH55_T40_Resolve_Parameter_Terms(void);
-    void vH55_T50_Cull_Exists_Call(void);
-    void vH55_T60_Delete_Empty_where(void);
+    void vH55_T30_Correct_Streams(void);
+    void vH55_T40_Correct_Predicates(void);
+    void vH55_T50_Resolve_Parameter_Linkage(void);
+    void vH55_T60_Resolve_Parameter_Terms(void);
+    void vH55_T70_Cull_Exists_Call(void);
+    void vH55_T80_Delete_Empty_where(void);
     void vH55_T99_End(void);
 
     // vHand_60_IndexJoin
@@ -134,13 +134,13 @@ namespace STORE
 
     // vHand_B0_RestoreStmOdn
     void vHB0_T00_Begin(void);
-    void vHB0_T10_Restore_stmColOdn_from_tblColOdn(void);
     void vHB0_T99_End(void);
 
     // vHand_Z0_RestatePipeline
     void vHZ0_T00_Begin(void);
-    void vHZ0_T10_Reinstate_stages(void);
-    void vHZ0_T20_Reinstate_combined(void);
+    void vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
+    void vHZ0_T20_Reinstate_stages(void);
+    void vHZ0_T30_Reinstate_combined(void);
     void vHZ0_T99_End(void);
 
   private:

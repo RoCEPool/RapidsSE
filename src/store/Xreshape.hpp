@@ -25,17 +25,17 @@ namespace STORE
     // vHand_20_TableAnalysis
     void vR_H20_T10_Add_tableSyn_ForAll_table(void);
     void vR_H20_T20_Add_tablePtn_UnderAll_table(void);
+    void vR_H20_T30_Add_stream_UnderAll_table(void);
 
     // vHand_30_StreamAnalysis
-    void vR_H30_T10_Add_stream_UnderAll_table(void);
-    void vR_H30_T20_Calc_ordinalRange_ForAll_stream(void);
+    void vR_H30_T10_Calc_ordinalRange_ForAll_stream(void);
+    void vR_H30_T20_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_H30_T30_Convert_stmColOdn_To_tblColOdn(void);
 
     // vHand_40_PredicatePullup
-    void vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void);
-    void vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void);
-    void vR_H40_T20_AtMark_where_pred_Wrt_table(void);
-    void vR_H40_T30_Move_AtMarked_where_pred_To_table_filter(void);
-    void vR_H40_T40_Delete_Empty_where(void);
+    void vR_H40_T10_AtMark_where_pred_Wrt_table(void);
+    void vR_H40_T20_Move_AtMarked_where_pred_To_table_filter(void);
+    void vR_H40_T30_Delete_Empty_where(void);
 
     // vHand_50_FlattenCall
     void vR_H50_T10_Extract_subSet_Of_call(void);
@@ -49,12 +49,12 @@ namespace STORE
     // vHand_55_FlattenExists
     void vR_H55_T10_Rework_Exists_SubQueries(void);
     void vR_H55_T20_Copy_Up_SubQueries(void);
-    void vR_H55_T24_Corrects_Streams(void);
-    void vR_H55_T26_Corrects_Predicates(void);
-    void vR_H55_T30_Resolve_Parameter_Linkage(void);
-    void vR_H55_T40_Resolve_Parameter_Terms(void);
-    void vR_H55_T50_Cull_Exists_Call(void);
-    void vR_H55_T60_Delete_Empty_where(void);
+    void vR_H55_T30_Corrects_Streams(void);
+    void vR_H55_T40_Corrects_Predicates(void);
+    void vR_H55_T50_Resolve_Parameter_Linkage(void);
+    void vR_H55_T60_Resolve_Parameter_Terms(void);
+    void vR_H55_T70_Cull_Exists_Call(void);
+    void vR_H55_T80_Delete_Empty_where(void);
 
     // vHand_60_IndexJoin
     void vR_H60_T10_Add_indexJoin_Wrt_filter(void);
@@ -106,11 +106,11 @@ namespace STORE
     void vR_HA0_T10_Individuate_indexJoin_filter_b(void);
 
     // vHand_B0_RestoreStmOdn
-    void vR_HB0_T10_Restore_stmColOdn_from_tblColOdn(void);
 
     // vHand_Z0_RestatePipeline
-    void vR_HZ0_T10_Reinstate_stages(void);
-    void vR_HZ0_T20_Reinstate_combined(void);
+    void vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
+    void vR_HZ0_T20_Reinstate_stages(void);
+    void vR_HZ0_T30_Reinstate_combined(void);
 
     void vRR_Convert_All_TblColOrd_to_StmColOrd(void);
     void vRR_Convert_All_StmColOrd_to_TblColOrd(void);

@@ -227,7 +227,7 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH20_T30_Add_stream_UnderAll_table(void)
+void Xtransforms::vH30_T10_Add_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -237,7 +237,7 @@ void Xtransforms::vH20_T30_Add_stream_UnderAll_table(void)
 
   // E <scan>
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H30_T10_Add_stream_UnderAll_table();
+    vR_H20_T30_Add_stream_UnderAll_table();
   }
 
   vEndTransform();
@@ -280,7 +280,7 @@ void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(void)
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_H30_T20_Calc_ordinalRange_ForAll_stream();
+    vR_H30_T10_Calc_ordinalRange_ForAll_stream();
   }
 
   vEndTransform();
@@ -319,14 +319,14 @@ void Xtransforms::vH40_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
+void Xtransforms::vH30_T30_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H40_T10_Convert_where_rpnCalc_To_boolCalc();
+    vR_H30_T20_Convert_where_rpnCalc_To_boolCalc();
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -336,7 +336,7 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T15_Convert_stmColOdn_To_tblColOdn(void)
+void Xtransforms::vH40_T30_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -349,7 +349,7 @@ void Xtransforms::vH40_T15_Convert_stmColOdn_To_tblColOdn(void)
         ))
       continue;
 
-    vR_H40_T15_Convert_stmColOdn_To_tblColOdn();
+    vR_H30_T30_Convert_stmColOdn_To_tblColOdn();
   }
 
   vEndTransform();
@@ -358,14 +358,14 @@ void Xtransforms::vH40_T15_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T20_AtMark_where_pred_Wrt_table(void)
+void Xtransforms::vH40_T10_AtMark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "put a table @c against where pred"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H40_T20_AtMark_where_pred_Wrt_table();
+    vR_H40_T10_AtMark_where_pred_Wrt_table();
   }
 
   vEndTransform();
@@ -374,14 +374,14 @@ void Xtransforms::vH40_T20_AtMark_where_pred_Wrt_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T30_Move_AtMarked_where_pred_To_table_filter(void)
+void Xtransforms::vH40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H40_T30_Move_AtMarked_where_pred_To_table_filter();
+    vR_H40_T20_Move_AtMarked_where_pred_To_table_filter();
   }
 
   vEndTransform();
@@ -390,14 +390,14 @@ void Xtransforms::vH40_T30_Move_AtMarked_where_pred_To_table_filter(void)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T40_Delete_Empty_where(void)
+void Xtransforms::vH40_T30_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete where if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H40_T40_Delete_Empty_where();
+    vR_H40_T30_Delete_Empty_where();
   }
 
   vEndTransform();
@@ -660,14 +660,14 @@ void Xtransforms::vH55_T20_Copy_Up_SubQueries(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T24_Correct_Streams(void)
+void Xtransforms::vH55_T30_Correct_Streams(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
-    vR_H55_T24_Corrects_Streams();
+    vR_H55_T30_Corrects_Streams();
   }
 
   vEndTransform();
@@ -676,14 +676,14 @@ void Xtransforms::vH55_T24_Correct_Streams(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T26_Correct_Predicates(void)
+void Xtransforms::vH55_T40_Correct_Predicates(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
-    vR_H55_T26_Corrects_Predicates();
+    vR_H55_T40_Corrects_Predicates();
   }
 
   vEndTransform();
@@ -692,7 +692,7 @@ void Xtransforms::vH55_T26_Correct_Predicates(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(void)
+void Xtransforms::vH55_T50_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -707,7 +707,7 @@ void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(void)
     if (!G_bResolveCard(CK_STMCOL, G.p_param->sz(), G.p_table))
       continue;
 
-    vR_H55_T30_Resolve_Parameter_Linkage();
+    vR_H55_T50_Resolve_Parameter_Linkage();
   }
 
   vEndTransform();
@@ -716,7 +716,7 @@ void Xtransforms::vH55_T30_Resolve_Parameter_Linkage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T40_Resolve_Parameter_Terms(void)
+void Xtransforms::vH55_T60_Resolve_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -729,7 +729,7 @@ void Xtransforms::vH55_T40_Resolve_Parameter_Terms(void)
             G.p_boolCalc->szBearing(),
             G.p_paramList->szBearing());
 
-    vR_H55_T40_Resolve_Parameter_Terms();
+    vR_H55_T60_Resolve_Parameter_Terms();
 
   }
 
@@ -739,14 +739,14 @@ void Xtransforms::vH55_T40_Resolve_Parameter_Terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T50_Cull_Exists_Call(void)
+void Xtransforms::vH55_T70_Cull_Exists_Call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H55_T50_Cull_Exists_Call();
+    vR_H55_T70_Cull_Exists_Call();
   }
 
   vEndTransform();
@@ -755,14 +755,14 @@ void Xtransforms::vH55_T50_Cull_Exists_Call(void)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T60_Delete_Empty_where(void)
+void Xtransforms::vH55_T80_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete <where> if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H55_T60_Delete_Empty_where();
+    vR_H55_T80_Delete_Empty_where();
   }
 
   vEndTransform();
@@ -1571,7 +1571,7 @@ void Xtransforms::vHB0_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vHB0_T10_Restore_stmColOdn_from_tblColOdn(void)
+void Xtransforms::vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1587,7 +1587,7 @@ void Xtransforms::vHB0_T10_Restore_stmColOdn_from_tblColOdn(void)
     ))
       continue;
 
-    vR_HB0_T10_Restore_stmColOdn_from_tblColOdn();
+    vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn();
   }
 
   vEndTransform();
@@ -1625,14 +1625,14 @@ void Xtransforms::vHZ0_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vHZ0_T10_Reinstate_stages(void)
+void Xtransforms::vHZ0_T20_Reinstate_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "reinstate stages"_Stz);
 
   while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
-    vR_HZ0_T10_Reinstate_stages();
+    vR_HZ0_T20_Reinstate_stages();
   }
 
   i8 i_Stage = 1;
@@ -1646,7 +1646,7 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vHZ0_T20_Reinstate_combined(void)
+void Xtransforms::vHZ0_T30_Reinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1655,7 +1655,7 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(void)
   while (G_bEachMain()) {
     G_vSubsequentToMain();
     if (T_bCombined_Reinstate(G.e_MainCard, G.e_SubsequentToMain)) {
-      vR_HZ0_T20_Reinstate_combined();
+      vR_HZ0_T30_Reinstate_combined();
       G_vSkipNextMain();
     }
   }
