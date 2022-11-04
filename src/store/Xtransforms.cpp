@@ -323,7 +323,7 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "convert <where>//<calc> into <where>//<calcBool> "_Stz);
+  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     vR_H40_T10_Convert_where_rpnCalc_To_boolCalc();
@@ -334,13 +334,13 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <where>//<calc> to <where>//<calcBool>                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T15_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "convert <where>//<calc> into <where>//<calcBool> "_Stz);
+  vTransform(__func__, "all $n become $c.n"_Stz);
 
   while (G_bEachMain()) {
 
@@ -356,13 +356,13 @@ void Xtransforms::vH40_T15_Convert_stmColOdn_To_tblColOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect <where>//<pred> and attempt to find source <table>                 */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "inspect <where>//<pred> and attempt to find source <table>"_Stz);
+  vTransform(__func__, "put a table @c against where pred"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T20_Mark_where_pred_Wrt_table();
@@ -372,13 +372,13 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>     */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>"_Stz);
+  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T30_Move_Marked_where_pred_To_table_filter();
@@ -394,7 +394,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "delete <where> if it is effectively empty"_Stz);
+  vTransform(__func__, "delete where if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T40_Delete_Empty_where();
@@ -1632,14 +1632,18 @@ void Xtransforms::vHH_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  char* azSeparator =
+  char* azSeparator = (char*)
       "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
       "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
       "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>";
+
   vTrace("\n%s\n%186s\n%s\n"_Stz,
          azSeparator,
          szXhand(),
          azSeparator);
+
+  vXdesc(""_Stz);
+  vXform(""_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

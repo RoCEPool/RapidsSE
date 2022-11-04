@@ -191,6 +191,8 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
 
   s256 sPrompt;
 
+  i8 nBoards = m_pBench->nItems();
+
   for (;;) {
     if (C_UNKNOWN != i_Board) {
       Board *pBoard = m_pBench->pGetBoard(eBoard, i_Board);
@@ -204,12 +206,12 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
     }
 
     if (! m_pCardCtl->bCueUser(szXhand(), C_NA)) {
-      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), C_NA, i_Board, C_UNKNOWN);
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), C_NA, i_Board, nBoards, C_UNKNOWN);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), C_NA, i_Board, C_UNKNOWN);
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), C_NA, i_Board, nBoards, C_UNKNOWN);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
   }
@@ -227,16 +229,20 @@ void Xgearing::vPrintBoard(i8 iLineNo)
 
   s256 sPrompt;
 
+  i8 nBoards = m_pBench->nItems();
+
   for (;;) {
     G.pBoard->vPrintBoard(szXdesc());
 
     if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_Board(), iLineNo);
+      m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(),
+                              G.pBoard->i_Board(), nBoards, iLineNo);
       printf("%s\n", sPrompt.azChar());
       break;
     }
 
-    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(), G.pBoard->i_Board(), iLineNo);
+    m_pCardCtl->vFormPrompt(sPrompt, szXhand(), szXform(),
+                            G.pBoard->i_Board(), nBoards, iLineNo);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
