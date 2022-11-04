@@ -47,13 +47,13 @@ namespace STORE
     void vR_H50_T60(void);
 
     // vHand_55_FlattenExists
-    void vR_H55_T10_Rework_Exists_SubQueries(void);
-    void vR_H55_T20_Copy_Up_SubQueries(void);
-    void vR_H55_T30_Corrects_Streams(void);
-    void vR_H55_T40_Corrects_Predicates(void);
-    void vR_H55_T50_Resolve_Parameter_Linkage(void);
+    void vR_H55_T10_Collapse_Exists_SubQuery(void);
+    void vR_H55_T20_Copy_Up_SubQuery(void);
+    void vR_H55_T30_Correct_KeyExists_Stream(void);
+    void vR_H55_T40_Correct_KeyExists_Predicate(void);
+    void vR_H55_T50_Produce_Parameter_Linkage(void);
     void vR_H55_T60_Resolve_Parameter_Terms(void);
-    void vR_H55_T70_Cull_Exists_Call(void);
+    void vR_H55_T70_Cull_Marked_CallSub(void);
     void vR_H55_T80_Delete_Empty_where(void);
 
     // vHand_60_IndexJoin
@@ -83,20 +83,20 @@ namespace STORE
     void vR_H75_T10_Morph_table_To_EEop(void);
     void vR_H75_T10_Morph_table_To_EEop_b(void);
     void vR_H75_T10_Morph_table_To_EEop_c(void);
-    void vR_H75_T20_Convert_keyExists_filter_To_bounds(void);
+    void vR_H75_T20_Morph_keyExists_filter_To_constraint(void);
     void vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
-    void vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void);
+    void vR_H75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
     // vHand_80_IndexScan
-    void vR_H80_T10_Add_indexList_Under_scan(void);
-    void vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void);
+    void vR_H80_T10_Produce_indexList_Under_scan(void);
+    void vR_H80_T20_Affix_idxCol_name_Of_scan_To_ordinal(void);
     void vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void);
     void vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void);
     void vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void);
     void vR_H80_T60_Cull_Marked_filter_cmpPred(void);
-    void vR_H80_T70_Promote_scan_To_indexScan(void);
-    void vR_H80_T70_Promote_scan_To_indexScan_b(void);
-    void vR_H80_T70_Promote_scan_To_indexScan_c(void);
+    void vR_H80_T70_Morph_scan_To_indexScan(void);
+    void vR_H80_T70_Morph_scan_To_indexScan_b(void);
+    void vR_H80_T70_Morph_scan_To_indexScan_c(void);
 
     // vHand_90_StreamOrdering
     void vR_H90_T10_Remove_sort_IfSameAs_gby(void);

@@ -278,13 +278,13 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
 
   m_pTransforms->vH55_T00_Begin();
 
-  m_pTransforms->vH55_T10_Rework_Exists_SubQueries();
-  m_pTransforms->vH55_T20_Copy_Up_SubQueries();
-  m_pTransforms->vH55_T30_Correct_Streams();
-  m_pTransforms->vH55_T40_Correct_Predicates();
-  m_pTransforms->vH55_T50_Resolve_Parameter_Linkage();
+  m_pTransforms->vH55_T10_Collapse_Exists_SubQueries();
+  m_pTransforms->vH55_T20_Copy_Up_ExistsSubQueries();
+  m_pTransforms->vH55_T30_Correct_KeyExists_Streams();
+  m_pTransforms->vH55_T40_Correct_KeyExists_Predicates();
+  m_pTransforms->vH55_T50_Produce_Parameter_Linkage();
   m_pTransforms->vH55_T60_Resolve_Parameter_Terms();
-  m_pTransforms->vH55_T70_Cull_Exists_Call();
+  m_pTransforms->vH55_T70_Cull_Marked_CallSub();
   m_pTransforms->vH55_T80_Delete_Empty_where();
 
   m_pTransforms->vH55_T99_End();
@@ -375,9 +375,9 @@ void Transformer::vHand_75_EE_operators(i8 iBelow, ...)
   m_pTransforms->vH75_T00_Begin();
 
   m_pTransforms->vH75_T10_Morph_table_To_EEop();
-  m_pTransforms->vH75_T20_Convert_keyExists_filter_To_bounds     ();
+  m_pTransforms->vH75_T20_Morph_keyExists_filter_To_constraint();
   m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
-  m_pTransforms->vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();
+  m_pTransforms->vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
 
   m_pTransforms->vH75_T99_End();
 
@@ -407,13 +407,13 @@ void Transformer::vHand_80_IndexScan(i8 iBelow, ...)
 
   m_pTransforms->vH80_T00_Begin();
 
-  m_pTransforms->vH80_T10_Add_Scratch_indexList_Under_scan();
+  m_pTransforms->vH80_T10_Produce_Scratch_indexList_Under_scan();
   m_pTransforms->vH80_T20_Affix_idxColOdn_ToAll_idxCol();
   m_pTransforms->vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred();
   m_pTransforms->vH80_T40_Mark_IndexMatchOf_scan_filter_terms();
   m_pTransforms->vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
   m_pTransforms->vH80_T60_Cull_Marked_filter_cmpPred();
-  m_pTransforms->vH80_T70_Promote_scan_To_indexScan();
+  m_pTransforms->vH80_T70_Morph_scan_To_indexScan();
 
   m_pTransforms->vH80_T99_End();
 

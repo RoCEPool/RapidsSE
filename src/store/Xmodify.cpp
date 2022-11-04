@@ -371,7 +371,7 @@ void Xmodify::M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_c
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vScan_Add_indexList(Card_Scan* p_scan)
+void Xmodify::M_vScan_Produce_indexList(Card_Scan* p_scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

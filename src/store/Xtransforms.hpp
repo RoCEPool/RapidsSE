@@ -66,13 +66,13 @@ namespace STORE
 
     // vHand_55_FlattenExists
     void vH55_T00_Begin(void);
-    void vH55_T10_Rework_Exists_SubQueries(void);
-    void vH55_T20_Copy_Up_SubQueries(void);
-    void vH55_T30_Correct_Streams(void);
-    void vH55_T40_Correct_Predicates(void);
-    void vH55_T50_Resolve_Parameter_Linkage(void);
+    void vH55_T10_Collapse_Exists_SubQueries(void);
+    void vH55_T20_Copy_Up_ExistsSubQueries(void);
+    void vH55_T30_Correct_KeyExists_Streams(void);
+    void vH55_T40_Correct_KeyExists_Predicates(void);
+    void vH55_T50_Produce_Parameter_Linkage(void);
     void vH55_T60_Resolve_Parameter_Terms(void);
-    void vH55_T70_Cull_Exists_Call(void);
+    void vH55_T70_Cull_Marked_CallSub(void);
     void vH55_T80_Delete_Empty_where(void);
     void vH55_T99_End(void);
 
@@ -106,20 +106,20 @@ namespace STORE
     // vHand_75_EE_operators
     void vH75_T00_Begin(void);
     void vH75_T10_Morph_table_To_EEop(void);
-    void vH75_T20_Convert_keyExists_filter_To_bounds(void);
+    void vH75_T20_Morph_keyExists_filter_To_constraint(void);
     void vH75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
-    void vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void);
+    void vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
     void vH75_T99_End(void);
 
     // vHand_80_IndexScan
     void vH80_T00_Begin(void);
-    void vH80_T10_Add_Scratch_indexList_Under_scan(void);
+    void vH80_T10_Produce_Scratch_indexList_Under_scan(void);
     void vH80_T20_Affix_idxColOdn_ToAll_idxCol(void);
     void vH80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void);
     void vH80_T40_Mark_IndexMatchOf_scan_filter_terms(void);
     void vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void);
     void vH80_T60_Cull_Marked_filter_cmpPred(void);
-    void vH80_T70_Promote_scan_To_indexScan(void);
+    void vH80_T70_Morph_scan_To_indexScan(void);
     void vH80_T99_End(void);
 
     // vHand_90_StreamOrdering
