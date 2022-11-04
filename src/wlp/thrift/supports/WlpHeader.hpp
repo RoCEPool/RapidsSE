@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #pragma once
+#include <arpa/inet.h>
 
 namespace WLP
 {
@@ -24,8 +25,8 @@ namespace WLP
       return iVal; }
     i8 iMsgType()     { return (i8) m_uMsgType; }
 
-    void vMsgSize(i8 iMsgSize)  { m_uMsgSize = htonll(iMsgSize); }
-    void vMsgType(i8 iMsgType)  { m_uMsgType = htonll(iMsgType); }
+    void vMsgSize(u4 uMsgSize)  { m_uMsgSize = htonl(uMsgSize); }
+    void vMsgType(u1 uMsgType)  { m_uMsgType = uMsgType;        }
   };
 
   static_assert(sizeof(WlpHeader) == C_WLPHEADER_SIZE, "Expecting sizeof(WlpHeader) == C_WLPHEADER_SIZE");
