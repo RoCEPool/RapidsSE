@@ -540,7 +540,7 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
     cWhichTable =
         cPullup_FindTableForPred(p_pred, p_deck);
     if (C_UNKNOWN != cWhichTable) {
-      p_pred->vMark1(MARK_ASSIGNED);
+      p_pred->vMark1(MARK_AT);
       p_pred->vMark2(cWhichTable);
     }
     return;
@@ -562,7 +562,7 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
     i8 iStream_1 = pSubCard_1->cMark2() - '0';
 
     if (iStream_0 == iStream_1) {
-      p_pred->vMark1(MARK_ASSIGNED);
+      p_pred->vMark1(MARK_AT);
       p_pred->vMark2(iStream_0);
     }
 
@@ -694,7 +694,7 @@ bool Xmodify::bPullUp_MovePredDrillDown(Card_PRED* pCard_pred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (MARK_ASSIGNED == pCard_pred->cMark1()) {
+  if (MARK_AT == pCard_pred->cMark1()) {
 
     Card *pMainCard;
     char cTableSyn = pCard_pred->cMark2();

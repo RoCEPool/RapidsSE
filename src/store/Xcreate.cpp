@@ -112,7 +112,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
     p_term = new Card_Term(p_cmpPred->sz());
     p_bounds->vAppend(p_term);
 
-    p_cmpPred->vMark1(MARK_UPWARDS);
+    p_cmpPred->vMark1(MARK_UP);
 
     return C_CONTINUE_RECURSION;
   };
@@ -194,7 +194,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
 //    p_term = new Card_Term(p_cmpPred->sz());
 //    p_bounds->vAppend(p_term);
 //
-//    p_cmpPred->vMark1(MARK_UPWARDS);
+//    p_cmpPred->vMark1(MARK_UP);
 //
 //    return C_CONTINUE_RECURSION;
 //  };

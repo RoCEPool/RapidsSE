@@ -49,6 +49,7 @@ namespace STORE
     void vHand_80_IndexScan       (i8 iBelow, ...);
     void vHand_90_StreamOrdering  (i8 iBelow, ...);
     void vHand_A0_FilterRefinement(i8 iBelow, ...);
+    void vHand_B0_RestoreStmOdn   (i8 iBelow, ...);
     void vHand_Z0_RestatePipeline (i8 iBelow, ...);
 
     void vEndHand(eBK eBoard, i8 i_Board=C_UNKNOWN);

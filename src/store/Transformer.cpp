@@ -114,6 +114,7 @@ void Transformer::vTransform3(void)
   vHand_80_IndexScan       (CK_NONE);
   vHand_90_StreamOrdering  (CK_NONE);
   vHand_A0_FilterRefinement(CK_NONE);
+  vHand_B0_RestoreStmOdn   (CK_NONE);
   vHand_Z0_RestatePipeline (CK_NONE);
 }
 
@@ -233,8 +234,8 @@ void Transformer::vHand_40_PredicatePullup(i8 iBelow, ...)
 
     m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_boolCalc();
     m_pTransforms->vH40_T15_Convert_stmColOdn_To_tblColOdn();
-    m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table();
-    m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter();
+    m_pTransforms->vH40_T20_AtMark_where_pred_Wrt_table();
+    m_pTransforms->vH40_T30_Move_AtMarked_where_pred_To_table_filter();
     m_pTransforms->vH40_T40_Delete_Empty_where();
   }
 
@@ -309,9 +310,9 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
 
   m_pTransforms->vH60_T10_Add_indexJoin_Wrt_filter();
   m_pTransforms->vH60_T20_Affix_tblColOdn_ToAll_idxCol();
-  m_pTransforms->vH60_T30_Add_bounds_Wrt_filter();
-  m_pTransforms->vH60_T40_Cull_pred_MovedTo_table_bounds();
-  m_pTransforms->vH60_T50_Delete_Empty_table_filter();
+  m_pTransforms->vH60_T30_UpCopy_filter_pred_Into_bounds();
+  m_pTransforms->vH60_T40_Cull_UpCopied_filter_pred();
+  m_pTransforms->vH60_T50_Delete_Empty_filter();
 
   m_pTransforms->vH60_T99_End();
 
@@ -461,6 +462,27 @@ void Transformer::vHand_A0_FilterRefinement(i8 iBelow, ...)
 
   vEndHand(BK_SUBPIPE,0);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_B0_RestoreStmOdn(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  m_pTransforms->vHB0_T00_Begin();
+
+  m_pTransforms->vHB0_T10_Restore_stmColOdn_from_tblColOdn();
+
+  m_pTransforms->vHB0_T99_End();
+
+  vEndHand(BK_SUBPIPE,0);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

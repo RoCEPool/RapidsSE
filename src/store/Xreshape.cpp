@@ -213,7 +213,7 @@ void Xreshape::vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
+void Xreshape::vR_H40_T20_AtMark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -223,7 +223,7 @@ void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H40_T30_Move_Marked_where_pred_To_table_filter(void)
+void Xreshape::vR_H40_T30_Move_AtMarked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -506,7 +506,7 @@ void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T30_Add_bounds_Wrt_filter(void)
+void Xreshape::vR_H60_T30_UpCopy_filter_pred_Into_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -516,13 +516,13 @@ void Xreshape::vR_H60_T30_Add_bounds_Wrt_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
+void Xreshape::vR_H60_T40_Cull_UpCopied_filter_pred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
 
-  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UPWARDS);
+  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1263,6 +1263,44 @@ void Xreshape::vR_HA0_T10_Individuate_indexJoin_filter_b(void)
   G.p_indexJoin->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_indexJoin);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                            Restore Stream Ordinals Hand B0 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_HB0_T10_Restore_stmColOdn_from_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szTblColOdn = p_term->szValue();
+    if (! G_bResolveSubCard(CK_TABLE,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
+      return C_CONTINUE_RECURSION;
+
+    RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
+
+    G.p_stmColOdn = m_pCard_parent->pSub_stmColOdn();
+    M_vCard_Set_Value(p_term, G.p_stmColOdn->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_MainCard->vApplyRecursive(CK_TERM, bLambdaFn);
+}
+
 
 
 /*----------------------------------------------------------------------------*/

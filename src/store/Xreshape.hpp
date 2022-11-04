@@ -14,6 +14,7 @@ namespace STORE
   {
   public:
 
+    // vHand_10_CondenseInfo
     void vR_H10_T10_Delete_Redundant_stage(void);
     void vR_H10_T15_Hide_Ignorable_stage(void);
     void vR_H10_T20_Delete_absJoin(void);
@@ -21,18 +22,22 @@ namespace STORE
     void vR_H10_T40_Delete_send(void);
     void vR_H10_T50_Cull_scan_Leaving_table(void);
 
+    // vHand_20_TableAnalysis
     void vR_H20_T10_Add_tableSyn_ForAll_table(void);
     void vR_H20_T20_Add_tablePtn_UnderAll_table(void);
 
+    // vHand_30_StreamAnalysis
     void vR_H30_T10_Add_stream_UnderAll_table(void);
     void vR_H30_T20_Calc_ordinalRange_ForAll_stream(void);
 
+    // vHand_40_PredicatePullup
     void vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void);
-    void vR_H40_T20_Mark_where_pred_Wrt_table(void);
-    void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
+    void vR_H40_T20_AtMark_where_pred_Wrt_table(void);
+    void vR_H40_T30_Move_AtMarked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);
 
+    // vHand_50_FlattenCall
     void vR_H50_T10_Extract_subSet_Of_call(void);
     void vR_H50_T20_Yank_Subset(void);
     void vR_H50_T20_Put_Yanked(void);
@@ -41,6 +46,7 @@ namespace STORE
     void vR_H50_T50(void);
     void vR_H50_T60(void);
 
+    // vHand_55_FlattenExists
     void vR_H55_T10_Rework_Exists_SubQueries(void);
     void vR_H55_T20_Copy_Up_SubQueries(void);
     void vR_H55_T24_Corrects_Streams(void);
@@ -50,12 +56,14 @@ namespace STORE
     void vR_H55_T50_Cull_Exists_Call(void);
     void vR_H55_T60_Delete_Empty_where(void);
 
+    // vHand_60_IndexJoin
     void vR_H60_T10_Add_indexJoin_Wrt_filter(void);
     void vR_H60_T20_Affix_tblColOdn_To_idxCol(void);
-    void vR_H60_T30_Add_bounds_Wrt_filter(void);
-    void vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void);
+    void vR_H60_T30_UpCopy_filter_pred_Into_bounds(void);
+    void vR_H60_T40_Cull_UpCopied_filter_pred(void);
     void vR_H60_T50_Delete_Empty_filter(void);
 
+    // vHand_70_JoinOrdering
     void vR_H70_T00_Extract_tableList_From_queryBoard(void);
     void vR_H70_T10_Extract_joinPredList(void);
     void vR_H70_T20_Compute_coPtnPredList(void);
@@ -71,6 +79,7 @@ namespace STORE
     void vR_H70_T96_Estimate_joinOrder(void);
     void vR_H70_T98_Extract_joinOrderSeq(void);
 
+    // vHand_75_EE_operators
     void vR_H75_T10_Convert_table_To_EEop(void);
     void vR_H75_T10_Convert_table_To_EEop_b(void);
     void vR_H75_T10_Convert_table_To_EEop_c(void);
@@ -78,6 +87,7 @@ namespace STORE
     void vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void);
 
+    // vHand_80_IndexScan
     void vR_H80_T10_Add_indexList_Under_scan(void);
     void vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void);
     void vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void);
@@ -88,11 +98,17 @@ namespace STORE
     void vR_H80_T70_Promote_scan_To_indexScan_b(void);
     void vR_H80_T70_Promote_scan_To_indexScan_c(void);
 
+    // vHand_90_StreamOrdering
     void vR_H90_T10_Remove_sort_IfSameAs_gby(void);
 
+    // vHand_A0_FilterRefinement
     void vR_HA0_T10_Individuate_scan_filter(void);
     void vR_HA0_T10_Individuate_indexJoin_filter_b(void);
 
+    // vHand_B0_RestoreStmOdn
+    void vR_HB0_T10_Restore_stmColOdn_from_tblColOdn(void);
+
+    // vHand_Z0_RestatePipeline
     void vR_HZ0_T10_Reinstate_stages(void);
     void vR_HZ0_T20_Reinstate_combined(void);
 
