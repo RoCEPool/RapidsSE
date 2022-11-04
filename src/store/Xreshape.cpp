@@ -396,26 +396,29 @@ void Xreshape::vR_H55_T30_Adjust_Stream_OrdinalRange(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H55_T40_Correct_BoolCalc_Terms(void)
+void Xreshape::vR_H55_T40_Adjust_BoolCalc_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   // CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC
 
+  // get the stream of this keyExists pile : <table>/<stream>
   Card_Stream* p_stream_keyExists = G.p_table->pSub_stream();
-  i8 iStmOrdLo_stream = E_iStream_OrdLo(p_stream_keyExists);
+
+  // lowest stream ordinal
+  i8 iLoOdn_stream = E_iStream_OrdLo(p_stream_keyExists);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfCorrect_StmColOdn = [this, iStmOrdLo_stream](Card* pCard)
+  auto bAdjustFn = [this, iLoOdn_stream](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
     if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iStmColOdn_term = E_iTerm_StreamColOdn(p_term);
-    i8 iStmColOdn_corrected = iStmOrdLo_stream + iStmColOdn_term - 1;
-    M_vCard_Set_StreamColOrdinal(p_term, iStmColOdn_corrected);
+    i8 iStmColOdn_adjusted = iLoOdn_stream + iStmColOdn_term - 1;
+    M_vCard_Set_StreamColOrdinal(p_term, iStmColOdn_adjusted);
 
     // TODO: M_vTerm_MarkAs_Changed();
     p_term->vMark1(MARK_CHANGED);
@@ -425,7 +428,7 @@ void Xreshape::vR_H55_T40_Correct_BoolCalc_Terms(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->vApplyRecursive(CK_TERM, bfCorrect_StmColOdn);
+  G.p_boolCalc->vApplyRecursive(CK_TERM, bAdjustFn);
 
 }
 
@@ -1033,6 +1036,8 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
     i8 iStmColOdn = E_iValue_StreamColOdn(p_stmColOrd->szValue());
     i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
     M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn_corrected);
+
+    p_stmColOrd->vMark1(MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };

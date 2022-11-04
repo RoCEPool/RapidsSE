@@ -69,7 +69,7 @@ namespace STORE
     void vH55_T10_Collapse_Exists_SubQueries(void);
     void vH55_T20_Copy_Up_ExistsSubQueries(void);
     void vH55_T30_Adjust_Stream_OrdinalRange(void);
-    void vH55_T40_Correct_BoolCalc_Terms(void);
+    void vH55_T40_Adjust_BoolCalc_Terms(void);
     void vH55_T50_Produce_Parameter_Linkage(void);
     void vH55_T60_Substitute_Parameter_Terms(void);
     void vH55_T70_Cull_Marked_CallSub(void);

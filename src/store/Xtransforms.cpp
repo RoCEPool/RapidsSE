@@ -654,6 +654,8 @@ void Xtransforms::vH55_T20_Copy_Up_ExistsSubQueries(void)
     }
   }
 
+  V_vNo_Terms_StmColOdn(G.pDeck);
+
   vEndTransform();
 }
 
@@ -676,14 +678,14 @@ void Xtransforms::vH55_T30_Adjust_Stream_OrdinalRange(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T40_Correct_BoolCalc_Terms(void)
+void Xtransforms::vH55_T40_Adjust_BoolCalc_Terms(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
-    vR_H55_T40_Correct_BoolCalc_Terms();
+    vR_H55_T40_Adjust_BoolCalc_Terms();
   }
 
   vEndTransform();

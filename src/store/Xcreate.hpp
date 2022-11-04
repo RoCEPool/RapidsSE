@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xtest.hpp"
+#include "Xverify.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xcreate : public Xtest
+  class Xcreate : public Xverify
   {
   public:
 

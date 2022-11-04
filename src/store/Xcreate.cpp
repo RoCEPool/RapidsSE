@@ -18,7 +18,7 @@ __aFooterFunction(Xcreate)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xcreate::Xcreate(eCN eClass)
-: Xtest(eClass)
+: Xverify(eClass)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

@@ -19,7 +19,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH60_T20_Affix_tblColOdn_ToAll_idxCol"
+/glean_cue_from = "vH75_T30_Correct_stmColOdn_Of_keyExists_stream"
 /glean_cue_trace = "x"
 /transliterated
 /transform
