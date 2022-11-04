@@ -283,9 +283,9 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
   m_pTransforms->vH55_T30_Adjust_Stream_OrdinalRange();
   //m_pTransforms->vH55_T40_Adjust_BoolCalc_Terms();
   m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
-  m_pTransforms->vH55_T50_Produce_Parameter_Linkage();
-  m_pTransforms->vH55_T60_Substitute_Parameter_Terms();
-  m_pTransforms->vH55_T70_Cull_Marked_CallSub();
+  m_pTransforms->vH55_T50_Add_tblColOdn_Under_param();
+  m_pTransforms->vH55_T60_Substitute_paramOdn_With_tblColOdn();
+  m_pTransforms->vH55_T70_Cull_CallMarked_CallSub();
   m_pTransforms->vH55_T80_Delete_Empty_where();
 
   m_pTransforms->vH55_T99_End();

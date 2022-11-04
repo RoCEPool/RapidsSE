@@ -141,7 +141,7 @@ static Stz* C_NA                = "n/a"_Stz;
 
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';
-static char MARK_CALLSUB    = '~';
+static char MARK_CALL    = '~';
 static char MARK_CHANGED    = '`';
 static char MARK_DOWNWARDS  = 'v';
 static char MARK_LEFTWARDS  = '<';

@@ -52,8 +52,8 @@ namespace STORE
     void vR_H55_T30_Adjust_Stream_OrdinalRange(void);
     void vR_H55_T40_Adjust_BoolCalc_Terms(void);
     void vR_H55_T50_Produce_Parameter_Linkage(void);
-    void vR_H55_T60_Substitute_Parameter_Terms(void);
-    void vR_H55_T70_Cull_Marked_CallSub(void);
+    void vR_H55_T60_Substitute_paramOdn_With_tblColOdn(void);
+    void vR_H55_T70_Cull_CallMarked_CallSub(void);
     void vR_H55_T80_Delete_Empty_where(void);
 
     // vHand_60_IndexJoin

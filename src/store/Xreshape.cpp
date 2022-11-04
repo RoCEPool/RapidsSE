@@ -461,7 +461,7 @@ void Xreshape::vR_H55_T50_Produce_Parameter_Linkage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H55_T60_Substitute_Parameter_Terms(void)
+void Xreshape::vR_H55_T60_Substitute_paramOdn_With_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -471,11 +471,11 @@ void Xreshape::vR_H55_T60_Substitute_Parameter_Terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H55_T70_Cull_Marked_CallSub(void)
+void Xreshape::vR_H55_T70_Cull_CallMarked_CallSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vBoolCalc_CullPred(G.p_boolCalc,MARK_CALLSUB);
+  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_CALL);
 }
 
 /*----------------------------------------------------------------------------*/

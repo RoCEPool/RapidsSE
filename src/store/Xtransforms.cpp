@@ -627,7 +627,7 @@ void Xtransforms::vH55_T20_Copy_Up_ExistsSubQueries(void)
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
-    G.p_tstPred->vMark1(MARK_CALLSUB);
+    G.p_tstPred->vMark1(MARK_CALL);
 
     G.sz_SubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,G.sz_SubQueryNm);
@@ -694,7 +694,7 @@ void Xtransforms::vH55_T40_Adjust_BoolCalc_Terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T50_Produce_Parameter_Linkage(void)
+void Xtransforms::vH55_T50_Add_tblColOdn_Under_param(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -710,7 +710,7 @@ void Xtransforms::vH55_T50_Produce_Parameter_Linkage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T60_Substitute_Parameter_Terms(void)
+void Xtransforms::vH55_T60_Substitute_paramOdn_With_tblColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -723,8 +723,7 @@ void Xtransforms::vH55_T60_Substitute_Parameter_Terms(void)
             G.p_boolCalc->szBearing(),
             G.p_paramList->szBearing());
 
-    vR_H55_T60_Substitute_Parameter_Terms();
-
+    vR_H55_T60_Substitute_paramOdn_With_tblColOdn();
   }
 
   vEndTransform();
@@ -733,14 +732,14 @@ void Xtransforms::vH55_T60_Substitute_Parameter_Terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T70_Cull_Marked_CallSub(void)
+void Xtransforms::vH55_T70_Cull_CallMarked_CallSub(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H55_T70_Cull_Marked_CallSub();
+    vR_H55_T70_Cull_CallMarked_CallSub();
   }
 
   vEndTransform();
