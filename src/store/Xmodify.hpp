@@ -69,8 +69,7 @@ namespace STORE
 
     char cPullup_FindTableForPred(Card_PRED* p_pred, Card_Deck* p_deck);
     char cPullUp_TableContainsPred(Card_Table* p_table, Card_PRED* p_pred);
-    bool bPullUp_StreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED);
-    bool bPullUp_StreamContainsPred2(Card_Table* p_table, Card_Stream* p_stream,
+    bool bPullUp_StreamContainsPred(Card_Table* p_table, Card_Stream* p_stream,
                                     Card_PRED* pCard_PRED);
 
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);

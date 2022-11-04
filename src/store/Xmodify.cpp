@@ -749,7 +749,7 @@ char Xmodify::cPullUp_TableContainsPred(Card_Table* p_table,
   Card_Stream* p_stream = p_table->pSub_stream();
 
   // are all $n of <pred> in this <stream>?
-  if (bPullUp_StreamContainsPred(p_stream, p_pred)) {
+  if (bPullUp_StreamContainsPred(p_table, p_stream, p_pred)) {
     char cTableSyn = p_table->cValue();
     return cTableSyn;
   }
@@ -758,43 +758,9 @@ char Xmodify::cPullUp_TableContainsPred(Card_Table* p_table,
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given <pred> within this stream?                                        */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::bPullUp_StreamContainsPred(Card_Stream* p_stream,
-                                         Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  eCK ePredCard = pCard_PRED->eCard();
-
-  if (CK_TERM == ePredCard) {
-    Stz* szTerm = pCard_PRED->sz();
-    if (!szTerm->bIsStreamColOrd())
-      return true;
-
-    i8 iOrdLo = p_stream->Y_iVal(P_OrdLo);
-    i8 iOrdHi = p_stream->Y_iVal(P_OrdHi);
-
-    i8 iOrd = szTerm->iOrdinal();
-    if (iOrd > iOrdHi)
-      return false;
-  }
-
-  i8 nSubCards = pCard_PRED->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
-
-    if (!bPullUp_StreamContainsPred(p_stream, static_cast<Card_PRED *>(pSubCard)))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given <pred> within this table+stream?                                  */
 /*----------------------------------------------------------------------------*/
-bool Xmodify::bPullUp_StreamContainsPred2(Card_Table* p_table,
+bool Xmodify::bPullUp_StreamContainsPred(Card_Table* p_table,
                                           Card_Stream* p_stream,
                                           Card_PRED* pCard_PRED)
 {
@@ -811,7 +777,7 @@ bool Xmodify::bPullUp_StreamContainsPred2(Card_Table* p_table,
       return false;
 
     char cTblColSyn = E_cValue_TableColSyn(szTerm);
-    if (! T_bTblColSyn_Same(cTableSyn,cTblColSyn))
+    if (cTableSyn < cTblColSyn)
       return false;
 
     return true;
@@ -821,7 +787,7 @@ bool Xmodify::bPullUp_StreamContainsPred2(Card_Table* p_table,
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = pCard_PRED->pGetChild(i_Child);
 
-    if (!bPullUp_StreamContainsPred2(p_table, p_stream, static_cast<Card_PRED *>(pSubCard)))
+    if (!bPullUp_StreamContainsPred(p_table, p_stream, static_cast<Card_PRED *>(pSubCard)))
       return false;
   }
 
