@@ -1290,7 +1290,7 @@ void Weaver::vConcat_vargs(Stz* aFormat, va_list xArgs)
  
   m_sOptStmt.vConcat((Stz*)caFormatted);
   
-  //vTrace("%s"_Stz,caFormatted);
+  //vTraceing("%s"_Stz,caFormatted);
 }
 
 /*----------------------------------------------------------------------------*/

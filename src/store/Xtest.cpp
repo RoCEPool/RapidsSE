@@ -581,7 +581,7 @@ bool Xtest::T_bStage_Reinstate(eCK eMain, eCK eSubsequent)
 /*----------------------------------------------------------------------------*/
 Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
                                                  Stz *szColNm,
-                                                 i8& i_StreamColNo)
+                                                 i8& ri_StreamColNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -599,7 +599,7 @@ Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
     //Card_As* pCard_as = pSubCard->pSub_as();
     if (pSubCard->bSame(szColNm)) {
       pCard_streamCol = _pCard_StmCol(pSubCard);
-      i_StreamColNo = i_Child;
+      ri_StreamColNo = i_Child;
       break;
     }
   }
@@ -681,6 +681,19 @@ bool Xtest::T_bFilter_IsEmpty(Card_Filter* p_filter)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bTblColSyn_Same(char cTblSyn0, char cTblSyn1)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (cTblSyn0 == cTblSyn1)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bValue_IsIndexColOrdinal(Stz* szValue)
@@ -749,7 +762,7 @@ bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a table-column ordinal?  (i.e. $$c.n)                             */
+/* is value a table-column ordinal?  (i.e. $c.n)                              */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bValue_IsTableColOrdinal(Stz* szValue)
 {
@@ -759,12 +772,11 @@ bool Xtest::T_bValue_IsTableColOrdinal(Stz* szValue)
   char acSecond = szValue->azChar()[1];
   char acThird  = szValue->azChar()[2];
   char acFourth = szValue->azChar()[3];
-  char acFifth  = szValue->azChar()[4];
 
-  if ('$' == acFirst && '$' == acSecond
-      && StrLib::bIsAlpha(acThird)
-      && '.' == acFourth
-      && StrLib::bIsDigit(acFifth))
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
     return true;
   else
     return false;

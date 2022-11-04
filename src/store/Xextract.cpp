@@ -229,7 +229,7 @@ i8 Xextract::E_iTerm_StreamColOdn(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table column number n (i.e. $$c.n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::E_iTerm_TableColNo(Card_Term* p_term)
+i8 Xextract::E_iTerm_TableColOdn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -289,6 +289,36 @@ i8 Xextract::E_iValue_StreamColOdn(Stz* szValue)
   i8 i_Col = StrLib::iGleanInt(szValue->azChar());
 
   return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column ordinal n  (i.e. $c.n)                                    */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iValue_TableColOdn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column syn from $c.n                                             */
+/*----------------------------------------------------------------------------*/
+char Xextract::E_cValue_TableColSyn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  RASSERT('$' == acFirst);
+  RASSERT('.' == acThird);
+
+  return acSecond;
 }
 
 

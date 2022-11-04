@@ -180,6 +180,39 @@ void Xreshape::vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szStmColOdn = p_term->szValue();
+    if (! G_bResolveSubCard(CK_STREAM,CK_STMCOLODN,szStmColOdn,G.i_MainCard))
+      return C_CONTINUE_RECURSION;
+
+    RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
+
+    G.p_tblColOdn = m_pCard_parent->pSub_tblColOdn();
+    M_vCard_Set_Value(p_term, G.p_tblColOdn->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_MainCard->vApplyRecursive(CK_TERM, bLambdaFn);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -401,9 +434,12 @@ void Xreshape::vR_H55_T30_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
-  //G.p_stmColOdn->vValue(G.p_stmColOdn->szValue());
-  G.p_param->vAppend(G.p_stmColOdn->pDupCardAndSubCards());
+//  G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
+//  G.p_param->vAppend(G.p_stmColOdn->pDupCardAndSubCards());
+
+  G.p_tblColOdn = G.p_stmCol->pSub_tblColOdn();
+  G.p_param->vAppend(G.p_tblColOdn->pDupCardAndSubCards());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,7 +482,7 @@ void Xreshape::vR_H55_T60_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
+void Xreshape::vR_H60_T10_Add_indexJoin_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -456,7 +492,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
+void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -464,17 +500,17 @@ void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
   G.p_stmColList = G.p_table->pSub_stmColList();
   G.p_idxColList = G.p_indexJoin->pSub_idxColList();
 
-  M_vIdxColList_ToOrdinals(G.p_idxColList, G.p_stream);
+  M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T30_Add_bounds_UnderFiltered_table(void)
+void Xreshape::vR_H60_T30_Add_bounds_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vBounds_Extract_FromFilter(G.p_table, G.p_filter);
+  C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1058,7 +1094,7 @@ void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vIdxColList_ToOrdinals(G.p_idxColList, G.p_stream);
+  M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/

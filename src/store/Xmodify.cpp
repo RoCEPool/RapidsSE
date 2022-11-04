@@ -174,8 +174,10 @@ void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
     if (! p_param)
       return false;
 
-    Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
-    M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+    //Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
+    //M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+    Card_TblColOdn* p_tblColOrd = p_param->pSub_tblColOdn();
+    M_vCard_Set_Value(p_term,p_tblColOrd->szValue(),MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -183,94 +185,6 @@ void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  //M.p_table->vDump();
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  RASSERT(1 == p_boolCalc->nChildCards());
-
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bfXYZ = [this,p_table](Card_PRED* p_pred, bool bUpwards)
-  {
-    if (bUpwards)
-      return C_TERMINATE_RECURSION;
-
-    if (! p_pred->bIsCard(CK_CMPPRED))
-      return C_CONTINUE_RECURSION;
-
-    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
-
-    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-    if (! T_bValue_IsStreamColOrdinal(pTerm_0->szValue()) ||
-        ! T_bValue_IsStreamColOrdinal(pTerm_1->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    // - - - -
-
-    Card_Bounds* p_bounds = p_table->pSub_bounds();
-    if (! p_bounds)
-      p_bounds = new Card_Bounds;
-    Card_IndexJoin* p_indexJoin = p_table->pSub_indexJoin();
-    Card_Stream* p_stream = p_table->pSub_stream();
-    p_table->vInsertAfter(p_bounds, p_stream);
-
-    Card_Term* p_term = new Card_Term("BOUND"_Stz);
-    p_bounds->vAppend(p_term);
-
-    // - - - -
-
-    // one of {pCard_term_0,pCard_term_1} is $In
-
-    i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
-    i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
-
-    i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
-    i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
-
-    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-      p_term = new Card_Term("$I1"_Stz);
-      p_bounds->vAppend(p_term);
-      p_term = new Card_Term(pTerm_1->sz());
-      p_bounds->vAppend(p_term);
-    }
-    else
-    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-      p_term = new Card_Term("$I1"_Stz);
-      p_bounds->vAppend(p_term);
-      p_term = new Card_Term(pTerm_0->sz());
-      p_bounds->vAppend(p_term);
-    }
-    else {
-      NEVER_REACH
-    }
-
-    p_term = new Card_Term(p_cmpPred->sz());
-    p_bounds->vAppend(p_term);
-
-    p_cmpPred->vMark1(MARK_UPWARDS);
-
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,72 +302,28 @@ void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add table and index                                                        */
+/* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
+void Xmodify::M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
+  i8 i_StreamColNo = C_UNKNOWN;
 
-  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
+  Card_StmColList* p_streamColList = p_stream->pSub_stmColList();
 
-  i8 nSubCards = p_idxColList->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(p_idxColList->pGetChild(i_Sub));
+  CardIter xCI(p_idxColList);
+  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild(CK_IDXCOL))) {
+    Stz* szColNm = p_idxCol->sz();
 
-    i8 i_StreamColNo = C_UNKNOWN;
-    Stz* szColNm = pCard_idxCol->sz();
-    Card_StmCol* pCard_streamCol =
-        T_pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
+    Card_StmCol* p_streamCol =
+        T_pStmColList_Find_streamCol(p_streamColList, szColNm, i_StreamColNo);
 
-    s32 sOrdinal;
-    sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
-    pCard_idxCol->vValue(sOrdinal);
+    Card_TblColOdn* p_tblColOdn = p_streamCol->pSub_tblColOdn();
+    Stz* szTblColOdn = p_tblColOdn->sz();
 
-    pCard_idxCol->vMark1(MARK_CHANGED);
+    M_vCard_Set_Value(p_idxCol,szTblColOdn,MARK_CHANGED);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of pred and apply lambda function                      */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::M_bPredRecursive(Card_PRED* p_pred,
-                             std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  bool bContinue;
-
-  eCK eCard = p_pred->eCard();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // only call term once
-
-  if (CK_TERM == eCard) {
-    bContinue = bfApply(p_pred,false);
-    return bContinue;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // apply pred function for downwards
-  bContinue = bfApply(p_pred,false);
-  if (! bContinue)
-    return false;
-
-  // descend into children
-  i8 nSubCards = p_pred->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = p_pred->pGetChild(i_Child);
-    bContinue = M_bPredRecursive(static_cast<Card_PRED *>(pSubCard), bfApply);
-    if (! bContinue)
-      return false;
-  }
-
-  // apply pred function for upwards
-  bContinue = bfApply(p_pred,true);
-  return bContinue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -712,7 +582,7 @@ char Xmodify::cPullup_FindTableForPred(Card_PRED* p_pred,
   i8 nTable    = 0;
   char cWhichTable = C_UNKNOWN;
 
-  //vTrace("iAssignPredLeft candidate %p\n"_Stz,p_pred);
+  //vTraceing("iAssignPredLeft candidate %p\n"_Stz,p_pred);
   //p_pred->vDump();
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
@@ -749,7 +619,7 @@ char Xmodify::cPullUp_TableContainsPred(Card_Table* p_table,
   Card_Stream* p_stream = p_table->pSub_stream();
 
   // are all $n of <pred> in this <stream>?
-  if (bPullUp_StreamContainsPred(p_stream, p_pred)) {
+  if (bPullUp_StreamContainsPred(p_table, p_stream, p_pred)) {
     char cTableSyn = p_table->cValue();
     return cTableSyn;
   }
@@ -758,33 +628,40 @@ char Xmodify::cPullUp_TableContainsPred(Card_Table* p_table,
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given <pred> within this stream?                                        */
+/* is given <pred> within this table+stream?                                  */
 /*----------------------------------------------------------------------------*/
-bool Xmodify::bPullUp_StreamContainsPred(Card_Stream* p_stream,
-                                         Card_PRED* pCard_PRED)
+bool Xmodify::bPullUp_StreamContainsPred(Card_Table* p_table,
+                                          Card_Stream* p_stream,
+                                          Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   eCK ePredCard = pCard_PRED->eCard();
 
+  char cTableSyn = p_table->cValue();
+
   if (CK_TERM == ePredCard) {
+
     Stz* szTerm = pCard_PRED->sz();
-    if (!szTerm->bIsStreamColOrd())
+
+    if (T_bValue_IsParamOrdinal(szTerm))
       return true;
 
-    i8 iOrdLo = p_stream->Y_iVal(P_OrdLo);
-    i8 iOrdHi = p_stream->Y_iVal(P_OrdHi);
-
-    i8 iOrd = szTerm->iOrdinal();
-    if (iOrd > iOrdHi)
+    if (! T_bValue_IsTableColOrdinal(szTerm))
       return false;
+
+    char cTblColSyn = E_cValue_TableColSyn(szTerm);
+    if (cTableSyn < cTblColSyn)
+      return false;
+
+    return true;
   }
 
   i8 nSubCards = pCard_PRED->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = pCard_PRED->pGetChild(i_Child);
 
-    if (!bPullUp_StreamContainsPred(p_stream, static_cast<Card_PRED *>(pSubCard)))
+    if (!bPullUp_StreamContainsPred(p_table, p_stream, static_cast<Card_PRED *>(pSubCard)))
       return false;
   }
 

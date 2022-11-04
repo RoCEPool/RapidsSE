@@ -23,6 +23,7 @@ namespace STORE
     eCK    e_PriorToMain;
     Card * p_MainCard;
     eCK    e_MainCard;
+    i8     i_MainCard;
     Card * p_SubLocated;
     eCK    e_SubLocated;
     Card * p_SubLocatedParent;
@@ -58,6 +59,7 @@ namespace STORE
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
     Card_GbyElist *         p_gbyElist;
+    Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
     Card_IdxColNm *         p_idxColNm;//

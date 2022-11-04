@@ -47,6 +47,20 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseExpanded();
+  vPrintBench(BK_SUBPIPE);
+  m_pCardCtl->vUseShorter();
+}
+
+/*----------------------------------------------------------------------------*/
 /* linearize board by deleting all redundant <stage>'s                        */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
@@ -152,9 +166,31 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                    Access Metadata Hand 20 */
+void Xtransforms::vH10_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                     Table Analysis Hand 20 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH20_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
+}
 
 /*----------------------------------------------------------------------------*/
 /* add a <tableSyn> to all <table>'s                                          */
@@ -189,14 +225,9 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                   Stream Analysis Hand 30 */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T10_Add_stream_UnderAll_table(void)
+void Xtransforms::vH20_T30_Add_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -210,6 +241,33 @@ void Xtransforms::vH30_T10_Add_stream_UnderAll_table(void)
   }
 
   vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH20_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    Stream Analysis Hand 30 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,9 +287,34 @@ void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                  Predicate Pullup Hand 40 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH40_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
+  vPrintBench(BK_SUBPIPE);
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
@@ -240,23 +323,46 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "convert <where>//<calc> into <where>//<calcBool> "_Stz);
+  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     vR_H40_T10_Convert_where_rpnCalc_To_boolCalc();
+  }
+
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH40_T15_Convert_stmColOdn_To_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "all $n become $c.n"_Stz);
+
+  while (G_bEachMain()) {
+
+    if (! (   CK_PROJECT == G.e_MainCard
+           || CK_WHERE   == G.e_MainCard
+        ))
+      continue;
+
+    vR_H40_T15_Convert_stmColOdn_To_tblColOdn();
   }
 
   vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect <where>//<pred> and attempt to find source <table>                 */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "inspect <where>//<pred> and attempt to find source <table>"_Stz);
+  vTransform(__func__, "put a table @c against where pred"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T20_Mark_where_pred_Wrt_table();
@@ -266,13 +372,13 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>     */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>"_Stz);
+  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T30_Move_Marked_where_pred_To_table_filter();
@@ -288,7 +394,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "delete <where> if it is effectively empty"_Stz);
+  vTransform(__func__, "delete where if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T40_Delete_Empty_where();
@@ -298,9 +404,35 @@ void Xtransforms::vH40_T40_Delete_Empty_where(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH40_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
+
+  vHH_End();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                       Flatten Call Hand 50 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH50_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -418,9 +550,31 @@ void Xtransforms::vH50_T60(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                    Flatten Exists Hand 55 */
+void Xtransforms::vH50_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                     Flatten Exists Hand 55 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH55_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -614,39 +768,61 @@ void Xtransforms::vH55_T60_Delete_Empty_where(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH55_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      Initial Join Hand 60 */
+/*                                                       Initial Join Hand 60 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
-/* add an <indexJoin> under all <table>'s which are joinable                  */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(void)
+void Xtransforms::vH60_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a scratch <indexJoin> under all joinable <table>'s                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH60_T10_Add_indexJoin_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "add an <indexJoin> under all <table>'s which are joinable"_Stz);
+  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T10_Add_indexJoin_UnderFiltered_table();
+    vR_H60_T10_Add_indexJoin_Wrt_filter();
   }
 
   vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert the column name in every <idxCol> to a $streamOrdinal              */
+/* affix $c.n to each <idxCol> wrt table stream                               */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T20_Affix_idxColOdn_ToAll_idxCol(void)
+void Xtransforms::vH60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
+  vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_INDEXJOIN)) {
-    vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal();
+    vR_H60_T20_Affix_tblColOdn_To_idxCol();
   }
 
   vEndTransform();
@@ -655,14 +831,14 @@ void Xtransforms::vH60_T20_Affix_idxColOdn_ToAll_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /* add <bounds> under each filtered <table>                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T30_Add_bounds_UnderAllFiltered_table(void)
+void Xtransforms::vH60_T30_Add_bounds_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "add <bounds> under each filtered <table>"_Stz);
+  vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T30_Add_bounds_UnderFiltered_table();
+    vR_H60_T30_Add_bounds_Wrt_filter();
   }
 
   vEndTransform();
@@ -701,9 +877,31 @@ void Xtransforms::vH60_T50_Delete_Empty_table_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                     Join Ordering Hand 70 */
+void Xtransforms::vH60_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                      Join Ordering Hand 70 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH70_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -984,6 +1182,33 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH70_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                       EE operators Hand 75 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH75_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin> or <keyExists>       */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH75_T10_Convert_table_To_EEop(void)
@@ -1073,9 +1298,32 @@ void Xtransforms::vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                        Index Scan Hand 80 */
+void Xtransforms::vH75_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                         Index Scan Hand 80 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH80_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
@@ -1201,9 +1449,31 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                   Stream Ordering Hand 90 */
+void Xtransforms::vH80_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    Stream Ordering Hand 90 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH90_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
@@ -1224,9 +1494,31 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                 Filter Refinement Hand A0 */
+void Xtransforms::vH90_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                  Filter Refinement Hand A0 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHA0_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
@@ -1250,9 +1542,31 @@ void Xtransforms::vHA0_T10_Individuate_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                  Restate Pipeline Hand Z0 */
+void Xtransforms::vHA0_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                   Restate Pipeline Hand Z0 */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHZ0_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vHH_Begin();
+}
 
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
@@ -1295,10 +1609,50 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHZ0_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHH_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  char* azSeparator = (char*)
+      "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+      "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+      "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>";
+
+  vTrace("\n%s\n%186s\n%s\n"_Stz,
+         azSeparator,
+         szXhand(),
+         azSeparator);
+
+  vXdesc(""_Stz);
+  vXform(""_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHH_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
 
 
 /*----------------------------------------------------------------------------*/

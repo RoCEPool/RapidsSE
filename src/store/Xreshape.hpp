@@ -28,6 +28,7 @@ namespace STORE
     void vR_H30_T20_Calc_ordinalRange_ForAll_stream(void);
 
     void vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_H40_T15_Convert_stmColOdn_To_tblColOdn(void);
     void vR_H40_T20_Mark_where_pred_Wrt_table(void);
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);
@@ -49,9 +50,9 @@ namespace STORE
     void vR_H55_T50_Cull_Exists_Call(void);
     void vR_H55_T60_Delete_Empty_where(void);
 
-    void vR_H60_T10_Add_indexJoin_UnderFiltered_table(void);
-    void vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void);
-    void vR_H60_T30_Add_bounds_UnderFiltered_table(void);
+    void vR_H60_T10_Add_indexJoin_Wrt_filter(void);
+    void vR_H60_T20_Affix_tblColOdn_To_idxCol(void);
+    void vR_H60_T30_Add_bounds_Wrt_filter(void);
     void vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void);
     void vR_H60_T50_Delete_Empty_filter(void);
 

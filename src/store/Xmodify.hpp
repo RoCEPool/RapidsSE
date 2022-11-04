@@ -31,7 +31,6 @@ namespace STORE
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
 
-    void M_vBounds_Extract_FromFilter(Card_Table* p_table, Card_Filter* p_filter);
 
     void M_vCard_Mark_Changed(Card* pCard);
     void M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn);
@@ -45,10 +44,7 @@ namespace STORE
 
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
-    void M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
-
-    bool M_bPredRecursive(Card_PRED* p_pred,
-                          std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
+    void M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream);
 
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Add_indexList(Card_Scan* p_scan);
@@ -69,7 +65,8 @@ namespace STORE
 
     char cPullup_FindTableForPred(Card_PRED* p_pred, Card_Deck* p_deck);
     char cPullUp_TableContainsPred(Card_Table* p_table, Card_PRED* p_pred);
-    bool bPullUp_StreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED);
+    bool bPullUp_StreamContainsPred(Card_Table* p_table, Card_Stream* p_stream,
+                                    Card_PRED* pCard_PRED);
 
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);

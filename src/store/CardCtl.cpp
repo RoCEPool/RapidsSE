@@ -159,14 +159,15 @@ bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform)
 /*----------------------------------------------------------------------------*/
 /* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform, i8 i_Board, i8 iLineNo)
+void CardCtl::vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform,
+                          i8 i_Board, i8 nBoards, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   sPrompt->vSprint(""_Stz);
 
   if (C_UNKNOWN != i_Board)
-    sPrompt->vCatSprint("%lld "_Stz, i_Board);
+    sPrompt->vCatSprint("%lld/%lld "_Stz, i_Board, nBoards);
 
   if (szXhand && szXform && ! szXform->bSame(C_NA)) {
     sPrompt->vCatSprint("%s :: %s"_Stz, szXhand, szXform);
@@ -743,6 +744,24 @@ void CardCtl::vSetSubsPrintNone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vShowSettings(i8 i_Card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  vTrace("Card Settings %lld %s\n"_Stz, i_Card, aCK[i_Card]);
+
+  vTrace("  m_bPrintName       %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintName       ? "true" : "false");
+  vTrace("  m_bPrintNo         %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintNo         ? "true" : "false");
+  vTrace("  m_bPrintValue      %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintValue      ? "true" : "false");
+  vTrace("  m_bPrintProperties %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintProperties ? "true" : "false");
+  vTrace("  m_bPrintPptName    %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintPptName    ? "true" : "false");
+  vTrace("  m_bPrintSubCards   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubCards   ? "true" : "false");
+  vTrace("  m_bPrintSubShort   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubShort   ? "true" : "false");
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cued                                                                   */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bTrace(void)
@@ -755,7 +774,7 @@ bool CardCtl::bTrace(void)
 /*----------------------------------------------------------------------------*/
 /* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vTrace(bool bTrace)
+void CardCtl::vTraceing(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
