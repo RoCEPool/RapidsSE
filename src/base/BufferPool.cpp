@@ -650,9 +650,9 @@ PoolBuffer* BufferPool::pReAllocOtherBuffer(void *aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Reinitialise all pool buffers in the pool after reload                     */
+/* After reload, clean up the free chain, and it's pointers                   */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vReInitialise(bool bTouch, bool bProgress)
+void BufferPool::vCleanup(bool bTouch, bool bProgress)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 
@@ -667,6 +667,10 @@ void BufferPool::vReInitialise(bool bTouch, bool bProgress)
   i8 iBufferMod;
   FreePoolBuffer* pPrevPoolBuffer = nullptr;
   i8 i_PoolBuffer = iBufferFirst();
+
+  // Walk the memory in 1MB chunks
+  // Find all buffers that are free
+  // Relink the free buffers to form a chain
   while (C_NIL != i_PoolBuffer) {
 
     if (bProgress) {
@@ -698,12 +702,15 @@ void BufferPool::vReInitialise(bool bTouch, bool bProgress)
     iFreeCount++;
   }
 
+  pPrevPoolBuffer->vNextFree(C_NIL);
+
+  // Ensure we got the correct number of allocated buffers
+  // and free buffers
   RASSERT((iAllocCount + iFreeCount + 1) == m_nBuffers);
 
+  // Update the members of BufferPool
   m_nAllocCount = iAllocCount;
   m_nFreeCount = iFreeCount;
-
-  pPrevPoolBuffer->vNextFree(C_NIL);
 
   m_okLock.vDropWrite();
   //vDump();

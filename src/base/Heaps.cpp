@@ -627,13 +627,27 @@ void Heaps::vReloadPHeaps(void)
     member called m_pThis, tells us the address of the buffer when it was
     written to disk.
 
-    We then search the Buffer Pool free chain for the buffer with the same
-    address. After removing it from the free chain, we copy the header info
-    into the buffer. Next, we read the rest of the info from the file into
-    this buffer.
+    We do a sanity check of this address and directly copy the header info
+    into the free chain buffer (since these addresses correspond to an
+    address in the free chain. Next, we read the rest of the info from
+    the file into this buffer. Note, we do not lock the free chain.
 
-    At this point we have successfully loaded a PoolBuffer or HeapBuffer from
-    disk. We repeat this till we reach the end of the file.
+    After the main thread loads in the various persisten heaps from disk,
+    we spawn threads based on the number of partitions. Each thread reads
+    it's corresponding file and performs the same task as what the main
+    thread did earlier, i.e read header info -> get the address -> check
+    the address -> read body into this address.
+
+    All threads are directly writing to the buffer addresses it reads
+    from the reload files.
+
+    This drastically speeds up reload times, but leaves the free chain in
+    an unstable/unusable state since different parts of the free chain
+    have been written to.
+
+    Hence, once all threads are done reloading, the main thread cleans up
+    the free chain, and repairs all the pointers, and other meta data info
+    about it, like number of allocs, number of free buffers, etc.
 
   */
   char caObjectHeader[sizeof(Object) + 128];
@@ -650,8 +664,6 @@ void Heaps::vReloadPHeaps(void)
   vFindPtn0FilePath(szNode0Path);
 
   RASSERT( ! szNode0Path.bIsEmpty());
-
-//  s256 szNode0Path = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[0];
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   bool bResult = pFile->bOpenRead(szNode0Path);
@@ -766,7 +778,8 @@ void Heaps::vReloadPHeaps(void)
   Timer oTimer;
   oTimer.vStart();
 
-  gpBufferPool->vReInitialise(false, true);
+  // Clean up the free chain
+  gpBufferPool->vCleanup(false, true);
 
   oTimer.vUpdate();
   vTrace("Rdtscp: Free chain recreate took %lld ms\n"_Stz, oTimer.iMilliseconds());
@@ -788,10 +801,24 @@ void Heaps::vReloadPHeaps(void)
                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                      iPtnNo);
 
-  if( ! File::bExists(szFilePath))
-  {
-    vTrace("%s does not exist. Please check the arguments for --disk and --reload options given\n"_Stz, szFilePath.szStz());
-    THROW("Could not open savefile. Please check the arguments for --disk and --reload options given\n"_Stz);
+  // Search the other disks for the reload file if we can't find it in the current dir
+  if( ! File::bExists(szFilePath)) {
+    i8 i = 0;
+    for (i = 0; i < nDiskpaths; i++) {
+      Stz *sRootDir = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i % nDiskpaths];
+      szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
+                         sRootDir,
+                         gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+                         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                         iPtnNo);
+      if (File::bExists(szFilePath))
+        break;
+    }
+    if(i >= nDiskpaths)
+    {
+      vTrace("%s does not exist. Please check the arguments for --disk and --reload options given\n"_Stz, szFilePath.szStz());
+      THROW("Could not open savefile. Please check the arguments for --disk and --reload options given\n"_Stz);
+    }
   }
 
   if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
@@ -824,8 +851,6 @@ void Heaps::vReloadPHeaps(void)
     {
       RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
       PoolBuffer *pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBufferHeader->m_pThis);
-
-//      HeapBuffer* pHeapBuffer = (HeapBuffer*)(gpBufferPool->pReAllocHeapBuffer(pPoolBufferHeader->m_pThis));
 
       MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
       aBody = aAdd<void *>(pHeapBuffer, nSizeHeader);

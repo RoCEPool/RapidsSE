@@ -85,7 +85,7 @@ namespace BASE
     bool bReloadSanityCheckAddr(void* aAddress);
     PoolBuffer* pReAllocHeapBuffer(void* aAddress);
     PoolBuffer* pReAllocOtherBuffer(void *aAddress);
-    void vReInitialise(bool bTouch, bool bProgress);
+    void vCleanup(bool bTouch, bool bProgress);
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);
     i8   iTotalSpace(void);

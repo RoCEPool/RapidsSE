@@ -1081,6 +1081,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Save the number of disk paths given (used for unload/reload).
   m_xSysArgs.m_nDiskPaths = i_DiskPath;
+  if(m_xSysArgs.m_bReload)
+  {
+    if(m_xSysArgs.m_nDiskPaths == 0)
+    {
+      vTrace("Incorrect argument: --reload was given without the --disk option\n"_Stz);
+      vTrace("Please provide disk root paths\n"_Stz);
+      return false;
+    }
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
