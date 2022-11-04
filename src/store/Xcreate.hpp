@@ -15,6 +15,8 @@ namespace STORE
 
     Card_BoolCalc*   C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
+    void C_vBounds_DeriveFrom_filter(Card_Table* p_pred_Of_filter, Card_Filter* p_filter);
+
     Card_StmColList* C_pDerive_streamColList(Card_ELIST* p_ELIST);
 
     Card_IndexList*  C_pProduce_indexList_ofTable(Table* pTable);

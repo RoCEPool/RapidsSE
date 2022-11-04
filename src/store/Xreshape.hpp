@@ -50,9 +50,9 @@ namespace STORE
     void vR_H55_T50_Cull_Exists_Call(void);
     void vR_H55_T60_Delete_Empty_where(void);
 
-    void vR_H60_T10_Add_indexJoin_UnderFiltered_table(void);
+    void vR_H60_T10_Add_indexJoin_Wrt_filter(void);
     void vR_H60_T20_Affix_tblColOdn_To_idxCol(void);
-    void vR_H60_T30_Add_bounds_UnderFiltered_table(void);
+    void vR_H60_T30_Add_bounds_Wrt_filter(void);
     void vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void);
     void vR_H60_T50_Delete_Empty_filter(void);
 

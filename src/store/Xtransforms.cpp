@@ -797,29 +797,29 @@ void Xtransforms::vH60_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add an <indexJoin> under all <table>'s which are joinable                  */
+/* add a scratch <indexJoin> under all joinable <table>'s                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(void)
+void Xtransforms::vH60_T10_Add_indexJoin_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "add an <indexJoin> under all <table>'s which are joinable"_Stz);
+  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T10_Add_indexJoin_UnderFiltered_table();
+    vR_H60_T10_Add_indexJoin_Wrt_filter();
   }
 
   vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert the column name in every <idxCol> to a $streamOrdinal              */
+/* affix $c.n to each <idxCol> wrt table stream                               */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "Affix $c.n to every idxCol within indexJoin"_Stz);
+  vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_INDEXJOIN)) {
     vR_H60_T20_Affix_tblColOdn_To_idxCol();
@@ -831,14 +831,14 @@ void Xtransforms::vH60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /* add <bounds> under each filtered <table>                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T30_Add_bounds_UnderAllFiltered_table(void)
+void Xtransforms::vH60_T30_Add_bounds_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "add <bounds> under each filtered <table>"_Stz);
+  vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T30_Add_bounds_UnderFiltered_table();
+    vR_H60_T30_Add_bounds_Wrt_filter();
   }
 
   vEndTransform();

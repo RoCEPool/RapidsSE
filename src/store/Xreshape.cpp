@@ -482,7 +482,7 @@ void Xreshape::vR_H55_T60_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
+void Xreshape::vR_H60_T10_Add_indexJoin_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -506,11 +506,11 @@ void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T30_Add_bounds_UnderFiltered_table(void)
+void Xreshape::vR_H60_T30_Add_bounds_Wrt_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vBounds_Extract_FromFilter(G.p_table, G.p_filter);
+  C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/

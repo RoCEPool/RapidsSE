@@ -71,9 +71,9 @@ namespace STORE
     void vH55_T99_End(void);
 
     void vH60_T00_Begin(void);
-    void vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(void);
+    void vH60_T10_Add_indexJoin_Wrt_filter(void);
     void vH60_T20_Affix_tblColOdn_ToAll_idxCol(void);
-    void vH60_T30_Add_bounds_UnderAllFiltered_table(void);
+    void vH60_T30_Add_bounds_Wrt_filter(void);
     void vH60_T40_Cull_pred_MovedTo_table_bounds(void);
     void vH60_T50_Delete_Empty_table_filter(void);
     void vH60_T99_End(void);
