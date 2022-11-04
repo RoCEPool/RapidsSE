@@ -373,31 +373,34 @@ void Xreshape::vR_H55_T20_Copy_Up_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H55_T30_Correct_KeyExists_Stream(void)
+void Xreshape::vR_H55_T30_Adjust_Stream_OrdinalRange(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // CK_TABLE, CK_KEYEXISTS
 
   Card_Stream* p_stream_keyExists = G.p_table->pSub_stream();
 
   if (! G_bResolveCardWithSub(CK_TABLE,CK_STREAM,m_pCard_temp))
     return;
 
-
   i8 iOrdLo = E_iStream_OrdLo(p_stream_keyExists);
   i8 iOrdHi = E_iStream_OrdHi(p_stream_keyExists);
 
-  i8 iOrdLo_corrected = E_iStream_OrdHi(G.p_stream) + iOrdLo;
-  i8 iOrdHi_corrected = E_iStream_OrdHi(G.p_stream) + iOrdHi;
+  i8 iOrdLo_adjusted = E_iStream_OrdHi(G.p_stream) + iOrdLo;
+  i8 iOrdHi_adjusted = E_iStream_OrdHi(G.p_stream) + iOrdHi;
 
-  M_vStream_Set_OrdinalRange(p_stream_keyExists,iOrdLo_corrected,iOrdHi_corrected);
+  M_vStream_Adjust_OrdinalRange(p_stream_keyExists, iOrdLo_adjusted, iOrdHi_adjusted);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H55_T40_Correct_KeyExists_Predicate(void)
+void Xreshape::vR_H55_T40_Correct_BoolCalc_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC
 
   Card_Stream* p_stream_keyExists = G.p_table->pSub_stream();
   i8 iStmOrdLo_stream = E_iStream_OrdLo(p_stream_keyExists);
@@ -433,22 +436,33 @@ void Xreshape::vR_H55_T50_Produce_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-//  G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
-//  G.p_param->vAppend(G.p_stmColOdn->pDupCardAndSubCards());
+  // CK_TABLE, CK_KEYEXISTS
 
+  vTracer("Resolving %s"_Stz,G.p_MainCard->szBearing());
+
+  // find under main: <table>//<param>
+  if (!G_bPlumbForSubMember(CK_TABLE, CK_PARAM))
+    return;
+
+  // find left of main: <stmCol> == <param>
+  if (!G_bResolveCard(CK_STMCOL, G.p_param->sz(), G.p_table))
+    return;
+
+  // find sub <stmCol>//<tblColOdn>=$c.n
   G.p_tblColOdn = G.p_stmCol->pSub_tblColOdn();
-  G.p_param->vAppend(G.p_tblColOdn->pDupCardAndSubCards());
 
+  // add <table>//<param>/<tblColOdn>=$c.n
+  G.p_param->vAppend(G.p_tblColOdn->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H55_T60_Resolve_Parameter_Terms(void)
+void Xreshape::vR_H55_T60_Substitute_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vBoolCalc_Resolve_Parameters(G.p_boolCalc, G.p_paramList);
+  M_vBoolCalc_Substitute_Parameters(G.p_boolCalc, G.p_paramList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -929,18 +943,6 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop(void)
     return;
   }
 
-  if (G.p_indexJoin) {
-    G.p_table->vRemoveSubCard(G.p_indexJoin);
-    G.p_indexJoin->vTransferChildren(G.p_table);
-
-    G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
-    G.p_indexJoin->vInsert(G.p_table);
-
-    G.p_indexJoin->vRemoveSubCard(G.p_index);
-    G.p_indexJoin->vAppend(G.p_index);
-    return;
-  }
-
   if (G.p_keyExists) {
     G.p_table->vRemoveSubCard(G.p_keyExists);
 
@@ -958,6 +960,17 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop(void)
     return;
   }
 
+  if (G.p_indexJoin) {
+    G.p_table->vRemoveSubCard(G.p_indexJoin);
+    G.p_indexJoin->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
+    G.p_indexJoin->vInsert(G.p_table);
+
+    G.p_indexJoin->vRemoveSubCard(G.p_index);
+    G.p_indexJoin->vAppend(G.p_index);
+    return;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

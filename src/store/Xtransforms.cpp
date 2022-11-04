@@ -660,14 +660,14 @@ void Xtransforms::vH55_T20_Copy_Up_ExistsSubQueries(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T30_Correct_KeyExists_Streams(void)
+void Xtransforms::vH55_T30_Adjust_Stream_OrdinalRange(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_KEYEXISTS)) {
-    vR_H55_T30_Correct_KeyExists_Stream();
+    vR_H55_T30_Adjust_Stream_OrdinalRange();
   }
 
   vEndTransform();
@@ -676,14 +676,14 @@ void Xtransforms::vH55_T30_Correct_KeyExists_Streams(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T40_Correct_KeyExists_Predicates(void)
+void Xtransforms::vH55_T40_Correct_BoolCalc_Terms(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC)) {
-    vR_H55_T40_Correct_KeyExists_Predicate();
+    vR_H55_T40_Correct_BoolCalc_Terms();
   }
 
   vEndTransform();
@@ -699,14 +699,6 @@ void Xtransforms::vH55_T50_Produce_Parameter_Linkage(void)
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_KEYEXISTS)) {
-
-    vTracer("Resolving %s"_Stz,G.p_MainCard->szBearing());
-    if (!G_bPlumbForSubMember(CK_TABLE, CK_PARAM))
-      continue;
-
-    if (!G_bResolveCard(CK_STMCOL, G.p_param->sz(), G.p_table))
-      continue;
-
     vR_H55_T50_Produce_Parameter_Linkage();
   }
 
@@ -716,7 +708,7 @@ void Xtransforms::vH55_T50_Produce_Parameter_Linkage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T60_Resolve_Parameter_Terms(void)
+void Xtransforms::vH55_T60_Substitute_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -729,7 +721,7 @@ void Xtransforms::vH55_T60_Resolve_Parameter_Terms(void)
             G.p_boolCalc->szBearing(),
             G.p_paramList->szBearing());
 
-    vR_H55_T60_Resolve_Parameter_Terms();
+    vR_H55_T60_Substitute_Parameter_Terms();
 
   }
 

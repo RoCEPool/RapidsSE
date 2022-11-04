@@ -152,8 +152,8 @@ void Xmodify::M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pre
 /*----------------------------------------------------------------------------*/
 /* resolve the parameters terms in given boolCalc                             */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
-                                             Card_ParamList* p_paramList)
+void Xmodify::M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc,
+                                                Card_ParamList* p_paramList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -425,7 +425,7 @@ void Xmodify::M_vStream_Derive_OrdinalRange(Card_Stream* p_stream, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi)
+void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

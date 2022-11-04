@@ -280,10 +280,10 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
 
   m_pTransforms->vH55_T10_Collapse_Exists_SubQueries();
   m_pTransforms->vH55_T20_Copy_Up_ExistsSubQueries();
-  m_pTransforms->vH55_T30_Correct_KeyExists_Streams();
-  m_pTransforms->vH55_T40_Correct_KeyExists_Predicates();
+  m_pTransforms->vH55_T30_Adjust_Stream_OrdinalRange();
+  m_pTransforms->vH55_T40_Correct_BoolCalc_Terms();
   m_pTransforms->vH55_T50_Produce_Parameter_Linkage();
-  m_pTransforms->vH55_T60_Resolve_Parameter_Terms();
+  m_pTransforms->vH55_T60_Substitute_Parameter_Terms();
   m_pTransforms->vH55_T70_Cull_Marked_CallSub();
   m_pTransforms->vH55_T80_Delete_Empty_where();
 

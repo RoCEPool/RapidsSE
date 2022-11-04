@@ -49,10 +49,10 @@ namespace STORE
     // vHand_55_FlattenExists
     void vR_H55_T10_Collapse_Exists_SubQuery(void);
     void vR_H55_T20_Copy_Up_SubQuery(void);
-    void vR_H55_T30_Correct_KeyExists_Stream(void);
-    void vR_H55_T40_Correct_KeyExists_Predicate(void);
+    void vR_H55_T30_Adjust_Stream_OrdinalRange(void);
+    void vR_H55_T40_Correct_BoolCalc_Terms(void);
     void vR_H55_T50_Produce_Parameter_Linkage(void);
-    void vR_H55_T60_Resolve_Parameter_Terms(void);
+    void vR_H55_T60_Substitute_Parameter_Terms(void);
     void vR_H55_T70_Cull_Marked_CallSub(void);
     void vR_H55_T80_Delete_Empty_where(void);
 

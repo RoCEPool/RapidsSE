@@ -29,7 +29,7 @@ namespace STORE
     //void M_vBoolCalc_DrillDown(Card_BoolCalc* p_bool, std::function<bool(Card* pCard)> bfApply);
     //void M_vBoolCalc_Drilldown(Card_PRED* p_pred, std::function<bool(Card* pCard)> bfApply);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
-    void M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
+    void M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
 
 
     void M_vCard_Mark_Changed(Card* pCard);
@@ -50,7 +50,7 @@ namespace STORE
     void M_vScan_Produce_indexList(Card_Scan* p_scan);
 
     void M_vStream_Derive_OrdinalRange(Card_Stream* p_stream, char cTblSyn);
-    void M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
+    void M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
     void M_vTable_Produce_IndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
