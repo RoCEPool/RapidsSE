@@ -1043,7 +1043,7 @@ failure contains: 'Value is out of range: -36028797018963968: Max/min decimal pr
 explain select  '36028797018963968' - 1.0 from nation;
 failure contains: 'Value is out of range: 36028797018963968: Max/min decimal precision supported is'
 
-//TODO: FIX WITH HELP FROM CRIAG
+//TODO: FIX WITH HELP FROM CRAIG
 /*
 explain select '-36028797018963967.123' + 1.0 from nation;
 failure contains: 'Value is out of range: -140737488355328.123: Max/min decimal precision supported is'
