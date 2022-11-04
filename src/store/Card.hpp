@@ -116,6 +116,7 @@ namespace STORE
 static Stz* P_AggLevel     = "eAggLevel"_Stz;
 static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
+static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
@@ -322,6 +323,10 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
+
+    void Y_vCut(Stz* szPpyNm);
+
+    bool Y_bHas(Stz* szPpyNm);
 
     void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
     void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);

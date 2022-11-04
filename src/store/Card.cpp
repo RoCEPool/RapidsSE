@@ -1207,7 +1207,10 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pRibbon->vSprint("==%02lld----------------"_Stz,m_iCardNo);
+  if (Y_bHas(P_Focus))
+    pRibbon->vSprint("==%02lld\\/\\/\\/\\/\\/\\/\\/\\/"_Stz,m_iCardNo);
+  else
+    pRibbon->vSprint("==%02lld----------------"_Stz,m_iCardNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1816,6 +1819,32 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpyVal)
   m_pProperties->vReplace(szPpyNm, szPpyVal);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* remove given property                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::Y_vCut(Stz* szPpyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+
+  m_pProperties->vDelete(szPpyNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* has given property ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::Y_bHas(Stz* szPpyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  return m_pProperties->bHasName(szPpyNm);
+}
 
 
 

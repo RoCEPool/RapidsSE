@@ -431,6 +431,8 @@ void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iH
 
   p_stream->Y_vSet(P_OrdLo,iLo);
   p_stream->Y_vSet(P_OrdHi,iHi);
+
+  p_stream->vMark1(MARK_CHANGED);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -177,6 +177,23 @@ void Xgearing::vEndTransform(void)
 
   //m_pCardCtl->vUseDefault();
 
+
+  CardIter xCI(G.pDeck);
+  while (G.p_MainCard = xCI.pEachChild())
+    G.p_MainCard->Y_vCut(P_Focus);
+}
+
+/*----------------------------------------------------------------------------*/
+/* focus on main                                                              */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vFocusOnMain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.e_MainCard = G.p_MainCard->eCard();
+  G.i_MainCard = G.xBI.i_Child();
+
+  G.p_MainCard->Y_vSet(P_Focus);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,7 +310,6 @@ void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
   if (m_pCardCtl->bTracing(szXhand(), szXform())) {
     vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,8 +523,7 @@ bool Xgearing::G_bEachMain(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((G.p_MainCard = G.xBI.pEachMain())) {
-    G.e_MainCard = G.p_MainCard->eCard();
-    G.i_MainCard = G.xBI.i_Child();
+    vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
@@ -525,7 +540,7 @@ bool Xgearing::G_bEachMain(eCK eOfMainKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
-    G.e_MainCard = G.p_MainCard->eCard();
+    vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
@@ -546,7 +561,8 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
-    G.e_MainCard = G.p_MainCard->eCard();
+    vFocusOnMain();
+
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
@@ -592,7 +608,8 @@ bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
       continue;
 
-    G.e_MainCard = G.p_MainCard->eCard();
+    vFocusOnMain();
+
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);

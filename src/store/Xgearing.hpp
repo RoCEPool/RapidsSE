@@ -70,6 +70,7 @@ namespace STORE
 
     void vEndTransform(void);
 
+    void vFocusOnMain(void);
 
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
