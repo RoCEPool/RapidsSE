@@ -43,7 +43,7 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                    Reduce Pipeline Hand 10 */
+/*                                                      Condense Info Hand 10 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -88,14 +88,14 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
 /*----------------------------------------------------------------------------*/
 /* hide ignorable <stage>'s                                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T15_Hide_Ignorable_stages(void)
+void Xtransforms::vH10_T20_Hide_Ignorable_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "hide ignorable <stage>'s"_Stz);
 
   while (G_bEachMain(CK_STAGE)) {
-    vR_H10_T15_Hide_Ignorable_stage();
+    vR_H10_T20_Hide_Ignorable_stage();
   }
 
   vEndTransform();
@@ -104,14 +104,14 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stages(void)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T20_Delete_All_absJoin(void)
+void Xtransforms::vH10_T30_Delete_All_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
   while (G_bEachMain(CK_ABSJOIN)) {
-    vR_H10_T20_Delete_absJoin();
+    vR_H10_T30_Delete_absJoin();
   }
 
   vEndTransform();
@@ -120,14 +120,14 @@ void Xtransforms::vH10_T20_Delete_All_absJoin(void)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T30_Delete_All_combined(void)
+void Xtransforms::vH10_T40_Delete_All_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete superfluous <combined>'s"_Stz);
 
   while (G_bEachMain(CK_COMBINED)) {
-    vR_H10_T30_Delete_combined();
+    vR_H10_T40_Delete_combined();
   }
 
   vEndTransform();
@@ -136,14 +136,14 @@ void Xtransforms::vH10_T30_Delete_All_combined(void)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <send>'s                                                */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T40_Delete_All_send(void)
+void Xtransforms::vH10_T50_Delete_All_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete superfluous <send>'s"_Stz);
 
   while (G_bEachMain(CK_SEND)) {
-    vR_H10_T40_Delete_send();
+    vR_H10_T50_Delete_send();
   }
 
   vEndTransform();
@@ -152,14 +152,14 @@ void Xtransforms::vH10_T40_Delete_All_send(void)
 /*----------------------------------------------------------------------------*/
 /* replace all <scan>'s with their children                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T50_Cull_scan_Leaving_table(void)
+void Xtransforms::vH10_T60_Cull_scan_Leaving_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "replace all <scan>'s with their children"_Stz);
 
   while (G_bEachMain(CK_SCAN)) {
-    vR_H10_T50_Cull_scan_Leaving_table();
+    vR_H10_T60_Cull_scan_Leaving_table();
   }
 
   vEndTransform();
@@ -202,7 +202,7 @@ void Xtransforms::vH20_T10_Affix_tableSyn_ToAll_table(void)
   vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    vR_H20_T10_Add_tableSyn_ForAll_table();
+    vR_H20_T10_AAffix_tableSyn_To_table();
   }
 
   vEndTransform();
@@ -211,33 +211,14 @@ void Xtransforms::vH20_T10_Affix_tableSyn_ToAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* add a <tablePtn> under every <table>                                       */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(void)
+void Xtransforms::vH20_T20_Produce_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <tablePtn> under every <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H20_T20_Add_tablePtn_UnderAll_table();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a <stream> under every <table>                                         */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T10_Add_stream_UnderAll_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <stream> under every <table>"_Stz);
-
-  vStreamAnalysisReset();
-
-  // E <scan>
-  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H20_T30_Add_stream_UnderAll_table();
+    vR_H20_T20_Produce_tablePtn_Under_table();
   }
 
   vEndTransform();
@@ -271,16 +252,74 @@ void Xtransforms::vH30_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate the ordinal $low..$high range for each <stream>                  */
+/* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(void)
+void Xtransforms::vH30_T10_Produce_stream_UnderAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "add a <stream> under every <table>"_Stz);
+
+  vStreamAnalysisReset();
+
+  // E <scan>
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
+    vR_H20_T30_Produce_stream_Under_table();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* derive the ordinal properties &lo..&hi range for each <stream>             */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T20_Derive_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_H30_T10_Calc_ordinalRange_ForAll_stream();
+    vR_H30_T10_Derive_ordinalRange_For_stream();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T30_Convert_where_rpnCalc_To_boolCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    vR_H30_T20_Convert_where_rpnCalc_To_boolCalc();
+  }
+
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <stmColOdn> to <tblColOdn>                                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "all $n become $c.n"_Stz);
+
+  while (G_bEachMain()) {
+
+    if (! (   CK_PROJECT == G.e_MainCard
+           || CK_WHERE   == G.e_MainCard
+    ))
+      continue;
+
+    vR_H30_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
   vEndTransform();
@@ -298,7 +337,7 @@ void Xtransforms::vH30_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  Predicate Pullup Hand 40 */
+/*                                                   Predicate Pullup Hand 40 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -317,46 +356,7 @@ void Xtransforms::vH40_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <where>//<calc> to <where>//<calcBool>                             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T30_Convert_where_rpnCalc_To_boolCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
-
-  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H30_T20_Convert_where_rpnCalc_To_boolCalc();
-  }
-
-  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T30_Convert_stmColOdn_To_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "all $n become $c.n"_Stz);
-
-  while (G_bEachMain()) {
-
-    if (! (   CK_PROJECT == G.e_MainCard
-           || CK_WHERE   == G.e_MainCard
-        ))
-      continue;
-
-    vR_H30_T30_Convert_stmColOdn_To_tblColOdn();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* put a table @c mark against where predicates which can be moved under table*/
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T10_AtMark_where_pred_Wrt_table(void)
 {
@@ -372,7 +372,7 @@ void Xtransforms::vH40_T10_AtMark_where_pred_Wrt_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* move where predicates with an @c table mark to new <table>/<filter>        */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 {
@@ -781,7 +781,7 @@ void Xtransforms::vH55_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                       Initial Join Hand 60 */
+/*                                                         Index Join Hand 60 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -799,14 +799,14 @@ void Xtransforms::vH60_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* add a scratch <indexJoin> under all joinable <table>'s                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T10_Add_indexJoin_Wrt_filter(void)
+void Xtransforms::vH60_T10_Produce_indexJoin_Under_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T10_Add_indexJoin_Wrt_filter();
+    vR_H60_T10_Produce_indexJoin_Under_filter();
   }
 
   vEndTransform();
@@ -829,7 +829,7 @@ void Xtransforms::vH60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add <bounds> under each filtered <table>                                   */
+/* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH60_T30_UpCopy_filter_pred_Into_bounds(void)
 {
@@ -845,7 +845,7 @@ void Xtransforms::vH60_T30_UpCopy_filter_pred_Into_bounds(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>    */
+/* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH60_T40_Cull_UpCopied_filter_pred(void)
 {
@@ -1209,9 +1209,9 @@ void Xtransforms::vH75_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> or <indexJoin> or <keyExists>       */
+/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH75_T10_Convert_table_To_EEop(void)
+void Xtransforms::vH75_T10_Morph_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1219,22 +1219,22 @@ void Xtransforms::vH75_T10_Convert_table_To_EEop(void)
 
   while (G_bEachMain(CK_TABLE)) {
 
-    G.p_bounds     = G.p_table->pSub_bounds();
+    G.p_bounds    = G.p_table->pSub_bounds();
     G.p_index     = G.p_table->pSub_index();
     G.p_indexJoin = G.p_table->pSub_indexJoin();
     G.p_keyExists = G.p_table->pSub_keyExists();
 
-    vR_H75_T10_Convert_table_To_EEop();
+    vR_H75_T10_Morph_table_To_EEop();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
-    vR_H75_T10_Convert_table_To_EEop_b();
+    vR_H75_T10_Morph_table_To_EEop_b();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
-    vR_H75_T10_Convert_table_To_EEop_c();
+    vR_H75_T10_Morph_table_To_EEop_c();
   }
 
   G_vRestart();

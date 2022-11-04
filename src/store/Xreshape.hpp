@@ -16,21 +16,21 @@ namespace STORE
 
     // vHand_10_CondenseInfo
     void vR_H10_T10_Delete_Redundant_stage(void);
-    void vR_H10_T15_Hide_Ignorable_stage(void);
-    void vR_H10_T20_Delete_absJoin(void);
-    void vR_H10_T30_Delete_combined(void);
-    void vR_H10_T40_Delete_send(void);
-    void vR_H10_T50_Cull_scan_Leaving_table(void);
+    void vR_H10_T20_Hide_Ignorable_stage(void);
+    void vR_H10_T30_Delete_absJoin(void);
+    void vR_H10_T40_Delete_combined(void);
+    void vR_H10_T50_Delete_send(void);
+    void vR_H10_T60_Cull_scan_Leaving_table(void);
 
     // vHand_20_TableAnalysis
-    void vR_H20_T10_Add_tableSyn_ForAll_table(void);
-    void vR_H20_T20_Add_tablePtn_UnderAll_table(void);
-    void vR_H20_T30_Add_stream_UnderAll_table(void);
+    void vR_H20_T10_AAffix_tableSyn_To_table(void);
+    void vR_H20_T20_Produce_tablePtn_Under_table(void);
+    void vR_H20_T30_Produce_stream_Under_table(void);
 
     // vHand_30_StreamAnalysis
-    void vR_H30_T10_Calc_ordinalRange_ForAll_stream(void);
+    void vR_H30_T10_Derive_ordinalRange_For_stream(void);
     void vR_H30_T20_Convert_where_rpnCalc_To_boolCalc(void);
-    void vR_H30_T30_Convert_stmColOdn_To_tblColOdn(void);
+    void vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void);
 
     // vHand_40_PredicatePullup
     void vR_H40_T10_AtMark_where_pred_Wrt_table(void);
@@ -57,7 +57,7 @@ namespace STORE
     void vR_H55_T80_Delete_Empty_where(void);
 
     // vHand_60_IndexJoin
-    void vR_H60_T10_Add_indexJoin_Wrt_filter(void);
+    void vR_H60_T10_Produce_indexJoin_Under_filter(void);
     void vR_H60_T20_Affix_tblColOdn_To_idxCol(void);
     void vR_H60_T30_UpCopy_filter_pred_Into_bounds(void);
     void vR_H60_T40_Cull_UpCopied_filter_pred(void);
@@ -80,9 +80,9 @@ namespace STORE
     void vR_H70_T98_Extract_joinOrderSeq(void);
 
     // vHand_75_EE_operators
-    void vR_H75_T10_Convert_table_To_EEop(void);
-    void vR_H75_T10_Convert_table_To_EEop_b(void);
-    void vR_H75_T10_Convert_table_To_EEop_c(void);
+    void vR_H75_T10_Morph_table_To_EEop(void);
+    void vR_H75_T10_Morph_table_To_EEop_b(void);
+    void vR_H75_T10_Morph_table_To_EEop_c(void);
     void vR_H75_T20_Convert_keyExists_filter_To_bounds(void);
     void vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_H75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void);
@@ -104,8 +104,6 @@ namespace STORE
     // vHand_A0_FilterRefinement
     void vR_HA0_T10_Individuate_scan_filter(void);
     void vR_HA0_T10_Individuate_indexJoin_filter_b(void);
-
-    // vHand_B0_RestoreStmOdn
 
     // vHand_Z0_RestatePipeline
     void vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void);

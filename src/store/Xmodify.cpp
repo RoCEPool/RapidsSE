@@ -391,7 +391,7 @@ void Xmodify::M_vScan_Add_indexList(Card_Scan* p_scan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vStream_OrdinalRange(Card_Stream* p_stream, char cTblSyn)
+void Xmodify::M_vStream_Derive_OrdinalRange(Card_Stream* p_stream, char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -436,7 +436,7 @@ void Xmodify::M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_Add_IndexJoin(Card_Table* p_table)
+void Xmodify::M_vTable_Produce_IndexJoin(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

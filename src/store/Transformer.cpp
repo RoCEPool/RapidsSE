@@ -144,11 +144,11 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
     m_pTransforms->vH10_T10_Delete_Redundant_stages();
-    m_pTransforms->vH10_T15_Hide_Ignorable_stages();
-    m_pTransforms->vH10_T20_Delete_All_absJoin();
-    m_pTransforms->vH10_T30_Delete_All_combined();
-    m_pTransforms->vH10_T40_Delete_All_send();
-    m_pTransforms->vH10_T50_Cull_scan_Leaving_table();
+    m_pTransforms->vH10_T20_Hide_Ignorable_stages();
+    m_pTransforms->vH10_T30_Delete_All_absJoin();
+    m_pTransforms->vH10_T40_Delete_All_combined();
+    m_pTransforms->vH10_T50_Delete_All_send();
+    m_pTransforms->vH10_T60_Cull_scan_Leaving_table();
   }
 
   m_pTransforms->vH10_T99_End();
@@ -176,7 +176,7 @@ void Transformer::vHand_20_TableAnalysis(i8 iBelow, ...)
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
     m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table();
-    m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table();
+    m_pTransforms->vH20_T20_Produce_tablePtn_UnderAll_table();
   }
 
   m_pTransforms->vH20_T99_End();
@@ -203,10 +203,10 @@ void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vH30_T10_Add_stream_UnderAll_table();
-    m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream();
+    m_pTransforms->vH30_T10_Produce_stream_UnderAll_table();
+    m_pTransforms->vH30_T20_Derive_ordinalRange_ForAll_stream();
     m_pTransforms->vH30_T30_Convert_where_rpnCalc_To_boolCalc();
-    m_pTransforms->vH40_T30_Convert_stmColOdn_To_tblColOdn();
+    m_pTransforms->vH30_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
   m_pTransforms->vH30_T99_End();
@@ -305,7 +305,7 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
 
   m_pTransforms->vH60_T00_Begin();
 
-  m_pTransforms->vH60_T10_Add_indexJoin_Wrt_filter();
+  m_pTransforms->vH60_T10_Produce_indexJoin_Under_filter();
   m_pTransforms->vH60_T20_Affix_tblColOdn_ToAll_idxCol();
   m_pTransforms->vH60_T30_UpCopy_filter_pred_Into_bounds();
   m_pTransforms->vH60_T40_Cull_UpCopied_filter_pred();
@@ -374,7 +374,7 @@ void Transformer::vHand_75_EE_operators(i8 iBelow, ...)
 
   m_pTransforms->vH75_T00_Begin();
 
-  m_pTransforms->vH75_T10_Convert_table_To_EEop                  ();
+  m_pTransforms->vH75_T10_Morph_table_To_EEop();
   m_pTransforms->vH75_T20_Convert_keyExists_filter_To_bounds     ();
   m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
   m_pTransforms->vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm();

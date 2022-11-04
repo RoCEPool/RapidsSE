@@ -26,25 +26,25 @@ namespace STORE
     // vHand_10_CondenseInfo
     void vH10_T00_Begin(void);
     void vH10_T10_Delete_Redundant_stages(void);
-    void vH10_T15_Hide_Ignorable_stages(void);
-    void vH10_T20_Delete_All_absJoin(void);
-    void vH10_T30_Delete_All_combined(void);
-    void vH10_T40_Delete_All_send(void);
-    void vH10_T50_Cull_scan_Leaving_table(void);
+    void vH10_T20_Hide_Ignorable_stages(void);
+    void vH10_T30_Delete_All_absJoin(void);
+    void vH10_T40_Delete_All_combined(void);
+    void vH10_T50_Delete_All_send(void);
+    void vH10_T60_Cull_scan_Leaving_table(void);
     void vH10_T99_End(void);
 
     // vHand_20_TableAnalysis
     void vH20_T00_Begin(void);
     void vH20_T10_Affix_tableSyn_ToAll_table(void);
-    void vH20_T20_Add_tablePtn_UnderAll_table(void);
+    void vH20_T20_Produce_tablePtn_UnderAll_table(void);
     void vH20_T99_End(void);
 
     // vHand_30_StreamAnalysis
     void vH30_T00_Begin(void);
-    void vH30_T10_Add_stream_UnderAll_table(void);
-    void vH30_T20_Calc_ordinalRange_ForAll_stream(void);
+    void vH30_T10_Produce_stream_UnderAll_table(void);
+    void vH30_T20_Derive_ordinalRange_ForAll_stream(void);
     void vH30_T30_Convert_where_rpnCalc_To_boolCalc(void);
-    void vH40_T30_Convert_stmColOdn_To_tblColOdn(void);
+    void vH30_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vH30_T99_End(void);
 
     // vHand_40_PredicatePullup
@@ -78,7 +78,7 @@ namespace STORE
 
     // vHand_60_IndexJoin
     void vH60_T00_Begin(void);
-    void vH60_T10_Add_indexJoin_Wrt_filter(void);
+    void vH60_T10_Produce_indexJoin_Under_filter(void);
     void vH60_T20_Affix_tblColOdn_ToAll_idxCol(void);
     void vH60_T30_UpCopy_filter_pred_Into_bounds(void);
     void vH60_T40_Cull_UpCopied_filter_pred(void);
@@ -105,7 +105,7 @@ namespace STORE
 
     // vHand_75_EE_operators
     void vH75_T00_Begin(void);
-    void vH75_T10_Convert_table_To_EEop(void);
+    void vH75_T10_Morph_table_To_EEop(void);
     void vH75_T20_Convert_keyExists_filter_To_bounds(void);
     void vH75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vH75_T40_Convert_stmColOdn_Of_bounds_To_stmColNm(void);

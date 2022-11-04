@@ -49,10 +49,10 @@ namespace STORE
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Add_indexList(Card_Scan* p_scan);
 
-    void M_vStream_OrdinalRange(Card_Stream* p_stream, char cTblSyn);
+    void M_vStream_Derive_OrdinalRange(Card_Stream* p_stream, char cTblSyn);
     void M_vStream_Set_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
-    void M_vTable_Add_IndexJoin(Card_Table* p_table);
+    void M_vTable_Produce_IndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
