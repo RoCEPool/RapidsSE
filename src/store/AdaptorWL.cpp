@@ -133,11 +133,11 @@ void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
   ASSERT(pPayload->iPayloadSize() > WLP::C_WLPHEADER_SIZE);
   WLP::WlpHeader* pHeader = (WLP::WlpHeader*) pPayload->pcBuf();
 
-  ASSERT(pHeader->m_iMsgSize > WLP::C_WLPHEADER_SIZE);
-  ASSERT(pHeader->m_iMsgType >= 0);
+  ASSERT(pHeader->iMsgSize() > WLP::C_WLPHEADER_SIZE);
+  ASSERT(pHeader->iMsgType() >= 0);
 
-  i8 iMsgBodySize = pHeader->m_iMsgSize - WLP::C_WLPHEADER_SIZE;
-  MessageTypes::type eMsgType = (MessageTypes::type) pHeader->m_iMsgType;
+  i8 iMsgBodySize = pHeader->iMsgSize() - WLP::C_WLPHEADER_SIZE;
+  MessageTypes::type eMsgType = (MessageTypes::type) pHeader->iMsgType();
 
   m_pTransport->vUseBuffer(pHeader->pcMsgBody(), iMsgBodySize);
   vDeserialiseMsg(eMsgType);
@@ -153,7 +153,10 @@ void AdaptorWL::vProcessWLMsg(void)
   ASSERT(!m_bProtocolError);
 
   // TODO
-  // TODO: delete m_pCurrentMsg when processing is all done
+
+  // Delete m_pCurrentMsg when processing is all done
+  m_bContinueProcessingMsg = false;
+  vCleanupCurrentMsg();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,7 +263,20 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
   if (iBytesRead == 0) {
     // TODO: respond with an error and close the socket
     m_bProtocolError = true;
+    vCleanupCurrentMsg();
   }
+
+  vTrace("Decoded a wireline message of type: %s\n"_Stz, to_string(eMsgType).c_str());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Deallocates the current message                                            */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vCleanupCurrentMsg()
+{
+  delete m_pCurrentMsg;
+  m_pCurrentMsg = nullptr;
+  m_iCurrentMsgType = -1;
 }
 
 /*============================================================================*/

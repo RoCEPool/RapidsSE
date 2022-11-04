@@ -9,16 +9,24 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_StartMarker \handler
 
+  "sendWL_StartMarker - EV_M_START" .
+
   "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
   // Make a copy of the socket where we retain the same file descriptor.
   <ansSocket> >int >ptr socket::copy to Socket[]
+
+  PipeIn[]\clear [op].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* send the data in the payload in the PipeIn[] register                      */
 /*----------------------------------------------------------------------------*/
 : sendWL_Payload \handler
+
+  "sendWL_Payload - EV_D_PAYLOAD" .
 
   PipeIn[]\clear locals| pPayloadObj |
 
@@ -35,7 +43,6 @@
   pPayloadObj payloadObj::delete
 
   true
-  //stk
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,8 +53,7 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_CLEANING \handler
 
-  "in sendWL_CLEANING" .
-
+  "sendWL_CLEANING - EV_M_CLEANING" .
 
   Socket[].close
   Socket[].object.isNotNull if
@@ -56,9 +62,7 @@
 
   Socket[].delete
 
-  LogicUnit[].cleanup
-  PipeIn[].pipeOut
-  true
+  EV_M_CLEANING_handler
 ;
 
 ///*----------------------------------------------------------------------------*/
@@ -119,7 +123,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sendWL :: sendWL <sendCast> ;
+cmdSyntax: sendWL :: sendWL ;
 
 : sendWL_cmdTags _cmdTags tagCopy: op_tags
   tags{

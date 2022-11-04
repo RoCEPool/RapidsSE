@@ -63,7 +63,7 @@ WlpHeader* BufferTransport::pAllocHeader(MessageTypes::type eType)
   WlpHeader* pHeader = (WlpHeader*) (m_pcBuf + m_iNext);
   m_iNext += sizeof(WlpHeader);
 
-  pHeader->m_iMsgType = eType;
+  pHeader->m_uMsgType = eType;
   return pHeader;
 }
 
@@ -191,7 +191,7 @@ const uint8_t* BufferTransport::borrow_virt(uint8_t* pBuf, uint32_t* piLen)
     return nullptr;
   }
 
-  if (*piLen < iRemaining) {
+  if (*piLen > iRemaining) {
     *piLen = iRemaining;
   }
 

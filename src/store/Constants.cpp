@@ -272,6 +272,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   /*    */ vAddConstant("CN_PARCEL"_Stz,       CN_PARCEL);
+  /*    */ vAddConstant("CN_PAYLOADOBJ"_Stz,   CN_PAYLOADOBJ);
 
   
   // CT_ : columne type

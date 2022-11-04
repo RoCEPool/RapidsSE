@@ -61,6 +61,7 @@ namespace STORE
   private:
 
     void vDeserialiseMsg(i8 iMessageType);
+    void vCleanupCurrentMsg();
     Footer* aFooter(void);
 
   };

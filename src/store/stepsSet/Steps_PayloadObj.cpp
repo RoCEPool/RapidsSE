@@ -17,6 +17,7 @@ void Step::vAddSteps_PayloadObj(void)
 {
 
   vAddStep("payloadObj::delete"_Stz, &Step::vPayloadObjDelete);
+  vAddStep("payloadObj::size@"_Stz, &Step::vPayloadObjSize);
 
 }
 
@@ -32,6 +33,22 @@ void Step::vPayloadObjDelete(void)
 
   delete pPayloadObj;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* payloadObj::delete : delete the payloadObj on the stack                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPayloadObjSize(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
+
+  i8 iSize = pPayloadObj->iPayloadSize();
+  m_pDataStack->vPushInt(iSize);
+
   EXIT();
 }
 

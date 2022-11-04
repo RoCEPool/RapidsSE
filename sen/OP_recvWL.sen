@@ -30,6 +30,7 @@
   then
 
   Socket[].object.isNotNull if
+    Socket[].object@ payloadObj::size@ "RecvWL: Piping out payload received of %v bytes" .printf
     Socket[].object@\clear [op].pipeout
     Socket[].success@
   else
@@ -64,10 +65,13 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_StartMarker \handler
 
-  "Receiver Demon Started" .boot
+  "recvWL_StartMarker - EV_M_START" .
 
   // initialise
   recvWL_init
+
+  // Pass the start marker on to other operators
+  PipeIn[]\clear [op].pipeout
 
   // loop, receiving and executing jobs
   recvWL_loop
@@ -76,8 +80,11 @@
   Socket[].close
   Socket[].clientAddr@ "Connection closed to client at address %v" .printf
 
+  "recvWL_StartMarker: piping out error marker" .
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,9 +101,7 @@
 
   Socket[].delete
 
-  LogicUnit[].cleanup
-  PipeIn[].pipeOut
-  true
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +117,7 @@
   find: recvWL_CLEANING    EV_M_CLEANING  [op].handler!
 
   // get the pipeline job of the operator
-  [op].job@ locals| pPipelineJob |
+  // [op].job@ locals| pPipelineJob |
 
   // peek to see if any operand
   begin
@@ -130,6 +135,11 @@
 
   // execute the operator's handler for the operand
   PipeIn[].kind [op].handler@ execute
+  "recvWL_op after handler execute" .
+
+  // TODO: Needed to handle cleaning event?
+  //op__loop
+  //"recvWL_op after op__loop" .
 
   _lu_finalise_
 

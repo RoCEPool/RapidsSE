@@ -280,13 +280,16 @@ Object* Socket::pRecvWLMsg(void)
     return nullptr;
   }
 
-  if (m_pWlpHeader->m_iMsgSize > WLP::PayloadObj::C_MAX_PAYLOAD_BYTES) {
+  i8 iMsgSize = m_pWlpHeader->iMsgSize();
+
+  if (iMsgSize > WLP::PayloadObj::C_MAX_PAYLOAD_BYTES) {
     // TODO: Handle the case where the size of the message is larger than can be accepted.
     //       Ideally we want to read the remaining bytes and return a wireline error
     //       message to the user.
-    vTrace("Invalid message received from client on %s:%lld\n"_Stz,
+    vTrace("Invalid message received from client on %s:%lld. Message too big (size = %lld).\n"_Stz,
            inet_ntoa(this->m_xClientAddr.sin_addr),
-           ntohs(this->m_xClientAddr.sin_port));
+           ntohs(this->m_xClientAddr.sin_port),
+           iMsgSize);
     return nullptr;
   }
 
@@ -587,8 +590,8 @@ Object* Socket::pWLMsgRecv()
   // It will be needed downstream.
   memcpy(pPayloadObj->pcBuf(), m_pWlpHeader, WLP::C_WLPHEADER_SIZE);
 
-  ASSERT(m_pWlpHeader->m_iMsgSize < WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
-  i8 nRemainingBytes = m_pWlpHeader->m_iMsgSize - WLP::C_WLPHEADER_SIZE;
+  ASSERT(m_pWlpHeader->iMsgSize() < WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
+  i8 nRemainingBytes = m_pWlpHeader->iMsgSize() - WLP::C_WLPHEADER_SIZE;
   ASSERT(nRemainingBytes > 0);
 
   char* pBody = pPayloadObj->pcBuf() + WLP::C_WLPHEADER_SIZE;
@@ -601,9 +604,9 @@ Object* Socket::pWLMsgRecv()
   }
 
   // Set the size of the payload object
-  pPayloadObj->vSetPayloadSize(m_pWlpHeader->m_iMsgSize);
+  pPayloadObj->vSetPayloadSize(m_pWlpHeader->iMsgSize());
 
-  m_pTotup->vAdd(eClass, m_pWlpHeader->m_iMsgSize);
+  m_pTotup->vAdd(eClass, m_pWlpHeader->iMsgSize());
 
   return pPayloadObj;
 }
@@ -622,7 +625,7 @@ Object* Socket::pWLMsgRecv_lowmem()
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive and discard the body of the object (low memory condition)
-  i8 nRemainingBytes = m_pWlpHeader->m_iMsgSize - WLP::C_WLPHEADER_SIZE;
+  i8 nRemainingBytes = m_pWlpHeader->iMsgSize() - WLP::C_WLPHEADER_SIZE;
 
   bool bResult = bBytesRecv(m_aLowBuff,nRemainingBytes,oSysCall);
   UNUSED(bResult);

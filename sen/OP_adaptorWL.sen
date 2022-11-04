@@ -10,7 +10,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StartMarker \handler
 
-  //"adaptorWL_StartMarker- EV_M_START" .verbose
+  "adaptorWL_StartMarker - EV_M_START" .
+
+  PipeIn[]\clear [op].pipeout
 
   AdaptorWL[].new
   true
@@ -21,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Payload \handler
 
-  //"adaptorWL_Payload- EV_D_PAYLOAD" .verbose
+  "adaptorWL_Payload- EV_D_PAYLOAD" .
 
   PipeIn[]\clear locals| pPayloadObj |
 
@@ -29,15 +31,16 @@
   pPayloadObj AdaptorWL[].decodePayload
   pPayloadObj payloadObj::delete
 
+  // Possible errors from decoding need to be sent here.
   begin
     AdaptorWL[].hasPayloadToSend@
   while
     [op].pipeOut
   repeat
 
+  // Process the decoded message.
   begin
     // Processing a message may generate 1 or more payloads to be sent.
-    // These are placed on the stack.
     AdaptorWL[].processWLMsg
 
     // Pipeout any payloads that were just generated so they can be sent straight away
@@ -65,13 +68,11 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Cleaning \handler
 
-  "adaptorWL_Cleaning- EV_M_CLEANING" .verbose
+  "adaptorWL_Cleaning - EV_M_CLEANING" .
 
   AdaptorWL[].delete
 
-  LogicUnit[].cleanup
-  PipeIn[].pipeOut
-  true
+  EV_M_CLEANING_handler
 ;
 
 ///*----------------------------------------------------------------------------*/
@@ -79,7 +80,7 @@
 ///*----------------------------------------------------------------------------*/
 //: adaptorWL_apiEvent \handler
 //
-//  //"adaptorWL_apiEvent- EV_M_APIEVENT" .verbose
+//  //"adaptorWL_apiEvent - EV_M_APIEVENT" .
 //
 //  AdaptorWL[].processEventB
 //
