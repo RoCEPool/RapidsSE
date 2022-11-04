@@ -581,7 +581,7 @@ bool Xtest::T_bStage_Reinstate(eCK eMain, eCK eSubsequent)
 /*----------------------------------------------------------------------------*/
 Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
                                                  Stz *szColNm,
-                                                 i8& i_StreamColNo)
+                                                 i8& ri_StreamColNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -599,7 +599,7 @@ Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
     //Card_As* pCard_as = pSubCard->pSub_as();
     if (pSubCard->bSame(szColNm)) {
       pCard_streamCol = _pCard_StmCol(pSubCard);
-      i_StreamColNo = i_Child;
+      ri_StreamColNo = i_Child;
       break;
     }
   }

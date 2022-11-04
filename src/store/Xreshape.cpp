@@ -434,9 +434,12 @@ void Xreshape::vR_H55_T30_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
-  //G.p_stmColOdn->vValue(G.p_stmColOdn->szValue());
-  G.p_param->vAppend(G.p_stmColOdn->pDupCardAndSubCards());
+//  G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
+//  G.p_param->vAppend(G.p_stmColOdn->pDupCardAndSubCards());
+
+  G.p_tblColOdn = G.p_stmCol->pSub_tblColOdn();
+  G.p_param->vAppend(G.p_tblColOdn->pDupCardAndSubCards());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,7 +492,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderFiltered_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
+void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -497,7 +500,7 @@ void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal(void)
   G.p_stmColList = G.p_table->pSub_stmColList();
   G.p_idxColList = G.p_indexJoin->pSub_idxColList();
 
-  M_vIdxColList_ToOrdinals(G.p_idxColList, G.p_stream);
+  M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1091,7 +1094,7 @@ void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_ordinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vIdxColList_ToOrdinals(G.p_idxColList, G.p_stream);
+  M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/

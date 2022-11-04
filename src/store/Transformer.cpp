@@ -308,7 +308,7 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
   m_pTransforms->vH60_T00_Begin();
 
   m_pTransforms->vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table();
-  m_pTransforms->vH60_T20_Affix_idxColOdn_ToAll_idxCol();
+  m_pTransforms->vH60_T20_Affix_tblColOdn_ToAll_idxCol();
   m_pTransforms->vH60_T30_Add_bounds_UnderAllFiltered_table();
   m_pTransforms->vH60_T40_Cull_pred_MovedTo_table_bounds();
   m_pTransforms->vH60_T50_Delete_Empty_table_filter();

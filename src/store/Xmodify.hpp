@@ -45,7 +45,7 @@ namespace STORE
 
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
-    void M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+    void M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream);
 
     bool M_bPredRecursive(Card_PRED* p_pred,
                           std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);

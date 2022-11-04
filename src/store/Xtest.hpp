@@ -49,7 +49,7 @@ namespace STORE
     bool T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior);
     bool T_bStage_Reinstate(eCK eMain, eCK eSubsequent);
 
-    Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
+    Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& ri_StreamColNo);
 
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);

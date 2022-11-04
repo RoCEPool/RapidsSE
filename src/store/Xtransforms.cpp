@@ -815,14 +815,14 @@ void Xtransforms::vH60_T10_Add_Scratch_indexJoin_UnderAllFiltered_table(void)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T20_Affix_idxColOdn_ToAll_idxCol(void)
+void Xtransforms::vH60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransform(__func__, "convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
+  vTransform(__func__, "Affix $c.n to every idxCol within indexJoin"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_INDEXJOIN)) {
-    vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal();
+    vR_H60_T20_Affix_tblColOdn_To_idxCol();
   }
 
   vEndTransform();

@@ -174,8 +174,10 @@ void Xmodify::M_vBoolCalc_Resolve_Parameters(Card_BoolCalc* p_boolCalc,
     if (! p_param)
       return false;
 
-    Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
-    M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+    //Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
+    //M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+    Card_TblColOdn* p_tblColOrd = p_param->pSub_tblColOdn();
+    M_vCard_Set_Value(p_term,p_tblColOrd->szValue(),MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -388,30 +390,27 @@ void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add table and index                                                        */
+/* affix each idxCol with $c.n of this table stream                          */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vIdxColList_ToOrdinals(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
+void Xmodify::M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
+  i8 i_StreamColNo = C_UNKNOWN;
 
-  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
+  Card_StmColList* p_streamColList = p_stream->pSub_stmColList();
 
-  i8 nSubCards = p_idxColList->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(p_idxColList->pGetChild(i_Sub));
+  CardIter xCI(p_idxColList);
+  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild(CK_IDXCOL))) {
+    Stz* szColNm = p_idxCol->sz();
 
-    i8 i_StreamColNo = C_UNKNOWN;
-    Stz* szColNm = pCard_idxCol->sz();
-    Card_StmCol* pCard_streamCol =
-        T_pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
+    Card_StmCol* p_streamCol =
+        T_pStmColList_Find_streamCol(p_streamColList, szColNm, i_StreamColNo);
 
-    s32 sOrdinal;
-    sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
-    pCard_idxCol->vValue(sOrdinal);
+    Card_TblColOdn* p_tblColOdn = p_streamCol->pSub_tblColOdn();
+    Stz* szTblColOdn = p_tblColOdn->sz();
 
-    pCard_idxCol->vMark1(MARK_CHANGED);
+    M_vCard_Set_Value(p_idxCol,szTblColOdn,MARK_CHANGED);
   }
 }
 
