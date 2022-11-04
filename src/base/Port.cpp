@@ -284,7 +284,7 @@ bool Port::bClose(SysCall& roSysCall)
   
   int iError = shutdown(m_iSocketFd, SHUT_RDWR);
   
-  if (iError && ENOTCONN != errno) {
+  if (iError && ENOTCONN != errno && EBADF != errno) {
     roSysCall.vError(errno);
     return false;
   }
@@ -294,7 +294,7 @@ bool Port::bClose(SysCall& roSysCall)
 #endif
   
   iError = close(m_iSocketFd);
-  if (iError) {
+  if (iError && EBADF != errno) {   // cater for closing a previously closed fd
     roSysCall.vError(errno);
     return false;
   }

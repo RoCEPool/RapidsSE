@@ -55,6 +55,7 @@
 
   "sendWL_CLEANING - EV_M_CLEANING" .
 
+  // TODO: This may not be needed if we use vRepair properly
   Socket[].close
   Socket[].object.isNotNull if
     Socket[].object.delete
@@ -64,28 +65,6 @@
 
   EV_M_CLEANING_handler
 ;
-
-///*----------------------------------------------------------------------------*/
-///* handler for EV_M_CANCELLING operand                                        */
-///*----------------------------------------------------------------------------*/
-//: sendWL_CANCELLING \handler
-//
-//  PipeIn[].drain
-//
-//  true
-//;
-
-///*----------------------------------------------------------------------------*/
-///* handler for EV_M_EXITING operand                                           */
-///*----------------------------------------------------------------------------*/
-//: sendWL_EXITING \handler
-//
-////PipeIn[].sendTo discard
-//
-//  [op].ackJobTask
-//
-//  false // calling op_loop exits
-//;
 
 /*----------------------------------------------------------------------------*/
 /* execute for send request                           (on node where spawned) */
@@ -102,14 +81,9 @@
 
   op__topology
 
-//find: PipeIn[].sendTo [op].handlerAll!
-
   find: sendWL_StartMarker EV_M_START       [op].handler!
   find: sendWL_Payload     EV_D_PAYLOAD     [op].handler!
   find: sendWL_CLEANING    EV_M_CLEANING    [op].handler!
-
-//find: sendWL_CANCELLING  EV_M_CANCELLING  [op].handler!
-//find: sendWL_EXITING     EV_M_EXITING     [op].handler!
 
   op__loop
 

@@ -80,9 +80,9 @@
   Socket[].close
   Socket[].clientAddr@ "Connection closed to client at address %v" .printf
 
+  // TODO: Fix this. Use a better error code.
   "recvWL_StartMarker: piping out error marker" .
-  ErrorMarker[].newErrorMarker
-  ErrorMarker[].pipeOut
+  EC_NO_SUCH_TABLE op__execErr
 
   true
 ;
@@ -94,6 +94,7 @@
 
   "in recvWL_CLEANING" .
 
+  // TODO: This may not be needed if we use vRepair properly
   Socket[].close
   Socket[].object.isNotNull if
     Socket[].object.delete
@@ -116,30 +117,8 @@
   find: recvWL_StartMarker EV_M_START     [op].handler!
   find: recvWL_CLEANING    EV_M_CLEANING  [op].handler!
 
-  // get the pipeline job of the operator
-  // [op].job@ locals| pPipelineJob |
-
-  // peek to see if any operand
-  begin
-    Pipein[].peek
-  not while
-    "receiver waiting for STARTMARKER..." .verbose
-    2 thread::sleepMsec
-  repeat
-
-  assert::stack_0
-
-  // pop operand from queue into PipeIn[]
-  PipeIn[].peek assert
-  PipeIn[].next
-
-  // execute the operator's handler for the operand
-  PipeIn[].kind [op].handler@ execute
-  "recvWL_op after handler execute" .
-
-  // TODO: Needed to handle cleaning event?
-  //op__loop
-  //"recvWL_op after op__loop" .
+  op__loop
+  "recvWL_op after op__loop" .
 
   _lu_finalise_
 
