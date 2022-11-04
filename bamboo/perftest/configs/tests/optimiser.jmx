@@ -1377,88 +1377,96 @@ dload lineitem paths
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P1Loop" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P1Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">pipeline unamed
+              <stringProp name="query">pipeline Query1
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
-    | stageMarker0858
-  stage stageMarker0858 on all partitions :
+    | next
+
+  stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter &quot; type BOOLEAN  $11 DATE &apos;1998-10-01&apos;  &lt;=  &quot;
-    | aggreg &quot; groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10
+    | aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
-      type VARCHAR $K1 , type VARCHAR $K2 ,
-      type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  ,
-      type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  $6 1.  $7 -  *  1.  $8 +  *  sum  ,
-      type INTEGER )  $5 count  ,
-      type INTEGER )  $6 count  ,
-      type DECIMAL )  $7 sum  ,
-      type INTEGER )  $7 count  ,
-      type INTEGER )  countAll  &quot;
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL ) as SUM_QTY L_QUANTITY sum  ,
+      type DECIMAL ) as SUM_BASE_PRICE L_EXTENDEDPRICE sum  ,
+      type DECIMAL ) as SUM_DISC_PRICE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL ) as SUM_CHARGE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type INTEGER ) L_EXTENDEDPRICE count  ,
+      type INTEGER ) L_QUANTITY count  ,
+      type DECIMAL ) L_DISCOUNT sum  ,
+      type INTEGER ) L_DISCOUNT count  ,
+      type INTEGER ) countAll  &quot;
     | combined 0
     | next
 
-  stage stageMarker0861 on all nodes :
-    aggreg &quot; groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
+  stage S02 on all nodes :
+    aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
-      type VARCHAR $K1 ,
-      type VARCHAR $K2 ,
-      type DECIMAL )  $3 sum  ,
-      type DECIMAL )  $4 sum  ,
-      type DECIMAL )  $5 sum  ,
-      type DECIMAL )  $6 sum  ,
-      type INTEGER )  $7 sum  ,
-      type INTEGER )  $8 sum  ,
-      type DECIMAL )  $9 sum  ,
-      type INTEGER )  $10 sum  ,
-      type INTEGER )  $11 sum  &quot;
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum ,
+      type INTEGER ) $7 sum ,
+      type INTEGER ) $8 sum ,
+      type DECIMAL ) $9 sum ,
+      type INTEGER ) $10 sum ,
+      type INTEGER ) $11 sum &quot;
     | combined 0
     | next
-  stage stageMarker1032 on origin :
-    aggreg &quot; groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
+
+  stage S03 on origin :
+    aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
-      type VARCHAR $K1 ,
-      type VARCHAR $K2 ,
-      type DECIMAL as sum_qty )  $3 sum  ,
-      type DECIMAL as sum_base_price )  $4 sum  ,
-      type DECIMAL as sum_disc_price )  $5 sum  ,
-      type DECIMAL as sum_charge )  $6 sum  ,
-      type INTEGER as count_order )  $11 sum  ,
-      type INTEGER )  $7 sum  ,
-      type INTEGER )  $8 sum  ,
-      type INTEGER )  $10 sum  ,
-      type DECIMAL )  $9 sum  &quot;
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum ,
+      type INTEGER ) $7 sum ,
+      type INTEGER ) $8 sum ,
+      type DECIMAL ) $9 sum ,
+      type INTEGER ) $10 sum ,
+      type INTEGER as COUNT_ORDER ) $11 sum&quot;
     | combined 0
     | next
-  stage stageMarker0864 on origin :
+
+  stage S04 on origin :
     project &quot;
-      type VARCHAR $1 ,
-      type VARCHAR $2 ,
-      type DECIMAL as sum_qty $3 ,
-      type DECIMAL as sum_base_price $4 ,
-      type DECIMAL as sum_disc_price $5 ,
-      type DECIMAL as sum_charge $6 ,
-      type DECIMAL as avg_qty $3 $8 casttype DECIMAL CAST  /  ,
-      type DECIMAL as avg_price $4 $9 casttype DECIMAL CAST  /  ,
-      type DECIMAL as avg_disc $11 $10 casttype DECIMAL CAST  /  ,
-      type INTEGER as count_order $7 &quot;
-    | sort &quot; type VARCHAR as l_returnflag $1 ASC  , type VARCHAR as l_linestatus $2 ASC  &quot;
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY SUM_QTY ,
+      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL as AVG_QTY SUM_QTY $8 casttype DECIMAL CAST  / ,
+      type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / ,
+      type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / ,
+      type INTEGER as COUNT_ORDER COUNT_ORDER &quot;
+    | sort &quot; type VARCHAR as L_RETURNFLAG L_RETURNFLAG ASC  ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ASC  &quot;
     | combined 0
     | next
 
-  stage stageLast on origin :
+  stage S05 on origin :
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1501,6 +1509,15 @@ end ;</stringProp>
               </objProp>
               <stringProp name="filename">p1.csv</stringProp>
             </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename"></stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+              <stringProp name="FileSaver.variablename">p1_</stringProp>
+            </ResultSaver>
             <hashTree/>
           </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
