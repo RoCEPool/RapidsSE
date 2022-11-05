@@ -78,7 +78,7 @@ namespace STORE
 
     // vHand_60_IndexJoin
     void vH60_T00_Begin(void);
-    void vH60_T10_Produce_indexJoin_Under_filter(void);
+    void vH60_T10_Produce_maybeIndexJoin_Under_filter(void);
     void vH60_T20_Affix_tblColOdn_ToAll_idxCol(void);
     void vH60_T30_UpCopy_filter_pred_Into_bounds(void);
     void vH60_T40_Cull_UpCopied_filter_pred(void);

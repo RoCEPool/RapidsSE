@@ -321,7 +321,7 @@ static Stz* aCK_short[]
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
 
-  /* */ "maybeIndexJoin"_Stz,  // CK_INDEXJOIN
+  /* */ "maybeIndexJoin"_Stz,  // CK_MAYBEINDEXJOIN
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION

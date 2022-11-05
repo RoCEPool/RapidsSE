@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_MaybeIndexJoin,CK_INDEXJOIN)
+__pCastFunction_Card(STORE,Card_MaybeIndexJoin,CK_MAYBEINDEXJOIN)
 __aNewFunction(Card_MaybeIndexJoin,CN_CARD)
 __vDeleteFunction(Card_MaybeIndexJoin,CN_CARD)
 
@@ -17,7 +17,7 @@ __vDeleteFunction(Card_MaybeIndexJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_MaybeIndexJoin::Card_MaybeIndexJoin(void)
-: Card(CK_INDEXJOIN)
+: Card(CK_MAYBEINDEXJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

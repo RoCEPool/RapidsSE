@@ -498,11 +498,11 @@ void Xreshape::vR_H55_T80_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H60_T10_Produce_indexJoin_Under_filter(void)
+void Xreshape::vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vTable_Produce_IndexJoin(G.p_table);
+  M_vTable_Produce_MaybeIndexJoin(G.p_table);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -514,7 +514,7 @@ void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
 
   G.p_stream = G.p_table->pSub_stream();;
   G.p_stmColList = G.p_table->pSub_stmColList();
-  G.p_idxColList = G.p_indexJoin->pSub_idxColList();
+  G.p_idxColList = G.p_maybeIndexJoin->pSub_idxColList();
 
   M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 }
@@ -949,29 +949,30 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop(void)
   if (G.p_keyExists) {
     G.p_table->vRemoveSubCard(G.p_keyExists);
 
-    G.p_table->vRemoveSubCard(G.p_indexJoin);
-    G.p_indexJoin->vTransferChildren(G.p_table);
+    G.p_table->vRemoveSubCard(G.p_maybeIndexJoin);
+    G.p_maybeIndexJoin->vTransferChildren(G.p_table);
 
-    G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
-    G.p_indexJoin->vInsert(G.p_table);
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_maybeIndexJoin);
+    G.p_maybeIndexJoin->vInsert(G.p_table);
 
-    G.p_indexJoin->vRemoveSubCard(G.p_index);
-    G.p_indexJoin->vAppend(G.p_index);
+    G.p_maybeIndexJoin->vRemoveSubCard(G.p_index);
+    G.p_maybeIndexJoin->vAppend(G.p_index);
 
-    G.p_indexJoin->vCard(CK_KEYEXISTS);
+    G.p_maybeIndexJoin->vCard(CK_KEYEXISTS);
     DELETE_CARD(G.p_keyExists);
     return;
   }
 
-  if (G.p_indexJoin) {
-    G.p_table->vRemoveSubCard(G.p_indexJoin);
-    G.p_indexJoin->vTransferChildren(G.p_table);
+  if (G.p_maybeIndexJoin) {
+    G.p_table->vRemoveSubCard(G.p_maybeIndexJoin);
+    G.p_maybeIndexJoin->vTransferChildren(G.p_table);
 
-    G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
-    G.p_indexJoin->vInsert(G.p_table);
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_maybeIndexJoin);
+    G.p_maybeIndexJoin->vInsert(G.p_table);
 
-    G.p_indexJoin->vRemoveSubCard(G.p_index);
-    G.p_indexJoin->vAppend(G.p_index);
+    G.p_maybeIndexJoin->vRemoveSubCard(G.p_index);
+    G.p_maybeIndexJoin->vAppend(G.p_index);
+    G.p_maybeIndexJoin->vCard(CK_INDEXJOIN);
     return;
   }
 }

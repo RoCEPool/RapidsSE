@@ -306,7 +306,7 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
 
   m_pTransforms->vH60_T00_Begin();
 
-  m_pTransforms->vH60_T10_Produce_indexJoin_Under_filter();
+  m_pTransforms->vH60_T10_Produce_maybeIndexJoin_Under_filter();
   m_pTransforms->vH60_T20_Affix_tblColOdn_ToAll_idxCol();
   m_pTransforms->vH60_T30_UpCopy_filter_pred_Into_bounds();
   m_pTransforms->vH60_T40_Cull_UpCopied_filter_pred();

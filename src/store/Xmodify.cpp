@@ -438,7 +438,7 @@ void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iH
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_Produce_IndexJoin(Card_Table* p_table)
+void Xmodify::M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -449,11 +449,11 @@ void Xmodify::M_vTable_Produce_IndexJoin(Card_Table* p_table)
   Card_IndexList* p_indexList = C_pProduce_indexList_ofTable(pTable);
 
   while (Card_Index* p_index = _pCard_Index(p_indexList->pPopChild())) {
-    Card* p_indexJoin = new Card_IndexJoin;
-    p_indexJoin->vAppend(p_index);
+    Card_MaybeIndexJoin* p_maybeIndexJoin = new Card_MaybeIndexJoin;
+    p_maybeIndexJoin->vAppend(p_index);
     Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
     p_table->vAppend(p_comment);
-    p_table->vAppend(p_indexJoin);
+    p_table->vAppend(p_maybeIndexJoin);
   }
 
   DELETE_CARD(p_indexList);

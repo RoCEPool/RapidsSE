@@ -2108,7 +2108,7 @@ Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_MaybeIndexJoin* p_maybeIndexJoin =
-      _pCard_MaybeIndexJoin(pFindSubCard(CK_LBOUND));
+      _pCard_MaybeIndexJoin(pFindSubCard(CK_MAYBEINDEXJOIN));
   return p_maybeIndexJoin;
 }
 

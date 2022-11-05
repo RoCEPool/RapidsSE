@@ -19,7 +19,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH55_T50_Add_tblColOdn_Under_param"
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_cue_trace = "x"
 /transliterated
 /transform

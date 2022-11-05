@@ -57,7 +57,7 @@ namespace STORE
     void vR_H55_T80_Delete_Empty_where(void);
 
     // vHand_60_IndexJoin
-    void vR_H60_T10_Produce_indexJoin_Under_filter(void);
+    void vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void);
     void vR_H60_T20_Affix_tblColOdn_To_idxCol(void);
     void vR_H60_T30_UpCopy_filter_pred_Into_bounds(void);
     void vR_H60_T40_Cull_UpCopied_filter_pred(void);

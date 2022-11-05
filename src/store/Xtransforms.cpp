@@ -790,16 +790,16 @@ void Xtransforms::vH60_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a scratch <indexJoin> under all joinable <table>'s                     */
+/* add a scratch <maybeIndexJoin> under all joinable <table>'s                */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T10_Produce_indexJoin_Under_filter(void)
+void Xtransforms::vH60_T10_Produce_maybeIndexJoin_Under_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T10_Produce_indexJoin_Under_filter();
+    vR_H60_T10_Produce_maybeIndexJoin_Under_filter();
   }
 
   vEndTransform();
@@ -814,7 +814,7 @@ void Xtransforms::vH60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 
   vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
 
-  while (G_bEachMainWithSub(CK_TABLE,CK_INDEXJOIN)) {
+  while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
     vR_H60_T20_Affix_tblColOdn_To_idxCol();
   }
 
@@ -1212,9 +1212,9 @@ void Xtransforms::vH75_T10_Morph_table_To_EEop(void)
 
   while (G_bEachMain(CK_TABLE)) {
 
-    G.p_bounds    = G.p_table->pSub_bounds();
-    G.p_index     = G.p_table->pSub_index();
-    G.p_indexJoin = G.p_table->pSub_indexJoin();
+    G.p_bounds = G.p_table->pSub_bounds();
+    G.p_index = G.p_table->pSub_index();
+    G.p_maybeIndexJoin = G.p_table->pSub_maybeIndexJoin();
     G.p_keyExists = G.p_table->pSub_keyExists();
 
     vR_H75_T10_Morph_table_To_EEop();
