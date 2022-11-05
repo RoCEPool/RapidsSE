@@ -142,18 +142,18 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
 
   m_pTransforms->vH10_T00_Begin();
 
-  for (i8 i_SubBoard = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
-       i_SubBoard++) {
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
 
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vH10_T10_Delete_Redundant_stages();
-    m_pTransforms->vH10_T20_Hide_Ignorable_stages();
     m_pTransforms->vH10_T30_Delete_All_absJoin();
     m_pTransforms->vH10_T40_Delete_All_combined();
     m_pTransforms->vH10_T50_Delete_All_send();
     m_pTransforms->vH10_T60_Cull_scan_Leaving_table();
+    m_pTransforms->vH10_T20_Hide_Ignorable_stages();
   }
 
   m_pTransforms->vH10_T99_End();
@@ -179,11 +179,11 @@ void Transformer::vHand_20_TableAnalysis(i8 iBelow, ...)
 
   m_pTransforms->vH20_T00_Begin();
 
-  for (i8 i_SubBoard = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
-       i_SubBoard++) {
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
 
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vH20_T10_Affix_tableSyn_ToAll_table();
     m_pTransforms->vH20_T20_Produce_tablePtn_UnderAll_table();
@@ -212,11 +212,11 @@ void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
 
   m_pTransforms->vH30_T00_Begin();
 
-  for (i8 i_SubBoard = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
-       i_SubBoard++) {
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
 
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vH30_T10_Produce_stream_UnderAll_table();
     m_pTransforms->vH30_T20_Derive_ordinalRange_ForAll_stream();
@@ -247,11 +247,11 @@ void Transformer::vHand_40_PredicatePullup(i8 iBelow, ...)
 
   m_pTransforms->vH40_T00_Begin();
 
-  for (i8 i_SubBoard = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
-       i_SubBoard++) {
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
 
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vH40_T10_AtMark_where_pred_Wrt_table();
     m_pTransforms->vH40_T20_Move_AtMarked_where_pred_To_table_filter();

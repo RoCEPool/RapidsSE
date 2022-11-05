@@ -54,7 +54,7 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //RASSERT(! pGetBoard(pBoard->eBoard()));
+  //RASSERT(! pGetBoard(pBoard->eBoardKind()));
 
   vPush(pBoard);
 }
@@ -110,7 +110,7 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
   for (i8 i_each = 0; i_each < nBoards; i_each++) {
     Board *pBoard = this->pGet(i_each);
 
-    if (eBoard == pBoard->eBoard() && (C_UNKNOWN == i_Board ||
+    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
                                        i_Board == pBoard->i_Board()))
       return pBoard;
   }

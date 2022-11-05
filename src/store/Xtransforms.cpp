@@ -508,8 +508,13 @@ bool Xtransforms::bH50_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  if (G_bEachMain(CK_CALL))
-    return true;
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+       i_Board++) {
+
+    if (G_bEachMain(CK_CALL))
+      return true;
+  }
 
   return false;
 }
@@ -671,8 +676,13 @@ bool Xtransforms::bH55_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
-    return true;
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+       i_Board++) {
+
+    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
+      return true;
+  }
 
   return false;
 }

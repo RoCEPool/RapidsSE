@@ -27,21 +27,24 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, eBT eBoardType, Bench* pBench)
+Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_sBoardNm     = szBoardNm;
-  m_eBoard       = eBoard;
-  m_i_Board   = i_Board;
-  m_eBoardType   = eBoardType;
+  m_i_Board    = i_Board;
+  m_sBoardNm   = szBoardNm;
+  m_eBoardKind = eBoardKind;
+  m_eBoardType = eBoardType;
+  m_eBoardRole = BR_NONE;
+  m_eBoardForm = BF_NONE;
+  m_eBoardCall = BC_NONE;
 
-  m_pBench       = pBench;
+  m_pBench     = pBench;
 
-  m_pOptimiser   = m_pBench->pOptimiser();
+  m_pOptimiser = m_pBench->pOptimiser();
 
-  m_pCard_Deck  = new Card_Deck;
+  m_pCard_Deck = new Card_Deck;
 
   m_iXform = C_UNKNOWN;
 
@@ -75,13 +78,53 @@ Board::~Board(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* get board kind                                                             */
+/* get board call                                                             */
 /*----------------------------------------------------------------------------*/
-eBK Board::eBoard(void)
+eBC Board::eBoardCall(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_eBoard;
+  return m_eBoardCall;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set board call                                                             */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardCall(eBC eBoardCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_eBoardCall = eBoardCall;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board form                                                             */
+/*----------------------------------------------------------------------------*/
+eBF Board::eBoardForm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eBoardForm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set board form                                                             */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardForm(eBF eBoardForm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_eBoardForm = eBoardForm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board kind                                                             */
+/*----------------------------------------------------------------------------*/
+eBK Board::eBoardKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eBoardKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,6 +145,26 @@ void Board::vBoardNm(Stz* szBoardNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_sBoardNm = szBoardNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board role                                                             */
+/*----------------------------------------------------------------------------*/
+eBR Board::eBoardRole(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eBoardRole;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set board role                                                             */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardRole(eBR eBoardRole)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_eBoardRole = eBoardRole;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,11 +231,8 @@ void Board::vPinBanners(Ribbon* pRibbon)
   else
     pRibbon->vDrawH('=');
 
-  //Stz* szXhand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
-  //Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXform();
-
-  pRibbon->vPutTextRight(szXhand(),1);
-  pRibbon->vPutTextRight(szXform(),2);
+  //pRibbon->vPutTextRight(szXhand(),1);
+  //pRibbon->vPutTextRight(szXform(),2);
 
   s32 sLeftMargin;
 
@@ -260,10 +320,14 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %s Query %s :: %s %s %s"_Stz,
                    m_iXform,
                    m_sBoardNm.szStz(),
-                   m_pOptimiser->szQueryNm());
+                   m_pOptimiser->szQueryNm(),
+                   aBR[m_eBoardRole],
+                   aBF[m_eBoardForm],
+                   aBC[m_eBoardCall]
+                   );
 
   //Stz* szXdesc = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXdesc();
 

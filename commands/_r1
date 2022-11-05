@@ -9,19 +9,19 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/jobTags
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
 /transliterated
 /transform
-/transform2
+/transform3
 /glean_interactive
-/glean_cue_from = "$"
 /weave
 /weaved
 /pipelineName = "r1"
 select
   count(*)
   from lineitem
-  where l_shipdate <= '1998-12-01 00:00:00'
+  where l_shipdate <= date '1998-12-01'
 ;
 
 

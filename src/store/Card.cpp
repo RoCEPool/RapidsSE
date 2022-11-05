@@ -1222,14 +1222,22 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintHeader(Ribbon* pRibbon)
+void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  char cLevel = ' ';
+  switch (eLevel) {
+    case AL_PARTITION : cLevel = 'P'; break;
+    case AL_NODE      : cLevel = 'N'; break;
+    case AL_ORIGIN    : cLevel = 'O'; break;
+    default           : cLevel = '?'; break;
+  }
+
   if (Y_bHas(P_Focus))
-    pRibbon->vSprint("==%02lld\\/\\/\\/\\/\\/\\/\\/\\/"_Stz,m_iCardNo);
+    pRibbon->vSprint("==%02lld %c\\/\\/\\/\\/\\/\\/\\/"_Stz,m_iCardNo,cLevel);
   else
-    pRibbon->vSprint("==%02lld----------------"_Stz,m_iCardNo);
+    pRibbon->vSprint("==%02lld %c---------------"_Stz,m_iCardNo,cLevel);
 }
 
 /*----------------------------------------------------------------------------*/

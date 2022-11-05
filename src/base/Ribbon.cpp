@@ -198,8 +198,11 @@ void Ribbon::vLaneNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  if (++m_i_Lane >= m_nMaxLanesAcross)
+  if (++m_i_Lane >= m_nMaxLanesAcross) {
     vHeatNext();
+
+    m_i_Lane = 1;
+  }
 
   m_i_Line = m_i_Heat;
   m_i_Char = m_pLaneTabs->iInt(m_i_Lane);

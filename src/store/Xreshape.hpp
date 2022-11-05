@@ -16,11 +16,11 @@ namespace STORE
 
     // vHand_10_CondenseInfo
     void vR_H10_T10_Delete_Redundant_stage(void);
-    void vR_H10_T20_Hide_Ignorable_stage(void);
     void vR_H10_T30_Delete_absJoin(void);
     void vR_H10_T40_Delete_combined(void);
     void vR_H10_T50_Delete_send(void);
     void vR_H10_T60_Cull_scan_Leaving_table(void);
+    void vR_H10_T20_Hide_Ignorable_stage(void);
 
     // vHand_20_TableAnalysis
     void vR_H20_T10_AAffix_tableSyn_To_table(void);

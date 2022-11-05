@@ -7,6 +7,9 @@
 
 #include "eBK.h"
 #include "eBT.h"
+#include "eBR.h"
+#include "eBF.h"
+#include "eBC.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -139,10 +142,13 @@ namespace STORE
   class Board : public Object
   {
   protected:
-    s32         m_sBoardNm;
-    eBK         m_eBoard;
     i8          m_i_Board;
-    eBT         m_eBoardType;
+    s32         m_sBoardNm;
+    eBK         m_eBoardKind;  // costEst, partition, permute, subpipe
+    eBT         m_eBoardType;  // original, view
+    eBR         m_eBoardRole;  // driver, follower
+    eBF         m_eBoardForm;  // fanin, linear
+    eBC         m_eBoardCall;  // exists, from, in
 
     Card_Deck*  m_pCard_Deck;
 
@@ -164,13 +170,19 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, eBT eBoardType, Bench* pBench);
+    Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    eBK eBoard(void);
-    i8 i_Board(void);
+    i8  i_Board(void);
+    eBC  eBoardCall(void);
+    void vBoardCall(eBC eBoardCall);
+    eBF  eBoardForm(void);
+    void vBoardForm(eBF eBoardForm);
+    eBK eBoardKind(void);
     Stz* szBoardNm(void);
     void vBoardNm(Stz* szBoardNm);
+    eBR  eBoardRole(void);
+    void vBoardRole(eBR eBoardRole);
 
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
