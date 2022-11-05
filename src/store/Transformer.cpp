@@ -135,6 +135,11 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH10_T00_Test()) {
+    m_pTransforms->vH10_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH10_T00_Begin();
 
   for (i8 i_SubBoard = 0;
@@ -167,6 +172,11 @@ void Transformer::vHand_20_TableAnalysis(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH20_T00_Test()) {
+    m_pTransforms->vH20_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH20_T00_Begin();
 
   for (i8 i_SubBoard = 0;
@@ -194,6 +204,11 @@ void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
   vHand(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
+
+  if (! m_pTransforms->bH30_T00_Test()) {
+    m_pTransforms->vH30_T00_Skip();
+    return;
+  }
 
   m_pTransforms->vH30_T00_Begin();
 
@@ -225,6 +240,11 @@ void Transformer::vHand_40_PredicatePullup(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH40_T00_Test()) {
+    m_pTransforms->vH40_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH40_T00_Begin();
 
   for (i8 i_SubBoard = 0;
@@ -254,6 +274,11 @@ void Transformer::vHand_50_FlattenCall(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH50_T00_Test()) {
+    m_pTransforms->vH50_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH50_T00_Begin();
 
   m_pTransforms->vH50_T10_Extract_subSet_Of_call();
@@ -275,6 +300,11 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
   vHand(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
+
+  if (! m_pTransforms->bH55_T00_Test()) {
+    m_pTransforms->vH55_T00_Skip();
+    return;
+  }
 
   m_pTransforms->vH55_T00_Begin();
 
@@ -304,6 +334,11 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH60_T00_Test()) {
+    m_pTransforms->vH60_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH60_T00_Begin();
 
   m_pTransforms->vH60_T10_Produce_maybeIndexJoin_Under_filter();
@@ -327,6 +362,11 @@ void Transformer::vHand_70_JoinOrdering(i8 iBelow, ...)
   vHand(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
+
+  if (! m_pTransforms->bH70_T00_Test()) {
+    m_pTransforms->vH70_T00_Skip();
+    return;
+  }
 
   m_pTransforms->vH70_T00_Begin();
 
@@ -373,6 +413,11 @@ void Transformer::vHand_75_EE_operators(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH75_T00_Test()) {
+    m_pTransforms->vH75_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH75_T00_Begin();
 
   m_pTransforms->vH75_T10_Morph_table_To_EEop();
@@ -405,6 +450,11 @@ void Transformer::vHand_80_IndexScan(i8 iBelow, ...)
  *
  */
 
+  if (! m_pTransforms->bH80_T00_Test()) {
+    m_pTransforms->vH80_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH80_T00_Begin();
 
   m_pTransforms->vH80_T10_Produce_Scratch_indexList_Under_scan();
@@ -431,6 +481,11 @@ void Transformer::vHand_90_StreamOrdering(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bH90_T00_Test()) {
+    m_pTransforms->vH90_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vH90_T00_Begin();
 
   m_pTransforms->vH90_T10_Remove_sort_IfSameAs_gby();
@@ -451,6 +506,11 @@ void Transformer::vHand_A0_FilterRefinement(i8 iBelow, ...)
 
   CARD_BELOW
 
+  if (! m_pTransforms->bHA0_T00_Test()) {
+    m_pTransforms->vHA0_T00_Skip();
+    return;
+  }
+
   m_pTransforms->vHA0_T00_Begin();
 
   m_pTransforms->vHA0_T10_Individuate_filter();
@@ -470,6 +530,11 @@ void Transformer::vHand_Z0_RestatePipeline(i8 iBelow, ...)
   vHand(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
+
+  if (! m_pTransforms->bHZ0_T00_Test()) {
+    m_pTransforms->vHZ0_T00_Skip();
+    return;
+  }
 
   m_pTransforms->vHZ0_T00_Begin();
 
