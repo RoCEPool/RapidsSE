@@ -1207,7 +1207,10 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pRibbon->vSprint("==%02lld----------------"_Stz,m_iCardNo);
+  if (Y_bHas(P_Focus))
+    pRibbon->vSprint("==%02lld\\/\\/\\/\\/\\/\\/\\/\\/"_Stz,m_iCardNo);
+  else
+    pRibbon->vSprint("==%02lld----------------"_Stz,m_iCardNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1817,6 +1820,32 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpyVal)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* remove given property                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::Y_vCut(Stz* szPpyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+
+  m_pProperties->vDelete(szPpyNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* has given property ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::Y_bHas(Stz* szPpyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  return m_pProperties->bHasName(szPpyNm);
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -2068,6 +2097,19 @@ Card_LBound* Card::pSub_lBound(void)
   Card_LBound* p_lBound =
       _pCard_LBound(pFindSubCard(CK_LBOUND));
   return p_lBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_MaybeIndexJoin.hpp"
+Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_MaybeIndexJoin* p_maybeIndexJoin =
+      _pCard_MaybeIndexJoin(pFindSubCard(CK_LBOUND));
+  return p_maybeIndexJoin;
 }
 
 /*----------------------------------------------------------------------------*/

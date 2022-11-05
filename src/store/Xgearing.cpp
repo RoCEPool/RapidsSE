@@ -177,6 +177,23 @@ void Xgearing::vEndTransform(void)
 
   //m_pCardCtl->vUseDefault();
 
+
+  CardIter xCI(G.pDeck);
+  while (G.p_MainCard = xCI.pEachChild())
+    G.p_MainCard->Y_vCut(P_Focus);
+}
+
+/*----------------------------------------------------------------------------*/
+/* focus on main                                                              */
+/*----------------------------------------------------------------------------*/
+void Xgearing::vFocusOnMain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.e_MainCard = G.p_MainCard->eCard();
+  G.i_MainCard = G.xBI.i_Child();
+
+  G.p_MainCard->Y_vSet(P_Focus);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,7 +310,6 @@ void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
   if (m_pCardCtl->bTracing(szXhand(), szXform())) {
     vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,8 +523,7 @@ bool Xgearing::G_bEachMain(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((G.p_MainCard = G.xBI.pEachMain())) {
-    G.e_MainCard = G.p_MainCard->eCard();
-    G.i_MainCard = G.xBI.i_Child();
+    vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
@@ -525,7 +540,7 @@ bool Xgearing::G_bEachMain(eCK eOfMainKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
-    G.e_MainCard = G.p_MainCard->eCard();
+    vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
   }
@@ -546,7 +561,8 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
-    G.e_MainCard = G.p_MainCard->eCard();
+    vFocusOnMain();
+
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
@@ -592,7 +608,8 @@ bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
       continue;
 
-    G.e_MainCard = G.p_MainCard->eCard();
+    vFocusOnMain();
+
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
@@ -739,6 +756,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_LBOUND:           return G.p_lBound;
+    case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
     case CK_PARAM:            return G.p_param;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
@@ -951,6 +969,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_joinPredList     = nullptr;
   G.p_keyExists        = nullptr;
   G.p_lBound           = nullptr;
+  G.p_maybeIndexJoin   = nullptr;
   G.p_param            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
@@ -1286,6 +1305,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
+    case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
@@ -1588,6 +1608,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
+    case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;

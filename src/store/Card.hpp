@@ -75,6 +75,8 @@ namespace STORE
   class Card_LBound;
   class Card_Limit;
 
+  class Card_MaybeIndexJoin;
+
   class Card_OrdAgg;
   class Card_OrPred;
   class Card_ObyElist;
@@ -116,6 +118,7 @@ namespace STORE
 static Stz* P_AggLevel     = "eAggLevel"_Stz;
 static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
+static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
@@ -140,7 +143,7 @@ static Stz* C_NA                = "n/a"_Stz;
 
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';
-static char MARK_CALLSUB    = '~';
+static char MARK_CALL    = '~';
 static char MARK_CHANGED    = '`';
 static char MARK_DOWNWARDS  = 'v';
 static char MARK_LEFTWARDS  = '<';
@@ -323,6 +326,10 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
+    void Y_vCut(Stz* szPpyNm);
+
+    bool Y_bHas(Stz* szPpyNm);
+
     void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
     void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 
@@ -344,6 +351,7 @@ namespace STORE
     Card_IndexNm*       pSub_indexNm(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_LBound*        pSub_lBound(void);
+    Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);

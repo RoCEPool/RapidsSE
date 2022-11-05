@@ -71,6 +71,8 @@ enum eCK // card kind
   /* */ CK_LIMIT,
   /* */ CK_LINKSTO,
 
+  /* */ CK_MAYBEINDEXJOIN,
+
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
@@ -153,7 +155,7 @@ static Stz* aCK[]
   /* */ "CK_COPTNPREDLIST"_Stz,// CK_COPTNPREDLIST
   /* */ "CK_CROSSPTNJOIN"_Stz,     // CK_CROSSPTNJOIN
   /* */ "CK_CROSSPTNJOINLIST"_Stz, // CK_CROSSPTNJOINLIST
-  /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
+  /* */ "CK_CROSSPTNPRED"_Stz,     // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
@@ -193,6 +195,8 @@ static Stz* aCK[]
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
+
+  /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -316,6 +320,8 @@ static Stz* aCK_short[]
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
+
+  /* */ "maybeIndexJoin"_Stz,  // CK_INDEXJOIN
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION
