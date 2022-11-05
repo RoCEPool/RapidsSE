@@ -92,18 +92,28 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
-  Stz* szPipelineNm;
-  if (C_UNKNOWN == i_SubPipeSpec)
-    szPipelineNm = "MainQuery"_Stz;
-  else
-    szPipelineNm= m_pPipeSpec->szVertexNm();
-
-  m_pBoard = new Board(szPipelineNm,
+  Stz* sBoardNm;
+  if (C_UNKNOWN == i_SubPipeSpec) {
+//    if (MY::pJob()->bHasTag("<pipelineName>"_Stz))
+//      szPipelineNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
+//    else
+    sBoardNm = "mainSQ"_Stz;
+  }
+  else {
+    sBoardNm = m_pPipeSpec->szVertexNm();
+  }
+  m_pBoard = new Board(sBoardNm,
                        BK_SUBPIPE, i_SubPipeSpec + 1,
                        BT_ORIGINAL,
                        m_pBench);
 
-  m_pOptimiser->vQueryNm(szPipelineNm);
+  Stz* szQueryNm;
+  if (MY::pJob()->bHasTag("<pipelineName>"_Stz))
+    szQueryNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
+  else
+    szQueryNm = "_unnamed_"_Stz;
+
+  m_pOptimiser->vQueryNm(szQueryNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

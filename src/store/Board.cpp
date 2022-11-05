@@ -181,7 +181,10 @@ void Board::vPinBanners(Ribbon* pRibbon)
   if (' ' == cPrefix)
     sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
   else
+  if ('m' == cPrefix || 'w' == cPrefix)
     sLeftMargin.vSprint("%c "_Stz, cPrefix);
+  else
+    sLeftMargin.vSprint("%c%lld "_Stz, cPrefix,m_i_Board);
 
   pRibbon->vInsertCharsV(0,0,sLeftMargin);
   //pRibbon->vDrawV(0,0,"x"_Stz);
