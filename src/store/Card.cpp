@@ -2102,6 +2102,19 @@ Card_LBound* Card::pSub_lBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_MaybeIndexJoin.hpp"
+Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_MaybeIndexJoin* p_maybeIndexJoin =
+      _pCard_MaybeIndexJoin(pFindSubCard(CK_LBOUND));
+  return p_maybeIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_RpnCalc.hpp"
 Card_RpnCalc* Card::pSub_rpnCalc(void)
 {

@@ -73,6 +73,8 @@
 #include "Card_Limit.hpp"
 #include "Card_LinksTo.hpp"
 
+#include "Card_MaybeIndexJoin.hpp"
+
 #include "Card_ObyElist.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_OrdAgg.hpp"

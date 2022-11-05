@@ -756,6 +756,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_LBOUND:           return G.p_lBound;
+    case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
     case CK_PARAM:            return G.p_param;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
@@ -968,6 +969,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_joinPredList     = nullptr;
   G.p_keyExists        = nullptr;
   G.p_lBound           = nullptr;
+  G.p_maybeIndexJoin   = nullptr;
   G.p_param            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
@@ -1303,6 +1305,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
+    case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
@@ -1605,6 +1608,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
+    case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
