@@ -508,7 +508,10 @@ bool Xtransforms::bH50_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  if (G_bEachMain(CK_CALL))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -668,7 +671,10 @@ bool Xtransforms::bH55_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
