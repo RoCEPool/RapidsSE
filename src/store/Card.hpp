@@ -225,7 +225,8 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
-    void vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply);
+    void vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     Stz* szBearing(void);
     void vBearing(void);

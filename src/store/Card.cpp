@@ -283,19 +283,38 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function               */
 /*----------------------------------------------------------------------------*/
-void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply)
+void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (CK_NONE == eToSubs || eToSubs == m_eCard) {
-    bool bContinue = bfApply(this);
+    bool bContinue = bfLambdaFn(this);
     if (! bContinue)
       return;
   }
 
   CardIter xCI(this);
   while (Card* pChildCard = xCI.pEachChild()) {
-    pChildCard->vApplyRecursive(eToSubs, bfApply);
+    pChildCard->vApplyRecursive(eToSubs, bfLambdaFn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all term sub-cards and apply lambda function                         */
+/*----------------------------------------------------------------------------*/
+void Card::vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsCard(CK_TERM)) {
+    bool bContinue = bfLambdaFn(_pCard_Term(this));
+    if (! bContinue)
+      return;
+  }
+
+  CardIter xCI(this);
+  while (Card* pChildCard = xCI.pEachChild()) {
+    pChildCard->vApplyRecursive_term(bfLambdaFn);
   }
 }
 
