@@ -1064,17 +1064,22 @@ void Card::vMoveToLastChild(Card* pChildCard)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
-                               Card* pParent, bool& rbPrune, bool bPrintBelow)
+void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
+                               bool& rbPrune, eAL eLevel, bool bPrintBelow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (CK_RPNCALC == m_eCard)
     vDebugPoint();
 
-  if (0 == iDepth)
-    vPrintHeader(pRibbon);
+  if (0 == iDepth) {
+    if (   bIsCard(CK_AGGREG)
+        || bIsCard(CK_PROJECT)) {
+      vDebugPoint();
+    }
 
+    vPrintHeader(pRibbon,eLevel);
+  }
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
@@ -1113,7 +1118,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCardRecursive(pRibbon, iDepth + 1, this, rbPrune, bPrintBelow);
+    pSubCard->vPrintCardRecursive(pRibbon, iDepth + 1, this,
+                                  rbPrune, eLevel, bPrintBelow);
   }
 
   delete pSubCard_I;
@@ -2124,6 +2130,19 @@ Card_LBound* Card::pSub_lBound(void)
   Card_LBound* p_lBound =
       _pCard_LBound(pFindSubCard(CK_LBOUND));
   return p_lBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Level.hpp"
+Card_Level* Card::pSub_level(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Level* p_level =
+      _pCard_Level(pFindSubCard(CK_LEVEL));
+  return p_level;
 }
 
 /*----------------------------------------------------------------------------*/

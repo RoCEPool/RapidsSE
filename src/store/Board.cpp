@@ -271,6 +271,9 @@ void Board::vPinCards(Ribbon* pRibbon)
   BoardIter xBI(this);
 
   i8 nCount = 0;
+
+  eAL eLevel = AL_PARTITION;
+
   while (Card* pCard = xBI.pEachMain()) {
     eCK eCard = pCard->eCard();
 
@@ -296,8 +299,26 @@ void Board::vPinCards(Ribbon* pRibbon)
     else
       pSubRibbon->vLaneNext();
 
+    if (   pCard->bIsCard(CK_AGGREG)
+        || pCard->bIsCard(CK_PROJECT)) {
+      Card_Level* p_level = pCard->pSub_level();
+      if (p_level)
+        eLevel = (eAL)p_level->Y_iVal(P_Level);
+    }
+    else
+    if (pCard->bIsCard(CK_STAGE)) {
+      Card_Topology* p_topology = pCard->pSub_topology();
+      eYG eStageTopo = (eYG)p_topology->Y_iVal(P_StageTopo);
+      switch (eStageTopo) {
+        case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
+        case YG_ALL_NODES      : eLevel = AL_NODE;      break;
+        case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
+        default                : eLevel = AL_NONE;      break;
+      }
+    }
+
     bool bPrune = false;
-    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune,false);
+    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

@@ -115,13 +115,13 @@ namespace STORE
   class Card_Unique;
 }
 
-static Stz* P_AggLevel     = "eAggLevel"_Stz;
 static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
+static Stz* P_Level        = "eLevel"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_OrdHi        = "iOrdHi"_Stz;
 static Stz* P_OrdLo        = "iOrdLo"_Stz;
@@ -282,8 +282,9 @@ namespace STORE
     void vMarkResetRecursive(void);
     void vMoveToLastChild(Card* pChildCard);
 
-    void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth,
-                             Card* pParent, bool& rbPrune, bool bPrintBelow);
+    void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
+                             bool& rbPrune, eAL eLevel,
+                             bool bPrintBelow);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
@@ -352,6 +353,7 @@ namespace STORE
     Card_IndexNm*       pSub_indexNm(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_LBound*        pSub_lBound(void);
+    Card_Level*         pSub_level(void);
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
