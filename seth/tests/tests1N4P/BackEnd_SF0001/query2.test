@@ -207,7 +207,6 @@ begin
                type VARCHAR as S_ADDRESS S_ADDRESS ,
                type VARCHAR as S_PHONE S_PHONE ,
                type VARCHAR as S_COMMENT S_COMMENT "
-
     | combined 0
     | next
 

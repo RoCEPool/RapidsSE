@@ -299,7 +299,7 @@ begin
 
   stage S07 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
-    | filter " type BOOLEAN  }  J1_P_TYPE '%BRASS'  6 matchTrailing J1_P_SIZE 20 == and"
+    | filter " type BOOLEAN  }  J1_P_TYPE '%BRASS'  6 matchTrailing J1_P_SIZE 15 == and"
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type INTEGER as P_PARTKEY J1_P_PARTKEY , type VARCHAR as P_MFGR J1_P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
     | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  , type VARCHAR as N_NAME N_NAME ASC  , type VARCHAR as S_NAME S_NAME ASC  , type INTEGER as P_PARTKEY P_PARTKEY ASC  "
     | combined 0
@@ -554,6 +554,113 @@ begin
 
    stage S05 on origin :
     top "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 4
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/////////////////////////////
+//SF0001:                  //
+//SF1:                     //
+//SF10: scan+filter: 728ms //
+//      indexScan:  1982   //
+/////////////////////////////
+
+
+/time pipeline Query4
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >= O_ORDERDATE DATE '1993-10-01' < and "
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY , type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY ==" "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY  aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) countAll"
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY aggregates  type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+pipeline Query4
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                            O_ORDERDATE DATE '1993-10-01' < and "
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+                                      "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) countAll"
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
