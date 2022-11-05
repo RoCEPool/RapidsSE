@@ -154,6 +154,8 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
+    bool        m_bMayHaveStmColOdn;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -174,6 +176,9 @@ namespace STORE
     void vClearMarks(void);
 
     Card_Deck* pDeck(void);
+
+    bool bMayHaveStmColOdn(void);
+    void vMayHaveStmColOdn(bool bMayHaveStmColOdn);
 
     void vPinBanners(Ribbon* pRibbon);
     void vPinCards(Ribbon* pRibbon);

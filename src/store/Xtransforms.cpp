@@ -322,6 +322,10 @@ void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
     vR_H30_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
+  V_vNo_Terms_StmColOdn(G.pDeck);
+
+  G.pBoard->vMayHaveStmColOdn(false);
+
   vEndTransform();
 }
 
@@ -1569,6 +1573,8 @@ void Xtransforms::vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+
+  G.pBoard->vMayHaveStmColOdn(true);
 
   while (G_bEachMain()) {
 

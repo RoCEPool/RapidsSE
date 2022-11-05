@@ -45,6 +45,8 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, eBT eBoardType, Bench* pBen
 
   m_iXform = C_UNKNOWN;
 
+  m_bMayHaveStmColOdn = true;
+
   _checkInitialised_(CN_BOARD);
 
   pBench->vAddBoard(this);
@@ -133,6 +135,26 @@ Card_Deck* Board::pDeck(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get may have stmColOdn                                                     */
+/*----------------------------------------------------------------------------*/
+bool Board::bMayHaveStmColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_bMayHaveStmColOdn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set may have stmColOdn                                                     */
+/*----------------------------------------------------------------------------*/
+void Board::vMayHaveStmColOdn(bool bMayHaveStmColOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_bMayHaveStmColOdn = bMayHaveStmColOdn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinBanners(Ribbon* pRibbon)
@@ -140,7 +162,11 @@ void Board::vPinBanners(Ribbon* pRibbon)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   pRibbon->vDrawH('-',true);
-  pRibbon->vDrawH('=');
+
+  if (m_bMayHaveStmColOdn)
+    pRibbon->vDrawH('|');
+  else
+    pRibbon->vDrawH('=');
 
   //Stz* szXhand = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXhand();
   //Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXform();
