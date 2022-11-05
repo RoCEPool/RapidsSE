@@ -24,6 +24,8 @@ Bench::Bench(Optimiser* pOptimiser)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
   m_pOptimiser = pOptimiser;
+
+  m_cPrefix = ' ';
   
   _checkInitialised_(CN_BENCH);
   
@@ -142,6 +144,26 @@ Optimiser* Bench::pOptimiser(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   return m_pOptimiser;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Bench::cPrefix(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_cPrefix;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vPrefix(char cPrefix)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_cPrefix = cPrefix;
 }
 
 /*============================================================================*/

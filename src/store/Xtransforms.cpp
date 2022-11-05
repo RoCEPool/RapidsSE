@@ -55,6 +55,7 @@ void Xtransforms::vH10_T00_Begin(void)
 
   vHH_Begin();
 
+  m_pBench->vPrefix('r');
   m_pCardCtl->vUseExpanded();
   vPrintBench(BK_SUBPIPE);
   m_pCardCtl->vUseShorter();
@@ -190,6 +191,8 @@ void Xtransforms::vH20_T00_Begin(void)
   vHH_Begin();
 
   m_pCardCtl->vUseShorter();
+
+  m_pBench->vPrefix('s');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -789,6 +792,8 @@ void Xtransforms::vH60_T00_Begin(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   m_pCardCtl->vUseShorter();
+
+  m_pBench->vPrefix('m');
 
   vHH_Begin();
 }
@@ -1617,6 +1622,8 @@ void Xtransforms::vHZ0_T00_Begin(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   m_pCardCtl->vUseShorter();
+
+  m_pBench->vPrefix('w');
 
   vHH_Begin();
 }

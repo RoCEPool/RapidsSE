@@ -65,7 +65,8 @@ namespace STORE
     void vCueDisabled(bool bCueDisabled);
     bool bCueUser(Stz* szXhand, Stz* szXform);
 
-    void vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform,
+    void vFormPrompt(String* sPrompt,
+                     char cPrefix, Stz* szXhand, Stz* szXform,
                      i8 i_Board, i8 nBpards, i8 iLineNo);
 
     bool bNextHoriz(i8 i_Card);

@@ -175,7 +175,14 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vPutTextRight(szXform(),2);
 
   s32 sLeftMargin;
-  sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
+
+  char cPrefix = m_pBench->cPrefix();
+
+  if (' ' == cPrefix)
+    sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
+  else
+    sLeftMargin.vSprint("%c "_Stz, cPrefix);
+
   pRibbon->vInsertCharsV(0,0,sLeftMargin);
   //pRibbon->vDrawV(0,0,"x"_Stz);
 }

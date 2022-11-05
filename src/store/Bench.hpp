@@ -13,6 +13,8 @@ namespace STORE
   private:
     Optimiser* m_pOptimiser;
 
+    char m_cPrefix;
+
     // must be last
     Footer m_xFooter;
 
@@ -30,6 +32,8 @@ namespace STORE
     Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
     Board* pGetBoard(Stz* szBoardNm);
     Optimiser* pOptimiser(void);
+    char cPrefix(void);
+    void vPrefix(char cPrefix);
 
   private:
     Footer* aFooter(void);

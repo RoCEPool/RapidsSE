@@ -159,15 +159,20 @@ bool CardCtl::bCueUser(Stz* szXhand, Stz* szXform)
 /*----------------------------------------------------------------------------*/
 /* set cued                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vFormPrompt(String* sPrompt, Stz* szXhand, Stz* szXform,
+void CardCtl::vFormPrompt(String* sPrompt,
+                          char cPrefix, Stz* szXhand, Stz* szXform,
                           i8 i_Board, i8 nBoards, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   sPrompt->vSprint(""_Stz);
 
-  if (C_UNKNOWN != i_Board)
-    sPrompt->vCatSprint("%lld/%lld "_Stz, i_Board, nBoards);
+//  if (! ('m' == cPrefix || 'w' == cPrefix))
+//    if (C_UNKNOWN != i_Board)
+//      sPrompt->vCatSprint("%lld/%lld "_Stz, i_Board, nBoards);
+  if ('r' == cPrefix || 's' == cPrefix)
+    if (C_UNKNOWN != i_Board)
+      sPrompt->vCatSprint("%lld/%lld "_Stz, i_Board, nBoards);
 
   if (szXhand && szXform && ! szXform->bSame(C_NA)) {
     sPrompt->vCatSprint("%s :: %s"_Stz, szXhand, szXform);
