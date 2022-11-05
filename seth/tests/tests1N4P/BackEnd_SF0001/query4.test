@@ -83,70 +83,58 @@ begin
 end ;
 */
 
-pipeline Q4
+pipeline Query4
 begin
 
-  stage first on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  //
-  // Q4_0:
-  //   a) scan Orders /O_CUSTKEY/  # _custkey    _orderkey
-  //
-
-  // ∀ ORDERS π O_ORDERKEY as _orderkey
-  stage Gs_ORDERS on all partitions :
+  stage S01 on all partitions :
     scan orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
-                              O_ORDERDATE DATE '1993-10-01' < and "
-    | project expr type INTEGER as _orderkey O_ORDERKEY ,
-                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | hash "type INTEGER $1"
+                            O_ORDERDATE DATE '1993-10-01' < and "
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
-  stage Gs_ORDERS_a on all partitions :
-    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  stage G_CNT_P on all partitions :
-    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
-                aggregates
-                type VARCHAR as O_ORDERPRIORITY $K1 ,
-                type INTEGER as ORDER_COUNT ) countAll
-
+  stage S03 on all partitions :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
-  stage G_CNT_N on all nodes :
-    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
-                aggregates
-                type VARCHAR as O_ORDERPRIORITY $K1 ,
-                type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
-
+  stage S04 on all nodes :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
-  stage G_CNT_O on origin :
-    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
-                aggregates
-                type VARCHAR as O_ORDERPRIORITY $K1 ,
-                type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
-
+  stage S05 on origin :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
-  stage last on origin :
+  stage S06 on origin :
     output
     | sink
     | first
-
 end ;
 
 rows:

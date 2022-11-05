@@ -1672,9 +1672,9 @@ begin
     | next hashcast
 
   stage S07 on all partitions :
-    indexJoin part IxP_PARTKEY &quot;BOUND $I1 PS_PARTKEY ==&quot; //J1
+    indexJoin part IxP_PARTKEY &quot;BOUND $I1 PS_PARTKEY ==&quot; 
     | filter &quot; type BOOLEAN  }  J1_P_TYPE &apos;%BRASS&apos;  6 matchTrailing
-             J1_P_SIZE 20 == and&quot;
+             J1_P_SIZE 15 == and&quot;
     | project &quot; type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
                 type VARCHAR as N_NAME N_NAME ,
@@ -1884,6 +1884,119 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
               <stringProp name="FileSaver.filename">p3_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P4Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p4" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query4
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | filter &quot; type BOOLEAN O_ORDERDATE DATE &apos;1993-07-01&apos; &gt;=
+                            O_ORDERDATE DATE &apos;1993-10-01&apos; &lt; and &quot;
+    | project &quot;type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY&quot;
+    | hash &quot;type INTEGER O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 O_ORDERKEY ==&quot;
+                                      &quot;type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) countAll&quot;
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum&quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">RequiresNo indexes.</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p4.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p4_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>
