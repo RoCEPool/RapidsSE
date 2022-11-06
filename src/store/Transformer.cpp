@@ -311,7 +311,10 @@ void Transformer::vHand_52_FlattenIn(i8 iBelow, ...)
 
   m_pTransforms->vH52_T10_Collect_In_SubQuery_As_SubSet();
   m_pTransforms->vH52_T20_CopyUp_In_Subset_nc();
-  m_pTransforms->vH52_T30_RemoveDelete_In();
+  m_pTransforms->vH52_T30_Cull_ExeMarked_exePred();
+  m_pTransforms->vH52_T40_Copy_TwistMarked_tstPred();
+  m_pTransforms->vH52_T50_Cull_TwistMarked_tstPred();
+  m_pTransforms->vH52_T60_Delete_Empty_where();
 
   m_pTransforms->vH52_T99_End();
 

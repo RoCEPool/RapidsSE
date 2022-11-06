@@ -695,8 +695,10 @@ bool Xtransforms::bH52_T00_Test(void)
        m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
        i_Board++) {
 
-    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz))
+    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
+      G.p_tstPred->vMark1(MARK_TWIST);
       return true;
+    }
   }
 
   return false;
@@ -734,6 +736,8 @@ void Xtransforms::vH52_T10_Collect_In_SubQuery_As_SubSet(void)
   while (G_bEachMainWithSub(CK_WHERE, CK_EXEPRED)) {
 
     G.p_exePred->vDump();
+
+    G.p_exePred->vMark1(MARK_EXE);
 
     Stz* szSubQueryNm = G.p_exePred->szValue();
     if (! G_bPushBoard(szSubQueryNm)) {
@@ -787,18 +791,67 @@ void Xtransforms::vH52_T20_CopyUp_In_Subset_nc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH52_T30_RemoveDelete_In(void)
+void Xtransforms::vH52_T30_Cull_ExeMarked_exePred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
-    vR_H52_T30_RemoveDelete_In();
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H52_T30_Cull_ExeMarked_exePred();
   }
 
   vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH52_T40_Copy_TwistMarked_tstPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H52_T40_Copy_TwistMarked_tstPred();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH52_T50_Cull_TwistMarked_tstPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H52_T50_Cull_TwistMarked_tstPred();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH52_T60_Delete_Empty_where(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete <where> if it is effectively empty"_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_H52_T60_Delete_Empty_where();
+  }
+
+  vEndTransform();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

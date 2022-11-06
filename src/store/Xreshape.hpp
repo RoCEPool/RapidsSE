@@ -51,7 +51,10 @@ namespace STORE
     void vR_H52_T10_Collect_In_SubQuery_Into_SubSet_Pile(void);
     void vR_H52_T20_Yank_SubSet(void);
     void vR_H52_T20_Put_SubSet_nc(void);
-    void vR_H52_T30_RemoveDelete_In(void);
+    void vR_H52_T30_Cull_ExeMarked_exePred(void);
+    void vR_H52_T40_Copy_TwistMarked_tstPred(void);
+    void vR_H52_T50_Cull_TwistMarked_tstPred(void);
+    void vR_H52_T60_Delete_Empty_where(void);
 
     // vHand_55_FlattenExists
     void vR_H55_T10_Collapse_Exists_SubQuery(void);

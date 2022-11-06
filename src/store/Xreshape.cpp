@@ -375,10 +375,67 @@ void Xreshape::vR_H52_T20_Put_SubSet_nc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H52_T30_RemoveDelete_In(void)
+void Xreshape::vR_H52_T30_Cull_ExeMarked_exePred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_EXE);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H52_T40_Copy_TwistMarked_tstPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+//  Card_BoolCalc* p_boolCalc_twist = G.p_twist->pSub_boolCalc();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    if (MARK_TWIST != pCard->cMark1())
+      return C_CONTINUE_RECURSION;
+
+//    if (! p_boolCalc_twist) {
+//      p_boolCalc_twist = new Card_BoolCalc;
+//      G.p_twist->vAppend(p_boolCalc_twist);
+//    }
+//
+//    p_boolCalc_twist->vAppend(pCard->pDupCardAndSubCards());
+
+    G.p_twist->vAppend(pCard->pDupCardAndSubCards());
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->vApplyRecursive(CK_TSTPRED, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H52_T50_Cull_TwistMarked_tstPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_TWIST);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H52_T60_Delete_Empty_where(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (0 == G.p_boolCalc->nChildCards()) {
+    G_vRemoveDeleteMain(CK_WHERE);
+  }
 }
 
 

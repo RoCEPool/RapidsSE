@@ -316,6 +316,10 @@ void Board::vPinCards(Ribbon* pRibbon)
         default                : eLevel = AL_NONE;      break;
       }
     }
+    else
+    if (pCard->bIsCard(CK_TABLE)) {
+      eLevel = AL_PARTITION;
+    }
 
     bool bPrune = false;
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);

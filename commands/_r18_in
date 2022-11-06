@@ -19,7 +19,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH52_T10_Collect_In_SubQuery_As_SubSet"
+/glean_cue_from = "vH52_T30_Cull_ExeMarked_exePred"
 /transliterated
 /transform
 /transform3

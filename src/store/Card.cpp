@@ -1243,7 +1243,7 @@ void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
   if (Y_bHas(P_Focus))
     pRibbon->vSprint("==%02lld %c\\/\\/\\/\\/\\/\\/\\/"_Stz,m_iCardNo,cLevel);
   else
-    pRibbon->vSprint("==%02lld %c---------------"_Stz,m_iCardNo,cLevel);
+    pRibbon->vSprint("==%02lld %c--------------"_Stz,m_iCardNo,cLevel);
 }
 
 /*----------------------------------------------------------------------------*/
