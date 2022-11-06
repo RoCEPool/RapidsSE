@@ -418,6 +418,7 @@ bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
 
   if (CK_AGGREG    == eMain ||
       CK_FILTER    == eMain ||
+      CK_HAVING    == eMain ||
       CK_INDEXSCAN == eMain ||
       CK_INDEXJOIN == eMain ||
       CK_KEYEXISTS == eMain ||
@@ -614,7 +615,7 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain
   if (p_level)
     eLevel_main = (eAL)p_level->Y_iVal(P_Level);
 
-  if (CK_FILTER == eMain || CK_WHERE == eMain) {
+  if ((CK_FILTER == eMain || CK_WHERE == eMain) && CK_AGGREG != ePrior) {
     // filter can be at P/N/O
     return false;
   }
@@ -633,7 +634,10 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain
 
   if (CK_AGGREG == eMain || CK_HAVING == eMain || CK_PROJECT == eMain) {
     if (eLevel_main == reLevel) {
-      if (CK_KEYEXISTS == ePrior || CK_PROJECT == ePrior)
+//      if (CK_HAVING == ePrior)
+//        vDebugPoint();
+      if (CK_AGGREG == ePrior    || CK_FILTER == ePrior || CK_HAVING == ePrior ||
+          CK_KEYEXISTS == ePrior || CK_PROJECT == ePrior)
         return true;
       return false;
     }
