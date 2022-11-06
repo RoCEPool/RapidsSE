@@ -620,12 +620,50 @@ void Xreshape::vR_H55_T80_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::vR_H60_T05_Twist_in_Becomes_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  RASSERT(G.p_tstPred);
+
+  char cTblSyn = D_cPRED_TableSyn_First(G.p_tstPred);
+
+  if (' ' == cTblSyn)
+    return;
+
+  s32 sTblSyn;
+  sTblSyn.vSprint("%c"_Stz,cTblSyn);
+  if (! G_bLocateCard(CK_TABLE,sTblSyn,C_UNKNOWN))
+    return;
+
+  vDebugPoint();
+
+  G.p_table = _pCard_Table(G.p_Located);
+  G.p_filter = G.p_table->pSub_filter();
+  if (! G.p_filter) {
+    G_vNewMember(CK_FILTER);
+    G.p_table->vAppend(G.p_filter);
+    G_vNewMember(CK_BOOLCALC);
+    G.p_filter->vAppend(G.p_boolCalc);
+  }
+
+  Card* p_copy = G.p_tstPred->pDupCardAndSubCards();
+  p_copy->vCard(CK_CMPPRED);
+  p_copy->vValue("=="_Stz);
+
+  G.p_boolCalc->vAppend(p_copy);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vTable_Produce_MaybeIndexJoin(G.p_table);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

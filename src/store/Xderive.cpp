@@ -199,7 +199,37 @@ void Xderive::D_vDerive_PtndJoin(Card_PtndJoin* p_ptndJoin, Card_TableList* p_ta
   p_ptndJoin->Y_vSet(P_JoinedBuff, nJoinedBuff);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Xderive::D_cPRED_TableSyn_First(Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  char cTblSyn = ' ';
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this,&cTblSyn](Card_Term* p_term)
+  {
+    if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    char cTblSyn_test = E_cValue_TableColSyn((p_term->szValue()));
+    if (' ' == cTblSyn)
+      cTblSyn = cTblSyn_test;
+    else
+    if (cTblSyn_test < cTblSyn)
+      cTblSyn = cTblSyn_test;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_PRED->vApplyRecursive_term(bLambdaFn);
+
+  return cTblSyn;
+}
 
 /*============================================================================*/
 /* end                                                                        */

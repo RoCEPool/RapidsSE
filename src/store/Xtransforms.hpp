@@ -105,6 +105,7 @@ namespace STORE
     bool bH60_T00_Test(void);
     void vH60_T00_Skip(void);
     void vH60_T00_Begin(void);
+    void vH60_T05_Twist_in_Becomes_filter(void);
     void vH60_T10_Produce_maybeIndexJoin_Under_filter(void);
     void vH60_T20_Affix_tblColOdn_ToAll_idxCol(void);
     void vH60_T30_UpCopy_filter_pred_Into_bounds(void);

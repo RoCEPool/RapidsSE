@@ -1138,6 +1138,22 @@ void Xtransforms::vH60_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH60_T05_Twist_in_Becomes_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
+
+  while (G_bEachMainWithSub(CK_TWIST, CK_TSTPRED,"in"_Stz)) {
+    vR_H60_T05_Twist_in_Becomes_filter();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a scratch <maybeIndexJoin> under all joinable <table>'s                */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH60_T10_Produce_maybeIndexJoin_Under_filter(void)

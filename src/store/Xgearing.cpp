@@ -887,9 +887,21 @@ bool Xgearing::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMembe
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given i_After                               */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
+bool Xgearing::G_bLocateCard(eCK eLocate, Stz* szWithValue, i8 i_After)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = G.pDeck->nChildCards();
+  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
+    Card *pMain = G.pDeck->pGetChild(i_Main);
+
+    G.p_Located = pMain->pFindValueRecursive(eLocate,szWithValue,G.p_Located);
+    if (!G.p_Located)
+      continue;
+
+    G.e_Located = eLocate;
+    return true;
+  }
 
   return false;
 }

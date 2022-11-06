@@ -30,6 +30,8 @@ namespace STORE
 
     void D_vDerive_PtndJoin(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList);
 
+    char D_cPRED_TableSyn_First(Card_PRED* p_PRED);
+
     Footer* aFooter(void);
   };
 }
