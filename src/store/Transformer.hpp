@@ -42,6 +42,7 @@ namespace STORE
     void vHand_30_StreamAnalysis  (i8 iBelow, ...);
     void vHand_40_PredicatePullup (i8 iBelow, ...);
     void vHand_50_FlattenCall     (i8 iBelow, ...);
+    void vHand_52_FlattenIn       (i8 iBelow, ...);
     void vHand_55_FlattenExists   (i8 iBelow, ...);
     void vHand_60_IndexJoin       (i8 iBelow, ...);
     void vHand_70_JoinOrdering    (i8 iBelow, ...);

@@ -103,10 +103,9 @@ void Transformer::vTransform3(void)
   vHand_10_CondenseInfo    (CK_NONE);
   vHand_20_TableAnalysis   (CK_NONE);
   vHand_30_StreamAnalysis  (CK_NONE);
-
   vHand_40_PredicatePullup (CK_NONE);
-
   vHand_50_FlattenCall     (CK_NONE);
+  vHand_52_FlattenIn       (CK_NONE);
   vHand_55_FlattenExists   (CK_NONE);
   vHand_60_IndexJoin       (CK_NONE);
   vHand_70_JoinOrdering    (CK_NONE);
@@ -288,6 +287,33 @@ void Transformer::vHand_50_FlattenCall(i8 iBelow, ...)
   m_pTransforms->vH50_T30();
 
   m_pTransforms->vH50_T99_End();
+
+  vEndHand(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_52_FlattenIn(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  if (! m_pTransforms->bH52_T00_Test()) {
+    m_pTransforms->vH52_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vH52_T00_Begin();
+
+  m_pTransforms->vH52_T10();
+  m_pTransforms->vH52_T20();
+  m_pTransforms->vH52_T30();
+
+  m_pTransforms->vH52_T99_End();
 
   vEndHand(BK_SUBPIPE);
 }

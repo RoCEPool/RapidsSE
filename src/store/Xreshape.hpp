@@ -47,6 +47,11 @@ namespace STORE
     void vR_H50_T50(void);
     void vR_H50_T60(void);
 
+    // vHand_52_FlattenIn
+    void vR_H52_T10(void);
+    void vR_H52_T20(void);
+    void vR_H52_T30(void);
+
     // vHand_55_FlattenExists
     void vR_H55_T10_Collapse_Exists_SubQuery(void);
     void vR_H55_T20_Copy_Up_SubQuery(void);
