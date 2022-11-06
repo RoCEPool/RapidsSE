@@ -771,6 +771,10 @@ void Xtransforms::vH52_T20_CopyUp_In_Subset_nc(void)
 
     G_vPopBoard();
 
+    G_vNewMember(CK_TWIST,"in"_Stz);
+
+    G.pDeck->vPush(G.p_twist);
+
     vR_H52_T20_Put_SubSet_nc();
 
     // TODO: this is not standard pattern

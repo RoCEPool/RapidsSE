@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Xgearing.cpp --                                                     */
+/* Xgearing.cpp --                                                            */
 /*============================================================================*/
 
 #include "Xgearing.hpp"
@@ -798,6 +798,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_TERM:             return G.p_term;
     case CK_TOPOLOGY:         return G.p_topology;
     case CK_TSTPRED:          return G.p_tstPred;
+    case CK_TWIST:            return G.p_twist;
     case CK_UBOUND:           return G.p_uBound;
     case CK_WHERE:            return G.p_where;
 
@@ -1012,6 +1013,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_term             = nullptr;
   G.p_topology         = nullptr;
   G.p_tstPred          = nullptr;
+  G.p_twist            = nullptr;
   G.p_uBound           = nullptr;
   G.p_where            = nullptr;
 }
@@ -1349,6 +1351,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
     case CK_TSTPRED:          *((Card**)&G.p_tstPred)          = pCard; break;
+    case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
 
@@ -1652,6 +1655,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
     case CK_TSTPRED:          return "G.p_tstPred"_Stz;
+    case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
 

@@ -116,6 +116,7 @@ enum eCK // card kind
   /* */ CK_TERM,
   /* */ CK_TOPOLOGY,
   /* */ CK_TSTPRED,
+  /* */ CK_TWIST,
   /* */ CK_TYPE,
 
   /* */ CK_UBOUND,
@@ -241,6 +242,7 @@ static Stz* aCK[]
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
   /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
+  /* */ "CK_TWIST"_Stz,        // CK_TWIST
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
   /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
@@ -366,6 +368,7 @@ static Stz* aCK_short[]
   /* */ "term"_Stz,            // CK_TERM
   /* */ "topology"_Stz,        // CK_TOPOLOGY
   /* */ "tstPred"_Stz,         // CK_TSTPRED
+  /* */ "twist"_Stz,           // CK_TWIST
   /* */ "type"_Stz,            // CK_TYPE
 
   /* */ "ubound"_Stz,          // CK_UBOUND

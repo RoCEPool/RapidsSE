@@ -117,6 +117,7 @@
 #include "Card_Term.hpp"
 #include "Card_Topology.hpp"
 #include "Card_TstPred.hpp"
+#include "Card_Twist.hpp"
 #include "Card_Type.hpp"
 
 #include "Card_UBound.hpp"

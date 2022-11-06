@@ -3,10 +3,6 @@
 /*============================================================================*/
 
 #include "Card_TableList.hpp"
-#include "Card_Table.hpp"
-#include "Card_TablePtn.hpp"
-#include "Card_ColumnRef.hpp"
-#include "Card_CmpPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

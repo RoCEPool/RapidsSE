@@ -108,6 +108,7 @@ namespace STORE
     Card_Term *             p_term;
     Card_Topology *         p_topology;
     Card_TstPred *          p_tstPred;
+    Card_Twist *            p_twist;
     Card_UBound *           p_uBound;
     Card_Where *            p_where;
   } ;

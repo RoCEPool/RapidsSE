@@ -109,6 +109,7 @@ namespace STORE
   class Card_TblColOdn;
   class Card_Term;
   class Card_Topology;
+  class Card_Twist;
   class Card_Type;
 
   class Card_UBound;
@@ -368,6 +369,7 @@ namespace STORE
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TblColOdn*     pSub_tblColOdn(void);
     Card_Topology*      pSub_topology(void);
+    Card_Twist*         pSub_twist(void);
     Card_UBound*        pSub_uBound(void);
 
   private:
