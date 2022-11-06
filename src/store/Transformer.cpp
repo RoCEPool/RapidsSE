@@ -148,12 +148,14 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vH10_T10_Delete_Redundant_stages();
-    m_pTransforms->vH10_T30_Delete_All_absJoin();
-    m_pTransforms->vH10_T40_Delete_All_combined();
-    m_pTransforms->vH10_T50_Delete_All_send();
-    m_pTransforms->vH10_T60_Cull_scan_Leaving_table();
-    m_pTransforms->vH10_T20_Hide_Ignorable_stages();
+    m_pTransforms->vH10_T10_Delete_All_absJoin();
+    m_pTransforms->vH10_T20_Delete_All_combined();
+    m_pTransforms->vH10_T30_Delete_All_send();
+    m_pTransforms->vH10_T40_Delete_All_stage();
+    m_pTransforms->vH10_T50_Cull_scan_Leaving_table();
+
+    //m_pTransforms->vH10_T80_Delete_Redundant_stages();
+    //m_pTransforms->vH10_T90_Hide_Ignorable_stages();
   }
 
   m_pTransforms->vH10_T99_End();
@@ -539,7 +541,8 @@ void Transformer::vHand_Z0_RestatePipeline(i8 iBelow, ...)
   m_pTransforms->vHZ0_T00_Begin();
 
   m_pTransforms->vHZ0_T10_Restore_stmColOdn_from_tblColOdn();
-  m_pTransforms->vHZ0_T20_Reinstate_stages();
+  //m_pTransforms->vHZ0_T20_Reinstate_stages();
+  m_pTransforms->vHZ0_T20_Reinstate_stagesV2();
   m_pTransforms->vHZ0_T30_Reinstate_combined();
 
   m_pTransforms->vHZ0_T99_End();

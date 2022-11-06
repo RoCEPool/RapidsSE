@@ -373,18 +373,22 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?
   
-  if (! m_bSawAggOp) {
-    delete pCard_RpnTerms;
-    pCard_Filter->vCard(CK_WHERE);
-    return pCard_Filter;
-  }
-  else {
+  if (m_bSawAggOp) {
     Card_Having* pCard_Having = new Card_Having;
     pCard_Having->vTransferChildren(pCard_Filter);
     delete pCard_Filter;
-  
     delete pCard_RpnTerms;
+
+    eAL eAggLevel = m_pStageSpec->eAggegLevel();
+    Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+    pCard_Having->vPush(pCard_AggLevel);
+
     return pCard_Having;
+  }
+  else {
+    delete pCard_RpnTerms;
+    pCard_Filter->vCard(CK_WHERE);
+    return pCard_Filter;
   }
 }
 
@@ -604,7 +608,13 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   pCard_Project->vAppend(pCard_ProjElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+  pCard_Project->vPush(pCard_AggLevel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   delete pCard_RpnTerms;
 
   return pCard_Project;

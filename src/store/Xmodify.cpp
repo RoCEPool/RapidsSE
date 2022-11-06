@@ -327,6 +327,21 @@ void Xmodify::M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_
 }
 
 /*----------------------------------------------------------------------------*/
+/* affix each idxCol with it's $c.n of this table stream                      */
+/*----------------------------------------------------------------------------*/
+eYG Xmodify::M_eLevel_To_StageTopology(eAL eLevel)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  switch (eLevel) {
+    case AL_PARTITION : return YG_ALL_PARTITIONS;
+    case AL_NODE      : return YG_ALL_NODES;
+    case AL_ORIGIN    : return YG_ORIGIN_NODE;
+    default           : return YG_ALL_PARTITIONS;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred)

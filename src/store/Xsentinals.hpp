@@ -40,6 +40,8 @@ namespace STORE
 
     Stz*   sz_SubQueryNm;
 
+    eAL    e_Level;
+
     Card_AbsJoin *          p_absJoin;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;

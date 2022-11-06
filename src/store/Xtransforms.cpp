@@ -80,9 +80,89 @@ void Xtransforms::vH10_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete superfluous <absJoin>'s                                             */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T10_Delete_All_absJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
+
+  while (G_bEachMain(CK_ABSJOIN)) {
+    vR_H10_T10_Delete_absJoin();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete superfluous <combined>'s                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T20_Delete_All_combined(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete superfluous <combined>'s"_Stz);
+
+  while (G_bEachMain(CK_COMBINED)) {
+    vR_H10_T20_Delete_combined();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete superfluous <send>'s                                                */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T30_Delete_All_send(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete superfluous <send>'s"_Stz);
+
+  while (G_bEachMain(CK_SEND)) {
+    vR_H10_T30_Delete_send();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete all <stage>'s                                                       */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T40_Delete_All_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete all <stage>'s"_Stz);
+
+  while (G_bEachMain(CK_STAGE)) {
+    vR_H10_T40_Delete_stage();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace all <scan>'s with their children                                   */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T50_Cull_scan_Leaving_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "replace all <scan>'s with their children"_Stz);
+
+  while (G_bEachMain(CK_SCAN)) {
+    vR_H10_T50_Cull_scan_Leaving_table();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /* linearize board by deleting all redundant <stage>'s                        */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
+void Xtransforms::vH10_T80_Delete_Redundant_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -98,7 +178,7 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
       continue;
     }
 
-    vR_H10_T10_Delete_Redundant_stage();
+    vR_H10_T80_Delete_Redundant_stage();
   }
 
   vEndTransform();
@@ -107,78 +187,14 @@ void Xtransforms::vH10_T10_Delete_Redundant_stages(void)
 /*----------------------------------------------------------------------------*/
 /* hide ignorable <stage>'s                                                   */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T20_Hide_Ignorable_stages(void)
+void Xtransforms::vH10_T90_Hide_Ignorable_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "hide ignorable <stage>'s"_Stz);
 
   while (G_bEachMain(CK_STAGE)) {
-    vR_H10_T20_Hide_Ignorable_stage();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete superfluous <absJoin>'s                                             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T30_Delete_All_absJoin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  while (G_bEachMain(CK_ABSJOIN)) {
-    vR_H10_T30_Delete_absJoin();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete superfluous <combined>'s                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T40_Delete_All_combined(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete superfluous <combined>'s"_Stz);
-
-  while (G_bEachMain(CK_COMBINED)) {
-    vR_H10_T40_Delete_combined();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete superfluous <send>'s                                                */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T50_Delete_All_send(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete superfluous <send>'s"_Stz);
-
-  while (G_bEachMain(CK_SEND)) {
-    vR_H10_T50_Delete_send();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace all <scan>'s with their children                                   */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T60_Cull_scan_Leaving_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "replace all <scan>'s with their children"_Stz);
-
-  while (G_bEachMain(CK_SCAN)) {
-    vR_H10_T60_Cull_scan_Leaving_table();
+    vR_H10_T90_Hide_Ignorable_stage();
   }
 
   vEndTransform();
@@ -1907,6 +1923,35 @@ void Xtransforms::vHZ0_T20_Reinstate_stages(void)
 
   while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
     vR_HZ0_T20_Reinstate_stages();
+  }
+
+  i8 i_Stage = 1;
+  G_vRestart();
+  while (G_bEachMain(CK_STAGE))
+    G.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reinstate stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHZ0_T20_Reinstate_stagesV2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "reinstate stages"_Stz);
+
+  G.e_Level = AL_PARTITION;
+
+  G.p_stage = new Card_Stage;
+
+  G.p_topology = new Card_Topology(YG_ALL_PARTITIONS);
+  G.p_stage->vAppend(G.p_topology);
+  G.pDeck->vPush(G.p_stage);
+
+  while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
+    vR_HZ0_T20_Reinstate_stagesV2();
   }
 
   i8 i_Stage = 1;

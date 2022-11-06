@@ -42,7 +42,7 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H10_T10_Delete_Redundant_stage(void)
+void Xreshape::vR_H10_T80_Delete_Redundant_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -52,7 +52,7 @@ void Xreshape::vR_H10_T10_Delete_Redundant_stage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H10_T20_Hide_Ignorable_stage(void)
+void Xreshape::vR_H10_T90_Hide_Ignorable_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -65,7 +65,7 @@ void Xreshape::vR_H10_T20_Hide_Ignorable_stage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H10_T30_Delete_absJoin(void)
+void Xreshape::vR_H10_T10_Delete_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -75,7 +75,7 @@ void Xreshape::vR_H10_T30_Delete_absJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H10_T40_Delete_combined(void)
+void Xreshape::vR_H10_T20_Delete_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -85,7 +85,7 @@ void Xreshape::vR_H10_T40_Delete_combined(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H10_T50_Delete_send(void)
+void Xreshape::vR_H10_T30_Delete_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -95,7 +95,18 @@ void Xreshape::vR_H10_T50_Delete_send(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H10_T60_Cull_scan_Leaving_table(void)
+void Xreshape::vR_H10_T40_Delete_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vRemoveDeleteMain(CK_STAGE);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1334,6 +1345,20 @@ void Xreshape::vR_HZ0_T20_Reinstate_stages(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (! T_bStage_Reinstate(G.e_MainCard, G.e_SubsequentToMain))
+    return;
+
+  m_pCard_dup = G.p_stage->pDupCardAndSubCards();
+  G.pDeck->vInsertAfter(m_pCard_dup, G.p_MainCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! T_bStage_ReinstateV2(G.e_MainCard, G.e_SubsequentToMain))
     return;
 
   m_pCard_dup = G.p_stage->pDupCardAndSubCards();

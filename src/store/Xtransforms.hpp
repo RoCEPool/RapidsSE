@@ -27,12 +27,13 @@ namespace STORE
     bool bH10_T00_Test(void);
     void vH10_T00_Skip(void);
     void vH10_T00_Begin(void);
-    void vH10_T10_Delete_Redundant_stages(void);
-    void vH10_T20_Hide_Ignorable_stages(void);
-    void vH10_T30_Delete_All_absJoin(void);
-    void vH10_T40_Delete_All_combined(void);
-    void vH10_T50_Delete_All_send(void);
-    void vH10_T60_Cull_scan_Leaving_table(void);
+    void vH10_T10_Delete_All_absJoin(void);
+    void vH10_T20_Delete_All_combined(void);
+    void vH10_T30_Delete_All_send(void);
+    void vH10_T40_Delete_All_stage(void);
+    void vH10_T50_Cull_scan_Leaving_table(void);
+    void vH10_T80_Delete_Redundant_stages(void);
+    void vH10_T90_Hide_Ignorable_stages(void);
     void vH10_T99_End(void);
 
     // vHand_20_TableAnalysis
@@ -168,6 +169,7 @@ namespace STORE
     void vHZ0_T00_Begin(void);
     void vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
     void vHZ0_T20_Reinstate_stages(void);
+    void vHZ0_T20_Reinstate_stagesV2(void);
     void vHZ0_T30_Reinstate_combined(void);
     void vHZ0_T99_End(void);
 

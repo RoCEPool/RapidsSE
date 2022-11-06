@@ -21,7 +21,7 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 select
   count(*)
   from lineitem
-  where l_shipdate <= date '1998-12-01'
+  where l_orderKey < 100
 ;
 
 

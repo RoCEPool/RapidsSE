@@ -563,14 +563,34 @@ bool Xtest::T_bStage_Reinstate(eCK eMain, eCK eSubsequent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (CK_STAGE == eMain || CK_STAGE == eSubsequent)
+  if (CK_STAGE     == eMain || eSubsequent == CK_STAGE)
     return false;
 
-  if (CK_FILTER == eMain && CK_INDEXJOIN == eSubsequent)
+  if (CK_FILTER    == eMain && eSubsequent == CK_INDEXJOIN)
     return false;
 
-  if (CK_INDEXJOIN == eMain &&
-      (CK_PROJECT == eSubsequent || CK_FILTER == eSubsequent))
+  if (CK_INDEXJOIN == eMain && (eSubsequent == CK_PROJECT ||
+                                eSubsequent == CK_FILTER))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (CK_STAGE     == eMain || eSubsequent == CK_STAGE)
+    return false;
+
+  if (CK_FILTER    == eMain && eSubsequent == CK_INDEXJOIN)
+    return false;
+
+  if (CK_INDEXJOIN == eMain && (eSubsequent == CK_PROJECT ||
+                                eSubsequent == CK_FILTER))
     return false;
 
   return true;
