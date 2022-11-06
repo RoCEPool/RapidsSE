@@ -749,9 +749,7 @@ void Xtransforms::vH55_T10_Collapse_Exists_SubQueries(void)
 
     //vPrintBoard();
 
-    if (G_bEachMain(CK_STAGE)) {
-      vTracer("SubQuery Stage: %s\n"_Stz, G.p_stage->szBearing());
-
+    if (G_bEachMain()) {
       vR_H55_T10_Collapse_Exists_SubQuery();
     }
     vPrintBoard(__LINE__);
@@ -1951,6 +1949,7 @@ void Xtransforms::vHZ0_T20_Reinstate_stagesV2(void)
 //  G.p_stage->vAppend(G.p_topology);
 //  G.pDeck->vPush(G.p_stage);
 
+  G.p_PriorToMain = nullptr;
   while (G_bEachMain())  {
     vR_HZ0_T20_Reinstate_stagesV2();
   }

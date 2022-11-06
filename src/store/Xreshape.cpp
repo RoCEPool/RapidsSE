@@ -265,7 +265,7 @@ void Xreshape::vR_H50_T10_Extract_subSet_Of_call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 1);
+  G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   G.pDeck->vPush(G.p_subSet);
 }
@@ -291,6 +291,8 @@ void Xreshape::vR_H50_T20_Put_Yanked(void)
 
   G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+
+  DELETE_CARD(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -342,9 +344,9 @@ void Xreshape::vR_H55_T10_Collapse_Exists_SubQuery(void)
 
   G_vNewMember(CK_KEYEXISTS);
 
-  G.pDeck->vInsertAfter(G.p_keyExists,G.p_stage);
+  G.pDeck->vPush(G.p_keyExists);
 
-  RASSERT(G_bEachMain());
+  //RASSERT(G_bEachMain());
 
   while (G_bSubsequentToMain(C_UPDATE_MEMBER)) {
     G.pDeck->vRemove(G.p_SubsequentToMain);
@@ -1358,8 +1360,12 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! T_bStage_ReinstateV2(G.e_Level, G.p_MainCard))
+  if (! T_bStage_ReinstateV2(G.e_Level, G.p_MainCard, G.p_PriorToMain)) {
+    G.p_PriorToMain = G.p_MainCard;
     return;
+  }
+
+  G.p_PriorToMain = G.p_MainCard;
 
   G.p_stage = new Card_Stage;
   G.p_topology = new Card_Topology(M_eLevel_To_StageTopology(G.e_Level));

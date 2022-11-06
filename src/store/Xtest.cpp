@@ -599,11 +599,12 @@ bool Xtest::T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent, eAL eLevel)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main)
+bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  eCK eMain = p_Main->eCard();
+  eCK eMain  = p_Main->eCard();
+  eCK ePrior = p_PriorToMain ? p_PriorToMain->eCard() : CK_NONE;
 
   if (CK_STAGE == eMain)
     return false;
@@ -631,8 +632,11 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (CK_AGGREG == eMain || CK_HAVING == eMain || CK_PROJECT == eMain) {
-    if (eLevel_main == reLevel)
+    if (eLevel_main == reLevel) {
+      if (CK_KEYEXISTS == ePrior || CK_PROJECT == ePrior)
+        return true;
       return false;
+    }
     reLevel = eLevel_main;
     return true;
   }
