@@ -309,9 +309,9 @@ void Transformer::vHand_52_FlattenIn(i8 iBelow, ...)
 
   m_pTransforms->vH52_T00_Begin();
 
-  m_pTransforms->vH52_T10();
-  m_pTransforms->vH52_T20();
-  m_pTransforms->vH52_T30();
+  m_pTransforms->vH52_T10_Collect_In_SubQuery_As_SubSet();
+  m_pTransforms->vH52_T20_CopyUp_In_Subset_nc();
+  m_pTransforms->vH52_T30_RemoveDelete_In();
 
   m_pTransforms->vH52_T99_End();
 

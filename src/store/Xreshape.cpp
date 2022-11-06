@@ -273,7 +273,7 @@ void Xreshape::vR_H50_T10_Extract_subSet_Of_call(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T20_Yank_Subset(void)
+void Xreshape::vR_H50_T20_Yank_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -285,7 +285,7 @@ void Xreshape::vR_H50_T20_Yank_Subset(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H50_T20_Put_Yanked(void)
+void Xreshape::vR_H50_T20_Put_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -338,25 +338,44 @@ void Xreshape::vR_H50_T60(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H52_T10(void)
+void Xreshape::vR_H52_T10_Collect_In_SubQuery_Into_SubSet_Pile(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 0);
+
+  G.pDeck->vPush(G.p_subSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H52_T20(void)
+void Xreshape::vR_H52_T20_Yank_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  m_pCard_yanked = G.pDeck->pFindChild(CK_SUBSET);
+
+  G.pDeck->vRemoveChild(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H52_T30(void)
+void Xreshape::vR_H52_T20_Put_SubSet_nc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.pDeck->vPush(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+
+  DELETE_CARD(m_pCard_yanked);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H52_T30_RemoveDelete_In(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

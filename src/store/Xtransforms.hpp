@@ -79,9 +79,9 @@ namespace STORE
     bool bH52_T00_Test(void);
     void vH52_T00_Skip(void);
     void vH52_T00_Begin(void);
-    void vH52_T10(void);
-    void vH52_T20(void);
-    void vH52_T30(void);
+    void vH52_T10_Collect_In_SubQuery_As_SubSet(void);
+    void vH52_T20_CopyUp_In_Subset_nc(void);
+    void vH52_T30_RemoveDelete_In(void);
     void vH52_T99_End(void);
 
     // vHand_55_FlattenExists

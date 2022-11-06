@@ -599,13 +599,12 @@ void Xtransforms::vH50_T20_Copy_Called_Subset(void)
       continue;
     }
 
-    vR_H50_T20_Yank_Subset();
+    vR_H50_T20_Yank_SubSet();
 
     G_vPopBoard();
 
-    vR_H50_T20_Put_Yanked();
+    vR_H50_T20_Put_SubSet();
   }
-
 
   vEndTransform();
 }
@@ -726,12 +725,27 @@ void Xtransforms::vH52_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH52_T10(void)
+void Xtransforms::vH52_T10_Collect_In_SubQuery_As_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
+  while (G_bEachMainWithSub(CK_WHERE, CK_EXEPRED)) {
+
+    G.p_exePred->vDump();
+
+    Stz* szSubQueryNm = G.p_exePred->szValue();
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H52_T10_Collect_In_SubQuery_Into_SubSet_Pile();
+    vPrintBoard(__LINE__);
+
+    G_vPopBoard();
+  }
 
   vEndTransform();
 }
@@ -739,12 +753,29 @@ void Xtransforms::vH52_T10(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH52_T20(void)
+void Xtransforms::vH52_T20_CopyUp_In_Subset_nc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
+  while (G_bEachMainWithSub(CK_WHERE, CK_EXEPRED)) {
+
+    Stz *szSubQueryNm = G.p_exePred->szValue();
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz, szSubQueryNm);
+      continue;
+    }
+
+    vR_H52_T20_Yank_SubSet();
+
+    G_vPopBoard();
+
+    vR_H52_T20_Put_SubSet_nc();
+
+    // TODO: this is not standard pattern
+    break;
+  }
 
   vEndTransform();
 }
@@ -752,12 +783,15 @@ void Xtransforms::vH52_T20(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH52_T30(void)
+void Xtransforms::vH52_T30_RemoveDelete_In(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
+  while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
+    vR_H52_T30_RemoveDelete_In();
+  }
 
   vEndTransform();
 }

@@ -40,17 +40,18 @@ namespace STORE
 
     // vHand_50_FlattenCall
     void vR_H50_T10_Extract_subSet_Of_call(void);
-    void vR_H50_T20_Yank_Subset(void);
-    void vR_H50_T20_Put_Yanked(void);
+    void vR_H50_T20_Yank_SubSet(void);
+    void vR_H50_T20_Put_SubSet(void);
     void vR_H50_T30_RemoveDelete_call(void);
     void vR_H50_T40(void);
     void vR_H50_T50(void);
     void vR_H50_T60(void);
 
     // vHand_52_FlattenIn
-    void vR_H52_T10(void);
-    void vR_H52_T20(void);
-    void vR_H52_T30(void);
+    void vR_H52_T10_Collect_In_SubQuery_Into_SubSet_Pile(void);
+    void vR_H52_T20_Yank_SubSet(void);
+    void vR_H52_T20_Put_SubSet_nc(void);
+    void vR_H52_T30_RemoveDelete_In(void);
 
     // vHand_55_FlattenExists
     void vR_H55_T10_Collapse_Exists_SubQuery(void);
