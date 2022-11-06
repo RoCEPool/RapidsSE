@@ -579,7 +579,7 @@ bool Xtest::T_bStage_Reinstate(eCK eMain, eCK eSubsequent)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent)
+bool Xtest::T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent, eAL eLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -592,6 +592,50 @@ bool Xtest::T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent)
   if (CK_INDEXJOIN == eMain && (eSubsequent == CK_PROJECT ||
                                 eSubsequent == CK_FILTER))
     return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  eCK eMain = p_Main->eCard();
+
+  if (CK_STAGE == eMain)
+    return false;
+
+  eAL eLevel_main = reLevel;
+  Card_Level* p_level = p_Main->pSub_level();
+  if (p_level)
+    eLevel_main = (eAL)p_level->Y_iVal(P_Level);
+
+  if (CK_FILTER == eMain || CK_WHERE == eMain) {
+    // filter can be at P/N/O
+    return false;
+  }
+
+  if (CK_INDEXJOIN == eMain) {
+    RASSERT(AL_PARTITION == reLevel);
+    return true;
+  }
+
+  if (CK_SCAN == eMain) {
+    RASSERT(AL_PARTITION == reLevel);
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (CK_AGGREG == eMain || CK_HAVING == eMain || CK_PROJECT == eMain) {
+    if (eLevel_main == reLevel)
+      return false;
+    reLevel = eLevel_main;
+    return true;
+  }
 
   return true;
 }

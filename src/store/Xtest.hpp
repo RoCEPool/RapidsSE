@@ -48,7 +48,8 @@ namespace STORE
     bool T_bStage_IsIgnorable(Card_Stage* p_stage);
     bool T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior);
     bool T_bStage_Reinstate(eCK eMain, eCK eSubsequent);
-    bool T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent);
+    bool T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent, eAL eLevel);
+    bool T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main);
 
     Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& ri_StreamColNo);
 

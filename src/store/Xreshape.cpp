@@ -1358,11 +1358,14 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! T_bStage_ReinstateV2(G.e_MainCard, G.e_SubsequentToMain))
+  if (! T_bStage_ReinstateV2(G.e_Level, G.p_MainCard))
     return;
 
-  m_pCard_dup = G.p_stage->pDupCardAndSubCards();
-  G.pDeck->vInsertAfter(m_pCard_dup, G.p_MainCard);
+  G.p_stage = new Card_Stage;
+  G.p_topology = new Card_Topology(M_eLevel_To_StageTopology(G.e_Level));
+  G.p_stage->vAppend(G.p_topology);
+  G.pDeck->vInsertBefore(G.p_stage, G.p_MainCard);
+  G_vSkipNextMain();
 }
 
 /*----------------------------------------------------------------------------*/

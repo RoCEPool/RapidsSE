@@ -1854,6 +1854,7 @@ void Xtransforms::vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
            || CK_INDEXJOIN == G.e_MainCard
            || CK_KEYEXISTS == G.e_MainCard
            || CK_PROJECT   == G.e_MainCard
+           || CK_WHERE     == G.e_MainCard
     ))
       continue;
 
@@ -1944,13 +1945,13 @@ void Xtransforms::vHZ0_T20_Reinstate_stagesV2(void)
 
   G.e_Level = AL_PARTITION;
 
-  G.p_stage = new Card_Stage;
+//  G.p_stage = new Card_Stage;
+//
+//  G.p_topology = new Card_Topology(YG_ALL_PARTITIONS);
+//  G.p_stage->vAppend(G.p_topology);
+//  G.pDeck->vPush(G.p_stage);
 
-  G.p_topology = new Card_Topology(YG_ALL_PARTITIONS);
-  G.p_stage->vAppend(G.p_topology);
-  G.pDeck->vPush(G.p_stage);
-
-  while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
+  while (G_bEachMain())  {
     vR_HZ0_T20_Reinstate_stagesV2();
   }
 

@@ -46,6 +46,7 @@ namespace STORE
 
     void M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream);
 
+    char M_eLevel_To_char(eAL eLevel);
     eYG  M_eLevel_To_StageTopology(eAL eLevel);
 
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);

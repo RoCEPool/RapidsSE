@@ -327,7 +327,23 @@ void Xmodify::M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_
 }
 
 /*----------------------------------------------------------------------------*/
-/* affix each idxCol with it's $c.n of this table stream                      */
+/* convert eLevel to P/N/O                                                    */
+/*----------------------------------------------------------------------------*/
+char Xmodify::M_eLevel_To_char(eAL eLevel)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  switch (eLevel) {
+    case AL_PARTITION : return 'P';
+    case AL_NODE      : return 'N';
+    case AL_ORIGIN    : return 'O';
+    default           : return '?';
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* convert eAL to eYG                                                         */
 /*----------------------------------------------------------------------------*/
 eYG Xmodify::M_eLevel_To_StageTopology(eAL eLevel)
 {
