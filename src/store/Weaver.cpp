@@ -144,6 +144,7 @@ void Weaver::vStageFirst(void)
   
   vTabOp();  vConcat("start"_Stz);           vEolOp();  m_i_Op_stage++;
   vTabOp();  vConcat("pulse     once"_Stz);  vEolOp();  m_i_Op_stage++;
+  vTabOp();  vConcat("next"_Stz);            vEolOp();  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,7 +156,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
   
   eYG eStageTopo = (eYG) pCard_Stage->pSub_topology()->Y_iVal(P_StageTopo);
   
-  vTabOp();  vConcat("next"_Stz);  vEolOp();
+  //vTabOp();  vConcat("next"_Stz);  vEolOp();
 
   vPreStage();
   vTabStage();
@@ -176,7 +177,7 @@ void Weaver::vStageLast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  vTabOp();  vConcat("next"_Stz);  vEolOp();
+  //vTabOp();  vConcat("next"_Stz);  vEolOp();
   
   vPreStage();
   vTabStage();
@@ -210,11 +211,12 @@ void Weaver::vOp(Card* pCard)
     case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));    break;
     case CK_COMBINED:   vArgCombined (sOpArgs,_pCard_Combined(pCard));  break;
     case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));    break;
-    case CK_HAVING:     vArgHaving   (sOpArgs, _pCard_Having(pCard));   break;
+    case CK_HAVING:     vArgHaving   (sOpArgs,_pCard_Having(pCard));    break;
     case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard)); break;
     case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard)); break;
     case CK_KEYEXISTS:  vArgKeyExists(sOpArgs,_pCard_KeyExists(pCard)); break;
     case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit(pCard));     break;
+    case CK_NEXT:       vArgNext     (sOpArgs,_pCard_Next(pCard));      break;
     case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));   break;
     case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));      break;
     case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));      break;
@@ -410,6 +412,16 @@ void Weaver::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
 
   szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
 }
+
+/*----------------------------------------------------------------------------*/
+/* weave :next ?                                                              */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgNext(Stz* szOpArgs, Card_Next* pCard_Next)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* weave : ordagg <compiled> <expr>                                           */

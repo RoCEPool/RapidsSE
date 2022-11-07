@@ -2200,6 +2200,29 @@ void Xtransforms::vHZ0_T30_Reinstate_combined(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vHZ0_T40_Reinstate_next(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  while (G_bEachMain(CK_STAGE)) {
+    if (! G.i_MainCard)
+      continue;
+
+    G.p_MainCard->vDump();
+
+    vR_HZ0_T40_Reinstate_next();
+  }
+
+  vR_HZ0_T40_Reinstate_next_b();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vHZ0_T99_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

@@ -122,6 +122,8 @@ namespace STORE
     void vR_HZ0_T20_Reinstate_stages(void);
     void vR_HZ0_T20_Reinstate_stagesV2(void);
     void vR_HZ0_T30_Reinstate_combined(void);
+    void vR_HZ0_T40_Reinstate_next(void);
+    void vR_HZ0_T40_Reinstate_next_b(void);
 
     void vRR_Convert_All_TblColOrd_to_StmColOrd(void);
     void vRR_Convert_All_StmColOrd_to_TblColOrd(void);
