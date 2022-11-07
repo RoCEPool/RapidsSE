@@ -79,6 +79,7 @@
   // If we get here then there was a problem receiving the next message from the client.
   "recvWL_StartMarker: piping out error marker" .
   EC_WL_SOCKET_CLOSED op__execErr
+  Socket[].close
 
   true
 ;

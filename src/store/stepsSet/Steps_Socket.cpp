@@ -425,6 +425,7 @@ void Step::vSocketSendWLMsg(void)
 
   WLP::PayloadObj* pPayload = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
+  ASSERT(pPayload->iPayloadSize() > 0);
 
   SysCall oSysCall;
 

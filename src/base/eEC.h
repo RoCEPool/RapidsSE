@@ -256,8 +256,10 @@ enum eEC : u2 // error codes
   EC_VERSION_MISMATCH,
 
   /* _W_ */
+  EC_WL_INTERNAL_ERROR,
   EC_WL_SOCKET_CLOSED,
   EC_WL_PROTOCOL_ERROR,
+  EC_WL_PROTOCOL_VER_NOT_SUPPORTED,
 
   /* _X_ */
 
@@ -519,8 +521,10 @@ static Stz* aEC[] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"internal wireline protocol error",
   /* EC_WL_SOCKET_CLOSED              */ (Stz*)"client socket has closed",
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"wireline protocol error",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"wireline protocol version not supported",
 
   /* _X_ */
 
@@ -777,8 +781,10 @@ static Stz* aEC2[] = // error code
   /* EC_VERSION_MISMATCH              */ (Stz*)"EC_VERSION_MISMATCH",
 
   /* _W_ */
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"EC_WL_INTERNAL_ERROR",
   /* EC_WL_SOCKET_CLOSED              */ (Stz*)"EC_WL_SOCKET_CLOSED",
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"EC_WL_PROTOCOL_ERROR",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"EC_WL_PROTOCOL_VER_NOT_SUPPORTED",
 
   /* _X_ */
 
@@ -1044,8 +1050,10 @@ static Stz* aErrorMsg[] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
-  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"client socket has closed",
-  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"wireline protocol error",
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
+  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
 
   /* _X_ */
 

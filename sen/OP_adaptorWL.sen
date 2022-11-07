@@ -45,7 +45,7 @@
     [op].pipeOut
   repeat
 
-  // Check if the protocol is unviable
+  // Check if the protocol is unviable (e.g. received invalid msg or in wrong sequence).
   AdaptorWL[].protocolErrorTest if
     AdaptorWL[].protocolError@ op__execErr
     true
@@ -61,6 +61,7 @@
     begin
       AdaptorWL[].hasPayloadToSend@
     while
+      "Sending payload" .
       AdaptorWL[].nextPayloadToSend@ [op].pipeOut
     repeat
 

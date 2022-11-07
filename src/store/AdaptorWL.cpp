@@ -10,6 +10,7 @@
 #include "AdaptorWL.hpp"
 #include "BufferTransport.hpp"
 #include "WlpHeader.hpp"
+#include "Version.h"
 
 // All of the wireline protocol messages
 #include "wlp/thrift/generated/AuthenticationOkResponse_types.h"
@@ -52,9 +53,24 @@
 #include "wlp/thrift/generated/TunnelSupportedResponse_types.h"
 #include "wlp/thrift/generated/WarningResponse_types.h"
 
+const i8 C_MIN_SUPPORT_PROTOCOL_VER = 4;
+const i8 C_MAX_SUPPORT_PROTOCOL_VER = 4;
 
 using namespace com::rapidsdata::wirelineprotocol::messages::compatibility;
 using namespace com::rapidsdata::wirelineprotocol::messages::v5;
+
+Stz* AdaptorWL::aState[] {
+    /* NONE */                "NONE"_Stz,
+    /* CONNECTED */           "CONNECTED"_Stz,
+    /* PROTOCOL_COMPATIBLE */ "PROTOCOL_COMPATIBLE"_Stz,
+    /* TUNNELED */            "TUNNELED"_Stz,
+    /* AUTHENTICATED */       "AUTHENTICATED"_Stz,
+    /* READY */               "READY"_Stz,
+    /* PROCESSING_MSG */      "PROCESSING_MSG"_Stz,
+    /* WAITING_FOR_API */     "WAITING_FOR_API"_Stz,
+    /* DISCONNECTED */        "DISCONNECTED"_Stz,
+    /* NENUMS */              "NENUM"_Stz
+};
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,6 +95,7 @@ AdaptorWL::AdaptorWL(void)
   m_pPayloadSendList = new PayloadList();
   m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_NONE;
+  m_eProtocolState = CONNECTED;
 
   m_pTransport = std::make_shared<WLP::BufferTransport>();
   m_pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(m_pTransport);
@@ -129,6 +146,7 @@ void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
   ASSERT(m_eProtocolError == EC_NONE);
   ASSERT(!m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == -1);
 
   ASSERT(pPayload->iPayloadSize() > WLP::C_WLPHEADER_SIZE);
   WLP::WlpHeader* pHeader = (WLP::WlpHeader*) pPayload->pcBuf();
@@ -150,13 +168,74 @@ void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
 void AdaptorWL::vProcessWLMsg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
+
+  ASSERT(m_iCurrentMsgType != -1);
+  ASSERT(m_pCurrentMsg);
   ASSERT(m_eProtocolError == EC_NONE);
 
-  // TODO
+  MessageTypes::type eMsgType = (MessageTypes::type) m_iCurrentMsgType;
+
+  switch (eMsgType) {
+
+    case MessageTypes::type::ProtocolCompatibleRequest:       processProtocolCompatibleRequest(); break;
+    case MessageTypes::type::DisconnectRequest:                                                   break;
+    case MessageTypes::type::PingRequest:                                                         break;
+    case MessageTypes::type::ClearTextTunnelRequest:                                              break;
+    case MessageTypes::type::PlainAuthenticationRequest:                                          break;
+    case MessageTypes::type::KerberosAuthenticationRequest:                                       break;
+    case MessageTypes::type::GssNegotiationMsg:                                                   break;
+    case MessageTypes::type::SessionChangeRequest:                                                break;
+    case MessageTypes::type::QueryExecuteRequest:                                                 break;
+    case MessageTypes::type::QueryProgressRequest:                                                break;
+    case MessageTypes::type::SessionMonitoringRequest:                                            break;
+    case MessageTypes::type::ParseStatementRequest:                                               break;
+    case MessageTypes::type::StatementBindAndExecuteRequest:                                      break;
+    case MessageTypes::type::ClosePreparedStatementRequest:                                       break;
+
+      // The following are messages that should never be received by RapidsSE
+      // as they should never be sent by a client. Only sent by a server.
+      //   ProtocolCompatibleResponse:
+      //   ProtocolIncompatibleResponse:
+      //   ErrorResponse:
+      //   WarningResponse:
+      //   ShutdownNotification:
+      //   DisconnectNotification:
+      //   PingResponse:
+      //   TunnelSupportedResponse:
+      //   AuthenticationOkResponse:
+      //   SessionChangeResponse:
+      //   QueryReceiptResponse:
+      //   RowMetadataResponse:
+      //   RowDataResponse:
+      //   StatementResponse:
+      //   QueryExecuteResponse:
+      //   QueryProgressResponse:
+      //   SessionProtocolVersionResponse:
+      //   SessionDataResponse:
+      //   SessionDroppedMessagesResponse:
+      //   SessionMonitoringResponse:
+      //   ParseStatementResponse:
+      //   ClosePreparedStatementResponse:
+
+    default:
+      // Respond to the client with an error, and set the m_eProtocolError
+      // which will cause the socket to be closed.
+      std::string sMsgType = to_string(eMsgType);
+      vSerialiseErrorResponse(EC_WL_PROTOCOL_ERROR,
+                              "Wireline protocol error: Processing an unexpected wireline message type of %s."_Stz,
+                              sMsgType.c_str());
+      m_eProtocolError = EC_WL_PROTOCOL_ERROR;
+      m_eProtocolState = DISCONNECTED;
+      m_bContinueProcessingMsg = false;
+      vCleanupCurrentMsg();
+      return;
+  }
+
 
   // Delete m_pCurrentMsg when processing is all done
-  m_bContinueProcessingMsg = false;
-  vCleanupCurrentMsg();
+  if (!m_bContinueProcessingMsg) {
+    vCleanupCurrentMsg();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,6 +287,7 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
 {
   MessageTypes::type eMsgType = (MessageTypes::type) iMessageType;
   ASSERT(!m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == -1);
 
   switch (eMsgType) {
 
@@ -255,24 +335,30 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
       // Respond to the client with an error, and set the m_eProtocolError
       // which will cause the socket to be closed.
       std::string sMsgType = to_string(eMsgType);
-      vSerialiseError(EC_WL_PROTOCOL_ERROR,
-                      "Wireline protocol error: Received an unexpected wireline message type of %s."_Stz,
-                      sMsgType.c_str());
+      vSerialiseErrorResponse(EC_WL_PROTOCOL_ERROR,
+                              "Wireline protocol error: Received an unexpected wireline message type of %s."_Stz,
+                              sMsgType.c_str());
       m_eProtocolError = EC_WL_PROTOCOL_ERROR;
-      NEVER_REACH
+      m_eProtocolState = DISCONNECTED;
+      m_bContinueProcessingMsg = false;
+      vCleanupCurrentMsg();
+      return;
   }
 
-  // Decode the message
+  // Set the current message type and decode the message
+  m_iCurrentMsgType = eMsgType;
   i8 iBytesRead = m_pCurrentMsg->read(m_pProtocol.get());
 
   if (iBytesRead == 0) {
     // Respond to the client with an error, and set the m_eProtocolError
     // which will cause the socket to be closed.
     std::string sMsgType = to_string(eMsgType);
-    vSerialiseError(EC_WL_PROTOCOL_ERROR,
-                    "Wireline protocol error: Unable to decode wireline message of type %s."_Stz,
-                    sMsgType.c_str());
+    vSerialiseErrorResponse(EC_WL_PROTOCOL_ERROR,
+                            "Wireline protocol error: Unable to decode wireline message of type %s."_Stz,
+                            sMsgType.c_str());
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
+    m_eProtocolState = DISCONNECTED;
+    m_bContinueProcessingMsg = false;
     vCleanupCurrentMsg();
   }
 
@@ -291,9 +377,10 @@ void AdaptorWL::vCleanupCurrentMsg()
 
 
 /*----------------------------------------------------------------------------*/
-/* Deallocates the current message                                            */
+/* Serialises a thrift ErrorResponse with a given message.                    */
+/* Adds the serialised message to the output queue.                           */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vSerialiseError(eEC eErrorCode, Stz* sFormat, ...)
+void AdaptorWL::vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...)
 {
   va_list args;
 
@@ -304,7 +391,6 @@ void AdaptorWL::vSerialiseError(eEC eErrorCode, Stz* sFormat, ...)
   vsnprintf(sBuf.azChar(), sBuf.nSpace(), sFormat->azChar(),args);
   va_end(args);
 
-  WLP::PayloadObj* pPayload = new WLP::PayloadObj();
 
   // Create and populate the error response object to be serialised
   ErrorResponse oErrorResponse;
@@ -314,15 +400,222 @@ void AdaptorWL::vSerialiseError(eEC eErrorCode, Stz* sFormat, ...)
     oErrorResponse.__set_errorCode(eErrorCode);
   }
 
+  // Serialise the error message to a payload and add it to the output queue
+  vSerialiseMsg(&oErrorResponse, MessageTypes::ErrorResponse);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Serialises an abstract thrift message and adds it to the output queue.     */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vSerialiseMsg(apache::thrift::TBase* pMsg, i8 iMsgType)
+{
+  MessageTypes::type eMsgType = (MessageTypes::type) iMsgType;
+
+  WLP::PayloadObj* pPayload = new WLP::PayloadObj();
+
   // Serialise the error message to a payload
-  m_pTransport->vUseBuffer(pPayload->pcBuf(), pPayload->iPayloadSize());
-  WLP::WlpHeader* pHeader = m_pTransport->pAllocHeader(MessageTypes::ErrorResponse);
-  oErrorResponse.write(m_pProtocol.get());
-  pHeader->vMsgSize(m_pTransport->iBytesWritten());
+  m_pTransport->vUseBuffer(pPayload->pcBuf(), WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
+  WLP::WlpHeader* pHeader = m_pTransport->pAllocHeader(eMsgType);
+  pMsg->write(m_pProtocol.get());
+
+  // Message size needs to be written into the header of the message
+  // as well as the payload object.
+  i8 iMsgSize = m_pTransport->iBytesWritten() + WLP::C_WLPHEADER_SIZE;
+  pHeader->vMsgSize(iMsgSize);
+  pPayload->vSetPayloadSize(iMsgSize);
   m_pTransport->vRemoveBuffer();
 
   // Add it to the send list
   m_pPayloadSendList->vAppend(pPayload);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Change the state and check the state transition                            */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vNextState(eState eNextState)
+{
+  switch(m_eProtocolState) {
+
+    case CONNECTED:
+      if (eNextState != PROTOCOL_COMPATIBLE && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case PROTOCOL_COMPATIBLE:
+      if (eNextState != TUNNELED && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case TUNNELED:
+      if (eNextState != AUTHENTICATED && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case AUTHENTICATED:
+      if (eNextState != READY && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case READY:
+      if (eNextState != PROCESSING_MSG && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case PROCESSING_MSG:
+      if (eNextState != READY && eNextState != WAITING_FOR_API && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case WAITING_FOR_API:
+      if (eNextState != READY && eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    case DISCONNECTED:
+      if (eNextState != DISCONNECTED) {
+        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+        return;
+      }
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Do the transition
+  vTrace("Wireline client transitioning from state %s to state %s\n"_Stz,
+         aState[m_eProtocolState],
+         aState[eNextState]);
+
+  m_eProtocolState = eNextState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Deallocates the current message                                            */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processProtocolCompatibleRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::ProtocolCompatibleRequest);
+  ASSERT(m_eProtocolState == CONNECTED);
+
+  ProtocolCompatibleRequest* pMsg = dynamic_cast<ProtocolCompatibleRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::ProtocolCompatibleRequest).c_str());
+    return;
+  }
+
+  // Create the server build info, required for any response here.
+  s2K sBuildInfo;
+  sBuildInfo.vSprint("RapidsSE build information:\n" \
+                                "  version     %s\n" \
+                                "  from branch %s\n" \
+                                "  by          %s\n" \
+                                "  on          %s\n" \
+                                "  at          %s"_Stz,
+                                C_VERSION_STRING,
+                                C_BUILD_BRANCH,
+                                C_BUILD_USERNAME,
+                                C_BUILD_DATE,
+                                C_BUILD_HOSTNAME );
+
+  // Check if the client is speaking the same protocol version
+  i8 iClientProtocolVer = pMsg->clientProtocolVersion;
+
+  if (iClientProtocolVer < C_MIN_SUPPORT_PROTOCOL_VER ||
+      iClientProtocolVer > C_MAX_SUPPORT_PROTOCOL_VER) {
+
+    // Serialise a ProtocolIncompatibleResponse
+
+    s256 sErrMsg;
+    const eEC eErrType = EC_WL_PROTOCOL_VER_NOT_SUPPORTED;
+
+    if (C_MIN_SUPPORT_PROTOCOL_VER == C_MAX_SUPPORT_PROTOCOL_VER) {
+      sErrMsg.vSprint("%s: client supports %lld, server supports version %lld."_Stz,
+                      aErrorMsg[eErrType],
+                      iClientProtocolVer,
+                      C_MIN_SUPPORT_PROTOCOL_VER);
+    } else {
+      sErrMsg.vSprint("%s: client sent %lld, server supports versions %lld to %lld."_Stz,
+                      aErrorMsg[eErrType],
+                      iClientProtocolVer,
+                      C_MIN_SUPPORT_PROTOCOL_VER,
+                      C_MAX_SUPPORT_PROTOCOL_VER);
+    }
+
+    ProtocolIncompatibleResponse oIncompatibleResponse;
+    oIncompatibleResponse.__set_clientProtocolVersion((int32_t) iClientProtocolVer);
+    oIncompatibleResponse.__set_minimumProtocolVersion(C_MIN_SUPPORT_PROTOCOL_VER);
+    oIncompatibleResponse.__set_maximumProtocolVersion(C_MAX_SUPPORT_PROTOCOL_VER);
+    oIncompatibleResponse.__set_serverSoftwareVersion(const_cast<Stz*>(C_VERSION_STRING)->azChar());
+    oIncompatibleResponse.__set_serverBuildInfo(sBuildInfo.azChar());
+    oIncompatibleResponse.__set_errorMessage(sErrMsg.azChar());
+
+    vSerialiseMsg(&oIncompatibleResponse, MessageTypes::type::ProtocolIncompatibleResponse);
+
+    m_eProtocolError = EC_WL_PROTOCOL_VER_NOT_SUPPORTED;
+    m_bContinueProcessingMsg = false;
+    vNextState(DISCONNECTED);
+    return;
+  }
+
+
+  // Serialise a ProtocolCompatibleResponse
+
+  ProtocolCompatibleResponse oCompatibleResponse;
+  oCompatibleResponse.__set_protocolVersion((int32_t) iClientProtocolVer);
+  oCompatibleResponse.__set_serverSoftwareVersion(const_cast<Stz*>(C_VERSION_STRING)->azChar());
+  oCompatibleResponse.__set_serverBuildInfo(sBuildInfo.azChar());
+
+  vSerialiseMsg(&oCompatibleResponse, MessageTypes::type::ProtocolCompatibleResponse);
+
+  m_bContinueProcessingMsg = false;
+  vNextState(PROTOCOL_COMPATIBLE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Internal error doing dynamic cast of received wireline message             */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
+{
+  Stz* szErrMsg = "%s: Unable to cast decoded message to type %s"_Stz;
+  const eEC eErrType = EC_WL_INTERNAL_ERROR;
+
+  vSerialiseErrorResponse(EC_WL_INTERNAL_ERROR,
+                          szErrMsg,
+                          aErrorMsg[eErrType],
+                          pcTargetType);
+  m_bContinueProcessingMsg = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Internal error doing protocol state transition                             */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
+{
+  Stz* szErrMsg = "%s: Invalid state transition from state %s to state %s"_Stz;
+  const eEC eErrType = EC_WL_INTERNAL_ERROR;
+
+  vSerialiseErrorResponse(EC_WL_INTERNAL_ERROR,
+                          szErrMsg,
+                          aErrorMsg[eErrType],
+                          szFromState,
+                          szToState);
+  m_bContinueProcessingMsg = false;
 }
 
 /*============================================================================*/

@@ -102,13 +102,8 @@ void Step::vAdaptorWLHasPayloadToSendFetch(void)
 {
   ENTRY();
 
-  if (m_pDataStack->nValues() == 0) {
-    m_pDataStack->vPushBol(0);
-    return;
-  }
-
-  Object* pObject = m_pDataStack->aPeekItem(0)->pObj();
-  m_pDataStack->vPushBol(CN_PAYLOADOBJ == pObject->eGetClassNo() ? 1 : 0);
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  m_pDataStack->vPushBol(pAdaptorWL->bHasPayloadToSend() ? 1 : 0);
 
   EXIT();
 }
@@ -140,7 +135,6 @@ void Step::vAdaptorWLProtocolErrorTest(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  ASSERT(pAdaptorWL->bHasPayloadToSend());
 
   m_pDataStack->vPushInt(pAdaptorWL->eProtocolError() == EC_NONE ? 0 : 1);
 
@@ -155,7 +149,6 @@ void Step::vAdaptorWLProtocolErrorFetch(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  ASSERT(pAdaptorWL->bHasPayloadToSend());
 
   m_pDataStack->vPushInt(pAdaptorWL->eProtocolError());
 

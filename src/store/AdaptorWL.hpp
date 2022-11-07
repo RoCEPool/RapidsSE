@@ -28,12 +28,28 @@ namespace STORE
                   , public ApiHelper
   {
   private:
+    enum eState {
+      NONE = 0,
+      CONNECTED,
+      PROTOCOL_COMPATIBLE,
+      TUNNELED,
+      AUTHENTICATED,
+      READY,
+      PROCESSING_MSG,
+      WAITING_FOR_API,
+      DISCONNECTED,
+      NENUMS
+    };
+
+    static Stz* aState[];
+
     // Current State enum
     apache::thrift::TBase* m_pCurrentMsg;
-    i8 m_iCurrentMsgType;
+    i8     m_iCurrentMsgType;
     PayloadList* m_pPayloadSendList;
-    bool m_bContinueProcessingMsg;
-    eEC m_eProtocolError;
+    bool   m_bContinueProcessingMsg;
+    eEC    m_eProtocolError;
+    eState m_eProtocolState;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -46,24 +62,33 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    AdaptorWL(void);
-   ~AdaptorWL(void) noexcept(false);
+    AdaptorWL();
+   ~AdaptorWL() noexcept(false);
   
     static void vRepair(Object* pObject);
 
     void vDecodePayload(WLP::PayloadObj* pPayload);
-    void vProcessWLMsg(void);
-    bool bKeepProcessingMsg(void);
-    eEC  eProtocolError(void);
-    bool bHasPayloadToSend(void);
-    WLP::PayloadObj* pNextPayloadToSend(void);
+    void vProcessWLMsg();
+    bool bKeepProcessingMsg();
+    eEC  eProtocolError();
+    bool bHasPayloadToSend();
+    WLP::PayloadObj* pNextPayloadToSend();
 
   private:
 
+    Footer* aFooter();
     void vDeserialiseMsg(i8 iMessageType);
     void vCleanupCurrentMsg();
-    void vSerialiseError(eEC eErrorCode, Stz* sFormat, ...);
-    Footer* aFooter(void);
+    void vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...);
+    void vSerialiseMsg(apache::thrift::TBase* pMsg, i8 iMsgType);
+    void vNextState(eState eNextState);
+
+    // Wireline message handlers
+    void processProtocolCompatibleRequest();
+
+    // Errors
+    void vErrorDynamicCast(const char* pcTargetType);
+    void vErrorStateTransition(Stz* szFromState, Stz* szToState);
 
   };
 
