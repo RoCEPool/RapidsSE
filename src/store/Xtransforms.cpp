@@ -1234,6 +1234,22 @@ void Xtransforms::vH60_T50_Delete_Empty_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete any <table>/<filter> which is effectively empty                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH60_T60_Delete_Twist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((desc))"_Stz);
+
+  while (G_bEachMain(CK_TWIST)) {
+    vR_H60_T60_Delete_Twist();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH60_T99_End(void)

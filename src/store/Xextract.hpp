@@ -29,11 +29,13 @@ namespace STORE
     ePB  E_eTerm_Bound(Card_Term* p_term);
     i8   E_iTerm_IndexColNo(Card_Term* p_term);
     eRO  E_eTerm_RelOp(Card_Term* p_term);
+    i8   E_iTerm_ResultOdn(Card_Term* p_term);
     i8   E_iTerm_StreamColOdn(Card_Term* p_term);
     i8   E_iTerm_TableColOdn(Card_Term* p_term);
     char E_cTerm_TableSyn(Card_Term* p_term);
     eTE  E_eTerm_TermEval(Card_Term* p_term);
 
+    i8   E_iValue_ResultOdn(Stz* szValue);
     i8   E_iValue_StreamColOdn(Stz* szValue);
     i8   E_iValue_TableColOdn(Stz* szValue);
     char E_cValue_TableColSyn(Stz* szValue);

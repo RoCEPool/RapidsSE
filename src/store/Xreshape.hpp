@@ -73,6 +73,7 @@ namespace STORE
     void vR_H60_T30_UpCopy_filter_pred_Into_bounds(void);
     void vR_H60_T40_Cull_UpCopied_filter_pred(void);
     void vR_H60_T50_Delete_Empty_filter(void);
+    void vR_H60_T60_Delete_Twist(void);
 
     // vHand_70_JoinOrdering
     void vR_H70_T00_Extract_tableList_From_queryBoard(void);

@@ -111,6 +111,7 @@ namespace STORE
     void vH60_T30_UpCopy_filter_pred_Into_bounds(void);
     void vH60_T40_Cull_UpCopied_filter_pred(void);
     void vH60_T50_Delete_Empty_filter(void);
+    void vH60_T60_Delete_Twist(void);
     void vH60_T99_End(void);
 
     // vHand_70_JoinOrdering

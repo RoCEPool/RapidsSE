@@ -646,12 +646,12 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain
   }
 
   if (CK_INDEXJOIN == eMain) {
-    RASSERT(AL_PARTITION == reLevel);
+    reLevel = AL_PARTITION;
     return true;
   }
 
   if (CK_SCAN == eMain) {
-    RASSERT(AL_PARTITION == reLevel);
+    reLevel = AL_PARTITION;
     return true;
   }
 

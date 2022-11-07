@@ -378,6 +378,7 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
   m_pTransforms->vH60_T30_UpCopy_filter_pred_Into_bounds();
   m_pTransforms->vH60_T40_Cull_UpCopied_filter_pred();
   m_pTransforms->vH60_T50_Delete_Empty_filter();
+  m_pTransforms->vH60_T60_Delete_Twist();
 
   m_pTransforms->vH60_T99_End();
 

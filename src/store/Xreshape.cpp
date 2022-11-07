@@ -716,6 +716,16 @@ void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H60_T60_Delete_Twist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vRemoveDeleteMain(CK_TWIST);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                     Join Ordering Hand 70 */
 /*============================================================================*/
@@ -1459,6 +1469,20 @@ void Xreshape::vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
   auto bLambdaFn = [this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
+
+    if (T_bValue_IsResultOrdinal(p_term->szValue())) {
+
+      i8 iResultOrd = E_iValue_ResultOdn(p_term->szValue());
+
+      // TODO: put this in a fn
+      s32 sStmColOdn;
+      sStmColOdn.vSprint("$%lld"_Stz,iResultOrd);
+      p_term->vValue(sStmColOdn);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+
     if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 

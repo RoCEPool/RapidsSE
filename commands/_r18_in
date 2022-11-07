@@ -19,7 +19,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH52_T30_Cull_ExeMarked_exePred"
+/glean_cue_from = "vH60_T60_Delete_Twist"
 /transliterated
 /transform
 /transform3
@@ -33,7 +33,7 @@ select count(*)
          (select l_orderkey
             from lineitem
            group by l_orderkey
-          having sum(l_quantity) > 300)
+          having sum(l_quantity) > 100)
    and c_custkey  = o_custkey
    and o_orderkey = l_orderkey
 ;

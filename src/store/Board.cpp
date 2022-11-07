@@ -299,6 +299,12 @@ void Board::vPinCards(Ribbon* pRibbon)
     else
       pSubRibbon->vLaneNext();
 
+    if (pCard->bIsCard(CK_INDEXJOIN) ||
+        pCard->bIsCard(CK_SCAN)      ||
+        pCard->bIsCard(CK_TABLE)) {
+      eLevel = AL_PARTITION;
+    }
+    else
     if (   pCard->bIsCard(CK_AGGREG)
         || pCard->bIsCard(CK_PROJECT)) {
       Card_Level* p_level = pCard->pSub_level();
@@ -315,10 +321,6 @@ void Board::vPinCards(Ribbon* pRibbon)
         case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
         default                : eLevel = AL_NONE;      break;
       }
-    }
-    else
-    if (pCard->bIsCard(CK_TABLE)) {
-      eLevel = AL_PARTITION;
     }
 
     bool bPrune = false;

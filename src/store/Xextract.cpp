@@ -214,6 +214,19 @@ eRO Xextract::E_eTerm_RelOp(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get result ordinal n  (i.e. #n)                                            */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iTerm_ResultOdn(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
+
+  return i_Col;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get stream column ordinal n  (i.e. $n)                                     */
 /*----------------------------------------------------------------------------*/
 i8 Xextract::E_iTerm_StreamColOdn(Card_Term* p_term)
@@ -276,6 +289,18 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
 
   else return TE_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get result ordinal n  (i.e. #n)                                            */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iValue_ResultOdn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
 }
 
 /*----------------------------------------------------------------------------*/
