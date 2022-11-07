@@ -1568,7 +1568,24 @@ bool Xgearing::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* resolve card (r-l) with grand-sub with given value before given i_Before   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveSubCard(eCK eCard, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card* pMain = G.pDeck->pGetChild(i_Main);
+
+    if ((m_pCard_resolved = pMain->pFindSubCard(eCard))) {
+      G_vUpdateMember(eCard, m_pCard_resolved, __func__);
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find sub of member with given property                                     */

@@ -152,6 +152,7 @@ namespace STORE
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore);
     bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
+    bool G_bResolveSubCard(eCK eSub, i8 i_Before);
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 

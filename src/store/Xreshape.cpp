@@ -534,6 +534,28 @@ void Xreshape::vR_H52_T60_Delete_Empty_where(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H52_T70_Adjust_StmOdn_PostTwist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! G_bResolveSubCard(CK_STREAM,G.i_MainCard))
+    return;
+
+  i8 iOdn_shift = G.p_stream->nChildCards();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
+
+    i8 iLoOdn_stream = E_iStream_OrdLo(G.p_stream);
+    i8 iHiOdn_stream = E_iStream_OrdHi(G.p_stream);
+
+    M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_stream+iOdn_shift,
+                                             iHiOdn_stream+iOdn_shift);
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

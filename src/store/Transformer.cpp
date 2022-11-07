@@ -320,6 +320,7 @@ void Transformer::vHand_52_FlattenIn(i8 iBelow, ...)
   m_pTransforms->vH52_T40_Copy_TwistMarked_tstPred();
   m_pTransforms->vH52_T50_Cull_TwistMarked_tstPred();
   m_pTransforms->vH52_T60_Delete_Empty_where();
+  m_pTransforms->vH52_T70_Adjust_StmOdn_PostTwist();
 
   m_pTransforms->vH52_T99_End();
 

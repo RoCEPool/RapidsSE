@@ -940,6 +940,22 @@ void Xtransforms::vH52_T60_Delete_Empty_where(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH52_T70_Adjust_StmOdn_PostTwist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((transform))"_Stz);
+
+  while (G_bEachMain(CK_TWIST)) {
+    vR_H52_T70_Adjust_StmOdn_PostTwist();
+  }
+
+  vEndTransform();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

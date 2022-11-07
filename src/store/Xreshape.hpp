@@ -60,6 +60,7 @@ namespace STORE
     void vR_H52_T40_Copy_TwistMarked_tstPred(void);
     void vR_H52_T50_Cull_TwistMarked_tstPred(void);
     void vR_H52_T60_Delete_Empty_where(void);
+    void vR_H52_T70_Adjust_StmOdn_PostTwist(void);
 
     // vHand_55_FlattenExists
     void vR_H55_T10_Collapse_Exists_SubQuery(void);
