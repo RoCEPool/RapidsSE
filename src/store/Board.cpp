@@ -272,8 +272,6 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   i8 nCount = 0;
 
-  eAL eLevel = AL_PARTITION;
-
   while (Card* pCard = xBI.pEachMain()) {
     eCK eCard = pCard->eCard();
 
@@ -299,6 +297,7 @@ void Board::vPinCards(Ribbon* pRibbon)
     else
       pSubRibbon->vLaneNext();
 
+    /*
     if (pCard->bIsCard(CK_INDEXJOIN) ||
         pCard->bIsCard(CK_SCAN)      ||
         pCard->bIsCard(CK_TABLE)) {
@@ -322,8 +321,13 @@ void Board::vPinCards(Ribbon* pRibbon)
         default                : eLevel = AL_NONE;      break;
       }
     }
+*/
 
     bool bPrune = false;
+    eAL eLevel = AL_NONE;
+    Card_Level* p_level = pCard->pSub_level();
+    if (p_level)
+      eLevel = (eAL)p_level->Y_iVal(P_Level);
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
   }
 
