@@ -33,7 +33,7 @@ namespace STORE
     i8 m_iCurrentMsgType;
     PayloadList* m_pPayloadSendList;
     bool m_bContinueProcessingMsg;
-    bool m_bProtocolError;
+    eEC m_eProtocolError;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -54,7 +54,7 @@ namespace STORE
     void vDecodePayload(WLP::PayloadObj* pPayload);
     void vProcessWLMsg(void);
     bool bKeepProcessingMsg(void);
-    bool bHasProtocolError(void);
+    eEC  eProtocolError(void);
     bool bHasPayloadToSend(void);
     WLP::PayloadObj* pNextPayloadToSend(void);
 
@@ -62,6 +62,7 @@ namespace STORE
 
     void vDeserialiseMsg(i8 iMessageType);
     void vCleanupCurrentMsg();
+    void vSerialiseError(eEC eErrorCode, Stz* sFormat, ...);
     Footer* aFooter(void);
 
   };

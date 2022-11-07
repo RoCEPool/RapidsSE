@@ -23,6 +23,8 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].keepProcessingMsg@"_Stz,&Step::vAdaptorWLKeepProcessingMsgFetch);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz, &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz, &Step::vAdaptorWLNextPayloadToSendFetch);
+  vAddStep("AdaptorWL[].protocolErrorTest"_Stz, &Step::vAdaptorWLProtocolErrorTest);
+  vAddStep("AdaptorWL[].protocolError@"_Stz, &Step::vAdaptorWLProtocolErrorFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +128,36 @@ void Step::vAdaptorWLNextPayloadToSendFetch(void)
   ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
 
   m_pDataStack->vPushPtr(pPayload);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].protocolErrorTest -- Pushes true if the protocol is out of sync*/
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLProtocolErrorTest(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  ASSERT(pAdaptorWL->bHasPayloadToSend());
+
+  m_pDataStack->vPushInt(pAdaptorWL->eProtocolError() == EC_NONE ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].vAdaptorWLProtocolErrorFetch -- Push the protocol error code   */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLProtocolErrorFetch(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  ASSERT(pAdaptorWL->bHasPayloadToSend());
+
+  m_pDataStack->vPushInt(pAdaptorWL->eProtocolError());
 
   EXIT();
 }

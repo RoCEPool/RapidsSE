@@ -78,7 +78,7 @@ AdaptorWL::AdaptorWL(void)
   m_iCurrentMsgType = -1;
   m_pPayloadSendList = new PayloadList();
   m_bContinueProcessingMsg = false;
-  m_bProtocolError = false;
+  m_eProtocolError = EC_NONE;
 
   m_pTransport = std::make_shared<WLP::BufferTransport>();
   m_pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(m_pTransport);
@@ -127,7 +127,7 @@ void AdaptorWL::vRepair(Object* pObject)
 void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  ASSERT(!m_bProtocolError);
+  ASSERT(m_eProtocolError == EC_NONE);
   ASSERT(!m_pCurrentMsg);
 
   ASSERT(pPayload->iPayloadSize() > WLP::C_WLPHEADER_SIZE);
@@ -150,7 +150,7 @@ void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
 void AdaptorWL::vProcessWLMsg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  ASSERT(!m_bProtocolError);
+  ASSERT(m_eProtocolError == EC_NONE);
 
   // TODO
 
@@ -165,17 +165,17 @@ void AdaptorWL::vProcessWLMsg(void)
 bool AdaptorWL::bKeepProcessingMsg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  return m_bContinueProcessingMsg && !m_bProtocolError;
+  return m_bContinueProcessingMsg && m_eProtocolError == EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Return true if a protocol error was hit and the socket should be closed    */
 /*----------------------------------------------------------------------------*/
-bool AdaptorWL::bHasProtocolError(void)
+eEC AdaptorWL::eProtocolError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
 
-  return m_bProtocolError;
+  return m_eProtocolError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,8 +252,13 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
     //   ClosePreparedStatementResponse:
 
     default:
-      // TODO: respond with an error and close the socket
-      m_bProtocolError = true;
+      // Respond to the client with an error, and set the m_eProtocolError
+      // which will cause the socket to be closed.
+      std::string sMsgType = to_string(eMsgType);
+      vSerialiseError(EC_WL_PROTOCOL_ERROR,
+                      "Wireline protocol error: Received an unexpected wireline message type of %s."_Stz,
+                      sMsgType.c_str());
+      m_eProtocolError = EC_WL_PROTOCOL_ERROR;
       NEVER_REACH
   }
 
@@ -261,8 +266,13 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
   i8 iBytesRead = m_pCurrentMsg->read(m_pProtocol.get());
 
   if (iBytesRead == 0) {
-    // TODO: respond with an error and close the socket
-    m_bProtocolError = true;
+    // Respond to the client with an error, and set the m_eProtocolError
+    // which will cause the socket to be closed.
+    std::string sMsgType = to_string(eMsgType);
+    vSerialiseError(EC_WL_PROTOCOL_ERROR,
+                    "Wireline protocol error: Unable to decode wireline message of type %s."_Stz,
+                    sMsgType.c_str());
+    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vCleanupCurrentMsg();
   }
 
@@ -277,6 +287,42 @@ void AdaptorWL::vCleanupCurrentMsg()
   delete m_pCurrentMsg;
   m_pCurrentMsg = nullptr;
   m_iCurrentMsgType = -1;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Deallocates the current message                                            */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vSerialiseError(eEC eErrorCode, Stz* sFormat, ...)
+{
+  va_list args;
+
+  // Create the error message
+  s16KB sBuf;
+
+  va_start(args,sFormat);
+  vsnprintf(sBuf.azChar(), sBuf.nSpace(), sFormat->azChar(),args);
+  va_end(args);
+
+  WLP::PayloadObj* pPayload = new WLP::PayloadObj();
+
+  // Create and populate the error response object to be serialised
+  ErrorResponse oErrorResponse;
+  oErrorResponse.__set_errorString(sBuf.azChar());
+
+  if (eErrorCode != EC_NONE) {
+    oErrorResponse.__set_errorCode(eErrorCode);
+  }
+
+  // Serialise the error message to a payload
+  m_pTransport->vUseBuffer(pPayload->pcBuf(), pPayload->iPayloadSize());
+  WLP::WlpHeader* pHeader = m_pTransport->pAllocHeader(MessageTypes::ErrorResponse);
+  oErrorResponse.write(m_pProtocol.get());
+  pHeader->vMsgSize(m_pTransport->iBytesWritten());
+  m_pTransport->vRemoveBuffer();
+
+  // Add it to the send list
+  m_pPayloadSendList->vAppend(pPayload);
 }
 
 /*============================================================================*/

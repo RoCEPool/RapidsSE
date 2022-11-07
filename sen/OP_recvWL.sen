@@ -77,12 +77,8 @@
   recvWL_loop
 
   // If we get here then there was a problem receiving the next message from the client.
-  Socket[].close
-  Socket[].clientAddr@ "Connection closed to client at address %v" .printf
-
-  // TODO: Fix this. Use a better error code.
   "recvWL_StartMarker: piping out error marker" .
-  EC_NO_SUCH_TABLE op__execErr
+  EC_WL_SOCKET_CLOSED op__execErr
 
   true
 ;
@@ -95,7 +91,6 @@
   "in recvWL_CLEANING" .
 
   // TODO: This may not be needed if we use vRepair properly
-  Socket[].close
   Socket[].object.isNotNull if
     Socket[].object.delete
   then

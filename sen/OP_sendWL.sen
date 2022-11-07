@@ -49,14 +49,29 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERROR operand                                             */
+/*----------------------------------------------------------------------------*/
+: sendWL_Error \handler
+
+  "sendWL_Error - EV_M_ERROR" .
+
+  // An up-stream operator has sent an error (usually the Adaptor).
+  // This SendWL operator will intercept this and close the socket
+  // before propagating the error.
+  Socket[].close
+  Socket[].clientAddr@ "Connection closed to client at address %v" .printf
+
+  EV_M_ERROR_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING operand                                          */
 /*----------------------------------------------------------------------------*/
-: sendWL_CLEANING \handler
+: sendWL_Cleaning \handler
 
-  "sendWL_CLEANING - EV_M_CLEANING" .
+  "sendWL_Cleaning - EV_M_CLEANING" .
 
   // TODO: This may not be needed if we use vRepair properly
-  Socket[].close
   Socket[].object.isNotNull if
     Socket[].object.delete
   then
@@ -83,7 +98,8 @@
 
   find: sendWL_StartMarker EV_M_START       [op].handler!
   find: sendWL_Payload     EV_D_PAYLOAD     [op].handler!
-  find: sendWL_CLEANING    EV_M_CLEANING    [op].handler!
+  find: sendWL_Cleaning    EV_M_CLEANING    [op].handler!
+  find: sendWL_Error       EV_M_ERROR       [op].handler!
 
   op__loop
 

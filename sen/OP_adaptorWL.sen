@@ -27,6 +27,13 @@
 
   PipeIn[]\clear locals| pPayloadObj |
 
+  // Check if we previously received an error
+  AdaptorWL[].protocolErrorTest if
+    pPayloadObj payloadObj::delete
+    true
+    exit
+  then
+
   // Decode the payload to a message. This might generate payloads to be sent.
   pPayloadObj AdaptorWL[].decodePayload
   pPayloadObj payloadObj::delete
@@ -37,6 +44,13 @@
   while
     [op].pipeOut
   repeat
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
 
   // Process the decoded message.
   begin
@@ -49,6 +63,13 @@
     while
       AdaptorWL[].nextPayloadToSend@ [op].pipeOut
     repeat
+
+    // Check if the protocol is unviable
+    AdaptorWL[].protocolErrorTest if
+      AdaptorWL[].protocolError@ op__execErr
+      true
+      exit
+    then
 
     // Processing a message may also need multiple turns (e.g. for processing
     // a large result set).

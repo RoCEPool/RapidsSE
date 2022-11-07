@@ -33,6 +33,8 @@ public:
   void vAdaptorWLKeepProcessingMsgFetch(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
+  void vAdaptorWLProtocolErrorTest(void);
+  void vAdaptorWLProtocolErrorFetch(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);
