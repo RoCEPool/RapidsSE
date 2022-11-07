@@ -47,6 +47,7 @@ namespace STORE
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
     Card_Call *             p_call;
+    Card_Cast *             p_cast;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
@@ -76,6 +77,7 @@ namespace STORE
     Card_KeyExists *        p_keyExists;
     Card_LBound *           p_lBound;
     Card_MaybeIndexJoin *   p_maybeIndexJoin;
+    Card_Next *             p_next;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;

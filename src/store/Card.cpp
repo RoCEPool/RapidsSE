@@ -1966,6 +1966,19 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Cast.hpp"
+Card_Cast* Card::pSub_cast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Cast* p_cast =
+      _pCard_Cast(pFindSubCard(CK_CAST));
+  return p_cast;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_CmpPred.hpp"
 Card_CmpPred* Card::pSub_cmpPred(void)
 {
@@ -2156,6 +2169,19 @@ Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
   Card_MaybeIndexJoin* p_maybeIndexJoin =
       _pCard_MaybeIndexJoin(pFindSubCard(CK_MAYBEINDEXJOIN));
   return p_maybeIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Next.hpp"
+Card_Next* Card::pSub_next(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Next* p_next =
+      _pCard_Next(pFindSubCard(CK_NEXT));
+  return p_next;
 }
 
 /*----------------------------------------------------------------------------*/

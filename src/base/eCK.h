@@ -19,6 +19,7 @@ enum eCK // card kind
 
   /* */ CK_CALL,
   /* */ CK_CANDINDEX,
+  /* */ CK_CAST,
   /* */ CK_CMPPRED,
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
@@ -72,6 +73,8 @@ enum eCK // card kind
   /* */ CK_LINKSTO,
 
   /* */ CK_MAYBEINDEXJOIN,
+
+  /* */ CK_NEXT,
 
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
@@ -145,6 +148,7 @@ static Stz* aCK[]
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
+  /* */ "CK_CAST"_Stz,         // CK_CAST
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
@@ -198,6 +202,8 @@ static Stz* aCK[]
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
 
   /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
+
+  /* */ "CK_NEXT"_Stz,         // CK_NEXT
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -271,6 +277,7 @@ static Stz* aCK_short[]
 
   /* */ "call"_Stz,            // CK_CALL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
+  /* */ "cast"_Stz,            // CK_CAST
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
@@ -324,6 +331,8 @@ static Stz* aCK_short[]
   /* */ "linksTo"_Stz,         // CK_LINKSTO
 
   /* */ "maybeIndexJoin"_Stz,  // CK_MAYBEINDEXJOIN
+
+  /* */ "next"_Stz,            // CK_NEXT
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION

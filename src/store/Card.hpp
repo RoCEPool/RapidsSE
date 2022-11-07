@@ -32,6 +32,7 @@ namespace STORE
   class Card_Bounds;
 
   class Card_CandIndex;
+  class Card_Cast;
   class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
@@ -76,6 +77,8 @@ namespace STORE
   class Card_Limit;
 
   class Card_MaybeIndexJoin;
+
+  class Card_Next;
 
   class Card_OrdAgg;
   class Card_OrPred;
@@ -343,6 +346,7 @@ namespace STORE
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bounds*        pSub_bounds(void);
+    Card_Cast*          pSub_cast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Constraint*    pSub_constraint(void);
@@ -358,6 +362,7 @@ namespace STORE
     Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
+    Card_Next*          pSub_next(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
