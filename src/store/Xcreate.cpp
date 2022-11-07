@@ -63,12 +63,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
       return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
-
-    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-    if (! T_bValue_IsTableColOrdinal(pTerm_0->szValue()) ||
-        ! T_bValue_IsTableColOrdinal(pTerm_1->szValue()))
+    if (!T_bCmpPred_MaybeBounds(p_cmpPred))
       return C_CONTINUE_RECURSION;
 
     // - - - -
@@ -88,22 +83,42 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
 
     // one of {pCard_term_0,pCard_term_1} is $In
 
-    char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
-    char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-
-    if (cTblSyn_term_0 == cTblSyn) {
-      p_term = new Card_Term("$I1"_Stz);
-      p_bounds->vAppend(p_term);
-      p_term = new Card_Term(pTerm_1->sz());
-      p_bounds->vAppend(p_term);
+    if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+      char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+      if (cTblSyn_term_0 == cTblSyn) {
+        p_term = new Card_Term("$I1"_Stz);
+        p_bounds->vAppend(p_term);
+        p_term = new Card_Term(pTerm_1->sz());
+        p_bounds->vAppend(p_term);
+      }
+      else
+      if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+        char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+        if (cTblSyn_term_1 == cTblSyn) {
+          p_term = new Card_Term("$I1"_Stz);
+          p_bounds->vAppend(p_term);
+          p_term = new Card_Term(pTerm_0->sz());
+          p_bounds->vAppend(p_term);
+        } else {
+          NEVER_REACH
+        }
+      }
     }
     else
-    if (cTblSyn_term_1 == cTblSyn) {
-      p_term = new Card_Term("$I1"_Stz);
-      p_bounds->vAppend(p_term);
-      p_term = new Card_Term(pTerm_0->sz());
-      p_bounds->vAppend(p_term);
+    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+      if (cTblSyn_term_1 == cTblSyn) {
+        p_term = new Card_Term("$I1"_Stz);
+        p_bounds->vAppend(p_term);
+        p_term = new Card_Term(pTerm_0->sz());
+        p_bounds->vAppend(p_term);
+      }
+      else {
+        NEVER_REACH
+      }
     }
     else {
       NEVER_REACH
