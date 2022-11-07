@@ -767,6 +767,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_LBOUND:           return G.p_lBound;
+    case CK_LEVEL:            return G.p_level;
     case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
     case CK_NEXT:             return G.p_next;
     case CK_PARAM:            return G.p_param;
@@ -995,6 +996,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_joinPredList     = nullptr;
   G.p_keyExists        = nullptr;
   G.p_lBound           = nullptr;
+  G.p_level            = nullptr;
   G.p_maybeIndexJoin   = nullptr;
   G.p_next             = nullptr;
   G.p_param            = nullptr;
@@ -1336,6 +1338,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
+    case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
@@ -1642,6 +1645,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
+    case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;

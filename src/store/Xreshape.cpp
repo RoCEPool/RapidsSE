@@ -115,6 +115,58 @@ void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H10_T60_Add_level(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.p_level = G.p_MainCard->pSub_level();
+  if (G.p_level)
+    return;
+
+  G.p_level = new Card_Level(AL_PARTITION);
+  G.p_MainCard->vPush(G.p_level);
+
+  /*
+  if (CK_INDEXJOIN == G.e_MainCard) {
+    G.e_Level = AL_PARTITION;
+    G.p_PriorToMain = G.p_MainCard;
+    G.e_PriorToMain = G.e_MainCard;
+    return;
+  }
+  if (CK_SCAN == G.e_MainCard) {
+    G.e_Level = AL_PARTITION;
+    G.p_PriorToMain = G.p_MainCard;
+    G.e_PriorToMain = G.e_MainCard;
+    return;
+  }
+  if (CK_TABLE == G.e_MainCard) {
+    G.e_Level = AL_PARTITION;
+    G.p_PriorToMain = G.p_MainCard;
+    G.e_PriorToMain = G.e_MainCard;
+    return;
+  }
+
+  Card_Level* p_level;
+  if (CK_AGGREG == G.e_MainCard) {
+    G.e_Level = AL_PARTITION;
+    G.p_PriorToMain = G.p_MainCard;
+    G.e_PriorToMain = G.e_MainCard;
+    return;
+  }
+
+
+//  if ((CK_FILTER == G.e_MainCard || CK_WHERE == G.e_MainCard) && CK_AGGREG != ePrior) {
+//    // filter can be at P/N/O
+//    return;
+//  }
+*/
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                     Table Analysis Hand 20 */
 /*============================================================================*/

@@ -76,6 +76,7 @@ namespace STORE
     Card_JoinPredList *     p_joinPredList;
     Card_KeyExists *        p_keyExists;
     Card_LBound *           p_lBound;
+    Card_Level *            p_level;
     Card_MaybeIndexJoin *   p_maybeIndexJoin;
     Card_Next *             p_next;
     Card_Param *            p_param;

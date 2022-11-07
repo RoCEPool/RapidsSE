@@ -19,7 +19,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vHZ0_T40_Reinstate_next"
+/glean_cue_from = "vH10_T60_Add_All_level"
 /transliterated
 /transform
 /transform3

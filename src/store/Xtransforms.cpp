@@ -160,6 +160,25 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add level to all pile                                                      */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T60_Add_All_level(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "replace all <scan>'s with their children"_Stz);
+
+  G.e_Level = AL_PARTITION;
+
+  while (G_bEachMain()) {
+    vR_H10_T60_Add_level();
+  }
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* linearize board by deleting all redundant <stage>'s                        */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH10_T80_Delete_Redundant_stages(void)

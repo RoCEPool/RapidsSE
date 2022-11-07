@@ -21,6 +21,7 @@ namespace STORE
     void vR_H10_T30_Delete_send(void);
     void vR_H10_T40_Delete_stage(void);
     void vR_H10_T50_Cull_scan_Leaving_table(void);
+    void vR_H10_T60_Add_level(void);
     void vR_H10_T90_Hide_Ignorable_stage(void);
 
     // vHand_20_TableAnalysis

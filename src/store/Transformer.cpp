@@ -152,6 +152,7 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
     m_pTransforms->vH10_T30_Delete_All_send();
     m_pTransforms->vH10_T40_Delete_All_stage();
     m_pTransforms->vH10_T50_Cull_scan_Leaving_table();
+    m_pTransforms->vH10_T60_Add_All_level();
 
     //m_pTransforms->vH10_T80_Delete_Redundant_stages();
     //m_pTransforms->vH10_T90_Hide_Ignorable_stages();

@@ -32,6 +32,7 @@ namespace STORE
     void vH10_T30_Delete_All_send(void);
     void vH10_T40_Delete_All_stage(void);
     void vH10_T50_Cull_scan_Leaving_table(void);
+    void vH10_T60_Add_All_level(void);
     void vH10_T80_Delete_Redundant_stages(void);
     void vH10_T90_Hide_Ignorable_stages(void);
     void vH10_T99_End(void);
