@@ -223,7 +223,9 @@ void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
     m_pTransforms->vH30_T10_Produce_stream_UnderAll_table();
     m_pTransforms->vH30_T12_Produce_stream_UnderAll_project();
     m_pTransforms->vH30_T14_Produce_stream_UnderAll_aggreg();
-    m_pTransforms->vH30_T20_Derive_ordinalRange_ForAll_stream();
+    m_pTransforms->vH30_T20_Derive_ordinalRange_ForAll_table_stream();
+    m_pTransforms->vH30_T22_Derive_ordinalRange_ForAll_project_stream();
+    m_pTransforms->vH30_T24_Derive_ordinalRange_ForAll_aggreg_stream();
     m_pTransforms->vH30_T30_Convert_where_rpnCalc_To_boolCalc();
     m_pTransforms->vH30_T40_Convert_stmColOdn_To_tblColOdn();
   }

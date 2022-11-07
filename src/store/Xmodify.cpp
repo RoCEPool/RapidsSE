@@ -422,7 +422,35 @@ void Xmodify::M_vScan_Produce_indexList(Card_Scan* p_scan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vStream_Derive_OrdinalRange(Card_Stream* p_stream, char cTblSyn)
+void Xmodify::M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 nStreamCols = p_stream->pSub_stmColList()->nChildCards();
+  p_stream->Y_vSet(P_OrdLo, (i8)1);
+  p_stream->Y_vSet(P_OrdHi, nStreamCols);
+
+  p_stream->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 nStreamCols = p_stream->pSub_stmColList()->nChildCards();
+  p_stream->Y_vSet(P_OrdLo, (i8)1);
+  p_stream->Y_vSet(P_OrdHi, nStreamCols);
+
+  p_stream->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

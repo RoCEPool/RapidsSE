@@ -402,14 +402,46 @@ void Xtransforms::vH30_T14_Produce_stream_UnderAll_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T20_Derive_ordinalRange_ForAll_stream(void)
+void Xtransforms::vH30_T20_Derive_ordinalRange_ForAll_table_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_H30_T20_Derive_ordinalRange_For_stream();
+    vR_H30_T20_Derive_ordinalRange_For_table_stream();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* derive the ordinal properties &lo..&hi range for each <stream>             */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T22_Derive_ordinalRange_ForAll_project_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
+
+  while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
+    vR_H30_T22_Derive_ordinalRange_For_project_stream();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* derive the ordinal properties &lo..&hi range for each <stream>             */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
+
+  while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
+    vR_H30_T24_Derive_ordinalRange_For_aggreg_stream();
   }
 
   vEndTransform();

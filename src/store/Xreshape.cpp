@@ -201,21 +201,6 @@ void Xreshape::vR_H20_T20_Produce_tablePtn_Under_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T20_Derive_ordinalRange_For_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  M_vStream_Derive_OrdinalRange(G.p_stream, G.p_table->cValue());
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                   Predicate Pullup Hand 40 */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xreshape::vR_H30_T10_Produce_stream_Under_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -248,6 +233,35 @@ void Xreshape::vR_H30_T14_Produce_stream_Under_aggreg(void)
   G.p_stream = C_pProduce_stream_ofAggreg(G.p_aggElist);
 
   G.p_aggreg->vAppend(G.p_stream);
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H30_T20_Derive_ordinalRange_For_table_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H30_T22_Derive_ordinalRange_For_project_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M_vStream_Derive_OrdinalRange_project(G.p_stream);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H30_T24_Derive_ordinalRange_For_aggreg_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,6 +310,12 @@ void Xreshape::vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void)
   G.p_MainCard->vApplyRecursive(CK_TERM, bLambdaFn);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                   Predicate Pullup Hand 40 */
+/*============================================================================*/
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
