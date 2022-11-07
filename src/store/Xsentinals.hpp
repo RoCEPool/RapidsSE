@@ -43,6 +43,7 @@ namespace STORE
     eAL    e_Level;
 
     Card_AbsJoin *          p_absJoin;
+    Card_AggElist *         p_aggElist;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
@@ -85,6 +86,7 @@ namespace STORE
     Card_Permutation *      p_permutation;
     Card_Permutation *      p_permutation_low;
     Card_Project *          p_project;
+    Card_ProjElist *        p_projElist;
     Card_PtnCol *           p_ptnCol;
     Card_PtnColList *       p_ptnColList;
     Card_PtnColNm *         p_ptnColNm;

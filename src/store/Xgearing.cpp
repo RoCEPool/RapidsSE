@@ -734,6 +734,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return G.p_absJoin;
+    case CK_AGGELIST:         return G.p_aggElist;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUNDS:           return G.p_bounds;
@@ -775,6 +776,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_PARTITION:        return G.p_partition;
     case CK_PERMUTATION:      return G.p_permutation;
     case CK_PROJECT:          return G.p_project;
+    case CK_PROJELIST:        return G.p_projElist;
     case CK_PTNCOL:           return G.p_ptnCol;
     case CK_PTNCOLLIST:       return G.p_ptnColList;
     case CK_PTNCOLNM:         return G.p_ptnColNm;
@@ -963,6 +965,7 @@ void Xgearing::G_vClearMembers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G.p_absJoin          = nullptr;
+  G.p_aggElist         = nullptr;
   G.p_aggreg           = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bounds           = nullptr;
@@ -1005,6 +1008,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_permutation      = nullptr;
   G.p_permutation_low  = nullptr;
   G.p_project          = nullptr;
+  G.p_projElist        = nullptr;
   G.p_ptnCol           = nullptr;
   G.p_ptnColList       = nullptr;
   G.p_ptnColNm         = nullptr;
@@ -1305,6 +1309,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
   switch (eMember) {
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
+    case CK_AGGELIST:         *((Card**)&G.p_aggElist)         = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
@@ -1346,6 +1351,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
+    case CK_PROJELIST:        *((Card**)&G.p_projElist)        = pCard; break;
     case CK_PTNCOL:           *((Card**)&G.p_ptnCol)           = pCard; break;
     case CK_PTNCOLLIST:       *((Card**)&G.p_ptnColList)       = pCard; break;
     case CK_PTNCOLNM:         *((Card**)&G.p_ptnColNm)         = pCard; break;
@@ -1614,6 +1620,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
+    case CK_AGGELIST:         return "G.p_aggElist"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
@@ -1653,6 +1660,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_PARTITION:        return "G.p_partition"_Stz;
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
+    case CK_PROJELIST:        return "G.p_projElist"_Stz;
     case CK_PTNCOL:           return "G.p_ptnCol"_Stz;
     case CK_PTNCOLLIST:       return "G.p_ptnColList"_Stz;
     case CK_PTNCOLNM:         return "G.p_ptnColNm"_Stz;

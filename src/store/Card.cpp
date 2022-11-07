@@ -1927,6 +1927,19 @@ void Card::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_AggElist.hpp"
+Card_AggElist* Card::pSub_aggElist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_AggElist* p_aggElist =
+      _pCard_AggElist(pFindSubCard(CK_AGGELIST));
+  return p_aggElist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_As.hpp"
 Card_As* Card::pSub_as(void)
 {
@@ -2182,6 +2195,19 @@ Card_Next* Card::pSub_next(void)
   Card_Next* p_next =
       _pCard_Next(pFindSubCard(CK_NEXT));
   return p_next;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_ProjElist.hpp"
+Card_ProjElist* Card::pSub_projElist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_ProjElist* p_projElist =
+      _pCard_ProjElist(pFindSubCard(CK_PROJELIST));
+  return p_projElist;
 }
 
 /*----------------------------------------------------------------------------*/

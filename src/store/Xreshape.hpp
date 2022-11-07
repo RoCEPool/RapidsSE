@@ -27,11 +27,13 @@ namespace STORE
     // vHand_20_TableAnalysis
     void vR_H20_T10_AAffix_tableSyn_To_table(void);
     void vR_H20_T20_Produce_tablePtn_Under_table(void);
-    void vR_H20_T30_Produce_stream_Under_table(void);
 
     // vHand_30_StreamAnalysis
-    void vR_H30_T10_Derive_ordinalRange_For_stream(void);
-    void vR_H30_T20_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_H30_T10_Produce_stream_Under_table(void);
+    void vR_H30_T12_Produce_stream_Under_project(void);
+    void vR_H30_T14_Produce_stream_Under_aggreg(void);
+    void vR_H30_T20_Derive_ordinalRange_For_stream(void);
+    void vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void);
 
     // vHand_40_PredicatePullup

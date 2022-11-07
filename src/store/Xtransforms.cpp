@@ -341,6 +341,8 @@ void Xtransforms::vH30_T00_Begin(void)
   vHH_Begin();
 
   m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,9 +356,44 @@ void Xtransforms::vH30_T10_Produce_stream_UnderAll_table(void)
 
   vStreamAnalysisReset();
 
-  // E <scan>
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H20_T30_Produce_stream_Under_table();
+    vR_H30_T10_Produce_stream_Under_table();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a <stream> under every <project>                                       */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T12_Produce_stream_UnderAll_project(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "add a <stream> under every <project>"_Stz);
+
+  vStreamAnalysisReset();
+
+  while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
+    vR_H30_T12_Produce_stream_Under_project();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a <stream> under every <aggreg>                                        */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH30_T14_Produce_stream_UnderAll_aggreg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "add a <stream> under every <aggreg>"_Stz);
+
+  vStreamAnalysisReset();
+
+  while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
+    vR_H30_T14_Produce_stream_Under_aggreg();
   }
 
   vEndTransform();
@@ -372,7 +409,7 @@ void Xtransforms::vH30_T20_Derive_ordinalRange_ForAll_stream(void)
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_H30_T10_Derive_ordinalRange_For_stream();
+    vR_H30_T20_Derive_ordinalRange_For_stream();
   }
 
   vEndTransform();
@@ -388,7 +425,7 @@ void Xtransforms::vH30_T30_Convert_where_rpnCalc_To_boolCalc(void)
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H30_T20_Convert_where_rpnCalc_To_boolCalc();
+    vR_H30_T30_Convert_where_rpnCalc_To_boolCalc();
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);

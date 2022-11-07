@@ -194,19 +194,6 @@ void Xreshape::vR_H20_T20_Produce_tablePtn_Under_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_H20_T30_Produce_stream_Under_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  m_pTable = A_pAccess_Table(G.p_tableNm->sz());
-  G.p_stream = C_pProduce_stream_ofTable(m_pTable);
-
-  G.p_table->vAppend(G.p_stream);
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                   Stream Analysis Hand 30 */
 /*============================================================================*/
@@ -214,7 +201,7 @@ void Xreshape::vR_H20_T30_Produce_stream_Under_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T10_Derive_ordinalRange_For_stream(void)
+void Xreshape::vR_H30_T20_Derive_ordinalRange_For_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -229,7 +216,44 @@ void Xreshape::vR_H30_T10_Derive_ordinalRange_For_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T20_Convert_where_rpnCalc_To_boolCalc(void)
+void Xreshape::vR_H30_T10_Produce_stream_Under_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pTable = A_pAccess_Table(G.p_tableNm->sz());
+  G.p_stream = C_pProduce_stream_ofTable(m_pTable);
+
+  G.p_table->vAppend(G.p_stream);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H30_T12_Produce_stream_Under_project(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+
+  G.p_project->vAppend(G.p_stream);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H30_T14_Produce_stream_Under_aggreg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_stream = C_pProduce_stream_ofAggreg(G.p_aggElist);
+
+  G.p_aggreg->vAppend(G.p_stream);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

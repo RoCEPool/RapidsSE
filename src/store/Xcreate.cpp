@@ -443,6 +443,102 @@ Card_Size* Xcreate::C_pProduce_size_ofTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce composite <stream> of <aggreg>                                     */
+/*----------------------------------------------------------------------------*/
+Card_Stream* Xcreate::C_pProduce_stream_ofAggreg(Card_AggElist* p_aggElist)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Stream *p_stream = new Card_Stream;
+  Card_StmColList *p_stmColList = new Card_StmColList;
+  p_stream->vAppend(p_stmColList);
+
+  i8 i_Expr = 0;
+  CardIter xCI_elist(p_aggElist);
+  while (Card_Expr* p_expr = _pCard_Expr(xCI_elist.pEachChild())) {
+    Card_As*   p_expr_as   = nullptr;
+    Card_Type* p_expr_type = nullptr;
+
+    i_Expr++;
+    CardIter xCI_expr(p_expr);
+    while (Card* p_expr_sub = xCI_expr.pEachChild()) {
+
+      eCK e_expr_sub = p_expr_sub->eCard();
+
+      if (CK_AS == e_expr_sub)
+        p_expr_as = _pCard_As(p_expr_sub);
+      else
+      if (CK_TYPE == e_expr_sub)
+        p_expr_type = _pCard_Type(p_expr_sub);
+
+    }
+
+    Card_StmCol* p_stmCol = new Card_StmCol();
+    p_stmColList->vAppend(p_stmCol);
+
+    Card_StmColNm* p_stmColNm = new Card_StmColNm();
+    if (p_expr_as)
+      p_stmColNm->vValue(p_expr_as->szValue());
+    else
+      p_stmColNm->vValueSprint("__%lld"_Stz,i_Expr);;
+    p_stmCol->vAppend(p_stmColNm);
+
+    Card_Type* p_type = _pCard_Type(p_expr_type->pDupCardAndSubCards());
+    p_stmCol->vAppend(p_type);
+  }
+
+  return p_stream;
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce composite <stream> of <project>                                    */
+/*----------------------------------------------------------------------------*/
+Card_Stream* Xcreate::C_pProduce_stream_ofProject(Card_ProjElist* p_projElist)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Stream *p_stream = new Card_Stream;
+  Card_StmColList *p_stmColList = new Card_StmColList;
+  p_stream->vAppend(p_stmColList);
+
+  i8 i_Expr = 0;
+  CardIter xCI_elist(p_projElist);
+  while (Card_Expr* p_expr = _pCard_Expr(xCI_elist.pEachChild())) {
+    Card_As*   p_expr_as   = nullptr;
+    Card_Type* p_expr_type = nullptr;
+
+    i_Expr++;
+    CardIter xCI_expr(p_expr);
+    while (Card* p_expr_sub = xCI_expr.pEachChild()) {
+
+      eCK e_expr_sub = p_expr_sub->eCard();
+
+      if (CK_AS == e_expr_sub)
+        p_expr_as = _pCard_As(p_expr_sub);
+      else
+      if (CK_TYPE == e_expr_sub)
+        p_expr_type = _pCard_Type(p_expr_sub);
+
+    }
+
+    Card_StmCol* p_stmCol = new Card_StmCol();
+    p_stmColList->vAppend(p_stmCol);
+
+    Card_StmColNm* p_stmColNm = new Card_StmColNm();
+    if (p_expr_as)
+      p_stmColNm->vValue(p_expr_as->szValue());
+    else
+      p_stmColNm->vValueSprint("__%lld"_Stz,i_Expr);;
+    p_stmCol->vAppend(p_stmColNm);
+
+    Card_Type* p_type = _pCard_Type(p_expr_type->pDupCardAndSubCards());
+    p_stmCol->vAppend(p_type);
+  }
+
+  return p_stream;
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce composite <stream> of table                                        */
 /*----------------------------------------------------------------------------*/
 Card_Stream* Xcreate::C_pProduce_stream_ofTable(Table* pTable)
