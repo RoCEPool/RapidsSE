@@ -1583,7 +1583,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! T_bStage_ReinstateV2(G.e_Level, G.p_MainCard, G.p_PriorToMain)) {
+  if (! T_bStage_ReinstateV3(G.e_Level, G.p_MainCard, G.p_PriorToMain)) {
     G.p_PriorToMain = G.p_MainCard;
     return;
   }

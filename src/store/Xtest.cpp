@@ -674,6 +674,32 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bStage_ReinstateV3(eAL& reLevel, Card* p_Main, Card* p_PriorToMain)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  eCK eMain  = p_Main->eCard();
+  eCK ePrior = p_PriorToMain ? p_PriorToMain->eCard() : CK_NONE;
+
+  if (CK_AGGREG == ePrior)
+    return false;
+
+  if (CK_FILTER == eMain || CK_WHERE == eMain)
+    return false;
+
+
+  if (CK_INDEXJOIN == eMain)
+    return true;
+
+  if (CK_SCAN == eMain)
+    return true;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
 Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,

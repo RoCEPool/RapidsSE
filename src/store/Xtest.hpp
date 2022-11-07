@@ -51,6 +51,7 @@ namespace STORE
     bool T_bStage_Reinstate(eCK eMain, eCK eSubsequent);
     bool T_bStage_ReinstateV2(eCK eMain, eCK eSubsequent, eAL eLevel);
     bool T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain);
+    bool T_bStage_ReinstateV3(eAL& reLevel, Card* p_Main, Card* p_PriorToMain);
 
     Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& ri_StreamColNo);
 
