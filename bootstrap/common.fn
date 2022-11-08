@@ -41,6 +41,7 @@ readonly NODE_CFG_PARTITIONS_KEY="partitions"
 readonly NODE_CFG_THREADS_KEY="threads"
 readonly NODE_CFG_MEM_KEY="mem"
 readonly NODE_CFG_CLUSTERID_KEY="clusterid"
+readonly NODE_CFG_DISK_KEY="disk_paths"
 readonly NODE_CFG_PARAMS_KEY="params"
 
 # An array of all mandatory node configuration settings.
@@ -884,6 +885,29 @@ function specificNodeCfgsSetValue() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets an array of values for a key in the dynamically created associative arrays for
+## the certain specified node name.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the key to be set.
+##  $2 : The name of the node
+##  $3 : The array of values to set this key for
+
+function singleNodeCfgsSetValues() {
+
+  local key="$1"
+  shift
+  local nodeName="$1"
+  shift
+  local -a value=("$@")
+
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${value[@]}\""
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Sets a value for a key in a dynamically created associative array.
 ##
 ## NB: Not relying on bash v4.3 which introduces reference variables that would
@@ -906,6 +930,36 @@ function nodeCfgSetValue() {
   # Here be dragons
   #shellcheck disable=SC2140
   eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${escapedVal}\""
+
+  # We need to include escaped quotes around $value because it may contain strings
+  # and this prevents the line from becoming a syntax error.
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets a value for a key in a dynamically created associative array.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+##  $2 : The name of the key in this node's associate array.
+##  $3 : The value to set against this key in the node's associate array.
+
+function nodeCfgSetValues() {
+  local nodeName=$1
+  shift
+  local key=$1
+  shift
+  local -a value=("$@")
+
+  # Escape any quotes in the value
+  #local escapedVal
+  #escapedVal="$(escapeDoubleQuotes "${value[@]}")"
+
+  # Here be dragons
+  #shellcheck disable=SC2140
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${value[@]}\""
 
   # We need to include escaped quotes around $value because it may contain strings
   # and this prevents the line from becoming a syntax error.

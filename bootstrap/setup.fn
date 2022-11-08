@@ -56,6 +56,7 @@ readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
          NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
          NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
          NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
+         NODE_CFG_DEFAULT_DISK_PATH="/opt/rapidsse"
 readonly NODE_CFG_DEFAULT_PARAMS=""
 
 readonly MINIMUM_RAM_SIZE="4"
@@ -614,6 +615,9 @@ function createConfiguration() {
   # installation directory
   askInstallDir
 
+  # (advanced) disk paths
+  askDiskPaths
+
   # shared memory size
   askMemSize
 
@@ -622,6 +626,9 @@ function createConfiguration() {
 
   # (advanced) threads
   askThreads
+
+  # (advanced) validate the disk paths exist
+  # validateDiskPaths
 
   # (advanced) additional parameters
   askParams
@@ -1452,6 +1459,107 @@ function askThreads() {
   specificNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter the root hard disk paths for all nodes.
+
+# shellcheck disable=SC2120
+function askDiskPaths() {
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  echo ""
+  echo "Hard Disk Paths"
+  echo "--------------------"
+  echo ""
+  echo "RapidsSE requires the paths to the various hard disks mounted on each node"
+  echo "that will be used for unload and reload operations."
+  echo ""
+  echo "If no paths are given, unload and reload will not be available."
+  echo ""
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Get the first path
+    local line
+    local re="^( |[[:space:]])+"
+    declare -a diskroots=()
+
+    while true
+    do
+      echo -n "Enter a disk path for ${nodeName} and press return : "
+      IFS=$'\n' read -r line
+
+      if [[ ${line} =~ ${re} ]]; then
+        echo "Invalid input: Path cannot start with whitespace."
+        continue
+      fi
+
+      if [[ "${line:0:1}" != "/" ]]; then
+        echo "Invalid input: Path cannot be a relative path."
+        continue
+      fi
+
+      # Paths cannot contain quotes - it's just too difficult for all involved
+      if [[ "${line}" =~ [\'\"] ]]; then
+        echo "Invalid input: Path cannot contain single or double quotes."
+        continue
+      fi
+
+      # Warn against whitespace in directory path
+      if [[ "${line}" = *[[:space:]]* ]]; then
+        echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
+      fi
+
+      diskroots+=("${line}")
+      break
+    done
+
+    while true
+    do
+      echo -n "Enter another disk path for ${nodeName}, or enter an empty line to finish : "
+      IFS=$'\n' read -r line
+
+      if [[ ${line} =~ ${re} ]]; then
+        echo "Invalid input: Path cannot start with whitespace."
+        continue
+      fi
+
+      if [ -z "${line:-}" ]; then
+        break
+      fi
+
+      if [[ "${line:0:1}" != "/" ]]; then
+        echo "Invalid input: Path cannot be a relative path."
+        continue
+      fi
+
+      # Paths cannot contain quotes - it's just too difficult for all involved
+      if [[ "${line}" =~ [\'\"] ]]; then
+        echo "Invalid input: Path cannot contain single or double quotes."
+        continue
+      fi
+
+      # Warn against whitespace in directory path
+      if [[ "${line}" = *[[:space:]]* ]]; then
+        echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
+      fi
+
+      diskroots+=("${line}")
+    done
+
+    if [ ${DEBUG} -eq 1 ]; then
+      debugPrint "\nGot the following disk paths for ${nodeName}:"
+      printIndentArray 2 "${diskroots[@]}"
+    fi
+
+    singleNodeCfgsSetValues "${NODE_CFG_DISK_KEY}" "${nodeName}" "${diskroots[@]}"
+  done
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Ask the user to enter any other command line parameters to be applied to all
