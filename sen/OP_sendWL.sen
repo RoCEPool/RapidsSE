@@ -71,13 +71,6 @@
 
   "sendWL_Cleaning - EV_M_CLEANING" .
 
-  // TODO: This may not be needed if we use vRepair properly
-  Socket[].object.isNotNull if
-    Socket[].object.delete
-  then
-
-  Socket[].delete
-
   EV_M_CLEANING_handler
 ;
 

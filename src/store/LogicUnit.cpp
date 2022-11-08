@@ -51,6 +51,7 @@
 #include "PlanOperand.hpp"
 #include "Dynamo.hpp"
 #include "Port.hpp"
+#include "Socket.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -156,7 +157,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                       LR_SENDNODE)
 ,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                          LR_SENDS)
 ,         m_xpSendWL(this,RF_REPAIR_NONE,  nullptr,                         LR_SENDWL)
-,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                         LR_SOCKET)
+,         m_xpSocket(this,RF_REPAIR_DELETE, Socket::vRepair,                LR_SOCKET)
 ,          m_xpStage(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                          LR_STATS)
 ,        m_xpStencil(this,RF_REPAIR_DELETE,       Stencil::vRepair,        LR_STENCIL)

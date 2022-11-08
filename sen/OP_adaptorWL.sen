@@ -92,9 +92,6 @@
 
   "adaptorWL_Cleaning - EV_M_CLEANING" .
 
-  // TODO: This may not be needed if we use vRepair properly
-  AdaptorWL[].delete
-
   EV_M_CLEANING_handler
 ;
 

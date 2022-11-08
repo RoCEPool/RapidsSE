@@ -40,7 +40,9 @@ namespace BASE
     Socket(Object* pIsFor, int iSocketId, Port* pFromPort);
     Socket(Object* pIsFor, int iSocketId);
    ~Socket(void) noexcept(false);
-      
+
+    static void vRepair(Object* pObject);
+
     Object* pReceivedObject(void);
     void    vReceivedObject(Object* pReceivedObject);
     Object* pRecvObject(void);

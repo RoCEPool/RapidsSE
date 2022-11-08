@@ -89,12 +89,15 @@ Socket::Socket(Object* pIsFor, int iSocketId)
 Socket::~Socket(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
+
   delete m_pRejectJob;
   m_pRejectJob = nullptr;
   
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   m_aLowBuff = nullptr;
+
+  delete m_pReceivedObject;
+  m_pReceivedObject = nullptr;
   
   -- gixSocket;
   
@@ -104,6 +107,24 @@ Socket::~Socket(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* repair the socket                                                          */
+/*----------------------------------------------------------------------------*/
+void Socket::vRepair(Object* pObject)
+{
+  _static_
+
+  SysCall oSysCall;
+
+  Socket* pSocket = _pSocket(pObject);
+
+  if (pSocket->bIsOpen()) {
+    pSocket->bClose(oSysCall);
+  }
+
+  delete pSocket;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
