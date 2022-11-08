@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* _r_ba -- sub_query test : pattern a/b -> ba                                */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
+
+_orders
+create index O_idx0 on orders(O_ORDERKEY);
+
+_customer
+create index C_Idx0 ON customer(C_CUSTKEY);
+
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load customer "../tpch/sf_0001/customer.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_cue_from = "vHZ0_T10_Restore_stmColOdn_from_tblColOdn"
+/transliterated
+/transform
+/transform3
+/glean_interactive
+/weave
+/weaved
+/pipelineName = "r_ba"
+select l_orderkey, sum(l_quantity)
+            from lineitem
+           group by l_orderkey
+          having sum(l_quantity) > 160
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
