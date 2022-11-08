@@ -669,7 +669,7 @@ void AdaptorWL::processPlainAuthenticationRequest()
   vSerialiseAndSendMsg(&oAuthResponse, MessageTypes::type::AuthenticationOkResponse);
 
   m_bContinueProcessingMsg = false;
-  vNextState(READY);
+  vNextState(AUTHENTICATED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,6 +721,7 @@ void AdaptorWL::processGssNegotiationMsg()
   m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
   vNextState(DISCONNECTED);
+//  vNextState(AUTHENTICATED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,7 +732,7 @@ void AdaptorWL::processSessionChangeRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::SessionChangeRequest);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({AUTHENTICATED})) { return; }
 
   SessionChangeRequest* pMsg = dynamic_cast<SessionChangeRequest*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -739,12 +740,29 @@ void AdaptorWL::processSessionChangeRequest()
     return;
   }
 
-  vErrorMessageNotSupported();
+  const char* pcDefaultCatalog = nullptr;
+  const char* pcDefaultSchema  = nullptr;
+  // Note: we ignore the defaultFederation field in this message. Doesn't apply to SE.
 
-  // TODO: populate
+  if (pMsg->__isset.defaultCatalog) {
+    pcDefaultCatalog = pMsg->defaultCatalog.c_str();
+  }
 
-//  m_bContinueProcessingMsg = false;
-//  vNextState(DISCONNECTED);
+  if (pMsg->__isset.defaultSchema) {
+    pcDefaultSchema = pMsg->defaultSchema.c_str();
+  }
+
+  // TODO: do something with the default catalog and schema
+
+
+  // Send a SessionChangeResponse.
+  SessionChangeResponse oSsnResponse;
+  oSsnResponse.sessionId = "ABCD";    // TODO
+  oSsnResponse.sessionKey = 1234;     // TODO
+  vSerialiseAndSendMsg(&oSsnResponse, MessageTypes::type::SessionChangeResponse);
+
+  m_bContinueProcessingMsg = false;
+  vNextState(READY);
 }
 
 /*----------------------------------------------------------------------------*/
