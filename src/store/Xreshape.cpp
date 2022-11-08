@@ -1693,8 +1693,9 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
     RASSERT(G.pDeck->pGetChild(ri_main) == p_main);
   };
 
-  auto vAddNext = [this] (Card* p_main, i8& ri_main) {
+  auto vAddNext = [this] (Card* p_main, i8& ri_main, Stz* szNextValue) {
     Card_Next* p_next = new Card_Next;
+    p_next->vValue(szNextValue);
     if (C_UNKNOWN == ri_main) {
       G.pDeck->vAppend(p_next);
       return;
@@ -1731,10 +1732,14 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
 
     // change of level
     if (e_level_main != e_level_running) {
-      e_level_running = e_level_main;
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
-      vAddNext(p_main, i_Main);
+      if (e_level_running == AL_ORIGIN &&
+          e_level_main == AL_PARTITION)
+        vAddNext(p_main, i_Main,"broadcast"_Stz);
+      else
+        vAddNext(p_main, i_Main,""_Stz);
+      e_level_running = e_level_main;
       vAddStage(p_main, i_Main, e_level_running,nStages);
       if (CK_AGGREG == e_main)
         bSawSynthedOp = true;
@@ -1746,14 +1751,14 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
     if (CK_INDEXJOIN == e_main) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
-      vAddNext(p_main, i_Main);
+      vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawSynthedOp = false;
       continue;
     }
 
     if (bSawSynthedOp) {
-      vAddNext(p_main, i_Main);
+      vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawSynthedOp = false;
       continue;
@@ -1766,7 +1771,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
   i8 i_End = C_UNKNOWN;
   if (CK_SCAN != e_prev)
     vAddCombined(p_main, i_End);
-  vAddNext(p_main, i_End);
+  vAddNext(p_main, i_End,""_Stz);
 }
 /*----------------------------------------------------------------------------*/
 //void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)

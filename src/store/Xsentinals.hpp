@@ -44,6 +44,7 @@ namespace STORE
 
     Card_AbsJoin *          p_absJoin;
     Card_AggElist *         p_aggElist;
+    Card_AggGby *           p_aggGby;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;

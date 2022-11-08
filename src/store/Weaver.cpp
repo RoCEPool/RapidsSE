@@ -420,6 +420,7 @@ void Weaver::vArgNext(Stz* szOpArgs, Card_Next* pCard_Next)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
+  szOpArgs->vCatSprint("%s"_Stz,pCard_Next->szValue());
 }
 
 

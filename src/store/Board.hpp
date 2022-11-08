@@ -16,6 +16,7 @@
 
 #include "Card_AbsJoin.hpp"
 #include "Card_AggElist.hpp"
+#include "Card_AggGby.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_Aggregates.hpp"
 #include "Card_AndPred.hpp"

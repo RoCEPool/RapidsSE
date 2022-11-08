@@ -22,7 +22,7 @@ namespace STORE
 {
   class Card_AbsJoin;
   class Card_AggElist;
-  class Card_Level;
+  class Card_AggGby;
   class Card_Aggreg;
   class Card_Aggregates;
   class Card_AndPred;
@@ -74,6 +74,7 @@ namespace STORE
   class Card_KeyExists;
 
   class Card_LBound;
+  class Card_Level;
   class Card_Limit;
 
   class Card_MaybeIndexJoin;
@@ -344,6 +345,8 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_AggElist*      pSub_aggElist(void);
+    Card_AggGby*        pSub_aggGby(void);
+    Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bounds*        pSub_bounds(void);
