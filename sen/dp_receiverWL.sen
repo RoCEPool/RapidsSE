@@ -10,7 +10,6 @@
 /*----------------------------------------------------------------------------*/
 procText:
   pipelineLocal receiverWL_procText
-    tag "<pre_execute>" = "demon::install" endTag
   begin
 
     stage stageA on origin :
