@@ -64,6 +64,7 @@ Stz* AdaptorWL::aState[] {
     /* CONNECTED */           "CONNECTED"_Stz,
     /* PROTOCOL_COMPATIBLE */ "PROTOCOL_COMPATIBLE"_Stz,
     /* TUNNELED */            "TUNNELED"_Stz,
+    /* KERBEROS_NEGOTIATING */"KERBEROS_NEGOTIATING"_Stz,
     /* AUTHENTICATED */       "AUTHENTICATED"_Stz,
     /* READY */               "READY"_Stz,
     /* PROCESSING_MSG */      "PROCESSING_MSG"_Stz,
@@ -401,13 +402,13 @@ void AdaptorWL::vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...)
   }
 
   // Serialise the error message to a payload and add it to the output queue
-  vSerialiseMsg(&oErrorResponse, MessageTypes::ErrorResponse);
+  vSerialiseAndSendMsg(&oErrorResponse, MessageTypes::ErrorResponse);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Serialises an abstract thrift message and adds it to the output queue.     */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vSerialiseMsg(apache::thrift::TBase* pMsg, i8 iMsgType)
+void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType)
 {
   MessageTypes::type eMsgType = (MessageTypes::type) iMsgType;
 
@@ -434,66 +435,46 @@ void AdaptorWL::vSerialiseMsg(apache::thrift::TBase* pMsg, i8 iMsgType)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vNextState(eState eNextState)
 {
+  // The list of valid next states from a given state.
+  static std::initializer_list<eState> aNextStates_Connected          = { PROTOCOL_COMPATIBLE, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_ProtocolCompatible = { TUNNELED, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_Tunneled           = { AUTHENTICATED, KERBEROS_NEGOTIATING, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_KerberosAuth       = { AUTHENTICATED, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_Authenticated      = { READY, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_Ready              = { READY, PROCESSING_MSG, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_ProcessingMsg      = { READY, WAITING_FOR_API, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_WaitingForApi      = { READY, DISCONNECTED };
+  static std::initializer_list<eState> aNextStates_Disconnected       = { DISCONNECTED };
+
+  // We'll use a reference to one of these static initializer lists above.
+  std::initializer_list<eState>& eValidNextStates = aNextStates_Connected;
+
   switch(m_eProtocolState) {
-
-    case CONNECTED:
-      if (eNextState != PROTOCOL_COMPATIBLE && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case PROTOCOL_COMPATIBLE:
-      if (eNextState != TUNNELED && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case TUNNELED:
-      if (eNextState != AUTHENTICATED && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case AUTHENTICATED:
-      if (eNextState != READY && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case READY:
-      if (eNextState != PROCESSING_MSG && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case PROCESSING_MSG:
-      if (eNextState != READY && eNextState != WAITING_FOR_API && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case WAITING_FOR_API:
-      if (eNextState != READY && eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
-    case DISCONNECTED:
-      if (eNextState != DISCONNECTED) {
-        vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-        return;
-      }
-      break;
-
+    case CONNECTED:             eValidNextStates = aNextStates_Connected;           break;
+    case PROTOCOL_COMPATIBLE:   eValidNextStates = aNextStates_ProtocolCompatible;  break;
+    case TUNNELED:              eValidNextStates = aNextStates_Tunneled;            break;
+    case KERBEROS_NEGOTIATING:  eValidNextStates = aNextStates_KerberosAuth;        break;
+    case AUTHENTICATED:         eValidNextStates = aNextStates_Authenticated;       break;
+    case READY:                 eValidNextStates = aNextStates_Ready;               break;
+    case PROCESSING_MSG:        eValidNextStates = aNextStates_ProcessingMsg;       break;
+    case WAITING_FOR_API:       eValidNextStates = aNextStates_WaitingForApi;       break;
+    case DISCONNECTED:          eValidNextStates = aNextStates_Disconnected;        break;
     default:
       NEVER_REACH
+  }
+
+  // Check the transition
+  bool bMatched = false;
+  for (eState eValidNextState : eValidNextStates) {
+    if (eNextState == eValidNextState) {
+      bMatched = true;
+      break;
+    }
+  }
+
+  if (!bMatched) {
+    vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+    return;
   }
 
   // Do the transition
@@ -570,7 +551,7 @@ void AdaptorWL::processProtocolCompatibleRequest()
     oIncompatibleResponse.__set_serverBuildInfo(sBuildInfo.azChar());
     oIncompatibleResponse.__set_errorMessage(sErrMsg.azChar());
 
-    vSerialiseMsg(&oIncompatibleResponse, MessageTypes::type::ProtocolIncompatibleResponse);
+    vSerialiseAndSendMsg(&oIncompatibleResponse, MessageTypes::type::ProtocolIncompatibleResponse);
 
     m_eProtocolError = EC_WL_PROTOCOL_VER_NOT_SUPPORTED;
     m_bContinueProcessingMsg = false;
@@ -586,7 +567,7 @@ void AdaptorWL::processProtocolCompatibleRequest()
   oCompatibleResponse.__set_serverSoftwareVersion(const_cast<Stz*>(C_VERSION_STRING)->azChar());
   oCompatibleResponse.__set_serverBuildInfo(sBuildInfo.azChar());
 
-  vSerialiseMsg(&oCompatibleResponse, MessageTypes::type::ProtocolCompatibleResponse);
+  vSerialiseAndSendMsg(&oCompatibleResponse, MessageTypes::type::ProtocolCompatibleResponse);
 
   m_bContinueProcessingMsg = false;
   vNextState(PROTOCOL_COMPATIBLE);
@@ -608,7 +589,8 @@ void AdaptorWL::processDisconnectRequest()
     return;
   }
 
-  // TODO: populate
+  // Nothing to do in this message. We set m_eProtocolError to cause the socket
+  // to be closed.
 
   m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_WL_SOCKET_CLOSED; // Cause the socket to be closed.
@@ -623,7 +605,7 @@ void AdaptorWL::processPingRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::PingRequest);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({READY})) { return; }
 
   PingRequest* pMsg = dynamic_cast<PingRequest*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -631,12 +613,12 @@ void AdaptorWL::processPingRequest()
     return;
   }
 
-  vErrorMessageNotSupported();
+  // Serialise a PingResponse. It has no fields to set.
+  PingResponse oPingResponse;
+  vSerialiseAndSendMsg(&oPingResponse, MessageTypes::type::PingResponse);
 
-  // TODO: populate
-
-//  m_bContinueProcessingMsg = false;
-//  vNextState(DISCONNECTED);
+  m_bContinueProcessingMsg = false;
+  vNextState(READY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -647,7 +629,7 @@ void AdaptorWL::processClearTextTunnelRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::ClearTextTunnelRequest);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({PROTOCOL_COMPATIBLE})) { return; }
 
   ClearTextTunnelRequest* pMsg = dynamic_cast<ClearTextTunnelRequest*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -655,12 +637,12 @@ void AdaptorWL::processClearTextTunnelRequest()
     return;
   }
 
-  vErrorMessageNotSupported();
+  // Send a TunnelSupportedResponse. No fields to set.
+  TunnelSupportedResponse oTunnelResponse;
+  vSerialiseAndSendMsg(&oTunnelResponse, MessageTypes::type::TunnelSupportedResponse);
 
-  // TODO: populate
-
-//  m_bContinueProcessingMsg = false;
-//  vNextState(DISCONNECTED);
+  m_bContinueProcessingMsg = false;
+  vNextState(TUNNELED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -671,7 +653,7 @@ void AdaptorWL::processPlainAuthenticationRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::PlainAuthenticationRequest);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({TUNNELED})) { return; }
 
   PlainAuthenticationRequest* pMsg = dynamic_cast<PlainAuthenticationRequest*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -679,12 +661,15 @@ void AdaptorWL::processPlainAuthenticationRequest()
     return;
   }
 
-  vErrorMessageNotSupported();
+  // At this point we aren't supporting authentication, so it doesn't matter
+  // what credentials are passed to in the message.
 
-  // TODO: populate
+  // Send a AuthenticationOkResponse. No fields to set.
+  AuthenticationOkResponse oAuthResponse;
+  vSerialiseAndSendMsg(&oAuthResponse, MessageTypes::type::AuthenticationOkResponse);
 
-//  m_bContinueProcessingMsg = false;
-//  vNextState(DISCONNECTED);
+  m_bContinueProcessingMsg = false;
+  vNextState(READY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -695,7 +680,7 @@ void AdaptorWL::processKerberosAuthenticationRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::KerberosAuthenticationRequest);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({TUNNELED})) { return; }
 
   KerberosAuthenticationRequest* pMsg = dynamic_cast<KerberosAuthenticationRequest*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -703,12 +688,14 @@ void AdaptorWL::processKerberosAuthenticationRequest()
     return;
   }
 
-  vErrorMessageNotSupported();
-
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
-//  vNextState(DISCONNECTED);
+  vErrorFeatureNotSupported("Kerberos authentication"_Stz);
+
+  m_bContinueProcessingMsg = false;
+  m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
+  vNextState(DISCONNECTED);
+  //vNextState(KERBEROS_NEGOTIATING);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -719,7 +706,7 @@ void AdaptorWL::processGssNegotiationMsg()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::GssNegotiationMsg);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({KERBEROS_NEGOTIATING})) { return; }
 
   GssNegotiationMsg* pMsg = dynamic_cast<GssNegotiationMsg*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -727,12 +714,13 @@ void AdaptorWL::processGssNegotiationMsg()
     return;
   }
 
-  vErrorMessageNotSupported();
-
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
-//  vNextState(DISCONNECTED);
+  vErrorFeatureNotSupported("Kerberos authentication"_Stz);
+
+  m_bContinueProcessingMsg = false;
+  m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
+  vNextState(DISCONNECTED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -988,7 +976,22 @@ void AdaptorWL::vErrorMessageNotSupported()
   vSerialiseErrorResponse(eErrType,
                           szErrMsg,
                           aErrorMsg[eErrType],
-                          aState[m_iCurrentMsgType]);
+                          to_string((MessageTypes::type)m_iCurrentMsgType).c_str());
+  m_bContinueProcessingMsg = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Wireline feature is not supported yet                                      */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vErrorFeatureNotSupported(Stz* szFeature)
+{
+  Stz* szErrMsg = "%s: %s"_Stz;
+  const eEC eErrType = EC_WL_FEATURE_NOT_SUPPORTED;
+
+  vSerialiseErrorResponse(eErrType,
+                          szErrMsg,
+                          aErrorMsg[eErrType],
+                          szFeature);
   m_bContinueProcessingMsg = false;
 }
 

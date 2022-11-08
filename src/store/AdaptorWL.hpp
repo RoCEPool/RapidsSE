@@ -33,6 +33,7 @@ namespace STORE
       CONNECTED,
       PROTOCOL_COMPATIBLE,
       TUNNELED,
+      KERBEROS_NEGOTIATING,
       AUTHENTICATED,
       READY,
       PROCESSING_MSG,
@@ -80,7 +81,7 @@ namespace STORE
     void vDeserialiseMsg(i8 iMessageType);
     void vCleanupCurrentMsg();
     void vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...);
-    void vSerialiseMsg(apache::thrift::TBase* pMsg, i8 iMsgType);
+    void vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType);
     void vNextState(eState eNextState);
 
     // Wireline message handlers
@@ -105,6 +106,7 @@ namespace STORE
     void vErrorDynamicCast(const char* pcTargetType);
     void vErrorStateTransition(Stz* szFromState, Stz* szToState);
     void vErrorMessageNotSupported();
+    void vErrorFeatureNotSupported(Stz* szFeature);
 
   };
 
