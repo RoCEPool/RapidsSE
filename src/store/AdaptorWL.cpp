@@ -177,20 +177,20 @@ void AdaptorWL::vProcessWLMsg(void)
 
   switch (eMsgType) {
 
-    case MessageTypes::type::ProtocolCompatibleRequest:       processProtocolCompatibleRequest(); break;
-    case MessageTypes::type::DisconnectRequest:                                                   break;
-    case MessageTypes::type::PingRequest:                                                         break;
-    case MessageTypes::type::ClearTextTunnelRequest:                                              break;
-    case MessageTypes::type::PlainAuthenticationRequest:                                          break;
-    case MessageTypes::type::KerberosAuthenticationRequest:                                       break;
-    case MessageTypes::type::GssNegotiationMsg:                                                   break;
-    case MessageTypes::type::SessionChangeRequest:                                                break;
-    case MessageTypes::type::QueryExecuteRequest:                                                 break;
-    case MessageTypes::type::QueryProgressRequest:                                                break;
-    case MessageTypes::type::SessionMonitoringRequest:                                            break;
-    case MessageTypes::type::ParseStatementRequest:                                               break;
-    case MessageTypes::type::StatementBindAndExecuteRequest:                                      break;
-    case MessageTypes::type::ClosePreparedStatementRequest:                                       break;
+    case MessageTypes::type::ProtocolCompatibleRequest:       processProtocolCompatibleRequest();       break;
+    case MessageTypes::type::DisconnectRequest:               processDisconnectRequest();               break;
+    case MessageTypes::type::PingRequest:                     processPingRequest();                     break;
+    case MessageTypes::type::ClearTextTunnelRequest:          processClearTextTunnelRequest();          break;
+    case MessageTypes::type::PlainAuthenticationRequest:      processPlainAuthenticationRequest();      break;
+    case MessageTypes::type::KerberosAuthenticationRequest:   processKerberosAuthenticationRequest();   break;
+    case MessageTypes::type::GssNegotiationMsg:               processGssNegotiationMsg();               break;
+    case MessageTypes::type::SessionChangeRequest:            processSessionChangeRequest();            break;
+    case MessageTypes::type::QueryExecuteRequest:             processQueryExecuteRequest();             break;
+    case MessageTypes::type::QueryProgressRequest:            processQueryProgressRequest();            break;
+    case MessageTypes::type::SessionMonitoringRequest:        processSessionMonitoringRequest();        break;
+    case MessageTypes::type::ParseStatementRequest:           processParseStatementRequest();           break;
+    case MessageTypes::type::StatementBindAndExecuteRequest:  processStatementBindAndExecuteRequest();  break;
+    case MessageTypes::type::ClosePreparedStatementRequest:   processClosePreparedStatementRequest();   break;
 
       // The following are messages that should never be received by RapidsSE
       // as they should never be sent by a client. Only sent by a server.
@@ -233,7 +233,7 @@ void AdaptorWL::vProcessWLMsg(void)
 
 
   // Delete m_pCurrentMsg when processing is all done
-  if (!m_bContinueProcessingMsg) {
+  if (!m_bContinueProcessingMsg || m_eProtocolError != EC_NONE) {
     vCleanupCurrentMsg();
   }
 }
@@ -504,20 +504,25 @@ void AdaptorWL::vNextState(eState eNextState)
   m_eProtocolState = eNextState;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Message Handlers Here                                                      */
+
 /*----------------------------------------------------------------------------*/
-/* Deallocates the current message                                            */
+/* Processes a ProtocolCompatibleRequest message                              */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::processProtocolCompatibleRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::ProtocolCompatibleRequest);
-  ASSERT(m_eProtocolState == CONNECTED);
+
+  if (!bCheckState({CONNECTED})) { return; }
 
   ProtocolCompatibleRequest* pMsg = dynamic_cast<ProtocolCompatibleRequest*>(m_pCurrentMsg);
   if (!pMsg) {
     vErrorDynamicCast(to_string(MessageTypes::type::ProtocolCompatibleRequest).c_str());
     return;
   }
+
 
   // Create the server build info, required for any response here.
   s2K sBuildInfo;
@@ -588,6 +593,360 @@ void AdaptorWL::processProtocolCompatibleRequest()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Processes a DisconnectRequest message                                      */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processDisconnectRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::DisconnectRequest);
+
+  //if (!bCheckState({CONNECTED})) { return; }
+
+  DisconnectRequest* pMsg = dynamic_cast<DisconnectRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::DisconnectRequest).c_str());
+    return;
+  }
+
+  // TODO: populate
+
+  m_bContinueProcessingMsg = false;
+  m_eProtocolError = EC_WL_SOCKET_CLOSED; // Cause the socket to be closed.
+  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a PingRequest message                                            */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processPingRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::PingRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  PingRequest* pMsg = dynamic_cast<PingRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::PingRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a ClearTextTunnelRequest message                                 */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processClearTextTunnelRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::ClearTextTunnelRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  ClearTextTunnelRequest* pMsg = dynamic_cast<ClearTextTunnelRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::ClearTextTunnelRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a PlainAuthenticationRequest message                             */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processPlainAuthenticationRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::PlainAuthenticationRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  PlainAuthenticationRequest* pMsg = dynamic_cast<PlainAuthenticationRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::PlainAuthenticationRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a KerberosAuthenticationRequest message                          */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processKerberosAuthenticationRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::KerberosAuthenticationRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  KerberosAuthenticationRequest* pMsg = dynamic_cast<KerberosAuthenticationRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::KerberosAuthenticationRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a GssNegotiationMsg message                                      */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processGssNegotiationMsg()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::GssNegotiationMsg);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  GssNegotiationMsg* pMsg = dynamic_cast<GssNegotiationMsg*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::GssNegotiationMsg).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a SessionChangeRequest message                                   */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processSessionChangeRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::SessionChangeRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  SessionChangeRequest* pMsg = dynamic_cast<SessionChangeRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::SessionChangeRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a QueryExecuteRequest message                                    */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processQueryExecuteRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryExecuteRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  QueryExecuteRequest* pMsg = dynamic_cast<QueryExecuteRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::QueryExecuteRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a QueryProgressRequest message                                   */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processQueryProgressRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryProgressRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  QueryProgressRequest* pMsg = dynamic_cast<QueryProgressRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::QueryProgressRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a SessionMonitoringRequest message                               */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processSessionMonitoringRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::SessionMonitoringRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  SessionMonitoringRequest* pMsg = dynamic_cast<SessionMonitoringRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::SessionMonitoringRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a ParseStatementRequest message                                  */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processParseStatementRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::ParseStatementRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  ParseStatementRequest* pMsg = dynamic_cast<ParseStatementRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::ParseStatementRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a StatementBindAndExecuteRequest message                         */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processStatementBindAndExecuteRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::StatementBindAndExecuteRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  StatementBindAndExecuteRequest* pMsg = dynamic_cast<StatementBindAndExecuteRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::StatementBindAndExecuteRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processes a ClosePreparedStatementRequest message                          */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::processClosePreparedStatementRequest()
+{
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::ClosePreparedStatementRequest);
+
+  //TODO: if (!bCheckState({CONNECTED})) { return; }
+
+  ClosePreparedStatementRequest* pMsg = dynamic_cast<ClosePreparedStatementRequest*>(m_pCurrentMsg);
+  if (!pMsg) {
+    vErrorDynamicCast(to_string(MessageTypes::type::ClosePreparedStatementRequest).c_str());
+    return;
+  }
+
+  vErrorMessageNotSupported();
+
+  // TODO: populate
+
+//  m_bContinueProcessingMsg = false;
+//  vNextState(DISCONNECTED);
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+
+/*----------------------------------------------------------------------------*/
+/* Check that we are in the correct state when receiving the current message  */
+/*----------------------------------------------------------------------------*/
+bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
+{
+  for (eState eProtocolState : eProtocolStates) {
+    if (m_eProtocolState == eProtocolState) {
+      return true;
+    }
+  }
+
+  // Make a string list of all applicable states for the error message.
+  s2K sBuf;
+  bool bFirst = true;
+  for (eState eProtocolState : eProtocolStates) {
+    if (bFirst) {
+      bFirst = false;
+    } else {
+      sBuf.vConcat(", "_Stz);
+    }
+
+    sBuf.vConcat(aState[eProtocolState]);
+  }
+
+  Stz* szErrMsg = "%s: Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
+  const eEC eErrType = EC_WL_PROTOCOL_ERROR;
+
+  vSerialiseErrorResponse(eErrType,
+                          szErrMsg,
+                          aErrorMsg[eErrType],
+                          aState[m_eProtocolState],
+                          sBuf.szStz());
+  m_bContinueProcessingMsg = false;
+  m_eProtocolError = eErrType;
+  m_eProtocolState = DISCONNECTED;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Internal error doing dynamic cast of received wireline message             */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
@@ -595,7 +954,7 @@ void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
   Stz* szErrMsg = "%s: Unable to cast decoded message to type %s"_Stz;
   const eEC eErrType = EC_WL_INTERNAL_ERROR;
 
-  vSerialiseErrorResponse(EC_WL_INTERNAL_ERROR,
+  vSerialiseErrorResponse(eErrType,
                           szErrMsg,
                           aErrorMsg[eErrType],
                           pcTargetType);
@@ -610,11 +969,26 @@ void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
   Stz* szErrMsg = "%s: Invalid state transition from state %s to state %s"_Stz;
   const eEC eErrType = EC_WL_INTERNAL_ERROR;
 
-  vSerialiseErrorResponse(EC_WL_INTERNAL_ERROR,
+  vSerialiseErrorResponse(eErrType,
                           szErrMsg,
                           aErrorMsg[eErrType],
                           szFromState,
                           szToState);
+  m_bContinueProcessingMsg = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Wireline message is not supported yet                                      */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vErrorMessageNotSupported()
+{
+  Stz* szErrMsg = "%s: %s"_Stz;
+  const eEC eErrType = EC_WL_MSG_NOT_SUPPORTED;
+
+  vSerialiseErrorResponse(eErrType,
+                          szErrMsg,
+                          aErrorMsg[eErrType],
+                          aState[m_iCurrentMsgType]);
   m_bContinueProcessingMsg = false;
 }
 

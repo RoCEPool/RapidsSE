@@ -257,9 +257,10 @@ enum eEC : u2 // error codes
 
   /* _W_ */
   EC_WL_INTERNAL_ERROR,
-  EC_WL_SOCKET_CLOSED,
+  EC_WL_MSG_NOT_SUPPORTED,
   EC_WL_PROTOCOL_ERROR,
   EC_WL_PROTOCOL_VER_NOT_SUPPORTED,
+  EC_WL_SOCKET_CLOSED,
 
   /* _X_ */
 
@@ -521,10 +522,11 @@ static Stz* aEC[] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
-  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"internal wireline protocol error",
-  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"client socket has closed",
-  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"wireline protocol error",
-  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"wireline protocol version not supported",
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
+  /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"Wireline protocol message not supported yet",
+  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
 
   /* _X_ */
 
@@ -782,9 +784,10 @@ static Stz* aEC2[] = // error code
 
   /* _W_ */
   /* EC_WL_INTERNAL_ERROR             */ (Stz*)"EC_WL_INTERNAL_ERROR",
-  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"EC_WL_SOCKET_CLOSED",
+  /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"EC_WL_MSG_NOT_SUPPORTED",
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"EC_WL_PROTOCOL_ERROR",
   /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"EC_WL_PROTOCOL_VER_NOT_SUPPORTED",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"EC_WL_SOCKET_CLOSED",
 
   /* _X_ */
 
@@ -1051,9 +1054,10 @@ static Stz* aErrorMsg[] =
 
   /* _W_ */
   /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
-  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
+  /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"Wireline protocol message not supported yet",
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
   /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
 
   /* _X_ */
 

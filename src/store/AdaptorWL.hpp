@@ -85,10 +85,26 @@ namespace STORE
 
     // Wireline message handlers
     void processProtocolCompatibleRequest();
+    void processDisconnectRequest();
+    void processPingRequest();
+    void processClearTextTunnelRequest();
+    void processPlainAuthenticationRequest();
+    void processKerberosAuthenticationRequest();
+    void processGssNegotiationMsg();
+    void processSessionChangeRequest();
+    void processQueryExecuteRequest();
+    void processQueryProgressRequest();
+    void processSessionMonitoringRequest();
+    void processParseStatementRequest();
+    void processStatementBindAndExecuteRequest();
+    void processClosePreparedStatementRequest();
+
 
     // Errors
+    bool bCheckState(std::initializer_list<eState> eProtocolStates);
     void vErrorDynamicCast(const char* pcTargetType);
     void vErrorStateTransition(Stz* szFromState, Stz* szToState);
+    void vErrorMessageNotSupported();
 
   };
 
