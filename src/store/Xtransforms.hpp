@@ -190,6 +190,7 @@ namespace STORE
     void vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
     void vHZ0_T20_Reinstate_stages(void);
     void vHZ0_T20_Reinstate_stagesV2(void);
+    void vHZ0_T20_Reinstate_stagesV3(void);
     void vHZ0_T30_Reinstate_combined(void);
     void vHZ0_T40_Reinstate_next(void);
     void vHZ0_T99_End(void);

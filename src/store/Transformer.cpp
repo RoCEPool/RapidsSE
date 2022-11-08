@@ -579,9 +579,11 @@ void Transformer::vHand_Z0_RestatePipeline(i8 iBelow, ...)
 
   m_pTransforms->vHZ0_T10_Restore_stmColOdn_from_tblColOdn();
   //m_pTransforms->vHZ0_T20_Reinstate_stages();
-  m_pTransforms->vHZ0_T20_Reinstate_stagesV2();
-  m_pTransforms->vHZ0_T30_Reinstate_combined();
-  m_pTransforms->vHZ0_T40_Reinstate_next();
+  //m_pTransforms->vHZ0_T20_Reinstate_stagesV2();
+  //m_pTransforms->vHZ0_T30_Reinstate_combined();
+  //m_pTransforms->vHZ0_T40_Reinstate_next();
+
+  m_pTransforms->vHZ0_T20_Reinstate_stagesV3();
 
   m_pTransforms->vHZ0_T99_End();
 

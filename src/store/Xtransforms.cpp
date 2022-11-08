@@ -2282,6 +2282,20 @@ void Xtransforms::vHZ0_T20_Reinstate_stagesV2(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reinstate stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHZ0_T20_Reinstate_stagesV3(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "reinstate stages"_Stz);
+
+  vR_HZ0_T20_Reinstate_stagesV3();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vHZ0_T30_Reinstate_combined(void)

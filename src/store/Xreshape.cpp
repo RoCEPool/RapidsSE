@@ -1666,6 +1666,212 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 nStages = 0;
+
+  Card_Stage* p_stage = new Card_Stage;
+  p_stage->vValueSprint("S%02lld"_Stz,++nStages);
+  Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
+  p_stage->vAppend(p_topology);
+  G.pDeck->vPush(p_stage);
+
+  eAL e_level_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
+
+  bool bSawSynthedOp = false;
+
+  auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
+    Card_Combined* p_combined = new Card_Combined;
+    if (C_UNKNOWN == ri_main) {
+      G.pDeck->vAppend(p_combined);
+      return;
+    }
+    G.pDeck->vInsertBefore(p_combined, p_main);
+    ri_main++;
+    RASSERT(G.pDeck->pGetChild(ri_main) == p_main);
+  };
+
+  auto vAddNext = [this] (Card* p_main, i8& ri_main) {
+    Card_Next* p_next = new Card_Next;
+    if (C_UNKNOWN == ri_main) {
+      G.pDeck->vAppend(p_next);
+      return;
+    }
+    G.pDeck->vInsertBefore(p_next, p_main);
+    ri_main++;
+    RASSERT(G.pDeck->pGetChild(ri_main) == p_main);
+  };
+
+  auto vAddStage = [this] (Card* p_main, i8& ri_main, eAL e_level_running, i8& nStages) {
+    Card_Stage *p_stage = new Card_Stage;
+    p_stage->vValueSprint("S%02lld"_Stz,++nStages);
+    eYG eStageTopo = M_eLevel_To_StageTopology(e_level_running);
+    Card_Topology *p_topology = new Card_Topology(eStageTopo);
+    p_stage->vAppend(p_topology);
+    G.pDeck->vInsertBefore(p_stage, p_main);
+    ri_main++;
+    RASSERT(G.pDeck->pGetChild(ri_main) == p_main);
+  };
+
+  Card* p_prev = nullptr;
+  eCK   e_prev = CK_NONE;
+  Card* p_main = p_stage;
+  eCK   e_main = p_main->eCard();
+
+  for (i8 i_Main = 1; i_Main < G.pDeck->nChildCards(); i_Main++) {
+
+    p_prev = p_main;
+    e_prev = e_main;
+
+    p_main = G.pDeck->pGetChild(i_Main);
+    e_main = p_main->eCard();
+    eAL e_level_main = (eAL)p_main->pSub_level()->Y_iVal(P_Level);
+
+    // change of level
+    if (e_level_main != e_level_running) {
+      e_level_running = e_level_main;
+      if (CK_SCAN != e_prev)
+        vAddCombined(p_main, i_Main);
+      vAddNext(p_main, i_Main);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      if (CK_AGGREG == e_main)
+        bSawSynthedOp = true;
+      else
+        bSawSynthedOp = false;
+      continue;
+    }
+
+    if (CK_INDEXJOIN == e_main) {
+      if (CK_SCAN != e_prev)
+        vAddCombined(p_main, i_Main);
+      vAddNext(p_main, i_Main);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawSynthedOp = false;
+      continue;
+    }
+
+    if (bSawSynthedOp) {
+      vAddNext(p_main, i_Main);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawSynthedOp = false;
+      continue;
+    }
+
+    if (CK_AGGREG == e_main)
+      bSawSynthedOp = true;
+  }
+
+  i8 i_End = C_UNKNOWN;
+  if (CK_SCAN != e_prev)
+    vAddCombined(p_main, i_End);
+  vAddNext(p_main, i_End);
+}
+/*----------------------------------------------------------------------------*/
+//void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+//
+//  Card_Stage* p_stage = new Card_Stage;
+//  Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
+//  p_stage->vAppend(p_topology);
+//  G.pDeck->vPush(p_stage);
+//
+//  eCK e_prev = CK_STAGE;
+//
+//  eAL eLevel_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
+//
+//  i8 nOpsInStage = 0;
+//
+//  bool bAddCombined = false;
+//  bool bAddStage    = false;
+//
+//  for (i8 i_Main = 1; i_Main < G.pDeck->nChildCards(); i_Main++) {
+//    Card* p_main = G.pDeck->pGetChild(i_Main);
+//    eCK e_main = p_main->eCard();
+//    eAL e_level_main = (eAL)p_main->pSub_level()->Y_iVal(P_Level);
+//
+//    Card* p_next = nullptr;
+//    eCK e_next = CK_NONE;
+//    eAL e_level_next = (eAL)p_main->pSub_level()->Y_iVal(P_Level);
+//    if (i_Main < G.pDeck->nChildCards() - 1) {
+//      p_next = G.pDeck->pGetChild(i_Main + 1);
+//      e_next = p_next->eCard();
+//      e_level_next = (eAL)p_next->pSub_level()->Y_iVal(P_Level);
+//    }
+//
+//
+//    switch (e_main) {
+//
+//      case CK_AGGREG:
+//        bAddCombined = true;
+//        if (CK_FILTER != e_next)
+//          bAddStage = true;
+//        break;
+//
+//      case CK_FILTER:
+//      case CK_HAVING:
+//        break;
+//
+//      case CK_INDEXJOIN:
+//        bAddCombined = true;
+//        if (CK_FILTER != e_next)
+//          bAddStage = true;
+//        break;
+//
+//      case CK_INDEXSCAN:
+//        bAddCombined = true;
+//        if (CK_FILTER != e_next)
+//          bAddStage = true;
+//        break;
+//
+//      case CK_PROJECT:
+//        bAddCombined = true;
+//        break;
+//
+//      case CK_SCAN:
+//        RASSERT(0 == nOpsInStage);
+//        break;
+//
+//      default:
+//        NEVER_REACH;
+//    }
+//
+//    e_prev = e_main;
+//
+//    if (! bAddStage)
+//      continue;
+//
+//    if (bAddCombined) {
+//      Card_Combined* p_combined = new Card_Combined;
+//
+//      G.pDeck->vInsertBefore(p_combined, p_main);
+//      i_Main++;
+//      RASSERT(G.pDeck->pGetChild(i_Main) == p_main);
+//    }
+//
+//    G.pDeck->vInsertBefore(p_next, p_main);
+//    i_Main++;
+//    RASSERT(G.pDeck->pGetChild(i_Main) == p_main);
+//
+//    Card_Stage *p_stage = new Card_Stage;
+//    eYG eStageTopo = M_eLevel_To_StageTopology(eLevel_running);
+//    Card_Topology *p_topology = new Card_Topology(eStageTopo);
+//    p_stage->vAppend(p_topology);
+//
+//    G.pDeck->vInsertBefore(p_stage, p_main);
+//    i_Main++;
+//    RASSERT(G.pDeck->pGetChild(i_Main) == p_main);
+//
+//    bAddCombined = false;
+//    bAddStage    = false;
+//  }
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::vR_HZ0_T30_Reinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
