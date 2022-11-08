@@ -1741,7 +1741,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
         vAddNext(p_main, i_Main,""_Stz);
       e_level_running = e_level_main;
       vAddStage(p_main, i_Main, e_level_running,nStages);
-      if (CK_AGGREG == e_main)
+      if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
         bSawSynthedOp = true;
       else
         bSawSynthedOp = false;
@@ -1764,7 +1764,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_AGGREG == e_main)
+    if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
       bSawSynthedOp = true;
   }
 
