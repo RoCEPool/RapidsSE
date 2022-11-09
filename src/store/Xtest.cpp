@@ -378,6 +378,31 @@ bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pre
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column ordinal of column ref                                           */
+/*----------------------------------------------------------------------------*/
+Card_Term* Xtest::E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Term* p_term_0 =_pCard_Term(p_cmpPred->pGetChild(0));
+  if (! p_term_0)
+    return nullptr;
+
+  if (T_bValue_IsParamOrdinal(p_term_0->szValue()))
+    return p_term_0;
+
+  Card_Term* p_term_1 =_pCard_Term(p_cmpPred->pGetChild(1));
+  if (! p_term_1)
+    return nullptr;
+
+  if (T_bValue_IsParamOrdinal(p_term_1->szValue()))
+    return p_term_1;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)

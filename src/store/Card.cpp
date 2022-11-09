@@ -523,7 +523,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 //         );
 
   if (*szValue()->azChar()) {
-    vTrace("%s%s %s { %s }\n"_Stz
+    vTrace("%s%s %s { %s }"_Stz
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
         , szValue()
@@ -531,12 +531,16 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
     );
   }
   else {
-    vTrace("%s%s { %s }\n"_Stz
+    vTrace("%s%s { %s }"_Stz
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
         , sProperties.szStz()
     );
   }
+
+  vTrace(" %p"_Stz,this);
+
+  vTrace("\n"_Stz);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)

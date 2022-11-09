@@ -72,7 +72,9 @@ namespace STORE
     bool bH36_T00_Test(void);
     void vH36_T00_Skip(void);
     void vH36_T00_Begin(void);
-    void vH36_T10_Copy_From_SubQuery(void);
+    void vH36_T10_Push_sqB_Into_mqA(void);
+    void vH36_T20_Transfer_whereB_To_whereA(void);
+    void vH36_T30_Replace_param_In_whereA(void);
 
     void vH36_T30_Adjust_From_SubQuery(void);
     void vH36_T99_End(void);

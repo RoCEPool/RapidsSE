@@ -590,7 +590,6 @@ void Xtransforms::vH35_T30(void)
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H36_T30();
 
   vEndTransform();
 }
@@ -645,7 +644,7 @@ void Xtransforms::vH36_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH36_T10_Copy_From_SubQuery(void)
+void Xtransforms::vH36_T10_Push_sqB_Into_mqA(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -670,6 +669,54 @@ void Xtransforms::vH36_T10_Copy_From_SubQuery(void)
     break;
   }
 
+  G.pDeck->vRenumberRecursive();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T20_Transfer_whereB_To_whereA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "Transfer where-B to where-A"_Stz);
+
+  G.pDeck->vDump();
+
+  while (G_bEachMain(CK_WHERE)) {
+    vR_H36_T20a_Get_cmpPred_Of_whereB();
+    break;
+  }
+
+  while (G_bEachMain(CK_WHERE)) {
+    vR_H36_T20b_Push_cmpPred_Onto_whereA();
+  }
+
+  G_vRestart();
+
+  while (G_bEachMainWithSub(CK_TWIST,CK_COMMENT,"- xfer whereB"_Stz)) {
+    G.p_comment->vValue("+ xfer whereB"_Stz);
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T30_Replace_param_In_whereA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "Replace param in where-A"_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    vR_H36_T30_Replace_param_In_whereA();
+    break;
+  }
+
   vEndTransform();
 }
 
@@ -687,6 +734,7 @@ void Xtransforms::vH36_T30_Adjust_From_SubQuery(void)
 
   vEndTransform();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

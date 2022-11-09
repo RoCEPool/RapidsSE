@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH36_T10_Copy_From_SubQuery"
+/glean_cue_from = "vH36_T30_Replace_param_In_whereA"
 /transliterated
 /transform
 /transform3

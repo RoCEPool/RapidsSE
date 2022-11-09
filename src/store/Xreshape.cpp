@@ -375,14 +375,17 @@ void Xreshape::vR_H36_T10b_Put_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.p_twist = new Card_Twist;
-  G_vNewMember(CK_COMMENT,"- where"_Stz);
+  G_vNewMember(CK_TWIST,"<-b | a->"_Stz);
+
+  G_vNewMember(CK_COMMENT,"- xfer whereB"_Stz);
   G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- paramList"_Stz);
+  G_vNewMember(CK_COMMENT,"- paramListB"_Stz);
   G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- stmOdn"_Stz);
+  G_vNewMember(CK_COMMENT,"- tstPredA"_Stz);
   G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- scan"_Stz);
+  G_vNewMember(CK_COMMENT,"- adj stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- scanB0"_Stz);
   G.p_twist->vAppend(G.p_comment);
   G_vNewMember(CK_COMMENT,"- crossJoin"_Stz);
   G.p_twist->vAppend(G.p_comment);
@@ -398,11 +401,78 @@ void Xreshape::vR_H36_T10b_Put_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T30(void)
+void Xreshape::vR_H36_T20a_Get_cmpPred_Of_whereB(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.pDeck->vRemoveChild(G.p_where);
+  G.p_boolCalc = G.p_where->pSub_boolCalc();
+
+  // TODO: this could be a complex pred sequence
+  G.p_cmpPred = _pCard_CmpPred(G.p_boolCalc->pPop());
+
+  DELETE_CARD(G.p_where);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H36_T20b_Push_cmpPred_Onto_whereA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.p_boolCalc = G.p_where->pSub_boolCalc();
+
+  M_vBoolCalc_PushPred(G.p_boolCalc,G.p_cmpPred);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H36_T30_Replace_param_In_whereA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
+
+    Card_Term* p_term_param = E_pCmpPred_Term_param(p_cmpPred);
+
+    if (! p_term_param)
+      return C_CONTINUE_RECURSION;
+
+    // TODO: this is a hack
+
+    G.p_paramList = _pCard_ParamList(G.pDeck->pGetChild(0));
+    G.p_param     = _pCard_Param(G.p_paramList->pGetChild(1));
+
+
+
+//    Stz* szParamNm = p_term_param->szValue();
+//    if (! G_bResolveSubCard(CK_PARAMLIST,CK_PARAM, szParamNm,G.i_MainCard))
+//      return C_CONTINUE_RECURSION;
+
+    p_term_param->vValue(G.p_param->szValue());
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->vApplyRecursive(CK_CMPPRED, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H36_T40(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

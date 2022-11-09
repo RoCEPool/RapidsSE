@@ -31,6 +31,7 @@ namespace STORE
     bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    Card_Term* E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
     i8 T_iCard_ConvertableTo_StmColOdn(Card* p_card);

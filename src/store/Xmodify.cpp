@@ -122,6 +122,25 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
   return  false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBoolCalc_PushPred(Card_BoolCalc* p_boolCalc,
+                                   Card_PRED* p_pred_toBeAdded)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_PRED* p_pred_oldTop = static_cast<Card_PRED*>(p_boolCalc->pPop());
+  RASSERT(! p_boolCalc->nChildCards());
+
+  Card_AndPred* p_andPred_new = new Card_AndPred;
+  p_andPred_new->vAppend(p_pred_oldTop);
+  p_andPred_new->vAppend(p_pred_toBeAdded);
+
+  p_boolCalc->vPush(p_andPred_new);
+}
+
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
