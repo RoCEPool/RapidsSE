@@ -17,7 +17,7 @@ Q18_0: select
 
  where o_orderkey in
 
-             ( Q18_1: select l_orderkey
+             ( select l_orderkey
 
                  from LineItem
 
@@ -28,10 +28,10 @@ Q18_0: select
        and c_custkey  = o_custkey
        and o_orderkey = l_orderkey
 
- group by c_name, c_custkey | o_custkey,
+ group by c_name, c_custkey ,
           o_orderkey, o_orderdate, o_totalprice
 
- order by o_totalprice desc,
+ order by o_totalprice asc,
           o_orderdate
 
  limit 100;

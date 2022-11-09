@@ -17,15 +17,11 @@ Q03_0: select
        and c_custkey    = o_custkey
        and l_orderkey   = o_orderkey
        and o_orderdate  < DATE '1995-03-15'
-
-
- group by l_orderkey, o_orderdate, o_shippriority
- order by l_orderkey;
-
- order by Revenue desc, o_orderdate
-
- limit 10;
        and l_shipdate   > DATE '1995-03-15'
+ group by l_orderkey, o_orderdate, o_shippriority
+ order by Revenue desc, o_orderdate
+ limit 10;
+
 
  select
           l_orderkey,
