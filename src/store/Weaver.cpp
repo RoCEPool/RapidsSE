@@ -211,6 +211,7 @@ void Weaver::vOp(Card* pCard)
     case CK_AGGGBY:     vArgAggGby   (sOpArgs,_pCard_AggGby(pCard));    break;
     case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));    break;
     case CK_COMBINED:   vArgCombined (sOpArgs,_pCard_Combined(pCard));  break;
+    case CK_CROSSJOIN:  vArgCrossJoin(sOpArgs,_pCard_CrossJoin(pCard)); break;
     case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));    break;
     case CK_HAVING:     vArgHaving   (sOpArgs,_pCard_Having(pCard));    break;
     case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard)); break;
@@ -232,6 +233,9 @@ void Weaver::vOp(Card* pCard)
 
   if (CK_AGGGBY == eCard)
     sOpNm = "aggreg"_Stz;
+  else
+  if (CK_CROSSJOIN == eCard)
+    sOpNm = "indexJoin"_Stz;
   else
   if (CK_HAVING == eCard || CK_WHERE == eCard)
     sOpNm = "filter"_Stz;
@@ -304,6 +308,29 @@ void Weaver::vArgCombined(Stz* szOpArgs, Card_Combined* pCard_Combine)
   vRpnCombined(sRpnExpr, pCard_Combine);
 
   szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : indexJoin <compiled> <tableNm> <indexNm> <expr>                    */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgCrossJoin(Stz* szOpArgs, Card_CrossJoin* pCard_CrossJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  // indexJoin : 0) {table} 1) {index} 2) indexPred
+
+  s4K sRpnExpr;
+
+  Card_TableNm* p_tableNm = pCard_CrossJoin->pSub_tableNm();
+  Card_IndexNm* p_indexNm = pCard_CrossJoin->pSub_indexNm();
+
+  vRpnCrossJoin(sRpnExpr,pCard_CrossJoin);
+
+  szOpArgs->vCatSprint("%s %s \"%s \""_Stz
+      ,p_tableNm->szValue()
+      ,p_indexNm->szValue()
+      ,sRpnExpr.szStz());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -627,6 +654,48 @@ void Weaver::vRpnCombined(Stz* szRpnExpr, Card_Combined* pCard_Combined)
 
   Card_Term* pCard_Term = _pCard_Term(pCard_Combined->pGet(0));
   szRpnExpr->vCatSprint("%s"_Stz,pCard_Term->sz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for crossJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_Bounds* pCard_joinPred = pCard_CrossJoin->pSub_bounds();
+  if (pCard_joinPred) {
+    i8 nSubs = pCard_joinPred->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card* pSubCard = pCard_joinPred->pGet(i_Sub);
+
+      if (! pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term* p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
+    }
+    return;
+  }
+
+  Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_CrossJoin->pFindSubCard(CK_INDEXPRED));
+
+  if (! pCard_IndexPred) {
+    szRpnExpr->vConcat(" <<no: indexPred>>"_Stz);
+    return;
+  }
+
+  i8 nSubs = pCard_IndexPred->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = pCard_IndexPred->pGet(i_Sub);
+
+    if (! pSubCard->bIsCard(CK_TERM))
+      continue;
+
+    Card_Term* p_term = _pCard_Term(pSubCard);
+    szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
