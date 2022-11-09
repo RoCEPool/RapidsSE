@@ -1,0 +1,80 @@
+/*============================================================================*/
+/* _sf1000arjun                                                                */
+/*============================================================================*/
+
+_customer
+_lineitem
+_nation
+_orders
+_part
+_partsupp
+_region
+_supplier
+
+//customer
+CREATE index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+CREATE index IxC_NATIONKEY   ON Customer (C_NATIONKEY)   ;
+
+//lineitem
+CREATE index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+CREATE INDEX IxL_SHIPDATE ON lineitem(L_SHIPDATE);
+CREATE index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+
+//nation
+CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
+
+//orders
+CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);
+CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
+
+//supplier
+CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);
+
+
+//create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+//create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+//create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+//create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+//create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
+//create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+//create index IxL_SUPPKEY   ON Lineitem (L_SUPPKEY)   ;
+
+dload lineitem paths
+  "/mnt/disk1/data1/tpch/sf1000/lineitem/lineitem.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/lineitem/lineitem.tbl"
+;
+
+dload customer paths
+  "/mnt/disk1/data1/tpch/sf1000/customer/customer.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/customer/customer.tbl"
+;
+
+dload nation paths
+  "/mnt/disk1/data1/tpch/sf1000/nation/nation.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/nation/nation.tbl"
+;
+
+dload orders paths
+  "/mnt/disk1/data1/tpch/sf1000/orders/orders.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/orders/orders.tbl"
+;
+
+dload part paths
+  "/mnt/disk1/data1/tpch/sf1000/part/part.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/part/part.tbl"
+;
+
+dload partsupp paths
+  "/mnt/disk1/data1/tpch/sf1000/partsupp/partsupp.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/partsupp/partsupp.tbl"
+;
+
+dload region paths
+  "/mnt/disk1/data1/tpch/sf1000/region/region.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/region/region.tbl"
+;
+
+dload supplier paths
+  "/mnt/disk1/data1/tpch/sf1000/supplier/supplier.tbl"
+  "/mnt/disk2/data1/tpch/sf1000/supplier/supplier.tbl"
+;
