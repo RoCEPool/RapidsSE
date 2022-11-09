@@ -23,7 +23,7 @@ namespace STORE
 
     //void vAdd_columnRef_Under_term(void);
 
-    // vHand_10_CondenseInfo
+    // vHand_10_Condense_Info
     bool bH10_T00_Test(void);
     void vH10_T00_Skip(void);
     void vH10_T00_Begin(void);
@@ -37,7 +37,7 @@ namespace STORE
     void vH10_T90_Hide_Ignorable_stages(void);
     void vH10_T99_End(void);
 
-    // vHand_20_TableAnalysis
+    // vHand_20_Table_Analysis
     bool bH20_T00_Test(void);
     void vH20_T00_Skip(void);
     void vH20_T00_Begin(void);
@@ -45,7 +45,7 @@ namespace STORE
     void vH20_T20_Produce_tablePtn_UnderAll_table(void);
     void vH20_T99_End(void);
 
-    // vHand_30_StreamAnalysis
+    // vHand_30_Stream_Analysis
     bool bH30_T00_Test(void);
     void vH30_T00_Skip(void);
     void vH30_T00_Begin(void);
@@ -59,7 +59,34 @@ namespace STORE
     void vH30_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vH30_T99_End(void);
 
-    // vHand_40_PredicatePullup
+    // vHand_35_Flatten_From
+    bool bH35_T00_Test(void);
+    void vH35_T00_Skip(void);
+    void vH35_T00_Begin(void);
+    void vH35_T10_Yank_From_SubQuery(void);
+    void vH35_T20_Put_From_SubQuery(void);
+    void vH35_T30_Adjust_From_SubQuery(void);
+    void vH35_T99_End(void);
+
+    // vHand_36_Flatten_Where
+    bool bH36_T00_Test(void);
+    void vH36_T00_Skip(void);
+    void vH36_T00_Begin(void);
+    void vH36_T10(void);
+    void vH36_T20(void);
+    void vH36_T30(void);
+    void vH36_T99_End(void);
+
+    // vHand_37_Flatten_Having
+    bool bH37_T00_Test(void);
+    void vH37_T00_Skip(void);
+    void vH37_T00_Begin(void);
+    void vH37_T10(void);
+    void vH37_T20(void);
+    void vH37_T30(void);
+    void vH37_T99_End(void);
+
+    // vHand_40_Predicate_Pullup
     bool bH40_T00_Test(void);
     void vH40_T00_Skip(void);
     void vH40_T00_Begin(void);
@@ -107,7 +134,7 @@ namespace STORE
     void vH55_T80_Delete_Empty_where(void);
     void vH55_T99_End(void);
 
-    // vHand_60_IndexJoin
+    // vHand_60_Index_Join
     bool bH60_T00_Test(void);
     void vH60_T00_Skip(void);
     void vH60_T00_Begin(void);
@@ -120,7 +147,7 @@ namespace STORE
     void vH60_T60_Delete_Twist(void);
     void vH60_T99_End(void);
 
-    // vHand_70_JoinOrdering
+    // vHand_70_Join_Ordering
     bool bH70_T00_Test(void);
     void vH70_T00_Skip(void);
     void vH70_T00_Begin(void);
@@ -150,7 +177,7 @@ namespace STORE
     void vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
     void vH75_T99_End(void);
 
-    // vHand_80_IndexScan
+    // vHand_80_Index_Scan
     bool bH80_T00_Test(void);
     void vH80_T00_Skip(void);
     void vH80_T00_Begin(void);
@@ -163,14 +190,14 @@ namespace STORE
     void vH80_T70_Morph_scan_To_indexScan(void);
     void vH80_T99_End(void);
 
-    // vHand_90_StreamOrdering
+    // vHand_90_Stream_Ordering
     bool bH90_T00_Test(void);
     void vH90_T00_Skip(void);
     void vH90_T00_Begin(void);
     void vH90_T10_Remove_sort_IfSameAs_gby(void);
     void vH90_T99_End(void);
 
-    // vHand_A0_FilterRefinement
+    // vHand_A0_Filter_Refinement
     bool bHA0_T00_Test(void);
     void vHA0_T00_Skip(void);
     void vHA0_T00_Begin(void);
@@ -183,7 +210,7 @@ namespace STORE
     void vHB0_T00_Begin(void);
     void vHB0_T99_End(void);
 
-    // vHand_Z0_RestatePipeline
+    // vHand_Z0_Restate_Pipeline
     bool bHZ0_T00_Test(void);
     void vHZ0_T00_Skip(void);
     void vHZ0_T00_Begin(void);

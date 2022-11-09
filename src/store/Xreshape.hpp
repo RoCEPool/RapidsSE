@@ -14,7 +14,7 @@ namespace STORE
   {
   public:
 
-    // vHand_10_CondenseInfo
+    // vHand_10_Condense_Info
     void vR_H10_T80_Delete_Redundant_stage(void);
     void vR_H10_T10_Delete_absJoin(void);
     void vR_H10_T20_Delete_combined(void);
@@ -24,11 +24,11 @@ namespace STORE
     void vR_H10_T60_Add_level(void);
     void vR_H10_T90_Hide_Ignorable_stage(void);
 
-    // vHand_20_TableAnalysis
+    // vHand_20_Table_Analysis
     void vR_H20_T10_AAffix_tableSyn_To_table(void);
     void vR_H20_T20_Produce_tablePtn_Under_table(void);
 
-    // vHand_30_StreamAnalysis
+    // vHand_30_Stream_Analysis
     void vR_H30_T10_Produce_stream_Under_table(void);
     void vR_H30_T12_Produce_stream_Under_project(void);
     void vR_H30_T14_Produce_stream_Under_aggreg(void);
@@ -38,7 +38,22 @@ namespace STORE
     void vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void);
 
-    // vHand_40_PredicatePullup
+    // vHand_35_Flatten_From
+    void vR_H35_T10_Yank_From_SubQuery(void);
+    void vR_H35_T20_Put_From_SubQuery(void);
+    void vR_H35_T30_Adjust_From_SubQuery(void);
+
+    // vHand_36_Flatten_Where
+    void vR_H36_T10(void);
+    void vR_H36_T20(void);
+    void vR_H36_T30(void);
+
+    // vHand_37_Flatten_Having
+    void vR_H37_T10(void);
+    void vR_H37_T20(void);
+    void vR_H37_T30(void);
+
+    // vHand_40_Predicate_Pullup
     void vR_H40_T10_AtMark_where_pred_Wrt_table(void);
     void vR_H40_T20_Move_AtMarked_where_pred_To_table_filter(void);
     void vR_H40_T30_Delete_Empty_where(void);
@@ -72,7 +87,7 @@ namespace STORE
     void vR_H55_T70_Cull_CallMarked_CallSub(void);
     void vR_H55_T80_Delete_Empty_where(void);
 
-    // vHand_60_IndexJoin
+    // vHand_60_Index_Join
     void vR_H60_T05_Twist_in_Becomes_filter(void);
     void vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void);
     void vR_H60_T20_Affix_tblColOdn_To_idxCol(void);
@@ -81,7 +96,7 @@ namespace STORE
     void vR_H60_T50_Delete_Empty_filter(void);
     void vR_H60_T60_Delete_Twist(void);
 
-    // vHand_70_JoinOrdering
+    // vHand_70_Join_Ordering
     void vR_H70_T00_Extract_tableList_From_queryBoard(void);
     void vR_H70_T10_Extract_joinPredList(void);
     void vR_H70_T20_Compute_coPtnPredList(void);
@@ -105,7 +120,7 @@ namespace STORE
     void vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_H75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
-    // vHand_80_IndexScan
+    // vHand_80_Index_Scan
     void vR_H80_T10_Produce_indexList_Under_scan(void);
     void vR_H80_T20_Affix_idxCol_name_Of_scan_To_ordinal(void);
     void vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void);
@@ -116,14 +131,14 @@ namespace STORE
     void vR_H80_T70_Morph_scan_To_indexScan_b(void);
     void vR_H80_T70_Morph_scan_To_indexScan_c(void);
 
-    // vHand_90_StreamOrdering
+    // vHand_90_Stream_Ordering
     void vR_H90_T10_Remove_sort_IfSameAs_gby(void);
 
-    // vHand_A0_FilterRefinement
+    // vHand_A0_Filter_Refinement
     void vR_HA0_T10_Individuate_scan_filter(void);
     void vR_HA0_T10_Individuate_indexJoin_filter_b(void);
 
-    // vHand_Z0_RestatePipeline
+    // vHand_Z0_Restate_Pipeline
     void vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
     void vR_HZ0_T20_Reinstate_stages(void);
     void vR_HZ0_T20_Reinstate_stagesV2(void);

@@ -100,20 +100,23 @@ void Transformer::vTransform3(void)
   m_pCardCtl->vSaveShorter();
   m_pCardCtl->vSaveXhand();
 
-  vHand_10_CondenseInfo    (CK_NONE);
-  vHand_20_TableAnalysis   (CK_NONE);
-  vHand_30_StreamAnalysis  (CK_NONE);
-  vHand_40_PredicatePullup (CK_NONE);
+  vHand_10_Condense_Info(CK_NONE);
+  vHand_20_Table_Analysis(CK_NONE);
+  vHand_30_Stream_Analysis(CK_NONE);
+  vHand_35_Flatten_From(CK_NONE);
+  vHand_36_Flatten_Where(CK_NONE);
+  vHand_37_Flatten_Having(CK_NONE);
+  vHand_40_Predicate_Pullup(CK_NONE);
   vHand_50_FlattenCall     (CK_NONE);
   vHand_52_FlattenIn       (CK_NONE);
   vHand_55_FlattenExists   (CK_NONE);
-  vHand_60_IndexJoin       (CK_NONE);
-  vHand_70_JoinOrdering    (CK_NONE);
+  vHand_60_Index_Join(CK_NONE);
+  vHand_70_Join_Ordering(CK_NONE);
   vHand_75_EE_operators    (CK_NONE);
-  vHand_80_IndexScan       (CK_NONE);
-  vHand_90_StreamOrdering  (CK_NONE);
-  vHand_A0_FilterRefinement(CK_NONE);
-  vHand_Z0_RestatePipeline (CK_NONE);
+  vHand_80_Index_Scan(CK_NONE);
+  vHand_90_Stream_Ordering(CK_NONE);
+  vHand_A0_Filter_Refinement(CK_NONE);
+  vHand_Z0_Restate_Pipeline(CK_NONE);
 }
 
 #define CARD_BELOW \
@@ -126,7 +129,7 @@ EndDefine \
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
+void Transformer::vHand_10_Condense_Info(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -166,7 +169,7 @@ void Transformer::vHand_10_CondenseInfo(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_20_TableAnalysis(i8 iBelow, ...)
+void Transformer::vHand_20_Table_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -199,7 +202,7 @@ void Transformer::vHand_20_TableAnalysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
+void Transformer::vHand_30_Stream_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -236,9 +239,90 @@ void Transformer::vHand_30_StreamAnalysis(i8 iBelow, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* from pattern : a/b -> ba                                                   */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_35_Flatten_From(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  if (! m_pTransforms->bH35_T00_Test()) {
+    m_pTransforms->vH35_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vH35_T00_Begin();
+
+  m_pTransforms->vH35_T10_Yank_From_SubQuery();
+  m_pTransforms->vH35_T20_Put_From_SubQuery();
+  m_pTransforms->vH35_T30_Adjust_From_SubQuery();
+
+  m_pTransforms->vH35_T99_End();
+
+  vEndHand(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* where pattern : a/b -> b|a                                                 */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_36_Flatten_Where(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  if (! m_pTransforms->bH36_T00_Test()) {
+    m_pTransforms->vH36_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vH36_T00_Begin();
+
+  m_pTransforms->vH36_T10();
+  m_pTransforms->vH36_T20();
+  m_pTransforms->vH36_T30();
+
+  m_pTransforms->vH36_T99_End();
+
+  vEndHand(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* having pattern : a/b -> a|b                                                */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_37_Flatten_Having(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  if (! m_pTransforms->bH37_T00_Test()) {
+    m_pTransforms->vH37_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vH37_T00_Begin();
+
+  m_pTransforms->vH37_T10();
+  m_pTransforms->vH37_T20();
+  m_pTransforms->vH37_T30();
+
+  m_pTransforms->vH37_T99_End();
+
+  vEndHand(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_40_PredicatePullup(i8 iBelow, ...)
+void Transformer::vHand_40_Predicate_Pullup(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -363,7 +447,7 @@ void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
+void Transformer::vHand_60_Index_Join(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -394,7 +478,7 @@ void Transformer::vHand_60_IndexJoin(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_70_JoinOrdering(i8 iBelow, ...)
+void Transformer::vHand_70_Join_Ordering(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -471,7 +555,7 @@ void Transformer::vHand_75_EE_operators(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_80_IndexScan(i8 iBelow, ...)
+void Transformer::vHand_80_Index_Scan(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -512,7 +596,7 @@ void Transformer::vHand_80_IndexScan(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_90_StreamOrdering(i8 iBelow, ...)
+void Transformer::vHand_90_Stream_Ordering(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -537,7 +621,7 @@ void Transformer::vHand_90_StreamOrdering(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_A0_FilterRefinement(i8 iBelow, ...)
+void Transformer::vHand_A0_Filter_Refinement(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -562,7 +646,7 @@ void Transformer::vHand_A0_FilterRefinement(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_Z0_RestatePipeline(i8 iBelow, ...)
+void Transformer::vHand_Z0_Restate_Pipeline(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
