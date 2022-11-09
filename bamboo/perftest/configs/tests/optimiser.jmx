@@ -1334,7 +1334,7 @@ dload lineitem paths
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countNation" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countNation" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">SELECT COUNT(*) FROM nation;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1360,7 +1360,7 @@ dload lineitem paths
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countRegion" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countRegion" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">SELECT COUNT(*) FROM region;</stringProp>
               <stringProp name="queryArguments"></stringProp>
