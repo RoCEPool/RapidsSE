@@ -34,6 +34,8 @@ public:
   void vAdaptorWLNextPayloadToSendFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
   void vAdaptorWLProtocolErrorFetch(void);
+  void vAdaptorWLHasStatement(void);
+  void vAdaptorWLStatementFetchClear(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);

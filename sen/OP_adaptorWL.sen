@@ -18,6 +18,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* Submit a statement through the API                                         */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_submitStatement params| sSmt |
+  "adaptorWL_submitStatement" .
+
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -44,17 +52,18 @@
   "adaptorWL_Payload- EV_D_PAYLOAD" .
 
   PipeIn[]\clear locals| pPayloadObj |
+  0              locals| sSmt        |
 
   // Check if we previously received an error
   AdaptorWL[].protocolErrorTest if
-    pPayloadObj payloadObj::delete
+    pPayloadObj payloadObj::delete  // TODO: is this required?
     true
     exit
   then
 
   // Decode the payload to a message. This might generate payloads to be sent.
   pPayloadObj AdaptorWL[].decodePayload
-  pPayloadObj payloadObj::delete
+  pPayloadObj payloadObj::delete  // TODO: is this required?
 
   // Possible errors from decoding need to be sent here.
   adaptorWL_sendAnyWLResponses
@@ -81,14 +90,92 @@
     exit
   then
 
-  // Check if there are queries to be submitted through the API
+  // Check if there are statements to be submitted through the API
 
-//AdaptorWL[].hasApiQuery@ if
-//  // TODO: Submit query through API
-//then
+  AdaptorWL[].hasStatement if
+    AdaptorWL[].statement@\clear adaptorWL_submitStatement
+  then
 
   true
 ;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_CRWBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_CrwBuffer \handler
+
+  EC_NONE locals| eError |
+
+  "adaptorWL_CrwBuffer- EV_D_CRWBUFFER" .
+
+  Pipein[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_ROWBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_RowBuffer \handler
+
+  EC_NONE locals| eError |
+
+  "adaptorWL_RowBuffer- EV_D_ROWBUFFER" .
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_StreamDef \handler
+
+  "adaptorWL_StreamDef- EV_D_STREAMDEF" .
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_X_CHILDEXIT ...                                       EV_X_CHILDEXIT */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_ChildExit \handler
+
+  "adaptorWL_ChildExit- EV_X_CHILDEXIT" .
+
+//  true LogicUnit[].RcvdChildExit!
+
+  nullptr [job].responseOp!
+
+//  LogicUnit[].RcvdEnd@ if
+//    Marker[].newEndMarker
+//    Marker[].pipeout
+//  then
+
+  Pipein[].delete
+
+  true
+;
+
+///*----------------------------------------------------------------------------*/
+///* handler for EV_M_END ...                                                   */
+///*----------------------------------------------------------------------------*/
+//: adaptorWL_End \handler
+//
+//  "adaptorWL_End- EV_M_END" .
+//
+//  true LogicUnit[].RcvdEnd!
+//
+//  LogicUnit[].RcvdChildExit@ if
+//     PipeIn[].pipeout
+//  else
+//    PipeIn[].delete
+//  then
+//
+//  true
+//;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING operand                                          */
@@ -112,6 +199,10 @@
 
   find: adaptorWL_StartMarker EV_M_START       [op].handler!
   find: adaptorWL_Payload     EV_D_PAYLOAD     [op].handler!
+  find: adaptorWL_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: adaptorWL_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: adaptorWL_StreamDef   EV_D_STREAMDEF   [op].handler!
+  find: adaptorWL_ChildExit   EV_X_CHILDEXIT   [op].handler!
   find: adaptorWL_Cleaning    EV_M_CLEANING    [op].handler!
 
   op__loop

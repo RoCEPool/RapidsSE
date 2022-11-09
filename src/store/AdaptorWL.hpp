@@ -46,10 +46,11 @@ namespace STORE
 
     // Current State enum
     apache::thrift::TBase* m_pCurrentMsg;
-    i8     m_iCurrentMsgType;
+    i8           m_iCurrentMsgType;
     PayloadList* m_pPayloadSendList;
-    eEC    m_eProtocolError;
-    eState m_eProtocolState;
+    eEC          m_eProtocolError;
+    eState       m_eProtocolState;
+    s48K         m_sSmtBuf;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -70,8 +71,13 @@ namespace STORE
     void vDecodePayload(WLP::PayloadObj* pPayload);
     void vProcessWLMsg();
     eEC  eProtocolError();
+
     bool bHasPayloadToSend();
     WLP::PayloadObj* pNextPayloadToSend();
+
+    Stz* szStatement();
+    bool bHasStatement();
+    void vClearStatement();
 
   private:
 

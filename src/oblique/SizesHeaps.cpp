@@ -274,7 +274,7 @@ SizeHeap gxaSizeHeap[]
   { CN__A__,                     'A' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_ACCESSPATH,               sizeof(AccessPath),         HT_T_MEDIUM  ,FILL },
   { CN_ACTION,                   sizeof(Action),             HT_T_TINY    ,FILL },
-  { CN_ADAPTORWL,                sizeof(AdaptorWL),          HT_T_TINY    ,FILL },
+  { CN_ADAPTORWL,                sizeof(AdaptorWL),          HT_T_MEDIUM  ,FILL },
   { CN_AGGTIMER,                 sizeof(AggTimer),           HT_T_TINY    ,FILL },
   { CN_AM,                       0,                          HT_INVALID   ,FILL },
   { CN_ANSWERWL,                 sizeof(AnswerWL),           HT_T_TINY    ,FILL },

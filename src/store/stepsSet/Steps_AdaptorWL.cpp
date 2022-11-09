@@ -18,12 +18,14 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].new"_Stz,      &Step::vAdaptorWLNew);
   vAddStep("AdaptorWL[].delete"_Stz,   &Step::vAdaptorWLDelete);
 
-  vAddStep("AdaptorWL[].decodePayload"_Stz,     &Step::vAdaptorWLDecodePayload);
-  vAddStep("AdaptorWL[].processWLMsg"_Stz, &Step::vAdaptorWLProcessWLMsg);
-  vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz, &Step::vAdaptorWLHasPayloadToSendFetch);
+  vAddStep("AdaptorWL[].decodePayload"_Stz,      &Step::vAdaptorWLDecodePayload);
+  vAddStep("AdaptorWL[].processWLMsg"_Stz,       &Step::vAdaptorWLProcessWLMsg);
+  vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,  &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz, &Step::vAdaptorWLNextPayloadToSendFetch);
-  vAddStep("AdaptorWL[].protocolErrorTest"_Stz, &Step::vAdaptorWLProtocolErrorTest);
-  vAddStep("AdaptorWL[].protocolError@"_Stz, &Step::vAdaptorWLProtocolErrorFetch);
+  vAddStep("AdaptorWL[].protocolErrorTest"_Stz,  &Step::vAdaptorWLProtocolErrorTest);
+  vAddStep("AdaptorWL[].protocolError@"_Stz,     &Step::vAdaptorWLProtocolErrorFetch);
+  vAddStep("AdaptorWL[].hasStatement"_Stz,       &Step::vAdaptorWLHasStatement);
+  vAddStep("AdaptorWL[].statement@\\clear"_Stz,  &Step::vAdaptorWLStatementFetchClear);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +130,7 @@ void Step::vAdaptorWLProtocolErrorTest(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].vAdaptorWLProtocolErrorFetch -- Push the protocol error code   */
+/* adaptorWL[].protocolError@ -- Push the protocol error code                 */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLProtocolErrorFetch(void)
 {
@@ -137,6 +139,36 @@ void Step::vAdaptorWLProtocolErrorFetch(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   m_pDataStack->vPushInt(pAdaptorWL->eProtocolError());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].hasStatement -- Push true if there is a statement to submit    */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLHasStatement(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  m_pDataStack->vPushInt(pAdaptorWL->bHasStatement() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AdaptorWL[].statement@\clear -- Push & clear the statement to submit       */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLStatementFetchClear(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  m_pDataStack->vPushStz(pAdaptorWL->szStatement());
+
+  pAdaptorWL->vClearStatement();
 
   EXIT();
 }
