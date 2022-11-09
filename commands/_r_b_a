@@ -4,22 +4,21 @@
 
 trackMemory;
 
-_lineItem
-create index L_idx0 on lineitem(L_ORDERKEY);
-
-_orders
-create index O_idx0 on orders(O_ORDERKEY);
-
 _customer
+_lineItem
+_orders
+_supplier
 create index C_Idx0 ON customer(C_CUSTKEY);
-
+create index L_idx0 on lineitem(L_ORDERKEY);
+create index O_idx0 on orders(O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY);
 load lineItem "../tpch/sf_0001/lineItem.csv" ;
 load orders   "../tpch/sf_0001/orders.csv"   ;
-load customer "../tpch/sf_0001/customer.csv" ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vHZ0_T10_Restore_stmColOdn_from_tblColOdn"
+/glean_cue_from = "vH20_T10_Affix_tableSyn_ToAll_table"
 /transliterated
 /transform
 /transform3
@@ -27,13 +26,32 @@ load customer "../tpch/sf_0001/customer.csv" ;
 /weave
 /weaved
 /pipelineName = "r_b_a"
-select l_orderkey, sum(l_quantity)
-            from lineitem
-           group by l_orderkey
-          having sum(l_quantity) > 160
+select count(*)
+  from orders, lineitem
+ where L_ORDERKEY = O_ORDERKEY
+   and exists (select *
+                 from supplier
+                where S_SUPPKEY = L_SUPPKEY)
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+bSQ | aMQ
+
+==02 P--------------
+  WHERE *2
+  0]level
+        AL_PARTITION
+  1]rpnCalc
+                 $10
+                  $1
+                  ==
+                 $12
+      __subquery0002
+              exists
+                 and
+*/
 
 //drop table lineItem;
 //drop table orders;

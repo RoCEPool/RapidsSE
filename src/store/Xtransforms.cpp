@@ -76,7 +76,7 @@ void Xtransforms::vH10_T00_Begin(void)
   m_pBench->vPrefix('r');
   m_pCardCtl->vUseExpanded();
   vPrintBench(BK_SUBPIPE);
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseExpanded();
 }
 
 /*----------------------------------------------------------------------------*/
