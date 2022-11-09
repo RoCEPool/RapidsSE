@@ -63,18 +63,18 @@ namespace STORE
     bool bH35_T00_Test(void);
     void vH35_T00_Skip(void);
     void vH35_T00_Begin(void);
-    void vH35_T10_Yank_From_SubQuery(void);
-    void vH35_T20_Put_From_SubQuery(void);
-    void vH35_T30_Adjust_From_SubQuery(void);
+    void vH35_T10(void);
+    void vH35_T20(void);
+    void vH35_T30(void);
     void vH35_T99_End(void);
 
     // vHand_36_Flatten_Where
     bool bH36_T00_Test(void);
     void vH36_T00_Skip(void);
     void vH36_T00_Begin(void);
-    void vH36_T10(void);
-    void vH36_T20(void);
-    void vH36_T30(void);
+    void vH36_T10_Copy_From_SubQuery(void);
+
+    void vH36_T30_Adjust_From_SubQuery(void);
     void vH36_T99_End(void);
 
     // vHand_37_Flatten_Having

@@ -320,19 +320,26 @@ void Xreshape::vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H35_T10_Yank_From_SubQuery(void)
+void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+
+  //G.pDeck->vPush(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H35_T20_Put_From_SubQuery(void)
+void Xreshape::vR_H35_T10b_Put_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+
+  DELETE_CARD(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,19 +360,39 @@ void Xreshape::vR_H35_T30_Adjust_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T10(void)
+void Xreshape::vR_H36_T10a_Copy_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T20(void)
+void Xreshape::vR_H36_T10b_Put_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.p_twist = new Card_Twist;
+  G_vNewMember(CK_COMMENT,"- where"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- paramList"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- scan"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- crossJoin"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+
+  G.pDeck->vPush(G.p_twist);
+
+  G.pDeck->vPush(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+
+  DELETE_CARD(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/

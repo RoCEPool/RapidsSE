@@ -39,13 +39,13 @@ namespace STORE
     void vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void);
 
     // vHand_35_Flatten_From
-    void vR_H35_T10_Yank_From_SubQuery(void);
-    void vR_H35_T20_Put_From_SubQuery(void);
+    void vR_H35_T10a_Copy_From_SubQuery(void);
+    void vR_H35_T10b_Put_From_SubQuery(void);
     void vR_H35_T30_Adjust_From_SubQuery(void);
 
     // vHand_36_Flatten_Where
-    void vR_H36_T10(void);
-    void vR_H36_T20(void);
+    void vR_H36_T10a_Copy_From_SubQuery(void);
+    void vR_H36_T10b_Put_From_SubQuery(void);
     void vR_H36_T30(void);
 
     // vHand_37_Flatten_Having

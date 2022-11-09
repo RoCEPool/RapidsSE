@@ -512,7 +512,7 @@ bool Xtransforms::bH35_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,13 +540,29 @@ void Xtransforms::vH35_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T10_Yank_From_SubQuery(void)
+void Xtransforms::vH35_T10(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((yank from subquery))"_Stz);
+  vTransform(__func__, "((10))"_Stz);
 
-  vR_H35_T10_Yank_From_SubQuery();
+  while (G_bEachMain(CK_CALL)) {
+
+    Stz* szSubQueryNm = G.p_call->szValue();
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H35_T10a_Copy_From_SubQuery();
+
+    G_vPopBoard();
+
+    vR_H35_T10b_Put_From_SubQuery();
+  }
+
+  vR_H36_T10a_Copy_From_SubQuery();
 
   vEndTransform();
 }
@@ -554,13 +570,13 @@ void Xtransforms::vH35_T10_Yank_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T20_Put_From_SubQuery(void)
+void Xtransforms::vH35_T20(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((put from subquery))"_Stz);
+  vTransform(__func__, "((20))"_Stz);
 
-  vR_H35_T20_Put_From_SubQuery();
+  vR_H36_T10b_Put_From_SubQuery();
 
   vEndTransform();
 }
@@ -568,13 +584,13 @@ void Xtransforms::vH35_T20_Put_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T30_Adjust_From_SubQuery(void)
+void Xtransforms::vH35_T30(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((adjust from subquery))"_Stz);
+  vTransform(__func__, "((30))"_Stz);
 
-  vR_H35_T30_Adjust_From_SubQuery();
+  vR_H36_T30();
 
   vEndTransform();
 }
@@ -601,7 +617,7 @@ bool Xtransforms::bH36_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -629,41 +645,45 @@ void Xtransforms::vH36_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH36_T10(void)
+void Xtransforms::vH36_T10_Copy_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((10))"_Stz);
+  vTransform(__func__, "((yank from subquery))"_Stz);
 
-  vR_H36_T10();
+  while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
+
+    Stz* szSubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
+    vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vR_H36_T10a_Copy_From_SubQuery();
+
+    G_vPopBoard();
+
+    vR_H36_T10b_Put_From_SubQuery();
+
+    break;
+  }
 
   vEndTransform();
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH36_T20(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vTransform(__func__, "((20))"_Stz);
-
-  vR_H36_T20();
-
-  vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH36_T30(void)
+void Xtransforms::vH36_T30_Adjust_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((30))"_Stz);
+  vTransform(__func__, "((adjust from subquery))"_Stz);
 
-  vR_H36_T30();
+  vR_H35_T30_Adjust_From_SubQuery();
 
   vEndTransform();
 }

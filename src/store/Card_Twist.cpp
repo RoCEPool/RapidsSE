@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Twist,CK_TABLELIST)
+__pCastFunction_Card(STORE,Card_Twist,CK_TWIST)
 __aNewFunction(Card_Twist,CN_CARD)
 __vDeleteFunction(Card_Twist,CN_CARD)
 
@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Twist,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Twist::Card_Twist(void)
-: Card(CK_TABLELIST)
+: Card(CK_TWIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -256,9 +256,9 @@ void Transformer::vHand_35_Flatten_From(i8 iBelow, ...)
 
   m_pTransforms->vH35_T00_Begin();
 
-  m_pTransforms->vH35_T10_Yank_From_SubQuery();
-  m_pTransforms->vH35_T20_Put_From_SubQuery();
-  m_pTransforms->vH35_T30_Adjust_From_SubQuery();
+  m_pTransforms->vH36_T10_Copy_From_SubQuery();
+
+  m_pTransforms->vH36_T30_Adjust_From_SubQuery();
 
   m_pTransforms->vH35_T99_End();
 
@@ -283,9 +283,7 @@ void Transformer::vHand_36_Flatten_Where(i8 iBelow, ...)
 
   m_pTransforms->vH36_T00_Begin();
 
-  m_pTransforms->vH36_T10();
-  m_pTransforms->vH36_T20();
-  m_pTransforms->vH36_T30();
+  m_pTransforms->vH36_T10_Copy_From_SubQuery();
 
   m_pTransforms->vH36_T99_End();
 
