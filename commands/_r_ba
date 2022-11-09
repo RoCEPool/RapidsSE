@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_ba -- sub_query test : pattern a/b -> ba                                */
+/* _r_ba -- from sub-query test : pattern a/b -> ba                           */
 /*============================================================================*/
 
 trackMemory;
@@ -25,7 +25,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 /glean_interactive
 /weave
 /weaved
-/pipelineName = "r_ba"
+/pipelineName = "r_ba_FROM"
 select count(*)
   from (select *
           from orders, lineitem

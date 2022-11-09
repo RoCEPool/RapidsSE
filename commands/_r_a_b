@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_a_b -- sub_query test : pattern a/b -> a|b                              */
+/* _r_a_b -- having sub-query test : pattern a/b -> a|b                       */
 /*============================================================================*/
 
 trackMemory;
@@ -25,7 +25,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 /glean_interactive
 /weave
 /weaved
-/pipelineName = "r_a_b"
+/pipelineName = "r_a_b_HAVING"
 select l_orderkey, sum(l_quantity)
   from lineitem
  group by l_orderkey

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_b_a -- sub_query test : pattern a/b -> b|a                              */
+/* _r_b_a -- where sub-query test : pattern a/b -> b|a                        */
 /*============================================================================*/
 
 trackMemory;
@@ -25,7 +25,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 /glean_interactive
 /weave
 /weaved
-/pipelineName = "r_b_a"
+/pipelineName = "r_b_a_WHERE"
 select count(*)
   from orders, lineitem
  where L_ORDERKEY = O_ORDERKEY
