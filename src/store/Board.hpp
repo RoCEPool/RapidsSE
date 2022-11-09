@@ -37,6 +37,7 @@
 #include "Card_CoPtnJoinList.hpp"
 #include "Card_CoPtnPred.hpp"
 #include "Card_CoPtnPredList.hpp"
+#include "Card_CrossJoin.hpp"
 #include "Card_CrossPtnJoin.hpp"
 #include "Card_CrossPtnJoinList.hpp"
 #include "Card_CrossPtnPred.hpp"

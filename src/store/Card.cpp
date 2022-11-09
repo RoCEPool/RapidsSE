@@ -2057,6 +2057,19 @@ Card_Constraint* Card::pSub_constraint(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_CrossJoin.hpp"
+Card_CrossJoin* Card::pSub_crossJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CrossJoin* p_crossJoin =
+      _pCard_CrossJoin(pFindSubCard(CK_CROSSJOIN));
+  return p_crossJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Filter.hpp"
 Card_Filter* Card::pSub_filter(void)
 {

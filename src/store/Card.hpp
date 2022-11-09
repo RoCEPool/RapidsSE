@@ -40,6 +40,7 @@ namespace STORE
   class Card_CoPtnJoin;
   class Card_CoPtnJoinList;
   class Card_CoPtnPred;
+  class Card_CrossJoin;
 
   class Card_Debug;
   class Card_Deck;
@@ -354,6 +355,7 @@ namespace STORE
     Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Constraint*    pSub_constraint(void);
+    Card_CrossJoin*     pSub_crossJoin(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);

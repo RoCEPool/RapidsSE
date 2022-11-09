@@ -1,18 +1,16 @@
 /*============================================================================*/
-/* _r_ba -- sub_query test : pattern a/b -> ba                                */
+/* _r_ba_FROM -- from sub-query test : pattern a/b -> ba                      */
 /*============================================================================*/
 
 trackMemory;
 
-_customer
 _lineItem
 _orders
 _supplier
-create index C_Idx0 ON customer(C_CUSTKEY);
 create index L_idx0 on lineitem(L_ORDERKEY);
-create index O_idx0 on orders(O_ORDERKEY);
-create index S_idx0 on supplier(S_SUPPKEY);
-load lineItem "../tpch/sf_0001/lineItem.csv" ;
+create index O_idx0 on orders  (O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY) ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
 load orders   "../tpch/sf_0001/orders.csv"   ;
 load supplier "../tpch/sf_0001/supplier.csv" ;
 
@@ -25,7 +23,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 /glean_interactive
 /weave
 /weaved
-/pipelineName = "r_ba"
+/pipelineName = "r_ba_FROM"
 select count(*)
   from (select *
           from orders, lineitem

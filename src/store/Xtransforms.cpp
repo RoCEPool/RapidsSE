@@ -502,6 +502,274 @@ void Xtransforms::vH30_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*                                                       Flatten From Hand 35 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bH35_T00_Test(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH35_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH35_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH35_T10_Yank_From_SubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((yank from subquery))"_Stz);
+
+  vR_H35_T10_Yank_From_SubQuery();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH35_T20_Put_From_SubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((put from subquery))"_Stz);
+
+  vR_H35_T20_Put_From_SubQuery();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH35_T30_Adjust_From_SubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((adjust from subquery))"_Stz);
+
+  vR_H35_T30_Adjust_From_SubQuery();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH35_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                      Flatten Where Hand 36 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bH36_T00_Test(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T10(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((10))"_Stz);
+
+  vR_H36_T10();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T20(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vR_H36_T20();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T30(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H36_T30();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                       Flatten From Hand 35 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bH37_T00_Test(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T10(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((10))"_Stz);
+
+  vR_H37_T10();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T20(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vR_H37_T20();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T30(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T30();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T99_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*                                                   Predicate Pullup Hand 40 */
 /*============================================================================*/
 
@@ -512,7 +780,7 @@ bool Xtransforms::bH40_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -612,15 +880,17 @@ bool Xtransforms::bH50_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
-       i_Board++) {
-
-    if (G_bEachMain(CK_CALL))
-      return true;
-  }
-
   return false;
+
+//  for (i8 i_Board = 0;
+//       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+//       i_Board++) {
+//
+//    if (G_bEachMain(CK_CALL))
+//      return true;
+//  }
+//
+//  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -779,17 +1049,19 @@ bool Xtransforms::bH52_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
-       i_Board++) {
-
-    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
-      G.p_tstPred->vMark1(MARK_TWIST);
-      return true;
-    }
-  }
-
   return false;
+
+//  for (i8 i_Board = 0;
+//       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+//       i_Board++) {
+//
+//    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
+//      G.p_tstPred->vMark1(MARK_TWIST);
+//      return true;
+//    }
+//  }
+//
+//  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -979,15 +1251,17 @@ bool Xtransforms::bH55_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
-       i_Board++) {
-
-    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
-      return true;
-  }
-
   return false;
+
+//  for (i8 i_Board = 0;
+//       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+//       i_Board++) {
+//
+//    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
+//      return true;
+//  }
+//
+//  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1216,7 +1490,7 @@ bool Xtransforms::bH60_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1375,7 +1649,7 @@ bool Xtransforms::bH70_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1833,7 +2107,7 @@ bool Xtransforms::bH80_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2001,7 +2275,7 @@ bool Xtransforms::bH90_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2064,7 +2338,7 @@ bool Xtransforms::bHA0_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2120,7 +2394,7 @@ void Xtransforms::vHA0_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  Filter Refinement Hand B0 */
+/*                                                     Restore StmOdn Hand B0 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -2130,7 +2404,7 @@ bool Xtransforms::bHB0_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
