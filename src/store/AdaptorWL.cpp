@@ -94,7 +94,6 @@ AdaptorWL::AdaptorWL(void)
   m_pCurrentMsg = nullptr;
   m_iCurrentMsgType = -1;
   m_pPayloadSendList = new PayloadList();
-  m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_NONE;
   m_eProtocolState = CONNECTED;
 
@@ -227,25 +226,13 @@ void AdaptorWL::vProcessWLMsg(void)
                               sMsgType.c_str());
       m_eProtocolError = EC_WL_PROTOCOL_ERROR;
       m_eProtocolState = DISCONNECTED;
-      m_bContinueProcessingMsg = false;
       vCleanupCurrentMsg();
       return;
   }
 
 
   // Delete m_pCurrentMsg when processing is all done
-  if (!m_bContinueProcessingMsg || m_eProtocolError != EC_NONE) {
-    vCleanupCurrentMsg();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return true if vProcessWLMsg() needs to be called again                    */
-/*----------------------------------------------------------------------------*/
-bool AdaptorWL::bKeepProcessingMsg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
-  return m_bContinueProcessingMsg && m_eProtocolError == EC_NONE;
+  vCleanupCurrentMsg();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +328,6 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
                               sMsgType.c_str());
       m_eProtocolError = EC_WL_PROTOCOL_ERROR;
       m_eProtocolState = DISCONNECTED;
-      m_bContinueProcessingMsg = false;
       vCleanupCurrentMsg();
       return;
   }
@@ -359,7 +345,6 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
                             sMsgType.c_str());
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     m_eProtocolState = DISCONNECTED;
-    m_bContinueProcessingMsg = false;
     vCleanupCurrentMsg();
   }
 
@@ -554,7 +539,6 @@ void AdaptorWL::processProtocolCompatibleRequest()
     vSerialiseAndSendMsg(&oIncompatibleResponse, MessageTypes::type::ProtocolIncompatibleResponse);
 
     m_eProtocolError = EC_WL_PROTOCOL_VER_NOT_SUPPORTED;
-    m_bContinueProcessingMsg = false;
     vNextState(DISCONNECTED);
     return;
   }
@@ -569,7 +553,6 @@ void AdaptorWL::processProtocolCompatibleRequest()
 
   vSerialiseAndSendMsg(&oCompatibleResponse, MessageTypes::type::ProtocolCompatibleResponse);
 
-  m_bContinueProcessingMsg = false;
   vNextState(PROTOCOL_COMPATIBLE);
 }
 
@@ -592,7 +575,6 @@ void AdaptorWL::processDisconnectRequest()
   // Nothing to do in this message. We set m_eProtocolError to cause the socket
   // to be closed.
 
-  m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_WL_SOCKET_CLOSED; // Cause the socket to be closed.
   vNextState(DISCONNECTED);
 }
@@ -617,7 +599,6 @@ void AdaptorWL::processPingRequest()
   PingResponse oPingResponse;
   vSerialiseAndSendMsg(&oPingResponse, MessageTypes::type::PingResponse);
 
-  m_bContinueProcessingMsg = false;
   vNextState(READY);
 }
 
@@ -641,7 +622,6 @@ void AdaptorWL::processClearTextTunnelRequest()
   TunnelSupportedResponse oTunnelResponse;
   vSerialiseAndSendMsg(&oTunnelResponse, MessageTypes::type::TunnelSupportedResponse);
 
-  m_bContinueProcessingMsg = false;
   vNextState(TUNNELED);
 }
 
@@ -668,7 +648,6 @@ void AdaptorWL::processPlainAuthenticationRequest()
   AuthenticationOkResponse oAuthResponse;
   vSerialiseAndSendMsg(&oAuthResponse, MessageTypes::type::AuthenticationOkResponse);
 
-  m_bContinueProcessingMsg = false;
   vNextState(AUTHENTICATED);
 }
 
@@ -692,7 +671,6 @@ void AdaptorWL::processKerberosAuthenticationRequest()
 
   vErrorFeatureNotSupported("Kerberos authentication"_Stz);
 
-  m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
   vNextState(DISCONNECTED);
   //vNextState(KERBEROS_NEGOTIATING);
@@ -718,7 +696,6 @@ void AdaptorWL::processGssNegotiationMsg()
 
   vErrorFeatureNotSupported("Kerberos authentication"_Stz);
 
-  m_bContinueProcessingMsg = false;
   m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
   vNextState(DISCONNECTED);
 //  vNextState(AUTHENTICATED);
@@ -761,7 +738,6 @@ void AdaptorWL::processSessionChangeRequest()
   oSsnResponse.sessionKey = 1234;     // TODO
   vSerialiseAndSendMsg(&oSsnResponse, MessageTypes::type::SessionChangeResponse);
 
-  m_bContinueProcessingMsg = false;
   vNextState(READY);
 }
 
@@ -785,7 +761,6 @@ void AdaptorWL::processQueryExecuteRequest()
 
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
 //  vNextState(DISCONNECTED);
 }
 
@@ -809,7 +784,6 @@ void AdaptorWL::processQueryProgressRequest()
 
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
 //  vNextState(DISCONNECTED);
 }
 
@@ -833,7 +807,6 @@ void AdaptorWL::processSessionMonitoringRequest()
 
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
 //  vNextState(DISCONNECTED);
 }
 
@@ -857,7 +830,6 @@ void AdaptorWL::processParseStatementRequest()
 
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
 //  vNextState(DISCONNECTED);
 }
 
@@ -881,7 +853,6 @@ void AdaptorWL::processStatementBindAndExecuteRequest()
 
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
 //  vNextState(DISCONNECTED);
 }
 
@@ -905,7 +876,6 @@ void AdaptorWL::processClosePreparedStatementRequest()
 
   // TODO: populate
 
-//  m_bContinueProcessingMsg = false;
 //  vNextState(DISCONNECTED);
 }
 
@@ -945,7 +915,6 @@ bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
                           aErrorMsg[eErrType],
                           aState[m_eProtocolState],
                           sBuf.szStz());
-  m_bContinueProcessingMsg = false;
   m_eProtocolError = eErrType;
   m_eProtocolState = DISCONNECTED;
 
@@ -964,7 +933,6 @@ void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
                           szErrMsg,
                           aErrorMsg[eErrType],
                           pcTargetType);
-  m_bContinueProcessingMsg = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -980,7 +948,6 @@ void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
                           aErrorMsg[eErrType],
                           szFromState,
                           szToState);
-  m_bContinueProcessingMsg = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -995,7 +962,6 @@ void AdaptorWL::vErrorMessageNotSupported()
                           szErrMsg,
                           aErrorMsg[eErrType],
                           to_string((MessageTypes::type)m_iCurrentMsgType).c_str());
-  m_bContinueProcessingMsg = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1010,7 +976,6 @@ void AdaptorWL::vErrorFeatureNotSupported(Stz* szFeature)
                           szErrMsg,
                           aErrorMsg[eErrType],
                           szFeature);
-  m_bContinueProcessingMsg = false;
 }
 
 /*============================================================================*/

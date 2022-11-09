@@ -48,7 +48,6 @@ namespace STORE
     apache::thrift::TBase* m_pCurrentMsg;
     i8     m_iCurrentMsgType;
     PayloadList* m_pPayloadSendList;
-    bool   m_bContinueProcessingMsg;
     eEC    m_eProtocolError;
     eState m_eProtocolState;
 
@@ -70,7 +69,6 @@ namespace STORE
 
     void vDecodePayload(WLP::PayloadObj* pPayload);
     void vProcessWLMsg();
-    bool bKeepProcessingMsg();
     eEC  eProtocolError();
     bool bHasPayloadToSend();
     WLP::PayloadObj* pNextPayloadToSend();

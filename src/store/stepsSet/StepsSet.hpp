@@ -30,7 +30,6 @@ public:
   void vAdaptorWLDelete(void);
   void vAdaptorWLDecodePayload(void);
   void vAdaptorWLProcessWLMsg(void);
-  void vAdaptorWLKeepProcessingMsgFetch(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
   void vAdaptorWLProtocolErrorTest(void);

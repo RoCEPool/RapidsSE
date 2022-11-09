@@ -20,7 +20,6 @@ void Step::vAddSteps_AdaptorWL(void)
 
   vAddStep("AdaptorWL[].decodePayload"_Stz,     &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].processWLMsg"_Stz, &Step::vAdaptorWLProcessWLMsg);
-  vAddStep("AdaptorWL[].keepProcessingMsg@"_Stz,&Step::vAdaptorWLKeepProcessingMsgFetch);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz, &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz, &Step::vAdaptorWLNextPayloadToSendFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz, &Step::vAdaptorWLProtocolErrorTest);
@@ -78,19 +77,6 @@ void Step::vAdaptorWLProcessWLMsg(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
   pAdaptorWL->vProcessWLMsg();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* adaptorWL[].keepProcessingMsg@ -- keep processing current WL message?      */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLKeepProcessingMsgFetch(void)
-{
-  ENTRY();
-
-  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  m_pDataStack->vPushBol(pAdaptorWL->bKeepProcessingMsg());
 
   EXIT();
 }

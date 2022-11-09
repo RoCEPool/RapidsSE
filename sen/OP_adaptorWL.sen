@@ -4,6 +4,22 @@
 
 " OP_adaptorWL.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* Send any serialised wireline responses if there are any queued and waiting */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_sendAnyWLResponses
+
+  begin
+    AdaptorWL[].hasPayloadToSend@
+  while
+    "Sending payload" .
+    AdaptorWL[].nextPayloadToSend@ [op].pipeOut
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* on EV_M_START ...                                                          */
@@ -20,6 +36,8 @@
 
 /*----------------------------------------------------------------------------*/
 /* on EV_D_PAYLOAD ...                                                        */
+/* This is called when a wireline message has been read from the socket and   */
+/* it needs to be decoded and processed.                                      */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Payload \handler
 
@@ -39,11 +57,7 @@
   pPayloadObj payloadObj::delete
 
   // Possible errors from decoding need to be sent here.
-  begin
-    AdaptorWL[].hasPayloadToSend@
-  while
-    [op].pipeOut
-  repeat
+  adaptorWL_sendAnyWLResponses
 
   // Check if the protocol is unviable (e.g. received invalid msg or in wrong sequence).
   AdaptorWL[].protocolErrorTest if
@@ -53,30 +67,21 @@
   then
 
   // Process the decoded message.
-  begin
-    // Processing a message may generate 1 or more payloads to be sent.
-    AdaptorWL[].processWLMsg
 
-    // Pipeout any payloads that were just generated so they can be sent straight away
-    begin
-      AdaptorWL[].hasPayloadToSend@
-    while
-      "Sending payload" .
-      AdaptorWL[].nextPayloadToSend@ [op].pipeOut
-    repeat
+  // Processing a message may generate 1 or more payloads to be sent back to the client.
+  AdaptorWL[].processWLMsg
 
-    // Check if the protocol is unviable
-    AdaptorWL[].protocolErrorTest if
-      AdaptorWL[].protocolError@ op__execErr
-      true
-      exit
-    then
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
 
-    // Processing a message may also need multiple turns (e.g. for processing
-    // a large result set).
-    AdaptorWL[].keepProcessingMsg@
-  while
-  repeat
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
+
+  // Check if there are queries to be submitted through the API
 
 //AdaptorWL[].hasApiQuery@ if
 //  // TODO: Submit query through API
@@ -95,17 +100,6 @@
   EV_M_CLEANING_handler
 ;
 
-///*----------------------------------------------------------------------------*/
-///* on EV_M_APIEVENT ...                                                       */
-///*----------------------------------------------------------------------------*/
-//: adaptorWL_apiEvent \handler
-//
-//  //"adaptorWL_apiEvent - EV_M_APIEVENT" .
-//
-//  AdaptorWL[].processEventB
-//
-//  true
-//;
 
 /*----------------------------------------------------------------------------*/
 /* entry point                                                                */
@@ -119,8 +113,6 @@
   find: adaptorWL_StartMarker EV_M_START       [op].handler!
   find: adaptorWL_Payload     EV_D_PAYLOAD     [op].handler!
   find: adaptorWL_Cleaning    EV_M_CLEANING    [op].handler!
-
-//find: adaptorWL_apiEvent    EV_M_APIEVENT    [op].handler!
 
   op__loop
 
