@@ -420,6 +420,26 @@ void Xmodify::M_vScan_Produce_indexList(Card_Scan* p_scan)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert eYG to eAL                                                         */
+/*----------------------------------------------------------------------------*/
+eAL Xmodify::M_eStageTopology_To_Level(eYG eStageTopo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eAL eLevel;
+
+  switch (eStageTopo) {
+    case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
+    case YG_ALL_NODES      : eLevel = AL_NODE;      break;
+    case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
+    default                : eLevel = AL_NONE;      break;
+  }
+
+  return eLevel;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream)

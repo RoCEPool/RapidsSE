@@ -95,7 +95,7 @@ Board* Xgearing::pBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cue user                                                                  */
+/* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
 eOA Xgearing::eCueUser(Stz* szPrompt)
 {
@@ -735,6 +735,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
 
     case CK_ABSJOIN:          return G.p_absJoin;
     case CK_AGGELIST:         return G.p_aggElist;
+    case CK_AGGGBY:           return G.p_aggGby;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUNDS:           return G.p_bounds;
@@ -966,6 +967,7 @@ void Xgearing::G_vClearMembers(void)
 
   G.p_absJoin          = nullptr;
   G.p_aggElist         = nullptr;
+  G.p_aggGby           = nullptr;
   G.p_aggreg           = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bounds           = nullptr;
@@ -1310,6 +1312,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
     case CK_AGGELIST:         *((Card**)&G.p_aggElist)         = pCard; break;
+    case CK_AGGGBY:           *((Card**)&G.p_aggGby)           = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
@@ -1638,6 +1641,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
 
     case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
     case CK_AGGELIST:         return "G.p_aggElist"_Stz;
+    case CK_AGGGBY:           return "G.p_aggGby"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;

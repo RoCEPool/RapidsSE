@@ -1940,6 +1940,32 @@ Card_AggElist* Card::pSub_aggElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_AggGby.hpp"
+Card_AggGby* Card::pSub_aggGby(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_AggGby* p_aggGby =
+      _pCard_AggGby(pFindSubCard(CK_AGGGBY));
+  return p_aggGby;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Aggreg.hpp"
+Card_Aggreg* Card::pSub_aggreg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Aggreg* p_aggreg =
+      _pCard_Aggreg(pFindSubCard(CK_AGGREG));
+  return p_aggreg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_As.hpp"
 Card_As* Card::pSub_as(void)
 {

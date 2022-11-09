@@ -52,6 +52,8 @@ namespace STORE
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
     void M_vScan_Produce_indexList(Card_Scan* p_scan);
 
+    eAL  M_eStageTopology_To_Level(eYG eStageTopo);
+
     void M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn);

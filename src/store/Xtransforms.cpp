@@ -76,7 +76,7 @@ void Xtransforms::vH10_T00_Begin(void)
   m_pBench->vPrefix('r');
   m_pCardCtl->vUseExpanded();
   vPrintBench(BK_SUBPIPE);
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseExpanded();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2277,6 +2277,20 @@ void Xtransforms::vHZ0_T20_Reinstate_stagesV2(void)
   G_vRestart();
   while (G_bEachMain(CK_STAGE))
     G.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reinstate stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHZ0_T20_Reinstate_stagesV3(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "reinstate stages"_Stz);
+
+  vR_HZ0_T20_Reinstate_stagesV3();
 
   vEndTransform();
 }
