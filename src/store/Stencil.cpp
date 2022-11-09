@@ -2920,6 +2920,14 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
         return EC_INVALID_PIPELINE;
       }
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // CANNOT HAVE INDEXJOIN OP wITH A KEYEXISTS OP
+      if (m_xStageOps.m_iKeyExistsOp) {
+        vTrace("Error: Cannot have indexJoinOP with an keyExistsOP (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
       m_xStageOps.m_iIndexJoinOp++;
     }
 
@@ -2955,9 +2963,17 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE LIMIT-OP's
+      // MULTIPLE KEYEXISTS-OP's
       if (m_xStageOps.m_iKeyExistsOp) {
         vTrace("Error: Cannot have multiple keyExists/keyNotExists operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // CANNOT HAVE KEYEXISTS WITH AN INDEXJOIN OP
+      if (m_xStageOps.m_iIndexJoinOp) {
+        vTrace("Error: Cannot have keyExists with an indexJoinOP (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
         return EC_INVALID_PIPELINE;
       }

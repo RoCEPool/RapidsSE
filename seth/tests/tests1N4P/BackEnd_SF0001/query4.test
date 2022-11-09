@@ -144,6 +144,69 @@ rows:
  ('4-NOT SPECIFIED',8)
  ('5-LOW',12)
 
+//ORDERS PARTITIONED ON O_ORDERKEY
+//SF10:
+/*
+pipeline Query4
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                            O_ORDERDATE DATE '1993-10-01' < and "
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+                                      "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) countAll"
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ ('1-URGENT',9)
+ ('2-HIGH',7)
+ ('3-MEDIUM',13)
+ ('4-NOT SPECIFIED',8)
+ ('5-LOW',12)
+*/
 CLEANUP {
   bye;
   mute

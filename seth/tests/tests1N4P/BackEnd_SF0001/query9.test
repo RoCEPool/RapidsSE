@@ -292,6 +292,242 @@ pipeline Query9
 rows: 41
 */
 
+//SF10:
+/*
+/time pipeline Query9
+  begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2578 on all partitions :
+    scan ORDERS
+    | project " type INTEGER as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2572 on all partitions :
+    indexJoin LINEITEM IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    | project "type INTEGER as L_PARTKEY J1_L_PARTKEY , type INTEGER as L_SUPPKEY J1_L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE J1_L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT J1_L_DISCOUNT , type DECIMAL as L_QUANTITY J1_L_QUANTITY"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2566 on all partitions :
+    indexJoin PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    | filter "type BOOLEAN }  J1_P_NAME '%green%'  5 matchMiddle"
+    | project "type INTEGER as P_PARTKEY J1_P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | combined 0
+    | next
+
+  stage stageMarker2575 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    | filter "type BOOLEAN J1_PS_SUPPKEY L_SUPPKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  J1_PS_SUPPLYCOST L_QUANTITY *  -"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2575_a on all partitions :
+     indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+     | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+     | combined 0
+     | next
+
+  stage stageMarker2581 on all partitions :
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION J1_N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | combined 0
+    | next
+
+  stage stageMarker2587 on all partitions :
+    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2593 on all nodes :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2596 on origin :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2596 on origin :
+    sort " type VARCHAR as nation $1 ASC , type INTEGER as o_year $2 DESC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 41
+*/
+
+/*
+ORDERS PARTITIONED ON O_ORDERKEY
+/time pipeline Query9
+  begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2572 on all partitions :
+    scan LINEITEM
+    | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | combined 0
+    | next
+
+  stage stageMarker2578 on all partitions :
+    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    | project "type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR J1_O_ORDERDATE extract_year , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+
+  stage stageMarker2566 on all partitions :
+    indexJoin PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    | filter "type BOOLEAN }  J1_P_NAME '%green%'  5 matchMiddle"
+    | project "type INTEGER as P_PARTKEY J1_P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | combined 0
+    | next
+
+  stage stageMarker2575 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    | filter "type BOOLEAN J1_PS_SUPPKEY L_SUPPKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  J1_PS_SUPPLYCOST L_QUANTITY *  -"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2575_a on all partitions :
+     indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+     | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+     | combined 0
+     | next
+
+  stage stageMarker2581 on all partitions :
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION J1_N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | combined 0
+    | next
+
+  stage stageMarker2587 on all partitions :
+    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2593 on all nodes :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2596 on origin :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2596 on origin :
+    sort " type VARCHAR as nation $1 ASC , type INTEGER as o_year $2 DESC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 41
+*/
+
+/*
+ORDERS PARTITIONED ON O_ORDERKEY
+SF10: 6.9s
+/time pipeline unamed
+  begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2566 on all partitions :
+    scan rapidsse public part
+    | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next
+
+  stage stageMarker2575 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST"
+    | combined 0
+    | next broadcast
+
+  stage stageMarker2572 on all partitions :
+    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    | filter "type BOOLEAN J1_L_SUPPKEY PS_SUPPKEY =="
+    | project "type INTEGER as L_ORDERKEY J1_L_ORDERKEY , type INTEGER as L_SUPPKEY J1_L_SUPPKEY , type DECIMAL as AMOUNT J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT -  *  PS_SUPPLYCOST J1_L_QUANTITY *  - "
+    | combined 0
+    | next
+
+  stage stageMarker2578 on all partitions :
+    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    | project " type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR J1_O_ORDERDATE extract_year , type DECIMAL as AMOUNT AMOUNT"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2575 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT "
+    | combined 0
+    | next broadcast
+
+  stage stageMarker2581 on all partitions :
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | project " type VARCHAR as NATION J1_N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | combined 0
+    | next
+
+  stage stageMarker2587 on all partitions :
+    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2593 on all nodes :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2596 on origin :
+    aggreg " groupBy  type VARCHAR as nation $1 ,  type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarker2596 on origin :
+    sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 41
+*/
+
 CLEANUP {
   bye;
   mute
