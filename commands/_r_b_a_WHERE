@@ -1,18 +1,16 @@
 /*============================================================================*/
-/* _r_b_a -- where sub-query test : pattern a/b -> b|a                        */
+/* _r_b_a_WHERE -- where sub-query test : pattern a/b -> b|a                  */
 /*============================================================================*/
 
 trackMemory;
 
-_customer
 _lineItem
 _orders
 _supplier
-create index C_Idx0 ON customer(C_CUSTKEY);
 create index L_idx0 on lineitem(L_ORDERKEY);
-create index O_idx0 on orders(O_ORDERKEY);
-create index S_idx0 on supplier(S_SUPPKEY);
-load lineItem "../tpch/sf_0001/lineItem.csv" ;
+create index O_idx0 on orders  (O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY) ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
 load orders   "../tpch/sf_0001/orders.csv"   ;
 load supplier "../tpch/sf_0001/supplier.csv" ;
 

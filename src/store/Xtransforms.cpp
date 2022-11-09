@@ -512,7 +512,7 @@ bool Xtransforms::bH35_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +780,7 @@ bool Xtransforms::bH40_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -880,15 +880,17 @@ bool Xtransforms::bH50_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
-       i_Board++) {
-
-    if (G_bEachMain(CK_CALL))
-      return true;
-  }
-
   return false;
+
+//  for (i8 i_Board = 0;
+//       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+//       i_Board++) {
+//
+//    if (G_bEachMain(CK_CALL))
+//      return true;
+//  }
+//
+//  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1047,17 +1049,19 @@ bool Xtransforms::bH52_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
-       i_Board++) {
-
-    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
-      G.p_tstPred->vMark1(MARK_TWIST);
-      return true;
-    }
-  }
-
   return false;
+
+//  for (i8 i_Board = 0;
+//       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+//       i_Board++) {
+//
+//    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "in"_Stz)) {
+//      G.p_tstPred->vMark1(MARK_TWIST);
+//      return true;
+//    }
+//  }
+//
+//  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1247,15 +1251,17 @@ bool Xtransforms::bH55_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
-       i_Board++) {
-
-    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
-      return true;
-  }
-
   return false;
+
+//  for (i8 i_Board = 0;
+//       m_pBench->bBoardExists(BK_SUBPIPE, i_Board);
+//       i_Board++) {
+//
+//    if (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz))
+//      return true;
+//  }
+//
+//  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1484,7 +1490,7 @@ bool Xtransforms::bH60_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1643,7 +1649,7 @@ bool Xtransforms::bH70_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2101,7 +2107,7 @@ bool Xtransforms::bH80_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2269,7 +2275,7 @@ bool Xtransforms::bH90_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2332,7 +2338,7 @@ bool Xtransforms::bHA0_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2388,7 +2394,7 @@ void Xtransforms::vHA0_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  Filter Refinement Hand B0 */
+/*                                                     Restore StmOdn Hand B0 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -2398,7 +2404,7 @@ bool Xtransforms::bHB0_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,18 +1,16 @@
 /*============================================================================*/
-/* _r_ba -- from sub-query test : pattern a/b -> ba                           */
+/* _r_a_b_HAVING -- having sub-query test : pattern a/b -> a|b                */
 /*============================================================================*/
 
 trackMemory;
 
-_customer
 _lineItem
 _orders
 _supplier
-create index C_Idx0 ON customer(C_CUSTKEY);
 create index L_idx0 on lineitem(L_ORDERKEY);
-create index O_idx0 on orders(O_ORDERKEY);
-create index S_idx0 on supplier(S_SUPPKEY);
-load lineItem "../tpch/sf_0001/lineItem.csv" ;
+create index O_idx0 on orders  (O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY) ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
 load orders   "../tpch/sf_0001/orders.csv"   ;
 load supplier "../tpch/sf_0001/supplier.csv" ;
 
@@ -25,28 +23,28 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 /glean_interactive
 /weave
 /weaved
-/pipelineName = "r_ba_FROM"
-select count(*)
-  from (select *
-          from orders, lineitem
-         where L_ORDERKEY = O_ORDERKEY)
+/pipelineName = "r_a_b_HAVING"
+select l_orderkey, sum(l_quantity)
+  from lineitem
+ group by l_orderkey
+having sum(l_quantity) > (select avg(l_quantity)
+                           from lineitem)
 ;
-
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
 
-bSQ aMQ
+aMQ | bSQ
 
-==00 P--------------
-  CALL *1
-      __subquery0002
+==04 O--------------
+  HAVING *2
   0]level
-        AL_PARTITION
-
-
-
+           AL_ORIGIN
+  1]rpnCalc
+                  $2
+      __subquery0002
+                   >
 
 
 
