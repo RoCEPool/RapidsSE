@@ -50,7 +50,7 @@ CURRENT_NODE_NAME=""
 ###############################################################################
 
 # Process the arguments given to the script.
-processStartStopArgs "$@"
+processStopArgs "$@"
 
 debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"

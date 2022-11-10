@@ -34,6 +34,8 @@ CLUSTER_INIT=0
 CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
 NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
 DEBUG=0
+ARG_EXTRA=""
+ARG_EXTRA_VALUE=""
 
 # Will be set after loading node name file.
 CURRENT_NODE_NAME=""
@@ -51,13 +53,15 @@ CURRENT_NODE_NAME=""
 ###############################################################################
 
 # Process the arguments given to the script.
-processStartStopArgs "$@"
+processStartArgs "$@"
 
 debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
 debugPrint "CLUSTER_INIT = ${CLUSTER_INIT}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
 debugPrint "NAME_FILE = ${NAME_FILE}"
 debugPrint "DEBUG = ${DEBUG}"
+debugPrint "ARG_EXTRA = ${ARG_EXTRA}"
+debugPrint "ARG_EXTRA_VALUE = ${ARG_EXTRA_VALUE}"
 
 # Import the cluster configuration
 loadClusterConfig
