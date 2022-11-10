@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH85_T20_Add_index_ForAll_crossJoin"
+/glean_cue_from = "vH85_T30_Add_bounds_ForAll_crossJoin"
 /transliterated
 /transform
 /transform3

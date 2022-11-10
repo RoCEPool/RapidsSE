@@ -1915,10 +1915,15 @@ void Xreshape::vR_H85_T20_Add_index_For_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H85_T30(void)
+void Xreshape::vR_H85_T30_Add_bounds_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G_vNewMember(CK_BOUNDS);
+  G.p_crossJoin->vAppend(G.p_bounds);
+
+  G_vNewMember(CK_TERM,"$I1"_Stz);
+  G.p_bounds->vAppend(G.p_term);
 }
 
 

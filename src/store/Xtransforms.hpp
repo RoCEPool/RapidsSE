@@ -202,7 +202,7 @@ namespace STORE
     void vH85_T00_Begin(void);
     void vH85_T10_Transmute_All_table(void);
     void vH85_T20_Add_index_ForAll_crossJoin(void);
-    void vH85_T30(void);
+    void vH85_T30_Add_bounds_ForAll_crossJoin(void);
     void vH85_T99_End(void);
 
     // vHand_90_Stream_Ordering

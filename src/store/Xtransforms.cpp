@@ -2478,13 +2478,15 @@ void Xtransforms::vH85_T20_Add_index_ForAll_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH85_T30(void)
+void Xtransforms::vH85_T30_Add_bounds_ForAll_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((85 20))"_Stz);
 
-  vR_H85_T30();
+  while (G_bEachMainWithSub(CK_CROSSJOIN,CK_INDEX)) {
+    vR_H85_T30_Add_bounds_For_crossJoin();
+  }
 
   vEndTransform();
 }

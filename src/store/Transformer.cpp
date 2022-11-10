@@ -619,7 +619,7 @@ void Transformer::vHand_85_Cross_Join(i8 iBelow, ...)
 
   m_pTransforms->vH85_T10_Transmute_All_table();
   m_pTransforms->vH85_T20_Add_index_ForAll_crossJoin();
-  m_pTransforms->vH85_T30();
+  m_pTransforms->vH85_T30_Add_bounds_ForAll_crossJoin();
 
   m_pTransforms->vH85_T99_End();
 
