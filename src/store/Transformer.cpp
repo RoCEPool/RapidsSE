@@ -288,6 +288,7 @@ void Transformer::vHand_36_Flatten_Where(i8 iBelow, ...)
   m_pTransforms->vH36_T30_Replace_param_In_whereA();
   m_pTransforms->vH36_T40_Delete_tstPred_In_whereA();
   m_pTransforms->vH36_T50_Adjust_StmOdn();
+  m_pTransforms->vH36_T60_Adjust_StmColOdn();
 
   m_pTransforms->vH36_T99_End();
 

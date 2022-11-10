@@ -42,6 +42,8 @@ namespace STORE
 
     eAL    e_Level;
 
+    i8     i_stmColOdn;
+
     Card_AbsJoin *          p_absJoin;
     Card_AggElist *         p_aggElist;
     Card_AggGby *           p_aggGby;
