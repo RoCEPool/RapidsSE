@@ -331,7 +331,7 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H35_T10b_Put_From_SubQuery(void)
+void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -378,7 +378,7 @@ void Xreshape::vR_H36_T10a_Copy_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T10b_Put_From_SubQuery(void)
+void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -635,9 +635,44 @@ void Xreshape::vR_H36_T70_Replace_term_In_cmpPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T10(void)
+void Xreshape::vR_H37_T10a_Copy_sqB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMember(CK_TWIST,"<-a b->"_Stz);
+  G_vNewMember(CK_COMMENT,"- link __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- stmColOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- gby __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- agg __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- unproject __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- reverse a b"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- delete twist"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+
+  G.pDeck->vAppend(G.p_twist);
+
+  G.pDeck->vAppend(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+
+  DELETE_CARD(m_pCard_yanked);
 
 }
 

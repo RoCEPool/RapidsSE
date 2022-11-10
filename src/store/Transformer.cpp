@@ -319,7 +319,7 @@ void Transformer::vHand_37_Flatten_Having(i8 iBelow, ...)
 
   m_pTransforms->vH37_T00_Begin();
 
-  m_pTransforms->vH37_T10();
+  m_pTransforms->vH37_T10_Append_sqB_After_mqA();
   m_pTransforms->vH37_T20();
   m_pTransforms->vH37_T30();
 

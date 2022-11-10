@@ -9,7 +9,7 @@
 
 namespace BASE
 {
-  static const i8 C_RIBBON_ACROSS = 10;
+  static const i8 C_RIBBON_ACROSS = 12;
 
   class Ribbon : public ListExo_t<CN_RIBBON,RibbonLine>
   {

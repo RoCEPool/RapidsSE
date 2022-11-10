@@ -87,7 +87,7 @@ namespace STORE
     bool bH37_T00_Test(void);
     void vH37_T00_Skip(void);
     void vH37_T00_Begin(void);
-    void vH37_T10(void);
+    void vH37_T10_Append_sqB_After_mqA(void);
     void vH37_T20(void);
     void vH37_T30(void);
     void vH37_T99_End(void);

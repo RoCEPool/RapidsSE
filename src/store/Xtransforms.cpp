@@ -518,7 +518,7 @@ bool Xtransforms::bH35_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -565,7 +565,7 @@ void Xtransforms::vH35_T10_Push_sqB_Into_mqA(void)
 
     G_vPopBoard();
 
-    vR_H35_T10b_Put_From_SubQuery();
+    vR_H35_T10b_Push_sqB_Before_mqA();
   }
 
   vEndTransform();
@@ -669,7 +669,7 @@ void Xtransforms::vH36_T10_Push_sqB_Into_mqA(void)
 
     G_vPopBoard();
 
-    vR_H36_T10b_Put_From_SubQuery();
+    vR_H36_T10b_Push_sqB_Before_mqA();
 
     break;
   }
@@ -837,7 +837,7 @@ bool Xtransforms::bH37_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -857,21 +857,41 @@ void Xtransforms::vH37_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseLonger();
 
-  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+  //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T10(void)
+void Xtransforms::vH37_T10_Append_sqB_After_mqA(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((10))"_Stz);
+  vTransform(__func__, "Append subQuery-B after mainQuery-A"_Stz);
 
-  vR_H37_T10();
+  //while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
+
+    //Stz* szSubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
+    Stz* szSubQueryNm = "__subquery0002"_Stz;
+    vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
+
+    if (! G_bPushBoard(szSubQueryNm)) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      NEVER_REACH;
+    }
+
+    vR_H37_T10a_Copy_sqB();
+
+    G_vPopBoard();
+
+    vR_H37_T10a_Append_sqB_After_mqA();
+
+    //break;
+  //}
+
+  G.pDeck->vRenumberRecursive();
 
   vEndTransform();
 }
