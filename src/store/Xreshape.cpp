@@ -2096,7 +2096,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
 
   eAL e_level_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
 
-  bool bSawSynthedOp = false;
+  bool bSawProjectOp = false;
+  bool bSawAggOp = false;
 
   auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
     Card_Combined* p_combined = new Card_Combined;
@@ -2158,9 +2159,13 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
       e_level_running = e_level_main;
       vAddStage(p_main, i_Main, e_level_running,nStages);
       if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
-        bSawSynthedOp = true;
+        bSawAggOp = true;
       else
-        bSawSynthedOp = false;
+        bSawAggOp = false;
+      if (CK_PROJECT == e_main)
+        bSawProjectOp = true;
+      else
+        bSawProjectOp = false;
       continue;
     }
 
@@ -2169,19 +2174,33 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
-      bSawSynthedOp = false;
+      bSawAggOp = false;
+      bSawProjectOp = false;
       continue;
     }
 
-    if (bSawSynthedOp) {
+    if (CK_PROJECT == e_main && bSawProjectOp ) {
+      if (CK_SCAN != e_prev)
+        vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
-      bSawSynthedOp = false;
+      bSawAggOp = false;
+      bSawProjectOp = false;
+      continue;
+    }
+
+    if (bSawAggOp) {
+      vAddNext(p_main, i_Main,""_Stz);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawProjectOp = false;
       continue;
     }
 
     if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
-      bSawSynthedOp = true;
+      bSawAggOp = true;
+    if (CK_PROJECT == e_main)
+      bSawProjectOp = true;
   }
 
   i8 i_End = C_UNKNOWN;
