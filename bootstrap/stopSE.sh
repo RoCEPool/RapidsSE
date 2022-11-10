@@ -42,32 +42,6 @@ CURRENT_NODE_NAME=""
 ### Functions                                                               ###
 ###############################################################################
 
-# None
-
-
-###############################################################################
-### Main Script                                                             ###
-###############################################################################
-
-# Process the arguments given to the script.
-processStopArgs "$@"
-
-debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
-debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
-debugPrint "NAME_FILE = ${NAME_FILE}"
-debugPrint "DEBUG = ${DEBUG}"
-
-# Import the cluster configuration
-loadClusterConfig
-
-if [ ${CLUSTER_OP} -eq 1 ]; then
-  stopCluster
-
-else
-  loadNodeName
-  stopCurrentNode
-fi
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Process the arguments for the stop script.
 ## Params: None
@@ -160,3 +134,27 @@ function processStopArgs() {
     printStartStopUsageAndExit
   fi
 }
+
+###############################################################################
+### Main Script                                                             ###
+###############################################################################
+
+# Process the arguments given to the script.
+processStopArgs "$@"
+
+debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
+debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
+debugPrint "NAME_FILE = ${NAME_FILE}"
+debugPrint "DEBUG = ${DEBUG}"
+
+# Import the cluster configuration
+loadClusterConfig
+
+if [ ${CLUSTER_OP} -eq 1 ]; then
+  stopCluster
+
+else
+  loadNodeName
+  stopCurrentNode
+fi
+

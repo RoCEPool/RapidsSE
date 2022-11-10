@@ -45,47 +45,6 @@ CURRENT_NODE_NAME=""
 ### Functions                                                               ###
 ###############################################################################
 
-# None
-
-
-###############################################################################
-### Main Script                                                             ###
-###############################################################################
-
-# Process the arguments given to the script.
-processStartArgs "$@"
-
-debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
-debugPrint "CLUSTER_INIT = ${CLUSTER_INIT}"
-debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
-debugPrint "NAME_FILE = ${NAME_FILE}"
-debugPrint "DEBUG = ${DEBUG}"
-debugPrint "ARG_EXTRA = ${ARG_EXTRA}"
-debugPrint "ARG_EXTRA_VALUE = ${ARG_EXTRA_VALUE}"
-
-# Import the cluster configuration
-loadClusterConfig
-
-if [ ${CLUSTER_OP} -eq 1 ]; then
-  if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    remoteClusterXConnect
-    exit
-  fi
-
-  #shellcheck disable=SC2119
-  startCluster ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
-
-else
-  loadNodeName
-
-  if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    localClusterXConnect
-    exit
-  fi
-
-  startCurrentNode ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
-fi
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Process the arguments for the start script.
 ## Params: None
@@ -186,3 +145,41 @@ function processStartArgs() {
     printStartStopUsageAndExit
   fi
 }
+
+###############################################################################
+### Main Script                                                             ###
+###############################################################################
+
+# Process the arguments given to the script.
+processStartArgs "$@"
+
+debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
+debugPrint "CLUSTER_INIT = ${CLUSTER_INIT}"
+debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
+debugPrint "NAME_FILE = ${NAME_FILE}"
+debugPrint "DEBUG = ${DEBUG}"
+debugPrint "ARG_EXTRA = ${ARG_EXTRA}"
+debugPrint "ARG_EXTRA_VALUE = ${ARG_EXTRA_VALUE}"
+
+# Import the cluster configuration
+loadClusterConfig
+
+if [ ${CLUSTER_OP} -eq 1 ]; then
+  if [ "${CLUSTER_INIT}" -eq 1 ]; then
+    remoteClusterXConnect
+    exit
+  fi
+
+  #shellcheck disable=SC2119
+  startCluster ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
+
+else
+  loadNodeName
+
+  if [ "${CLUSTER_INIT}" -eq 1 ]; then
+    localClusterXConnect
+    exit
+  fi
+
+  startCurrentNode ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
+fi
