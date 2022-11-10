@@ -76,6 +76,7 @@ namespace STORE
     void vH36_T20_Transfer_whereB_To_whereA(void);
     void vH36_T30_Replace_param_In_whereA(void);
     void vH36_T40_Delete_tstPred_In_whereA(void);
+    void vH36_T50_Adjust_StmOdn(void);
 
     void vH36_T99_End(void);
 

@@ -746,6 +746,20 @@ void Xtransforms::vH36_T40_Delete_tstPred_In_whereA(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T50_Adjust_StmOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "Adjust stream lo/ho ordinals"_Stz);
+
+  vR_H36_T50_Adjust_StmOdn();
+
+  vEndTransform();
+}
+
 
 
 
