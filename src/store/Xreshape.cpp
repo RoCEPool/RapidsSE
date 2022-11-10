@@ -385,7 +385,9 @@ void Xreshape::vR_H36_T10b_Put_From_SubQuery(void)
   G.p_twist->vAppend(G.p_comment);
   G_vNewMember(CK_COMMENT,"- adj stmOdn"_Stz);
   G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- scanB0"_Stz);
+  G_vNewMember(CK_COMMENT,"- adj stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- cmpPred term"_Stz);
   G.p_twist->vAppend(G.p_comment);
   G_vNewMember(CK_COMMENT,"- crossJoin"_Stz);
   G.p_twist->vAppend(G.p_comment);
@@ -424,6 +426,8 @@ void Xreshape::vR_H36_T20b_Push_cmpPred_Onto_whereA(void)
   G.p_boolCalc = G.p_where->pSub_boolCalc();
 
   M_vBoolCalc_PushPred(G.p_boolCalc,G.p_cmpPred);
+
+  G.p_cmpPred->vMark1(MARK_REPLACE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -571,6 +575,47 @@ void Xreshape::vR_H36_T60_Adjust_StmColOdn(void)
 
     G.p_stmColList->bApplyRecursive(CK_STMCOL,bLambdaFn);
   }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H36_T70_Replace_term_In_cmpPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card *pCard) {
+
+    if (MARK_REPLACE != pCard->cMark1())
+      return C_CONTINUE_RECURSION;
+
+    pCard->vMark1(' ');
+
+    m_pTerm_0 = _pCard_Term(pCard->pGetChild(0));
+
+    Stz* szNm0 = m_pTerm_0->szValue();
+    if (G_bResolveSubCard(CK_STREAM,CK_STMCOLNM,szNm0,G.i_MainCard)) {
+      G.p_tblColOdn = m_pCard_resolved->pSub_tblColOdn();
+      m_pTerm_0->vValue(G.p_tblColOdn->szValue());
+    }
+
+    m_pTerm_1 = _pCard_Term(pCard->pGetChild(1));
+
+    Stz* szNm1 = m_pTerm_1->szValue();
+    if (G_bResolveSubCard(CK_STREAM,CK_STMCOLNM,szNm1,G.i_MainCard)) {
+      G.p_tblColOdn = m_pCard_resolved->pSub_tblColOdn();
+      m_pTerm_1->vValue(G.p_tblColOdn->szValue());
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->bApplyRecursive(CK_CMPPRED,bLambdaFn);
 
 }
 

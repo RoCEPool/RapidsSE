@@ -157,6 +157,7 @@ static char MARK_EXE        = '$';
 static char MARK_LEFTWARDS  = '<';
 static char MARK_MANY       = '*';
 static char MARK_MORE       = '+';
+static char MARK_REPLACE    = '#';
 static char MARK_RIGHTWARDS = '>';
 static char MARK_TWIST      = '{';
 static char MARK_UP         = '^';

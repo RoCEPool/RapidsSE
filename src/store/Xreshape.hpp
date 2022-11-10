@@ -53,6 +53,7 @@ namespace STORE
     void vR_H36_T40_Delete_tstPred_In_whereA(void);
     void vR_H36_T50_Adjust_StmOdn(void);
     void vR_H36_T60_Adjust_StmColOdn(void);
+    void vR_H36_T70_Replace_term_In_cmpPred(void);
 
     // vHand_37_Flatten_Having
     void vR_H37_T10(void);

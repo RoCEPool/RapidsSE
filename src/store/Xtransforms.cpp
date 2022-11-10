@@ -774,6 +774,21 @@ void Xtransforms::vH36_T60_Adjust_StmColOdn(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T70_Replace_term_In_cmpPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "AReplace term in cmpPred"_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    vR_H36_T70_Replace_term_In_cmpPred();
+  }
+
+  vEndTransform();
+}
 
 
 
