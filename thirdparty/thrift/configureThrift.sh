@@ -48,8 +48,16 @@ function checkDependenciesMacOs() {
 
   # 2. Check for Bison >= 2.5
   if ! which bison &>/dev/null; then
-    errorExit "The Thrift pre-requisite Bison does not appear to be installed. " \
-              "Install with the command \"brew install bison\"."
+    errorExit "The Thrift pre-requisite Bison does not appear to be installed.\n"\
+              "Install with the command:  brew install bison"
+  fi
+
+  # If we have a homebrew version of bison installed then we will put that at the start
+  # of the PATH so the thrift configure script will find it.
+  # Note that the bison check seems to only be needed for the configure script
+  # and not the actual compilation.
+  if brew list --versions bison &>dev/null; then
+    PATH="$(brew --prefix bison)/bin:${PATH}"
   fi
 
   local bisonVerStr
@@ -59,8 +67,19 @@ function checkDependenciesMacOs() {
   bisonMajor="$(echo "${bisonVerStr}" | cut -d '.' -f 1)"
   bisonMinor="$(echo "${bisonVerStr}" | cut -d '.' -f 2)"
 
-  [[ "${bisonMajor}" -lt 2 ]] && errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater. Installed version is ${bisonVerStr}."
-  [[ "${bisonMajor}" -eq 2 && "${bisonMinor}" -lt 5 ]] && errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater. Installed version is ${bisonVerStr}."
+  local bisonErr=0
+  if [[ "${bisonMajor}" -lt 2 ]]; then
+    bisonErr=1
+  elif [[ "${bisonMajor}" -eq 2 && "${bisonMinor}" -lt 5 ]];
+    then bisonErr=1
+  fi
+
+  if [ "${bisonErr}" -eq 1 ]; then
+    errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater.\n"\
+              "Installed version of bison is ${bisonVerStr}.\n"\
+              "An updated version of bison can be installed via homebrew with the command:\n"\
+              "  brew install bison\n"
+  fi
 
   # 3. Check for OpenSSL headers and library
   if [ ! -d /usr/local/opt/openssl/include ]; then
