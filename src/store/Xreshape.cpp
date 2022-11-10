@@ -679,10 +679,18 @@ void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T20(void)
+void Xreshape::vR_H37_T20_Link_sqCall_In_having(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  // TODO: this is a hack
+
+  CardIter xCI(G.p_rpnCalc);
+  while (G.p_term = _pCard_Term(xCI.pEachChild())) {
+    Stz* szTerm = G.p_term->szValue();
+    if (G_bIsBoard(szTerm))
+      G.p_term->vValue("__1"_Stz); // need to discover the stmColNm
+  }
 }
 
 /*----------------------------------------------------------------------------*/

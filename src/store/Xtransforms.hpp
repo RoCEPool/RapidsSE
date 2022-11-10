@@ -88,7 +88,7 @@ namespace STORE
     void vH37_T00_Skip(void);
     void vH37_T00_Begin(void);
     void vH37_T10_Append_sqB_After_mqA(void);
-    void vH37_T20(void);
+    void vH37_T20_Link_sqCall_In_having(void);
     void vH37_T30(void);
     void vH37_T99_End(void);
 

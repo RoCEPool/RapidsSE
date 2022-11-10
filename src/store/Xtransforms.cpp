@@ -899,13 +899,15 @@ void Xtransforms::vH37_T10_Append_sqB_After_mqA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T20(void)
+void Xtransforms::vH37_T20_Link_sqCall_In_having(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((20))"_Stz);
 
-  vR_H37_T20();
+  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
+    vR_H37_T20_Link_sqCall_In_having();
+  }
 
   vEndTransform();
 }

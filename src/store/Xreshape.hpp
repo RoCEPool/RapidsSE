@@ -58,7 +58,7 @@ namespace STORE
     // vHand_37_Flatten_Having
     void vR_H37_T10a_Copy_sqB(void);
     void vR_H37_T10a_Append_sqB_After_mqA(void);
-    void vR_H37_T20(void);
+    void vR_H37_T20_Link_sqCall_In_having(void);
     void vR_H37_T30(void);
 
     // vHand_40_Predicate_Pullup

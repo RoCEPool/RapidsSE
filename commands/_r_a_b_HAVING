@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH37_T10_Append_sqB_After_mqA"
+/glean_cue_from = "vH37_T20_Link_sqCall_In_having"
 /transliterated
 /transform
 /transform3
