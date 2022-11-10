@@ -1922,6 +1922,9 @@ void Xreshape::vR_H85_T30_Add_bounds_For_crossJoin(void)
   G_vNewMember(CK_BOUNDS);
   G.p_crossJoin->vAppend(G.p_bounds);
 
+  G_vNewMember(CK_TERM,"bound"_Stz);
+  G.p_bounds->vAppend(G.p_term);
+
   G_vNewMember(CK_TERM,"$I1"_Stz);
   G.p_bounds->vAppend(G.p_term);
 }
@@ -2154,7 +2157,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_INDEXJOIN == e_main) {
+    if (CK_CROSSJOIN == e_main || CK_INDEXJOIN == e_main ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
