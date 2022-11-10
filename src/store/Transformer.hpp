@@ -51,6 +51,7 @@ namespace STORE
     void vHand_70_Join_Ordering    (i8 iBelow, ...);
     void vHand_75_EE_operators     (i8 iBelow, ...);
     void vHand_80_Index_Scan       (i8 iBelow, ...);
+    void vHand_85_Cross_Join       (i8 iBelow, ...);
     void vHand_90_Stream_Ordering  (i8 iBelow, ...);
     void vHand_A0_Filter_Refinement(i8 iBelow, ...);
     void vHand_Z0_Restate_Pipeline (i8 iBelow, ...);

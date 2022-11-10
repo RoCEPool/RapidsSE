@@ -138,6 +138,11 @@ namespace STORE
     void vR_H80_T70_Morph_scan_To_indexScan_b(void);
     void vR_H80_T70_Morph_scan_To_indexScan_c(void);
 
+    // vHand_85_Cross_Join
+    void vR_H85_T10(void);
+    void vR_H85_T20(void);
+    void vR_H85_T30(void);
+
     // vHand_90_Stream_Ordering
     void vR_H90_T10_Remove_sort_IfSameAs_gby(void);
 

@@ -114,6 +114,7 @@ void Transformer::vTransform3(void)
   vHand_70_Join_Ordering(CK_NONE);
   vHand_75_EE_operators    (CK_NONE);
   vHand_80_Index_Scan(CK_NONE);
+  vHand_85_Cross_Join(CK_NONE);
   vHand_90_Stream_Ordering(CK_NONE);
   vHand_A0_Filter_Refinement(CK_NONE);
   vHand_Z0_Restate_Pipeline(CK_NONE);
@@ -597,6 +598,34 @@ void Transformer::vHand_80_Index_Scan(i8 iBelow, ...)
 
   vEndHand(BK_SUBPIPE,0);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_85_Cross_Join(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  if (! m_pTransforms->bH85_T00_Test()) {
+    m_pTransforms->vH85_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vH85_T00_Begin();
+
+  m_pTransforms->vH85_T10();
+  m_pTransforms->vH85_T20();
+  m_pTransforms->vH85_T30();
+
+  m_pTransforms->vH85_T99_End();
+
+  vEndHand(BK_SUBPIPE,0);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
