@@ -899,14 +899,15 @@ void Xtransforms::vH37_T10_Append_sqB_After_mqA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T20_Link_sqCall_In_having(void)
+void Xtransforms::vH37_T20_Find_stmCol_Link(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((20))"_Stz);
+  vTransform(__func__, "((30))"_Stz);
 
-  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
-    vR_H37_T20_Link_sqCall_In_having();
+  while (G_bResolveCard(CK_PROJECT,C_UNKNOWN)) {
+    vR_H37_T20_Find_stmCol_Link();
+    break;
   }
 
   vEndTransform();
@@ -915,13 +916,80 @@ void Xtransforms::vH37_T20_Link_sqCall_In_having(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T30(void)
+void Xtransforms::vH37_T30_Link_sqCall_In_having(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
+    vR_H37_T30_Link_sqCall_In_having();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T40_Add_sqCol_To_aggGby(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T30();
+  while (G_bEachMain()) {
+
+    if (G.e_MainCard == CK_HAVING)
+      break;
+
+    if (G.e_MainCard != CK_AGGGBY)
+      continue;
+
+    vR_H37_T40Add_sqCol_To_AggGby();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T50(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T50();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T60(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T60();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T70(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T70();
 
   vEndTransform();
 }

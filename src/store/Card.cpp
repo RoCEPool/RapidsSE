@@ -2325,6 +2325,19 @@ Card_Stream* Card::pSub_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_StmCol.hpp"
+Card_StmCol* Card::pSub_stmCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmCol* p_streamCol =
+      _pCard_StmCol(pFindSubCard(CK_STMCOL));
+  return p_streamCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_StmColList.hpp"
 Card_StmColList* Card::pSub_stmColList(void)
 {
@@ -2450,6 +2463,19 @@ Card_Twist* Card::pSub_twist(void)
   Card_Twist* p_twist =
       _pCard_Twist(pFindSubCard(CK_TWIST));
   return p_twist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Type.hpp"
+Card_Type* Card::pSub_type(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Type* p_type =
+      _pCard_Type(pFindSubCard(CK_TYPE));
+  return p_type;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -97,6 +97,7 @@ namespace STORE
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
+
     void G_vDuplicateMember(eCK eMember);
 
     void G_vClearMembers(void);
@@ -149,7 +150,9 @@ namespace STORE
 
     void G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
+    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
 
+    bool G_bResolveCard(eCK eCard, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);

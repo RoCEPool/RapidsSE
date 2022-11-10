@@ -155,6 +155,7 @@ static char MARK_CHANGED    = '`';
 static char MARK_DOWNWARDS  = 'v';
 static char MARK_EXE        = '$';
 static char MARK_LEFTWARDS  = '<';
+static char MARK_LINK       = '%';
 static char MARK_MANY       = '*';
 static char MARK_MORE       = '+';
 static char MARK_REPLACE    = '#';
@@ -377,6 +378,7 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
+    Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
@@ -387,6 +389,7 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_TstPred*       pSub_tstPred(void);
     Card_Twist*         pSub_twist(void);
+    Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
 
   private:

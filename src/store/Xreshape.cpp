@@ -650,22 +650,14 @@ void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vNewMember(CK_TWIST,"<-a b->"_Stz);
-  G_vNewMember(CK_COMMENT,"- link __1"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- stmOdn"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- stmColOdn"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- gby __1"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- agg __1"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- unproject __1"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- reverse a b"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- delete twist"_Stz);
-  G.p_twist->vAppend(G.p_comment);
+  G_vNewMemberOf(CK_COMMENT,"- link __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- gby __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- agg __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- reverse a b"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- stmOdn"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- stmColOdn"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- unproject __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- delete twist"_Stz,CK_TWIST);
 
   G.pDeck->vAppend(G.p_twist);
 
@@ -673,13 +665,32 @@ void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
-
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T20_Link_sqCall_In_having(void)
+void Xreshape::vR_H37_T20_Find_stmCol_Link(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.p_project->vDump();
+
+  G.p_stmColList = G.p_project->pSub_stmColList();
+  if (G.p_stmColList) {
+    G.p_stmCol = G.p_stmColList->pSub_stmCol();
+    if (G.p_stmCol) {
+      G.p_stmCol->vMark1(MARK_LINK);
+      G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
+      G.p_type = G.p_stmColNm->pSub_type();
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T30_Link_sqCall_In_having(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -696,11 +707,42 @@ void Xreshape::vR_H37_T20_Link_sqCall_In_having(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T30(void)
+void Xreshape::vR_H37_T40Add_sqCol_To_AggGby(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMemberOf(CK_EXPR,"??"_Stz,CK_GBYELIST);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T50(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T60(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T70(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

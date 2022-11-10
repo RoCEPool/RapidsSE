@@ -806,6 +806,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_TOPOLOGY:         return G.p_topology;
     case CK_TSTPRED:          return G.p_tstPred;
     case CK_TWIST:            return G.p_twist;
+    case CK_TYPE:             return G.p_type;
     case CK_UBOUND:           return G.p_uBound;
     case CK_WHERE:            return G.p_where;
 
@@ -1040,6 +1041,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_topology         = nullptr;
   G.p_tstPred          = nullptr;
   G.p_twist            = nullptr;
+  G.p_type             = nullptr;
   G.p_uBound           = nullptr;
   G.p_where            = nullptr;
 }
@@ -1319,11 +1321,29 @@ void Xgearing::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 }
 
 /*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vNewMemberOf(eCK eMember, Stz* szValue,
+                              eCK eOf, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMember(eMember, bUpdateMember);
+
+  m_pCard_new->vValue(szValue);
+
+  G_vAppendChild(eOf,eMember);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  RASSERT(!pCard || pCard->bIsCard(eMember));
 
   switch (eMember) {
 
@@ -1400,6 +1420,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
     case CK_TSTPRED:          *((Card**)&G.p_tstPred)          = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
+    case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
 
@@ -1482,6 +1503,27 @@ bool Xgearing::G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool b
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* resolve card (right-left before given i_Before                             */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveCard(eCK eCard, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (C_UNKNOWN == i_Before)
+    i_Before = G.pDeck->nChildCards();
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card* pMain = G.pDeck->pGetChild(i_Main);
+
+    if (pMain->bIsCard(eCard)) {
+      G_vUpdateMember(eCard, pMain, __func__);
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
@@ -1580,7 +1622,7 @@ bool Xgearing::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 
     if ((m_pCard_resolved = pMain->pFindValueRecursive(eGrandSub,szWithValue,m_pCard_parent))) {
 
       if ((m_pCard_resolved = pMain->pFindParent(m_pCard_resolved))) {
-        G_vUpdateMember(eCard, m_pCard_resolved, __func__);
+        G_vUpdateMember(m_pCard_resolved->eCard(), m_pCard_resolved, __func__);
         return true;
       }
     }
@@ -1728,6 +1770,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
     case CK_TSTPRED:          return "G.p_tstPred"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
+    case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
 
