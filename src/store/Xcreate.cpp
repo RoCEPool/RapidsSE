@@ -385,8 +385,6 @@ Card_Index* Xcreate::C_pProduce_index_ofTable(Table* pTable)
   if (! pIdxVec)
     return nullptr;
 
-  Card_IndexList* p_indexList = new Card_IndexList;
-
   Index* pIndex = pIdxVec->pGet(0);
 
   Card_Index*  p_index = new Card_Index;

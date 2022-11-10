@@ -557,7 +557,7 @@ void Xreshape::vR_H36_T60_Adjust_StmColOdn(void)
     //M_vCard_Set_TableColOrdinal(G.p_tblColOdn, cTblSyn, i_StmColOdn++);
 
     G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
-    M_vCard_Set_StreamColOrdinal(pCard,G.i_stmColOdn++);
+    M_vCard_Set_StreamColOrdinal(G.p_stmColOdn,G.i_stmColOdn++);
     return C_CONTINUE_RECURSION;
   };
 

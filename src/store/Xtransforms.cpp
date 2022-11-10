@@ -480,6 +480,12 @@ void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
     ))
       continue;
 
+    if (CK_PROJECT == G.e_MainCard) {
+      G.p_level = G.p_MainCard->pSub_level();
+      if (G.p_level && AL_PARTITION != G.p_level->Y_iVal(P_Level))
+        continue;
+    }
+
     vR_H30_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
@@ -636,9 +642,9 @@ void Xtransforms::vH36_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseExpanded();
 
-  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+  //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
 
 /*----------------------------------------------------------------------------*/

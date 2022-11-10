@@ -96,13 +96,13 @@ begin
     | next broadcast
 
   stage S02 on all partitions :
-    indexJoin orders IxO_ORDERKEY "bound $I1"
+    indexJoin orders O_idx0 "bound $I1"
     | project " type INTEGER as S_SUPPKEY S_SUPPKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY "
     | combined 0
     | next
 
   stage S03 on all partitions :
-    indexJoin lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    indexJoin lineitem L_idx0 "bound $I1 O_ORDERKEY =="
     | filter " type BOOLEAN S_SUPPKEY J1_L_SUPPKEY =="
     | project " type INTEGER )  countAll  "
     | combined 0
