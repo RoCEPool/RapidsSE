@@ -737,6 +737,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_AGGELIST:         return G.p_aggElist;
     case CK_AGGGBY:           return G.p_aggGby;
     case CK_AGGREG:           return G.p_aggreg;
+    case CK_AS:               return G.p_as;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUNDS:           return G.p_bounds;
     case CK_CALL:             return G.p_call;
@@ -752,6 +753,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
     case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
+    case CK_DIRECTION:        return G.p_direction;
     case CK_EXEPRED:          return G.p_exePred;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
@@ -971,6 +973,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_aggElist         = nullptr;
   G.p_aggGby           = nullptr;
   G.p_aggreg           = nullptr;
+  G.p_as               = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bounds           = nullptr;
   G.p_call             = nullptr;
@@ -986,6 +989,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_crossJoin        = nullptr;
   G.p_crossPtnJoin     = nullptr;
   G.p_crossPtnJoinList = nullptr;
+  G.p_direction        = nullptr;
   G.p_exePred          = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
@@ -1351,6 +1355,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGGELIST:         *((Card**)&G.p_aggElist)         = pCard; break;
     case CK_AGGGBY:           *((Card**)&G.p_aggGby)           = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
+    case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
@@ -1366,6 +1371,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
+    case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
     case CK_EXEPRED:          *((Card**)&G.p_exePred)          = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
@@ -1703,6 +1709,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_AGGELIST:         return "G.p_aggElist"_Stz;
     case CK_AGGGBY:           return "G.p_aggGby"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
+    case CK_AS:               return "G.p_as"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
@@ -1718,6 +1725,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
     case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
+    case CK_DIRECTION:        return "G.p_direction"_Stz;
     case CK_EXEPRED:          return "G.p_exePred"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;

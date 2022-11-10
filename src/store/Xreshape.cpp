@@ -682,7 +682,7 @@ void Xreshape::vR_H37_T20_Find_stmCol_Link(void)
     if (G.p_stmCol) {
       G.p_stmCol->vMark1(MARK_LINK);
       G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
-      G.p_type = G.p_stmColNm->pSub_type();
+      G.p_type = G.p_stmCol->pSub_type();
     }
   }
 }
@@ -711,8 +711,19 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G_vNewMemberOf(CK_EXPR,"??"_Stz,CK_GBYELIST);
+  G.p_gbyElist = G.p_aggGby->pSub_gbyElist();
 
+  Card_Type* p_type = G.p_type;
+
+  G_vNewMemberOf(CK_EXPR,""_Stz,CK_GBYELIST);
+
+  G_vNewMemberOf(CK_TYPE,      p_type->szValue(),       CK_EXPR);
+  G_vNewMemberOf(CK_AS,        G.p_stmColNm->szValue(), CK_EXPR);
+  G_vNewMemberOf(CK_RPNCALC,   ""_Stz,                  CK_EXPR);
+  G_vNewMemberOf(CK_TERM,      G.p_stmColNm->szValue(), CK_RPNCALC);
+  G_vNewMemberOf(CK_DIRECTION, "ASC"_Stz,               CK_EXPR);
+
+  G.p_type = p_type;
 }
 
 /*----------------------------------------------------------------------------*/

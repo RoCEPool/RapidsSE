@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH37_T30_Link_sqCall_In_having"
+/glean_cue_from = "vH37_T40_Add_sqCol_To_aggGby"
 /transliterated
 /transform
 /transform3
