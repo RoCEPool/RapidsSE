@@ -79,6 +79,7 @@ namespace STORE
     void vH36_T50_Adjust_StmOdn(void);
     void vH36_T60_Adjust_StmColOdn(void);
     void vH36_T70_Replace_term_In_cmpPred(void);
+    void vH36_T80_Delete_twist(void);
 
     void vH36_T99_End(void);
 

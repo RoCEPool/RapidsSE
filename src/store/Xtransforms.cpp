@@ -791,6 +791,23 @@ void Xtransforms::vH36_T70_Replace_term_In_cmpPred(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T80_Delete_twist(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "AReplace term in cmpPred"_Stz);
+
+  while (G_bEachMain(CK_TWIST)) {
+    G_vRemoveDeleteMain(CK_TWIST);
+    break;
+  }
+
+  vEndTransform();
+}
+
 
 
 /*----------------------------------------------------------------------------*/

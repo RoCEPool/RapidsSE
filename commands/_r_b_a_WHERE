@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH36_T70_Replace_term_In_cmpPred"
+/glean_cue_from = "vHand_36_Flatten_Where"
 /transliterated
 /transform
 /transform3
