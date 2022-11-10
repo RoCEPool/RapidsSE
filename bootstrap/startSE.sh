@@ -73,7 +73,7 @@ if [ ${CLUSTER_OP} -eq 1 ]; then
   fi
 
   #shellcheck disable=SC2119
-  startCluster
+  startCluster ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
 
 else
   loadNodeName
@@ -83,6 +83,106 @@ else
     exit
   fi
 
-  startCurrentNode
+  startCurrentNode ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
 fi
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Process the arguments for the start script.
+## Params: None
+
+function processStartArgs() {
+
+  # Check that some globals are specified with defaults
+  if [ -z "${CLUSTER_OP:-}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_INIT:-}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
+
+  # Indicates if a given argument was specified.
+  local argCluster=0
+  local argNode=0
+  local argConfig=0
+  local argExtra=0
+  #local argClusterInit=0
+
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case "${key}" in
+
+      --cluster)
+        CLUSTER_OP=1
+        argCluster=1
+        shift # past argument
+        ;;
+
+      --node)
+        CLUSTER_OP=0
+        argNode=1
+        shift # past argument
+        ;;
+
+      --reload)
+        argExtra=1
+        ARG_EXTRA="$1"
+        ARG_EXTRA_VALUE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
+      --config)
+        argConfig=1
+        CONFIG_FILE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
+      --config=*)
+        argConfig=1
+        CONFIG_FILE="${key#*=}"
+        shift # past argument=value
+        ;;
+
+      --debug)
+        DEBUG=1
+        shift # past argument
+        ;;
+
+      --clusterinit)
+        #argClusterInit=1
+        CLUSTER_INIT=1
+        shift # past argument
+        ;;
+
+      --help|-h)
+        shift
+        printStartStopUsageAndExit
+        ;;
+
+      *)
+        shift
+        printStartStopUsageAndExit
+        ;;
+    esac
+  done
+
+  # Now we can check for invalid combinations of arguments.
+    # --cluster     and --node
+    # --config      and no file specified
+
+  local errmsg="Invalid combination of arguments specified: "
+
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then
+    printError "${errmsg}" "--cluster" "--node"
+    printStartStopUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
+    printError "${errmsg}" "No config file specified"
+    printStartStopUsageAndExit
+  fi
+
+  # Check that the config file exists
+  if [[ ! -f "${CONFIG_FILE}" ]]; then
+    printError "Config file does not exist: ${CONFIG_FILE}"
+    printStartStopUsageAndExit
+  fi
+}
