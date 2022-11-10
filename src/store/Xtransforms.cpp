@@ -518,7 +518,7 @@ bool Xtransforms::bH35_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -538,15 +538,15 @@ void Xtransforms::vH35_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseLonger();
 
-  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+  //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T10(void)
+void Xtransforms::vH35_T10_Push_sqB_Into_mqA(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -568,21 +568,19 @@ void Xtransforms::vH35_T10(void)
     vR_H35_T10b_Put_From_SubQuery();
   }
 
-  vR_H36_T10a_Copy_From_SubQuery();
-
   vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T20(void)
+void Xtransforms::vH35_T20_Delete_call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((20))"_Stz);
 
-  vR_H36_T10b_Put_From_SubQuery();
+  vHH_DeleteMain(CK_CALL);
 
   vEndTransform();
 }
@@ -590,12 +588,13 @@ void Xtransforms::vH35_T20(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T30(void)
+void Xtransforms::vH35_T30_Delete_twist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
+  vHH_DeleteMain(CK_TWIST);
 
   vEndTransform();
 }
@@ -622,7 +621,7 @@ bool Xtransforms::bH36_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -806,15 +805,15 @@ void Xtransforms::vH36_T80_Delete_twist(void)
 
   vTransform(__func__, "AReplace term in cmpPred"_Stz);
 
-  while (G_bEachMain(CK_TWIST)) {
-    G_vRemoveDeleteMain(CK_TWIST);
-    break;
-  }
+//  while (G_bEachMain(CK_TWIST)) {
+//    G_vRemoveDeleteMain(CK_TWIST);
+//    break;
+//  }
+
+  vHH_DeleteMain(CK_TWIST);
 
   vEndTransform();
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -2900,6 +2899,19 @@ void Xtransforms::vHH_Begin(void)
 void Xtransforms::vHH_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vHH_DeleteMain(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (G_bEachMain(eCard)) {
+    G_vRemoveDeleteMain(eCard);
+  }
+
 }
 
 

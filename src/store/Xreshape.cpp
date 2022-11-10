@@ -326,7 +326,6 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
-  //G.pDeck->vPush(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,6 +334,14 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 void Xreshape::vR_H35_T10b_Put_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMember(CK_TWIST,"<-b | a->"_Stz);
+  G_vNewMember(CK_COMMENT,"- delete call"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- delete twist"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+
+  G.pDeck->vInsertAfter(G.p_twist,G.p_call);
 
   G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);

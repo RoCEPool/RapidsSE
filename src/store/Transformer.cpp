@@ -257,7 +257,10 @@ void Transformer::vHand_35_Flatten_From(i8 iBelow, ...)
 
   m_pTransforms->vH35_T00_Begin();
 
-  m_pTransforms->vH36_T10_Push_sqB_Into_mqA();
+  m_pTransforms->vH35_T10_Push_sqB_Into_mqA();
+  m_pTransforms->vH35_T20_Delete_call();
+  m_pTransforms->vH35_T30_Delete_twist();
+
 
   //m_pTransforms->vH36_T30_Adjust_From_SubQuery();
 

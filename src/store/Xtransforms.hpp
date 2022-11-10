@@ -63,9 +63,9 @@ namespace STORE
     bool bH35_T00_Test(void);
     void vH35_T00_Skip(void);
     void vH35_T00_Begin(void);
-    void vH35_T10(void);
-    void vH35_T20(void);
-    void vH35_T30(void);
+    void vH35_T10_Push_sqB_Into_mqA(void);
+    void vH35_T20_Delete_call(void);
+    void vH35_T30_Delete_twist(void);
     void vH35_T99_End(void);
 
     // vHand_36_Flatten_Where
@@ -241,6 +241,8 @@ namespace STORE
 
     void vHH_Begin(void);
     void vHH_End(void);
+
+    void vHH_DeleteMain(eCK eCard);
 
     void vREPLACE_WITH_RESHAPE(void);
 
