@@ -36,12 +36,14 @@ namespace STORE
       /* 04 */ KERBEROS_NEGOTIATING,
       /* 05 */ AUTHENTICATED,
       /* 06 */ READY,
-      /* 07 */ API_STATEMENT_SUBMITTED,
-      /* 08 */ API_METADATA_RECEIVED,
-      /* 09 */ API_DATA_RECEIVED,
-      /* 10 */ API_STATEMENT_COMPLETED,
-      /* 11 */ DISCONNECTED,
-      /* 12 */ NENUMS
+      /* 07 */ QUERY_BEGUN,
+      /* 08 */ API_STATEMENT_SUBMITTED,
+      /* 09 */ API_METADATA_RECEIVED,
+      /* 10 */ API_DATA_RECEIVED,
+      /* 11 */ API_STATEMENT_COMPLETED,
+      /* 12 */ QUERY_COMPLETED,
+      /* 13 */ DISCONNECTED,
+      /* 14 */ NENUMS
     };
 
     static Stz* aState[];

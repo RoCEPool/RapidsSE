@@ -269,7 +269,7 @@ void Step::vSocketCopy(void)
 
   Socket* pOther = _pSocket(m_pDataStack->pPopPtr(__func__));
 
-  pSocket = new Socket(pOther->m_pIsFor,pOther->m_iSocketFd, pOther);
+  pSocket = new Socket(pOther->m_pIsFor,pOther->m_iSocketFd, pOther, true);
 
   m_pDataStack->vPushPtr(pSocket);
 

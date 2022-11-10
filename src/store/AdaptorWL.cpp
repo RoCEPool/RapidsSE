@@ -67,12 +67,14 @@ Stz* AdaptorWL::aState[] {
     /* 04 KERBEROS_NEGOTIATING */     "KERBEROS_NEGOTIATING"_Stz,
     /* 05 AUTHENTICATED */            "AUTHENTICATED"_Stz,
     /* 06 READY */                    "READY"_Stz,
-    /* 07 API_STATEMENT_SUBMITTED */  "API_STATEMENT_SUBMITTED"_Stz,
-    /* 08 API_METADATA_RECEIVED */    "API_METADATA_RECEIVED"_Stz,
-    /* 09 API_DATA_RECEIVED */        "API_DATA_RECEIVED"_Stz,
-    /* 10 API_STATEMENT_COMPLETED */ "API_STATEMENT_COMPLETED"_Stz,
-    /* 11 DISCONNECTED */            "DISCONNECTED"_Stz,
-    /* 12 NENUMS */                  "NENUM"_Stz
+    /* 07 QUERY_BEGUN */              "QUERY_BEGUN"_Stz,
+    /* 08 API_STATEMENT_SUBMITTED */  "API_STATEMENT_SUBMITTED"_Stz,
+    /* 09 API_METADATA_RECEIVED */    "API_METADATA_RECEIVED"_Stz,
+    /* 10 API_DATA_RECEIVED */        "API_DATA_RECEIVED"_Stz,
+    /* 11 API_STATEMENT_COMPLETED */ "API_STATEMENT_COMPLETED"_Stz,
+    /* 12 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
+    /* 13 DISCONNECTED */            "DISCONNECTED"_Stz,
+    /* 14 NENUMS */                  "NENUM"_Stz
 };
 
 /*----------------------------------------------------------------------------*/
@@ -449,33 +451,37 @@ void AdaptorWL::vNextState(eState eNextState)
   typedef std::initializer_list<eState> StateList;
 
   // The list of valid next states from a given state.
-  static StateList aNextStates_Connected          = { PROTOCOL_COMPATIBLE, DISCONNECTED };
-  static StateList aNextStates_ProtocolCompatible = { TUNNELED, DISCONNECTED };
-  static StateList aNextStates_Tunneled           = { AUTHENTICATED, KERBEROS_NEGOTIATING, DISCONNECTED };
-  static StateList aNextStates_KerberosAuth       = { AUTHENTICATED, DISCONNECTED };
-  static StateList aNextStates_Authenticated      = { READY, DISCONNECTED };
-  static StateList aNextStates_Ready              = { READY, API_STATEMENT_SUBMITTED, DISCONNECTED };
-  static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  static StateList aNextStates_ApiSmtCompleted    = { READY, DISCONNECTED };
-  static StateList aNextStates_Disconnected       = { DISCONNECTED };
+  /*01*/ static StateList aNextStates_Connected          = { PROTOCOL_COMPATIBLE, DISCONNECTED };
+  /*02*/ static StateList aNextStates_ProtocolCompatible = { TUNNELED, DISCONNECTED };
+  /*03*/ static StateList aNextStates_Tunneled           = { AUTHENTICATED, KERBEROS_NEGOTIATING, DISCONNECTED };
+  /*04*/ static StateList aNextStates_KerberosAuth       = { AUTHENTICATED, DISCONNECTED };
+  /*05*/ static StateList aNextStates_Authenticated      = { READY, DISCONNECTED };
+  /*06*/ static StateList aNextStates_Ready              = { READY, QUERY_BEGUN, DISCONNECTED };
+  /*07*/ static StateList aNextStates_QueryBegun         = { READY, API_STATEMENT_SUBMITTED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
+  /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
+  /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
+  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { QUERY_COMPLETED, API_STATEMENT_SUBMITTED, DISCONNECTED };
+  /*12*/ static StateList aNextStates_QueryCompleted     = { READY, DISCONNECTED };
+  /*13*/ static StateList aNextStates_Disconnected       = { DISCONNECTED };
 
   // We'll use a reference to one of these static initializer lists above.
-  std::initializer_list<eState>& eValidNextStates = aNextStates_Connected;
+  std::initializer_list<eState> eValidNextStates = aNextStates_Connected;
 
   switch(m_eProtocolState) {
-    case CONNECTED:               eValidNextStates = aNextStates_Connected;           break;
-    case PROTOCOL_COMPATIBLE:     eValidNextStates = aNextStates_ProtocolCompatible;  break;
-    case TUNNELED:                eValidNextStates = aNextStates_Tunneled;            break;
-    case KERBEROS_NEGOTIATING:    eValidNextStates = aNextStates_KerberosAuth;        break;
-    case AUTHENTICATED:           eValidNextStates = aNextStates_Authenticated;       break;
-    case READY:                   eValidNextStates = aNextStates_Ready;               break;
-    case API_STATEMENT_SUBMITTED: eValidNextStates = aNextStates_ApiSmtSubmitted;     break;
-    case API_METADATA_RECEIVED:   eValidNextStates = aNextStates_ApiMetadataRcvd;     break;
-    case API_DATA_RECEIVED:       eValidNextStates = aNextStates_ApiDataRcvd;         break;
-    case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiSmtCompleted;     break;
-    case DISCONNECTED:            eValidNextStates = aNextStates_Disconnected;        break;
+    /*01*/ case CONNECTED:               eValidNextStates = aNextStates_Connected;           break;
+    /*02*/ case PROTOCOL_COMPATIBLE:     eValidNextStates = aNextStates_ProtocolCompatible;  break;
+    /*03*/ case TUNNELED:                eValidNextStates = aNextStates_Tunneled;            break;
+    /*04*/ case KERBEROS_NEGOTIATING:    eValidNextStates = aNextStates_KerberosAuth;        break;
+    /*05*/ case AUTHENTICATED:           eValidNextStates = aNextStates_Authenticated;       break;
+    /*06*/ case READY:                   eValidNextStates = aNextStates_Ready;               break;
+    /*07*/ case QUERY_BEGUN:             eValidNextStates = aNextStates_QueryBegun;          break;
+    /*08*/ case API_STATEMENT_SUBMITTED: eValidNextStates = aNextStates_ApiSmtSubmitted;     break;
+    /*09*/ case API_METADATA_RECEIVED:   eValidNextStates = aNextStates_ApiMetadataRcvd;     break;
+    /*10*/ case API_DATA_RECEIVED:       eValidNextStates = aNextStates_ApiDataRcvd;         break;
+    /*11*/ case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiSmtCompleted;     break;
+    /*12*/ case QUERY_COMPLETED:         eValidNextStates = aNextStates_QueryCompleted;      break;
+    /*13*/ case DISCONNECTED:            eValidNextStates = aNextStates_Disconnected;        break;
     default:
       NEVER_REACH
   }
@@ -781,7 +787,7 @@ void AdaptorWL::processQueryExecuteRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryExecuteRequest);
 
-  //TODO: if (!bCheckState({CONNECTED})) { return; }
+  if (!bCheckState({READY})) { return; }
 
   QueryExecuteRequest* pMsg = dynamic_cast<QueryExecuteRequest*>(m_pCurrentMsg);
   if (!pMsg) {
@@ -793,7 +799,7 @@ void AdaptorWL::processQueryExecuteRequest()
 
   // TODO: populate
 
-//  vNextState(DISCONNECTED);
+  vNextState(API_STATEMENT_SUBMITTED);
 }
 
 /*----------------------------------------------------------------------------*/

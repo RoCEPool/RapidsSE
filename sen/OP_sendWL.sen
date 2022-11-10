@@ -14,7 +14,7 @@
   "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
   // Make a copy of the socket where we retain the same file descriptor.
-  <ansSocket> >int >ptr socket::copy to Socket[]
+  <ansSocket> >int >ptr to Socket[]
 
   PipeIn[]\clear [op].pipeout
 

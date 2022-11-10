@@ -34,7 +34,7 @@ __aFooterFunction(Socket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Socket::Socket(Object* pIsFor, int iSocketId, Port* pFromPort)
+Socket::Socket(Object* pIsFor, int iSocketId, Port* pFromPort, bool bNoClose)
     : Port(pIsFor,iSocketId, pFromPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -48,6 +48,8 @@ Socket::Socket(Object* pIsFor, int iSocketId, Port* pFromPort)
 
   m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   m_pRejectJob = new RejectJob;
+
+  m_bNoClose = bNoClose;
 
   _checkInitialised_(CN_SOCKET);
 
@@ -75,6 +77,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   m_pRejectJob = new RejectJob;
 
+  m_bNoClose = false;
+
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -98,6 +102,10 @@ Socket::~Socket(void) noexcept(false)
 
   delete m_pReceivedObject;
   m_pReceivedObject = nullptr;
+
+  if (m_bNoClose) {
+    m_iSocketFd = C_UNKNOWN;
+  }
   
   -- gixSocket;
   
@@ -119,7 +127,7 @@ void Socket::vRepair(Object* pObject)
 
   Socket* pSocket = _pSocket(pObject);
 
-  if (pSocket->bIsOpen()) {
+  if (pSocket->bIsOpen() && !pSocket->m_bNoClose) {
     pSocket->bClose(oSysCall);
   }
 

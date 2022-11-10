@@ -11,7 +11,7 @@
 
   "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
-  <ansSocket> >int >ptr to Socket[]
+  <ansSocket> >int >ptr socket::copy to Socket[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +79,6 @@
   // If we get here then there was a problem receiving the next message from the client.
   "recvWL_StartMarker: piping out error marker" .
   EC_WL_SOCKET_CLOSED op__execErr
-  Socket[].close
 
   true
 ;
@@ -107,7 +106,6 @@
   find: recvWL_CLEANING    EV_M_CLEANING  [op].handler!
 
   op__loop
-  "recvWL_op after op__loop" .
 
   _lu_finalise_
 
@@ -123,7 +121,7 @@ cmdSyntax: recvWL :: recvWL ;
 
 : recvWL_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <dedicatedThd> = 1
+//    <dedicatedThd> = 1
     <opEntry> = "recvWL_op"
   }
 ;

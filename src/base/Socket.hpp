@@ -29,6 +29,8 @@ namespace BASE
   
     RejectJob* m_pRejectJob;
     void*      m_aLowBuff;  // low memory read area
+
+    bool m_bNoClose; // Do not close this socket because its fd is being shared
   
     // must be last
     Footer m_xFooter;
@@ -37,7 +39,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Socket(Object* pIsFor, int iSocketId, Port* pFromPort);
+    Socket(Object* pIsFor, int iSocketId, Port* pFromPort, bool bNoClose = false);
     Socket(Object* pIsFor, int iSocketId);
    ~Socket(void) noexcept(false);
 
