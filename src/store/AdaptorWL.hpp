@@ -29,17 +29,19 @@ namespace STORE
   {
   private:
     enum eState {
-      NONE = 0,
-      CONNECTED,
-      PROTOCOL_COMPATIBLE,
-      TUNNELED,
-      KERBEROS_NEGOTIATING,
-      AUTHENTICATED,
-      READY,
-      PROCESSING_MSG,
-      WAITING_FOR_API,
-      DISCONNECTED,
-      NENUMS
+      /* 00 */ NONE = 0,
+      /* 01 */ CONNECTED,
+      /* 02 */ PROTOCOL_COMPATIBLE,
+      /* 03 */ TUNNELED,
+      /* 04 */ KERBEROS_NEGOTIATING,
+      /* 05 */ AUTHENTICATED,
+      /* 06 */ READY,
+      /* 07 */ API_STATEMENT_SUBMITTED,
+      /* 08 */ API_METADATA_RECEIVED,
+      /* 09 */ API_DATA_RECEIVED,
+      /* 10 */ API_STATEMENT_COMPLETED,
+      /* 11 */ DISCONNECTED,
+      /* 12 */ NENUMS
     };
 
     static Stz* aState[];
