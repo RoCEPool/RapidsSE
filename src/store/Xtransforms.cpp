@@ -932,7 +932,7 @@ void Xtransforms::vH37_T30_Link_sqCall_In_having(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T40_Add_sqCol_To_aggGby(void)
+void Xtransforms::vH37_T40_Add_sqCol_To_aggGbyElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -946,7 +946,7 @@ void Xtransforms::vH37_T40_Add_sqCol_To_aggGby(void)
     if (G.e_MainCard != CK_AGGGBY)
       continue;
 
-    vR_H37_T40Add_sqCol_To_AggGby();
+    vR_H37_T40Add_sqCol_To_AggGbyElist();
   }
 
   vEndTransform();
@@ -955,13 +955,24 @@ void Xtransforms::vH37_T40_Add_sqCol_To_aggGby(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T50(void)
+void Xtransforms::vH37_T50_Add_sqlCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T50();
+  while (G_bEachMain()) {
+
+    if (G.e_MainCard == CK_HAVING)
+      break;
+
+    if (G.e_MainCard != CK_AGGGBY)
+      continue;
+
+    vR_H37_T50_Add_sqlCol_To_aggAggElist();
+  }
+
+  vR_H37_T50_Add_sqlCol_To_aggAggElist();
 
   vEndTransform();
 }

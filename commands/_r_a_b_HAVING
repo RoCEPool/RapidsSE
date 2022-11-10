@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH37_T40_Add_sqCol_To_aggGby"
+/glean_cue_from = "vH37_T50_Add_sqlCol_To_aggAggElist"
 /transliterated
 /transform
 /transform3

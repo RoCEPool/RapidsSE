@@ -653,10 +653,10 @@ void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
   G_vNewMemberOf(CK_COMMENT,"- link __1"_Stz,CK_TWIST);
   G_vNewMemberOf(CK_COMMENT,"- gby __1"_Stz,CK_TWIST);
   G_vNewMemberOf(CK_COMMENT,"- agg __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_COMMENT,"- unproject __1"_Stz,CK_TWIST);
   G_vNewMemberOf(CK_COMMENT,"- reverse a b"_Stz,CK_TWIST);
   G_vNewMemberOf(CK_COMMENT,"- stmOdn"_Stz,CK_TWIST);
   G_vNewMemberOf(CK_COMMENT,"- stmColOdn"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- unproject __1"_Stz,CK_TWIST);
   G_vNewMemberOf(CK_COMMENT,"- delete twist"_Stz,CK_TWIST);
 
   G.pDeck->vAppend(G.p_twist);
@@ -707,7 +707,7 @@ void Xreshape::vR_H37_T30_Link_sqCall_In_having(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T40Add_sqCol_To_AggGby(void)
+void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -729,10 +729,22 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGby(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T50(void)
+void Xreshape::vR_H37_T50_Add_sqlCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.p_aggElist = G.p_aggGby->pSub_aggElist();
+
+  Card_Type* p_type = G.p_type;
+
+  G_vNewMemberOf(CK_EXPR,""_Stz,CK_AGGELIST);
+
+  G_vNewMemberOf(CK_TYPE,      p_type->szValue(),       CK_EXPR);
+  G_vNewMemberOf(CK_RPNCALC,   ""_Stz,                  CK_EXPR);
+  G_vNewMemberOf(CK_TERM,      G.p_stmColNm->szValue(), CK_RPNCALC);
+  G_vNewMemberOf(CK_AS,        G.p_stmColNm->szValue(), CK_EXPR);
+
+  G.p_type = p_type;
 }
 
 /*----------------------------------------------------------------------------*/

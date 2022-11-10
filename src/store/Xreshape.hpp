@@ -59,9 +59,9 @@ namespace STORE
     void vR_H37_T10a_Copy_sqB(void);
     void vR_H37_T10a_Append_sqB_After_mqA(void);
     void vR_H37_T30_Link_sqCall_In_having(void);
-    void vR_H37_T40Add_sqCol_To_AggGby(void);
+    void vR_H37_T40Add_sqCol_To_AggGbyElist(void);
     void vR_H37_T20_Find_stmCol_Link(void);
-    void vR_H37_T50(void);
+    void vR_H37_T50_Add_sqlCol_To_aggAggElist(void);
     void vR_H37_T60(void);
     void vR_H37_T70(void);
 

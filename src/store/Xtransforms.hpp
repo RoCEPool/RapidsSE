@@ -90,8 +90,8 @@ namespace STORE
     void vH37_T10_Append_sqB_After_mqA(void);
     void vH37_T20_Find_stmCol_Link(void);
     void vH37_T30_Link_sqCall_In_having(void);
-    void vH37_T40_Add_sqCol_To_aggGby(void);
-    void vH37_T50(void);
+    void vH37_T40_Add_sqCol_To_aggGbyElist(void);
+    void vH37_T50_Add_sqlCol_To_aggAggElist(void);
     void vH37_T60(void);
     void vH37_T70(void);
     void vH37_T99_End(void);
