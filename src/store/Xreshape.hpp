@@ -139,7 +139,8 @@ namespace STORE
     void vR_H80_T70_Morph_scan_To_indexScan_c(void);
 
     // vHand_85_Cross_Join
-    void vR_H85_T10(void);
+    void vR_H85_T10a_Transmute_table_To_Scan(void);
+    void vR_H85_T10b_Transmute_table_To_crossJoin(void);
     void vR_H85_T20(void);
     void vR_H85_T30(void);
 

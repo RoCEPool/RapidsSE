@@ -1870,10 +1870,29 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_c(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H85_T10(void)
+void Xreshape::vR_H85_T10a_Transmute_table_To_Scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.p_scan = new Card_Scan;
+  G.p_scan->vTransferChildren(G.p_table);
+
+  G.pBoard->pDeck()->vReplace(G.p_table,G.p_scan);
+  G.p_scan->vInsert(G.p_table);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H85_T10b_Transmute_table_To_crossJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.p_crossJoin = new Card_CrossJoin;
+  G.p_crossJoin->vTransferChildren(G.p_table);
+
+  G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
+  G.p_crossJoin->vInsert(G.p_table);
 }
 
 /*----------------------------------------------------------------------------*/

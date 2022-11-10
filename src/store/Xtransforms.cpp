@@ -2114,7 +2114,7 @@ bool Xtransforms::bH75_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2443,13 +2443,18 @@ void Xtransforms::vH85_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH85_T10(void)
+void Xtransforms::vH85_T10_Transmute_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((85 10))"_Stz);
 
-  vR_H85_T10();
+  if (G_bEachMain(CK_TABLE)) {
+    vR_H85_T10a_Transmute_table_To_Scan();
+    while (G_bEachMain(CK_TABLE)) {
+      vR_H85_T10b_Transmute_table_To_crossJoin();
+    }
+  }
 
   vEndTransform();
 }

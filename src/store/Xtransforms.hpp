@@ -200,7 +200,7 @@ namespace STORE
     bool bH85_T00_Test(void);
     void vH85_T00_Skip(void);
     void vH85_T00_Begin(void);
-    void vH85_T10(void);
+    void vH85_T10_Transmute_table(void);
     void vH85_T20(void);
     void vH85_T30(void);
     void vH85_T99_End(void);
