@@ -75,7 +75,7 @@ function printStartStopUsageAndExit() {
   echo "  --debug           Displays additional debugging messages during execution."
   echo ""
   echo "  --reload <dir>    Starts SE in reload mode."
-  echo "                    <dir> is the relative path from root disk paths."
+  echo "                    <dir> is the relative directory path from root disk paths."
   echo ""
   echo "  --clusterinit     Internal use only."
   echo ""
@@ -134,14 +134,14 @@ function startCluster() {
     for row in "${nodeNames[@]}"
     do
       debugPrint "Starting ${row}"
-      startRemoteNode "${row}" $1 $2  || errorExit "Could not start node ${row} in the cluster."
+      startRemoteNode "${row}" "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}" || errorExit "Could not start node ${row} in the cluster."
     done
 
   else
     # Start the nodes in parallel. Ignore all output.
     for row in "${nodeNames[@]}"
     do
-      startRemoteNode "${row}" $1 $2 &>/dev/null &
+      startRemoteNode "${row}" "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}" &>/dev/null &
     done
 
     # Wait for all parallel jobs to finish.

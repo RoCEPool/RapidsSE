@@ -171,7 +171,7 @@ if [ ${CLUSTER_OP} -eq 1 ]; then
   fi
 
   #shellcheck disable=SC2119
-  startCluster ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
+  startCluster
 
 else
   loadNodeName

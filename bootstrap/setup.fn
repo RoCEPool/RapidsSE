@@ -56,7 +56,7 @@ readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
          NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
          NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
          NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
-         NODE_CFG_DEFAULT_DISK_PATH="/opt/rapidsse"
+         NODE_CFG_DEFAULT_DISK_PATH=""
 readonly NODE_CFG_DEFAULT_PARAMS=""
 
 readonly MINIMUM_RAM_SIZE="4"
