@@ -2443,7 +2443,7 @@ void Xtransforms::vH85_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH85_T10_Transmute_table(void)
+void Xtransforms::vH85_T10_Transmute_All_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2462,13 +2462,15 @@ void Xtransforms::vH85_T10_Transmute_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH85_T20(void)
+void Xtransforms::vH85_T20_Add_index_ForAll_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((85 20))"_Stz);
 
-  vR_H85_T20();
+  while (G_bEachMainWithSub(CK_CROSSJOIN,CK_TABLENM)) {
+    vR_H85_T20_Add_index_For_crossJoin();
+  }
 
   vEndTransform();
 }

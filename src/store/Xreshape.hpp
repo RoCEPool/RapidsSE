@@ -141,7 +141,7 @@ namespace STORE
     // vHand_85_Cross_Join
     void vR_H85_T10a_Transmute_table_To_Scan(void);
     void vR_H85_T10b_Transmute_table_To_crossJoin(void);
-    void vR_H85_T20(void);
+    void vR_H85_T20_Add_index_For_crossJoin(void);
     void vR_H85_T30(void);
 
     // vHand_90_Stream_Ordering

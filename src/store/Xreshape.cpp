@@ -1898,9 +1898,17 @@ void Xreshape::vR_H85_T10b_Transmute_table_To_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H85_T20(void)
+void Xreshape::vR_H85_T20_Add_index_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
+  G.p_index = C_pProduce_index_ofTable(m_pTable);
+
+  G.p_comment = new Card_Comment(SEP_DERIVED);
+  G.p_crossJoin->vAppend(G.p_comment);
+
+  G.p_crossJoin->vAppend(G.p_index);
 
 }
 

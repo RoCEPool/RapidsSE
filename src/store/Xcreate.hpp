@@ -19,6 +19,7 @@ namespace STORE
 
     Card_StmColList* C_pDerive_streamColList(Card_ELIST* p_ELIST);
 
+    Card_Index*      C_pProduce_index_ofTable(Table* pTable);
     Card_IndexList*  C_pProduce_indexList_ofTable(Table* pTable);
     Card_Size*       C_pProduce_size_ofTable(Table* pTable);
     Card_Stream*     C_pProduce_stream_ofAggreg(Card_AggElist* p_aggElist);

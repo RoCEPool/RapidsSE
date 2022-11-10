@@ -372,6 +372,52 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce composite <index> of table                                         */
+/*----------------------------------------------------------------------------*/
+Card_Index* Xcreate::C_pProduce_index_ofTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (!pTable)
+    return nullptr;
+
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  if (! pIdxVec)
+    return nullptr;
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+
+  Index* pIndex = pIdxVec->pGet(0);
+
+  Card_Index*  p_index = new Card_Index;
+
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_indexNm->vValue(pIndex->szIndexNm());
+  p_index->vAppend(p_indexNm);
+
+  Card_IdxColList* p_idxColList = new Card_IdxColList;
+  p_index->vAppend(p_idxColList);
+
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+
+  i8 nColumns = pIndexDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+
+    Column* pColumn = pIndexDef->pGetColumn(i_Col);
+    Card_IdxCol* p_idxCol = new Card_IdxCol;
+    p_idxCol->vValue(pColumn->szColNm());
+
+    p_idxColList->vAppend(p_idxCol);
+
+    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
+    p_idxColNm->vValue(pColumn->szColNm());
+    p_idxCol->vAppend(p_idxColNm);
+  }
+
+  return p_index;
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce composite <indexList> of table                                     */
 /*----------------------------------------------------------------------------*/
 Card_IndexList* Xcreate::C_pProduce_indexList_ofTable(Table* pTable)

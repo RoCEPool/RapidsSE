@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH85_T10_Transmute_table"
+/glean_cue_from = "vH85_T20_Add_index_ForAll_crossJoin"
 /transliterated
 /transform
 /transform3
