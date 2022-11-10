@@ -258,7 +258,7 @@ void Transformer::vHand_35_Flatten_From(i8 iBelow, ...)
 
   m_pTransforms->vH36_T10_Push_sqB_Into_mqA();
 
-  m_pTransforms->vH36_T30_Adjust_From_SubQuery();
+  //m_pTransforms->vH36_T30_Adjust_From_SubQuery();
 
   m_pTransforms->vH35_T99_End();
 
@@ -286,6 +286,7 @@ void Transformer::vHand_36_Flatten_Where(i8 iBelow, ...)
   m_pTransforms->vH36_T10_Push_sqB_Into_mqA();
   m_pTransforms->vH36_T20_Transfer_whereB_To_whereA();
   m_pTransforms->vH36_T30_Replace_param_In_whereA();
+  m_pTransforms->vH36_T40_Delete_tstPred_In_whereA();
 
   m_pTransforms->vH36_T99_End();
 

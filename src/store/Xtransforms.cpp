@@ -694,11 +694,10 @@ void Xtransforms::vH36_T20_Transfer_whereB_To_whereA(void)
     vR_H36_T20b_Push_cmpPred_Onto_whereA();
   }
 
-  G_vRestart();
-
-  while (G_bEachMainWithSub(CK_TWIST,CK_COMMENT,"- xfer whereB"_Stz)) {
-    G.p_comment->vValue("+ xfer whereB"_Stz);
-  }
+//  G_vRestart();
+//  while (G_bEachMainWithSub(CK_TWIST,CK_COMMENT,"- xfer whereB"_Stz)) {
+//    G.p_comment->vValue("+ xfer whereB"_Stz);
+//  }
 
   vEndTransform();
 }
@@ -713,7 +712,34 @@ void Xtransforms::vH36_T30_Replace_param_In_whereA(void)
   vTransform(__func__, "Replace param in where-A"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    vR_H36_T30_Replace_param_In_whereA();
+    vR_H36_T30a_Replace_param_In_whereA();
+    break;
+  }
+
+  G_vRestart();
+  while (G_bEachMain(CK_PARAMLIST)) {
+    vR_H36_T30b_Delete_param_In_whereB();
+  }
+
+//  G_vRestart();
+//  while (G_bEachMainWithSub(CK_TWIST,CK_COMMENT,"- paramListB"_Stz)) {
+//    G.p_comment->vValue("+ paramListB"_Stz);
+//  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH36_T40_Delete_tstPred_In_whereA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "Delete tstPred in where-A"_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    vR_H36_T40_Delete_tstPred_In_whereA();
     break;
   }
 
@@ -721,19 +747,7 @@ void Xtransforms::vH36_T30_Replace_param_In_whereA(void)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH36_T30_Adjust_From_SubQuery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((adjust from subquery))"_Stz);
-
-  vR_H35_T30_Adjust_From_SubQuery();
-
-  vEndTransform();
-}
 
 
 /*----------------------------------------------------------------------------*/

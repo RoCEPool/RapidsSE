@@ -307,7 +307,7 @@ void Xreshape::vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_MainCard->vApplyRecursive(CK_TERM, bLambdaFn);
+  G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
 
 }
 
@@ -429,7 +429,7 @@ void Xreshape::vR_H36_T20b_Push_cmpPred_Onto_whereA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T30_Replace_param_In_whereA(void)
+void Xreshape::vR_H36_T30a_Replace_param_In_whereA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -461,18 +461,43 @@ void Xreshape::vR_H36_T30_Replace_param_In_whereA(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->vApplyRecursive(CK_CMPPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T40(void)
+void Xreshape::vR_H36_T30b_Delete_param_In_whereB(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  G_vRemoveDeleteMain(CK_PARAMLIST);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H36_T40_Delete_tstPred_In_whereA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card *pCard) {
+
+    Card_TstPred* p_tstPred = _pCard_TstPred(pCard);
+
+    M_vBoolCalc_RemovePred(G.p_boolCalc,p_tstPred);
+
+    DELETE_CARD(p_tstPred);
+
+    return C_TERMINATE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -705,7 +730,7 @@ void Xreshape::vR_H52_T40_Copy_TwistMarked_tstPred(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->vApplyRecursive(CK_TSTPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -864,7 +889,7 @@ void Xreshape::vR_H55_T40_Adjust_BoolCalc_Terms(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->vApplyRecursive(CK_TERM, bAdjustFn);
+  G.p_boolCalc->bApplyRecursive(CK_TERM, bAdjustFn);
 
 }
 
@@ -1529,7 +1554,7 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_stream->vApplyRecursive(CK_STMCOLODN, bLambdaFn);
+  G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1616,7 +1641,7 @@ void Xreshape::vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_filter->vApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
+  G.p_filter->bApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1641,7 +1666,7 @@ void Xreshape::vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_filter->vApplyRecursive(CK_TERM, bfPredBounds);
+  G.p_filter->bApplyRecursive(CK_TERM, bfPredBounds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1661,7 +1686,7 @@ void Xreshape::vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_filter->vApplyRecursive(CK_CMPPRED, bfAdd);
+  G.p_filter->bApplyRecursive(CK_CMPPRED, bfAdd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1814,7 +1839,7 @@ void Xreshape::vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_MainCard->vApplyRecursive(CK_TERM, bLambdaFn);
+  G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
 }
 
 
@@ -2131,7 +2156,7 @@ void Xreshape::vRR_Convert_All_TblColOrd_to_StmColOrd(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.pDeck->vApplyRecursive(CK_NONE,bLambdaFn);
+  G.pDeck->bApplyRecursive(CK_NONE, bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2157,7 +2182,7 @@ void Xreshape::vRR_Convert_All_StmColOrd_to_TblColOrd(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.pDeck->vApplyRecursive(CK_NONE,bLambdaFn);
+  G.pDeck->bApplyRecursive(CK_NONE, bLambdaFn);
 }
 
 /*============================================================================*/

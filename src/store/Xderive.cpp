@@ -126,7 +126,7 @@ void Xderive::D_vDerive_JoinPredList(Card_JoinPredList* p_joinPredList, Card_Boo
 
   // - - - - - - - - -
 
-  p_boolCalc->vApplyRecursive(CK_CMPPRED, bfExtract);
+  p_boolCalc->bApplyRecursive(CK_CMPPRED, bfExtract);
 
 }
 

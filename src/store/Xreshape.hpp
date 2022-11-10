@@ -48,8 +48,9 @@ namespace STORE
     void vR_H36_T10b_Put_From_SubQuery(void);
     void vR_H36_T20a_Get_cmpPred_Of_whereB(void);
     void vR_H36_T20b_Push_cmpPred_Onto_whereA(void);
-    void vR_H36_T30_Replace_param_In_whereA(void);
-    void vR_H36_T40(void);
+    void vR_H36_T30a_Replace_param_In_whereA(void);
+    void vR_H36_T30b_Delete_param_In_whereB(void);
+    void vR_H36_T40_Delete_tstPred_In_whereA(void);
 
     // vHand_37_Flatten_Having
     void vR_H37_T10(void);

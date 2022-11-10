@@ -283,20 +283,24 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function               */
 /*----------------------------------------------------------------------------*/
-void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
+bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (CK_NONE == eToSubs || eToSubs == m_eCard) {
     bool bContinue = bfLambdaFn(this);
     if (! bContinue)
-      return;
+      return C_TERMINATE_RECURSION;
   }
 
   CardIter xCI(this);
   while (Card* pChildCard = xCI.pEachChild()) {
-    pChildCard->vApplyRecursive(eToSubs, bfLambdaFn);
+    bool bContinue = pChildCard->bApplyRecursive(eToSubs, bfLambdaFn);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
   }
+
+  return C_CONTINUE_RECURSION;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2420,6 +2424,19 @@ Card_Topology* Card::pSub_topology(void)
   Card_Topology* p_stageTopo =
       _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
   return p_stageTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_TstPred.hpp"
+Card_TstPred* Card::pSub_tstPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TstPred* p_tstPred =
+      _pCard_TstPred(pFindSubCard(CK_TSTPRED));
+  return p_tstPred;
 }
 
 /*----------------------------------------------------------------------------*/

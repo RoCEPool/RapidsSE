@@ -114,6 +114,7 @@ namespace STORE
   class Card_TblColOdn;
   class Card_Term;
   class Card_Topology;
+  class Card_TstPred;
   class Card_Twist;
   class Card_Type;
 
@@ -233,7 +234,7 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
-    void vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     Stz* szBearing(void);
@@ -383,6 +384,7 @@ namespace STORE
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TblColOdn*     pSub_tblColOdn(void);
     Card_Topology*      pSub_topology(void);
+    Card_TstPred*       pSub_tstPred(void);
     Card_Twist*         pSub_twist(void);
     Card_UBound*        pSub_uBound(void);
 
