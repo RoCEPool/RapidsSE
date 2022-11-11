@@ -1466,7 +1466,6 @@ function askThreads() {
 function askDiskPaths() {
 
   local -a nodeNames
-  local defValue=0
   if [ "$#" -eq 0 ]; then
     nodeNames=( "${NODE_LIST[@]}" )
   else
@@ -1489,6 +1488,7 @@ function askDiskPaths() {
     local line
     local re="^( |[[:space:]])+"
     declare -a diskroots=()
+    local defValue=0
 
     while true
     do
