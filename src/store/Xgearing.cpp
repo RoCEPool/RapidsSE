@@ -1197,6 +1197,19 @@ void Xgearing::G_vPushBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bIsBoard(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (m_pBench->pGetBoard(szBoardNm))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bPushBoard(Stz* szBoardNm)

@@ -326,15 +326,22 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
-  //G.pDeck->vPush(m_pCard_yanked);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H35_T10b_Put_From_SubQuery(void)
+void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMember(CK_TWIST,"<-b | a->"_Stz);
+  G_vNewMember(CK_COMMENT,"- delete call"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- delete twist"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+
+  G.pDeck->vInsertAfter(G.p_twist,G.p_call);
 
   G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
@@ -371,7 +378,7 @@ void Xreshape::vR_H36_T10a_Copy_From_SubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H36_T10b_Put_From_SubQuery(void)
+void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -628,19 +635,62 @@ void Xreshape::vR_H36_T70_Replace_term_In_cmpPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T10(void)
+void Xreshape::vR_H37_T10a_Copy_sqB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMember(CK_TWIST,"<-a b->"_Stz);
+  G_vNewMember(CK_COMMENT,"- link __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- stmColOdn"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- gby __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- agg __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- unproject __1"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- reverse a b"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_COMMENT,"- delete twist"_Stz);
+  G.p_twist->vAppend(G.p_comment);
+
+  G.pDeck->vAppend(G.p_twist);
+
+  G.pDeck->vAppend(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+
+  DELETE_CARD(m_pCard_yanked);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T20(void)
+void Xreshape::vR_H37_T20_Link_sqCall_In_having(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  // TODO: this is a hack
+
+  CardIter xCI(G.p_rpnCalc);
+  while (G.p_term = _pCard_Term(xCI.pEachChild())) {
+    Stz* szTerm = G.p_term->szValue();
+    if (G_bIsBoard(szTerm))
+      G.p_term->vValue("__1"_Stz); // need to discover the stmColNm
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2089,7 +2139,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
 
   eAL e_level_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
 
-  bool bSawSynthedOp = false;
+  bool bSawProjectOp = false;
+  bool bSawAggOp = false;
 
   auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
     Card_Combined* p_combined = new Card_Combined;
@@ -2151,9 +2202,13 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
       e_level_running = e_level_main;
       vAddStage(p_main, i_Main, e_level_running,nStages);
       if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
-        bSawSynthedOp = true;
+        bSawAggOp = true;
       else
-        bSawSynthedOp = false;
+        bSawAggOp = false;
+      if (CK_PROJECT == e_main)
+        bSawProjectOp = true;
+      else
+        bSawProjectOp = false;
       continue;
     }
 
@@ -2162,19 +2217,33 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
-      bSawSynthedOp = false;
+      bSawAggOp = false;
+      bSawProjectOp = false;
       continue;
     }
 
-    if (bSawSynthedOp) {
+    if (CK_PROJECT == e_main && bSawProjectOp ) {
+      if (CK_SCAN != e_prev)
+        vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
-      bSawSynthedOp = false;
+      bSawAggOp = false;
+      bSawProjectOp = false;
+      continue;
+    }
+
+    if (bSawAggOp) {
+      vAddNext(p_main, i_Main,""_Stz);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawProjectOp = false;
       continue;
     }
 
     if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
-      bSawSynthedOp = true;
+      bSawAggOp = true;
+    if (CK_PROJECT == e_main)
+      bSawProjectOp = true;
   }
 
   i8 i_End = C_UNKNOWN;

@@ -99,6 +99,12 @@ namespace STORE
     void G_vAppendChild(eCK eParent, Card* pChild);
     void G_vDuplicateMember(eCK eMember);
 
+    void G_vClearMembers(void);
+    void G_vClearMembersRegisters(void);
+    void G_vClearRegisters(void);
+    void G_vClearRegistersIf(eCK eCard);
+    void G_vClearRegistersIf(Card* pCard);
+
     void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);
 
@@ -122,6 +128,8 @@ namespace STORE
 
     Card* G_pGetMember(eCK eMember);
 
+    bool G_bIsBoard(Stz* szBoardNm);
+
     bool G_bHasPriorToMain(bool bUpdateMember = false);
     bool G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
     bool G_bHasSubsequentToMain(bool bUpdateMember = false);
@@ -131,11 +139,6 @@ namespace STORE
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
-    void G_vClearMembers(void);
-    void G_vClearMembersRegisters(void);
-    void G_vClearRegisters(void);
-    void G_vClearRegistersIf(eCK eCard);
-    void G_vClearRegistersIf(Card* pCard);
     void G_vPushBoard(Board* pBoard);
     bool G_bPushBoard(Stz* szBoardNm);
     void G_vPushIter(void);

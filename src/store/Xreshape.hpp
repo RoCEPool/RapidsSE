@@ -40,12 +40,12 @@ namespace STORE
 
     // vHand_35_Flatten_From
     void vR_H35_T10a_Copy_From_SubQuery(void);
-    void vR_H35_T10b_Put_From_SubQuery(void);
+    void vR_H35_T10b_Push_sqB_Before_mqA(void);
     void vR_H35_T30_Adjust_From_SubQuery(void);
 
     // vHand_36_Flatten_Where
     void vR_H36_T10a_Copy_From_SubQuery(void);
-    void vR_H36_T10b_Put_From_SubQuery(void);
+    void vR_H36_T10b_Push_sqB_Before_mqA(void);
     void vR_H36_T20a_Get_cmpPred_Of_whereB(void);
     void vR_H36_T20b_Push_cmpPred_Onto_whereA(void);
     void vR_H36_T30a_Replace_param_In_whereA(void);
@@ -56,8 +56,9 @@ namespace STORE
     void vR_H36_T70_Replace_term_In_cmpPred(void);
 
     // vHand_37_Flatten_Having
-    void vR_H37_T10(void);
-    void vR_H37_T20(void);
+    void vR_H37_T10a_Copy_sqB(void);
+    void vR_H37_T10a_Append_sqB_After_mqA(void);
+    void vR_H37_T20_Link_sqCall_In_having(void);
     void vR_H37_T30(void);
 
     // vHand_40_Predicate_Pullup

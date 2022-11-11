@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH20_T10_Affix_tableSyn_ToAll_table"
+/glean_cue_from = "vH35_T10_Push_sqB_Into_mqA"
 /transliterated
 /transform
 /transform3

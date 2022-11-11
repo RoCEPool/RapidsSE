@@ -257,7 +257,10 @@ void Transformer::vHand_35_Flatten_From(i8 iBelow, ...)
 
   m_pTransforms->vH35_T00_Begin();
 
-  m_pTransforms->vH36_T10_Push_sqB_Into_mqA();
+  m_pTransforms->vH35_T10_Push_sqB_Into_mqA();
+  m_pTransforms->vH35_T20_Delete_call();
+  m_pTransforms->vH35_T30_Delete_twist();
+
 
   //m_pTransforms->vH36_T30_Adjust_From_SubQuery();
 
@@ -316,8 +319,8 @@ void Transformer::vHand_37_Flatten_Having(i8 iBelow, ...)
 
   m_pTransforms->vH37_T00_Begin();
 
-  m_pTransforms->vH37_T10();
-  m_pTransforms->vH37_T20();
+  m_pTransforms->vH37_T10_Append_sqB_After_mqA();
+  m_pTransforms->vH37_T20_Link_sqCall_In_having();
   m_pTransforms->vH37_T30();
 
   m_pTransforms->vH37_T99_End();
