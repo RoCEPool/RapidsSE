@@ -780,6 +780,11 @@ void Xreshape::vR_H37_T60_Unproject_sqCol(void)
     G_vAppendChild(CK_PROJELIST,p_expr_simple);
   }
 
+
+  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+
+  G.p_project->vAppend(G.p_stream);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -804,9 +809,34 @@ void Xreshape::vR_H37_T70_Exhange_sqB_With_mqA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T80(void)
+void Xreshape::vR_H37_T80_AdjustStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iOdn_shift = 0;
+
+  while (G_bEachMain()) {
+
+    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
+      continue;
+
+    G.p_stream = G.p_MainCard->pSub_stream();
+
+    if (G.p_MainCard->bIsCard(CK_PROJECT))
+      iOdn_shift = 0;
+
+    G.p_stmColList = G.p_stream->pSub_stmColList();
+    i8 nStmCols = G.p_stmColList->nChildCards();
+
+    i8 iLoOdn_stream = E_iStream_OrdLo(G.p_stream);
+
+    i8 iLoOdn_adjusted = iOdn_shift + 1;
+    i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+
+    M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_adjusted,iHiOdn_adjusted);
+
+    iOdn_shift = iHiOdn_adjusted;
+  }
 
 }
 

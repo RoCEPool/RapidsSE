@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH37_T70_Exhange_sqB_With_mqA"
+/glean_cue_from = "vH37_T80_Adjust_StmOdn"
 /transliterated
 /transform
 /transform3

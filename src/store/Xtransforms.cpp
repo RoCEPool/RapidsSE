@@ -1016,13 +1016,13 @@ void Xtransforms::vH37_T70_Exhange_sqB_With_mqA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T80(void)
+void Xtransforms::vH37_T80_Adjust_StmOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T80();
+  vR_H37_T80_AdjustStmOdn();
 
   vEndTransform();
 }
