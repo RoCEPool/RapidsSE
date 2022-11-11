@@ -93,7 +93,7 @@ namespace STORE
     void vH37_T40_Add_sqCol_To_aggGbyElist(void);
     void vH37_T50_Add_sqCol_To_aggAggElist(void);
     void vH37_T60_Unproject_sqCol(void);
-    void vH37_T70(void);
+    void vH37_T70_Exhange_sqB_With_mqA(void);
     void vH37_T80(void);
     void vH37_T90(void);
     void vH37_TA0(void);

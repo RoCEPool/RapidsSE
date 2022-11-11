@@ -63,7 +63,7 @@ namespace STORE
     void vR_H37_T20_Find_stmCol_Link(void);
     void vR_H37_T50_Add_sqCol_To_aggAggElist(void);
     void vR_H37_T60_Unproject_sqCol(void);
-    void vR_H37_T70(void);
+    void vR_H37_T70_Exhange_sqB_With_mqA(void);
     void vR_H37_T80(void);
     void vR_H37_T90(void);
     void vR_H37_TA0(void);

@@ -998,13 +998,17 @@ void Xtransforms::vH37_T60_Unproject_sqCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T70(void)
+void Xtransforms::vH37_T70_Exhange_sqB_With_mqA(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T70();
+  while (G_bEachMain(CK_TWIST)) {
+
+    vR_H37_T70_Exhange_sqB_With_mqA();
+    break;
+  }
 
   vEndTransform();
 }

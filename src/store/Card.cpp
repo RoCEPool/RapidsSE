@@ -1908,6 +1908,30 @@ bool Card::Y_bHas(Stz* szPpyNm)
   return m_pProperties->bHasName(szPpyNm);
 }
 
+/*----------------------------------------------------------------------------*/
+/* yank some subcards                                                         */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  while (i_From < nChildCards()
+         && (C_UNKNOWN == i_Till || i_From <= i_Till)) {
+    Card* p_child = pGetChild(i_From);
+
+    vRemoveChild(p_child);
+
+    p_subSet->vAppend(p_child);
+
+    if (C_UNKNOWN != i_Till)
+      i_Till--;
+  }
+
+  return p_subSet;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

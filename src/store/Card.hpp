@@ -344,6 +344,8 @@ namespace STORE
 
     bool Y_bHas(Stz* szPpyNm);
 
+    Card_SubSet* pYankSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
+
     void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
     void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 

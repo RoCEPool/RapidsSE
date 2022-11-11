@@ -785,10 +785,20 @@ void Xreshape::vR_H37_T60_Unproject_sqCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T70(void)
+void Xreshape::vR_H37_T70_Exhange_sqB_With_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.pDeck->vRemoveChild(G.p_twist);
+  G.pDeck->vPush(G.p_twist);
+
+  G.p_subSet = G.pDeck->pYankSubCards(G.i_MainCard+1,C_UNKNOWN);
+
+  G.pDeck->vPush(G.p_subSet);
+  G.pDeck->vReplaceChildWithItsSubs(G.p_subSet);
+
+  RASSERT(0 == G.p_subSet->nChildCards());
+  DELETE_CARD(G.p_subSet);
 }
 
 /*----------------------------------------------------------------------------*/
