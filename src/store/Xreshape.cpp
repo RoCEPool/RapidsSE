@@ -813,6 +813,7 @@ void Xreshape::vR_H37_T80_AdjustStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  //TODO: factor with vH36_T60_Adjust_StmColOdn
   i8 iOdn_shift = 0;
 
   while (G_bEachMain()) {
@@ -843,9 +844,41 @@ void Xreshape::vR_H37_T80_AdjustStmOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T90(void)
+void Xreshape::vR_H37_T90_Adjust_StmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card *pCard) {
+
+    G.p_stmCol = _pCard_StmCol(pCard);
+
+    //G.p_tblColOdn = G.p_stmCol->pSub_tblColOdn();
+    //char cTblSyn = E_cValue_TableColSyn(G.p_tblColOdn->szValue());
+    //M_vCard_Set_TableColOrdinal(G.p_tblColOdn, cTblSyn, i_StmColOdn++);
+
+    G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
+    M_vCard_Set_StreamColOrdinal(G.p_stmColOdn,G.i_stmColOdn++);
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.i_stmColOdn = 1;
+  while (G_bEachMain()) {
+
+    if (! (G.p_MainCard->bIsCard(CK_TABLE) ))
+      continue;
+
+    G.p_stream = G.p_MainCard->pSub_stream();
+
+    G.p_stmColList = G.p_stream->pSub_stmColList();
+
+    G.p_stmColList->bApplyRecursive(CK_STMCOL,bLambdaFn);
+  }
+
 
 }
 

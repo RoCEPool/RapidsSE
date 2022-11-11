@@ -327,6 +327,8 @@ void Transformer::vHand_37_Flatten_Having(i8 iBelow, ...)
   m_pTransforms->vH37_T60_Unproject_sqCol();
   m_pTransforms->vH37_T70_Exhange_sqB_With_mqA();
   m_pTransforms->vH37_T80_Adjust_StmOdn();
+  m_pTransforms->vH37_T90_Adjust_StmColOdn();
+  m_pTransforms->vH37_TA0_Delete_twist();
 
   m_pTransforms->vH37_T99_End();
 

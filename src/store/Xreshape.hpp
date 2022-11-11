@@ -65,7 +65,7 @@ namespace STORE
     void vR_H37_T60_Unproject_sqCol(void);
     void vR_H37_T70_Exhange_sqB_With_mqA(void);
     void vR_H37_T80_AdjustStmOdn(void);
-    void vR_H37_T90(void);
+    void vR_H37_T90_Adjust_StmColOdn(void);
     void vR_H37_TA0(void);
     void vR_H37_TB0(void);
 

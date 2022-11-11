@@ -1030,13 +1030,13 @@ void Xtransforms::vH37_T80_Adjust_StmOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T90(void)
+void Xtransforms::vH37_T90_Adjust_StmColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T90();
+  vR_H37_T90_Adjust_StmColOdn();
 
   vEndTransform();
 }
@@ -1044,13 +1044,13 @@ void Xtransforms::vH37_T90(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_TA0(void)
+void Xtransforms::vH37_TA0_Delete_twist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_TA0();
+  vHH_DeleteMain(CK_TWIST);
 
   vEndTransform();
 }
