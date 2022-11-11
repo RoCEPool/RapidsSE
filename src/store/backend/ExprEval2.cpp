@@ -466,12 +466,28 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip ascending/ descending
-    if (pTkn->bSame("ASC"_Stz) || pTkn->bSame("DESC"_Stz)) {
+    // ascending
+    if (pTkn->bSame("ASC"_Stz)) {
       vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
       // set the column no in the indexDef w.r to the streamDef
       pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+
       pPreExpStack->vPush(ePreExp);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // descending
+    if (pTkn->bSame("DESC"_Stz)) {
+      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+      // set the column no in the indexDef w.r to the streamDef
+      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+
+      // set the column as descending
+      pIndexDef->pGetColumn(i_ColumnOrdinal)->vIsAscending(false);
+
+        pPreExpStack->vPush(ePreExp);
       pTkn = pTknVec->pNextToken();
       continue;
     }
