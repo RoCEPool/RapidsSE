@@ -729,7 +729,7 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T50_Add_sqlCol_To_aggAggElist(void)
+void Xreshape::vR_H37_T50_Add_sqCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -750,7 +750,42 @@ void Xreshape::vR_H37_T50_Add_sqlCol_To_aggAggElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T60(void)
+void Xreshape::vR_H37_T60_Unproject_sqCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! G_bResolveCardWithSub(CK_AGGGBY,CK_AGGELIST,G.i_MainCard))
+    return;
+
+  G_vNewMemberBefore(CK_PROJECT,""_Stz,CK_TWIST);
+
+  G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
+  G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
+
+  G_vNewMemberOf(CK_PROJELIST,""_Stz,CK_PROJECT);
+
+  i8 i_Col = 1;
+  i8 nChildren_aggElist = G.p_aggElist->nChildCards();
+  for (i8 i_expr_aggElist = 0;
+       i_expr_aggElist < nChildren_aggElist;
+       i_expr_aggElist++) {
+
+    G.p_expr = _pCard_Expr(G.p_aggElist->pGetChild(i_expr_aggElist));
+
+    if (G.p_expr->bHasSubWithValue(CK_TERM, G.p_stmColNm->szValue()))
+      continue;
+
+    Card_Expr* p_expr_simple = D_pProject_Simple_expr_Of(G.p_expr,i_Col++);
+
+    G_vAppendChild(CK_PROJELIST,p_expr_simple);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T70(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -759,7 +794,34 @@ void Xreshape::vR_H37_T60(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H37_T70(void)
+void Xreshape::vR_H37_T80(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T90(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_TA0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_TB0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

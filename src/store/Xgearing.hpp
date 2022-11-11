@@ -150,6 +150,7 @@ namespace STORE
 
     void G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
+    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
 
     bool G_bResolveCard(eCK eCard, i8 i_Before);

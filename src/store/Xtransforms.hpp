@@ -91,9 +91,13 @@ namespace STORE
     void vH37_T20_Find_stmCol_Link(void);
     void vH37_T30_Link_sqCall_In_having(void);
     void vH37_T40_Add_sqCol_To_aggGbyElist(void);
-    void vH37_T50_Add_sqlCol_To_aggAggElist(void);
-    void vH37_T60(void);
+    void vH37_T50_Add_sqCol_To_aggAggElist(void);
+    void vH37_T60_Unproject_sqCol(void);
     void vH37_T70(void);
+    void vH37_T80(void);
+    void vH37_T90(void);
+    void vH37_TA0(void);
+    void vH37_TB0(void);
     void vH37_T99_End(void);
 
     // vHand_40_Predicate_Pullup

@@ -955,7 +955,7 @@ void Xtransforms::vH37_T40_Add_sqCol_To_aggGbyElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T50_Add_sqlCol_To_aggAggElist(void)
+void Xtransforms::vH37_T50_Add_sqCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -969,10 +969,10 @@ void Xtransforms::vH37_T50_Add_sqlCol_To_aggAggElist(void)
     if (G.e_MainCard != CK_AGGGBY)
       continue;
 
-    vR_H37_T50_Add_sqlCol_To_aggAggElist();
+    vR_H37_T50_Add_sqCol_To_aggAggElist();
   }
 
-  vR_H37_T50_Add_sqlCol_To_aggAggElist();
+  vR_H37_T50_Add_sqCol_To_aggAggElist();
 
   vEndTransform();
 }
@@ -980,13 +980,17 @@ void Xtransforms::vH37_T50_Add_sqlCol_To_aggAggElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T60(void)
+void Xtransforms::vH37_T60_Unproject_sqCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T60();
+  while (G_bEachMain(CK_TWIST)) {
+
+    vR_H37_T60_Unproject_sqCol();
+    break;
+  }
 
   vEndTransform();
 }
@@ -1001,6 +1005,62 @@ void Xtransforms::vH37_T70(void)
   vTransform(__func__, "((30))"_Stz);
 
   vR_H37_T70();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T80(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T80();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T90(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T90();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_TA0(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_TA0();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_TB0(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_TB0();
 
   vEndTransform();
 }

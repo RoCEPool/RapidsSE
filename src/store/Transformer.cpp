@@ -323,8 +323,8 @@ void Transformer::vHand_37_Flatten_Having(i8 iBelow, ...)
   m_pTransforms->vH37_T20_Find_stmCol_Link();
   m_pTransforms->vH37_T30_Link_sqCall_In_having();
   m_pTransforms->vH37_T40_Add_sqCol_To_aggGbyElist();
-  m_pTransforms->vH37_T50_Add_sqlCol_To_aggAggElist();
-  m_pTransforms->vH37_T60();
+  m_pTransforms->vH37_T50_Add_sqCol_To_aggAggElist();
+  m_pTransforms->vH37_T60_Unproject_sqCol();
   m_pTransforms->vH37_T70();
 
   m_pTransforms->vH37_T99_End();

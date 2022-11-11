@@ -272,6 +272,7 @@ namespace STORE
     bool bHasProperty(Stz* szPpyNm);
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
+    bool bHasSubWithValue(eCK eCard, Stz* szValue);
     bool bHasValue(void);
 
     bool bIsAggOp(void);

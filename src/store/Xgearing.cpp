@@ -1327,6 +1327,23 @@ void Xgearing::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
+void Xgearing::G_vNewMemberBefore(eCK eMember, Stz* szValue,
+                                  eCK eBefore, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G_vNewMember(eMember, bUpdateMember);
+
+  m_pCard_new->vValue(szValue);
+
+  Card* p_before = G_pGetMember(eBefore);
+
+  G.pDeck->vInsertBefore(m_pCard_new,p_before);
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
 void Xgearing::G_vNewMemberOf(eCK eMember, Stz* szValue,
                               eCK eOf, bool bUpdateMember)
 {
@@ -1338,7 +1355,6 @@ void Xgearing::G_vNewMemberOf(eCK eMember, Stz* szValue,
 
   G_vAppendChild(eOf,eMember);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* update member card                                                         */

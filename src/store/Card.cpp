@@ -847,6 +847,27 @@ bool Card::bHasSubRecursive(Card* pSubCard, Card*& rpParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given card a sub card of this card?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSubWithValue(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsCard(eCard) && bIsValue(szValue))
+    return true;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *p_sub = pGetChild(i_Child);
+
+    if (p_sub->bHasSubWithValue(eCard,szValue))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szPpyNm)
