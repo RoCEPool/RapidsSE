@@ -36,6 +36,7 @@ namespace STORE
   class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
+  class Card_Comment;
   class Card_Constraint;
   class Card_CoPtnJoin;
   class Card_CoPtnJoinList;
@@ -81,6 +82,7 @@ namespace STORE
   class Card_MaybeIndexJoin;
 
   class Card_Next;
+  class Card_Note;
 
   class Card_OrdAgg;
   class Card_OrPred;
@@ -360,6 +362,7 @@ namespace STORE
     Card_Cast*          pSub_cast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
+    Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Expr*          pSub_expr(void);
@@ -376,6 +379,7 @@ namespace STORE
     Card_Level*         pSub_level(void);
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_Next*          pSub_next(void);
+    Card_Note*          pSub_note(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);

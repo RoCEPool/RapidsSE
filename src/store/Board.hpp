@@ -82,6 +82,7 @@
 #include "Card_MaybeIndexJoin.hpp"
 
 #include "Card_Next.hpp"
+#include "Card_Note.hpp"
 
 #include "Card_ObyElist.hpp"
 #include "Card_OrPred.hpp"

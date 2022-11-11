@@ -336,10 +336,10 @@ void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vNewMember(CK_TWIST,"<-b | a->"_Stz);
-  G_vNewMember(CK_COMMENT,"- delete call"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- delete twist"_Stz);
-  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_NOTE,"- delete call"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- delete twist"_Stz);
+  G.p_twist->vAppend(G.p_note);
 
   G.pDeck->vInsertAfter(G.p_twist,G.p_call);
 
@@ -382,22 +382,26 @@ void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  Card* p_card = G.pDeck->pGetChild(0);
+  Card_Comment* p_comment = new Card_Comment("main-query"_Stz);
+  p_card->vAppend(p_comment);
+
   G_vNewMember(CK_TWIST,"<-b | a->"_Stz);
 
-  G_vNewMember(CK_COMMENT,"- xfer whereB"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- paramListB"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- tstPredA"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- adj stmOdn"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- adj stmOdn"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- cmpPred term"_Stz);
-  G.p_twist->vAppend(G.p_comment);
-  G_vNewMember(CK_COMMENT,"- crossJoin"_Stz);
-  G.p_twist->vAppend(G.p_comment);
+  G_vNewMember(CK_NOTE,"- xfer whereB"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- paramListB"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- tstPredA"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- adj stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- adj stmOdn"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- cmpPred term"_Stz);
+  G.p_twist->vAppend(G.p_note);
+  G_vNewMember(CK_NOTE,"- crossJoin"_Stz);
+  G.p_twist->vAppend(G.p_note);
 
   G.pDeck->vPush(G.p_twist);
 
@@ -405,6 +409,11 @@ void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
+
+  p_card = G.pDeck->pGetChild(0);
+  p_comment = new Card_Comment("sub-query"_Stz);
+  p_card->vAppend(p_comment);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -649,22 +658,35 @@ void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  Card* p_card = G.pDeck->pGetChild(0);
+  Card_Comment* p_comment = new Card_Comment("main-query A"_Stz);
+  p_card->vAppend(p_comment);
+
+
+
   G_vNewMember(CK_TWIST,"<-a b->"_Stz);
-  G_vNewMemberOf(CK_COMMENT,"- link __1"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- gby __1"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- agg __1"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- unproject __1"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- reverse a b"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- stmOdn"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- stmColOdn"_Stz,CK_TWIST);
-  G_vNewMemberOf(CK_COMMENT,"- delete twist"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- link __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- gby __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- agg __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- unproject __1"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- reverse a b"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- stmOdn"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- stmColOdn"_Stz,CK_TWIST);
+  G_vNewMemberOf(CK_NOTE,"- delete twist"_Stz,CK_TWIST);
 
   G.pDeck->vAppend(G.p_twist);
+
+  i8 i_StartOfB = G.pDeck->nChildCards();
 
   G.pDeck->vAppend(m_pCard_yanked);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
+
+  p_card = G.pDeck->pGetChild(i_StartOfB);
+  p_comment = new Card_Comment("sub-query B"_Stz);
+  p_card->vAppend(p_comment);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -675,6 +697,8 @@ void Xreshape::vR_H37_T20_Find_stmCol_Link(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G.p_project->vDump();
+
+  G_vNewMemberOf(CK_COMMENT,"__1 is sub-query column"_Stz,CK_PROJECT);
 
   G.p_stmColList = G.p_project->pSub_stmColList();
   if (G.p_stmColList) {
@@ -899,6 +923,8 @@ void Xreshape::vR_H37_T60_Unproject_sqCol(void)
 
   G.p_project->vAppend(G.p_stream);
 
+  G_vNewMember(CK_COMMENT,"unproject of __1"_Stz);
+  G.p_project->vAppend(G.p_comment);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1688,7 +1714,7 @@ void Xreshape::vR_H70_T60_Copy_ptndJoinSet(void)
   G.p_ptndJoinSet =
       _pCard_PtndJoinSet(G.pDeck->pFindChild(CK_PTNDJOINSET));
 
-  G.pDeck->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
+  G.pDeck->vAppendMain(new Card_Note("PERMUTATIONS"_Stz));
 
   i8 i_PtdnJoin = 0;
   G.p_subSet = G.p_ptndJoinSet->pDupSubCards();
@@ -1721,7 +1747,7 @@ void Xreshape::vR_H70_T70_Generate_ptndPermutations(void)
 
       G.p_ptndJoin = _pCard_PtndJoin(m_pCard_child);
       if (!T_bPtndJoin_MayFollowAfter(G.p_ptndJoin, G.p_subSet)) {
-        G.pDeck->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
+        G.pDeck->vAppendMain(new Card_Note("**DOESN'T FOLLOW**"_Stz));
         G.p_permutation->Y_vSet(P_Invalid);
         break;
       }
@@ -1761,7 +1787,7 @@ void Xreshape::vR_H70_T80_Remove_invalidPermutations(void)
     G.pDeck->vRemoveChild(G.p_MainCard);
     while (i_Main < G.pDeck->nChildCards()) {
       G.p_MainCard = G.pDeck->pGetChild(i_Main);
-      if (CK_PTNDJOIN != G.p_MainCard->eCard() && CK_COMMENT != G.p_MainCard->eCard())
+      if (CK_PTNDJOIN != G.p_MainCard->eCard() && CK_NOTE != G.p_MainCard->eCard())
         break;
       G.pDeck->vRemoveChild(G.p_MainCard);
       delete G.p_MainCard;
@@ -1978,11 +2004,11 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop_b(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   i8 i_Child;
-  G.p_comment = _pCard_Comment(G.p_scan->pFindChild(CK_COMMENT,i_Child));
+  G.p_note = _pCard_Note(G.p_scan->pFindChild(CK_NOTE,i_Child));
 
   if (i_Child == G.p_scan->nChildCards() - 1) {
-    G.p_scan->vRemoveChild(G.p_comment);
-    DELETE_CARD(G.p_comment);
+    G.p_scan->vRemoveChild(G.p_note);
+    DELETE_CARD(G.p_note);
   }
 
 }
@@ -1995,8 +2021,8 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop_c(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   i8 i_Child;
-  G.p_comment = _pCard_Comment(G.p_indexJoin->pFindChild(CK_COMMENT,i_Child));
-  G.p_comment->vValue(SEP_DERIVED);
+  G.p_note = _pCard_Note(G.p_indexJoin->pFindChild(CK_NOTE,i_Child));
+  G.p_note->vValue(SEP_DERIVED);
 
 }
 
@@ -2211,8 +2237,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 i_Child;
-  G.p_comment = _pCard_Comment(G.p_indexScan->pFindChild(CK_COMMENT,i_Child));
-  G.p_comment->vValue(SEP_DERIVED);
+  G.p_note = _pCard_Note(G.p_indexScan->pFindChild(CK_NOTE,i_Child));
+  G.p_note->vValue(SEP_DERIVED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2269,8 +2295,8 @@ void Xreshape::vR_H85_T20_Add_index_For_crossJoin(void)
   m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
   G.p_index = C_pProduce_index_ofTable(m_pTable);
 
-  G.p_comment = new Card_Comment(SEP_DERIVED);
-  G.p_crossJoin->vAppend(G.p_comment);
+  G.p_note = new Card_Note(SEP_DERIVED);
+  G.p_crossJoin->vAppend(G.p_note);
 
   G.p_crossJoin->vAppend(G.p_index);
 

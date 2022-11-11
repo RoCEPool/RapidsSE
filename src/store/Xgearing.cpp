@@ -775,6 +775,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_LEVEL:            return G.p_level;
     case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
     case CK_NEXT:             return G.p_next;
+    case CK_NOTE:             return G.p_note;
     case CK_PARAM:            return G.p_param;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
@@ -1011,6 +1012,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_level            = nullptr;
   G.p_maybeIndexJoin   = nullptr;
   G.p_next             = nullptr;
+  G.p_note             = nullptr;
   G.p_param            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
@@ -1409,6 +1411,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
+    case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
@@ -1761,6 +1764,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
+    case CK_NOTE:             return "G.p_note"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;

@@ -86,6 +86,7 @@ namespace STORE
     Card_Level *            p_level;
     Card_MaybeIndexJoin *   p_maybeIndexJoin;
     Card_Next *             p_next;
+    Card_Note *             p_note;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;

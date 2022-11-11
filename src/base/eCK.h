@@ -77,6 +77,7 @@ enum eCK // card kind
   /* */ CK_MAYBEINDEXJOIN,
 
   /* */ CK_NEXT,
+  /* */ CK_NOTE,
 
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
@@ -208,6 +209,7 @@ static Stz* aCK[]
   /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
 
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
+  /* */ "CK_NOTE"_Stz,         // CK_NOTE
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -339,6 +341,7 @@ static Stz* aCK_short[]
   /* */ "maybeIndexJoin"_Stz,  // CK_MAYBEINDEXJOIN
 
   /* */ "next"_Stz,            // CK_NEXT
+  /* */ "note"_Stz,            // CK_NOTE
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION

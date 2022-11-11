@@ -2097,6 +2097,19 @@ Card_ColumnRef* Card::pSub_columnRef(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Comment.hpp"
+Card_Comment* Card::pSub_comment(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Comment* p_comment =
+      _pCard_Comment(pFindSubCard(CK_COMMENT));
+  return p_comment;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Constraint.hpp"
 Card_Constraint* Card::pSub_constraint(void)
 {
@@ -2300,6 +2313,19 @@ Card_Next* Card::pSub_next(void)
   Card_Next* p_next =
       _pCard_Next(pFindSubCard(CK_NEXT));
   return p_next;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Note.hpp"
+Card_Note* Card::pSub_note(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Note* p_note =
+      _pCard_Note(pFindSubCard(CK_NOTE));
+  return p_note;
 }
 
 /*----------------------------------------------------------------------------*/
