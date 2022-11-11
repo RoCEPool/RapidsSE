@@ -615,7 +615,7 @@ function createConfiguration() {
   # installation directory
   askInstallDir
 
-  # (advanced) disk paths
+  # disk paths
   askDiskPaths
 
   # shared memory size
@@ -626,9 +626,6 @@ function createConfiguration() {
 
   # (advanced) threads
   askThreads
-
-  # (advanced) validate the disk paths exist
-  # validateDiskPaths
 
   # (advanced) additional parameters
   askParams
@@ -1212,6 +1209,9 @@ function askInstallDir() {
     nodeNames=( "$@" )
   fi
 
+  # Set the devault root disk path for unload/reload as the install dir
+  NODE_CFG_DEFAULT_DISK_PATH="${line}"
+
   # Set the value for all relevant nodes
   specificNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}" "${nodeNames[@]}"
 }
@@ -1466,6 +1466,7 @@ function askThreads() {
 function askDiskPaths() {
 
   local -a nodeNames
+  local defValue=0
   if [ "$#" -eq 0 ]; then
     nodeNames=( "${NODE_LIST[@]}" )
   else
@@ -1491,8 +1492,15 @@ function askDiskPaths() {
 
     while true
     do
-      echo -n "Enter a disk path for ${nodeName} and press return : "
+      echo -n "Enter a disk path for ${nodeName} and press return [default: ${NODE_CFG_DEFAULT_DISK_PATH}] : "
       IFS=$'\n' read -r line
+
+      if [ -z "${line:-}" ]; then
+        # Accepting the default value
+        defValue=1
+        diskroots+=("${NODE_CFG_DEFAULT_DISK_PATH}")
+        break
+      fi
 
       if [[ ${line} =~ ${re} ]]; then
         echo "Invalid input: Path cannot start with whitespace."
@@ -1521,6 +1529,10 @@ function askDiskPaths() {
 
     while true
     do
+      if [ ${defValue} -eq 1 ]; then
+        break
+      fi
+
       echo -n "Enter another disk path for ${nodeName}, or enter an empty line to finish : "
       IFS=$'\n' read -r line
 
@@ -2117,9 +2129,11 @@ function doNodeInstall() {
   local installDir
   local hostname
   local cmd
+  local -a diskPaths
 
   installDir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
   hostname="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+  diskPaths="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DISK_KEY}")"
 
   if [ -z "${installDir:-}" ]; then
     errorExit "The installation directory for node ${CURRENT_NODE_NAME} has not been set."
@@ -2169,6 +2183,24 @@ function doNodeInstall() {
     debugPrint "About to create the installation directory: ${hostname}:${installDir}"
 
     mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+  fi
+
+  # diskPaths above is a string. Let's turn it into an array based on spaces.
+  declare -a diskpathsArray=()
+  IFS=' ' read -r -a diskpathsArray <<< "${diskPaths}"
+
+  # If the disk paths are given, check if they exist and are writable.
+  if [ ${#diskpathsArray[@]} -ne 0 ]; then
+    for path in "${diskpathsArray[@]}"
+    do
+      if [ ! -d "${path}" ]; then
+        errorExit "Disk root path (${path}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] does not exist."
+      fi
+
+      if [ ! -w "${path}" ]; then
+        errorExit "The disk root directory (${path}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+      fi
+    done
   fi
 
 
