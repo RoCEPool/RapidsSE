@@ -292,6 +292,18 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get key ordinal n  (i.e. $Kn)                                              */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iValue_KeyOdn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get result ordinal n  (i.e. #n)                                            */
 /*----------------------------------------------------------------------------*/
 i8 Xextract::E_iValue_ResultOdn(Stz* szValue)

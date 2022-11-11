@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH37_T90_Adjust_StmColOdn"
+/glean_cue_from = "vH37_T50_Add_sqCol_To_aggAggElist"
 /transliterated
 /transform
 /transform3

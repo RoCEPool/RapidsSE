@@ -35,6 +35,7 @@ namespace STORE
     char E_cTerm_TableSyn(Card_Term* p_term);
     eTE  E_eTerm_TermEval(Card_Term* p_term);
 
+    i8   E_iValue_KeyOdn(Stz* szValue);
     i8   E_iValue_ResultOdn(Stz* szValue);
     i8   E_iValue_StreamColOdn(Stz* szValue);
     i8   E_iValue_TableColOdn(Stz* szValue);

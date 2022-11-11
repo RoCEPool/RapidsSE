@@ -229,6 +229,16 @@ void Xmodify::M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_KeyOrdinal(Card* p_card, i8 iKeyOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  p_card->vValueSprint("$K%lld"_Stz, iKeyOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xmodify::M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -577,6 +587,30 @@ void Xmodify::M_vTable_Set_Syn(Card_Table* p_table)
   p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
 
   m_cTableSyn++;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTerm_Bump_KeyOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 iKeyOdn = E_iValue_KeyOdn(p_term->szValue());
+
+  M_vCard_Set_KeyOrdinal(p_term,iKeyOdn+1);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 iStmColOdn = E_iValue_StreamColOdn(p_term->szValue());
+
+  M_vCard_Set_StreamColOrdinal(p_term,iStmColOdn+1);
 }
 
 /*----------------------------------------------------------------------------*/

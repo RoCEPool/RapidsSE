@@ -859,6 +859,8 @@ void Xtransforms::vH37_T00_Begin(void)
 
   m_pCardCtl->vUseLonger();
 
+  m_pCardCtl->vPrintSubCards(false,CK_STREAM,0);
+
   //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
 
@@ -932,6 +934,23 @@ void Xtransforms::vH37_T30_Link_sqCall_In_having(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_AGGGBY,CK_GBYELIST)) {
+    vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB();
+  }
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vH37_T40_Add_sqCol_To_aggGbyElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -947,6 +966,22 @@ void Xtransforms::vH37_T40_Add_sqCol_To_aggGbyElist(void)
       continue;
 
     vR_H37_T40Add_sqCol_To_AggGbyElist();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_AGGGBY,CK_AGGELIST)) {
+    vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB();
   }
 
   vEndTransform();
@@ -972,7 +1007,21 @@ void Xtransforms::vH37_T50_Add_sqCol_To_aggAggElist(void)
     vR_H37_T50_Add_sqCol_To_aggAggElist();
   }
 
-  vR_H37_T50_Add_sqCol_To_aggAggElist();
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T55_Bump_having_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
+    vR_H37_T55_Bump_having_rpnCalc_In_sqB();
+  }
 
   vEndTransform();
 }

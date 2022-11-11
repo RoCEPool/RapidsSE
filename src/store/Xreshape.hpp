@@ -58,10 +58,13 @@ namespace STORE
     // vHand_37_Flatten_Having
     void vR_H37_T10a_Copy_sqB(void);
     void vR_H37_T10a_Append_sqB_After_mqA(void);
-    void vR_H37_T30_Link_sqCall_In_having(void);
-    void vR_H37_T40Add_sqCol_To_AggGbyElist(void);
     void vR_H37_T20_Find_stmCol_Link(void);
+    void vR_H37_T30_Link_sqCall_In_having(void);
+    void vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
+    void vR_H37_T40Add_sqCol_To_AggGbyElist(void);
+    void vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB(void);
     void vR_H37_T50_Add_sqCol_To_aggAggElist(void);
+    void vR_H37_T55_Bump_having_rpnCalc_In_sqB(void);
     void vR_H37_T60_Unproject_sqCol(void);
     void vR_H37_T70_Exhange_sqB_With_mqA(void);
     void vR_H37_T80_AdjustStmOdn(void);

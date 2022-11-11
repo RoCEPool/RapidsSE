@@ -63,8 +63,10 @@ namespace STORE
     bool T_bTblColSyn_Same(char cTblSyn0, char cTblSyn1);
 
     bool T_bValue_IsIndexColOrdinal(Stz* szValue);  // $In
+    bool T_bValue_IsKeyOrdinal(Stz* szValue);       // #n
     bool T_bValue_IsParamOrdinal(Stz* szValue);     // $Pn
     bool T_bValue_IsResultOrdinal(Stz* szValue);    // #n
+    bool T_bValue_IsSqyColOrdinal(Stz* szValue); // __n
     bool T_bValue_IsStreamColOrdinal(Stz* szValue); // $n
     bool T_bValue_IsTableColOrdinal(Stz* szValue);  // $c.n
 

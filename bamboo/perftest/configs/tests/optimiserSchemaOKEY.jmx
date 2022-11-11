@@ -1580,7 +1580,7 @@ end ;
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P2Loop" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P2Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -3065,6 +3065,119 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
               <stringProp name="FileSaver.filename">p17_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P17Loop_a" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p17_a" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">/time pipeline Query17
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+ stage S01 on all partitions :
+     scan rapidsse public part
+     | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#23&apos;  ==  P_CONTAINER &apos;MED BAG&apos;  ==  and&quot;
+     | project &quot;type INTEGER as P_PARTKEY P_PARTKEY&quot;
+     | combined 0
+     | next broadcast
+
+  stage S02 on all partitions :
+    indexJoin lineitem IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+    | ordagg &quot; ordgroupBy type integer P_PARTKEY aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  J1_L_QUANTITY sum  , type INTEGER )  J1_L_QUANTITY count  &quot;
+    | hash &quot;type INTEGER P_PARTKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    aggreg &quot; groupBy type integer P_PARTKEY aggregates type integer as P_PARTKEY $K1  , type DECIMAL as sum_qty )  $2 sum  , type INTEGER as cnt_qty )  $3 sum &quot;
+   | combined 0
+   | next
+
+  stage S04 on all partitions :
+    project &quot; type integer as P_PARTKEY P_PARTKEY , type DECIMAL as AV $2 $3 casttype DECIMAL cast / 0.2 *&quot;
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions :
+    indexJoin lineitem IxL_PARTKEY &quot;bound $I1 $L1 ==&quot;
+    | filter &quot; type BOOLEAN  J1_L_QUANTITY AV &lt;&quot;
+    | project &quot; type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  &quot;
+    | combined 0
+    | next
+
+  stage S06 on all nodes :
+    project &quot; type decimal as avg_yearly ) $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    project &quot; type DECIMAL as avg_yearly ) $1 sum 7.0 / &quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p17_a.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p17_a_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>

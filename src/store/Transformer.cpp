@@ -322,8 +322,11 @@ void Transformer::vHand_37_Flatten_Having(i8 iBelow, ...)
   m_pTransforms->vH37_T10_Append_sqB_After_mqA();
   m_pTransforms->vH37_T20_Find_stmCol_Link();
   m_pTransforms->vH37_T30_Link_sqCall_In_having();
+  m_pTransforms->vH37_T35_Bump_gbyElist_rpnCalc_In_sqB();
   m_pTransforms->vH37_T40_Add_sqCol_To_aggGbyElist();
+  m_pTransforms->vH37_T45_Bump_aggElist_rpnCalc_In_sqB();
   m_pTransforms->vH37_T50_Add_sqCol_To_aggAggElist();
+  m_pTransforms->vH37_T55_Bump_having_rpnCalc_In_sqB();
   m_pTransforms->vH37_T60_Unproject_sqCol();
   m_pTransforms->vH37_T70_Exhange_sqB_With_mqA();
   m_pTransforms->vH37_T80_Adjust_StmOdn();

@@ -697,10 +697,35 @@ void Xreshape::vR_H37_T30_Link_sqCall_In_having(void)
   // TODO: this is a hack
 
   CardIter xCI(G.p_rpnCalc);
-  while (G.p_term = _pCard_Term(xCI.pEachChild())) {
+  while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
     Stz* szTerm = G.p_term->szValue();
-    if (G_bIsBoard(szTerm))
+    if (G_bIsBoard(szTerm)) {
       G.p_term->vValue("__1"_Stz); // need to discover the stmColNm
+      G.p_term->vMark1(MARK_LINK);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(G.p_gbyElist);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+
+    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+    CardIter xCI2(G.p_rpnCalc);
+    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+      Stz *szTerm = G.p_term->szValue();
+      if (!T_bValue_IsStreamColOrdinal(szTerm))
+        continue;
+      M_vTerm_Bump_StreamColOrdinal(G.p_term);
+      G.p_term->vMark1(MARK_CHANGED);
+    }
   }
 }
 
@@ -715,15 +740,47 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
 
   Card_Type* p_type = G.p_type;
 
-  G_vNewMemberOf(CK_EXPR,""_Stz,CK_GBYELIST);
+  G_vNewMember(CK_EXPR,""_Stz);
+  G.p_gbyElist->vPush(G.p_expr);
 
   G_vNewMemberOf(CK_TYPE,      p_type->szValue(),       CK_EXPR);
-  G_vNewMemberOf(CK_AS,        G.p_stmColNm->szValue(), CK_EXPR);
+  //G_vNewMemberOf(CK_AS,        G.p_stmColNm->szValue(), CK_EXPR);
   G_vNewMemberOf(CK_RPNCALC,   ""_Stz,                  CK_EXPR);
-  G_vNewMemberOf(CK_TERM,      G.p_stmColNm->szValue(), CK_RPNCALC);
+  G_vNewMemberOf(CK_TERM,      "$1"_Stz,                CK_RPNCALC);
   G_vNewMemberOf(CK_DIRECTION, "ASC"_Stz,               CK_EXPR);
 
   G.p_type = p_type;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(G.p_aggElist);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+
+    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+    CardIter xCI2(G.p_rpnCalc);
+    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+      Stz *szTerm = G.p_term->szValue();
+
+      if (T_bValue_IsStreamColOrdinal(szTerm)) {
+        M_vTerm_Bump_StreamColOrdinal(G.p_term);
+        G.p_term->vMark1(MARK_CHANGED);
+        continue;
+      }
+
+      if (T_bValue_IsKeyOrdinal(szTerm)) {
+        M_vTerm_Bump_KeyOrdinal(G.p_term);
+        G.p_term->vMark1(MARK_CHANGED);
+        continue;
+      }
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -733,18 +790,50 @@ void Xreshape::vR_H37_T50_Add_sqCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  G.p_gbyElist = G.p_aggGby->pSub_gbyElist();
+  i8 nGbyElistExpr = G.p_gbyElist->nChildCards();
+
+  s32 sK_Term = "$K1"_Stz;
+
   G.p_aggElist = G.p_aggGby->pSub_aggElist();
 
   Card_Type* p_type = G.p_type;
 
-  G_vNewMemberOf(CK_EXPR,""_Stz,CK_AGGELIST);
+  //G_vNewMemberOf(CK_EXPR,""_Stz,CK_AGGELIST);
+  G_vNewMember(CK_EXPR,""_Stz);
+  G.p_aggElist->vPush(G.p_expr);
 
   G_vNewMemberOf(CK_TYPE,      p_type->szValue(),       CK_EXPR);
   G_vNewMemberOf(CK_RPNCALC,   ""_Stz,                  CK_EXPR);
-  G_vNewMemberOf(CK_TERM,      G.p_stmColNm->szValue(), CK_RPNCALC);
+  G_vNewMemberOf(CK_TERM,      sK_Term.szStz(),         CK_RPNCALC);
   G_vNewMemberOf(CK_AS,        G.p_stmColNm->szValue(), CK_EXPR);
 
   G.p_type = p_type;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H37_T55_Bump_having_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(G.p_rpnCalc);
+  while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+    Stz *szTerm = G.p_term->szValue();
+
+    if (T_bValue_IsStreamColOrdinal(szTerm)) {
+      M_vTerm_Bump_StreamColOrdinal(G.p_term);
+      G.p_term->vMark1(MARK_CHANGED);
+      continue;
+    }
+
+//    if (T_bValue_IsKeyOrdinal(szTerm)) {
+//      M_vTerm_Bump_KeyOrdinal(G.p_term);
+//      G.p_term->vMark1(MARK_CHANGED);
+//      continue;
+//    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,18 +853,36 @@ void Xreshape::vR_H37_T60_Unproject_sqCol(void)
 
   G_vNewMemberOf(CK_PROJELIST,""_Stz,CK_PROJECT);
 
-  i8 i_Col = 1;
+  i8 i_Col = 0;
   i8 nChildren_aggElist = G.p_aggElist->nChildCards();
   for (i8 i_expr_aggElist = 0;
        i_expr_aggElist < nChildren_aggElist;
        i_expr_aggElist++) {
 
-    G.p_expr = _pCard_Expr(G.p_aggElist->pGetChild(i_expr_aggElist));
+    i_Col++;
 
-    if (G.p_expr->bHasSubWithValue(CK_TERM, G.p_stmColNm->szValue()))
+    G.p_expr = _pCard_Expr(G.p_aggElist->pGetChild(i_expr_aggElist));
+    G.p_as = G.p_expr->pSub_as();
+
+    if (T_bValue_IsSqyColOrdinal(G.p_as->szValue()))
       continue;
 
-    Card_Expr* p_expr_simple = D_pProject_Simple_expr_Of(G.p_expr,i_Col++);
+//    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+//
+//    bool bUnproject = false;
+//    CardIter xCI2(G.p_rpnCalc);
+//    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+//
+//      if (T_bValue_IsSqyColOrdinal(G.p_term->szValue())) {
+//        bUnproject = true;
+//        break;
+//      }
+//    }
+//
+//    if (bUnproject)
+//      continue;
+
+    Card_Expr* p_expr_simple = D_pProject_Simple_expr_Of(G.p_expr,i_Col);
 
     G_vAppendChild(CK_PROJELIST,p_expr_simple);
   }
@@ -2425,6 +2532,14 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
     if (CK_PROJECT == e_main && bSawProjectOp ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
+      vAddNext(p_main, i_Main,""_Stz);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawProjectOp = false;
+      continue;
+    }
+
+    if (CK_AGGREG == e_main && bSawAggOp ) {
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
