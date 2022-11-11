@@ -176,11 +176,14 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   }
 
   ASSERT(iPtnOfNode >= 0);
-  i8 start;
-  start =Timer::iGetTimeOfDay();
 
+#ifdef WITH_TSCP_TIMER
   Timer oTimer;
   oTimer.vStart();
+#else
+  i8 start;
+  start =Timer::iGetTimeOfDay();
+#endif
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   pFile->bOpenWrite(sFilePath);
@@ -209,15 +212,16 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 
   pFile->vClose();
   delete pFile;
-
+#ifdef WITH_TSCP_TIMER
   oTimer.vUpdate();
-  vTrace("Rdtscp: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
+  vTrace("Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
          iPtnOfNode,
          oTimer.iMilliseconds());
-
-  vTrace("GetTimeOfDay: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
+#else
+  vTrace("Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
          iPtnOfNode,
          (Timer::iGetTimeOfDay() - start)/1000000);
+#endif
 }
 
 /*============================================================================*/

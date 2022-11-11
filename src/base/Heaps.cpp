@@ -528,19 +528,22 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 void Heaps::vInit(void)
 {
   if(gxCmdLineArgs.m_xSysArgs.m_bReload) {
-    i8 start = Timer::iGetTimeOfDay();
+#ifdef WITH_TSCP_TIMER
     Timer oTimer;
-//    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
-      oTimer.vStart();
-//    }
+    oTimer.vStart();
+#else
+    i8 start = Timer::iGetTimeOfDay();
+#endif
 
     vReloadPHeaps();
 
-//    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
-      oTimer.vUpdate();
-      vTrace("Rdtscp: Loading of Persistent Heaps from disk took %lld ms\n"_Stz, oTimer.iMilliseconds());
-      vTrace("GetTimeOfDay: Loading of Persistent Heaps from disk took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
-//    }
+#ifdef WITH_TSCP_TIMER
+    oTimer.vUpdate();
+    vTrace("Loading of Persistent Heaps from disk took %lld ms\n"_Stz, oTimer.iMilliseconds());
+#else
+    vTrace("Loading of Persistent Heaps from disk took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
+#endif
+
   } else {
     // create the persistent heaps
     Persistent.m_pTiny   =
@@ -774,16 +777,8 @@ void Heaps::vReloadPHeaps(void)
   Persistent.m_pMedium->vDropWriteLock();
   Persistent.m_pLarge->vDropWriteLock();
 
-  i8 start = Timer::iGetTimeOfDay();
-  Timer oTimer;
-  oTimer.vStart();
-
   // Clean up the free chain
   gpBufferPool->vCleanup(false, true);
-
-  oTimer.vUpdate();
-  vTrace("Rdtscp: Free chain recreate took %lld ms\n"_Stz, oTimer.iMilliseconds());
-  vTrace("GetTimeOfDay: Free chain recreate took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
 }
 
 /*----------------------------------------------------------------------------*/
