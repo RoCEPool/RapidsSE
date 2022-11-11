@@ -685,6 +685,13 @@ void Xreshape::vR_H37_T20_Find_stmCol_Link(void)
       G.p_type = G.p_stmCol->pSub_type();
     }
   }
+
+  G.p_expr = G.p_project->pSub_expr();
+  G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+  G_vNewMember(CK_AS,"__1"_Stz);
+  G.p_expr->vInsertBefore(G.p_as,G.p_rpnCalc);
+
 }
 
 /*----------------------------------------------------------------------------*/

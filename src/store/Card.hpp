@@ -362,6 +362,7 @@ namespace STORE
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);

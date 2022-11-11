@@ -2123,6 +2123,19 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Expr.hpp"
+Card_Expr* Card::pSub_expr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Expr* p_expr =
+      _pCard_Expr(pFindSubCard(CK_EXPR));
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Filter.hpp"
 Card_Filter* Card::pSub_filter(void)
 {
