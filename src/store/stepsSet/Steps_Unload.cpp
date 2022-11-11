@@ -34,6 +34,8 @@ void Step::vUnloadToDisk(void)
   if(nDiskpaths <= 0)
   {
     vTrace("SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n"_Stz);
+    s256 sDir;
+    m_pDataStack->vPopStr(sDir, __func__);
     EXIT();
     return;
   }
