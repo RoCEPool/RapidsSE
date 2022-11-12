@@ -189,7 +189,7 @@ void Xmodify::M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc,
     if (! T_bValue_IsParamOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOrd));
+    Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOdn));
     if (! p_param)
       return false;
 
