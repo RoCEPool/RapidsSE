@@ -776,7 +776,7 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.p_gbyElist = G.p_aggGby->pSub_gbyElist();
+  G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
 
   Card_Type* p_type = G.p_type;
 
@@ -830,12 +830,12 @@ void Xreshape::vR_H37_T50_Add_sqCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.p_gbyElist = G.p_aggGby->pSub_gbyElist();
+  G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
   i8 nGbyElistExpr = G.p_gbyElist->nChildCards();
 
   s32 sK_Term = "$K1"_Stz;
 
-  G.p_aggElist = G.p_aggGby->pSub_aggElist();
+  G.p_aggElist = G.p_gbyAgg->pSub_aggElist();
 
   Card_Type* p_type = G.p_type;
 
@@ -883,7 +883,7 @@ void Xreshape::vR_H37_T60_Unproject_sqCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (! G_bResolveCardWithSub(CK_AGGGBY,CK_AGGELIST,G.i_MainCard))
+  if (! G_bResolveCardWithSub(CK_GBYAGG, CK_AGGELIST, G.i_MainCard))
     return;
 
   G_vNewMemberBefore(CK_PROJECT,""_Stz,CK_TWIST);
@@ -2550,7 +2550,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
         vAddNext(p_main, i_Main,""_Stz);
       e_level_running = e_level_main;
       vAddStage(p_main, i_Main, e_level_running,nStages);
-      if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
+      if (CK_GBYAGG == e_main || CK_AGGREG == e_main)
         bSawAggOp = true;
       else
         bSawAggOp = false;
@@ -2603,7 +2603,7 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_AGGGBY == e_main || CK_AGGREG == e_main)
+    if (CK_GBYAGG == e_main || CK_AGGREG == e_main)
       bSawAggOp = true;
     if (CK_PROJECT == e_main)
       bSawProjectOp = true;

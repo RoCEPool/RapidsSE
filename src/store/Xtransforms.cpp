@@ -940,7 +940,7 @@ void Xtransforms::vH37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
 
   vTransform(__func__, "((20))"_Stz);
 
-  while (G_bEachMainWithSub(CK_AGGGBY,CK_GBYELIST)) {
+  while (G_bEachMainWithSub(CK_GBYAGG, CK_GBYELIST)) {
     vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB();
   }
 
@@ -962,7 +962,7 @@ void Xtransforms::vH37_T40_Add_sqCol_To_aggGbyElist(void)
     if (G.e_MainCard == CK_HAVING)
       break;
 
-    if (G.e_MainCard != CK_AGGGBY)
+    if (G.e_MainCard != CK_GBYAGG)
       continue;
 
     vR_H37_T40Add_sqCol_To_AggGbyElist();
@@ -980,7 +980,7 @@ void Xtransforms::vH37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
 
   vTransform(__func__, "((20))"_Stz);
 
-  while (G_bEachMainWithSub(CK_AGGGBY,CK_AGGELIST)) {
+  while (G_bEachMainWithSub(CK_GBYAGG, CK_AGGELIST)) {
     vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB();
   }
 
@@ -1001,7 +1001,7 @@ void Xtransforms::vH37_T50_Add_sqCol_To_aggAggElist(void)
     if (G.e_MainCard == CK_HAVING)
       break;
 
-    if (G.e_MainCard != CK_AGGGBY)
+    if (G.e_MainCard != CK_GBYAGG)
       continue;
 
     vR_H37_T50_Add_sqCol_To_aggAggElist();

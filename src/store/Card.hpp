@@ -22,7 +22,6 @@ namespace STORE
 {
   class Card_AbsJoin;
   class Card_AggElist;
-  class Card_AggGby;
   class Card_Aggreg;
   class Card_Aggregates;
   class Card_AndPred;
@@ -55,6 +54,7 @@ namespace STORE
 
   class Card_Filter;
 
+  class Card_GbyAgg;
   class Card_GbyElist;
 
   class Card_Hash;
@@ -354,7 +354,6 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_AggElist*      pSub_aggElist(void);
-    Card_AggGby*        pSub_aggGby(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
@@ -367,6 +366,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
+    Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IdxColNm*      pSub_idxColNm(void);

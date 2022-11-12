@@ -735,7 +735,6 @@ Card* Xgearing::G_pGetMember(eCK eMember)
 
     case CK_ABSJOIN:          return G.p_absJoin;
     case CK_AGGELIST:         return G.p_aggElist;
-    case CK_AGGGBY:           return G.p_aggGby;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_AS:               return G.p_as;
     case CK_BOOLCALC:         return G.p_boolCalc;
@@ -757,6 +756,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_EXEPRED:          return G.p_exePred;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
+    case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
     case CK_HAVING:           return G.p_having;
     case CK_IDXCOL:           return G.p_idxCol;
@@ -972,7 +972,6 @@ void Xgearing::G_vClearMembers(void)
 
   G.p_absJoin          = nullptr;
   G.p_aggElist         = nullptr;
-  G.p_aggGby           = nullptr;
   G.p_aggreg           = nullptr;
   G.p_as               = nullptr;
   G.p_boolCalc         = nullptr;
@@ -994,6 +993,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_exePred          = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
+  G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
   G.p_having           = nullptr;
   G.p_idxCol           = nullptr;
@@ -1371,7 +1371,6 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
     case CK_AGGELIST:         *((Card**)&G.p_aggElist)         = pCard; break;
-    case CK_AGGGBY:           *((Card**)&G.p_aggGby)           = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
@@ -1393,6 +1392,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXEPRED:          *((Card**)&G.p_exePred)          = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
@@ -1726,7 +1726,6 @@ Stz* Xgearing::szMemberNm(eCK eMember)
 
     case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
     case CK_AGGELIST:         return "G.p_aggElist"_Stz;
-    case CK_AGGGBY:           return "G.p_aggGby"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_AS:               return "G.p_as"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
@@ -1748,6 +1747,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_EXEPRED:          return "G.p_exePred"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
+    case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
     case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
     case CK_IDXCOLNM:         return "G.p_idxColNm"_Stz;

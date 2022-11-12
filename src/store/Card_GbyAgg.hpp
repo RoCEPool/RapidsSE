@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AggGby.hpp -- Aggreg-GroupBy                                          */
+/* Card_GbyAgg.hpp -- Aggreg-GroupBy                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_AggGby : public Card_Project
+  class Card_GbyAgg : public Card_Project
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AggGby(void);
-   ~Card_AggGby(void) noexcept(false);
+    Card_GbyAgg(void);
+   ~Card_GbyAgg(void) noexcept(false);
   };
 
-  Card_AggGby* _pCard_AggGby(void* aAddr);
+  Card_GbyAgg* _pCard_GbyAgg(void* aAddr);
 }
 
 /*============================================================================*/

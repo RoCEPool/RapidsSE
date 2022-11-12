@@ -46,7 +46,6 @@ namespace STORE
 
     Card_AbsJoin *          p_absJoin;
     Card_AggElist *         p_aggElist;
-    Card_AggGby *           p_aggGby;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
     Card_BoolCalc *         p_boolCalc;
@@ -68,6 +67,7 @@ namespace STORE
     Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
+    Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
     Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;

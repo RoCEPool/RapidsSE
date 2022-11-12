@@ -9,7 +9,6 @@ enum eCK // card kind
 
   /* */ CK_ABSJOIN,
   /* */ CK_AGGELIST,
-  /* */ CK_AGGGBY,
   /* */ CK_AGGREG,
   /* */ CK_AGGREGATES,
   /* */ CK_ANDPRED,
@@ -48,6 +47,7 @@ enum eCK // card kind
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
 
+  /* */ CK_GBYAGG,
   /* */ CK_GBYELIST,
 
   /* */ CK_HASH,
@@ -141,7 +141,6 @@ static Stz* aCK[]
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
   /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
-  /* */ "CK_AGGGBY"_Stz,       // CK_AGGGBY
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
@@ -180,6 +179,7 @@ static Stz* aCK[]
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
 
+  /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
@@ -273,7 +273,6 @@ static Stz* aCK_short[]
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
   /* */ "aggElist"_Stz,        // CK_AGGELIST
-  /* */ "agggby"_Stz,          // CK_AGGGBY
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "andPred"_Stz,         // CK_ANDPRED
@@ -312,6 +311,7 @@ static Stz* aCK_short[]
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
 
+  /* */ "gbyAgg"_Stz,          // CK_GBYAGG
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
 
   /* */ "hash"_Stz,            // CK_HASH

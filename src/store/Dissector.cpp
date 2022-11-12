@@ -259,7 +259,7 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   if (pCard_RpnTerms->nItems()) {
     Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
     pCard_Aggreg->vAppend(pCard_ByList);
-    pCard_Aggreg->vCard(CK_AGGGBY);
+    pCard_Aggreg->vCard(CK_GBYAGG);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

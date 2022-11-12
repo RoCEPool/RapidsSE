@@ -1993,19 +1993,6 @@ Card_AggElist* Card::pSub_aggElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_AggGby.hpp"
-Card_AggGby* Card::pSub_aggGby(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_AggGby* p_aggGby =
-      _pCard_AggGby(pFindSubCard(CK_AGGGBY));
-  return p_aggGby;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Aggreg.hpp"
 Card_Aggreg* Card::pSub_aggreg(void)
 {
@@ -2157,6 +2144,19 @@ Card_Filter* Card::pSub_filter(void)
   Card_Filter* p_filter =
       _pCard_Filter(pFindSubCard(CK_FILTER));
   return p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_GbyAgg.hpp"
+Card_GbyAgg* Card::pSub_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_GbyAgg* p_gbyAgg =
+      _pCard_GbyAgg(pFindSubCard(CK_GBYAGG));
+  return p_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -208,11 +208,11 @@ void Weaver::vOp(Card* pCard)
   switch (eCard) {
 
     case CK_ABSJOIN:    vArgAbsJoin  (sOpArgs,_pCard_AbsJoin(pCard));   break;
-    case CK_AGGGBY:     vArgAggGby   (sOpArgs,_pCard_AggGby(pCard));    break;
     case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));    break;
     case CK_COMBINED:   vArgCombined (sOpArgs,_pCard_Combined(pCard));  break;
     case CK_CROSSJOIN:  vArgCrossJoin(sOpArgs,_pCard_CrossJoin(pCard)); break;
     case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));    break;
+    case CK_GBYAGG:     vArgGbyAgg   (sOpArgs,_pCard_GbyAgg(pCard));    break;
     case CK_HAVING:     vArgHaving   (sOpArgs,_pCard_Having(pCard));    break;
     case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard)); break;
     case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard)); break;
@@ -231,7 +231,7 @@ void Weaver::vOp(Card* pCard)
 
   s32 sOpNm;
 
-  if (CK_AGGGBY == eCard)
+  if (CK_GBYAGG == eCard)
     sOpNm = "aggreg"_Stz;
   else
   if (CK_CROSSJOIN == eCard)
@@ -269,22 +269,6 @@ void Weaver::vArgAbsJoin(Stz* szOpArgs, Card_AbsJoin*   pCard_AbsJoin)
   szOpArgs->vCatSprint("abstractJoin \" 1 \""_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* weave : aggGby <compiled> <expr>                                           */
-/*----------------------------------------------------------------------------*/
-void Weaver::vArgAggGby(Stz* szOpArgs, Card_AggGby* pCard_AggGby)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  // 0) aggElist : 1) gbyList
-
-  //pCard_Aggreg->vDump();
-  s4K sRpnExpr;
-
-  vRpnAggGby(sRpnExpr,pCard_AggGby);
-
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
-}
 
 /*----------------------------------------------------------------------------*/
 /* weave : aggreg <compiled> <expr>                                           */
@@ -358,6 +342,22 @@ void Weaver::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
+/*----------------------------------------------------------------------------*/
+/* weave : aggGby <compiled> <expr>                                           */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  // 0) aggElist : 1) gbyList
+
+  //pCard_Aggreg->vDump();
+  s4K sRpnExpr;
+
+  vRpnGbyAgg(sRpnExpr, pCard_AggGby);
+
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+}
 /*----------------------------------------------------------------------------*/
 /* weave : having  <expr>                                                     */
 /*----------------------------------------------------------------------------*/
@@ -580,16 +580,6 @@ void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for aggGby op                                               */
-/*----------------------------------------------------------------------------*/
-void Weaver::vRpnAggGby(Stz* szRpnExpr, Card_AggGby* pCard_AggGby)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  vRpnAggreg(szRpnExpr,(Card_Aggreg*)pCard_AggGby);
-}
-
-/*----------------------------------------------------------------------------*/
 /* produce <expr> for aggreg op                                               */
 /*----------------------------------------------------------------------------*/
 void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
@@ -733,6 +723,16 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
     Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_rpnCalc();
     vRpnCalc(szRpnExpr, pCard_Calc);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for aggGby op                                               */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnGbyAgg(Stz* szRpnExpr, Card_GbyAgg* pCard_GbyAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  vRpnAggreg(szRpnExpr,(Card_Aggreg*)pCard_GbyAgg);
 }
 
 /*----------------------------------------------------------------------------*/
