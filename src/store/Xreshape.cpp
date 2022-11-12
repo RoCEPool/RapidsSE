@@ -335,6 +335,10 @@ void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  Card* p_card = G.pDeck->pGetChild(1);
+  Card_Comment* p_comment = new Card_Comment("main-query A"_Stz);
+  p_card->vAppend(p_comment);
+
   G_vNewMember(CK_TWIST,"<-b | a->"_Stz);
   G_vNewMember(CK_NOTE,"- delete call"_Stz);
   G.p_twist->vAppend(G.p_note);
@@ -347,6 +351,11 @@ void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
+
+  p_card = G.pDeck->pGetChild(1);
+  p_comment = new Card_Comment("sub-query B"_Stz);
+  p_card->vAppend(p_comment);
+
 }
 
 /*----------------------------------------------------------------------------*/

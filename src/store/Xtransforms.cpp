@@ -518,7 +518,7 @@ bool Xtransforms::bH35_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -538,7 +538,7 @@ void Xtransforms::vH35_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseLonger();
+  m_pCardCtl->vUseShorter();
 
   //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
@@ -837,7 +837,7 @@ bool Xtransforms::bH37_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -857,7 +857,7 @@ void Xtransforms::vH37_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseLonger();
+  m_pCardCtl->vUseShorter();
 
   m_pCardCtl->vPrintSubCards(false,CK_STREAM,0);
 
