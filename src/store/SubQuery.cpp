@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Query.cpp -- Query analysis                                                */
+/* SubQuery.cpp -- SubQuery analysis                                                */
 /*============================================================================*/
 
-#include "Query.hpp"
+#include "SubQuery.hpp"
 #include "Card.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Query,CN_QUERY)
-__aNewFunction(Query,CN_QUERY)
-__vDeleteFunction(Query,CN_QUERY)
-__aFooterFunction(Query)
+__pCastFunction(STORE, SubQuery, CN_SUBQUERY)
+__aNewFunction(SubQuery, CN_SUBQUERY)
+__vDeleteFunction(SubQuery, CN_SUBQUERY)
+__aFooterFunction(SubQuery)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Query::Query(void)
-: Object(CN_QUERY)
+SubQuery::SubQuery(void)
+: Object(CN_SUBQUERY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_iForm = C_UNKNOWN;
 
@@ -30,17 +30,17 @@ Query::Query(void)
 
   m_eRelationalOp = RO_NONE;
 
-  _checkInitialised_(CN_QUERY);
+  _checkInitialised_(CN_SUBQUERY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Query::~Query(void) noexcept(false)
+SubQuery::~SubQuery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 }
 
 
@@ -51,9 +51,9 @@ Query::~Query(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get form                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Query::iForm(void)
+i8 SubQuery::iForm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   return m_iForm;
 }
@@ -61,9 +61,9 @@ i8 Query::iForm(void)
 /*----------------------------------------------------------------------------*/
 /* set form                                                                   */
 /*----------------------------------------------------------------------------*/
-void Query::vForm(i8 iForm)
+void SubQuery::vForm(i8 iForm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_iForm = iForm;
 }
@@ -71,9 +71,9 @@ void Query::vForm(i8 iForm)
 /*----------------------------------------------------------------------------*/
 /* get aggregation                                                            */
 /*----------------------------------------------------------------------------*/
-eQA Query::eAggregation(void)
+eQA SubQuery::eAggregation(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   return m_eAggregation;
 }
@@ -81,9 +81,9 @@ eQA Query::eAggregation(void)
 /*----------------------------------------------------------------------------*/
 /* set aggregation                                                            */
 /*----------------------------------------------------------------------------*/
-void Query::vAggregation(eQA eAggregation)
+void SubQuery::vAggregation(eQA eAggregation)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eAggregation = eAggregation;
 }
@@ -91,9 +91,9 @@ void Query::vAggregation(eQA eAggregation)
 /*----------------------------------------------------------------------------*/
 /* get clause                                                                 */
 /*----------------------------------------------------------------------------*/
-eQC Query::eClause(void)
+eQC SubQuery::eClause(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   return m_eClause;
 }
@@ -101,9 +101,9 @@ eQC Query::eClause(void)
 /*----------------------------------------------------------------------------*/
 /* set clause                                                                 */
 /*----------------------------------------------------------------------------*/
-void Query::vClause(eQC eClause)
+void SubQuery::vClause(eQC eClause)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eClause = eClause;
 }
@@ -111,9 +111,9 @@ void Query::vClause(eQC eClause)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-eQO Query::eOperator(void)
+eQO SubQuery::eOperator(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   return m_eOperator;
 }
@@ -121,9 +121,9 @@ eQO Query::eOperator(void)
 /*----------------------------------------------------------------------------*/
 /* set operator                                                               */
 /*----------------------------------------------------------------------------*/
-void Query::vOperator(eQO eOperator)
+void SubQuery::vOperator(eQO eOperator)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eOperator = eOperator;
 }
@@ -131,9 +131,9 @@ void Query::vOperator(eQO eOperator)
 /*----------------------------------------------------------------------------*/
 /* get relational op                                                          */
 /*----------------------------------------------------------------------------*/
-eRO Query::eRelationalOp(void)
+eRO SubQuery::eRelationalOp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   return m_eRelationalOp;
 }
@@ -141,9 +141,9 @@ eRO Query::eRelationalOp(void)
 /*----------------------------------------------------------------------------*/
 /* set relational op                                                          */
 /*----------------------------------------------------------------------------*/
-void Query::vRelationalOp(eRO eRelationalOp)
+void SubQuery::vRelationalOp(eRO eRelationalOp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERY,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eRelationalOp = eRelationalOp;
 }

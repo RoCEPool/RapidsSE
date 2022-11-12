@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Query.hpp -- Query analysis                                                */
+/* SubQuery.hpp -- SubQuery analysis                                                */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,7 @@
 
 namespace STORE
 {
-  class Query : public Object
+  class SubQuery : public Object
   {
   protected:
 
@@ -32,8 +32,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Query(void);
-   ~Query(void) noexcept(false);
+    SubQuery(void);
+   ~SubQuery(void) noexcept(false);
 
     i8 iForm(void);
     void vForm(i8 iForm);
@@ -54,7 +54,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Query* _pQuery(void* aAddr);
+  SubQuery* _pQuery(void* aAddr);
 }
 
 /*============================================================================*/

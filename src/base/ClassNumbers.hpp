@@ -254,7 +254,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PTRVAL,
 
   /* */ CN__Q__,
-  /* */ CN_QUERY,
   /* */ CN_QUERYNODE,
   /* */ CN_QUERYNODELIST,
   /* */ CN_QUERYNODESTACK,
@@ -356,6 +355,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
+  /* */ CN_SUBQUERY,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -680,7 +680,6 @@ static Stz* aCN[]
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
   /* */ "_Q__"_Stz,                 // CN__Q__
-  /* */ "QUERY"_Stz,                // CN_QUERY
   /* */ "QUERYNODE"_Stz,            // CN_QUERYNODE
   /* */ "QUERYNODELIST"_Stz,        // CN_QUERYNODELIST
   /* */ "QUERYNODESTACK"_Stz,       // CN_QUERYNODESTACK
@@ -782,6 +781,7 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
+  /* */ "SUBQUERY"_Stz,             // CN_SUBQUERY
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
