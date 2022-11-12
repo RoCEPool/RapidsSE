@@ -2589,7 +2589,13 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
+    // if filter then continue?
+    if (CK_FILTER == e_main) {
+      continue;
+    }
+
     if (bSawAggOp) {
+      vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;

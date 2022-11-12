@@ -621,7 +621,7 @@ bool Xtransforms::bH36_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -837,7 +837,7 @@ bool Xtransforms::bH37_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

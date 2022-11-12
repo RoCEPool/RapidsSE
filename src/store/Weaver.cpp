@@ -244,7 +244,8 @@ void Weaver::vOp(Card* pCard)
 
   Card_Comment* p_comment = pCard->pSub_comment();
   if (p_comment) {
-    vTabOp();
+    //vTabOp();
+    vConcat("      "_Stz);
     vConcat("// %s"_Stz,
             p_comment->szValue());
     vEolOp();
