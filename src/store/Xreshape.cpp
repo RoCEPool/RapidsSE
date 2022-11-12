@@ -46,7 +46,11 @@ void Xreshape::vR_H10_T80_Delete_Redundant_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G_vRemoveDeleteMain(CK_STAGE);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +64,8 @@ void Xreshape::vR_H10_T90_Hide_Ignorable_stage(void)
     return;
 
   G.p_stage->Y_vSet(P_HideHeat);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,6 +76,8 @@ void Xreshape::vR_H10_T10_Delete_absJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vRemoveDeleteMain(CK_ABSJOIN);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +88,8 @@ void Xreshape::vR_H10_T20_Delete_combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vRemoveDeleteMain(CK_COMBINED);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,6 +100,8 @@ void Xreshape::vR_H10_T30_Delete_send(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vRemoveDeleteMain(CK_SEND);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,6 +112,8 @@ void Xreshape::vR_H10_T40_Delete_stage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vRemoveDeleteMain(CK_STAGE);
+
+  vEndReshape();
 }
 
 
@@ -112,6 +126,8 @@ void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 
   G.pDeck->vReplaceChildWithItsSubs(G.p_scan);
   DELETE_CARD(G.p_scan);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,6 +179,8 @@ void Xreshape::vR_H10_T60_Add_level(void)
 //  }
 */
 
+
+  vEndReshape();
 }
 
 
@@ -179,6 +197,8 @@ void Xreshape::vR_H20_T10_AAffix_tableSyn_To_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vTable_Set_Syn(G.p_table);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,6 +211,8 @@ void Xreshape::vR_H20_T20_Produce_tablePtn_Under_table(void)
   G.p_tablePtn = C_pProduce_tablePtn_ofTable(G.p_table);
 
   G.p_table->vAppend(G.p_tablePtn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +223,7 @@ void Xreshape::vR_H20_T20_Produce_tablePtn_Under_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T10_Produce_stream_Under_table(void)
+void Xreshape::vR_H25_T10_Produce_stream_Under_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -209,65 +231,78 @@ void Xreshape::vR_H30_T10_Produce_stream_Under_table(void)
   G.p_stream = C_pProduce_stream_ofTable(m_pTable);
 
   G.p_table->vAppend(G.p_stream);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T12_Produce_stream_Under_project(void)
+void Xreshape::vR_H25_T12_Produce_stream_Under_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T14_Produce_stream_Under_aggreg(void)
+void Xreshape::vR_H25_T14_Produce_stream_Under_aggreg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G.p_stream = C_pProduce_stream_ofAggreg(G.p_aggElist);
 
   G.p_aggreg->vAppend(G.p_stream);
+
+  vEndReshape();
 }
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T20_Derive_ordinalRange_For_table_stream(void)
+void Xreshape::vR_H25_T20_Derive_ordinalRange_For_table_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T22_Derive_ordinalRange_For_project_stream(void)
+void Xreshape::vR_H25_T22_Derive_ordinalRange_For_project_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vStream_Derive_OrdinalRange_project(G.p_stream);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T24_Derive_ordinalRange_For_aggreg_stream(void)
+void Xreshape::vR_H25_T24_Derive_ordinalRange_For_aggreg_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void)
+void Xreshape::vR_H25_T30_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -276,12 +311,14 @@ void Xreshape::vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void)
   G.p_where->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
 
   G_vDeleteMember(G.p_rpnCalc);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void)
+void Xreshape::vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -309,6 +346,8 @@ void Xreshape::vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void)
 
   G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,28 +358,34 @@ void Xreshape::vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H32_T10(void)
+void Xreshape::vR_H29_T10_Main_Query_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H32_T20(void)
+void Xreshape::vR_H29_T20(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H32_T30(void)
+void Xreshape::vR_H29_T30(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  vEndReshape();
 }
 
 
@@ -359,6 +404,8 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -389,6 +436,8 @@ void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
   p_comment = new Card_Comment("sub-query B"_Stz);
   p_card->vAppend(p_comment);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,6 +447,8 @@ void Xreshape::vR_H35_T30_Adjust_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,6 +466,8 @@ void Xreshape::vR_H36_T10a_Copy_From_SubQuery(void)
 
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,6 +509,8 @@ void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
   p_comment = new Card_Comment("sub-query"_Stz);
   p_card->vAppend(p_comment);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -472,6 +527,8 @@ void Xreshape::vR_H36_T20a_Get_cmpPred_Of_whereB(void)
   G.p_cmpPred = _pCard_CmpPred(G.p_boolCalc->pPop());
 
   DELETE_CARD(G.p_where);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,6 +543,8 @@ void Xreshape::vR_H36_T20b_Push_cmpPred_Onto_whereA(void)
   M_vBoolCalc_PushPred(G.p_boolCalc,G.p_cmpPred);
 
   G.p_cmpPred->vMark1(MARK_REPLACE);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -524,6 +583,8 @@ void Xreshape::vR_H36_T30a_Replace_param_In_whereA(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,6 +595,8 @@ void Xreshape::vR_H36_T30b_Delete_param_In_whereB(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G_vRemoveDeleteMain(CK_PARAMLIST);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -559,6 +622,8 @@ void Xreshape::vR_H36_T40_Delete_tstPred_In_whereA(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -594,6 +659,8 @@ void Xreshape::vR_H36_T50_Adjust_StmOdn(void)
 
     iOdn_shift = iHiOdn_adjusted;
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,6 +701,8 @@ void Xreshape::vR_H36_T60_Adjust_StmColOdn(void)
     G.p_stmColList->bApplyRecursive(CK_STMCOL,bLambdaFn);
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -675,6 +744,8 @@ void Xreshape::vR_H36_T70_Replace_term_In_cmpPred(void)
 
   G.p_boolCalc->bApplyRecursive(CK_CMPPRED,bLambdaFn);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -691,6 +762,8 @@ void Xreshape::vR_H37_T10a_Copy_sqB(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -729,6 +802,8 @@ void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
   p_comment = new Card_Comment("sub-query B"_Stz);
   p_card->vAppend(p_comment);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -758,6 +833,8 @@ void Xreshape::vR_H37_T20_Find_stmCol_Link(void)
   G_vNewMember(CK_AS,"__1"_Stz);
   G.p_expr->vInsertBefore(G.p_as,G.p_rpnCalc);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -777,6 +854,8 @@ void Xreshape::vR_H37_T30_Link_sqCall_In_having(void)
       G.p_term->vMark1(MARK_LINK);
     }
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -800,6 +879,8 @@ void Xreshape::vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
       G.p_term->vMark1(MARK_CHANGED);
     }
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -823,6 +904,8 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
   G_vNewMemberOf(CK_DIRECTION, "ASC"_Stz,               CK_EXPR);
 
   G.p_type = p_type;
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -854,6 +937,8 @@ void Xreshape::vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
       }
     }
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -882,6 +967,8 @@ void Xreshape::vR_H37_T50_Add_sqCol_To_aggAggElist(void)
   G_vNewMemberOf(CK_AS,        G.p_stmColNm->szValue(), CK_EXPR);
 
   G.p_type = p_type;
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -907,6 +994,8 @@ void Xreshape::vR_H37_T55_Bump_having_rpnCalc_In_sqB(void)
 //      continue;
 //    }
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,6 +1056,8 @@ void Xreshape::vR_H37_T60_Unproject_sqCol(void)
 
   G_vNewMember(CK_COMMENT,"unproject of __1"_Stz);
   G.p_project->vAppend(G.p_comment);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -986,6 +1077,8 @@ void Xreshape::vR_H37_T70_Exhange_sqB_With_mqA(void)
 
   RASSERT(0 == G.p_subSet->nChildCards());
   DELETE_CARD(G.p_subSet);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1021,6 +1114,8 @@ void Xreshape::vR_H37_T80_AdjustStmOdn(void)
     iOdn_shift = iHiOdn_adjusted;
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1062,6 +1157,8 @@ void Xreshape::vR_H37_T90_Adjust_StmColOdn(void)
   }
 
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1071,6 +1168,8 @@ void Xreshape::vR_H37_TA0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1080,6 +1179,8 @@ void Xreshape::vR_H37_TB0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  vEndReshape();
 }
 
 
@@ -1098,6 +1199,8 @@ void Xreshape::vR_H40_T10_AtMark_where_pred_Wrt_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vPullUp_MarkPredLeftwards(G.p_boolCalc, G.pDeck);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1108,6 +1211,8 @@ void Xreshape::vR_H40_T20_Move_AtMarked_where_pred_To_table_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1120,6 +1225,8 @@ void Xreshape::vR_H40_T30_Delete_Empty_where(void)
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1137,6 +1244,8 @@ void Xreshape::vR_H50_T10_Extract_subSet_Of_call(void)
   G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   G.pDeck->vPush(G.p_subSet);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1149,6 +1258,8 @@ void Xreshape::vR_H50_T20_Yank_SubSet(void)
   m_pCard_yanked = G.pDeck->pFindChild(CK_SUBSET);
 
   G.pDeck->vRemoveChild(m_pCard_yanked);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1162,6 +1273,8 @@ void Xreshape::vR_H50_T20_Put_SubSet(void)
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1172,6 +1285,8 @@ void Xreshape::vR_H50_T30_RemoveDelete_call(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G_vRemoveDeleteMain(CK_CALL);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1180,6 +1295,8 @@ void Xreshape::vR_H50_T30_RemoveDelete_call(void)
 void Xreshape::vR_H50_T40(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1188,6 +1305,8 @@ void Xreshape::vR_H50_T40(void)
 void Xreshape::vR_H50_T50(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1196,6 +1315,8 @@ void Xreshape::vR_H50_T50(void)
 void Xreshape::vR_H50_T60(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vEndReshape();
 }
 
 
@@ -1214,6 +1335,8 @@ void Xreshape::vR_H52_T10_Collect_In_SubQuery_Into_SubSet_Pile(void)
   G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   G.pDeck->vPush(G.p_subSet);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1226,6 +1349,8 @@ void Xreshape::vR_H52_T20_Yank_SubSet(void)
   m_pCard_yanked = G.pDeck->pFindChild(CK_SUBSET);
 
   G.pDeck->vRemoveChild(m_pCard_yanked);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1239,6 +1364,8 @@ void Xreshape::vR_H52_T20_Put_SubSet_nc(void)
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1250,6 +1377,8 @@ void Xreshape::vR_H52_T30_Cull_ExeMarked_exePred(void)
 
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_EXE);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1283,6 +1412,8 @@ void Xreshape::vR_H52_T40_Copy_TwistMarked_tstPred(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1293,6 +1424,8 @@ void Xreshape::vR_H52_T50_Cull_TwistMarked_tstPred(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_TWIST);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1305,6 +1438,8 @@ void Xreshape::vR_H52_T60_Delete_Empty_where(void)
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1327,6 +1462,8 @@ void Xreshape::vR_H52_T70_Adjust_StmOdn_PostTwist(void)
     M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_stream+iOdn_shift,
                                              iHiOdn_stream+iOdn_shift);
   }
+
+  vEndReshape();
 }
 
 
@@ -1365,6 +1502,8 @@ void Xreshape::vR_H55_T10_Collapse_Exists_SubQuery(void)
   p_table->vPromoteSubs(G.p_keyExists);
 
   vPrintBoard();
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1381,6 +1520,8 @@ void Xreshape::vR_H55_T20_Copy_Up_SubQuery(void)
   G_vSkipNextMain();
 
   //vPrintBoard(false,__LINE__);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1404,6 +1545,8 @@ void Xreshape::vR_H55_T30_Adjust_Stream_OrdinalRange(void)
   i8 iOdnHi_adjusted = E_iStream_OdnHi(G.p_stream) + iOdnHi;
 
   M_vStream_Adjust_OrdinalRange(p_stream_keyExists, iOdnLo_adjusted, iOdnHi_adjusted);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1443,6 +1586,8 @@ void Xreshape::vR_H55_T40_Adjust_BoolCalc_Terms(void)
 
   G.p_boolCalc->bApplyRecursive(CK_TERM, bAdjustFn);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1469,6 +1614,8 @@ void Xreshape::vR_H55_T50_Produce_Parameter_Linkage(void)
 
   // add <table>//<param>/<tblColOdn>=$c.n
   G.p_param->vAppend(G.p_tblColOdn->pDupCardAndSubCards());
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1479,6 +1626,8 @@ void Xreshape::vR_H55_T60_Substitute_paramOdn_With_tblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vBoolCalc_Substitute_Parameters(G.p_boolCalc, G.p_paramList);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1489,6 +1638,8 @@ void Xreshape::vR_H55_T70_Cull_CallMarked_CallSub(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_CALL);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1501,6 +1652,8 @@ void Xreshape::vR_H55_T80_Delete_Empty_where(void)
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1543,6 +1696,8 @@ void Xreshape::vR_H60_T05_Twist_in_Becomes_filter(void)
   p_copy->vValue("=="_Stz);
 
   G.p_boolCalc->vAppend(p_copy);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1553,6 +1708,8 @@ void Xreshape::vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vTable_Produce_MaybeIndexJoin(G.p_table);
+
+  vEndReshape();
 }
 
 
@@ -1568,6 +1725,8 @@ void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
   G.p_idxColList = G.p_maybeIndexJoin->pSub_idxColList();
 
   M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1578,6 +1737,8 @@ void Xreshape::vR_H60_T30_UpCopy_filter_pred_Into_bounds(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1590,6 +1751,8 @@ void Xreshape::vR_H60_T40_Cull_UpCopied_filter_pred(void)
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
 
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1604,6 +1767,8 @@ void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 
   G.p_MainCard->vRemoveChild(G.p_filter);
   DELETE_CARD(G.p_filter);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1614,6 +1779,8 @@ void Xreshape::vR_H60_T60_Delete_Twist(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G_vRemoveDeleteMain(CK_TWIST);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1629,6 +1796,8 @@ void Xreshape::vR_H70_T00_Extract_tableList_From_queryBoard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G.p_tableList->vAppend(G.p_table->pDupCardAndSubCards());
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1639,6 +1808,8 @@ void Xreshape::vR_H70_T10_Extract_joinPredList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   D_vDerive_JoinPredList(G.p_joinPredList, G.p_boolCalc);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1653,6 +1824,8 @@ void Xreshape::vR_H70_T20_Compute_coPtnPredList(void)
   G.p_coPtnPred->vAppend(G.p_cmpPred->pDupCardAndSubCards());
 
   G.p_coPtnPredList->vAppend(G.p_coPtnPred);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1684,6 +1857,8 @@ void Xreshape::vR_H70_T30_Compute_coPtnJoinList(void)
     DELETE_CARD(G.p_subSet);
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1712,6 +1887,8 @@ void Xreshape::vR_H70_T40_Compute_crossPtnJoinList(void)
     G.p_crossPtnJoin->vAppend(G.p_cmpPred->pDupCardAndSubCards());
     G.p_crossPtnJoinList->vAppend(G.p_crossPtnJoin);
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1742,6 +1919,8 @@ void Xreshape::vR_H70_T50_Compute_ptndJoinSet(void)
     m_pCard_child->vCard(CK_PTNDJOIN);
     m_pCard_child->Y_vSet(P_PtndJoin, i_Child);
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1764,6 +1943,8 @@ void Xreshape::vR_H70_T60_Copy_ptndJoinSet(void)
     G.pDeck->vAppendMain(m_pCard_popped);
   }
   DELETE_CARD(G.p_subSet);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1800,6 +1981,8 @@ void Xreshape::vR_H70_T70_Generate_ptndPermutations(void)
 
   DELETE_CARD(G.p_subSet);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1836,6 +2019,8 @@ void Xreshape::vR_H70_T80_Remove_invalidPermutations(void)
     }
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1854,6 +2039,8 @@ void Xreshape::vR_H70_T90_Setup_costEst(void)
     delete G.p_MainCard;
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1884,6 +2071,8 @@ void Xreshape::vR_H70_T92_Estimate_ptndJoins(void)
     D_vDerive_PtndJoin(G.p_ptndJoin, G.p_tableList);
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1927,6 +2116,8 @@ void Xreshape::vR_H70_T94_Estimate_network(void)
   if (G.p_permutation)
     G.p_permutation->Y_vSet(P_Network, nNetwork);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1961,6 +2152,8 @@ void Xreshape::vR_H70_T96_Estimate_joinOrder(void)
     D_vDerive_JoinOrderSeq(G.p_joinOrderSeq, G.p_ptndJoin);
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1983,6 +2176,8 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
     G.p_ptndJoin = _pCard_PtndJoin(G.p_MainCard);
     D_vDerive_JoinOrderSeq(G.p_joinOrderSeq, G.p_ptndJoin);
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2036,6 +2231,8 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop(void)
     G.p_maybeIndexJoin->vCard(CK_INDEXJOIN);
     return;
   }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2053,6 +2250,8 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop_b(void)
     DELETE_CARD(G.p_note);
   }
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2066,6 +2265,8 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop_c(void)
   G.p_note = _pCard_Note(G.p_indexJoin->pFindChild(CK_NOTE,i_Child));
   G.p_note->vValue(SEP_DERIVED);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2076,6 +2277,8 @@ void Xreshape::vR_H75_T20_Morph_keyExists_filter_To_constraint(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G.p_filter->vCard(CK_CONSTRAINT);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2107,6 +2310,8 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2149,6 +2354,8 @@ void Xreshape::vR_H75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = M_bPredRecursive(p_pred_ROOT,bLambdaFn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2164,6 +2371,8 @@ void Xreshape::vR_H80_T10_Produce_indexList_Under_scan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vScan_Produce_indexList(G.p_scan);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2174,6 +2383,8 @@ void Xreshape::vR_H80_T20_Affix_idxCol_name_Of_scan_To_ordinal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2194,6 +2405,8 @@ void Xreshape::vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_filter->bApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2219,6 +2432,8 @@ void Xreshape::vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_filter->bApplyRecursive(CK_TERM, bfPredBounds);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2239,6 +2454,8 @@ void Xreshape::vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_filter->bApplyRecursive(CK_CMPPRED, bfAdd);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2259,6 +2476,8 @@ void Xreshape::vR_H80_T60_Cull_Marked_filter_cmpPred(void)
   vTracer("Deleting empty <filter> %s\n"_Stz,G.p_filter->szBearing());
   G.p_MainCard->vRemoveSubCard(G.p_filter);
   DELETE_CARD(G.p_filter);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2269,6 +2488,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G.p_scan->vCard(CK_INDEXSCAN);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2281,6 +2502,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_b(void)
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_indexScan->pFindChild(CK_NOTE,i_Child));
   G.p_note->vValue(SEP_DERIVED);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2292,6 +2515,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_c(void)
 
   G.p_indexScan->vReplaceChildWithItsSubs(G.p_indexList);
   DELETE_CARD((G.p_indexList));
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2311,6 +2536,8 @@ void Xreshape::vR_H85_T10a_Transmute_table_To_Scan(void)
 
   G.pBoard->pDeck()->vReplace(G.p_table,G.p_scan);
   G.p_scan->vInsert(G.p_table);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2325,6 +2552,8 @@ void Xreshape::vR_H85_T10b_Transmute_table_To_crossJoin(void)
 
   G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
   G.p_crossJoin->vInsert(G.p_table);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2342,6 +2571,8 @@ void Xreshape::vR_H85_T20_Add_index_For_crossJoin(void)
 
   G.p_crossJoin->vAppend(G.p_index);
 
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2359,6 +2590,8 @@ void Xreshape::vR_H85_T30_Add_bounds_For_crossJoin(void)
 
   G_vNewMember(CK_TERM,"$I1"_Stz);
   G.p_bounds->vAppend(G.p_term);
+
+  vEndReshape();
 }
 
 
@@ -2382,6 +2615,8 @@ void Xreshape::vR_H90_T10_Remove_sort_IfSameAs_gby(void)
     return;
 
   G_vRemoveDeleteMain(CK_SORT);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2398,6 +2633,8 @@ void Xreshape::vR_HA0_T10_Individuate_scan_filter(void)
 
   G.p_scan->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_scan);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2409,6 +2646,8 @@ void Xreshape::vR_HA0_T10_Individuate_indexJoin_filter_b(void)
 
   G.p_indexJoin->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_indexJoin);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2460,6 +2699,8 @@ void Xreshape::vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
+
+  vEndReshape();
 }
 
 
@@ -2481,6 +2722,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stages(void)
 
   m_pCard_dup = G.p_stage->pDupCardAndSubCards();
   G.pDeck->vInsertAfter(m_pCard_dup, G.p_MainCard);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2502,6 +2745,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
   G.p_stage->vAppend(G.p_topology);
   G.pDeck->vInsertBefore(G.p_stage, G.p_MainCard);
   G_vSkipNextMain();
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2646,6 +2891,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
   if (CK_SCAN != e_prev)
     vAddCombined(p_main, i_End);
   vAddNext(p_main, i_End,""_Stz);
+
+  vEndReshape();
 }
 /*----------------------------------------------------------------------------*/
 //void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
@@ -2757,6 +3004,8 @@ void Xreshape::vR_HZ0_T30_Reinstate_combined(void)
 
   G.p_combined = new Card_Combined;
   G.pDeck->vInsertAfter(G.p_combined, G.p_MainCard);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2769,6 +3018,8 @@ void Xreshape::vR_HZ0_T40_Reinstate_next(void)
   G_vNewMember(CK_NEXT);
   G.pDeck->vInsertBefore(G.p_next, G.p_MainCard);
   G_vSkipNextMain();
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2780,6 +3031,8 @@ void Xreshape::vR_HZ0_T40_Reinstate_next_b(void)
 
   G_vNewMember(CK_NEXT);
   G.pDeck->vAppend(G.p_next);
+
+  vEndReshape();
 }
 
 
@@ -2810,6 +3063,8 @@ void Xreshape::vRR_Convert_All_TblColOrd_to_StmColOrd(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.pDeck->bApplyRecursive(CK_NONE, bLambdaFn);
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2836,6 +3091,8 @@ void Xreshape::vRR_Convert_All_StmColOrd_to_TblColOrd(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.pDeck->bApplyRecursive(CK_NONE, bLambdaFn);
+
+  vEndReshape();
 }
 
 /*============================================================================*/

@@ -68,12 +68,15 @@ namespace STORE
 
     eOA eCueUser(Stz* szPrompt);
 
+    void vEndReshape(void);
     void vEndTransform(void);
 
     void vFocusOnMain(void);
 
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
+
+    void vReshape(const char* azFunc);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);

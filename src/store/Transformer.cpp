@@ -212,12 +212,12 @@ void Transformer::vHand_30_Stream_Analysis(i8 iBelow, ...)
 
   CARD_BELOW
 
-  if (! m_pTransforms->bH30_T00_Test()) {
-    m_pTransforms->vH30_T00_Skip();
+  if (! m_pTransforms->bH25_T00_Test()) {
+    m_pTransforms->vH25_T00_Skip();
     return;
   }
 
-  m_pTransforms->vH30_T00_Begin();
+  m_pTransforms->vH25_T00_Begin();
 
   for (i8 i_Board = 0;
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
@@ -225,17 +225,17 @@ void Transformer::vHand_30_Stream_Analysis(i8 iBelow, ...)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vH30_T10_Produce_stream_UnderAll_table();
-    m_pTransforms->vH30_T12_Produce_stream_UnderAll_project();
-    m_pTransforms->vH30_T14_Produce_stream_UnderAll_aggreg();
-    m_pTransforms->vH30_T20_Derive_ordinalRange_ForAll_table_stream();
-    m_pTransforms->vH30_T22_Derive_ordinalRange_ForAll_project_stream();
-    m_pTransforms->vH30_T24_Derive_ordinalRange_ForAll_aggreg_stream();
-    m_pTransforms->vH30_T30_Convert_where_rpnCalc_To_boolCalc();
-    m_pTransforms->vH30_T40_Convert_stmColOdn_To_tblColOdn();
+    m_pTransforms->vH25_T10_Produce_stream_UnderAll_table();
+    m_pTransforms->vH25_T12_Produce_stream_UnderAll_project();
+    m_pTransforms->vH25_T14_Produce_stream_UnderAll_aggreg();
+    m_pTransforms->vH25_T20_Derive_ordinalRange_ForAll_table_stream();
+    m_pTransforms->vH25_T22_Derive_ordinalRange_ForAll_project_stream();
+    m_pTransforms->vH25_T24_Derive_ordinalRange_ForAll_aggreg_stream();
+    m_pTransforms->vH25_T30_Convert_where_rpnCalc_To_boolCalc();
+    m_pTransforms->vH25_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
-  m_pTransforms->vH30_TZZ_End();
+  m_pTransforms->vH25_TZZ_End();
 
   vEndHand(BK_SUBPIPE);
 }
@@ -251,18 +251,18 @@ void Transformer::vHand_32_Query_Analysis(i8 iBelow, ...)
 
   CARD_BELOW
 
-  if (! m_pTransforms->bH32_T00_Test()) {
-    m_pTransforms->vH32_T00_Skip();
+  if (! m_pTransforms->bH29_T00_Test()) {
+    m_pTransforms->vH29_T00_Skip();
     return;
   }
 
-  m_pTransforms->vH32_T00_Begin();
+  m_pTransforms->vH29_T00_Begin();
 
-  m_pTransforms->vH32_T10();
-  m_pTransforms->vH32_T20();
-  m_pTransforms->vH32_T30();
+  m_pTransforms->vH29_T10_Main_Query_Analysis();
+  m_pTransforms->vH29_T20_Sub_Query_Analysis();
+  m_pTransforms->vH29_T30();
 
-  m_pTransforms->vH32_TZZ_End();
+  m_pTransforms->vH29_TZZ_End();
 
   vEndHand(BK_SUBPIPE);
 }
