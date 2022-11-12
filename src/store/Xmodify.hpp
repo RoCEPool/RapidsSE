@@ -12,8 +12,8 @@ namespace STORE
   class Xmodify : public Xcreate
   {
   public:
-    i8   m_iOrdLo;
-    i8   m_iOrdHi;
+    i8   m_iOdnLo;
+    i8   m_iOdnHi;
     char m_cTableSyn;
 
     // must be last

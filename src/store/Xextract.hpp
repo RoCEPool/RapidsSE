@@ -21,8 +21,8 @@ namespace STORE
     char E_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef);
     void E_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
 
-    i8   E_iStream_OrdLo(Card_Stream* p_stream);
-    i8   E_iStream_OrdHi(Card_Stream* p_stream);
+    i8   E_iStream_OdnLo(Card_Stream* p_stream);
+    i8   E_iStream_OdnHi(Card_Stream* p_stream);
 
     Card_SubSet* E_pSubset_ChildrenBetween(Card* pCard, i8 i_From, i8 i_Till=C_UNKNOWN);
 

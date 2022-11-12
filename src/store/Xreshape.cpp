@@ -552,7 +552,7 @@ void Xreshape::vR_H36_T50_Adjust_StmOdn(void)
     G.p_stmColList = G.p_stream->pSub_stmColList();
     i8 nStmCols = G.p_stmColList->nChildCards();
 
-    i8 iLoOdn_stream = E_iStream_OrdLo(G.p_stream);
+    i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
 
     i8 iLoOdn_adjusted = iOdn_shift + 1;
     i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
@@ -978,7 +978,7 @@ void Xreshape::vR_H37_T80_AdjustStmOdn(void)
     G.p_stmColList = G.p_stream->pSub_stmColList();
     i8 nStmCols = G.p_stmColList->nChildCards();
 
-    i8 iLoOdn_stream = E_iStream_OrdLo(G.p_stream);
+    i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
 
     i8 iLoOdn_adjusted = iOdn_shift + 1;
     i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
@@ -1288,8 +1288,8 @@ void Xreshape::vR_H52_T70_Adjust_StmOdn_PostTwist(void)
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
 
-    i8 iLoOdn_stream = E_iStream_OrdLo(G.p_stream);
-    i8 iHiOdn_stream = E_iStream_OrdHi(G.p_stream);
+    i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
+    i8 iHiOdn_stream = E_iStream_OdnHi(G.p_stream);
 
     M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_stream+iOdn_shift,
                                              iHiOdn_stream+iOdn_shift);
@@ -1364,13 +1364,13 @@ void Xreshape::vR_H55_T30_Adjust_Stream_OrdinalRange(void)
   if (! G_bResolveCardWithSub(CK_TABLE,CK_STREAM,m_pCard_temp))
     return;
 
-  i8 iOrdLo = E_iStream_OrdLo(p_stream_keyExists);
-  i8 iOrdHi = E_iStream_OrdHi(p_stream_keyExists);
+  i8 iOdnLo = E_iStream_OdnLo(p_stream_keyExists);
+  i8 iOdnHi = E_iStream_OdnHi(p_stream_keyExists);
 
-  i8 iOrdLo_adjusted = E_iStream_OrdHi(G.p_stream) + iOrdLo;
-  i8 iOrdHi_adjusted = E_iStream_OrdHi(G.p_stream) + iOrdHi;
+  i8 iOdnLo_adjusted = E_iStream_OdnHi(G.p_stream) + iOdnLo;
+  i8 iOdnHi_adjusted = E_iStream_OdnHi(G.p_stream) + iOdnHi;
 
-  M_vStream_Adjust_OrdinalRange(p_stream_keyExists, iOrdLo_adjusted, iOrdHi_adjusted);
+  M_vStream_Adjust_OrdinalRange(p_stream_keyExists, iOdnLo_adjusted, iOdnHi_adjusted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1386,7 +1386,7 @@ void Xreshape::vR_H55_T40_Adjust_BoolCalc_Terms(void)
   Card_Stream* p_stream_keyExists = G.p_table->pSub_stream();
 
   // lowest stream ordinal
-  i8 iLoOdn_stream = E_iStream_OrdLo(p_stream_keyExists);
+  i8 iLoOdn_stream = E_iStream_OdnLo(p_stream_keyExists);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2052,7 +2052,7 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  i8 iOrdLo_stream = E_iStream_OrdLo(G.p_stream);
+  i8 iOrdLo_stream = E_iStream_OdnLo(G.p_stream);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

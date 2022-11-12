@@ -1944,9 +1944,9 @@ void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth
   s32 sName;
   sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
 
-  if (bHasProperty(P_OrdLo))
+  if (bHasProperty(P_OdnLo))
     sName.vCatSprint(" $%lld,%lld"_Stz,
-                     Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
+                     Y_iVal(P_OdnLo), Y_iVal(P_OdnHi));
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }

@@ -183,20 +183,20 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
 //
 //    // one of {pCard_term_0,pCard_term_1} is $In
 //
-//    i8 iStreamOrdLo = p_stream->Y_iVal(P_OrdLo);
-//    i8 iStreamOrdHi = p_stream->Y_iVal(P_OrdHi);
+//    i8 iStreamOdnLo = p_stream->Y_iVal(P_OdnLo);
+//    i8 iStreamOdnHi = p_stream->Y_iVal(P_OdnHi);
 //
-//    i8 i_iOrdLo_0 = E_iTerm_StreamColOdn(pTerm_0);
-//    i8 i_iOrdLo_1 = E_iTerm_StreamColOdn(pTerm_1);
+//    i8 i_iOdnLo_0 = E_iTerm_StreamColOdn(pTerm_0);
+//    i8 i_iOdnLo_1 = E_iTerm_StreamColOdn(pTerm_1);
 //
-//    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+//    if (i_iOdnLo_0 >= iStreamOdnLo && i_iOdnLo_0 <= iStreamOdnHi) {
 //      p_term = new Card_Term("$I1"_Stz);
 //      p_bounds->vAppend(p_term);
 //      p_term = new Card_Term(pTerm_1->sz());
 //      p_bounds->vAppend(p_term);
 //    }
 //    else
-//    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
+//    if (i_iOdnLo_1 >= iStreamOdnLo && i_iOdnLo_1 <= iStreamOdnHi) {
 //      p_term = new Card_Term("$I1"_Stz);
 //      p_bounds->vAppend(p_term);
 //      p_term = new Card_Term(pTerm_0->sz());

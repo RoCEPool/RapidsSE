@@ -20,8 +20,8 @@ Xmodify::Xmodify(eCN eClass)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_iOrdLo      = 1;
-  m_iOrdHi      = C_UNKNOWN;
+  m_iOdnLo      = 1;
+  m_iOdnHi      = C_UNKNOWN;
   m_cTableSyn   = 'a';
 }
 
@@ -476,8 +476,8 @@ void Xmodify::M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   i8 nStreamCols = p_stream->pSub_stmColList()->nChildCards();
-  p_stream->Y_vSet(P_OrdLo, (i8)1);
-  p_stream->Y_vSet(P_OrdHi, nStreamCols);
+  p_stream->Y_vSet(P_OdnLo, (i8)1);
+  p_stream->Y_vSet(P_OdnHi, nStreamCols);
 
   p_stream->vMark1(MARK_CHANGED);
 }
@@ -490,8 +490,8 @@ void Xmodify::M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   i8 nStreamCols = p_stream->pSub_stmColList()->nChildCards();
-  p_stream->Y_vSet(P_OrdLo, (i8)1);
-  p_stream->Y_vSet(P_OrdHi, nStreamCols);
+  p_stream->Y_vSet(P_OdnLo, (i8)1);
+  p_stream->Y_vSet(P_OdnHi, nStreamCols);
 
   p_stream->vMark1(MARK_CHANGED);
 }
@@ -503,17 +503,17 @@ void Xmodify::M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cT
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  // <scan>/<stream>:iOrdLo,iOrdHi
+  // <scan>/<stream>:iOrdLo,iOdnHi
   i8 nStreamCols = p_stream->pSub_stmColList()->nChildCards();
-  p_stream->Y_vSet(P_OrdLo, m_iOrdLo);
-  m_iOrdHi = m_iOrdLo + nStreamCols - 1;
-  p_stream->Y_vSet(P_OrdHi, m_iOrdHi);
+  p_stream->Y_vSet(P_OdnLo, m_iOdnLo);
+  m_iOdnHi = m_iOdnLo + nStreamCols - 1;
+  p_stream->Y_vSet(P_OdnHi, m_iOdnHi);
 
   p_stream->vMark1(MARK_CHANGED);
 
   CardIter xCI(p_stream->pSub_stmColList());
   i8 iTblColOdn = 1;
-  i8 iStmColOdn = m_iOrdLo;
+  i8 iStmColOdn = m_iOdnLo;
   while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
     Card_StmColOdn* p_stmColOrd = new Card_StmColOdn;
     M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn);
@@ -527,7 +527,7 @@ void Xmodify::M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cT
     iTblColOdn++;
   }
 
-  m_iOrdLo = m_iOrdHi + 1;
+  m_iOdnLo = m_iOdnHi + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -537,8 +537,8 @@ void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iH
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  p_stream->Y_vSet(P_OrdLo,iLo);
-  p_stream->Y_vSet(P_OrdHi,iHi);
+  p_stream->Y_vSet(P_OdnLo, iLo);
+  p_stream->Y_vSet(P_OdnHi, iHi);
 
   p_stream->vMark1(MARK_CHANGED);
 }
@@ -925,8 +925,8 @@ void Xmodify::vStreamAnalysisReset(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  m_iOrdLo      = 1;
-  m_iOrdHi      = C_UNKNOWN;
+  m_iOdnLo      = 1;
+  m_iOdnHi      = C_UNKNOWN;
   m_cTableSyn   = 'a';
 }
 
