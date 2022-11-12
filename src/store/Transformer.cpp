@@ -103,6 +103,7 @@ void Transformer::vTransform3(void)
   vHand_10_Condense_Info(CK_NONE);
   vHand_20_Table_Analysis(CK_NONE);
   vHand_30_Stream_Analysis(CK_NONE);
+  vHand_32_Query_Analysis(CK_NONE);
   vHand_35_Flatten_From(CK_NONE);
   vHand_36_Flatten_Where(CK_NONE);
   vHand_37_Flatten_Having(CK_NONE);
@@ -235,6 +236,33 @@ void Transformer::vHand_30_Stream_Analysis(i8 iBelow, ...)
   }
 
   m_pTransforms->vH30_TZZ_End();
+
+  vEndHand(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vHand_32_Query_Analysis(i8 iBelow, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  vHand(BK_SUBPIPE, 0, __func__);
+
+  CARD_BELOW
+
+  if (! m_pTransforms->bH32_T00_Test()) {
+    m_pTransforms->vH32_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vH32_T00_Begin();
+
+  m_pTransforms->vH32_T10();
+  m_pTransforms->vH32_T20();
+  m_pTransforms->vH32_T30();
+
+  m_pTransforms->vH32_TZZ_End();
 
   vEndHand(BK_SUBPIPE);
 }

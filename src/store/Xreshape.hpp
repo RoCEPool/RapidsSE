@@ -38,6 +38,11 @@ namespace STORE
     void vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void);
 
+    // vHand_32_Query_Analysis
+    void vR_H32_T10(void);
+    void vR_H32_T20(void);
+    void vR_H32_T30(void);
+
     // vHand_35_Flatten_From
     void vR_H35_T10a_Copy_From_SubQuery(void);
     void vR_H35_T10b_Push_sqB_Before_mqA(void);

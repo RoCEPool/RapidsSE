@@ -59,6 +59,15 @@ namespace STORE
     void vH30_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vH30_TZZ_End(void);
 
+       // vHand_32_Query_Analysis
+    bool bH32_T00_Test(void);
+    void vH32_T00_Skip(void);
+    void vH32_T00_Begin(void);
+    void vH32_T10(void);
+    void vH32_T20(void);
+    void vH32_T30(void);
+    void vH32_TZZ_End(void);
+
     // vHand_35_Flatten_From
     bool bH35_T00_Test(void);
     void vH35_T00_Skip(void);
