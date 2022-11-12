@@ -254,6 +254,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PTRVAL,
 
   /* */ CN__Q__,
+  /* */ CN_QUERY,
   /* */ CN_QUERYNODE,
   /* */ CN_QUERYNODELIST,
   /* */ CN_QUERYNODESTACK,
@@ -679,6 +680,7 @@ static Stz* aCN[]
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
   /* */ "_Q__"_Stz,                 // CN__Q__
+  /* */ "QUERY"_Stz,                // CN_QUERY
   /* */ "QUERYNODE"_Stz,            // CN_QUERYNODE
   /* */ "QUERYNODELIST"_Stz,        // CN_QUERYNODELIST
   /* */ "QUERYNODESTACK"_Stz,       // CN_QUERYNODESTACK

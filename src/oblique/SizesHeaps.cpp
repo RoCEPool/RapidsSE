@@ -515,6 +515,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PTRVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),            HT_INVALID   ,FILL },
+  { CN_QUERY,                sizeof(Query),                  HT_T_TINY    ,FILL },
   { CN_QUERYNODE,                sizeof(QueryNode),          HT_V_TINY    ,FILL },
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),      HT_T_TINY    ,FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),     HT_T_MEDIUM  ,FILL },

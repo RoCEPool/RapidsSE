@@ -18,6 +18,7 @@
 Xbase::Xbase(eCN eClass)
 : Object(eClass)
 {
+  m_pQuery = new Query;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,6 +26,7 @@ Xbase::Xbase(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xbase::~Xbase(void) noexcept(false)
 {
+  delete m_pQuery;
 }
 
 

@@ -6,12 +6,15 @@
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
+#include "Query.hpp"
+
 
 namespace STORE
 {
   class Xbase : public Object
   {
   public:
+    Query* m_pQuery;
 
     // must be last
     Footer m_xFooter;
