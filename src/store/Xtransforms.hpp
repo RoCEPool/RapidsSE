@@ -35,7 +35,7 @@ namespace STORE
     void vH10_T60_Add_All_level(void);
     void vH10_T80_Delete_Redundant_stages(void);
     void vH10_T90_Hide_Ignorable_stages(void);
-    void vH10_T99_End(void);
+    void vH10_TZZ_End(void);
 
     // vHand_20_Table_Analysis
     bool bH20_T00_Test(void);
@@ -43,7 +43,7 @@ namespace STORE
     void vH20_T00_Begin(void);
     void vH20_T10_Affix_tableSyn_ToAll_table(void);
     void vH20_T20_Produce_tablePtn_UnderAll_table(void);
-    void vH20_T99_End(void);
+    void vH20_TZZ_End(void);
 
     // vHand_30_Stream_Analysis
     bool bH30_T00_Test(void);
@@ -57,7 +57,7 @@ namespace STORE
     void vH30_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
     void vH30_T30_Convert_where_rpnCalc_To_boolCalc(void);
     void vH30_T40_Convert_stmColOdn_To_tblColOdn(void);
-    void vH30_T99_End(void);
+    void vH30_TZZ_End(void);
 
     // vHand_35_Flatten_From
     bool bH35_T00_Test(void);
@@ -66,7 +66,7 @@ namespace STORE
     void vH35_T10_Push_sqB_Into_mqA(void);
     void vH35_T20_Delete_call(void);
     void vH35_T30_Delete_twist(void);
-    void vH35_T99_End(void);
+    void vH35_TZZ_End(void);
 
     // vHand_36_Flatten_Where
     bool bH36_T00_Test(void);
@@ -81,7 +81,7 @@ namespace STORE
     void vH36_T70_Replace_term_In_cmpPred(void);
     void vH36_T80_Delete_twist(void);
 
-    void vH36_T99_End(void);
+    void vH36_TZZ_End(void);
 
     // vHand_37_Flatten_Having
     bool bH37_T00_Test(void);
@@ -101,7 +101,7 @@ namespace STORE
     void vH37_T90_Adjust_StmColOdn(void);
     void vH37_TA0_Delete_twist(void);
     void vH37_TB0(void);
-    void vH37_T99_End(void);
+    void vH37_TZZ_End(void);
 
     // vHand_40_Predicate_Pullup
     bool bH40_T00_Test(void);
@@ -110,7 +110,7 @@ namespace STORE
     void vH40_T10_AtMark_where_pred_Wrt_table(void);
     void vH40_T20_Move_AtMarked_where_pred_To_table_filter(void);
     void vH40_T30_Delete_Empty_where(void);
-    void vH40_T99_End(void);
+    void vH40_TZZ_End(void);
 
     // vHand_50_FlattenCall
     bool bH50_T00_Test(void);
@@ -122,7 +122,7 @@ namespace STORE
     void vH50_T40(void);
     void vH50_T50(void);
     void vH50_T60(void);
-    void vH50_T99_End(void);
+    void vH50_TZZ_End(void);
 
     // vHand_52_FlattenIN
     bool bH52_T00_Test(void);
@@ -135,7 +135,7 @@ namespace STORE
     void vH52_T50_Cull_TwistMarked_tstPred(void);
     void vH52_T60_Delete_Empty_where(void);
     void vH52_T70_Adjust_StmOdn_PostTwist(void);
-    void vH52_T99_End(void);
+    void vH52_TZZ_End(void);
 
     // vHand_55_FlattenExists
     bool bH55_T00_Test(void);
@@ -149,7 +149,7 @@ namespace STORE
     void vH55_T60_Substitute_paramOdn_With_tblColOdn(void);
     void vH55_T70_Cull_CallMarked_CallSub(void);
     void vH55_T80_Delete_Empty_where(void);
-    void vH55_T99_End(void);
+    void vH55_TZZ_End(void);
 
     // vHand_60_Index_Join
     bool bH60_T00_Test(void);
@@ -162,7 +162,7 @@ namespace STORE
     void vH60_T40_Cull_UpCopied_filter_pred(void);
     void vH60_T50_Delete_Empty_filter(void);
     void vH60_T60_Delete_Twist(void);
-    void vH60_T99_End(void);
+    void vH60_TZZ_End(void);
 
     // vHand_70_Join_Ordering
     bool bH70_T00_Test(void);
@@ -182,7 +182,7 @@ namespace STORE
     void vH70_T94_Estimate_network(void);
     void vH70_T96_Estimate_joinOrder(void);
     void vH70_T98_Extract_joinOrderSeq(void);
-    void vH70_T99_End(void);
+    void vH70_TZZ_End(void);
 
     // vHand_75_EE_operators
     bool bH75_T00_Test(void);
@@ -192,7 +192,7 @@ namespace STORE
     void vH75_T20_Morph_keyExists_filter_To_constraint(void);
     void vH75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
-    void vH75_T99_End(void);
+    void vH75_TZZ_End(void);
 
     // vHand_80_Index_Scan
     bool bH80_T00_Test(void);
@@ -205,7 +205,7 @@ namespace STORE
     void vH80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void);
     void vH80_T60_Cull_Marked_filter_cmpPred(void);
     void vH80_T70_Morph_scan_To_indexScan(void);
-    void vH80_T99_End(void);
+    void vH80_TZZ_End(void);
 
     // vHand_85_Cross_Join
     bool bH85_T00_Test(void);
@@ -214,27 +214,27 @@ namespace STORE
     void vH85_T10_Transmute_All_table(void);
     void vH85_T20_Add_index_ForAll_crossJoin(void);
     void vH85_T30_Add_bounds_ForAll_crossJoin(void);
-    void vH85_T99_End(void);
+    void vH85_TZZ_End(void);
 
     // vHand_90_Stream_Ordering
     bool bH90_T00_Test(void);
     void vH90_T00_Skip(void);
     void vH90_T00_Begin(void);
     void vH90_T10_Remove_sort_IfSameAs_gby(void);
-    void vH90_T99_End(void);
+    void vH90_TZZ_End(void);
 
     // vHand_A0_Filter_Refinement
     bool bHA0_T00_Test(void);
     void vHA0_T00_Skip(void);
     void vHA0_T00_Begin(void);
     void vHA0_T10_Individuate_filter(void);
-    void vHA0_T99_End(void);
+    void vHA0_TZZ_End(void);
 
     // vHand_B0_RestoreStmOdn
     bool bHB0_T00_Test(void);
     void vHB0_T00_Skip(void);
     void vHB0_T00_Begin(void);
-    void vHB0_T99_End(void);
+    void vHB0_TZZ_End(void);
 
     // vHand_Z0_Restate_Pipeline
     bool bHZ0_T00_Test(void);
@@ -246,7 +246,7 @@ namespace STORE
     void vHZ0_T20_Reinstate_stagesV3(void);
     void vHZ0_T30_Reinstate_combined(void);
     void vHZ0_T40_Reinstate_next(void);
-    void vHZ0_T99_End(void);
+    void vHZ0_TZZ_End(void);
 
   private:
 
