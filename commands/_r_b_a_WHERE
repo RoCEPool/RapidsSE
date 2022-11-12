@@ -16,7 +16,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vHZ0_T20_Reinstate_stagesV3"
+/glean_cue_from = "vH36_T20_Transfer_whereB_To_whereA"
 /transliterated
 /transform
 /transform3

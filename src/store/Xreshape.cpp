@@ -419,7 +419,7 @@ void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
 
   DELETE_CARD(m_pCard_yanked);
 
-  p_card = G.pDeck->pGetChild(0);
+  p_card = G.pDeck->pGetChild(1);
   p_comment = new Card_Comment("sub-query"_Stz);
   p_card->vAppend(p_comment);
 
