@@ -28,7 +28,7 @@ namespace STORE
     void vR_H20_T10_AAffix_tableSyn_To_table(void);
     void vR_H20_T20_Produce_tablePtn_Under_table(void);
 
-    // vHand_30_Stream_Analysis
+    // vHand_25_Stream_Analysis
     void vR_H25_T10_Produce_stream_Under_table(void);
     void vR_H25_T12_Produce_stream_Under_project(void);
     void vR_H25_T14_Produce_stream_Under_aggreg(void);
@@ -38,7 +38,7 @@ namespace STORE
     void vR_H25_T30_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void);
 
-    // vHand_32_Query_Analysis
+    // vHand_29_Query_Analysis
     void vR_H29_T10_Main_Query_Analysis_Only_main(void);
     void vR_H29_T10_Main_Query_Analysis_Of_rpnCalc(void);
     void vR_H29_T20_Sub_Query_Analysis_paramList(void);

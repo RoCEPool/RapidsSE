@@ -469,7 +469,7 @@ bool Xtransforms::bH29_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,7 +491,7 @@ void Xtransforms::vH29_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
 }
 
 /*----------------------------------------------------------------------------*/

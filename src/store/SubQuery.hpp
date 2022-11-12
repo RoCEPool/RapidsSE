@@ -54,7 +54,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  SubQuery* _pQuery(void* aAddr);
+  SubQuery* _pSubQuery(void* aAddr);
 }
 
 /*============================================================================*/

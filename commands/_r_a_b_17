@@ -19,7 +19,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vHand_30_Stream_Analysis"
+/glean_cue_from = "vHand_25_Stream_Analysis"
 /transliterated
 /transform
 /transform3
