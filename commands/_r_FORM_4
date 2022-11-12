@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* _r_FORM_4 -- sub-query form 4 analysis : refer Q17                         */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_cue_from = "vH29_T10_Main_Query_Analysis"
+/transliterated
+/transform
+/transform3
+/glean_interactive
+/weave
+/weaved
+/pipelineName = "r_FORM_4"
+select sum(l_extendedprice)
+  from lineitem, part
+ where P_PARTKEY = L_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+// mq:
+// where  " type BOOLEAN  $17 $2 ==  $5 $17 __subquery0002  <  and  "
+
+// sq:
+// params "P_PARTKEY "
+// where  " type BOOLEAN  $2 ==  "
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

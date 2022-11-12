@@ -4,14 +4,17 @@
 
 trackMemory;
 
+_customer
 _lineItem
 _orders
 _part
 _supplier
+create index C_idx0 on customer(C_CUSTKEY) ;
 create index L_idx0 on lineitem(L_ORDERKEY);
 create index O_idx0 on orders  (O_ORDERKEY);
 create index P_idx0 on part    (P_PARTKEY) ;
 create index S_idx0 on supplier(S_SUPPKEY) ;
+load customer "../tpch/sf_0001/customer.csv" ;
 load lineitem "../tpch/sf_0001/lineItem.csv" ;
 load orders   "../tpch/sf_0001/orders.csv"   ;
 load part     "../tpch/sf_0001/part.csv"     ;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_FORM_1 -- sub-query form 1 analysis :                                   */
+/* _r_FORM_1 -- sub-query form 1 analysis : refer Q2                          */
 /*============================================================================*/
 
 trackMemory;
@@ -19,7 +19,7 @@ _r_init
 select *
   from part, partsupp
  where P_PARTKEY = PS_PARTKEY
-   and ps_suppkey = (select min(ps_suppkey)
+   and PS_SUPPKEY = (select min(ps_suppkey)
                        from partsupp
                       where P_PARTKEY = PS_PARTKEY)
 ;
