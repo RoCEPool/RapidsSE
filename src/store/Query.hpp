@@ -5,11 +5,24 @@
 
 #include "BASE.h"
 
+#include "eQA.h"
+#include "eQC.h"
+#include "eQO.h"
+#include "eRO.h"
+
 namespace STORE
 {
   class Query : public Object
   {
   protected:
+
+    i8  m_iForm;
+
+    eQA m_eAggregation;
+    eQC m_eClause;
+    eQO m_eOperator;
+
+    eRO m_eRelationalOp;
 
   protected:
     // must be last
@@ -22,6 +35,20 @@ namespace STORE
     Query(void);
    ~Query(void) noexcept(false);
 
+    i8 iForm(void);
+    void vForm(i8 iForm);
+
+    eQA eAggregation(void);
+    void vAggregation(eQA eAggregation);
+
+    eQC eClause(void);
+    void vClause(eQC eClause);
+
+    eQO eOperator(void);
+    void vOperator(eQO eOperator);
+
+    eRO eRelationalOp(void);
+    void vRelationalOp(eRO eRelationalOp);
 
   protected:
     Footer* aFooter(void);
