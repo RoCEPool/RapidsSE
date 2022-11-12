@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _r_FORM_2 -- sub-query form 2 analysis :                                   */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_cue_from = "vH29_T10_Main_Query_Analysis"
+/transliterated
+/transform
+/transform3
+/glean_interactive
+/weave
+/weaved
+/pipelineName = "r_FORM_2"
+select count(*)
+  from orders
+ where exists (select *
+                 from lineitem
+                where L_ORDERKEY = O_ORDERKEY)
+;
+// mq:
+// where  " type BOOLEAN  $1 __subquery0002  exists  "
+
+// sq:
+// params "O_ORDERKEY "
+// where  " type BOOLEAN  $1 ==  "
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

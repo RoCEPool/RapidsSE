@@ -4,21 +4,7 @@
 
 trackMemory;
 
-_lineItem
-_orders
-_part
-_partsupp
-_supplier
-create index L_idx0  on lineitem(L_ORDERKEY) ;
-create index O_idx0  on orders  (O_ORDERKEY) ;
-create index P_idx0  on part    (P_PARTKEY ) ;
-create index PS_idx0 on part    (PS_PARTKEY) ;
-create index S_idx0  on supplier(S_SUPPKEY ) ;
-load lineitem "../tpch/sf_0001/lineItem.csv" ;
-load orders   "../tpch/sf_0001/orders.csv"   ;
-load part     "../tpch/sf_0001/part.csv"     ;
-load partsupp "../tpch/sf_0001/partsupp.csv" ;
-load supplier "../tpch/sf_0001/supplier.csv" ;
+_r_init
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -29,7 +15,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 /glean_interactive
 /weave
 /weaved
-/pipelineName = "r_a_b_15"
+/pipelineName = "r_FORM_1"
 select *
   from part, partsupp
  where P_PARTKEY = PS_PARTKEY
@@ -38,11 +24,11 @@ select *
                       where P_PARTKEY = PS_PARTKEY)
 ;
 // mq:
-// filter " type BOOLEAN  $1 $10 ==  $11 $1 __subquery0002  ==  and  "
+// where  " type BOOLEAN  $1 $10 ==  $11 $1 __subquery0002  ==  and  "
 
 // sq:
 // params "P_PARTKEY "
-// filter " type BOOLEAN  $1 ==  "
+// where  " type BOOLEAN  $1 ==  "
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
