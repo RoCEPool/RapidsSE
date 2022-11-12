@@ -60,6 +60,8 @@ void Xreshape::vR_H10_T90_Hide_Ignorable_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   if (! T_bStage_IsIgnorable(G.p_stage))
     return;
 
@@ -75,6 +77,8 @@ void Xreshape::vR_H10_T10_Delete_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G_vRemoveDeleteMain(CK_ABSJOIN);
 
   vEndReshape();
@@ -86,6 +90,8 @@ void Xreshape::vR_H10_T10_Delete_absJoin(void)
 void Xreshape::vR_H10_T20_Delete_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vRemoveDeleteMain(CK_COMBINED);
 
@@ -99,6 +105,8 @@ void Xreshape::vR_H10_T30_Delete_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G_vRemoveDeleteMain(CK_SEND);
 
   vEndReshape();
@@ -110,6 +118,8 @@ void Xreshape::vR_H10_T30_Delete_send(void)
 void Xreshape::vR_H10_T40_Delete_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vRemoveDeleteMain(CK_STAGE);
 
@@ -124,6 +134,8 @@ void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.pDeck->vReplaceChildWithItsSubs(G.p_scan);
   DELETE_CARD(G.p_scan);
 
@@ -136,6 +148,8 @@ void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 void Xreshape::vR_H10_T60_Add_level(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_level = G.p_MainCard->pSub_level();
   if (G.p_level)
@@ -196,6 +210,8 @@ void Xreshape::vR_H20_T10_AAffix_tableSyn_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vTable_Set_Syn(G.p_table);
 
   vEndReshape();
@@ -207,6 +223,8 @@ void Xreshape::vR_H20_T10_AAffix_tableSyn_To_table(void)
 void Xreshape::vR_H20_T20_Produce_tablePtn_Under_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_tablePtn = C_pProduce_tablePtn_ofTable(G.p_table);
 
@@ -227,6 +245,8 @@ void Xreshape::vR_H25_T10_Produce_stream_Under_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   m_pTable = A_pAccess_Table(G.p_tableNm->sz());
   G.p_stream = C_pProduce_stream_ofTable(m_pTable);
 
@@ -242,6 +262,8 @@ void Xreshape::vR_H25_T12_Produce_stream_Under_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
@@ -255,6 +277,8 @@ void Xreshape::vR_H25_T12_Produce_stream_Under_project(void)
 void Xreshape::vR_H25_T14_Produce_stream_Under_aggreg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   G.p_stream = C_pProduce_stream_ofAggreg(G.p_aggElist);
 
@@ -270,6 +294,8 @@ void Xreshape::vR_H25_T20_Derive_ordinalRange_For_table_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
 
   vEndReshape();
@@ -281,6 +307,8 @@ void Xreshape::vR_H25_T20_Derive_ordinalRange_For_table_stream(void)
 void Xreshape::vR_H25_T22_Derive_ordinalRange_For_project_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   M_vStream_Derive_OrdinalRange_project(G.p_stream);
 
@@ -294,6 +322,8 @@ void Xreshape::vR_H25_T24_Derive_ordinalRange_For_aggreg_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
 
   vEndReshape();
@@ -305,6 +335,8 @@ void Xreshape::vR_H25_T24_Derive_ordinalRange_For_aggreg_stream(void)
 void Xreshape::vR_H25_T30_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
 
@@ -321,6 +353,8 @@ void Xreshape::vR_H25_T30_Convert_where_rpnCalc_To_boolCalc(void)
 void Xreshape::vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -358,10 +392,13 @@ void Xreshape::vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T10_Main_Query_Analysis(void)
+void Xreshape::vR_H29_T10_Main_Query_Analysis_Only_main(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
+  // there is no subQuery
 
   vEndReshape();
 }
@@ -369,10 +406,82 @@ void Xreshape::vR_H29_T10_Main_Query_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T20(void)
+void Xreshape::vR_H29_T10_Main_Query_Analysis_Of_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
+  // there is a subQuery, how is it called?
+
+  bool bBoardNm = false;
+  i8 i_BoardNm  = C_UNKNOWN;
+
+  bool bExists = false;
+  i8 i_Exists  = C_UNKNOWN;
+
+  bool bIn = false;
+  i8 i_In  = C_UNKNOWN;
+
+  Stz* szValue_term = nullptr;
+  Stz* szValue_prev = nullptr;
+
+  CardIter xCI(G.p_rpnCalc);
+  while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+    Stz* szValue_term = G.p_term->szValue();
+
+    if ((bBoardNm = G_bIsBoard(szValue_term)))
+      i_BoardNm = xCI.i_Child();
+    else
+    if ((bExists = szValue_term->bSame("exists"_Stz)))
+      i_Exists = xCI.i_Child();
+    else
+    if ((bIn = szValue_term->bSame("in"_Stz)))
+      i_In = xCI.i_Child();
+
+  }
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H29_T20_Sub_Query_Analysis_paramList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  // there is a subQuery and it has a paramList
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H29_T20_Sub_Query_Analysis_aggreg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  // there is a subQuery and it has an aggreg
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H29_T20_Sub_Query_Analysis_gbyagg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  // there is a subQuery and it has an gbyAgg
 
   vEndReshape();
 }
@@ -383,6 +492,8 @@ void Xreshape::vR_H29_T20(void)
 void Xreshape::vR_H29_T30(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
 
   vEndReshape();
@@ -402,6 +513,8 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
 
@@ -414,6 +527,8 @@ void Xreshape::vR_H35_T10a_Copy_From_SubQuery(void)
 void Xreshape::vR_H35_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   Card* p_card = G.pDeck->pGetChild(1);
   Card_Comment* p_comment = new Card_Comment("main-query A"_Stz);
@@ -447,6 +562,8 @@ void Xreshape::vR_H35_T30_Adjust_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
 
   vEndReshape();
 }
@@ -464,6 +581,8 @@ void Xreshape::vR_H36_T10a_Copy_From_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
 
@@ -476,6 +595,8 @@ void Xreshape::vR_H36_T10a_Copy_From_SubQuery(void)
 void Xreshape::vR_H36_T10b_Push_sqB_Before_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   Card* p_card = G.pDeck->pGetChild(0);
   Card_Comment* p_comment = new Card_Comment("main-query"_Stz);
@@ -520,6 +641,8 @@ void Xreshape::vR_H36_T20a_Get_cmpPred_Of_whereB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.pDeck->vRemoveChild(G.p_where);
   G.p_boolCalc = G.p_where->pSub_boolCalc();
 
@@ -538,6 +661,8 @@ void Xreshape::vR_H36_T20b_Push_cmpPred_Onto_whereA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_boolCalc = G.p_where->pSub_boolCalc();
 
   M_vBoolCalc_PushPred(G.p_boolCalc,G.p_cmpPred);
@@ -553,6 +678,8 @@ void Xreshape::vR_H36_T20b_Push_cmpPred_Onto_whereA(void)
 void Xreshape::vR_H36_T30a_Replace_param_In_whereA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -594,6 +721,8 @@ void Xreshape::vR_H36_T30b_Delete_param_In_whereB(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   G_vRemoveDeleteMain(CK_PARAMLIST);
 
   vEndReshape();
@@ -605,6 +734,8 @@ void Xreshape::vR_H36_T30b_Delete_param_In_whereB(void)
 void Xreshape::vR_H36_T40_Delete_tstPred_In_whereA(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -632,6 +763,8 @@ void Xreshape::vR_H36_T40_Delete_tstPred_In_whereA(void)
 void Xreshape::vR_H36_T50_Adjust_StmOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   i8 iOdn_shift = 0;
 
@@ -670,6 +803,7 @@ void Xreshape::vR_H36_T60_Adjust_StmColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -711,6 +845,8 @@ void Xreshape::vR_H36_T60_Adjust_StmColOdn(void)
 void Xreshape::vR_H36_T70_Replace_term_In_cmpPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -761,6 +897,8 @@ void Xreshape::vR_H37_T10a_Copy_sqB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   vEndReshape();
@@ -772,6 +910,8 @@ void Xreshape::vR_H37_T10a_Copy_sqB(void)
 void Xreshape::vR_H37_T10a_Append_sqB_After_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   Card* p_card = G.pDeck->pGetChild(0);
   Card_Comment* p_comment = new Card_Comment("main-query A"_Stz);
@@ -813,6 +953,8 @@ void Xreshape::vR_H37_T20_Find_stmCol_Link(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_project->vDump();
 
   G_vNewMemberOf(CK_COMMENT,"__1 is sub-query column"_Stz,CK_PROJECT);
@@ -844,6 +986,8 @@ void Xreshape::vR_H37_T30_Link_sqCall_In_having(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   // TODO: this is a hack
 
   CardIter xCI(G.p_rpnCalc);
@@ -864,6 +1008,8 @@ void Xreshape::vR_H37_T30_Link_sqCall_In_having(void)
 void Xreshape::vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   CardIter xCI(G.p_gbyElist);
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
@@ -890,6 +1036,8 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
 
   Card_Type* p_type = G.p_type;
@@ -914,6 +1062,8 @@ void Xreshape::vR_H37_T40Add_sqCol_To_AggGbyElist(void)
 void Xreshape::vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   CardIter xCI(G.p_aggElist);
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
@@ -948,6 +1098,8 @@ void Xreshape::vR_H37_T50_Add_sqCol_To_aggAggElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
   i8 nGbyElistExpr = G.p_gbyElist->nChildCards();
 
@@ -978,6 +1130,8 @@ void Xreshape::vR_H37_T55_Bump_having_rpnCalc_In_sqB(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   CardIter xCI(G.p_rpnCalc);
   while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
     Stz *szTerm = G.p_term->szValue();
@@ -1004,6 +1158,8 @@ void Xreshape::vR_H37_T55_Bump_having_rpnCalc_In_sqB(void)
 void Xreshape::vR_H37_T60_Unproject_sqCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (! G_bResolveCardWithSub(CK_GBYAGG, CK_AGGELIST, G.i_MainCard))
     return;
@@ -1067,6 +1223,8 @@ void Xreshape::vR_H37_T70_Exhange_sqB_With_mqA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.pDeck->vRemoveChild(G.p_twist);
   G.pDeck->vPush(G.p_twist);
 
@@ -1087,6 +1245,8 @@ void Xreshape::vR_H37_T70_Exhange_sqB_With_mqA(void)
 void Xreshape::vR_H37_T80_AdjustStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   //TODO: factor with vH36_T60_Adjust_StmColOdn
   i8 iOdn_shift = 0;
@@ -1124,6 +1284,8 @@ void Xreshape::vR_H37_T80_AdjustStmOdn(void)
 void Xreshape::vR_H37_T90_Adjust_StmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1168,6 +1330,7 @@ void Xreshape::vR_H37_TA0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
 
   vEndReshape();
 }
@@ -1179,6 +1342,7 @@ void Xreshape::vR_H37_TB0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
 
   vEndReshape();
 }
@@ -1198,6 +1362,8 @@ void Xreshape::vR_H40_T10_AtMark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   vPullUp_MarkPredLeftwards(G.p_boolCalc, G.pDeck);
 
   vEndReshape();
@@ -1210,6 +1376,8 @@ void Xreshape::vR_H40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
 
   vEndReshape();
@@ -1221,6 +1389,8 @@ void Xreshape::vR_H40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 void Xreshape::vR_H40_T30_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
@@ -1241,6 +1411,8 @@ void Xreshape::vR_H50_T10_Extract_subSet_Of_call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   G.pDeck->vPush(G.p_subSet);
@@ -1255,6 +1427,8 @@ void Xreshape::vR_H50_T20_Yank_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   m_pCard_yanked = G.pDeck->pFindChild(CK_SUBSET);
 
   G.pDeck->vRemoveChild(m_pCard_yanked);
@@ -1268,6 +1442,8 @@ void Xreshape::vR_H50_T20_Yank_SubSet(void)
 void Xreshape::vR_H50_T20_Put_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
@@ -1284,6 +1460,8 @@ void Xreshape::vR_H50_T30_RemoveDelete_call(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   G_vRemoveDeleteMain(CK_CALL);
 
   vEndReshape();
@@ -1296,6 +1474,8 @@ void Xreshape::vR_H50_T40(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   vEndReshape();
 }
 
@@ -1306,6 +1486,8 @@ void Xreshape::vR_H50_T50(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   vEndReshape();
 }
 
@@ -1315,6 +1497,8 @@ void Xreshape::vR_H50_T50(void)
 void Xreshape::vR_H50_T60(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   vEndReshape();
 }
@@ -1332,6 +1516,8 @@ void Xreshape::vR_H52_T10_Collect_In_SubQuery_Into_SubSet_Pile(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   G.p_subSet = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   G.pDeck->vPush(G.p_subSet);
@@ -1346,6 +1532,8 @@ void Xreshape::vR_H52_T20_Yank_SubSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   m_pCard_yanked = G.pDeck->pFindChild(CK_SUBSET);
 
   G.pDeck->vRemoveChild(m_pCard_yanked);
@@ -1359,6 +1547,8 @@ void Xreshape::vR_H52_T20_Yank_SubSet(void)
 void Xreshape::vR_H52_T20_Put_SubSet_nc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   G.pDeck->vPush(m_pCard_yanked);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
@@ -1375,6 +1565,8 @@ void Xreshape::vR_H52_T30_Cull_ExeMarked_exePred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_EXE);
 
 
@@ -1387,6 +1579,8 @@ void Xreshape::vR_H52_T30_Cull_ExeMarked_exePred(void)
 void Xreshape::vR_H52_T40_Copy_TwistMarked_tstPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
 //  Card_BoolCalc* p_boolCalc_twist = G.p_twist->pSub_boolCalc();
 
@@ -1423,6 +1617,8 @@ void Xreshape::vR_H52_T50_Cull_TwistMarked_tstPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_TWIST);
 
   vEndReshape();
@@ -1434,6 +1630,8 @@ void Xreshape::vR_H52_T50_Cull_TwistMarked_tstPred(void)
 void Xreshape::vR_H52_T60_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
@@ -1448,6 +1646,8 @@ void Xreshape::vR_H52_T60_Delete_Empty_where(void)
 void Xreshape::vR_H52_T70_Adjust_StmOdn_PostTwist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (! G_bResolveSubCard(CK_STREAM,G.i_MainCard))
     return;
@@ -1478,6 +1678,8 @@ void Xreshape::vR_H52_T70_Adjust_StmOdn_PostTwist(void)
 void Xreshape::vR_H55_T10_Collapse_Exists_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vNewMember(CK_KEYEXISTS);
 
@@ -1513,6 +1715,8 @@ void Xreshape::vR_H55_T20_Copy_Up_SubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   m_pCard_temp = G.p_table->pDupCardAndSubCards();
   G_vPopIter();
 
@@ -1530,6 +1734,8 @@ void Xreshape::vR_H55_T20_Copy_Up_SubQuery(void)
 void Xreshape::vR_H55_T30_Adjust_Stream_OrdinalRange(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // CK_TABLE, CK_KEYEXISTS
 
@@ -1555,6 +1761,8 @@ void Xreshape::vR_H55_T30_Adjust_Stream_OrdinalRange(void)
 void Xreshape::vR_H55_T40_Adjust_BoolCalc_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // CK_TABLE, CK_KEYEXISTS, CK_BOOLCALC
 
@@ -1597,6 +1805,8 @@ void Xreshape::vR_H55_T50_Produce_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   // CK_TABLE, CK_KEYEXISTS
 
   vTracer("Resolving %s"_Stz,G.p_MainCard->szBearing());
@@ -1625,6 +1835,8 @@ void Xreshape::vR_H55_T60_Substitute_paramOdn_With_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vBoolCalc_Substitute_Parameters(G.p_boolCalc, G.p_paramList);
 
   vEndReshape();
@@ -1637,6 +1849,8 @@ void Xreshape::vR_H55_T70_Cull_CallMarked_CallSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_CALL);
 
   vEndReshape();
@@ -1648,6 +1862,8 @@ void Xreshape::vR_H55_T70_Cull_CallMarked_CallSub(void)
 void Xreshape::vR_H55_T80_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
@@ -1667,6 +1883,8 @@ void Xreshape::vR_H55_T80_Delete_Empty_where(void)
 void Xreshape::vR_H60_T05_Twist_in_Becomes_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   RASSERT(G.p_tstPred);
 
@@ -1707,6 +1925,8 @@ void Xreshape::vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vTable_Produce_MaybeIndexJoin(G.p_table);
 
   vEndReshape();
@@ -1719,6 +1939,8 @@ void Xreshape::vR_H60_T10_Produce_maybeIndexJoin_Under_filter(void)
 void Xreshape::vR_H60_T20_Affix_tblColOdn_To_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_stream = G.p_table->pSub_stream();;
   G.p_stmColList = G.p_table->pSub_stmColList();
@@ -1736,6 +1958,8 @@ void Xreshape::vR_H60_T30_UpCopy_filter_pred_Into_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
 
   vEndReshape();
@@ -1747,6 +1971,8 @@ void Xreshape::vR_H60_T30_UpCopy_filter_pred_Into_bounds(void)
 void Xreshape::vR_H60_T40_Cull_UpCopied_filter_pred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
 
@@ -1761,6 +1987,8 @@ void Xreshape::vR_H60_T40_Cull_UpCopied_filter_pred(void)
 void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (! T_bFilter_IsEmpty(G.p_filter))
     return;
@@ -1777,6 +2005,8 @@ void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 void Xreshape::vR_H60_T60_Delete_Twist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vRemoveDeleteMain(CK_TWIST);
 
@@ -1795,6 +2025,8 @@ void Xreshape::vR_H70_T00_Extract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_tableList->vAppend(G.p_table->pDupCardAndSubCards());
 
   vEndReshape();
@@ -1806,6 +2038,8 @@ void Xreshape::vR_H70_T00_Extract_tableList_From_queryBoard(void)
 void Xreshape::vR_H70_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   D_vDerive_JoinPredList(G.p_joinPredList, G.p_boolCalc);
 
@@ -1819,6 +2053,7 @@ void Xreshape::vR_H70_T20_Compute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
 
   G.p_coPtnPred = new Card_CoPtnPred;
   G.p_coPtnPred->vAppend(G.p_cmpPred->pDupCardAndSubCards());
@@ -1834,6 +2069,8 @@ void Xreshape::vR_H70_T20_Compute_coPtnPredList(void)
 void Xreshape::vR_H70_T30_Compute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_coPtnJoinList = new Card_CoPtnJoinList;
   G.pDeck->vAppendMain(G.p_coPtnJoinList);
@@ -1868,6 +2105,8 @@ void Xreshape::vR_H70_T40_Compute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_joinPredList =
       _pCard_JoinPredList(G.pDeck->pFindChild(CK_JOINPREDLIST));
 
@@ -1897,6 +2136,8 @@ void Xreshape::vR_H70_T40_Compute_crossPtnJoinList(void)
 void Xreshape::vR_H70_T50_Compute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_ptndJoinSet = new Card_PtndJoinSet;
   G.pDeck->vAppendMain(G.p_ptndJoinSet);
@@ -1930,6 +2171,8 @@ void Xreshape::vR_H70_T60_Copy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
 
   G.p_ptndJoinSet =
@@ -1953,6 +2196,8 @@ void Xreshape::vR_H70_T60_Copy_ptndJoinSet(void)
 void Xreshape::vR_H70_T70_Generate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   m_pPermGen = new PermGen(G.p_ptndJoinSet->nChildCards());
 
@@ -1992,6 +2237,8 @@ void Xreshape::vR_H70_T80_Remove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   i8 i_Main = 0;
   i8 i_Permutation = 0;
   while (i_Main < G.pDeck->nChildCards()) {
@@ -2030,6 +2277,8 @@ void Xreshape::vR_H70_T90_Setup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   while ((G.p_MainCard = G.pDeck->pGetChild(0))) {
 
     if (CK_PERMUTATION == G.p_MainCard->eCard())
@@ -2049,6 +2298,8 @@ void Xreshape::vR_H70_T90_Setup_costEst(void)
 void Xreshape::vR_H70_T92_Estimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_tableList =
       _pCard_TableList(G.pDeck->pFindChild(CK_TABLELIST));
@@ -2081,6 +2332,8 @@ void Xreshape::vR_H70_T92_Estimate_ptndJoins(void)
 void Xreshape::vR_H70_T94_Estimate_network(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   BoardIter xBI(G.pBoard);
 
@@ -2127,6 +2380,8 @@ void Xreshape::vR_H70_T96_Estimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   i8 iLowestNetwork = 999999999;
 
   BoardIter xBI(G.pBoard);
@@ -2163,6 +2418,8 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.pDeck->vAppendMain((G.p_joinOrderSeq = new Card_JoinOrderSeq));
 
   BoardIter xBI(G.pBoard);
@@ -2186,6 +2443,8 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 void Xreshape::vR_H75_T10_Morph_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (! G.p_bounds) {
 
@@ -2242,6 +2501,8 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop_b(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_scan->pFindChild(CK_NOTE,i_Child));
 
@@ -2261,6 +2522,8 @@ void Xreshape::vR_H75_T10_Morph_table_To_EEop_c(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_indexJoin->pFindChild(CK_NOTE,i_Child));
   G.p_note->vValue(SEP_DERIVED);
@@ -2276,6 +2539,8 @@ void Xreshape::vR_H75_T20_Morph_keyExists_filter_To_constraint(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vReshape(__func__);
+
   G.p_filter->vCard(CK_CONSTRAINT);
 
   vEndReshape();
@@ -2287,6 +2552,8 @@ void Xreshape::vR_H75_T20_Morph_keyExists_filter_To_constraint(void)
 void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   i8 iOrdLo_stream = E_iStream_OdnLo(G.p_stream);
 
@@ -2320,6 +2587,8 @@ void Xreshape::vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 void Xreshape::vR_H75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   i8 i_Main = G.pDeck->iFindChild(G.p_MainCard);
 
@@ -2370,6 +2639,8 @@ void Xreshape::vR_H80_T10_Produce_indexList_Under_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vScan_Produce_indexList(G.p_scan);
 
   vEndReshape();
@@ -2382,6 +2653,8 @@ void Xreshape::vR_H80_T20_Affix_idxCol_name_Of_scan_To_ordinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 
   vEndReshape();
@@ -2393,6 +2666,8 @@ void Xreshape::vR_H80_T20_Affix_idxCol_name_Of_scan_To_ordinal(void)
 void Xreshape::vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2415,6 +2690,8 @@ void Xreshape::vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void)
 void Xreshape::vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (! (G.p_index = _pCard_Index(G.p_indexList->pGetChild(0))))
     return;
@@ -2443,6 +2720,8 @@ void Xreshape::vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfAdd = [this](Card* pCard) {
@@ -2464,6 +2743,8 @@ void Xreshape::vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 void Xreshape::vR_H80_T60_Cull_Marked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   vTracer("Culling <filter> of L & U bounds %s\n"_Stz,G.p_filter->szBearing());
   M_vFilter_CullPred(G.p_filter, 'L');
@@ -2487,6 +2768,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_scan->vCard(CK_INDEXSCAN);
 
   vEndReshape();
@@ -2498,6 +2781,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan(void)
 void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_b(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_indexScan->pFindChild(CK_NOTE,i_Child));
@@ -2512,6 +2797,8 @@ void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_b(void)
 void Xreshape::vR_H80_T70_Morph_scan_To_indexScan_c(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_indexScan->vReplaceChildWithItsSubs(G.p_indexList);
   DELETE_CARD((G.p_indexList));
@@ -2531,6 +2818,8 @@ void Xreshape::vR_H85_T10a_Transmute_table_To_Scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_scan = new Card_Scan;
   G.p_scan->vTransferChildren(G.p_table);
 
@@ -2547,6 +2836,8 @@ void Xreshape::vR_H85_T10b_Transmute_table_To_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_crossJoin = new Card_CrossJoin;
   G.p_crossJoin->vTransferChildren(G.p_table);
 
@@ -2562,6 +2853,8 @@ void Xreshape::vR_H85_T10b_Transmute_table_To_crossJoin(void)
 void Xreshape::vR_H85_T20_Add_index_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
   G.p_index = C_pProduce_index_ofTable(m_pTable);
@@ -2581,6 +2874,8 @@ void Xreshape::vR_H85_T20_Add_index_For_crossJoin(void)
 void Xreshape::vR_H85_T30_Add_bounds_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vNewMember(CK_BOUNDS);
   G.p_crossJoin->vAppend(G.p_bounds);
@@ -2607,6 +2902,8 @@ void Xreshape::vR_H90_T10_Remove_sort_IfSameAs_gby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_gbyElist = G.p_aggreg->pSub_gbyElist();
   G.p_sbyElist = G.p_sort->pSub_sbyElist();
 
@@ -2631,6 +2928,8 @@ void Xreshape::vR_HA0_T10_Individuate_scan_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_scan->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_scan);
 
@@ -2643,6 +2942,8 @@ void Xreshape::vR_HA0_T10_Individuate_scan_filter(void)
 void Xreshape::vR_HA0_T10_Individuate_indexJoin_filter_b(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G.p_indexJoin->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_indexJoin);
@@ -2661,6 +2962,8 @@ void Xreshape::vR_HA0_T10_Individuate_indexJoin_filter_b(void)
 void Xreshape::vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2717,6 +3020,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   if (! T_bStage_Reinstate(G.e_MainCard, G.e_SubsequentToMain))
     return;
 
@@ -2732,6 +3037,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stages(void)
 void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   if (! T_bStage_ReinstateV3(G.e_Level, G.p_MainCard, G.p_PriorToMain)) {
     G.p_PriorToMain = G.p_MainCard;
@@ -2755,6 +3062,8 @@ void Xreshape::vR_HZ0_T20_Reinstate_stagesV2(void)
 void Xreshape::vR_HZ0_T20_Reinstate_stagesV3(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vReshape(__func__);
 
   i8 nStages = 0;
 
@@ -3002,6 +3311,8 @@ void Xreshape::vR_HZ0_T30_Reinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  vReshape(__func__);
+
   G.p_combined = new Card_Combined;
   G.pDeck->vInsertAfter(G.p_combined, G.p_MainCard);
 
@@ -3014,6 +3325,8 @@ void Xreshape::vR_HZ0_T30_Reinstate_combined(void)
 void Xreshape::vR_HZ0_T40_Reinstate_next(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vNewMember(CK_NEXT);
   G.pDeck->vInsertBefore(G.p_next, G.p_MainCard);
@@ -3028,6 +3341,8 @@ void Xreshape::vR_HZ0_T40_Reinstate_next(void)
 void Xreshape::vR_HZ0_T40_Reinstate_next_b(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   G_vNewMember(CK_NEXT);
   G.pDeck->vAppend(G.p_next);
@@ -3045,6 +3360,8 @@ void Xreshape::vR_HZ0_T40_Reinstate_next_b(void)
 void Xreshape::vRR_Convert_All_TblColOrd_to_StmColOrd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -3073,6 +3390,8 @@ void Xreshape::vRR_Convert_All_TblColOrd_to_StmColOrd(void)
 void Xreshape::vRR_Convert_All_StmColOrd_to_TblColOrd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

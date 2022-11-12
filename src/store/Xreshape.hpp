@@ -39,8 +39,11 @@ namespace STORE
     void vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void);
 
     // vHand_32_Query_Analysis
-    void vR_H29_T10_Main_Query_Analysis(void);
-    void vR_H29_T20(void);
+    void vR_H29_T10_Main_Query_Analysis_Only_main(void);
+    void vR_H29_T10_Main_Query_Analysis_Of_rpnCalc(void);
+    void vR_H29_T20_Sub_Query_Analysis_paramList(void);
+    void vR_H29_T20_Sub_Query_Analysis_aggreg(void);
+    void vR_H29_T20_Sub_Query_Analysis_gbyagg(void);
     void vR_H29_T30(void);
 
     // vHand_35_Flatten_From

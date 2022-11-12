@@ -55,8 +55,6 @@ namespace STORE
     void vH25_T20_Derive_ordinalRange_ForAll_table_stream(void);
     void vH25_T22_Derive_ordinalRange_ForAll_project_stream(void);
     void vH25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
-    void vH25_T30_Convert_where_rpnCalc_To_boolCalc(void);
-    void vH25_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vH25_TZZ_End(void);
 
     // vHand_29_Query_Analysis
@@ -66,6 +64,8 @@ namespace STORE
     void vH29_T10_Main_Query_Analysis(void);
     void vH29_T20_Sub_Query_Analysis(void);
     void vH29_T30(void);
+    void vH25_T30_Convert_where_rpnCalc_To_boolCalc(void);
+    void vH25_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vH29_TZZ_End(void);
 
     // vHand_35_Flatten_From

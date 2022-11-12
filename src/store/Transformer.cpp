@@ -231,8 +231,6 @@ void Transformer::vHand_30_Stream_Analysis(i8 iBelow, ...)
     m_pTransforms->vH25_T20_Derive_ordinalRange_ForAll_table_stream();
     m_pTransforms->vH25_T22_Derive_ordinalRange_ForAll_project_stream();
     m_pTransforms->vH25_T24_Derive_ordinalRange_ForAll_aggreg_stream();
-    m_pTransforms->vH25_T30_Convert_where_rpnCalc_To_boolCalc();
-    m_pTransforms->vH25_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
   m_pTransforms->vH25_TZZ_End();
@@ -261,6 +259,9 @@ void Transformer::vHand_32_Query_Analysis(i8 iBelow, ...)
   m_pTransforms->vH29_T10_Main_Query_Analysis();
   m_pTransforms->vH29_T20_Sub_Query_Analysis();
   m_pTransforms->vH29_T30();
+
+  m_pTransforms->vH25_T30_Convert_where_rpnCalc_To_boolCalc();
+  m_pTransforms->vH25_T40_Convert_stmColOdn_To_tblColOdn();
 
   m_pTransforms->vH29_TZZ_End();
 

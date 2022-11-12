@@ -448,55 +448,6 @@ void Xtransforms::vH25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH25_T30_Convert_where_rpnCalc_To_boolCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
-
-  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H25_T30_Convert_where_rpnCalc_To_boolCalc();
-  }
-
-  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert all <stmColOdn> to <tblColOdn>                                     */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vH25_T40_Convert_stmColOdn_To_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "all $n become $c.n"_Stz);
-
-  while (G_bEachMain()) {
-
-    if (! (   CK_PROJECT == G.e_MainCard
-           || CK_WHERE   == G.e_MainCard
-    ))
-      continue;
-
-    if (CK_PROJECT == G.e_MainCard) {
-      G.p_level = G.p_MainCard->pSub_level();
-      if (G.p_level && AL_PARTITION != G.p_level->Y_iVal(P_Level))
-        continue;
-    }
-
-    vR_H25_T40_Convert_stmColOdn_To_tblColOdn();
-  }
-
-  V_vNo_Terms_StmColOdn(G.pDeck);
-
-  G.pBoard->vMayHaveStmColOdn(false);
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH25_TZZ_End(void)
@@ -552,7 +503,15 @@ void Xtransforms::vH29_T10_Main_Query_Analysis(void)
 
   vTransform(__func__, "((10))"_Stz);
 
-  vR_H29_T10_Main_Query_Analysis();
+  i8 nBoards = m_pBench->nItems();
+  if (1 == nBoards) {
+    vR_H29_T10_Main_Query_Analysis_Only_main();
+  }
+  else {
+    while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+      vR_H29_T10_Main_Query_Analysis_Of_rpnCalc();
+    }
+  }
 
   vEndTransform();
 }
@@ -566,7 +525,27 @@ void Xtransforms::vH29_T20_Sub_Query_Analysis(void)
 
   vTransform(__func__, "((20))"_Stz);
 
-  vR_H29_T20();
+  i8 nBoards = m_pBench->nItems();
+  if (1 == nBoards) {
+
+  }
+  else
+  if (2 == nBoards) {
+
+    while (G_bEachMain(CK_PARAMLIST)) {
+      vR_H29_T20_Sub_Query_Analysis_paramList();
+    }
+
+    while (G_bEachMain(CK_AGGREG)) {
+      vR_H29_T20_Sub_Query_Analysis_aggreg();
+    }
+
+    while (G_bEachMain(CK_GBYAGG)) {
+      vR_H29_T20_Sub_Query_Analysis_gbyagg();
+    }
+  }
+  else
+    NEVER_REACH;
 
   vEndTransform();
 }
@@ -584,6 +563,56 @@ void Xtransforms::vH29_T30(void)
 
   vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH25_T30_Convert_where_rpnCalc_To_boolCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    vR_H25_T30_Convert_where_rpnCalc_To_boolCalc();
+  }
+
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <stmColOdn> to <tblColOdn>                                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH25_T40_Convert_stmColOdn_To_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "all $n become $c.n"_Stz);
+
+  while (G_bEachMain()) {
+
+    if (! (   CK_PROJECT == G.e_MainCard
+              || CK_WHERE   == G.e_MainCard
+    ))
+      continue;
+
+    if (CK_PROJECT == G.e_MainCard) {
+      G.p_level = G.p_MainCard->pSub_level();
+      if (G.p_level && AL_PARTITION != G.p_level->Y_iVal(P_Level))
+        continue;
+    }
+
+    vR_H25_T40_Convert_stmColOdn_To_tblColOdn();
+  }
+
+  V_vNo_Terms_StmColOdn(G.pDeck);
+
+  G.pBoard->vMayHaveStmColOdn(false);
+
+  vEndTransform();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
