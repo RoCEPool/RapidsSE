@@ -11,6 +11,8 @@
 #include "eBF.h"
 #include "eBC.h"
 
+#include "eQS.h"
+
 #include "Card.hpp"
 #include "CardCtl.hpp"
 
@@ -157,6 +159,8 @@ namespace STORE
     eBF         m_eBoardForm;  // fanin, linear
     eBC         m_eBoardCall;  // exists, from, in
 
+    eQS         m_eSubQuery;
+
     Card_Deck*  m_pCard_Deck;
 
     Optimiser*  m_pOptimiser;
@@ -205,6 +209,9 @@ namespace STORE
                    i8 iTransformNo,
                    Stz* szExplain=nullptr);
     void vPrintBoard(Stz* szDescription=nullptr);
+
+    eQS  eSubQuery(void);
+    void vSubQuery(eQS  eSubQuery);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);
