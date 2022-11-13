@@ -174,7 +174,10 @@ namespace STORE
 
     void       vPosVecPriorToEntry_int(Key* aWithKey,
                                        Ent* aPriorVec[]);
-  
+
+    void       vPosVecPriorToEntryDesc_int(Key* aWithKey,
+                                       Ent* aPriorVec[]);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
@@ -235,6 +238,7 @@ namespace STORE
     Ent*       aInsertEntAbsLazy(Ent* aEntry);
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     Ent*       aInsertEntSkipList(Ent* aEntry);
+    Ent*       aInsertEntSkipListDesc(Ent* aEntry);
     Ent*       aInsertEntUpwards(eIU eReason, Ent* aEntry, EntBuffer** ppRootBuffer);
     bool       bKeyBeforeBuffer(Key* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);

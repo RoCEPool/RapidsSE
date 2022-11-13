@@ -28,6 +28,7 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
   m_uKind    = KE_GENERAL;
   m_uPayload = 0;
   m_uFree    = 0;
+  m_uDesc    = 0;
   m_uSpare   = 0;
 }
 
@@ -72,6 +73,22 @@ i8 Rrf::iBuffer(void)
 void Rrf::vBuffer(i8 iBuffer)
 {
   m_uBuffer = iBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get desc                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Rrf::bDesc(void)
+{
+  return (bool)m_uDesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set referenced entry as having a descing key                               */
+/*----------------------------------------------------------------------------*/
+void Rrf::vDesc(bool bDesc)
+{
+  m_uDesc = (i8)bDesc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +194,7 @@ void Rrf::vReset(void)
   m_uKind    = 0;
   m_uPayload = 0;
   m_uFree    = 0;
+  m_uDesc    = 0;
   m_uSpare   = 0;
 }
 
@@ -192,6 +210,7 @@ void Rrf::vSet(Rrf xwRef)
   m_uKind    = xwRef.m_uKind;
   m_uPayload = xwRef.m_uPayload;
   m_uFree    = xwRef.m_uFree;
+  m_uDesc    = xwRef.m_uDesc;
   m_uSpare   = 0;
 }
 
@@ -207,6 +226,7 @@ void Rrf::vSetNil(void)
   m_uKind    = 0;
   m_uPayload = 0;
   m_uFree    = 0;
+  m_uDesc    = 0;
   m_uSpare   = 0;
 }
 
