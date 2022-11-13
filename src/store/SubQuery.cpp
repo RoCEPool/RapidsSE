@@ -25,9 +25,9 @@ SubQuery::SubQuery(void)
   m_iForm = C_UNKNOWN;
 
   m_i_SubQuery = 0;
-  m_nParams    = 0;
 
-  m_eAggregation = QA_LINEAR;
+  m_nParams      = 0;
+  m_eDisposition = QD_LINEAR;
   m_eClause      = QC_NONE;
   m_eOperator    = QO_NONE;
 
@@ -74,23 +74,23 @@ void SubQuery::vForm(i8 iForm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get aggregation                                                            */
+/* get disposition                                                            */
 /*----------------------------------------------------------------------------*/
-eQA SubQuery::eAggregation(void)
+eQD SubQuery::eDisposition(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  return m_eAggregation;
+  return m_eDisposition;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set aggregation                                                            */
+/* set disposition                                                            */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vAggregation(eQA eAggregation)
+void SubQuery::vDisposition(eQD eDisposition)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_eAggregation = eAggregation;
+  m_eDisposition = eDisposition;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -400,7 +400,7 @@ void Xreshape::vR_H29_T10b_Main_Query_Analysis_aggreg(void)
 
   // the main-query has an aggreg
 
-  m_pMainQuery->vAggregation(QA_AGGREGATION);
+  m_pMainQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }
@@ -416,7 +416,7 @@ void Xreshape::vR_H29_T10c_Main_Query_Analysis_gbyagg(void)
 
   // the main-query has an gnyAggr
 
-  m_pMainQuery->vAggregation(QA_AGGREGATION);
+  m_pMainQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }
@@ -477,7 +477,7 @@ void Xreshape::vR_H29_T20a_Sub_Query_Analysis_Only_main(void)
 
   m_pMainQuery->vSubQueries(0);
 
-  m_pSubQuery->vAggregation(QA_NONE);
+  m_pSubQuery->vDisposition(QD_NONE);
 
   vEndReshape();
 }
@@ -510,7 +510,7 @@ void Xreshape::vR_H29_T20c_Sub_Query_Analysis_aggreg(void)
 
   // there is a subQuery and it has an aggreg
 
-  m_pSubQuery->vAggregation(QA_AGGREGATION);
+  m_pSubQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }
@@ -525,7 +525,7 @@ void Xreshape::vR_H29_T20d_Sub_Query_Analysis_gbyagg(void)
   vReshape(__func__);
 
   // there is a subQuery and it has an gbyAgg
-  m_pSubQuery->vAggregation(QA_AGGREGATION);
+  m_pSubQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }

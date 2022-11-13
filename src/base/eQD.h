@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* eQA.h -- SubQuery Aggregation                                              */
+/* eQD.h -- Query Disposition/Nature                                          */
 /*============================================================================*/
 #pragma once
 
-enum eQA // subquery aggregation
+enum eQD // subquery aggregation
 {
-  /*   */ QA_NONE=0,
+  /*   */ QD_NONE=0,
   
-  /*   */ QA_AGGREGATION,
-  /*   */ QA_LINEAR,
+  /*   */ QD_AGGREGATION,
+  /*   */ QD_LINEAR,
 
-  /*   */ QA_ENUMS
+  /*   */ QD_ENUMS
 };
 
 static Stz* aQA[]
 {
-  /*   */ "QA_NONE"_Stz,
+  /*   */ "QD_NONE"_Stz,
   
-  /*   */ "QA_AGGREGATION"_Stz,
-  /*   */ "QA_LINEAR"_Stz,
+  /*   */ "QD_AGGREGATION"_Stz,
+  /*   */ "QD_LINEAR"_Stz,
 
-  /*   */ "QA_ENUMS"_Stz,
+  /*   */ "QD_ENUMS"_Stz,
 };
 
 /*============================================================================*/

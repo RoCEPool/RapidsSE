@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "eQA.h"
+#include "eQD.h"
 #include "eQC.h"
 #include "eQO.h"
 #include "eRO.h"
@@ -19,16 +19,15 @@ namespace STORE
     i8  m_iForm;
 
     i8 m_i_SubQuery;
-    i8 m_nParams;
 
-    eQA m_eAggregation;
-    eQC m_eClause;
-    eQO m_eOperator;
+    i8 m_nParams;        // number of parameters
+    eQD m_eDisposition;  // linear/simple or aggregation
+    eQC m_eClause;       // claused called from where|having
+    eQO m_eOperator;     // post-call operator: relnOp|exists|in(not)
 
-    eRO m_eRelationalOp;
+    eRO m_eRelationalOp; // <|<=|==|!=|>=|>
 
-
-    i8 m_nSubQueries;
+    i8 m_nSubQueries;    // how many sub-queries under this one
 
   protected:
     // must be last
@@ -44,8 +43,8 @@ namespace STORE
     i8 iForm(void);
     void vForm(i8 iForm);
 
-    eQA eAggregation(void);
-    void vAggregation(eQA eAggregation);
+    eQD eDisposition(void);
+    void vDisposition(eQD eDisposition);
 
     eQC eClause(void);
     void vClause(eQC eClause);
