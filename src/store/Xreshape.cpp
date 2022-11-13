@@ -392,13 +392,15 @@ void Xreshape::vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T10_Main_Query_Analysis_Only_main(void)
+void Xreshape::vR_H29_T10b_Main_Query_Analysis_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
 
-  // there is no subQuery
+  // the main-query has an aggreg
+
+  m_pMainQuery->vAggregation(QA_AGGREGATION);
 
   vEndReshape();
 }
@@ -406,11 +408,29 @@ void Xreshape::vR_H29_T10_Main_Query_Analysis_Only_main(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T10_Main_Query_Analysis_Of_rpnCalc(void)
+void Xreshape::vR_H29_T10c_Main_Query_Analysis_gbyagg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // the main-query has an gnyAggr
+
+  m_pMainQuery->vAggregation(QA_AGGREGATION);
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_rpnCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  m_pMainQuery->vSubQueries(1);
 
   // there is a subQuery, how is it called?
 
@@ -447,7 +467,25 @@ void Xreshape::vR_H29_T10_Main_Query_Analysis_Of_rpnCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T20_Sub_Query_Analysis_paramList(void)
+void Xreshape::vR_H29_T20a_Sub_Query_Analysis_Only_main(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  // there is no sub-query
+
+  m_pMainQuery->vSubQueries(0);
+
+  m_pSubQuery->vAggregation(QA_NONE);
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H29_T20b_Sub_Query_Analysis_paramList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -455,13 +493,16 @@ void Xreshape::vR_H29_T20_Sub_Query_Analysis_paramList(void)
 
   // there is a subQuery and it has a paramList
 
+  i8 nParams = G.p_paramList->nChildCards();
+  m_pSubQuery->vParams(nParams);
+
   vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T20_Sub_Query_Analysis_aggreg(void)
+void Xreshape::vR_H29_T20c_Sub_Query_Analysis_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -469,19 +510,22 @@ void Xreshape::vR_H29_T20_Sub_Query_Analysis_aggreg(void)
 
   // there is a subQuery and it has an aggreg
 
+  m_pSubQuery->vAggregation(QA_AGGREGATION);
+
   vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T20_Sub_Query_Analysis_gbyagg(void)
+void Xreshape::vR_H29_T20d_Sub_Query_Analysis_gbyagg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
 
   // there is a subQuery and it has an gbyAgg
+  m_pSubQuery->vAggregation(QA_AGGREGATION);
 
   vEndReshape();
 }

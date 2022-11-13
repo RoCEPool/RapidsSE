@@ -24,11 +24,16 @@ SubQuery::SubQuery(void)
 
   m_iForm = C_UNKNOWN;
 
-  m_eAggregation = QA_NONE;
+  m_i_SubQuery = 0;
+  m_nParams    = 0;
+
+  m_eAggregation = QA_LINEAR;
   m_eClause      = QC_NONE;
   m_eOperator    = QO_NONE;
 
   m_eRelationalOp = RO_NONE;
+
+  m_nSubQueries = 0;
 
   _checkInitialised_(CN_SUBQUERY);
 
@@ -129,6 +134,26 @@ void SubQuery::vOperator(eQO eOperator)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get nParams                                                                */
+/*----------------------------------------------------------------------------*/
+i8 SubQuery::nParams(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_nParams;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nParams                                                                */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vParams(i8 nParams)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  m_nParams = nParams;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get relational op                                                          */
 /*----------------------------------------------------------------------------*/
 eRO SubQuery::eRelationalOp(void)
@@ -146,6 +171,46 @@ void SubQuery::vRelationalOp(eRO eRelationalOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eRelationalOp = eRelationalOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nSubQueries                                                            */
+/*----------------------------------------------------------------------------*/
+i8 SubQuery::nSubQueries(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_nSubQueries;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nSubQueries                                                            */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSubQueries(i8 nSubQueries)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  m_nSubQueries = nSubQueries;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i_SubQuery                                                             */
+/*----------------------------------------------------------------------------*/
+i8 SubQuery::i_SubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_i_SubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set i_SubQuery                                                             */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSubQuery(i8 i_SubQuery)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  m_i_SubQuery = i_SubQuery;
 }
 
 /*============================================================================*/
