@@ -14,7 +14,7 @@ namespace STORE
   class Xbase : public Object
   {
   public:
-    SubQuery* m_pMainQuery;
+    //SubQuery* m_pMainQuery;
     SubQuery* m_pSubQuery;
 
     // must be last

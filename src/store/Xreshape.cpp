@@ -401,7 +401,9 @@ void Xreshape::vR_H29_T10a_Main_Query_Analysis_aggreg(void)
 
   // the main-query has an aggreg
 
-  m_pMainQuery->vDisposition(QD_AGGREGATION);
+  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+
+  pMainQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }
@@ -417,7 +419,9 @@ void Xreshape::vR_H29_T10b_Main_Query_Analysis_gbyagg(void)
 
   // the main-query has an gnyAggr
 
-  m_pMainQuery->vDisposition(QD_AGGREGATION);
+  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+
+  pMainQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }
@@ -431,11 +435,13 @@ void Xreshape::vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void)
 
   vReshape(__func__);
 
-  m_pMainQuery->vSubQueries(1);
+  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+
+  pMainQuery->vSubQueries(1);
 
   // there is a subQuery, how is it called?
 
-  m_pMainQuery->vClause(QC_WHERE_CLAUSE);
+  pMainQuery->vClause(QC_WHERE_CLAUSE);
 
   CardIter xCI(G.p_rpnCalc);
   while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
@@ -453,12 +459,12 @@ void Xreshape::vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          m_pMainQuery->vOperator(QO_NOT_EXISTS_OP);
+          pMainQuery->vOperator(QO_NOT_EXISTS_OP);
         else
-          m_pMainQuery->vOperator(QO_EXISTS_OP);
+          pMainQuery->vOperator(QO_EXISTS_OP);
       }
       else {
-        m_pMainQuery->vOperator(QO_EXISTS_OP);
+        pMainQuery->vOperator(QO_EXISTS_OP);
       }
     }
     else
@@ -466,20 +472,20 @@ void Xreshape::vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          m_pMainQuery->vOperator(QO_NOT_IN_OP);
+          pMainQuery->vOperator(QO_NOT_IN_OP);
         else
-          m_pMainQuery->vOperator(QO_IN_OP);
+          pMainQuery->vOperator(QO_IN_OP);
       }
       else {
-        m_pMainQuery->vOperator(QO_IN_OP);
+        pMainQuery->vOperator(QO_IN_OP);
       }
     }
     else
     {
       eRO eRelnOp = RelOp::eDecode(szValue_term);
       if (RO_NONE != eRelnOp) {
-        m_pMainQuery->vOperator(QO_IN_OP);
-        m_pMainQuery->vRelationalOp(eRelnOp);
+        pMainQuery->vOperator(QO_IN_OP);
+        pMainQuery->vRelationalOp(eRelnOp);
       }
     }
 
@@ -498,11 +504,13 @@ void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void)
 
   vReshape(__func__);
 
-  m_pMainQuery->vSubQueries(1);
+  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+
+  pMainQuery->vSubQueries(1);
 
   // there is a subQuery, how is it called?
 
-  m_pMainQuery->vClause(QC_HAVING_CLAUSE);
+  pMainQuery->vClause(QC_HAVING_CLAUSE);
 
   CardIter xCI(G.p_rpnCalc);
   while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
@@ -520,12 +528,12 @@ void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          m_pMainQuery->vOperator(QO_NOT_EXISTS_OP);
+          pMainQuery->vOperator(QO_NOT_EXISTS_OP);
         else
-          m_pMainQuery->vOperator(QO_EXISTS_OP);
+          pMainQuery->vOperator(QO_EXISTS_OP);
       }
       else {
-        m_pMainQuery->vOperator(QO_EXISTS_OP);
+        pMainQuery->vOperator(QO_EXISTS_OP);
       }
     }
     else
@@ -533,20 +541,20 @@ void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          m_pMainQuery->vOperator(QO_NOT_IN_OP);
+          pMainQuery->vOperator(QO_NOT_IN_OP);
         else
-          m_pMainQuery->vOperator(QO_IN_OP);
+          pMainQuery->vOperator(QO_IN_OP);
       }
       else {
-        m_pMainQuery->vOperator(QO_IN_OP);
+        pMainQuery->vOperator(QO_IN_OP);
       }
     }
     else
     {
       eRO eRelnOp = RelOp::eDecode(szValue_term);
       if (RO_NONE != eRelnOp) {
-        m_pMainQuery->vOperator(QO_IN_OP);
-        m_pMainQuery->vRelationalOp(eRelnOp);
+        pMainQuery->vOperator(QO_IN_OP);
+        pMainQuery->vRelationalOp(eRelnOp);
       }
     }
 
@@ -568,9 +576,10 @@ void Xreshape::vR_H29_T20a_Sub_Query_Analysis_Only_main(void)
 
   // there is no sub-query
 
-  m_pMainQuery->vSubQueries(0);
+  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
 
-  m_pSubQuery->vDisposition(QD_NONE);
+  pMainQuery->vSubQueries(0);
+
 
   vEndReshape();
 }

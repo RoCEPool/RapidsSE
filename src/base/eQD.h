@@ -13,7 +13,7 @@ enum eQD // subquery aggregation
   /*   */ QD_ENUMS
 };
 
-static Stz* aQA[]
+static Stz* aQD[]
 {
   /*   */ "QD_NONE"_Stz,
   

@@ -52,6 +52,8 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
 
   m_bMayHaveStmColOdn = true;
 
+  m_pSubQuery = new SubQuery;
+
   _checkInitialised_(CN_BOARD);
 
   pBench->vAddBoard(this);
@@ -71,6 +73,8 @@ Board::~Board(void) noexcept(false)
   }
 
   delete m_pCard_Deck;
+
+  delete m_pSubQuery;
 }
 
 
@@ -353,6 +357,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // line 1
   pRibbon->vSprint("Transform: %02lld Board %s Query %s :: %s %s %s"_Stz,
                    m_iXform,
                    m_sBoardNm.szStz(),
@@ -362,9 +367,26 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    aBC[m_eBoardCall]
                    );
 
-  //Stz* szXdesc = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szXdesc();
-
+  // line 2
   pRibbon->vSprint("%s"_Stz,szXdesc());
+
+  // line 3
+  if (0 == m_i_Board)
+    pRibbon->vSprint("%s %s"_Stz,
+                     "MainQuery"_Stz,
+                     aQD[m_pSubQuery->eDisposition()]);
+  else
+    pRibbon->vSprint("%s(%lld params) %s %s %s %s"_Stz,
+                     "SubQuery"_Stz,
+                     m_pSubQuery->nParams(),
+                     aQD[m_pSubQuery->eDisposition()],
+                     aQC[m_pSubQuery->eClause()],
+                     aQO[m_pSubQuery->eOperator()],
+                     aRO[m_pSubQuery->eRelationalOp()]
+                     );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pRibbon->vTitleLines();
 }
 
@@ -416,6 +438,16 @@ void Board::vSubQuery(eQS eSubQuery)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_eSubQuery = eSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-query                                                              */
+/*----------------------------------------------------------------------------*/
+SubQuery* Board::pSubQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_pSubQuery;
 }
 
 /*----------------------------------------------------------------------------*/

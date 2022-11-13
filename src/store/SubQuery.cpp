@@ -27,7 +27,7 @@ SubQuery::SubQuery(void)
   m_i_SubQuery = 0;
 
   m_nParams      = 0;
-  m_eDisposition = QD_LINEAR;
+  m_eDisposition = QD_NONE;
   m_eClause      = QC_NONE;
   m_eOperator    = QO_NONE;
 

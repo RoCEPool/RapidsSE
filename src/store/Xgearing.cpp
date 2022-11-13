@@ -188,7 +188,7 @@ void Xgearing::vEndTransform(void)
 
 
   CardIter xCI(G.pDeck);
-  while (G.p_MainCard = xCI.pEachChild())
+  while ((G.p_MainCard = xCI.pEachChild()))
     G.p_MainCard->Y_vCut(P_Focus);
 }
 

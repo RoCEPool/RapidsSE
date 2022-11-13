@@ -138,6 +138,7 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
+#include "SubQuery.hpp"
 
 namespace STORE
 {
@@ -172,6 +173,8 @@ namespace STORE
     s256        m_sXdesc;
 
     bool        m_bMayHaveStmColOdn;
+
+    SubQuery*   m_pSubQuery;
 
   private:
     // must be last
@@ -212,6 +215,8 @@ namespace STORE
 
     eQS  eSubQuery(void);
     void vSubQuery(eQS  eSubQuery);
+
+    SubQuery* pSubQuery(void);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);

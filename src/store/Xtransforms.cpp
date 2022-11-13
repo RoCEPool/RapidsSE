@@ -88,6 +88,10 @@ void Xtransforms::vH10_T10_Delete_All_absJoin(void)
 
   vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
+  // TODO: not in the right place
+  if (G.pBoard->i_Board())
+    m_pSubQuery = G.pBoard->pSubQuery();
+
   while (G_bEachMain(CK_ABSJOIN)) {
     vR_H10_T10_Delete_absJoin();
   }
