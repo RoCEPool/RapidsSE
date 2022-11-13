@@ -1470,6 +1470,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  EntWrk::vEntDesc((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL,pIndexDef);
 
   // create RowSingleP
   if (m_xStageOps.m_pPostProjectOp) {

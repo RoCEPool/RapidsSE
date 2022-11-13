@@ -22,6 +22,8 @@
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
+#define SCAN_IS_AT_PRIOR_POS_DESC(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
+
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
 
 /*----------------------------------------------------------------------------*/
@@ -412,6 +414,58 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute prior vector for given int key                                     */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPosVecPriorToEntryDesc_int(Key* aGivenKey_int,
+                                        Ent* aPriorVec[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  RASSERT(KE_INT == m_eEntKind);
+
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  Ent* aSkipRoots = this->aSkipRoots();
+
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    aPriorVec[i_Level] = aSkipRoots;
+
+  // if there are no items then the prior vec is the set of skip roots
+  if (nItems() == 0)
+    return;
+
+  Ent_int* aItemArray = (Ent_int*)this->aItemArray();
+
+  i8 iGivenIntElm0 = ELM0_OF_KEY(aGivenKey_int);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Ent_int* aNextEnt_int;
+  i8 iNextEnt_IntElm0;
+
+  Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
+  for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
+
+    for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
+         ! END_TICKET(tNextEnt);
+         tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
+
+      aNextEnt_int = GET_ENTRY(tNextEnt);
+      iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
+
+      if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
+        break;
+
+      aScanEnt = aNextEnt_int;
+
+    } // next aScanEnt at i_Level
+
+    STORE_PRIOR_POS(aPriorVec,i_Level,aScanEnt);
+
+  } // next i_Level
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
@@ -491,6 +545,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
 #undef GET_ENTRY
 #undef NEXT_TICKET
 #undef SCAN_IS_AT_PRIOR_POS
+#define SCAN_IS_AT_PRIOR_POS_DESC
 #undef STORE_PRIOR_POS
 
 /*============================================================================*/

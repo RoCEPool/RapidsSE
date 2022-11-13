@@ -143,6 +143,25 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the entry desc in EntWrk ifi indexdef has a desc key                   */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vEntDesc(EntWrk* pEntWrk, IndexDef* pIndexDef)
+{
+  _static_
+
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
+
+    Column *pCol = pIndexDef->pGetColumn(i_Col);
+    if (!pCol->bIsAscending()) {
+      pEntWrk->aEnt()->vDesc(true);
+      break;
+    }
+
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* set the entry kind in EntWrk                                               */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vEntKind(EntWrk* pEntWrk, bool bPayLoad, eKE eKeyKind)

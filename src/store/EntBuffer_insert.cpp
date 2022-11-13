@@ -56,12 +56,6 @@ void EntBuffer::vBuildSkipList(void)
       
     }
 
-    
-    
-    
-    
-    
-    
   }
   
   Ent* aRevisedEntry = aNextEntry(aSkipRoots(),0);
@@ -642,7 +636,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   //EntBuffer::vShowEntry(aInsertedEntry);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
-  
+
   Ent* aPrevEnt = aInsertEntSkipList(aInsertedEntry);
   UNUSED(aPrevEnt);
 
@@ -942,10 +936,19 @@ Ent* EntBuffer::aInsertEntSkipList(Ent* aEntry)
   Key* aKey = aEntry->aKey();
   
   if (0 == m_iBufferHeight) {
-    if (KE_GENERAL == m_eEntKind)
-      vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
-    else
-      vPosVecPriorToEntry_int(aKey, xPriorVec);
+    if (KE_GENERAL == m_eEntKind) {
+      if (aEntry->bDesc())
+        vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
+      else
+        vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
+    }
+    else {
+      if (aEntry->bDesc())
+        vPosVecPriorToEntryDesc_int(aKey, xPriorVec);
+      else
+        vPosVecPriorToEntry_int(aKey, xPriorVec);
+    }
+
   }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
