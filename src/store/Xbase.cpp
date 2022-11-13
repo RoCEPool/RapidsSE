@@ -19,7 +19,7 @@ Xbase::Xbase(eCN eClass)
 : Object(eClass)
 {
   //m_pMainQuery = nullptr;
-  m_pSubQuery  = nullptr;
+  //m_pSubQuery  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,7 +15,7 @@ namespace STORE
   {
   public:
     //SubQuery* m_pMainQuery;
-    SubQuery* m_pSubQuery;
+    //SubQuery* m_pSubQuery;
 
     // must be last
     Footer m_xFooter;

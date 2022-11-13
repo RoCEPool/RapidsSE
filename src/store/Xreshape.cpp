@@ -401,7 +401,7 @@ void Xreshape::vR_H29_T10a_Main_Query_Analysis_aggreg(void)
 
   // the main-query has an aggreg
 
-  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+  SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
 
   pMainQuery->vDisposition(QD_AGGREGATION);
 
@@ -419,7 +419,7 @@ void Xreshape::vR_H29_T10b_Main_Query_Analysis_gbyagg(void)
 
   // the main-query has an gnyAggr
 
-  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+  SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
 
   pMainQuery->vDisposition(QD_AGGREGATION);
 
@@ -435,7 +435,7 @@ void Xreshape::vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void)
 
   vReshape(__func__);
 
-  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+  SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
 
   pMainQuery->vSubQueries(1);
 
@@ -504,7 +504,7 @@ void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void)
 
   vReshape(__func__);
 
-  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+  SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
 
   pMainQuery->vSubQueries(1);
 
@@ -576,7 +576,7 @@ void Xreshape::vR_H29_T20a_Sub_Query_Analysis_Only_main(void)
 
   // there is no sub-query
 
-  SubQuery* pMainQuery = m_pBench->pGetBoard(0)->pSubQuery();
+  SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
 
   pMainQuery->vSubQueries(0);
 
@@ -595,8 +595,10 @@ void Xreshape::vR_H29_T20b_Sub_Query_Analysis_paramList(void)
 
   // there is a subQuery and it has a paramList
 
+  SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
   i8 nParams = G.p_paramList->nChildCards();
-  m_pSubQuery->vParams(nParams);
+  pSubQuery->vParams(nParams);
 
   vEndReshape();
 }
@@ -612,7 +614,9 @@ void Xreshape::vR_H29_T20c_Sub_Query_Analysis_aggreg(void)
 
   // there is a subQuery and it has an aggreg
 
-  m_pSubQuery->vDisposition(QD_AGGREGATION);
+  SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
+  pSubQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }
@@ -627,7 +631,8 @@ void Xreshape::vR_H29_T20d_Sub_Query_Analysis_gbyagg(void)
   vReshape(__func__);
 
   // there is a subQuery and it has an gbyAgg
-  m_pSubQuery->vDisposition(QD_AGGREGATION);
+  SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+  pSubQuery->vDisposition(QD_AGGREGATION);
 
   vEndReshape();
 }

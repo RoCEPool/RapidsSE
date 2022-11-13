@@ -30,6 +30,7 @@ namespace STORE
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
     Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
+    Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     Optimiser* pOptimiser(void);
     char cPrefix(void);

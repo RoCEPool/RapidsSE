@@ -119,6 +119,18 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get board                                                                  */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pGetBoard(i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  Board *pBoard = this->pGet(i_Board);
+
+  return pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
 Board* Bench::pGetBoard(Stz* szBoardNm)
