@@ -7,6 +7,7 @@
 #include "Table.hpp"
 #include "PtnDef.hpp"
 
+#include "RelOp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -392,7 +393,7 @@ void Xreshape::vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T10b_Main_Query_Analysis_aggreg(void)
+void Xreshape::vR_H29_T10a_Main_Query_Analysis_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -408,7 +409,7 @@ void Xreshape::vR_H29_T10b_Main_Query_Analysis_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T10c_Main_Query_Analysis_gbyagg(void)
+void Xreshape::vR_H29_T10b_Main_Query_Analysis_gbyagg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -424,7 +425,7 @@ void Xreshape::vR_H29_T10c_Main_Query_Analysis_gbyagg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_rpnCalc(void)
+void Xreshape::vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -434,35 +435,127 @@ void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_rpnCalc(void)
 
   // there is a subQuery, how is it called?
 
-  bool bBoardNm = false;
-  i8 i_BoardNm  = C_UNKNOWN;
-
-  bool bExists = false;
-  i8 i_Exists  = C_UNKNOWN;
-
-  bool bIn = false;
-  i8 i_In  = C_UNKNOWN;
-
-  Stz* szValue_term = nullptr;
-  Stz* szValue_prev = nullptr;
+  m_pMainQuery->vClause(QC_WHERE_CLAUSE);
 
   CardIter xCI(G.p_rpnCalc);
   while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
     Stz* szValue_term = G.p_term->szValue();
 
-    if ((bBoardNm = G_bIsBoard(szValue_term)))
-      i_BoardNm = xCI.i_Child();
-    else
-    if ((bExists = szValue_term->bSame("exists"_Stz)))
-      i_Exists = xCI.i_Child();
-    else
-    if ((bIn = szValue_term->bSame("in"_Stz)))
-      i_In = xCI.i_Child();
+    if (!G_bIsBoard(szValue_term))
+      continue;
 
+    if (! (G.p_term = _pCard_Term(xCI.pEachChild())))
+      break;
+
+    szValue_term = G.p_term->szValue();
+
+    if (szValue_term->bSame("exists"_Stz)) {
+      if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+        szValue_term = G.p_term->szValue();
+        if (szValue_term->bSame("not"_Stz))
+          m_pMainQuery->vOperator(QO_NOT_EXISTS_OP);
+        else
+          m_pMainQuery->vOperator(QO_EXISTS_OP);
+      }
+      else {
+        m_pMainQuery->vOperator(QO_EXISTS_OP);
+      }
+    }
+    else
+    if (szValue_term->bSame("in"_Stz)) {
+      if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+        szValue_term = G.p_term->szValue();
+        if (szValue_term->bSame("not"_Stz))
+          m_pMainQuery->vOperator(QO_NOT_IN_OP);
+        else
+          m_pMainQuery->vOperator(QO_IN_OP);
+      }
+      else {
+        m_pMainQuery->vOperator(QO_IN_OP);
+      }
+    }
+    else
+    {
+      eRO eRelnOp = RelOp::eDecode(szValue_term);
+      if (RO_NONE != eRelnOp) {
+        m_pMainQuery->vOperator(QO_IN_OP);
+        m_pMainQuery->vRelationalOp(eRelnOp);
+      }
+    }
+
+    break;
   }
 
   vEndReshape();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  m_pMainQuery->vSubQueries(1);
+
+  // there is a subQuery, how is it called?
+
+  m_pMainQuery->vClause(QC_HAVING_CLAUSE);
+
+  CardIter xCI(G.p_rpnCalc);
+  while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+    Stz* szValue_term = G.p_term->szValue();
+
+    if (!G_bIsBoard(szValue_term))
+      continue;
+
+    if (! (G.p_term = _pCard_Term(xCI.pEachChild())))
+      break;
+
+    szValue_term = G.p_term->szValue();
+
+    if (szValue_term->bSame("exists"_Stz)) {
+      if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+        szValue_term = G.p_term->szValue();
+        if (szValue_term->bSame("not"_Stz))
+          m_pMainQuery->vOperator(QO_NOT_EXISTS_OP);
+        else
+          m_pMainQuery->vOperator(QO_EXISTS_OP);
+      }
+      else {
+        m_pMainQuery->vOperator(QO_EXISTS_OP);
+      }
+    }
+    else
+    if (szValue_term->bSame("in"_Stz)) {
+      if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+        szValue_term = G.p_term->szValue();
+        if (szValue_term->bSame("not"_Stz))
+          m_pMainQuery->vOperator(QO_NOT_IN_OP);
+        else
+          m_pMainQuery->vOperator(QO_IN_OP);
+      }
+      else {
+        m_pMainQuery->vOperator(QO_IN_OP);
+      }
+    }
+    else
+    {
+      eRO eRelnOp = RelOp::eDecode(szValue_term);
+      if (RO_NONE != eRelnOp) {
+        m_pMainQuery->vOperator(QO_IN_OP);
+        m_pMainQuery->vRelationalOp(eRelnOp);
+      }
+    }
+
+    break;
+  }
+
+  vEndReshape();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

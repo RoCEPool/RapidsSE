@@ -10,6 +10,8 @@ enum eQO // subquery calling operator
   /*   */ QO_COMPARE_OP,
   /*   */ QO_EXISTS_OP,
   /*   */ QO_IN_OP,
+  /*   */ QO_NOT_EXISTS_OP,
+  /*   */ QO_NOT_IN_OP,
 
   /*   */ QO_ENUMS
 };
@@ -21,6 +23,8 @@ static Stz* aQO[]
   /*   */ "QO_COMPARE_OP"_Stz,
   /*   */ "QO_EXISTS_OP"_Stz,
   /*   */ "QO_IN_OP"_Stz,
+  /*   */ "QO_NOT_EXISTS_OP"_Stz,
+  /*   */ "QO_NOT_IN_OP"_Stz,
 
   /*   */ "QO_ENUMS"_Stz,
 };

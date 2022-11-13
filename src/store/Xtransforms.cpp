@@ -504,17 +504,20 @@ void Xtransforms::vH29_T10_Main_Query_Analysis(void)
   vTransform(__func__, "((10))"_Stz);
 
   while (G_bEachMain(CK_AGGREG)) {
-    vR_H29_T10b_Main_Query_Analysis_aggreg();
+    vR_H29_T10a_Main_Query_Analysis_aggreg();
   }
 
   while (G_bEachMain(CK_GBYAGG)) {
-    vR_H29_T10c_Main_Query_Analysis_gbyagg();
+    vR_H29_T10b_Main_Query_Analysis_gbyagg();
   }
 
   i8 nBoards = m_pBench->nItems();
   if (nBoards > 1) {
     while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      vR_H29_T10d_Main_Query_Analysis_Of_rpnCalc();
+      vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc();
+    }
+    while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+      vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc();
     }
   }
 
