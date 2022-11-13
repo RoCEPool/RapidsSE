@@ -39,7 +39,8 @@ namespace STORE
 
     void vHand_10_Condense_Info    (i8 iBelow, ...);
     void vHand_20_Table_Analysis   (i8 iBelow, ...);
-    void vHand_30_Stream_Analysis  (i8 iBelow, ...);
+    void vHand_25_Stream_Analysis  (i8 iBelow, ...);
+    void vHand_29_Query_Analysis   (i8 iBelow, ...);
     void vHand_35_Flatten_From     (i8 iBelow, ...);
     void vHand_36_Flatten_Where    (i8 iBelow, ...);
     void vHand_37_Flatten_Having   (i8 iBelow, ...);

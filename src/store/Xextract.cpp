@@ -121,25 +121,25 @@ void Xextract::E_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 /*----------------------------------------------------------------------------*/
 /* get stream ordinal low                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::E_iStream_OrdLo(Card_Stream* p_stream)
+i8 Xextract::E_iStream_OdnLo(Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOrdLo = p_stream->Y_iVal(P_OrdLo);
+  i8 iOdnLo = p_stream->Y_iVal(P_OdnLo);
 
-  return iOrdLo;
+  return iOdnLo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get stream ordinal high                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Xextract::E_iStream_OrdHi(Card_Stream* p_stream)
+i8 Xextract::E_iStream_OdnHi(Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOrdHi = p_stream->Y_iVal(P_OrdHi);
+  i8 iOdnHi = p_stream->Y_iVal(P_OdnHi);
 
-  return iOrdHi;
+  return iOdnHi;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,6 +289,18 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
 
   else return TE_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key ordinal n  (i.e. $Kn)                                              */
+/*----------------------------------------------------------------------------*/
+i8 Xextract::E_iValue_KeyOdn(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
 }
 
 /*----------------------------------------------------------------------------*/

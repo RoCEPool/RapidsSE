@@ -66,7 +66,7 @@ CardIter::~CardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void CardIter::vChangeCard(Card* pCard)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   m_pCard = pCard;
 
@@ -78,7 +78,7 @@ void CardIter::vChangeCard(Card* pCard)
 /*----------------------------------------------------------------------------*/
 i8 CardIter::i_Child(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   return m_i_Child;
 }
@@ -88,7 +88,7 @@ i8 CardIter::i_Child(void)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pChild(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   return m_pChild;
 }
@@ -196,7 +196,7 @@ Card* CardIter::pEachChild(eCK eCard, i8& ri_Main)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild(i8& ri_Main, eCK& reCard)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = 0;
@@ -223,7 +223,7 @@ Card* CardIter::pEachChild(i8& ri_Main, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 void CardIter::vForward(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   Card* pChild = pNextChild();
 
@@ -235,7 +235,7 @@ void CardIter::vForward(void)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pGetChild(i8 i_Child)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   Card* pChild = m_pCard->pGetChild(i_Child);
 
@@ -247,7 +247,7 @@ Card* CardIter::pGetChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 bool CardIter::bLess(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (m_i_Child - 1 >= 0)
     return true;
@@ -260,7 +260,7 @@ bool CardIter::bLess(void)
 /*----------------------------------------------------------------------------*/
 bool CardIter::bMore(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (m_i_Child + 1 < m_pCard->nChildCards())
     return true;
@@ -273,7 +273,7 @@ bool CardIter::bMore(void)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pNextChild(void)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   i8 i_Next = m_i_Child + 1;
 
@@ -290,7 +290,7 @@ Card* CardIter::pNextChild(void)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pNextChildIf(eCK eCard)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   Card* pNextMain = this->pNextChild();
   if (! pNextMain || eCard != pNextMain->eCard())
@@ -304,7 +304,7 @@ Card* CardIter::pNextChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pPrevChild(void)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   i8 i_Prev = m_i_Child - 1;
 
@@ -321,7 +321,7 @@ Card* CardIter::pPrevChild(void)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRemoveChild(Card* pChild)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   if (pChild == m_pChild)
     vRemoveCurr(m_pChild->eCard());
@@ -334,7 +334,7 @@ void CardIter::vRemoveChild(Card* pChild)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRemoveDeleteChild(Card*& rpChild)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   vRemoveChild(rpChild);
 
@@ -348,7 +348,7 @@ void CardIter::vRemoveDeleteChild(Card*& rpChild)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRemoveCurr(eCK eCrossCheck)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(eCrossCheck == m_pChild->eCard());
   m_pCard->vRemoveChild(m_pChild);
@@ -364,7 +364,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(eCrossCheck == m_pChild->eCard());
   m_pCard->vRemoveChild(m_pChild);
@@ -381,7 +381,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRestart(void)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   m_i_Child    = C_UNKNOWN;
   m_pChild = nullptr;
@@ -392,7 +392,7 @@ void CardIter::vRestart(void)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRewind(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   Card* pChild = pPrevChild();
 
@@ -404,7 +404,7 @@ void CardIter::vRewind(void)
 /*----------------------------------------------------------------------------*/
 void CardIter::vSet(Card* pChild)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   m_i_Child = m_pCard->iFindChild(pChild);
 
@@ -419,7 +419,7 @@ void CardIter::vSet(Card* pChild)
 /*----------------------------------------------------------------------------*/
 void CardIter::vSet(i8 iChild, Card* pChild)
 {
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   m_i_Child = iChild;
   m_pChild = pChild;

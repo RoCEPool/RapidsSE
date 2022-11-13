@@ -231,6 +231,31 @@ char Xderive::D_cPRED_TableSyn_First(Card_PRED* p_PRED)
   return cTblSyn;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Xderive::D_pProject_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  //Card_Expr* p_expr_simple = _pCard_Expr(p_expr->pDupCardAndSubCards());
+
+  Card_Expr* p_expr_simple = new Card_Expr;
+
+  p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term* p_term = new Card_Term;
+  p_term->vValueSprint("$%lld"_Stz,i_Col);
+  p_rpnCalc->vAppend(p_term);
+
+  p_expr_simple->vAppend(p_rpnCalc);
+
+  p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardAndSubCards());
+
+  return p_expr_simple;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

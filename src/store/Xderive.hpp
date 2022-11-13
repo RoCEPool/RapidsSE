@@ -32,6 +32,8 @@ namespace STORE
 
     char D_cPRED_TableSyn_First(Card_PRED* p_PRED);
 
+    Card_Expr* D_pProject_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+
     Footer* aFooter(void);
   };
 }

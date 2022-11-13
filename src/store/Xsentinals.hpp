@@ -46,8 +46,8 @@ namespace STORE
 
     Card_AbsJoin *          p_absJoin;
     Card_AggElist *         p_aggElist;
-    Card_AggGby *           p_aggGby;
     Card_Aggreg *           p_aggreg;
+    Card_As *               p_as;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
     Card_Call *             p_call;
@@ -63,9 +63,11 @@ namespace STORE
     Card_CrossJoin *        p_crossJoin;
     Card_CrossPtnJoin *     p_crossPtnJoin;
     Card_CrossPtnJoinList * p_crossPtnJoinList;
+    Card_Direction *        p_direction;
     Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
+    Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
     Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;
@@ -84,6 +86,7 @@ namespace STORE
     Card_Level *            p_level;
     Card_MaybeIndexJoin *   p_maybeIndexJoin;
     Card_Next *             p_next;
+    Card_Note *             p_note;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;
@@ -118,6 +121,7 @@ namespace STORE
     Card_Topology *         p_topology;
     Card_TstPred *          p_tstPred;
     Card_Twist *            p_twist;
+    Card_Type *             p_type;
     Card_UBound *           p_uBound;
     Card_Where *            p_where;
   } ;

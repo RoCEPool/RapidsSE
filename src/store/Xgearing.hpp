@@ -68,12 +68,15 @@ namespace STORE
 
     eOA eCueUser(Stz* szPrompt);
 
+    void vEndReshape(void);
     void vEndTransform(void);
 
     void vFocusOnMain(void);
 
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
+
+    void vReshape(const char* azFunc);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
@@ -97,6 +100,7 @@ namespace STORE
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
+
     void G_vDuplicateMember(eCK eMember);
 
     void G_vClearMembers(void);
@@ -149,7 +153,10 @@ namespace STORE
 
     void G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
+    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
+    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
 
+    bool G_bResolveCard(eCK eCard, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);

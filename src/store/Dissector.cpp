@@ -156,7 +156,7 @@ void Dissector::vStage(i8 i_StageSpec)
       Card_Param* p_param = new Card_Param;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
       p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
-      p_param->Y_vSet(P_ParamOrd,"$P1"_Stz);
+      p_param->Y_vSet(P_ParamOdn, "$P1"_Stz);
       p_paramList->vAppend(p_param);
     }
   }
@@ -259,7 +259,7 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   if (pCard_RpnTerms->nItems()) {
     Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
     pCard_Aggreg->vAppend(pCard_ByList);
-    pCard_Aggreg->vCard(CK_AGGGBY);
+    pCard_Aggreg->vCard(CK_GBYAGG);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -799,10 +799,16 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
-    vAsEnsure(pCard_Expr);
+    //vAsEnsure(pCard_Expr);
+
+    Card_As* p_as = pCard_Expr->pSub_as();
+    if (p_as) {
+      pCard_Expr->vRemoveChild(p_as);
+      DELETE_CARD(p_as);
+    }
     
-    Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
-    pCard_Expr->vAppend(pCard_Direction);
+    //Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
+    //pCard_Expr->vAppend(pCard_Direction);
     
     pCard_GbyElist->vAppend(pCard_Expr);
   }
@@ -1029,7 +1035,10 @@ void Dissector::vAsEnsure(Card_Expr* p_expr)
   sAs.vSprint("COL_%lld"_Stz,p_expr->iCardNo());
 
   pCard_As = new Card_As(sAs);
-  p_expr->vAppend(pCard_As);
+
+  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+
+  p_expr->vInsertBefore(pCard_As,p_rpnCalc);
 }
 
 

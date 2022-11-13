@@ -40,6 +40,8 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
   m_eBoardForm = BF_NONE;
   m_eBoardCall = BC_NONE;
 
+  m_eSubQuery  = QS_NONE;
+
   m_pBench     = pBench;
 
   m_pOptimiser = m_pBench->pOptimiser();
@@ -394,6 +396,26 @@ i8 Board::i_Board(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   return m_i_Board;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-query kind                                                         */
+/*----------------------------------------------------------------------------*/
+eQS Board::eSubQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sub-query kind                                                         */
+/*----------------------------------------------------------------------------*/
+void Board::vSubQuery(eQS eSubQuery)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_eSubQuery = eSubQuery;
 }
 
 /*----------------------------------------------------------------------------*/

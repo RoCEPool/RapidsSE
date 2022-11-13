@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* _r_FORM_1 -- sub-query form 1 analysis : refer Q2                          */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_cue_from = "vH29_T10_Main_Query_Analysis"
+/transliterated
+/transform
+/transform3
+/glean_interactive
+/weave
+/weaved
+/pipelineName = "r_FORM_1"
+select *
+  from part, partsupp
+ where P_PARTKEY = PS_PARTKEY
+   and PS_SUPPKEY = (select min(ps_suppkey)
+                       from partsupp
+                      where P_PARTKEY = PS_PARTKEY)
+;
+// mq:
+// where  " type BOOLEAN  $1 $10 ==  $11 $1 __subquery0002  ==  and  "
+
+// sq:
+// params "P_PARTKEY "
+// where  " type BOOLEAN  $1 ==  "
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

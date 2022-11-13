@@ -22,7 +22,6 @@ namespace STORE
 {
   class Card_AbsJoin;
   class Card_AggElist;
-  class Card_AggGby;
   class Card_Aggreg;
   class Card_Aggregates;
   class Card_AndPred;
@@ -36,6 +35,7 @@ namespace STORE
   class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
+  class Card_Comment;
   class Card_Constraint;
   class Card_CoPtnJoin;
   class Card_CoPtnJoinList;
@@ -54,6 +54,7 @@ namespace STORE
 
   class Card_Filter;
 
+  class Card_GbyAgg;
   class Card_GbyElist;
 
   class Card_Hash;
@@ -81,6 +82,7 @@ namespace STORE
   class Card_MaybeIndexJoin;
 
   class Card_Next;
+  class Card_Note;
 
   class Card_OrdAgg;
   class Card_OrPred;
@@ -130,9 +132,9 @@ static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Level        = "eLevel"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
-static Stz* P_OrdHi        = "iOrdHi"_Stz;
-static Stz* P_OrdLo        = "iOrdLo"_Stz;
-static Stz* P_ParamOrd     = "szParamOrd"_Stz;
+static Stz* P_OdnHi        = "iOdnHi"_Stz;
+static Stz* P_OdnLo        = "iOdnLo"_Stz;
+static Stz* P_ParamOdn     = "szParamOdn"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
 static Stz* P_Rank         = "iRank"_Stz;
@@ -155,6 +157,7 @@ static char MARK_CHANGED    = '`';
 static char MARK_DOWNWARDS  = 'v';
 static char MARK_EXE        = '$';
 static char MARK_LEFTWARDS  = '<';
+static char MARK_LINK       = '%';
 static char MARK_MANY       = '*';
 static char MARK_MORE       = '+';
 static char MARK_REPLACE    = '#';
@@ -271,6 +274,7 @@ namespace STORE
     bool bHasProperty(Stz* szPpyNm);
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
+    bool bHasSubWithValue(eCK eCard, Stz* szValue);
     bool bHasValue(void);
 
     bool bIsAggOp(void);
@@ -342,13 +346,14 @@ namespace STORE
 
     bool Y_bHas(Stz* szPpyNm);
 
+    Card_SubSet* pYankSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
+
     void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
     void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_AggElist*      pSub_aggElist(void);
-    Card_AggGby*        pSub_aggGby(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
@@ -356,9 +361,12 @@ namespace STORE
     Card_Cast*          pSub_cast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
+    Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
+    Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IdxColNm*      pSub_idxColNm(void);
@@ -371,12 +379,14 @@ namespace STORE
     Card_Level*         pSub_level(void);
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_Next*          pSub_next(void);
+    Card_Note*          pSub_note(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
+    Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
@@ -387,6 +397,7 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_TstPred*       pSub_tstPred(void);
     Card_Twist*         pSub_twist(void);
+    Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
 
   private:

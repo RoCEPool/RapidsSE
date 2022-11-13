@@ -1,24 +1,27 @@
 /*============================================================================*/
-/* Card_AggGby.hpp -- Aggreg-GroupBy                                          */
+/* eQC.h -- SubQuery called from which Clause                                 */
 /*============================================================================*/
 #pragma once
 
-#include "Card_Project.hpp"
-
-namespace STORE
+enum eQC // subquery calling clause
 {
-  class Card_AggGby : public Card_Project
-  {  
-  public:
-    void* operator new(size_t);
-    void  operator delete(void*);
+  /*   */ QC_NONE=0,
   
-    Card_AggGby(void);
-   ~Card_AggGby(void) noexcept(false);
-  };
+  /*   */ QC_HAVING_CLAUSE,
+  /*   */ QC_WHERE_CLAUSE,
 
-  Card_AggGby* _pCard_AggGby(void* aAddr);
-}
+  /*   */ QC_ENUMS
+};
+
+static Stz* aQC[]
+{
+  /*   */ "QC_NONE"_Stz,
+  
+  /*   */ "QC_HAVING_CLAUSE"_Stz,
+  /*   */ "QC_WHERE_CLAUSE"_Stz,
+
+  /*   */ "QC_ENUMS"_Stz,
+};
 
 /*============================================================================*/
 /* end                                                                        */

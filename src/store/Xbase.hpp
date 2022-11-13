@@ -6,12 +6,16 @@
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
+#include "SubQuery.hpp"
+
 
 namespace STORE
 {
   class Xbase : public Object
   {
   public:
+    SubQuery* m_pMainQuery;
+    SubQuery* m_pSubQuery;
 
     // must be last
     Footer m_xFooter;

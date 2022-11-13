@@ -18,6 +18,8 @@
 Xbase::Xbase(eCN eClass)
 : Object(eClass)
 {
+  m_pMainQuery = new SubQuery;
+  m_pSubQuery  = new SubQuery;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,6 +27,8 @@ Xbase::Xbase(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xbase::~Xbase(void) noexcept(false)
 {
+  delete m_pMainQuery;
+  delete m_pSubQuery;
 }
 
 

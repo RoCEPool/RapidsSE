@@ -28,15 +28,26 @@ namespace STORE
     void vR_H20_T10_AAffix_tableSyn_To_table(void);
     void vR_H20_T20_Produce_tablePtn_Under_table(void);
 
-    // vHand_30_Stream_Analysis
-    void vR_H30_T10_Produce_stream_Under_table(void);
-    void vR_H30_T12_Produce_stream_Under_project(void);
-    void vR_H30_T14_Produce_stream_Under_aggreg(void);
-    void vR_H30_T20_Derive_ordinalRange_For_table_stream(void);
-    void vR_H30_T22_Derive_ordinalRange_For_project_stream(void);
-    void vR_H30_T24_Derive_ordinalRange_For_aggreg_stream(void);
-    void vR_H30_T30_Convert_where_rpnCalc_To_boolCalc(void);
-    void vR_H30_T40_Convert_stmColOdn_To_tblColOdn(void);
+    // vHand_25_Stream_Analysis
+    void vR_H25_T10_Produce_stream_Under_table(void);
+    void vR_H25_T12_Produce_stream_Under_project(void);
+    void vR_H25_T14_Produce_stream_Under_aggreg(void);
+    void vR_H25_T20_Derive_ordinalRange_For_table_stream(void);
+    void vR_H25_T22_Derive_ordinalRange_For_project_stream(void);
+    void vR_H25_T24_Derive_ordinalRange_For_aggreg_stream(void);
+    void vR_H25_T30_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void);
+
+    // vHand_29_Query_Analysis
+    void vR_H29_T10a_Main_Query_Analysis_aggreg(void);
+    void vR_H29_T10b_Main_Query_Analysis_gbyagg(void);
+    void vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void);
+    void vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void);
+    void vR_H29_T20a_Sub_Query_Analysis_Only_main(void);
+    void vR_H29_T20b_Sub_Query_Analysis_paramList(void);
+    void vR_H29_T20c_Sub_Query_Analysis_aggreg(void);
+    void vR_H29_T20d_Sub_Query_Analysis_gbyagg(void);
+    void vR_H29_T30(void);
 
     // vHand_35_Flatten_From
     void vR_H35_T10a_Copy_From_SubQuery(void);
@@ -58,8 +69,19 @@ namespace STORE
     // vHand_37_Flatten_Having
     void vR_H37_T10a_Copy_sqB(void);
     void vR_H37_T10a_Append_sqB_After_mqA(void);
-    void vR_H37_T20_Link_sqCall_In_having(void);
-    void vR_H37_T30(void);
+    void vR_H37_T20_Find_stmCol_Link(void);
+    void vR_H37_T30_Link_sqCall_In_having(void);
+    void vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
+    void vR_H37_T40Add_sqCol_To_AggGbyElist(void);
+    void vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB(void);
+    void vR_H37_T50_Add_sqCol_To_aggAggElist(void);
+    void vR_H37_T55_Bump_having_rpnCalc_In_sqB(void);
+    void vR_H37_T60_Unproject_sqCol(void);
+    void vR_H37_T70_Exhange_sqB_With_mqA(void);
+    void vR_H37_T80_AdjustStmOdn(void);
+    void vR_H37_T90_Adjust_StmColOdn(void);
+    void vR_H37_TA0(void);
+    void vR_H37_TB0(void);
 
     // vHand_40_Predicate_Pullup
     void vR_H40_T10_AtMark_where_pred_Wrt_table(void);

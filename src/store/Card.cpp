@@ -847,6 +847,27 @@ bool Card::bHasSubRecursive(Card* pSubCard, Card*& rpParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given card a sub card of this card?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSubWithValue(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsCard(eCard) && bIsValue(szValue))
+    return true;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *p_sub = pGetChild(i_Child);
+
+    if (p_sub->bHasSubWithValue(eCard,szValue))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szPpyNm)
@@ -1887,6 +1908,30 @@ bool Card::Y_bHas(Stz* szPpyNm)
   return m_pProperties->bHasName(szPpyNm);
 }
 
+/*----------------------------------------------------------------------------*/
+/* yank some subcards                                                         */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  while (i_From < nChildCards()
+         && (C_UNKNOWN == i_Till || i_From <= i_Till)) {
+    Card* p_child = pGetChild(i_From);
+
+    vRemoveChild(p_child);
+
+    p_subSet->vAppend(p_child);
+
+    if (C_UNKNOWN != i_Till)
+      i_Till--;
+  }
+
+  return p_subSet;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -1899,9 +1944,9 @@ void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth
   s32 sName;
   sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
 
-  if (bHasProperty(P_OrdLo))
+  if (bHasProperty(P_OdnLo))
     sName.vCatSprint(" $%lld,%lld"_Stz,
-                     Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
+                     Y_iVal(P_OdnLo), Y_iVal(P_OdnHi));
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
@@ -1943,19 +1988,6 @@ Card_AggElist* Card::pSub_aggElist(void)
   Card_AggElist* p_aggElist =
       _pCard_AggElist(pFindSubCard(CK_AGGELIST));
   return p_aggElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_AggGby.hpp"
-Card_AggGby* Card::pSub_aggGby(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_AggGby* p_aggGby =
-      _pCard_AggGby(pFindSubCard(CK_AGGGBY));
-  return p_aggGby;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2052,6 +2084,19 @@ Card_ColumnRef* Card::pSub_columnRef(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Comment.hpp"
+Card_Comment* Card::pSub_comment(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Comment* p_comment =
+      _pCard_Comment(pFindSubCard(CK_COMMENT));
+  return p_comment;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Constraint.hpp"
 Card_Constraint* Card::pSub_constraint(void)
 {
@@ -2078,6 +2123,19 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Expr.hpp"
+Card_Expr* Card::pSub_expr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Expr* p_expr =
+      _pCard_Expr(pFindSubCard(CK_EXPR));
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Filter.hpp"
 Card_Filter* Card::pSub_filter(void)
 {
@@ -2086,6 +2144,19 @@ Card_Filter* Card::pSub_filter(void)
   Card_Filter* p_filter =
       _pCard_Filter(pFindSubCard(CK_FILTER));
   return p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_GbyAgg.hpp"
+Card_GbyAgg* Card::pSub_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_GbyAgg* p_gbyAgg =
+      _pCard_GbyAgg(pFindSubCard(CK_GBYAGG));
+  return p_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2247,6 +2318,19 @@ Card_Next* Card::pSub_next(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Note.hpp"
+Card_Note* Card::pSub_note(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Note* p_note =
+      _pCard_Note(pFindSubCard(CK_NOTE));
+  return p_note;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_ProjElist.hpp"
 Card_ProjElist* Card::pSub_projElist(void)
 {
@@ -2320,6 +2404,19 @@ Card_Stream* Card::pSub_stream(void)
   Card_Stream* p_stream =
       _pCard_Stream(pFindSubCard(CK_STREAM));
   return p_stream;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StmCol.hpp"
+Card_StmCol* Card::pSub_stmCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmCol* p_streamCol =
+      _pCard_StmCol(pFindSubCard(CK_STMCOL));
+  return p_streamCol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2450,6 +2547,19 @@ Card_Twist* Card::pSub_twist(void)
   Card_Twist* p_twist =
       _pCard_Twist(pFindSubCard(CK_TWIST));
   return p_twist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Type.hpp"
+Card_Type* Card::pSub_type(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Type* p_type =
+      _pCard_Type(pFindSubCard(CK_TYPE));
+  return p_type;
 }
 
 /*----------------------------------------------------------------------------*/

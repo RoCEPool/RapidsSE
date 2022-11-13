@@ -43,7 +43,7 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      Condense Info Hand 10 */
+/*                                                           Condense Info 10 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@ void Xtransforms::vH10_T90_Hide_Ignorable_stages(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH10_T99_End(void)
+void Xtransforms::vH10_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -231,7 +231,7 @@ void Xtransforms::vH10_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                     Table Analysis Hand 20 */
+/*                                                          Table Analysis 20 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +301,7 @@ void Xtransforms::vH20_T20_Produce_tablePtn_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH20_T99_End(void)
+void Xtransforms::vH20_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -310,13 +310,13 @@ void Xtransforms::vH20_T99_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                    Stream Analysis Hand 30 */
+/*                                                         Stream Analysis 25 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bH30_T00_Test(void)
+bool Xtransforms::bH25_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -326,7 +326,7 @@ bool Xtransforms::bH30_T00_Test(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T00_Skip(void)
+void Xtransforms::vH25_T00_Skip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -334,7 +334,7 @@ void Xtransforms::vH30_T00_Skip(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T00_Begin(void)
+void Xtransforms::vH25_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -348,7 +348,7 @@ void Xtransforms::vH30_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T10_Produce_stream_UnderAll_table(void)
+void Xtransforms::vH25_T10_Produce_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -357,7 +357,7 @@ void Xtransforms::vH30_T10_Produce_stream_UnderAll_table(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H30_T10_Produce_stream_Under_table();
+    vR_H25_T10_Produce_stream_Under_table();
   }
 
   vEndTransform();
@@ -366,7 +366,7 @@ void Xtransforms::vH30_T10_Produce_stream_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <project>                                       */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T12_Produce_stream_UnderAll_project(void)
+void Xtransforms::vH25_T12_Produce_stream_UnderAll_project(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -375,7 +375,7 @@ void Xtransforms::vH30_T12_Produce_stream_UnderAll_project(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
-    vR_H30_T12_Produce_stream_Under_project();
+    vR_H25_T12_Produce_stream_Under_project();
   }
 
   vEndTransform();
@@ -384,7 +384,7 @@ void Xtransforms::vH30_T12_Produce_stream_UnderAll_project(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <aggreg>                                        */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T14_Produce_stream_UnderAll_aggreg(void)
+void Xtransforms::vH25_T14_Produce_stream_UnderAll_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -393,7 +393,7 @@ void Xtransforms::vH30_T14_Produce_stream_UnderAll_aggreg(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
-    vR_H30_T14_Produce_stream_Under_aggreg();
+    vR_H25_T14_Produce_stream_Under_aggreg();
   }
 
   vEndTransform();
@@ -402,14 +402,14 @@ void Xtransforms::vH30_T14_Produce_stream_UnderAll_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T20_Derive_ordinalRange_ForAll_table_stream(void)
+void Xtransforms::vH25_T20_Derive_ordinalRange_ForAll_table_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_H30_T20_Derive_ordinalRange_For_table_stream();
+    vR_H25_T20_Derive_ordinalRange_For_table_stream();
   }
 
   vEndTransform();
@@ -418,14 +418,14 @@ void Xtransforms::vH30_T20_Derive_ordinalRange_ForAll_table_stream(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T22_Derive_ordinalRange_ForAll_project_stream(void)
+void Xtransforms::vH25_T22_Derive_ordinalRange_ForAll_project_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
-    vR_H30_T22_Derive_ordinalRange_For_project_stream();
+    vR_H25_T22_Derive_ordinalRange_For_project_stream();
   }
 
   vEndTransform();
@@ -434,15 +434,140 @@ void Xtransforms::vH30_T22_Derive_ordinalRange_ForAll_project_stream(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
+void Xtransforms::vH25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
-    vR_H30_T24_Derive_ordinalRange_For_aggreg_stream();
+    vR_H25_T24_Derive_ordinalRange_For_aggreg_stream();
   }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH25_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                          Query Analysis 29 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bH29_T00_Test(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH29_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH29_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vHH_Begin();
+
+  m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH29_T10_Main_Query_Analysis(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((10))"_Stz);
+
+  while (G_bEachMain(CK_AGGREG)) {
+    vR_H29_T10a_Main_Query_Analysis_aggreg();
+  }
+
+  while (G_bEachMain(CK_GBYAGG)) {
+    vR_H29_T10b_Main_Query_Analysis_gbyagg();
+  }
+
+  i8 nBoards = m_pBench->nItems();
+  if (nBoards > 1) {
+    while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+      vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc();
+    }
+    while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+      vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc();
+    }
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH29_T20_Sub_Query_Analysis(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  i8 nBoards = m_pBench->nItems();
+  if (1 == nBoards) {
+    vR_H29_T20a_Sub_Query_Analysis_Only_main();
+  }
+  else
+  if (2 == nBoards) {
+
+    while (G_bEachMain(CK_PARAMLIST)) {
+      vR_H29_T20b_Sub_Query_Analysis_paramList();
+    }
+
+    while (G_bEachMain(CK_AGGREG)) {
+      vR_H29_T20c_Sub_Query_Analysis_aggreg();
+    }
+
+    while (G_bEachMain(CK_GBYAGG)) {
+      vR_H29_T20d_Sub_Query_Analysis_gbyagg();
+    }
+  }
+  else
+    NEVER_REACH;
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH29_T30(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H29_T30();
 
   vEndTransform();
 }
@@ -450,14 +575,14 @@ void Xtransforms::vH30_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T30_Convert_where_rpnCalc_To_boolCalc(void)
+void Xtransforms::vH25_T30_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H30_T30_Convert_where_rpnCalc_To_boolCalc();
+    vR_H25_T30_Convert_where_rpnCalc_To_boolCalc();
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -467,7 +592,7 @@ void Xtransforms::vH30_T30_Convert_where_rpnCalc_To_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
+void Xtransforms::vH25_T40_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -476,7 +601,7 @@ void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
   while (G_bEachMain()) {
 
     if (! (   CK_PROJECT == G.e_MainCard
-           || CK_WHERE   == G.e_MainCard
+              || CK_WHERE   == G.e_MainCard
     ))
       continue;
 
@@ -486,7 +611,7 @@ void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
         continue;
     }
 
-    vR_H30_T40_Convert_stmColOdn_To_tblColOdn();
+    vR_H25_T40_Convert_stmColOdn_To_tblColOdn();
   }
 
   V_vNo_Terms_StmColOdn(G.pDeck);
@@ -496,10 +621,11 @@ void Xtransforms::vH30_T40_Convert_stmColOdn_To_tblColOdn(void)
   vEndTransform();
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T99_End(void)
+void Xtransforms::vH29_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -538,7 +664,7 @@ void Xtransforms::vH35_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseLonger();
+  m_pCardCtl->vUseShorter();
 
   //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
@@ -602,7 +728,7 @@ void Xtransforms::vH35_T30_Delete_twist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH35_T99_End(void)
+void Xtransforms::vH35_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -621,7 +747,7 @@ bool Xtransforms::bH36_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,7 +767,7 @@ void Xtransforms::vH36_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseExpanded();
+  m_pCardCtl->vUseShorter();
 
   //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
@@ -818,7 +944,7 @@ void Xtransforms::vH36_T80_Delete_twist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH36_T99_End(void)
+void Xtransforms::vH36_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -837,7 +963,7 @@ bool Xtransforms::bH37_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -857,7 +983,9 @@ void Xtransforms::vH37_T00_Begin(void)
 
   vHH_Begin();
 
-  m_pCardCtl->vUseLonger();
+  m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(false,CK_STREAM,0);
 
   //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
@@ -899,14 +1027,15 @@ void Xtransforms::vH37_T10_Append_sqB_After_mqA(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T20_Link_sqCall_In_having(void)
+void Xtransforms::vH37_T20_Find_stmCol_Link(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((20))"_Stz);
+  vTransform(__func__, "((30))"_Stz);
 
-  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
-    vR_H37_T20_Link_sqCall_In_having();
+  while (G_bResolveCard(CK_PROJECT,C_UNKNOWN)) {
+    vR_H37_T20_Find_stmCol_Link();
+    break;
   }
 
   vEndTransform();
@@ -915,13 +1044,15 @@ void Xtransforms::vH37_T20_Link_sqCall_In_having(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T30(void)
+void Xtransforms::vH37_T30_Link_sqCall_In_having(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vTransform(__func__, "((30))"_Stz);
+  vTransform(__func__, "((20))"_Stz);
 
-  vR_H37_T30();
+  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
+    vR_H37_T30_Link_sqCall_In_having();
+  }
 
   vEndTransform();
 }
@@ -929,7 +1060,194 @@ void Xtransforms::vH37_T30(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH37_T99_End(void)
+void Xtransforms::vH37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_GBYAGG, CK_GBYELIST)) {
+    vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB();
+  }
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T40_Add_sqCol_To_aggGbyElist(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  while (G_bEachMain()) {
+
+    if (G.e_MainCard == CK_HAVING)
+      break;
+
+    if (G.e_MainCard != CK_GBYAGG)
+      continue;
+
+    vR_H37_T40Add_sqCol_To_AggGbyElist();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_GBYAGG, CK_AGGELIST)) {
+    vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T50_Add_sqCol_To_aggAggElist(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  while (G_bEachMain()) {
+
+    if (G.e_MainCard == CK_HAVING)
+      break;
+
+    if (G.e_MainCard != CK_GBYAGG)
+      continue;
+
+    vR_H37_T50_Add_sqCol_To_aggAggElist();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T55_Bump_having_rpnCalc_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
+    vR_H37_T55_Bump_having_rpnCalc_In_sqB();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T60_Unproject_sqCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  while (G_bEachMain(CK_TWIST)) {
+
+    vR_H37_T60_Unproject_sqCol();
+    break;
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T70_Exhange_sqB_With_mqA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  while (G_bEachMain(CK_TWIST)) {
+
+    vR_H37_T70_Exhange_sqB_With_mqA();
+    break;
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T80_Adjust_StmOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T80_AdjustStmOdn();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_T90_Adjust_StmColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_T90_Adjust_StmColOdn();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_TA0_Delete_twist(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vHH_DeleteMain(CK_TWIST);
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_TB0(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vR_H37_TB0();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH37_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1026,7 +1344,7 @@ void Xtransforms::vH40_T30_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T99_End(void)
+void Xtransforms::vH40_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1199,7 +1517,7 @@ void Xtransforms::vH50_T60(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH50_T99_End(void)
+void Xtransforms::vH50_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1401,7 +1719,7 @@ void Xtransforms::vH52_T70_Adjust_StmOdn_PostTwist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH52_T99_End(void)
+void Xtransforms::vH52_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1639,7 +1957,7 @@ void Xtransforms::vH55_T80_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH55_T99_End(void)
+void Xtransforms::vH55_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1799,7 +2117,7 @@ void Xtransforms::vH60_T60_Delete_Twist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH60_T99_End(void)
+void Xtransforms::vH60_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2122,7 +2440,7 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH70_T99_End(void)
+void Xtransforms::vH70_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2256,7 +2574,7 @@ void Xtransforms::vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH75_T99_End(void)
+void Xtransforms::vH75_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2425,7 +2743,7 @@ void Xtransforms::vH80_T70_Morph_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH80_T99_End(void)
+void Xtransforms::vH80_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2521,7 +2839,7 @@ void Xtransforms::vH85_T30_Add_bounds_ForAll_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH85_T99_End(void)
+void Xtransforms::vH85_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2585,7 +2903,7 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH90_T99_End(void)
+void Xtransforms::vH90_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2651,7 +2969,7 @@ void Xtransforms::vHA0_T10_Individuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vHA0_T99_End(void)
+void Xtransforms::vHA0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2725,7 +3043,7 @@ void Xtransforms::vHZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vHB0_T99_End(void)
+void Xtransforms::vHB0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2881,7 +3199,7 @@ void Xtransforms::vHZ0_T40_Reinstate_next(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vHZ0_T99_End(void)
+void Xtransforms::vHZ0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

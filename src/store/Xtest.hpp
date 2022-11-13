@@ -13,7 +13,6 @@ namespace STORE
   {
   public:
 
-    bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
 
     bool T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
     bool T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
@@ -39,6 +38,8 @@ namespace STORE
 
     bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
 
+    bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
+
     bool            T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
     bool            T_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
@@ -62,8 +63,10 @@ namespace STORE
     bool T_bTblColSyn_Same(char cTblSyn0, char cTblSyn1);
 
     bool T_bValue_IsIndexColOrdinal(Stz* szValue);  // $In
+    bool T_bValue_IsKeyOrdinal(Stz* szValue);       // #n
     bool T_bValue_IsParamOrdinal(Stz* szValue);     // $Pn
     bool T_bValue_IsResultOrdinal(Stz* szValue);    // #n
+    bool T_bValue_IsSqyColOrdinal(Stz* szValue); // __n
     bool T_bValue_IsStreamColOrdinal(Stz* szValue); // $n
     bool T_bValue_IsTableColOrdinal(Stz* szValue);  // $c.n
 

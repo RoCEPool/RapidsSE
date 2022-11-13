@@ -852,7 +852,27 @@ bool Xtest::T_bValue_IsIndexColOrdinal(Stz* szValue)
   char acSecond = szValue->azChar()[1];
   char acThird  = szValue->azChar()[2];
 
-  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+  if ('$' == acFirst
+      && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a key ordinal?  (i.e. $Kn)                                        */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsKeyOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst
+      && ('K' == acSecond || 'k' == acSecond)
       && StrLib::bIsDigit(acThird))
     return true;
   else
@@ -888,6 +908,25 @@ bool Xtest::T_bValue_IsResultOrdinal(Stz* szValue)
   char acSecond = szValue->azChar()[1];
 
   if ('#' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a subQuery-column ordinal?  (i.e. __n)                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsSqyColOrdinal(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && StrLib::bIsDigit(acThird))
     return true;
   else
     return false;

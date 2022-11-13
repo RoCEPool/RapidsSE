@@ -46,7 +46,7 @@ namespace STORE
     void vOp          (Card* pCard);
 
     void vArgAbsJoin  (Stz* szOpArgs,  Card_AbsJoin*   pCard_AbsJoin);
-    void vArgAggGby   (Stz* szOpArgs,  Card_AggGby*    pCard_AggGby);
+    void vArgGbyAgg   (Stz* szOpArgs, Card_GbyAgg*    pCard_AggGby);
     void vArgAggreg   (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
     void vArgCombined (Stz* szOpArgs,  Card_Combined*  pCard_Combine);
     void vArgCrossJoin(Stz* szOpArgs,  Card_CrossJoin* pCard_CrossJoin);
@@ -63,7 +63,7 @@ namespace STORE
     void vArgSort     (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
     void vArgWhere    (Stz* szOpArgs,  Card_Where*     pCard_Where);
 
-    void vRpnAggGby   (Stz* szRpnExpr, Card_AggGby*    pCard_AggGby);
+    void vRpnGbyAgg   (Stz* szRpnExpr, Card_GbyAgg*    pCard_GbyAgg);
     void vRpnAggreg   (Stz* szRpnExpr, Card_Aggreg*    pCard_Aggreg);
     void vRpnCombined (Stz* szRpnExpr, Card_Combined*  pCard_Combined);
     void vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin);

@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_AggGby.cpp -- Aggreg-GroupBy                                          */
+/* Card_GbyAgg.cpp -- Aggreg-GroupBy                                          */
 /*============================================================================*/
 
-#include "Card_AggGby.hpp"
+#include "Card_GbyAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_AggGby,CK_AGGGBY)
-__aNewFunction(Card_AggGby,CN_CARD)
-__vDeleteFunction(Card_AggGby,CN_CARD)
+__pCastFunction_Card(STORE, Card_GbyAgg, CK_GBYAGG)
+__aNewFunction(Card_GbyAgg, CN_CARD)
+__vDeleteFunction(Card_GbyAgg, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggGby::Card_AggGby(void)
-: Card_Project(CK_AGGGBY)
+Card_GbyAgg::Card_GbyAgg(void)
+: Card_Project(CK_GBYAGG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_AggGby::Card_AggGby(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AggGby::~Card_AggGby(void) noexcept(false)
+Card_GbyAgg::~Card_GbyAgg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
