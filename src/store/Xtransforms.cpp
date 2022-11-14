@@ -49,9 +49,12 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS10_T00_Test(void)
+bool Xtransforms::bS10_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return true;
 }
@@ -237,9 +240,12 @@ void Xtransforms::vS10_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS20_T00_Test(void)
+bool Xtransforms::bS20_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return true;
 }
@@ -316,9 +322,12 @@ void Xtransforms::vS20_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS25_T00_Test(void)
+bool Xtransforms::bS25_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return true;
 }
@@ -465,9 +474,12 @@ void Xtransforms::vS25_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS29_T00_Test(void)
+bool Xtransforms::bS29_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return true;
 }
@@ -654,9 +666,12 @@ void Xtransforms::vS29_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS35_T00_Test(void)
+bool Xtransforms::bS35_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
@@ -762,9 +777,12 @@ void Xtransforms::vS35_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS36_T00_Test(void)
+bool Xtransforms::bS36_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
@@ -983,9 +1001,12 @@ void Xtransforms::vS36_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS37_T00_Test(void)
+bool Xtransforms::bS37_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
@@ -1292,9 +1313,12 @@ void Xtransforms::vS37_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS40_T00_Test(void)
+bool Xtransforms::bS40_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -1392,9 +1416,12 @@ void Xtransforms::vS40_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS60_T00_Test(void)
+bool Xtransforms::bS60_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -1551,9 +1578,12 @@ void Xtransforms::vS60_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS70_T00_Test(void)
+bool Xtransforms::bS70_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -1874,9 +1904,12 @@ void Xtransforms::vS70_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS75_T00_Test(void)
+bool Xtransforms::bS75_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -2009,9 +2042,12 @@ void Xtransforms::vS75_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS80_T00_Test(void)
+bool Xtransforms::bS80_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -2177,9 +2213,12 @@ void Xtransforms::vS80_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS85_T00_Test(void)
+bool Xtransforms::bS85_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return true;
 }
@@ -2274,9 +2313,12 @@ void Xtransforms::vS85_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS90_T00_Test(void)
+bool Xtransforms::bS90_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -2337,9 +2379,12 @@ void Xtransforms::vS90_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bSA0_T00_Test(void)
+bool Xtransforms::bSA0_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -2403,9 +2448,12 @@ void Xtransforms::vSA0_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bSB0_T00_Test(void)
+bool Xtransforms::bSB0_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return false;
 }
@@ -2478,9 +2526,12 @@ void Xtransforms::vSB0_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bSZ0_T00_Test(void)
+bool Xtransforms::bSZ0_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
 
   return true;
 }

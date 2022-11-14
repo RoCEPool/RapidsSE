@@ -100,7 +100,7 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS10_T00_Test()) {
+  if (! m_pTransforms->bS10_T00_Test(bEnabled)) {
     m_pTransforms->vS10_T00_Skip();
     return;
   }
@@ -138,7 +138,7 @@ void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS20_T00_Test()) {
+  if (! m_pTransforms->bS20_T00_Test(bEnabled)) {
     m_pTransforms->vS20_T00_Skip();
     return;
   }
@@ -169,7 +169,7 @@ void Xseries::vSeries_25_Stream_Analysis(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS25_T00_Test()) {
+  if (! m_pTransforms->bS25_T00_Test(bEnabled)) {
     m_pTransforms->vS25_T00_Skip();
     return;
   }
@@ -204,7 +204,7 @@ void Xseries::vSeries_29_Query_Analysis(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS29_T00_Test()) {
+  if (! m_pTransforms->bS29_T00_Test(bEnabled)) {
     m_pTransforms->vS29_T00_Skip();
     return;
   }
@@ -232,7 +232,7 @@ void Xseries::vSeries_35_Flatten_From(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS35_T00_Test()) {
+  if (! m_pTransforms->bS35_T00_Test(bEnabled)) {
     m_pTransforms->vS35_T00_Skip();
     return;
   }
@@ -260,7 +260,7 @@ void Xseries::vSeries_36_Flatten_Where(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS36_T00_Test()) {
+  if (! m_pTransforms->bS36_T00_Test(bEnabled)) {
     m_pTransforms->vS36_T00_Skip();
     return;
   }
@@ -290,7 +290,7 @@ void Xseries::vSeries_37_Flatten_Having(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS37_T00_Test()) {
+  if (! m_pTransforms->bS37_T00_Test(bEnabled)) {
     m_pTransforms->vS37_T00_Skip();
     return;
   }
@@ -325,7 +325,7 @@ void Xseries::vSeries_40_Predicate_Pullup(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS40_T00_Test()) {
+  if (! m_pTransforms->bS40_T00_Test(bEnabled)) {
     m_pTransforms->vS40_T00_Skip();
     return;
   }
@@ -357,7 +357,7 @@ void Xseries::vSeries_60_Index_Join(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS60_T00_Test()) {
+  if (! m_pTransforms->bS60_T00_Test(bEnabled)) {
     m_pTransforms->vS60_T00_Skip();
     return;
   }
@@ -386,7 +386,7 @@ void Xseries::vSeries_70_Join_Ordering(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS70_T00_Test()) {
+  if (! m_pTransforms->bS70_T00_Test(bEnabled)) {
     m_pTransforms->vS70_T00_Skip();
     return;
   }
@@ -434,7 +434,7 @@ void Xseries::vSeries_75_EE_operators(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS75_T00_Test()) {
+  if (! m_pTransforms->bS75_T00_Test(bEnabled)) {
     m_pTransforms->vS75_T00_Skip();
     return;
   }
@@ -469,7 +469,7 @@ void Xseries::vSeries_80_Index_Scan(bool bEnabled)
  *
  */
 
-  if (! m_pTransforms->bS80_T00_Test()) {
+  if (! m_pTransforms->bS80_T00_Test(bEnabled)) {
     m_pTransforms->vS80_T00_Skip();
     return;
   }
@@ -498,7 +498,7 @@ void Xseries::vSeries_85_Cross_Join(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS85_T00_Test()) {
+  if (! m_pTransforms->bS85_T00_Test(bEnabled)) {
     m_pTransforms->vS85_T00_Skip();
     return;
   }
@@ -524,7 +524,7 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS90_T00_Test()) {
+  if (! m_pTransforms->bS90_T00_Test(bEnabled)) {
     m_pTransforms->vS90_T00_Skip();
     return;
   }
@@ -547,7 +547,7 @@ void Xseries::vSeries_A0_Filter_Refinement(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bSA0_T00_Test()) {
+  if (! m_pTransforms->bSA0_T00_Test(bEnabled)) {
     m_pTransforms->vSA0_T00_Skip();
     return;
   }
@@ -570,7 +570,7 @@ void Xseries::vSeries_Z0_Restate_Pipeline(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bSZ0_T00_Test()) {
+  if (! m_pTransforms->bSZ0_T00_Test(bEnabled)) {
     m_pTransforms->vSZ0_T00_Skip();
     return;
   }

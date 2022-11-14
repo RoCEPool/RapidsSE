@@ -24,7 +24,7 @@ namespace STORE
     //void vAdd_columnRef_Under_term(void);
 
     // vSeries_10_Condense_Info
-    bool bS10_T00_Test(void);
+    bool bS10_T00_Test(bool bEnabled);
     void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);
     void vS10_T10_Delete_All_absJoin(void);
@@ -38,7 +38,7 @@ namespace STORE
     void vS10_TZZ_End(void);
 
     // vSeries_20_Table_Analysis
-    bool bS20_T00_Test(void);
+    bool bS20_T00_Test(bool bEnabled);
     void vS20_T00_Skip(void);
     void vS20_T00_Begin(void);
     void vS20_T10_Affix_tableSyn_ToAll_table(void);
@@ -46,7 +46,7 @@ namespace STORE
     void vS20_TZZ_End(void);
 
     // vSeries_25_Stream_Analysis
-    bool bS25_T00_Test(void);
+    bool bS25_T00_Test(bool bEnabled);
     void vS25_T00_Skip(void);
     void vS25_T00_Begin(void);
     void vS25_T10_Produce_stream_UnderAll_table(void);
@@ -58,7 +58,7 @@ namespace STORE
     void vS25_TZZ_End(void);
 
     // vSeries_29_Query_Analysis
-    bool bS29_T00_Test(void);
+    bool bS29_T00_Test(bool bEnabled);
     void vS29_T00_Skip(void);
     void vS29_T00_Begin(void);
     void vS29_T10_Main_Query_Analysis(void);
@@ -69,7 +69,7 @@ namespace STORE
     void vS29_TZZ_End(void);
 
     // vSeries_35_Flatten_From
-    bool bS35_T00_Test(void);
+    bool bS35_T00_Test(bool bEnabled);
     void vS35_T00_Skip(void);
     void vS35_T00_Begin(void);
     void vS35_T10_Push_sqB_Into_mqA(void);
@@ -78,7 +78,7 @@ namespace STORE
     void vS35_TZZ_End(void);
 
     // vSeries_36_Flatten_Where
-    bool bS36_T00_Test(void);
+    bool bS36_T00_Test(bool bEnabled);
     void vS36_T00_Skip(void);
     void vS36_T00_Begin(void);
     void vS36_T10_Push_sqB_Into_mqA(void);
@@ -93,7 +93,7 @@ namespace STORE
     void vS36_TZZ_End(void);
 
     // vSeries_37_Flatten_Having
-    bool bS37_T00_Test(void);
+    bool bS37_T00_Test(bool bEnabled);
     void vS37_T00_Skip(void);
     void vS37_T00_Begin(void);
     void vS37_T10_Append_sqB_After_mqA(void);
@@ -113,7 +113,7 @@ namespace STORE
     void vS37_TZZ_End(void);
 
     // vSeries_40_Predicate_Pullup
-    bool bS40_T00_Test(void);
+    bool bS40_T00_Test(bool bEnabled);
     void vS40_T00_Skip(void);
     void vS40_T00_Begin(void);
     void vS40_T10_AtMark_where_pred_Wrt_table(void);
@@ -122,7 +122,7 @@ namespace STORE
     void vS40_TZZ_End(void);
 
     // vSeries_60_Index_Join
-    bool bS60_T00_Test(void);
+    bool bS60_T00_Test(bool bEnabled);
     void vS60_T00_Skip(void);
     void vS60_T00_Begin(void);
     void vS60_T05_Twist_in_Becomes_filter(void);
@@ -135,7 +135,7 @@ namespace STORE
     void vS60_TZZ_End(void);
 
     // vSeries_70_Join_Ordering
-    bool bS70_T00_Test(void);
+    bool bS70_T00_Test(bool bEnabled);
     void vS70_T00_Skip(void);
     void vS70_T00_Begin(void);
     void vS70_T00_Extract_tableList_From_queryBoard(void);
@@ -155,7 +155,7 @@ namespace STORE
     void vS70_TZZ_End(void);
 
     // vSeries_75_EE_operators
-    bool bS75_T00_Test(void);
+    bool bS75_T00_Test(bool bEnabled);
     void vS75_T00_Skip(void);
     void vS75_T00_Begin(void);
     void vS75_T10_Morph_table_To_EEop(void);
@@ -165,7 +165,7 @@ namespace STORE
     void vS75_TZZ_End(void);
 
     // vSeries_80_Index_Scan
-    bool bS80_T00_Test(void);
+    bool bS80_T00_Test(bool bEnabled);
     void vS80_T00_Skip(void);
     void vS80_T00_Begin(void);
     void vS80_T10_Produce_Scratch_indexList_Under_scan(void);
@@ -178,7 +178,7 @@ namespace STORE
     void vS80_TZZ_End(void);
 
     // vSeries_85_Cross_Join
-    bool bS85_T00_Test(void);
+    bool bS85_T00_Test(bool bEnabled);
     void vS85_T00_Skip(void);
     void vS85_T00_Begin(void);
     void vS85_T10_Transmute_All_table(void);
@@ -187,27 +187,27 @@ namespace STORE
     void vS85_TZZ_End(void);
 
     // vSeries_90_Stream_Ordering
-    bool bS90_T00_Test(void);
+    bool bS90_T00_Test(bool bEnabled);
     void vS90_T00_Skip(void);
     void vS90_T00_Begin(void);
     void vS90_T10_Remove_sort_IfSameAs_gby(void);
     void vS90_TZZ_End(void);
 
     // vSeries_A0_Filter_Refinement
-    bool bSA0_T00_Test(void);
+    bool bSA0_T00_Test(bool bEnabled);
     void vSA0_T00_Skip(void);
     void vSA0_T00_Begin(void);
     void vSA0_T10_Individuate_filter(void);
     void vSA0_TZZ_End(void);
 
     // vSeries_B0_RestoreStmOdn
-    bool bSB0_T00_Test(void);
+    bool bSB0_T00_Test(bool bEnabled);
     void vSB0_T00_Skip(void);
     void vSB0_T00_Begin(void);
     void vSB0_TZZ_End(void);
 
     // vSeries_Z0_Restate_Pipeline
-    bool bSZ0_T00_Test(void);
+    bool bSZ0_T00_Test(bool bEnabled);
     void vSZ0_T00_Skip(void);
     void vSZ0_T00_Begin(void);
     void vSZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
