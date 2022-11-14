@@ -98,13 +98,9 @@
 
   PipeSpec[] Optimiser[].dissect
 
-  "<transform>" [job].tagSet@ tagSet.hasName if
-    Optimiser[].transform
-  then
+  Optimiser[].transform
 
-  "<weave>" [job].tagSet@ tagSet.hasName if
-    Optimiser[].weave to Text[] // discard
-  then
+  Optimiser[].weave to Text[] // discard
 
   Optimiser[].delete
 
@@ -167,14 +163,7 @@
     Text[] "Tranliterated: \n%v"  str.format .
   then
 
-  //"<dissect>"   1 [job].tagSet@ tagSet.appendInt
-  //"<transform>" 1 [job].tagSet@ tagSet.appendInt
-  //"<weave>"     1 [job].tagSet@ tagSet.appendInt
-
-  "<dissect>"   [job].tagSet@ tagSet.hasName
-  "<transform>" [job].tagSet@ tagSet.hasName or
-  "<weave>"     [job].tagSet@ tagSet.hasName or if
-    "HAS an optimisation tag" .
+  "<transform>" [job].tagSet@ tagSet.hasName if
     _Call_Optimiser
   then
 
