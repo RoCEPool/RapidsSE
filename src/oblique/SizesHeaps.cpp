@@ -250,6 +250,7 @@
 #include "TransformIterList.hpp"
 #include "Ppy.hpp"
 #include "PpySet.hpp"
+#include "Xseries.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -686,11 +687,12 @@ SizeHeap gxaSizeHeap[]
   { CN_WORD,                     sizeof(Word),        HT_T_TINY    , FILL },
   { CN_WSPCONVERGENT_t,          0,                   HT_INVALID   , FILL },
 
-  {CN__X__,                     'X' - ('A' - 1),     HT_INVALID   , FILL },
+  { CN__X__,                    'X' - ('A' - 1),      HT_INVALID   , FILL },
+  { CN_XSERIES,                 sizeof(Xseries),      HT_T_TINY    , FILL },
 
-  {CN__Y__,                     'Y' - ('A' - 1),     HT_INVALID   , FILL },
+  { CN__Y__,                    'Y' - ('A' - 1),     HT_INVALID   , FILL },
 
-  {CN__Z__,                     'Z' - ('A' - 1),     HT_INVALID   , FILL },
+  { CN__Z__,                    'Z' - ('A' - 1),     HT_INVALID   , FILL },
 
   { CN_ENUMS,                    C_VARGS_END,                HT_INVALID   ,FILL }
 };
