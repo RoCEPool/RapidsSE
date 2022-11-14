@@ -82,11 +82,12 @@ void Xseries::vTransformSeries(void)
   vSeries_37_Flatten_Having     (C_ENABLED);
   vSeries_40_Predicate_Pullup   (C_ENABLED);
   vSeries_60_Index_Join         (C_ENABLED);
-  vSeries_70_Join_Ordering      (C_ENABLED);
+  vSeries_70_Join_Ordering      (C_DISABLED);
   vSeries_75_EE_operators       (C_ENABLED);
   vSeries_80_Index_Scan         (C_ENABLED);
   vSeries_85_Cross_Join         (C_ENABLED);
-  vSeries_90_Stream_Ordering    (C_ENABLED);
+  vSeries_90_Stream_Ordering    (C_DISABLED);
+  vSeries_92_Ordered_Aggreg     (C_DISABLED);
   vSeries_A0_Filter_Refinement  (C_ENABLED);
   vSeries_Z0_Restate_Pipeline   (C_ENABLED);
 }
@@ -532,6 +533,31 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
   m_pTransforms->vS90_T00_Begin();
 
   m_pTransforms->vS90_T10_Remove_sort_IfSameAs_gby();
+
+  m_pTransforms->vS90_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_92_Ordered_Aggreg(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS92_T00_Test(bEnabled)) {
+    m_pTransforms->vS92_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS92_T00_Begin();
+
+  m_pTransforms->vS92_T10();
+  m_pTransforms->vS92_T20();
+  m_pTransforms->vS92_T30();
 
   m_pTransforms->vS90_TZZ_End();
 
