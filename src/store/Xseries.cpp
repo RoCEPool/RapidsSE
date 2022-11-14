@@ -105,7 +105,7 @@ void Xseries::vSeries_10_Condense_Info(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -135,7 +135,7 @@ void Xseries::vSeries_10_Condense_Info(i8 iBelow, ...)
 
   m_pTransforms->vS10_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ void Xseries::vSeries_20_Table_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -168,7 +168,7 @@ void Xseries::vSeries_20_Table_Analysis(i8 iBelow, ...)
 
   m_pTransforms->vS20_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +178,7 @@ void Xseries::vSeries_25_Stream_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -205,7 +205,7 @@ void Xseries::vSeries_25_Stream_Analysis(i8 iBelow, ...)
 
   m_pTransforms->vS25_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +215,7 @@ void Xseries::vSeries_29_Query_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -235,7 +235,7 @@ void Xseries::vSeries_29_Query_Analysis(i8 iBelow, ...)
 
   m_pTransforms->vS29_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +245,7 @@ void Xseries::vSeries_35_Flatten_From(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -265,7 +265,7 @@ void Xseries::vSeries_35_Flatten_From(i8 iBelow, ...)
 
   m_pTransforms->vS35_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +275,7 @@ void Xseries::vSeries_36_Flatten_Where(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -297,7 +297,7 @@ void Xseries::vSeries_36_Flatten_Where(i8 iBelow, ...)
 
   m_pTransforms->vS36_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ void Xseries::vSeries_37_Flatten_Having(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -334,7 +334,7 @@ void Xseries::vSeries_37_Flatten_Having(i8 iBelow, ...)
 
   m_pTransforms->vS37_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,7 +344,7 @@ void Xseries::vSeries_40_Predicate_Pullup(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -368,7 +368,7 @@ void Xseries::vSeries_40_Predicate_Pullup(i8 iBelow, ...)
 
   m_pTransforms->vS40_TZZ_End();
 
-  vEndHand(BK_SUBPIPE);
+  vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +378,7 @@ void Xseries::vSeries_60_Index_Join(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -399,7 +399,7 @@ void Xseries::vSeries_60_Index_Join(i8 iBelow, ...)
 
   m_pTransforms->vS60_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,7 +409,7 @@ void Xseries::vSeries_70_Join_Ordering(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -449,7 +449,7 @@ void Xseries::vSeries_70_Join_Ordering(i8 iBelow, ...)
 
   m_pTransforms->vS70_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -459,7 +459,7 @@ void Xseries::vSeries_75_EE_operators(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -476,7 +476,7 @@ void Xseries::vSeries_75_EE_operators(i8 iBelow, ...)
 
   m_pTransforms->vS75_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,7 +486,7 @@ void Xseries::vSeries_80_Index_Scan(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -517,7 +517,7 @@ void Xseries::vSeries_80_Index_Scan(i8 iBelow, ...)
 
   m_pTransforms->vS80_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,7 +527,7 @@ void Xseries::vSeries_85_Cross_Join(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -544,7 +544,7 @@ void Xseries::vSeries_85_Cross_Join(i8 iBelow, ...)
 
   m_pTransforms->vS85_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 
@@ -555,7 +555,7 @@ void Xseries::vSeries_90_Stream_Ordering(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -570,7 +570,7 @@ void Xseries::vSeries_90_Stream_Ordering(i8 iBelow, ...)
 
   m_pTransforms->vS90_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -580,7 +580,7 @@ void Xseries::vSeries_A0_Filter_Refinement(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -595,7 +595,7 @@ void Xseries::vSeries_A0_Filter_Refinement(i8 iBelow, ...)
 
   m_pTransforms->vSA0_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,7 +605,7 @@ void Xseries::vSeries_Z0_Restate_Pipeline(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vHand(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBPIPE, 0, __func__);
 
   CARD_BELOW
 
@@ -626,7 +626,7 @@ void Xseries::vSeries_Z0_Restate_Pipeline(i8 iBelow, ...)
 
   m_pTransforms->vSZ0_TZZ_End();
 
-  vEndHand(BK_SUBPIPE,0);
+  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -635,7 +635,7 @@ void Xseries::vSeries_Z0_Restate_Pipeline(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vEndHand(eBK eBoard, i8 i_Board)
+void Xseries::vEndSeries(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -648,7 +648,7 @@ void Xseries::vEndHand(eBK eBoard, i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand(eBK eBoard, i8 i_Board, const char* azHand)
+void Xseries::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 

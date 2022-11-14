@@ -34,8 +34,8 @@ namespace STORE
 
   private:
     
-    void vSeries_10_Condense_Info    (i8 iBelow, ...);
     void vSeries_20_Table_Analysis   (i8 iBelow, ...);
+    void vSeries_10_Condense_Info    (i8 iBelow, ...);
     void vSeries_25_Stream_Analysis  (i8 iBelow, ...);
     void vSeries_29_Query_Analysis   (i8 iBelow, ...);
     void vSeries_35_Flatten_From     (i8 iBelow, ...);
@@ -51,8 +51,8 @@ namespace STORE
     void vSeries_A0_Filter_Refinement(i8 iBelow, ...);
     void vSeries_Z0_Restate_Pipeline (i8 iBelow, ...);
 
-    void vEndHand(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vHand(eBK eBoard, i8 i_Board, const char* azHand);
+    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
+    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
     Footer* aFooter(void);
   };

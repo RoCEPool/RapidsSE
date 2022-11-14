@@ -658,6 +658,11 @@ bool Xtransforms::bS35_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
+  if (QC_FROM_CLAUSE == pSubQuery->eClause())
+    return true;
+
   return false;
 }
 
@@ -761,7 +766,12 @@ bool Xtransforms::bS36_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return true;
+  SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
+  if (QC_WHERE_CLAUSE == pSubQuery->eClause())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -976,6 +986,11 @@ void Xtransforms::vS36_TZZ_End(void)
 bool Xtransforms::bS37_T00_Test(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
+  if (QC_WHERE_CLAUSE == pSubQuery->eClause())
+    return true;
 
   return false;
 }

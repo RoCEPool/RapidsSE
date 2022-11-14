@@ -24,7 +24,7 @@ namespace STORE
 
     i8 m_nParams;        // number of parameters
     eQD m_eDisposition;  // linear/simple or aggregation
-    eQC m_eClause;       // claused called from where|having
+    eQC m_eClause;       // clause called from: from|where|having
     eQO m_eOperator;     // post-call operator: relnOp|exists|in(not)
 
     eRO m_eRelationalOp; // <|<=|==|!=|>=|>
