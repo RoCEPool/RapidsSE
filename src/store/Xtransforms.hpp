@@ -57,15 +57,22 @@ namespace STORE
     void vS25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
     void vS25_TZZ_End(void);
 
-    // vSeries_29_Query_Analysis
+    // vSeries_27_Query_Analysis
+    bool bS27_T00_Test(bool bEnabled);
+    void vS27_T00_Skip(void);
+    void vS27_T00_Begin(void);
+    void vS27_T10_Main_Query_Analysis(void);
+    void vS27_T20_Sub_Query_Analysis(void);
+    void vS27_T30(void);
+    void vS27_TZZ_End(void);
+
+    // vSeries_29_To_RpnForm
     bool bS29_T00_Test(bool bEnabled);
     void vS29_T00_Skip(void);
     void vS29_T00_Begin(void);
-    void vS29_T10_Main_Query_Analysis(void);
-    void vS29_T20_Sub_Query_Analysis(void);
+    void vS29_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vS29_T20_Convert_stmColOdn_To_tblColOdn(void);
     void vS29_T30(void);
-    void vS25_T30_Convert_where_rpnCalc_To_boolCalc(void);
-    void vS25_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vS29_TZZ_End(void);
 
     // vSeries_35_Flatten_From

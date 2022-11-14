@@ -35,10 +35,10 @@ namespace STORE
     void vR_H25_T20_Derive_ordinalRange_For_table_stream(void);
     void vR_H25_T22_Derive_ordinalRange_For_project_stream(void);
     void vR_H25_T24_Derive_ordinalRange_For_aggreg_stream(void);
-    void vR_H25_T30_Convert_where_rpnCalc_To_boolCalc(void);
-    void vR_H25_T40_Convert_stmColOdn_To_tblColOdn(void);
+    void vR_H29_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_H29_T20_Convert_stmColOdn_To_tblColOdn(void);
 
-    // vSeries_29_Query_Analysis
+    // vSeries_27_Query_Analysis
     void vR_H29_T10a_Main_Query_Analysis_aggreg(void);
     void vR_H29_T10b_Main_Query_Analysis_gbyagg(void);
     void vR_H29_T10c_Main_Query_Analysis_Of_from(void);
