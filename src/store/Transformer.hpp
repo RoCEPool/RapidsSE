@@ -45,9 +45,6 @@ namespace STORE
     void vHand_36_Flatten_Where    (i8 iBelow, ...);
     void vHand_37_Flatten_Having   (i8 iBelow, ...);
     void vHand_40_Predicate_Pullup (i8 iBelow, ...);
-    void vHand_50_FlattenCall      (i8 iBelow, ...);
-    void vHand_52_FlattenIn        (i8 iBelow, ...);
-    void vHand_55_FlattenExists    (i8 iBelow, ...);
     void vHand_60_Index_Join       (i8 iBelow, ...);
     void vHand_70_Join_Ordering    (i8 iBelow, ...);
     void vHand_75_EE_operators     (i8 iBelow, ...);

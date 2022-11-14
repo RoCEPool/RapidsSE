@@ -108,9 +108,6 @@ void Transformer::vTransform3(void)
   vHand_36_Flatten_Where(CK_NONE);
   vHand_37_Flatten_Having(CK_NONE);
   vHand_40_Predicate_Pullup(CK_NONE);
-  vHand_50_FlattenCall     (CK_NONE);
-  vHand_52_FlattenIn       (CK_NONE);
-  vHand_55_FlattenExists   (CK_NONE);
   vHand_60_Index_Join(CK_NONE);
   vHand_70_Join_Ordering(CK_NONE);
   vHand_75_EE_operators    (CK_NONE);
@@ -399,97 +396,6 @@ void Transformer::vHand_40_Predicate_Pullup(i8 iBelow, ...)
   m_pTransforms->vH40_TZZ_End();
 
   vEndHand(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transformer::vHand_50_FlattenCall(i8 iBelow, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
-
-  vHand(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
-
-  if (! m_pTransforms->bH50_T00_Test()) {
-    m_pTransforms->vH50_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vH50_T00_Begin();
-
-  m_pTransforms->vH50_T10_Extract_subSet_Of_call();
-  m_pTransforms->vH50_T20_Copy_Called_Subset();
-  m_pTransforms->vH50_T30();
-
-  m_pTransforms->vH50_TZZ_End();
-
-  vEndHand(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transformer::vHand_52_FlattenIn(i8 iBelow, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
-
-  vHand(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
-
-  if (! m_pTransforms->bH52_T00_Test()) {
-    m_pTransforms->vH52_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vH52_T00_Begin();
-
-  m_pTransforms->vH52_T10_Collect_In_SubQuery_As_SubSet();
-  m_pTransforms->vH52_T20_CopyUp_In_Subset_nc();
-  m_pTransforms->vH52_T30_Cull_ExeMarked_exePred();
-  m_pTransforms->vH52_T40_Copy_TwistMarked_tstPred();
-  m_pTransforms->vH52_T50_Cull_TwistMarked_tstPred();
-  m_pTransforms->vH52_T60_Delete_Empty_where();
-  m_pTransforms->vH52_T70_Adjust_StmOdn_PostTwist();
-
-  m_pTransforms->vH52_TZZ_End();
-
-  vEndHand(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transformer::vHand_55_FlattenExists(i8 iBelow, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
-
-  vHand(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
-
-  if (! m_pTransforms->bH55_T00_Test()) {
-    m_pTransforms->vH55_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vH55_T00_Begin();
-
-  m_pTransforms->vH55_T10_Collapse_Exists_SubQueries();
-  m_pTransforms->vH55_T20_Copy_Up_ExistsSubQueries();
-  m_pTransforms->vH55_T30_Adjust_Stream_OrdinalRange();
-  //m_pTransforms->vH55_T40_Adjust_BoolCalc_Terms();
-  m_pTransforms->vH75_T30_Correct_stmColOdn_Of_keyExists_stream();
-  m_pTransforms->vH55_T50_Add_tblColOdn_Under_param();
-  m_pTransforms->vH55_T60_Substitute_paramOdn_With_tblColOdn();
-  m_pTransforms->vH55_T70_Cull_CallMarked_CallSub();
-  m_pTransforms->vH55_T80_Delete_Empty_where();
-
-  m_pTransforms->vH55_TZZ_End();
-
-  vEndHand(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -121,45 +121,6 @@ namespace STORE
     void vH40_T30_Delete_Empty_where(void);
     void vH40_TZZ_End(void);
 
-    // vHand_50_FlattenCall
-    bool bH50_T00_Test(void);
-    void vH50_T00_Skip(void);
-    void vH50_T00_Begin(void);
-    void vH50_T10_Extract_subSet_Of_call(void);
-    void vH50_T20_Copy_Called_Subset(void);
-    void vH50_T30(void);
-    void vH50_T40(void);
-    void vH50_T50(void);
-    void vH50_T60(void);
-    void vH50_TZZ_End(void);
-
-    // vHand_52_FlattenIN
-    bool bH52_T00_Test(void);
-    void vH52_T00_Skip(void);
-    void vH52_T00_Begin(void);
-    void vH52_T10_Collect_In_SubQuery_As_SubSet(void);
-    void vH52_T20_CopyUp_In_Subset_nc(void);
-    void vH52_T30_Cull_ExeMarked_exePred(void);
-    void vH52_T40_Copy_TwistMarked_tstPred(void);
-    void vH52_T50_Cull_TwistMarked_tstPred(void);
-    void vH52_T60_Delete_Empty_where(void);
-    void vH52_T70_Adjust_StmOdn_PostTwist(void);
-    void vH52_TZZ_End(void);
-
-    // vHand_55_FlattenExists
-    bool bH55_T00_Test(void);
-    void vH55_T00_Skip(void);
-    void vH55_T00_Begin(void);
-    void vH55_T10_Collapse_Exists_SubQueries(void);
-    void vH55_T20_Copy_Up_ExistsSubQueries(void);
-    void vH55_T30_Adjust_Stream_OrdinalRange(void);
-    void vH55_T40_Adjust_BoolCalc_Terms(void);
-    void vH55_T50_Add_tblColOdn_Under_param(void);
-    void vH55_T60_Substitute_paramOdn_With_tblColOdn(void);
-    void vH55_T70_Cull_CallMarked_CallSub(void);
-    void vH55_T80_Delete_Empty_where(void);
-    void vH55_TZZ_End(void);
-
     // vHand_60_Index_Join
     bool bH60_T00_Test(void);
     void vH60_T00_Skip(void);
