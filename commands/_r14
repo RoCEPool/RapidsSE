@@ -21,10 +21,7 @@ load part "../tpch/sf_0001/part.csv" ;
 /glean_cue_from = "OTvAppend_indexList_To_scan"
 /jobTags
 /transliterated
-/transform
-/transform1
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r14"
 select 100

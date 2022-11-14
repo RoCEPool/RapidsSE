@@ -8,10 +8,8 @@ _tpchCreate
 
 /jobTags
 /transliterated
-/transform
-/transform2
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r9"
 

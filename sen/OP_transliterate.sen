@@ -163,7 +163,7 @@
     Text[] "Tranliterated: \n%v"  str.format .
   then
 
-  "<transform>" [job].tagSet@ tagSet.hasName if
+  "<optimise>" [job].tagSet@ tagSet.hasName if
     _Call_Optimiser
   then
 

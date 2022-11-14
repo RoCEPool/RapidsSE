@@ -18,10 +18,8 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 /glean_cue_from = "vH36_T20_Transfer_whereB_To_whereA"
 /transliterated
-/transform
-/transform3
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r_b_a_WHERE"
 select count(*)

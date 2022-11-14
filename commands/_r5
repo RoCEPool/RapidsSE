@@ -65,10 +65,8 @@ tablesizes;
 /glean_cue_from = "OT_vAppend_preliminary_indexJoin"
 /jobTags
 /transliterated
-/transform
-/transform2
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r5"
 select

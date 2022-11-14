@@ -17,9 +17,8 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 
 /*
 /transliterated
-/transform
+/optimise
 /glean_interactive
-/weave
 /weaved
 select * from orders;
 */
@@ -29,9 +28,8 @@ select * from orders;
 
 /jobTags
 /transliterated
-/transform
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "rayD"
 select *
@@ -43,9 +41,8 @@ select *
 /*
 /jobTags
 /transliterated
-/transform
+/optimise
 /glean_interactive
-/weave
 /weaved
 select
   sum(l_extendedprice * (1 - l_discount)) as Revenue

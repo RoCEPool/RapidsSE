@@ -21,10 +21,8 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 /glean_cue_from = "vHZ0_T10_Restore_stmColOdn_from_tblColOdn"
 /transliterated
-/transform
-/transform3
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r18_in"
 select l_orderkey, sum(l_quantity)

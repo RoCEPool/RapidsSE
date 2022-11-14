@@ -34,7 +34,6 @@ load datums "../DATA/DataTypes/dataTypes.csv" ;
 /transliterated
 /optimise
 /glean_interactive
-/weave
 /weaved
 select int_col1, sum(int_col0) from datums group by int_col1;
 

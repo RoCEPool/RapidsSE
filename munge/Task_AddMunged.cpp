@@ -29371,7 +29371,7 @@ void Task::vAddMunged(Task* )
     "    Text[] \"Tranliterated: \\n%v\"  str.format .\n"
     "  then\n"
     "\n"
-    "  \"<transform>\" [job].tagSet@ tagSet.hasName if\n"
+    "  \"<optimise>\" [job].tagSet@ tagSet.hasName if\n"
     "    _Call_Optimiser\n"
     "  then\n"
     "\n"

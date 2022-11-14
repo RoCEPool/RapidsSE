@@ -9,7 +9,6 @@ load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
 /*
 /jobTags
 /optimise
-/weave
 /transliterated
 /optimised
 /todo
@@ -25,7 +24,6 @@ select *
 /transliterated
 /optimise
 /glean_interactive
-/weave
 /weaved
 select sum(n_nationKey) from nation;
 

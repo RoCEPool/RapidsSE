@@ -18,10 +18,8 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 /glean_cue_from = "vH37_T50_Add_sqCol_To_aggAggElist"
 /transliterated
-/transform
-/transform3
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r_a_b_HAVING"
 select l_orderkey, sum(l_quantity)

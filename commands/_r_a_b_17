@@ -24,10 +24,8 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 /glean_cue_from = "vSeries_25_Stream_Analysis"
 /transliterated
-/transform
-/transform3
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r_a_b_15"
 select sum(l_extendedprice) / 7.0 as avg_yearly

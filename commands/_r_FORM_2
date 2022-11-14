@@ -10,10 +10,8 @@ _r_init
 
 /glean_cue_from = "vH29_T10_Main_Query_Analysis"
 /transliterated
-/transform
-/transform3
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r_FORM_2"
 select count(*)

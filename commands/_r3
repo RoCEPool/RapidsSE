@@ -26,10 +26,8 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 /glean_cue_from = "vSeries_10_Condense_Info"
 /transliterated
-/transform
-/transform3
+/optimise
 /glean_interactive
-/weave
 /weaved
 /pipelineName = "r3"
 select
