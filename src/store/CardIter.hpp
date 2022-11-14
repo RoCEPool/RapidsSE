@@ -14,6 +14,8 @@ namespace STORE
     i8     m_i_Child;
     Card*  m_pChild;
 
+    bool   m_bActive;
+
     // must be last
     Footer m_xFooter;
 

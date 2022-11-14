@@ -50,7 +50,6 @@ namespace STORE
     void vRemoveCard(Card* pCard);
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteCurr(eCK eCrossCheck);
-    void vRestart(void);
 
     void vSet(Card* pCurrMain);
     void vSet(i8 i_Main, Card* pCurrMain);

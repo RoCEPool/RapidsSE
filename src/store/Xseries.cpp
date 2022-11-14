@@ -658,6 +658,8 @@ void Xseries::vEndSeries(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
+  RASSERT(0 == m_pTransforms->iTransformDepth());
+
   //m_pTransforms->vXform(C_NA);
   //m_pCardCtl->vUseXhand();
 

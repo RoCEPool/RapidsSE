@@ -74,7 +74,7 @@ void Xtransforms::vS10_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pBench->vPrefix('r');
   m_pCardCtl->vUseExpanded();
@@ -229,7 +229,7 @@ void Xtransforms::vS10_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +265,7 @@ void Xtransforms::vS20_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -311,7 +311,7 @@ void Xtransforms::vS20_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,7 +347,7 @@ void Xtransforms::vS25_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -463,7 +463,7 @@ void Xtransforms::vS25_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,7 +499,7 @@ void Xtransforms::vS27_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -606,7 +606,7 @@ void Xtransforms::vS27_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -644,7 +644,7 @@ void Xtransforms::vS29_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -715,7 +715,7 @@ void Xtransforms::vS29_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -757,7 +757,7 @@ void Xtransforms::vS35_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -827,7 +827,7 @@ void Xtransforms::vS35_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -868,7 +868,7 @@ void Xtransforms::vS36_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -1051,7 +1051,7 @@ void Xtransforms::vS36_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1092,7 +1092,7 @@ void Xtransforms::vS37_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -1362,7 +1362,7 @@ void Xtransforms::vS37_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -1399,7 +1399,7 @@ void Xtransforms::vS40_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -1465,7 +1465,7 @@ void Xtransforms::vS40_TZZ_End(void)
   m_pCardCtl->vUseShorter();
   m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -1506,7 +1506,7 @@ void Xtransforms::vS60_T00_Begin(void)
 
   m_pBench->vPrefix('m');
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1628,7 +1628,7 @@ void Xtransforms::vS60_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1666,7 +1666,7 @@ void Xtransforms::vS70_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1954,7 +1954,7 @@ void Xtransforms::vS70_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1992,7 +1992,7 @@ void Xtransforms::vS75_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2091,7 +2091,7 @@ void Xtransforms::vS75_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2130,7 +2130,7 @@ void Xtransforms::vS80_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2263,7 +2263,7 @@ void Xtransforms::vS80_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2301,7 +2301,7 @@ void Xtransforms::vS85_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2362,7 +2362,7 @@ void Xtransforms::vS85_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2401,7 +2401,7 @@ void Xtransforms::vS90_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2429,7 +2429,7 @@ void Xtransforms::vS90_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2467,7 +2467,7 @@ void Xtransforms::vS92_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2513,7 +2513,7 @@ void Xtransforms::vS92_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2552,7 +2552,7 @@ void Xtransforms::vSA0_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2583,7 +2583,7 @@ void Xtransforms::vSA0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2621,7 +2621,7 @@ void Xtransforms::vSB0_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2660,7 +2660,7 @@ void Xtransforms::vSB0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2701,7 +2701,7 @@ void Xtransforms::vSZ0_T00_Begin(void)
 
   m_pBench->vPrefix('w');
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2819,7 +2819,7 @@ void Xtransforms::vSZ0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2831,7 +2831,38 @@ void Xtransforms::vSZ0_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSH_Begin(void)
+void Xtransforms::vAssert_Board_any(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // nothing to do?
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vAssert_Board_mqA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  RASSERT(0 == G.pBoard->i_Board());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vAssert_Board_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  RASSERT(0 == G.pBoard->i_Board());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vST00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2852,7 +2883,7 @@ void Xtransforms::vSH_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSH_End(void)
+void Xtransforms::vSTZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -2870,14 +2901,6 @@ void Xtransforms::vSH_DeleteMain(eCK eCard)
 
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vREPLACE_WITH_RESHAPE(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-}
 
 /*============================================================================*/
 /* end                                                                        */

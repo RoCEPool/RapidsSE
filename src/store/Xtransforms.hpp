@@ -236,12 +236,15 @@ namespace STORE
 
   private:
 
-    void vSH_Begin(void);
-    void vSH_End(void);
+    void vAssert_Board_any(void);
+    void vAssert_Board_mqA(void);
+    void vAssert_Board_sqB(void);
+
+
+    void vST00_Begin(void);
+    void vSTZZ_End(void);
 
     void vSH_DeleteMain(eCK eCard);
-
-    void vREPLACE_WITH_RESHAPE(void);
 
     Footer* aFooter(void);
   };

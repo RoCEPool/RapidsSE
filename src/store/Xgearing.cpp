@@ -340,6 +340,16 @@ void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Xgearing::iTransformDepth(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  return m_pTransformIterList->nItems();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vUsingBoard(eBK eBoard, i8 i_Board)
