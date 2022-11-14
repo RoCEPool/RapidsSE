@@ -89,35 +89,6 @@ namespace STORE
     void vR_S40_T20_Move_AtMarked_where_pred_To_table_filter(void);
     void vR_S40_T30_Delete_Empty_where(void);
 
-    // vSeries_50_FlattenCall
-    void vR_S50_T10_Extract_subSet_Of_call(void);
-    void vR_S50_T20_Yank_SubSet(void);
-    void vR_S50_T20_Put_SubSet(void);
-    void vR_S50_T30_RemoveDelete_call(void);
-    void vR_S50_T40(void);
-    void vR_S50_T50(void);
-    void vR_S50_T60(void);
-
-    // vSeries_52_FlattenIn
-    void vR_S52_T10_Collect_In_SubQuery_Into_SubSet_Pile(void);
-    void vR_S52_T20_Yank_SubSet(void);
-    void vR_S52_T20_Put_SubSet_nc(void);
-    void vR_S52_T30_Cull_ExeMarked_exePred(void);
-    void vR_S52_T40_Copy_TwistMarked_tstPred(void);
-    void vR_S52_T50_Cull_TwistMarked_tstPred(void);
-    void vR_S52_T60_Delete_Empty_where(void);
-    void vR_S52_T70_Adjust_StmOdn_PostTwist(void);
-
-    // vSeries_55_FlattenExists
-    void vR_S55_T10_Collapse_Exists_SubQuery(void);
-    void vR_S55_T20_Copy_Up_SubQuery(void);
-    void vR_S55_T30_Adjust_Stream_OrdinalRange(void);
-    void vR_S55_T40_Adjust_BoolCalc_Terms(void);
-    void vR_S55_T50_Produce_Parameter_Linkage(void);
-    void vR_S55_T60_Substitute_paramOdn_With_tblColOdn(void);
-    void vR_S55_T70_Cull_CallMarked_CallSub(void);
-    void vR_S55_T80_Delete_Empty_where(void);
-
     // vSeries_60_Index_Join
     void vR_S60_T05_Twist_in_Becomes_filter(void);
     void vR_S60_T10_Produce_maybeIndexJoin_Under_filter(void);
