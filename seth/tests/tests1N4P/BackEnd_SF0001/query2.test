@@ -165,7 +165,7 @@ begin
       output
       | sink
       | stageStart
-  end ; 
+  end ;
 */
 
 pipeline Query2
