@@ -245,11 +245,12 @@ void Xseries::vSeries_29_To_RpnForm(bool bEnabled)
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
        i_Board++) {
 
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+
     m_pTransforms->vS29_T10_Convert_where_rpnCalc_To_boolCalc();
     m_pTransforms->vS29_T20_Convert_stmColOdn_To_tblColOdn();
-
-
   }
+
   m_pTransforms->vS29_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);

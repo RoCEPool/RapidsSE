@@ -624,7 +624,7 @@ bool Xtransforms::bS29_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1381,7 +1381,7 @@ bool Xtransforms::bS40_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1484,7 +1484,7 @@ bool Xtransforms::bS60_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1646,7 +1646,7 @@ bool Xtransforms::bS70_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1972,7 +1972,7 @@ bool Xtransforms::bS75_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2110,7 +2110,7 @@ bool Xtransforms::bS80_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2381,7 +2381,7 @@ bool Xtransforms::bS90_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2447,7 +2447,7 @@ bool Xtransforms::bS92_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2532,7 +2532,7 @@ bool Xtransforms::bSA0_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2601,7 +2601,7 @@ bool Xtransforms::bSB0_T00_Test(bool bEnabled)
   if (! bEnabled)
     return false;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
