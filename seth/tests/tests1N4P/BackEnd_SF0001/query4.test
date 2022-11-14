@@ -104,18 +104,22 @@ begin
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | aggreg "groupby type VARCHAR O_ORDERPRIORITY
+              aggregates
+              type VARCHAR as O_ORDERPRIORITY $K1 ,
+              type INTEGER as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
-  stage S03 on all partitions :
+  stage S03 on all nodes :
     aggreg "groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) countAll"
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
-  stage S04 on all nodes :
+  stage S04 on origin :
     aggreg "groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
@@ -124,14 +128,6 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg "groupby type VARCHAR O_ORDERPRIORITY
-            aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
-    | combined 0
-    | next
-
-  stage S06 on origin :
     output
     | sink
     | first

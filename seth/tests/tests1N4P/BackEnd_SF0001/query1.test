@@ -46,7 +46,7 @@ begin
     | stageMarker0858
   stage stageMarker0858 on all partitions :
     scan rapidsse public lineitem
-    | filter " type BOOLEAN  $11 TIMESTAMP ''1998-10-01 00:00:00''  <=  "
+    | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
     | aggreg " groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  $6 1.  $7 -  *  1.  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  "
     | combined 0
     | stageMarker0861
@@ -153,8 +153,6 @@ begin
       type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / ,
       type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / ,
       type INTEGER as COUNT_ORDER COUNT_ORDER "
-    | sort " type VARCHAR as L_RETURNFLAG L_RETURNFLAG ASC  ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ASC  "
     | combined 0
     | next
 
@@ -164,7 +162,7 @@ begin
     | first
 end ;
 
-rows:
+ordered rows:
   ('A','F',37474.00,56250004.88,-2850613.26,-5813077.32,25.35,38058.19,1.05,1478)
   ('N','F',1041.00,1614635.42,-64993.33,-132418.45,27.39,42490.41,1.04,38)
   ('N','O',76045.00,114300229.29,-5651915.97,-11527336.95,25.55,38407.34,1.05,2976)
