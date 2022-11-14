@@ -23,7 +23,7 @@ namespace STORE
 
     //void vAdd_columnRef_Under_term(void);
 
-    // vHand_10_Condense_Info
+    // vSeries_10_Condense_Info
     bool bH10_T00_Test(void);
     void vH10_T00_Skip(void);
     void vH10_T00_Begin(void);
@@ -37,7 +37,7 @@ namespace STORE
     void vH10_T90_Hide_Ignorable_stages(void);
     void vH10_TZZ_End(void);
 
-    // vHand_20_Table_Analysis
+    // vSeries_20_Table_Analysis
     bool bH20_T00_Test(void);
     void vH20_T00_Skip(void);
     void vH20_T00_Begin(void);
@@ -45,7 +45,7 @@ namespace STORE
     void vH20_T20_Produce_tablePtn_UnderAll_table(void);
     void vH20_TZZ_End(void);
 
-    // vHand_25_Stream_Analysis
+    // vSeries_25_Stream_Analysis
     bool bH25_T00_Test(void);
     void vH25_T00_Skip(void);
     void vH25_T00_Begin(void);
@@ -57,7 +57,7 @@ namespace STORE
     void vH25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
     void vH25_TZZ_End(void);
 
-    // vHand_29_Query_Analysis
+    // vSeries_29_Query_Analysis
     bool bH29_T00_Test(void);
     void vH29_T00_Skip(void);
     void vH29_T00_Begin(void);
@@ -68,7 +68,7 @@ namespace STORE
     void vH25_T40_Convert_stmColOdn_To_tblColOdn(void);
     void vH29_TZZ_End(void);
 
-    // vHand_35_Flatten_From
+    // vSeries_35_Flatten_From
     bool bH35_T00_Test(void);
     void vH35_T00_Skip(void);
     void vH35_T00_Begin(void);
@@ -77,7 +77,7 @@ namespace STORE
     void vH35_T30_Delete_twist(void);
     void vH35_TZZ_End(void);
 
-    // vHand_36_Flatten_Where
+    // vSeries_36_Flatten_Where
     bool bH36_T00_Test(void);
     void vH36_T00_Skip(void);
     void vH36_T00_Begin(void);
@@ -92,7 +92,7 @@ namespace STORE
 
     void vH36_TZZ_End(void);
 
-    // vHand_37_Flatten_Having
+    // vSeries_37_Flatten_Having
     bool bH37_T00_Test(void);
     void vH37_T00_Skip(void);
     void vH37_T00_Begin(void);
@@ -112,7 +112,7 @@ namespace STORE
     void vH37_TB0(void);
     void vH37_TZZ_End(void);
 
-    // vHand_40_Predicate_Pullup
+    // vSeries_40_Predicate_Pullup
     bool bH40_T00_Test(void);
     void vH40_T00_Skip(void);
     void vH40_T00_Begin(void);
@@ -121,7 +121,7 @@ namespace STORE
     void vH40_T30_Delete_Empty_where(void);
     void vH40_TZZ_End(void);
 
-    // vHand_60_Index_Join
+    // vSeries_60_Index_Join
     bool bH60_T00_Test(void);
     void vH60_T00_Skip(void);
     void vH60_T00_Begin(void);
@@ -134,7 +134,7 @@ namespace STORE
     void vH60_T60_Delete_Twist(void);
     void vH60_TZZ_End(void);
 
-    // vHand_70_Join_Ordering
+    // vSeries_70_Join_Ordering
     bool bH70_T00_Test(void);
     void vH70_T00_Skip(void);
     void vH70_T00_Begin(void);
@@ -154,7 +154,7 @@ namespace STORE
     void vH70_T98_Extract_joinOrderSeq(void);
     void vH70_TZZ_End(void);
 
-    // vHand_75_EE_operators
+    // vSeries_75_EE_operators
     bool bH75_T00_Test(void);
     void vH75_T00_Skip(void);
     void vH75_T00_Begin(void);
@@ -164,7 +164,7 @@ namespace STORE
     void vH75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
     void vH75_TZZ_End(void);
 
-    // vHand_80_Index_Scan
+    // vSeries_80_Index_Scan
     bool bH80_T00_Test(void);
     void vH80_T00_Skip(void);
     void vH80_T00_Begin(void);
@@ -177,7 +177,7 @@ namespace STORE
     void vH80_T70_Morph_scan_To_indexScan(void);
     void vH80_TZZ_End(void);
 
-    // vHand_85_Cross_Join
+    // vSeries_85_Cross_Join
     bool bH85_T00_Test(void);
     void vH85_T00_Skip(void);
     void vH85_T00_Begin(void);
@@ -186,27 +186,27 @@ namespace STORE
     void vH85_T30_Add_bounds_ForAll_crossJoin(void);
     void vH85_TZZ_End(void);
 
-    // vHand_90_Stream_Ordering
+    // vSeries_90_Stream_Ordering
     bool bH90_T00_Test(void);
     void vH90_T00_Skip(void);
     void vH90_T00_Begin(void);
     void vH90_T10_Remove_sort_IfSameAs_gby(void);
     void vH90_TZZ_End(void);
 
-    // vHand_A0_Filter_Refinement
+    // vSeries_A0_Filter_Refinement
     bool bHA0_T00_Test(void);
     void vHA0_T00_Skip(void);
     void vHA0_T00_Begin(void);
     void vHA0_T10_Individuate_filter(void);
     void vHA0_TZZ_End(void);
 
-    // vHand_B0_RestoreStmOdn
+    // vSeries_B0_RestoreStmOdn
     bool bHB0_T00_Test(void);
     void vHB0_T00_Skip(void);
     void vHB0_T00_Begin(void);
     void vHB0_TZZ_End(void);
 
-    // vHand_Z0_Restate_Pipeline
+    // vSeries_Z0_Restate_Pipeline
     bool bHZ0_T00_Test(void);
     void vHZ0_T00_Skip(void);
     void vHZ0_T00_Begin(void);

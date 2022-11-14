@@ -59,7 +59,7 @@ Xseries::~Xseries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
-void Xseries::vTransform3(void)
+void Xseries::vTransformSeries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
 
@@ -73,22 +73,22 @@ void Xseries::vTransform3(void)
   m_pCardCtl->vSaveShorter();
   m_pCardCtl->vSaveXhand();
 
-  vHand_10_Condense_Info(CK_NONE);
-  vHand_20_Table_Analysis(CK_NONE);
-  vHand_25_Stream_Analysis(CK_NONE);
-  vHand_29_Query_Analysis(CK_NONE);
-  vHand_35_Flatten_From(CK_NONE);
-  vHand_36_Flatten_Where(CK_NONE);
-  vHand_37_Flatten_Having(CK_NONE);
-  vHand_40_Predicate_Pullup(CK_NONE);
-  vHand_60_Index_Join(CK_NONE);
-  vHand_70_Join_Ordering(CK_NONE);
-  vHand_75_EE_operators    (CK_NONE);
-  vHand_80_Index_Scan(CK_NONE);
-  vHand_85_Cross_Join(CK_NONE);
-  vHand_90_Stream_Ordering(CK_NONE);
-  vHand_A0_Filter_Refinement(CK_NONE);
-  vHand_Z0_Restate_Pipeline(CK_NONE);
+  vSeries_10_Condense_Info(CK_NONE);
+  vSeries_20_Table_Analysis(CK_NONE);
+  vSeries_25_Stream_Analysis(CK_NONE);
+  vSeries_29_Query_Analysis(CK_NONE);
+  vSeries_35_Flatten_From(CK_NONE);
+  vSeries_36_Flatten_Where(CK_NONE);
+  vSeries_37_Flatten_Having(CK_NONE);
+  vSeries_40_Predicate_Pullup(CK_NONE);
+  vSeries_60_Index_Join(CK_NONE);
+  vSeries_70_Join_Ordering(CK_NONE);
+  vSeries_75_EE_operators    (CK_NONE);
+  vSeries_80_Index_Scan(CK_NONE);
+  vSeries_85_Cross_Join(CK_NONE);
+  vSeries_90_Stream_Ordering(CK_NONE);
+  vSeries_A0_Filter_Refinement(CK_NONE);
+  vSeries_Z0_Restate_Pipeline(CK_NONE);
 }
 
 #define CARD_BELOW \
@@ -101,7 +101,7 @@ EndDefine \
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_10_Condense_Info(i8 iBelow, ...)
+void Xseries::vSeries_10_Condense_Info(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -141,7 +141,7 @@ void Xseries::vHand_10_Condense_Info(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_20_Table_Analysis(i8 iBelow, ...)
+void Xseries::vSeries_20_Table_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -174,7 +174,7 @@ void Xseries::vHand_20_Table_Analysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_25_Stream_Analysis(i8 iBelow, ...)
+void Xseries::vSeries_25_Stream_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -211,7 +211,7 @@ void Xseries::vHand_25_Stream_Analysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_29_Query_Analysis(i8 iBelow, ...)
+void Xseries::vSeries_29_Query_Analysis(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -241,7 +241,7 @@ void Xseries::vHand_29_Query_Analysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /* from pattern : a/b -> ba                                                   */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_35_Flatten_From(i8 iBelow, ...)
+void Xseries::vSeries_35_Flatten_From(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -271,7 +271,7 @@ void Xseries::vHand_35_Flatten_From(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /* where pattern : a/b -> b|a                                                 */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_36_Flatten_Where(i8 iBelow, ...)
+void Xseries::vSeries_36_Flatten_Where(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -303,7 +303,7 @@ void Xseries::vHand_36_Flatten_Where(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /* having pattern : a/b -> a|b                                                */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_37_Flatten_Having(i8 iBelow, ...)
+void Xseries::vSeries_37_Flatten_Having(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -340,7 +340,7 @@ void Xseries::vHand_37_Flatten_Having(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_40_Predicate_Pullup(i8 iBelow, ...)
+void Xseries::vSeries_40_Predicate_Pullup(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -374,7 +374,7 @@ void Xseries::vHand_40_Predicate_Pullup(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_60_Index_Join(i8 iBelow, ...)
+void Xseries::vSeries_60_Index_Join(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -405,7 +405,7 @@ void Xseries::vHand_60_Index_Join(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_70_Join_Ordering(i8 iBelow, ...)
+void Xseries::vSeries_70_Join_Ordering(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -455,7 +455,7 @@ void Xseries::vHand_70_Join_Ordering(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_75_EE_operators(i8 iBelow, ...)
+void Xseries::vSeries_75_EE_operators(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -482,7 +482,7 @@ void Xseries::vHand_75_EE_operators(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_80_Index_Scan(i8 iBelow, ...)
+void Xseries::vSeries_80_Index_Scan(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -523,7 +523,7 @@ void Xseries::vHand_80_Index_Scan(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_85_Cross_Join(i8 iBelow, ...)
+void Xseries::vSeries_85_Cross_Join(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -551,7 +551,7 @@ void Xseries::vHand_85_Cross_Join(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_90_Stream_Ordering(i8 iBelow, ...)
+void Xseries::vSeries_90_Stream_Ordering(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -576,7 +576,7 @@ void Xseries::vHand_90_Stream_Ordering(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_A0_Filter_Refinement(i8 iBelow, ...)
+void Xseries::vSeries_A0_Filter_Refinement(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
@@ -601,7 +601,7 @@ void Xseries::vHand_A0_Filter_Refinement(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vHand_Z0_Restate_Pipeline(i8 iBelow, ...)
+void Xseries::vSeries_Z0_Restate_Pipeline(i8 iBelow, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
