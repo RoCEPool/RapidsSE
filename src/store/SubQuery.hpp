@@ -20,6 +20,8 @@ namespace STORE
 
     i8 m_i_SubQuery;
 
+    i8 m_i_Caller;
+
     i8 m_nParams;        // number of parameters
     eQD m_eDisposition;  // linear/simple or aggregation
     eQC m_eClause;       // claused called from where|having
@@ -45,6 +47,9 @@ namespace STORE
 
     eQD eDisposition(void);
     void vDisposition(eQD eDisposition);
+
+    i8 i_Caller(void);
+    void vCaller(i8 i_Caller);
 
     eQC eClause(void);
     void vClause(eQC eClause);

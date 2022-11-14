@@ -41,8 +41,9 @@ namespace STORE
     // vHand_29_Query_Analysis
     void vR_H29_T10a_Main_Query_Analysis_aggreg(void);
     void vR_H29_T10b_Main_Query_Analysis_gbyagg(void);
-    void vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc(void);
-    void vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc(void);
+    void vR_H29_T10c_Main_Query_Analysis_Of_from(void);
+    void vR_H29_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
+    void vR_H29_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
     void vR_H29_T20a_Sub_Query_Analysis_Only_main(void);
     void vR_H29_T20b_Sub_Query_Analysis_paramList(void);
     void vR_H29_T20c_Sub_Query_Analysis_aggreg(void);

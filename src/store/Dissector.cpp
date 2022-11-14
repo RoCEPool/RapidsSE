@@ -616,6 +616,12 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Card_RpnCalc* p_rpnCalc = pCard_Project->pSub_rpnCalc();
+  if (p_rpnCalc && p_rpnCalc->Y_bHas(P_AggOp))
+    pCard_Project->vCard(CK_AGGREG);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   delete pCard_RpnTerms;
 
   return pCard_Project;

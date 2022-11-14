@@ -144,6 +144,7 @@ namespace STORE
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     void G_vPushBoard(Board* pBoard);
+    bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
     void G_vPushIter(void);
     void G_vPushIter(Board* pBoard);

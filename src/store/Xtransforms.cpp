@@ -507,17 +507,24 @@ void Xtransforms::vH29_T10_Main_Query_Analysis(void)
     vR_H29_T10a_Main_Query_Analysis_aggreg();
   }
 
+  G_vRestart();
   while (G_bEachMain(CK_GBYAGG)) {
     vR_H29_T10b_Main_Query_Analysis_gbyagg();
   }
 
   i8 nBoards = m_pBench->nItems();
   if (nBoards > 1) {
-    while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      vR_H29_T10c_Main_Query_Analysis_Of_where_rpnCalc();
+    G_vRestart();
+    while (G_bEachMain(CK_CALL)) {
+      vR_H29_T10c_Main_Query_Analysis_Of_from();
     }
+    G_vRestart();
+    while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+      vR_H29_T10d_Main_Query_Analysis_Of_where_rpnCalc();
+    }
+    G_vRestart();
     while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      vR_H29_T10d_Main_Query_Analysis_Of_having_rpnCalc();
+      vR_H29_T10e_Main_Query_Analysis_Of_having_rpnCalc();
     }
   }
 
@@ -540,16 +547,23 @@ void Xtransforms::vH29_T20_Sub_Query_Analysis(void)
   else
   if (2 == nBoards) {
 
-    while (G_bEachMain(CK_PARAMLIST)) {
-      vR_H29_T20b_Sub_Query_Analysis_paramList();
-    }
+    if (G_bPushBoard(1)) {
 
-    while (G_bEachMain(CK_AGGREG)) {
-      vR_H29_T20c_Sub_Query_Analysis_aggreg();
-    }
+      while (G_bEachMain(CK_PARAMLIST)) {
+        vR_H29_T20b_Sub_Query_Analysis_paramList();
+      }
 
-    while (G_bEachMain(CK_GBYAGG)) {
-      vR_H29_T20d_Sub_Query_Analysis_gbyagg();
+      G_vRestart();
+      while (G_bEachMain(CK_AGGREG)) {
+        vR_H29_T20c_Sub_Query_Analysis_aggreg();
+      }
+
+      G_vRestart();
+      while (G_bEachMain(CK_GBYAGG)) {
+        vR_H29_T20d_Sub_Query_Analysis_gbyagg();
+      }
+
+      G_vPopBoard();
     }
   }
   else

@@ -1222,6 +1222,24 @@ void Xgearing::G_vPushBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push board                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bPushBoard(i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Board* pBoard = m_pBench->pGetBoard(i_Board);
+  RASSERT(pBoard);
+
+  if (pBoard) {
+    G_vPushBoard(pBoard);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bIsBoard(Stz* szBoardNm)
