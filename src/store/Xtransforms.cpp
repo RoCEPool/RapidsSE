@@ -92,7 +92,7 @@ void Xtransforms::vS10_T10_Delete_All_absJoin(void)
   vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
   while (G_bEachMain(CK_ABSJOIN)) {
-    vR_H10_T10_Delete_absJoin();
+    vR_S10_T10_Delete_absJoin();
   }
 
   vEndTransform();
@@ -108,7 +108,7 @@ void Xtransforms::vS10_T20_Delete_All_combined(void)
   vTransform(__func__, "delete superfluous <combined>'s"_Stz);
 
   while (G_bEachMain(CK_COMBINED)) {
-    vR_H10_T20_Delete_combined();
+    vR_S10_T20_Delete_combined();
   }
 
   vEndTransform();
@@ -124,7 +124,7 @@ void Xtransforms::vS10_T30_Delete_All_send(void)
   vTransform(__func__, "delete superfluous <send>'s"_Stz);
 
   while (G_bEachMain(CK_SEND)) {
-    vR_H10_T30_Delete_send();
+    vR_S10_T30_Delete_send();
   }
 
   vEndTransform();
@@ -140,7 +140,7 @@ void Xtransforms::vS10_T40_Delete_All_stage(void)
   vTransform(__func__, "delete all <stage>'s"_Stz);
 
   while (G_bEachMain(CK_STAGE)) {
-    vR_H10_T40_Delete_stage();
+    vR_S10_T40_Delete_stage();
   }
 
   vEndTransform();
@@ -156,7 +156,7 @@ void Xtransforms::vS10_T50_Cull_scan_Leaving_table(void)
   vTransform(__func__, "replace all <scan>'s with their children"_Stz);
 
   while (G_bEachMain(CK_SCAN)) {
-    vR_H10_T50_Cull_scan_Leaving_table();
+    vR_S10_T50_Cull_scan_Leaving_table();
   }
 
   vEndTransform();
@@ -174,7 +174,7 @@ void Xtransforms::vS10_T60_Add_All_level(void)
   G.e_Level = AL_PARTITION;
 
   while (G_bEachMain()) {
-    vR_H10_T60_Add_level();
+    vR_S10_T60_Add_level();
   }
 
   vEndTransform();
@@ -200,7 +200,7 @@ void Xtransforms::vS10_T80_Delete_Redundant_stages(void)
       continue;
     }
 
-    vR_H10_T80_Delete_Redundant_stage();
+    vR_S10_T80_Delete_Redundant_stage();
   }
 
   vEndTransform();
@@ -216,7 +216,7 @@ void Xtransforms::vS10_T90_Hide_Ignorable_stages(void)
   vTransform(__func__, "hide ignorable <stage>'s"_Stz);
 
   while (G_bEachMain(CK_STAGE)) {
-    vR_H10_T90_Hide_Ignorable_stage();
+    vR_S10_T90_Hide_Ignorable_stage();
   }
 
   vEndTransform();
@@ -282,7 +282,7 @@ void Xtransforms::vS20_T10_Affix_tableSyn_ToAll_table(void)
   vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    vR_H20_T10_AAffix_tableSyn_To_table();
+    vR_S20_T10_AAffix_tableSyn_To_table();
   }
 
   vEndTransform();
@@ -298,7 +298,7 @@ void Xtransforms::vS20_T20_Produce_tablePtn_UnderAll_table(void)
   vTransform(__func__, "add a <tablePtn> under every <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H20_T20_Produce_tablePtn_Under_table();
+    vR_S20_T20_Produce_tablePtn_Under_table();
   }
 
   vEndTransform();
@@ -366,7 +366,7 @@ void Xtransforms::vS25_T10_Produce_stream_UnderAll_table(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H25_T10_Produce_stream_Under_table();
+    vR_S25_T10_Produce_stream_Under_table();
   }
 
   vEndTransform();
@@ -384,7 +384,7 @@ void Xtransforms::vS25_T12_Produce_stream_UnderAll_project(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
-    vR_H25_T12_Produce_stream_Under_project();
+    vR_S25_T12_Produce_stream_Under_project();
   }
 
   vEndTransform();
@@ -402,7 +402,7 @@ void Xtransforms::vS25_T14_Produce_stream_UnderAll_aggreg(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
-    vR_H25_T14_Produce_stream_Under_aggreg();
+    vR_S25_T14_Produce_stream_Under_aggreg();
   }
 
   vEndTransform();
@@ -418,7 +418,7 @@ void Xtransforms::vS25_T20_Derive_ordinalRange_ForAll_table_stream(void)
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_H25_T20_Derive_ordinalRange_For_table_stream();
+    vR_S25_T20_Derive_ordinalRange_For_table_stream();
   }
 
   vEndTransform();
@@ -434,7 +434,7 @@ void Xtransforms::vS25_T22_Derive_ordinalRange_ForAll_project_stream(void)
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
-    vR_H25_T22_Derive_ordinalRange_For_project_stream();
+    vR_S25_T22_Derive_ordinalRange_For_project_stream();
   }
 
   vEndTransform();
@@ -450,7 +450,7 @@ void Xtransforms::vS25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
-    vR_H25_T24_Derive_ordinalRange_For_aggreg_stream();
+    vR_S25_T24_Derive_ordinalRange_For_aggreg_stream();
   }
 
   vEndTransform();
@@ -516,27 +516,27 @@ void Xtransforms::vS27_T10_Main_Query_Analysis(void)
   vTransform(__func__, "((10))"_Stz);
 
   while (G_bEachMain(CK_AGGREG)) {
-    vR_H29_T10a_Main_Query_Analysis_aggreg();
+    vR_S29_T10a_Main_Query_Analysis_aggreg();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_GBYAGG)) {
-    vR_H29_T10b_Main_Query_Analysis_gbyagg();
+    vR_S29_T10b_Main_Query_Analysis_gbyagg();
   }
 
   i8 nBoards = m_pBench->nItems();
   if (nBoards > 1) {
     G_vRestart();
     while (G_bEachMain(CK_CALL)) {
-      vR_H29_T10c_Main_Query_Analysis_Of_from();
+      vR_S29_T10c_Main_Query_Analysis_Of_from();
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      vR_H29_T10d_Main_Query_Analysis_Of_where_rpnCalc();
+      vR_S29_T10d_Main_Query_Analysis_Of_where_rpnCalc();
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      vR_H29_T10e_Main_Query_Analysis_Of_having_rpnCalc();
+      vR_S29_T10e_Main_Query_Analysis_Of_having_rpnCalc();
     }
   }
 
@@ -554,7 +554,7 @@ void Xtransforms::vS27_T20_Sub_Query_Analysis(void)
 
   i8 nBoards = m_pBench->nItems();
   if (1 == nBoards) {
-    vR_H29_T20a_Sub_Query_Analysis_Only_main();
+    vR_S29_T20a_Sub_Query_Analysis_Only_main();
   }
   else
   if (2 == nBoards) {
@@ -562,17 +562,17 @@ void Xtransforms::vS27_T20_Sub_Query_Analysis(void)
     if (G_bPushBoard(1)) {
 
       while (G_bEachMain(CK_PARAMLIST)) {
-        vR_H29_T20b_Sub_Query_Analysis_paramList();
+        vR_S29_T20b_Sub_Query_Analysis_paramList();
       }
 
       G_vRestart();
       while (G_bEachMain(CK_AGGREG)) {
-        vR_H29_T20c_Sub_Query_Analysis_aggreg();
+        vR_S29_T20c_Sub_Query_Analysis_aggreg();
       }
 
       G_vRestart();
       while (G_bEachMain(CK_GBYAGG)) {
-        vR_H29_T20d_Sub_Query_Analysis_gbyagg();
+        vR_S29_T20d_Sub_Query_Analysis_gbyagg();
       }
 
       G_vPopBoard();
@@ -593,7 +593,7 @@ void Xtransforms::vS27_T30(void)
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H29_T30();
+  vR_S29_T30();
 
   vEndTransform();
 }
@@ -657,7 +657,7 @@ void Xtransforms::vS29_T10_Convert_where_rpnCalc_To_boolCalc(void)
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H29_T10_Convert_where_rpnCalc_To_boolCalc();
+    vR_S29_T10_Convert_where_rpnCalc_To_boolCalc();
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -686,7 +686,7 @@ void Xtransforms::vS29_T20_Convert_stmColOdn_To_tblColOdn(void)
         continue;
     }
 
-    vR_H29_T20_Convert_stmColOdn_To_tblColOdn();
+    vR_S29_T20_Convert_stmColOdn_To_tblColOdn();
   }
 
   V_vNo_Terms_StmColOdn(G.pDeck);
@@ -782,11 +782,11 @@ void Xtransforms::vS35_T10_Push_sqB_Into_mqA(void)
       continue;
     }
 
-    vR_H35_T10a_Copy_From_SubQuery();
+    vR_S35_T10a_Copy_From_SubQuery();
 
     G_vPopBoard();
 
-    vR_H35_T10b_Push_sqB_Before_mqA();
+    vR_S35_T10b_Push_sqB_Before_mqA();
   }
 
   vEndTransform();
@@ -894,11 +894,11 @@ void Xtransforms::vS36_T10_Push_sqB_Into_mqA(void)
       continue;
     }
 
-    vR_H36_T10a_Copy_From_SubQuery();
+    vR_S36_T10a_Copy_From_SubQuery();
 
     G_vPopBoard();
 
-    vR_H36_T10b_Push_sqB_Before_mqA();
+    vR_S36_T10b_Push_sqB_Before_mqA();
 
     break;
   }
@@ -920,12 +920,12 @@ void Xtransforms::vS36_T20_Transfer_whereB_To_whereA(void)
   G.pDeck->vDump();
 
   while (G_bEachMain(CK_WHERE)) {
-    vR_H36_T20a_Get_cmpPred_Of_whereB();
+    vR_S36_T20a_Get_cmpPred_Of_whereB();
     break;
   }
 
   while (G_bEachMain(CK_WHERE)) {
-    vR_H36_T20b_Push_cmpPred_Onto_whereA();
+    vR_S36_T20b_Push_cmpPred_Onto_whereA();
   }
 
 //  G_vRestart();
@@ -946,13 +946,13 @@ void Xtransforms::vS36_T30_Replace_param_In_whereA(void)
   vTransform(__func__, "Replace param in where-A"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    vR_H36_T30a_Replace_param_In_whereA();
+    vR_S36_T30a_Replace_param_In_whereA();
     break;
   }
 
   G_vRestart();
   while (G_bEachMain(CK_PARAMLIST)) {
-    vR_H36_T30b_Delete_param_In_whereB();
+    vR_S36_T30b_Delete_param_In_whereB();
   }
 
 //  G_vRestart();
@@ -973,7 +973,7 @@ void Xtransforms::vS36_T40_Delete_tstPred_In_whereA(void)
   vTransform(__func__, "Delete tstPred in where-A"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    vR_H36_T40_Delete_tstPred_In_whereA();
+    vR_S36_T40_Delete_tstPred_In_whereA();
     break;
   }
 
@@ -989,7 +989,7 @@ void Xtransforms::vS36_T50_Adjust_StmOdn(void)
 
   vTransform(__func__, "Adjust stream lo/ho ordinals"_Stz);
 
-  vR_H36_T50_Adjust_StmOdn();
+  vR_S36_T50_Adjust_StmOdn();
 
   vEndTransform();
 }
@@ -1003,7 +1003,7 @@ void Xtransforms::vS36_T60_Adjust_StmColOdn(void)
 
   vTransform(__func__, "Adjust stream lo/ho ordinals"_Stz);
 
-  vR_H36_T60_Adjust_StmColOdn();
+  vR_S36_T60_Adjust_StmColOdn();
 
   vEndTransform();
 }
@@ -1018,7 +1018,7 @@ void Xtransforms::vS36_T70_Replace_term_In_cmpPred(void)
   vTransform(__func__, "AReplace term in cmpPred"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    vR_H36_T70_Replace_term_In_cmpPred();
+    vR_S36_T70_Replace_term_In_cmpPred();
   }
 
   vEndTransform();
@@ -1121,11 +1121,11 @@ void Xtransforms::vS37_T10_Append_sqB_After_mqA(void)
       NEVER_REACH;
     }
 
-    vR_H37_T10a_Copy_sqB();
+    vR_S37_T10a_Copy_sqB();
 
     G_vPopBoard();
 
-    vR_H37_T10a_Append_sqB_After_mqA();
+    vR_S37_T10a_Append_sqB_After_mqA();
 
     //break;
   //}
@@ -1145,7 +1145,7 @@ void Xtransforms::vS37_T20_Find_stmCol_Link(void)
   vTransform(__func__, "((30))"_Stz);
 
   while (G_bResolveCard(CK_PROJECT,C_UNKNOWN)) {
-    vR_H37_T20_Find_stmCol_Link();
+    vR_S37_T20_Find_stmCol_Link();
     break;
   }
 
@@ -1162,7 +1162,7 @@ void Xtransforms::vS37_T30_Link_sqCall_In_having(void)
   vTransform(__func__, "((20))"_Stz);
 
   while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
-    vR_H37_T30_Link_sqCall_In_having();
+    vR_S37_T30_Link_sqCall_In_having();
   }
 
   vEndTransform();
@@ -1178,7 +1178,7 @@ void Xtransforms::vS37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
   vTransform(__func__, "((20))"_Stz);
 
   while (G_bEachMainWithSub(CK_GBYAGG, CK_GBYELIST)) {
-    vR_H37_T35_Bump_gbyElist_rpnCalc_In_sqB();
+    vR_S37_T35_Bump_gbyElist_rpnCalc_In_sqB();
   }
 
   vEndTransform();
@@ -1202,7 +1202,7 @@ void Xtransforms::vS37_T40_Add_sqCol_To_aggGbyElist(void)
     if (G.e_MainCard != CK_GBYAGG)
       continue;
 
-    vR_H37_T40Add_sqCol_To_AggGbyElist();
+    vR_S37_T40Add_sqCol_To_AggGbyElist();
   }
 
   vEndTransform();
@@ -1218,7 +1218,7 @@ void Xtransforms::vS37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
   vTransform(__func__, "((20))"_Stz);
 
   while (G_bEachMainWithSub(CK_GBYAGG, CK_AGGELIST)) {
-    vR_H37_T45_Bump_aggElist_rpnCalc_In_sqB();
+    vR_S37_T45_Bump_aggElist_rpnCalc_In_sqB();
   }
 
   vEndTransform();
@@ -1241,7 +1241,7 @@ void Xtransforms::vS37_T50_Add_sqCol_To_aggAggElist(void)
     if (G.e_MainCard != CK_GBYAGG)
       continue;
 
-    vR_H37_T50_Add_sqCol_To_aggAggElist();
+    vR_S37_T50_Add_sqCol_To_aggAggElist();
   }
 
   vEndTransform();
@@ -1257,7 +1257,7 @@ void Xtransforms::vS37_T55_Bump_having_rpnCalc_In_sqB(void)
   vTransform(__func__, "((20))"_Stz);
 
   while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
-    vR_H37_T55_Bump_having_rpnCalc_In_sqB();
+    vR_S37_T55_Bump_having_rpnCalc_In_sqB();
   }
 
   vEndTransform();
@@ -1274,7 +1274,7 @@ void Xtransforms::vS37_T60_Unproject_sqCol(void)
 
   while (G_bEachMain(CK_TWIST)) {
 
-    vR_H37_T60_Unproject_sqCol();
+    vR_S37_T60_Unproject_sqCol();
     break;
   }
 
@@ -1292,7 +1292,7 @@ void Xtransforms::vS37_T70_Exhange_sqB_With_mqA(void)
 
   while (G_bEachMain(CK_TWIST)) {
 
-    vR_H37_T70_Exhange_sqB_With_mqA();
+    vR_S37_T70_Exhange_sqB_With_mqA();
     break;
   }
 
@@ -1308,7 +1308,7 @@ void Xtransforms::vS37_T80_Adjust_StmOdn(void)
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T80_AdjustStmOdn();
+  vR_S37_T80_AdjustStmOdn();
 
   vEndTransform();
 }
@@ -1322,7 +1322,7 @@ void Xtransforms::vS37_T90_Adjust_StmColOdn(void)
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_T90_Adjust_StmColOdn();
+  vR_S37_T90_Adjust_StmColOdn();
 
   vEndTransform();
 }
@@ -1350,7 +1350,7 @@ void Xtransforms::vS37_TB0(void)
 
   vTransform(__func__, "((30))"_Stz);
 
-  vR_H37_TB0();
+  vR_S37_TB0();
 
   vEndTransform();
 }
@@ -1417,7 +1417,7 @@ void Xtransforms::vS40_T10_AtMark_where_pred_Wrt_table(void)
   vTransform(__func__, "put a table @c against where pred"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H40_T10_AtMark_where_pred_Wrt_table();
+    vR_S40_T10_AtMark_where_pred_Wrt_table();
   }
 
   vEndTransform();
@@ -1433,7 +1433,7 @@ void Xtransforms::vS40_T20_Move_AtMarked_where_pred_To_table_filter(void)
   vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H40_T20_Move_AtMarked_where_pred_To_table_filter();
+    vR_S40_T20_Move_AtMarked_where_pred_To_table_filter();
   }
 
   vEndTransform();
@@ -1449,7 +1449,7 @@ void Xtransforms::vS40_T30_Delete_Empty_where(void)
   vTransform(__func__, "delete where if it is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_H40_T30_Delete_Empty_where();
+    vR_S40_T30_Delete_Empty_where();
   }
 
   vEndTransform();
@@ -1519,7 +1519,7 @@ void Xtransforms::vS60_T05_Twist_in_Becomes_filter(void)
   vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TWIST, CK_TSTPRED,"in"_Stz)) {
-    vR_H60_T05_Twist_in_Becomes_filter();
+    vR_S60_T05_Twist_in_Becomes_filter();
   }
 
   vEndTransform();
@@ -1535,7 +1535,7 @@ void Xtransforms::vS60_T10_Produce_maybeIndexJoin_Under_filter(void)
   vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T10_Produce_maybeIndexJoin_Under_filter();
+    vR_S60_T10_Produce_maybeIndexJoin_Under_filter();
   }
 
   vEndTransform();
@@ -1551,7 +1551,7 @@ void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
   vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
-    vR_H60_T20_Affix_tblColOdn_To_idxCol();
+    vR_S60_T20_Affix_tblColOdn_To_idxCol();
   }
 
   vEndTransform();
@@ -1567,7 +1567,7 @@ void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
   vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_H60_T30_UpCopy_filter_pred_Into_bounds();
+    vR_S60_T30_UpCopy_filter_pred_Into_bounds();
   }
 
   vEndTransform();
@@ -1583,7 +1583,7 @@ void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
   vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_H60_T40_Cull_UpCopied_filter_pred();
+    vR_S60_T40_Cull_UpCopied_filter_pred();
   }
 
   vEndTransform();
@@ -1599,7 +1599,7 @@ void Xtransforms::vS60_T50_Delete_Empty_filter(void)
   vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_H60_T50_Delete_Empty_filter();
+    vR_S60_T50_Delete_Empty_filter();
   }
 
   vEndTransform();
@@ -1615,7 +1615,7 @@ void Xtransforms::vS60_T60_Delete_Twist(void)
   vTransform(__func__, "((desc))"_Stz);
 
   while (G_bEachMain(CK_TWIST)) {
-    vR_H60_T60_Delete_Twist();
+    vR_S60_T60_Delete_Twist();
   }
 
   vEndTransform();
@@ -1692,7 +1692,7 @@ void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
     if (! (G.p_table = G.p_MainCard->pSub_table()))
       continue;
 
-    vR_H70_T00_Extract_tableList_From_queryBoard();
+    vR_S70_T00_Extract_tableList_From_queryBoard();
   }
 
   vEndTransform();
@@ -1721,7 +1721,7 @@ void Xtransforms::vS70_T10_Extract_joinPredList(void)
     if (!G.p_boolCalc)
       continue;
 
-    vR_H70_T10_Extract_joinPredList();
+    vR_S70_T10_Extract_joinPredList();
   }
 
   vEndTransform();
@@ -1757,7 +1757,7 @@ void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
     if (!T_bTableList_PredCmpIsCoPtn(G.p_tableList, G.p_cmpPred))
       continue;
 
-    vR_H70_T20_Compute_coPtnPredList();
+    vR_S70_T20_Compute_coPtnPredList();
   }
 
   vEndTransform();
@@ -1777,7 +1777,7 @@ void Xtransforms::vS70_T30_Compute_coPtnJoinList(void)
   //--nn--------------==
   // coPtnJoinList
 
-  vR_H70_T30_Compute_coPtnJoinList();
+  vR_S70_T30_Compute_coPtnJoinList();
 
   vEndTransform();
 }
@@ -1796,7 +1796,7 @@ void Xtransforms::vS70_T40_Compute_crossPtnJoinList(void)
   //--nn--------------==
   // crossPtnJoinList
 
-  vR_H70_T40_Compute_crossPtnJoinList();
+  vR_S70_T40_Compute_crossPtnJoinList();
 
 
 //  G.p_comment = new Card_Comment("((TO BE CODED))"_Stz);
@@ -1819,7 +1819,7 @@ void Xtransforms::vS70_T50_Compute_ptndJoinSet(void)
   //--nn--------------==
   // ptndJoinSet
 
-  vR_H70_T50_Compute_ptndJoinSet();
+  vR_S70_T50_Compute_ptndJoinSet();
 
   vEndTransform();
 }
@@ -1835,7 +1835,7 @@ void Xtransforms::vS70_T60_Copy_ptndJoinSet(void)
 
   //vSetupPermuteBoard();
 
-  vR_H70_T60_Copy_ptndJoinSet();
+  vR_S70_T60_Copy_ptndJoinSet();
 
   vEndTransform();
 }
@@ -1854,7 +1854,7 @@ void Xtransforms::vS70_T70_Generate_ptndPermutations(void)
   //--nn--------------==
   // x
 
-  vR_H70_T70_Generate_ptndPermutations();
+  vR_S70_T70_Generate_ptndPermutations();
 
   vEndTransform();
 }
@@ -1868,7 +1868,7 @@ void Xtransforms::vS70_T80_Remove_invalidPermutations(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_H70_T80_Remove_invalidPermutations();
+  vR_S70_T80_Remove_invalidPermutations();
 
   vEndTransform();
 }
@@ -1886,7 +1886,7 @@ void Xtransforms::vS70_T90_Setup_costEst(void)
 
   //m_pBoard_costEst->vDuplicateBoard(G.pBoard);
 
-  vR_H70_T90_Setup_costEst();
+  vR_S70_T90_Setup_costEst();
 
   vEndTransform();
 }
@@ -1900,7 +1900,7 @@ void Xtransforms::vS70_T92_Estimate_ptndJoins(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_H70_T92_Estimate_ptndJoins();
+  vR_S70_T92_Estimate_ptndJoins();
 
   vEndTransform();
 }
@@ -1914,7 +1914,7 @@ void Xtransforms::vS70_T94_Estimate_network(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_H70_T94_Estimate_network();
+  vR_S70_T94_Estimate_network();
 
   vEndTransform();
 }
@@ -1928,7 +1928,7 @@ void Xtransforms::vS70_T96_Estimate_joinOrder(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_H70_T96_Estimate_joinOrder();
+  vR_S70_T96_Estimate_joinOrder();
 
   vEndTransform();
 }
@@ -1942,7 +1942,7 @@ void Xtransforms::vS70_T98_Extract_joinOrderSeq(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_H70_T98_Extract_joinOrderSeq();
+  vR_S70_T98_Extract_joinOrderSeq();
 
   vEndTransform();
 }
@@ -2011,17 +2011,17 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
     G.p_maybeIndexJoin = G.p_table->pSub_maybeIndexJoin();
     G.p_keyExists = G.p_table->pSub_keyExists();
 
-    vR_H75_T10_Morph_table_To_EEop();
+    vR_S75_T10_Morph_table_To_EEop();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
-    vR_H75_T10_Morph_table_To_EEop_b();
+    vR_S75_T10_Morph_table_To_EEop_b();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
-    vR_H75_T10_Morph_table_To_EEop_c();
+    vR_S75_T10_Morph_table_To_EEop_c();
   }
 
   G_vRestart();
@@ -2046,7 +2046,7 @@ void Xtransforms::vS75_T20_Morph_keyExists_filter_To_constraint(void)
   vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
-    vR_H75_T20_Morph_keyExists_filter_To_constraint();
+    vR_S75_T20_Morph_keyExists_filter_To_constraint();
   }
 
   vEndTransform();
@@ -2062,7 +2062,7 @@ void Xtransforms::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
   vTransform(__func__, "((description))"_Stz);
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_STREAM)) {
-    vR_H75_T30_Correct_stmColOdn_Of_keyExists_stream();
+    vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream();
   }
 
   vEndTransform();
@@ -2078,7 +2078,7 @@ void Xtransforms::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
   vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
-    vR_H75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
+    vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
   }
 
   vEndTransform();
@@ -2143,7 +2143,7 @@ void Xtransforms::vS80_T10_Produce_Scratch_indexList_Under_scan(void)
   vTransform(__func__, "append <indexList> to <scan>"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_TABLENM)) {
-    vR_H80_T10_Produce_indexList_Under_scan();
+    vR_S80_T10_Produce_indexList_Under_scan();
   }
 
   vEndTransform();
@@ -2159,7 +2159,7 @@ void Xtransforms::vS80_T20_Affix_idxColOdn_ToAll_idxCol(void)
   vTransform(__func__, "convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_STREAM, CK_IDXCOLLIST)) {
-    vR_H80_T20_Affix_idxCol_name_Of_scan_To_ordinal();
+    vR_S80_T20_Affix_idxCol_name_Of_scan_To_ordinal();
   }
 
   vEndTransform();
@@ -2175,7 +2175,7 @@ void Xtransforms::vS80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void)
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
-    vR_H80_T30_Mark_ULBoundsOf_scan_filter_cmpPred();
+    vR_S80_T30_Mark_ULBoundsOf_scan_filter_cmpPred();
   }
 
   vEndTransform();
@@ -2191,7 +2191,7 @@ void Xtransforms::vS80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
   vTransform(__func__, "mark <SCAN>//<filter>//<term> ordinals which match index"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
-    vR_H80_T40_Mark_IndexMatchOf_scan_filter_terms();
+    vR_S80_T40_Mark_IndexMatchOf_scan_filter_terms();
   }
 
   vEndTransform();
@@ -2207,7 +2207,7 @@ void Xtransforms::vS80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
-    vR_H80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
+    vR_S80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
   }
 
   vEndTransform();
@@ -2223,7 +2223,7 @@ void Xtransforms::vS80_T60_Cull_Marked_filter_cmpPred(void)
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
-    vR_H80_T60_Cull_Marked_filter_cmpPred();
+    vR_S80_T60_Cull_Marked_filter_cmpPred();
   }
 
   vEndTransform();
@@ -2240,17 +2240,17 @@ void Xtransforms::vS80_T70_Morph_scan_To_indexScan(void)
 
   while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
     //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,G.p_scan->szBearing());
-    vR_H80_T70_Morph_scan_To_indexScan();
+    vR_S80_T70_Morph_scan_To_indexScan();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
-    vR_H80_T70_Morph_scan_To_indexScan_b();
+    vR_S80_T70_Morph_scan_To_indexScan_b();
   }
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXSCAN, CK_INDEXLIST)) {
-    vR_H80_T70_Morph_scan_To_indexScan_c();
+    vR_S80_T70_Morph_scan_To_indexScan_c();
   }
 
   vEndTransform();
@@ -2314,9 +2314,9 @@ void Xtransforms::vS85_T10_Transmute_All_table(void)
   vTransform(__func__, "((85 10))"_Stz);
 
   if (G_bEachMain(CK_TABLE)) {
-    vR_H85_T10a_Transmute_table_To_Scan();
+    vR_S85_T10a_Transmute_table_To_Scan();
     while (G_bEachMain(CK_TABLE)) {
-      vR_H85_T10b_Transmute_table_To_crossJoin();
+      vR_S85_T10b_Transmute_table_To_crossJoin();
     }
   }
 
@@ -2333,7 +2333,7 @@ void Xtransforms::vS85_T20_Add_index_ForAll_crossJoin(void)
   vTransform(__func__, "((85 20))"_Stz);
 
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_TABLENM)) {
-    vR_H85_T20_Add_index_For_crossJoin();
+    vR_S85_T20_Add_index_For_crossJoin();
   }
 
   vEndTransform();
@@ -2349,7 +2349,7 @@ void Xtransforms::vS85_T30_Add_bounds_ForAll_crossJoin(void)
   vTransform(__func__, "((85 20))"_Stz);
 
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_INDEX)) {
-    vR_H85_T30_Add_bounds_For_crossJoin();
+    vR_S85_T30_Add_bounds_For_crossJoin();
   }
 
   vEndTransform();
@@ -2416,7 +2416,7 @@ void Xtransforms::vS90_T10_Remove_sort_IfSameAs_gby(void)
   while (G_bEachMain(CK_SORT)) {
     if (! G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
       break;
-    vR_H90_T10_Remove_sort_IfSameAs_gby();
+    vR_S90_T10_Remove_sort_IfSameAs_gby();
   }
 
   vEndTransform();
@@ -2565,12 +2565,12 @@ void Xtransforms::vSA0_T10_Individuate_filter(void)
   vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
   while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    vR_HA0_T10_Individuate_scan_filter();
+    vR_SA0_T10_Individuate_scan_filter();
   }
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    vR_HA0_T10_Individuate_indexJoin_filter_b();
+    vR_SA0_T10_Individuate_indexJoin_filter_b();
   }
 
   vEndTransform();
@@ -2646,7 +2646,7 @@ void Xtransforms::vSZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
     ))
       continue;
 
-    vR_HZ0_T10_Restore_stmColOdn_from_tblColOdn();
+    vR_SZ0_T10_Restore_stmColOdn_from_tblColOdn();
   }
 
   vEndTransform();
@@ -2714,7 +2714,7 @@ void Xtransforms::vSZ0_T20_Reinstate_stages(void)
   vTransform(__func__, "reinstate stages"_Stz);
 
   while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
-    vR_HZ0_T20_Reinstate_stages();
+    vR_SZ0_T20_Reinstate_stages();
   }
 
   i8 i_Stage = 1;
@@ -2744,7 +2744,7 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV2(void)
 
   G.p_PriorToMain = nullptr;
   while (G_bEachMain())  {
-    vR_HZ0_T20_Reinstate_stagesV2();
+    vR_SZ0_T20_Reinstate_stagesV2();
   }
 
   i8 i_Stage = 1;
@@ -2764,7 +2764,7 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
 
   vTransform(__func__, "reinstate stages"_Stz);
 
-  vR_HZ0_T20_Reinstate_stagesV3();
+  vR_SZ0_T20_Reinstate_stagesV3();
 
   vEndTransform();
 }
@@ -2781,7 +2781,7 @@ void Xtransforms::vSZ0_T30_Reinstate_combined(void)
   while (G_bEachMain()) {
     G_vSubsequentToMain();
     if (T_bCombined_Reinstate(G.e_MainCard, G.e_SubsequentToMain)) {
-      vR_HZ0_T30_Reinstate_combined();
+      vR_SZ0_T30_Reinstate_combined();
       G_vSkipNextMain();
     }
   }
@@ -2804,10 +2804,10 @@ void Xtransforms::vSZ0_T40_Reinstate_next(void)
 
     G.p_MainCard->vDump();
 
-    vR_HZ0_T40_Reinstate_next();
+    vR_SZ0_T40_Reinstate_next();
   }
 
-  vR_HZ0_T40_Reinstate_next_b();
+  vR_SZ0_T40_Reinstate_next_b();
 
   vEndTransform();
 }
