@@ -73,41 +73,32 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveShorter();
   m_pCardCtl->vSaveXhand();
 
-  vSeries_10_Condense_Info(CK_NONE);
-  vSeries_20_Table_Analysis(CK_NONE);
-  vSeries_25_Stream_Analysis(CK_NONE);
-  vSeries_29_Query_Analysis(CK_NONE);
-  vSeries_35_Flatten_From(CK_NONE);
-  vSeries_36_Flatten_Where(CK_NONE);
-  vSeries_37_Flatten_Having(CK_NONE);
-  vSeries_40_Predicate_Pullup(CK_NONE);
-  vSeries_60_Index_Join(CK_NONE);
-  vSeries_70_Join_Ordering(CK_NONE);
-  vSeries_75_EE_operators    (CK_NONE);
-  vSeries_80_Index_Scan(CK_NONE);
-  vSeries_85_Cross_Join(CK_NONE);
-  vSeries_90_Stream_Ordering(CK_NONE);
-  vSeries_A0_Filter_Refinement(CK_NONE);
-  vSeries_Z0_Restate_Pipeline(CK_NONE);
+  vSeries_10_Condense_Info      (C_ENABLED);
+  vSeries_20_Table_Analysis     (C_ENABLED);
+  vSeries_25_Stream_Analysis    (C_ENABLED);
+  vSeries_29_Query_Analysis     (C_ENABLED);
+  vSeries_35_Flatten_From       (C_ENABLED);
+  vSeries_36_Flatten_Where      (C_ENABLED);
+  vSeries_37_Flatten_Having     (C_ENABLED);
+  vSeries_40_Predicate_Pullup   (C_ENABLED);
+  vSeries_60_Index_Join         (C_ENABLED);
+  vSeries_70_Join_Ordering      (C_ENABLED);
+  vSeries_75_EE_operators       (C_ENABLED);
+  vSeries_80_Index_Scan         (C_ENABLED);
+  vSeries_85_Cross_Join         (C_ENABLED);
+  vSeries_90_Stream_Ordering    (C_ENABLED);
+  vSeries_A0_Filter_Refinement  (C_ENABLED);
+  vSeries_Z0_Restate_Pipeline   (C_ENABLED);
 }
-
-#define CARD_BELOW \
-  va_list xVarArgs; \
-  va_start(xVarArgs,iBelow); \
-  m_pCardCtl->vPrintBelow(iBelow,xVarArgs); \
-  va_end(xVarArgs);\
-EndDefine \
 
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_10_Condense_Info(i8 iBelow, ...)
+void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS10_T00_Test()) {
     m_pTransforms->vS10_T00_Skip();
@@ -141,13 +132,11 @@ void Xseries::vSeries_10_Condense_Info(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_20_Table_Analysis(i8 iBelow, ...)
+void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS20_T00_Test()) {
     m_pTransforms->vS20_T00_Skip();
@@ -174,13 +163,11 @@ void Xseries::vSeries_20_Table_Analysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_25_Stream_Analysis(i8 iBelow, ...)
+void Xseries::vSeries_25_Stream_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS25_T00_Test()) {
     m_pTransforms->vS25_T00_Skip();
@@ -211,13 +198,11 @@ void Xseries::vSeries_25_Stream_Analysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_29_Query_Analysis(i8 iBelow, ...)
+void Xseries::vSeries_29_Query_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS29_T00_Test()) {
     m_pTransforms->vS29_T00_Skip();
@@ -241,13 +226,11 @@ void Xseries::vSeries_29_Query_Analysis(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /* from pattern : a/b -> ba                                                   */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_35_Flatten_From(i8 iBelow, ...)
+void Xseries::vSeries_35_Flatten_From(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS35_T00_Test()) {
     m_pTransforms->vS35_T00_Skip();
@@ -271,13 +254,11 @@ void Xseries::vSeries_35_Flatten_From(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /* where pattern : a/b -> b|a                                                 */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_36_Flatten_Where(i8 iBelow, ...)
+void Xseries::vSeries_36_Flatten_Where(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS36_T00_Test()) {
     m_pTransforms->vS36_T00_Skip();
@@ -303,13 +284,11 @@ void Xseries::vSeries_36_Flatten_Where(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /* having pattern : a/b -> a|b                                                */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_37_Flatten_Having(i8 iBelow, ...)
+void Xseries::vSeries_37_Flatten_Having(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS37_T00_Test()) {
     m_pTransforms->vS37_T00_Skip();
@@ -340,13 +319,11 @@ void Xseries::vSeries_37_Flatten_Having(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_40_Predicate_Pullup(i8 iBelow, ...)
+void Xseries::vSeries_40_Predicate_Pullup(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS40_T00_Test()) {
     m_pTransforms->vS40_T00_Skip();
@@ -374,13 +351,11 @@ void Xseries::vSeries_40_Predicate_Pullup(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_60_Index_Join(i8 iBelow, ...)
+void Xseries::vSeries_60_Index_Join(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS60_T00_Test()) {
     m_pTransforms->vS60_T00_Skip();
@@ -405,13 +380,11 @@ void Xseries::vSeries_60_Index_Join(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_70_Join_Ordering(i8 iBelow, ...)
+void Xseries::vSeries_70_Join_Ordering(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS70_T00_Test()) {
     m_pTransforms->vS70_T00_Skip();
@@ -455,13 +428,11 @@ void Xseries::vSeries_70_Join_Ordering(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_75_EE_operators(i8 iBelow, ...)
+void Xseries::vSeries_75_EE_operators(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS75_T00_Test()) {
     m_pTransforms->vS75_T00_Skip();
@@ -482,13 +453,11 @@ void Xseries::vSeries_75_EE_operators(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_80_Index_Scan(i8 iBelow, ...)
+void Xseries::vSeries_80_Index_Scan(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   /*
  *
@@ -523,13 +492,11 @@ void Xseries::vSeries_80_Index_Scan(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_85_Cross_Join(i8 iBelow, ...)
+void Xseries::vSeries_85_Cross_Join(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS85_T00_Test()) {
     m_pTransforms->vS85_T00_Skip();
@@ -551,13 +518,11 @@ void Xseries::vSeries_85_Cross_Join(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_90_Stream_Ordering(i8 iBelow, ...)
+void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bS90_T00_Test()) {
     m_pTransforms->vS90_T00_Skip();
@@ -576,13 +541,11 @@ void Xseries::vSeries_90_Stream_Ordering(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_A0_Filter_Refinement(i8 iBelow, ...)
+void Xseries::vSeries_A0_Filter_Refinement(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bSA0_T00_Test()) {
     m_pTransforms->vSA0_T00_Skip();
@@ -601,13 +564,11 @@ void Xseries::vSeries_A0_Filter_Refinement(i8 iBelow, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_Z0_Restate_Pipeline(i8 iBelow, ...)
+void Xseries::vSeries_Z0_Restate_Pipeline(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  CARD_BELOW
 
   if (! m_pTransforms->bSZ0_T00_Test()) {
     m_pTransforms->vSZ0_T00_Skip();

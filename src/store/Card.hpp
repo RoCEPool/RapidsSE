@@ -171,7 +171,7 @@ static Stz* SEP_SCRATCH    = "? ? ? ? ? ? ? ? ? "_Stz;
 namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
-  static const bool C_PRINT_HAND         = true;
+  static const bool C_PRINT_HAND          = true;
   static const bool C_PRINT_XFORM         = true;
   static const bool C_TRACE_Y             = true;
   static const bool C_UPDATE_MEMBER       = true;
@@ -184,6 +184,9 @@ namespace STORE
   static const i8 C_NO    = 0;
   static const i8 C_MAYBE = 1;
   static const i8 C_YES   = 2;
+
+  static const bool C_ENABLED  = true;
+  static const bool C_DISABLED = false;
 
   class Card : public Object
              , public ChildCards
