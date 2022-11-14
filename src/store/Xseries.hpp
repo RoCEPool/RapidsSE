@@ -43,8 +43,8 @@ namespace STORE
     void vSeries_36_Flatten_Where    (bool bEnabled); //
     void vSeries_37_Flatten_Having   (bool bEnabled); //
     void vSeries_40_Predicate_Pullup (bool bEnabled); //
+    void vSeries_50_Join_Ordering    (bool bEnabled); // 2 days
     void vSeries_60_Index_Join       (bool bEnabled); //
-    void vSeries_70_Join_Ordering    (bool bEnabled); // 2 days
     void vSeries_75_EE_operators     (bool bEnabled); // 1 day
 //  void vSeries_79_Add_Partitioning (bool bEnabled); //
     void vSeries_80_Index_Scan       (bool bEnabled); // 1 day

@@ -82,13 +82,13 @@ void Xseries::vTransformSeries(void)
   vSeries_36_Flatten_Where      (C_ENABLED);
   vSeries_37_Flatten_Having     (C_ENABLED);
   vSeries_40_Predicate_Pullup   (C_ENABLED);
+  vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_60_Index_Join         (C_ENABLED);
-  vSeries_70_Join_Ordering      (C_DISABLED);
   vSeries_75_EE_operators       (C_ENABLED);
   vSeries_80_Index_Scan         (C_ENABLED);
   vSeries_85_Cross_Join         (C_ENABLED);
-  vSeries_90_Stream_Ordering    (C_DISABLED);
-  vSeries_92_Ordered_Aggreg     (C_DISABLED);
+  vSeries_90_Stream_Ordering                 (C_DISABLED);
+  vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement  (C_ENABLED);
   vSeries_Z0_Restate_Pipeline   (C_ENABLED);
 }
@@ -384,6 +384,53 @@ void Xseries::vSeries_40_Predicate_Pullup(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS50_T00_Test(bEnabled)) {
+    m_pTransforms->vS50_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS50_T00_Begin();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PARTITION BOARD
+
+  //
+  m_pTransforms->vS50_T00_Extract_tableList_From_queryBoard();
+
+  // add <term/<columnRef> to all ordinal <term>
+  //m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
+
+  m_pTransforms->vS50_T10_Extract_joinPredList();
+  m_pTransforms->vS50_T20_Compute_coPtnPredList();
+  m_pTransforms->vS50_T30_Compute_coPtnJoinList();
+  m_pTransforms->vS50_T40_Compute_crossPtnJoinList();
+  m_pTransforms->vS50_T50_Compute_ptndJoinSet();
+
+  m_pTransforms->vS50_T60_Copy_ptndJoinSet();
+  m_pTransforms->vS50_T70_Generate_ptndPermutations();
+  m_pTransforms->vS50_T80_Remove_invalidPermutations();
+
+  m_pTransforms->vS50_T90_Setup_costEst();
+  m_pTransforms->vS50_T92_Estimate_ptndJoins();
+  m_pTransforms->vS50_T94_Estimate_network();
+  m_pTransforms->vS50_T96_Estimate_joinOrder();
+  m_pTransforms->vS50_T98_Extract_joinOrderSeq();
+
+
+  m_pTransforms->vS50_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE, 0);
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xseries::vSeries_60_Index_Join(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
@@ -410,53 +457,6 @@ void Xseries::vSeries_60_Index_Join(bool bEnabled)
   vEndSeries(BK_SUBPIPE, 0);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_70_Join_Ordering(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS70_T00_Test(bEnabled)) {
-    m_pTransforms->vS70_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS70_T00_Begin();
-
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // PARTITION BOARD
-
-  //
-  m_pTransforms->vS70_T00_Extract_tableList_From_queryBoard();
-
-  // add <term/<columnRef> to all ordinal <term>
-  //m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
-
-  m_pTransforms->vS70_T10_Extract_joinPredList();
-  m_pTransforms->vS70_T20_Compute_coPtnPredList();
-  m_pTransforms->vS70_T30_Compute_coPtnJoinList();
-  m_pTransforms->vS70_T40_Compute_crossPtnJoinList();
-  m_pTransforms->vS70_T50_Compute_ptndJoinSet();
-
-  m_pTransforms->vS70_T60_Copy_ptndJoinSet();
-  m_pTransforms->vS70_T70_Generate_ptndPermutations();
-  m_pTransforms->vS70_T80_Remove_invalidPermutations();
-
-  m_pTransforms->vS70_T90_Setup_costEst();
-  m_pTransforms->vS70_T92_Estimate_ptndJoins();
-  m_pTransforms->vS70_T94_Estimate_network();
-  m_pTransforms->vS70_T96_Estimate_joinOrder();
-  m_pTransforms->vS70_T98_Extract_joinOrderSeq();
-*/
-
-  m_pTransforms->vS70_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

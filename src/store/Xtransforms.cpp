@@ -1747,13 +1747,13 @@ void Xtransforms::vS60_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   vSeries_70_Join_Ordering */
+/*                                                   vSeries_50_Join_Ordering */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS70_T00_Test(bool bEnabled)
+bool Xtransforms::bS50_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1766,7 +1766,7 @@ bool Xtransforms::bS70_T00_Test(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T00_Skip(void)
+void Xtransforms::vS50_T00_Skip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -1774,7 +1774,7 @@ void Xtransforms::vS70_T00_Skip(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T00_Begin(void)
+void Xtransforms::vS50_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1786,7 +1786,7 @@ void Xtransforms::vS70_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
+void Xtransforms::vS50_T00_Extract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1808,7 +1808,7 @@ void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
     if (! (G.p_table = G.p_MainCard->pSub_table()))
       continue;
 
-    vR_S70_T00_Extract_tableList_From_queryBoard();
+    vR_S50_T00_Extract_tableList_From_queryBoard();
   }
 
   vEndTransform();
@@ -1817,7 +1817,7 @@ void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T10_Extract_joinPredList(void)
+void Xtransforms::vS50_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1839,7 +1839,7 @@ void Xtransforms::vS70_T10_Extract_joinPredList(void)
     if (!G.p_boolCalc)
       continue;
 
-    vR_S70_T10_Extract_joinPredList();
+    vR_S50_T10_Extract_joinPredList();
   }
 
   vEndTransform();
@@ -1848,7 +1848,7 @@ void Xtransforms::vS70_T10_Extract_joinPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
+void Xtransforms::vS50_T20_Compute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1877,7 +1877,7 @@ void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
     if (!T_bTableList_PredCmpIsCoPtn(G.p_tableList, G.p_cmpPred))
       continue;
 
-    vR_S70_T20_Compute_coPtnPredList();
+    vR_S50_T20_Compute_coPtnPredList();
   }
 
   vEndTransform();
@@ -1886,7 +1886,7 @@ void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T30_Compute_coPtnJoinList(void)
+void Xtransforms::vS50_T30_Compute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1899,7 +1899,7 @@ void Xtransforms::vS70_T30_Compute_coPtnJoinList(void)
   //--nn--------------==
   // coPtnJoinList
 
-  vR_S70_T30_Compute_coPtnJoinList();
+  vR_S50_T30_Compute_coPtnJoinList();
 
   vEndTransform();
 }
@@ -1907,7 +1907,7 @@ void Xtransforms::vS70_T30_Compute_coPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T40_Compute_crossPtnJoinList(void)
+void Xtransforms::vS50_T40_Compute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1920,7 +1920,7 @@ void Xtransforms::vS70_T40_Compute_crossPtnJoinList(void)
   //--nn--------------==
   // crossPtnJoinList
 
-  vR_S70_T40_Compute_crossPtnJoinList();
+  vR_S50_T40_Compute_crossPtnJoinList();
 
 
 //  G.p_comment = new Card_Comment("((TO BE CODED))"_Stz);
@@ -1932,7 +1932,7 @@ void Xtransforms::vS70_T40_Compute_crossPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T50_Compute_ptndJoinSet(void)
+void Xtransforms::vS50_T50_Compute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1945,7 +1945,7 @@ void Xtransforms::vS70_T50_Compute_ptndJoinSet(void)
   //--nn--------------==
   // ptndJoinSet
 
-  vR_S70_T50_Compute_ptndJoinSet();
+  vR_S50_T50_Compute_ptndJoinSet();
 
   vEndTransform();
 }
@@ -1953,7 +1953,7 @@ void Xtransforms::vS70_T50_Compute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T60_Copy_ptndJoinSet(void)
+void Xtransforms::vS50_T60_Copy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1963,7 +1963,7 @@ void Xtransforms::vS70_T60_Copy_ptndJoinSet(void)
 
   //vSetupPermuteBoard();
 
-  vR_S70_T60_Copy_ptndJoinSet();
+  vR_S50_T60_Copy_ptndJoinSet();
 
   vEndTransform();
 }
@@ -1971,7 +1971,7 @@ void Xtransforms::vS70_T60_Copy_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T70_Generate_ptndPermutations(void)
+void Xtransforms::vS50_T70_Generate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1984,7 +1984,7 @@ void Xtransforms::vS70_T70_Generate_ptndPermutations(void)
   //--nn--------------==
   // x
 
-  vR_S70_T70_Generate_ptndPermutations();
+  vR_S50_T70_Generate_ptndPermutations();
 
   vEndTransform();
 }
@@ -1992,7 +1992,7 @@ void Xtransforms::vS70_T70_Generate_ptndPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T80_Remove_invalidPermutations(void)
+void Xtransforms::vS50_T80_Remove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2000,7 +2000,7 @@ void Xtransforms::vS70_T80_Remove_invalidPermutations(void)
 
   vAssert_Board_mqA();
 
-  vR_S70_T80_Remove_invalidPermutations();
+  vR_S50_T80_Remove_invalidPermutations();
 
   vEndTransform();
 }
@@ -2008,7 +2008,7 @@ void Xtransforms::vS70_T80_Remove_invalidPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T90_Setup_costEst(void)
+void Xtransforms::vS50_T90_Setup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2020,7 +2020,7 @@ void Xtransforms::vS70_T90_Setup_costEst(void)
 
   //m_pBoard_costEst->vDuplicateBoard(G.pBoard);
 
-  vR_S70_T90_Setup_costEst();
+  vR_S50_T90_Setup_costEst();
 
   vEndTransform();
 }
@@ -2028,7 +2028,7 @@ void Xtransforms::vS70_T90_Setup_costEst(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T92_Estimate_ptndJoins(void)
+void Xtransforms::vS50_T92_Estimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2036,7 +2036,7 @@ void Xtransforms::vS70_T92_Estimate_ptndJoins(void)
 
   vAssert_Board_mqA();
 
-  vR_S70_T92_Estimate_ptndJoins();
+  vR_S50_T92_Estimate_ptndJoins();
 
   vEndTransform();
 }
@@ -2044,7 +2044,7 @@ void Xtransforms::vS70_T92_Estimate_ptndJoins(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T94_Estimate_network(void)
+void Xtransforms::vS50_T94_Estimate_network(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2052,7 +2052,7 @@ void Xtransforms::vS70_T94_Estimate_network(void)
 
   vAssert_Board_mqA();
 
-  vR_S70_T94_Estimate_network();
+  vR_S50_T94_Estimate_network();
 
   vEndTransform();
 }
@@ -2060,7 +2060,7 @@ void Xtransforms::vS70_T94_Estimate_network(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T96_Estimate_joinOrder(void)
+void Xtransforms::vS50_T96_Estimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2068,7 +2068,7 @@ void Xtransforms::vS70_T96_Estimate_joinOrder(void)
 
   vAssert_Board_mqA();
 
-  vR_S70_T96_Estimate_joinOrder();
+  vR_S50_T96_Estimate_joinOrder();
 
   vEndTransform();
 }
@@ -2076,7 +2076,7 @@ void Xtransforms::vS70_T96_Estimate_joinOrder(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T98_Extract_joinOrderSeq(void)
+void Xtransforms::vS50_T98_Extract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2084,7 +2084,7 @@ void Xtransforms::vS70_T98_Extract_joinOrderSeq(void)
 
   vAssert_Board_mqA();
 
-  vR_S70_T98_Extract_joinOrderSeq();
+  vR_S50_T98_Extract_joinOrderSeq();
 
   vEndTransform();
 }
@@ -2092,7 +2092,7 @@ void Xtransforms::vS70_T98_Extract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_TZZ_End(void)
+void Xtransforms::vS50_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

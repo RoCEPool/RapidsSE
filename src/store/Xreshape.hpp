@@ -98,21 +98,21 @@ namespace STORE
     void vR_S60_T50_Delete_Empty_filter(void);
     void vR_S60_T60_Delete_Twist(void);
 
-    // vSeries_70_Join_Ordering
-    void vR_S70_T00_Extract_tableList_From_queryBoard(void);
-    void vR_S70_T10_Extract_joinPredList(void);
-    void vR_S70_T20_Compute_coPtnPredList(void);
-    void vR_S70_T30_Compute_coPtnJoinList(void);
-    void vR_S70_T40_Compute_crossPtnJoinList(void);
-    void vR_S70_T50_Compute_ptndJoinSet(void);
-    void vR_S70_T60_Copy_ptndJoinSet(void);
-    void vR_S70_T70_Generate_ptndPermutations(void);
-    void vR_S70_T80_Remove_invalidPermutations(void);
-    void vR_S70_T90_Setup_costEst(void);
-    void vR_S70_T92_Estimate_ptndJoins(void);
-    void vR_S70_T94_Estimate_network(void);
-    void vR_S70_T96_Estimate_joinOrder(void);
-    void vR_S70_T98_Extract_joinOrderSeq(void);
+    // vSeries_50_Join_Ordering
+    void vR_S50_T00_Extract_tableList_From_queryBoard(void);
+    void vR_S50_T10_Extract_joinPredList(void);
+    void vR_S50_T20_Compute_coPtnPredList(void);
+    void vR_S50_T30_Compute_coPtnJoinList(void);
+    void vR_S50_T40_Compute_crossPtnJoinList(void);
+    void vR_S50_T50_Compute_ptndJoinSet(void);
+    void vR_S50_T60_Copy_ptndJoinSet(void);
+    void vR_S50_T70_Generate_ptndPermutations(void);
+    void vR_S50_T80_Remove_invalidPermutations(void);
+    void vR_S50_T90_Setup_costEst(void);
+    void vR_S50_T92_Estimate_ptndJoins(void);
+    void vR_S50_T94_Estimate_network(void);
+    void vR_S50_T96_Estimate_joinOrder(void);
+    void vR_S50_T98_Extract_joinOrderSeq(void);
 
     // vSeries_75_EE_operators
     void vR_S75_T10_Morph_table_To_EEop(void);

@@ -1725,13 +1725,13 @@ void Xreshape::vR_S60_T60_Delete_Twist(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   vSeries_70_Join_Ordering */
+/*                                                   vSeries_50_Join_Ordering */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T00_Extract_tableList_From_queryBoard(void)
+void Xreshape::vR_S50_T00_Extract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1745,7 +1745,7 @@ void Xreshape::vR_S70_T00_Extract_tableList_From_queryBoard(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T10_Extract_joinPredList(void)
+void Xreshape::vR_S50_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1759,7 +1759,7 @@ void Xreshape::vR_S70_T10_Extract_joinPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T20_Compute_coPtnPredList(void)
+void Xreshape::vR_S50_T20_Compute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1776,7 +1776,7 @@ void Xreshape::vR_S70_T20_Compute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T30_Compute_coPtnJoinList(void)
+void Xreshape::vR_S50_T30_Compute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1811,7 +1811,7 @@ void Xreshape::vR_S70_T30_Compute_coPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T40_Compute_crossPtnJoinList(void)
+void Xreshape::vR_S50_T40_Compute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1843,7 +1843,7 @@ void Xreshape::vR_S70_T40_Compute_crossPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T50_Compute_ptndJoinSet(void)
+void Xreshape::vR_S50_T50_Compute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1877,7 +1877,7 @@ void Xreshape::vR_S70_T50_Compute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T60_Copy_ptndJoinSet(void)
+void Xreshape::vR_S50_T60_Copy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1903,7 +1903,7 @@ void Xreshape::vR_S70_T60_Copy_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T70_Generate_ptndPermutations(void)
+void Xreshape::vR_S50_T70_Generate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1943,7 +1943,7 @@ void Xreshape::vR_S70_T70_Generate_ptndPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T80_Remove_invalidPermutations(void)
+void Xreshape::vR_S50_T80_Remove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1983,7 +1983,7 @@ void Xreshape::vR_S70_T80_Remove_invalidPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T90_Setup_costEst(void)
+void Xreshape::vR_S50_T90_Setup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2005,7 +2005,7 @@ void Xreshape::vR_S70_T90_Setup_costEst(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T92_Estimate_ptndJoins(void)
+void Xreshape::vR_S50_T92_Estimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2039,7 +2039,7 @@ void Xreshape::vR_S70_T92_Estimate_ptndJoins(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T94_Estimate_network(void)
+void Xreshape::vR_S50_T94_Estimate_network(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2086,7 +2086,7 @@ void Xreshape::vR_S70_T94_Estimate_network(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T96_Estimate_joinOrder(void)
+void Xreshape::vR_S50_T96_Estimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2124,7 +2124,7 @@ void Xreshape::vR_S70_T96_Estimate_joinOrder(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S70_T98_Extract_joinOrderSeq(void)
+void Xreshape::vR_S50_T98_Extract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

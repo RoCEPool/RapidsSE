@@ -128,6 +128,26 @@ namespace STORE
     void vS40_T30_Delete_Empty_where(void);
     void vS40_TZZ_End(void);
 
+    // vSeries_50_Join_Ordering
+    bool bS50_T00_Test(bool bEnabled);
+    void vS50_T00_Skip(void);
+    void vS50_T00_Begin(void);
+    void vS50_T00_Extract_tableList_From_queryBoard(void);
+    void vS50_T10_Extract_joinPredList(void);
+    void vS50_T20_Compute_coPtnPredList(void);
+    void vS50_T30_Compute_coPtnJoinList(void);
+    void vS50_T40_Compute_crossPtnJoinList(void);
+    void vS50_T50_Compute_ptndJoinSet(void);
+    void vS50_T60_Copy_ptndJoinSet(void);
+    void vS50_T70_Generate_ptndPermutations(void);
+    void vS50_T80_Remove_invalidPermutations(void);
+    void vS50_T90_Setup_costEst(void);
+    void vS50_T92_Estimate_ptndJoins(void);
+    void vS50_T94_Estimate_network(void);
+    void vS50_T96_Estimate_joinOrder(void);
+    void vS50_T98_Extract_joinOrderSeq(void);
+    void vS50_TZZ_End(void);
+
     // vSeries_60_Index_Join
     bool bS60_T00_Test(bool bEnabled);
     void vS60_T00_Skip(void);
@@ -140,26 +160,6 @@ namespace STORE
     void vS60_T50_Delete_Empty_filter(void);
     void vS60_T60_Delete_Twist(void);
     void vS60_TZZ_End(void);
-
-    // vSeries_70_Join_Ordering
-    bool bS70_T00_Test(bool bEnabled);
-    void vS70_T00_Skip(void);
-    void vS70_T00_Begin(void);
-    void vS70_T00_Extract_tableList_From_queryBoard(void);
-    void vS70_T10_Extract_joinPredList(void);
-    void vS70_T20_Compute_coPtnPredList(void);
-    void vS70_T30_Compute_coPtnJoinList(void);
-    void vS70_T40_Compute_crossPtnJoinList(void);
-    void vS70_T50_Compute_ptndJoinSet(void);
-    void vS70_T60_Copy_ptndJoinSet(void);
-    void vS70_T70_Generate_ptndPermutations(void);
-    void vS70_T80_Remove_invalidPermutations(void);
-    void vS70_T90_Setup_costEst(void);
-    void vS70_T92_Estimate_ptndJoins(void);
-    void vS70_T94_Estimate_network(void);
-    void vS70_T96_Estimate_joinOrder(void);
-    void vS70_T98_Extract_joinOrderSeq(void);
-    void vS70_TZZ_End(void);
 
     // vSeries_75_EE_operators
     bool bS75_T00_Test(bool bEnabled);
