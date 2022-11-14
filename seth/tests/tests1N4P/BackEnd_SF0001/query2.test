@@ -122,47 +122,50 @@ begin
   end
 
   stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker6152
-  stage stageMarker6152 on all partitions :
-    scan rapidsse public part
-    | stageMarker6155 broadcast
-  stage stageMarker6155 on all partitions :
-    scan rapidsse public supplier
-    | abstractJoin "CROSS true  "
-    | stageMarker6158 broadcast
-  stage stageMarker6158 on all partitions :
-    scan rapidsse public partsupp
-    | abstractJoin "CROSS true  "
-    | stageMarker6161 broadcast
-  stage stageMarker6161 on all partitions :
-    scan rapidsse public nation
-    | abstractJoin "CROSS true  "
-    | stageMarker6164 broadcast
-  stage stageMarker6164 on all partitions :
-    scan rapidsse public region
-    | abstractJoin "CROSS true  "
-    | stageMarker6167
-  stage stageMarker6167 on all partitions :
-    filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 20  ==  and  }  $5 ''%STEEL''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''AFRICA''  ==  and  $20 $1 __subquery0003  ==  and  "
-    | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
-    | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
-    | combined 0
-    | stageMarker6170
-  stage stageMarker6170 on all nodes :
-    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
-    | combined 0
-    | stageMarker6173
-  stage stageMarker6173 on origin :
-    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
+      start
+      | pulse once
+      | stageMarker3382
+    stage stageMarker3382 on all partitions :
+      scan rapidsse public part
+      | stageMarker3385 broadcast
+    stage stageMarker3385 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin "CROSS true  "
+      | stageMarker3388 broadcast
+    stage stageMarker3388 on all partitions :
+      scan rapidsse public partsupp
+      | abstractJoin "CROSS true  "
+      | stageMarker3391 broadcast
+    stage stageMarker3391 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker3394 broadcast
+    stage stageMarker3394 on all partitions :
+      scan rapidsse public region
+      | abstractJoin "CROSS true  "
+      | stageMarker3397
+    stage stageMarker3397 on all partitions :
+      filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 20  ==  and  }  $5 ''%STEEL''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''AFRICA''  ==  and  $20 $1 __subquery0003  ==  and  "
+      | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
+      | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+      | limit 100
+      | combined 0
+      | stageMarker3400
+    stage stageMarker3400 on all nodes :
+      sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+      | limit 100
+      | combined 0
+      | stageMarker3403
+    stage stageMarker3403 on origin :
+      sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+      | limit 100
+      | combined 0
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
 */
 
 pipeline Query2
@@ -207,6 +210,7 @@ begin
                type VARCHAR as S_ADDRESS S_ADDRESS ,
                type VARCHAR as S_PHONE S_PHONE ,
                type VARCHAR as S_COMMENT S_COMMENT "
+
     | combined 0
     | next
 
@@ -267,12 +271,11 @@ begin
                 type VARCHAR as S_ADDRESS S_ADDRESS ,
                 type VARCHAR as S_PHONE S_PHONE ,
                 type VARCHAR as S_COMMENT S_COMMENT "
-
     | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  ,
              type VARCHAR as N_NAME N_NAME ASC  ,
              type VARCHAR as S_NAME S_NAME ASC  ,
              type INTEGER as P_PARTKEY P_PARTKEY ASC  "
-
+     | limit 100
     | combined 0
     | next
 
@@ -281,17 +284,18 @@ begin
              type VARCHAR as N_NAME N_NAME ASC ,
              type VARCHAR as S_NAME S_NAME ASC ,
              type INTEGER as P_PARTKEY P_PARTKEY ASC"
+    | limit 100
     | combined 0
     | next
 
   stage S09 on origin :
-     sort " type DECIMAL as s_acctbal s_acctbal ASC ,
-               type VARCHAR as N_NAME N_NAME ASC ,
-               type VARCHAR as S_NAME S_NAME ASC ,
-               type INTEGER as p_partkey p_partkey ASC"
-      | limit 100
-      | combined 0
-      | next
+    sort " type DECIMAL as s_acctbal s_acctbal ASC ,
+           type VARCHAR as N_NAME N_NAME ASC ,
+           type VARCHAR as S_NAME S_NAME ASC ,
+           type INTEGER as p_partkey p_partkey ASC"
+     | limit 100
+     | combined 0
+     | next
 
   stage S10 on origin :
     output

@@ -1517,8 +1517,6 @@ begin
       type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / ,
       type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / ,
       type INTEGER as COUNT_ORDER COUNT_ORDER &quot;
-    | sort &quot; type VARCHAR as L_RETURNFLAG L_RETURNFLAG ASC  ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ASC  &quot;
     | combined 0
     | next
 
@@ -1679,9 +1677,9 @@ begin
     | next hashcast
 
   stage S07 on all partitions :
-    indexJoin part IxP_PARTKEY &quot;BOUND $I1 PS_PARTKEY ==&quot; 
+    indexJoin part IxP_PARTKEY &quot;BOUND $I1 PS_PARTKEY ==&quot; //J1
     | filter &quot; type BOOLEAN  }  J1_P_TYPE &apos;%BRASS&apos;  6 matchTrailing
-             J1_P_SIZE 15 == and&quot;
+             J1_P_SIZE 20 == and&quot;
     | project &quot; type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
                 type VARCHAR as N_NAME N_NAME ,
@@ -1690,12 +1688,11 @@ begin
                 type VARCHAR as S_ADDRESS S_ADDRESS ,
                 type VARCHAR as S_PHONE S_PHONE ,
                 type VARCHAR as S_COMMENT S_COMMENT &quot;
-
     | sort &quot; type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  ,
              type VARCHAR as N_NAME N_NAME ASC  ,
              type VARCHAR as S_NAME S_NAME ASC  ,
              type INTEGER as P_PARTKEY P_PARTKEY ASC  &quot;
-
+    | limit 100
     | combined 0
     | next
 
@@ -1704,23 +1701,25 @@ begin
              type VARCHAR as N_NAME N_NAME ASC ,
              type VARCHAR as S_NAME S_NAME ASC ,
              type INTEGER as P_PARTKEY P_PARTKEY ASC&quot;
+    | limit 100
     | combined 0
     | next
 
   stage S09 on origin :
-     sort &quot; type DECIMAL as s_acctbal s_acctbal ASC ,
-               type VARCHAR as N_NAME N_NAME ASC ,
-               type VARCHAR as S_NAME S_NAME ASC ,
-               type INTEGER as p_partkey p_partkey ASC&quot;
-      | limit 100
-      | combined 0
-      | next
+    sort &quot; type DECIMAL as s_acctbal s_acctbal ASC ,
+           type VARCHAR as N_NAME N_NAME ASC ,
+           type VARCHAR as S_NAME S_NAME ASC ,
+           type INTEGER as p_partkey p_partkey ASC&quot;
+     | limit 100
+     | combined 0
+     | next
 
   stage S10 on origin :
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1926,18 +1925,22 @@ begin
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 O_ORDERKEY ==&quot;
                                       &quot;type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
+    | aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+              aggregates
+              type VARCHAR as O_ORDERPRIORITY $K1 ,
+              type INTEGER as ORDER_COUNT ) countAll&quot;
     | combined 0
     | next
 
-  stage S03 on all partitions :
+  stage S03 on all nodes :
     aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) countAll&quot;
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum&quot;
     | combined 0
     | next
 
-  stage S04 on all nodes :
+  stage S04 on origin :
     aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
@@ -1946,19 +1949,10 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
-            aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum&quot;
-    | combined 0
-    | next
-
-  stage S06 on origin :
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
