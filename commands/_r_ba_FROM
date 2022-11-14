@@ -16,10 +16,10 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH35_T10_Push_sqB_Into_mqA"
-/transliterated
 /optimise
+/glean_cue_from = "vH35_T10_Push_sqB_Into_mqA"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r_ba_FROM"
 select count(*)

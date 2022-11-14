@@ -16,10 +16,10 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH36_T20_Transfer_whereB_To_whereA"
-/transliterated
 /optimise
+/glean_cue_from = "vH36_T20_Transfer_whereB_To_whereA"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r_b_a_WHERE"
 select count(*)

@@ -19,10 +19,10 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vHZ0_T20_Reinstate_stagesV3"
-/transliterated
 /optimise
+/glean_cue_from = "vHZ0_T20_Reinstate_stagesV3"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r18_in"
 select count(*)

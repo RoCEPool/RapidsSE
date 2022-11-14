@@ -19,11 +19,11 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/optimise
 /glean_cue_from = "vH55_T10_Collapse_Exists_SubQueries"
 /glean_cue_trace = "x"
-/transliterated
-/optimise
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r4_exists"
 select

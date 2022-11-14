@@ -9,11 +9,11 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/optimise
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_cue_trace = "x"
-/transliterated
-/optimise
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r1"
 select

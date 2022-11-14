@@ -15,10 +15,10 @@ load orders   "../tpch/sf_0001/orders.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH50_T10_Extract_subSet_Of_call"
-/transliterated
 /optimise
+/glean_cue_from = "vH50_T10_Extract_subSet_Of_call"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r7_call"
 select count(*)

@@ -24,10 +24,10 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vSeries_10_Condense_Info"
-/transliterated
 /optimise
+/glean_cue_from = "vSeries_10_Condense_Info"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r3"
 select

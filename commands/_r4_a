@@ -12,11 +12,10 @@ load orders "../tpch/sf_0001/orders.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//glean_cue_from = "OT_vPromote_scan_To_indexScan"
-/jobTags
-/transliterated
 /optimise
+//glean_cue_from = "OT_vPromote_scan_To_indexScan"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r4_a"
 select

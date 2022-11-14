@@ -8,10 +8,10 @@ _r_init
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vH29_T10_Main_Query_Analysis"
-/transliterated
 /optimise
+/glean_cue_from = "vS29_T10_Main_Query_Analysis"
 /glean_interactive
+/transliterated
 /weaved
 /pipelineName = "r_FORM_6"
 select PS_PARTKEY,
