@@ -1510,7 +1510,7 @@ void Xtransforms::vS40_T10_AtMark_where_pred_Wrt_table(void)
 
   vTransform(__func__, "put a table @c against where pred"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S40_T10_AtMark_where_pred_Wrt_table();
@@ -1528,7 +1528,7 @@ void Xtransforms::vS40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 
   vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S40_T20_Move_AtMarked_where_pred_To_table_filter();
@@ -1546,7 +1546,7 @@ void Xtransforms::vS40_T30_Delete_Empty_where(void)
 
   vTransform(__func__, "delete where if it is effectively empty"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S40_T30_Delete_Empty_where();
@@ -2157,25 +2157,29 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 
     vR_S75_T10_Morph_table_To_EEop();
   }
+  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
     vR_S75_T10_Morph_table_To_EEop_b();
   }
+  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
     vR_S75_T10_Morph_table_To_EEop_c();
   }
+  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_KEYEXISTS)) {
     if (G.p_keyExists) {
       i8 i_Child;
-      G.p_comment = _pCard_Comment(G.p_keyExists->pFindChild(CK_COMMENT, i_Child));
-      G.p_comment->vValue(SEP_DERIVED);
+      G.p_note = _pCard_Note(G.p_keyExists->pFindChild(CK_NOTE, i_Child));
+      G.p_note->vValue(SEP_DERIVED);
     }
   }
+  vPrintBoard(__LINE__);
 
   vEndTransform();
 }

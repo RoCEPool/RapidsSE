@@ -231,6 +231,9 @@ void Weaver::vOp(Card* pCard)
 
   s32 sOpNm;
 
+  if (CK_AGGREG == eCard)
+    sOpNm = "project"_Stz;
+  else
   if (CK_GBYAGG == eCard)
     sOpNm = "aggreg"_Stz;
   else
@@ -588,49 +591,20 @@ void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
 
   i8 nSubCards;
 
-  Card_GbyElist* pCard_GbyElist =
-          _pCard_GbyElist(pCard_Aggreg->pFindSubCard(CK_GBYELIST));
-
-  if (! pCard_GbyElist)
-    return;
-
-  szRpnExpr->vConcat(" groupBy"_Stz);
-
-  nSubCards = pCard_GbyElist->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_GbyElist->pGet(i_Child);
-    if (! pCard_SUB->bIsCard(CK_EXPR))
-      return;
-
-    if (i_Child) {
-      szRpnExpr->vConcat("\n                 "_Stz);
-      szRpnExpr->vConcat(" ,"_Stz);
-    }
-    else {
-      szRpnExpr->vConcat("\n                 "_Stz);
-      szRpnExpr->vConcat("  "_Stz);
-    }
-
-    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vExpr(szRpnExpr,pCard_Expr);
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Card_ProjElist* pCard_ProjElist =
+    _pCard_ProjElist(pCard_Aggreg->pFindSubCard(CK_PROJELIST));
 
-
-  Card_AggElist* pCard_AggElist =
-    _pCard_AggElist(pCard_Aggreg->pFindSubCard(CK_AGGELIST));
-
-  if (! pCard_AggElist)
+  if (! pCard_ProjElist)
     return;
 
-  szRpnExpr->vConcat("\n                 "_Stz);
-  szRpnExpr->vConcat(" aggregates"_Stz);
+  //szRpnExpr->vConcat("\n                 "_Stz);
+  //szRpnExpr->vConcat(" aggregates"_Stz);
 
-  nSubCards = pCard_AggElist->nItems();
+  nSubCards = pCard_ProjElist->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_AggElist->pGet(i_Child);
+    Card* pCard_SUB = pCard_ProjElist->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
     
@@ -639,7 +613,7 @@ void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
       szRpnExpr->vConcat(" ,"_Stz);
     }
     else {
-      szRpnExpr->vConcat("\n                 "_Stz);
+      //szRpnExpr->vConcat("\n                 "_Stz);
       szRpnExpr->vConcat("  "_Stz);
     }
 
@@ -732,7 +706,69 @@ void Weaver::vRpnGbyAgg(Stz* szRpnExpr, Card_GbyAgg* pCard_GbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  vRpnAggreg(szRpnExpr,(Card_Aggreg*)pCard_GbyAgg);
+  i8 nSubCards;
+
+  Card_GbyElist* pCard_GbyElist =
+      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_GBYELIST));
+
+  if (! pCard_GbyElist)
+    return;
+
+  szRpnExpr->vConcat(" groupBy"_Stz);
+
+  nSubCards = pCard_GbyElist->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_GbyElist->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+  Card_AggElist* pCard_AggElist =
+      _pCard_AggElist(pCard_GbyAgg->pFindSubCard(CK_AGGELIST));
+
+  if (! pCard_AggElist)
+    return;
+
+  szRpnExpr->vConcat("\n                 "_Stz);
+  szRpnExpr->vConcat(" aggregates"_Stz);
+
+  nSubCards = pCard_AggElist->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_AggElist->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+
+
 }
 
 /*----------------------------------------------------------------------------*/

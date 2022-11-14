@@ -442,8 +442,8 @@ void Xmodify::M_vScan_Produce_indexList(Card_Scan* p_scan)
   if (! p_indexList)
     return;
 
-  Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
-  p_scan->vAppend(p_comment);
+  Card_Note* p_note = new Card_Note(SEP_SCRATCH);
+  p_scan->vAppend(p_note);
 
   p_scan->vAppend(p_indexList);
 }
@@ -559,8 +559,8 @@ void Xmodify::M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table)
   while (Card_Index* p_index = _pCard_Index(p_indexList->pPopChild())) {
     Card_MaybeIndexJoin* p_maybeIndexJoin = new Card_MaybeIndexJoin;
     p_maybeIndexJoin->vAppend(p_index);
-    Card_Comment* p_comment = new Card_Comment(SEP_SCRATCH);
-    p_table->vAppend(p_comment);
+    Card_Note* p_note = new Card_Note(SEP_SCRATCH);
+    p_table->vAppend(p_note);
     p_table->vAppend(p_maybeIndexJoin);
   }
 

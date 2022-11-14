@@ -2239,6 +2239,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_c(void)
 
   vReshape(__func__);
 
+  G.p_indexJoin->vDump();
+
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_indexJoin->pFindChild(CK_NOTE,i_Child));
   G.p_note->vValue(SEP_DERIVED);
@@ -2866,7 +2868,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_PROJECT == e_main && bSawProjectOp ) {
+    if (CK_PROJECT == e_main && (bSawAggOp || bSawProjectOp) ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
@@ -2876,7 +2878,15 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_AGGREG == e_main && bSawAggOp ) {
+    if (CK_AGGREG == e_main && (bSawAggOp || bSawProjectOp)) {
+      vAddNext(p_main, i_Main,""_Stz);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawProjectOp = false;
+      continue;
+    }
+
+    if (CK_GBYAGG == e_main && (bSawAggOp || bSawProjectOp)) {
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;

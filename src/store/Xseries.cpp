@@ -444,13 +444,13 @@ void Xseries::vSeries_60_Index_Join(bool bEnabled)
 
   m_pTransforms->vS60_T00_Begin();
 
-  m_pTransforms->vS60_T05_Twist_in_Becomes_filter();
+  //m_pTransforms->vS60_T05_Twist_in_Becomes_filter();
   m_pTransforms->vS60_T10_Produce_maybeIndexJoin_Under_filter();
   m_pTransforms->vS60_T20_Affix_tblColOdn_ToAll_idxCol();
   m_pTransforms->vS60_T30_UpCopy_filter_pred_Into_bounds();
   m_pTransforms->vS60_T40_Cull_UpCopied_filter_pred();
   m_pTransforms->vS60_T50_Delete_Empty_filter();
-  m_pTransforms->vS60_T60_Delete_Twist();
+  //m_pTransforms->vS60_T60_Delete_Twist();
 
   m_pTransforms->vS60_TZZ_End();
 
