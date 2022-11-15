@@ -66,7 +66,7 @@ namespace STORE
     void vS27_T30(void);
     void vS27_TZZ_End(void);
 
-    // vSeries_29_To_RpnForm
+    // vSeries_29_To_BoolCalc
     bool bS29_T00_Test(bool bEnabled);
     void vS29_T00_Skip(void);
     void vS29_T00_Begin(void);

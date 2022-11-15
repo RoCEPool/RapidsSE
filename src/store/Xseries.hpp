@@ -38,11 +38,11 @@ namespace STORE
     void vSeries_20_Table_Analysis   (bool bEnabled); //
     void vSeries_25_Stream_Analysis  (bool bEnabled); //
     void vSeries_27_Query_Analysis   (bool bEnabled); //
-    void vSeries_29_To_RpnForm       (bool bEnabled); //
+    void vSeries_29_To_BoolCalc      (bool bEnabled); //
+    void vSeries_40_Predicate_Pullup (bool bEnabled); //
     void vSeries_35_Flatten_From     (bool bEnabled); //
     void vSeries_36_Flatten_Where    (bool bEnabled); //
     void vSeries_37_Flatten_Having   (bool bEnabled); //
-    void vSeries_40_Predicate_Pullup (bool bEnabled); //
     void vSeries_50_Join_Ordering    (bool bEnabled); // 2 days
     void vSeries_60_Index_Join       (bool bEnabled); //
     void vSeries_75_EE_operators     (bool bEnabled); // 1 day

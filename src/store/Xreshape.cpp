@@ -625,7 +625,7 @@ void Xreshape::vR_S29_T30(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      vSeries_29_To_RpnForm */
+/*                                                      vSeries_29_To_BoolCalc */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -2650,6 +2650,10 @@ void Xreshape::vR_SA0_T10_Individuate_scan_filter(void)
   G.p_scan->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_scan);
 
+  if (! G.p_filter->pSub_level()) {
+    G.p_filter->vPush(G.p_scan->pSub_level()->pDupCardAndSubCards());
+  }
+
   vEndReshape();
 }
 
@@ -2664,6 +2668,10 @@ void Xreshape::vR_SA0_T10_Individuate_indexJoin_filter_b(void)
 
   G.p_indexJoin->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_indexJoin);
+
+  if (! G.p_filter->pSub_level()) {
+    G.p_filter->vPush(G.p_indexJoin->pSub_level()->pDupCardAndSubCards());
+  }
 
   vEndReshape();
 }

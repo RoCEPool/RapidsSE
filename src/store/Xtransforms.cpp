@@ -649,7 +649,7 @@ void Xtransforms::vS27_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      vSeries_29_To_RpnForm */
+/*                                                      vSeries_29_To_BoolCalc */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -1137,7 +1137,7 @@ bool Xtransforms::bS37_T00_Test(bool bEnabled)
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
-  if (QC_WHERE_CLAUSE == pSubQuery->eClause())
+  if (QC_HAVING_CLAUSE == pSubQuery->eClause())
     return true;
 
   return false;

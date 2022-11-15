@@ -74,22 +74,32 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveXhand();
 
   vSeries_10_Condense_Info      (C_ENABLED);
+
   vSeries_20_Table_Analysis     (C_ENABLED);
   vSeries_25_Stream_Analysis    (C_ENABLED);
   vSeries_27_Query_Analysis     (C_ENABLED);
-  vSeries_29_To_RpnForm         (C_ENABLED);
+  vSeries_29_To_BoolCalc        (C_ENABLED);
+
+  vSeries_40_Predicate_Pullup   (C_ENABLED);
+
   vSeries_35_Flatten_From       (C_ENABLED);
   vSeries_36_Flatten_Where      (C_ENABLED);
   vSeries_37_Flatten_Having     (C_ENABLED);
-  vSeries_40_Predicate_Pullup   (C_ENABLED);
+
   vSeries_50_Join_Ordering                   (C_DISABLED);
+
   vSeries_60_Index_Join         (C_ENABLED);
+  vSeries_85_Cross_Join                      (C_DISABLED);
+
   vSeries_75_EE_operators       (C_ENABLED);
+
   vSeries_80_Index_Scan         (C_ENABLED);
-  vSeries_85_Cross_Join         (C_ENABLED);
+
   vSeries_90_Stream_Ordering                 (C_DISABLED);
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
+
   vSeries_A0_Filter_Refinement  (C_ENABLED);
+
   vSeries_Z0_Restate_Pipeline   (C_ENABLED);
 }
 
@@ -228,7 +238,7 @@ void Xseries::vSeries_27_Query_Analysis(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_29_To_RpnForm(bool bEnabled)
+void Xseries::vSeries_29_To_BoolCalc(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
