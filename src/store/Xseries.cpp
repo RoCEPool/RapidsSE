@@ -310,6 +310,9 @@ void Xseries::vSeries_36_Flatten_Where(bool bEnabled)
 
   m_pTransforms->vS36_T00_Begin();
 
+  m_pTransforms->vS36_T04_Mark_pmzWhere_In_sqB();
+  m_pTransforms->vS36_T05_Pullup_pmzWhere_Into_mqA();
+
   m_pTransforms->vS36_T10_Push_sqB_Into_mqA();
   m_pTransforms->vS36_T20_Transfer_whereB_To_whereA();
   m_pTransforms->vS36_T30_Replace_param_In_whereA();

@@ -928,6 +928,38 @@ void Xtransforms::vS36_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T04_Mark_pmzWhere_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((04))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vS36_T04_Mark_pmzWhere_In_sqB();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T05_Pullup_pmzWhere_Into_mqA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((04))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vS36_T05_Pullup_pmzWhere_Into_mqA();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vS36_T10_Push_sqB_Into_mqA(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

@@ -56,6 +56,8 @@ namespace STORE
     void vR_S35_T30_Adjust_From_SubQuery(void);
 
     // vSeries_36_Flatten_Where
+    void vR_S36_T104_Mark_pmzWhere_In_sqB(void);
+    void vR_S36_T105_Pullup_pmzWhere_Into_mqA(void);
     void vR_S36_T10a_Copy_From_SubQuery(void);
     void vR_S36_T10b_Push_sqB_Before_mqA(void);
     void vR_S36_T20a_Get_cmpPred_Of_whereB(void);

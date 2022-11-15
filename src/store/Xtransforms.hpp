@@ -88,6 +88,8 @@ namespace STORE
     bool bS36_T00_Test(bool bEnabled);
     void vS36_T00_Skip(void);
     void vS36_T00_Begin(void);
+    void vS36_T04_Mark_pmzWhere_In_sqB(void);
+    void vS36_T05_Pullup_pmzWhere_Into_mqA(void);
     void vS36_T10_Push_sqB_Into_mqA(void);
     void vS36_T20_Transfer_whereB_To_whereA(void);
     void vS36_T30_Replace_param_In_whereA(void);
