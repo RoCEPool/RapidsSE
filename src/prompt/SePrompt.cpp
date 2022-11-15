@@ -824,13 +824,21 @@ bool SePrompt::bPromptFunction(eEC* eErrorCode)
     return false;
   
   //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
-  
-  oTimer.vStart();
-  (pPromptDesc->m_fPrompt)(this);
-  oTimer.vUpdate();
 
+// rdtscp timer
+//  oTimer.vStart();
+//  (pPromptDesc->m_fPrompt)(this);
+//  oTimer.vUpdate();
+//
+//  if (m_pInpTagSet->bHasName(C_TAG_TIME))
+//    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+
+// sys/time timer
+  i8 start = Timer::iGetTimeOfDay();
+  (pPromptDesc->m_fPrompt)(this);
+  i8 end = Timer::iGetTimeOfDay();
   if (m_pInpTagSet->bHasName(C_TAG_TIME))
-    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+    vTrace("time %lldms\n\n"_Stz,(end - start) / 1000000);
 
   return true;
 }
