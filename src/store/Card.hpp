@@ -30,9 +30,11 @@ namespace STORE
   class Card_BoolCalc;
   class Card_Bounds;
 
+  class Card_CalcOp;
   class Card_CandIndex;
   class Card_Cast;
   class Card_CmpPred;
+  class Card_Clause;
   class Card_ColumnRef;
   class Card_Combined;
   class Card_Comment;
@@ -53,6 +55,7 @@ namespace STORE
   class Card_Expr;
 
   class Card_Filter;
+  class Card_Fold;
 
   class Card_GbyAgg;
   class Card_GbyElist;
@@ -80,9 +83,12 @@ namespace STORE
   class Card_Limit;
 
   class Card_MaybeIndexJoin;
+  class Card_Manner;
 
+  class Card_NCorrCols;
   class Card_Next;
   class Card_Note;
+  class Card_NParmCols;
 
   class Card_OrdAgg;
   class Card_OrPred;
@@ -364,7 +370,9 @@ namespace STORE
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bounds*        pSub_bounds(void);
+    Card_CalcOp*        pSub_calcOp(void);
     Card_Cast*          pSub_cast(void);
+    Card_Clause*        pSub_clause(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Comment*       pSub_comment(void);
@@ -372,6 +380,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
+    Card_Fold*          pSub_fold(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
@@ -384,8 +393,11 @@ namespace STORE
     Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
+    Card_Manner*        pSub_manner(void);
+    Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
+    Card_NParmCols*     pSub_nParmCols(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_RpnCalc*       pSub_rpnCalc(void);

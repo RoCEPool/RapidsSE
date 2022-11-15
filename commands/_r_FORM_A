@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_FORM_7 -- sub-query form 7 analysis : refer Q7                         */
+/* _r_FORM_A -- sub-query form 1 analysis : refer Q7                         */
 /*============================================================================*/
 
 trackMemory;
@@ -13,7 +13,7 @@ _r_init
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "r_FORM_7"
+/pipelineName = "r_FORM_A"
 select count(*)
   from (select *
           from orders, lineitem

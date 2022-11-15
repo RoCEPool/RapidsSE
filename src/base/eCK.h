@@ -17,9 +17,11 @@ enum eCK // card kind
   /* */ CK_BOOLCALC,
   /* */ CK_BOUNDS,
 
+  /* */ CK_CALCOP,
   /* */ CK_CALL,
   /* */ CK_CANDINDEX,
   /* */ CK_CAST,
+  /* */ CK_CLAUSE,
   /* */ CK_CMPPRED,
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
@@ -46,6 +48,7 @@ enum eCK // card kind
 
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
+  /* */ CK_FOLD,
 
   /* */ CK_GBYAGG,
   /* */ CK_GBYELIST,
@@ -75,9 +78,12 @@ enum eCK // card kind
   /* */ CK_LINKSTO,
 
   /* */ CK_MAYBEINDEXJOIN,
+  /* */ CK_MANNER,
 
+  /* */ CK_NCORRCOLS,
   /* */ CK_NEXT,
   /* */ CK_NOTE,
+  /* */ CK_NPARMCOLS,
 
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
@@ -98,6 +104,7 @@ enum eCK // card kind
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
+  /* */ CK_RELNOP,
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
@@ -150,9 +157,11 @@ static Stz* aCK[]
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
+  /* */ "CK_CALCOP"_Stz,       // CK_CALCOP
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CAST"_Stz,         // CK_CAST
+  /* */ "CK_CLAUSE"_Stz,       // CK_CLAUSE
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
@@ -179,6 +188,7 @@ static Stz* aCK[]
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
+  /* */ "CK_FOLD"_Stz,         // CK_FOLD
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
@@ -208,9 +218,12 @@ static Stz* aCK[]
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
 
   /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
+  /* */ "CK_MANNER"_Stz,       // CK_MANNER
 
+  /* */ "CK_NCORRCOLS"_Stz     // CK_NCORRCOLS
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
+  /* */ "CK_NPARMCOLS"_Stz     // CK_NPARMCOLS
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -231,6 +244,7 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
+  /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
@@ -283,9 +297,11 @@ static Stz* aCK_short[]
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
+  /* */ "calcOp"_Stz,          // CK_CALCOP
   /* */ "call"_Stz,            // CK_CALL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cast"_Stz,            // CK_CAST
+  /* */ "clause"_Stz,          // CK_CLAUSE
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
@@ -312,6 +328,7 @@ static Stz* aCK_short[]
 
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
+  /* */ "fold"_Stz,            // CK_FOLD
 
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
@@ -341,9 +358,12 @@ static Stz* aCK_short[]
   /* */ "linksTo"_Stz,         // CK_LINKSTO
 
   /* */ "maybeIndexJoin"_Stz,  // CK_MAYBEINDEXJOIN
+  /* */ "manner"_Stz,          // CK_MANNER
 
+  /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "next"_Stz,            // CK_NEXT
   /* */ "note"_Stz,            // CK_NOTE
+  /* */ "nParmCols"_Stz,       // CK_NPARMCOLS
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION
@@ -364,6 +384,7 @@ static Stz* aCK_short[]
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
+  /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
