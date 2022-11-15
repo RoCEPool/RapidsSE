@@ -934,7 +934,7 @@ void Engine::vLoadTables(void)
 
   pDic = _pDic(pWord->pObject());
 
-  AM::pHeaps()->Persistent.m_pTiny->vGrabLock();
+  AM::pHeaps()->Persistent.m_pTiny->vGrabWriteLock();
   HeapBuffer* pHeapBuffer = AM::pHeaps()->Persistent.m_pTiny->pFirstBuffer();
   i8 nBytes = AM::pHeaps()->Persistent.m_pTiny->nObjectSize();
 
@@ -970,7 +970,7 @@ void Engine::vLoadTables(void)
     pHeapBuffer = pHeapBuffer->pNextBuffer();
   }
 
-  AM::pHeaps()->Persistent.m_pTiny->vDropLock();
+  AM::pHeaps()->Persistent.m_pTiny->vDropWriteLock();
 
   oTimer.vUpdate();
   vTrace("Loading Tables duration: %lldms\n"_Stz,oTimer.iMilliseconds());

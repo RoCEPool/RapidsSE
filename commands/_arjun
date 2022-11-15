@@ -55,7 +55,7 @@ select cast(c,time) from cast_time;
 select c, cast(c,time) from cast_time;
 select c, cast(c, date) from cast_time;
 */
-
+/*
 tag default <tpch_dir> = "../TPCH/SF10" ;
 tag default <suffix>   = "tbl";
 
@@ -79,7 +79,7 @@ load Region   "<tpch_dir>/region.<suffix>"   ;
 load Supplier "<tpch_dir>/supplier.<suffix>" ;
 
 tablesizes;
-
+*/
 /*
 drop table customer;
 drop table lineitem;
@@ -94,3 +94,25 @@ lstbl;
 
 tablesizes;
 */
+/*
+unload paths
+  "/Users/arjun/Boray/rapidsse/tmp/save2N4PSF50/"
+  "/Users/arjun/Boray/rapidsse/tmp/save2N4PSF50/"
+  "/Users/arjun/Boray/rapidsse/tmp/save2N4PSF50/"
+  "/Users/arjun/Boray/rapidsse/tmp/save2N4PSF50/"
+;
+*/
+/*
+tag default <tpch_dir> = "../TPCH/SF50" ;
+tag default <suffix>   = "tbl";
+
+_lineitem
+
+load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+*/
+_lineitem
+
+dload lineitem paths
+  "/mnt/disk1/data1/tpch/sf10/lineitem/lineitem.tbl"
+  "/mnt/disk2/data1/tpch/sf10/lineitem/lineitem.tbl"
+;

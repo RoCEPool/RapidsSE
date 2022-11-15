@@ -11,10 +11,33 @@
 
   EV_M_DATAPULSE_handler
 
-  <filePath> locals| sFilePath |
+  <dirName> locals| sDirName |
 
-  sFilePath unload.toFile
+  sDirName unload.toDisk
 
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_I_PATH ... an infoset with __path rows                      */
+/*----------------------------------------------------------------------------*/
+: unload_Path \handler
+
+  PipeIn[]\clear to InfoSet[]
+
+  C_TDEF_PATH infoSetRow:getFirstRow
+
+  // extract the values
+  0 InfoSet[].colVal@ locals| sPath   |
+  1 InfoSet[].colVal@ locals| iPathNo |
+  2 InfoSet[].colVal@ locals| iPathOf |
+
+  // unload to disk
+  iPathOf iPathNo sPath unload.toDisk
+
+  InfoSet[].delete
+  nullptr to InfoSetRow[]
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -29,10 +52,8 @@
 
   op__topology
 
-//  find: unload_CsvBuffer   EV_D_CSVBUFFER [op].handler!
-//  find: unload_EosMarker   EV_M_EOS       [op].handler!
-  find: unload_DataPulse   EV_M_DATAPULSE [op].handler!
-//  find: unload_StartMarker EV_M_START     [op].handler!
+  find: unload_DataPulse  EV_M_DATAPULSE  [op].handler!
+  //find: unload_Path  EV_I_PATH  [op].handler!
 
   op__loop
 
@@ -46,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: unload :: unload <filePath> ;
+cmdSyntax: unload :: unload <dirName> ;
 
 : unload_cmdTags _cmdTags tagCopy: op_tags
   tags{

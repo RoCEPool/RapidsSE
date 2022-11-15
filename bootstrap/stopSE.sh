@@ -42,15 +42,105 @@ CURRENT_NODE_NAME=""
 ### Functions                                                               ###
 ###############################################################################
 
-# None
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Process the arguments for the stop script.
+## Params: None
 
+function processStopArgs() {
+
+  # Check that some globals are specified with defaults
+  if [ -z "${CLUSTER_OP:-}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_INIT:-}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
+
+  # Indicates if a given argument was specified.
+  local argCluster=0
+  local argNode=0
+  local argConfig=0
+  local argReload=0
+  #local argClusterInit=0
+
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case "${key}" in
+
+      --cluster)
+        CLUSTER_OP=1
+        argCluster=1
+        shift # past argument
+        ;;
+
+      --node)
+        CLUSTER_OP=0
+        argNode=1
+        shift # past argument
+        ;;
+
+      --config)
+        argConfig=1
+        CONFIG_FILE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
+      --config=*)
+        argConfig=1
+        CONFIG_FILE="${key#*=}"
+        shift # past argument=value
+        ;;
+
+      --debug)
+        DEBUG=1
+        shift # past argument
+        ;;
+
+      --clusterinit)
+        #argClusterInit=1
+        CLUSTER_INIT=1
+        shift # past argument
+        ;;
+
+      --help|-h)
+        shift
+        printStartStopUsageAndExit
+        ;;
+
+      *)
+        shift
+        printStartStopUsageAndExit
+        ;;
+    esac
+  done
+
+  # Now we can check for invalid combinations of arguments.
+    # --cluster     and --node
+    # --config      and no file specified
+
+  local errmsg="Invalid combination of arguments specified: "
+
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then
+    printError "${errmsg}" "--cluster" "--node"
+    printStartStopUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE:-}" ]]; then
+    printError "${errmsg}" "No config file specified"
+    printStartStopUsageAndExit
+  fi
+
+  # Check that the config file exists
+  if [[ ! -f "${CONFIG_FILE}" ]]; then
+    printError "Config file does not exist: ${CONFIG_FILE}"
+    printStartStopUsageAndExit
+  fi
+}
 
 ###############################################################################
 ### Main Script                                                             ###
 ###############################################################################
 
 # Process the arguments given to the script.
-processStartStopArgs "$@"
+processStopArgs "$@"
 
 debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"

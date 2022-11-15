@@ -32,6 +32,47 @@ load datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
+select int_col0 + null from datums where int_col0 = 1;
+rows:
+  (null)
+
+//------------------------------------------------------------------------------
+select null + int_col0 from datums where int_col0 = 1;
+rows:
+ (null)
+
+//------------------------------------------------------------------------------
+select int_col0 - null from datums where int_col0 = 1;
+rows:
+  (null)
+
+//------------------------------------------------------------------------------
+select null - int_col0 from datums where int_col0 = 1;
+rows:
+ (null)
+
+//------------------------------------------------------------------------------
+select int_col0 * null from datums where int_col0 = 1;
+rows:
+(null)
+
+//------------------------------------------------------------------------------
+select null * int_col0 from datums where int_col0 = 1;
+rows:
+(null)
+
+//------------------------------------------------------------------------------
+select int_col0 / null from datums where int_col0 = 1;
+rows:
+  (null)
+
+//------------------------------------------------------------------------------
+select null / int_col0 from datums where int_col0 = 1;
+rows:
+  (null)
+
+
+//------------------------------------------------------------------------------
 select int_col0 from datums;
 rows:
   (1)
@@ -172,6 +213,12 @@ rows: (182)
 
 select sum(int_col0) + sum(int_col0) from datums;
 rows: (182)
+
+select sum(int_col0) + null from datums;
+rows: (null)
+
+select null + sum(int_col0)  from datums;
+rows: (null)
 
 // aggregates : sum (with nulls)
 

@@ -30,9 +30,13 @@
   //"Operand:- EV_M_START" .verbose
 
   // check if we can scan the table
-  <tableNm> <indexNm> op__table_index if
-    PipeIn[].pipeOut
+  <tableNm> <indexNm> op__table_index not if
+    Pipein[].delete
+    true
+    exit
   then
+
+  PipeIn[].pipeOut
 
   true
 ;
