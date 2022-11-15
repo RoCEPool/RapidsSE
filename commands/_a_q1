@@ -19,7 +19,7 @@ select l_returnflag, l_linestatus,
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-// TABLES     : lineitem
+// TABLES     : LINEITEM
 // JOIN ORDER : NONE
 // INDEXES    : NONE
 
@@ -28,6 +28,12 @@ select l_returnflag, l_linestatus,
 // TRICKS:
 //   * order by can be discarded as it is on the same columns as group by
 //   * Once we have intervals , need to do literal arithmetic upfront
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   NONE
+
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

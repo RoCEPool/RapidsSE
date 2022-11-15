@@ -39,6 +39,11 @@ limit 10;
 //   * added stage with sort and limit on all partitions and on all nodes.
 //     This reduces the data being sorted as we move along
 
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 pipeline Query3
