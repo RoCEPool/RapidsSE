@@ -68,13 +68,14 @@ Stz* AdaptorWL::aState[] {
     /* 05 AUTHENTICATED */            "AUTHENTICATED"_Stz,
     /* 06 READY */                    "READY"_Stz,
     /* 07 QUERY_BEGUN */              "QUERY_BEGUN"_Stz,
-    /* 08 API_STATEMENT_SUBMITTED */  "API_STATEMENT_SUBMITTED"_Stz,
-    /* 09 API_METADATA_RECEIVED */    "API_METADATA_RECEIVED"_Stz,
-    /* 10 API_DATA_RECEIVED */        "API_DATA_RECEIVED"_Stz,
-    /* 11 API_STATEMENT_COMPLETED */ "API_STATEMENT_COMPLETED"_Stz,
-    /* 12 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
-    /* 13 DISCONNECTED */            "DISCONNECTED"_Stz,
-    /* 14 NENUMS */                  "NENUM"_Stz
+    /* 08 API_STATEMENT_TO_SUBMIT */  "API_STATEMENT_TO_SUBMIT"_Stz,
+    /* 09 API_STATEMENT_SUBMITTED */  "API_STATEMENT_SUBMITTED"_Stz,
+    /* 10 API_METADATA_RECEIVED */    "API_METADATA_RECEIVED"_Stz,
+    /* 11 API_DATA_RECEIVED */        "API_DATA_RECEIVED"_Stz,
+    /* 12 API_STATEMENT_COMPLETED */ "API_STATEMENT_COMPLETED"_Stz,
+    /* 13 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
+    /* 14 DISCONNECTED */            "DISCONNECTED"_Stz,
+    /* 15 NENUMS */                  "NENUM"_Stz
 };
 
 /*----------------------------------------------------------------------------*/
@@ -100,6 +101,11 @@ AdaptorWL::AdaptorWL(void)
   m_pPayloadSendList = new PayloadList();
   m_eProtocolError = EC_NONE;
   m_eProtocolState = CONNECTED;
+  m_sSmtBuf.vReset();
+  m_iSmtCrs = -1;
+  m_nSmtParsed = 0;
+  m_nSmtSucceeded = 0;
+  m_nSmtFailed = 0;
 
   m_pTransport = std::make_shared<WLP::BufferTransport>();
   m_pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(m_pTransport);
@@ -384,9 +390,13 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vCleanupCurrentMsg()
 {
-  delete m_pCurrentMsg;
-  m_pCurrentMsg = nullptr;
-  m_iCurrentMsgType = -1;
+  // We want to keep m_pCurrentMsg and m_iCurrentMsgType while a query
+  // is being executed.
+  if (!bQueryInProgress()) {
+    delete m_pCurrentMsg;
+    m_pCurrentMsg = nullptr;
+    m_iCurrentMsgType = -1;
+  }
 }
 
 
@@ -457,11 +467,12 @@ void AdaptorWL::vNextState(eState eNextState)
   /*04*/ static StateList aNextStates_KerberosAuth       = { AUTHENTICATED, DISCONNECTED };
   /*05*/ static StateList aNextStates_Authenticated      = { READY, DISCONNECTED };
   /*06*/ static StateList aNextStates_Ready              = { READY, QUERY_BEGUN, DISCONNECTED };
-  /*07*/ static StateList aNextStates_QueryBegun         = { READY, API_STATEMENT_SUBMITTED, DISCONNECTED };
+  /*07*/ static StateList aNextStates_QueryBegun         = { READY, API_STATEMENT_TO_SUBMIT, QUERY_COMPLETED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiSmtToSubmit     = { API_STATEMENT_SUBMITTED, DISCONNECTED };
   /*08*/ static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
   /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
   /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { QUERY_COMPLETED, API_STATEMENT_SUBMITTED, DISCONNECTED };
+  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { QUERY_COMPLETED, API_STATEMENT_TO_SUBMIT, DISCONNECTED };
   /*12*/ static StateList aNextStates_QueryCompleted     = { READY, DISCONNECTED };
   /*13*/ static StateList aNextStates_Disconnected       = { DISCONNECTED };
 
@@ -476,12 +487,13 @@ void AdaptorWL::vNextState(eState eNextState)
     /*05*/ case AUTHENTICATED:           eValidNextStates = aNextStates_Authenticated;       break;
     /*06*/ case READY:                   eValidNextStates = aNextStates_Ready;               break;
     /*07*/ case QUERY_BEGUN:             eValidNextStates = aNextStates_QueryBegun;          break;
-    /*08*/ case API_STATEMENT_SUBMITTED: eValidNextStates = aNextStates_ApiSmtSubmitted;     break;
-    /*09*/ case API_METADATA_RECEIVED:   eValidNextStates = aNextStates_ApiMetadataRcvd;     break;
-    /*10*/ case API_DATA_RECEIVED:       eValidNextStates = aNextStates_ApiDataRcvd;         break;
-    /*11*/ case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiSmtCompleted;     break;
-    /*12*/ case QUERY_COMPLETED:         eValidNextStates = aNextStates_QueryCompleted;      break;
-    /*13*/ case DISCONNECTED:            eValidNextStates = aNextStates_Disconnected;        break;
+    /*08*/ case API_STATEMENT_TO_SUBMIT: eValidNextStates = aNextStates_ApiSmtToSubmit;      break;
+    /*09*/ case API_STATEMENT_SUBMITTED: eValidNextStates = aNextStates_ApiSmtSubmitted;     break;
+    /*10*/ case API_METADATA_RECEIVED:   eValidNextStates = aNextStates_ApiMetadataRcvd;     break;
+    /*11*/ case API_DATA_RECEIVED:       eValidNextStates = aNextStates_ApiDataRcvd;         break;
+    /*12*/ case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiSmtCompleted;     break;
+    /*13*/ case QUERY_COMPLETED:         eValidNextStates = aNextStates_QueryCompleted;      break;
+    /*14*/ case DISCONNECTED:            eValidNextStates = aNextStates_Disconnected;        break;
     default:
       NEVER_REACH
   }
@@ -496,7 +508,10 @@ void AdaptorWL::vNextState(eState eNextState)
   }
 
   if (!bMatched) {
+    // Connection is no longer viable
     vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
+    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
+    m_eProtocolState = DISCONNECTED;
     return;
   }
 
@@ -604,11 +619,11 @@ void AdaptorWL::processDisconnectRequest()
 
   //if (!bCheckState({CONNECTED})) { return; }
 
-  DisconnectRequest* pMsg = dynamic_cast<DisconnectRequest*>(m_pCurrentMsg);
-  if (!pMsg) {
-    vErrorDynamicCast(to_string(MessageTypes::type::DisconnectRequest).c_str());
-    return;
-  }
+//  DisconnectRequest* pMsg = dynamic_cast<DisconnectRequest*>(m_pCurrentMsg);
+//  if (!pMsg) {
+//    vErrorDynamicCast(to_string(MessageTypes::type::DisconnectRequest).c_str());
+//    return;
+//  }
 
   // Nothing to do in this message. We set m_eProtocolError to cause the socket
   // to be closed.
@@ -711,6 +726,7 @@ void AdaptorWL::processKerberosAuthenticationRequest()
 
   m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
   vNextState(DISCONNECTED);
+
   //vNextState(KERBEROS_NEGOTIATING);
 }
 
@@ -736,6 +752,7 @@ void AdaptorWL::processGssNegotiationMsg()
 
   m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
   vNextState(DISCONNECTED);
+
 //  vNextState(AUTHENTICATED);
 }
 
@@ -795,11 +812,46 @@ void AdaptorWL::processQueryExecuteRequest()
     return;
   }
 
-  vErrorMessageNotSupported();
+  // Sanity check the parameters in the message
+  if (pMsg->rowsPerRowDataResponse < 0) {
+    Stz* szMsg = "%s : Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
+    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
+    vSerialiseErrorResponse(m_eProtocolError,
+                            szMsg,
+                            aState[m_eProtocolError],
+                            pMsg->rowsPerRowDataResponse);
+    vNextState(READY);
+    return;
+  }
 
-  // TODO: populate
+  if (pMsg->maxRowsToReturn < -1) {
+    Stz* szMsg = "%s : Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
+    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
+    vSerialiseErrorResponse(m_eProtocolError,
+                            szMsg,
+                            aState[m_eProtocolError],
+                            pMsg->rowsPerRowDataResponse);
+    vNextState(READY);
+    return;
+  }
 
-  vNextState(API_STATEMENT_SUBMITTED);
+  vNextState(QUERY_BEGUN);
+  m_iSmtCrs = -1;
+  m_nSmtParsed = 0;
+  m_nSmtSucceeded = 0;
+  m_nSmtFailed = 0;
+
+  // The query string in the QueryExecuteRequest may contain more than one statement
+  // to be executed. So let's walk that string and find the next statement based on
+  // semicolons. We will then copy this to m_sSmtBuf which will then be submitted
+  // through the API
+  if (bExtractNextStatement()) {
+    vNextState(API_STATEMENT_TO_SUBMIT);
+
+  } else {
+    // Send a QueryExecuteResponse to terminate the query and update the state appropriately
+    vFinishQueryDialog();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -979,7 +1031,7 @@ void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
 void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
 {
   Stz* szErrMsg = "%s: Invalid state transition from state %s to state %s"_Stz;
-  const eEC eErrType = EC_WL_INTERNAL_ERROR;
+  const eEC eErrType = EC_WL_PROTOCOL_ERROR;
 
   vSerialiseErrorResponse(eErrType,
                           szErrMsg,
@@ -1014,6 +1066,115 @@ void AdaptorWL::vErrorFeatureNotSupported(Stz* szFeature)
                           szErrMsg,
                           aErrorMsg[eErrType],
                           szFeature);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if a query is currently being executed                        */
+/*----------------------------------------------------------------------------*/
+bool AdaptorWL::bQueryInProgress()
+{
+  switch (m_eProtocolState) {
+    case QUERY_BEGUN:
+    case API_STATEMENT_SUBMITTED:
+    case API_METADATA_RECEIVED:
+    case API_DATA_RECEIVED:
+    case API_STATEMENT_COMPLETED:
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the next statement from the QueryExecuteRequest & copy it to m_sSmtBuf.*/
+/* Returns true if a next statement was found.                                */
+/*----------------------------------------------------------------------------*/
+bool AdaptorWL::bExtractNextStatement()
+{
+  ASSERT(m_iSmtCrs >= -1);
+  ASSERT(m_pCurrentMsg);
+  ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryExecuteRequest);
+  ASSERT(bCheckState({QUERY_BEGUN, API_STATEMENT_COMPLETED}));
+
+  QueryExecuteRequest* pMsg = dynamic_cast<QueryExecuteRequest*>(m_pCurrentMsg);
+  ASSERT(pMsg);
+
+  i8 nQueryLen = (i8) pMsg->query.length();
+
+  i8 iStartCrs = m_iSmtCrs + 1;
+
+  while (++m_iSmtCrs < nQueryLen) {
+    char c = pMsg->query.at(m_iSmtCrs);
+
+    switch (c) {
+
+      case '/':
+        // Check for SQL comments and advance over the comment block
+        if (    (m_iSmtCrs + 1 < nQueryLen)
+             && pMsg->query.at(m_iSmtCrs + 1) == '*'
+           ) {
+          ++m_iSmtCrs;  // Cursor points at the first '*'
+
+          // Advance to the "*/" or the EOS
+          while (++m_iSmtCrs < nQueryLen) {
+            char d = pMsg->query.at(m_iSmtCrs);
+            if (d == '*' && (m_iSmtCrs + 1 < nQueryLen) && pMsg->query.at(m_iSmtCrs + 1) == '/') {
+              break;
+            }
+          }
+        }
+        break;
+
+      case '\'':
+        // Advance over the single-quoted string
+        while (++m_iSmtCrs < nQueryLen && pMsg->query.at(m_iSmtCrs) != '\'') {}
+        break;
+
+      case '"':
+        // Advance over the double-quoted string
+        while (++m_iSmtCrs < nQueryLen && pMsg->query.at(m_iSmtCrs) != '"') {}
+        break;
+
+      case '`':
+        // Advance over the backtick identifier
+        while (++m_iSmtCrs < nQueryLen && pMsg->query.at(m_iSmtCrs) != '`') {}
+        break;
+
+      case ';':
+        // Extract the semicolon terminated statement
+        m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_iSmtCrs - iStartCrs + 1);
+        ++m_nSmtParsed;
+        return true;
+
+      default:
+        continue;
+    }
+  }
+
+  // No semicolon terminated statement found
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send a QueryExecuteResponse, update the state & clean up the current query */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vFinishQueryDialog()
+{
+  vNextState(QUERY_COMPLETED);
+
+  QueryExecuteResponse xResponse;
+  xResponse.executionTime = 0.0;
+  xResponse.numStatementsParsed = m_nSmtParsed;
+  xResponse.numStatementsSucceeded = m_nSmtSucceeded;
+  xResponse.numStatementsFailed = m_nSmtFailed;
+
+  vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
+
+  // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
+  vCleanupCurrentMsg();
+
+  vNextState(READY);
 }
 
 /*============================================================================*/

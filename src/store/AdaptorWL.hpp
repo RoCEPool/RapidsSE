@@ -37,13 +37,14 @@ namespace STORE
       /* 05 */ AUTHENTICATED,
       /* 06 */ READY,
       /* 07 */ QUERY_BEGUN,
-      /* 08 */ API_STATEMENT_SUBMITTED,
-      /* 09 */ API_METADATA_RECEIVED,
-      /* 10 */ API_DATA_RECEIVED,
-      /* 11 */ API_STATEMENT_COMPLETED,
-      /* 12 */ QUERY_COMPLETED,
-      /* 13 */ DISCONNECTED,
-      /* 14 */ NENUMS
+      /* 08 */ API_STATEMENT_TO_SUBMIT,
+      /* 09 */ API_STATEMENT_SUBMITTED,
+      /* 10 */ API_METADATA_RECEIVED,
+      /* 11 */ API_DATA_RECEIVED,
+      /* 12 */ API_STATEMENT_COMPLETED,
+      /* 13 */ QUERY_COMPLETED,
+      /* 14 */ DISCONNECTED,
+      /* 15 */ NENUMS
     };
 
     static Stz* aState[];
@@ -54,7 +55,13 @@ namespace STORE
     PayloadList* m_pPayloadSendList;
     eEC          m_eProtocolError;
     eState       m_eProtocolState;
+
     s48K         m_sSmtBuf;
+    i8           m_iSmtCrs;
+
+    i8           m_nSmtParsed;
+    i8           m_nSmtSucceeded;
+    i8           m_nSmtFailed;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -116,6 +123,10 @@ namespace STORE
     void vErrorMessageNotSupported();
     void vErrorFeatureNotSupported(Stz* szFeature);
 
+    // Helpers
+    bool bQueryInProgress();
+    bool bExtractNextStatement();
+    void vFinishQueryDialog();
   };
 
   AdaptorWL* _pAdaptorWL(void* aAddr);

@@ -29,10 +29,10 @@ struct QueryExecuteRequest {
   4: optional bool mustNotReturnRows = false;
 
   // A mechanism for limiting the number of rows returned from the server.
-  // If this value is >= 0 then the server will not return any more rows for any individual 
+  // If this value is >= 0 then the server will not return any more rows for any individual
   // statement in this request. If this limit is hit then the server will send a StatementResponse
   // as if there were genuinely no more rows to be returned.
-  // Setting this value to -1 means that the server should return all rows from queries. 
+  // Setting this value to -1 means that the server should return all rows from queries.
   5: optional i64 maxRowsToReturn = -1;
 
   // Additional session fields can go in here.
