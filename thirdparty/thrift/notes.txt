@@ -21,7 +21,7 @@ MacOS Dependencies:
 1. The package manager Homebrew is required to help install the other dependencies.
 2. The Thrift autoconfigure script requires Bison >= 2.5. The standard bison included
    with MacOS is 2.3. A newer version can be installed with HomeBrew via the command
-   "brew install bison". You then need to change the $PATH to use this HomeBrew version
+   "brew install bison". You *might* need to change the $PATH to use this HomeBrew version
    of bison before the inbuilt MacOS bison. You can do this by adding the following command
    to your ~/.bash_profile file:
    export PATH="$(brew --prefix bison)/bin:$PATH"
