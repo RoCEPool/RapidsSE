@@ -50,8 +50,10 @@ namespace STORE
     Card_As *               p_as;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
+    Card_CalcOp *           p_calcOp;
     Card_Call *             p_call;
     Card_Cast *             p_cast;
+    Card_Clause *           p_clause;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
@@ -67,6 +69,7 @@ namespace STORE
     Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
+    Card_Fold *             p_fold;
     Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
     Card_Having *           p_having;
@@ -84,9 +87,12 @@ namespace STORE
     Card_KeyExists *        p_keyExists;
     Card_LBound *           p_lBound;
     Card_Level *            p_level;
+    Card_Manner *           p_manner;
     Card_MaybeIndexJoin *   p_maybeIndexJoin;
+    Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;
+    Card_NParmCols *        p_nParmCols;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;

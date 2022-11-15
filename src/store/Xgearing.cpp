@@ -766,6 +766,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_AS:               return G.p_as;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUNDS:           return G.p_bounds;
+    case CK_CALCOP:           return G.p_calcOp;
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
     case CK_CMPPRED:          return G.p_cmpPred;
@@ -1004,6 +1005,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_as               = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bounds           = nullptr;
+  G.p_calcOp           = nullptr;
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
   G.p_cmpPred          = nullptr;
@@ -1422,6 +1424,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
+    case CK_CALCOP:           *((Card**)&G.p_calcOp)           = pCard; break;
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;
@@ -1778,6 +1781,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_AS:               return "G.p_as"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
+    case CK_CALCOP:           return "G.p_calcOp"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
     case CK_CAST:             return "G.p_cast"_Stz;
     case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
