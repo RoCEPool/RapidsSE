@@ -1555,17 +1555,17 @@ begin
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | aggreg  "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | aggreg  "groupby type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    aggreg "groupby type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    aggreg "groupby type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
