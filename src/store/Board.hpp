@@ -94,6 +94,7 @@
 #include "Card_ParamList.hpp"
 #include "Card_Partition.hpp"
 #include "Card_Permutation.hpp"
+#include "Card_PmzWhere.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
 #include "Card_PtnCol.hpp"

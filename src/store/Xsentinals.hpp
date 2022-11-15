@@ -92,6 +92,7 @@ namespace STORE
     Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;
     Card_Permutation *      p_permutation_low;
+    Card_PmzWhere *         p_pmzWhere;
     Card_Project *          p_project;
     Card_ProjElist *        p_projElist;
     Card_PtnCol *           p_ptnCol;

@@ -92,6 +92,7 @@ namespace STORE
   class Card_Project;
   class Card_ProjElist;
   class Card_PtndJoin;
+  class Card_PmzWhere;
 
   class Card_RBound;
   class Card_RpnCalc;
@@ -122,6 +123,8 @@ namespace STORE
 
   class Card_UBound;
   class Card_Unique;
+
+  class Card_Where;
 }
 
 static Stz* P_AggOp        = "bAggOp"_Stz;
@@ -383,6 +386,7 @@ namespace STORE
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
+    Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
@@ -402,6 +406,7 @@ namespace STORE
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
+    Card_Where*         pSub_where(void);
 
   private:
 

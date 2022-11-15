@@ -88,6 +88,7 @@ enum eCK // card kind
   /* */ CK_PARAMLIST,
   /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
+  /* */ CK_PMZWHERE,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
   /* */ CK_PTNCOL,
@@ -220,6 +221,7 @@ static Stz* aCK[]
   /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
   /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
+  /* */ "CK_PMZWHERE"_Stz,     // CK_PMZWHERE
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
   /* */ "CK_PTNCOL"_Stz,       // CK_PTNCOL

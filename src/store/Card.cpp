@@ -2331,6 +2331,19 @@ Card_Note* Card::pSub_note(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_PmzWhere.hpp"
+Card_PmzWhere* Card::pSub_pmzWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PmzWhere* p_pmzWhere =
+      _pCard_PmzWhere(pFindSubCard(CK_PMZWHERE));
+  return p_pmzWhere;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_ProjElist.hpp"
 Card_ProjElist* Card::pSub_projElist(void)
 {
@@ -2573,6 +2586,19 @@ Card_UBound* Card::pSub_uBound(void)
   Card_UBound* p_uBound =
       _pCard_UBound(pFindSubCard(CK_UBOUND));
   return p_uBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Where.hpp"
+Card_Where* Card::pSub_where(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Where* p_where =
+      _pCard_Where(pFindSubCard(CK_WHERE));
+  return p_where;
 }
 
 

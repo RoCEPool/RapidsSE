@@ -450,7 +450,7 @@ void Xreshape::vR_S29_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
     {
       eRO eRelnOp = RelOp::eDecode(szValue_term);
       if (RO_NONE != eRelnOp) {
-        pSubQuery->vOperator(QO_IN_OP);
+        pSubQuery->vOperator(QO_COMPARE_OP);
         pSubQuery->vRelationalOp(eRelnOp);
       }
     }
