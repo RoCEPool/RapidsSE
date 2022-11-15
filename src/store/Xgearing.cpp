@@ -788,6 +788,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_FOLD:             return G.p_fold;
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
+    case CK_GENESIS:          return G.p_genesis;
     case CK_HAVING:           return G.p_having;
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
@@ -1033,6 +1034,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_fold             = nullptr;
   G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
+  G.p_genesis          = nullptr;
   G.p_having           = nullptr;
   G.p_idxCol           = nullptr;
   G.p_idxColList       = nullptr;
@@ -1458,6 +1460,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
+    case CK_GENESIS:          *((Card**)&G.p_genesis)          = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
@@ -1821,6 +1824,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_FOLD:             return "G.p_fold"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
+    case CK_GENESIS:          return "G.p_genesis"_Stz;
     case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
     case CK_IDXCOLNM:         return "G.p_idxColNm"_Stz;
     case CK_INDEX:            return "G.p_index"_Stz;

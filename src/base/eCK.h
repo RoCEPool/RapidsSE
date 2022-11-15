@@ -52,6 +52,7 @@ enum eCK // card kind
 
   /* */ CK_GBYAGG,
   /* */ CK_GBYELIST,
+  /* */ CK_GENESIS,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
@@ -174,7 +175,7 @@ static Stz* aCK[]
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
   /* */ "CK_CROSSPTNJOIN"_Stz,     // CK_CROSSPTNJOIN
   /* */ "CK_CROSSPTNJOINLIST"_Stz, // CK_CROSSPTNJOINLIST
-  /* */ "CK_CROSSPTNPRED"_Stz,     // CK_CROSSPTNPRED
+  /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
@@ -192,6 +193,7 @@ static Stz* aCK[]
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
+  /* */ "CK_GENESIS"_Stz,      // CK_GENESIS
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
@@ -220,10 +222,10 @@ static Stz* aCK[]
   /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
   /* */ "CK_MANNER"_Stz,       // CK_MANNER
 
-  /* */ "CK_NCORRCOLS"_Stz     // CK_NCORRCOLS
+  /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
-  /* */ "CK_NPARMCOLS"_Stz     // CK_NPARMCOLS
+  /* */ "CK_NPARMCOLS"_Stz,    // CK_NPARMCOLS
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -332,6 +334,7 @@ static Stz* aCK_short[]
 
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
+  /* */ "genesis"_Stz,         // CK_GENESIS
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
