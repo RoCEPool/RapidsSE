@@ -1650,6 +1650,7 @@ void vDdlLockAssertNone(void);
   // PayloadObj
   void vPayloadObjDelete(void);
   void vPayloadObjSize(void);
+  void vPayloadObjMsgType(void);
 
   // reg Pipein
   void vPipeinBide(void);

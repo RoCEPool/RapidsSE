@@ -28,6 +28,7 @@ namespace WLP
     i8 iPayloadSize();
     void vSetPayloadSize(i8 nBytes);
     void vReset();
+    void vMsgType(s256& sBuf);
   
     Footer* aFooter(void);
   };

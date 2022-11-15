@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 #include "PayloadObj.hpp"
+#include "WlpHeader.hpp"
+#include "wlp/thrift/generated/MessageTypes_types.h"
 
 using namespace WLP;
 /*----------------------------------------------------------------------------*/
@@ -83,6 +85,22 @@ void PayloadObj::vReset()
 {
   m_nPayloadBytes = 0;
   m_caPayload[0] = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get a copy of the message type in this payload                             */
+/*----------------------------------------------------------------------------*/
+void PayloadObj::vMsgType(s256& sBuf)
+{
+  using namespace com::rapidsdata::wirelineprotocol::messages::v5;
+
+  if (m_nPayloadBytes >= WLP::C_WLPHEADER_SIZE) {
+    WlpHeader* pHeader = (WlpHeader*) m_caPayload;
+
+    MessageTypes::type eMsgType = (MessageTypes::type) pHeader->iMsgType();
+    std::string sMsgType = to_string(eMsgType);
+    sBuf.vCopy((Stz*) sMsgType.c_str());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

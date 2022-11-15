@@ -9,12 +9,18 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_sendAnyWLResponses
 
+  0 locals| pPayload |
+
   begin
     AdaptorWL[].hasPayloadToSend@
   while
-    "Sending payload" .
-    AdaptorWL[].nextPayloadToSend@ [op].pipeOut
+    AdaptorWL[].nextPayloadToSend@ to pPayload
+
+    pPayload payloadObj::msgType@ "Sending payload: %v" .printf
+    pPayload [op].pipeOut
   repeat
+
+  0 to pPayload
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -16,8 +16,9 @@
 void Step::vAddSteps_PayloadObj(void)
 {
 
-  vAddStep("payloadObj::delete"_Stz, &Step::vPayloadObjDelete);
-  vAddStep("payloadObj::size@"_Stz, &Step::vPayloadObjSize);
+  vAddStep("payloadObj::delete"_Stz,   &Step::vPayloadObjDelete);
+  vAddStep("payloadObj::size@"_Stz,    &Step::vPayloadObjSize);
+  vAddStep("payloadObj::msgType@"_Stz, &Step::vPayloadObjMsgType);
 
 }
 
@@ -48,6 +49,23 @@ void Step::vPayloadObjSize(void)
 
   i8 iSize = pPayloadObj->iPayloadSize();
   m_pDataStack->vPushInt(iSize);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* payloadObj::msgType@ : push a string description of the message type on stk*/
+/*----------------------------------------------------------------------------*/
+void Step::vPayloadObjMsgType(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
+
+  s256 sBuf;
+  pPayloadObj->vMsgType(sBuf);
+  m_pDataStack->vPushStr(sBuf);
 
   EXIT();
 }

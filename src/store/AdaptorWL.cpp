@@ -232,8 +232,10 @@ void AdaptorWL::vProcessWLMsg(void)
       // Respond to the client with an error, and set the m_eProtocolError
       // which will cause the socket to be closed.
       std::string sMsgType = to_string(eMsgType);
-      vSerialiseErrorResponse(EC_WL_PROTOCOL_ERROR,
-                              "Wireline protocol error: Processing an unexpected wireline message type of %s."_Stz,
+      eEC eErrCode = EC_WL_PROTOCOL_ERROR;
+      vSerialiseErrorResponse(eErrCode,
+                              "Error: %s: Processing an unexpected wireline message type of %s."_Stz,
+                              aErrorMsg[eErrCode],
                               sMsgType.c_str());
       m_eProtocolError = EC_WL_PROTOCOL_ERROR;
       m_eProtocolState = DISCONNECTED;
@@ -315,7 +317,7 @@ void AdaptorWL::vStatementSubmitted()
 void AdaptorWL::vStatementSubmitted(eEC eErrCode)
 {
   ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
-  Stz* szErrMsg= "Could not submit statement for execution: %s"_Stz;
+  Stz* szErrMsg= "Error: %s"_Stz;
 
   vSerialiseErrorResponse(eErrCode, szErrMsg, aErrorMsg[eErrCode]);
 
@@ -382,8 +384,10 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
       // Respond to the client with an error, and set the m_eProtocolError
       // which will cause the socket to be closed.
       std::string sMsgType = to_string(eMsgType);
-      vSerialiseErrorResponse(EC_WL_PROTOCOL_ERROR,
-                              "Wireline protocol error: Received an unexpected wireline message type of %s."_Stz,
+      eEC eErrCode = EC_WL_PROTOCOL_ERROR;
+      vSerialiseErrorResponse(eErrCode,
+                              "Error: %s: Received an unexpected wireline message type of %s."_Stz,
+                              aErrorMsg[eErrCode],
                               sMsgType.c_str());
       m_eProtocolError = EC_WL_PROTOCOL_ERROR;
       m_eProtocolState = DISCONNECTED;
@@ -399,8 +403,10 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
     // Respond to the client with an error, and set the m_eProtocolError
     // which will cause the socket to be closed.
     std::string sMsgType = to_string(eMsgType);
-    vSerialiseErrorResponse(EC_WL_PROTOCOL_ERROR,
-                            "Wireline protocol error: Unable to decode wireline message of type %s."_Stz,
+    eEC eErrCode = EC_WL_PROTOCOL_ERROR;
+    vSerialiseErrorResponse(eErrCode,
+                            "%s: Unable to decode wireline message of type %s."_Stz,
+                            aErrorMsg[eErrCode],
                             sMsgType.c_str());
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     m_eProtocolState = DISCONNECTED;
@@ -840,7 +846,7 @@ void AdaptorWL::processQueryExecuteRequest()
 
   // Sanity check the parameters in the message
   if (pMsg->rowsPerRowDataResponse < 0) {
-    Stz* szMsg = "%s : Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
+    Stz* szMsg = "Error: %s: Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
@@ -851,7 +857,7 @@ void AdaptorWL::processQueryExecuteRequest()
   }
 
   if (pMsg->maxRowsToReturn < -1) {
-    Stz* szMsg = "%s : Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
+    Stz* szMsg = "Error: %s: Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
@@ -1024,7 +1030,7 @@ bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
     sBuf.vConcat(aState[eProtocolState]);
   }
 
-  Stz* szErrMsg = "%s: Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
+  Stz* szErrMsg = "Error: %s: Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
   const eEC eErrType = EC_WL_PROTOCOL_ERROR;
 
   vSerialiseErrorResponse(eErrType,
@@ -1043,7 +1049,7 @@ bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
 {
-  Stz* szErrMsg = "%s: Unable to cast decoded message to type %s"_Stz;
+  Stz* szErrMsg = "Error: %s: Unable to cast decoded message to type %s"_Stz;
   const eEC eErrType = EC_WL_INTERNAL_ERROR;
 
   vSerialiseErrorResponse(eErrType,
@@ -1057,7 +1063,7 @@ void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
 {
-  Stz* szErrMsg = "%s: Invalid state transition from state %s to state %s"_Stz;
+  Stz* szErrMsg = "Error: %s: Invalid state transition from state %s to state %s"_Stz;
   const eEC eErrType = EC_WL_PROTOCOL_ERROR;
 
   vSerialiseErrorResponse(eErrType,
@@ -1072,7 +1078,7 @@ void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorMessageNotSupported()
 {
-  Stz* szErrMsg = "%s: %s"_Stz;
+  Stz* szErrMsg = "Error: %s: %s"_Stz;
   const eEC eErrType = EC_WL_MSG_NOT_SUPPORTED;
 
   vSerialiseErrorResponse(eErrType,
@@ -1086,7 +1092,7 @@ void AdaptorWL::vErrorMessageNotSupported()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorFeatureNotSupported(Stz* szFeature)
 {
-  Stz* szErrMsg = "%s: %s"_Stz;
+  Stz* szErrMsg = "Error: %s: %s"_Stz;
   const eEC eErrType = EC_WL_FEATURE_NOT_SUPPORTED;
 
   vSerialiseErrorResponse(eErrType,
