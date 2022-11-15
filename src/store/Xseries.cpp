@@ -93,9 +93,9 @@ void Xseries::vTransformSeries(void)
 
   vSeries_75_EE_operators       (C_ENABLED);
 
-  vSeries_80_Index_Scan         (C_ENABLED);
+  vSeries_80_Index_Scan                      (C_DISABLED);
 
-  vSeries_90_Stream_Ordering                 (C_DISABLED);
+  vSeries_90_Stream_Ordering    (C_ENABLED);
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
 
   vSeries_A0_Filter_Refinement  (C_ENABLED);
@@ -227,8 +227,8 @@ void Xseries::vSeries_27_Query_Analysis(bool bEnabled)
   m_pTransforms->vS27_T20_Sub_Query_Analysis();
   m_pTransforms->vS27_T30();
 
-  m_pTransforms->vS29_T10_Convert_where_rpnCalc_To_boolCalc();
-  m_pTransforms->vS29_T20_Convert_stmColOdn_To_tblColOdn();
+  //m_pTransforms->vS29_T10_Convert_where_rpnCalc_To_boolCalc();
+  //m_pTransforms->vS29_T20_Convert_stmColOdn_To_tblColOdn();
 
   m_pTransforms->vS27_TZZ_End();
 

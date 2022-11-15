@@ -38,6 +38,7 @@ namespace STORE
     void vSeries_20_Table_Analysis   (bool bEnabled); //
     void vSeries_25_Stream_Analysis  (bool bEnabled); //
     void vSeries_27_Query_Analysis   (bool bEnabled); //
+//  vSeries_28_Literal_Arithmetic    (bool bEnabled); //
     void vSeries_29_To_BoolCalc      (bool bEnabled); //
     void vSeries_40_Predicate_Pullup (bool bEnabled); //
     void vSeries_35_Flatten_From     (bool bEnabled); //
