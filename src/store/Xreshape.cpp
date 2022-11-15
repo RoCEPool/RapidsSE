@@ -765,6 +765,17 @@ void Xreshape::vR_S36_T104_Mark_pmzWhere_In_sqB(void)
 
   vReshape(__func__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfMarkPredBounds = [this](Card* pCard) {
+    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
+    M_vCmpPred_MarkBound(p_cmpPred);
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_filter->bApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
 
   vEndReshape();
 }

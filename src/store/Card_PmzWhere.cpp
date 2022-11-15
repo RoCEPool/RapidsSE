@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_PmzWhere,CK_WHERE)
+__pCastFunction_Card(STORE,Card_PmzWhere,CK_PMZWHERE)
 __aNewFunction(Card_PmzWhere,CN_CARD)
 __vDeleteFunction(Card_PmzWhere,CN_CARD)
 
@@ -17,7 +17,7 @@ __vDeleteFunction(Card_PmzWhere,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_PmzWhere::Card_PmzWhere(void)
-: Card(CK_WHERE)
+: Card(CK_PMZWHERE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

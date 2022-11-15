@@ -936,7 +936,14 @@ void Xtransforms::vS36_T04_Mark_pmzWhere_In_sqB(void)
 
   vAssert_Board_mqA();
 
-  vS36_T04_Mark_pmzWhere_In_sqB();
+//  if (G_bPushBoard(1)) {
+//
+//    while (G_bEachMain(CK_WHERE)) {
+//      vR_S36_T104_Mark_pmzWhere_In_sqB();
+//    }
+//
+//    G_vPopBoard();
+//  }
 
   vEndTransform();
 }
@@ -952,7 +959,7 @@ void Xtransforms::vS36_T05_Pullup_pmzWhere_Into_mqA(void)
 
   vAssert_Board_mqA();
 
-  vS36_T05_Pullup_pmzWhere_Into_mqA();
+  vR_S36_T105_Pullup_pmzWhere_Into_mqA();
 
   vEndTransform();
 }
@@ -1528,7 +1535,7 @@ void Xtransforms::vS40_T00_Begin(void)
   vST00_Begin();
 
   m_pCardCtl->vUseShorter();
-  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,CK_WHERE,0);
 
   vPrintBench(BK_SUBPIPE);
 }
@@ -1594,8 +1601,8 @@ void Xtransforms::vS40_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  m_pCardCtl->vUseShorter();
-  m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
+  //m_pCardCtl->vUseShorter();
+  //m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
 
   vSTZZ_End();
 }

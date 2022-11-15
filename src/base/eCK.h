@@ -354,6 +354,7 @@ static Stz* aCK_short[]
   /* */ "paramList"_Stz,       // CK_PARAMLIST
   /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
+  /* */ "pmzWhere"_Stz,        // CK_PMZWHERE
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
   /* */ "ptnCol"_Stz,          // CK_PTNCOL

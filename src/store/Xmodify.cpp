@@ -779,7 +779,7 @@ bool Xmodify::bPullUp_StreamContainsPred(Card_Table* p_table,
     Stz* szTerm = pCard_PRED->sz();
 
     if (T_bValue_IsParamOrdinal(szTerm))
-      return true;
+      return false;
 
     if (! T_bValue_IsTableColOrdinal(szTerm))
       return false;
