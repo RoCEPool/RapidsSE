@@ -102,6 +102,7 @@ namespace STORE
   class Card_PmzWhere;
 
   class Card_RBound;
+  class Card_Reason;
   class Card_RpnCalc;
   class Card_RpnTerms;
 
@@ -402,6 +403,7 @@ namespace STORE
     Card_NParmCols*     pSub_nParmCols(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
+    Card_Reason*        pSub_reason(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);

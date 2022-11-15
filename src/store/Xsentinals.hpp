@@ -107,6 +107,7 @@ namespace STORE
     Card_PtnColNm *         p_ptnColNm;
     Card_PtndJoin *         p_ptndJoin;
     Card_PtndJoinSet *      p_ptndJoinSet;
+    Card_Reason *           p_reason;
     Card_RelnOp *           p_relnOp;
     Card_RpnCalc *          p_rpnCalc;
     Card_SbyElist *         p_sbyElist;

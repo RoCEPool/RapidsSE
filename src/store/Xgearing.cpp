@@ -822,6 +822,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_PTNCOLNM:         return G.p_ptnColNm;
     case CK_PTNDJOIN:         return G.p_ptndJoin;
     case CK_PTNDJOINSET:      return G.p_ptndJoinSet;
+    case CK_REASON:           return G.p_reason;
     case CK_RELNOP:           return G.p_relnOp;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SBYELIST:         return G.p_sbyElist;
@@ -1069,6 +1070,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_ptnColNm         = nullptr;
   G.p_ptndJoin         = nullptr;
   G.p_ptndJoinSet      = nullptr;
+  G.p_reason           = nullptr;
   G.p_relnOp           = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_sbyElist         = nullptr;
@@ -1494,6 +1496,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PTNCOLNM:         *((Card**)&G.p_ptnColNm)         = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&G.p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&G.p_ptndJoinSet)      = pCard; break;
+    case CK_REASON:           *((Card**)&G.p_reason)           = pCard; break;
     case CK_RELNOP:           *((Card**)&G.p_relnOp)           = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SBYELIST:         *((Card**)&G.p_sbyElist)         = pCard; break;
@@ -1856,6 +1859,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_PTNCOLNM:         return "G.p_ptnColNm"_Stz;
     case CK_PTNDJOIN:         return "G.p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "G.p_ptndJoinSet"_Stz;
+    case CK_REASON:           return "G.p_reason"_Stz;
     case CK_RELNOP:           return "G.p_relnOp"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SBYELIST:         return "G.p_sbyElist"_Stz;

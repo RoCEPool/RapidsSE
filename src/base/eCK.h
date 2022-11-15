@@ -105,6 +105,7 @@ enum eCK // card kind
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
+  /* */ CK_REASON,
   /* */ CK_RELNOP,
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
@@ -246,6 +247,7 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
+  /* */ "CK_REASON"_Stz,       // CK_REASON
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
@@ -387,6 +389,7 @@ static Stz* aCK_short[]
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
+  /* */ "reason"_Stz,          // CK_REASON
   /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
