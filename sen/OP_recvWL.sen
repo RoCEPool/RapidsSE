@@ -121,7 +121,7 @@ cmdSyntax: recvWL :: recvWL ;
 
 : recvWL_cmdTags _cmdTags tagCopy: op_tags
   tags{
-//    <dedicatedThd> = 1
+    <dedicatedThd> = 1
     <opEntry> = "recvWL_op"
   }
 ;
