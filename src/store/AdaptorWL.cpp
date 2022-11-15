@@ -298,6 +298,31 @@ void AdaptorWL::vClearStatement()
   m_sSmtBuf.vReset();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Update the state that a statement has been submitted                       */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vStatementSubmitted()
+{
+  ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
+
+  vNextState(API_STATEMENT_SUBMITTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the state that a statement has failed to submit                     */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vStatementSubmitted(eEC eErrCode)
+{
+  ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
+  Stz* szErrMsg= "Could not submit statement for execution: %s"_Stz;
+
+  vSerialiseErrorResponse(eErrCode, szErrMsg, aErrorMsg[eErrCode]);
+
+  // An error at this point ends the query dialog
+  vFinishQueryDialog();
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -428,6 +453,7 @@ void AdaptorWL::vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...)
   vSerialiseAndSendMsg(&oErrorResponse, MessageTypes::ErrorResponse);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* Serialises an abstract thrift message and adds it to the output queue.     */
 /*----------------------------------------------------------------------------*/
@@ -468,7 +494,7 @@ void AdaptorWL::vNextState(eState eNextState)
   /*05*/ static StateList aNextStates_Authenticated      = { READY, DISCONNECTED };
   /*06*/ static StateList aNextStates_Ready              = { READY, QUERY_BEGUN, DISCONNECTED };
   /*07*/ static StateList aNextStates_QueryBegun         = { READY, API_STATEMENT_TO_SUBMIT, QUERY_COMPLETED, DISCONNECTED };
-  /*08*/ static StateList aNextStates_ApiSmtToSubmit     = { API_STATEMENT_SUBMITTED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiSmtToSubmit     = { API_STATEMENT_SUBMITTED, QUERY_COMPLETED, DISCONNECTED };
   /*08*/ static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
   /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
   /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
@@ -840,6 +866,7 @@ void AdaptorWL::processQueryExecuteRequest()
   m_nSmtParsed = 0;
   m_nSmtSucceeded = 0;
   m_nSmtFailed = 0;
+  m_iQueryStartNanos = Timer::iGetTimeOfDay();
 
   // The query string in the QueryExecuteRequest may contain more than one statement
   // to be executed. So let's walk that string and find the next statement based on
@@ -1163,8 +1190,11 @@ void AdaptorWL::vFinishQueryDialog()
 {
   vNextState(QUERY_COMPLETED);
 
+  i8 iQueryEndNanos = Timer::iGetTimeOfDay();
+  double dQueryTime = (double) (iQueryEndNanos - m_iQueryStartNanos) / C_1B;
+
   QueryExecuteResponse xResponse;
-  xResponse.executionTime = 0.0;
+  xResponse.executionTime = dQueryTime;
   xResponse.numStatementsParsed = m_nSmtParsed;
   xResponse.numStatementsSucceeded = m_nSmtSucceeded;
   xResponse.numStatementsFailed = m_nSmtFailed;

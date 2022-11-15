@@ -62,6 +62,7 @@ namespace STORE
     i8           m_nSmtParsed;
     i8           m_nSmtSucceeded;
     i8           m_nSmtFailed;
+    i8           m_iQueryStartNanos;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -89,6 +90,9 @@ namespace STORE
     Stz* szStatement();
     bool bHasStatement();
     void vClearStatement();
+
+    void vStatementSubmitted();
+    void vStatementSubmitted(eEC eErrCode);
 
   private:
 

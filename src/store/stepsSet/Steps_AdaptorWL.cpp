@@ -15,17 +15,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AdaptorWL(void)
 {
-  vAddStep("AdaptorWL[].new"_Stz,      &Step::vAdaptorWLNew);
-  vAddStep("AdaptorWL[].delete"_Stz,   &Step::vAdaptorWLDelete);
+  vAddStep("AdaptorWL[].new"_Stz,                 &Step::vAdaptorWLNew);
+  vAddStep("AdaptorWL[].delete"_Stz,              &Step::vAdaptorWLDelete);
 
-  vAddStep("AdaptorWL[].decodePayload"_Stz,      &Step::vAdaptorWLDecodePayload);
-  vAddStep("AdaptorWL[].processWLMsg"_Stz,       &Step::vAdaptorWLProcessWLMsg);
-  vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,  &Step::vAdaptorWLHasPayloadToSendFetch);
-  vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz, &Step::vAdaptorWLNextPayloadToSendFetch);
-  vAddStep("AdaptorWL[].protocolErrorTest"_Stz,  &Step::vAdaptorWLProtocolErrorTest);
-  vAddStep("AdaptorWL[].protocolError@"_Stz,     &Step::vAdaptorWLProtocolErrorFetch);
-  vAddStep("AdaptorWL[].hasStatement"_Stz,       &Step::vAdaptorWLHasStatement);
-  vAddStep("AdaptorWL[].statement@\\clear"_Stz,  &Step::vAdaptorWLStatementFetchClear);
+  vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
+  vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
+  vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);
+  vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
+  vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
+  vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
+  vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
+  vAddStep("AdaptorWL[].statement@\\clear"_Stz,   &Step::vAdaptorWLStatementFetchClear);
+  vAddStep("AdaptorWL[].smtSubmitted"_Stz,        &Step::vAdaptorWLStatementSubmitted);
+  vAddStep("AdaptorWL[].smtSubmittedErr"_Stz,     &Step::vAdaptorWLStatementSubmittedError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,6 +171,37 @@ void Step::vAdaptorWLStatementFetchClear(void)
   m_pDataStack->vPushStz(pAdaptorWL->szStatement());
 
   pAdaptorWL->vClearStatement();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AdaptorWL[].statementSubmittedError -- The statement submission failed.    */
+/* An error code must be on the stack.                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLStatementSubmittedError(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  eEC eErrCode = (eEC) m_pDataStack->iPopInt(__func__);
+
+  pAdaptorWL->vStatementSubmitted(eErrCode);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AdaptorWL[].statementSubmitted -- The statement submission succeeded.      */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLStatementSubmitted(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  pAdaptorWL->vStatementSubmitted();
 
   EXIT();
 }

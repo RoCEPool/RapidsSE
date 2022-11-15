@@ -23,6 +23,20 @@
 : adaptorWL_submitStatement params| sSmt |
   "adaptorWL_submitStatement" .
 
+  sSmt "FORKING CHILD FOR COMMAND: %v"  str.format .
+
+  // spawn a job for the smt
+  [Op] [job].responseOp!
+  STD_NORMALFORK_TAG sSmt api::forkChild not if
+    //"Error Code %v" .printf
+    nullptr [job].responseOp!
+
+    // Error code is on the stack. Use it to form a message to be sent to the client.
+    AdaptorWL[].smtSubmittedErr
+    exit
+  then
+
+  AdaptorWL[].smtSubmitted
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -56,14 +70,16 @@
 
   // Check if we previously received an error
   AdaptorWL[].protocolErrorTest if
-    pPayloadObj payloadObj::delete  // TODO: is this required?
+    pPayloadObj payloadObj::delete
+    0 to pPayloadObj
     true
     exit
   then
 
   // Decode the payload to a message. This might generate payloads to be sent.
   pPayloadObj AdaptorWL[].decodePayload
-  pPayloadObj payloadObj::delete  // TODO: is this required?
+  pPayloadObj payloadObj::delete
+  0 to pPayloadObj
 
   // Possible errors from decoding need to be sent here.
   adaptorWL_sendAnyWLResponses
@@ -91,9 +107,18 @@
   then
 
   // Check if there are statements to be submitted through the API
-
   AdaptorWL[].hasStatement if
     AdaptorWL[].statement@\clear adaptorWL_submitStatement
+
+    // Pipeout any payloads that were just generated so they can be sent straight away
+    adaptorWL_sendAnyWLResponses
+
+    // Check if the protocol is unviable
+    AdaptorWL[].protocolErrorTest if
+      AdaptorWL[].protocolError@ op__execErr
+      true
+      exit
+    then
   then
 
   true

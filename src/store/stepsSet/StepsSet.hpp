@@ -26,16 +26,18 @@ public:
   void vAccumSumStore(void);
 
   // adaptorWL
-  void vAdaptorWLNew(void);
-  void vAdaptorWLDelete(void);
   void vAdaptorWLDecodePayload(void);
-  void vAdaptorWLProcessWLMsg(void);
+  void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
-  void vAdaptorWLNextPayloadToSendFetch(void);
-  void vAdaptorWLProtocolErrorTest(void);
-  void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLHasStatement(void);
+  void vAdaptorWLNew(void);
+  void vAdaptorWLNextPayloadToSendFetch(void);
+  void vAdaptorWLProcessWLMsg(void);
+  void vAdaptorWLProtocolErrorFetch(void);
+  void vAdaptorWLProtocolErrorTest(void);
   void vAdaptorWLStatementFetchClear(void);
+  void vAdaptorWLStatementSubmitted(void);
+  void vAdaptorWLStatementSubmittedError(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);
