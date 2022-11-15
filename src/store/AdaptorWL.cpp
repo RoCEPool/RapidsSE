@@ -106,6 +106,7 @@ AdaptorWL::AdaptorWL(void)
   m_nSmtParsed = 0;
   m_nSmtSucceeded = 0;
   m_nSmtFailed = 0;
+  m_iQueryStartNanos = 0;
 
   m_pTransport = std::make_shared<WLP::BufferTransport>();
   m_pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(m_pTransport);
@@ -287,7 +288,7 @@ Stz* AdaptorWL::szStatement()
 /*----------------------------------------------------------------------------*/
 bool AdaptorWL::bHasStatement()
 {
-  return m_sSmtBuf.bIsEmpty();
+  return !m_sSmtBuf.bIsEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,7 +298,6 @@ void AdaptorWL::vClearStatement()
 {
   m_sSmtBuf.vReset();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* Update the state that a statement has been submitted                       */

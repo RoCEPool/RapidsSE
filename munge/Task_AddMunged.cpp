@@ -9378,7 +9378,7 @@ void Task::vAddMunged(Task* )
     "\n"
     ": recvWL_cmdTags _cmdTags tagCopy: op_tags\n"
     "  tags{\n"
-    "//    <dedicatedThd> = 1\n"
+    "    <dedicatedThd> = 1\n"
     "    <opEntry> = \"recvWL_op\"\n"
     "  }\n"
     " ;\n"
