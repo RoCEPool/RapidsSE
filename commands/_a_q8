@@ -68,31 +68,31 @@ order by
 
 pipeline Q8
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage stageMarkerA on all partitions :
+  stage S01 on all partitions :
     scan rapidsse public region
     | filter "type BOOLEAN R_NAME 'AMERICA' =="
     | project "type INTEGER R_REGIONKEY as R_REGIONKEY"
     | combined 0
     | next
 
-  stage stageMarkerB on all partitions :
+  stage S02 on all partitions :
     indexJoin nation IxN_REGIONKEY "BOUND $I1 R_REGIONKEY =="
     | project "type INTEGER as N_NATIONKEY J1_N_NATIONKEY"
     | combined 0
     | next
 
-  stage stageMarkerC on all partitions :
+  stage S03 on all partitions :
     indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
     | project "type INTEGER as C_CUSTKEY J1_C_CUSTKEY"
     | combined 0
     | next
 
-  stage stageMarkerD on all partitions :
+  stage S04 on all partitions :
     indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
     | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-01-01' >=  J1_O_ORDERDATE DATE '1996-12-31' <= and"
     | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
@@ -101,7 +101,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage stageMarkerE on all partitions :
+  stage S05 on all partitions :
     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
                type INTEGER as L_PARTKEY J1_L_PARTKEY ,
@@ -112,7 +112,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage stageMarkerF on all partitions :
+  stage S06 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
     | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED STEEL' =="
     | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
@@ -123,7 +123,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage stageMarkerG on all partitions :
+  stage S07 on all partitions :
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
     | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
                type INTEGER as O_YEAR O_YEAR ,
@@ -132,7 +132,7 @@ begin
     | combined 0
     | next
 
-  stage stageMarkerH on all partitions :
+  stage S08 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
@@ -140,7 +140,7 @@ begin
     | combined 0
     | next
 
-  stage stageMarkerI on all partitions :
+  stage S09 on all partitions :
     aggreg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
@@ -149,7 +149,7 @@ begin
     | combined 0
     | next
 
-  stage stageMarkerJ on all nodes :
+  stage S010 on all nodes :
     aggreg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
@@ -158,7 +158,7 @@ begin
     | combined 0
     | next
 
-  stage stageMarkerK on origin :
+  stage S011 on origin :
     aggreg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
@@ -167,13 +167,13 @@ begin
     | combined 0
     | next
 
-  stage stageMarkerL on origin :
+  stage S012 on origin :
     project " type INTEGER as O_YEAR O_YEAR ,
               type DECIMAL as mkt_share $3 $2 /  "
     | combined 0
     | next
 
-  stage stageLast on origin :
+  stage S013 on origin :
     output
     | sink
     | first
