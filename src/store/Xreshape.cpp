@@ -725,6 +725,17 @@ void Xreshape::vR_S35_T10b_Push_sqB_Before_mqA(void)
 
   G.pDeck->vInsertAfter(G.p_twist,G.p_call);
 
+
+  G_vNewMember(CK_FOLD);
+  G_vNewMember(CK_MANNER,"<-b | a->"_Stz);
+  G_vAppendChild(CK_FOLD,CK_MANNER);
+  G_vNewMember(CK_CLAUSE,"from"_Stz);
+  G_vAppendChild(CK_FOLD,CK_CLAUSE);
+
+  G.pDeck->vInsertAfter(G.p_fold,G.p_twist);
+
+
+
   G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 

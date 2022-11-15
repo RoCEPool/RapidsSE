@@ -769,6 +769,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_CALCOP:           return G.p_calcOp;
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
+    case CK_CLAUSE:           return G.p_clause;
     case CK_CMPPRED:          return G.p_cmpPred;
     case CK_COMBINED:         return G.p_combined;
     case CK_COMMENT:          return G.p_comment;
@@ -784,6 +785,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_EXEPRED:          return G.p_exePred;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
+    case CK_FOLD:             return G.p_fold;
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
     case CK_HAVING:           return G.p_having;
@@ -801,9 +803,12 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_LBOUND:           return G.p_lBound;
     case CK_LEVEL:            return G.p_level;
+    case CK_MANNER:           return G.p_manner;
     case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
+    case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEXT:             return G.p_next;
     case CK_NOTE:             return G.p_note;
+    case CK_NPARMCOLS:        return G.p_nParmCols;
     case CK_PARAM:            return G.p_param;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
@@ -816,6 +821,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_PTNCOLNM:         return G.p_ptnColNm;
     case CK_PTNDJOIN:         return G.p_ptndJoin;
     case CK_PTNDJOINSET:      return G.p_ptndJoinSet;
+    case CK_RELNOP:           return G.p_relnOp;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SBYELIST:         return G.p_sbyElist;
     case CK_SCAN:             return G.p_scan;
@@ -1008,6 +1014,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_calcOp           = nullptr;
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
+  G.p_clause           = nullptr;
   G.p_cmpPred          = nullptr;
   G.p_combined         = nullptr;
   G.p_comment          = nullptr;
@@ -1023,6 +1030,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_exePred          = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
+  G.p_fold             = nullptr;
   G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
   G.p_having           = nullptr;
@@ -1040,9 +1048,12 @@ void Xgearing::G_vClearMembers(void)
   G.p_keyExists        = nullptr;
   G.p_lBound           = nullptr;
   G.p_level            = nullptr;
+  G.p_manner           = nullptr;
   G.p_maybeIndexJoin   = nullptr;
+  G.p_nCorrCols        = nullptr;
   G.p_next             = nullptr;
   G.p_note             = nullptr;
+  G.p_nParmCols        = nullptr;
   G.p_param            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
@@ -1056,6 +1067,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_ptnColNm         = nullptr;
   G.p_ptndJoin         = nullptr;
   G.p_ptndJoinSet      = nullptr;
+  G.p_relnOp           = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_sbyElist         = nullptr;
   G.p_scan             = nullptr;
@@ -1427,6 +1439,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CALCOP:           *((Card**)&G.p_calcOp)           = pCard; break;
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
+    case CK_CLAUSE:           *((Card**)&G.p_clause)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&G.p_comment)          = pCard; break;
@@ -1442,6 +1455,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXEPRED:          *((Card**)&G.p_exePred)          = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
@@ -1459,9 +1473,12 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
+    case CK_MANNER:           *((Card**)&G.p_manner)           = pCard; break;
     case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
+    case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
+    case CK_NPARMCOLS:        *((Card**)&G.p_nParmCols)        = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
@@ -1474,6 +1491,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PTNCOLNM:         *((Card**)&G.p_ptnColNm)         = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&G.p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&G.p_ptndJoinSet)      = pCard; break;
+    case CK_RELNOP:           *((Card**)&G.p_relnOp)           = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SBYELIST:         *((Card**)&G.p_sbyElist)         = pCard; break;
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard; break;
@@ -1784,6 +1802,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_CALCOP:           return "G.p_calcOp"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
     case CK_CAST:             return "G.p_cast"_Stz;
+    case CK_CLAUSE:           return "G.p_clause"_Stz;
     case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
     case CK_COMBINED:         return "G.p_combined"_Stz;
     case CK_COMMENT:          return "G.p_comment"_Stz;
@@ -1799,6 +1818,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_EXEPRED:          return "G.p_exePred"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
+    case CK_FOLD:             return "G.p_fold"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
     case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
@@ -1814,9 +1834,12 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
+    case CK_MANNER:           return "G.p_manner"_Stz;
     case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
+    case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
     case CK_NOTE:             return "G.p_note"_Stz;
+    case CK_NPARMCOLS:        return "G.p_nParmCols"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
@@ -1829,6 +1852,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_PTNCOLNM:         return "G.p_ptnColNm"_Stz;
     case CK_PTNDJOIN:         return "G.p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "G.p_ptndJoinSet"_Stz;
+    case CK_RELNOP:           return "G.p_relnOp"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SBYELIST:         return "G.p_sbyElist"_Stz;
     case CK_SCAN:             return "G.p_scan"_Stz;
