@@ -232,8 +232,6 @@ begin
       type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / ,
       type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / ,
       type INTEGER as COUNT_ORDER COUNT_ORDER "
-    | sort " type VARCHAR as L_RETURNFLAG L_RETURNFLAG ASC  ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ASC  "
     | combined 0
     | next
 
@@ -477,7 +475,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    scan Customer
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
     | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
     | combined 0
@@ -503,12 +501,25 @@ begin
     | combined 0
     | next
 
-   stage S05 on origin :
-    top "TOP type DECIMAL Revenue" 10
-    | combined 0
-    | next
+   stage S05 on all partitions :
+     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     | limit 10
+     | combined 0
+     | next
 
-  stage S06 on origin :
+   stage S06 on all nodes :
+     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     | limit 10
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     | limit 10
+     | combined 0
+     | next
+
+  stage S08 on origin :
     output
     | sink
     | first
@@ -522,9 +533,9 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    scan Customer
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
     | combined 0
     | next
 
@@ -534,7 +545,7 @@ begin
     | project "type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
                type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash expr type INTEGER O_ORDERKEY
+    | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
@@ -554,12 +565,25 @@ begin
     | combined 0
     | next
 
-   stage S05 on origin :
-    top "TOP type DECIMAL Revenue" 10
+  stage S05 on all partitions :
+    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    | limit 10
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S06 on all nodes :
+    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage S08 on origin :
     output
     | sink
     | first

@@ -1679,7 +1679,7 @@ begin
   stage S07 on all partitions :
     indexJoin part IxP_PARTKEY &quot;BOUND $I1 PS_PARTKEY ==&quot; //J1
     | filter &quot; type BOOLEAN  }  J1_P_TYPE &apos;%BRASS&apos;  6 matchTrailing
-             J1_P_SIZE 20 == and&quot;
+             J1_P_SIZE 15 == and&quot;
     | project &quot; type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
                 type VARCHAR as N_NAME N_NAME ,
@@ -1799,9 +1799,9 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan Customer IxC_CUSTKEY &quot;LBOUND $I1 0 &gt;=&quot;
+    scan Customer
     | filter &quot;type BOOLEAN C_MKTSEGMENT &apos;BUILDING&apos; ==&quot;
-    | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY&quot;
     | combined 0
     | next
 
@@ -1811,7 +1811,7 @@ begin
     | project &quot;type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
                type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY&quot;
-    | hash expr type INTEGER O_ORDERKEY
+    | hash &quot;type INTEGER O_ORDERKEY&quot;
     | combined 0
     | next hashcast
 
@@ -1831,17 +1831,29 @@ begin
     | combined 0
     | next
 
-   stage S05 on origin :
-    top &quot;TOP type DECIMAL Revenue&quot; 10
+  stage S05 on all partitions :
+    sort &quot; type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  &quot;
+    | limit 10
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S06 on all nodes :
+    sort &quot; type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  &quot;
+    | limit 10
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort &quot; type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  &quot;
+    | limit 10
+    | combined 0
+    | next
+
+  stage S08 on origin :
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1852,8 +1864,7 @@ end ;
               <stringProp name="variableNames"></stringProp>
               <stringProp name="TestPlan.comments">Requires the following indexes:
 create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
-create index IxO_CUSTKEY  ON Orders  (O_CUSTKEY)  ;
-create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
+create index IxO_CUSTKEY  ON Orders  (O_CUSTKEY)  ;</stringProp>
             </JDBCSampler>
             <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
