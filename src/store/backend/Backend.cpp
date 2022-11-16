@@ -92,6 +92,7 @@
 
 
 #include "ColumnOrdinal.hpp"
+#include "ColumnParameter.hpp"
 #include "ColumnRef.hpp"
 
 #include "FilterOp.hpp"
@@ -1090,6 +1091,36 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
           " $%lld"
           ""_Stz,
           ColumnOrdinal::iOrdinal(pColumnOrdinal));
+    }
+  }
+
+  if (ColumnParameter::bIsOfType(pOrdinalExpr)) {
+    QueryNode* pColumnParameter = _pQueryNode(pOrdinalExpr);
+    bool bJoinPredicate = pBackend->m_bJoinPredicate;
+
+    RASSERT(pBackend->m_iColumnsOfLeftChild);
+
+    i8 iColumnParameter = ColumnParameter::iParameter(pColumnParameter);
+
+    if (bJoinPredicate) {
+
+      if (iColumnParameter - pBackend->m_iColumnsOfLeftChild <= 0 )
+        sPipeline->vCatSprint(
+            " $L%lld"
+            ""_Stz,
+            iColumnParameter);
+      else
+        sPipeline->vCatSprint(
+            " $R%lld"
+            ""_Stz,
+            iColumnParameter - pBackend->m_iColumnsOfLeftChild);
+
+    }
+    else {
+      sPipeline->vCatSprint(
+          " %%%lld"
+          ""_Stz,
+          iColumnParameter);
     }
   }
 
