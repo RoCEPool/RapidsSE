@@ -828,61 +828,32 @@ void Xtransforms::vS30_T10(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_bForm_Mq_W_sq_1Ck_exists = [this] (void) {
-
-    return false;
+  auto L_vFold_Fsq_Before_Mq_As_opSeq = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_bForm_Mq_W_sq_in1Ck = [this] (void) {
-
-    return false;
+  auto L_vFold_WLsq_C_E_Before_Mq_As_keyExists = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_bForm_Mq_W_sq_notIn1Ck = [this] (void) {
-
-    return false;
+  auto L_vFold_WAsq_NC_NI_Before_Mq_As_aggFanVal = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_vFold_Sq_Before_Mq_As_from = [this] (void) {
+  auto L_vFold_WAsq_C_ro_Before_Mq_As_AggFanCorrVal = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  auto L_vFold_WLsq_C_NI_Into_Mq_As_keyNotExists = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_vFold_CorrSq_Before_Mq_As_keyExists = [this] (void) {
+  auto L_vFold_HAsq_C_ro_Before_Mq_As_projectingAggFan = [this] (void) {
   };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto L_vFold_CorrSq_Before_Mq_As_keyNotExists = [this] (void) {
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto L_vFold_CorrSq_Before_Mq_As_corrProjectingFanIn = [this] (void) {
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto L_vFold_CorrSq_Before_Mq_As_join = [this] (void) {
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  auto L_vFold_in1CkSq_Before_Mq_As_keyExists = [this] (void) {
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  auto L_vFold_notIn1CkSq_Before_Mq_As_keyNotExists = [this] (void) {
-  };
-
-
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -896,55 +867,69 @@ void Xtransforms::vS30_T10(void)
 
   G.pSubQuery = m_pBench->pGetBoard(C_SQ_BOARD)->pSubQuery();
 
-  if (G.pSubQuery->bViaFrom())  {
-    // + select from (select ...)
-    L_vFold_Sq_Before_Mq_As_from();
-  }
+  if (G.pSubQuery->bViaFrom())                /* Fsq_       Q7,8,9 */ L_vFold_Fsq_Before_Mq_As_opSeq();
   else
   if (G.pSubQuery->bViaWhere()) {
-    // + select where ... (select ...)
-    if (L_bForm_Mq_W_sq_in1Ck()) {
-      //+ calcOp is in
-      L_vFold_in1CkSq_Before_Mq_As_keyExists();
-    }
-    else if (L_bForm_Mq_W_sq_notIn1Ck()) {
-      //+ calcOp is in not
-      L_vFold_notIn1CkSq_Before_Mq_As_keyNotExists();
-    }
-    else if (G.pSubQuery->bIsCorrelated()) {
-      // ++ select where exists (select ...%1)
-      if (G.pSubQuery->bByExists()) {
-        //+ calcOp is exists
-        L_vFold_CorrSq_Before_Mq_As_keyExists();
+    if (G.pSubQuery->bIsAggregation()) {
+      if (G.pSubQuery->bIsCorrelated()) {
+             if (G.pSubQuery->bByExists())    /* WAsq_C_E          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* WAsq_C_NE         */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* WAsq_C_I          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* WAsq_C_NI         */ NEVER_REACH
+        else                                  /* WAsq_C_ro Q2+,17+ */ L_vFold_WAsq_C_ro_Before_Mq_As_AggFanCorrVal();
+      } else {
+             if (G.pSubQuery->bByExists())    /* WAsq_NC_E         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* WAsq_NC_NE        */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* WAsq_NC_I         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* WAsq_NC_NI   Q18+ */ L_vFold_WAsq_NC_NI_Before_Mq_As_aggFanVal();
+        else                                  /* WAsq_NC_ro        */ NEVER_REACH
       }
-      else if (G.pSubQuery->bByNotExists()) {
-        //+ calcOp is not exists
-        L_vFold_CorrSq_Before_Mq_As_keyNotExists();
+    } else {
+      if (G.pSubQuery->bIsCorrelated()) {
+             if (G.pSubQuery->bByExists())    /* WLsq_C_E       Q4 */ L_vFold_WLsq_C_E_Before_Mq_As_keyExists();
+        else if (G.pSubQuery->bByNotExists()) /* WLsq_C_NE         */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* WLsq_C_I          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* WLsq_C_NI    Q16? */ L_vFold_WLsq_C_NI_Into_Mq_As_keyNotExists();
+        else                                  /* WLsq_C_ro         */ NEVER_REACH
+      } else {
+             if (G.pSubQuery->bByExists())    /* WLsq_NC_E         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* WLsq_NC_NE        */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* WLsq_NC_I         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* WLsq_NC_NI        */ NEVER_REACH
+        else                                  /* WLsq_NC_ro        */ NEVER_REACH
       }
-      else {
-        // ++ select where <col> in (select ...%1)
-        L_vFold_CorrSq_Before_Mq_As_join();
-      }
-    }
-    else {
-      // ++ select where exists (select ...)
-      // ++ select where <col> in (select ...)
-      L_vFold_CorrSq_Before_Mq_As_corrProjectingFanIn();
     }
   }
   else
   if (G.pSubQuery->bViaHaving()) {
-    // + select having ... (select ...)
-
-    // the sub-query goes before the main query and has sun-query column injected
-
-    if (G.pSubQuery->bIsCorrelated()) {
-      // ++ select having exists (select ...%1)
-      // ++ select having <col> in (select ...%1)
-
-    }
-    else {
-
+    if (G.pSubQuery->bIsAggregation()) {
+      if (G.pSubQuery->bIsCorrelated()) {
+             if (G.pSubQuery->bByExists())    /* HAsq_C_E          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* HAsq_C_NE         */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* HAsq_C_I          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* HAsq_C_NI         */ NEVER_REACH
+        else                                  /* HAsq_C_ro         */ NEVER_REACH
+      } else {
+             if (G.pSubQuery->bByExists())    /* HAsq_NC_E         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* HAsq_NC_NE        */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* HAsq_NC_I         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* HAsq_NC_NI        */ NEVER_REACH
+        else                                  /* HAsq_NC_ro   Q11? */ L_vFold_HAsq_C_ro_Before_Mq_As_projectingAggFan();
+      }
+    } else {
+      if (G.pSubQuery->bIsCorrelated()) {
+             if (G.pSubQuery->bByExists())    /* HLsq_C_E          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* HLsq_C_NE         */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* HLsq_C_I          */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* HLsq_C_NI         */ NEVER_REACH
+        else                                  /* HLsq_C_ro         */ NEVER_REACH
+      } else {
+             if (G.pSubQuery->bByExists())    /* HLsq_NC_E         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotExists()) /* HLsq_NC_NE        */ NEVER_REACH
+        else if (G.pSubQuery->bByIn())        /* HLsq_NC_I         */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* HLsq_NC_NI        */ NEVER_REACH
+        else                                  /* HLsq_NC_ro        */ NEVER_REACH
+      }
     }
   }
   else
