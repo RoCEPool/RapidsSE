@@ -19,7 +19,7 @@ success
 
 // no key
 create unique index idx on t();
-failure contains: 'invalid command'
+failure contains: 'invalid columns'
 
 // no index
 drop index t idx;
