@@ -11,6 +11,7 @@
 #include "BufferTransport.hpp"
 #include "WlpHeader.hpp"
 #include "Version.h"
+#include "InfoSet.hpp"
 
 // All of the wireline protocol messages
 #include "wlp/thrift/generated/AuthenticationOkResponse_types.h"
@@ -73,10 +74,12 @@ Stz* AdaptorWL::aState[] {
     /* 10 API_METADATA_RECEIVED */    "API_METADATA_RECEIVED"_Stz,
     /* 11 API_DATA_RECEIVED */        "API_DATA_RECEIVED"_Stz,
     /* 12 API_STATEMENT_COMPLETED */ "API_STATEMENT_COMPLETED"_Stz,
-    /* 13 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
-    /* 14 DISCONNECTED */            "DISCONNECTED"_Stz,
-    /* 15 NENUMS */                  "NENUM"_Stz
+    /* 13 API_CHILD_JOB_EXITED */    "API_CHILD_JOB_EXITED"_Stz,
+    /* 14 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
+    /* 15 DISCONNECTED */            "DISCONNECTED"_Stz,
+    /* 16 NENUMS */                  "NENUM"_Stz
 };
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -101,12 +104,6 @@ AdaptorWL::AdaptorWL(void)
   m_pPayloadSendList = new PayloadList();
   m_eProtocolError = EC_NONE;
   m_eProtocolState = CONNECTED;
-  m_sSmtBuf.vReset();
-  m_iSmtCrs = -1;
-  m_nSmtParsed = 0;
-  m_nSmtSucceeded = 0;
-  m_nSmtFailed = 0;
-  m_iQueryStartNanos = 0;
 
   m_pTransport = std::make_shared<WLP::BufferTransport>();
   m_pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(m_pTransport);
@@ -282,7 +279,7 @@ WLP::PayloadObj* AdaptorWL::pNextPayloadToSend(void)
 /*----------------------------------------------------------------------------*/
 Stz* AdaptorWL::szStatement()
 {
-  return m_sSmtBuf.szStz();
+  return m_xStmtCtx.m_sSmtBuf.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,15 +287,16 @@ Stz* AdaptorWL::szStatement()
 /*----------------------------------------------------------------------------*/
 bool AdaptorWL::bHasStatement()
 {
-  return !m_sSmtBuf.bIsEmpty();
+  return !m_xStmtCtx.m_sSmtBuf.bIsEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clear the active statement to be sent through the SE API                   */
+/* Reset the variables used during execution of a statement                   */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vClearStatement()
+void AdaptorWL::vResetStmtCtx()
 {
-  m_sSmtBuf.vReset();
+  // TODO: Get rid of this. Move it elsewhere, like when we move to StatementComplete
+  m_xStmtCtx.vResetContext();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,6 +321,60 @@ void AdaptorWL::vStatementSubmitted(eEC eErrCode)
 
   // An error at this point ends the query dialog
   vFinishQueryDialog();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the state after an error is received from the SQL compiler          */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
+{
+  if (m_xStmtCtx.m_bGotSmtError) {
+    return;
+  }
+
+  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS));
+
+  Row *pInfoRow = pInfoSet->pFirstRow();
+
+  Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
+  eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
+  i8 iLineNo       = pInfoRow->iColVal_int(2);
+  i8 iColumnNo     = pInfoRow->iColVal_int(3);
+  Stz* szErrorText = pInfoRow->szColVal_ofs(4);
+
+  Stz* szMsgFmt = "Error: %s; %s; Line: %lld; Column: %lld; %s"_Stz;
+  vSerialiseErrorResponse(eErrorCode,
+                          szMsgFmt,
+                          szNodeName,
+                          aEC2[eErrorCode],
+                          iLineNo,
+                          iColumnNo,
+                          szErrorText);
+
+  m_xStmtCtx.m_bGotSmtError = true;
+
+  // An error at this point ends the current statement
+  vNextState(API_STATEMENT_COMPLETED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the state after the child job has exited                            */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vChildJobExited()
+{
+  ASSERT(bCheckState( {API_STATEMENT_COMPLETED} ));
+
+  m_xStmtCtx.vResetContext();
+  vNextState(API_CHILD_JOB_EXITED);
+
+  if (bExtractNextStatement()) {
+    vNextState(API_STATEMENT_TO_SUBMIT);
+
+  } else {
+    // Send a QueryExecuteResponse to terminate the query and update the state appropriately
+    vFinishQueryDialog();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -421,13 +473,9 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vCleanupCurrentMsg()
 {
-  // We want to keep m_pCurrentMsg and m_iCurrentMsgType while a query
-  // is being executed.
-  if (!bQueryInProgress()) {
-    delete m_pCurrentMsg;
-    m_pCurrentMsg = nullptr;
-    m_iCurrentMsgType = -1;
-  }
+  delete m_pCurrentMsg;
+  m_pCurrentMsg = nullptr;
+  m_iCurrentMsgType = -1;
 }
 
 
@@ -504,7 +552,8 @@ void AdaptorWL::vNextState(eState eNextState)
   /*08*/ static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
   /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
   /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { QUERY_COMPLETED, API_STATEMENT_TO_SUBMIT, DISCONNECTED };
+  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { API_CHILD_JOB_EXITED, DISCONNECTED };
+  /*11*/ static StateList aNextStates_ApiChildJobExited  = { QUERY_COMPLETED, API_STATEMENT_TO_SUBMIT, DISCONNECTED };
   /*12*/ static StateList aNextStates_QueryCompleted     = { READY, DISCONNECTED };
   /*13*/ static StateList aNextStates_Disconnected       = { DISCONNECTED };
 
@@ -524,6 +573,7 @@ void AdaptorWL::vNextState(eState eNextState)
     /*10*/ case API_METADATA_RECEIVED:   eValidNextStates = aNextStates_ApiMetadataRcvd;     break;
     /*11*/ case API_DATA_RECEIVED:       eValidNextStates = aNextStates_ApiDataRcvd;         break;
     /*12*/ case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiSmtCompleted;     break;
+    /*12*/ case API_CHILD_JOB_EXITED:    eValidNextStates = aNextStates_ApiChildJobExited;   break;
     /*13*/ case QUERY_COMPLETED:         eValidNextStates = aNextStates_QueryCompleted;      break;
     /*14*/ case DISCONNECTED:            eValidNextStates = aNextStates_Disconnected;        break;
     default:
@@ -868,11 +918,16 @@ void AdaptorWL::processQueryExecuteRequest()
   }
 
   vNextState(QUERY_BEGUN);
-  m_iSmtCrs = -1;
-  m_nSmtParsed = 0;
-  m_nSmtSucceeded = 0;
-  m_nSmtFailed = 0;
-  m_iQueryStartNanos = Timer::iGetTimeOfDay();
+
+  m_xQueryCtx.vResetContext();
+  m_xStmtCtx.vResetContext();
+
+  m_xQueryCtx.m_iQueryStartNanos = Timer::iGetTimeOfDay();
+
+  // Move the current QueryExecuteRequest to the QueryContext object
+  // so that we can keep it until the query is completed.
+  m_xQueryCtx.m_pQueryExecuteRequest = pMsg;
+  m_pCurrentMsg = nullptr;
 
   // The query string in the QueryExecuteRequest may contain more than one statement
   // to be executed. So let's walk that string and find the next statement based on
@@ -885,6 +940,8 @@ void AdaptorWL::processQueryExecuteRequest()
     // Send a QueryExecuteResponse to terminate the query and update the state appropriately
     vFinishQueryDialog();
   }
+
+  ASSERT(!m_pCurrentMsg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1125,34 +1182,34 @@ bool AdaptorWL::bQueryInProgress()
 /*----------------------------------------------------------------------------*/
 bool AdaptorWL::bExtractNextStatement()
 {
-  ASSERT(m_iSmtCrs >= -1);
-  ASSERT(m_pCurrentMsg);
-  ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryExecuteRequest);
-  ASSERT(bCheckState({QUERY_BEGUN, API_STATEMENT_COMPLETED}));
+  ASSERT(m_xQueryCtx.m_iSmtCrs >= -1);
+  ASSERT(m_xQueryCtx.m_pQueryExecuteRequest);
+  ASSERT(!m_pCurrentMsg);
+  ASSERT(bCheckState({QUERY_BEGUN, API_CHILD_JOB_EXITED}));
 
-  QueryExecuteRequest* pMsg = dynamic_cast<QueryExecuteRequest*>(m_pCurrentMsg);
+  QueryExecuteRequest* pMsg = m_xQueryCtx.m_pQueryExecuteRequest;
   ASSERT(pMsg);
 
   i8 nQueryLen = (i8) pMsg->query.length();
 
-  i8 iStartCrs = m_iSmtCrs + 1;
+  i8 iStartCrs = m_xQueryCtx.m_iSmtCrs + 1;
 
-  while (++m_iSmtCrs < nQueryLen) {
-    char c = pMsg->query.at(m_iSmtCrs);
+  while (++m_xQueryCtx.m_iSmtCrs < nQueryLen) {
+    char c = pMsg->query.at(m_xQueryCtx.m_iSmtCrs);
 
     switch (c) {
 
       case '/':
         // Check for SQL comments and advance over the comment block
-        if (    (m_iSmtCrs + 1 < nQueryLen)
-             && pMsg->query.at(m_iSmtCrs + 1) == '*'
+        if (    (m_xQueryCtx.m_iSmtCrs + 1 < nQueryLen)
+             && pMsg->query.at(m_xQueryCtx.m_iSmtCrs + 1) == '*'
            ) {
-          ++m_iSmtCrs;  // Cursor points at the first '*'
+          ++m_xQueryCtx.m_iSmtCrs;  // Cursor points at the first '*'
 
           // Advance to the "*/" or the EOS
-          while (++m_iSmtCrs < nQueryLen) {
-            char d = pMsg->query.at(m_iSmtCrs);
-            if (d == '*' && (m_iSmtCrs + 1 < nQueryLen) && pMsg->query.at(m_iSmtCrs + 1) == '/') {
+          while (++m_xQueryCtx.m_iSmtCrs < nQueryLen) {
+            char d = pMsg->query.at(m_xQueryCtx.m_iSmtCrs);
+            if (d == '*' && (m_xQueryCtx.m_iSmtCrs + 1 < nQueryLen) && pMsg->query.at(m_xQueryCtx.m_iSmtCrs + 1) == '/') {
               break;
             }
           }
@@ -1161,26 +1218,27 @@ bool AdaptorWL::bExtractNextStatement()
 
       case '\'':
         // Advance over the single-quoted string
-        while (++m_iSmtCrs < nQueryLen && pMsg->query.at(m_iSmtCrs) != '\'') {}
+        while (++m_xQueryCtx.m_iSmtCrs < nQueryLen && pMsg->query.at(m_xQueryCtx.m_iSmtCrs) != '\'') {}
         break;
 
       case '"':
         // Advance over the double-quoted string
-        while (++m_iSmtCrs < nQueryLen && pMsg->query.at(m_iSmtCrs) != '"') {}
+        while (++m_xQueryCtx.m_iSmtCrs < nQueryLen && pMsg->query.at(m_xQueryCtx.m_iSmtCrs) != '"') {}
         break;
 
       case '`':
         // Advance over the backtick identifier
-        while (++m_iSmtCrs < nQueryLen && pMsg->query.at(m_iSmtCrs) != '`') {}
+        while (++m_xQueryCtx.m_iSmtCrs < nQueryLen && pMsg->query.at(m_xQueryCtx.m_iSmtCrs) != '`') {}
         break;
 
       case ';':
         // Extract the semicolon terminated statement
         // TEMP: Don't include the terminating semicolon as this gets interpreted as another
         //       argument to the sqlCompiler procedure.
-        m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_iSmtCrs - iStartCrs);
-//        m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_iSmtCrs - iStartCrs + 1);
-        ++m_nSmtParsed;
+        m_xStmtCtx.m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_xQueryCtx.m_iSmtCrs - iStartCrs);
+//        m_xStmtCtx.m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + m_xQueryCtx.iStartCrs),
+//                                   m_xQueryCtx.m_iSmtCrs - iStartCrs + 1);
+        ++m_xQueryCtx.m_nSmtParsed;
         return true;
 
       default:
@@ -1200,20 +1258,88 @@ void AdaptorWL::vFinishQueryDialog()
   vNextState(QUERY_COMPLETED);
 
   i8 iQueryEndNanos = Timer::iGetTimeOfDay();
-  double dQueryTime = (double) (iQueryEndNanos - m_iQueryStartNanos) / C_1B;
+  double dQueryTime = (double) (iQueryEndNanos - m_xQueryCtx.m_iQueryStartNanos) / C_1B;
 
   QueryExecuteResponse xResponse;
   xResponse.executionTime = dQueryTime;
-  xResponse.numStatementsParsed = m_nSmtParsed;
-  xResponse.numStatementsSucceeded = m_nSmtSucceeded;
-  xResponse.numStatementsFailed = m_nSmtFailed;
+  xResponse.numStatementsParsed = m_xQueryCtx.m_nSmtParsed;
+  xResponse.numStatementsSucceeded = m_xQueryCtx.m_nSmtSucceeded;
+  xResponse.numStatementsFailed = m_xQueryCtx.m_nSmtFailed;
 
   vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
 
   // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
-  vCleanupCurrentMsg();
+  m_xQueryCtx.vResetContext();
 
   vNextState(READY);
+}
+
+/*============================================================================*/
+/* QueryContext struct                                                        */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+QueryContext::QueryContext(void)
+{
+  m_pQueryExecuteRequest = nullptr;
+  m_iSmtCrs           = -1;
+  m_nSmtParsed        = 0;
+  m_nSmtSucceeded     = 0;
+  m_nSmtFailed        = 0;
+  m_iQueryStartNanos  = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+QueryContext::~QueryContext(void) noexcept(false)
+{
+  delete m_pQueryExecuteRequest;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void QueryContext::vResetContext()
+{
+  delete m_pQueryExecuteRequest;
+  m_pQueryExecuteRequest = nullptr;
+  m_iSmtCrs           = -1;
+  m_nSmtParsed        = 0;
+  m_nSmtSucceeded     = 0;
+  m_nSmtFailed        = 0;
+  m_iQueryStartNanos  = 0;
+}
+
+/*============================================================================*/
+/* StatementContext struct                                                    */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+StatementContext::StatementContext(void)
+{
+  vResetContext();
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+StatementContext::~StatementContext(void) noexcept(false)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vResetContext()
+{
+  m_sSmtBuf.vReset();
+  m_bGotSmtError = false;
 }
 
 /*============================================================================*/

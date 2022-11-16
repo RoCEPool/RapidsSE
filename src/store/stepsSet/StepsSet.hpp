@@ -26,6 +26,8 @@ public:
   void vAccumSumStore(void);
 
   // adaptorWL
+  void vAdaptorWLChildJobExited(void);
+  void vAdaptorWLCompilerError(void);
   void vAdaptorWLDecodePayload(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);

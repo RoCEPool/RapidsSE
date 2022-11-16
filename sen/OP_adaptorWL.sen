@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Payload \handler
 
-  "adaptorWL_Payload- EV_D_PAYLOAD" .
+  "adaptorWL_Payload - EV_D_PAYLOAD" .
 
   PipeIn[]\clear locals| pPayloadObj |
   0              locals| sSmt        |
@@ -132,6 +132,35 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_I_COMPILEERRORS                                             */
+/* Called when there is an error from the SQL compiler.                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_CompileErrors \handler
+
+  "adaptorWL_CompileErrors - EV_I_COMPILEERRORS" .
+
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
+
+  AdaptorWL[].compilerError
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_CRWBUFFER                                                 */
 /* Called when a compact row buffer is received. CRW buffers are stored in    */
 /* tables, so these are often received when a table is scanned without        */
@@ -141,9 +170,19 @@
 
   EC_NONE locals| eError |
 
-  "adaptorWL_CrwBuffer- EV_D_CRWBUFFER" .
+  "adaptorWL_CrwBuffer - EV_D_CRWBUFFER" .
 
   Pipein[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
 
   true
 ;
@@ -156,8 +195,18 @@
 
   EC_NONE locals| eError |
 
-  "adaptorWL_RowBuffer- EV_D_ROWBUFFER" .
+  "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .
   Pipein[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
 
   true
 ;
@@ -168,9 +217,19 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StreamDef \handler
 
-  "adaptorWL_StreamDef- EV_D_STREAMDEF" .
+  "adaptorWL_StreamDef - EV_D_STREAMDEF" .
 
   PipeIn[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
 
   true
 ;
@@ -181,10 +240,22 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ChildExit \handler
 
-  "adaptorWL_ChildExit- EV_X_CHILDEXIT" .
+  "adaptorWL_ChildExit - EV_X_CHILDEXIT" .
 
   nullptr [job].responseOp!
   Pipein[].delete
+
+  adaptorWL[].childJobExited
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
 
   true
 ;

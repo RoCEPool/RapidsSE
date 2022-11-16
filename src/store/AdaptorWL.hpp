@@ -16,6 +16,7 @@ namespace apache { namespace thrift { namespace protocol { template <typename TY
 
 namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
   struct MessageTypes;
+  class QueryExecuteRequest;
 }}}}}
 
 namespace STORE
@@ -23,6 +24,30 @@ namespace STORE
   // Forward declarations (inside namespace STORE scope)
   typedef ListExo_t<CN_PAYLOADLIST, WLP::PayloadObj> PayloadList;
 
+  // Internal structure/classes used
+  struct QueryContext {
+    com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* m_pQueryExecuteRequest;
+    i8  m_iSmtCrs;
+    i8  m_nSmtParsed;
+    i8  m_nSmtSucceeded;
+    i8  m_nSmtFailed;
+    i8  m_iQueryStartNanos;
+
+    QueryContext();
+    ~QueryContext() noexcept(false);
+
+    void vResetContext();
+  };
+
+  struct StatementContext {
+    s48K  m_sSmtBuf;
+    bool  m_bGotSmtError;
+
+    StatementContext();
+    ~StatementContext();
+
+    void vResetContext();
+  };
 
   class AdaptorWL : public Object
                   , public ApiHelper
@@ -42,9 +67,10 @@ namespace STORE
       /* 10 */ API_METADATA_RECEIVED,
       /* 11 */ API_DATA_RECEIVED,
       /* 12 */ API_STATEMENT_COMPLETED,
-      /* 13 */ QUERY_COMPLETED,
-      /* 14 */ DISCONNECTED,
-      /* 15 */ NENUMS
+      /* 13 */ API_CHILD_JOB_EXITED,
+      /* 14 */ QUERY_COMPLETED,
+      /* 15 */ DISCONNECTED,
+      /* 16 */ NENUMS
     };
 
     static Stz* aState[];
@@ -56,13 +82,8 @@ namespace STORE
     eEC          m_eProtocolError;
     eState       m_eProtocolState;
 
-    s48K         m_sSmtBuf;
-    i8           m_iSmtCrs;
-
-    i8           m_nSmtParsed;
-    i8           m_nSmtSucceeded;
-    i8           m_nSmtFailed;
-    i8           m_iQueryStartNanos;
+    QueryContext     m_xQueryCtx;
+    StatementContext m_xStmtCtx;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -89,10 +110,13 @@ namespace STORE
 
     Stz* szStatement();
     bool bHasStatement();
-    void vClearStatement();
+    void vResetStmtCtx();
 
+    // State-change handlers called from sen code
     void vStatementSubmitted();
     void vStatementSubmitted(eEC eErrCode);
+    void vCompilerError(InfoSet* pInfoSet);
+    void vChildJobExited();
 
   private:
 

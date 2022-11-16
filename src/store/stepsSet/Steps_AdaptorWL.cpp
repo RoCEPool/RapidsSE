@@ -18,6 +18,8 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].new"_Stz,                 &Step::vAdaptorWLNew);
   vAddStep("AdaptorWL[].delete"_Stz,              &Step::vAdaptorWLDelete);
 
+  vAddStep("AdaptorWL[].childJobExited"_Stz,      &Step::vAdaptorWLChildJobExited);
+  vAddStep("AdaptorWL[].compilerError"_Stz,       &Step::vAdaptorWLCompilerError);
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);
@@ -55,6 +57,37 @@ void Step::vAdaptorWLDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* adaptorWL[].childJobExited -- update state after the child job has exited  */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLChildJobExited(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  pAdaptorWL->vChildJobExited();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].compilerError -- Received an error from the SQL compiler       */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLCompilerError(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  InfoSet* pInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pInfoSet);
+  ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS));
+
+  pAdaptorWL->vCompilerError(pInfoSet);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* adaptorWL[].decodePayload -- Decode a PayloadObj to a wireline message     */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLDecodePayload(void)
@@ -66,9 +99,8 @@ void Step::vAdaptorWLDecodePayload(void)
   WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
-  // TODO: How do we get any serialised errors and put them on the stack?
   pAdaptorWL->vDecodePayload(pPayloadObj);
-  
+
   EXIT();
 }
 
@@ -170,7 +202,7 @@ void Step::vAdaptorWLStatementFetchClear(void)
 
   m_pDataStack->vPushStz(pAdaptorWL->szStatement());
 
-  pAdaptorWL->vClearStatement();
+  pAdaptorWL->vResetStmtCtx();
 
   EXIT();
 }
