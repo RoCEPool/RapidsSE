@@ -76,7 +76,7 @@ void Xseries::vTransformSeries(void)
   vSeries_10_Condense_Info      (C_ENABLED);
 
   vSeries_20_Table_Analysis     (C_ENABLED);
-  vSeries_25_Stream_Analysis    (C_ENABLED);
+  vSeries_22_Stream_Analysis(C_ENABLED);
   vSeries_27_Query_Analysis     (C_ENABLED);
   vSeries_29_To_BoolCalc        (C_ENABLED);
 
@@ -175,18 +175,18 @@ void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_25_Stream_Analysis(bool bEnabled)
+void Xseries::vSeries_22_Stream_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
   if (! m_pTransforms->bS25_T00_Test(bEnabled)) {
-    m_pTransforms->vS25_T00_Skip();
+    m_pTransforms->vS22_T00_Skip();
     return;
   }
 
-  m_pTransforms->vS25_T00_Begin();
+  m_pTransforms->vS22_T00_Begin();
 
   for (i8 i_Board = 0;
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
@@ -194,15 +194,15 @@ void Xseries::vSeries_25_Stream_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS25_T10_Produce_stream_UnderAll_table();
-    m_pTransforms->vS25_T12_Produce_stream_UnderAll_project();
-    m_pTransforms->vS25_T14_Produce_stream_UnderAll_aggreg();
-    m_pTransforms->vS25_T20_Derive_ordinalRange_ForAll_table_stream();
-    m_pTransforms->vS25_T22_Derive_ordinalRange_ForAll_project_stream();
-    m_pTransforms->vS25_T24_Derive_ordinalRange_ForAll_aggreg_stream();
+    m_pTransforms->vS22_T10_Produce_stream_UnderAll_table();
+    m_pTransforms->vS22_T12_Produce_stream_UnderAll_project();
+    m_pTransforms->vS22_T14_Produce_stream_UnderAll_aggreg();
+    m_pTransforms->vS22_T20_Derive_ordinalRange_ForAll_table_stream();
+    m_pTransforms->vS22_T22_Derive_ordinalRange_ForAll_project_stream();
+    m_pTransforms->vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream();
   }
 
-  m_pTransforms->vS25_TZZ_End();
+  m_pTransforms->vS22_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }

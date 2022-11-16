@@ -236,13 +236,13 @@ void Xreshape::vR_S20_T20_Produce_tablePtn_Under_table(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                 vSeries_25_Stream_Analysis */
+/*                                                 vSeries_22_Stream_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S25_T10_Produce_stream_Under_table(void)
+void Xreshape::vR_S22_T10_Produce_stream_Under_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -259,7 +259,7 @@ void Xreshape::vR_S25_T10_Produce_stream_Under_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S25_T12_Produce_stream_Under_project(void)
+void Xreshape::vR_S22_T12_Produce_stream_Under_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -275,7 +275,7 @@ void Xreshape::vR_S25_T12_Produce_stream_Under_project(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S25_T14_Produce_stream_Under_aggreg(void)
+void Xreshape::vR_S22_T14_Produce_stream_Under_aggreg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -291,7 +291,7 @@ void Xreshape::vR_S25_T14_Produce_stream_Under_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S25_T20_Derive_ordinalRange_For_table_stream(void)
+void Xreshape::vR_S22_T20_Derive_ordinalRange_For_table_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -305,7 +305,7 @@ void Xreshape::vR_S25_T20_Derive_ordinalRange_For_table_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S25_T22_Derive_ordinalRange_For_project_stream(void)
+void Xreshape::vR_S22_T22_Derive_ordinalRange_For_project_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -319,7 +319,7 @@ void Xreshape::vR_S25_T22_Derive_ordinalRange_For_project_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S25_T24_Derive_ordinalRange_For_aggreg_stream(void)
+void Xreshape::vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

@@ -28,13 +28,13 @@ namespace STORE
     void vR_S20_T10_AAffix_tableSyn_To_table(void);
     void vR_S20_T20_Produce_tablePtn_Under_table(void);
 
-    // vSeries_25_Stream_Analysis
-    void vR_S25_T10_Produce_stream_Under_table(void);
-    void vR_S25_T12_Produce_stream_Under_project(void);
-    void vR_S25_T14_Produce_stream_Under_aggreg(void);
-    void vR_S25_T20_Derive_ordinalRange_For_table_stream(void);
-    void vR_S25_T22_Derive_ordinalRange_For_project_stream(void);
-    void vR_S25_T24_Derive_ordinalRange_For_aggreg_stream(void);
+    // vSeries_22_Stream_Analysis
+    void vR_S22_T10_Produce_stream_Under_table(void);
+    void vR_S22_T12_Produce_stream_Under_project(void);
+    void vR_S22_T14_Produce_stream_Under_aggreg(void);
+    void vR_S22_T20_Derive_ordinalRange_For_table_stream(void);
+    void vR_S22_T22_Derive_ordinalRange_For_project_stream(void);
+    void vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void);
     void vR_S29_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_S29_T20_Convert_stmColOdn_To_tblColOdn(void);
 
