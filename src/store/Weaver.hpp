@@ -63,11 +63,11 @@ namespace STORE
     void vArgSort     (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
     void vArgWhere    (Stz* szOpArgs,  Card_Where*     pCard_Where);
 
-    void vRpnGbyAgg   (Stz* szRpnExpr, Card_GbyAgg*    pCard_GbyAgg);
     void vRpnAggreg   (Stz* szRpnExpr, Card_Aggreg*    pCard_Aggreg);
     void vRpnCombined (Stz* szRpnExpr, Card_Combined*  pCard_Combined);
     void vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin);
     void vRpnFilter   (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
+    void vRpnGbyAgg   (Stz* szRpnExpr, Card_GbyAgg*    pCard_GbyAgg);
     void vRpnHaving   (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);

@@ -74,7 +74,7 @@ void Xtransforms::vS10_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pBench->vPrefix('r');
   m_pCardCtl->vUseExpanded();
@@ -90,6 +90,8 @@ void Xtransforms::vS10_T10_Delete_All_absJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMain(CK_ABSJOIN)) {
     vR_S10_T10_Delete_absJoin();
@@ -107,6 +109,8 @@ void Xtransforms::vS10_T20_Delete_All_combined(void)
 
   vTransform(__func__, "delete superfluous <combined>'s"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMain(CK_COMBINED)) {
     vR_S10_T20_Delete_combined();
   }
@@ -122,6 +126,8 @@ void Xtransforms::vS10_T30_Delete_All_send(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "delete superfluous <send>'s"_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMain(CK_SEND)) {
     vR_S10_T30_Delete_send();
@@ -139,6 +145,8 @@ void Xtransforms::vS10_T40_Delete_All_stage(void)
 
   vTransform(__func__, "delete all <stage>'s"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMain(CK_STAGE)) {
     vR_S10_T40_Delete_stage();
   }
@@ -155,6 +163,8 @@ void Xtransforms::vS10_T50_Cull_scan_Leaving_table(void)
 
   vTransform(__func__, "replace all <scan>'s with their children"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMain(CK_SCAN)) {
     vR_S10_T50_Cull_scan_Leaving_table();
   }
@@ -170,6 +180,8 @@ void Xtransforms::vS10_T60_Add_All_level(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "replace all <scan>'s with their children"_Stz);
+
+  vAssert_Board_any();
 
   G.e_Level = AL_PARTITION;
 
@@ -189,6 +201,8 @@ void Xtransforms::vS10_T80_Delete_Redundant_stages(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "linearize board by deleting all duplicate <stage>'s"_Stz);
+
+  vAssert_Board_any();
 
   //G.pDeck->vDump(0,(Stz*)(__func__));
 
@@ -215,6 +229,8 @@ void Xtransforms::vS10_T90_Hide_Ignorable_stages(void)
 
   vTransform(__func__, "hide ignorable <stage>'s"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMain(CK_STAGE)) {
     vR_S10_T90_Hide_Ignorable_stage();
   }
@@ -229,7 +245,7 @@ void Xtransforms::vS10_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +281,7 @@ void Xtransforms::vS20_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -280,6 +296,8 @@ void Xtransforms::vS20_T10_Affix_tableSyn_ToAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     vR_S20_T10_AAffix_tableSyn_To_table();
@@ -297,6 +315,8 @@ void Xtransforms::vS20_T20_Produce_tablePtn_UnderAll_table(void)
 
   vTransform(__func__, "add a <tablePtn> under every <table>"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     vR_S20_T20_Produce_tablePtn_Under_table();
   }
@@ -311,7 +331,7 @@ void Xtransforms::vS20_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,7 +367,7 @@ void Xtransforms::vS25_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -362,6 +382,8 @@ void Xtransforms::vS25_T10_Produce_stream_UnderAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <stream> under every <table>"_Stz);
+
+  vAssert_Board_any();
 
   vStreamAnalysisReset();
 
@@ -381,6 +403,8 @@ void Xtransforms::vS25_T12_Produce_stream_UnderAll_project(void)
 
   vTransform(__func__, "add a <stream> under every <project>"_Stz);
 
+  vAssert_Board_any();
+
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
@@ -398,6 +422,8 @@ void Xtransforms::vS25_T14_Produce_stream_UnderAll_aggreg(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <stream> under every <aggreg>"_Stz);
+
+  vAssert_Board_any();
 
   vStreamAnalysisReset();
 
@@ -417,6 +443,8 @@ void Xtransforms::vS25_T20_Derive_ordinalRange_ForAll_table_stream(void)
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
     vR_S25_T20_Derive_ordinalRange_For_table_stream();
   }
@@ -432,6 +460,8 @@ void Xtransforms::vS25_T22_Derive_ordinalRange_ForAll_project_stream(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
     vR_S25_T22_Derive_ordinalRange_For_project_stream();
@@ -449,6 +479,8 @@ void Xtransforms::vS25_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
 
   vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
     vR_S25_T24_Derive_ordinalRange_For_aggreg_stream();
   }
@@ -463,7 +495,7 @@ void Xtransforms::vS25_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,7 +531,7 @@ void Xtransforms::vS27_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -514,6 +546,8 @@ void Xtransforms::vS27_T10_Main_Query_Analysis(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((10))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain(CK_AGGREG)) {
     vR_S29_T10a_Main_Query_Analysis_aggreg();
@@ -551,6 +585,8 @@ void Xtransforms::vS27_T20_Sub_Query_Analysis(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
 
   i8 nBoards = m_pBench->nItems();
   if (1 == nBoards) {
@@ -593,6 +629,8 @@ void Xtransforms::vS27_T30(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vR_S29_T30();
 
   vEndTransform();
@@ -606,12 +644,12 @@ void Xtransforms::vS27_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      vSeries_29_To_RpnForm */
+/*                                                      vSeries_29_To_BoolCalc */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -644,7 +682,7 @@ void Xtransforms::vS29_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -655,6 +693,8 @@ void Xtransforms::vS29_T10_Convert_where_rpnCalc_To_boolCalc(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     vR_S29_T10_Convert_where_rpnCalc_To_boolCalc();
@@ -672,6 +712,8 @@ void Xtransforms::vS29_T20_Convert_stmColOdn_To_tblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "all $n become $c.n"_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMain()) {
 
@@ -705,6 +747,8 @@ void Xtransforms::vS29_T30(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vEndTransform();
 }
 
@@ -715,7 +759,7 @@ void Xtransforms::vS29_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -757,7 +801,7 @@ void Xtransforms::vS35_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -772,6 +816,8 @@ void Xtransforms::vS35_T10_Push_sqB_Into_mqA(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((10))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain(CK_CALL)) {
 
@@ -801,6 +847,8 @@ void Xtransforms::vS35_T20_Delete_call(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  vAssert_Board_mqA();
+
   vSH_DeleteMain(CK_CALL);
 
   vEndTransform();
@@ -815,6 +863,8 @@ void Xtransforms::vS35_T30_Delete_twist(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vSH_DeleteMain(CK_TWIST);
 
   vEndTransform();
@@ -827,7 +877,7 @@ void Xtransforms::vS35_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -868,11 +918,50 @@ void Xtransforms::vS36_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
   //m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T04_Mark_pmzWhere_In_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((04))"_Stz);
+
+  vAssert_Board_mqA();
+
+//  if (G_bPushBoard(1)) {
+//
+//    while (G_bEachMain(CK_WHERE)) {
+//      vR_S36_T104_Mark_pmzWhere_In_sqB();
+//    }
+//
+//    G_vPopBoard();
+//  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T05_Pullup_pmzWhere_Into_mqA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((04))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vR_S36_T105_Pullup_pmzWhere_Into_mqA();
+
+  vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -883,6 +972,8 @@ void Xtransforms::vS36_T10_Push_sqB_Into_mqA(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((yank from subquery))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
@@ -917,6 +1008,8 @@ void Xtransforms::vS36_T20_Transfer_whereB_To_whereA(void)
 
   vTransform(__func__, "Transfer where-B to where-A"_Stz);
 
+  vAssert_Board_mqA();
+
   G.pDeck->vDump();
 
   while (G_bEachMain(CK_WHERE)) {
@@ -945,6 +1038,8 @@ void Xtransforms::vS36_T30_Replace_param_In_whereA(void)
 
   vTransform(__func__, "Replace param in where-A"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     vR_S36_T30a_Replace_param_In_whereA();
     break;
@@ -972,6 +1067,8 @@ void Xtransforms::vS36_T40_Delete_tstPred_In_whereA(void)
 
   vTransform(__func__, "Delete tstPred in where-A"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     vR_S36_T40_Delete_tstPred_In_whereA();
     break;
@@ -989,6 +1086,8 @@ void Xtransforms::vS36_T50_Adjust_StmOdn(void)
 
   vTransform(__func__, "Adjust stream lo/ho ordinals"_Stz);
 
+  vAssert_Board_mqA();
+
   vR_S36_T50_Adjust_StmOdn();
 
   vEndTransform();
@@ -1003,6 +1102,8 @@ void Xtransforms::vS36_T60_Adjust_StmColOdn(void)
 
   vTransform(__func__, "Adjust stream lo/ho ordinals"_Stz);
 
+  vAssert_Board_mqA();
+
   vR_S36_T60_Adjust_StmColOdn();
 
   vEndTransform();
@@ -1016,6 +1117,8 @@ void Xtransforms::vS36_T70_Replace_term_In_cmpPred(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "AReplace term in cmpPred"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     vR_S36_T70_Replace_term_In_cmpPred();
@@ -1034,6 +1137,8 @@ void Xtransforms::vS36_T80_Delete_twist(void)
 
   vTransform(__func__, "AReplace term in cmpPred"_Stz);
 
+  vAssert_Board_mqA();
+
 //  while (G_bEachMain(CK_TWIST)) {
 //    G_vRemoveDeleteMain(CK_TWIST);
 //    break;
@@ -1051,7 +1156,7 @@ void Xtransforms::vS36_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1071,7 +1176,7 @@ bool Xtransforms::bS37_T00_Test(bool bEnabled)
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
-  if (QC_WHERE_CLAUSE == pSubQuery->eClause())
+  if (QC_HAVING_CLAUSE == pSubQuery->eClause())
     return true;
 
   return false;
@@ -1092,7 +1197,7 @@ void Xtransforms::vS37_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
 
@@ -1109,6 +1214,8 @@ void Xtransforms::vS37_T10_Append_sqB_After_mqA(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "Append subQuery-B after mainQuery-A"_Stz);
+
+  vAssert_Board_mqA();
 
   //while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
@@ -1144,6 +1251,8 @@ void Xtransforms::vS37_T20_Find_stmCol_Link(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bResolveCard(CK_PROJECT,C_UNKNOWN)) {
     vR_S37_T20_Find_stmCol_Link();
     break;
@@ -1161,6 +1270,8 @@ void Xtransforms::vS37_T30_Link_sqCall_In_having(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
     vR_S37_T30_Link_sqCall_In_having();
   }
@@ -1176,6 +1287,8 @@ void Xtransforms::vS37_T35_Bump_gbyElist_rpnCalc_In_sqB(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_GBYAGG, CK_GBYELIST)) {
     vR_S37_T35_Bump_gbyElist_rpnCalc_In_sqB();
@@ -1193,6 +1306,8 @@ void Xtransforms::vS37_T40_Add_sqCol_To_aggGbyElist(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain()) {
 
@@ -1217,6 +1332,8 @@ void Xtransforms::vS37_T45_Bump_aggElist_rpnCalc_In_sqB(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_GBYAGG, CK_AGGELIST)) {
     vR_S37_T45_Bump_aggElist_rpnCalc_In_sqB();
   }
@@ -1232,6 +1349,8 @@ void Xtransforms::vS37_T50_Add_sqCol_To_aggAggElist(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain()) {
 
@@ -1256,6 +1375,8 @@ void Xtransforms::vS37_T55_Bump_having_rpnCalc_In_sqB(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_HAVING,CK_RPNCALC)) {
     vR_S37_T55_Bump_having_rpnCalc_In_sqB();
   }
@@ -1271,6 +1392,8 @@ void Xtransforms::vS37_T60_Unproject_sqCol(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain(CK_TWIST)) {
 
@@ -1290,6 +1413,8 @@ void Xtransforms::vS37_T70_Exhange_sqB_With_mqA(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMain(CK_TWIST)) {
 
     vR_S37_T70_Exhange_sqB_With_mqA();
@@ -1308,6 +1433,8 @@ void Xtransforms::vS37_T80_Adjust_StmOdn(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vR_S37_T80_AdjustStmOdn();
 
   vEndTransform();
@@ -1321,6 +1448,8 @@ void Xtransforms::vS37_T90_Adjust_StmColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "((30))"_Stz);
+
+  vAssert_Board_mqA();
 
   vR_S37_T90_Adjust_StmColOdn();
 
@@ -1336,6 +1465,8 @@ void Xtransforms::vS37_TA0_Delete_twist(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vSH_DeleteMain(CK_TWIST);
 
   vEndTransform();
@@ -1350,6 +1481,8 @@ void Xtransforms::vS37_TB0(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vR_S37_TB0();
 
   vEndTransform();
@@ -1362,7 +1495,7 @@ void Xtransforms::vS37_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -1399,10 +1532,10 @@ void Xtransforms::vS40_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_Begin();
+  vST00_Begin();
 
   m_pCardCtl->vUseShorter();
-  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,CK_WHERE,0);
 
   vPrintBench(BK_SUBPIPE);
 }
@@ -1415,6 +1548,8 @@ void Xtransforms::vS40_T10_AtMark_where_pred_Wrt_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S40_T10_AtMark_where_pred_Wrt_table();
@@ -1432,6 +1567,8 @@ void Xtransforms::vS40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 
   vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S40_T20_Move_AtMarked_where_pred_To_table_filter();
   }
@@ -1448,6 +1585,8 @@ void Xtransforms::vS40_T30_Delete_Empty_where(void)
 
   vTransform(__func__, "delete where if it is effectively empty"_Stz);
 
+  vAssert_Board_any();
+
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S40_T30_Delete_Empty_where();
   }
@@ -1462,10 +1601,10 @@ void Xtransforms::vS40_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  m_pCardCtl->vUseShorter();
-  m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
+  //m_pCardCtl->vUseShorter();
+  //m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -1506,7 +1645,7 @@ void Xtransforms::vS60_T00_Begin(void)
 
   m_pBench->vPrefix('m');
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1517,6 +1656,8 @@ void Xtransforms::vS60_T05_Twist_in_Becomes_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TWIST, CK_TSTPRED,"in"_Stz)) {
     vR_S60_T05_Twist_in_Becomes_filter();
@@ -1534,6 +1675,8 @@ void Xtransforms::vS60_T10_Produce_maybeIndexJoin_Under_filter(void)
 
   vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_S60_T10_Produce_maybeIndexJoin_Under_filter();
   }
@@ -1549,6 +1692,8 @@ void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
     vR_S60_T20_Affix_tblColOdn_To_idxCol();
@@ -1566,6 +1711,8 @@ void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
 
   vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_S60_T30_UpCopy_filter_pred_Into_bounds();
   }
@@ -1581,6 +1728,8 @@ void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     vR_S60_T40_Cull_UpCopied_filter_pred();
@@ -1598,6 +1747,8 @@ void Xtransforms::vS60_T50_Delete_Empty_filter(void)
 
   vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     vR_S60_T50_Delete_Empty_filter();
   }
@@ -1614,6 +1765,8 @@ void Xtransforms::vS60_T60_Delete_Twist(void)
 
   vTransform(__func__, "((desc))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMain(CK_TWIST)) {
     vR_S60_T60_Delete_Twist();
   }
@@ -1628,18 +1781,18 @@ void Xtransforms::vS60_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   vSeries_70_Join_Ordering */
+/*                                                   vSeries_50_Join_Ordering */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS70_T00_Test(bool bEnabled)
+bool Xtransforms::bS50_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1652,7 +1805,7 @@ bool Xtransforms::bS70_T00_Test(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T00_Skip(void)
+void Xtransforms::vS50_T00_Skip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -1660,23 +1813,25 @@ void Xtransforms::vS70_T00_Skip(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T00_Begin(void)
+void Xtransforms::vS50_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
+void Xtransforms::vS50_T00_Extract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPartitionBoard();
 
@@ -1692,7 +1847,7 @@ void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
     if (! (G.p_table = G.p_MainCard->pSub_table()))
       continue;
 
-    vR_S70_T00_Extract_tableList_From_queryBoard();
+    vR_S50_T00_Extract_tableList_From_queryBoard();
   }
 
   vEndTransform();
@@ -1701,11 +1856,13 @@ void Xtransforms::vS70_T00_Extract_tableList_From_queryBoard(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T10_Extract_joinPredList(void)
+void Xtransforms::vS50_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPartitionBoard();
 
@@ -1721,7 +1878,7 @@ void Xtransforms::vS70_T10_Extract_joinPredList(void)
     if (!G.p_boolCalc)
       continue;
 
-    vR_S70_T10_Extract_joinPredList();
+    vR_S50_T10_Extract_joinPredList();
   }
 
   vEndTransform();
@@ -1730,11 +1887,13 @@ void Xtransforms::vS70_T10_Extract_joinPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
+void Xtransforms::vS50_T20_Compute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPartitionBoard();
 
@@ -1757,7 +1916,7 @@ void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
     if (!T_bTableList_PredCmpIsCoPtn(G.p_tableList, G.p_cmpPred))
       continue;
 
-    vR_S70_T20_Compute_coPtnPredList();
+    vR_S50_T20_Compute_coPtnPredList();
   }
 
   vEndTransform();
@@ -1766,18 +1925,20 @@ void Xtransforms::vS70_T20_Compute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T30_Compute_coPtnJoinList(void)
+void Xtransforms::vS50_T30_Compute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPartitionBoard();
 
   //--nn--------------==
   // coPtnJoinList
 
-  vR_S70_T30_Compute_coPtnJoinList();
+  vR_S50_T30_Compute_coPtnJoinList();
 
   vEndTransform();
 }
@@ -1785,18 +1946,20 @@ void Xtransforms::vS70_T30_Compute_coPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T40_Compute_crossPtnJoinList(void)
+void Xtransforms::vS50_T40_Compute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPartitionBoard();
 
   //--nn--------------==
   // crossPtnJoinList
 
-  vR_S70_T40_Compute_crossPtnJoinList();
+  vR_S50_T40_Compute_crossPtnJoinList();
 
 
 //  G.p_comment = new Card_Comment("((TO BE CODED))"_Stz);
@@ -1808,18 +1971,20 @@ void Xtransforms::vS70_T40_Compute_crossPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T50_Compute_ptndJoinSet(void)
+void Xtransforms::vS50_T50_Compute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPartitionBoard();
 
   //--nn--------------==
   // ptndJoinSet
 
-  vR_S70_T50_Compute_ptndJoinSet();
+  vR_S50_T50_Compute_ptndJoinSet();
 
   vEndTransform();
 }
@@ -1827,15 +1992,17 @@ void Xtransforms::vS70_T50_Compute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T60_Copy_ptndJoinSet(void)
+void Xtransforms::vS50_T60_Copy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupPermuteBoard();
 
-  vR_S70_T60_Copy_ptndJoinSet();
+  vR_S50_T60_Copy_ptndJoinSet();
 
   vEndTransform();
 }
@@ -1843,18 +2010,20 @@ void Xtransforms::vS70_T60_Copy_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T70_Generate_ptndPermutations(void)
+void Xtransforms::vS50_T70_Generate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
 //  PermGen::vTest(4);
 
   //--nn--------------==
   // x
 
-  vR_S70_T70_Generate_ptndPermutations();
+  vR_S50_T70_Generate_ptndPermutations();
 
   vEndTransform();
 }
@@ -1862,13 +2031,15 @@ void Xtransforms::vS70_T70_Generate_ptndPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T80_Remove_invalidPermutations(void)
+void Xtransforms::vS50_T80_Remove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_S70_T80_Remove_invalidPermutations();
+  vAssert_Board_mqA();
+
+  vR_S50_T80_Remove_invalidPermutations();
 
   vEndTransform();
 }
@@ -1876,17 +2047,19 @@ void Xtransforms::vS70_T80_Remove_invalidPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T90_Setup_costEst(void)
+void Xtransforms::vS50_T90_Setup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   //vSetupCostEstBoard();
 
   //m_pBoard_costEst->vDuplicateBoard(G.pBoard);
 
-  vR_S70_T90_Setup_costEst();
+  vR_S50_T90_Setup_costEst();
 
   vEndTransform();
 }
@@ -1894,13 +2067,15 @@ void Xtransforms::vS70_T90_Setup_costEst(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T92_Estimate_ptndJoins(void)
+void Xtransforms::vS50_T92_Estimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_S70_T92_Estimate_ptndJoins();
+  vAssert_Board_mqA();
+
+  vR_S50_T92_Estimate_ptndJoins();
 
   vEndTransform();
 }
@@ -1908,13 +2083,15 @@ void Xtransforms::vS70_T92_Estimate_ptndJoins(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T94_Estimate_network(void)
+void Xtransforms::vS50_T94_Estimate_network(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_S70_T94_Estimate_network();
+  vAssert_Board_mqA();
+
+  vR_S50_T94_Estimate_network();
 
   vEndTransform();
 }
@@ -1922,13 +2099,15 @@ void Xtransforms::vS70_T94_Estimate_network(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T96_Estimate_joinOrder(void)
+void Xtransforms::vS50_T96_Estimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_S70_T96_Estimate_joinOrder();
+  vAssert_Board_mqA();
+
+  vR_S50_T96_Estimate_joinOrder();
 
   vEndTransform();
 }
@@ -1936,13 +2115,15 @@ void Xtransforms::vS70_T96_Estimate_joinOrder(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_T98_Extract_joinOrderSeq(void)
+void Xtransforms::vS50_T98_Extract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vR_S70_T98_Extract_joinOrderSeq();
+  vAssert_Board_mqA();
+
+  vR_S50_T98_Extract_joinOrderSeq();
 
   vEndTransform();
 }
@@ -1950,11 +2131,11 @@ void Xtransforms::vS70_T98_Extract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS70_TZZ_End(void)
+void Xtransforms::vS50_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1992,7 +2173,7 @@ void Xtransforms::vS75_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2004,6 +2185,8 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 
   vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMain(CK_TABLE)) {
 
     G.p_bounds = G.p_table->pSub_bounds();
@@ -2013,25 +2196,29 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 
     vR_S75_T10_Morph_table_To_EEop();
   }
+  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
     vR_S75_T10_Morph_table_To_EEop_b();
   }
+  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXJOIN)) {
     vR_S75_T10_Morph_table_To_EEop_c();
   }
+  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_KEYEXISTS)) {
     if (G.p_keyExists) {
       i8 i_Child;
-      G.p_comment = _pCard_Comment(G.p_keyExists->pFindChild(CK_COMMENT, i_Child));
-      G.p_comment->vValue(SEP_DERIVED);
+      G.p_note = _pCard_Note(G.p_keyExists->pFindChild(CK_NOTE, i_Child));
+      G.p_note->vValue(SEP_DERIVED);
     }
   }
+  vPrintBoard(__LINE__);
 
   vEndTransform();
 }
@@ -2044,6 +2231,8 @@ void Xtransforms::vS75_T20_Morph_keyExists_filter_To_constraint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
     vR_S75_T20_Morph_keyExists_filter_To_constraint();
@@ -2061,6 +2250,8 @@ void Xtransforms::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 
   vTransform(__func__, "((description))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_STREAM)) {
     vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream();
   }
@@ -2077,6 +2268,8 @@ void Xtransforms::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
 
   vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
     vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
   }
@@ -2091,7 +2284,7 @@ void Xtransforms::vS75_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2130,7 +2323,7 @@ void Xtransforms::vS80_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2141,6 +2334,8 @@ void Xtransforms::vS80_T10_Produce_Scratch_indexList_Under_scan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "append <indexList> to <scan>"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_TABLENM)) {
     vR_S80_T10_Produce_indexList_Under_scan();
@@ -2158,6 +2353,8 @@ void Xtransforms::vS80_T20_Affix_idxColOdn_ToAll_idxCol(void)
 
   vTransform(__func__, "convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWith2Sub(CK_SCAN, CK_STREAM, CK_IDXCOLLIST)) {
     vR_S80_T20_Affix_idxCol_name_Of_scan_To_ordinal();
   }
@@ -2173,6 +2370,8 @@ void Xtransforms::vS80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
     vR_S80_T30_Mark_ULBoundsOf_scan_filter_cmpPred();
@@ -2190,6 +2389,8 @@ void Xtransforms::vS80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
 
   vTransform(__func__, "mark <SCAN>//<filter>//<term> ordinals which match index"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
     vR_S80_T40_Mark_IndexMatchOf_scan_filter_terms();
   }
@@ -2205,6 +2406,8 @@ void Xtransforms::vS80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
     vR_S80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
@@ -2222,6 +2425,8 @@ void Xtransforms::vS80_T60_Cull_Marked_filter_cmpPred(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
     vR_S80_T60_Cull_Marked_filter_cmpPred();
   }
@@ -2237,6 +2442,8 @@ void Xtransforms::vS80_T70_Morph_scan_To_indexScan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
     //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,G.p_scan->szBearing());
@@ -2263,7 +2470,7 @@ void Xtransforms::vS80_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2301,7 +2508,7 @@ void Xtransforms::vS85_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2312,6 +2519,8 @@ void Xtransforms::vS85_T10_Transmute_All_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((85 10))"_Stz);
+
+  vAssert_Board_mqA();
 
   if (G_bEachMain(CK_TABLE)) {
     vR_S85_T10a_Transmute_table_To_Scan();
@@ -2332,6 +2541,8 @@ void Xtransforms::vS85_T20_Add_index_ForAll_crossJoin(void)
 
   vTransform(__func__, "((85 20))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_TABLENM)) {
     vR_S85_T20_Add_index_For_crossJoin();
   }
@@ -2348,6 +2559,8 @@ void Xtransforms::vS85_T30_Add_bounds_ForAll_crossJoin(void)
 
   vTransform(__func__, "((85 20))"_Stz);
 
+  vAssert_Board_mqA();
+
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_INDEX)) {
     vR_S85_T30_Add_bounds_For_crossJoin();
   }
@@ -2362,7 +2575,7 @@ void Xtransforms::vS85_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2401,7 +2614,7 @@ void Xtransforms::vS90_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2412,6 +2625,8 @@ void Xtransforms::vS90_T10_Remove_sort_IfSameAs_gby(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain(CK_SORT)) {
     if (! G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
@@ -2429,7 +2644,7 @@ void Xtransforms::vS90_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2467,7 +2682,7 @@ void Xtransforms::vS92_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2478,6 +2693,8 @@ void Xtransforms::vS92_T10(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((10))"_Stz);
+
+  vAssert_Board_mqA();
 
   vEndTransform();
 }
@@ -2491,6 +2708,8 @@ void Xtransforms::vS92_T20(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  vAssert_Board_mqA();
+
   vEndTransform();
 }
 
@@ -2503,6 +2722,8 @@ void Xtransforms::vS92_T30(void)
 
   vTransform(__func__, "((30))"_Stz);
 
+  vAssert_Board_mqA();
+
   vEndTransform();
 }
 
@@ -2513,7 +2734,7 @@ void Xtransforms::vS92_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2552,7 +2773,7 @@ void Xtransforms::vSA0_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2563,6 +2784,8 @@ void Xtransforms::vSA0_T10_Individuate_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     vR_SA0_T10_Individuate_scan_filter();
@@ -2583,7 +2806,7 @@ void Xtransforms::vSA0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2621,7 +2844,7 @@ void Xtransforms::vSB0_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2632,6 +2855,8 @@ void Xtransforms::vSZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+
+  vAssert_Board_mqA();
 
   G.pBoard->vMayHaveStmColOdn(true);
 
@@ -2660,7 +2885,7 @@ void Xtransforms::vSB0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2701,7 +2926,7 @@ void Xtransforms::vSZ0_T00_Begin(void)
 
   m_pBench->vPrefix('w');
 
-  vSH_Begin();
+  vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2712,6 +2937,8 @@ void Xtransforms::vSZ0_T20_Reinstate_stages(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "reinstate stages"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
     vR_SZ0_T20_Reinstate_stages();
@@ -2733,6 +2960,8 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV2(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "reinstate stages"_Stz);
+
+  vAssert_Board_mqA();
 
   G.e_Level = AL_PARTITION;
 
@@ -2764,6 +2993,8 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
 
   vTransform(__func__, "reinstate stages"_Stz);
 
+  vAssert_Board_mqA();
+
   vR_SZ0_T20_Reinstate_stagesV3();
 
   vEndTransform();
@@ -2777,6 +3008,8 @@ void Xtransforms::vSZ0_T30_Reinstate_combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain()) {
     G_vSubsequentToMain();
@@ -2797,6 +3030,8 @@ void Xtransforms::vSZ0_T40_Reinstate_next(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
 
   while (G_bEachMain(CK_STAGE)) {
     if (! G.i_MainCard)
@@ -2819,7 +3054,7 @@ void Xtransforms::vSZ0_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  vSH_End();
+  vSTZZ_End();
 }
 
 
@@ -2831,7 +3066,38 @@ void Xtransforms::vSZ0_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSH_Begin(void)
+void Xtransforms::vAssert_Board_any(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // nothing to do?
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vAssert_Board_mqA(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  RASSERT(0 == G.pBoard->i_Board());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vAssert_Board_sqB(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  RASSERT(0 == G.pBoard->i_Board());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vST00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -2852,7 +3118,7 @@ void Xtransforms::vSH_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSH_End(void)
+void Xtransforms::vSTZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -2870,14 +3136,6 @@ void Xtransforms::vSH_DeleteMain(eCK eCard)
 
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vREPLACE_WITH_RESHAPE(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-}
 
 /*============================================================================*/
 /* end                                                                        */

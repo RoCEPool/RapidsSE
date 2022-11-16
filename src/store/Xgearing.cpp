@@ -340,6 +340,16 @@ void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Xgearing::iTransformDepth(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  return m_pTransformIterList->nItems();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vUsingBoard(eBK eBoard, i8 i_Board)
@@ -797,6 +807,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
     case CK_PERMUTATION:      return G.p_permutation;
+    case CK_PMZWHERE:         return G.p_pmzWhere;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJELIST:        return G.p_projElist;
     case CK_PTNCOL:           return G.p_ptnCol;
@@ -1035,6 +1046,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_partition        = nullptr;
   G.p_permutation      = nullptr;
   G.p_permutation_low  = nullptr;
+  G.p_pmzWhere         = nullptr;
   G.p_project          = nullptr;
   G.p_projElist        = nullptr;
   G.p_ptnCol           = nullptr;
@@ -1451,6 +1463,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
+    case CK_PMZWHERE:         *((Card**)&G.p_pmzWhere)         = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
     case CK_PROJELIST:        *((Card**)&G.p_projElist)        = pCard; break;
     case CK_PTNCOL:           *((Card**)&G.p_ptnCol)           = pCard; break;
@@ -1804,6 +1817,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
+    case CK_PMZWHERE:         return "G.p_pmzWhere"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
     case CK_PROJELIST:        return "G.p_projElist"_Stz;
     case CK_PTNCOL:           return "G.p_ptnCol"_Stz;

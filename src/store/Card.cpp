@@ -2045,6 +2045,19 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_CalcOp.hpp"
+Card_CalcOp* Card::pSub_calcOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CalcOp* p_calcOp =
+      _pCard_CalcOp(pFindSubCard(CK_CALCOP));
+  return p_calcOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Cast.hpp"
 Card_Cast* Card::pSub_cast(void)
 {
@@ -2053,6 +2066,19 @@ Card_Cast* Card::pSub_cast(void)
   Card_Cast* p_cast =
       _pCard_Cast(pFindSubCard(CK_CAST));
   return p_cast;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Clause.hpp"
+Card_Clause* Card::pSub_clause(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Clause* p_clause =
+      _pCard_Clause(pFindSubCard(CK_CLAUSE));
+  return p_clause;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2144,6 +2170,19 @@ Card_Filter* Card::pSub_filter(void)
   Card_Filter* p_filter =
       _pCard_Filter(pFindSubCard(CK_FILTER));
   return p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Fold.hpp"
+Card_Fold* Card::pSub_fold(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Fold* p_fold =
+      _pCard_Fold(pFindSubCard(CK_FOLD));
+  return p_fold;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2305,6 +2344,32 @@ Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Manner.hpp"
+Card_Manner* Card::pSub_manner(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Manner* p_manner =
+      _pCard_Manner(pFindSubCard(CK_MANNER));
+  return p_manner;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_NCorrCols.hpp"
+Card_NCorrCols* Card::pSub_nCorrCols(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_NCorrCols* p_nCorrCols =
+      _pCard_NCorrCols(pFindSubCard(CK_NCORRCOLS));
+  return p_nCorrCols;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Next.hpp"
 Card_Next* Card::pSub_next(void)
 {
@@ -2326,6 +2391,32 @@ Card_Note* Card::pSub_note(void)
   Card_Note* p_note =
       _pCard_Note(pFindSubCard(CK_NOTE));
   return p_note;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_NParmCols.hpp"
+Card_NParmCols* Card::pSub_nParmCols(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_NParmCols* p_nParmCols =
+      _pCard_NParmCols(pFindSubCard(CK_NPARMCOLS));
+  return p_nParmCols;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_PmzWhere.hpp"
+Card_PmzWhere* Card::pSub_pmzWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PmzWhere* p_pmzWhere =
+      _pCard_PmzWhere(pFindSubCard(CK_PMZWHERE));
+  return p_pmzWhere;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2573,6 +2664,19 @@ Card_UBound* Card::pSub_uBound(void)
   Card_UBound* p_uBound =
       _pCard_UBound(pFindSubCard(CK_UBOUND));
   return p_uBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Where.hpp"
+Card_Where* Card::pSub_where(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Where* p_where =
+      _pCard_Where(pFindSubCard(CK_WHERE));
+  return p_where;
 }
 
 
