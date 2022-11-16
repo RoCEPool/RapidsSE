@@ -425,12 +425,12 @@ void Xreshape::vR_S24_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          pSubQuery->vOperator(QO_NOT_EXISTS_OP);
+          pSubQuery->vCalcOp(QO_NOT_EXISTS_OP);
         else
-          pSubQuery->vOperator(QO_EXISTS_OP);
+          pSubQuery->vCalcOp(QO_EXISTS_OP);
       }
       else {
-        pSubQuery->vOperator(QO_EXISTS_OP);
+        pSubQuery->vCalcOp(QO_EXISTS_OP);
       }
     }
     else
@@ -438,20 +438,20 @@ void Xreshape::vR_S24_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          pSubQuery->vOperator(QO_NOT_IN_OP);
+          pSubQuery->vCalcOp(QO_NOT_IN_OP);
         else
-          pSubQuery->vOperator(QO_IN_OP);
+          pSubQuery->vCalcOp(QO_IN_OP);
       }
       else {
-        pSubQuery->vOperator(QO_IN_OP);
+        pSubQuery->vCalcOp(QO_IN_OP);
       }
     }
     else
     {
       eRO eRelnOp = RelOp::eDecode(szValue_term);
       if (RO_NONE != eRelnOp) {
-        pSubQuery->vOperator(QO_COMPARE_OP);
-        pSubQuery->vRelationalOp(eRelnOp);
+        pSubQuery->vCalcOp(QO_COMPARE_OP);
+        pSubQuery->vRelnOp(eRelnOp);
       }
     }
 
@@ -497,12 +497,12 @@ void Xreshape::vR_S24_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          pSubQuery->vOperator(QO_NOT_EXISTS_OP);
+          pSubQuery->vCalcOp(QO_NOT_EXISTS_OP);
         else
-          pSubQuery->vOperator(QO_EXISTS_OP);
+          pSubQuery->vCalcOp(QO_EXISTS_OP);
       }
       else {
-        pSubQuery->vOperator(QO_EXISTS_OP);
+        pSubQuery->vCalcOp(QO_EXISTS_OP);
       }
     }
     else
@@ -510,20 +510,20 @@ void Xreshape::vR_S24_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
         if (szValue_term->bSame("not"_Stz))
-          pSubQuery->vOperator(QO_NOT_IN_OP);
+          pSubQuery->vCalcOp(QO_NOT_IN_OP);
         else
-          pSubQuery->vOperator(QO_IN_OP);
+          pSubQuery->vCalcOp(QO_IN_OP);
       }
       else {
-        pSubQuery->vOperator(QO_IN_OP);
+        pSubQuery->vCalcOp(QO_IN_OP);
       }
     }
     else
     {
       eRO eRelnOp = RelOp::eDecode(szValue_term);
       if (RO_NONE != eRelnOp) {
-        pSubQuery->vOperator(QO_COMPARE_OP);
-        pSubQuery->vRelationalOp(eRelnOp);
+        pSubQuery->vCalcOp(QO_COMPARE_OP);
+        pSubQuery->vRelnOp(eRelnOp);
       }
     }
 
@@ -587,7 +587,7 @@ void Xreshape::vR_S24_T20b_Sub_Query_Analysis_paramList(void)
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
   i8 nParams = G.p_paramList->nChildCards();
-  pSubQuery->vParams(nParams);
+  pSubQuery->vCorrCols(nParams);
 
   vEndReshape();
 }
@@ -758,7 +758,8 @@ void Xreshape::vR_S35_T10b_Push_sqB_Before_mqA(void)
   G_vNewMember(CK_NOTE,"- delete twist"_Stz);
   G.p_twist->vAppend(G.p_note);
 
-  G.pDeck->vInsertAfter(G.p_twist,G.p_call);
+  //G.pDeck->vInsertAfter(G.p_twist,G.p_call);
+  G.pDeck->vPush(G.p_twist);
 
 
   G_vNewMember(CK_FOLD);
@@ -770,13 +771,14 @@ void Xreshape::vR_S35_T10b_Push_sqB_Before_mqA(void)
   G.pDeck->vInsertAfter(G.p_fold,G.p_twist);
 
 
-
-  G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
+  //G.pDeck->vInsertAfter(m_pCard_yanked,G.p_call);
+  G.pDeck->vPush(m_pCard_yanked);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
 
   DELETE_CARD(m_pCard_yanked);
 
-  p_card = G.pDeck->pGetChild(1);
+  //p_card = G.pDeck->pGetChild(1);
+  p_card = G.pDeck->pGetChild(0);
   p_comment = new Card_Comment("sub-query B"_Stz);
   p_card->vAppend(p_comment);
 

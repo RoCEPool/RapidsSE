@@ -199,6 +199,10 @@ namespace STORE
   static const bool C_ENABLED  = true;
   static const bool C_DISABLED = false;
 
+  static const i8 C_MQ_BOARD   = 0;
+  static const i8 C_SQ_BOARD   = 1;
+
+
   class Card : public Object
              , public ChildCards
   {

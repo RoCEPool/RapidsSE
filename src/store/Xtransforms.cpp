@@ -776,6 +776,193 @@ void Xtransforms::vS29_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*                                                   vSeries_30_Flatten_Query */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bS30_T00_Test(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
+
+  if (m_pBench->nItems() > 1)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vST00_Begin();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T10(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((10))"_Stz);
+
+  vAssert_Board_mqA();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_bForm_Mq_W_sq_1Ck_in = [this] (void) {
+
+    return false;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_xTransform = [this] (void) {
+  };
+
+
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  // test for:
+  //   1) Mq_F_Sq
+  //   2) Mq_W_Sq_0C
+  //   3) Mq_W_Sq_1C
+  //   4) Mq_H_Sq_0C
+  //   5) Mq_H_Sq_1C
+
+  SubQuery* pSubQuery = m_pBench->pGetBoard(C_SQ_BOARD)->pSubQuery();
+
+  if (pSubQuery->bViaFrom())  {
+    // + select from (select ...)
+
+    // the sub-query goes before the main query
+
+  }
+  else
+  if (pSubQuery->bViaWhere()) {
+    // + select where ... (select ...)
+
+    // the sub-query goes before the main query
+
+    if (pSubQuery->bIsCorrelated()) {
+      // ++ select where exists (select ...%1)
+      if (pSubQuery->bByExists()) {
+        //+ calcOp is exists
+
+        // keyExists opt; sq TABLE -> keyExists t
+      }
+      else
+      if (pSubQuery->bByNotExists()) {
+        //+ calcOp is not exists
+
+        // keyNotExists opt; sq TABLE -> keyNotExists t
+      }
+      else
+        // ++ select where <col> in (select ...%1)
+        ;
+    }
+    else {
+      // ++ select where exists (select ...)
+      // ++ select where <col> in (select ...)
+
+      if (pSubQuery->bByIn()) {
+        //  Mq_W_Sq_in
+
+        if (L_bForm_Mq_W_sq_1Ck_in()) {
+          // + Mq_W_Sq_1Ck_in
+
+          // Sq column is a key of table
+         ; //pFlatten()->v_Mq_W_Sq_1Ck_in();
+        }
+      }
+    }
+  }
+  else
+  if (pSubQuery->bViaHaving()) {
+    // + select having ... (select ...)
+
+    // the sub-query goes before the main query and has sun-query column injected
+
+    if (pSubQuery->bIsCorrelated()) {
+      // ++ select having exists (select ...%1)
+      // ++ select having <col> in (select ...%1)
+
+    }
+    else {
+
+    }
+  }
+  else
+    NEVER_REACH;
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T20(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T30(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((30))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vSTZZ_End();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*                                                    vSeries_35_Flatten_From */
 /*============================================================================*/
 
@@ -844,6 +1031,7 @@ void Xtransforms::vS35_T10_Push_sqB_Into_mqA(void)
     G_vPopBoard();
 
     vR_S35_T10b_Push_sqB_Before_mqA();
+    break;
   }
 
   vEndTransform();

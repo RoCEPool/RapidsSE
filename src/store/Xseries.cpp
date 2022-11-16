@@ -82,6 +82,7 @@ void Xseries::vTransformSeries(void)
 
   vSeries_40_Predicate_Pullup   (C_ENABLED);
 
+  vSeries_30_Flatten_Query                   (C_DISABLED);
   vSeries_35_Flatten_From       (C_ENABLED);
   vSeries_36_Flatten_Where      (C_ENABLED);
   vSeries_37_Flatten_Having     (C_ENABLED);
@@ -262,6 +263,31 @@ void Xseries::vSeries_29_To_BoolCalc(bool bEnabled)
   }
 
   m_pTransforms->vS29_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* flatten query                                                              */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_30_Flatten_Query(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (!m_pTransforms->bS30_T00_Test(bEnabled)) {
+    m_pTransforms->vS30_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS30_T00_Begin();
+
+  m_pTransforms->vS30_T10();
+  m_pTransforms->vS30_T20();
+  m_pTransforms->vS30_T30();
+
+  m_pTransforms->vS30_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }

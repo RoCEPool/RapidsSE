@@ -75,6 +75,15 @@ namespace STORE
     void vS29_T30(void);
     void vS29_TZZ_End(void);
 
+    // vSeries_30_Flatten_Query
+    bool bS30_T00_Test(bool bEnabled);
+    void vS30_T00_Skip(void);
+    void vS30_T00_Begin(void);
+    void vS30_T10(void);
+    void vS30_T20(void);
+    void vS30_T30(void);
+    void vS30_TZZ_End(void);
+
     // vSeries_35_Flatten_From
     bool bS35_T00_Test(bool bEnabled);
     void vS35_T00_Skip(void);
