@@ -16,6 +16,7 @@ namespace STORE
 
     Board*      pBoard;
     Card_Deck*  pDeck;
+    SubQuery*   pSubQuery;
 
     Card * p_Located;
     eCK    e_Located;

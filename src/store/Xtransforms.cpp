@@ -828,14 +828,56 @@ void Xtransforms::vS30_T10(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_bForm_Mq_W_sq_1Ck_in = [this] (void) {
+  auto L_bForm_Mq_W_sq_1Ck_exists = [this] (void) {
 
     return false;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_xTransform = [this] (void) {
+  auto L_bForm_Mq_W_sq_in1Ck = [this] (void) {
+
+    return false;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_bForm_Mq_W_sq_notIn1Ck = [this] (void) {
+
+    return false;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_vFold_Sq_Before_Mq_As_from = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_vFold_CorrSq_Before_Mq_As_keyExists = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_vFold_CorrSq_Before_Mq_As_keyNotExists = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_vFold_CorrSq_Before_Mq_As_corrProjectingFanIn = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto L_vFold_CorrSq_Before_Mq_As_join = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  auto L_vFold_in1CkSq_Before_Mq_As_keyExists = [this] (void) {
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  auto L_vFold_notIn1CkSq_Before_Mq_As_keyNotExists = [this] (void) {
   };
 
 
@@ -852,60 +894,51 @@ void Xtransforms::vS30_T10(void)
   //   4) Mq_H_Sq_0C
   //   5) Mq_H_Sq_1C
 
-  SubQuery* pSubQuery = m_pBench->pGetBoard(C_SQ_BOARD)->pSubQuery();
+  G.pSubQuery = m_pBench->pGetBoard(C_SQ_BOARD)->pSubQuery();
 
-  if (pSubQuery->bViaFrom())  {
+  if (G.pSubQuery->bViaFrom())  {
     // + select from (select ...)
-
-    // the sub-query goes before the main query
-
+    L_vFold_Sq_Before_Mq_As_from();
   }
   else
-  if (pSubQuery->bViaWhere()) {
+  if (G.pSubQuery->bViaWhere()) {
     // + select where ... (select ...)
-
-    // the sub-query goes before the main query
-
-    if (pSubQuery->bIsCorrelated()) {
+    if (L_bForm_Mq_W_sq_in1Ck()) {
+      //+ calcOp is in
+      L_vFold_in1CkSq_Before_Mq_As_keyExists();
+    }
+    else if (L_bForm_Mq_W_sq_notIn1Ck()) {
+      //+ calcOp is in not
+      L_vFold_notIn1CkSq_Before_Mq_As_keyNotExists();
+    }
+    else if (G.pSubQuery->bIsCorrelated()) {
       // ++ select where exists (select ...%1)
-      if (pSubQuery->bByExists()) {
+      if (G.pSubQuery->bByExists()) {
         //+ calcOp is exists
-
-        // keyExists opt; sq TABLE -> keyExists t
+        L_vFold_CorrSq_Before_Mq_As_keyExists();
       }
-      else
-      if (pSubQuery->bByNotExists()) {
+      else if (G.pSubQuery->bByNotExists()) {
         //+ calcOp is not exists
-
-        // keyNotExists opt; sq TABLE -> keyNotExists t
+        L_vFold_CorrSq_Before_Mq_As_keyNotExists();
       }
-      else
+      else {
         // ++ select where <col> in (select ...%1)
-        ;
+        L_vFold_CorrSq_Before_Mq_As_join();
+      }
     }
     else {
       // ++ select where exists (select ...)
       // ++ select where <col> in (select ...)
-
-      if (pSubQuery->bByIn()) {
-        //  Mq_W_Sq_in
-
-        if (L_bForm_Mq_W_sq_1Ck_in()) {
-          // + Mq_W_Sq_1Ck_in
-
-          // Sq column is a key of table
-         ; //pFlatten()->v_Mq_W_Sq_1Ck_in();
-        }
-      }
+      L_vFold_CorrSq_Before_Mq_As_corrProjectingFanIn();
     }
   }
   else
-  if (pSubQuery->bViaHaving()) {
+  if (G.pSubQuery->bViaHaving()) {
     // + select having ... (select ...)
 
     // the sub-query goes before the main query and has sun-query column injected
 
-    if (pSubQuery->bIsCorrelated()) {
+    if (G.pSubQuery->bIsCorrelated()) {
       // ++ select having exists (select ...%1)
       // ++ select having <col> in (select ...%1)
 

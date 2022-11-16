@@ -57,9 +57,9 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
-  G.pBoard = nullptr;
-  G.pDeck = nullptr;
-
+  G.pBoard    = nullptr;
+  G.pDeck     = nullptr;
+  G.pSubQuery = nullptr;
   G_vClearMembers();
   G_vClearRegisters();
 
