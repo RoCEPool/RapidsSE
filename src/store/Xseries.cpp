@@ -76,8 +76,8 @@ void Xseries::vTransformSeries(void)
   vSeries_10_Condense_Info      (C_ENABLED);
 
   vSeries_20_Table_Analysis     (C_ENABLED);
-  vSeries_22_Stream_Analysis(C_ENABLED);
-  vSeries_27_Query_Analysis     (C_ENABLED);
+  vSeries_22_Stream_Analysis    (C_ENABLED);
+  vSeries_24_Query_Analysis     (C_ENABLED);
   vSeries_29_To_BoolCalc        (C_ENABLED);
 
   vSeries_40_Predicate_Pullup   (C_ENABLED);
@@ -210,27 +210,27 @@ void Xseries::vSeries_22_Stream_Analysis(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_27_Query_Analysis(bool bEnabled)
+void Xseries::vSeries_24_Query_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (!m_pTransforms->bS27_T00_Test(bEnabled)) {
-    m_pTransforms->vS27_T00_Skip();
+  if (!m_pTransforms->bS24_T00_Test(bEnabled)) {
+    m_pTransforms->vS24_T00_Skip();
     return;
   }
 
-  m_pTransforms->vS27_T00_Begin();
+  m_pTransforms->vS24_T00_Begin();
 
-  m_pTransforms->vS27_T10_Main_Query_Analysis();
-  m_pTransforms->vS27_T20_Sub_Query_Analysis();
-  m_pTransforms->vS27_T30();
+  m_pTransforms->vS24_T10_Main_Query_Analysis();
+  m_pTransforms->vS24_T20_Sub_Query_Analysis();
+  m_pTransforms->vS24_T30();
 
   //m_pTransforms->vS29_T10_Convert_where_rpnCalc_To_boolCalc();
   //m_pTransforms->vS29_T20_Convert_stmColOdn_To_tblColOdn();
 
-  m_pTransforms->vS27_TZZ_End();
+  m_pTransforms->vS24_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }

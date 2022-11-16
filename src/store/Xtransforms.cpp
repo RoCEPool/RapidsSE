@@ -500,13 +500,13 @@ void Xtransforms::vS22_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  vSeries_27_Query_Analysis */
+/*                                                  vSeries_24_Query_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS27_T00_Test(bool bEnabled)
+bool Xtransforms::bS24_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -519,7 +519,7 @@ bool Xtransforms::bS27_T00_Test(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS27_T00_Skip(void)
+void Xtransforms::vS24_T00_Skip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -527,7 +527,7 @@ void Xtransforms::vS27_T00_Skip(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS27_T00_Begin(void)
+void Xtransforms::vS24_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -541,7 +541,7 @@ void Xtransforms::vS27_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS27_T10_Main_Query_Analysis(void)
+void Xtransforms::vS24_T10_Main_Query_Analysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -549,28 +549,33 @@ void Xtransforms::vS27_T10_Main_Query_Analysis(void)
 
   vAssert_Board_mqA();
 
+  while (G_bEachMain()) {
+    vR_S24_T10f_Main_Query_Genesis();
+  }
+
+  G_vRestart();
   while (G_bEachMain(CK_AGGREG)) {
-    vR_S29_T10a_Main_Query_Analysis_aggreg();
+    vR_S24_T10a_Main_Query_Analysis_aggreg();
   }
 
   G_vRestart();
   while (G_bEachMain(CK_GBYAGG)) {
-    vR_S29_T10b_Main_Query_Analysis_gbyagg();
+    vR_S24_T10b_Main_Query_Analysis_gbyagg();
   }
 
   i8 nBoards = m_pBench->nItems();
   if (nBoards > 1) {
     G_vRestart();
     while (G_bEachMain(CK_CALL)) {
-      vR_S29_T10c_Main_Query_Analysis_Of_from();
+      vR_S24_T10c_Main_Query_Analysis_Of_from();
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      vR_S29_T10d_Main_Query_Analysis_Of_where_rpnCalc();
+      vR_S24_T10d_Main_Query_Analysis_Of_where_rpnCalc();
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      vR_S29_T10e_Main_Query_Analysis_Of_having_rpnCalc();
+      vR_S24_T10e_Main_Query_Analysis_Of_having_rpnCalc();
     }
   }
 
@@ -580,7 +585,7 @@ void Xtransforms::vS27_T10_Main_Query_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS27_T20_Sub_Query_Analysis(void)
+void Xtransforms::vS24_T20_Sub_Query_Analysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -588,27 +593,33 @@ void Xtransforms::vS27_T20_Sub_Query_Analysis(void)
 
   vAssert_Board_mqA();
 
+
   i8 nBoards = m_pBench->nItems();
   if (1 == nBoards) {
-    vR_S29_T20a_Sub_Query_Analysis_Only_main();
+    vR_S24_T20a_Sub_Query_Analysis_Only_main();
   }
   else
   if (2 == nBoards) {
 
     if (G_bPushBoard(1)) {
 
+      while (G_bEachMain()) {
+        vR_S24_T10e_Sub_Query_Genesis();
+      }
+
+      G_vRestart();
       while (G_bEachMain(CK_PARAMLIST)) {
-        vR_S29_T20b_Sub_Query_Analysis_paramList();
+        vR_S24_T20b_Sub_Query_Analysis_paramList();
       }
 
       G_vRestart();
       while (G_bEachMain(CK_AGGREG)) {
-        vR_S29_T20c_Sub_Query_Analysis_aggreg();
+        vR_S24_T20c_Sub_Query_Analysis_aggreg();
       }
 
       G_vRestart();
       while (G_bEachMain(CK_GBYAGG)) {
-        vR_S29_T20d_Sub_Query_Analysis_gbyagg();
+        vR_S24_T20d_Sub_Query_Analysis_gbyagg();
       }
 
       G_vPopBoard();
@@ -623,7 +634,7 @@ void Xtransforms::vS27_T20_Sub_Query_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS27_T30(void)
+void Xtransforms::vS24_T30(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -631,7 +642,7 @@ void Xtransforms::vS27_T30(void)
 
   vAssert_Board_mqA();
 
-  vR_S29_T30();
+  vR_S24_T30();
 
   vEndTransform();
 }
@@ -640,7 +651,7 @@ void Xtransforms::vS27_T30(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS27_TZZ_End(void)
+void Xtransforms::vS24_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -649,7 +660,7 @@ void Xtransforms::vS27_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      vSeries_29_To_BoolCalc */
+/*                                                     vSeries_29_To_BoolCalc */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/

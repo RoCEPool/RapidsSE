@@ -57,14 +57,14 @@ namespace STORE
     void vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
     void vS22_TZZ_End(void);
 
-    // vSeries_27_Query_Analysis
-    bool bS27_T00_Test(bool bEnabled);
-    void vS27_T00_Skip(void);
-    void vS27_T00_Begin(void);
-    void vS27_T10_Main_Query_Analysis(void);
-    void vS27_T20_Sub_Query_Analysis(void);
-    void vS27_T30(void);
-    void vS27_TZZ_End(void);
+    // vSeries_24_Query_Analysis
+    bool bS24_T00_Test(bool bEnabled);
+    void vS24_T00_Skip(void);
+    void vS24_T00_Begin(void);
+    void vS24_T10_Main_Query_Analysis(void);
+    void vS24_T20_Sub_Query_Analysis(void);
+    void vS24_T30(void);
+    void vS24_TZZ_End(void);
 
     // vSeries_29_To_BoolCalc
     bool bS29_T00_Test(bool bEnabled);

@@ -332,13 +332,13 @@ void Xreshape::vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  vSeries_27_Query_Analysis */
+/*                                                  vSeries_24_Query_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T10a_Main_Query_Analysis_aggreg(void)
+void Xreshape::vR_S24_T10a_Main_Query_Analysis_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -356,7 +356,7 @@ void Xreshape::vR_S29_T10a_Main_Query_Analysis_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T10b_Main_Query_Analysis_gbyagg(void)
+void Xreshape::vR_S24_T10b_Main_Query_Analysis_gbyagg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -374,7 +374,7 @@ void Xreshape::vR_S29_T10b_Main_Query_Analysis_gbyagg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T10c_Main_Query_Analysis_Of_from(void)
+void Xreshape::vR_S24_T10c_Main_Query_Analysis_Of_from(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -395,7 +395,7 @@ void Xreshape::vR_S29_T10c_Main_Query_Analysis_Of_from(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
+void Xreshape::vR_S24_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -467,7 +467,7 @@ void Xreshape::vR_S29_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
+void Xreshape::vR_S24_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -536,11 +536,28 @@ void Xreshape::vR_S29_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
   vEndReshape();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_S24_T10f_Main_Query_Genesis(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  G_vNewMember(CK_GENESIS,"mq"_Stz);
+  if ((G.p_level = G.p_MainCard->pSub_level()))
+    G.p_MainCard->vInsertAfter(G.p_genesis,G.p_level);
+  else
+    G.p_MainCard->vPush(G.p_genesis);
+
+  vEndReshape();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T20a_Sub_Query_Analysis_Only_main(void)
+void Xreshape::vR_S24_T20a_Sub_Query_Analysis_Only_main(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -559,7 +576,7 @@ void Xreshape::vR_S29_T20a_Sub_Query_Analysis_Only_main(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T20b_Sub_Query_Analysis_paramList(void)
+void Xreshape::vR_S24_T20b_Sub_Query_Analysis_paramList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -578,7 +595,7 @@ void Xreshape::vR_S29_T20b_Sub_Query_Analysis_paramList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T20c_Sub_Query_Analysis_aggreg(void)
+void Xreshape::vR_S24_T20c_Sub_Query_Analysis_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -596,7 +613,7 @@ void Xreshape::vR_S29_T20c_Sub_Query_Analysis_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T20d_Sub_Query_Analysis_gbyagg(void)
+void Xreshape::vR_S24_T20d_Sub_Query_Analysis_gbyagg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -612,7 +629,25 @@ void Xreshape::vR_S29_T20d_Sub_Query_Analysis_gbyagg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S29_T30(void)
+void Xreshape::vR_S24_T10e_Sub_Query_Genesis(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  G_vNewMember(CK_GENESIS,"sq"_Stz);
+  if ((G.p_level = G.p_MainCard->pSub_level()))
+    G.p_MainCard->vInsertAfter(G.p_genesis,G.p_level);
+  else
+    G.p_MainCard->vPush(G.p_genesis);
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_S24_T30(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

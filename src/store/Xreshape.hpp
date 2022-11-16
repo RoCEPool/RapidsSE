@@ -35,20 +35,25 @@ namespace STORE
     void vR_S22_T20_Derive_ordinalRange_For_table_stream(void);
     void vR_S22_T22_Derive_ordinalRange_For_project_stream(void);
     void vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void);
+
+
+    // vSeries_24_Query_Analysis
+    void vR_S24_T10a_Main_Query_Analysis_aggreg(void);
+    void vR_S24_T10b_Main_Query_Analysis_gbyagg(void);
+    void vR_S24_T10c_Main_Query_Analysis_Of_from(void);
+    void vR_S24_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
+    void vR_S24_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
+    void vR_S24_T10f_Main_Query_Genesis(void);
+    void vR_S24_T20a_Sub_Query_Analysis_Only_main(void);
+    void vR_S24_T20b_Sub_Query_Analysis_paramList(void);
+    void vR_S24_T20c_Sub_Query_Analysis_aggreg(void);
+    void vR_S24_T20d_Sub_Query_Analysis_gbyagg(void);
+    void vR_S24_T10e_Sub_Query_Genesis(void);
+    void vR_S24_T30(void);
+
+    // vSeries_29_To_BoolCalc
     void vR_S29_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_S29_T20_Convert_stmColOdn_To_tblColOdn(void);
-
-    // vSeries_27_Query_Analysis
-    void vR_S29_T10a_Main_Query_Analysis_aggreg(void);
-    void vR_S29_T10b_Main_Query_Analysis_gbyagg(void);
-    void vR_S29_T10c_Main_Query_Analysis_Of_from(void);
-    void vR_S29_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
-    void vR_S29_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
-    void vR_S29_T20a_Sub_Query_Analysis_Only_main(void);
-    void vR_S29_T20b_Sub_Query_Analysis_paramList(void);
-    void vR_S29_T20c_Sub_Query_Analysis_aggreg(void);
-    void vR_S29_T20d_Sub_Query_Analysis_gbyagg(void);
-    void vR_S29_T30(void);
 
     // vSeries_35_Flatten_From
     void vR_S35_T10a_Copy_From_SubQuery(void);
