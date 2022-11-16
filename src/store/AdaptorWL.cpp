@@ -1176,7 +1176,10 @@ bool AdaptorWL::bExtractNextStatement()
 
       case ';':
         // Extract the semicolon terminated statement
-        m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_iSmtCrs - iStartCrs + 1);
+        // TEMP: Don't include the terminating semicolon as this gets interpreted as another
+        //       argument to the sqlCompiler procedure.
+        m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_iSmtCrs - iStartCrs);
+//        m_sSmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_iSmtCrs - iStartCrs + 1);
         ++m_nSmtParsed;
         return true;
 

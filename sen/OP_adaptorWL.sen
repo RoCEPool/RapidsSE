@@ -50,7 +50,8 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_START ...                                                          */
+/* handler for EV_M_START                                                     */
+/* Called when the pipeline is first started, to initialise all operators.    */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StartMarker \handler
 
@@ -63,7 +64,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_PAYLOAD ...                                                        */
+/* handler for EV_D_PAYLOAD                                                   */
 /* This is called when a wireline message has been read from the socket and   */
 /* it needs to be decoded and processed.                                      */
 /*----------------------------------------------------------------------------*/
@@ -131,7 +132,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_CRWBUFFER ...                                                      */
+/* handler for EV_D_CRWBUFFER                                                 */
+/* Called when a compact row buffer is received. CRW buffers are stored in    */
+/* tables, so these are often received when a table is scanned without        */
+/* projections.                                                               */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CrwBuffer \handler
 
@@ -139,13 +143,14 @@
 
   "adaptorWL_CrwBuffer- EV_D_CRWBUFFER" .
 
-  Pipein[].pipeOut
+  Pipein[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                      */
+/* handler for EV_D_ROWBUFFER                                                 */
+/* Called when a row buffer is received. These are projections from a query.  */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_RowBuffer \handler
 
@@ -158,58 +163,36 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF                                                 */
+/* Called to indicate the definition of a resultset from a query.             */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StreamDef \handler
 
   "adaptorWL_StreamDef- EV_D_STREAMDEF" .
 
-  PipeIn[].pipeout
+  PipeIn[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_X_CHILDEXIT ...                                       EV_X_CHILDEXIT */
+/* handler for EV_X_CHILDEXIT ...                                             */
+/* Called when the submitted statement has finished being executed.           */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ChildExit \handler
 
   "adaptorWL_ChildExit- EV_X_CHILDEXIT" .
 
-//  true LogicUnit[].RcvdChildExit!
-
   nullptr [job].responseOp!
-
-//  LogicUnit[].RcvdEnd@ if
-//    Marker[].newEndMarker
-//    Marker[].pipeout
-//  then
-
   Pipein[].delete
 
   true
 ;
 
-///*----------------------------------------------------------------------------*/
-///* handler for EV_M_END ...                                                   */
-///*----------------------------------------------------------------------------*/
-//: adaptorWL_End \handler
-//
-//  "adaptorWL_End- EV_M_END" .
-//
-//  true LogicUnit[].RcvdEnd!
-//
-//  LogicUnit[].RcvdChildExit@ if
-//     PipeIn[].pipeout
-//  else
-//    PipeIn[].delete
-//  then
-//
-//  true
-//;
-
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_CLEANING operand                                          */
+/* handler for EV_M_CLEANING                                                  */
+/* Called when the pipeline is being torn down. Usually because the client has*/
+/* disconnected, or the server is disconnecting from the client.              */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Cleaning \handler
 
@@ -228,13 +211,14 @@
 
   op__topology
 
-  find: adaptorWL_StartMarker EV_M_START       [op].handler!
-  find: adaptorWL_Payload     EV_D_PAYLOAD     [op].handler!
-  find: adaptorWL_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
-  find: adaptorWL_RowBuffer   EV_D_ROWBUFFER   [op].handler!
-  find: adaptorWL_StreamDef   EV_D_STREAMDEF   [op].handler!
-  find: adaptorWL_ChildExit   EV_X_CHILDEXIT   [op].handler!
-  find: adaptorWL_Cleaning    EV_M_CLEANING    [op].handler!
+  find: adaptorWL_StartMarker   EV_M_START          [op].handler!
+  find: adaptorWL_Payload       EV_D_PAYLOAD        [op].handler!
+  find: adaptorWL_CompileErrors EV_I_COMPILEERRORS  [op].handler!
+  find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
+  find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
+  find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
+  find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!
+  find: adaptorWL_Cleaning      EV_M_CLEANING       [op].handler!
 
   op__loop
 
