@@ -1,0 +1,115 @@
+/*============================================================================*/
+/* _r_a_b_HAVING -- having sub-query test : pattern a/b -> a|b                */
+/*============================================================================*/
+
+trackMemory;
+
+_nation
+load nation "../tpch/sf_0001/nation.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT n_nationkey, ( SELECT MAX(r_regionkey) FROM region ) AS regionMin from nation;
+
+
+/*
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+explain stage transliterate SELECT n_nationkey, ( SELECT MAX(r_regionkey) FROM region ) AS regionMin from nation;
+
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker140990
+    stage stageMarker140990 on all partitions :
+      scan rapidsse public REGION
+      | project " type INTEGER )  $1 max  "
+      | combined 0
+      | stageMarker140993
+    stage stageMarker140993 on all nodes :
+      project " type INTEGER )  $1 max  "
+      | combined 0
+      | stageMarker140996
+    stage stageMarker140996 on origin :
+      project " type INTEGER )  $1 max  "
+      | combined 0
+      | stageMarker140999
+    stage stageMarker140999 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker141002
+  stage stageMarker141002 on all partitions :
+    scan rapidsse public NATION
+    | project " type INTEGER as n_nationkey $1 , type INTEGER as regionMin __subquery0003  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//OPTIMISED QUERY
+
+pipeline unnamed
+  begin
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S01 on all partitions :
+      scan rapidsse public REGION
+      | project " type INTEGER )  $1 max  "
+      | combined 0
+      | next
+
+    stage S02 on all nodes :
+      project " type INTEGER )  $1 max  "
+      | combined 0
+      | next
+
+    stage S03 on origin :
+      project " type INTEGER )  $1 max  "
+      | combined 0
+      | next broadcast
+
+    stage S04 on all partitions :
+      indexJoin NATION IxN_NATIONKEY "BOUND $I1"  // cross join
+      | project " type INTEGER as n_nationkey $2 , type INTEGER as regionMax $1  "
+      | combined 0
+      | next
+
+    stage S05 on origin :
+      output
+      | sink
+      | first
+  end ;
+
+
+
+//drop table nation;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
