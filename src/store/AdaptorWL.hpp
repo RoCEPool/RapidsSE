@@ -118,6 +118,7 @@ namespace STORE
     void vStatementSubmitted();
     void vStatementSubmissionFailed(eEC eErrCode);
     void vCompilerError(InfoSet* pInfoSet);
+    void vExecutionError(InfoSet* pInfoSet);
     void vChildJobExited();
     bool bIsChildJobActive();
 

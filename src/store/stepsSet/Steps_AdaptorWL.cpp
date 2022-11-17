@@ -21,6 +21,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].childJobExited"_Stz,      &Step::vAdaptorWLChildJobExited);
   vAddStep("AdaptorWL[].compilerError"_Stz,       &Step::vAdaptorWLCompilerError);
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
+  vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);
   vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
@@ -101,6 +102,23 @@ void Step::vAdaptorWLDecodePayload(void)
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   pAdaptorWL->vDecodePayload(pPayloadObj);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].executionError -- Received an error from the execution engine  */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLExecutionError(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  InfoSet* pInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pInfoSet);
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
+
+  pAdaptorWL->vExecutionError(pInfoSet);
 
   EXIT();
 }

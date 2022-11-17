@@ -360,6 +360,37 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Update the state after an error is received from the execution engine      */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
+{
+  if (m_xStmtCtx.m_bGotSmtError) {
+    return;
+  }
+
+  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
+
+  Row *pInfoRow = pInfoSet->pFirstRow();
+
+  Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
+  eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
+  Stz* szErrorText = pInfoRow->szColVal_ofs(2);
+
+  Stz* szMsgFmt = "Error: %s; %s; %s"_Stz;
+  vSerialiseErrorResponse(eErrorCode,
+                          szMsgFmt,
+                          szNodeName,
+                          aEC2[eErrorCode],
+                          szErrorText);
+
+  m_xStmtCtx.m_bGotSmtError = true;
+
+  // An error at this point ends the current statement
+  vNextState(API_STATEMENT_COMPLETED);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Update the state after the child job has exited                            */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vChildJobExited()

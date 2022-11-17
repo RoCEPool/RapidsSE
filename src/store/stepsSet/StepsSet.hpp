@@ -29,6 +29,7 @@ public:
   void vAdaptorWLChildJobExited(void);
   void vAdaptorWLCompilerError(void);
   void vAdaptorWLDecodePayload(void);
+  void vAdaptorWLExecutionError(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLHasStatement(void);
