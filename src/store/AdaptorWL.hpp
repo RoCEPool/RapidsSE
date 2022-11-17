@@ -53,6 +53,8 @@ namespace STORE
                   , public ApiHelper
   {
   private:
+    // There is a state transition diagram that describes the valid transitions between
+    // these states on the Sharepoint fileserver under the Wire Line Protocol directory.
     enum eState {
       /* 00 */ NONE = 0,
       /* 01 */ CONNECTED,
@@ -114,9 +116,10 @@ namespace STORE
 
     // State-change handlers called from sen code
     void vStatementSubmitted();
-    void vStatementSubmitted(eEC eErrCode);
+    void vStatementSubmissionFailed(eEC eErrCode);
     void vCompilerError(InfoSet* pInfoSet);
     void vChildJobExited();
+    bool bIsChildJobActive();
 
   private:
 

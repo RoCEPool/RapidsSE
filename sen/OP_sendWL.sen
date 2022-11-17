@@ -22,7 +22,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send the data in the payload in the PipeIn[] register                      */
+/* handler for EV_D_PAYLOAD operand                                           */
 /*----------------------------------------------------------------------------*/
 : sendWL_Payload \handler
 

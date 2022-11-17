@@ -32,6 +32,7 @@ public:
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLHasStatement(void);
+  void vAdaptorWLIsChildJobActive(void);
   void vAdaptorWLNew(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
   void vAdaptorWLProcessWLMsg(void);

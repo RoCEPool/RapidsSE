@@ -3635,6 +3635,12 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
+    case CN_PAYLOADOBJ: {
+      WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pOperand);
+      delete pPayloadObj;
+      break;
+    }
+
     case CN_PLANOPERAND: {
       PlanOperand* pPlanOperand = _pPlanOperand(pOperand);
       delete pPlanOperand;

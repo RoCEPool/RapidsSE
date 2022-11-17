@@ -23,6 +23,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);
+  vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
@@ -192,6 +193,20 @@ void Step::vAdaptorWLHasStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* adaptorWL[].isChildJobActive -- Push true if there is a statement executing*/
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLIsChildJobActive(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  m_pDataStack->vPushInt(pAdaptorWL->bIsChildJobActive() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* AdaptorWL[].statement@\clear -- Push & clear the statement to submit       */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLStatementFetchClear(void)
@@ -219,7 +234,7 @@ void Step::vAdaptorWLStatementSubmittedError(void)
 
   eEC eErrCode = (eEC) m_pDataStack->iPopInt(__func__);
 
-  pAdaptorWL->vStatementSubmitted(eErrCode);
+  pAdaptorWL->vStatementSubmissionFailed(eErrCode);
 
   EXIT();
 }

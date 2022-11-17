@@ -312,15 +312,16 @@ void AdaptorWL::vStatementSubmitted()
 /*----------------------------------------------------------------------------*/
 /* Update the state that a statement has failed to submit                     */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vStatementSubmitted(eEC eErrCode)
+void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 {
   ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
   Stz* szErrMsg= "Error: %s"_Stz;
 
   vSerialiseErrorResponse(eErrCode, szErrMsg, aErrorMsg[eErrCode]);
 
-  // An error at this point ends the query dialog
-  vFinishQueryDialog();
+  // The child job failed during submission.
+  vNextState(API_STATEMENT_COMPLETED);
+  vChildJobExited();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,6 +375,23 @@ void AdaptorWL::vChildJobExited()
   } else {
     // Send a QueryExecuteResponse to terminate the query and update the state appropriately
     vFinishQueryDialog();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return true if a child job is currently executing                          */
+/*----------------------------------------------------------------------------*/
+bool AdaptorWL::bIsChildJobActive()
+{
+  switch (m_eProtocolState) {
+    case API_STATEMENT_SUBMITTED:
+    case API_METADATA_RECEIVED:
+    case API_DATA_RECEIVED:
+    case API_STATEMENT_COMPLETED:
+      return true;
+
+    default:
+      return false;
   }
 }
 
@@ -541,6 +559,8 @@ void AdaptorWL::vNextState(eState eNextState)
   typedef std::initializer_list<eState> StateList;
 
   // The list of valid next states from a given state.
+  // There is a state transition diagram that describes the valid transitions between
+  // these states on the Sharepoint fileserver under the Wire Line Protocol directory.
   /*01*/ static StateList aNextStates_Connected          = { PROTOCOL_COMPATIBLE, DISCONNECTED };
   /*02*/ static StateList aNextStates_ProtocolCompatible = { TUNNELED, DISCONNECTED };
   /*03*/ static StateList aNextStates_Tunneled           = { AUTHENTICATED, KERBEROS_NEGOTIATING, DISCONNECTED };
@@ -548,11 +568,11 @@ void AdaptorWL::vNextState(eState eNextState)
   /*05*/ static StateList aNextStates_Authenticated      = { READY, DISCONNECTED };
   /*06*/ static StateList aNextStates_Ready              = { READY, QUERY_BEGUN, DISCONNECTED };
   /*07*/ static StateList aNextStates_QueryBegun         = { READY, API_STATEMENT_TO_SUBMIT, QUERY_COMPLETED, DISCONNECTED };
-  /*08*/ static StateList aNextStates_ApiSmtToSubmit     = { API_STATEMENT_SUBMITTED, QUERY_COMPLETED, DISCONNECTED };
-  /*08*/ static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, DISCONNECTED };
-  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { API_CHILD_JOB_EXITED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiSmtToSubmit     = { API_STATEMENT_SUBMITTED, API_CHILD_JOB_EXITED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiSmtSubmitted    = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED };
+  /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED };
+  /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED };
+  /*11*/ static StateList aNextStates_ApiSmtCompleted    = { API_CHILD_JOB_EXITED };
   /*11*/ static StateList aNextStates_ApiChildJobExited  = { QUERY_COMPLETED, API_STATEMENT_TO_SUBMIT, DISCONNECTED };
   /*12*/ static StateList aNextStates_QueryCompleted     = { READY, DISCONNECTED };
   /*13*/ static StateList aNextStates_Disconnected       = { DISCONNECTED };

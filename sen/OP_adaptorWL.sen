@@ -247,6 +247,16 @@
 
   adaptorWL[].childJobExited
 
+  // The client may have disconnected while the child job was executing. If so
+  // then an ErrorMarker[] will be set. We couldn't pipe this out until the
+  // child job has exited, so now is the time.
+  ErrorMarker[].isNotNull if
+    "adaptorWL: Piping out previously received error marker" .
+    ErrorMarker[].pipeOut
+    true
+    exit
+  then
+
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses
 
@@ -255,6 +265,29 @@
     AdaptorWL[].protocolError@ op__execErr
     true
     exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERROR                                                     */
+/* Called when an upstream operator encounters an error. Usually because the  */
+/* client has disconnected.                                                   */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_Error \handler
+
+  "adaptorWL_Error - EV_M_ERROR" .
+
+  // We cannot simply pass this downstream if a statement has already been
+  // submitted through the API. Instead we will need to save the error and
+  // only re-emit it after the child job has exited.
+
+  AdaptorWL[].isChildJobActive if
+    ErrorMarker[].isNull assert
+    Pipein[]\clear ErrorMarker[].set
+  else
+    EV_M_ERROR_handler
   then
 
   true
@@ -289,6 +322,7 @@
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
   find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!
+  find: adaptorWL_Error         EV_M_ERROR          [op].handler!
   find: adaptorWL_Cleaning      EV_M_CLEANING       [op].handler!
 
   op__loop
