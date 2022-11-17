@@ -829,51 +829,57 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push a (from) sub-query before the main-query
   // as an op-sequence
+  // (refer: Q7,8,9)
 
   auto L_vFold_Fsq_Before_Mq_As_opSeq = [this] (void) {
-    vS30_T10_Fold_Fsq_Before_Mq_As_opSeq();
+    vS30_T10_Fold_F_Before_Mq_As_opSeq();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push a (linear correlated exists) sub-query before the main-query
   // as a keyExists.  join ordering will be required to make it runnable
+  // (refer: Q4)
 
   auto L_vFold_WLsq_C_E_Before_Mq_As_keyExists = [this] (void) {
-    vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists();
+    vS30_T20_Fold_W_L_C_E_Before_Mq_As_keyExists();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
   // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q18)
 
   auto L_vFold_WAsq_NC_I_Before_Mq_As_aggFanAval = [this] (void) {
-    vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval();
+    vS30_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push a (single-value aggregate correlated ro) sub-query before the main-query
   // as an aggregation-fan (projecting key-of-correlation and aggregated value)
   // further: the key-of-correlation needs to be added to group-by)
+  // (refer: Q2,17)
 
   auto L_vFold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey = [this] (void) {
-    vS30_T40_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
+    vS30_T40_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push a (linear correlated in) sub-query before the main-query
   // as a keyExists
+  // (refer: Q16)
 
-  auto L_vFold_WLsq_C_NI_Into_Mq_As_keyNotExists = [this] (void) {
-    vS30_T50_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists();
+  auto L_vFold_WLsq_NC_NI_Into_Mq_As_keyNotExists = [this] (void) {
+    vS30_T50_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push a (single-value aggregate non-correlated ro) sub query before main queryy
   // as am aggregation-fan
   // further: the aggregation-value is injected/factored into the main-query
+  // (refer: Q11)
 
   auto L_vFold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq = [this] (void) {
-    vS30_T60_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
+    vS30_T60_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -902,13 +908,13 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
              if (G.pSubQuery->bByExists())    /* WLsq_C_E       Q4 */ L_vFold_WLsq_C_E_Before_Mq_As_keyExists();
         else if (G.pSubQuery->bByNotExists()) /* WLsq_C_NE         */ NEVER_REACH
         else if (G.pSubQuery->bByIn())        /* WLsq_C_I          */ NEVER_REACH
-        else if (G.pSubQuery->bByNotIn())     /* WLsq_C_NI    Q16? */ L_vFold_WLsq_C_NI_Into_Mq_As_keyNotExists();
+        else if (G.pSubQuery->bByNotIn())     /* WLsq_C_NI         */ NEVER_REACH
         else                                  /* WLsq_C_ro         */ NEVER_REACH
       } else {
              if (G.pSubQuery->bByExists())    /* WLsq_NC_E         */ NEVER_REACH
         else if (G.pSubQuery->bByNotExists()) /* WLsq_NC_NE        */ NEVER_REACH
         else if (G.pSubQuery->bByIn())        /* WLsq_NC_I         */ NEVER_REACH
-        else if (G.pSubQuery->bByNotIn())     /* WLsq_NC_NI        */ NEVER_REACH
+        else if (G.pSubQuery->bByNotIn())     /* WLsq_NC_NI   Q16? */ L_vFold_WLsq_NC_NI_Into_Mq_As_keyNotExists();
         else                                  /* WLsq_NC_ro        */ NEVER_REACH
       }
     }
@@ -954,15 +960,35 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T10_Fold_Fsq_Before_Mq_As_opSeq(void)
+void Xtransforms::vS30_T10_Fold_F_Before_Mq_As_opSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // F
+  // push a (from) sub-query before the main-query
+  // as an op-sequence
+  // (refer: Q7,8,9)
+
+  /*
+      select count(*)
+        from (F:
+              select *
+                from orders, lineitem
+               where L_ORDERKEY = O_ORDERKEY)
+      ;
+   */
 
   vTransform(__func__, "((20))"_Stz);
 
   vAssert_Board_mqA();
 
-  vR_S30_T10a_Fold_Fsq_Before_Mq_As_opSeq();
+  // 1) copy sq
+  // 2) push onto mq
+  // 3)
+
+
+
+  vR_S30_T10a_Fold_F_Before_Mq_As_opSeq();
 
   vEndTransform();
 }
@@ -971,15 +997,41 @@ void Xtransforms::vS30_T10_Fold_Fsq_Before_Mq_As_opSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists(void)
+void Xtransforms::vS30_T20_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // W L C E
+  // push a (linear correlated exists) sub-query before the main-query
+  // as a keyExists.  join ordering will be required to make it runnable
+  // (refer: Q4)
+
+  // assumptions
+  // A1) sq is a single <table>
+  // A2) will have index and bound [BVO: vSeries_42_Bound_Analysis]
+
+  /*
+      select count(*)
+        from orders, lineitem
+       where L_ORDERKEY = O_ORDERKEY
+         and exists (W L C E:
+                     select *
+                       from supplier
+                      where S_SUPPKEY = [C: L_SUPPKEY])
+      ;
+   */
 
   vTransform(__func__, "((20))"_Stz);
 
   vAssert_Board_mqA();
 
-  vR_S30_T20a_Fold_WLsq_C_E_Before_Mq_As_keyExists();
+  // 1) find <sq>/<table>
+  // 2) dup and push <mq>/<table>
+  // 3) add <mq>/<table>/<keyExists>
+
+
+
+  vR_S30_T20a_Fold_W_L_C_E_Before_Mq_As_keyExists();
 
   vEndTransform();
 }
@@ -987,15 +1039,37 @@ void Xtransforms::vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void)
+void Xtransforms::vS30_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // W A NC I
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q18)
+
+
+  /*
+      select count(*)
+        from orders, lineitem
+       where O_ORDERKEY = L_ORDERKEY
+         and O_ORDERKEY in (W A NC I:
+                            select L_ORDERKEY
+                              from lineitem
+                             group by L_ORDERKEY
+                             having sum(l_quantity) > 300)
+      ;
+   */
 
   vTransform(__func__, "((30))"_Stz);
 
   vAssert_Board_mqA();
 
-  vR_S30_T30a_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval();
+  // 1)
+
+
+
+  vR_S30_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
 
   vEndTransform();
 }
@@ -1003,15 +1077,36 @@ void Xtransforms::vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T40_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
+void Xtransforms::vS30_T40_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // W A C ro
+  // push a (single-value aggregate correlated ro) sub-query before the main-query
+  // as an aggregation-fan (projecting key-of-correlation and aggregated value)
+  // further: the key-of-correlation needs to be added to group-by)
+  // (refer: Q2,17)
+
+  /*
+     select count(*)
+       from lineitem, part
+      where P_PARTKEY = L_PARTKEY
+        and l_quantity < (W A C ro:
+                          select avg(l_quanity)
+                            from lineitem
+                           where L_PARTKEY = [C: P_PARTKEY])
+    ;
+ */
 
   vTransform(__func__, "((20))"_Stz);
 
   vAssert_Board_mqA();
 
-  vR_S30_T40a_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
+  // 1)
+
+
+
+  vR_S30_T40a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
 
   vEndTransform();
 }
@@ -1019,15 +1114,35 @@ void Xtransforms::vS30_T40_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(vo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T50_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void)
+void Xtransforms::vS30_T50_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // W L NC NI
+  // push a (linear correlated in) sub-query before the main-query
+  // as a keyExists
+  // (refer: Q16)
+
+  /*
+      select count(*)
+        from partsupp, part
+       where PS_PARTKEY = P_PARTKEY
+         and PS_SUPPKEY not in (W L NC NI:
+                                select S_SUPPKEY
+                                  from supplier
+                                 where s_comment like '%Customer%Complaints%'
+      ;
+ */
 
   vTransform(__func__, "((20))"_Stz);
 
   vAssert_Board_mqA();
 
-  vR_S30_T50a_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists();
+  // 1)
+
+
+
+  vR_S30_T50a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
 
   vEndTransform();
 }
@@ -1035,15 +1150,37 @@ void Xtransforms::vS30_T50_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T60_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
+void Xtransforms::vS30_T60_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // H A NC ro
+  // push a (single-value aggregate non-correlated ro) sub query before main queryy
+  // as am aggregation-fan
+  // further: the aggregation-value is injected/factored into the main-query
+  // (refer: Q11)
+
+  /*
+      select ps_partkey,
+             avg(ps_supplycost * ps_availqty) as value
+        from partsupp, supplier
+       where PS_SUPPKEY = S_SUPPKEY
+      having avg(ps_supplycost * ps_availqty) > (H A NC ro:
+                                                 select avg(ps_supplycost * ps_availqty)
+                                                   from partsupp, supplier
+                                                  where PS_SUPPKEY = S_SUPPKEY)
+      ;
+ */
 
   vTransform(__func__, "((20))"_Stz);
 
   vAssert_Board_mqA();
 
-  vR_S30_T60a_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
+  // 1)
+
+
+
+  vR_S30_T60a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
 
   vEndTransform();
 }

@@ -726,7 +726,7 @@ void Xreshape::vR_S29_T20_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S30_T10a_Fold_Fsq_Before_Mq_As_opSeq(void)
+void Xreshape::vR_S30_T10a_Fold_F_Before_Mq_As_opSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -739,7 +739,7 @@ void Xreshape::vR_S30_T10a_Fold_Fsq_Before_Mq_As_opSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S30_T20a_Fold_WLsq_C_E_Before_Mq_As_keyExists(void)
+void Xreshape::vR_S30_T20a_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -751,7 +751,7 @@ void Xreshape::vR_S30_T20a_Fold_WLsq_C_E_Before_Mq_As_keyExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S30_T30a_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void)
+void Xreshape::vR_S30_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -763,7 +763,7 @@ void Xreshape::vR_S30_T30a_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S30_T40a_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
+void Xreshape::vR_S30_T40a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -775,7 +775,7 @@ void Xreshape::vR_S30_T40a_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(vo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S30_T50a_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void)
+void Xreshape::vR_S30_T50a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -787,7 +787,7 @@ void Xreshape::vR_S30_T50a_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S30_T60a_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
+void Xreshape::vR_S30_T60a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
