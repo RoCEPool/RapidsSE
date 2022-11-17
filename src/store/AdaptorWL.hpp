@@ -27,10 +27,10 @@ namespace STORE
   // Internal structure/classes used
   struct QueryContext {
     com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* m_pQueryExecuteRequest;
-    i8  m_iSmtCrs;
-    i8  m_nSmtParsed;
-    i8  m_nSmtSucceeded;
-    i8  m_nSmtFailed;
+    i8  m_iStmtCrs;
+    i8  m_nStmtParsed;
+    i8  m_nStmtSucceeded;
+    i8  m_nStmtFailed;
     i8  m_iQueryStartNanos;
 
     QueryContext();
@@ -40,8 +40,8 @@ namespace STORE
   };
 
   struct StatementContext {
-    s48K  m_sSmtBuf;
-    bool  m_bGotSmtError;
+    s48K  m_sStmtBuf;
+    bool  m_bGotStmtError;
 
     StatementContext();
     ~StatementContext();
