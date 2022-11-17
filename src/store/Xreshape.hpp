@@ -63,6 +63,13 @@ namespace STORE
     void vR_S30_T50a_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void);
     void vR_S30_T60a_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
 
+    void vR_S30_Ute_a(void);
+    void vR_S30_Ute_b(void);
+    void vR_S30_Ute_c(void);
+    void vR_S30_Ute_d(void);
+    void vR_S30_Ute_e(void);
+    void vR_S30_Ute_f(void);
+
     // vSeries_35_Flatten_From
     void vR_S35_T10a_Copy_From_SubQuery(void);
     void vR_S35_T10b_Push_sqB_Before_mqA(void);
