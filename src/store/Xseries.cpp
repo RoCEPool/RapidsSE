@@ -283,9 +283,9 @@ void Xseries::vSeries_30_Flatten_Query(bool bEnabled)
 
   m_pTransforms->vS30_T00_Begin();
 
-  m_pTransforms->vS30_T10();
-  m_pTransforms->vS30_T20();
-  m_pTransforms->vS30_T30();
+  m_pTransforms->vS30_T05_Flatten_By_Decision_Tree();
+  m_pTransforms->vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists();
+  m_pTransforms->vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval();
 
   m_pTransforms->vS30_TZZ_End();
 

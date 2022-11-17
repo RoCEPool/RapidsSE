@@ -55,6 +55,14 @@ namespace STORE
     void vR_S29_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_S29_T20_Convert_stmColOdn_To_tblColOdn(void);
 
+    // vSeries_30_Flatten_Query
+    void vR_S30_T10a_Fold_Fsq_Before_Mq_As_opSeq(void);
+    void vR_S30_T20a_Fold_WLsq_C_E_Before_Mq_As_keyExists(void);
+    void vR_S30_T30a_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void);
+    void vR_S30_T40a_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
+    void vR_S30_T50a_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void);
+    void vR_S30_T60a_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
+
     // vSeries_35_Flatten_From
     void vR_S35_T10a_Copy_From_SubQuery(void);
     void vR_S35_T10b_Push_sqB_Before_mqA(void);

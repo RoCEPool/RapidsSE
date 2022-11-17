@@ -818,7 +818,7 @@ void Xtransforms::vS30_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T10(void)
+void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -827,43 +827,56 @@ void Xtransforms::vS30_T10(void)
   vAssert_Board_mqA();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push a (from) sub-query before the main-query
+  // as an op-sequence
 
   auto L_vFold_Fsq_Before_Mq_As_opSeq = [this] (void) {
+    vS30_T10_Fold_Fsq_Before_Mq_As_opSeq();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push a (linear correlated exists) sub-query before the main-query
+  // as a keyExists.  join ordering will be required to make it runnable
 
   auto L_vFold_WLsq_C_E_Before_Mq_As_keyExists = [this] (void) {
+    vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
 
   auto L_vFold_WAsq_NC_I_Before_Mq_As_aggFanAval = [this] (void) {
+    vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push a (single-value aggregate correlated ro) sub-query before the main-query
+  // as an aggregation-fan (projecting key-of-correlation and aggregated value)
+  // further: the key-of-correlation needs to be added to group-by)
 
   auto L_vFold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey = [this] (void) {
+    vS30_T40_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push a (linear correlated in) sub-query before the main-query
+  // as a keyExists
+
   auto L_vFold_WLsq_C_NI_Into_Mq_As_keyNotExists = [this] (void) {
+    vS30_T50_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push a (single-value aggregate non-correlated ro) sub query before main queryy
+  // as am aggregation-fan
+  // further: the aggregation-value is injected/factored into the main-query
 
   auto L_vFold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq = [this] (void) {
+    vS30_T60_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  // test for:
-  //   1) Mq_F_Sq
-  //   2) Mq_W_Sq_0C
-  //   3) Mq_W_Sq_1C
-  //   4) Mq_H_Sq_0C
-  //   5) Mq_H_Sq_1C
 
   G.pSubQuery = m_pBench->pGetBoard(C_SQ_BOARD)->pSubQuery();
 
@@ -941,7 +954,7 @@ void Xtransforms::vS30_T10(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T20(void)
+void Xtransforms::vS30_T10_Fold_Fsq_Before_Mq_As_opSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -949,13 +962,32 @@ void Xtransforms::vS30_T20(void)
 
   vAssert_Board_mqA();
 
+  vR_S30_T10a_Fold_Fsq_Before_Mq_As_opSeq();
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vR_S30_T20a_Fold_WLsq_C_E_Before_Mq_As_keyExists();
+
   vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T30(void)
+void Xtransforms::vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -963,6 +995,56 @@ void Xtransforms::vS30_T30(void)
 
   vAssert_Board_mqA();
 
+  vR_S30_T30a_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T40_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vR_S30_T40a_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T50_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vR_S30_T50a_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists();
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS30_T60_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vR_S30_T60a_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
+  
   vEndTransform();
 }
 

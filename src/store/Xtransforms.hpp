@@ -79,9 +79,13 @@ namespace STORE
     bool bS30_T00_Test(bool bEnabled);
     void vS30_T00_Skip(void);
     void vS30_T00_Begin(void);
-    void vS30_T10(void);
-    void vS30_T20(void);
-    void vS30_T30(void);
+    void vS30_T05_Flatten_By_Decision_Tree(void);
+    void vS30_T10_Fold_Fsq_Before_Mq_As_opSeq(void);
+    void vS30_T20_Fold_WLsq_C_E_Before_Mq_As_keyExists(void);
+    void vS30_T30_Fold_WAsq_NC_I_Before_Mq_As_aggFanAval(void);
+    void vS30_T40_Fold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
+    void vS30_T50_Fold_WLsq_C_NI_Into_Mq_As_keyNotExists(void);
+    void vS30_T60_Fold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
     void vS30_TZZ_End(void);
 
     // vSeries_35_Flatten_From
