@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* _r_FOLD_40_W_L_C_I -- sub-query flattening test : refer Q4                 */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_FOLD_40_W_L_C_I"
+select count(*)
+  from (select *
+          from orders, lineitem
+         where O_ORDERKEY = L_ORDERKEY)
+;
+// mq:
+// having  " type BOOLEAN  $2 __subquery0002  >  "
+
+// sq:
+// params (none)
+// where  (n/a)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
