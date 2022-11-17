@@ -838,12 +838,12 @@ void Xtransforms::vS30_T10(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_vFold_WAsq_NC_NI_Before_Mq_As_aggFanVal = [this] (void) {
+  auto L_vFold_WAsq_NC_I_Before_Mq_As_aggFanAval = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_vFold_WAsq_C_ro_Before_Mq_As_AggFanCorrVal = [this] (void) {
+  auto L_vFold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -852,7 +852,7 @@ void Xtransforms::vS30_T10(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto L_vFold_HAsq_C_ro_Before_Mq_As_projectingAggFan = [this] (void) {
+  auto L_vFold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq = [this] (void) {
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -876,12 +876,12 @@ void Xtransforms::vS30_T10(void)
         else if (G.pSubQuery->bByNotExists()) /* WAsq_C_NE         */ NEVER_REACH
         else if (G.pSubQuery->bByIn())        /* WAsq_C_I          */ NEVER_REACH
         else if (G.pSubQuery->bByNotIn())     /* WAsq_C_NI         */ NEVER_REACH
-        else                                  /* WAsq_C_ro Q2+,17+ */ L_vFold_WAsq_C_ro_Before_Mq_As_AggFanCorrVal();
+        else                                  /* WAsq_C_ro Q2+,17+ */ L_vFold_WAsq_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
       } else {
              if (G.pSubQuery->bByExists())    /* WAsq_NC_E         */ NEVER_REACH
         else if (G.pSubQuery->bByNotExists()) /* WAsq_NC_NE        */ NEVER_REACH
-        else if (G.pSubQuery->bByIn())        /* WAsq_NC_I         */ NEVER_REACH
-        else if (G.pSubQuery->bByNotIn())     /* WAsq_NC_NI   Q18+ */ L_vFold_WAsq_NC_NI_Before_Mq_As_aggFanVal();
+        else if (G.pSubQuery->bByIn())        /* WAsq_NC_I    Q18+ */ L_vFold_WAsq_NC_I_Before_Mq_As_aggFanAval();
+        else if (G.pSubQuery->bByNotIn())     /* WAsq_NC_NI        */ NEVER_REACH
         else                                  /* WAsq_NC_ro        */ NEVER_REACH
       }
     } else {
@@ -914,7 +914,7 @@ void Xtransforms::vS30_T10(void)
         else if (G.pSubQuery->bByNotExists()) /* HAsq_NC_NE        */ NEVER_REACH
         else if (G.pSubQuery->bByIn())        /* HAsq_NC_I         */ NEVER_REACH
         else if (G.pSubQuery->bByNotIn())     /* HAsq_NC_NI        */ NEVER_REACH
-        else                                  /* HAsq_NC_ro   Q11? */ L_vFold_HAsq_C_ro_Before_Mq_As_projectingAggFan();
+        else                                  /* HAsq_NC_ro   Q11? */ L_vFold_HAsq_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
       }
     } else {
       if (G.pSubQuery->bIsCorrelated()) {
