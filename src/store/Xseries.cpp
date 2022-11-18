@@ -79,6 +79,7 @@ void Xseries::vTransformSeries(void)
   vSeries_26_Query_Analysis    (C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
   vSeries_34_Predicate_Pullup  (C_ENABLED);
+  vSeries_36_Bound_Analysis                  (C_DISABLED);
   vSeries_40_Flatten_Query     (C_DISABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_60_Index_Join        (C_ENABLED);
@@ -288,6 +289,31 @@ void Xseries::vSeries_34_Predicate_Pullup(bool bEnabled)
   }
 
   m_pTransforms->vS34_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_36_Bound_Analysis(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS36_T00_Test(bEnabled)) {
+    m_pTransforms->vS36_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS36_T00_Begin();
+
+  m_pTransforms->vS36_T10();
+  m_pTransforms->vS36_T20();
+  m_pTransforms->vS36_T30();
+
+  m_pTransforms->vS36_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }

@@ -55,6 +55,16 @@ namespace STORE
     void vR_S32_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_S32_T20_Convert_stmColOdn_To_tblColOdn(void);
 
+    // vSeries_34_Predicate_Pullup
+    void vR_S34_T10_AtMark_where_pred_Wrt_table(void);
+    void vR_S34_T20_Move_AtMarked_where_pred_To_table_filter(void);
+    void vR_S34_T30_Delete_Empty_where(void);
+
+    // vSeries_36_Bound_Analysis
+    void vR_S36_T10(void);
+    void vR_S36_T20(void);
+    void vR_S36_T30(void);
+
     // vSeries_40_Flatten_Query
     void vR_S40_T10a_Fold_F_Before_Mq_As_opSeq(void);
     void vR_S40_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
@@ -71,56 +81,6 @@ namespace STORE
     void vR_S40_Ute_e(void);
     void vR_S40_Ute_f(void);
 
-    // vSeries_35X_Flatten_From
-    void vR_S35X_T10a_Copy_From_SubQuery(void);
-    void vR_S35X_T10b_Push_sqB_Before_mqA(void);
-    void vR_S35X_T30_Adjust_From_SubQuery(void);
-
-    // vSeries_36X_Flatten_Where
-    void vR_S36X_T104_Mark_pmzWhere_In_sqB(void);
-    void vR_S36X_T105_Pullup_pmzWhere_Into_mqA(void);
-    void vR_S36X_T10a_Copy_From_SubQuery(void);
-    void vR_S36X_T10b_Push_sqB_Before_mqA(void);
-    void vR_S36X_T20a_Get_cmpPred_Of_whereB(void);
-    void vR_S36X_T20b_Push_cmpPred_Onto_whereA(void);
-    void vR_S36X_T30a_Replace_param_In_whereA(void);
-    void vR_S36X_T30b_Delete_param_In_whereB(void);
-    void vR_S36X_T40_Delete_tstPred_In_whereA(void);
-    void vR_S36X_T50_Adjust_StmOdn(void);
-    void vR_S36X_T60_Adjust_StmColOdn(void);
-    void vR_S36X_T70_Replace_term_In_cmpPred(void);
-
-    // vSeries_37X_Flatten_Having
-    void vR_S37X_T10a_Copy_sqB(void);
-    void vR_S37X_T10a_Append_sqB_After_mqA(void);
-    void vR_S37X_T20_Find_stmCol_Link(void);
-    void vR_S37X_T30_Link_sqCall_In_having(void);
-    void vR_S37X_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
-    void vR_S37X_T40Add_sqCol_To_AggGbyElist(void);
-    void vR_S37X_T45_Bump_aggElist_rpnCalc_In_sqB(void);
-    void vR_S37X_T50_Add_sqCol_To_aggAggElist(void);
-    void vR_S37X_T55_Bump_having_rpnCalc_In_sqB(void);
-    void vR_S37X_T60_Unproject_sqCol(void);
-    void vR_S37X_T70_Exhange_sqB_With_mqA(void);
-    void vR_S37X_T80_AdjustStmOdn(void);
-    void vR_S37X_T90_Adjust_StmColOdn(void);
-    void vR_S37X_TA0(void);
-    void vR_S37X_TB0(void);
-
-    // vSeries_34_Predicate_Pullup
-    void vR_S34_T10_AtMark_where_pred_Wrt_table(void);
-    void vR_S34_T20_Move_AtMarked_where_pred_To_table_filter(void);
-    void vR_S34_T30_Delete_Empty_where(void);
-
-    // vSeries_60_Index_Join
-    void vR_S60_T05_Twist_in_Becomes_filter(void);
-    void vR_S60_T10_Produce_maybeIndexJoin_Under_filter(void);
-    void vR_S60_T20_Affix_tblColOdn_To_idxCol(void);
-    void vR_S60_T30_UpCopy_filter_pred_Into_bounds(void);
-    void vR_S60_T40_Cull_UpCopied_filter_pred(void);
-    void vR_S60_T50_Delete_Empty_filter(void);
-    void vR_S60_T60_Delete_Twist(void);
-
     // vSeries_50_Join_Ordering
     void vR_S50_T00_Extract_tableList_From_queryBoard(void);
     void vR_S50_T10_Extract_joinPredList(void);
@@ -136,6 +96,15 @@ namespace STORE
     void vR_S50_T94_Estimate_network(void);
     void vR_S50_T96_Estimate_joinOrder(void);
     void vR_S50_T98_Extract_joinOrderSeq(void);
+
+    // vSeries_60_Index_Join
+    void vR_S60_T05_Twist_in_Becomes_filter(void);
+    void vR_S60_T10_Produce_maybeIndexJoin_Under_filter(void);
+    void vR_S60_T20_Affix_tblColOdn_To_idxCol(void);
+    void vR_S60_T30_UpCopy_filter_pred_Into_bounds(void);
+    void vR_S60_T40_Cull_UpCopied_filter_pred(void);
+    void vR_S60_T50_Delete_Empty_filter(void);
+    void vR_S60_T60_Delete_Twist(void);
 
     // vSeries_75_EE_operators
     void vR_S75_T10_Morph_table_To_EEop(void);
@@ -180,6 +149,45 @@ namespace STORE
 
     void vRR_Convert_All_TblColOrd_to_StmColOrd(void);
     void vRR_Convert_All_StmColOrd_to_TblColOrd(void);
+
+
+
+    // vSeries_35X_Flatten_From
+    void vR_S35X_T10a_Copy_From_SubQuery(void);
+    void vR_S35X_T10b_Push_sqB_Before_mqA(void);
+    void vR_S35X_T30_Adjust_From_SubQuery(void);
+
+    // vSeries_36X_Flatten_Where
+    void vR_S36X_T104_Mark_pmzWhere_In_sqB(void);
+    void vR_S36X_T105_Pullup_pmzWhere_Into_mqA(void);
+    void vR_S36X_T10a_Copy_From_SubQuery(void);
+    void vR_S36X_T10b_Push_sqB_Before_mqA(void);
+    void vR_S36X_T20a_Get_cmpPred_Of_whereB(void);
+    void vR_S36X_T20b_Push_cmpPred_Onto_whereA(void);
+    void vR_S36X_T30a_Replace_param_In_whereA(void);
+    void vR_S36X_T30b_Delete_param_In_whereB(void);
+    void vR_S36X_T40_Delete_tstPred_In_whereA(void);
+    void vR_S36X_T50_Adjust_StmOdn(void);
+    void vR_S36X_T60_Adjust_StmColOdn(void);
+    void vR_S36X_T70_Replace_term_In_cmpPred(void);
+
+    // vSeries_37X_Flatten_Having
+    void vR_S37X_T10a_Copy_sqB(void);
+    void vR_S37X_T10a_Append_sqB_After_mqA(void);
+    void vR_S37X_T20_Find_stmCol_Link(void);
+    void vR_S37X_T30_Link_sqCall_In_having(void);
+    void vR_S37X_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
+    void vR_S37X_T40Add_sqCol_To_AggGbyElist(void);
+    void vR_S37X_T45_Bump_aggElist_rpnCalc_In_sqB(void);
+    void vR_S37X_T50_Add_sqCol_To_aggAggElist(void);
+    void vR_S37X_T55_Bump_having_rpnCalc_In_sqB(void);
+    void vR_S37X_T60_Unproject_sqCol(void);
+    void vR_S37X_T70_Exhange_sqB_With_mqA(void);
+    void vR_S37X_T80_AdjustStmOdn(void);
+    void vR_S37X_T90_Adjust_StmColOdn(void);
+    void vR_S37X_TA0(void);
+    void vR_S37X_TB0(void);
+
 
     // must be last
     Footer m_xFooter;
