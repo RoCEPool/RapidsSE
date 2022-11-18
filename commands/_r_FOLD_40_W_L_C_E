@@ -15,23 +15,14 @@ _r_init
 /weaved
 /pipelineName = "_r_FOLD_40_W_L_C_I"
 select count(*)
-  from (select *
-          from orders, lineitem
-         where O_ORDERKEY = L_ORDERKEY)
+  from orders, lineitem
+ where L_ORDERKEY = O_ORDERKEY
+   and exists (select *
+                 from supplier
+                where S_SUPPKEY = L_SUPPKEY)
 ;
-// mq:
-// having  " type BOOLEAN  $2 __subquery0002  >  "
-
-// sq:
-// params (none)
-// where  (n/a)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//drop table lineItem;
-//drop table orders;
-
-//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

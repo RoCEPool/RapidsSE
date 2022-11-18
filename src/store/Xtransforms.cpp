@@ -971,8 +971,7 @@ void Xtransforms::vS30_T10_Fold_F_Before_Mq_As_opSeq(void)
 
   /*
       select count(*)
-        from (F:
-              select *
+        from (select *
                 from orders, lineitem
                where L_ORDERKEY = O_ORDERKEY)
       ;
@@ -1011,8 +1010,7 @@ void Xtransforms::vS30_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
      select count(*)
        from lineitem, part
       where P_PARTKEY = L_PARTKEY
-        and l_quantity < (W A C ro:
-                          select avg(l_quanity)
+        and l_quantity < (select avg(l_quanity)
                             from lineitem
                            where L_PARTKEY = [C: P_PARTKEY])
     ;
@@ -1130,7 +1128,7 @@ void Xtransforms::vS30_T50_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
          and PS_SUPPKEY not in (W L NC NI:
                                 select S_SUPPKEY
                                   from supplier
-                                 where s_comment like '%Customer%Complaints%'
+                                 where s_comment like '%Customer%Complaints%')
       ;
  */
 

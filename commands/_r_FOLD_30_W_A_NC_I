@@ -15,23 +15,15 @@ _r_init
 /weaved
 /pipelineName = "_r_FOLD_30_W_A_NC_I"
 select count(*)
-  from (select *
-          from orders, lineitem
-         where O_ORDERKEY = L_ORDERKEY)
+  from orders, lineitem
+ where O_ORDERKEY = L_ORDERKEY
+   and O_ORDERKEY in (select L_ORDERKEY
+                        from lineitem
+                       group by L_ORDERKEY
+                      having sum(l_quantity) > 300)
 ;
-// mq:
-// having  " type BOOLEAN  $2 __subquery0002  >  "
-
-// sq:
-// params (none)
-// where  (n/a)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//drop table lineItem;
-//drop table orders;
-
-//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

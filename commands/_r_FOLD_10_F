@@ -19,19 +19,8 @@ select count(*)
           from orders, lineitem
          where O_ORDERKEY = L_ORDERKEY)
 ;
-// mq:
-// having  " type BOOLEAN  $2 __subquery0002  >  "
-
-// sq:
-// params (none)
-// where  (n/a)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//drop table lineItem;
-//drop table orders;
-
-//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

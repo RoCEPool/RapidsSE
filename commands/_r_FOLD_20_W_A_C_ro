@@ -15,23 +15,14 @@ _r_init
 /weaved
 /pipelineName = "_r_FOLD_20_W_A_C_ro"
 select count(*)
-  from (select *
-          from orders, lineitem
-         where O_ORDERKEY = L_ORDERKEY)
+  from lineitem, part
+ where P_PARTKEY = L_PARTKEY
+   and l_quantity < (select avg(l_quanity)
+                       from lineitem
+                      where L_PARTKEY = [C: P_PARTKEY])
 ;
-// mq:
-// having  " type BOOLEAN  $2 __subquery0002  >  "
-
-// sq:
-// params (none)
-// where  (n/a)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//drop table lineItem;
-//drop table orders;
-
-//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

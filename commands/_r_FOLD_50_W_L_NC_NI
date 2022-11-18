@@ -15,23 +15,14 @@ _r_init
 /weaved
 /pipelineName = "_r_FOLD_50_W_L_NC_NI"
 select count(*)
-  from (select *
-          from orders, lineitem
-         where O_ORDERKEY = L_ORDERKEY)
+  from partsupp, part
+ where PS_PARTKEY = P_PARTKEY
+   and PS_SUPPKEY not in (select S_SUPPKEY
+                            from supplier
+                           where s_comment like '%Customer%Complaints%')
 ;
-// mq:
-// having  " type BOOLEAN  $2 __subquery0002  >  "
-
-// sq:
-// params (none)
-// where  (n/a)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//drop table lineItem;
-//drop table orders;
-
-//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */
