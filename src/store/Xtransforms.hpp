@@ -89,51 +89,51 @@ namespace STORE
     void vS30_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
     void vS30_TZZ_End(void);
 
-    // vSeries_35_Flatten_From
-    bool bS35_T00_Test(bool bEnabled);
-    void vS35_T00_Skip(void);
-    void vS35_T00_Begin(void);
-    void vS35_T10_Push_sqB_Into_mqA(void);
-    void vS35_T20_Delete_call(void);
-    void vS35_T30_Delete_twist(void);
-    void vS35_TZZ_End(void);
+    // vSeries_35X_Flatten_From
+    bool bS35X_T00_Test(bool bEnabled);
+    void vS35X_T00_Skip(void);
+    void vS35X_T00_Begin(void);
+    void vS35X_T10_Push_sqB_Into_mqA(void);
+    void vS35X_T20_Delete_call(void);
+    void vS35X_T30_Delete_twist(void);
+    void vS35X_TZZ_End(void);
 
-    // vSeries_36_Flatten_Where
-    bool bS36_T00_Test(bool bEnabled);
-    void vS36_T00_Skip(void);
-    void vS36_T00_Begin(void);
-    void vS36_T04_Mark_pmzWhere_In_sqB(void);
-    void vS36_T05_Pullup_pmzWhere_Into_mqA(void);
-    void vS36_T10_Push_sqB_Into_mqA(void);
-    void vS36_T20_Transfer_whereB_To_whereA(void);
-    void vS36_T30_Replace_param_In_whereA(void);
-    void vS36_T40_Delete_tstPred_In_whereA(void);
-    void vS36_T50_Adjust_StmOdn(void);
-    void vS36_T60_Adjust_StmColOdn(void);
-    void vS36_T70_Replace_term_In_cmpPred(void);
-    void vS36_T80_Delete_twist(void);
+    // vSeries_36X_Flatten_Where
+    bool bS36X_T00_Test(bool bEnabled);
+    void vS36X_T00_Skip(void);
+    void vS36X_T00_Begin(void);
+    void vS36X_T04_Mark_pmzWhere_In_sqB(void);
+    void vS36X_T05_Pullup_pmzWhere_Into_mqA(void);
+    void vS36X_T10_Push_sqB_Into_mqA(void);
+    void vS36X_T20_Transfer_whereB_To_whereA(void);
+    void vS36X_T30_Replace_param_In_whereA(void);
+    void vS36X_T40_Delete_tstPred_In_whereA(void);
+    void vS36X_T50_Adjust_StmOdn(void);
+    void vS36X_T60_Adjust_StmColOdn(void);
+    void vS36X_T70_Replace_term_In_cmpPred(void);
+    void vS36X_T80_Delete_twist(void);
 
-    void vS36_TZZ_End(void);
+    void vS36X_TZZ_End(void);
 
-    // vSeries_37_Flatten_Having
-    bool bS37_T00_Test(bool bEnabled);
-    void vS37_T00_Skip(void);
-    void vS37_T00_Begin(void);
-    void vS37_T10_Append_sqB_After_mqA(void);
-    void vS37_T20_Find_stmCol_Link(void);
-    void vS37_T30_Link_sqCall_In_having(void);
-    void vS37_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
-    void vS37_T40_Add_sqCol_To_aggGbyElist(void);
-    void vS37_T45_Bump_aggElist_rpnCalc_In_sqB(void);
-    void vS37_T50_Add_sqCol_To_aggAggElist(void);
-    void vS37_T55_Bump_having_rpnCalc_In_sqB(void);
-    void vS37_T60_Unproject_sqCol(void);
-    void vS37_T70_Exhange_sqB_With_mqA(void);
-    void vS37_T80_Adjust_StmOdn(void);
-    void vS37_T90_Adjust_StmColOdn(void);
-    void vS37_TA0_Delete_twist(void);
-    void vS37_TB0(void);
-    void vS37_TZZ_End(void);
+    // vSeries_37X_Flatten_Having
+    bool bS37X_T00_Test(bool bEnabled);
+    void vS37X_T00_Skip(void);
+    void vS37X_T00_Begin(void);
+    void vS37X_T10_Append_sqB_After_mqA(void);
+    void vS37X_T20_Find_stmCol_Link(void);
+    void vS37X_T30_Link_sqCall_In_having(void);
+    void vS37X_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
+    void vS37X_T40_Add_sqCol_To_aggGbyElist(void);
+    void vS37X_T45_Bump_aggElist_rpnCalc_In_sqB(void);
+    void vS37X_T50_Add_sqCol_To_aggAggElist(void);
+    void vS37X_T55_Bump_having_rpnCalc_In_sqB(void);
+    void vS37X_T60_Unproject_sqCol(void);
+    void vS37X_T70_Exhange_sqB_With_mqA(void);
+    void vS37X_T80_Adjust_StmOdn(void);
+    void vS37X_T90_Adjust_StmColOdn(void);
+    void vS37X_TA0_Delete_twist(void);
+    void vS37X_TB0(void);
+    void vS37X_TZZ_End(void);
 
     // vSeries_40_Predicate_Pullup
     bool bS40_T00_Test(bool bEnabled);

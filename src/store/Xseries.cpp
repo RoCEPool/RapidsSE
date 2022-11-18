@@ -83,9 +83,9 @@ void Xseries::vTransformSeries(void)
   vSeries_40_Predicate_Pullup   (C_ENABLED);
 
   vSeries_30_Flatten_Query                   (C_DISABLED);
-  vSeries_35_Flatten_From       (C_ENABLED);
-  vSeries_36_Flatten_Where      (C_ENABLED);
-  vSeries_37_Flatten_Having     (C_ENABLED);
+  vSeries_35X_Flatten_From(C_ENABLED);
+  vSeries_36X_Flatten_Where(C_ENABLED);
+  vSeries_37X_Flatten_Having(C_ENABLED);
 
   vSeries_50_Join_Ordering                   (C_DISABLED);
 
@@ -286,102 +286,6 @@ void Xseries::vSeries_30_Flatten_Query(bool bEnabled)
   m_pTransforms->vS30_T05_Flatten_By_Decision_Tree();
 
   m_pTransforms->vS30_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* from pattern : a/b -> ba                                                   */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_35_Flatten_From(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS35_T00_Test(bEnabled)) {
-    m_pTransforms->vS35_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS35_T00_Begin();
-
-  m_pTransforms->vS35_T10_Push_sqB_Into_mqA();
-  m_pTransforms->vS35_T20_Delete_call();
-  m_pTransforms->vS35_T30_Delete_twist();
-
-
-  //m_pTransforms->vS36_T30_Adjust_From_SubQuery();
-
-  m_pTransforms->vS35_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* where pattern : a/b -> b|a                                                 */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_36_Flatten_Where(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS36_T00_Test(bEnabled)) {
-    m_pTransforms->vS36_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS36_T00_Begin();
-
-  m_pTransforms->vS36_T04_Mark_pmzWhere_In_sqB();
-  m_pTransforms->vS36_T05_Pullup_pmzWhere_Into_mqA();
-
-  m_pTransforms->vS36_T10_Push_sqB_Into_mqA();
-  m_pTransforms->vS36_T20_Transfer_whereB_To_whereA();
-  m_pTransforms->vS36_T30_Replace_param_In_whereA();
-  m_pTransforms->vS36_T40_Delete_tstPred_In_whereA();
-  m_pTransforms->vS36_T50_Adjust_StmOdn();
-  m_pTransforms->vS36_T60_Adjust_StmColOdn();
-  m_pTransforms->vS36_T70_Replace_term_In_cmpPred();
-  m_pTransforms->vS36_T80_Delete_twist();
-
-  m_pTransforms->vS36_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* having pattern : a/b -> a|b                                                */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_37_Flatten_Having(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS37_T00_Test(bEnabled)) {
-    m_pTransforms->vS37_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS37_T00_Begin();
-
-  m_pTransforms->vS37_T10_Append_sqB_After_mqA();
-  m_pTransforms->vS37_T20_Find_stmCol_Link();
-  m_pTransforms->vS37_T30_Link_sqCall_In_having();
-  m_pTransforms->vS37_T35_Bump_gbyElist_rpnCalc_In_sqB();
-  m_pTransforms->vS37_T40_Add_sqCol_To_aggGbyElist();
-  m_pTransforms->vS37_T45_Bump_aggElist_rpnCalc_In_sqB();
-  m_pTransforms->vS37_T50_Add_sqCol_To_aggAggElist();
-  m_pTransforms->vS37_T55_Bump_having_rpnCalc_In_sqB();
-  m_pTransforms->vS37_T60_Unproject_sqCol();
-  m_pTransforms->vS37_T70_Exhange_sqB_With_mqA();
-  m_pTransforms->vS37_T80_Adjust_StmOdn();
-  m_pTransforms->vS37_T90_Adjust_StmColOdn();
-  m_pTransforms->vS37_TA0_Delete_twist();
-
-  m_pTransforms->vS37_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -719,3 +623,101 @@ void Xseries::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+/*----------------------------------------------------------------------------*/
+/* from pattern : a/b -> ba                                                   */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_35X_Flatten_From(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS35X_T00_Test(bEnabled)) {
+    m_pTransforms->vS35X_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS35X_T00_Begin();
+
+  m_pTransforms->vS35X_T10_Push_sqB_Into_mqA();
+  m_pTransforms->vS35X_T20_Delete_call();
+  m_pTransforms->vS35X_T30_Delete_twist();
+
+
+  //m_pTransforms->vS36X_T30_Adjust_From_SubQuery();
+
+  m_pTransforms->vS35X_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* where pattern : a/b -> b|a                                                 */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_36X_Flatten_Where(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS36X_T00_Test(bEnabled)) {
+    m_pTransforms->vS36X_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS36X_T00_Begin();
+
+  m_pTransforms->vS36X_T04_Mark_pmzWhere_In_sqB();
+  m_pTransforms->vS36X_T05_Pullup_pmzWhere_Into_mqA();
+
+  m_pTransforms->vS36X_T10_Push_sqB_Into_mqA();
+  m_pTransforms->vS36X_T20_Transfer_whereB_To_whereA();
+  m_pTransforms->vS36X_T30_Replace_param_In_whereA();
+  m_pTransforms->vS36X_T40_Delete_tstPred_In_whereA();
+  m_pTransforms->vS36X_T50_Adjust_StmOdn();
+  m_pTransforms->vS36X_T60_Adjust_StmColOdn();
+  m_pTransforms->vS36X_T70_Replace_term_In_cmpPred();
+  m_pTransforms->vS36X_T80_Delete_twist();
+
+  m_pTransforms->vS36X_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* having pattern : a/b -> a|b                                                */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_37X_Flatten_Having(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS37X_T00_Test(bEnabled)) {
+    m_pTransforms->vS37X_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS37X_T00_Begin();
+
+  m_pTransforms->vS37X_T10_Append_sqB_After_mqA();
+  m_pTransforms->vS37X_T20_Find_stmCol_Link();
+  m_pTransforms->vS37X_T30_Link_sqCall_In_having();
+  m_pTransforms->vS37X_T35_Bump_gbyElist_rpnCalc_In_sqB();
+  m_pTransforms->vS37X_T40_Add_sqCol_To_aggGbyElist();
+  m_pTransforms->vS37X_T45_Bump_aggElist_rpnCalc_In_sqB();
+  m_pTransforms->vS37X_T50_Add_sqCol_To_aggAggElist();
+  m_pTransforms->vS37X_T55_Bump_having_rpnCalc_In_sqB();
+  m_pTransforms->vS37X_T60_Unproject_sqCol();
+  m_pTransforms->vS37X_T70_Exhange_sqB_With_mqA();
+  m_pTransforms->vS37X_T80_Adjust_StmOdn();
+  m_pTransforms->vS37X_T90_Adjust_StmColOdn();
+  m_pTransforms->vS37X_TA0_Delete_twist();
+
+  m_pTransforms->vS37X_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+

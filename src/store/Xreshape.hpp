@@ -71,41 +71,41 @@ namespace STORE
     void vR_S30_Ute_e(void);
     void vR_S30_Ute_f(void);
 
-    // vSeries_35_Flatten_From
-    void vR_S35_T10a_Copy_From_SubQuery(void);
-    void vR_S35_T10b_Push_sqB_Before_mqA(void);
-    void vR_S35_T30_Adjust_From_SubQuery(void);
+    // vSeries_35X_Flatten_From
+    void vR_S35X_T10a_Copy_From_SubQuery(void);
+    void vR_S35X_T10b_Push_sqB_Before_mqA(void);
+    void vR_S35X_T30_Adjust_From_SubQuery(void);
 
-    // vSeries_36_Flatten_Where
-    void vR_S36_T104_Mark_pmzWhere_In_sqB(void);
-    void vR_S36_T105_Pullup_pmzWhere_Into_mqA(void);
-    void vR_S36_T10a_Copy_From_SubQuery(void);
-    void vR_S36_T10b_Push_sqB_Before_mqA(void);
-    void vR_S36_T20a_Get_cmpPred_Of_whereB(void);
-    void vR_S36_T20b_Push_cmpPred_Onto_whereA(void);
-    void vR_S36_T30a_Replace_param_In_whereA(void);
-    void vR_S36_T30b_Delete_param_In_whereB(void);
-    void vR_S36_T40_Delete_tstPred_In_whereA(void);
-    void vR_S36_T50_Adjust_StmOdn(void);
-    void vR_S36_T60_Adjust_StmColOdn(void);
-    void vR_S36_T70_Replace_term_In_cmpPred(void);
+    // vSeries_36X_Flatten_Where
+    void vR_S36X_T104_Mark_pmzWhere_In_sqB(void);
+    void vR_S36X_T105_Pullup_pmzWhere_Into_mqA(void);
+    void vR_S36X_T10a_Copy_From_SubQuery(void);
+    void vR_S36X_T10b_Push_sqB_Before_mqA(void);
+    void vR_S36X_T20a_Get_cmpPred_Of_whereB(void);
+    void vR_S36X_T20b_Push_cmpPred_Onto_whereA(void);
+    void vR_S36X_T30a_Replace_param_In_whereA(void);
+    void vR_S36X_T30b_Delete_param_In_whereB(void);
+    void vR_S36X_T40_Delete_tstPred_In_whereA(void);
+    void vR_S36X_T50_Adjust_StmOdn(void);
+    void vR_S36X_T60_Adjust_StmColOdn(void);
+    void vR_S36X_T70_Replace_term_In_cmpPred(void);
 
-    // vSeries_37_Flatten_Having
-    void vR_S37_T10a_Copy_sqB(void);
-    void vR_S37_T10a_Append_sqB_After_mqA(void);
-    void vR_S37_T20_Find_stmCol_Link(void);
-    void vR_S37_T30_Link_sqCall_In_having(void);
-    void vR_S37_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
-    void vR_S37_T40Add_sqCol_To_AggGbyElist(void);
-    void vR_S37_T45_Bump_aggElist_rpnCalc_In_sqB(void);
-    void vR_S37_T50_Add_sqCol_To_aggAggElist(void);
-    void vR_S37_T55_Bump_having_rpnCalc_In_sqB(void);
-    void vR_S37_T60_Unproject_sqCol(void);
-    void vR_S37_T70_Exhange_sqB_With_mqA(void);
-    void vR_S37_T80_AdjustStmOdn(void);
-    void vR_S37_T90_Adjust_StmColOdn(void);
-    void vR_S37_TA0(void);
-    void vR_S37_TB0(void);
+    // vSeries_37X_Flatten_Having
+    void vR_S37X_T10a_Copy_sqB(void);
+    void vR_S37X_T10a_Append_sqB_After_mqA(void);
+    void vR_S37X_T20_Find_stmCol_Link(void);
+    void vR_S37X_T30_Link_sqCall_In_having(void);
+    void vR_S37X_T35_Bump_gbyElist_rpnCalc_In_sqB(void);
+    void vR_S37X_T40Add_sqCol_To_AggGbyElist(void);
+    void vR_S37X_T45_Bump_aggElist_rpnCalc_In_sqB(void);
+    void vR_S37X_T50_Add_sqCol_To_aggAggElist(void);
+    void vR_S37X_T55_Bump_having_rpnCalc_In_sqB(void);
+    void vR_S37X_T60_Unproject_sqCol(void);
+    void vR_S37X_T70_Exhange_sqB_With_mqA(void);
+    void vR_S37X_T80_AdjustStmOdn(void);
+    void vR_S37X_T90_Adjust_StmColOdn(void);
+    void vR_S37X_TA0(void);
+    void vR_S37X_TB0(void);
 
     // vSeries_40_Predicate_Pullup
     void vR_S40_T10_AtMark_where_pred_Wrt_table(void);
