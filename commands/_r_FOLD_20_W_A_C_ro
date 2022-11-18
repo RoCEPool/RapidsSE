@@ -19,7 +19,7 @@ select count(*)
  where P_PARTKEY = L_PARTKEY
    and l_quantity < (select avg(l_quanity)
                        from lineitem
-                      where L_PARTKEY = [C: P_PARTKEY])
+                      where L_PARTKEY = P_PARTKEY)
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -59,10 +59,10 @@ namespace STORE
     void vR_S30_T10a_Fold_F_Before_Mq_As_opSeq(void);
     void vR_S30_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
     void vR_S30_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void);
-    void vR_S30_T35a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void);
-    void vR_S30_T40a_Fold_W_L_C_E_Before_Mq_As_keyExists(void);
-    void vR_S30_T50a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
-    void vR_S30_T60a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
+    void vR_S30_T40a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void);
+    void vR_S30_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists(void);
+    void vR_S30_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
+    void vR_S30_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
 
     void vR_S30_Ute_a(void);
     void vR_S30_Ute_b(void);

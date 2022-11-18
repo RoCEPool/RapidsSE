@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_FOLD_40_W_L_C_I -- sub-query flattening test : refer Q4                 */
+/* _r_FOLD_50_W_L_C_E -- sub-query flattening test : refer Q4                 */
 /*============================================================================*/
 
 trackMemory;
@@ -13,13 +13,13 @@ _r_init
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_40_W_L_C_I"
+/pipelineName = "_r_FOLD_50_W_L_C_E"
 select count(*)
-  from orders, lineitem
- where L_ORDERKEY = O_ORDERKEY
-   and exists (select *
-                 from supplier
-                where S_SUPPKEY = L_SUPPKEY)
+  from orders
+ where exists (select *
+                 from lineitem
+                where L_ORDERKEY = O_ORDERKEY
+                  and l_commitdate < l_receiptdate)
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

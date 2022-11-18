@@ -20,7 +20,7 @@ select count(*)
    and O_ORDERKEY in (select L_ORDERKEY
                         from lineitem
                        group by L_ORDERKEY
-                      having sum(l_quantity) > 300)
+                      having sum(l_quantity) > 100)
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

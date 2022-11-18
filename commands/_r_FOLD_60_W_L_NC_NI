@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_FOLD_50_W_L_NC_NI -- sub-query flattening test : refer Q16              */
+/* _r_FOLD_60_W_L_NC_NI -- sub-query flattening test : refer Q16              */
 /*============================================================================*/
 
 trackMemory;
@@ -13,7 +13,7 @@ _r_init
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_50_W_L_NC_NI"
+/pipelineName = "_r_FOLD_60_W_L_NC_NI"
 select count(*)
   from partsupp, part
  where PS_PARTKEY = P_PARTKEY
