@@ -45,8 +45,17 @@ namespace STORE
     void vS20_T20_Produce_tablePtn_UnderAll_table(void);
     void vS20_TZZ_End(void);
 
+    // vSeries_22_Index_Analysis
+    bool bS22_T00_Test(bool bEnabled);
+    void vS22_T00_Skip(void);
+    void vS22_T00_Begin(void);
+    void vS22_T10(void);
+    void vS22_T20(void);
+    void vS22_T30(void);
+    void vS22_TZZ_End(void);
+
     // vSeries_24_Stream_Analysis
-    bool bS25_T00_Test(bool bEnabled);
+    bool bS24_T00_Test(bool bEnabled);
     void vS24_T00_Skip(void);
     void vS24_T00_Begin(void);
     void vS24_T10_Produce_stream_UnderAll_table(void);

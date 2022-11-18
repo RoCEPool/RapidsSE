@@ -36,7 +36,7 @@ namespace STORE
 
     void vSeries_10_Condense_Info    (bool bEnabled); //
     void vSeries_20_Table_Analysis   (bool bEnabled); //
-//  void vSeries_22_Index_Analysis   (bool bEnabled);
+    void vSeries_22_Index_Analysis   (bool bEnabled);
     void vSeries_24_Stream_Analysis  (bool bEnabled); //
     void vSeries_26_Query_Analysis   (bool bEnabled); //
 //  void vSeries_30_Literal_Arithmetic  (bool bEnabled); //

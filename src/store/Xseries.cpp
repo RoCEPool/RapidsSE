@@ -75,6 +75,7 @@ void Xseries::vTransformSeries(void)
 
   vSeries_10_Condense_Info     (C_ENABLED);
   vSeries_20_Table_Analysis    (C_ENABLED);
+  vSeries_22_Index_Analysis                  (C_DISABLED);
   vSeries_24_Stream_Analysis   (C_ENABLED);
   vSeries_26_Query_Analysis    (C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
@@ -170,13 +171,38 @@ void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xseries::vSeries_22_Index_Analysis(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS36_T00_Test(bEnabled)) {
+    m_pTransforms->vS36_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS22_T00_Begin();
+
+  m_pTransforms->vS22_T10();
+  m_pTransforms->vS22_T20();
+  m_pTransforms->vS22_T30();
+
+  m_pTransforms->vS22_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xseries::vSeries_24_Stream_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS25_T00_Test(bEnabled)) {
+  if (!m_pTransforms->bS24_T00_Test(bEnabled)) {
     m_pTransforms->vS24_T00_Skip();
     return;
   }

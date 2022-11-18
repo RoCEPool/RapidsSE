@@ -28,6 +28,11 @@ namespace STORE
     void vR_S20_T10_AAffix_tableSyn_To_table(void);
     void vR_S20_T20_Produce_tablePtn_Under_table(void);
 
+    // vSeries_22_Index_Analysis
+    void vR_S22_T10(void);
+    void vR_S22_T20(void);
+    void vR_S22_T30(void);
+
     // vSeries_24_Stream_Analysis
     void vR_S24_T10_Produce_stream_Under_table(void);
     void vR_S24_T12_Produce_stream_Under_project(void);
