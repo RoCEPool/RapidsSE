@@ -28,32 +28,32 @@ namespace STORE
     void vR_S20_T10_AAffix_tableSyn_To_table(void);
     void vR_S20_T20_Produce_tablePtn_Under_table(void);
 
-    // vSeries_22_Stream_Analysis
-    void vR_S22_T10_Produce_stream_Under_table(void);
-    void vR_S22_T12_Produce_stream_Under_project(void);
-    void vR_S22_T14_Produce_stream_Under_aggreg(void);
-    void vR_S22_T20_Derive_ordinalRange_For_table_stream(void);
-    void vR_S22_T22_Derive_ordinalRange_For_project_stream(void);
-    void vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void);
+    // vSeries_24_Stream_Analysis
+    void vR_S24_T10_Produce_stream_Under_table(void);
+    void vR_S24_T12_Produce_stream_Under_project(void);
+    void vR_S24_T14_Produce_stream_Under_aggreg(void);
+    void vR_S24_T20_Derive_ordinalRange_For_table_stream(void);
+    void vR_S24_T22_Derive_ordinalRange_For_project_stream(void);
+    void vR_S24_T24_Derive_ordinalRange_For_aggreg_stream(void);
 
 
-    // vSeries_24_Query_Analysis
-    void vR_S24_T10a_Main_Query_Analysis_aggreg(void);
-    void vR_S24_T10b_Main_Query_Analysis_gbyagg(void);
-    void vR_S24_T10c_Main_Query_Analysis_Of_from(void);
-    void vR_S24_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
-    void vR_S24_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
-    void vR_S24_T10f_Main_Query_Genesis(void);
-    void vR_S24_T20a_Sub_Query_Analysis_Only_main(void);
-    void vR_S24_T20b_Sub_Query_Analysis_paramList(void);
-    void vR_S24_T20c_Sub_Query_Analysis_aggreg(void);
-    void vR_S24_T20d_Sub_Query_Analysis_gbyagg(void);
-    void vR_S24_T10e_Sub_Query_Genesis(void);
-    void vR_S24_T30(void);
+    // vSeries_26_Query_Analysis
+    void vR_S26_T10a_Main_Query_Analysis_aggreg(void);
+    void vR_S26_T10b_Main_Query_Analysis_gbyagg(void);
+    void vR_S26_T10c_Main_Query_Analysis_Of_from(void);
+    void vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
+    void vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
+    void vR_S26_T10f_Main_Query_Genesis(void);
+    void vR_S26_T20a_Sub_Query_Analysis_Only_main(void);
+    void vR_S26_T20b_Sub_Query_Analysis_paramList(void);
+    void vR_S26_T20c_Sub_Query_Analysis_aggreg(void);
+    void vR_S26_T20d_Sub_Query_Analysis_gbyagg(void);
+    void vR_S26_T10e_Sub_Query_Genesis(void);
+    void vR_S26_T30(void);
 
-    // vSeries_29_To_BoolCalc
-    void vR_S29_T10_Convert_where_rpnCalc_To_boolCalc(void);
-    void vR_S29_T20_Convert_stmColOdn_To_tblColOdn(void);
+    // vSeries_32_To_BoolCalc
+    void vR_S32_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vR_S32_T20_Convert_stmColOdn_To_tblColOdn(void);
 
     // vSeries_40_Flatten_Query
     void vR_S40_T10a_Fold_F_Before_Mq_As_opSeq(void);
@@ -64,12 +64,12 @@ namespace STORE
     void vR_S40_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
     void vR_S40_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
 
-    void vR_S30_Ute_a(void);
-    void vR_S30_Ute_b(void);
-    void vR_S30_Ute_c(void);
-    void vR_S30_Ute_d(void);
-    void vR_S30_Ute_e(void);
-    void vR_S30_Ute_f(void);
+    void vR_S40_Ute_a(void);
+    void vR_S40_Ute_b(void);
+    void vR_S40_Ute_c(void);
+    void vR_S40_Ute_d(void);
+    void vR_S40_Ute_e(void);
+    void vR_S40_Ute_f(void);
 
     // vSeries_35X_Flatten_From
     void vR_S35X_T10a_Copy_From_SubQuery(void);

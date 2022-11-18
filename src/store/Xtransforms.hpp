@@ -45,35 +45,35 @@ namespace STORE
     void vS20_T20_Produce_tablePtn_UnderAll_table(void);
     void vS20_TZZ_End(void);
 
-    // vSeries_22_Stream_Analysis
+    // vSeries_24_Stream_Analysis
     bool bS25_T00_Test(bool bEnabled);
-    void vS22_T00_Skip(void);
-    void vS22_T00_Begin(void);
-    void vS22_T10_Produce_stream_UnderAll_table(void);
-    void vS22_T12_Produce_stream_UnderAll_project(void);
-    void vS22_T14_Produce_stream_UnderAll_aggreg(void);
-    void vS22_T20_Derive_ordinalRange_ForAll_table_stream(void);
-    void vS22_T22_Derive_ordinalRange_ForAll_project_stream(void);
-    void vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
-    void vS22_TZZ_End(void);
-
-    // vSeries_24_Query_Analysis
-    bool bS24_T00_Test(bool bEnabled);
     void vS24_T00_Skip(void);
     void vS24_T00_Begin(void);
-    void vS24_T10_Main_Query_Analysis(void);
-    void vS24_T20_Sub_Query_Analysis(void);
-    void vS24_T30(void);
+    void vS24_T10_Produce_stream_UnderAll_table(void);
+    void vS24_T12_Produce_stream_UnderAll_project(void);
+    void vS24_T14_Produce_stream_UnderAll_aggreg(void);
+    void vS24_T20_Derive_ordinalRange_ForAll_table_stream(void);
+    void vS24_T22_Derive_ordinalRange_ForAll_project_stream(void);
+    void vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
     void vS24_TZZ_End(void);
 
-    // vSeries_29_To_BoolCalc
-    bool bS29_T00_Test(bool bEnabled);
-    void vS29_T00_Skip(void);
-    void vS29_T00_Begin(void);
-    void vS29_T10_Convert_where_rpnCalc_To_boolCalc(void);
-    void vS29_T20_Convert_stmColOdn_To_tblColOdn(void);
-    void vS29_T30(void);
-    void vS29_TZZ_End(void);
+    // vSeries_26_Query_Analysis
+    bool bS26_T00_Test(bool bEnabled);
+    void vS26_T00_Skip(void);
+    void vS26_T00_Begin(void);
+    void vS26_T10_Main_Query_Analysis(void);
+    void vS26_T20_Sub_Query_Analysis(void);
+    void vS26_T30(void);
+    void vS26_TZZ_End(void);
+
+    // vSeries_32_To_BoolCalc
+    bool bS32_T00_Test(bool bEnabled);
+    void vS32_T00_Skip(void);
+    void vS32_T00_Begin(void);
+    void vS32_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vS32_T20_Convert_stmColOdn_To_tblColOdn(void);
+    void vS32_T30(void);
+    void vS32_TZZ_End(void);
 
     // vSeries_40_Flatten_Query
     bool bS40_T00_Test(bool bEnabled);
