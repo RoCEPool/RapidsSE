@@ -29,6 +29,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
+  vAddStep("AdaptorWL[].resultMetadata"_Stz,      &Step::vAdaptorWLResultMetadata);
   vAddStep("AdaptorWL[].statement@\\clear"_Stz,   &Step::vAdaptorWLStatementFetchClear);
   vAddStep("AdaptorWL[].smtSubmitted"_Stz,        &Step::vAdaptorWLStatementSubmitted);
   vAddStep("AdaptorWL[].smtSubmittedErr"_Stz,     &Step::vAdaptorWLStatementSubmittedError);
@@ -178,6 +179,24 @@ void Step::vAdaptorWLProtocolErrorTest(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   m_pDataStack->vPushInt(pAdaptorWL->eProtocolError() == EC_NONE ? 0 : 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].resultMetadata -- Resultset metadata has been received         */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLResultMetadata(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__ ));
+  ASSERT(pStreamDef);
+  ASSERT(CN_STREAMDEF == pStreamDef->eGetClassNo());
+
+  pAdaptorWL->vResultMetadata(pStreamDef);
 
   EXIT();
 }

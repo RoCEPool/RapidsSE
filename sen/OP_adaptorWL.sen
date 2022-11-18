@@ -16,7 +16,7 @@
   while
     AdaptorWL[].nextPayloadToSend@ to pPayload
 
-    pPayload payloadObj::msgType@ "Sending payload: %v" .printf
+    pPayload payloadObj::msgType@ "AdaptorWL: Sending payload: %v" .printf
     pPayload [op].pipeOut
   repeat
 
@@ -160,21 +160,45 @@
   true
 ;
 
+///*----------------------------------------------------------------------------*/
+///* handler for EV_I_EXECERRORS                                                */
+///* Called when there is an error from the execution engine.                   */
+///*----------------------------------------------------------------------------*/
+//: adaptorWL_ExecErrors \handler
+//
+//  "adaptorWL_ExecErrors - EV_I_EXECERRORS" .
+//
+//  PipeIn[] to InfoSet[]
+//  nullptr to PipeIn[]
+//
+//  AdaptorWL[].executionError
+//
+//  // now delete the InfoSet[]
+//  InfoSet[].delete
+//
+//  // Pipeout any payloads that were just generated so they can be sent straight away
+//  adaptorWL_sendAnyWLResponses
+//
+//  // Check if the protocol is unviable
+//  AdaptorWL[].protocolErrorTest if
+//    AdaptorWL[].protocolError@ op__execErr
+//    true
+//    exit
+//  then
+//
+//  true
+//;
+
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_EXECERRORS                                                */
-/* Called when there is an error from the execution engine.                   */
+/* handler for EV_D_STREAMDEF                                                 */
+/* Called to indicate the definition of a resultset from a query.             */
 /*----------------------------------------------------------------------------*/
-: adaptorWL_ExecErrors \handler
+: adaptorWL_StreamDef \handler
 
-  "adaptorWL_ExecErrors - EV_I_EXECERRORS" .
+  "adaptorWL_StreamDef - EV_D_STREAMDEF" .
 
-  PipeIn[] to InfoSet[]
-  nullptr to PipeIn[]
-
-  AdaptorWL[].executionError
-
-  // now delete the InfoSet[]
-  InfoSet[].delete
+  PipeIn[] AdaptorWL[].resultMetadata
+  PipeIn[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses
@@ -226,29 +250,6 @@
 
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .
   Pipein[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses
-
-  // Check if the protocol is unviable
-  AdaptorWL[].protocolErrorTest if
-    AdaptorWL[].protocolError@ op__execErr
-    true
-    exit
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMDEF                                                 */
-/* Called to indicate the definition of a resultset from a query.             */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_StreamDef \handler
-
-  "adaptorWL_StreamDef - EV_D_STREAMDEF" .
-
-  PipeIn[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses
@@ -347,7 +348,7 @@
   find: adaptorWL_StartMarker   EV_M_START          [op].handler!
   find: adaptorWL_Payload       EV_D_PAYLOAD        [op].handler!
   find: adaptorWL_CompileErrors EV_I_COMPILEERRORS  [op].handler!
-  find: adaptorWL_ExecErrors    EV_I_EXECERRORS     [op].handler!
+//find: adaptorWL_ExecErrors    EV_I_EXECERRORS     [op].handler!
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!

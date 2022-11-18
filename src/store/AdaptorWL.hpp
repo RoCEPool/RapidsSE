@@ -16,6 +16,7 @@ namespace apache { namespace thrift { namespace protocol { template <typename TY
 
 namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
   struct MessageTypes;
+  struct DataType;
   class QueryExecuteRequest;
 }}}}}
 
@@ -121,6 +122,7 @@ namespace STORE
     void vExecutionError(InfoSet* pInfoSet);
     void vChildJobExited();
     bool bIsChildJobActive();
+    void vResultMetadata(StreamDef* pStreamDef);
 
   private:
 
@@ -158,7 +160,9 @@ namespace STORE
     // Helpers
     bool bQueryInProgress();
     bool bExtractNextStatement();
+    void vSendQueryReceipt();
     void vFinishQueryDialog();
+    i8   eToWLType(eCT eColType);
   };
 
   AdaptorWL* _pAdaptorWL(void* aAddr);

@@ -427,6 +427,78 @@ bool AdaptorWL::bIsChildJobActive()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Notify the client about the resultset definition                           */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
+{
+  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED} ));
+  vNextState(API_METADATA_RECEIVED);
+
+  if (m_xStmtCtx.m_bGotStmtError) {
+    return;
+  }
+
+  // Build the list of columns for the thrift message
+  std::vector<ColumnMetadata> xColumns;
+  i8 nColumns = pStreamDef->nColumns();
+
+  for (i8 i=0; i<nColumns; i++) {
+    Column* pColumn = pStreamDef->pGetColumn(i);
+
+    // Convert the SE eCT type to a wireline type
+    eCT eColType = pColumn->eColumnType();
+    i8 iWLType = eToWLType(eColType);
+    DataType::type eWLType = (DataType::type) iWLType;
+
+    if (iWLType < 0) {
+      eEC eErrCode = EC_WL_INTERNAL_ERROR;
+
+      if (eColType < CT_NONE || eColType > CT_ENUMS) {
+        Stz* szErrMsg = "Error: %s: Could not convert internal type %d to a wireline type"_Stz;
+        vSerialiseErrorResponse(eErrCode,
+                                szErrMsg,
+                                aErrorMsg[eErrCode],
+                                eColType);
+
+      } else {
+        Stz* szErrMsg = "Error: %s: Could not convert internal type %s to a wireline type"_Stz;
+        vSerialiseErrorResponse(eErrCode,
+                                szErrMsg,
+                                aErrorMsg[eErrCode],
+                                aCT[eColType]);
+      }
+
+      m_xStmtCtx.m_bGotStmtError = true;
+      vNextState(API_STATEMENT_COMPLETED);
+      return;
+    }
+
+    ColumnMetadata xColumn{};
+    xColumn.__set_columnName(pColumn->szColNm()->azChar());
+    xColumn.__set_columnType(eWLType);
+
+    if (pColumn->iColumnLength() > 0)   xColumn.__set_precision(pColumn->iColumnLength());
+    if (pColumn->iColumnScale() > 0)    xColumn.__set_scale(pColumn->iColumnScale());
+
+    xColumn.__set_isNullable(pColumn->bIsNullable());
+
+    // TODO: Fill in when supported
+//    xColumn.__set_charsetName();
+//    xColumn.__set_collationName();
+//    xColumn.__set_isAutoIncrement();
+
+    xColumns.push_back(xColumn);
+  }
+
+  RowMetadataResponse xRowMetadataResponse;
+  xRowMetadataResponse.__set_numColumns(nColumns);
+  xRowMetadataResponse.__set_isBoundedResult(true);
+  xRowMetadataResponse.__set_columns(xColumns);
+
+  vSerialiseAndSendMsg(&xRowMetadataResponse, MessageTypes::type::RowMetadataResponse);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -598,12 +670,12 @@ void AdaptorWL::vNextState(eState eNextState)
   /*04*/ static StateList aNextStates_KerberosAuth       = { AUTHENTICATED, DISCONNECTED };
   /*05*/ static StateList aNextStates_Authenticated      = { READY, DISCONNECTED };
   /*06*/ static StateList aNextStates_Ready              = { READY, QUERY_BEGUN, DISCONNECTED };
-  /*07*/ static StateList aNextStates_QueryBegun         = { READY, API_STATEMENT_TO_SUBMIT, QUERY_COMPLETED, DISCONNECTED };
-  /*08*/ static StateList aNextStates_ApiStmtToSubmit    = {API_STATEMENT_SUBMITTED, API_CHILD_JOB_EXITED, DISCONNECTED };
-  /*08*/ static StateList aNextStates_ApiStmtSubmitted   = {API_METADATA_RECEIVED, API_STATEMENT_COMPLETED };
-  /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED };
-  /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED };
-  /*11*/ static StateList aNextStates_ApiStmtCompleted   = {API_CHILD_JOB_EXITED };
+  /*07*/ static StateList aNextStates_QueryBegun         = { API_STATEMENT_TO_SUBMIT, QUERY_COMPLETED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiStmtToSubmit    = { API_STATEMENT_SUBMITTED, API_CHILD_JOB_EXITED, DISCONNECTED };
+  /*08*/ static StateList aNextStates_ApiStmtSubmitted   = { API_METADATA_RECEIVED, API_STATEMENT_COMPLETED, API_CHILD_JOB_EXITED };
+  /*09*/ static StateList aNextStates_ApiMetadataRcvd    = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, API_CHILD_JOB_EXITED };
+  /*10*/ static StateList aNextStates_ApiDataRcvd        = { API_DATA_RECEIVED, API_STATEMENT_COMPLETED, API_CHILD_JOB_EXITED };
+  /*11*/ static StateList aNextStates_ApiStmtCompleted   = { API_CHILD_JOB_EXITED };
   /*11*/ static StateList aNextStates_ApiChildJobExited  = { QUERY_COMPLETED, API_STATEMENT_TO_SUBMIT, DISCONNECTED };
   /*12*/ static StateList aNextStates_QueryCompleted     = { READY, DISCONNECTED };
   /*13*/ static StateList aNextStates_Disconnected       = { DISCONNECTED };
@@ -619,11 +691,11 @@ void AdaptorWL::vNextState(eState eNextState)
     /*05*/ case AUTHENTICATED:           eValidNextStates = aNextStates_Authenticated;       break;
     /*06*/ case READY:                   eValidNextStates = aNextStates_Ready;               break;
     /*07*/ case QUERY_BEGUN:             eValidNextStates = aNextStates_QueryBegun;          break;
-    /*08*/ case API_STATEMENT_TO_SUBMIT: eValidNextStates = aNextStates_ApiStmtToSubmit;      break;
-    /*09*/ case API_STATEMENT_SUBMITTED: eValidNextStates = aNextStates_ApiStmtSubmitted;     break;
+    /*08*/ case API_STATEMENT_TO_SUBMIT: eValidNextStates = aNextStates_ApiStmtToSubmit;     break;
+    /*09*/ case API_STATEMENT_SUBMITTED: eValidNextStates = aNextStates_ApiStmtSubmitted;    break;
     /*10*/ case API_METADATA_RECEIVED:   eValidNextStates = aNextStates_ApiMetadataRcvd;     break;
     /*11*/ case API_DATA_RECEIVED:       eValidNextStates = aNextStates_ApiDataRcvd;         break;
-    /*12*/ case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiStmtCompleted;     break;
+    /*12*/ case API_STATEMENT_COMPLETED: eValidNextStates = aNextStates_ApiStmtCompleted;    break;
     /*12*/ case API_CHILD_JOB_EXITED:    eValidNextStates = aNextStates_ApiChildJobExited;   break;
     /*13*/ case QUERY_COMPLETED:         eValidNextStates = aNextStates_QueryCompleted;      break;
     /*14*/ case DISCONNECTED:            eValidNextStates = aNextStates_Disconnected;        break;
@@ -947,17 +1019,20 @@ void AdaptorWL::processQueryExecuteRequest()
 
   // Sanity check the parameters in the message
   if (pMsg->rowsPerRowDataResponse < 0) {
+    // Sending this error before the QueryReceiptResponse ends the dialog
     Stz* szMsg = "Error: %s: Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aState[m_eProtocolError],
                             pMsg->rowsPerRowDataResponse);
+    // TODO: Do we need to send a QueryExecuteResponse here?
     vNextState(READY);
     return;
   }
 
   if (pMsg->maxRowsToReturn < -1) {
+    // Sending this error before the QueryReceiptResponse ends the dialog
     Stz* szMsg = "Error: %s: Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(m_eProtocolError,
@@ -979,6 +1054,9 @@ void AdaptorWL::processQueryExecuteRequest()
   // so that we can keep it until the query is completed.
   m_xQueryCtx.m_pQueryExecuteRequest = pMsg;
   m_pCurrentMsg = nullptr;
+
+  // Send back a QueryReceiptResponse before we submit the first query.
+  vSendQueryReceipt();
 
   // The query string in the QueryExecuteRequest may contain more than one statement
   // to be executed. So let's walk that string and find the next statement based on
@@ -1284,7 +1362,7 @@ bool AdaptorWL::bExtractNextStatement()
 
       case ';':
         // Extract the semicolon terminated statement
-        // TEMP: Don't include the terminating semicolon as this gets interpreted as another
+        // TODO: TEMP: Don't include the terminating semicolon as this gets interpreted as another
         //       argument to the sqlCompiler procedure.
         m_xStmtCtx.m_sStmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_xQueryCtx.m_iStmtCrs - iStartCrs);
 //        m_xStmtCtx.m_sStmtBuf.vCopy((Stz*) (pMsg->query.c_str() + m_xQueryCtx.iStartCrs),
@@ -1299,6 +1377,37 @@ bool AdaptorWL::bExtractNextStatement()
 
   // No semicolon terminated statement found
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send a QueryReceiptResponse back to the client                             */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vSendQueryReceipt()
+{
+  ASSERT(bCheckState( {QUERY_BEGUN} ));
+  ASSERT(m_xQueryCtx.m_iStmtCrs == -1);
+
+  QueryReceiptResponse xQueryReceipt;
+  std::vector<StatementReceipt> xStatementReceipts;
+  xQueryReceipt.__set_statementReceipts(xStatementReceipts);
+
+  i8 nStatements = 0;
+
+  while (bExtractNextStatement()) {
+    ++nStatements;
+
+    StatementReceipt xStatementReceipt{};
+    xStatementReceipt.__set_statementString(m_xStmtCtx.m_sStmtBuf.azChar());
+    xStatementReceipt.__set_statementId("abcd");  // TODO: Use a real statementId
+    xStatementReceipt.__set_statementKey(-1);     // TODO: Use a real statementKey
+
+    xStatementReceipts.push_back(xStatementReceipt);
+  }
+
+  vSerialiseAndSendMsg(&xQueryReceipt, MessageTypes::QueryReceiptResponse);
+
+  m_xQueryCtx.m_iStmtCrs = -1;
+  m_xStmtCtx.vResetContext();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1323,6 +1432,31 @@ void AdaptorWL::vFinishQueryDialog()
   m_xQueryCtx.vResetContext();
 
   vNextState(READY);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Convert an eCT to a wireline data type (DataType::type)                    */
+/* We return as an i8 because we can't forward declare this enum in the hpp.  */
+/*----------------------------------------------------------------------------*/
+i8 AdaptorWL::eToWLType(eCT eColType)
+{
+  switch (eColType) {
+    case CT_NONE:         return -1;
+    case CT_BOOLEAN:      return DataType::BOOLEAN;
+    case CT_CHAR:         return DataType::VARCHAR;
+    case CT_DATE:         return DataType::DATE;
+    case CT_DECIMAL:      return DataType::DECIMAL;
+    case CT_FLOAT:        return DataType::FLOAT;
+    case CT_INTEGER:      return DataType::BIGINT;
+    case CT_INTERVAL_DT:  return DataType::INTERVAL;  // TODO: Needs to change
+    case CT_INTERVAL_YM:  return DataType::INTERVAL;  // TODO: Needs to change
+    case CT_TIME:         return DataType::TIME;
+    case CT_TIMESTAMP:    return DataType::TIMESTAMP;
+    case CT_VARCHAR:      return DataType::VARCHAR;
+    case CT_UNKNOWN:      return DataType::NULL;
+    case CT_ENUMS:        return -1;
+    default:              NEVER_REACH
+  }
 }
 
 /*============================================================================*/

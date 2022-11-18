@@ -33,6 +33,8 @@
   // We expect to see a PayloadObj
   pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
+  pPayloadObj payloadObj::msgType@ "SendWL: Sending payload: %v" .printf
+
   pPayloadObj Socket[].sendWLMsg not if
     Socket[].clientAddr@  "Error sending wireline message to client at %v" .printf
     Socket[].close

@@ -39,6 +39,7 @@ public:
   void vAdaptorWLProcessWLMsg(void);
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
+  void vAdaptorWLResultMetadata(void);
   void vAdaptorWLStatementFetchClear(void);
   void vAdaptorWLStatementSubmitted(void);
   void vAdaptorWLStatementSubmittedError(void);
