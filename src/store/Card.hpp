@@ -446,6 +446,26 @@ namespace STORE
     Card_UBound*        pSub_uBound(void);
     Card_Where*         pSub_where(void);
 
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    Card_Av_AggP*          pSub_avAggP(void);
+    Card_Av_AggPN*         pSub_avAggPN(void);
+    Card_Av_AggPNO*        pSub_avAggPNO(void);
+    Card_Av_AggregP*       pSub_avAggregP(void);
+    Card_Av_AggregPN*      pSub_avAggregPN(void);
+    Card_Av_AggregPNO*     pSub_avAggregPNO(void);
+    Card_Av_Filter*        pSub_avFilter(void);
+    Card_Av_FilterProject* pSub_avFilterProject(void);
+    Card_Av_GbyAggP*       pSub_avGbyAggP(void);
+    Card_Av_GbyAggPN*      pSub_avGbyAggPN(void);
+    Card_Av_GbyPNO*        pSub_avGbyPNO(void);
+    Card_Av_JoinSeries*    pSub_avJoinSeries(void);
+    Card_Av_Limit*         pSub_avLimit(void);
+    Card_Av_Project*       pSub_avProject(void);
+    Card_Av_ScanJoinSeries* pSub_avScanJoinSeries(void);
+    Card_Av_ScanOnly*      pSub_avScanOnly(void);
+    Card_Av_Sort*          pSub_avSort(void);
+
   private:
 
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);
