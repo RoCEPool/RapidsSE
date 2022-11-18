@@ -133,6 +133,24 @@ namespace STORE
   class Card_Unique;
 
   class Card_Where;
+
+  class Card_Av_AggP;
+  class Card_Av_AggPN;
+  class Card_Av_AggPNO;
+  class Card_Av_AggregP;
+  class Card_Av_AggregPN;
+  class Card_Av_AggregPNO;
+  class Card_Av_Filter;
+  class Card_Av_FilterProject;
+  class Card_Av_GbyAggP;
+  class Card_Av_GbyAggPN;
+  class Card_Av_GbyPNO;
+  class Card_Av_JoinSeries;
+  class Card_Av_Limit;
+  class Card_Av_Project;
+  class Card_Av_ScanJoinSeries;
+  class Card_Av_ScanOnly;
+  class Card_Av_Sort;
 }
 
 static Stz* P_AggOp        = "bAggOp"_Stz;

@@ -140,6 +140,25 @@ enum eCK // card kind
 
   /* */ CK_WHERE,
 
+
+  /* */ CK_AV_AGGP,
+  /* */ CK_AV_AGGPN,
+  /* */ CK_AV_AGGPNO,
+  /* */ CK_AV_AGGREGP,
+  /* */ CK_AV_AGGREGPN,
+  /* */ CK_AV_AGGREGPNO,
+  /* */ CK_AV_FILTER,
+  /* */ CK_AV_FILTERPROJECT,
+  /* */ CK_AV_GBYAGGP,
+  /* */ CK_AV_GBYAGGPN,
+  /* */ CK_AV_GBYPNO,
+  /* */ CK_AV_JOINSERIES,
+  /* */ CK_AV_LIMIT,
+  /* */ CK_AV_PROJECT,
+  /* */ CK_AV_SCANJOINSERIES,
+  /* */ CK_AV_SCANONLY,
+  /* */ CK_AV_SORT,
+
   /* */ CK_ENUMS
 };
 
@@ -282,6 +301,24 @@ static Stz* aCK[]
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
+  /* */ "CK_AV_AGGP"_Stz,      // CK_AV_AGGP
+  /* */ "CK_AV_AGGPN"_Stz,     // CK_AV_AGGPN
+  /* */ "CK_AV_AGGPNO"_Stz,    // CK_AV_AGGPNO
+  /* */ "CK_AV_AGGREGP"_Stz,   // CK_AV_AGGREGP
+  /* */ "CK_AV_AGGREGPN"_Stz,  // CK_AV_AGGREGPN
+  /* */ "CK_AV_AGGREGPNO"_Stz, // CK_AV_AGGREGPNO
+  /* */ "CK_AV_FILTER"_Stz,    // CK_AV_FILTER
+  /* */ "CK_AV_FILTERPROJECT"_Stz, // CK_AV_FILTERPROJECT
+  /* */ "CK_AV_GBYAGGP"_Stz,   // CK_AV_GBYAGGP
+  /* */ "CK_AV_GBYAGGPN"_Stz,  // CK_AV_GBYAGGPN
+  /* */ "CK_AV_GBYPNO"_Stz,    // CK_AV_GBYPNO
+  /* */ "CK_AV_JOINSERIES"_Stz,// CK_AV_JOINSERIES
+  /* */ "CK_AV_LIMIT"_Stz,     // CK_AV_LIMIT
+  /* */ "CK_AV_PROJECT"_Stz,   // CK_AV_PROJECT
+  /* */ "CK_AV_SCANJOINSERIES"_Stz,// CK_AV_SCANJOINSERIES
+  /* */ "CK_AV_SCANONLY"_Stz,  // CK_AV_SCANONLY
+  /* */ "CK_AV_SORT"_Stz,      // CK_AV_SORT
+
   /* */ "ENUMS"_Stz
 };
 
@@ -423,6 +460,25 @@ static Stz* aCK_short[]
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "where"_Stz,           // CK_WHERE
+
+
+  /* */ "av_aggP"_Stz,            // CK_AV_AGGP
+  /* */ "av_aggPN"_Stz,           // CK_AV_AGGPN
+  /* */ "av_aggPNO"_Stz,          // CK_AV_AGGPNO
+  /* */ "av_aggregP"_Stz,         // CK_AV_AGGREGP
+  /* */ "av_aggregPN"_Stz,        // CK_AV_AGGREGPN
+  /* */ "av_aggregPNO"_Stz,       // CK_AV_AGGREGPNO
+  /* */ "av_filter"_Stz,          // CK_AV_FILTER
+  /* */ "av_filterProject"_Stz,   // CK_AV_FILTERPROJECT
+  /* */ "av_gbyAggP"_Stz,         // CK_AV_GBYAGGP
+  /* */ "av_gbyAggPN"_Stz,        // CK_AV_GBYAGGPN
+  /* */ "av_gbyPNO"_Stz,          // CK_AV_GBYPNO
+  /* */ "av_joinSeries"_Stz,      // CK_AV_JOINSERIES
+  /* */ "av_limit"_Stz,           // CK_AV_LIMIT
+  /* */ "av_project"_Stz,         // CK_AV_PROJECT
+  /* */ "av_scanJoinSeries"_Stz,  // CK_AV_SCANJOINSERIES
+  /* */ "av_scanOnly"_Stz,        // CK_AV_SCANONLY
+  /* */ "av_sort"_Stz,            // CK_AV_SORT
 
   /* */ "ENUMS"_Stz
 };

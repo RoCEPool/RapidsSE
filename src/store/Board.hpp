@@ -150,6 +150,25 @@
 
 #include "SubQuery.hpp"
 
+
+#include "Card_Av_AggP.hpp"
+#include "Card_Av_AggPN.hpp"
+#include "Card_Av_AggPNO.hpp"
+#include "Card_Av_AggregP.hpp"
+#include "Card_Av_AggregPN.hpp"
+#include "Card_Av_AggregPNO.hpp"
+#include "Card_Av_Filter.hpp"
+#include "Card_Av_FilterProject.hpp"
+#include "Card_Av_GbyAggP.hpp"
+#include "Card_Av_GbyAggPN.hpp"
+#include "Card_Av_GbyPNO.hpp"
+#include "Card_Av_JoinSeries.hpp"
+#include "Card_Av_Limit.hpp"
+#include "Card_Av_Project.hpp"
+#include "Card_Av_ScanJoinSeries.hpp"
+#include "Card_Av_ScanOnly.hpp"
+#include "Card_Av_Sort.hpp"
+
 namespace STORE
 {
   class Bench;
