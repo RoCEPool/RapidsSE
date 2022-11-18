@@ -135,14 +135,14 @@ namespace STORE
     void vS37X_TB0(void);
     void vS37X_TZZ_End(void);
 
-    // vSeries_40_Predicate_Pullup
-    bool bS40_T00_Test(bool bEnabled);
-    void vS40_T00_Skip(void);
-    void vS40_T00_Begin(void);
-    void vS40_T10_AtMark_where_pred_Wrt_table(void);
-    void vS40_T20_Move_AtMarked_where_pred_To_table_filter(void);
-    void vS40_T30_Delete_Empty_where(void);
-    void vS40_TZZ_End(void);
+    // vSeries_34_Predicate_Pullup
+    bool bS34_T00_Test(bool bEnabled);
+    void vS34_T00_Skip(void);
+    void vS34_T00_Begin(void);
+    void vS34_T10_AtMark_where_pred_Wrt_table(void);
+    void vS34_T20_Move_AtMarked_where_pred_To_table_filter(void);
+    void vS34_T30_Delete_Empty_where(void);
+    void vS34_TZZ_End(void);
 
     // vSeries_50_Join_Ordering
     bool bS50_T00_Test(bool bEnabled);

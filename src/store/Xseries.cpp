@@ -73,35 +73,28 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveShorter();
   m_pCardCtl->vSaveXhand();
 
-  vSeries_10_Condense_Info      (C_ENABLED);
-
-  vSeries_20_Table_Analysis     (C_ENABLED);
-  vSeries_22_Stream_Analysis    (C_ENABLED);
-  vSeries_24_Query_Analysis     (C_ENABLED);
-  vSeries_29_To_BoolCalc        (C_ENABLED);
-
-  vSeries_40_Predicate_Pullup   (C_ENABLED);
-
+  vSeries_10_Condense_Info     (C_ENABLED);
+  vSeries_20_Table_Analysis    (C_ENABLED);
+  vSeries_22_Stream_Analysis   (C_ENABLED);
+  vSeries_24_Query_Analysis    (C_ENABLED);
+  vSeries_29_To_BoolCalc       (C_ENABLED);
+  vSeries_34_Predicate_Pullup  (C_ENABLED);
   vSeries_30_Flatten_Query                   (C_DISABLED);
+  vSeries_50_Join_Ordering                   (C_DISABLED);
+  vSeries_60_Index_Join        (C_ENABLED);
+  vSeries_85_Cross_Join                      (C_DISABLED);
+  vSeries_75_EE_operators      (C_ENABLED);
+  vSeries_80_Index_Scan                      (C_DISABLED);
+  vSeries_90_Stream_Ordering   (C_ENABLED);
+  vSeries_92_Ordered_Aggreg                  (C_DISABLED);
+  vSeries_A0_Filter_Refinement (C_ENABLED);
+
+  vSeries_Z0_Restate_Pipeline  (C_ENABLED);
+
+
   vSeries_35X_Flatten_From(C_ENABLED);
   vSeries_36X_Flatten_Where(C_ENABLED);
   vSeries_37X_Flatten_Having(C_ENABLED);
-
-  vSeries_50_Join_Ordering                   (C_DISABLED);
-
-  vSeries_60_Index_Join         (C_ENABLED);
-  vSeries_85_Cross_Join                      (C_DISABLED);
-
-  vSeries_75_EE_operators       (C_ENABLED);
-
-  vSeries_80_Index_Scan                      (C_DISABLED);
-
-  vSeries_90_Stream_Ordering    (C_ENABLED);
-  vSeries_92_Ordered_Aggreg                  (C_DISABLED);
-
-  vSeries_A0_Filter_Refinement  (C_ENABLED);
-
-  vSeries_Z0_Restate_Pipeline   (C_ENABLED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,6 +261,38 @@ void Xseries::vSeries_29_To_BoolCalc(bool bEnabled)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_34_Predicate_Pullup(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bS34_T00_Test(bEnabled)) {
+    m_pTransforms->vS34_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vS34_T00_Begin();
+
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
+
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+
+    m_pTransforms->vS34_T10_AtMark_where_pred_Wrt_table();
+    m_pTransforms->vS34_T20_Move_AtMarked_where_pred_To_table_filter();
+    m_pTransforms->vS34_T30_Delete_Empty_where();
+  }
+
+  m_pTransforms->vS34_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* flatten query                                                              */
 /*----------------------------------------------------------------------------*/
 void Xseries::vSeries_30_Flatten_Query(bool bEnabled)
@@ -286,38 +311,6 @@ void Xseries::vSeries_30_Flatten_Query(bool bEnabled)
   m_pTransforms->vS30_T05_Flatten_By_Decision_Tree();
 
   m_pTransforms->vS30_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_40_Predicate_Pullup(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS40_T00_Test(bEnabled)) {
-    m_pTransforms->vS40_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS40_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS40_T10_AtMark_where_pred_Wrt_table();
-    m_pTransforms->vS40_T20_Move_AtMarked_where_pred_To_table_filter();
-    m_pTransforms->vS40_T30_Delete_Empty_where();
-  }
-
-  m_pTransforms->vS40_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }

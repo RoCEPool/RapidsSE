@@ -864,14 +864,14 @@ void Xreshape::vR_S30_Ute_f(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                vSeries_40_Predicate_Pullup */
+/*                                                vSeries_34_Predicate_Pullup */
 /*============================================================================*/
 
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S40_T10_AtMark_where_pred_Wrt_table(void)
+void Xreshape::vR_S34_T10_AtMark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -885,7 +885,7 @@ void Xreshape::vR_S40_T10_AtMark_where_pred_Wrt_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S40_T20_Move_AtMarked_where_pred_To_table_filter(void)
+void Xreshape::vR_S34_T20_Move_AtMarked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -899,7 +899,7 @@ void Xreshape::vR_S40_T20_Move_AtMarked_where_pred_To_table_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S40_T30_Delete_Empty_where(void)
+void Xreshape::vR_S34_T30_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

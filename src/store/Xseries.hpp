@@ -39,10 +39,10 @@ namespace STORE
 //  void vSeries_21_Index_Analysis   (bool bEnabled);
     void vSeries_22_Stream_Analysis  (bool bEnabled); //
     void vSeries_24_Query_Analysis   (bool bEnabled); //
-//  vSeries_28_Literal_Arithmetic    (bool bEnabled); //
+//  void vSeries_30_Literal_Arithmetic  (bool bEnabled); //
     void vSeries_29_To_BoolCalc      (bool bEnabled); //
-    void vSeries_40_Predicate_Pullup (bool bEnabled); //
-//  void vSeries_42_Bound_Analysis   (bool bEnabled); //
+    void vSeries_34_Predicate_Pullup (bool bEnabled); //
+//  void vSeries_36_Bound_Analysis   (bool bEnabled); //
     void vSeries_30_Flatten_Query    (bool bEnabled); //
     void vSeries_50_Join_Ordering    (bool bEnabled); // 2 days
     void vSeries_60_Index_Join       (bool bEnabled); //

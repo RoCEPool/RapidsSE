@@ -107,10 +107,10 @@ namespace STORE
     void vR_S37X_TA0(void);
     void vR_S37X_TB0(void);
 
-    // vSeries_40_Predicate_Pullup
-    void vR_S40_T10_AtMark_where_pred_Wrt_table(void);
-    void vR_S40_T20_Move_AtMarked_where_pred_To_table_filter(void);
-    void vR_S40_T30_Delete_Empty_where(void);
+    // vSeries_34_Predicate_Pullup
+    void vR_S34_T10_AtMark_where_pred_Wrt_table(void);
+    void vR_S34_T20_Move_AtMarked_where_pred_To_table_filter(void);
+    void vR_S34_T30_Delete_Empty_where(void);
 
     // vSeries_60_Index_Join
     void vR_S60_T05_Twist_in_Becomes_filter(void);

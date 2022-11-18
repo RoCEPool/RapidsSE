@@ -776,6 +776,114 @@ void Xtransforms::vS29_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*                                                vSeries_34_Predicate_Pullup */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bS34_T00_Test(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vST00_Begin();
+
+  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,CK_WHERE,0);
+
+  vPrintBench(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put a table @c mark against where predicates which can be moved under table*/
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_S34_T10_AtMark_where_pred_Wrt_table();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* move where predicates with an @c table mark to new <table>/<filter>        */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_S34_T20_Move_AtMarked_where_pred_To_table_filter();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <where> if it is effectively empty                                  */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_T30_Delete_Empty_where(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete where if it is effectively empty"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vR_S34_T30_Delete_Empty_where();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  //m_pCardCtl->vUseShorter();
+  //m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
+
+  vSTZZ_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*                                                   vSeries_30_Flatten_Query */
 /*============================================================================*/
 
@@ -1224,114 +1332,6 @@ void Xtransforms::vS30_TZZ_End(void)
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                vSeries_40_Predicate_Pullup */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtransforms::bS40_T00_Test(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (! bEnabled)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS40_T00_Skip(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS40_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vST00_Begin();
-
-  m_pCardCtl->vUseShorter();
-  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,CK_WHERE,0);
-
-  vPrintBench(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put a table @c mark against where predicates which can be moved under table*/
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS40_T10_AtMark_where_pred_Wrt_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_S40_T10_AtMark_where_pred_Wrt_table();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* move where predicates with an @c table mark to new <table>/<filter>        */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS40_T20_Move_AtMarked_where_pred_To_table_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_S40_T20_Move_AtMarked_where_pred_To_table_filter();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete <where> if it is effectively empty                                  */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS40_T30_Delete_Empty_where(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_S40_T30_Delete_Empty_where();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS40_TZZ_End(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  //m_pCardCtl->vUseShorter();
-  //m_pCardCtl->vPrintSubCards(false,CK_WHERE,0);
-
-  vSTZZ_End();
-}
 
 
 /*----------------------------------------------------------------------------*/
