@@ -66,12 +66,12 @@ namespace STORE
     void vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
     void vS24_TZZ_End(void);
 
-    // vSeries_26_Query_Analysis
+    // vSeries_26_SubQuery_Analysis
     bool bS26_T00_Test(bool bEnabled);
     void vS26_T00_Skip(void);
     void vS26_T00_Begin(void);
-    void vS26_T10_Main_Query_Analysis(void);
-    void vS26_T20_Sub_Query_Analysis(void);
+    void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
+    void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
     void vS26_T30(void);
     void vS26_TZZ_End(void);
 
@@ -80,9 +80,14 @@ namespace STORE
     void vS32_T00_Skip(void);
     void vS32_T00_Begin(void);
     void vS32_T10_Convert_where_rpnCalc_To_boolCalc(void);
-    void vS32_T20_Convert_stmColOdn_To_tblColOdn(void);
-    void vS32_T30(void);
     void vS32_TZZ_End(void);
+
+    // vSeries_33_To_TblColOdn
+    bool bS33_T00_Test(bool bEnabled);
+    void vS33_T00_Skip(void);
+    void vS33_T00_Begin(void);
+    void vS33_T10_Convert_stmColOdn_To_tblColOdn(void);
+    void vS33_TZZ_End(void);
 
     // vSeries_34_Predicate_Pullup
     bool bS34_T00_Test(bool bEnabled);

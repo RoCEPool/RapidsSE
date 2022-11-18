@@ -42,7 +42,7 @@ namespace STORE
     void vR_S24_T24_Derive_ordinalRange_For_aggreg_stream(void);
 
 
-    // vSeries_26_Query_Analysis
+    // vSeries_26_SubQuery_Analysis
     void vR_S26_T10a_Main_Query_Analysis_aggreg(void);
     void vR_S26_T10b_Main_Query_Analysis_gbyagg(void);
     void vR_S26_T10c_Main_Query_Analysis_Of_from(void);
@@ -58,7 +58,9 @@ namespace STORE
 
     // vSeries_32_To_BoolCalc
     void vR_S32_T10_Convert_where_rpnCalc_To_boolCalc(void);
-    void vR_S32_T20_Convert_stmColOdn_To_tblColOdn(void);
+
+    // vSeries_33_To_TblColOdn
+    void vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void);
 
     // vSeries_34_Predicate_Pullup
     void vR_S34_T10_AtMark_where_pred_Wrt_table(void);

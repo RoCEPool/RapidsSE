@@ -598,7 +598,7 @@ void Xtransforms::vS24_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  vSeries_26_Query_Analysis */
+/*                                                  vSeries_26_SubQuery_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -639,7 +639,7 @@ void Xtransforms::vS26_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS26_T10_Main_Query_Analysis(void)
+void Xtransforms::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -683,7 +683,7 @@ void Xtransforms::vS26_T10_Main_Query_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS26_T20_Sub_Query_Analysis(void)
+void Xtransforms::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -814,9 +814,57 @@ void Xtransforms::vS32_T10_Convert_where_rpnCalc_To_boolCalc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS32_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vSTZZ_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    vSeries_33_To_TblColOdn */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bS33_T00_Test(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS33_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS33_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vST00_Begin();
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T20_Convert_stmColOdn_To_tblColOdn(void)
+void Xtransforms::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -837,7 +885,7 @@ void Xtransforms::vS32_T20_Convert_stmColOdn_To_tblColOdn(void)
         continue;
     }
 
-    vR_S32_T20_Convert_stmColOdn_To_tblColOdn();
+    vR_S33_T10_Convert_stmColOdn_To_tblColOdn();
   }
 
   V_vNo_Terms_StmColOdn(G.pDeck);
@@ -850,21 +898,7 @@ void Xtransforms::vS32_T20_Convert_stmColOdn_To_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T30(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "((30))"_Stz);
-
-  vAssert_Board_mqA();
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_TZZ_End(void)
+void Xtransforms::vS33_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
