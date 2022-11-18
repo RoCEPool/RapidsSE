@@ -43,7 +43,7 @@ namespace STORE
     void vSeries_29_To_BoolCalc      (bool bEnabled); //
     void vSeries_34_Predicate_Pullup (bool bEnabled); //
 //  void vSeries_36_Bound_Analysis   (bool bEnabled); //
-    void vSeries_30_Flatten_Query    (bool bEnabled); //
+    void vSeries_40_Flatten_Query    (bool bEnabled); //
     void vSeries_50_Join_Ordering    (bool bEnabled); // 2 days
     void vSeries_60_Index_Join       (bool bEnabled); //
     void vSeries_75_EE_operators     (bool bEnabled); // 1 day

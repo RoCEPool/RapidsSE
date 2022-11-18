@@ -79,7 +79,7 @@ void Xseries::vTransformSeries(void)
   vSeries_24_Query_Analysis    (C_ENABLED);
   vSeries_29_To_BoolCalc       (C_ENABLED);
   vSeries_34_Predicate_Pullup  (C_ENABLED);
-  vSeries_30_Flatten_Query                   (C_DISABLED);
+  vSeries_40_Flatten_Query     (C_DISABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_60_Index_Join        (C_ENABLED);
   vSeries_85_Cross_Join                      (C_DISABLED);
@@ -295,22 +295,22 @@ void Xseries::vSeries_34_Predicate_Pullup(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /* flatten query                                                              */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_30_Flatten_Query(bool bEnabled)
+void Xseries::vSeries_40_Flatten_Query(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (!m_pTransforms->bS30_T00_Test(bEnabled)) {
-    m_pTransforms->vS30_T00_Skip();
+  if (!m_pTransforms->bS40_T00_Test(bEnabled)) {
+    m_pTransforms->vS40_T00_Skip();
     return;
   }
 
-  m_pTransforms->vS30_T00_Begin();
+  m_pTransforms->vS40_T00_Begin();
 
-  m_pTransforms->vS30_T05_Flatten_By_Decision_Tree();
+  m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
 
-  m_pTransforms->vS30_TZZ_End();
+  m_pTransforms->vS40_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
 }

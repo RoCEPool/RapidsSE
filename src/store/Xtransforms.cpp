@@ -884,13 +884,13 @@ void Xtransforms::vS34_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   vSeries_30_Flatten_Query */
+/*                                                   vSeries_40_Flatten_Query */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bS30_T00_Test(bool bEnabled)
+bool Xtransforms::bS40_T00_Test(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -906,7 +906,7 @@ bool Xtransforms::bS30_T00_Test(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T00_Skip(void)
+void Xtransforms::vS40_T00_Skip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
@@ -914,7 +914,7 @@ void Xtransforms::vS30_T00_Skip(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T00_Begin(void)
+void Xtransforms::vS40_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -926,7 +926,7 @@ void Xtransforms::vS30_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
+void Xtransforms::vS40_T05_Flatten_By_Decision_Tree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -940,7 +940,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q7,8,9)
 
   auto L_vFold_10_F_Before_Mq_As_opSeq = [this] (void) {
-    vS30_T10_Fold_F_Before_Mq_As_opSeq();
+    vS40_T10_Fold_F_Before_Mq_As_opSeq();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -950,7 +950,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q2,17)
 
   auto L_vFold_20_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey = [this] (void) {
-    vS30_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
+    vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -959,7 +959,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q18)
 
   auto L_vFold_30_W_A_NC_I_Before_Mq_As_aggFanAval = [this] (void) {
-    vS30_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
+    vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -968,7 +968,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q15)
 
   auto L_vFold_40_W_A_NC_ro_Before_Mq_As_aggFanAval = [this] (void) {
-    vS30_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval();
+    vS40_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -977,7 +977,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q4)
 
   auto L_vFold_50_W_L_C_E_Before_Mq_As_keyExists = [this] (void) {
-    vS30_T50_Fold_W_L_C_E_Before_Mq_As_keyExists();
+    vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -986,7 +986,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q16)
 
   auto L_vFold_60_W_L_NC_NI_Into_Mq_As_keyNotExists = [this] (void) {
-    vS30_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
+    vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -996,7 +996,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
   // (refer: Q11)
 
   auto L_vFold_70_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq = [this] (void) {
-    vS30_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
+    vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1077,7 +1077,7 @@ void Xtransforms::vS30_T05_Flatten_By_Decision_Tree(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T10_Fold_F_Before_Mq_As_opSeq(void)
+void Xtransforms::vS40_T10_Fold_F_Before_Mq_As_opSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1104,7 +1104,7 @@ void Xtransforms::vS30_T10_Fold_F_Before_Mq_As_opSeq(void)
 
 
 
-  vR_S30_T10a_Fold_F_Before_Mq_As_opSeq();
+  vR_S40_T10a_Fold_F_Before_Mq_As_opSeq();
 
   vEndTransform();
 }
@@ -1113,7 +1113,7 @@ void Xtransforms::vS30_T10_Fold_F_Before_Mq_As_opSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
+void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1141,7 +1141,7 @@ void Xtransforms::vS30_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
 
 
-  vR_S30_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
+  vR_S40_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
 
   vEndTransform();
 }
@@ -1149,7 +1149,7 @@ void Xtransforms::vS30_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
+void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1177,7 +1177,7 @@ void Xtransforms::vS30_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
 
 
-  vR_S30_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
+  vR_S40_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
 
   vEndTransform();
 }
@@ -1185,7 +1185,7 @@ void Xtransforms::vS30_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void)
+void Xtransforms::vS40_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1201,7 +1201,7 @@ void Xtransforms::vS30_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void)
 
   vAssert_Board_mqA();
 
-  vR_S30_T40a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval();
+  vR_S40_T40a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval();
 
   vEndTransform();
 }
@@ -1209,7 +1209,7 @@ void Xtransforms::vS30_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
+void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1242,7 +1242,7 @@ void Xtransforms::vS30_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
 
 
-  vR_S30_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
+  vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
 
   vEndTransform();
 }
@@ -1250,7 +1250,7 @@ void Xtransforms::vS30_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
+void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1277,7 +1277,7 @@ void Xtransforms::vS30_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
 
 
-  vR_S30_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
+  vR_S40_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
 
   vEndTransform();
 }
@@ -1285,7 +1285,7 @@ void Xtransforms::vS30_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
+void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1315,7 +1315,7 @@ void Xtransforms::vS30_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
 
 
-  vR_S30_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
+  vR_S40_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
 
   vEndTransform();
 }
@@ -1324,191 +1324,13 @@ void Xtransforms::vS30_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS30_TZZ_End(void)
+void Xtransforms::vS40_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vSTZZ_End();
 }
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                      vSeries_60_Index_Join */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtransforms::bS60_T00_Test(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (! bEnabled)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T00_Skip(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  m_pCardCtl->vUseShorter();
-
-  m_pBench->vPrefix('m');
-
-  vST00_Begin();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T05_Twist_in_Becomes_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TWIST, CK_TSTPRED,"in"_Stz)) {
-    vR_S60_T05_Twist_in_Becomes_filter();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a scratch <maybeIndexJoin> under all joinable <table>'s                */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T10_Produce_maybeIndexJoin_Under_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_S60_T10_Produce_maybeIndexJoin_Under_filter();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* affix $c.n to each <idxCol> wrt table stream                               */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
-    vR_S60_T20_Affix_tblColOdn_To_idxCol();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy <table>/<filter> up into <table>/<bounds>                             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_S60_T30_UpCopy_filter_pred_Into_bounds();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S60_T40_Cull_UpCopied_filter_pred();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete any <table>/<filter> which is effectively empty                     */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T50_Delete_Empty_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S60_T50_Delete_Empty_filter();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete any <table>/<filter> which is effectively empty                     */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T60_Delete_Twist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "((desc))"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMain(CK_TWIST)) {
-    vR_S60_T60_Delete_Twist();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_TZZ_End(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vSTZZ_End();
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1858,6 +1680,184 @@ void Xtransforms::vS50_T98_Extract_joinOrderSeq(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vS50_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vSTZZ_End();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                      vSeries_60_Index_Join */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bS60_T00_Test(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  m_pBench->vPrefix('m');
+
+  vST00_Begin();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T05_Twist_in_Becomes_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TWIST, CK_TSTPRED,"in"_Stz)) {
+    vR_S60_T05_Twist_in_Becomes_filter();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a scratch <maybeIndexJoin> under all joinable <table>'s                */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T10_Produce_maybeIndexJoin_Under_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "add an <indexJoin> under all joinable <table>'s"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    vR_S60_T10_Produce_maybeIndexJoin_Under_filter();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* affix $c.n to each <idxCol> wrt table stream                               */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "Affix $c.n to each <idxCol> wrt table stream"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
+    vR_S60_T20_Affix_tblColOdn_To_idxCol();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy <table>/<filter> up into <table>/<bounds>                             */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    vR_S60_T30_UpCopy_filter_pred_Into_bounds();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+    vR_S60_T40_Cull_UpCopied_filter_pred();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete any <table>/<filter> which is effectively empty                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T50_Delete_Empty_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+    vR_S60_T50_Delete_Empty_filter();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete any <table>/<filter> which is effectively empty                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_T60_Delete_Twist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((desc))"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMain(CK_TWIST)) {
+    vR_S60_T60_Delete_Twist();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS60_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

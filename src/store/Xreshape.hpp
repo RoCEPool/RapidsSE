@@ -55,14 +55,14 @@ namespace STORE
     void vR_S29_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_S29_T20_Convert_stmColOdn_To_tblColOdn(void);
 
-    // vSeries_30_Flatten_Query
-    void vR_S30_T10a_Fold_F_Before_Mq_As_opSeq(void);
-    void vR_S30_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
-    void vR_S30_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void);
-    void vR_S30_T40a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void);
-    void vR_S30_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists(void);
-    void vR_S30_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
-    void vR_S30_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
+    // vSeries_40_Flatten_Query
+    void vR_S40_T10a_Fold_F_Before_Mq_As_opSeq(void);
+    void vR_S40_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
+    void vR_S40_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void);
+    void vR_S40_T40a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void);
+    void vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists(void);
+    void vR_S40_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
+    void vR_S40_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
 
     void vR_S30_Ute_a(void);
     void vR_S30_Ute_b(void);
