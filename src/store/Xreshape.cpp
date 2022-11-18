@@ -763,6 +763,18 @@ void Xreshape::vR_S30_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::vR_S30_T35a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::vR_S30_T40a_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
