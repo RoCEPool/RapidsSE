@@ -49,9 +49,8 @@ namespace STORE
     bool bS22_T00_Test(bool bEnabled);
     void vS22_T00_Skip(void);
     void vS22_T00_Begin(void);
-    void vS22_T10(void);
-    void vS22_T20(void);
-    void vS22_T30(void);
+    void vS22_T10_Append_indexList_UnderAll_table(void);
+    void vS22_T20_Affix_tblColOdn_ToAll_idxCol(void);
     void vS22_TZZ_End(void);
 
     // vSeries_24_Stream_Analysis

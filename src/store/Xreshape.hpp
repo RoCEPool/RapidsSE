@@ -29,8 +29,8 @@ namespace STORE
     void vR_S20_T20_Produce_tablePtn_Under_table(void);
 
     // vSeries_22_Index_Analysis
-    void vR_S22_T10(void);
-    void vR_S22_T20(void);
+    void vR_S22_T10_Produce_indexList_Under_table(void);
+    void vR_S22_T20_Affix_tblColOdn_To_idxCol(void);
     void vR_S22_T30(void);
 
     // vSeries_24_Stream_Analysis

@@ -377,23 +377,7 @@ void Xtransforms::vS22_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T10(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  vAssert_Board_any();
-
-  vR_S22_T10();
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T20(void)
+void Xtransforms::vS22_T10_Append_indexList_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -401,7 +385,9 @@ void Xtransforms::vS22_T20(void)
 
   vAssert_Board_any();
 
-  vR_S22_T20();
+  while (G_bEachMain(CK_TABLE)) {
+    vR_S22_T10_Produce_indexList_Under_table();
+  }
 
   vEndTransform();
 }
@@ -409,7 +395,7 @@ void Xtransforms::vS22_T20(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T30(void)
+void Xtransforms::vS22_T20_Affix_tblColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -417,7 +403,9 @@ void Xtransforms::vS22_T30(void)
 
   vAssert_Board_any();
 
-  vR_S22_T30();
+  while (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
+    vR_S22_T20_Affix_tblColOdn_To_idxCol();
+  }
 
   vEndTransform();
 }

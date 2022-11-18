@@ -242,23 +242,37 @@ void Xreshape::vR_S20_T20_Produce_tablePtn_Under_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S22_T10(void)
+void Xreshape::vR_S22_T10_Produce_indexList_Under_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  G.p_tableNm = G.p_table->pSub_tableNm();
+  Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
+
+  G.p_indexList = C_pProduce_indexList_ofTable(pTable);
+
+  G_vAppendChild(CK_TABLE,CK_INDEXLIST);
 
   vEndReshape();
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S22_T20(void)
+void Xreshape::vR_S22_T20_Affix_tblColOdn_To_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  CardIter xCI(G.p_indexList);
+  while ((G.p_index = _pCard_Index(xCI.pEachChild()))) {
+    G.p_idxColList = G.p_index->pSub_idxColList();
+    M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
+  }
 
   vEndReshape();
 }

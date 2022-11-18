@@ -75,8 +75,8 @@ void Xseries::vTransformSeries(void)
 
   vSeries_10_Condense_Info     (C_ENABLED);
   vSeries_20_Table_Analysis    (C_ENABLED);
-  vSeries_22_Index_Analysis                  (C_DISABLED);
   vSeries_24_Stream_Analysis   (C_ENABLED);
+  vSeries_22_Index_Analysis    (C_ENABLED);
   vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
@@ -179,16 +179,22 @@ void Xseries::vSeries_22_Index_Analysis(bool bEnabled)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS36_T00_Test(bEnabled)) {
-    m_pTransforms->vS36_T00_Skip();
+  if (! m_pTransforms->bS22_T00_Test(bEnabled)) {
+    m_pTransforms->vS22_T00_Skip();
     return;
   }
 
   m_pTransforms->vS22_T00_Begin();
 
-  m_pTransforms->vS22_T10();
-  m_pTransforms->vS22_T20();
-  m_pTransforms->vS22_T30();
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
+
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+
+    m_pTransforms->vS22_T10_Append_indexList_UnderAll_table();
+    m_pTransforms->vS22_T20_Affix_tblColOdn_ToAll_idxCol();
+  }
 
   m_pTransforms->vS22_TZZ_End();
 
