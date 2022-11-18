@@ -28,18 +28,18 @@ namespace STORE
     void vR_S20_T10_AAffix_tableSyn_To_table(void);
     void vR_S20_T20_Produce_tablePtn_Under_table(void);
 
-    // vSeries_22_Index_Analysis
-    void vR_S22_T10_Produce_indexList_Under_table(void);
-    void vR_S22_T20_Affix_tblColOdn_To_idxCol(void);
-    void vR_S22_T30(void);
+    // vSeries_24_Index_Analysis
+    void vR_S24_T10_Produce_indexList_Under_table(void);
+    void vR_S24_T20_Affix_tblColOdn_To_idxCol(void);
+    void vR_S24_T30(void);
 
-    // vSeries_24_Stream_Analysis
-    void vR_S24_T10_Produce_stream_Under_table(void);
-    void vR_S24_T12_Produce_stream_Under_project(void);
-    void vR_S24_T14_Produce_stream_Under_aggreg(void);
-    void vR_S24_T20_Derive_ordinalRange_For_table_stream(void);
-    void vR_S24_T22_Derive_ordinalRange_For_project_stream(void);
-    void vR_S24_T24_Derive_ordinalRange_For_aggreg_stream(void);
+    // vSeries_22_Stream_Analysis
+    void vR_S22_T10_Produce_stream_Under_table(void);
+    void vR_S22_T12_Produce_stream_Under_project(void);
+    void vR_S22_T14_Produce_stream_Under_aggreg(void);
+    void vR_S22_T20_Derive_ordinalRange_For_table_stream(void);
+    void vR_S22_T22_Derive_ordinalRange_For_project_stream(void);
+    void vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void);
 
 
     // vSeries_26_SubQuery_Analysis

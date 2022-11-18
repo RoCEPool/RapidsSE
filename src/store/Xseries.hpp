@@ -34,16 +34,19 @@ namespace STORE
 
   private:
 
+    // we start with multiple sub_queries...
     void vSeries_10_Condense_Info     (bool bEnabled); //
     void vSeries_20_Table_Analysis    (bool bEnabled); //
-    void vSeries_24_Stream_Analysis   (bool bEnabled); //
-    void vSeries_22_Index_Analysis    (bool bEnabled);
+    void vSeries_22_Stream_Analysis   (bool bEnabled); //
+    void vSeries_24_Index_Analysis    (bool bEnabled);
     void vSeries_26_SubQuery_Analysis (bool bEnabled); //
 //  void vSeries_30_Literal_Arithmetic(bool bEnabled); //
     void vSeries_32_To_BoolCalc       (bool bEnabled); //
     void vSeries_33_To_TblColOdn      (bool bEnabled); //
     void vSeries_34_Predicate_Pullup  (bool bEnabled); //
     void vSeries_36_Bound_Analysis    (bool bEnabled); //
+
+    // main query only from here...
     void vSeries_40_Flatten_Query     (bool bEnabled); //
     void vSeries_50_Join_Ordering     (bool bEnabled); // 2 days
     void vSeries_60_Index_Join        (bool bEnabled); //

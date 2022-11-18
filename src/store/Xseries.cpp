@@ -75,8 +75,8 @@ void Xseries::vTransformSeries(void)
 
   vSeries_10_Condense_Info     (C_ENABLED);
   vSeries_20_Table_Analysis    (C_ENABLED);
-  vSeries_24_Stream_Analysis   (C_ENABLED);
-  vSeries_22_Index_Analysis    (C_ENABLED);
+  vSeries_22_Stream_Analysis(C_ENABLED);
+  vSeries_24_Index_Analysis(C_ENABLED);
   vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
@@ -173,13 +173,13 @@ void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_22_Index_Analysis(bool bEnabled)
+void Xseries::vSeries_22_Stream_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS22_T00_Test(bEnabled)) {
+  if (!m_pTransforms->bS22_T00_Test(bEnabled)) {
     m_pTransforms->vS22_T00_Skip();
     return;
   }
@@ -192,8 +192,12 @@ void Xseries::vSeries_22_Index_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS22_T10_Append_indexList_UnderAll_table();
-    m_pTransforms->vS22_T20_Affix_tblColOdn_ToAll_idxCol();
+    m_pTransforms->vS22_T10_Produce_stream_UnderAll_table();
+    m_pTransforms->vS22_T12_Produce_stream_UnderAll_project();
+    m_pTransforms->vS22_T14_Produce_stream_UnderAll_aggreg();
+    m_pTransforms->vS22_T20_Derive_ordinalRange_ForAll_table_stream();
+    m_pTransforms->vS22_T22_Derive_ordinalRange_ForAll_project_stream();
+    m_pTransforms->vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream();
   }
 
   m_pTransforms->vS22_TZZ_End();
@@ -204,13 +208,13 @@ void Xseries::vSeries_22_Index_Analysis(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_24_Stream_Analysis(bool bEnabled)
+void Xseries::vSeries_24_Index_Analysis(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (!m_pTransforms->bS24_T00_Test(bEnabled)) {
+  if (! m_pTransforms->bS24_T00_Test(bEnabled)) {
     m_pTransforms->vS24_T00_Skip();
     return;
   }
@@ -223,12 +227,8 @@ void Xseries::vSeries_24_Stream_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS24_T10_Produce_stream_UnderAll_table();
-    m_pTransforms->vS24_T12_Produce_stream_UnderAll_project();
-    m_pTransforms->vS24_T14_Produce_stream_UnderAll_aggreg();
-    m_pTransforms->vS24_T20_Derive_ordinalRange_ForAll_table_stream();
-    m_pTransforms->vS24_T22_Derive_ordinalRange_ForAll_project_stream();
-    m_pTransforms->vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream();
+    m_pTransforms->vS24_T10_Append_indexList_UnderAll_table();
+    m_pTransforms->vS24_T20_Affix_tblColOdn_ToAll_idxCol();
   }
 
   m_pTransforms->vS24_TZZ_End();
@@ -372,10 +372,17 @@ void Xseries::vSeries_36_Bound_Analysis(bool bEnabled)
 
   m_pTransforms->vS36_T00_Begin();
 
-  m_pTransforms->vS36_T10();
-  m_pTransforms->vS36_T20();
-  m_pTransforms->vS36_T30();
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
 
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+
+    m_pTransforms->vS36_T10();
+    m_pTransforms->vS36_T20();
+    m_pTransforms->vS36_T30();
+  }
+  
   m_pTransforms->vS36_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);

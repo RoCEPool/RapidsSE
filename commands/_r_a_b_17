@@ -23,7 +23,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vSeries_24_Stream_Analysis"
+/glean_cue_from = "vSeries_22_Stream_Analysis"
 /glean_interactive
 /transliterated
 /weaved

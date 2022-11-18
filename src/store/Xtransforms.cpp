@@ -336,93 +336,7 @@ void Xtransforms::vS20_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  vSeries_22_Index_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtransforms::bS22_T00_Test(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (! bEnabled)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T00_Skip(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vST00_Begin();
-
-  m_pCardCtl->vUseShorter();
-
-  vPrintBench(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T10_Append_indexList_UnderAll_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMain(CK_TABLE)) {
-    vR_S22_T10_Produce_indexList_Under_table();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T20_Affix_tblColOdn_ToAll_idxCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
-    vR_S22_T20_Affix_tblColOdn_To_idxCol();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_TZZ_End(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vSTZZ_End();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                 vSeries_24_Stream_Analysis */
+/*                                                  vSeries_24_Index_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -457,13 +371,99 @@ void Xtransforms::vS24_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
+  vPrintBench(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS24_T10_Append_indexList_UnderAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMain(CK_TABLE)) {
+    vR_S24_T10_Produce_indexList_Under_table();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS24_T20_Affix_tblColOdn_ToAll_idxCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete where if it is effectively empty"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
+    vR_S24_T20_Affix_tblColOdn_To_idxCol();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS24_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vSTZZ_End();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                 vSeries_22_Stream_Analysis */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bS22_T00_Test(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS22_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS22_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vST00_Begin();
+
+  m_pCardCtl->vUseShorter();
+
   m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,CK_STREAM,0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T10_Produce_stream_UnderAll_table(void)
+void Xtransforms::vS22_T10_Produce_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -474,7 +474,7 @@ void Xtransforms::vS24_T10_Produce_stream_UnderAll_table(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_S24_T10_Produce_stream_Under_table();
+    vR_S22_T10_Produce_stream_Under_table();
   }
 
   vEndTransform();
@@ -483,7 +483,7 @@ void Xtransforms::vS24_T10_Produce_stream_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <project>                                       */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T12_Produce_stream_UnderAll_project(void)
+void Xtransforms::vS22_T12_Produce_stream_UnderAll_project(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -494,7 +494,7 @@ void Xtransforms::vS24_T12_Produce_stream_UnderAll_project(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
-    vR_S24_T12_Produce_stream_Under_project();
+    vR_S22_T12_Produce_stream_Under_project();
   }
 
   vEndTransform();
@@ -503,7 +503,7 @@ void Xtransforms::vS24_T12_Produce_stream_UnderAll_project(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <aggreg>                                        */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T14_Produce_stream_UnderAll_aggreg(void)
+void Xtransforms::vS22_T14_Produce_stream_UnderAll_aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -514,7 +514,7 @@ void Xtransforms::vS24_T14_Produce_stream_UnderAll_aggreg(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
-    vR_S24_T14_Produce_stream_Under_aggreg();
+    vR_S22_T14_Produce_stream_Under_aggreg();
   }
 
   vEndTransform();
@@ -523,7 +523,7 @@ void Xtransforms::vS24_T14_Produce_stream_UnderAll_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T20_Derive_ordinalRange_ForAll_table_stream(void)
+void Xtransforms::vS22_T20_Derive_ordinalRange_ForAll_table_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -532,7 +532,7 @@ void Xtransforms::vS24_T20_Derive_ordinalRange_ForAll_table_stream(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_S24_T20_Derive_ordinalRange_For_table_stream();
+    vR_S22_T20_Derive_ordinalRange_For_table_stream();
   }
 
   vEndTransform();
@@ -541,7 +541,7 @@ void Xtransforms::vS24_T20_Derive_ordinalRange_ForAll_table_stream(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T22_Derive_ordinalRange_ForAll_project_stream(void)
+void Xtransforms::vS22_T22_Derive_ordinalRange_ForAll_project_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -550,7 +550,7 @@ void Xtransforms::vS24_T22_Derive_ordinalRange_ForAll_project_stream(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
-    vR_S24_T22_Derive_ordinalRange_For_project_stream();
+    vR_S22_T22_Derive_ordinalRange_For_project_stream();
   }
 
   vEndTransform();
@@ -559,7 +559,7 @@ void Xtransforms::vS24_T22_Derive_ordinalRange_ForAll_project_stream(void)
 /*----------------------------------------------------------------------------*/
 /* derive the ordinal properties &lo..&hi range for each <stream>             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
+void Xtransforms::vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -568,7 +568,7 @@ void Xtransforms::vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
-    vR_S24_T24_Derive_ordinalRange_For_aggreg_stream();
+    vR_S22_T24_Derive_ordinalRange_For_aggreg_stream();
   }
 
   vEndTransform();
@@ -577,7 +577,7 @@ void Xtransforms::vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_TZZ_End(void)
+void Xtransforms::vS22_TZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

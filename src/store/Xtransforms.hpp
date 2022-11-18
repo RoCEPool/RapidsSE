@@ -45,25 +45,25 @@ namespace STORE
     void vS20_T20_Produce_tablePtn_UnderAll_table(void);
     void vS20_TZZ_End(void);
 
-    // vSeries_22_Index_Analysis
-    bool bS22_T00_Test(bool bEnabled);
-    void vS22_T00_Skip(void);
-    void vS22_T00_Begin(void);
-    void vS22_T10_Append_indexList_UnderAll_table(void);
-    void vS22_T20_Affix_tblColOdn_ToAll_idxCol(void);
-    void vS22_TZZ_End(void);
-
-    // vSeries_24_Stream_Analysis
+    // vSeries_24_Index_Analysis
     bool bS24_T00_Test(bool bEnabled);
     void vS24_T00_Skip(void);
     void vS24_T00_Begin(void);
-    void vS24_T10_Produce_stream_UnderAll_table(void);
-    void vS24_T12_Produce_stream_UnderAll_project(void);
-    void vS24_T14_Produce_stream_UnderAll_aggreg(void);
-    void vS24_T20_Derive_ordinalRange_ForAll_table_stream(void);
-    void vS24_T22_Derive_ordinalRange_ForAll_project_stream(void);
-    void vS24_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
+    void vS24_T10_Append_indexList_UnderAll_table(void);
+    void vS24_T20_Affix_tblColOdn_ToAll_idxCol(void);
     void vS24_TZZ_End(void);
+
+    // vSeries_22_Stream_Analysis
+    bool bS22_T00_Test(bool bEnabled);
+    void vS22_T00_Skip(void);
+    void vS22_T00_Begin(void);
+    void vS22_T10_Produce_stream_UnderAll_table(void);
+    void vS22_T12_Produce_stream_UnderAll_project(void);
+    void vS22_T14_Produce_stream_UnderAll_aggreg(void);
+    void vS22_T20_Derive_ordinalRange_ForAll_table_stream(void);
+    void vS22_T22_Derive_ordinalRange_ForAll_project_stream(void);
+    void vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
+    void vS22_TZZ_End(void);
 
     // vSeries_26_SubQuery_Analysis
     bool bS26_T00_Test(bool bEnabled);
