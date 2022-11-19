@@ -16,6 +16,7 @@ namespace STORE
 
     // utilities
     bool R_bUTE_FindAndMarkSubQryCall(void);
+    bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
 
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);

@@ -1454,13 +1454,19 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   vAssert_Board_mqA();
 
   // 5) fold
-  vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
+  //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
   // put cc:<table>/* before mq:<where>
   G_vInsertBefore(m_pCard_copied,G.p_where);
   G_vAppendNewChild(m_pCard_copied, CK_KEYEXISTS);
   G_vCopyCard(nullptr);
 
   // % -> $t.n
+  R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
+
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
 
   // cull marked mq:<where>//<@pred>
   // r_ute cull marked cb:<where>//<@pred>

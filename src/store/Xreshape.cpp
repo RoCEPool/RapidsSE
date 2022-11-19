@@ -44,17 +44,20 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   bool bFoundCall = false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bLambdaFn = [this,&bFoundCall](Card* pCard)
   {
-    Card_TstPred* p_tstPred = _pCard_TstPred(pCard);
-    Card_ExePred* p_exePred = p_tstPred->pSub_exePred();
+    G.p_tstPred = _pCard_TstPred(pCard);
+    m_sSqyNm = G.p_tstPred->szValue();
 
+    Card_ExePred* p_exePred = G.p_tstPred->pSub_exePred();
     m_sSqyNm = p_exePred->szValue();
+
     bFoundCall = true;
 
-    p_tstPred->vMark1(MARK_AT);
+    G.p_tstPred->vMark1(MARK_AT);
 
     return C_CONTINUE_RECURSION;
   };
@@ -66,8 +69,36 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   return bFoundCall;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find sub card with given value and replace                                 */
+/*----------------------------------------------------------------------------*/
+bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  bool bReplaced = false;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this, szValue, szWith, &bReplaced](Card *pCard)
+  {
+    G.p_term = _pCard_Term(pCard);
+
+    if (! G.p_term->bIsValue(szValue))
+      return C_CONTINUE_RECURSION;
+
+    G.p_term->vValue(szWith);
+    bReplaced = true;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCard->bApplyRecursive(eSub, bLambdaFn);
+
+  return bReplaced;
+}
 
 
 /*----------------------------------------------------------------------------*/
