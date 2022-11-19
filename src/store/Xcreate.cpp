@@ -261,6 +261,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  Stz* szSqyNm;
   Card_AndPred* p_andPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
   Card_ExePred* p_exePred = nullptr;
@@ -345,20 +346,42 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       // <termSeries>
 
       case TE_EXECUTE:
-        // <termSeries> = <termSeries><execute>
-        p_exePred = new Card_ExePred;
-        p_subQueryNm = _pCard_Term(p_rpnCalc->pPop());
-        p_exePred->vValue(p_subQueryNm->sz());
-        p_TermSeries->vAppend(p_exePred);
-        p_exePred = nullptr;
         DELETE_CARD(p_term);
-        DELETE_CARD(p_subQueryNm);
         break;
 
+//        // <termSeries> = <termSeries><execute>
+//        p_exePred = new Card_ExePred;
+//        p_subQueryNm = _pCard_Term(p_rpnCalc->pPop());
+//        p_exePred->vValue(p_subQueryNm->sz());
+//        p_TermSeries->vAppend(p_exePred);
+//        p_exePred = nullptr;
+//        DELETE_CARD(p_term);
+//        DELETE_CARD(p_subQueryNm);
+//        break;
+
       case TE_OTHER:
-        // <termSeries> = <termSeries><term>
-        p_TermSeries->vAppend(p_term);
-        break;
+        if (! p_rpnCalc->nChildCards()) {
+          // <termSeries> = <termSeries><term>
+          p_TermSeries->vAppend(p_term);
+          break;
+        }
+
+        // test for sq execute
+        szSqyNm = p_term->szValue();
+        if (StrLib::bBeginsWith(szSqyNm->azChar(),"__")) {
+          // <termSeries> = <termSeries><execute>
+          p_exePred = new Card_ExePred;
+          p_exePred->vValue(szSqyNm);
+          p_TermSeries->vAppend(p_exePred);
+          p_exePred = nullptr;
+          DELETE_CARD(p_term);
+          break;
+        }
+        else {
+          // <termSeries> = <termSeries><term>
+          p_TermSeries->vAppend(p_term);
+          break;
+        }
 
       default:
         NEVER_REACH;

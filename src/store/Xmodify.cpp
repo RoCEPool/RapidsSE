@@ -396,6 +396,9 @@ void Xmodify::M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(Card_RpnCalc* p_rpnCalc)
   CardIter xCI(p_rpnCalc);
   while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
 
+    if (! xCI.bMore())
+      break;
+
     if (p_term->bSame("exists"_Stz)) {
 
       Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
