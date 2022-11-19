@@ -14,6 +14,9 @@ namespace STORE
   {
   public:
 
+    // utilities
+    bool R_bUTE_FindAndMarkSubQryCall(void);
+
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);
     void vR_S10_T10_Delete_absJoin(void);

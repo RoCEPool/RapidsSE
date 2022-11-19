@@ -26,6 +26,7 @@ namespace STORE
     s32         m_sXhand;
     s256        m_sXform;
     s256        m_sXdesc;
+    s32         m_sSqyNm;
 
     PermGen*    m_pPermGen;
 

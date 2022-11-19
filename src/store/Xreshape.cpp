@@ -35,6 +35,41 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* find and mark call to the subquery referenced in G.p_boolCalc              */
+/*----------------------------------------------------------------------------*/
+bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  bool bFoundCall = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this,&bFoundCall](Card* pCard)
+  {
+    Card_TstPred* p_tstPred = _pCard_TstPred(pCard);
+    Card_ExePred* p_exePred = p_tstPred->pSub_exePred();
+
+    m_sSqyNm = p_exePred->szValue();
+    bFoundCall = true;
+
+    p_tstPred->vMark1(MARK_AT);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
+
+  return bFoundCall;
+}
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                   vSeries_10_Condense_Info */

@@ -1426,15 +1426,44 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
+  vAssert_Board_mqA();
+  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (!R_bUTE_FindAndMarkSubQryCall()) {
+      vTracer("DID NOT FIND SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTracer("Found call to %s\n"_Stz,m_sSqyNm.szStz());
+  vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! G_bPushBoard(m_sSqyNm)) {
+    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  // 3) get copy of sq:<table>/* into cc:<table>
+  if (G_bEachMain(CK_TABLE)) {
+    // G_vCopyCard(G.p_table);
+  }
+
+  // 4) pop back to mq
+  G_vPopBoard();
   vAssert_Board_mqA();
 
-  // 1) find <sq>/<table>
-  // 2) dup and push <mq>/<table>
-  // 3) add <mq>/<table>/<keyExists>
-
-
-
+  // 5) fold
   vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
+  // put cc:<table>/* before mq:<where>
+  // G_vInsertBefore(m_pCopiedCard,G.p_where);
+  // G_vMorphCard(m_pCopiedCard,CK_KEYEXISTS);
+
+  // cull marked mq:<where>//<@pred>
+  // r_ute cull marked cb:<where>//<@pred>
+
+  // delete potentially empty where
+  // r_ute delete empty cb:<where>
 
   vEndTransform();
 }
@@ -3008,7 +3037,7 @@ void Xtransforms::vAssert_Board_sqB(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  RASSERT(0 == G.pBoard->i_Board());
+  RASSERT(1 == G.pBoard->i_Board());
 }
 
 
