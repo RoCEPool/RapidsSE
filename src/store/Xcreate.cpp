@@ -57,13 +57,15 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
   auto bLambdaFn = [this,p_table](Card_PRED* p_pred_Of_filter, bool bUpwards)
   {
     if (bUpwards)
-      return C_TERMINATE_RECURSION;
+      return C_CONTINUE_RECURSION;
 
     if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
       return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
-    if (!T_bCmpPred_MaybeBounds(p_cmpPred))
+    p_cmpPred->vDump();
+
+    if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table))
       return C_CONTINUE_RECURSION;
 
     // - - - -

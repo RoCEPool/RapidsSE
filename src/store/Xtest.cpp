@@ -325,27 +325,69 @@ bool Xtest::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred)
+bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  char cTblSyn = pTable->cValue();
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue()) &&
-      T_bValue_IsTableColOrdinal(pTerm_1->szValue()))
+  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+    char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+
+    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+      char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+
+      if (cTblSyn_0 == cTblSyn && cTblSyn_1 != cTblSyn)
+        return true;
+      else
+      if (cTblSyn_1 == cTblSyn && cTblSyn_0 != cTblSyn)
+        return true;
+      else
+        return false;
+    }
+
+    if (cTblSyn_0 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_1->szValue()))
       return true;
+    if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_1->szValue()))
+      return true;
+  }
 
-  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue()) &&
-      T_bValue_IsResultOrdinal(pTerm_1->szValue()))
-    return true;
+  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
 
-  if (T_bValue_IsResultOrdinal(pTerm_0->szValue()) &&
-      T_bValue_IsTableColOrdinal(pTerm_1->szValue()))
-    return true;
+    if (cTblSyn_1 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+      return true;
+    if (cTblSyn_1 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
+      return true;
+  }
 
   return false;
 }
+/*----------------------------------------------------------------------------*/
+//bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+//
+//  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+//  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+//
+//  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue()) &&
+//      T_bValue_IsTableColOrdinal(pTerm_1->szValue()))
+//    return true;
+//
+//  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue()) &&
+//      (T_bValue_IsParamOrdinal(pTerm_1->szValue()) || T_bValue_IsResultOrdinal(pTerm_1->szValue())))
+//    return true;
+//
+//  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue()) &&
+//      (T_bValue_IsParamOrdinal(pTerm_0->szValue()) || T_bValue_IsResultOrdinal(pTerm_0->szValue())))
+//    return true;
+//
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -888,14 +930,28 @@ bool Xtest::T_bValue_IsParamOrdinal(Stz* szValue)
 
   char acFirst  = szValue->azChar()[0];
   char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
 
-  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
-      && StrLib::bIsDigit(acThird))
+  if ('%' == acFirst
+      && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
 }
+/*----------------------------------------------------------------------------*/
+//bool Xtest::T_bValue_IsParamOrdinal(Stz* szValue)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+//
+//  char acFirst  = szValue->azChar()[0];
+//  char acSecond = szValue->azChar()[1];
+//  char acThird  = szValue->azChar()[2];
+//
+//  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+//      && StrLib::bIsDigit(acThird))
+//    return true;
+//  else
+//    return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */

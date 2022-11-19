@@ -1980,7 +1980,7 @@ void Xtransforms::vS36_T10_UpCopy_filter_pred_Into_bounds(void)
 
   vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_S36_T10_UpCopy_filter_pred_Into_bounds();
@@ -1998,7 +1998,7 @@ void Xtransforms::vS36_T20_Cull_UpCopied_filter_pred(void)
 
   vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     vR_S36_T20_Cull_UpCopied_filter_pred();
@@ -2016,7 +2016,7 @@ void Xtransforms::vS36_T30_Delete_Empty_filter(void)
 
   vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     vR_S36_T30_Delete_Empty_filter();
