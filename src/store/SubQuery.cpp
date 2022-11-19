@@ -32,6 +32,8 @@ SubQuery::SubQuery(void)
   m_eCalcOp  = QO_NONE;
   m_eRelnOp  = RO_NONE;
 
+  m_eFold    = FF_NONE;
+
   m_nSubQueries = 0;
 
   _checkInitialised_(CN_SUBQUERY);
@@ -215,6 +217,26 @@ void SubQuery::vDisposition(eQD eDisposition)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eDisposition = eDisposition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get fold                                                                   */
+/*----------------------------------------------------------------------------*/
+eFF SubQuery::eFold(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_eFold;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set fold                                                                   */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vFold(eFF eFold)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  m_eFold = eFold;
 }
 
 /*----------------------------------------------------------------------------*/
