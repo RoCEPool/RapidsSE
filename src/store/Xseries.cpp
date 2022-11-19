@@ -83,7 +83,7 @@ void Xseries::vTransformSeries(void)
   vSeries_33_To_TblColOdn      (C_ENABLED);
   vSeries_34_Predicate_Pullup  (C_ENABLED);
   vSeries_36_Bound_Analysis    (C_ENABLED);
-  vSeries_40_Flatten_Query                   (C_DISABLED);
+  vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_60_Index_Join        (C_ENABLED);
   vSeries_85_Cross_Join                      (C_DISABLED);

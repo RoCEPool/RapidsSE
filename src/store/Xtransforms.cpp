@@ -689,6 +689,9 @@ void Xtransforms::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
 
     if (G_bPushBoard(1)) {
 
+      SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+      pSubQuery->vDisposition(QD_LINEAR);
+
       while (G_bEachMain()) {
         vR_S26_T10e_Sub_Query_Genesis();
       }
