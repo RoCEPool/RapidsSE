@@ -9,7 +9,7 @@ _r_init
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vSeries_24_Index_Analysis"
+/glean_cue_from = "vSeries_32_To_BoolCalc"
 /glean_interactive
 /transliterated
 /weaved

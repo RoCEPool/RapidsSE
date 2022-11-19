@@ -78,7 +78,8 @@ namespace STORE
     bool bS32_T00_Test(bool bEnabled);
     void vS32_T00_Skip(void);
     void vS32_T00_Begin(void);
-    void vS32_T10_Convert_where_rpnCalc_To_boolCalc(void);
+    void vS32_T10_Convert_sqyOp_not_To_notSqyOp(void);
+    void vS32_T20_Convert_where_rpnCalc_To_boolCalc(void);
     void vS32_TZZ_End(void);
 
     // vSeries_33_To_TblColOdn
@@ -101,9 +102,10 @@ namespace STORE
     bool bS36_T00_Test(bool bEnabled);
     void vS36_T00_Skip(void);
     void vS36_T00_Begin(void);
-    void vS36_T10(void);
-    void vS36_T20(void);
-    void vS36_T30(void);
+    void vS36_T10_UpCopy_filter_pred_Into_bounds(void);
+    void vS36_T20_Cull_UpCopied_filter_pred(void);
+    void vS36_T30_Delete_Empty_filter(void);
+    void vS36_T40(void);
     void vS36_TZZ_End(void);
 
     // vSeries_40_Flatten_Query
@@ -147,9 +149,6 @@ namespace STORE
     void vS60_T05_Twist_in_Becomes_filter(void);
     void vS60_T10_Produce_maybeIndexJoin_Under_filter(void);
     void vS60_T20_Affix_tblColOdn_ToAll_idxCol(void);
-    void vS60_T30_UpCopy_filter_pred_Into_bounds(void);
-    void vS60_T40_Cull_UpCopied_filter_pred(void);
-    void vS60_T50_Delete_Empty_filter(void);
     void vS60_T60_Delete_Twist(void);
     void vS60_TZZ_End(void);
 

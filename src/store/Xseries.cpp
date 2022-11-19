@@ -75,8 +75,8 @@ void Xseries::vTransformSeries(void)
 
   vSeries_10_Condense_Info     (C_ENABLED);
   vSeries_20_Table_Analysis    (C_ENABLED);
-  vSeries_22_Stream_Analysis(C_ENABLED);
-  vSeries_24_Index_Analysis(C_ENABLED);
+  vSeries_22_Stream_Analysis   (C_ENABLED);
+  vSeries_24_Index_Analysis    (C_ENABLED);
   vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
@@ -256,7 +256,7 @@ void Xseries::vSeries_26_SubQuery_Analysis(bool bEnabled)
   m_pTransforms->vS26_T20_SubQuery_Analysis_Of_Sub_Query();
   m_pTransforms->vS26_T30();
 
-  //m_pTransforms->vS32_T10_Convert_where_rpnCalc_To_boolCalc();
+  //m_pTransforms->vS32_T20_Convert_where_rpnCalc_To_boolCalc();
   //m_pTransforms->vS32_T20_Convert_stmColOdn_To_tblColOdn();
 
   m_pTransforms->vS26_TZZ_End();
@@ -286,7 +286,8 @@ void Xseries::vSeries_32_To_BoolCalc(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS32_T10_Convert_where_rpnCalc_To_boolCalc();
+    m_pTransforms->vS32_T10_Convert_sqyOp_not_To_notSqyOp();
+    m_pTransforms->vS32_T20_Convert_where_rpnCalc_To_boolCalc();
   }
 
   m_pTransforms->vS32_TZZ_End();
@@ -378,11 +379,11 @@ void Xseries::vSeries_36_Bound_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS36_T10();
-    m_pTransforms->vS36_T20();
-    m_pTransforms->vS36_T30();
+    m_pTransforms->vS36_T10_UpCopy_filter_pred_Into_bounds();
+    m_pTransforms->vS36_T20_Cull_UpCopied_filter_pred();
+    m_pTransforms->vS36_T30_Delete_Empty_filter();
   }
-  
+
   m_pTransforms->vS36_TZZ_End();
 
   vEndSeries(BK_SUBPIPE);
@@ -477,9 +478,9 @@ void Xseries::vSeries_60_Index_Join(bool bEnabled)
   //m_pTransforms->vS60_T05_Twist_in_Becomes_filter();
   m_pTransforms->vS60_T10_Produce_maybeIndexJoin_Under_filter();
   m_pTransforms->vS60_T20_Affix_tblColOdn_ToAll_idxCol();
-  m_pTransforms->vS60_T30_UpCopy_filter_pred_Into_bounds();
-  m_pTransforms->vS60_T40_Cull_UpCopied_filter_pred();
-  m_pTransforms->vS60_T50_Delete_Empty_filter();
+  m_pTransforms->vS36_T10_UpCopy_filter_pred_Into_bounds();
+  m_pTransforms->vS36_T20_Cull_UpCopied_filter_pred();
+  m_pTransforms->vS36_T30_Delete_Empty_filter();
   //m_pTransforms->vS60_T60_Delete_Twist();
 
   m_pTransforms->vS60_TZZ_End();

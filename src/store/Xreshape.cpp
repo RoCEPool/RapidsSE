@@ -721,7 +721,22 @@ void Xreshape::vR_S26_T30(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S32_T10_Convert_where_rpnCalc_To_boolCalc(void)
+void Xreshape::vR_S32_T10_Convert_sqyOp_not_To_notSqyOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(G.p_rpnCalc);
+
+  vEndReshape();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_S32_T20_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -837,11 +852,13 @@ void Xreshape::vR_S34_T30_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S36_T10(void)
+void Xreshape::vR_S36_T10_UpCopy_filter_pred_Into_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
 
   vEndReshape();
 }
@@ -849,11 +866,15 @@ void Xreshape::vR_S36_T10(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S36_T20(void)
+void Xreshape::vR_S36_T20_Cull_UpCopied_filter_pred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  G.p_boolCalc = G.p_filter->pSub_boolCalc();
+
+  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
 
   vEndReshape();
 }
@@ -861,14 +882,21 @@ void Xreshape::vR_S36_T20(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S36_T30(void)
+void Xreshape::vR_S36_T30_Delete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
 
+  if (! T_bFilter_IsEmpty(G.p_filter))
+    return;
+
+  G.p_MainCard->vRemoveChild(G.p_filter);
+  DELETE_CARD(G.p_filter);
+
   vEndReshape();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1514,54 +1542,6 @@ void Xreshape::vR_S60_T20_Affix_tblColOdn_To_idxCol(void)
   G.p_idxColList = G.p_maybeIndexJoin->pSub_idxColList();
 
   M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S60_T30_UpCopy_filter_pred_Into_bounds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S60_T40_Cull_UpCopied_filter_pred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  G.p_boolCalc = G.p_filter->pSub_boolCalc();
-
-  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S60_T50_Delete_Empty_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  if (! T_bFilter_IsEmpty(G.p_filter))
-    return;
-
-  G.p_MainCard->vRemoveChild(G.p_filter);
-  DELETE_CARD(G.p_filter);
 
   vEndReshape();
 }

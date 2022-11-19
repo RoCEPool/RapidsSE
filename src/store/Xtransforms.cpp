@@ -785,7 +785,7 @@ void Xtransforms::vS32_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T10_Convert_where_rpnCalc_To_boolCalc(void)
+void Xtransforms::vS32_T10_Convert_sqyOp_not_To_notSqyOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -794,7 +794,26 @@ void Xtransforms::vS32_T10_Convert_where_rpnCalc_To_boolCalc(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_S32_T10_Convert_where_rpnCalc_To_boolCalc();
+    vR_S32_T10_Convert_sqyOp_not_To_notSqyOp();
+  }
+
+  m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS32_T20_Convert_where_rpnCalc_To_boolCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    vR_S32_T20_Convert_where_rpnCalc_To_boolCalc();
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -1040,54 +1059,6 @@ void Xtransforms::vS36_T00_Begin(void)
   m_pCardCtl->vUseShorter();
 
   vPrintBench(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T10(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  vAssert_Board_any();
-
-  vR_S36_T10();
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T20(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
-
-  vAssert_Board_any();
-
-  vR_S36_T20();
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T30(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
-
-  vR_S36_T30();
-
-  vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2003,7 +1974,7 @@ void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
+void Xtransforms::vS36_T10_UpCopy_filter_pred_Into_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2012,7 +1983,7 @@ void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_S60_T30_UpCopy_filter_pred_Into_bounds();
+    vR_S36_T10_UpCopy_filter_pred_Into_bounds();
   }
 
   vEndTransform();
@@ -2021,7 +1992,7 @@ void Xtransforms::vS60_T30_UpCopy_filter_pred_Into_bounds(void)
 /*----------------------------------------------------------------------------*/
 /* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
+void Xtransforms::vS36_T20_Cull_UpCopied_filter_pred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2030,7 +2001,7 @@ void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S60_T40_Cull_UpCopied_filter_pred();
+    vR_S36_T20_Cull_UpCopied_filter_pred();
   }
 
   vEndTransform();
@@ -2039,7 +2010,7 @@ void Xtransforms::vS60_T40_Cull_UpCopied_filter_pred(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <table>/<filter> which is effectively empty                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS60_T50_Delete_Empty_filter(void)
+void Xtransforms::vS36_T30_Delete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2048,7 +2019,7 @@ void Xtransforms::vS60_T50_Delete_Empty_filter(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S60_T50_Delete_Empty_filter();
+    vR_S36_T30_Delete_Empty_filter();
   }
 
   vEndTransform();
