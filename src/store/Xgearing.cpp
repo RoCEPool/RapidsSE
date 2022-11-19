@@ -41,6 +41,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_pTable     = nullptr;
 
   m_pCard_child    = nullptr;
+  m_pCard_copied   = nullptr;
   m_pCard_dup      = nullptr;
   m_pCard_found    = nullptr;
   m_pCard_located  = nullptr;
@@ -507,6 +508,30 @@ void Xgearing::G_vAppendChild(eCK eParent, Card* pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pChild = new Card(eChild);
+
+  pParent->vAppend(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pChild = new Card(eChild, szValue);
+
+  pParent->vAppend(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xgearing::G_vDuplicateMember(eCK eMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -695,6 +720,17 @@ bool Xgearing::G_bMoreMain(void)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* morph card                                                                 */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vMorphCard(Card* pCard, eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  pCard->vCard(eCard);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* remove main card from deck (do not clear M members or registers)           */
@@ -1217,6 +1253,21 @@ void Xgearing::G_vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear the general M registers if they match given pointer                  */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vCopyCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! pCard) {
+    m_pCard_copied = nullptr;
+    return;
+  }
+
+  m_pCard_copied = pCard->pDupCardAndSubCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vPushIter(void)
@@ -1267,6 +1318,26 @@ bool Xgearing::G_bPushBoard(i8 i_Board)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vInsertAfter(Card* pCard, Card* pAfter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.pDeck->vInsertAfter(pCard,pAfter);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vInsertBefore(Card* pCard, Card* pBefore)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.pDeck->vInsertBefore(pCard,pBefore);
 }
 
 /*----------------------------------------------------------------------------*/

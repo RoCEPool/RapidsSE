@@ -1446,7 +1446,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   // 3) get copy of sq:<table>/* into cc:<table>
   if (G_bEachMain(CK_TABLE)) {
-    // G_vCopyCard(G.p_table);
+    G_vCopyCard(G.p_table);
   }
 
   // 4) pop back to mq
@@ -1456,8 +1456,11 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   // 5) fold
   vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
   // put cc:<table>/* before mq:<where>
-  // G_vInsertBefore(m_pCopiedCard,G.p_where);
-  // G_vMorphCard(m_pCopiedCard,CK_KEYEXISTS);
+  G_vInsertBefore(m_pCard_copied,G.p_where);
+  G_vAppendNewChild(m_pCard_copied, CK_KEYEXISTS);
+  G_vCopyCard(nullptr);
+
+  // % -> $t.n
 
   // cull marked mq:<where>//<@pred>
   // r_ute cull marked cb:<where>//<@pred>
