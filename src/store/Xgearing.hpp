@@ -116,6 +116,7 @@ namespace STORE
 
     void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);
+    void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
     void G_vDuplicateMember(eCK eMember);
 
     bool G_bEachMain(void);

@@ -267,6 +267,21 @@ Card* CardIter::pGetChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool CardIter::bJustRestarted(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (C_UNKNOWN == m_i_Child &&
+      nullptr   == m_pChild  &&
+      true      == m_bActive)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bLess(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);

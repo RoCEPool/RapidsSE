@@ -42,6 +42,8 @@ namespace STORE
 
     Card* pGetChild(i8 i_Child);
 
+    bool bJustRestarted(void);
+
     bool bLess(void);
 
     bool bMore(void);

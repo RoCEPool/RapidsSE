@@ -440,6 +440,7 @@ namespace STORE
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TblColOdn*     pSub_tblColOdn(void);
+    Card_Term*          pSub_term(void);
     Card_Topology*      pSub_topology(void);
     Card_TstPred*       pSub_tstPred(void);
     Card_Twist*         pSub_twist(void);

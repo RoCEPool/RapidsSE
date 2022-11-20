@@ -2643,6 +2643,19 @@ Card_TblColOdn* Card::pSub_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Term.hpp"
+Card_Term* Card::pSub_term(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term =
+      _pCard_Term(pFindSubCard(CK_TERM));
+  return p_term;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Topology.hpp"
 Card_Topology* Card::pSub_topology(void)
 {

@@ -50,7 +50,8 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   auto bLambdaFn = [this,&bFoundCall](Card* pCard)
   {
     G.p_tstPred = _pCard_TstPred(pCard);
-    m_sSqyNm = G.p_tstPred->szValue();
+    G.p_term    = G.p_tstPred->pSub_term();
+    m_sSqyArg   = G.p_term->szValue();
 
     Card_ExePred* p_exePred = G.p_tstPred->pSub_exePred();
     m_sSqyNm = p_exePred->szValue();

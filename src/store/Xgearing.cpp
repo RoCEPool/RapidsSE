@@ -530,24 +530,6 @@ void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vDuplicateMember(eCK eMember)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card* pMember  = G_pGetMember(eMember);
-
-  m_pCard_dup = pMember->pDupCardAndSubCards();
-
-  if (! bIsTracing())
-    return;
-
-  vTrace("  %s %s from %s\n"_Stz,
-         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete member of given kind; clear-if registers; update M member to null   */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vDeleteMember(eCK eMember)
@@ -575,6 +557,46 @@ void Xgearing::G_vDeleteMember(Card* pMember)
   G_vUpdateMember(eMember, nullptr, __func__);
 
   DELETE_CARD(pMember);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete main when given sub is empty                                        */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  RASSERT(G.xBI.bJustRestarted());
+
+  if (! G_bEachMainWithSub(eMain,eSub))
+    return;
+
+  G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+  G.e_SubOfMain = G.p_SubOfMain->eCard();
+
+
+  if (G.p_SubOfMain->nChildCards())
+    return;
+
+  G_vRemoveDeleteMain(eMain);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vDuplicateMember(eCK eMember)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pMember  = G_pGetMember(eMember);
+
+  m_pCard_dup = pMember->pDupCardAndSubCards();
+
+  if (! bIsTracing())
+    return;
+
+  vTrace("  %s %s from %s\n"_Stz,
+         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
 }
 
 /*----------------------------------------------------------------------------*/
