@@ -15,6 +15,7 @@ namespace STORE
   public:
 
     // utilities
+    void R_vUTE_AdjustStmLoHi(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
 

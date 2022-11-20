@@ -37,6 +37,45 @@ Xreshape::~Xreshape(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* visit each stream and adjust it's lo-hi range                              */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_AdjustStmLoHi(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+  vReshape(__func__);
+
+  i8 iOdn_shift = 0;
+
+  // TODO: G_bEachSub(CK_STREAM)
+
+  G_vRestart();
+  while (G_bEachMain()) {
+
+    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
+      continue;
+
+    G.p_stream = G.p_MainCard->pSub_stream();
+
+    if (G.p_MainCard->bIsCard(CK_PROJECT))
+      iOdn_shift = 0;
+
+    G.p_stmColList = G.p_stream->pSub_stmColList();
+    i8 nStmCols = G.p_stmColList->nChildCards();
+
+    i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
+
+    i8 iLoOdn_adjusted = iOdn_shift + 1;
+    i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+
+    M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_adjusted,iHiOdn_adjusted);
+
+    iOdn_shift = iHiOdn_adjusted;
+  }
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find and mark call to the subquery referenced in G.p_boolCalc              */
 /*----------------------------------------------------------------------------*/
 bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)

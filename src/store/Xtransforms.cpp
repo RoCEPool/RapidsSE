@@ -1542,7 +1542,11 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   G_vInsertBefore(m_pCard_copied,G.p_where);
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
+
   G.pDeck->vRenumberRecursive();
+  vPrintBoard(__LINE__);
+
+  R_vUTE_AdjustStmLoHi();
   vPrintBoard(__LINE__);
 
   // % -> $t.n
