@@ -78,6 +78,52 @@ void Xreshape::R_vUTE_AdjustStmLoHi(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  i8 i_Main = G.pDeck->iFindChild(G.p_MainCard);
+
+  Card_BoolCalc* p_boolCalc = G.p_constraint->pSub_boolCalc();
+  RASSERT(1 == p_boolCalc->nChildCards());
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this,i_Main](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, p_term->szValue(), i_Main + 1);
+
+    Card_StmColNm* p_stmColNm = G.p_stmCol->pSub_stmColNm();
+
+    M_vCard_Set_Value(p_term,p_stmColNm->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bLambdaFn);
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -89,6 +135,8 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
   auto bLambdaFn = [this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
+
+    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
     if (T_bValue_IsResultOrdinal(p_term->szValue())) {
 
@@ -107,8 +155,10 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
       return C_CONTINUE_RECURSION;
 
     Stz* szTblColOdn = p_term->szValue();
-    if (! G_bResolveSubCard(CK_TABLE,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
-      return C_CONTINUE_RECURSION;
+    if (! G_bResolveSubCard(CK_SCAN,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
+      if (! G_bResolveSubCard(CK_INDEXJOIN,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
+        if (! G_bResolveSubCard(CK_KEYNOTEXISTS,CK_TBLCOLODN,szTblColOdn,G.i_MainCard+1))
+          return C_CONTINUE_RECURSION;
 
     RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
 
@@ -180,6 +230,35 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
 
   return bFoundCall;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move <where> to <table>/<constraint>                                       */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_boolCalc = p_where->pSub_boolCalc();
+  G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
+  G.p_PRED->vMark1(MARK_AT);
+
+  G.p_subSet = G.p_boolCalc->pDupSubCards();
+  RASSERT(1 == G.p_subSet->nChildCards());
+  G.p_PRED = static_cast<Card_PRED*>(G.p_subSet->pPop());
+  DELETE_CARD(G.p_subSet);
+
+  if ((G.p_constraint = p_table->pSub_constraint())) {
+    G.p_boolCalc = G.p_constraint->pSub_boolCalc();
+    M_vBoolCalc_PushPred(G.p_boolCalc,G.p_PRED);
+  }
+  else {
+    G_vAppendNewChild(p_table,CK_CONSTRAINT);
+    G_vAppendNewChild(G.p_constraint,CK_BOOLCALC);
+    G_vAppendChild(CK_BOOLCALC,G.p_PRED);
+  }
+
+
 }
 
 /*----------------------------------------------------------------------------*/

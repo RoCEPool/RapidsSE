@@ -8,6 +8,7 @@ enum eTE // atom evaluation
   /* */ TE_NONE=0,
 
   /* */ TE_AND,
+  /* */ TE_BOOLFN,
   /* */ TE_COMPARE,
   /* */ TE_EXECUTE,
   /* */ TE_EXISTS,
@@ -25,6 +26,7 @@ static Stz* aTE[]
   /*  */ "TE_NONE"_Stz,
 
   /*  */ "TE_AND"_Stz,
+  /*  */ "TE_BOOLFN"_Stz,
   /*  */ "TE_COMPARE"_Stz,
   /*  */ "TE_EXECUTE"_Stz,
   /*  */ "TE_EXISTS"_Stz,

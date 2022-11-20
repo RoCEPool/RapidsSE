@@ -359,14 +359,18 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_boolCalc->vAppend(p_tstPred);
         p_tstPred = nullptr;
         DELETE_CARD(p_term);
-
-//        p_andPred = new Card_AndPred;
-//        p_andPred->vTransferChildren(p_boolCalc);
-//        p_boolCalc->vAppend(p_andPred);
-//        p_andPred = nullptr;
         break;
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case TE_BOOLFN:
+        p_tstPred = new Card_TstPred;
+        p_tstPred->vValue(p_term->sz());
+        p_tstPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vAppend(p_tstPred);
+        p_tstPred = nullptr;
+        DELETE_CARD(p_term);
+        break;
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // <termSeries>
 
       case TE_EXECUTE:

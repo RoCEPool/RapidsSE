@@ -1530,14 +1530,15 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   vAssert_Board_sqB();
 
   // x) pull <where> into <table>/<filter>
+  vPrintBoard(__LINE__);
+
   G_vRestart();
   if (G_bEachMain(CK_TABLE)) {
     if (G_bEachMain(CK_WHERE)) {
-      R_vUTE_MoveWhereToTableAsFilter(G.p_table,G.p_where);
+      R_vUTE_MoveWhereToTableAsConstraint(G.p_table,G.p_where);
     }
   }
   vPrintBoard(__LINE__);
-
 
   // 3) get copy of sq:<table>/* into cc:<table>
   G_vRestart();
@@ -2962,6 +2963,34 @@ void Xtransforms::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
       continue;
 
     R_vUTE_Convert_tblColOdn_To_stmOdn();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((20))))"_Stz);
+
+  vAssert_Board_mqA();
+
+  G.pBoard->vMayHaveStmColOdn(true);
+
+  while (G_bEachMain()) {
+
+    if (! (   CK_KEYEXISTS    == G.e_MainCard
+           || CK_KEYNOTEXISTS == G.e_MainCard
+    ))
+      continue;
+
+    G.p_constraint = G.p_MainCard->pSub_constraint();
+
+    R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm();
   }
 
   vEndTransform();

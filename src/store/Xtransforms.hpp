@@ -218,6 +218,7 @@ namespace STORE
     void vSE0_T00_Skip(void);
     void vSE0_T00_Begin(void);
     void vSE0_T10_Convert_TblColOdn_To_StmOdn(void);
+    void vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void vSE0_TZZ_End(void);
 
     // vSeries_Z0_Restate_Pipeline

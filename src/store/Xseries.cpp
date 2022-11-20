@@ -669,6 +669,7 @@ void Xseries::vSeries_E0_To_StmOdn(bool bEnabled)
   m_pTransforms->vSE0_T00_Begin();
 
   m_pTransforms->vSE0_T10_Convert_TblColOdn_To_StmOdn();
+  m_pTransforms->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
 
   m_pTransforms->vSE0_TZZ_End();
 
