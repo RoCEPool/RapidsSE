@@ -2331,6 +2331,19 @@ Card_KeyExists* Card::pSub_keyExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_KeyNotExists.hpp"
+Card_KeyNotExists* Card::pSub_keyNotExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_KeyNotExists* p_keyNotExists =
+      _pCard_KeyNotExists(pFindSubCard(CK_KEYNOTEXISTS));
+  return p_keyNotExists;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_LBound.hpp"
 Card_LBound* Card::pSub_lBound(void)
 {

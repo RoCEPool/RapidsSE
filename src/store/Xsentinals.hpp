@@ -87,6 +87,7 @@ namespace STORE
     Card_JoinOrderSeq *     p_joinOrderSeq;
     Card_JoinPredList *     p_joinPredList;
     Card_KeyExists *        p_keyExists;
+    Card_KeyNotExists *     p_keyNotExists;
     Card_LBound *           p_lBound;
     Card_Level *            p_level;
     Card_Manner *           p_manner;

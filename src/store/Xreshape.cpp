@@ -72,7 +72,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
       m_pTerm_1 = _pCard_Term(G.p_tstPred->pGet(1));
       m_sSqyRsl = m_pTerm_1->szValue();
       m_pTerm_2 = _pCard_Term(G.p_tstPred->pGet(2));
-      m_sSqyCol = m_pTerm_2->szValue();
+      m_sSqyArg = m_pTerm_2->szValue();
 
       bFoundCall = true;
 

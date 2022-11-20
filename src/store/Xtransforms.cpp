@@ -1517,7 +1517,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
       NEVER_REACH
     }
   }
-  vTrace("Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyCol.szStz(),m_sSqyRsl.szStz());
+  vTrace("Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
   vPrintBoard(__LINE__);
 
   // 2) push to sq
@@ -1540,8 +1540,9 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
   // put cc:<table>/* before mq:<where>
   G_vInsertBefore(m_pCard_copied,G.p_where);
-  G_vAppendNewChild(m_pCard_copied, CK_KEYEXISTS);
+  G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
+  G.pDeck->vRenumberRecursive();
   vPrintBoard(__LINE__);
 
   // % -> $t.n

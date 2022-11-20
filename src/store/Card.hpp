@@ -78,6 +78,7 @@ namespace STORE
   class Card_JoinPredList;
 
   class Card_KeyExists;
+  class Card_KeyNotExists;
 
   class Card_LBound;
   class Card_Level;
@@ -416,6 +417,7 @@ namespace STORE
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
     Card_KeyExists*     pSub_keyExists(void);
+    Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
     Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);

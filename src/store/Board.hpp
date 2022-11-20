@@ -79,6 +79,7 @@
 #include "Card_JoinPredList.hpp"
 
 #include "Card_KeyExists.hpp"
+#include "Card_KeyNotExists.hpp"
 
 #include "Card_LBound.hpp"
 #include "Card_Level.hpp"

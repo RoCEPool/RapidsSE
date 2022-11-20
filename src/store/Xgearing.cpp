@@ -860,6 +860,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_JOINORDERSEQ:     return G.p_joinOrderSeq;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEYEXISTS:        return G.p_keyExists;
+    case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
     case CK_LBOUND:           return G.p_lBound;
     case CK_LEVEL:            return G.p_level;
     case CK_MANNER:           return G.p_manner;
@@ -1107,6 +1108,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_joinOrderSeq     = nullptr;
   G.p_joinPredList     = nullptr;
   G.p_keyExists        = nullptr;
+  G.p_keyNotExists     = nullptr;
   G.p_lBound           = nullptr;
   G.p_level            = nullptr;
   G.p_manner           = nullptr;
@@ -1570,6 +1572,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINORDERSEQ:     *((Card**)&G.p_joinOrderSeq)     = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
+    case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_MANNER:           *((Card**)&G.p_manner)           = pCard; break;
@@ -1933,6 +1936,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_JOINORDERSEQ:     return "G.p_joinOrderSeq"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
+    case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_MANNER:           return "G.p_manner"_Stz;
