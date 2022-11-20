@@ -28,6 +28,8 @@ namespace STORE
     s256        m_sXdesc;
     s32         m_sSqyNm;
     s32         m_sSqyArg;
+    s32         m_sSqyCol;
+    s32         m_sSqyRsl;
 
     PermGen*    m_pPermGen;
 
@@ -53,6 +55,7 @@ namespace STORE
 
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
+    Card_Term* m_pTerm_2;
 
 
 

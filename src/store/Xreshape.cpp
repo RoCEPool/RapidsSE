@@ -50,20 +50,43 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   auto bLambdaFn = [this,&bFoundCall](Card* pCard)
   {
     G.p_tstPred = _pCard_TstPred(pCard);
-    G.p_term    = G.p_tstPred->pSub_term();
-    m_sSqyArg   = G.p_term->szValue();
 
-    Card_ExePred* p_exePred = G.p_tstPred->pSub_exePred();
-    m_sSqyNm = p_exePred->szValue();
+    if (G.p_tstPred->bIsValue("exists"_Stz)) {
+      G.p_term = G.p_tstPred->pSub_term();
+      m_sSqyArg = G.p_term->szValue();
 
-    bFoundCall = true;
+      Card_ExePred *p_exePred = G.p_tstPred->pSub_exePred();
+      m_sSqyNm = p_exePred->szValue();
 
-    G.p_tstPred->vMark1(MARK_AT);
+      bFoundCall = true;
+
+      G.p_tstPred->vMark1(MARK_AT);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (G.p_tstPred->bIsValue("notIn"_Stz)) {
+      G.p_exePred = G.p_tstPred->pSub_exePred();
+      m_sSqyNm = G.p_exePred->szValue();
+
+      m_pTerm_1 = _pCard_Term(G.p_tstPred->pGet(1));
+      m_sSqyRsl = m_pTerm_1->szValue();
+      m_pTerm_2 = _pCard_Term(G.p_tstPred->pGet(2));
+      m_sSqyCol = m_pTerm_2->szValue();
+
+      bFoundCall = true;
+
+      G.p_tstPred->vMark1(MARK_AT);
+
+      return C_CONTINUE_RECURSION;
+    }
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->vDump();
 
   G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
 
@@ -554,6 +577,7 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
       else {
         pSubQuery->vCalcOp(QO_EXISTS_OP);
       }
+      break;
     }
     else
     if (szValue_term->bSame("in"_Stz)) {
@@ -567,6 +591,31 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
       else {
         pSubQuery->vCalcOp(QO_IN_OP);
       }
+      break;
+    }
+    else
+    if (T_bValue_IsResultOrdinal(szValue_term)) {
+      if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+        szValue_term = G.p_term->szValue();
+        if (T_bValue_IsStreamColOrdinal(szValue_term)) {
+          if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+            szValue_term = G.p_term->szValue();
+            if (szValue_term->bSame("in"_Stz)) {
+              if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+                szValue_term = G.p_term->szValue();
+                if (szValue_term->bSame("not"_Stz))
+                  pSubQuery->vCalcOp(QO_NOT_IN_OP);
+                else
+                  pSubQuery->vCalcOp(QO_IN_OP);
+              }
+              else {
+                pSubQuery->vCalcOp(QO_IN_OP);
+              }
+            }
+          }
+        }
+      }
+      break;
     }
     else
     {
@@ -575,9 +624,9 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
         pSubQuery->vCalcOp(QO_COMPARE_OP);
         pSubQuery->vRelnOp(eRelnOp);
       }
+      break;
     }
 
-    break;
   }
 
   SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();

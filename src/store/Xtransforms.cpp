@@ -1173,7 +1173,7 @@ void Xtransforms::vS40_T05_Flatten_By_Decision_Tree(void)
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (linear correlated in) sub-query before the main-query
+  // push a (linear non-correlated not-in) sub-query before the main-query
   // as a keyExists
   // (refer: Q16)
 
@@ -1430,11 +1430,11 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
-      vTracer("DID NOT FIND SubQuery call\n"_Stz);
+      vTracer("DID NOT FIND W_L_C_E SubQuery call\n"_Stz);
       NEVER_REACH
     }
   }
-  vTracer("Found call to %s\n"_Stz,m_sSqyNm.szStz());
+  vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz());
   vPrintBoard(__LINE__);
 
   // 2) push to sq
@@ -1509,13 +1509,61 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  vAssert_Board_mqA();
+  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (!R_bUTE_FindAndMarkSubQryCall()) {
+      vTracer("DID NOT FIND W_L_NC_NI SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTrace("Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyCol.szStz(),m_sSqyRsl.szStz());
+  vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! G_bPushBoard(m_sSqyNm)) {
+    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  // 3) get copy of sq:<table>/* into cc:<table>
+  if (G_bEachMain(CK_TABLE)) {
+    G_vCopyCard(G.p_table);
+  }
+
+  // 4) pop back to mq
+  G_vPopBoard();
   vAssert_Board_mqA();
 
-  // 1)
+  // 5) fold
+  //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
+  // put cc:<table>/* before mq:<where>
+  G_vInsertBefore(m_pCard_copied,G.p_where);
+  G_vAppendNewChild(m_pCard_copied, CK_KEYEXISTS);
+
+  vPrintBoard(__LINE__);
+
+  // % -> $t.n
+  R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
+
+  G_vCopyCard(nullptr);
+
+  vPrintBoard(__LINE__);
+
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  vPrintBoard(__LINE__);
 
 
+  // delete potentially empty where
+  G_vRestart();
+  G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
 
-  vR_S40_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists();
+  vPrintBoard(__LINE__);
 
   vEndTransform();
 }
