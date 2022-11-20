@@ -76,6 +76,56 @@ void Xreshape::R_vUTE_AdjustStmLoHi(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    if (T_bValue_IsResultOrdinal(p_term->szValue())) {
+
+      i8 iResultOrd = E_iValue_ResultOdn(p_term->szValue());
+
+      // TODO: put this in a fn
+      s32 sStmColOdn;
+      sStmColOdn.vSprint("$%lld"_Stz,iResultOrd);
+      p_term->vValue(sStmColOdn);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+
+    if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szTblColOdn = p_term->szValue();
+    if (! G_bResolveSubCard(CK_TABLE,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
+      return C_CONTINUE_RECURSION;
+
+    RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
+
+    G.p_stmColOdn = m_pCard_parent->pSub_stmColOdn();
+    M_vCard_Set_Value(p_term, G.p_stmColOdn->szValue(),MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
+
+  vEndReshape();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find and mark call to the subquery referenced in G.p_boolCalc              */
 /*----------------------------------------------------------------------------*/
 bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
@@ -154,6 +204,46 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
     G_vAppendNewChild(G.p_filter,CK_BOOLCALC);
     G_vAppendChild(CK_FILTER,G.p_PRED);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit each stream and adjust it's lo-hi range                              */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_RenumberStmOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+  vReshape(__func__);
+
+  // TODO: G_bEachSub(CK_STREAM)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card *pCard) {
+
+    G.p_stmCol    = _pCard_StmCol(pCard);
+    G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
+
+    M_vCard_Set_StreamColOrdinal(G.p_stmColOdn,G.i_stmColOdn++);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.i_stmColOdn = 1;
+  while (G_bEachMain()) {
+
+    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
+      continue;
+
+    G.p_stream = G.p_MainCard->pSub_stream();
+
+    G.p_stmColList = G.p_stream->pSub_stmColList();
+
+    G.p_stmColList->bApplyRecursive(CK_STMCOL,bLambdaFn);
+  }
+
+  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2279,56 +2369,6 @@ void Xreshape::vR_SA0_T10_Individuate_indexJoin_filter_b(void)
 /*----------------------------------------------------------------------------*/
 /*                                                vSeries_Z0_Restate_Pipeline */
 /*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_SZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [this](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-
-    if (T_bValue_IsResultOrdinal(p_term->szValue())) {
-
-      i8 iResultOrd = E_iValue_ResultOdn(p_term->szValue());
-
-      // TODO: put this in a fn
-      s32 sStmColOdn;
-      sStmColOdn.vSprint("$%lld"_Stz,iResultOrd);
-      p_term->vValue(sStmColOdn);
-
-      return C_CONTINUE_RECURSION;
-    }
-
-
-    if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    Stz* szTblColOdn = p_term->szValue();
-    if (! G_bResolveSubCard(CK_TABLE,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
-      return C_CONTINUE_RECURSION;
-
-    RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
-
-    G.p_stmColOdn = m_pCard_parent->pSub_stmColOdn();
-    M_vCard_Set_Value(p_term, G.p_stmColOdn->szValue(),MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
-
-  vEndReshape();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

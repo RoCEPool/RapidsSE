@@ -1567,7 +1567,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   // % -> $t.n
   //R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
 
-
+  R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
   G.p_bounds = C_pBounds_Create_Eq_ForGivenCol(m_sSqyArg);
@@ -2885,35 +2885,6 @@ void Xtransforms::vSB0_T00_Begin(void)
   vST00_Begin();
 }
 
-/*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vSZ0_T10_Restore_stmColOdn_from_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-
-  vAssert_Board_mqA();
-
-  G.pBoard->vMayHaveStmColOdn(true);
-
-  while (G_bEachMain()) {
-
-    if (! (   CK_FILTER    == G.e_MainCard
-           || CK_INDEXSCAN == G.e_MainCard
-           || CK_INDEXJOIN == G.e_MainCard
-           || CK_KEYEXISTS == G.e_MainCard
-           || CK_PROJECT   == G.e_MainCard
-           || CK_WHERE     == G.e_MainCard
-    ))
-      continue;
-
-    vR_SZ0_T10_Restore_stmColOdn_from_tblColOdn();
-  }
-
-  vEndTransform();
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -2925,6 +2896,88 @@ void Xtransforms::vSB0_TZZ_End(void)
 
   vSTZZ_End();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                       vSeries_E0_To_StmOdn */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bSE0_T00_Test(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! bEnabled)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSE0_T00_Skip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSE0_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  m_pCardCtl->vUseShorter();
+
+  vST00_Begin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+
+  vAssert_Board_mqA();
+
+  G.pBoard->vMayHaveStmColOdn(true);
+
+  while (G_bEachMain()) {
+
+    if (! (   CK_FILTER       == G.e_MainCard
+           || CK_INDEXSCAN    == G.e_MainCard
+           || CK_INDEXJOIN    == G.e_MainCard
+           || CK_KEYEXISTS    == G.e_MainCard
+           || CK_KEYNOTEXISTS == G.e_MainCard
+           || CK_PROJECT      == G.e_MainCard
+           || CK_WHERE        == G.e_MainCard
+    ))
+      continue;
+
+    R_vUTE_Convert_tblColOdn_To_stmOdn();
+  }
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSE0_TZZ_End(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vSTZZ_End();
+}
+
 
 
 /*----------------------------------------------------------------------------*/

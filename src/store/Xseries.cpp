@@ -93,6 +93,8 @@ void Xseries::vTransformSeries(void)
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement (C_ENABLED);
 
+  vSeries_E0_To_StmOdn         (C_ENABLED);
+
   vSeries_Z0_Restate_Pipeline  (C_ENABLED);
 
 
@@ -653,6 +655,30 @@ void Xseries::vSeries_A0_Filter_Refinement(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xseries::vSeries_E0_To_StmOdn(bool bEnabled)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  if (! m_pTransforms->bSE0_T00_Test(bEnabled)) {
+    m_pTransforms->vSE0_T00_Skip();
+    return;
+  }
+
+  m_pTransforms->vSE0_T00_Begin();
+
+  m_pTransforms->vSE0_T10_Convert_TblColOdn_To_StmOdn();
+
+  m_pTransforms->vSE0_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE, 0);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xseries::vSeries_Z0_Restate_Pipeline(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
@@ -666,7 +692,6 @@ void Xseries::vSeries_Z0_Restate_Pipeline(bool bEnabled)
 
   m_pTransforms->vSZ0_T00_Begin();
 
-  m_pTransforms->vSZ0_T10_Restore_stmColOdn_from_tblColOdn();
   //m_pTransforms->vSZ0_T20_Reinstate_stages();
   //m_pTransforms->vSZ0_T20_Reinstate_stagesV2();
   //m_pTransforms->vSZ0_T30_Reinstate_combined();

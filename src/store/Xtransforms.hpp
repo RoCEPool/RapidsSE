@@ -213,6 +213,13 @@ namespace STORE
     void vSB0_T00_Begin(void);
     void vSB0_TZZ_End(void);
 
+    // vSeries_E0_To_StmOdn
+    bool bSE0_T00_Test(bool bEnabled);
+    void vSE0_T00_Skip(void);
+    void vSE0_T00_Begin(void);
+    void vSE0_T10_Convert_TblColOdn_To_StmOdn(void);
+    void vSE0_TZZ_End(void);
+
     // vSeries_Z0_Restate_Pipeline
     bool bSZ0_T00_Test(bool bEnabled);
     void vSZ0_T00_Skip(void);

@@ -16,8 +16,10 @@ namespace STORE
 
     // utilities
     void R_vUTE_AdjustStmLoHi(void);
+    void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
+    void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
 
     // vSeries_10_Condense_Info
@@ -150,7 +152,6 @@ namespace STORE
     void vR_SA0_T10_Individuate_indexJoin_filter_b(void);
 
     // vSeries_Z0_Restate_Pipeline
-    void vR_SZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
     void vR_SZ0_T20_Reinstate_stages(void);
     void vR_SZ0_T20_Reinstate_stagesV2(void);
     void vR_SZ0_T20_Reinstate_stagesV3(void);

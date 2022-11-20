@@ -65,6 +65,7 @@ namespace STORE
 //  void vSeries_B3_Trick_3           (bool bEnabled); // 1 day
 //  void vSeries_B4_Earlier_Aggreg    (bool bEnabled); // 2 days
 //  void vSeries_B5_Limit_Pullup      (bool bEnabled); // 2 days
+    void vSeries_E0_To_StmOdn         (bool bEnabled); //
     void vSeries_Z0_Restate_Pipeline  (bool bEnabled); //
                                                       // ---------
                                                       // 2.5 weeks
