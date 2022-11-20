@@ -2505,7 +2505,9 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_CROSSJOIN == e_main || CK_INDEXJOIN == e_main ) {
+    if (CK_CROSSJOIN == e_main || CK_INDEXJOIN == e_main
+                               || CK_KEYEXISTS == e_main
+                               || CK_KEYNOTEXISTS == e_main) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
