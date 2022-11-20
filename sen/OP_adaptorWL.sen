@@ -316,11 +316,11 @@
   AdaptorWL[].isChildJobActive if
     ErrorMarker[].isNull assert
     Pipein[]\clear ErrorMarker[].set
+    true
+
   else
     EV_M_ERROR_handler
   then
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
