@@ -17,6 +17,7 @@ namespace STORE
     // utilities
     void R_vUTE_AdjustStmLoHi(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
+    void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
 
     // vSeries_10_Condense_Info

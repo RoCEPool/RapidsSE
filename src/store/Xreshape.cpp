@@ -133,6 +133,30 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* move <where> to <table>/<filter>                                           */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_boolCalc = p_where->pSub_boolCalc();
+  G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
+  G.p_PRED->vMark1(MARK_AT);
+
+  G.p_PRED = reinterpret_cast<Card_PRED*>(G.p_PRED->pDupSubCards());
+
+  if ((G.p_filter = p_table->pSub_filter())) {
+    G.p_boolCalc = G.p_filter->pSub_boolCalc();
+    M_vBoolCalc_PushPred(G.p_boolCalc,G.p_PRED);
+  }
+  else {
+    G_vAppendNewChild(p_table,CK_FILTER);
+    G_vAppendNewChild(G.p_filter,CK_BOOLCALC);
+    G_vAppendChild(CK_FILTER,G.p_PRED);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* find sub card with given value and replace                                 */
 /*----------------------------------------------------------------------------*/
 bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith)
@@ -1744,20 +1768,17 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
     return;
   }
 
-  if (G.p_keyExists) {
-    G.p_table->vRemoveSubCard(G.p_keyExists);
+  if (G.p_keyNotExists) {
+    G.p_table->vRemoveSubCard(G.p_keyNotExists);
 
-    G.p_table->vRemoveSubCard(G.p_maybeIndexJoin);
-    G.p_maybeIndexJoin->vTransferChildren(G.p_table);
+    G.p_keyNotExists->vTransferChildren(G.p_table);
 
-    G.pBoard->pDeck()->vReplace(G.p_table, G.p_maybeIndexJoin);
-    G.p_maybeIndexJoin->vInsert(G.p_table);
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_keyNotExists);
+    G.p_keyNotExists->vInsert(G.p_table);
 
-    G.p_maybeIndexJoin->vRemoveSubCard(G.p_index);
-    G.p_maybeIndexJoin->vAppend(G.p_index);
+    G.p_keyNotExists->vRemoveSubCard(G.p_index);
+    G.p_keyNotExists->vAppend(G.p_index);
 
-    G.p_maybeIndexJoin->vCard(CK_KEYEXISTS);
-    DELETE_CARD(G.p_keyExists);
     return;
   }
 
@@ -1772,6 +1793,16 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
     G.p_maybeIndexJoin->vAppend(G.p_index);
     G.p_maybeIndexJoin->vCard(CK_INDEXJOIN);
     return;
+  }
+  else {
+    G_vNewMember(CK_INDEXJOIN);
+    G.p_indexJoin->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
+    G.p_indexJoin->vInsert(G.p_table);
+
+    G.p_indexJoin->vRemoveSubCard(G.p_index);
+    G.p_indexJoin->vAppend(G.p_index);
   }
 
   vEndReshape();

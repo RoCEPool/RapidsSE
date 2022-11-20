@@ -39,6 +39,28 @@ Xcreate::~Xcreate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* create a bounds given tblColOdn                                            */
+/*----------------------------------------------------------------------------*/
+Card_Bounds* Xcreate::C_pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Bounds* p_bounds = new Card_Bounds;
+
+  Card_Term* p_term = new Card_Term("BOUND"_Stz);
+  p_bounds->vAppend(p_term);
+
+  p_term = new Card_Term("$I1"_Stz);
+  p_bounds->vAppend(p_term);
+  p_term = new Card_Term(szTblColOdn);
+  p_bounds->vAppend(p_term);
+  p_term = new Card_Term("=="_Stz);
+  p_bounds->vAppend(p_term);
+
+  return p_bounds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
 void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_filter)

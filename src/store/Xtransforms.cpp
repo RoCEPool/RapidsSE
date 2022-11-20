@@ -1517,8 +1517,10 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
       NEVER_REACH
     }
   }
-  vTrace("Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
+  vTrace(">>>>>>>>> Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
   vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 2) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
@@ -1527,10 +1529,23 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   }
   vAssert_Board_sqB();
 
+  // x) pull <where> into <table>/<filter>
+  G_vRestart();
+  if (G_bEachMain(CK_TABLE)) {
+    if (G_bEachMain(CK_WHERE)) {
+      R_vUTE_MoveWhereToTableAsFilter(G.p_table,G.p_where);
+    }
+  }
+  vPrintBoard(__LINE__);
+
+
   // 3) get copy of sq:<table>/* into cc:<table>
+  G_vRestart();
   if (G_bEachMain(CK_TABLE)) {
     G_vCopyCard(G.p_table);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 4) pop back to mq
   G_vPopBoard();
@@ -1550,11 +1565,16 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   vPrintBoard(__LINE__);
 
   // % -> $t.n
-  R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
+  //R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
 
-  G_vCopyCard(nullptr);
 
   vPrintBoard(__LINE__);
+
+  G.p_bounds = C_pBounds_Create_Eq_ForGivenCol(m_sSqyArg);
+  m_pCard_copied->vAppend(G.p_bounds);
+  vPrintBoard(__LINE__);
+
+  G_vCopyCard(nullptr);
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
@@ -2206,10 +2226,11 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 
   while (G_bEachMain(CK_TABLE)) {
 
-    G.p_bounds = G.p_table->pSub_bounds();
-    G.p_index = G.p_table->pSub_index();
+    G.p_bounds         = G.p_table->pSub_bounds();
+    G.p_index          = G.p_table->pSub_index();
+    G.p_keyExists      = G.p_table->pSub_keyExists();
+    G.p_keyNotExists   = G.p_table->pSub_keyNotExists();
     G.p_maybeIndexJoin = G.p_table->pSub_maybeIndexJoin();
-    G.p_keyExists = G.p_table->pSub_keyExists();
 
     vR_S75_T10_Morph_table_To_EEop();
   }
@@ -2221,11 +2242,11 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
   }
   vPrintBoard(__LINE__);
 
-  G_vRestart();
-  while (G_bEachMain(CK_INDEXJOIN)) {
-    vR_S75_T10_Morph_table_To_EEop_c();
-  }
-  vPrintBoard(__LINE__);
+//  G_vRestart();
+//  while (G_bEachMain(CK_INDEXJOIN)) {
+//    vR_S75_T10_Morph_table_To_EEop_c();
+//  }
+//  vPrintBoard(__LINE__);
 
   G_vRestart();
   while (G_bEachMain(CK_KEYEXISTS)) {

@@ -45,6 +45,10 @@ namespace STORE
 
     i8     i_stmColOdn;
 
+    Card_PRED * p_PRED;
+
+    // - - - - - - - - - - - - - - - - - -
+
     Card_AbsJoin *          p_absJoin;
     Card_AggElist *         p_aggElist;
     Card_Aggreg *           p_aggreg;

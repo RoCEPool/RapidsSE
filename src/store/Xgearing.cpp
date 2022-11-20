@@ -515,6 +515,7 @@ void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild)
   Card* pChild = new Card(eChild);
 
   pParent->vAppend(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1207,6 +1208,8 @@ void Xgearing::G_vClearRegisters(void)
   G.e_Level = AL_NONE;
 
   G.i_stmColOdn = C_UNKNOWN;
+
+  G.p_PRED = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

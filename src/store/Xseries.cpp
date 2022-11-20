@@ -85,20 +85,20 @@ void Xseries::vTransformSeries(void)
   vSeries_36_Bound_Analysis    (C_ENABLED);
   vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
-  vSeries_60_Index_Join        (C_ENABLED);
+  vSeries_60_Index_Join                      (C_DISABLED);
   vSeries_85_Cross_Join                      (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
   vSeries_80_Index_Scan                      (C_DISABLED);
-  vSeries_90_Stream_Ordering   (C_ENABLED);
+  vSeries_90_Stream_Ordering                 (C_DISABLED);
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement (C_ENABLED);
 
   vSeries_Z0_Restate_Pipeline  (C_ENABLED);
 
 
-  vSeries_35X_Flatten_From(C_ENABLED);
-  vSeries_36X_Flatten_Where(C_ENABLED);
-  vSeries_37X_Flatten_Having(C_ENABLED);
+  vSeries_35X_Flatten_From(C_DISABLED);
+  vSeries_36X_Flatten_Where(C_DISABLED);
+  vSeries_37X_Flatten_Having(C_DISABLED);
 }
 
 /*----------------------------------------------------------------------------*/

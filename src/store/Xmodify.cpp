@@ -418,6 +418,7 @@ void Xmodify::M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(Card_RpnCalc* p_rpnCalc)
         xCI.vRewind();
         p_rpnCalc->vRemoveChild(p_term_next);
         p_term->vValue("notIn"_Stz);
+        DELETE_CARD(p_term_next);
         continue;
       }
       continue;
