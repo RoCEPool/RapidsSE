@@ -2258,15 +2258,15 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 //  }
 //  vPrintBoard(__LINE__);
 
-  G_vRestart();
-  while (G_bEachMain(CK_KEYEXISTS)) {
-    if (G.p_keyExists) {
-      i8 i_Child;
-      G.p_note = _pCard_Note(G.p_keyExists->pFindChild(CK_NOTE, i_Child));
-      G.p_note->vValue(SEP_DERIVED);
-    }
-  }
-  vPrintBoard(__LINE__);
+//  G_vRestart();
+//  while (G_bEachMain(CK_KEYEXISTS)) {
+//    if (G.p_keyExists) {
+//      i8 i_Child;
+//      G.p_note = _pCard_Note(G.p_keyExists->pFindChild(CK_NOTE, i_Child));
+//      G.p_note->vValue(SEP_DERIVED);
+//    }
+//  }
+//  vPrintBoard(__LINE__);
 
   vEndTransform();
 }

@@ -1934,9 +1934,20 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
       G.p_scan->vRemoveChild(G.p_indexJoin);
       DELETE_CARD(G.p_indexJoin);
     }
-    return;
   }
+  else
+  if (G.p_keyExists) {
+    G.p_table->vRemoveSubCard(G.p_keyExists);
 
+    G.p_keyExists->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_keyExists);
+    G.p_keyExists->vInsert(G.p_table);
+
+    G.p_keyExists->vRemoveSubCard(G.p_index);
+    G.p_keyExists->vAppend(G.p_index);
+  }
+  else
   if (G.p_keyNotExists) {
     G.p_table->vRemoveSubCard(G.p_keyNotExists);
 
@@ -1947,10 +1958,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
 
     G.p_keyNotExists->vRemoveSubCard(G.p_index);
     G.p_keyNotExists->vAppend(G.p_index);
-
-    return;
   }
-
+  else
   if (G.p_maybeIndexJoin) {
     G.p_table->vRemoveSubCard(G.p_maybeIndexJoin);
     G.p_maybeIndexJoin->vTransferChildren(G.p_table);
@@ -1961,8 +1970,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
     G.p_maybeIndexJoin->vRemoveSubCard(G.p_index);
     G.p_maybeIndexJoin->vAppend(G.p_index);
     G.p_maybeIndexJoin->vCard(CK_INDEXJOIN);
-    return;
   }
+
   else {
     G_vNewMember(CK_INDEXJOIN);
     G.p_indexJoin->vTransferChildren(G.p_table);
