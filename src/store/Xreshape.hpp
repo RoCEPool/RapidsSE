@@ -153,6 +153,7 @@ namespace STORE
     // vSeries_A0_Filter_Refinement
     void vR_SA0_T10_Individuate_scan_filter(void);
     void vR_SA0_T10_Individuate_indexJoin_filter_b(void);
+    void vR_SA0_T10c_Individuate_crossJoin_filter(void);
 
     // vSeries_Z0_Restate_Pipeline
     void vR_SZ0_T20_Reinstate_stages(void);

@@ -86,7 +86,7 @@ void Xseries::vTransformSeries(void)
   vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_60_Index_Join                      (C_DISABLED);
-  vSeries_85_Cross_Join                      (C_DISABLED);
+  vSeries_85_Cross_Join        (C_ENABLED);
   vSeries_75_EE_operators      (C_ENABLED);
   vSeries_80_Index_Scan                      (C_DISABLED);
   vSeries_90_Stream_Ordering                 (C_DISABLED);

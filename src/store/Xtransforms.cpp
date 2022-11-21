@@ -2649,7 +2649,11 @@ void Xtransforms::vS85_T10_Transmute_All_table(void)
   if (G_bEachMain(CK_TABLE)) {
     vR_S85_T10a_Transmute_table_To_Scan();
     while (G_bEachMain(CK_TABLE)) {
+      if ( (! G.p_table->pSub_indexJoin()) &&
+           (! G.p_table->pSub_keyExists()) &&
+           (! G.p_table->pSub_keyNotExists()))
       vR_S85_T10b_Transmute_table_To_crossJoin();
+      break;
     }
   }
 
@@ -2919,6 +2923,12 @@ void Xtransforms::vSA0_T10_Individuate_filter(void)
   while (G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
     vR_SA0_T10_Individuate_indexJoin_filter_b();
   }
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
+    vR_SA0_T10c_Individuate_crossJoin_filter();
+  }
+
 
   vEndTransform();
 }

@@ -49,7 +49,7 @@ void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRE
   else {
     G_vAppendNewChild(p_table,CK_FILTER);
     G_vAppendNewChild(G.p_filter,CK_BOOLCALC);
-    G_vAppendChild(CK_FILTER,p_PRED);
+    G_vAppendChild(CK_BOOLCALC,p_PRED);
   }
 }
 
@@ -2471,6 +2471,26 @@ void Xreshape::vR_SA0_T10_Individuate_indexJoin_filter_b(void)
 
   vEndReshape();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_SA0_T10c_Individuate_crossJoin_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vReshape(__func__);
+
+  G.p_crossJoin->vRemoveChild(G.p_filter);
+  G.pDeck->vInsertAfter(G.p_filter, G.p_crossJoin);
+
+  if (! G.p_filter->pSub_level()) {
+    G.p_filter->vPush(G.p_crossJoin->pSub_level()->pDupCardAndSubCards());
+  }
+
+  vEndReshape();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
