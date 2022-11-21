@@ -1444,7 +1444,16 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   }
   vAssert_Board_sqB();
 
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+    G_vMorphCard(G.p_filter,CK_CONSTRAINT);
+  }
+  vPrintBoard(__LINE__);
+
+  vPrintBoard(__LINE__);
+
   // 3) get copy of sq:<table>/* into cc:<table>
+  G_vRestart();
   if (G_bEachMain(CK_TABLE)) {
     G_vCopyCard(G.p_table);
   }
