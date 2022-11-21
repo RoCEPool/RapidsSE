@@ -1376,12 +1376,42 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
       NEVER_REACH
     }
   }
-  vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz());
+  vTrace("Found W_A_NC_I call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
 
   G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
   G.pDeck->vPush(G.p_fold);
 
+  // find table for sqyarg
+
+
+  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
+  G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
+
+  // TODO: derive cmpPred from marked tstPred and add to corresponding table
+
+  G_vNewMember(CK_CMPPRED,"=="_Stz);
+  G_vNewMember(CK_TERM,m_sSqyArg.szStz());
+  G.p_cmpPred->vAppend(G.p_term);
+  G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
+  G.p_cmpPred->vAppend(G.p_term);
+
+  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
   vPrintBoard(__LINE__);
+
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  vPrintBoard(__LINE__);
+
+  // delete potentially empty where
+  G_vRestart();
+  G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+
+  vPrintBoard(__LINE__);
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1406,6 +1436,13 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
   DELETE_CARD(m_pCard_yanked);
 
+  vPrintBoard(__LINE__);
+
+
+  R_vUTE_AdjustStmLoHi();
+  vPrintBoard(__LINE__);
+
+  R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
   vEndTransform();
@@ -1487,8 +1524,6 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   if (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
     G_vMorphCard(G.p_filter,CK_CONSTRAINT);
   }
-  vPrintBoard(__LINE__);
-
   vPrintBoard(__LINE__);
 
   // 3) get copy of sq:<table>/* into cc:<table>

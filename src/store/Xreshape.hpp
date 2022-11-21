@@ -15,6 +15,7 @@ namespace STORE
   public:
 
     // utilities
+    void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
     void R_vUTE_AdjustStmLoHi(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);

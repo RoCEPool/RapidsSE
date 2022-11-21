@@ -35,6 +35,23 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* move <where> to <table>/<filter>                                           */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if ((G.p_filter = p_table->pSub_filter())) {
+    G.p_boolCalc = G.p_filter->pSub_boolCalc();
+    M_vBoolCalc_PushPred(G.p_boolCalc,p_PRED);
+  }
+  else {
+    G_vAppendNewChild(p_table,CK_FILTER);
+    G_vAppendNewChild(G.p_filter,CK_BOOLCALC);
+    G_vAppendChild(CK_FILTER,p_PRED);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* visit each stream and adjust it's lo-hi range                              */
@@ -2558,6 +2575,10 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
     ri_main++;
     RASSERT(G.pDeck->pGetChild(ri_main) == p_main);
   };
+
+  G_vRestart();
+  if (G_bEachMain(CK_FOLD))
+    G_vRemoveDeleteMain(CK_FOLD);
 
   Card* p_prev = nullptr;
   eCK   e_prev = CK_NONE;
