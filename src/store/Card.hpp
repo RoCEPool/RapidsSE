@@ -56,6 +56,7 @@ namespace STORE
 
   class Card_Filter;
   class Card_Fold;
+  class Card_FoldExpr;
 
   class Card_GbyAgg;
   class Card_GbyElist;
@@ -407,6 +408,7 @@ namespace STORE
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
     Card_Fold*          pSub_fold(void);
+    Card_FoldExpr*      pSub_foldExpr(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_Genesis*       pSub_genesis(void);

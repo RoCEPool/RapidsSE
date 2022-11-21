@@ -44,6 +44,7 @@ namespace STORE
     eAL    e_Level;
 
     i8     i_stmColOdn;
+    i8     i_FoldCard;
 
     Card_PRED * p_PRED;
 
@@ -75,6 +76,7 @@ namespace STORE
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
     Card_Fold *             p_fold;
+    Card_FoldExpr *         p_foldExpr;
     Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
     Card_Genesis *          p_genesis;

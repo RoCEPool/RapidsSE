@@ -56,6 +56,7 @@
 
 #include "Card_Filter.hpp"
 #include "Card_Fold.hpp"
+#include "Card_FoldExpr.hpp"
 
 #include "Card_GbyAgg.hpp"
 #include "Card_GbyElist.hpp"
