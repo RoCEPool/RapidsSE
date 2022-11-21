@@ -321,6 +321,9 @@ void Xreshape::R_vUTE_RenumberStmOdn(void)
     G.p_stmCol    = _pCard_StmCol(pCard);
     G.p_stmColOdn = G.p_stmCol->pSub_stmColOdn();
 
+    if (! G.p_stmColOdn)
+      return C_CONTINUE_RECURSION;
+
     M_vCard_Set_StreamColOrdinal(G.p_stmColOdn,G.i_stmColOdn++);
 
     return C_CONTINUE_RECURSION;
@@ -328,13 +331,15 @@ void Xreshape::R_vUTE_RenumberStmOdn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.i_stmColOdn = 1;
+  G_vRestart();
   while (G_bEachMain()) {
 
     if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
       continue;
 
     G.p_stream = G.p_MainCard->pSub_stream();
+
+    G.i_stmColOdn = G.p_stream->Y_iVal(P_OdnLo);
 
     G.p_stmColList = G.p_stream->pSub_stmColList();
 
