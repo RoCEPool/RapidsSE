@@ -1739,12 +1739,28 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   }
   vAssert_Board_sqB();
 
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 4) pop back to mq
   G_vPopBoard();
   vAssert_Board_mqA();
+
+  G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
+  G.pDeck->vPush(G.p_fold);
+
+  G.pDeck->vPush(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+  DELETE_CARD(m_pCard_yanked);
+
+  vPrintBoard(__LINE__);
+
+  R_vUTE_AdjustStmLoHi();
+  vPrintBoard(__LINE__);
+
+  R_vUTE_RenumberStmOdn();
+  vPrintBoard(__LINE__);
 
   vEndTransform();
 }
@@ -2342,16 +2358,29 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 
   vAssert_Board_mqA();
 
+  vPrintBoard(__LINE__);
+
   while (G_bEachMain(CK_TABLE)) {
 
     G.p_bounds         = G.p_table->pSub_bounds();
     G.p_index          = G.p_table->pSub_index();
+    G.p_indexJoin      = G.p_table->pSub_indexJoin();
     G.p_keyExists      = G.p_table->pSub_keyExists();
     G.p_keyNotExists   = G.p_table->pSub_keyNotExists();
     G.p_maybeIndexJoin = G.p_table->pSub_maybeIndexJoin();
 
+    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
+           G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());
+
     vR_S75_T10_Morph_table_To_EEop();
+
+    G.pDeck->vRenumberRecursive();
+
+    vPrintBoard(__LINE__);
+
+    vDebugPoint();
   }
+
   vPrintBoard(__LINE__);
 
   G_vRestart();
@@ -3243,6 +3272,8 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
   vTransform(__func__, "reinstate stages"_Stz);
 
   vAssert_Board_mqA();
+
+  vPrintBoard(__LINE__);
 
   vR_SZ0_T20_Reinstate_stagesV3();
 

@@ -1973,15 +1973,43 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
 
   if (! G.p_bounds) {
 
-    G.p_scan = new Card_Scan;
-    G.p_scan->vTransferChildren(G.p_table);
+    if (0 == G.i_MainCard)  {
+      G.p_scan = new Card_Scan;
+      G.p_scan->vTransferChildren(G.p_table);
 
-    G.pBoard->pDeck()->vReplace(G.p_table,G.p_scan);
-    G.p_scan->vInsert(G.p_table);
+      G.pBoard->pDeck()->vReplace(G.p_table,G.p_scan);
+      G.p_scan->vInsert(G.p_table);
 
-    if (G.p_indexJoin) {
-      G.p_scan->vRemoveChild(G.p_indexJoin);
-      DELETE_CARD(G.p_indexJoin);
+      if (G.p_indexJoin) {
+        G.p_scan->vRemoveChild(G.p_indexJoin);
+        DELETE_CARD(G.p_indexJoin);
+      }
+    }
+    else {
+      G.p_crossJoin = new Card_CrossJoin;
+      G.p_crossJoin->vTransferChildren(G.p_table);
+
+      G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
+      G.p_crossJoin->vInsert(G.p_table);
+
+      //G.p_tableNm = G.p_table->pSub_tableNm();
+      //m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
+      //G.p_index = C_pProduce_index_ofTable(m_pTable);
+
+      //G.p_note = new Card_Note(SEP_DERIVED);
+      //G.p_crossJoin->vAppend(G.p_note);
+
+      //G.p_crossJoin->vAppend(G.p_index);
+
+      G_vNewMember(CK_BOUNDS);
+      G.p_crossJoin->vAppend(G.p_bounds);
+
+      G_vNewMember(CK_TERM,"bound"_Stz);
+      G.p_bounds->vAppend(G.p_term);
+
+      G_vNewMember(CK_TERM,"$I1"_Stz);
+      G.p_bounds->vAppend(G.p_term);
+
     }
   }
   else

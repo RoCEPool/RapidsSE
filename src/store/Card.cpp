@@ -132,9 +132,20 @@ void Card::vInit(eCK eCard)
 /*----------------------------------------------------------------------------*/
 Card::~Card(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("Card [~%02lld] %p\n"_Stz,md__SeqNo,this);
+  static Card* pPriorCard = nullptr;
+
+  vTrace("Card [~%02lld] %p\n"_Stz,md__SeqNo,this);
+
+  if (this == pPriorCard)
+    vDebugPoint();
+
+  if (678 == md__SeqNo) {
+    pPriorCard = this;
+    vDebugPoint();
+  }
+
   gapCard[md__SeqNo] = nullptr;
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
