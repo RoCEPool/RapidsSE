@@ -2649,9 +2649,11 @@ void Xtransforms::vS85_T10_Transmute_All_table(void)
   if (G_bEachMain(CK_TABLE)) {
     vR_S85_T10a_Transmute_table_To_Scan();
     while (G_bEachMain(CK_TABLE)) {
-      if ( (! G.p_table->pSub_indexJoin()) &&
-           (! G.p_table->pSub_keyExists()) &&
-           (! G.p_table->pSub_keyNotExists()))
+      if ( (! G.p_table->pSub_indexJoin())
+           && (! G.p_table->pSub_keyExists())
+           && (! G.p_table->pSub_keyNotExists())
+           && (! G.p_table->pSub_bounds())
+          )
       vR_S85_T10b_Transmute_table_To_crossJoin();
       break;
     }
