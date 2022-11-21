@@ -190,7 +190,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   {
     G.p_tstPred = _pCard_TstPred(pCard);
 
-    if (G.p_tstPred->bIsValue("exists"_Stz)) {
+    if (G.p_tstPred->bIsValue("exists"_Stz) || G.p_tstPred->bIsValue("notExists"_Stz)) {
       G.p_term = G.p_tstPred->pSub_term();
       m_sSqyArg = G.p_term->szValue();
 
@@ -204,7 +204,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
       return C_CONTINUE_RECURSION;
     }
 
-    if (G.p_tstPred->bIsValue("notIn"_Stz)) {
+    if (G.p_tstPred->bIsValue("in"_Stz) || G.p_tstPred->bIsValue("notIn"_Stz)) {
       G.p_exePred = G.p_tstPred->pSub_exePred();
       m_sSqyNm = G.p_exePred->szValue();
 
@@ -219,6 +219,8 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
       return C_CONTINUE_RECURSION;
     }
+
+    NEVER_REACH
 
     return C_CONTINUE_RECURSION;
   };

@@ -1365,11 +1365,38 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vAssert_Board_mqA();
 
-  // 1)
 
+  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
+  vAssert_Board_mqA();
+  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (!R_bUTE_FindAndMarkSubQryCall()) {
+      vTracer("DID NOT FIND W_A_N_I SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz());
+  vPrintBoard(__LINE__);
 
+  // x) push to sq
+  if (! G_bPushBoard(m_sSqyNm)) {
+    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
 
-  vR_S40_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval();
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+
+  vPrintBoard(__LINE__);
+
+  // x) pop back to mq
+  G_vPopBoard();
+  vAssert_Board_mqA();
+
+  G.pDeck->vPush(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+  DELETE_CARD(m_pCard_yanked);
+
+  vPrintBoard(__LINE__);
 
   vEndTransform();
 }
