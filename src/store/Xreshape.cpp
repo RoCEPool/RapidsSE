@@ -193,6 +193,30 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_foldExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! G_bResolveSubCard(CK_PROJELIST,G.i_FoldCard))
+    return;
+
+  G.p_type = m_pCard_resolved->pSub_type();
+
+  G_vAppendNewChild(G.p_fold,CK_FOLDEXPR);
+  if (G.p_type) {
+    G.p_fold->vAppend(G.p_type->pDupCardAndSubCards());
+  }
+  else {
+    G_vAppendNewChild(G.p_foldExpr,CK_TYPE,"((type missing))"_Stz);
+  }
+  G_vAppendNewChild(G.p_foldExpr,CK_AS,"__SQ1RESULT"_Stz);
+  G_vAppendNewChild(G.p_foldExpr,CK_RPNCALC);
+  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* find and mark call to the subquery referenced in G.p_boolCalc              */
 /*----------------------------------------------------------------------------*/
 bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
