@@ -17,7 +17,7 @@ _r_init
 select count(*)
   from lineitem, part
  where P_PARTKEY = L_PARTKEY
-   and l_quantity < (select avg(l_quanity)
+   and l_quantity < (select avg(l_quantity)
                        from lineitem
                       where L_PARTKEY = P_PARTKEY)
 ;

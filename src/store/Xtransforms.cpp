@@ -807,7 +807,7 @@ void Xtransforms::vS32_T10_Convert_sqyOp_not_To_notSqyOp(void)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T20_Convert_where_rpnCalc_To_boolCalc(void)
+void Xtransforms::vS32_T20_Convert_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -816,7 +816,20 @@ void Xtransforms::vS32_T20_Convert_where_rpnCalc_To_boolCalc(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_S32_T20_Convert_where_rpnCalc_To_boolCalc();
+    G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
+
+    G.p_where->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
+
+    G_vDeleteMember(G.p_rpnCalc);
+  }
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+    G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
+
+    G.p_having->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
+
+    G_vDeleteMember(G.p_rpnCalc);
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -1706,13 +1719,32 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   vTransform(__func__, "((20))"_Stz);
 
+  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
+  if (G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+    if (!R_bUTE_FindAndMarkSubQryCall()) {
+      vTracer("DID NOT FIND W_L_NC_NI SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTrace(">>>>>>>>> Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
+  vPrintBoard(__LINE__);
 
-  // 1)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 2) push to sq
+  if (! G_bPushBoard(m_sSqyNm)) {
+    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vR_S40_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq();
+  // 4) pop back to mq
+  G_vPopBoard();
+  vAssert_Board_mqA();
 
   vEndTransform();
 }

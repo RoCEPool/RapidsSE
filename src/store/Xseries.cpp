@@ -258,7 +258,7 @@ void Xseries::vSeries_26_SubQuery_Analysis(bool bEnabled)
   m_pTransforms->vS26_T20_SubQuery_Analysis_Of_Sub_Query();
   m_pTransforms->vS26_T30();
 
-  //m_pTransforms->vS32_T20_Convert_where_rpnCalc_To_boolCalc();
+  //m_pTransforms->vS32_T20_Convert_rpnCalc_To_boolCalc();
   //m_pTransforms->vS32_T20_Convert_stmColOdn_To_tblColOdn();
 
   m_pTransforms->vS26_TZZ_End();
@@ -289,7 +289,7 @@ void Xseries::vSeries_32_To_BoolCalc(bool bEnabled)
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vS32_T10_Convert_sqyOp_not_To_notSqyOp();
-    m_pTransforms->vS32_T20_Convert_where_rpnCalc_To_boolCalc();
+    m_pTransforms->vS32_T20_Convert_rpnCalc_To_boolCalc();
   }
 
   m_pTransforms->vS32_TZZ_End();
