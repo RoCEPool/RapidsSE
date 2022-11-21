@@ -1112,6 +1112,8 @@ void Xtransforms::vS40_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
+  m_pCardCtl->vPrintSubCards(true,CK_PROJELIST,0);
+
   vST00_Begin();
 }
 
@@ -1370,12 +1372,18 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
-      vTracer("DID NOT FIND W_A_N_I SubQuery call\n"_Stz);
+      vTracer("DID NOT FIND W_A_NC_I SubQuery call\n"_Stz);
       NEVER_REACH
     }
   }
   vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz());
+
+  G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
+  G.pDeck->vPush(G.p_fold);
+
   vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // x) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
@@ -1387,6 +1395,8 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
 
   vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // x) pop back to mq
   G_vPopBoard();
@@ -1464,6 +1474,8 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz());
   vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // 2) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
     vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
@@ -1484,6 +1496,8 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   if (G_bEachMain(CK_TABLE)) {
     G_vCopyCard(G.p_table);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 4) pop back to mq
   G_vPopBoard();
