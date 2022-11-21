@@ -1026,7 +1026,6 @@ void AdaptorWL::processQueryExecuteRequest()
                             szMsg,
                             aState[m_eProtocolError],
                             pMsg->rowsPerRowDataResponse);
-    // TODO: Do we need to send a QueryExecuteResponse here?
     vNextState(READY);
     return;
   }
@@ -1389,7 +1388,6 @@ void AdaptorWL::vSendQueryReceipt()
 
   QueryReceiptResponse xQueryReceipt;
   std::vector<StatementReceipt> xStatementReceipts;
-  xQueryReceipt.__set_statementReceipts(xStatementReceipts);
 
   i8 nStatements = 0;
 
@@ -1404,6 +1402,7 @@ void AdaptorWL::vSendQueryReceipt()
     xStatementReceipts.push_back(xStatementReceipt);
   }
 
+  xQueryReceipt.__set_statementReceipts(xStatementReceipts);
   vSerialiseAndSendMsg(&xQueryReceipt, MessageTypes::QueryReceiptResponse);
 
   m_xQueryCtx.m_iStmtCrs = -1;
