@@ -809,20 +809,20 @@ void Weaver::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
 
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-//  Card* pCard_test = pCard_Having->pSub_boolCalc();
-//  if (CK_BOOLCALC == pCard_test->eCard()) {
-//    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
-//    vBoolCalc(szRpnExpr, pCard_CalcBool);
-//  }
-//  else {
-//    Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
-//    vRpnCalc(szRpnExpr, pCard_Calc);
-//  }
-
-  Card_RpnCalc* p_rpnCalc = pCard_Having->pSub_rpnCalc();
-  if (p_rpnCalc) {
-    vRpnCalc(szRpnExpr, p_rpnCalc);
+  Card* pCard_test = pCard_Having->pSub_boolCalc();
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
   }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
+//  Card_RpnCalc* p_rpnCalc = pCard_Having->pSub_rpnCalc();
+//  if (p_rpnCalc) {
+//    vRpnCalc(szRpnExpr, p_rpnCalc);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1125,7 +1125,9 @@ void Xtransforms::vS40_T00_Begin(void)
 
   m_pCardCtl->vUseShorter();
 
-  m_pCardCtl->vPrintSubCards(true,CK_FILTER,CK_PROJELIST,CK_RPNCALC,CK_STREAM,0);
+  m_pCardCtl->vPrintSubCards(true,
+                             CK_AGGELIST,CK_FILTER,CK_GBYELIST,
+                             CK_PROJELIST,CK_RPNCALC,CK_STREAM,0);
 
   vST00_Begin();
 }
