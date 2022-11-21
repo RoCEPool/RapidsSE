@@ -8,7 +8,6 @@
 #include "ApiHelper.hpp"
 #include "PayloadObj.hpp"
 #include "QueryContext.hpp"
-#include "StatementContext.hpp"
 
 // Forward declarations (outside namespace STORE scope)
 namespace WLP { class BufferTransport; }
@@ -62,8 +61,8 @@ namespace STORE
     eEC          m_eProtocolError;
     eState       m_eProtocolState;
 
-    WLP::QueryContext     m_oQueryCtx;
-    WLP::StatementContext m_oStmtCtx;
+    WLP::QueryContext m_oQueryCtx;
+    WLP::StatementContext* m_pStmtCtx;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;
@@ -90,7 +89,6 @@ namespace STORE
 
     Stz* szStatement();
     bool bHasStatement();
-    void vResetStmtCtx();
 
     // State-change handlers called from sen code
     void vStatementSubmitted();
@@ -136,7 +134,6 @@ namespace STORE
 
     // Helpers
     bool bQueryInProgress();
-    bool bExtractNextStatement();
     void vSendQueryReceipt();
     void vFinishQueryDialog();
     i8   eToWLType(eCT eColType);

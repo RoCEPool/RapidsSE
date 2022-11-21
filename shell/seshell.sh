@@ -9,4 +9,4 @@ CLASSPATH="${CLASSPATH}:${DIR}/*:${DIR}/../shell/*"
 export SE_USERNAME=""
 export SE_PASSWORD=""
 
-java "${DEBUG}" -cp "${CLASSPATH}" com.rapidsdata.shell.RapidsShell "$@"
+java -cp "${CLASSPATH}" com.rapidsdata.shell.RapidsShell "$@"

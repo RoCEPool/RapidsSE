@@ -11,16 +11,21 @@ namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace me
 }}}}}
 
 namespace WLP
-{  
+{
+  // Forward declarations and typedefs
+  class StatementContext;
+  typedef ListExo_t<CN_STATEMENTCTXLIST, StatementContext> StatementCtxList;
+  typedef ListExoIter_t<StatementContext> StatementCtxIter;
+
   class QueryContext : public Object
   {
-    public:
+    private:
     com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* m_pQueryExecuteRequest;
-    i8  m_iStmtCrs;
     i8  m_nStmtParsed;
     i8  m_nStmtSucceeded;
     i8  m_nStmtFailed;
     i8  m_iQueryStartNanos;
+    StatementCtxList* m_pStmtCtxList;
 
     Footer m_xFooter;
 
@@ -32,8 +37,24 @@ namespace WLP
     QueryContext(void);
     ~QueryContext(void) noexcept(false);
 
-    void vResetContext();
-  
+    void vReset();
+    void vInit(com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* pQueryExecuteRequest);
+    StatementContext* pPopStmtCtx();
+    StatementCtxIter* pStmtCtxIter();
+
+    Stz* szQueryText();
+    void vIncStmtParsed();
+    i8   nStmtParsed();
+    void vIncStmtSucceeded();
+    i8   nStmtSucceeded();
+    void vIncStmtFailed();
+    i8   nStmtFailed();
+    i8   iQueryStartNanos();
+    i8   nStmtContexts();
+
+  private:
+    void vExtractStatements();
+
     Footer* aFooter(void);
   };
   

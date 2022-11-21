@@ -254,8 +254,6 @@ void Step::vAdaptorWLStatementFetch(void)
 
   m_pDataStack->vPushStz(pAdaptorWL->szStatement());
 
-  pAdaptorWL->vResetStmtCtx();
-
   EXIT();
 }
 
