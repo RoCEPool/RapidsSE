@@ -203,7 +203,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this,&bFoundCall](Card* pCard)
+  auto bLambdaFn_tstPred = [this,&bFoundCall](Card* pCard)
   {
     G.p_tstPred = _pCard_TstPred(pCard);
 
@@ -244,9 +244,34 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  auto bLambdaFn_cmpPred = [this,&bFoundCall](Card* pCard)
+  {
+    G.p_cmpPred = _pCard_CmpPred(pCard);
+    m_sSqyRO  =  G.p_cmpPred->szValue();
+    m_sSqyArg = G.p_cmpPred->pGetChild(0)->szValue();
+
+    G.p_exePred = G.p_cmpPred->pSub_exePred();
+    m_sSqyNm = G.p_exePred->szValue();
+
+    bFoundCall = true;
+
+    G.p_cmpPred->vMark1(MARK_AT);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   G.p_boolCalc->vDump();
 
-  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn_tstPred);
+  if (bFoundCall)
+    return true;
+
+  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_cmpPred);
+  if (bFoundCall)
+    return true;
+
 
   return bFoundCall;
 }

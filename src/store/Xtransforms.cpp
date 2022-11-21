@@ -1723,11 +1723,11 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
-      vTracer("DID NOT FIND W_L_NC_NI SubQuery call\n"_Stz);
+      vTrace("DID NOT FIND H_A_NC_ro SubQuery call\n"_Stz);
       NEVER_REACH
     }
   }
-  vTrace(">>>>>>>>> Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
+  vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_sSqyArg.szStz(),m_sSqyRO.szStz(),m_sSqyNm.szStz());
   vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
