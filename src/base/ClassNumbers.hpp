@@ -251,6 +251,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PTRVAL,
 
   /* */ CN__Q__,
+  /* */ CN_QUERYCONTEXT,
   /* */ CN_QUERYNODE,
   /* */ CN_QUERYNODELIST,
   /* */ CN_QUERYNODESTACK,
@@ -338,6 +339,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGESPEC,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
+  /* */ CN_STATEMENTCONTEXT,
   /* */ CN_STATS,
   /* */ CN_STENCIL,
   /* */ CN_STEP,
@@ -670,6 +672,7 @@ static Stz* aCN[]
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
   /* */ "_Q__"_Stz,                 // CN__Q__
+  /* */ "QUERYCONTEXT"_Stz,         // CN_QUERYCONTEXT
   /* */ "QUERYNODE"_Stz,            // CN_QUERYNODE
   /* */ "QUERYNODELIST"_Stz,        // CN_QUERYNODELIST
   /* */ "QUERYNODESTACK"_Stz,       // CN_QUERYNODESTACK
@@ -757,6 +760,7 @@ static Stz* aCN[]
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
+  /* */ "STATEMENTCONTEXT"_Stz,     // CN_STATEMENTCONTEXT
   /* */ "STATS"_Stz,                // CN_STATS
   /* */ "STENCIL"_Stz,              // CN_STENCIL
   /* */ "STEP"_Stz,                 // CN_STEP

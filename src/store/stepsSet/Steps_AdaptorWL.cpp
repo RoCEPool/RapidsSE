@@ -30,9 +30,9 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
   vAddStep("AdaptorWL[].resultMetadata"_Stz,      &Step::vAdaptorWLResultMetadata);
-  vAddStep("AdaptorWL[].statement@\\clear"_Stz,   &Step::vAdaptorWLStatementFetchClear);
-  vAddStep("AdaptorWL[].smtSubmitted"_Stz,        &Step::vAdaptorWLStatementSubmitted);
-  vAddStep("AdaptorWL[].smtSubmittedErr"_Stz,     &Step::vAdaptorWLStatementSubmittedError);
+  vAddStep("AdaptorWL[].statement@"_Stz,          &Step::vAdaptorWLStatementFetch);
+  vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
+  vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,9 +244,9 @@ void Step::vAdaptorWLIsChildJobActive(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* AdaptorWL[].statement@\clear -- Push & clear the statement to submit       */
+/* AdaptorWL[].statement@ -- Push & clear the statement to submit             */
 /*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLStatementFetchClear(void)
+void Step::vAdaptorWLStatementFetch(void)
 {
   ENTRY();
 

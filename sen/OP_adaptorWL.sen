@@ -38,11 +38,11 @@
     nullptr [job].responseOp!
 
     // Error code is on the stack. Use it to form a message to be sent to the client.
-    AdaptorWL[].smtSubmittedErr
+    AdaptorWL[].stmtSubmittedErr
     exit
   then
 
-  AdaptorWL[].smtSubmitted
+  AdaptorWL[].stmtSubmitted
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +115,7 @@
 
   // Check if there are statements to be submitted through the API
   AdaptorWL[].hasStatement if
-    AdaptorWL[].statement@\clear adaptorWL_submitStatement
+    AdaptorWL[].statement@ adaptorWL_submitStatement
 
     // Pipeout any payloads that were just generated so they can be sent straight away
     adaptorWL_sendAnyWLResponses
@@ -295,6 +295,21 @@
     AdaptorWL[].protocolError@ op__execErr
     true
     exit
+  then
+
+  // Check if there are statements to be submitted through the API
+  AdaptorWL[].hasStatement if
+    AdaptorWL[].statement@ adaptorWL_submitStatement
+
+    // Pipeout any payloads that were just generated so they can be sent straight away
+    adaptorWL_sendAnyWLResponses
+
+    // Check if the protocol is unviable
+    AdaptorWL[].protocolErrorTest if
+      AdaptorWL[].protocolError@ op__execErr
+      true
+      exit
+    then
   then
 
   true

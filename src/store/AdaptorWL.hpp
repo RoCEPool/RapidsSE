@@ -7,6 +7,8 @@
 
 #include "ApiHelper.hpp"
 #include "PayloadObj.hpp"
+#include "QueryContext.hpp"
+#include "StatementContext.hpp"
 
 // Forward declarations (outside namespace STORE scope)
 namespace WLP { class BufferTransport; }
@@ -24,31 +26,6 @@ namespace STORE
 {
   // Forward declarations (inside namespace STORE scope)
   typedef ListExo_t<CN_PAYLOADLIST, WLP::PayloadObj> PayloadList;
-
-  // Internal structure/classes used
-  struct QueryContext {
-    com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* m_pQueryExecuteRequest;
-    i8  m_iStmtCrs;
-    i8  m_nStmtParsed;
-    i8  m_nStmtSucceeded;
-    i8  m_nStmtFailed;
-    i8  m_iQueryStartNanos;
-
-    QueryContext();
-    ~QueryContext() noexcept(false);
-
-    void vResetContext();
-  };
-
-  struct StatementContext {
-    s48K  m_sStmtBuf;
-    bool  m_bGotStmtError;
-
-    StatementContext();
-    ~StatementContext();
-
-    void vResetContext();
-  };
 
   class AdaptorWL : public Object
                   , public ApiHelper
@@ -85,8 +62,8 @@ namespace STORE
     eEC          m_eProtocolError;
     eState       m_eProtocolState;
 
-    QueryContext     m_xQueryCtx;
-    StatementContext m_xStmtCtx;
+    WLP::QueryContext     m_oQueryCtx;
+    WLP::StatementContext m_oStmtCtx;
 
     // For thrift serialisation and deserialisation
     std::shared_ptr<WLP::BufferTransport> m_pTransport;

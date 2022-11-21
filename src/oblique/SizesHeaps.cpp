@@ -261,6 +261,8 @@
 using namespace Parser;
 
 #include "PayloadObj.hpp"
+#include "QueryContext.hpp"
+#include "StatementContext.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
@@ -507,6 +509,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PTRVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),            HT_INVALID   ,FILL },
+  { CN_QUERYCONTEXT,             sizeof(WLP::QueryContext),  HT_V_TINY    ,FILL },
   { CN_QUERYNODE,                sizeof(QueryNode),          HT_V_TINY    ,FILL },
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),      HT_T_TINY    ,FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),     HT_T_MEDIUM  ,FILL },
@@ -594,6 +597,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STAGESPEC,                sizeof(StageSpec),          HT_T_TINY    ,FILL },
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
+  { CN_STATEMENTCONTEXT,         sizeof(WLP::StatementContext),HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },

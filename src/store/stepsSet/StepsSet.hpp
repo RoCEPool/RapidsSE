@@ -40,7 +40,7 @@ public:
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
   void vAdaptorWLResultMetadata(void);
-  void vAdaptorWLStatementFetchClear(void);
+  void vAdaptorWLStatementFetch(void);
   void vAdaptorWLStatementSubmitted(void);
   void vAdaptorWLStatementSubmittedError(void);
 

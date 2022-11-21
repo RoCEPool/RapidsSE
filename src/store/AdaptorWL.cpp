@@ -279,7 +279,7 @@ WLP::PayloadObj* AdaptorWL::pNextPayloadToSend(void)
 /*----------------------------------------------------------------------------*/
 Stz* AdaptorWL::szStatement()
 {
-  return m_xStmtCtx.m_sStmtBuf.szStz();
+  return m_oStmtCtx.m_sStmtBuf.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +287,7 @@ Stz* AdaptorWL::szStatement()
 /*----------------------------------------------------------------------------*/
 bool AdaptorWL::bHasStatement()
 {
-  return !m_xStmtCtx.m_sStmtBuf.bIsEmpty();
+  return !m_oStmtCtx.m_sStmtBuf.bIsEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,7 +296,7 @@ bool AdaptorWL::bHasStatement()
 void AdaptorWL::vResetStmtCtx()
 {
   // TODO: Get rid of this. Move it elsewhere, like when we move to StatementComplete
-  m_xStmtCtx.vResetContext();
+  m_oStmtCtx.vResetContext();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,7 +329,7 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 {
-  if (m_xStmtCtx.m_bGotStmtError) {
+  if (m_oStmtCtx.m_bGotStmtError) {
     return;
   }
 
@@ -353,7 +353,7 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
                           iColumnNo,
                           szErrorText);
 
-  m_xStmtCtx.m_bGotStmtError = true;
+  m_oStmtCtx.m_bGotStmtError = true;
 
   // An error at this point ends the current statement
   vNextState(API_STATEMENT_COMPLETED);
@@ -364,7 +364,7 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 {
-  if (m_xStmtCtx.m_bGotStmtError) {
+  if (m_oStmtCtx.m_bGotStmtError) {
     return;
   }
 
@@ -384,7 +384,7 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
                           aEC2[eErrorCode],
                           szErrorText);
 
-  m_xStmtCtx.m_bGotStmtError = true;
+  m_oStmtCtx.m_bGotStmtError = true;
 
   // An error at this point ends the current statement
   vNextState(API_STATEMENT_COMPLETED);
@@ -395,9 +395,26 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vChildJobExited()
 {
-  ASSERT(bCheckState( {API_STATEMENT_COMPLETED} ));
+  ASSERT(bCheckState( { API_STATEMENT_TO_SUBMIT,
+                        API_STATEMENT_SUBMITTED,
+                        API_METADATA_RECEIVED,
+                        API_DATA_RECEIVED,
+                        API_STATEMENT_COMPLETED } ));
 
-  m_xStmtCtx.vResetContext();
+  if (!m_oStmtCtx.m_bGotStmtError) {
+    // We need to send a StatementComplete message to the client
+    StatementResponse xMsg;
+//    xMsg.__set_statementId(xx);
+//    xMsg.__set_statementString(m_oStmtCtx.m_sStmtBuf.azChar());
+//    xMsg.__set_numMatchedRows(xx);
+//    xMsg.__set_numAffectedRows(xx);
+//    xMsg.__set_affectedVerb(xx);
+
+
+    vSerialiseAndSendMsg(&xMsg, MessageTypes::type::StatementResponse);
+  }
+
+  m_oStmtCtx.vResetContext();
   vNextState(API_CHILD_JOB_EXITED);
 
   if (bExtractNextStatement()) {
@@ -434,7 +451,7 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
   ASSERT(bCheckState( {API_STATEMENT_SUBMITTED} ));
   vNextState(API_METADATA_RECEIVED);
 
-  if (m_xStmtCtx.m_bGotStmtError) {
+  if (m_oStmtCtx.m_bGotStmtError) {
     return;
   }
 
@@ -468,7 +485,7 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
                                 aCT[eColType]);
       }
 
-      m_xStmtCtx.m_bGotStmtError = true;
+      m_oStmtCtx.m_bGotStmtError = true;
       vNextState(API_STATEMENT_COMPLETED);
       return;
     }
@@ -1044,14 +1061,14 @@ void AdaptorWL::processQueryExecuteRequest()
 
   vNextState(QUERY_BEGUN);
 
-  m_xQueryCtx.vResetContext();
-  m_xStmtCtx.vResetContext();
+  m_oQueryCtx.vResetContext();
+  m_oStmtCtx.vResetContext();
 
-  m_xQueryCtx.m_iQueryStartNanos = Timer::iGetTimeOfDay();
+  m_oQueryCtx.m_iQueryStartNanos = Timer::iGetTimeOfDay();
 
   // Move the current QueryExecuteRequest to the QueryContext object
   // so that we can keep it until the query is completed.
-  m_xQueryCtx.m_pQueryExecuteRequest = pMsg;
+  m_oQueryCtx.m_pQueryExecuteRequest = pMsg;
   m_pCurrentMsg = nullptr;
 
   // Send back a QueryReceiptResponse before we submit the first query.
@@ -1310,34 +1327,34 @@ bool AdaptorWL::bQueryInProgress()
 /*----------------------------------------------------------------------------*/
 bool AdaptorWL::bExtractNextStatement()
 {
-  ASSERT(m_xQueryCtx.m_iStmtCrs >= -1);
-  ASSERT(m_xQueryCtx.m_pQueryExecuteRequest);
+  ASSERT(m_oQueryCtx.m_iStmtCrs >= -1);
+  ASSERT(m_oQueryCtx.m_pQueryExecuteRequest);
   ASSERT(!m_pCurrentMsg);
   ASSERT(bCheckState({QUERY_BEGUN, API_CHILD_JOB_EXITED}));
 
-  QueryExecuteRequest* pMsg = m_xQueryCtx.m_pQueryExecuteRequest;
+  QueryExecuteRequest* pMsg = m_oQueryCtx.m_pQueryExecuteRequest;
   ASSERT(pMsg);
 
   i8 nQueryLen = (i8) pMsg->query.length();
 
-  i8 iStartCrs = m_xQueryCtx.m_iStmtCrs + 1;
+  i8 iStartCrs = m_oQueryCtx.m_iStmtCrs + 1;
 
-  while (++m_xQueryCtx.m_iStmtCrs < nQueryLen) {
-    char c = pMsg->query.at(m_xQueryCtx.m_iStmtCrs);
+  while (++m_oQueryCtx.m_iStmtCrs < nQueryLen) {
+    char c = pMsg->query.at(m_oQueryCtx.m_iStmtCrs);
 
     switch (c) {
 
       case '/':
         // Check for SQL comments and advance over the comment block
-        if (    (m_xQueryCtx.m_iStmtCrs + 1 < nQueryLen)
-             && pMsg->query.at(m_xQueryCtx.m_iStmtCrs + 1) == '*'
+        if (    (m_oQueryCtx.m_iStmtCrs + 1 < nQueryLen)
+             && pMsg->query.at(m_oQueryCtx.m_iStmtCrs + 1) == '*'
            ) {
-          ++m_xQueryCtx.m_iStmtCrs;  // Cursor points at the first '*'
+          ++m_oQueryCtx.m_iStmtCrs;  // Cursor points at the first '*'
 
           // Advance to the "*/" or the EOS
-          while (++m_xQueryCtx.m_iStmtCrs < nQueryLen) {
-            char d = pMsg->query.at(m_xQueryCtx.m_iStmtCrs);
-            if (d == '*' && (m_xQueryCtx.m_iStmtCrs + 1 < nQueryLen) && pMsg->query.at(m_xQueryCtx.m_iStmtCrs + 1) == '/') {
+          while (++m_oQueryCtx.m_iStmtCrs < nQueryLen) {
+            char d = pMsg->query.at(m_oQueryCtx.m_iStmtCrs);
+            if (d == '*' && (m_oQueryCtx.m_iStmtCrs + 1 < nQueryLen) && pMsg->query.at(m_oQueryCtx.m_iStmtCrs + 1) == '/') {
               break;
             }
           }
@@ -1346,27 +1363,27 @@ bool AdaptorWL::bExtractNextStatement()
 
       case '\'':
         // Advance over the single-quoted string
-        while (++m_xQueryCtx.m_iStmtCrs < nQueryLen && pMsg->query.at(m_xQueryCtx.m_iStmtCrs) != '\'') {}
+        while (++m_oQueryCtx.m_iStmtCrs < nQueryLen && pMsg->query.at(m_oQueryCtx.m_iStmtCrs) != '\'') {}
         break;
 
       case '"':
         // Advance over the double-quoted string
-        while (++m_xQueryCtx.m_iStmtCrs < nQueryLen && pMsg->query.at(m_xQueryCtx.m_iStmtCrs) != '"') {}
+        while (++m_oQueryCtx.m_iStmtCrs < nQueryLen && pMsg->query.at(m_oQueryCtx.m_iStmtCrs) != '"') {}
         break;
 
       case '`':
         // Advance over the backtick identifier
-        while (++m_xQueryCtx.m_iStmtCrs < nQueryLen && pMsg->query.at(m_xQueryCtx.m_iStmtCrs) != '`') {}
+        while (++m_oQueryCtx.m_iStmtCrs < nQueryLen && pMsg->query.at(m_oQueryCtx.m_iStmtCrs) != '`') {}
         break;
 
       case ';':
         // Extract the semicolon terminated statement
         // TODO: TEMP: Don't include the terminating semicolon as this gets interpreted as another
         //       argument to the sqlCompiler procedure.
-        m_xStmtCtx.m_sStmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_xQueryCtx.m_iStmtCrs - iStartCrs);
+        m_oStmtCtx.m_sStmtBuf.vCopy((Stz*) (pMsg->query.c_str() + iStartCrs), m_oQueryCtx.m_iStmtCrs - iStartCrs);
 //        m_xStmtCtx.m_sStmtBuf.vCopy((Stz*) (pMsg->query.c_str() + m_xQueryCtx.iStartCrs),
 //                                   m_xQueryCtx.m_iStmtCrs - iStartCrs + 1);
-        ++m_xQueryCtx.m_nStmtParsed;
+        ++m_oQueryCtx.m_nStmtParsed;
         return true;
 
       default:
@@ -1375,6 +1392,7 @@ bool AdaptorWL::bExtractNextStatement()
   }
 
   // No semicolon terminated statement found
+  m_oStmtCtx.m_sStmtBuf.vReset();
   return false;
 }
 
@@ -1384,7 +1402,7 @@ bool AdaptorWL::bExtractNextStatement()
 void AdaptorWL::vSendQueryReceipt()
 {
   ASSERT(bCheckState( {QUERY_BEGUN} ));
-  ASSERT(m_xQueryCtx.m_iStmtCrs == -1);
+  ASSERT(m_oQueryCtx.m_iStmtCrs == -1);
 
   QueryReceiptResponse xQueryReceipt;
   std::vector<StatementReceipt> xStatementReceipts;
@@ -1395,7 +1413,7 @@ void AdaptorWL::vSendQueryReceipt()
     ++nStatements;
 
     StatementReceipt xStatementReceipt{};
-    xStatementReceipt.__set_statementString(m_xStmtCtx.m_sStmtBuf.azChar());
+    xStatementReceipt.__set_statementString(m_oStmtCtx.m_sStmtBuf.azChar());
     xStatementReceipt.__set_statementId("abcd");  // TODO: Use a real statementId
     xStatementReceipt.__set_statementKey(-1);     // TODO: Use a real statementKey
 
@@ -1405,8 +1423,8 @@ void AdaptorWL::vSendQueryReceipt()
   xQueryReceipt.__set_statementReceipts(xStatementReceipts);
   vSerialiseAndSendMsg(&xQueryReceipt, MessageTypes::QueryReceiptResponse);
 
-  m_xQueryCtx.m_iStmtCrs = -1;
-  m_xStmtCtx.vResetContext();
+  m_oQueryCtx.m_iStmtCrs = -1;
+  m_oStmtCtx.vResetContext();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1417,18 +1435,18 @@ void AdaptorWL::vFinishQueryDialog()
   vNextState(QUERY_COMPLETED);
 
   i8 iQueryEndNanos = Timer::iGetTimeOfDay();
-  double dQueryTime = (double) (iQueryEndNanos - m_xQueryCtx.m_iQueryStartNanos) / C_1B;
+  double dQueryTime = (double) (iQueryEndNanos - m_oQueryCtx.m_iQueryStartNanos) / C_1B;
 
   QueryExecuteResponse xResponse;
   xResponse.executionTime = dQueryTime;
-  xResponse.numStatementsParsed    = m_xQueryCtx.m_nStmtParsed;
-  xResponse.numStatementsSucceeded = m_xQueryCtx.m_nStmtSucceeded;
-  xResponse.numStatementsFailed    = m_xQueryCtx.m_nStmtFailed;
+  xResponse.numStatementsParsed    = m_oQueryCtx.m_nStmtParsed;
+  xResponse.numStatementsSucceeded = m_oQueryCtx.m_nStmtSucceeded;
+  xResponse.numStatementsFailed    = m_oQueryCtx.m_nStmtFailed;
 
   vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
 
   // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
-  m_xQueryCtx.vResetContext();
+  m_oQueryCtx.vResetContext();
 
   vNextState(READY);
 }
@@ -1456,74 +1474,6 @@ i8 AdaptorWL::eToWLType(eCT eColType)
     case CT_ENUMS:        return -1;
     default:              NEVER_REACH
   }
-}
-
-/*============================================================================*/
-/* QueryContext struct                                                        */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-QueryContext::QueryContext(void)
-{
-  m_pQueryExecuteRequest = nullptr;
-  m_iStmtCrs         = -1;
-  m_nStmtParsed      = 0;
-  m_nStmtSucceeded   = 0;
-  m_nStmtFailed      = 0;
-  m_iQueryStartNanos = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-QueryContext::~QueryContext(void) noexcept(false)
-{
-  delete m_pQueryExecuteRequest;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Reset                                                                      */
-/*----------------------------------------------------------------------------*/
-void QueryContext::vResetContext()
-{
-  delete m_pQueryExecuteRequest;
-  m_pQueryExecuteRequest = nullptr;
-  m_iStmtCrs           = -1;
-  m_nStmtParsed        = 0;
-  m_nStmtSucceeded     = 0;
-  m_nStmtFailed        = 0;
-  m_iQueryStartNanos  = 0;
-}
-
-/*============================================================================*/
-/* StatementContext struct                                                    */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-StatementContext::StatementContext(void)
-{
-  vResetContext();
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-StatementContext::~StatementContext(void) noexcept(false)
-{
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* Reset                                                                      */
-/*----------------------------------------------------------------------------*/
-void StatementContext::vResetContext()
-{
-  m_sStmtBuf.vReset();
-  m_bGotStmtError = false;
 }
 
 /*============================================================================*/
