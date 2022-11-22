@@ -16,7 +16,7 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value
     and s_nationkey = n_nationkey
     and n_name = 'GERMANY' )
 
-    order by value asc;
+    order by value desc;
 
 */
 

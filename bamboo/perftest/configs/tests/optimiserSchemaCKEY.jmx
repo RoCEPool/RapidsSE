@@ -2785,33 +2785,15 @@ begin
 
   stage S01 on all partitions :
     indexScan Orders IxO_ORDERDATE &quot;LBOUND date &apos;1993-10-01&apos; &gt;=  UBOUND date &apos;1994-01-01&apos; &lt; &quot;
-    | project &quot;type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY&quot;
+    | project &quot;type INTEGER as O_CUSTKEY  O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY&quot;
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
     | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME J1_C_NAME ,
-               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
-               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
-               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
-               type VARCHAR as C_PHONE J1_C_PHONE ,
-               type VARCHAR as C_COMMENT J1_C_COMMENT&quot;
-    | combined 0
-    | next
-
-  stage S03 on all partitions :
-    indexjoin Nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
-    | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME J1_N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT&quot;
+               type INTEGER as O_ORDERKEY O_ORDERKEY&quot;
     | hash expr type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
@@ -2821,53 +2803,72 @@ begin
     | filter  &quot;type BOOLEAN J1_L_RETURNFLAG &apos;R&apos; ==&quot;
     | aggreg  &quot;groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
-                          type VARCHAR as C_NAME C_NAME ,
-                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
-                          type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                          type VARCHAR as N_NAME N_NAME ,
-                          type VARCHAR as C_ADDRESS C_ADDRESS ,
-                          type VARCHAR as C_PHONE C_PHONE ,
-                          type VARCHAR as C_COMMENT C_COMMENT&quot;
+                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum &quot;
     | combined 0
     | next
 
   stage S04 on all nodes :
     aggreg &quot;groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type VARCHAR as C_NAME C_NAME ,
-                       type DECIMAL as REVENUE ) REVENUE  sum ,
-                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR as N_NAME N_NAME ,
-                       type VARCHAR as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR as C_PHONE C_PHONE ,
-                       type VARCHAR as C_COMMENT C_COMMENT&quot;
+                       type DECIMAL as REVENUE ) REVENUE  sum &quot;
     | combined 0
     | next
 
   stage S05 on origin :
     aggreg &quot;groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type VARCHAR as C_NAME C_NAME ,
-                       type DECIMAL as REVENUE ) REVENUE  sum ,
-                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR as N_NAME N_NAME ,
-                       type VARCHAR as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR as C_PHONE C_PHONE ,
-                       type VARCHAR as C_COMMENT C_COMMENT&quot;
+                       type DECIMAL as REVENUE ) REVENUE  sum&quot;
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top &quot; TOP type DECIMAL REVENUE &quot; 20
+    | hash expr type INTEGER O_CUSTKEY
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
+    | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
+               type VARCHAR as C_NAME J1_C_NAME ,
+               type DECIMAL as REVENUE ) REVENUE ,
+               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
+               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+               type VARCHAR as C_PHONE J1_C_PHONE ,
+               type VARCHAR as C_COMMENT J1_C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexjoin Nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
+    | project &quot;type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR as C_NAME C_NAME ,
+               type DECIMAL as REVENUE ) REVENUE ,
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top &quot; TOP type DECIMAL REVENUE &quot; 20
     | combined 0
     | next
 
   stage S06 on origin :
     sort &quot; type DECIMAL REVENUE ASC  &quot;
-    | limit 100
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S10 on origin :
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
