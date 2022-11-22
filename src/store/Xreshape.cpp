@@ -254,6 +254,43 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_boolCalc = G.p_having->pSub_boolCalc();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card *pCard) {
+
+    if (MARK_AT != pCard->cMark1())
+      return C_CONTINUE_RECURSION;
+
+    G.p_cmpPred = _pCard_CmpPred(pCard);
+
+    if (! (G.p_exePred = G.p_cmpPred->pSub_exePred()))
+      return C_CONTINUE_RECURSION;
+
+    G.p_cmpPred->vRemoveChild(G.p_exePred);
+    DELETE_CARD(G.p_exePred);
+
+    m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
+    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
+
+    G_vAppendNewChild(G.p_cmpPred,CK_TERM,"$1"_Stz);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn);
+
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_foldExpr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

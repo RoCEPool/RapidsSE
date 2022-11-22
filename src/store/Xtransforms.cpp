@@ -1784,6 +1784,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   G_vRestart();
   if (G_bEachMain(CK_HAVING)) {
     R_vUTE_Unproject_foldExpr();
+    R_vUTE_Correct_having_BaseOn_foldExpr();
   }
 
   vPrintBoard(__LINE__);
