@@ -1,0 +1,151 @@
+/*============================================================================*/
+/* _a_q10 -- Query10 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+  ps_partkey,
+  sum(ps_supplycost * ps_availqty) as value
+from
+  partsupp,
+  supplier,
+  nation
+where
+  ps_suppkey = s_suppkey
+  and s_nationkey = n_nationkey
+  and n_name = 'GERMANY'
+group by
+  ps_partkey
+having
+  sum(ps_supplycost * ps_availqty) > (
+
+    select
+      sum(ps_supplycost * ps_availqty) * 0.0000010000
+    from
+      partsupp,
+      supplier,
+      nation
+    where
+      ps_suppkey = s_suppkey
+      and s_nationkey = n_nationkey
+      and n_name = 'GERMANY' )
+
+order by
+  value asc; //desc
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : PARTSUPP, SUPPLIER, NATION
+// JOIN ORDER : NATION->SUPPLIER->PARTSUPP....>NATION->SUPPLIER->PARTSUPP
+// INDEXES    : IxS_NATIONKEY
+//              IxPS_SUPPKEY
+//              IxN_NATIONKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+pipeline Query10
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
+    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | hash expr type INTEGER O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | aggreg  "groupby    type INTEGER O_CUSTKEY
+               aggregates type INTEGER as O_CUSTKEY $K1 ,
+                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg "groupby    type INTEGER O_CUSTKEY
+            aggregates type INTEGER as O_CUSTKEY $K1 ,
+                       type DECIMAL as REVENUE ) REVENUE  sum "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg "groupby    type INTEGER O_CUSTKEY
+            aggregates type INTEGER as O_CUSTKEY $K1 ,
+                       type DECIMAL as REVENUE ) REVENUE  sum"
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top " TOP type DECIMAL REVENUE " 20
+    | hash expr type INTEGER O_CUSTKEY
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
+               type VARCHAR as C_NAME J1_C_NAME ,
+               type DECIMAL as REVENUE ) REVENUE ,
+               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
+               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+               type VARCHAR as C_PHONE J1_C_PHONE ,
+               type VARCHAR as C_COMMENT J1_C_COMMENT"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR as C_NAME C_NAME ,
+               type DECIMAL as REVENUE ) REVENUE ,
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top " TOP type DECIMAL REVENUE " 20
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort " type DECIMAL REVENUE ASC  "
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

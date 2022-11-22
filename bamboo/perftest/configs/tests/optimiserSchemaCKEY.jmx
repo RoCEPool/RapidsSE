@@ -651,6 +651,20 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline7</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxS_NATIONKEY ON supplier(s_nationkey);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Required for pipeline7</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_NATIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxN_NATIONKEY ON nation (n_nationkey);</stringProp>
@@ -1082,6 +1096,19 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxS_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index supplier IxS_SUPPKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxS_NATIONKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index supplier IxS_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2919,6 +2946,159 @@ create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
               <stringProp name="FileSaver.filename">p10_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P11Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p11" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER as N_NATIONKEY N_NATIONKEY&quot;
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER as S_SUPPKEY J1_S_SUPPKEY&quot;
+    | combined 0
+    | next broadcast
+
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | project &quot; type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    project &quot; type DECIMAL as INNERRESULT )  $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project &quot; type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  &quot;
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot;bound $I1&quot;
+    | filter &quot; type BOOLEAN J1_N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | aggreg &quot; groupBy    type INTEGER J1_PS_PARTKEY
+               aggregates
+                          type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    aggreg &quot; groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    aggreg &quot; groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter &quot; type BOOLEAN  value INNERRESULT  &gt;  &quot;
+    | project &quot; type INTEGER as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL as VALUE VALUE&quot;
+    | sort &quot; type DECIMAL VALUE ASC  &quot;
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+create index IxS_NATIOKEY  ON Supplier (S_NATIONKEY) ;
+create index IxPS_SUPPKEY ON Partsupp (xPS_SUPPKEY)  ;
+create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
+
+</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p11.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p11_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>
