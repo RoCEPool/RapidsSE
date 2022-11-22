@@ -2537,6 +2537,19 @@ Card_Size* Card::pSub_size(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_SqtPred.hpp"
+Card_SqtPred* Card::pSub_sqtPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SqtPred* p_sqtPred =
+      _pCard_SqtPred(pFindSubCard(CK_SQTPRED));
+  return p_sqtPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Stream.hpp"
 Card_Stream* Card::pSub_stream(void)
 {
@@ -2675,19 +2688,6 @@ Card_Topology* Card::pSub_topology(void)
   Card_Topology* p_stageTopo =
       _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
   return p_stageTopo;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_TstPred.hpp"
-Card_TstPred* Card::pSub_tstPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_TstPred* p_tstPred =
-      _pCard_TstPred(pFindSubCard(CK_TSTPRED));
-  return p_tstPred;
 }
 
 /*----------------------------------------------------------------------------*/

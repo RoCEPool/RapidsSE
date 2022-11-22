@@ -1213,8 +1213,8 @@ void Weaver::vBoolCalc(Stz* szRpnExpr, Card_BoolCalc* pCard_BoolCalc)
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
-      case CK_TSTPRED:
-        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
+      case CK_SQTPRED:
+        vSqtPred(szRpnExpr, _pCard_SqtPred(pSubCard), 0);
         break;
       default:
         vOtherPred(szRpnExpr, pSubCard, 0);
@@ -1247,8 +1247,8 @@ void Weaver::vOrPred(Stz* szRpnExpr, Card_OrPred* pCard_OrPred, i8 i)
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
-      case CK_TSTPRED:
-        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
+      case CK_SQTPRED:
+        vSqtPred(szRpnExpr, _pCard_SqtPred(pSubCard), 0);
         break;
       default:
         vOtherPred(szRpnExpr, pSubCard, 0);
@@ -1283,8 +1283,8 @@ void Weaver::vAndPred(Stz* szRpnExpr, Card_AndPred* pCard_AndPred, i8 i)
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
-      case CK_TSTPRED:
-        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
+      case CK_SQTPRED:
+        vSqtPred(szRpnExpr, _pCard_SqtPred(pSubCard), 0);
         break;
       default:
         vOtherPred(szRpnExpr, pSubCard, 0);
@@ -1319,8 +1319,8 @@ void Weaver::vCmpPred(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred, i8 i)
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
-      case CK_TSTPRED:
-        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
+      case CK_SQTPRED:
+        vSqtPred(szRpnExpr, _pCard_SqtPred(pSubCard), 0);
         break;
       default:
         vOtherPred(szRpnExpr, pSubCard, 0);
@@ -1335,7 +1335,7 @@ void Weaver::vCmpPred(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred, i8 i)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <predCmp>                                             */
 /*----------------------------------------------------------------------------*/
-void Weaver::vTstPred(Stz* szRpnExpr, Card_TstPred* pCard_TstPred, i8 i)
+void Weaver::vSqtPred(Stz* szRpnExpr, Card_SqtPred* pCard_TstPred, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -1355,8 +1355,8 @@ void Weaver::vTstPred(Stz* szRpnExpr, Card_TstPred* pCard_TstPred, i8 i)
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
-      case CK_TSTPRED:
-        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
+      case CK_SQTPRED:
+        vSqtPred(szRpnExpr, _pCard_SqtPred(pSubCard), 0);
         break;
       default:
         vOtherPred(szRpnExpr, pSubCard, 0);

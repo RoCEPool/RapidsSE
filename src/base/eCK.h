@@ -117,6 +117,7 @@ enum eCK // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SIZE,
   /* */ CK_SORT,
+  /* */ CK_SQTPRED,
   /* */ CK_STAGE,
   /* */ CK_STMCOL,
   /* */ CK_STMCOLLIST,
@@ -132,7 +133,6 @@ enum eCK // card kind
   /* */ CK_TBLCOLODN,
   /* */ CK_TERM,
   /* */ CK_TOPOLOGY,
-  /* */ CK_TSTPRED,
   /* */ CK_TWIST,
   /* */ CK_TYPE,
 
@@ -279,6 +279,7 @@ static Stz* aCK[]
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
+  /* */ "CK_SQTPRED"_Stz,      // CK_SQTPRED
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
   /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
@@ -294,7 +295,6 @@ static Stz* aCK[]
   /* */ "CK_TBLCOLODN"_Stz,    // CK_TBLCOLODN
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
-  /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
   /* */ "CK_TWIST"_Stz,        // CK_TWIST
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
@@ -440,6 +440,7 @@ static Stz* aCK_short[]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
+  /* */ "sqtPred"_Stz,         // CK_SQTPRED
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stmCol"_Stz,          // CK_STMCOL
   /* */ "stmColList"_Stz,      // CK_STMCOLLIST
@@ -455,7 +456,6 @@ static Stz* aCK_short[]
   /* */ "tblColOdn"_Stz,       // CK_TBLCOLODN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "topology"_Stz,        // CK_TOPOLOGY
-  /* */ "tstPred"_Stz,         // CK_TSTPRED
   /* */ "twist"_Stz,           // CK_TWIST
   /* */ "type"_Stz,            // CK_TYPE
 

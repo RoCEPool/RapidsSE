@@ -322,32 +322,32 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   auto bLambdaFn_tstPred = [this,&bFoundCall](Card* pCard)
   {
-    G.p_tstPred = _pCard_TstPred(pCard);
+    G.p_sqtPred = _pCard_SqtPred(pCard);
 
-    if (G.p_tstPred->bIsValue("exists"_Stz) || G.p_tstPred->bIsValue("notExists"_Stz)) {
-      m_pTerm_0 = _pCard_Term(G.p_tstPred->pGet(0));
+    if (G.p_sqtPred->bIsValue("exists"_Stz) || G.p_sqtPred->bIsValue("notExists"_Stz)) {
+      m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
       m_sSqyArg = m_pTerm_0->szValue();
-      m_pTerm_1 = _pCard_Term(G.p_tstPred->pGet(1));
+      m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
       m_sSqyNm = m_pTerm_1->szValue();
 
       bFoundCall = true;
 
-      G.p_tstPred->vMark1(MARK_AT);
+      G.p_sqtPred->vMark1(MARK_AT);
 
       return C_CONTINUE_RECURSION;
     }
 
-    if (G.p_tstPred->bIsValue("in"_Stz) || G.p_tstPred->bIsValue("notIn"_Stz)) {
-      m_pTerm_0 = _pCard_Term(G.p_tstPred->pGet(0));
+    if (G.p_sqtPred->bIsValue("in"_Stz) || G.p_sqtPred->bIsValue("notIn"_Stz)) {
+      m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
       m_sSqyNm = m_pTerm_0->szValue();
-      m_pTerm_1 = _pCard_Term(G.p_tstPred->pGet(1));
+      m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
       m_sSqyRsl = m_pTerm_1->szValue();
-      m_pTerm_2 = _pCard_Term(G.p_tstPred->pGet(2));
+      m_pTerm_2 = _pCard_Term(G.p_sqtPred->pGet(2));
       m_sSqyArg = m_pTerm_2->szValue();
 
       bFoundCall = true;
 
-      G.p_tstPred->vMark1(MARK_AT);
+      G.p_sqtPred->vMark1(MARK_AT);
 
       return C_CONTINUE_RECURSION;
     }
@@ -381,7 +381,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   G.p_boolCalc->vDump();
 
-  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn_tstPred);
+  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn_tstPred);
   if (bFoundCall)
     return true;
 
@@ -2109,9 +2109,9 @@ void Xreshape::vR_S60_T05_Twist_in_Becomes_filter(void)
 
   vReshape(__func__);
 
-  RASSERT(G.p_tstPred);
+  RASSERT(G.p_sqtPred);
 
-  char cTblSyn = D_cPRED_TableSyn_First(G.p_tstPred);
+  char cTblSyn = D_cPRED_TableSyn_First(G.p_sqtPred);
 
   if (' ' == cTblSyn)
     return;
@@ -2132,7 +2132,7 @@ void Xreshape::vR_S60_T05_Twist_in_Becomes_filter(void)
     G.p_filter->vAppend(G.p_boolCalc);
   }
 
-  Card* p_copy = G.p_tstPred->pDupCardAndSubCards();
+  Card* p_copy = G.p_sqtPred->pDupCardAndSubCards();
   p_copy->vCard(CK_CMPPRED);
   p_copy->vValue("=="_Stz);
 
@@ -3496,18 +3496,18 @@ void Xreshape::vR_S36X_T40_Delete_tstPred_In_whereA(void)
 
   auto bLambdaFn = [this](Card *pCard) {
 
-    Card_TstPred* p_tstPred = _pCard_TstPred(pCard);
+    Card_SqtPred* p_sqtPred = _pCard_SqtPred(pCard);
 
-    M_vBoolCalc_RemovePred(G.p_boolCalc,p_tstPred);
+    M_vBoolCalc_RemovePred(G.p_boolCalc,p_sqtPred);
 
-    DELETE_CARD(p_tstPred);
+    DELETE_CARD(p_sqtPred);
 
     return C_TERMINATE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->bApplyRecursive(CK_TSTPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
 
   vEndReshape();
 }

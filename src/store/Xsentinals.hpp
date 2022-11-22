@@ -136,7 +136,7 @@ namespace STORE
     Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
     Card_Topology *         p_topology;
-    Card_TstPred *          p_tstPred;
+    Card_SqtPred *          p_sqtPred;
     Card_Twist *            p_twist;
     Card_Type *             p_type;
     Card_UBound *           p_uBound;

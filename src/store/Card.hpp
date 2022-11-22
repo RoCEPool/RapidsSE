@@ -112,6 +112,7 @@ namespace STORE
   class Card_Size;
   class Card_Send;
   class Card_Sort;
+  class Card_SqtPred;
   class Card_Stage;
   class Card_Stream;
   class Card_StmCol;
@@ -126,7 +127,6 @@ namespace STORE
   class Card_TblColOdn;
   class Card_Term;
   class Card_Topology;
-  class Card_TstPred;
   class Card_Twist;
   class Card_Type;
 
@@ -433,6 +433,7 @@ namespace STORE
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
+    Card_SqtPred*       pSub_sqtPred(void);
     Card_Stream*        pSub_stream(void);
     Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);
@@ -444,7 +445,6 @@ namespace STORE
     Card_TblColOdn*     pSub_tblColOdn(void);
     Card_Term*          pSub_term(void);
     Card_Topology*      pSub_topology(void);
-    Card_TstPred*       pSub_tstPred(void);
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
