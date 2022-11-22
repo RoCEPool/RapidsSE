@@ -911,6 +911,24 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_UBOUND:           return G.p_uBound;
     case CK_WHERE:            return G.p_where;
 
+    case CK_AV_AGGP:          return G.p_av_aggP;
+    case CK_AV_AGGPN:         return G.p_av_aggPN;
+    case CK_AV_AGGPNO:        return G.p_av_aggPNO;
+    case CK_AV_AGGREGP:       return G.p_av_aggregP;
+    case CK_AV_AGGREGPN:      return G.p_av_aggregPN;
+    case CK_AV_AGGREGPNO:     return G.p_av_aggregPNO;
+    case CK_AV_FILTER:        return G.p_av_filter;
+    case CK_AV_FILTERPROJECT: return G.p_av_filterProject;
+    case CK_AV_GBYAGGP:       return G.p_av_gbyAggP;
+    case CK_AV_GBYAGGPN:      return G.p_av_gbyAggPN;
+    case CK_AV_GBYPNO:        return G.p_av_gbyPNO;
+    case CK_AV_JOINSERIES:    return G.p_av_joinSeries;
+    case CK_AV_LIMIT:         return G.p_av_limit;
+    case CK_AV_PROJECT:       return G.p_av_project;
+    case CK_AV_SCANJOINSERIES: return G.p_av_scanJoinSeries;
+    case CK_AV_SCANONLY:      return G.p_av_scanOnly;
+    case CK_AV_SORT:          return G.p_av_sort;
+
    default:
       NEVER_REACH
   }
@@ -1160,6 +1178,24 @@ void Xgearing::G_vClearMembers(void)
   G.p_type             = nullptr;
   G.p_uBound           = nullptr;
   G.p_where            = nullptr;
+
+  G.p_av_aggP          = nullptr;
+  G.p_av_aggPN         = nullptr;
+  G.p_av_aggPNO        = nullptr;
+  G.p_av_aggregP       = nullptr;
+  G.p_av_aggregPN      = nullptr;
+  G.p_av_aggregPNO     = nullptr;
+  G.p_av_filter        = nullptr;
+  G.p_av_filterProject = nullptr;
+  G.p_av_gbyAggP       = nullptr;
+  G.p_av_gbyAggPN      = nullptr;
+  G.p_av_gbyPNO        = nullptr;
+  G.p_av_joinSeries    = nullptr;
+  G.p_av_limit         = nullptr;
+  G.p_av_project       = nullptr;
+  G.p_av_scanJoinSeries = nullptr;
+  G.p_av_scanOnly      = nullptr;
+  G.p_av_sort          = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1628,6 +1664,24 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
 
+    case CK_AV_AGGP:          *((Card**)&G.p_av_aggP)          = pCard; break;
+    case CK_AV_AGGPN:         *((Card**)&G.p_av_aggPN)         = pCard; break;
+    case CK_AV_AGGPNO:        *((Card**)&G.p_av_aggPNO)        = pCard; break;
+    case CK_AV_AGGREGP:       *((Card**)&G.p_av_aggregP)       = pCard; break;
+    case CK_AV_AGGREGPN:      *((Card**)&G.p_av_aggregPN)      = pCard; break;
+    case CK_AV_AGGREGPNO:     *((Card**)&G.p_av_aggregPNO)     = pCard; break;
+    case CK_AV_FILTER:        *((Card**)&G.p_av_filter)        = pCard; break;
+    case CK_AV_FILTERPROJECT: *((Card**)&G.p_av_filterProject) = pCard; break;
+    case CK_AV_GBYAGGP:       *((Card**)&G.p_av_gbyAggP)       = pCard; break;
+    case CK_AV_GBYAGGPN:      *((Card**)&G.p_av_gbyAggPN)      = pCard; break;
+    case CK_AV_GBYPNO:        *((Card**)&G.p_av_gbyPNO)        = pCard; break;
+    case CK_AV_JOINSERIES:    *((Card**)&G.p_av_joinSeries)    = pCard; break;
+    case CK_AV_LIMIT:         *((Card**)&G.p_av_limit)         = pCard; break;
+    case CK_AV_PROJECT:       *((Card**)&G.p_av_project)       = pCard; break;
+    case CK_AV_SCANJOINSERIES: *((Card**)&G.p_av_scanJoinSeries) = pCard; break;
+    case CK_AV_SCANONLY:      *((Card**)&G.p_av_scanOnly)      = pCard; break;
+    case CK_AV_SORT:          *((Card**)&G.p_av_sort)          = pCard; break;
+
     default:
       NEVER_REACH
   }
@@ -1992,6 +2046,24 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
+
+    case CK_AV_AGGP:          return "G.p_av_aggP"_Stz;
+    case CK_AV_AGGPN:         return "G.p_av_aggPN"_Stz;
+    case CK_AV_AGGPNO:        return "G.p_av_aggPNO"_Stz;
+    case CK_AV_AGGREGP:       return "G.p_av_aggregP"_Stz;
+    case CK_AV_AGGREGPN:      return "G.p_av_aggregPN"_Stz;
+    case CK_AV_AGGREGPNO:     return "G.p_av_aggregPNO"_Stz;
+    case CK_AV_FILTER:        return "G.p_av_filter"_Stz;
+    case CK_AV_FILTERPROJECT: return "G.p_av_filterProject"_Stz;
+    case CK_AV_GBYAGGP:       return "G.p_av_gbyAggP"_Stz;
+    case CK_AV_GBYAGGPN:      return "G.p_av_gbyAggPN"_Stz;
+    case CK_AV_GBYPNO:        return "G.p_av_gbyPNO"_Stz;
+    case CK_AV_JOINSERIES:    return "G.p_av_joinSeries"_Stz;
+    case CK_AV_LIMIT:         return "G.p_av_limit"_Stz;
+    case CK_AV_PROJECT:       return "G.p_av_project"_Stz;
+    case CK_AV_SCANJOINSERIES: return "G.p_av_scanJoinSeries"_Stz;
+    case CK_AV_SCANONLY:      return "G.p_av_scanOnly"_Stz;
+    case CK_AV_SORT:          return "G.p_av_sort"_Stz;
 
     default:
       NEVER_REACH

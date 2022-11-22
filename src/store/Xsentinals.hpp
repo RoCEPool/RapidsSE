@@ -142,6 +142,26 @@ namespace STORE
     Card_Type *             p_type;
     Card_UBound *           p_uBound;
     Card_Where *            p_where;
+
+    // - - - - - - - - - - - - - - - - - -
+
+    Card_Av_AggP *           p_av_aggP;
+    Card_Av_AggPN *          p_av_aggPN;
+    Card_Av_AggPNO *         p_av_aggPNO;
+    Card_Av_AggregP *        p_av_aggregP;
+    Card_Av_AggregPN *       p_av_aggregPN;
+    Card_Av_AggregPNO *      p_av_aggregPNO;
+    Card_Av_Filter *         p_av_filter;
+    Card_Av_FilterProject *  p_av_filterProject;
+    Card_Av_GbyAggP *        p_av_gbyAggP;
+    Card_Av_GbyAggPN *       p_av_gbyAggPN;
+    Card_Av_GbyPNO *         p_av_gbyPNO;
+    Card_Av_JoinSeries *     p_av_joinSeries;
+    Card_Av_Limit *          p_av_limit;
+    Card_Av_Project *        p_av_project;
+    Card_Av_ScanJoinSeries * p_av_scanJoinSeries;
+    Card_Av_ScanOnly *       p_av_scanOnly;
+    Card_Av_Sort *           p_av_sort;
   } ;
 
   class Xsentinals : public Xderive

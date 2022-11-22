@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _r_Q6 -- TCPH query 6 test                                                 */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q6"
+select
+  sum(l_extendedprice*l_discount) as revenue
+from
+  lineitem
+where
+  l_shipdate >= DATE '1994-01-01'
+  and l_shipdate < DATE '1994-01-01' + interval '1' year
+  and l_discount between 0.06 - 0.01 and 0.06 + 0.01
+  and l_quantity < 24;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

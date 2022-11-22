@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* _r_Q4 -- TCPH query 4 test                                                 */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q4"
+select o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where o_orderdate >= DATE '1993-07-01'
+  and o_orderdate < DATE '1993-07-01' + interval '3' month
+  and
+exists (
+  select
+    *
+  from
+    lineitem
+  where
+    l_orderkey = o_orderkey
+    and l_commitdate < l_receiptdate
+  )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
