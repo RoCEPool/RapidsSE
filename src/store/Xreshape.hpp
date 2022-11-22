@@ -32,6 +32,7 @@ namespace STORE
     void R_vUTE_Push_foldExpr_Into_gbyElist(void);
     void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
+    void R_vUTE_Unproject_foldExpr(void);
 
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);

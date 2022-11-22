@@ -550,6 +550,58 @@ bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz
   return bReplaced;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Unproject_foldExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+
+  if (! G_bResolveCardWithSub(CK_GBYAGG, CK_AGGELIST, G.i_MainCard))
+    return;
+
+  G.p_gbyAgg->vDump();
+
+  G.p_aggElist->vDump();
+
+  G_vNewMember(CK_PROJECT);
+  G.pDeck->vAppend(G.p_project);
+
+  G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
+  G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
+
+  G_vNewMemberOf(CK_PROJELIST,""_Stz,CK_PROJECT);
+
+  i8 i_Col = 0;
+  i8 nChildren_aggElist = G.p_aggElist->nChildCards();
+  for (i8 i_expr_aggElist = 0;
+       i_expr_aggElist < nChildren_aggElist;
+       i_expr_aggElist++) {
+
+    i_Col++;
+
+    G.p_expr = _pCard_Expr(G.p_aggElist->pGetChild(i_expr_aggElist));
+    G.p_as = G.p_expr->pSub_as();
+
+    if (T_bValue_IsSqyColOrdinal(G.p_as->szValue()))
+      continue;
+
+    Card_Expr* p_expr_simple = D_pProject_Simple_expr_Of(G.p_expr,i_Col);
+
+    G_vAppendChild(CK_PROJELIST,p_expr_simple);
+  }
+
+
+  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+
+  G.p_project->vAppend(G.p_stream);
+
+  G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
+  G.p_project->vAppend(G.p_comment);
+
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

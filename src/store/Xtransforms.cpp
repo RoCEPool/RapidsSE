@@ -1778,6 +1778,14 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   vPrintBoard(__LINE__);
 
   R_vUTE_FoldIn_foldExpr();
+  G.pDeck->vRenumberRecursive();
+  vPrintBoard(__LINE__);
+
+  G_vRestart();
+  if (G_bEachMain(CK_HAVING)) {
+    R_vUTE_Unproject_foldExpr();
+  }
+
   vPrintBoard(__LINE__);
 
 
