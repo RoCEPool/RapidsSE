@@ -247,7 +247,8 @@ QUERY 2
 
 /////////////////////////
 //SF001:  117ms        //
-//SF1:    864ms        //
+//SF1:    264ms        //
+//SF10:   280ms        //
 /////////////////////////
 
 /time pipeline Query2
@@ -258,64 +259,90 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan partsupp IxPS_PARTKEY "LBOUND $I1 0 >="
-    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    scan part
+    | filter " type BOOLEAN  }  P_TYPE '%BRASS'  6 matchTrailing P_SIZE 15 == and"
+    | project " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type DECIMAL as S_ACCTBAL J1_S_ACCTBAL , type VARCHAR as S_NAME J1_S_NAME , type VARCHAR as S_ADDRESS J1_S_ADDRESS , type VARCHAR as S_PHONE J1_S_PHONE , type VARCHAR as S_COMMENT J1_S_COMMENT "
-    | combined 0
-    | next
-
   stage S03 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as N_REGIONKEY J1_N_REGIONKEY , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME J1_N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as S_NATIONKEY J1_S_NATIONKEY "
     | combined 0
     | next
 
   stage S04 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as N_REGIONKEY J1_N_REGIONKEY "
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
     | filter " type BOOLEAN  J1_R_NAME 'EUROPE'  == "
-    | aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+    | aggreg " GroupBy type INTEGER as P_PARTKEY P_PARTKEY aggregates type INTEGER as P_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min "
     | combined 0
     | next
 
-  stage S05 on all nodes :
-    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+  stage S06 on all nodes :
+    aggreg " GroupBy type INTEGER as P_PARTKEY P_PARTKEY aggregates type INTEGER as P_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
     | combined 0
     | next
 
-  stage S06 on origin :
-    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
-    | hash "type INTEGER PS_PARTKEY"
+  stage S07 on origin :
+    aggreg " GroupBy type INTEGER as P_PARTKEY P_PARTKEY aggregates type INTEGER as P_PARTKEY $K1 , type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
+    | hash "type INTEGER P_PARTKEY"
     | combined 0
     | next hashcast
 
-  stage S07 on all partitions :
-    indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
-    | filter " type BOOLEAN  }  J1_P_TYPE '%BRASS'  6 matchTrailing J1_P_SIZE 15 == and"
-    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type INTEGER as P_PARTKEY J1_P_PARTKEY , type VARCHAR as P_MFGR J1_P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
-    | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  , type VARCHAR as N_NAME N_NAME ASC  , type VARCHAR as S_NAME S_NAME ASC  , type INTEGER as P_PARTKEY P_PARTKEY ASC  "
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | filter "type BOOLEAN PS_SUPPLYCOST_MIN J1_PS_SUPPLYCOST =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY"
+    | combined 0
+    | next
+
+  stage S09 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR as P_MFGR J1_P_MFGR"
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S10 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type DECIMAL as S_ACCTBAL J1_S_ACCTBAL , type VARCHAR as S_NAME J1_S_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_MFGR P_MFGR , type VARCHAR as S_ADDRESS J1_S_ADDRESS , type VARCHAR as S_PHONE J1_S_PHONE , type VARCHAR as S_COMMENT J1_S_COMMENT "
+    | combined 0
+    | next
+
+  stage S11 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME J1_N_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_MFGR P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+    | sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
-  stage S08 on all nodes :
-   sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC , type VARCHAR as N_NAME N_NAME ASC , type VARCHAR as S_NAME S_NAME ASC , type INTEGER as P_PARTKEY P_PARTKEY ASC"
+  stage S12 on all nodes :
+    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
-  stage S09 on origin :
-     sort " type DECIMAL as s_acctbal s_acctbal ASC , type VARCHAR as N_NAME N_NAME ASC , type VARCHAR as S_NAME S_NAME ASC , type INTEGER as p_partkey p_partkey ASC"
-      | limit 100
-      | combined 0
-      | next
+  stage S13 on origin :
+    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
 
-  stage S10 on origin :
+  stage S14 on origin :
     output
     | sink
     | first
@@ -329,133 +356,135 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan partsupp IxPS_PARTKEY "LBOUND $I1 0 >="
-    | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
-                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    scan part
+    | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing P_SIZE 20 == and"
+    | project " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY ,
+                type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+                type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
-               type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
-               type DECIMAL as S_ACCTBAL J1_S_ACCTBAL ,
-               type VARCHAR as S_NAME J1_S_NAME ,
-               type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
-               type VARCHAR as S_PHONE J1_S_PHONE ,
-               type VARCHAR as S_COMMENT J1_S_COMMENT "
-    | combined 0
-    | next
-
   stage S03 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
-               type INTEGER as N_REGIONKEY J1_N_REGIONKEY ,
-               type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-               type VARCHAR as S_NAME S_NAME ,
-               type VARCHAR as N_NAME J1_N_NAME ,
-               type VARCHAR as S_ADDRESS S_ADDRESS ,
-               type VARCHAR as S_PHONE S_PHONE ,
-               type VARCHAR as S_COMMENT S_COMMENT "
-
+               type INTEGER as S_NATIONKEY J1_S_NATIONKEY "
     | combined 0
     | next
 
   stage S04 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY "
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter " type BOOLEAN  J1_R_NAME 'EUROPE'  == "
-    | aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
-                 aggregates
-                 type INTEGER as PS_PARTKEY $K1 ,
-                 type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
-                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-                 type VARCHAR as S_NAME S_NAME ,
-                 type VARCHAR as N_NAME N_NAME ,
-                 type VARCHAR as S_ADDRESS S_ADDRESS ,
-                 type VARCHAR as S_PHONE S_PHONE ,
-                 type VARCHAR as S_COMMENT S_COMMENT "
+    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
+    | aggreg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER as P_PARTKEY $K1 ,
+                          type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min "
     | combined 0
     | next
 
-  stage S05 on all nodes :
-    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
-             aggregates
-             type INTEGER as PS_PARTKEY $K1 ,
-             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
-             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-             type VARCHAR as S_NAME S_NAME ,
-             type VARCHAR as N_NAME N_NAME ,
-             type VARCHAR as S_ADDRESS S_ADDRESS ,
-             type VARCHAR as S_PHONE S_PHONE ,
-             type VARCHAR as S_COMMENT S_COMMENT "
+  stage S06 on all nodes :
+     aggreg " GroupBy     type INTEGER as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER as P_PARTKEY $K1 ,
+                          type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
     | combined 0
     | next
 
-  stage S06 on origin :
-    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
-             aggregates
-             type INTEGER as PS_PARTKEY $K1 ,
-             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
-             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-             type VARCHAR as S_NAME S_NAME ,
-             type VARCHAR as N_NAME N_NAME ,
-             type VARCHAR as S_ADDRESS S_ADDRESS ,
-             type VARCHAR as S_PHONE S_PHONE ,
-             type VARCHAR as S_COMMENT S_COMMENT "
-    | hash "type INTEGER PS_PARTKEY"
+  stage S07 on origin :
+     aggreg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER as P_PARTKEY $K1 ,
+                          type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
+    | hash "type INTEGER P_PARTKEY"
     | combined 0
     | next hashcast
 
-  stage S07 on all partitions :
-    indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
-    | filter " type BOOLEAN  }  J1_P_TYPE '%BRASS'  6 matchTrailing
-             J1_P_SIZE 20 == and"
-    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-                type VARCHAR as S_NAME S_NAME ,
-                type VARCHAR as N_NAME N_NAME ,
-                type INTEGER as P_PARTKEY J1_P_PARTKEY ,
-                type VARCHAR as P_MFGR J1_P_MFGR ,
-                type VARCHAR as S_ADDRESS S_ADDRESS ,
-                type VARCHAR as S_PHONE S_PHONE ,
-                type VARCHAR as S_COMMENT S_COMMENT "
-    | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  ,
-             type VARCHAR as N_NAME N_NAME ASC  ,
-             type VARCHAR as S_NAME S_NAME ASC  ,
-             type INTEGER as P_PARTKEY P_PARTKEY ASC  "
-     | limit 100
-
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | filter "type BOOLEAN PS_SUPPLYCOST_MIN J1_PS_SUPPLYCOST =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY"
     | combined 0
     | next
 
-  stage S08 on all nodes :
-   sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC ,
-             type VARCHAR as N_NAME N_NAME ASC ,
-             type VARCHAR as S_NAME S_NAME ASC ,
-             type INTEGER as P_PARTKEY P_PARTKEY ASC"
+  stage S09 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY ,
+                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+                type VARCHAR as P_MFGR J1_P_MFGR"
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S10 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+                type DECIMAL as S_ACCTBAL J1_S_ACCTBAL ,
+                type VARCHAR as S_NAME J1_S_NAME ,
+                type INTEGER as P_PARTKEY P_PARTKEY ,
+                type VARCHAR as P_MFGR P_MFGR ,
+                type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
+                type VARCHAR as S_PHONE J1_S_PHONE ,
+                type VARCHAR as S_COMMENT J1_S_COMMENT "
+    | combined 0
+    | next
+
+  stage S11 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR as N_NAME J1_N_NAME ,
+                 type INTEGER as P_PARTKEY P_PARTKEY ,
+                 type VARCHAR as P_MFGR P_MFGR ,
+                 type VARCHAR as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR as S_PHONE S_PHONE ,
+                 type VARCHAR as S_COMMENT S_COMMENT "
+    | sort "type DECIMAL S_ACCTBAL ASC ,
+            type VARCHAR N_NAME ASC ,
+            type VARCHAR S_NAME ASC ,
+            type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
-  stage S09 on origin :
-    sort " type DECIMAL as s_acctbal s_acctbal ASC ,
-           type VARCHAR as N_NAME N_NAME ASC ,
-           type VARCHAR as S_NAME S_NAME ASC ,
-           type INTEGER as p_partkey p_partkey ASC"
-     | limit 100
-     | combined 0
-     | next
+  stage S12 on all nodes :
+    sort "type DECIMAL S_ACCTBAL ASC ,
+          type VARCHAR N_NAME ASC ,
+          type VARCHAR S_NAME ASC ,
+          type INTEGER P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
 
-  stage S10 on origin :
+  stage S13 on origin :
+    sort "type DECIMAL S_ACCTBAL ASC ,
+          type VARCHAR N_NAME ASC ,
+          type VARCHAR S_NAME ASC ,
+          type INTEGER P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
+
+  stage S14 on origin :
     output
     | sink
     | first
 end ;
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 QUERY 3
@@ -1541,13 +1570,7 @@ begin
 
   stage S02 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type VARCHAR as C_NAME J1_C_NAME , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL , type INTEGER as C_NATIONKEY J1_C_NATIONKEY , type VARCHAR as C_ADDRESS J1_C_ADDRESS , type VARCHAR as C_PHONE J1_C_PHONE , type VARCHAR as C_COMMENT J1_C_COMMENT"
-    | combined 0
-    | next
-
-  stage S03 on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME J1_N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
     | hash expr type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
@@ -1555,31 +1578,54 @@ begin
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | aggreg  "groupby type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | aggreg  "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg "groupby type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg "groupby type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE  sum , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum"
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top " TOP type DECIMAL REVENUE " 20
+    | hash expr type INTEGER O_CUSTKEY
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY J1_C_NATIONKEY , type VARCHAR as C_NAME J1_C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL , type VARCHAR as C_ADDRESS J1_C_ADDRESS , type VARCHAR as C_PHONE J1_C_PHONE , type VARCHAR as C_COMMENT J1_C_COMMENT"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME J1_N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top " TOP type DECIMAL REVENUE " 20
     | combined 0
     | next
 
   stage S06 on origin :
     sort " type DECIMAL REVENUE ASC  "
-    | limit 100
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S10 on origin :
     output
     | sink
     | first
 end ;
+
 
 pipeline Query10
 begin
@@ -1591,33 +1637,15 @@ begin
 
   stage S01 on all partitions :
     indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
-    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME J1_C_NAME ,
-               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
-               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
-               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
-               type VARCHAR as C_PHONE J1_C_PHONE ,
-               type VARCHAR as C_COMMENT J1_C_COMMENT"
-    | combined 0
-    | next
-
-  stage S03 on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME J1_N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
     | hash expr type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
@@ -1627,54 +1655,250 @@ begin
     | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
     | aggreg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
-                          type VARCHAR as C_NAME C_NAME ,
-                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
-                          type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                          type VARCHAR as N_NAME N_NAME ,
-                          type VARCHAR as C_ADDRESS C_ADDRESS ,
-                          type VARCHAR as C_PHONE C_PHONE ,
-                          type VARCHAR as C_COMMENT C_COMMENT"
+                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
     aggreg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type VARCHAR as C_NAME C_NAME ,
-                       type DECIMAL as REVENUE ) REVENUE  sum ,
-                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR as N_NAME N_NAME ,
-                       type VARCHAR as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR as C_PHONE C_PHONE ,
-                       type VARCHAR as C_COMMENT C_COMMENT"
+                       type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
     aggreg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type VARCHAR as C_NAME C_NAME ,
-                       type DECIMAL as REVENUE ) REVENUE  sum ,
-                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR as N_NAME N_NAME ,
-                       type VARCHAR as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR as C_PHONE C_PHONE ,
-                       type VARCHAR as C_COMMENT C_COMMENT"
+                       type DECIMAL as REVENUE ) REVENUE  sum"
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top " TOP type DECIMAL REVENUE " 20
+    | hash expr type INTEGER O_CUSTKEY
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
+               type VARCHAR as C_NAME J1_C_NAME ,
+               type DECIMAL as REVENUE ) REVENUE ,
+               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
+               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+               type VARCHAR as C_PHONE J1_C_PHONE ,
+               type VARCHAR as C_COMMENT J1_C_COMMENT"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR as C_NAME C_NAME ,
+               type DECIMAL as REVENUE ) REVENUE ,
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    top " TOP type DECIMAL REVENUE " 20
     | combined 0
     | next
 
   stage S06 on origin :
     sort " type DECIMAL REVENUE ASC  "
-    | limit 100
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S10 on origin :
     output
     | sink
     | first
 end ;
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 11
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/////////////////////////
+//SF001:               //
+//SF1:                 //
+//SF10:  1.6s          //
+/////////////////////////
+
+/time pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+    | combined 0
+    | next broadcast
+
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1"
+    | filter " type BOOLEAN J1_N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    aggreg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    aggreg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE ASC  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
+
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+    | combined 0
+    | next broadcast
+
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1"
+    | filter " type BOOLEAN J1_N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " groupBy    type INTEGER J1_PS_PARTKEY
+               aggregates
+                          type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    aggreg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    aggreg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE ASC  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 QUERY 17

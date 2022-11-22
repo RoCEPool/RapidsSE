@@ -16,7 +16,7 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value
     and s_nationkey = n_nationkey
     and n_name = 'GERMANY' )
 
-    order by value asc;
+    order by value desc;
 
 */
 
@@ -300,82 +300,94 @@ rows: 20
 sleep 4;
 success
 
-//nation->supplier->partsupp
+//nation->supplier->partsupp...>nation->supplier->partsupp
 //SF1: 278ms
-//SF10: 1.7s
+//SF10: 1.6s
 pipeline Query11
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage stageMarkerA on all partitions :
+  stage S01 on all partitions :
     scan nation
     | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
     | combined 0
     | next
 
-  stage stageMarkerB on all partitions :
+  stage S02 on all partitions :
     indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
     | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
     | combined 0
     | next broadcast
 
- stage stageMarkerC on all partitions :
+ stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
     | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
-  stage stageMarkerD on all nodes :
+  stage S04 on all nodes :
     project " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
-  stage stageMarkerD on origin :
+  stage S05 on origin :
     project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
-  stage stageMarkerA on all partitions :
+  stage S06 on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1"
     | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
-    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
-  stage stageMarkerB on all partitions :
+  stage S07 on all partitions :
     indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
-    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
 
-  stage stageMarkerG on all partitions :
+  stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | aggreg " groupBy    type INTEGER J1_PS_PARTKEY
+               aggregates
+                          type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
-  stage stageMarkerH on all nodes :
-    aggreg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+  stage S09 on all nodes :
+    aggreg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
-  stage stageMarkerI on origin :
-    aggreg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+  stage S10 on origin :
+    aggreg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
-  stage stageMarkerJ on origin :
+  stage S11 on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
-    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
-    | sort " type DECIMAL $2 ASC  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE ASC  "
     | combined 0
     | next
 
-  stage stageLast on origin :
+  stage S12 on origin :
     output
     | sink
     | first

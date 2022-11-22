@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* _r_Q11 -- TCPH query 11 test                                               */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q11"
+select
+  ps_partkey,
+  sum(ps_supplycost * ps_availqty) as value
+from
+  partsupp,
+  supplier,
+  nation
+where
+  ps_suppkey = s_suppkey
+  and s_nationkey = n_nationkey
+  and n_name = 'GERMANY'
+group by
+  ps_partkey having
+    sum(ps_supplycost * ps_availqty) >
+    (
+      select
+        sum(ps_supplycost * ps_availqty) * 0.0001
+      from
+        partsupp,
+        supplier,
+        nation
+      where
+        ps_suppkey = s_suppkey
+        and s_nationkey = n_nationkey
+        and n_name = 'GERMANY'
+    )
+order by
+   value desc;
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
