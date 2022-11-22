@@ -320,7 +320,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn_tstPred = [this,&bFoundCall](Card* pCard)
+  auto bLambdaFn_sqtPred = [this,&bFoundCall](Card* pCard)
   {
     G.p_sqtPred = _pCard_SqtPred(pCard);
 
@@ -352,6 +352,25 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
       return C_CONTINUE_RECURSION;
     }
 
+    // TODO: needs to be a list
+    if (G.p_sqtPred->bIsValue("<"_Stz)) {
+
+      m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+      m_sSqyRO =  m_pTerm_0->szValue();
+
+      m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+      m_sSqyArg = m_pTerm_1->szValue();
+
+      m_pTerm_2 = _pCard_Term(G.p_sqtPred->pGet(2));
+      m_sSqyNm = m_pTerm_2->szValue();
+
+      bFoundCall = true;
+
+      G.p_sqtPred->vMark1(MARK_AT);
+
+      return C_CONTINUE_RECURSION;
+    }
+
     NEVER_REACH
 
     return C_CONTINUE_RECURSION;
@@ -359,35 +378,35 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn_cmpPred = [this,&bFoundCall](Card* pCard)
-  {
-    G.p_cmpPred = _pCard_CmpPred(pCard);
-    m_sSqyRO  =  G.p_cmpPred->szValue();
-
-    m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
-    m_sSqyArg = m_pTerm_0->szValue();
-
-    m_pTerm_1 = _pCard_Term(G.p_cmpPred->pGet(1));
-    m_sSqyNm = m_pTerm_1->szValue();
-
-    bFoundCall = true;
-
-    G.p_cmpPred->vMark1(MARK_AT);
-
-    return C_CONTINUE_RECURSION;
-  };
+//  auto bLambdaFn_cmpPred = [this,&bFoundCall](Card* pCard)
+//  {
+//    G.p_cmpPred = _pCard_CmpPred(pCard);
+//    m_sSqyRO  =  G.p_cmpPred->szValue();
+//
+//    m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
+//    m_sSqyArg = m_pTerm_0->szValue();
+//
+//    m_pTerm_1 = _pCard_Term(G.p_cmpPred->pGet(1));
+//    m_sSqyNm = m_pTerm_1->szValue();
+//
+//    bFoundCall = true;
+//
+//    G.p_cmpPred->vMark1(MARK_AT);
+//
+//    return C_CONTINUE_RECURSION;
+//  };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_boolCalc->vDump();
 
-  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn_tstPred);
+  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn_sqtPred);
   if (bFoundCall)
     return true;
 
-  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_cmpPred);
-  if (bFoundCall)
-    return true;
+//  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_cmpPred);
+//  if (bFoundCall)
+//    return true;
 
 
   return bFoundCall;

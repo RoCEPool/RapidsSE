@@ -292,6 +292,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   Card_SqtPred* p_sqtPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
 
+  bool bSawSqy = false;
+
   Card_Term*    p_subQueryNm = nullptr;
 
   Card_SubSet*  p_TermSeries = new Card_SubSet;
@@ -331,12 +333,22 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       case TE_COMPARE:
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
-        p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term->sz());
-        p_cmpPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vPush(p_cmpPred);
-        p_cmpPred = nullptr;
+        if (bSawSqy) {
+          p_sqtPred = new Card_SqtPred;
+          p_sqtPred->vValue(p_term->sz());
+          p_sqtPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vPush(p_sqtPred);
+          p_sqtPred = nullptr;
+        }
+        else {
+          p_cmpPred = new Card_CmpPred;
+          p_cmpPred->vValue(p_term->sz());
+          p_cmpPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vPush(p_cmpPred);
+          p_cmpPred = nullptr;
+        }
         DELETE_CARD(p_term);
+        bSawSqy = false;
         break;
 
       case TE_EXISTS:
@@ -379,6 +391,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
       case TE_BOOLFN:
       case TE_OTHER:
+        if (StrLib::bBeginsWith(p_term->szValue()->azChar(),"__"))
+          bSawSqy = true;
         p_TermSeries->vAppend(p_term);
         break;
 
