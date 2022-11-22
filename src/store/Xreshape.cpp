@@ -95,6 +95,65 @@ void Xreshape::R_vUTE_AdjustStmLoHi(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+
+  CardIter xCI(p_ELIST);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+
+    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+    if (! G.p_rpnCalc)
+      continue;
+
+    CardIter xCI2(G.p_rpnCalc);
+    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+      Stz *szTerm = G.p_term->szValue();
+
+      if (T_bValue_IsKeyOrdinal(szTerm)) {
+        M_vTerm_Bump_KeyOrdinal(G.p_term);
+        G.p_term->vMark1(MARK_CHANGED);
+        continue;
+      }
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_ELIST);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+
+    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+    if (! G.p_rpnCalc)
+      continue;
+
+    CardIter xCI2(G.p_rpnCalc);
+    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+      Stz *szTerm = G.p_term->szValue();
+
+      if (T_bValue_IsStreamColOrdinal(szTerm)) {
+        M_vTerm_Bump_StreamColOrdinal(G.p_term);
+        G.p_term->vMark1(MARK_CHANGED);
+        continue;
+      }
+    }
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -298,6 +357,28 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
 
   return bFoundCall;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fold in the fold expression                                                */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_FoldIn_foldExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  while (G_bEachMain()) {
+
+    if (CK_GBYAGG == G.e_MainCard) {
+
+      G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
+      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_gbyElist);
+
+      G.p_aggElist = G.p_gbyAgg->pSub_aggElist();
+      R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
+      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
+    }
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -17,12 +17,19 @@ namespace STORE
     // utilities
     void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
     void R_vUTE_AdjustStmLoHi(void);
+    void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
+    void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
+    void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
+    void R_vUTE_Convert_exePred_To_StmOdn(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
+    void R_vUTE_FoldIn_foldExpr(void);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
+    void R_vUTE_Push_foldExpr_Into_aggElist(void);
+    void R_vUTE_Push_foldExpr_Into_gbyElist(void);
     void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
 

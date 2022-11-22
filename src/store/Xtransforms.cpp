@@ -1777,6 +1777,10 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   }
   vPrintBoard(__LINE__);
 
+  R_vUTE_FoldIn_foldExpr();
+  vPrintBoard(__LINE__);
+
+
   vEndTransform();
 }
 
