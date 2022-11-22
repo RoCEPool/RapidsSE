@@ -265,7 +265,7 @@ void Xreshape::R_vUTE_Derive_foldExpr(void)
 
   G_vAppendNewChild(G.p_fold,CK_FOLDEXPR);
   if (G.p_type) {
-    G.p_fold->vAppend(G.p_type->pDupCardAndSubCards());
+    G.p_foldExpr->vAppend(G.p_type->pDupCardAndSubCards());
   }
   else {
     G_vAppendNewChild(G.p_foldExpr,CK_TYPE,"((type missing))"_Stz);
@@ -376,6 +376,9 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
       G.p_aggElist = G.p_gbyAgg->pSub_aggElist();
       R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
       R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
+
+      R_vUTE_Push_foldExpr_Into_aggElist();
+      R_vUTE_Push_foldExpr_Into_gbyElist();
     }
 
   }
@@ -432,6 +435,43 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
     G_vAppendNewChild(G.p_filter,CK_BOOLCALC);
     G_vAppendChild(CK_FILTER,G.p_PRED);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Push_foldExpr_Into_aggElist(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_foldExpr->vDump();
+
+  G_vNewMember(CK_EXPR);
+
+  G.p_expr->vAppend(G.p_foldExpr->pSub_type()->pDupCardAndSubCards());
+
+  G.p_expr->vAppend(G.p_foldExpr->pSub_as()->pDupCardAndSubCards());
+
+  G_vAppendNewChild(G.p_expr,CK_RPNCALC);
+  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$K1"_Stz);
+
+  G.p_aggElist->vPush(G.p_expr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Push_foldExpr_Into_gbyElist(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G_vNewMember(CK_EXPR);
+
+  G.p_expr->vAppend(G.p_foldExpr->pSub_type()->pDupCardAndSubCards());
+
+  G.p_expr->vAppend(G.p_foldExpr->pSub_rpnCalc()->pDupCardAndSubCards());
+
+  G.p_gbyElist->vPush(G.p_expr);
 }
 
 /*----------------------------------------------------------------------------*/
