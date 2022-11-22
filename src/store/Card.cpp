@@ -2030,6 +2030,19 @@ Card_As* Card::pSub_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_BolPred.hpp"
+Card_BolPred* Card::pSub_bolPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_BolPred* p_bolPred =
+      _pCard_BolPred(pFindSubCard(CK_BOLPRED));
+  return p_bolPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_BoolCalc.hpp"
 Card_BoolCalc* Card::pSub_boolCalc(void)
 {

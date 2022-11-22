@@ -419,7 +419,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<constraint>                                       */
+/* move <where> to <table keyExists>/<constraint>                             */
 /*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where)
 {

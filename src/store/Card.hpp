@@ -27,6 +27,7 @@ namespace STORE
   class Card_AndPred;
   class Card_As;
 
+  class Card_BolPred;
   class Card_BoolCalc;
   class Card_Bounds;
 
@@ -393,6 +394,7 @@ namespace STORE
     Card_AggElist*      pSub_aggElist(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
+    Card_BolPred*       pSub_bolPred(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bounds*        pSub_bounds(void);
     Card_CalcOp*        pSub_calcOp(void);

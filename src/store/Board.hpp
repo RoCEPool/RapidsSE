@@ -23,6 +23,7 @@
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
+#include "Card_BolPred.hpp"
 #include "Card_BoolCalc.hpp"
 #include "Card_Bounds.hpp"
 
