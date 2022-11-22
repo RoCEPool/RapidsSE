@@ -90,7 +90,7 @@ namespace STORE
     void vCmpPred     (Stz* szRpnExpr, Card_CmpPred*   pCard_CmpPred, i8 i);
     void vBolPred     (Stz* szRpnExpr, Card_BolPred*   pCard_BolPred, i8 i);
     void vSqtPred     (Stz* szRpnExpr, Card_SqtPred*   pCard_TstPred, i8 i);
-    void vOtherPred   (Stz* szRpnExpr, Card*           pCard_Other, i8 i);
+    void vTermPred    (Stz* szRpnExpr, Card_Term*      pCard_Term, i8 i);
 
     void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);
     void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr);
