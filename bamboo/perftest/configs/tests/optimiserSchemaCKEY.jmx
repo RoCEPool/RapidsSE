@@ -525,6 +525,20 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline17</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_RECEIPTDATE" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index IxL_RECEIPTDATE  ON Lineitem (L_RECEIPTDATE) ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Required for pipeline22</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SHIPDATE" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_SHIPDATE ON lineitem (L_SHIPDATE);</stringProp>
@@ -3099,6 +3113,120 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
               <stringProp name="FileSaver.filename">p11_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P12Loop" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p12" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline unamed
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_RECEIPTDATE &quot;LBOUND $I1 &gt;= DATE &apos;1994-01-01&apos; UBOUND $I1 DATE &apos;1995-01-01&apos;  &lt;&quot;
+     | filter &quot; type BOOLEAN }  &apos;MAIL&apos;  &apos;SHIP&apos;  #2  L_SHIPMODE in&quot;
+     | filter &quot; type BOOLEAN L_SHIPDATE L_COMMITDATE &lt; &quot;
+     | filter &quot; type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
+     | project &quot;type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE&quot;
+     | combined 0
+     | next broadcast
+
+   stage S02 on all partitions :
+     indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
+     | project &quot;type VARCHAR as O_ORDERPRIORITY J1_O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE&quot;
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     aggreg &quot; groupBy    type VARCHAR as L_SHIPMODE L_SHIPMODE 
+              aggregates type VARCHAR $K1 , 
+                         type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , 
+                         type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on all nodes :
+     aggreg &quot; groupBy     type VARCHAR as L_SHIPMODE $1
+              aggregates  type VARCHAR $K1 , 
+                          type INTEGER )  $2 sum  , type INTEGER )  $3 sum  &quot;
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     aggreg &quot; groupBy     type VARCHAR as L_SHIPMODE $1 
+              aggregates  type VARCHAR $K1 , 
+                          type INTEGER as high_line_count )  $2 sum  , 
+                          type INTEGER as low_line_count )  $3 sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+create index IxL_RECEIPTDATE  ON Lineitem (L_RECEIPTDATE) ;
+create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
+
+</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p12.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p12_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>

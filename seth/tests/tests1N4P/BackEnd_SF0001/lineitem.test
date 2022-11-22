@@ -35,6 +35,9 @@ affected: 0
 create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
 affected: 0
 
+create index IxL_RECEIPTDATE  ON Lineitem (L_RECEIPTDATE)  ;
+affected: 0
+
 // load the table
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
