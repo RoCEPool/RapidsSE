@@ -287,6 +287,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   Stz* szSqyNm;
   Card_AndPred* p_andPred = nullptr;
+  Card_BolPred* p_bolPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
   Card_SqtPred* p_sqtPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
@@ -360,14 +361,14 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         DELETE_CARD(p_term);
         break;
 
-      case TE_BOOLFN:
-        p_sqtPred = new Card_SqtPred;
-        p_sqtPred->vValue(p_term->sz());
-        p_sqtPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vAppend(p_sqtPred);
-        p_sqtPred = nullptr;
-        DELETE_CARD(p_term);
-        break;
+//      case TE_BOOLFN:
+//        p_sqtPred = new Card_SqtPred;
+//        p_sqtPred->vValue(p_term->sz());
+//        p_sqtPred->vTransferChildren(p_TermSeries);
+//        p_boolCalc->vAppend(p_sqtPred);
+//        p_sqtPred = nullptr;
+//        DELETE_CARD(p_term);
+//        break;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // <termSeries>
@@ -376,13 +377,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         DELETE_CARD(p_term);
         break;
 
+      case TE_BOOLFN:
       case TE_OTHER:
-        if (! p_rpnCalc->nChildCards()) {
-          // <termSeries> = <termSeries><term>
-          p_TermSeries->vAppend(p_term);
-          break;
-        }
-
         p_TermSeries->vAppend(p_term);
         break;
 
@@ -395,8 +391,14 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   p_boolCalc->vDump();
 
   if (p_TermSeries->nItems()) {
-    p_TermSeries->vDump();
-    p_boolCalc->vTransferChildren(p_TermSeries);
+    RASSERT(0 == p_boolCalc->nChildCards());
+    p_boolCalc->vDump(0,"boolCalc"_Stz);
+    p_TermSeries->vDump(0,"termSeries"_Stz);
+
+    p_bolPred = new Card_BolPred;
+    p_bolPred->vTransferChildren(p_TermSeries);
+
+    p_boolCalc->vAppend(p_bolPred);
   }
 
   RASSERT(0 == p_TermSeries->nChildCards());
