@@ -1344,13 +1344,21 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vTransform(__func__, "((20))"_Stz);
 
+  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
+  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (!R_bUTE_FindAndMarkSubQryCall()) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTrace(">>>>>>>>> Found W_A_C_ro call:  %s %s %s\n"_Stz,m_sSqyArg.szStz(),m_sSqyRO.szStz(),m_sSqyNm.szStz());
+  vPrintBoard(__LINE__);
+
 
   // 1)
 
 
-
-  vR_S40_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
 
   vEndTransform();
 }
