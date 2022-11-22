@@ -216,3 +216,17 @@ void BufferTransport::consume_virt(uint32_t iLen)
     m_iNext = m_iLen;
   }
 }
+
+
+/*============================================================================*/
+/* BufferFullException                                                        */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* Constructor                                                                */
+/*----------------------------------------------------------------------------*/
+BufferFullException::BufferFullException(const std::string& message)
+: apache::thrift::transport::TTransportException(message)
+{
+
+}

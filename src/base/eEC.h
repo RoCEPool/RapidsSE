@@ -262,6 +262,7 @@ enum eEC : u2 // error codes
   EC_WL_PROTOCOL_ERROR,
   EC_WL_PROTOCOL_VER_NOT_SUPPORTED,
   EC_WL_RESULTSET_RETURNED,
+  EC_WL_ROW_TOO_BIG,
   EC_WL_SOCKET_CLOSED,
 
   /* _X_ */
@@ -530,6 +531,7 @@ static Stz* aEC[] =
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
   /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
   /* EC_WL_RESULTSET_RETURNED         */ (Stz*)"Client request was not expecting a resultset, but query generated one",
+  /* EC_WL_ROW_TOO_BIG                */ (Stz*)"Serialised row too big for buffer",
   /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
 
   /* _X_ */
@@ -793,6 +795,7 @@ static Stz* aEC2[] = // error code
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"EC_WL_PROTOCOL_ERROR",
   /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"EC_WL_PROTOCOL_VER_NOT_SUPPORTED",
   /* EC_WL_RESULTSET_RETURNED         */ (Stz*)"EC_WL_RESULTSET_RETURNED",
+  /* EC_WL_ROW_TOO_BIG                */ (Stz*)"EC_WL_ROW_TOO_BIG",
   /* EC_WL_SOCKET_CLOSED              */ (Stz*)"EC_WL_SOCKET_CLOSED",
 
   /* _X_ */
@@ -1065,6 +1068,7 @@ static Stz* aErrorMsg[] =
   /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
   /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
   /* EC_WL_RESULTSET_RETURNED         */ (Stz*)"Client request was not expecting a resultset, but query generated one",
+  /* EC_WL_ROW_TOO_BIG                */ (Stz*)"Serialised row too big for buffer",
   /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
 
   /* _X_ */

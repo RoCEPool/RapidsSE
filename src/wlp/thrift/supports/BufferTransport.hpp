@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <string>
 #include "thrift/transport/TTransport.h"
 #include "BaseTypes_tcc.h"
 #include "MessageTypes_types.h"
@@ -42,5 +43,11 @@ namespace WLP
 
     const uint8_t* borrow_virt(uint8_t* uint8, uint32_t* uint32) override;
     void consume_virt(uint32_t uint32) override;
+  };
+
+  class BufferFullException : public apache::thrift::transport::TTransportException
+  {
+  public:
+    BufferFullException(const std::string& message);
   };
 }

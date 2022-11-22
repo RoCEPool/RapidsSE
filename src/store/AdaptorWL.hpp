@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include <vector>
 #include "BASE.h"
 
 #include "ApiHelper.hpp"
