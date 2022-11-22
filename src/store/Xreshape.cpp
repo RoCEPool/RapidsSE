@@ -269,15 +269,12 @@ void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
 
     G.p_cmpPred = _pCard_CmpPred(pCard);
 
-    if (! (G.p_exePred = G.p_cmpPred->pSub_exePred()))
-      return C_CONTINUE_RECURSION;
-
-    G.p_cmpPred->vRemoveChild(G.p_exePred);
-    DELETE_CARD(G.p_exePred);
-
     m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
     M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
 
+    m_pTerm_1 = _pCard_Term(G.p_cmpPred->pGet(1));
+    G.p_cmpPred->vRemoveChild(m_pTerm_1);
+    DELETE_CARD(m_pTerm_1);
     G_vAppendNewChild(G.p_cmpPred,CK_TERM,"$1"_Stz);
 
     return C_CONTINUE_RECURSION;
@@ -366,10 +363,12 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
   {
     G.p_cmpPred = _pCard_CmpPred(pCard);
     m_sSqyRO  =  G.p_cmpPred->szValue();
-    m_sSqyArg = G.p_cmpPred->pGetChild(0)->szValue();
 
-    G.p_exePred = G.p_cmpPred->pSub_exePred();
-    m_sSqyNm = G.p_exePred->szValue();
+    m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
+    m_sSqyArg = m_pTerm_0->szValue();
+
+    m_pTerm_1 = _pCard_Term(G.p_cmpPred->pGet(1));
+    m_sSqyNm = m_pTerm_1->szValue();
 
     bFoundCall = true;
 
