@@ -49,9 +49,11 @@ enum eCK // card kind
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
   /* */ CK_FOLD,
+  /* */ CK_FOLDEXPR,
 
   /* */ CK_GBYAGG,
   /* */ CK_GBYELIST,
+  /* */ CK_GENESIS,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
@@ -71,6 +73,7 @@ enum eCK // card kind
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEYEXISTS,
+  /* */ CK_KEYNOTEXISTS,
 
   /* */ CK_LBOUND,
   /* */ CK_LEVEL,
@@ -104,6 +107,7 @@ enum eCK // card kind
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
+  /* */ CK_REASON,
   /* */ CK_RELNOP,
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
@@ -137,6 +141,25 @@ enum eCK // card kind
   /* */ CK_UNIQUE,
 
   /* */ CK_WHERE,
+
+
+  /* */ CK_AV_AGGP,
+  /* */ CK_AV_AGGPN,
+  /* */ CK_AV_AGGPNO,
+  /* */ CK_AV_AGGREGP,
+  /* */ CK_AV_AGGREGPN,
+  /* */ CK_AV_AGGREGPNO,
+  /* */ CK_AV_FILTER,
+  /* */ CK_AV_FILTERPROJECT,
+  /* */ CK_AV_GBYAGGP,
+  /* */ CK_AV_GBYAGGPN,
+  /* */ CK_AV_GBYPNO,
+  /* */ CK_AV_JOINSERIES,
+  /* */ CK_AV_LIMIT,
+  /* */ CK_AV_PROJECT,
+  /* */ CK_AV_SCANJOINSERIES,
+  /* */ CK_AV_SCANONLY,
+  /* */ CK_AV_SORT,
 
   /* */ CK_ENUMS
 };
@@ -174,7 +197,7 @@ static Stz* aCK[]
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
   /* */ "CK_CROSSPTNJOIN"_Stz,     // CK_CROSSPTNJOIN
   /* */ "CK_CROSSPTNJOINLIST"_Stz, // CK_CROSSPTNJOINLIST
-  /* */ "CK_CROSSPTNPRED"_Stz,     // CK_CROSSPTNPRED
+  /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
@@ -189,9 +212,11 @@ static Stz* aCK[]
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
+  /* */ "CK_FOLDEXPR"_Stz,     // CK_FOLDEXPR
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
+  /* */ "CK_GENESIS"_Stz,      // CK_GENESIS
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
@@ -211,6 +236,7 @@ static Stz* aCK[]
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
+  /* */ "CK_KEYNOTEXISTS"_Stz, // CK_KEYNOTEXISTS
 
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
@@ -220,10 +246,10 @@ static Stz* aCK[]
   /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
   /* */ "CK_MANNER"_Stz,       // CK_MANNER
 
-  /* */ "CK_NCORRCOLS"_Stz     // CK_NCORRCOLS
+  /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
-  /* */ "CK_NPARMCOLS"_Stz     // CK_NPARMCOLS
+  /* */ "CK_NPARMCOLS"_Stz,    // CK_NPARMCOLS
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -244,6 +270,7 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
+  /* */ "CK_REASON"_Stz,       // CK_REASON
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
@@ -277,6 +304,24 @@ static Stz* aCK[]
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
+
+  /* */ "CK_AV_AGGP"_Stz,      // CK_AV_AGGP
+  /* */ "CK_AV_AGGPN"_Stz,     // CK_AV_AGGPN
+  /* */ "CK_AV_AGGPNO"_Stz,    // CK_AV_AGGPNO
+  /* */ "CK_AV_AGGREGP"_Stz,   // CK_AV_AGGREGP
+  /* */ "CK_AV_AGGREGPN"_Stz,  // CK_AV_AGGREGPN
+  /* */ "CK_AV_AGGREGPNO"_Stz, // CK_AV_AGGREGPNO
+  /* */ "CK_AV_FILTER"_Stz,    // CK_AV_FILTER
+  /* */ "CK_AV_FILTERPROJECT"_Stz, // CK_AV_FILTERPROJECT
+  /* */ "CK_AV_GBYAGGP"_Stz,   // CK_AV_GBYAGGP
+  /* */ "CK_AV_GBYAGGPN"_Stz,  // CK_AV_GBYAGGPN
+  /* */ "CK_AV_GBYPNO"_Stz,    // CK_AV_GBYPNO
+  /* */ "CK_AV_JOINSERIES"_Stz,// CK_AV_JOINSERIES
+  /* */ "CK_AV_LIMIT"_Stz,     // CK_AV_LIMIT
+  /* */ "CK_AV_PROJECT"_Stz,   // CK_AV_PROJECT
+  /* */ "CK_AV_SCANJOINSERIES"_Stz,// CK_AV_SCANJOINSERIES
+  /* */ "CK_AV_SCANONLY"_Stz,  // CK_AV_SCANONLY
+  /* */ "CK_AV_SORT"_Stz,      // CK_AV_SORT
 
   /* */ "ENUMS"_Stz
 };
@@ -329,9 +374,11 @@ static Stz* aCK_short[]
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
   /* */ "fold"_Stz,            // CK_FOLD
+  /* */ "foldExpr"_Stz,        // CK_FOLDEXPR
 
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
+  /* */ "genesis"_Stz,         // CK_GENESIS
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
@@ -351,6 +398,7 @@ static Stz* aCK_short[]
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
+  /* */ "keyNotExists"_Stz,    // CK_KEYNOTEXISTS
 
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "level"_Stz,           // CK_LEVEL
@@ -384,6 +432,7 @@ static Stz* aCK_short[]
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
+  /* */ "reason"_Stz,          // CK_REASON
   /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
@@ -417,6 +466,25 @@ static Stz* aCK_short[]
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "where"_Stz,           // CK_WHERE
+
+
+  /* */ "av_aggP"_Stz,            // CK_AV_AGGP
+  /* */ "av_aggPN"_Stz,           // CK_AV_AGGPN
+  /* */ "av_aggPNO"_Stz,          // CK_AV_AGGPNO
+  /* */ "av_aggregP"_Stz,         // CK_AV_AGGREGP
+  /* */ "av_aggregPN"_Stz,        // CK_AV_AGGREGPN
+  /* */ "av_aggregPNO"_Stz,       // CK_AV_AGGREGPNO
+  /* */ "av_filter"_Stz,          // CK_AV_FILTER
+  /* */ "av_filterProject"_Stz,   // CK_AV_FILTERPROJECT
+  /* */ "av_gbyAggP"_Stz,         // CK_AV_GBYAGGP
+  /* */ "av_gbyAggPN"_Stz,        // CK_AV_GBYAGGPN
+  /* */ "av_gbyPNO"_Stz,          // CK_AV_GBYPNO
+  /* */ "av_joinSeries"_Stz,      // CK_AV_JOINSERIES
+  /* */ "av_limit"_Stz,           // CK_AV_LIMIT
+  /* */ "av_project"_Stz,         // CK_AV_PROJECT
+  /* */ "av_scanJoinSeries"_Stz,  // CK_AV_SCANJOINSERIES
+  /* */ "av_scanOnly"_Stz,        // CK_AV_SCANONLY
+  /* */ "av_sort"_Stz,            // CK_AV_SORT
 
   /* */ "ENUMS"_Stz
 };

@@ -16,6 +16,7 @@ namespace STORE
 
     Board*      pBoard;
     Card_Deck*  pDeck;
+    SubQuery*   pSubQuery;
 
     Card * p_Located;
     eCK    e_Located;
@@ -43,6 +44,11 @@ namespace STORE
     eAL    e_Level;
 
     i8     i_stmColOdn;
+    i8     i_FoldCard;
+
+    Card_PRED * p_PRED;
+
+    // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *          p_absJoin;
     Card_AggElist *         p_aggElist;
@@ -50,8 +56,10 @@ namespace STORE
     Card_As *               p_as;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
+    Card_CalcOp *           p_calcOp;
     Card_Call *             p_call;
     Card_Cast *             p_cast;
+    Card_Clause *           p_clause;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
@@ -67,8 +75,11 @@ namespace STORE
     Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
+    Card_Fold *             p_fold;
+    Card_FoldExpr *         p_foldExpr;
     Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
+    Card_Genesis *          p_genesis;
     Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
@@ -82,11 +93,15 @@ namespace STORE
     Card_JoinOrderSeq *     p_joinOrderSeq;
     Card_JoinPredList *     p_joinPredList;
     Card_KeyExists *        p_keyExists;
+    Card_KeyNotExists *     p_keyNotExists;
     Card_LBound *           p_lBound;
     Card_Level *            p_level;
+    Card_Manner *           p_manner;
     Card_MaybeIndexJoin *   p_maybeIndexJoin;
+    Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;
+    Card_NParmCols *        p_nParmCols;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;
@@ -100,6 +115,8 @@ namespace STORE
     Card_PtnColNm *         p_ptnColNm;
     Card_PtndJoin *         p_ptndJoin;
     Card_PtndJoinSet *      p_ptndJoinSet;
+    Card_Reason *           p_reason;
+    Card_RelnOp *           p_relnOp;
     Card_RpnCalc *          p_rpnCalc;
     Card_SbyElist *         p_sbyElist;
     Card_Scan *             p_scan;

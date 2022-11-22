@@ -378,13 +378,13 @@ void Board::vPinTitle(Ribbon* pRibbon,
   else
     pRibbon->vSprint("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
                      "SubQuery"_Stz,
-                     m_pSubQuery->nParams(),
+                     m_pSubQuery->nCorrCols(),
                      aQD[m_pSubQuery->eDisposition()],
 
                      m_pSubQuery->i_SubQuery(),
                      aQC[m_pSubQuery->eClause()],
-                     aQO[m_pSubQuery->eOperator()],
-                     aRO[m_pSubQuery->eRelationalOp()]
+                     aQO[m_pSubQuery->eCalcOp()],
+                     aRO[m_pSubQuery->eRelnOp()]
                      );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

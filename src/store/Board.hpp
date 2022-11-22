@@ -30,6 +30,7 @@
 #include "Card_Call.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Cast.hpp"
+#include "Card_Clause.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Combined.hpp"
 #include "Card_Comment.hpp"
@@ -55,9 +56,11 @@
 
 #include "Card_Filter.hpp"
 #include "Card_Fold.hpp"
+#include "Card_FoldExpr.hpp"
 
 #include "Card_GbyAgg.hpp"
 #include "Card_GbyElist.hpp"
+#include "Card_Genesis.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
@@ -77,6 +80,7 @@
 #include "Card_JoinPredList.hpp"
 
 #include "Card_KeyExists.hpp"
+#include "Card_KeyNotExists.hpp"
 
 #include "Card_LBound.hpp"
 #include "Card_Level.hpp"
@@ -109,6 +113,7 @@
 #include "Card_PtndJoinSet.hpp"
 
 #include "Card_RBound.hpp"
+#include "Card_Reason.hpp"
 #include "Card_RelnOp.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_RpnTerms.hpp"
@@ -146,6 +151,25 @@
 #include "OpSpec.hpp"
 
 #include "SubQuery.hpp"
+
+
+#include "Card_Av_AggP.hpp"
+#include "Card_Av_AggPN.hpp"
+#include "Card_Av_AggPNO.hpp"
+#include "Card_Av_AggregP.hpp"
+#include "Card_Av_AggregPN.hpp"
+#include "Card_Av_AggregPNO.hpp"
+#include "Card_Av_Filter.hpp"
+#include "Card_Av_FilterProject.hpp"
+#include "Card_Av_GbyAggP.hpp"
+#include "Card_Av_GbyAggPN.hpp"
+#include "Card_Av_GbyPNO.hpp"
+#include "Card_Av_JoinSeries.hpp"
+#include "Card_Av_Limit.hpp"
+#include "Card_Av_Project.hpp"
+#include "Card_Av_ScanJoinSeries.hpp"
+#include "Card_Av_ScanOnly.hpp"
+#include "Card_Av_Sort.hpp"
 
 namespace STORE
 {

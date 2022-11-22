@@ -9,6 +9,7 @@
 #include "eQC.h"
 #include "eQO.h"
 #include "eRO.h"
+#include "eFF.h"
 
 namespace STORE
 {
@@ -16,18 +17,17 @@ namespace STORE
   {
   protected:
 
-    i8  m_iForm;
+    i8 m_i_SubQuery;     // which subquery is this subquery?
+    i8 m_i_Caller;       // which subquery calls this subquery
 
-    i8 m_i_SubQuery;
-
-    i8 m_i_Caller;
-
-    i8 m_nParams;        // number of parameters
     eQD m_eDisposition;  // linear/simple or aggregation
-    eQC m_eClause;       // clause called from: from|where|having
-    eQO m_eOperator;     // post-call operator: relnOp|exists|in(not)
+    i8 m_nCorrCols;      // number of correlated columns
 
-    eRO m_eRelationalOp; // <|<=|==|!=|>=|>
+    eQC m_eClause;       // called via clause: from|where|having
+    eQO m_eCalcOp;       // connecting operator: cmpOp|(not)exists|(not)in
+    eRO m_eRelnOp;       // NONE|<|<=|==|!=|>=|> (if connecting/post call is cmpOp)
+
+    eFF m_eFold;         // which fold
 
     i8 m_nSubQueries;    // how many sub-queries under this one
 
@@ -42,32 +42,48 @@ namespace STORE
     SubQuery(void);
    ~SubQuery(void) noexcept(false);
 
-    i8 iForm(void);
-    void vForm(i8 iForm);
+    bool bAreYou_Mq_W_Sq_1Ck_in(void);
 
-    eQD eDisposition(void);
-    void vDisposition(eQD eDisposition);
+    bool bByCmpOp(void);
+    bool bByExists(void);
+    bool bByIn(void);
+    bool bByNotExists(void);
+    bool bByNotIn(void);
 
-    i8 i_Caller(void);
+    i8   i_Caller(void);
     void vCaller(i8 i_Caller);
 
-    eQC eClause(void);
+    eQO  eCalcOp(void);
+    void vCalcOp(eQO eCalcOp);
+
+    eQC  eClause(void);
     void vClause(eQC eClause);
 
-    eQO eOperator(void);
-    void vOperator(eQO eOperator);
+    i8   nCorrCols(void);
+    void vCorrCols(i8 nCorrCols);
 
-    i8 nParams(void);
-    void vParams(i8 nParams);
+    eQD  eDisposition(void);
+    void vDisposition(eQD eDisposition);
 
-    eRO eRelationalOp(void);
-    void vRelationalOp(eRO eRelationalOp);
+    eFF  eFold(void);
+    void vFold(eFF eFold);
 
-    i8 nSubQueries(void);
+    bool bIsAggregation(void);
+    bool bIsCorrelated(void);
+    bool bIsLinear(void);
+
+    eRO  eRelnOp(void);
+    void vRelnOp(eRO eRelnOp);
+
+    i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);
 
-    i8 i_SubQuery(void);
+    i8   i_SubQuery(void);
     void vSubQuery(i8 i_SubQuery);
+
+    bool bViaFrom(void);
+    bool bViaHaving(void);
+    bool bViaWhere(void);
 
   protected:
     Footer* aFooter(void);

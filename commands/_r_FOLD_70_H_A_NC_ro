@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* _r_FOLD_70_W_L_NC_ro -- sub-query flattening test : refer Q11              */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS40_T05_Flatten_By_Decision_Tree"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_FOLD_70_W_L_NC_ro"
+select ps_partkey,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by ps_partkey
+having sum(ps_supplycost * ps_availqty) > (select avg(ps_supplycost * ps_availqty)
+                                             from partsupp, supplier
+                                            where PS_SUPPKEY = S_SUPPKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -273,20 +273,24 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
 
   Stz* szTerm = p_term->sz();
 
-       if (szTerm->bSame("and"_Stz))     return TE_AND;
-  else if (szTerm->bSame("}"_Stz))       return TE_EXECUTE;
-  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
-  else if (szTerm->bSame("in"_Stz))      return TE_IN;
-  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+       if (szTerm->bSame("and"_Stz))        return TE_AND;
+  else if (szTerm->bSame("}"_Stz))          return TE_EXECUTE;
+  else if (szTerm->bSame("exists"_Stz))     return TE_EXISTS;
+  else if (szTerm->bSame("in"_Stz))         return TE_IN;
+  else if (szTerm->bSame("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (szTerm->bSame("notIn"_Stz))      return TE_NOTIN;
+  else if (szTerm->bSame("or"_Stz))         return TE_OR;
 
-  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
-  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
-  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<"_Stz))          return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))         return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))          return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))         return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))         return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))         return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))         return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))          return TE_COMPARE;
+
+  else if (szTerm->bSame("matchMiddle1"_Stz))   return TE_BOOLFN;
 
   else return TE_OTHER;
 }

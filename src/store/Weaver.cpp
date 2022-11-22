@@ -207,22 +207,23 @@ void Weaver::vOp(Card* pCard)
   
   switch (eCard) {
 
-    case CK_ABSJOIN:    vArgAbsJoin  (sOpArgs,_pCard_AbsJoin(pCard));   break;
-    case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));    break;
-    case CK_COMBINED:   vArgCombined (sOpArgs,_pCard_Combined(pCard));  break;
-    case CK_CROSSJOIN:  vArgCrossJoin(sOpArgs,_pCard_CrossJoin(pCard)); break;
-    case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));    break;
-    case CK_GBYAGG:     vArgGbyAgg   (sOpArgs,_pCard_GbyAgg(pCard));    break;
-    case CK_HAVING:     vArgHaving   (sOpArgs,_pCard_Having(pCard));    break;
-    case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard)); break;
-    case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard)); break;
-    case CK_KEYEXISTS:  vArgKeyExists(sOpArgs,_pCard_KeyExists(pCard)); break;
-    case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit(pCard));     break;
-    case CK_NEXT:       vArgNext     (sOpArgs,_pCard_Next(pCard));      break;
-    case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));   break;
-    case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));      break;
-    case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));      break;
-    case CK_WHERE:      vArgWhere    (sOpArgs,_pCard_Where(pCard));     break;
+    case CK_ABSJOIN:       vArgAbsJoin     (sOpArgs,_pCard_AbsJoin(pCard));      break;
+    case CK_AGGREG:        vArgAggreg      (sOpArgs,_pCard_Aggreg(pCard));       break;
+    case CK_COMBINED:      vArgCombined    (sOpArgs,_pCard_Combined(pCard));     break;
+    case CK_CROSSJOIN:     vArgCrossJoin   (sOpArgs,_pCard_CrossJoin(pCard));    break;
+    case CK_FILTER:        vArgFilter      (sOpArgs,_pCard_Filter(pCard));       break;
+    case CK_GBYAGG:        vArgGbyAgg      (sOpArgs,_pCard_GbyAgg(pCard));       break;
+    case CK_HAVING:        vArgHaving      (sOpArgs,_pCard_Having(pCard));       break;
+    case CK_INDEXJOIN:     vArgIndexJoin   (sOpArgs,_pCard_IndexJoin(pCard));    break;
+    case CK_INDEXSCAN:     vArgIndexScan   (sOpArgs,_pCard_IndexScan(pCard));    break;
+    case CK_KEYEXISTS:     vArgKeyExists   (sOpArgs,_pCard_KeyExists(pCard));    break;
+    case CK_KEYNOTEXISTS:  vArgKeyNotExists(sOpArgs,_pCard_KeyNotExists(pCard)); break;
+    case CK_LIMIT:         vArgLimit       (sOpArgs,_pCard_Limit(pCard));        break;
+    case CK_NEXT:          vArgNext        (sOpArgs,_pCard_Next(pCard));         break;
+    case CK_PROJECT:       vArgProject     (sOpArgs,_pCard_Project(pCard));      break;
+    case CK_SCAN:          vArgScan        (sOpArgs,_pCard_Scan(pCard));         break;
+    case CK_SORT:          vArgSort        (sOpArgs,_pCard_Sort(pCard));         break;
+    case CK_WHERE:         vArgWhere       (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
       vTrace("  skipping %s\n"_Stz,aCK[eCard]);
@@ -452,6 +453,32 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
   s4K sRpnConstraint;
   if (pCard_KeyExists->pSub_constraint())
     vRpnKeyExists_constraint(sRpnConstraint, pCard_KeyExists);
+  else
+    sRpnConstraint = " type boolean 1 1 == "_Stz;
+
+  szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
+      ,p_tableNm->szValue()
+      ,p_indexNm->szValue()
+      ,sRpnExpr.szStz()
+      ,sRpnConstraint.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : keyNotExists <tableNm> <indexNm> <keyExpr> <expr>                  */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgKeyNotExists(Stz* szOpArgs, Card_KeyNotExists* p_keyNotExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_TableNm* p_tableNm = p_keyNotExists->pSub_tableNm();
+  Card_IndexNm* p_indexNm = p_keyNotExists->pSub_indexNm();
+
+  s4K sRpnExpr;
+  vRpnKeyNotExists(sRpnExpr,p_keyNotExists);
+
+  s4K sRpnConstraint;
+  if (p_keyNotExists->pSub_constraint())
+    vRpnKeyNotExists_constraint(sRpnConstraint, p_keyNotExists);
   else
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
@@ -782,20 +809,20 @@ void Weaver::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
 
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-//  Card* pCard_test = pCard_Having->pSub_boolCalc();
-//  if (CK_BOOLCALC == pCard_test->eCard()) {
-//    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
-//    vBoolCalc(szRpnExpr, pCard_CalcBool);
-//  }
-//  else {
-//    Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
-//    vRpnCalc(szRpnExpr, pCard_Calc);
-//  }
-
-  Card_RpnCalc* p_rpnCalc = pCard_Having->pSub_rpnCalc();
-  if (p_rpnCalc) {
-    vRpnCalc(szRpnExpr, p_rpnCalc);
+  Card* pCard_test = pCard_Having->pSub_boolCalc();
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
   }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
+//  Card_RpnCalc* p_rpnCalc = pCard_Having->pSub_rpnCalc();
+//  if (p_rpnCalc) {
+//    vRpnCalc(szRpnExpr, p_rpnCalc);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -871,6 +898,54 @@ void Weaver::vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyE
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   Card_Constraint *pCard_constraint = pCard_KeyExists->pSub_constraint();
+  if (! pCard_constraint)
+    return;
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_Bounds *pCard_bounds = p_keyNotExists->pSub_bounds();
+  if (pCard_bounds) {
+    i8 nSubs = pCard_bounds->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card *pSubCard = pCard_bounds->pGet(i_Sub);
+
+      if (!pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term *p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
+    }
+    return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for keyNotExists op                                         */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnKeyNotExists_constraint(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_Constraint *pCard_constraint = p_keyNotExists->pSub_constraint();
   if (! pCard_constraint)
     return;
 

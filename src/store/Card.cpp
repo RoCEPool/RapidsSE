@@ -132,9 +132,20 @@ void Card::vInit(eCK eCard)
 /*----------------------------------------------------------------------------*/
 Card::~Card(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("Card [~%02lld] %p\n"_Stz,md__SeqNo,this);
+  static Card* pPriorCard = nullptr;
+
+  vTrace("Card [~%02lld] %p\n"_Stz,md__SeqNo,this);
+
+  if (this == pPriorCard)
+    vDebugPoint();
+
+  if (678 == md__SeqNo) {
+    pPriorCard = this;
+    vDebugPoint();
+  }
+
   gapCard[md__SeqNo] = nullptr;
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
@@ -2149,6 +2160,19 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_ExePred.hpp"
+Card_ExePred* Card::pSub_exePred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_ExePred* p_exePred =
+      _pCard_ExePred(pFindSubCard(CK_EXEPRED));
+  return p_exePred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
 Card_Expr* Card::pSub_expr(void)
 {
@@ -2209,6 +2233,19 @@ Card_GbyElist* Card::pSub_gbyElist(void)
   Card_GbyElist* p_gbyElist =
       _pCard_GbyElist(pFindSubCard(CK_GBYELIST));
   return p_gbyElist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Genesis.hpp"
+Card_Genesis* Card::pSub_genesis(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Genesis* p_genesis =
+      _pCard_Genesis(pFindSubCard(CK_GENESIS));
+  return p_genesis;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2300,6 +2337,19 @@ Card_KeyExists* Card::pSub_keyExists(void)
   Card_KeyExists* p_keyExists =
       _pCard_KeyExists(pFindSubCard(CK_KEYEXISTS));
   return p_keyExists;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_KeyNotExists.hpp"
+Card_KeyNotExists* Card::pSub_keyNotExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_KeyNotExists* p_keyNotExists =
+      _pCard_KeyNotExists(pFindSubCard(CK_KEYNOTEXISTS));
+  return p_keyNotExists;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2430,6 +2480,19 @@ Card_ProjElist* Card::pSub_projElist(void)
   Card_ProjElist* p_projElist =
       _pCard_ProjElist(pFindSubCard(CK_PROJELIST));
   return p_projElist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Reason.hpp"
+Card_Reason* Card::pSub_reason(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Reason* p_reason =
+      _pCard_Reason(pFindSubCard(CK_REASON));
+  return p_reason;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2604,6 +2667,19 @@ Card_TblColOdn* Card::pSub_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Term.hpp"
+Card_Term* Card::pSub_term(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term =
+      _pCard_Term(pFindSubCard(CK_TERM));
+  return p_term;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Topology.hpp"
 Card_Topology* Card::pSub_topology(void)
 {
@@ -2679,6 +2755,232 @@ Card_Where* Card::pSub_where(void)
   return p_where;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Aggregate View                                                             */
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_AggP.hpp"
+Card_Av_AggP* Card::pSub_avAggP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_AggP* p_avAggP =
+      _pCard_Av_AggP(pFindSubCard(CK_AV_AGGP));
+  return p_avAggP;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_AggPN.hpp"
+Card_Av_AggPN* Card::pSub_avAggPN(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_AggPN* p_avAggPN =
+      _pCard_Av_AggPN(pFindSubCard(CK_AV_AGGPN));
+  return p_avAggPN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_AggPNO.hpp"
+Card_Av_AggPNO* Card::pSub_avAggPNO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_AggPNO* p_avAggPNO =
+      _pCard_Av_AggPNO(pFindSubCard(CK_AV_AGGPNO));
+  return p_avAggPNO;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_AggregP.hpp"
+Card_Av_AggregP* Card::pSub_avAggregP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_AggregP* p_avAggregP =
+      _pCard_Av_AggregP(pFindSubCard(CK_AV_AGGREGP));
+  return p_avAggregP;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_AggregPN.hpp"
+Card_Av_AggregPN* Card::pSub_avAggregPN(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_AggregPN* p_avAggregPN =
+      _pCard_Av_AggregPN(pFindSubCard(CK_AV_AGGREGPN));
+  return p_avAggregPN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_AggregPNO.hpp"
+Card_Av_AggregPNO* Card::pSub_avAggregPNO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_AggregPNO* p_avAggregPNO =
+      _pCard_Av_AggregPNO(pFindSubCard(CK_AV_AGGREGPNO));
+  return p_avAggregPNO;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_Filter.hpp"
+Card_Av_Filter* Card::pSub_avFilter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_Filter* p_avFilter =
+      _pCard_Av_Filter(pFindSubCard(CK_AV_FILTER));
+  return p_avFilter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_FilterProject.hpp"
+Card_Av_FilterProject* Card::pSub_avFilterProject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_FilterProject* p_avFilterProject =
+      _pCard_Av_FilterProject(pFindSubCard(CK_AV_FILTERPROJECT));
+  return p_avFilterProject;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_GbyAggP.hpp"
+Card_Av_GbyAggP* Card::pSub_avGbyAggP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_GbyAggP* p_avGbyAggP =
+      _pCard_Av_GbyAggP(pFindSubCard(CK_AV_GBYAGGP));
+  return p_avGbyAggP;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_GbyAggPN.hpp"
+Card_Av_GbyAggPN* Card::pSub_avGbyAggPN(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_GbyAggPN* p_avGbyAggPN =
+      _pCard_Av_GbyAggPN(pFindSubCard(CK_AV_GBYAGGPN));
+  return p_avGbyAggPN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_GbyPNO.hpp"
+Card_Av_GbyPNO* Card::pSub_avGbyPNO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_GbyPNO* p_avGbyPNO =
+      _pCard_Av_GbyPNO(pFindSubCard(CK_AV_GBYPNO));
+  return p_avGbyPNO;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_JoinSeries.hpp"
+Card_Av_JoinSeries* Card::pSub_avJoinSeries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_JoinSeries* p_avJoinSeries =
+      _pCard_Av_JoinSeries(pFindSubCard(CK_AV_JOINSERIES));
+  return p_avJoinSeries;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_Limit.hpp"
+Card_Av_Limit* Card::pSub_avLimit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_Limit* p_avLimit =
+      _pCard_Av_Limit(pFindSubCard(CK_AV_LIMIT));
+  return p_avLimit;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_Project.hpp"
+Card_Av_Project* Card::pSub_avProject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_Project* p_avProject =
+      _pCard_Av_Project(pFindSubCard(CK_AV_PROJECT));
+  return p_avProject;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_ScanJoinSeries.hpp"
+Card_Av_ScanJoinSeries* Card::pSub_avScanJoinSeries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_ScanJoinSeries* p_avScanJoinSeries =
+      _pCard_Av_ScanJoinSeries(pFindSubCard(CK_AV_SCANJOINSERIES));
+  return p_avScanJoinSeries;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_ScanOnly.hpp"
+Card_Av_ScanOnly* Card::pSub_avScanOnly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_ScanOnly* p_avScanOnly =
+      _pCard_Av_ScanOnly(pFindSubCard(CK_AV_SCANONLY));
+  return p_avScanOnly;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Av_Sort.hpp"
+Card_Av_Sort* Card::pSub_avSort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Av_Sort* p_avSort =
+      _pCard_Av_Sort(pFindSubCard(CK_AV_SORT));
+  return p_avSort;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

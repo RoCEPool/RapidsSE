@@ -41,6 +41,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_pTable     = nullptr;
 
   m_pCard_child    = nullptr;
+  m_pCard_copied   = nullptr;
   m_pCard_dup      = nullptr;
   m_pCard_found    = nullptr;
   m_pCard_located  = nullptr;
@@ -57,9 +58,9 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
-  G.pBoard = nullptr;
-  G.pDeck = nullptr;
-
+  G.pBoard    = nullptr;
+  G.pDeck     = nullptr;
+  G.pSubQuery = nullptr;
   G_vClearMembers();
   G_vClearRegisters();
 
@@ -507,19 +508,26 @@ void Xgearing::G_vAppendChild(eCK eParent, Card* pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::G_vDuplicateMember(eCK eMember)
+void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card* pMember  = G_pGetMember(eMember);
+  Card* pChild = new Card(eChild);
 
-  m_pCard_dup = pMember->pDupCardAndSubCards();
+  pParent->vAppend(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
 
-  if (! bIsTracing())
-    return;
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTrace("  %s %s from %s\n"_Stz,
-         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
+  Card* pChild = new Card(eChild, szValue);
+
+  pParent->vAppend(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,6 +558,46 @@ void Xgearing::G_vDeleteMember(Card* pMember)
   G_vUpdateMember(eMember, nullptr, __func__);
 
   DELETE_CARD(pMember);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete main when given sub is empty                                        */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  RASSERT(G.xBI.bJustRestarted());
+
+  if (! G_bEachMainWithSub(eMain,eSub))
+    return;
+
+  G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+  G.e_SubOfMain = G.p_SubOfMain->eCard();
+
+
+  if (G.p_SubOfMain->nChildCards())
+    return;
+
+  G_vRemoveDeleteMain(eMain);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vDuplicateMember(eCK eMember)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pMember  = G_pGetMember(eMember);
+
+  m_pCard_dup = pMember->pDupCardAndSubCards();
+
+  if (! bIsTracing())
+    return;
+
+  vTrace("  %s %s from %s\n"_Stz,
+         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -697,6 +745,17 @@ bool Xgearing::G_bMoreMain(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* morph card                                                                 */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vMorphCard(Card* pCard, eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  pCard->vCard(eCard);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* remove main card from deck (do not clear M members or registers)           */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vRemoveMain(eCK eCrossCheck)
@@ -766,8 +825,10 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_AS:               return G.p_as;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUNDS:           return G.p_bounds;
+    case CK_CALCOP:           return G.p_calcOp;
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
+    case CK_CLAUSE:           return G.p_clause;
     case CK_CMPPRED:          return G.p_cmpPred;
     case CK_COMBINED:         return G.p_combined;
     case CK_COMMENT:          return G.p_comment;
@@ -783,8 +844,11 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_EXEPRED:          return G.p_exePred;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
+    case CK_FOLD:             return G.p_fold;
+    case CK_FOLDEXPR:         return G.p_foldExpr;
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
+    case CK_GENESIS:          return G.p_genesis;
     case CK_HAVING:           return G.p_having;
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
@@ -798,11 +862,15 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_JOINORDERSEQ:     return G.p_joinOrderSeq;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEYEXISTS:        return G.p_keyExists;
+    case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
     case CK_LBOUND:           return G.p_lBound;
     case CK_LEVEL:            return G.p_level;
+    case CK_MANNER:           return G.p_manner;
     case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
+    case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEXT:             return G.p_next;
     case CK_NOTE:             return G.p_note;
+    case CK_NPARMCOLS:        return G.p_nParmCols;
     case CK_PARAM:            return G.p_param;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
@@ -815,6 +883,8 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_PTNCOLNM:         return G.p_ptnColNm;
     case CK_PTNDJOIN:         return G.p_ptndJoin;
     case CK_PTNDJOINSET:      return G.p_ptndJoinSet;
+    case CK_REASON:           return G.p_reason;
+    case CK_RELNOP:           return G.p_relnOp;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SBYELIST:         return G.p_sbyElist;
     case CK_SCAN:             return G.p_scan;
@@ -1004,8 +1074,10 @@ void Xgearing::G_vClearMembers(void)
   G.p_as               = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bounds           = nullptr;
+  G.p_calcOp           = nullptr;
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
+  G.p_clause           = nullptr;
   G.p_cmpPred          = nullptr;
   G.p_combined         = nullptr;
   G.p_comment          = nullptr;
@@ -1021,8 +1093,11 @@ void Xgearing::G_vClearMembers(void)
   G.p_exePred          = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
+  G.p_fold             = nullptr;
+  G.p_foldExpr         = nullptr;
   G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
+  G.p_genesis          = nullptr;
   G.p_having           = nullptr;
   G.p_idxCol           = nullptr;
   G.p_idxColList       = nullptr;
@@ -1036,11 +1111,15 @@ void Xgearing::G_vClearMembers(void)
   G.p_joinOrderSeq     = nullptr;
   G.p_joinPredList     = nullptr;
   G.p_keyExists        = nullptr;
+  G.p_keyNotExists     = nullptr;
   G.p_lBound           = nullptr;
   G.p_level            = nullptr;
+  G.p_manner           = nullptr;
   G.p_maybeIndexJoin   = nullptr;
+  G.p_nCorrCols        = nullptr;
   G.p_next             = nullptr;
   G.p_note             = nullptr;
+  G.p_nParmCols        = nullptr;
   G.p_param            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
@@ -1054,6 +1133,8 @@ void Xgearing::G_vClearMembers(void)
   G.p_ptnColNm         = nullptr;
   G.p_ptndJoin         = nullptr;
   G.p_ptndJoinSet      = nullptr;
+  G.p_reason           = nullptr;
+  G.p_relnOp           = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_sbyElist         = nullptr;
   G.p_scan             = nullptr;
@@ -1122,12 +1203,16 @@ void Xgearing::G_vClearRegisters(void)
 
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
+  m_pTerm_2            = nullptr;
 
   G.sz_SubQueryNm      = nullptr;
 
   G.e_Level = AL_NONE;
 
   G.i_stmColOdn = C_UNKNOWN;
+  G.i_FoldCard = C_UNKNOWN;
+
+  G.p_PRED = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1199,6 +1284,21 @@ void Xgearing::G_vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear the general M registers if they match given pointer                  */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vCopyCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! pCard) {
+    m_pCard_copied = nullptr;
+    return;
+  }
+
+  m_pCard_copied = pCard->pDupCardAndSubCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vPushIter(void)
@@ -1249,6 +1349,26 @@ bool Xgearing::G_bPushBoard(i8 i_Board)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vInsertAfter(Card* pCard, Card* pAfter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.pDeck->vInsertAfter(pCard,pAfter);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vInsertBefore(Card* pCard, Card* pBefore)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.pDeck->vInsertBefore(pCard,pBefore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1422,8 +1542,10 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
+    case CK_CALCOP:           *((Card**)&G.p_calcOp)           = pCard; break;
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
+    case CK_CLAUSE:           *((Card**)&G.p_clause)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&G.p_comment)          = pCard; break;
@@ -1439,8 +1561,11 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXEPRED:          *((Card**)&G.p_exePred)          = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
+    case CK_FOLDEXPR:         *((Card**)&G.p_foldExpr)         = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
+    case CK_GENESIS:          *((Card**)&G.p_genesis)          = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
@@ -1454,11 +1579,15 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINORDERSEQ:     *((Card**)&G.p_joinOrderSeq)     = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
+    case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
+    case CK_MANNER:           *((Card**)&G.p_manner)           = pCard; break;
     case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
+    case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
+    case CK_NPARMCOLS:        *((Card**)&G.p_nParmCols)        = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
@@ -1471,6 +1600,8 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PTNCOLNM:         *((Card**)&G.p_ptnColNm)         = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&G.p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&G.p_ptndJoinSet)      = pCard; break;
+    case CK_REASON:           *((Card**)&G.p_reason)           = pCard; break;
+    case CK_RELNOP:           *((Card**)&G.p_relnOp)           = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SBYELIST:         *((Card**)&G.p_sbyElist)         = pCard; break;
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard; break;
@@ -1778,8 +1909,10 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_AS:               return "G.p_as"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
+    case CK_CALCOP:           return "G.p_calcOp"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
     case CK_CAST:             return "G.p_cast"_Stz;
+    case CK_CLAUSE:           return "G.p_clause"_Stz;
     case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
     case CK_COMBINED:         return "G.p_combined"_Stz;
     case CK_COMMENT:          return "G.p_comment"_Stz;
@@ -1795,8 +1928,11 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_EXEPRED:          return "G.p_exePred"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
+    case CK_FOLD:             return "G.p_fold"_Stz;
+    case CK_FOLDEXPR:         return "G.p_foldExpr"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
+    case CK_GENESIS:          return "G.p_genesis"_Stz;
     case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
     case CK_IDXCOLNM:         return "G.p_idxColNm"_Stz;
     case CK_INDEX:            return "G.p_index"_Stz;
@@ -1808,11 +1944,15 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_JOINORDERSEQ:     return "G.p_joinOrderSeq"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
+    case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
+    case CK_MANNER:           return "G.p_manner"_Stz;
     case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
+    case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
     case CK_NOTE:             return "G.p_note"_Stz;
+    case CK_NPARMCOLS:        return "G.p_nParmCols"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
@@ -1825,6 +1965,8 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_PTNCOLNM:         return "G.p_ptnColNm"_Stz;
     case CK_PTNDJOIN:         return "G.p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "G.p_ptndJoinSet"_Stz;
+    case CK_REASON:           return "G.p_reason"_Stz;
+    case CK_RELNOP:           return "G.p_relnOp"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SBYELIST:         return "G.p_sbyElist"_Stz;
     case CK_SCAN:             return "G.p_scan"_Stz;

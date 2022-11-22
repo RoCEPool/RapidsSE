@@ -27,6 +27,12 @@ namespace STORE
     s256        m_sXform;
     s256        m_sXdesc;
 
+    s32         m_sSqyNm;
+    s32         m_sSqyArg;
+    s32         m_sSqyCol;
+    s32         m_sSqyRO;
+    s32         m_sSqyRsl;
+
     PermGen*    m_pPermGen;
 
     Column*     m_pColumn;
@@ -37,6 +43,7 @@ namespace STORE
     Table*      m_pTable;
 
     Card* m_pCard_child;
+    Card* m_pCard_copied;
     Card* m_pCard_dup;
     Card* m_pCard_found;
     Card* m_pCard_located;
@@ -50,6 +57,7 @@ namespace STORE
 
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
+    Card_Term* m_pTerm_2;
 
 
 
@@ -101,49 +109,57 @@ namespace STORE
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
-
-    void G_vDuplicateMember(eCK eMember);
+    void G_vAppendNewChild(Card* pParent, eCK eChild);
+    void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
     void G_vClearMembers(void);
     void G_vClearMembersRegisters(void);
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(eCK eCard);
     void G_vClearRegistersIf(Card* pCard);
+    void G_vCopyCard(Card* pCard);
 
     void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);
+    void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
+    void G_vDuplicateMember(eCK eMember);
 
     bool G_bEachMain(void);
     bool G_bEachMain(eCK eOfMainKind);
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
     bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
-    i8   G_i_Main(void);
-    bool G_bMoreMain(void);
-    void G_vRemoveMain(eCK eCrossCheck);
-    void G_vRemoveDeleteMain(eCK eCrossCheck);
-    void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
-    bool G_bSubsequentToMain(bool bUpdateMember = false);
-    void G_vSubsequentToMain(bool bUpdateMember = false);
 
-    bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
-    bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
-    bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
-    bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 
     Card* G_pGetMember(eCK eMember);
-
-    bool G_bIsBoard(Stz* szBoardNm);
 
     bool G_bHasPriorToMain(bool bUpdateMember = false);
     bool G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
     bool G_bHasSubsequentToMain(bool bUpdateMember = false);
     bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
+    void G_vInsertAfter(Card* pCard, Card* pAfter);
+    void G_vInsertBefore(Card* pCard, Card* pBefore);
+    bool G_bIsBoard(Stz* szBoardNm);
+
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
+    i8   G_i_Main(void);
+    bool G_bMoreMain(void);
+    void G_vMorphCard(Card* pCard, eCK eCard);
+
+    void G_vNewMember(eCK eMember, bool bUpdateMember= true);
+    void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
+    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
+    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
+
+    bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
+    bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
+    bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
     void G_vPushBoard(Board* pBoard);
     bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
@@ -151,13 +167,9 @@ namespace STORE
     void G_vPushIter(Board* pBoard);
     void G_vPopBoard(void);
     void G_vPopIter(void);
-    void G_vRestart(void);
 
-    void G_vNewMember(eCK eMember, bool bUpdateMember= true);
-    void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
-    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
-    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
-
+    void G_vRemoveMain(eCK eCrossCheck);
+    void G_vRemoveDeleteMain(eCK eCrossCheck);
     bool G_bResolveCard(eCK eCard, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
@@ -165,15 +177,17 @@ namespace STORE
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore);
     bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
     bool G_bResolveSubCard(eCK eSub, i8 i_Before);
+    void G_vRestart(void);
+
+    void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
+    bool G_bSubsequentToMain(bool bUpdateMember = false);
+    void G_vSubsequentToMain(bool bUpdateMember = false);
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
-
-    bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 
 
     Stz* szT(eCK eMember);
     Stz* szMemberNm(eCK eMember);
-
   };
 }
 

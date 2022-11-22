@@ -22,17 +22,17 @@ SubQuery::SubQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_iForm = C_UNKNOWN;
-
   m_i_SubQuery = 0;
   m_i_Caller   = 0;
 
-  m_nParams      = 0;
   m_eDisposition = QD_NONE;
-  m_eClause      = QC_NONE;
-  m_eOperator    = QO_NONE;
+  m_nCorrCols    = 0;
 
-  m_eRelationalOp = RO_NONE;
+  m_eClause  = QC_NONE;
+  m_eCalcOp  = QO_NONE;
+  m_eRelnOp  = RO_NONE;
+
+  m_eFold    = FF_NONE;
 
   m_nSubQueries = 0;
 
@@ -55,6 +55,71 @@ SubQuery::~SubQuery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* called by/wrt cmpOp                                                        */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bByCmpOp(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QO_COMPARE_OP == m_eCalcOp)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* called by/wrt exists                                                       */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bByExists(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QO_EXISTS_OP == m_eCalcOp)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* called by/wrt in                                                           */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bByIn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QO_IN_OP == m_eCalcOp)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* called by/wrt not exists                                                   */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bByNotExists(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QO_NOT_EXISTS_OP == m_eCalcOp)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* called by/wrt not in                                                       */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bByNotIn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QO_NOT_IN_OP == m_eCalcOp)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get i_Caller                                                               */
 /*----------------------------------------------------------------------------*/
 i8 SubQuery::i_Caller(void)
@@ -72,46 +137,6 @@ void SubQuery::vCaller(i8 i_Caller)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_i_Caller = i_Caller;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get form                                                                   */
-/*----------------------------------------------------------------------------*/
-i8 SubQuery::iForm(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  return m_iForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set form                                                                   */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vForm(i8 iForm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  m_iForm = iForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get disposition                                                            */
-/*----------------------------------------------------------------------------*/
-eQD SubQuery::eDisposition(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  return m_eDisposition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set disposition                                                            */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vDisposition(eQD eDisposition)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  m_eDisposition = eDisposition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,61 +162,141 @@ void SubQuery::vClause(eQC eClause)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-eQO SubQuery::eOperator(void)
+eQO SubQuery::eCalcOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  return m_eOperator;
+  return m_eCalcOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set operator                                                               */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vOperator(eQO eOperator)
+void SubQuery::vCalcOp(eQO eCalcOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_eOperator = eOperator;
+  m_eCalcOp = eCalcOp;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nParams                                                                */
+/* get nCorrCols                                                              */
 /*----------------------------------------------------------------------------*/
-i8 SubQuery::nParams(void)
+i8 SubQuery::nCorrCols(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  return m_nParams;
+  return m_nCorrCols;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set nParams                                                                */
+/* set nCorrCols                                                              */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vParams(i8 nParams)
+void SubQuery::vCorrCols(i8 nCorrCols)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_nParams = nParams;
+  m_nCorrCols = nCorrCols;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get disposition                                                            */
+/*----------------------------------------------------------------------------*/
+eQD SubQuery::eDisposition(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_eDisposition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set disposition                                                            */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vDisposition(eQD eDisposition)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  m_eDisposition = eDisposition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get fold                                                                   */
+/*----------------------------------------------------------------------------*/
+eFF SubQuery::eFold(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_eFold;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set fold                                                                   */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vFold(eFF eFold)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  m_eFold = eFold;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this sub-query an aggegation?                                           */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bIsAggregation(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QD_AGGREGATION == m_eDisposition)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this sub-query correlated?                                              */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bIsCorrelated(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (m_nCorrCols)
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* is this sub-query linear?                                                  */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bIsLinear(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QD_LINEAR == m_eDisposition)
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get relational op                                                          */
 /*----------------------------------------------------------------------------*/
-eRO SubQuery::eRelationalOp(void)
+eRO SubQuery::eRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  return m_eRelationalOp;
+  return m_eRelnOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set relational op                                                          */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vRelationalOp(eRO eRelationalOp)
+void SubQuery::vRelnOp(eRO eRelnOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_eRelationalOp = eRelationalOp;
+  m_eRelnOp = eRelnOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,6 +337,45 @@ void SubQuery::vSubQuery(i8 i_SubQuery)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_i_SubQuery = i_SubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this sub-query called via a from clause?                                */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bViaFrom(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QC_FROM_CLAUSE == m_eClause)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this sub-query called via a having clause?                              */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bViaHaving(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QC_HAVING_CLAUSE == m_eClause)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this sub-query called via a where clause?                               */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bViaWhere(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QC_WHERE_CLAUSE == m_eClause)
+    return true;
+
+  return false;
 }
 
 /*============================================================================*/

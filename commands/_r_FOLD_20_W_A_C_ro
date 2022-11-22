@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* _r_FOLD_20_W_A_C_ro -- sub-query flattening test : refer Q2,17             */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_FOLD_20_W_A_C_ro"
+select count(*)
+  from lineitem, part
+ where P_PARTKEY = L_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

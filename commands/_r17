@@ -9,7 +9,7 @@ _r_init
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vSeries_27_Query_Analysis"
+/glean_cue_from = "vSeries_26_SubQuery_Analysis"
 /glean_interactive
 /transliterated
 /weaved
