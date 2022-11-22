@@ -19,6 +19,7 @@ namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace me
   struct MessageTypes;
   struct DataType;
   class QueryExecuteRequest;
+  class Row;
 }}}}}
 
 namespace STORE
@@ -98,6 +99,8 @@ namespace STORE
     void vChildJobExited();
     bool bIsChildJobActive();
     void vResultMetadata(StreamDef* pStreamDef);
+    void vRowData(CrwBuffer* pCrwBuffer);
+    void vRowData(RowBuffer* pRowBuffer);
 
   private:
 
@@ -137,6 +140,11 @@ namespace STORE
     void vSendQueryReceipt();
     void vFinishQueryDialog();
     i8   eToWLType(eCT eColType);
+    i8   nRowsToSend(i8 iRowsInBuf);
+    void vCreateAndAddRow(
+        std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row>* pRowList,
+        Row* pRow,
+        RowPix* pRowPix);
   };
 
   AdaptorWL* _pAdaptorWL(void* aAddr);

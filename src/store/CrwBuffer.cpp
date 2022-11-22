@@ -659,6 +659,16 @@ i8 CrwBuffer::nHeadSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the number of row (including deleted ones) in the buffer               */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::nHeads(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_oRowTray.pNub()->nHeads();
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vRestore(void)

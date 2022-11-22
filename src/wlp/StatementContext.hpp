@@ -23,6 +23,7 @@ namespace WLP
     bool  m_bGotStmtError;
     i8    m_iAffectedRows;
     eAffectedVerb m_eVerb;
+    StreamDef* m_pStreamDef;  // Definition of the resultset
 
     Footer m_xFooter;
 
@@ -40,10 +41,13 @@ namespace WLP
     bool bGotError();
     void vGotError(bool bError);
     i8   nAffectedRows();
+    void vAddAffectedRows(i8 nRows);
     void vAffectedRows(i8 nRows);
     eAffectedVerb eVerb();
     void vVerb(eAffectedVerb eVerb);
-  
+    StreamDef* pStreamDef();
+    void vStreamDef(StreamDef* pDef);
+
     Footer* aFooter(void);
   };
   

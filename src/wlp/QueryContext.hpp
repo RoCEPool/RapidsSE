@@ -42,7 +42,6 @@ namespace WLP
     StatementContext* pPopStmtCtx();
     StatementCtxIter* pStmtCtxIter();
 
-    Stz* szQueryText();
     void vIncStmtParsed();
     i8   nStmtParsed();
     void vIncStmtSucceeded();
@@ -51,6 +50,13 @@ namespace WLP
     i8   nStmtFailed();
     i8   iQueryStartNanos();
     i8   nStmtContexts();
+
+    // Information from the QueryExecuteRequest
+    Stz* szQueryText();
+    bool bContinueOnError();
+    i8   iRowsPerRowDataResponse();
+    bool bMustNotReturnRows();
+    i8   iMaxRowsToReturn();
 
   private:
     void vExtractStatements();

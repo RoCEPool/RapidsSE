@@ -197,8 +197,8 @@
 
   "adaptorWL_StreamDef - EV_D_STREAMDEF" .
 
-  PipeIn[] AdaptorWL[].resultMetadata
-  PipeIn[].delete
+  // Pass stream def to Adaptor. Adaptor saves it for use with row data.
+  PipeIn[]\clear AdaptorWL[].resultMetadata
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses
@@ -221,10 +221,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CrwBuffer \handler
 
-  EC_NONE locals| eError |
-
   "adaptorWL_CrwBuffer - EV_D_CRWBUFFER" .
 
+  PipeIn[] AdaptorWL[].crwBuffer
   Pipein[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
@@ -246,9 +245,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_RowBuffer \handler
 
-  EC_NONE locals| eError |
-
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .
+
+  PipeIn[] AdaptorWL[].rowBuffer
   Pipein[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away

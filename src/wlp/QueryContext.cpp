@@ -151,7 +151,6 @@ void QueryContext::vExtractStatements()
                                         "abc"_Stz,    // TODO: Use a real statementId
                                         -1);          // TODO: Use a real statementKey
         m_pStmtCtxList->vAppend(pStmtCtx);
-        ++m_nStmtParsed;
 
         // Another statement?
         iStartCrs = iStmtCrs + 1;
@@ -243,6 +242,46 @@ i8 QueryContext::iQueryStartNanos()
 i8 QueryContext::nStmtContexts()
 {
   return m_pStmtCtxList->nItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the text of the query (may contain a batch of statements)           */
+/*----------------------------------------------------------------------------*/
+Stz* QueryContext::szQueryText()
+{
+  return (Stz*) (m_pQueryExecuteRequest->query.c_str());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return true if a batch of statements should be aborted if one fails        */
+/*----------------------------------------------------------------------------*/
+bool QueryContext::bContinueOnError()
+{
+  return m_pQueryExecuteRequest->continueBatchOnError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the max number of rows to be sent per RowDataResponse               */
+/*----------------------------------------------------------------------------*/
+i8 QueryContext::iRowsPerRowDataResponse()
+{
+  return m_pQueryExecuteRequest->rowsPerRowDataResponse;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return true if the client is not expecting a resultset to be returned      */
+/*----------------------------------------------------------------------------*/
+bool QueryContext::bMustNotReturnRows()
+{
+  return m_pQueryExecuteRequest->mustNotReturnRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Maximum number of rows to be returned per statement, or -1 for unlimited   */
+/*----------------------------------------------------------------------------*/
+i8 QueryContext::iMaxRowsToReturn()
+{
+  return m_pQueryExecuteRequest->maxRowsToReturn;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -28,6 +28,7 @@ public:
   // adaptorWL
   void vAdaptorWLChildJobExited(void);
   void vAdaptorWLCompilerError(void);
+  void vAdaptorWLCrwBuffer(void);
   void vAdaptorWLDecodePayload(void);
   void vAdaptorWLExecutionError(void);
   void vAdaptorWLDelete(void);
@@ -40,6 +41,7 @@ public:
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
   void vAdaptorWLResultMetadata(void);
+  void vAdaptorWLRowBuffer(void);
   void vAdaptorWLStatementFetch(void);
   void vAdaptorWLStatementSubmitted(void);
   void vAdaptorWLStatementSubmittedError(void);

@@ -33,6 +33,7 @@ StatementContext::StatementContext(Stz* szStmtStart, i8 iLen, Stz* szId, i8 iKey
   m_bGotStmtError = false;
   m_iAffectedRows = 0;
   m_eVerb = NONE;
+  m_pStreamDef = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STATEMENTCONTEXT,_FOOTER_);
 }
@@ -43,7 +44,8 @@ StatementContext::StatementContext(Stz* szStmtStart, i8 iLen, Stz* szId, i8 iKey
 StatementContext::~StatementContext(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATEMENTCONTEXT,_FOOTER_);
-
+  delete m_pStreamDef;
+  m_pStreamDef = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +101,14 @@ i8 StatementContext::nAffectedRows()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Add to the count of rows affected by this query                            */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddAffectedRows(i8 nRows)
+{
+  m_iAffectedRows += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Set the count of rows affected by this query                               */
 /*----------------------------------------------------------------------------*/
 void StatementContext::vAffectedRows(i8 nRows)
@@ -120,6 +130,22 @@ StatementContext::eAffectedVerb StatementContext::eVerb()
 void StatementContext::vVerb(StatementContext::eAffectedVerb eVerb)
 {
   m_eVerb = eVerb;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the stream definition                                                  */
+/*----------------------------------------------------------------------------*/
+StreamDef* StatementContext::pStreamDef()
+{
+  return m_pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Save the stream definition                                                 */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vStreamDef(StreamDef* pStreamDef)
+{
+  m_pStreamDef = pStreamDef;
 }
 
 

@@ -13,6 +13,10 @@
 #include "Version.h"
 #include "InfoSet.hpp"
 #include "StatementContext.hpp"
+#include "IndexDef.hpp"
+#include "TailLine.hpp"
+#include "RowInflator.hpp"
+#include "SP_Bcd.hpp"
 
 // All of the wireline protocol messages
 #include "wlp/thrift/generated/AuthenticationOkResponse_types.h"
@@ -425,12 +429,23 @@ void AdaptorWL::vChildJobExited()
     vSerialiseAndSendMsg(&xMsg, MessageTypes::type::StatementResponse);
   }
 
+  bool bAbortRemaining = (m_pStmtCtx->bGotError() && !m_oQueryCtx.bContinueOnError());
+
   delete m_pStmtCtx;
   m_pStmtCtx = nullptr;
   vNextState(API_CHILD_JOB_EXITED);
 
+  if (bAbortRemaining) {
+    // Remove all the remaining statement contexts. This will cause the query to finish.
+    while ( (m_pStmtCtx = m_oQueryCtx.pPopStmtCtx()) != nullptr) {
+      delete m_pStmtCtx;
+      m_pStmtCtx = nullptr;
+    }
+  }
+
   m_pStmtCtx = m_oQueryCtx.pPopStmtCtx();
   if (m_pStmtCtx) {
+    m_oQueryCtx.vIncStmtParsed();
     vNextState(API_STATEMENT_TO_SUBMIT);
 
   } else {
@@ -468,6 +483,23 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
   if (m_pStmtCtx->bGotError()) {
     return;
   }
+
+  // Check if a resultset was expected for this query
+  if (m_oQueryCtx.bMustNotReturnRows()) {
+    // This is an error
+    m_pStmtCtx->vGotError(true);
+
+    eEC eErrCode = EC_WL_RESULTSET_RETURNED;
+    Stz* szErrMsg = "Error: %s: %s"_Stz;
+    vSerialiseErrorResponse(eErrCode,
+                            szErrMsg,
+                            aErrorMsg[eErrCode],
+                            m_pStmtCtx->szStmt());
+    return;
+  }
+
+  // Save the stream definition so we can interpret the row data
+  m_pStmtCtx->vStreamDef(pStreamDef);
 
   // Build the list of columns for the thrift message
   std::vector<ColumnMetadata> xColumns;
@@ -527,6 +559,87 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
   xRowMetadataResponse.__set_columns(xColumns);
 
   vSerialiseAndSendMsg(&xRowMetadataResponse, MessageTypes::type::RowMetadataResponse);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send row data to the client                                                */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
+{
+  ASSERT(m_pStmtCtx);
+  ASSERT(m_pStmtCtx->pStreamDef());
+
+  ASSERT(bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED}));
+  vNextState(API_DATA_RECEIVED);
+
+  if (m_pStmtCtx->bGotError()) {
+    return;
+  }
+
+  std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
+
+  StreamDef* pDef = m_pStmtCtx->pStreamDef();
+  RowPix* pRowPix = pDef->pRowPix();
+
+  HV_RowSingle hvRowSingle(pDef);
+
+  // Work out how many rows from this CrwBuffer to serialise
+  i8 iStartingRow = 0;
+  i8 iRowsInBuf = pCrwBuffer->nHeads();
+
+  // We might need to send multiple RowDataResponses for this CrwBuffer.
+  // This can be due to a limit of rows per response
+  while(iStartingRow < iRowsInBuf) {
+
+    i8 iRowsToSend = nRowsToSend(iRowsInBuf - iStartingRow);
+    if (iRowsToSend <= 0) {
+      break;
+    }
+
+    for (i8 i_Crw = iStartingRow; i_Crw < iRowsToSend; i_Crw++) {
+      // get the compact row
+      Crw* aCrw = (Crw*) pCrwBuffer->aGetHead(i_Crw);
+
+      // ignore deleted rows
+      if (aCrw->bIsDeleted()) {
+        continue;
+      }
+
+      // inflate compact row into a RowSingle
+      RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle, aCrw);
+      Row* pRow = hvRowSingle->pRowCurrent();
+
+      vCreateAndAddRow(&xRowList, pRow, pRowPix);
+    }
+
+    iStartingRow += iRowsToSend;
+    m_pStmtCtx->vAddAffectedRows(iRowsToSend);
+    ASSERT(xRowList.size() == iRowsToSend);
+
+    RowDataResponse xRowDataResponse;
+    xRowDataResponse.__set_rows(xRowList);
+
+    // TODO: Ensure that the message is < 1MB.
+    vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send row data to the client                                                */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
+{
+  ASSERT(m_pStmtCtx);
+  ASSERT(m_pStmtCtx->pStreamDef());
+
+  ASSERT(bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED}));
+  vNextState(API_DATA_RECEIVED);
+
+  if (m_pStmtCtx->bGotError()) {
+    return;
+  }
+
+  // TODO
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1092,6 +1205,7 @@ void AdaptorWL::processQueryExecuteRequest()
   // to be executed. Hence there may be more than one StatementContexts.
   m_pStmtCtx = m_oQueryCtx.pPopStmtCtx();
   if (m_pStmtCtx) {
+    m_oQueryCtx.vIncStmtParsed();
     vNextState(API_STATEMENT_TO_SUBMIT);
 
   } else {
@@ -1414,6 +1528,174 @@ i8 AdaptorWL::eToWLType(eCT eColType)
     default:              NEVER_REACH
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* Work out how many rows to send in the RowDataResponse                      */
+/*----------------------------------------------------------------------------*/
+i8 AdaptorWL::nRowsToSend(i8 iRowsInBuf)
+{
+  i8 iMaxRows         = m_oQueryCtx.iMaxRowsToReturn();
+  i8 iRowsAlreadySent = m_pStmtCtx->nAffectedRows();
+  i8 iRowsPerResponse = m_oQueryCtx.iRowsPerRowDataResponse();
+  i8 iRowsToSend      = iRowsInBuf;
+
+  // Work out how many rows to send in this RowDataResponse
+  if (iMaxRows != -1) {
+    iRowsToSend = iMaxRows - iRowsAlreadySent;
+
+    if (iRowsToSend > iRowsInBuf) {
+      iRowsToSend = iRowsInBuf;
+    }
+  }
+
+  if (iRowsPerResponse > 0 && iRowsToSend > iRowsPerResponse) {
+    iRowsToSend = iRowsPerResponse;
+  }
+
+  return iRowsToSend;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Work out how many rows to send in the RowDataResponse                      */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row>* pRowList,
+                                 Row* pRow,
+                                 RowPix* pRowPix)
+{
+  typedef com::rapidsdata::wirelineprotocol::messages::v5::Row RowWL;
+  typedef com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue ColumnWL;
+  typedef com::rapidsdata::wirelineprotocol::messages::v5::Date DateWL;
+  typedef com::rapidsdata::wirelineprotocol::messages::v5::Time TimeWL;
+  typedef com::rapidsdata::wirelineprotocol::messages::v5::Timestamp TimestampWL;
+  typedef com::rapidsdata::wirelineprotocol::messages::v5::Interval IntervalWL;
+
+  RowWL xRowWL;
+  std::vector<ColumnWL> xColumns;
+
+  for (i8 i_Col = 0;
+       i_Col < pRowPix->m_nColumns - pRowPix->m_nExtraCols;
+       i_Col++) {
+
+    ColumnWL    xColumnWL;
+    DateWL      xDateWL;
+    TimeWL      xTimeWL;
+    TimestampWL xTimestampWL;
+    IntervalWL  xIntervalWL;
+    Dtm         wDtm;
+    Bcd         xBcd;
+    SP_Bcd      spBcd;
+
+    eDM eDatum = (eDM) pRowPix->m_xaColPix[i_Col].m_uDatum;
+
+    // Null check with special case for strings and decimals (why?)
+    bool bIsNull = false;
+    switch (eDatum) {
+      case DM_VCH:
+      case DM_BCD:
+        if (pRow->bIsColNull(i_Col)) {
+          bIsNull = true;
+        }
+        break;
+
+      default:
+        if (pRow->iColVal_int(i_Col) == C_DATUM_NULL) {
+          bIsNull = true;
+        }
+        break;
+    }
+
+    if (bIsNull) {
+      xColumnWL.__set_isNull(true);
+      continue;
+    }
+
+    // Not null value
+    i8 iVal = pRow->iColVal_int(i_Col);
+
+    switch (eDatum) {
+      case DM_BCD:
+        xBcd = iVal;
+        xColumnWL.__set_bigDecimalVal(spBcd.sz(xBcd.T.m_iMantissa,xBcd.T.m_iScale)->azChar()); // Fix
+        break;
+
+      case DM_BOL:
+        xColumnWL.__set_booleanVal(iVal);
+        break;
+
+      case DM_DTE:
+        wDtm = iVal;
+        xDateWL.__set_year(wDtm.m_wDte.iYear());
+        xDateWL.__set_month(wDtm.m_wDte.iMonth());
+        xDateWL.__set_day(wDtm.m_wDte.iDay());
+        break;
+
+      case DM_FLT:
+        xColumnWL.__set_doubleVal(*(d8*)&iVal);
+        break;
+
+      case DM_INT:
+        xColumnWL.__set_bigintVal(iVal);
+        break;
+
+      case DM_IVL:  // day-time
+        // TODO: Needs the interval branch completed first
+        wDtm = iVal;
+        xIntervalWL.__set_type(IntervalType::type::DAY_TIME);
+        xIntervalWL.__set_day(0);
+        xIntervalWL.__set_hour(0);
+        xIntervalWL.__set_minute(0);
+        xIntervalWL.__set_second(0);
+        xIntervalWL.__set_nanoseconds(0);
+        break;
+
+      case DM_IVY:  // year-month
+        // TODO: Needs the interval branch completed first
+        wDtm = iVal;
+        xIntervalWL.__set_type(IntervalType::type::YEAR_MONTH);
+        xIntervalWL.__set_year(0);
+        xIntervalWL.__set_month(0);
+        break;
+
+      case DM_TME:
+        wDtm = iVal;
+        xTimeWL.__set_hour(wDtm.m_wTme.iHour());
+        xTimeWL.__set_minute(wDtm.m_wTme.iMin());
+        xTimeWL.__set_second(wDtm.m_wTme.iSec());
+        xTimeWL.__set_nanoseconds(wDtm.m_wTme.m_uMicro * C_1K);
+        break;
+
+      case DM_TSP:
+        wDtm = iVal;
+        xTimestampWL.__set_year(wDtm.m_wTsp.iYear());
+        xTimestampWL.__set_month(wDtm.m_wTsp.iMonth());
+        xTimestampWL.__set_day(wDtm.m_wTsp.iDay());
+        xTimestampWL.__set_hour(wDtm.m_wTsp.iHour());
+        xTimestampWL.__set_minute(wDtm.m_wTsp.iMin());
+        xTimestampWL.__set_second(wDtm.m_wTsp.iSec());
+        xTimestampWL.__set_nanoseconds(wDtm.m_wTsp.iMicro() * C_1K);
+        break;
+
+      case DM_VCH:
+        xColumnWL.__set_stringVal(pRow->szColVal_ofs(i_Col)->azChar());
+        break;
+
+      case DM_UNK:
+        xColumnWL.__set_isNull(true);
+        break;
+
+      default:
+        NEVER_REACH
+    }
+
+    xColumns.push_back(xColumnWL);
+  }
+
+  // Add the columns to the row, and the row to the rowlist
+  xRowWL.__set_columns(xColumns);
+  pRowList->push_back(xRowWL);
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* Helper to convert an internal AffectedVerb enum to the wireline version.   */

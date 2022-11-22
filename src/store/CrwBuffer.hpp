@@ -54,6 +54,7 @@ namespace STORE
     i8         nRows(void);
     i8         nRowSize(void);
     i8         nHeadSize(void);
+    i8         nHeads(void);
 
 
     ////////////////////////////////////////////////////////////////////////////
