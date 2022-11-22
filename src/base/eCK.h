@@ -41,7 +41,6 @@ enum eCK // card kind
   /* */ CK_DIRECTION,
 
   /* */ CK_EBOUND,
-  /* */ CK_EXEPRED,
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   /* */ CK_EXPRBOOL,
@@ -204,7 +203,6 @@ static Stz* aCK[]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
   /* */ "CK_EBOUND"_Stz,       // CK_EBOUND
-  /* */ "CK_EXEPRED"_Stz,      // CK_EXEPRED
   /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
@@ -366,7 +364,6 @@ static Stz* aCK_short[]
   /* */ "direction"_Stz,       // CK_DIRECTION
 
   /* */ "ebound"_Stz,          // CK_EBOUND
-  /* */ "exePred"_Stz,         // CK_EXEPRED
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprBool"_Stz,        // CK_EXPRBOOL

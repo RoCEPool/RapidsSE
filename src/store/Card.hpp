@@ -50,7 +50,6 @@ namespace STORE
 
   class Card_EBound;
   class Card_ELIST;
-  class Card_ExePred;
   class Card_Exists;
   class Card_Expr;
 
@@ -404,7 +403,6 @@ namespace STORE
     Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CrossJoin*     pSub_crossJoin(void);
-    Card_ExePred*       pSub_exePred(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
     Card_Fold*          pSub_fold(void);

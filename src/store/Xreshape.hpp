@@ -20,7 +20,6 @@ namespace STORE
     void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
-    void R_vUTE_Convert_exePred_To_StmOdn(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);

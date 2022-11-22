@@ -72,7 +72,6 @@ namespace STORE
     Card_CrossPtnJoin *     p_crossPtnJoin;
     Card_CrossPtnJoinList * p_crossPtnJoinList;
     Card_Direction *        p_direction;
-    Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
     Card_Fold *             p_fold;
