@@ -328,11 +328,10 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
     G.p_tstPred = _pCard_TstPred(pCard);
 
     if (G.p_tstPred->bIsValue("exists"_Stz) || G.p_tstPred->bIsValue("notExists"_Stz)) {
-      G.p_term = G.p_tstPred->pSub_term();
-      m_sSqyArg = G.p_term->szValue();
-
-      Card_ExePred *p_exePred = G.p_tstPred->pSub_exePred();
-      m_sSqyNm = p_exePred->szValue();
+      m_pTerm_0 = _pCard_Term(G.p_tstPred->pGet(0));
+      m_sSqyArg = m_pTerm_0->szValue();
+      m_pTerm_1 = _pCard_Term(G.p_tstPred->pGet(1));
+      m_sSqyNm = m_pTerm_1->szValue();
 
       bFoundCall = true;
 
@@ -342,9 +341,8 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
     }
 
     if (G.p_tstPred->bIsValue("in"_Stz) || G.p_tstPred->bIsValue("notIn"_Stz)) {
-      G.p_exePred = G.p_tstPred->pSub_exePred();
-      m_sSqyNm = G.p_exePred->szValue();
-
+      m_pTerm_0 = _pCard_Term(G.p_tstPred->pGet(0));
+      m_sSqyNm = m_pTerm_0->szValue();
       m_pTerm_1 = _pCard_Term(G.p_tstPred->pGet(1));
       m_sSqyRsl = m_pTerm_1->szValue();
       m_pTerm_2 = _pCard_Term(G.p_tstPred->pGet(2));

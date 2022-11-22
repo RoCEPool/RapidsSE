@@ -1440,7 +1440,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   // x) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
-    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
     NEVER_REACH
   }
   vAssert_Board_sqB();
@@ -1538,7 +1538,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   // 2) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
-    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
     NEVER_REACH
   }
   vAssert_Board_sqB();

@@ -395,21 +395,24 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         }
 
         // test for sq execute
-        szSqyNm = p_term->szValue();
-        if (StrLib::bBeginsWith(szSqyNm->azChar(),"__")) {
-          // <termSeries> = <termSeries><execute>
-          p_exePred = new Card_ExePred;
-          p_exePred->vValue(szSqyNm);
-          p_TermSeries->vAppend(p_exePred);
-          p_exePred = nullptr;
-          DELETE_CARD(p_term);
-          break;
-        }
-        else {
-          // <termSeries> = <termSeries><term>
-          p_TermSeries->vAppend(p_term);
-          break;
-        }
+//        szSqyNm = p_term->szValue();
+//        if (StrLib::bBeginsWith(szSqyNm->azChar(),"__")) {
+//          // <termSeries> = <termSeries><execute>
+//          p_exePred = new Card_ExePred;
+//          p_exePred->vValue(szSqyNm);
+//          p_TermSeries->vAppend(p_exePred);
+//          p_exePred = nullptr;
+//          DELETE_CARD(p_term);
+//          break;
+//        }
+//        else {
+//          // <termSeries> = <termSeries><term>
+//          p_TermSeries->vAppend(p_term);
+//          break;
+//        }
+
+        p_TermSeries->vAppend(p_term);
+        break;
 
       default:
         NEVER_REACH;
