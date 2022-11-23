@@ -212,6 +212,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     G.p_projElist = G.p_gbyAgg->pSub_projElist();
 
     G.p_gbyElist = new Card_GbyElist;
+    G.p_gbyElist->Y_vSet(P_Inject);
     G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
 
 //    G_vAppendNewChild(G.p_gbyElist,CK_EXPR);
@@ -231,6 +232,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 //    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
 
     G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr);
+    G.p_expr->Y_vSet(P_Inject);
     G.p_projElist->vPush(G.p_expr);
 
   }
@@ -703,6 +705,56 @@ void Xreshape::R_vUTE_Push_foldExpr_Into_gbyElist(void)
   G.p_expr->vAppend(G.p_foldElist->pSub_rpnCalc()->pDupCardAndSubCards());
 
   G.p_gbyElist->vPush(G.p_expr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* relabel expressions                                                        */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_RelabelExpressions(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 i_Expr;
+  s32 sLabel;
+
+  G_vRestart();
+  while (G_bEachMainWith2Sub(CK_GBYAGG, CK_GBYELIST, CK_PROJELIST)) {
+
+    i_Expr = 0;
+    CardIter xCI_g(G.p_gbyElist);
+    while ((G.p_expr = _pCard_Expr(xCI_g.pEachChild()))) {
+      sLabel.vSprint("$K%lld"_Stz,++i_Expr);
+      G.p_expr->vValue(sLabel.szStz());
+    }
+
+    i_Expr = 0;
+    CardIter xCI_p(G.p_projElist);
+    while ((G.p_expr = _pCard_Expr(xCI_p.pEachChild()))) {
+      sLabel.vSprint("$%lld"_Stz,++i_Expr);
+      G.p_expr->vValue(sLabel.szStz());
+    }
+
+  }
+
+  i8 i_StmCol;
+
+  G_vRestart();
+  while (G_bEachMain()) {
+    if (! (G.p_stream = G.p_MainCard->pSub_stream()))
+      continue;
+
+    i_StmCol = G.p_stream->Y_iVal(P_OdnLo);
+
+    G.p_stmColList = G.p_stream->pSub_stmColList();
+
+    CardIter xCI_s(G.p_stmColList);
+    while ((G.p_stmCol = _pCard_StmCol(xCI_s.pEachChild()))) {
+      sLabel.vSprint("$%lld"_Stz,i_StmCol++);
+      G.p_stmCol->vValue(sLabel.szStz());
+    }
+
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

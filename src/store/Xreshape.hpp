@@ -32,6 +32,7 @@ namespace STORE
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);
     void R_vUTE_Push_foldExpr_Into_gbyElist(void);
+    void R_vUTE_RelabelExpressions(void);
     void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
     void R_vUTE_Unproject_foldExpr_After_having(void);

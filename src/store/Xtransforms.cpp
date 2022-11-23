@@ -1456,6 +1456,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
     R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
   }
   G.pDeck->vRenumberRecursive();
+  R_vUTE_RelabelExpressions();
   vPrintBoard(__LINE__);
 
 
