@@ -609,6 +609,20 @@ group by
               <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_SUPPKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index IxPS_SUPPKEY ON Partsupp (PS_SUPPKEY)  ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxP_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxP_PARTKEY ON part(p_partkey);</stringProp>
@@ -1004,6 +1018,19 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxPS_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index partsupp IxPS_PARTKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxPS_SUPPKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index partsupp IxPS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3073,7 +3100,7 @@ end ;</stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="TestPlan.comments">Requires the following indexes:
 create index IxS_NATIOKEY  ON Supplier (S_NATIONKEY) ;
-create index IxPS_SUPPKEY ON Partsupp (xPS_SUPPKEY)  ;
+create index IxPS_SUPPKEY ON Partsupp (PS_SUPPKEY)  ;
 create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
 
 </stringProp>
