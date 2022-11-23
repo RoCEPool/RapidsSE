@@ -846,7 +846,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
     case CK_FOLD:             return G.p_fold;
-    case CK_FOLDELIST:         return G.p_foldExpr;
+    case CK_FOLDELIST:         return G.p_foldElist;
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
     case CK_GENESIS:          return G.p_genesis;
@@ -1113,7 +1113,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_fold             = nullptr;
-  G.p_foldExpr         = nullptr;
+  G.p_foldElist         = nullptr;
   G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
   G.p_genesis          = nullptr;
@@ -1625,7 +1625,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
-    case CK_FOLDELIST: *((Card**)&G.p_foldExpr)         = pCard; break;
+    case CK_FOLDELIST: *((Card**)&G.p_foldElist)         = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
     case CK_GENESIS:          *((Card**)&G.p_genesis)          = pCard; break;
@@ -2010,7 +2010,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
     case CK_FOLD:             return "G.p_fold"_Stz;
-    case CK_FOLDELIST:         return "G.p_foldExpr"_Stz;
+    case CK_FOLDELIST:         return "G.p_foldElist"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
     case CK_GENESIS:          return "G.p_genesis"_Stz;

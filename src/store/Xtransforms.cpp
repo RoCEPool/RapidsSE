@@ -1878,9 +1878,9 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
   G.pDeck->vPush(G.p_fold);
 //  G_vAppendNewChild(G.p_fold,CK_FOLDELIST);
-//  G_vAppendNewChild(G.p_foldExpr,CK_TYPE,"((type))"_Stz);
-//  G_vAppendNewChild(G.p_foldExpr,CK_AS,"__SQ1RESULT"_Stz);
-//  G_vAppendNewChild(G.p_foldExpr,CK_RPNCALC);
+//  G_vAppendNewChild(G.p_foldElist,CK_TYPE,"((type))"_Stz);
+//  G_vAppendNewChild(G.p_foldElist,CK_AS,"__SQ1RESULT"_Stz);
+//  G_vAppendNewChild(G.p_foldElist,CK_RPNCALC);
 //  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
 
