@@ -158,6 +158,43 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // identify the cmpPred with inject info
+
+  auto bLambdaFn = [this](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_CMPPRED))
+      return C_CONTINUE_RECURSION;
+
+    CardIter xCI(p_pred);
+    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+
+      if (! T_bValue_IsParamOrdinal(G.p_term->szValue()))
+        continue;
+
+      p_pred->vMark1(MARK_AT);
+      G.p_term = _pCard_Term(xCI.pPrevChild());
+      G.p_term->Y_vSet(P_Inject);
+      break;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  G.p_boolCalc = G.p_filter->pSub_boolCalc();
+  G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
+  bool bIgnore = M_bPredRecursive(G.p_PRED,bLambdaFn);
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
   while (G_bEachMain()) {
     if (! G.p_MainCard->bIsCard(CK_AGGREG))
       break;
@@ -172,12 +209,12 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
     G_vAppendNewChild(G.p_gbyElist,CK_EXPR);
     G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
-    G_vAppendNewChild(G.p_expr,CK_RPNCALC,"((?))"_Stz);
+    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
 
     G_vPushNewChild(G.p_projElist,CK_EXPR);
     G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
-    G_vAppendNewChild(G.p_expr,CK_RPNCALC,"((?))"_Stz);
+    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
 
   }
@@ -187,7 +224,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     G.p_projElist = G.p_project->pSub_projElist();
     G_vPushNewChild(G.p_projElist, CK_EXPR);
     G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
-    G_vAppendNewChild(G.p_expr, CK_RPNCALC, "((?))"_Stz);
+    G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
 
 
@@ -217,7 +254,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   G_vPushNewChild(G.p_foldElist, CK_EXPR);
   G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
   G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1GBYKEY"_Stz);
-  G_vAppendNewChild(G.p_expr, CK_RPNCALC, "((?))"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
 }
 

@@ -620,7 +620,7 @@ void CardCtl::vReset(void)
 
   vPrintName(CK_TERM,false);
   vPrintNo(CK_TERM,false);
-  vPrintProperties(CK_TERM,false);
+  //vPrintProperties(CK_TERM,false);
 }
 
 /*----------------------------------------------------------------------------*/
