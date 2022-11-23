@@ -214,15 +214,24 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     G.p_gbyElist = new Card_GbyElist;
     G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
 
-    G_vAppendNewChild(G.p_gbyElist,CK_EXPR);
-    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
-    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
-    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
+//    G_vAppendNewChild(G.p_gbyElist,CK_EXPR);
+//    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
+//    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
+//    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
 
-    G_vPushNewChild(G.p_projElist,CK_EXPR);
-    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
-    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
-    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
+    G.p_expr = D_pDerive_Gby_expr_From_stmCol(G.p_stmCol);
+    G.p_gbyElist->vAppend(G.p_expr);
+
+    // TODO: hack...
+    G.p_expr->vCardNo(0);
+
+//    G_vPushNewChild(G.p_projElist,CK_EXPR);
+//    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
+//    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
+//    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
+
+    G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr);
+    G.p_projElist->vPush(G.p_expr);
 
   }
 
