@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_StartMarker \handler
 
-  "recvWL_StartMarker - EV_M_START" .
+  "recvWL_StartMarker - EV_M_START" .verbose
 
   // initialise
   recvWL_init
@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_CLEANING \handler
 
-  "in recvWL_CLEANING" .
+  "in recvWL_CLEANING" .verbose
 
   EV_M_CLEANING_handler
 ;

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_StartMarker \handler
 
-  "sendWL_StartMarker - EV_M_START" .
+  "sendWL_StartMarker - EV_M_START" .verbose
 
   "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
@@ -26,14 +26,16 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_Payload \handler
 
-  "sendWL_Payload - EV_D_PAYLOAD" .
+  "sendWL_Payload - EV_D_PAYLOAD" .verbose
 
   PipeIn[]\clear locals| pPayloadObj |
 
   // We expect to see a PayloadObj
   pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
-  pPayloadObj payloadObj::msgType@ "SendWL: Sending payload: %v" .printf
+  pPayloadObj payloadObj::size@
+  pPayloadObj payloadObj::msgType@
+  "SendWL: Sending payload: %v : %v bytes" .printf
 
   pPayloadObj Socket[].sendWLMsg not if
     Socket[].clientAddr@  "Error sending wireline message to client at %v" .printf
@@ -55,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_Error \handler
 
-  "sendWL_Error - EV_M_ERROR" .
+  "sendWL_Error - EV_M_ERROR" .verbose
 
   // An up-stream operator has sent an error (usually the Adaptor).
   // This SendWL operator will intercept this and close the socket
@@ -71,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_Cleaning \handler
 
-  "sendWL_Cleaning - EV_M_CLEANING" .
+  "sendWL_Cleaning - EV_M_CLEANING" .verbose
 
   EV_M_CLEANING_handler
 ;

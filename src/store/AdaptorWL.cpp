@@ -327,9 +327,9 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
   Stz* szErrMsg= "Error: %s; %s"_Stz;
 
   vSerialiseErrorResponse(eErrCode, szErrMsg, aEC2[eErrCode], aErrorMsg[eErrCode]);
+  m_pStmtCtx->vGotError(true);
 
   // The child job failed during submission.
-  vNextState(API_STATEMENT_COMPLETED);
   vChildJobExited();
 }
 
@@ -954,6 +954,8 @@ void AdaptorWL::vNextState(eState eNextState)
 
   if (!bMatched) {
     // Connection is no longer viable
+    vTrace("Wireline client is making an invalid transition from state %s to %s\n"_Stz,
+           aState[m_eProtocolState], aState[eNextState]);
     vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
     m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     m_eProtocolState = DISCONNECTED;

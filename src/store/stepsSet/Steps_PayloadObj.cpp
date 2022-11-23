@@ -38,7 +38,7 @@ void Step::vPayloadObjDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* payloadObj::delete : delete the payloadObj on the stack                    */
+/* payloadObj::size@ : push the size of the payloadObj on the stack           */
 /*----------------------------------------------------------------------------*/
 void Step::vPayloadObjSize(void)
 {
