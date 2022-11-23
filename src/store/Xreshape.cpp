@@ -176,8 +176,8 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
         continue;
 
       p_pred->vMark1(MARK_AT);
-      G.p_term = _pCard_Term(xCI.pPrevChild());
-      G.p_term->Y_vSet(P_Inject);
+      m_pTerm_inject = _pCard_Term(xCI.pPrevChild());
+      m_pTerm_inject->Y_vSet(P_Inject);
       break;
     }
 
@@ -188,6 +188,13 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
   bool bIgnore = M_bPredRecursive(G.p_PRED,bLambdaFn);
 
+
+
+  m_pCard_found = G.p_stream->pFindValueRecursive(m_pTerm_inject->szValue(),m_pCard_parent);
+  G.p_stmCol = _pCard_StmCol(m_pCard_parent);
+
+  m_pCard_parent->vMark1(MARK_AT);
+  G.p_stmCol->vDump();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
