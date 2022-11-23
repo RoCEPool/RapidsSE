@@ -2212,13 +2212,13 @@ Card_Fold* Card::pSub_fold(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_FoldExpr.hpp"
-Card_FoldExpr* Card::pSub_foldExpr(void)
+#include "Card_FoldElist.hpp"
+Card_FoldElist* Card::pSub_foldElist(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_FoldExpr* p_foldExpr =
-      _pCard_FoldExpr(pFindSubCard(CK_FOLDEXPR));
+  Card_FoldElist* p_foldExpr =
+      _pCard_FoldElist(pFindSubCard(CK_FOLDELIST));
   return p_foldExpr;
 }
 

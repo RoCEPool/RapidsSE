@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_FoldExpr.hpp -- Fold Typed Expression                                 */
+/* Card_FoldElist.hpp -- Fold Typed Expression                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_FoldExpr : public Card
+  class Card_FoldElist : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_FoldExpr(void);
-   ~Card_FoldExpr(void) noexcept(false);
+    Card_FoldElist(void);
+   ~Card_FoldElist(void) noexcept(false);
   };
 
-  Card_FoldExpr* _pCard_FoldExpr(void* aAddr);
+  Card_FoldElist* _pCard_FoldElist(void* aAddr);
 }
 
 /*============================================================================*/

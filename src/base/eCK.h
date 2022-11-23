@@ -49,7 +49,7 @@ enum eCK // card kind
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
   /* */ CK_FOLD,
-  /* */ CK_FOLDEXPR,
+  /* */ CK_FOLDELIST,
 
   /* */ CK_GBYAGG,
   /* */ CK_GBYELIST,
@@ -212,7 +212,7 @@ static Stz* aCK[]
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
-  /* */ "CK_FOLDEXPR"_Stz,     // CK_FOLDEXPR
+  /* */ "CK_FOLDELIST"_Stz,     // CK_FOLDELIST
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
@@ -374,7 +374,7 @@ static Stz* aCK_short[]
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
   /* */ "fold"_Stz,            // CK_FOLD
-  /* */ "foldExpr"_Stz,        // CK_FOLDEXPR
+  /* */ "foldElist"_Stz,       // CK_FOLDELIST
 
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG
   /* */ "gbyElist"_Stz,        // CK_GBYELIST

@@ -195,7 +195,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
 //  if (G_bEachMain(CK_FOLD)) {
 //
-//    G.p_foldExpr = G.p_fold->pSub_foldExpr();
+//    G.p_foldExpr = G.p_fold->pSub_foldElist();
 //
 //    G_vPushNewChild(G.p_foldExpr, CK_EXPR);
 //    G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
@@ -392,7 +392,7 @@ void Xreshape::R_vUTE_Derive_foldExpr(void)
 
   G.p_type = m_pCard_resolved->pSub_type();
 
-  G_vAppendNewChild(G.p_fold,CK_FOLDEXPR);
+  G_vAppendNewChild(G.p_fold, CK_FOLDELIST);
   if (G.p_type) {
     G.p_foldExpr->vAppend(G.p_type->pDupCardAndSubCards());
   }
