@@ -1901,6 +1901,512 @@ begin
 end ;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 12
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/time pipeline Query12
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 >= DATE '1994-01-01' UBOUND $I1 DATE '1995-01-01'  <"
+     | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
+     | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
+     | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | combined 0
+     | next broadcast
+
+   stage S02 on all partitions :
+     indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
+     | project "type VARCHAR as O_ORDERPRIORITY J1_O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     aggreg " groupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     | combined 0
+     | next
+
+   stage S04 on all nodes :
+     aggreg " groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     aggreg " groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+pipeline Query12
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 >= DATE '1994-01-01' UBOUND $I1 DATE '1995-01-01'  <"
+     | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
+     | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
+     | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | combined 0
+     | next broadcast
+
+   stage S02 on all partitions :
+     indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
+     | project "type VARCHAR as O_ORDERPRIORITY J1_O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     aggreg " groupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     | combined 0
+     | next
+
+   stage S04 on all nodes :
+     aggreg " groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     aggreg " groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 13
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/time pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER as c_count )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg " groupBy  type INTEGER as c_count $2 aggregates  type INTEGER $K1 , type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type INTEGER $1  , type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S08 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+                                 "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER as c_count )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg " groupBy    type INTEGER as c_count $2
+             aggregates type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S08 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 14
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/time pipeline Query14
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public lineitem
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    | filter " type BOOLEAN $2 $17 == "
+    | filter " type BOOLEAN $11 DATE '1995-09-01' >= "
+    | filter " type BOOLEAN $11 DATE '1995-10-01'  < "
+    | project " type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+pipeline Query14
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public lineitem
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    | filter " type BOOLEAN $2 $17 == "
+    | filter " type BOOLEAN $11 DATE '1995-09-01' >= "
+    | filter " type BOOLEAN $11 DATE '1995-10-01'  < "
+    | project " type DECIMAL )  $6 1.  $7 -  *  sum  ,
+                type DECIMAL )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    project " type DECIMAL )  $1 sum  ,
+              type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project " type DECIMAL )  $1 sum  ,
+              type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 15
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/time pipeline Query15
+ begin
+   stage S01 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S02 on all partitions :
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
+     | aggreg " groupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | combined 0
+     | next
+
+   stage S03 on all nodes :
+     aggreg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     aggreg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER as supplier_no $K1 , type DECIMAL )  $2 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     top "TOP type DECIMAL $2" 1
+     | hash "type INTEGER supplier_no"
+     | combined 0
+     | next hashcast
+
+   stage S06 on all partitions :
+     indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+pipeline Query15
+ begin
+   stage S01 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S02 on all partitions :
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
+     | aggreg " groupBy    type INTEGER as l_suppkey $3
+                aggregates type INTEGER $K1 ,
+                           type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | combined 0
+     | next
+
+   stage S03 on all nodes :
+     aggreg " groupBy    type INTEGER as l_suppkey $1
+              aggregates type INTEGER $K1 ,
+                         type DECIMAL )  $2 sum  "
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     aggreg " groupBy    type INTEGER as l_suppkey $1
+              aggregates type INTEGER as supplier_no $K1 ,
+                         type DECIMAL )  $2 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     top "TOP type DECIMAL $2" 1
+     | hash "type INTEGER supplier_no"
+     | combined 0
+     | next hashcast
+
+   stage S06 on all partitions :
+     indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 16
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' != !f
+              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not !f and
+              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project "type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE"
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                       type VARCHAR as P_TYPE P_TYPE ,
+                       type INTEGER as P_SIZE P_SIZE ,
+                       type INTEGER as PS_SUPPKEY PS_SUPPKEY
+               aggregates
+                       type VARCHAR  as P_BRAND $K1 ,
+                       type VARCHAR  as P_TYPE $K2 ,
+                       type INTEGER  as P_SIZE $K3 ,
+                       type INTEGER  as PS_SUPPKEY $K4"
+
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                     type VARCHAR as P_TYPE P_TYPE ,
+                     type INTEGER as P_SIZE P_SIZE ,
+                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR  as P_BRAND $K1 ,
+                    type VARCHAR  as P_TYPE $K2 ,
+                    type INTEGER  as P_SIZE $K3 ,
+                    type INTEGER  as PS_SUPPKEY $K4 "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                     type VARCHAR as P_TYPE P_TYPE ,
+                     type INTEGER as P_SIZE P_SIZE ,
+                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR  as P_BRAND $K1 ,
+                    type VARCHAR  as P_TYPE $K2 ,
+                    type INTEGER  as P_SIZE $K3 ,
+                    type INTEGER  as PS_SUPPKEY $K4 "
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND ,
+                       type VARCHAR as P_TYPE P_TYPE ,
+                       type INTEGER as P_SIZE P_SIZE
+                       aggregates
+                       type VARCHAR  as P_BRAND $K1 ,
+                       type VARCHAR  as P_TYPE $K2 ,
+                       type INTEGER  as P_SIZE $K3 ,
+                       type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT"
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                     type VARCHAR as P_TYPE P_TYPE ,
+                     type INTEGER as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR  as P_BRAND $K1 ,
+                     type VARCHAR  as P_TYPE $K2 ,
+                     type INTEGER  as P_SIZE $K3 ,
+                     type INTEGER  as supplier_cnt ) supplier_cnt SUM"
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND ,
+                      type VARCHAR as P_TYPE P_TYPE ,
+                      type INTEGER as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR  as P_BRAND $K1 ,
+                      type VARCHAR  as P_TYPE $K2 ,
+                      type INTEGER  as P_SIZE $K3 ,
+                      type INTEGER  as supplier_cnt ) supplier_cnt SUM"
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort " type INTEGER $4 DESC  ,
+           type VARCHAR as P_BRAND P_BRAND ASC ,
+           type VARCHAR as P_TYPE P_TYPE ASC ,
+           type INTEGER as P_SIZE P_SIZE ASC "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 QUERY 17
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

@@ -121,51 +121,62 @@ end ;
 //
 // inner query followed by outer query
 //
-pipeline c_orders
-  begin
-    stage stageStart on origin :
-      start
-      | pulse once
-      | next
-    stage stageMarker32010 on all partitions :
-      scan rapidsse public customer
-      | next
-    stage stageMarker32013 on all partitions :
-      indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
-      "type BOOLEAN
-                }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
-      | combined 0
-      | next
-    stage stageMarker32016 on all partitions :
-      aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $9 count  "
-      | combined 0
-      | next
-    stage stageMarker32019 on all nodes :
-      aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $2 sum  "
-      | combined 0
-      | next
-    stage stageMarker32022 on origin :
-      aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER as c_count )  $2 sum  "
-      | combined 0
-      | next
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
 
-//
-// outer query
-//
-    stage stageMarker32028 on origin :
-      aggreg " groupBy  type INTEGER as c_count $2 aggregates  type INTEGER $K1 , type INTEGER as custdist )  countAll  "
-      | combined 0
-      | next
-    stage stageMarker32028 on origin :
-      sort " type INTEGER $1  , type INTEGER as c_count $2  "
-      | combined 0
-      | next
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
 
-stage stageLast on origin :
-    output
-    | sink
-    | first
-end ;
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+                                 "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER as c_count )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    aggreg " groupBy    type INTEGER as c_count $2
+             aggregates type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S08 on origin :
+   output
+   | sink
+   | first
+ end ;
 
 rows:
   (0,1)

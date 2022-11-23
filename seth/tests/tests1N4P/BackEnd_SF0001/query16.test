@@ -767,14 +767,14 @@ rows:
 
 // moved filters and added projections early
 //sf10 : 7.8s
-pipeline unamed
-  begin
-  stage stageStart on origin :
+pipeline Query16
+begin
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage stageMarker2543 on all partitions :
+  stage S01 on all partitions :
     scan rapidsse public part
     | filter " type BOOLEAN  P_BRAND 'Brand#45' != !f
               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not !f and
@@ -786,8 +786,8 @@ pipeline unamed
     | combined 0
     | next
 
-  stage stageMarker2546 on all partitions :
-    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
+  stage S02 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project "type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
@@ -796,7 +796,7 @@ pipeline unamed
     | combined 0
     | next hashcast
 
-  stage stageMarker2549 on all partitions :
+  stage S03 on all partitions :
     keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
@@ -812,7 +812,7 @@ pipeline unamed
     | combined 0
     | next
 
-  stage stageMarker2552 on all nodes :
+  stage S04 on all nodes :
     aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                      type VARCHAR as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE ,
@@ -825,7 +825,7 @@ pipeline unamed
     | combined 0
     | next
 
-  stage stageMarker2555 on origin :
+  stage S05 on origin :
     aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                      type VARCHAR as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE ,
@@ -839,7 +839,7 @@ pipeline unamed
     | combined 0
     | next hashcast
 
-  stage CNTDST_a on all partitions :
+  stage S06 on all partitions :
     aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND ,
                        type VARCHAR as P_TYPE P_TYPE ,
                        type INTEGER as P_SIZE P_SIZE
@@ -851,7 +851,7 @@ pipeline unamed
     | combined 0
     | next
 
-  stage CNTDST_b on all nodes :
+  stage S07 on all nodes :
     aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                      type VARCHAR as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE
@@ -863,7 +863,7 @@ pipeline unamed
     | combined 0
     | next
 
-  stage CNTDST_c on origin :
+  stage S08 on origin :
     aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND ,
                       type VARCHAR as P_TYPE P_TYPE ,
                       type INTEGER as P_SIZE P_SIZE
@@ -875,7 +875,7 @@ pipeline unamed
     | combined 0
     | next
 
-  stage SORT_a on origin :
+  stage S09 on origin :
     sort " type INTEGER $4 DESC  ,
            type VARCHAR as P_BRAND P_BRAND ASC ,
            type VARCHAR as P_TYPE P_TYPE ASC ,
@@ -888,6 +888,7 @@ pipeline unamed
     | sink
     | first
 end ;
+
 rows:
  ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
  ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
