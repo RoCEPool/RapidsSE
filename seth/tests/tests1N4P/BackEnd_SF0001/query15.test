@@ -142,44 +142,50 @@ begin
 end ;
 */
 
-pipeline unamed
+pipeline Query15
  begin
-   stage stageStart on origin :
+   stage S01 on origin :
      start
      | pulse once
      | next
 
-   stage stageMarker4125 on all partitions :
+   stage S02 on all partitions :
      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
-     | aggreg " groupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | aggreg " groupBy    type INTEGER as l_suppkey $3
+                aggregates type INTEGER $K1 ,
+                           type DECIMAL )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
-   stage stageMarker4128 on all nodes :
-     aggreg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+   stage S03 on all nodes :
+     aggreg " groupBy    type INTEGER as l_suppkey $1
+              aggregates type INTEGER $K1 ,
+                         type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
-   stage stageMarker4131 on origin :
-     aggreg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER as supplier_no $K1 , type DECIMAL )  $2 sum  "
+   stage S04 on origin :
+     aggreg " groupBy    type INTEGER as l_suppkey $1
+              aggregates type INTEGER as supplier_no $K1 ,
+                         type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
-   stage stageMarker4131 on origin :
+   stage S05 on origin :
      top "TOP type DECIMAL $2" 1
      | hash "type INTEGER supplier_no"
      | combined 0
      | next hashcast
 
-   stage stageMarker4994 on all partitions :
+   stage S06 on all partitions :
      indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
      | combined 0
      | next
 
-   stage stageLast on origin :
+   stage S07 on origin :
      output
      | sink
-     | stageStart
+     | first
  end ;
 
  rows:
