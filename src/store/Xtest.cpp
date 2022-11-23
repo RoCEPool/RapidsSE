@@ -325,7 +325,8 @@ bool Xtest::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable)
+bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
+                                   bool bParamAllowedInBounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -349,7 +350,9 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable)
         return false;
     }
 
-    if (cTblSyn_0 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+    if (bParamAllowedInBounds &&
+        cTblSyn_0 == cTblSyn &&
+        T_bValue_IsParamOrdinal(pTerm_1->szValue()))
       return true;
     if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_1->szValue()))
       return true;

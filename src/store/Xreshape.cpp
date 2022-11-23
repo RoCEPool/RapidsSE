@@ -154,6 +154,27 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  while (G_bEachMain()) {
+    if (! G.p_MainCard->bIsCard(CK_AGGREG))
+      break;
+
+    G.p_MainCard->vCard(CK_GBYAGG);
+
+    G.p_gbyAgg = _pCard_GbyAgg(G.p_MainCard);
+    G.p_projElist = G.p_gbyAgg->pSub_projElist();
+
+    G.p_gbyElist = new Card_GbyElist;
+    G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -267,22 +288,64 @@ void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
-    G.p_cmpPred = _pCard_CmpPred(pCard);
+    G.p_sqtPred = _pCard_SqtPred(pCard);
 
-    m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
+    m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
     M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
 
-    m_pTerm_1 = _pCard_Term(G.p_cmpPred->pGet(1));
-    G.p_cmpPred->vRemoveChild(m_pTerm_1);
+    m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+    G.p_sqtPred->vRemoveChild(m_pTerm_1);
     DELETE_CARD(m_pTerm_1);
-    G_vAppendNewChild(G.p_cmpPred,CK_TERM,"$1"_Stz);
+    G_vAppendNewChild(G.p_sqtPred,CK_TERM,"$1"_Stz);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Correct_where_BaseOn_foldExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_boolCalc = G.p_where->pSub_boolCalc();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this](Card *pCard) {
+
+    if (MARK_AT != pCard->cMark1())
+      return C_CONTINUE_RECURSION;
+
+    G.p_sqtPred = _pCard_SqtPred(pCard);
+
+    m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
+
+    m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+    G.p_sqtPred->vRemoveChild(m_pTerm_1);
+    DELETE_CARD(m_pTerm_1);
+
+    m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+    G.p_sqtPred->vRemoveChild(m_pTerm_1);
+    DELETE_CARD(m_pTerm_1);
+
+    G_vAppendNewChild(G.p_sqtPred,CK_TERM,"$1"_Stz);
+
+    G_vMorphCard(G.p_sqtPred,CK_CMPPRED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -353,16 +416,27 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
     }
 
     // TODO: needs to be a list
-    if (G.p_sqtPred->bIsValue("<"_Stz)) {
+    if (G.p_sqtPred->bIsValue("<"_Stz) ||
+        G.p_sqtPred->bIsValue(">"_Stz)) {
 
-      m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
-      m_sSqyRO =  m_pTerm_0->szValue();
+      if (3 == G.p_sqtPred->nChildCards()) {
+        m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+        // TODO: this doesnt seem right
+        m_sSqyRO = m_pTerm_0->szValue();
 
-      m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
-      m_sSqyArg = m_pTerm_1->szValue();
+        m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+        m_sSqyArg = m_pTerm_1->szValue();
 
-      m_pTerm_2 = _pCard_Term(G.p_sqtPred->pGet(2));
-      m_sSqyNm = m_pTerm_2->szValue();
+        m_pTerm_2 = _pCard_Term(G.p_sqtPred->pGet(2));
+        m_sSqyNm = m_pTerm_2->szValue();
+      }
+      else {
+        m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+        m_sSqyArg = m_pTerm_0->szValue();
+
+        m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+        m_sSqyNm = m_pTerm_1->szValue();
+      }
 
       bFoundCall = true;
 
@@ -606,7 +680,7 @@ bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Unproject_foldExpr(void)
+void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -653,6 +727,26 @@ void Xreshape::R_vUTE_Unproject_foldExpr(void)
   G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
   G.p_project->vAppend(G.p_comment);
 
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Unproject_foldExpr_After_where(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+
+  G_vNewMember(CK_PROJECT);
+  G.pDeck->vInsertAfter(G.p_project,G.p_where);
+
+  G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
+  G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
+
+  G_vNewMemberOf(CK_PROJELIST,""_Stz,CK_PROJECT);
+
+  // TODO : unproject $1
 
 }
 
@@ -1499,13 +1593,13 @@ void Xreshape::vR_S34_T30_Delete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S36_T10_UpCopy_filter_pred_Into_bounds(void)
+void Xreshape::vR_S36_T10_UpCopy_filter_pred_Into_bounds(bool bParamAllowedInBounds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
 
-  C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter);
+  C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter,bParamAllowedInBounds);
 
   vEndReshape();
 }
