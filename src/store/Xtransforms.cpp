@@ -1452,7 +1452,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
 
   G_vRestart();
-  if (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+  if (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER)) {
     R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
   }
   G.pDeck->vRenumberRecursive();
@@ -1477,6 +1477,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   }
 
 
+  m_pBench->vIsFlat(true);
   vPrintBoard(__LINE__);
   vEndTransform();
 }

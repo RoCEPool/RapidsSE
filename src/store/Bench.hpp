@@ -15,6 +15,8 @@ namespace STORE
 
     char m_cPrefix;
 
+    bool m_bIsFlat;
+
     // must be last
     Footer m_xFooter;
 
@@ -32,6 +34,8 @@ namespace STORE
     Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
+    bool bIsFlat(void);
+    void vIsFlat(bool bIsFlat);
     Optimiser* pOptimiser(void);
     char cPrefix(void);
     void vPrefix(char cPrefix);

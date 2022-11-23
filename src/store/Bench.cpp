@@ -26,6 +26,8 @@ Bench::Bench(Optimiser* pOptimiser)
   m_pOptimiser = pOptimiser;
 
   m_cPrefix = ' ';
+
+  m_bIsFlat = false;
   
   _checkInitialised_(CN_BENCH);
   
@@ -146,6 +148,26 @@ Board* Bench::pGetBoard(Stz* szBoardNm)
   }
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the bench flat?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Bench::bIsFlat(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_bIsFlat;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is the bench flat?                                                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vIsFlat(bool bIsFlat)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_bIsFlat = bIsFlat;
 }
 
 /*----------------------------------------------------------------------------*/
