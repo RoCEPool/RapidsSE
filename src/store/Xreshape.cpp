@@ -177,7 +177,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
       p_pred->vMark1(MARK_AT);
       m_pTerm_inject = _pCard_Term(xCI.pPrevChild());
-      m_pTerm_inject->Y_vSet(P_Inject);
+      m_pTerm_inject->Y_vSet(P_Injected);
       break;
     }
 
@@ -207,18 +207,17 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
       break;
 
     G.p_MainCard->vCard(CK_GBYAGG);
-
     G.p_gbyAgg = _pCard_GbyAgg(G.p_MainCard);
+
+    G.p_level = G.p_gbyAgg->pSub_level();
+    G.e_Level = (eAL)G.p_level->Y_iVal(P_Level);
+
     G.p_projElist = G.p_gbyAgg->pSub_projElist();
 
     G.p_gbyElist = new Card_GbyElist;
-    G.p_gbyElist->Y_vSet(P_Inject);
+    G.p_gbyElist->Y_vSet(P_Injected);
     G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
 
-//    G_vAppendNewChild(G.p_gbyElist,CK_EXPR);
-//    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
-//    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
-//    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
 
     G.p_expr = D_pDerive_Gby_expr_From_stmCol(G.p_stmCol);
     G.p_gbyElist->vAppend(G.p_expr);
@@ -231,15 +230,29 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 //    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
 //    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
 
-    G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr);
-    G.p_expr->Y_vSet(P_Inject);
-    G.p_projElist->vPush(G.p_expr);
+    if (AL_PARTITION == G.e_Level) {
+      G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr);
+    }
+    else {
+      G.p_gbyElist->Y_vSet(P_ProjBump, (i8)1);
+      G.p_type = _pCard_Type(G.p_expr->pSub_type()->pDupCardAndSubCards());
 
+      G_vNewMember(CK_EXPR);
+      G_vAppendChild(CK_EXPR,G.p_type);
+      G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+      G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$K1"_Stz);
+    }
+
+    G.p_expr->Y_vSet(P_Injected);
+    G.p_projElist->vPush(G.p_expr);
   }
 
   if (G.p_MainCard->bIsCard(CK_PROJECT)) {
 
     G.p_projElist = G.p_project->pSub_projElist();
+
+    G.p_projElist->Y_vSet(P_ProjBump,(i8)1);
+
     G_vPushNewChild(G.p_projElist, CK_EXPR);
     G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
@@ -250,6 +263,8 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
   if (! G_bEachMain(CK_FOLD))
     return;
+
+  G.p_fold->Y_vSet(P_BumpRight,(i8)2);
 
   G.p_type = G.p_projElist->pSub_type();
 
@@ -414,15 +429,17 @@ void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Correct_where_BaseOn_foldExpr(void)
+void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G.p_boolCalc = G.p_where->pSub_boolCalc();
 
+  i8 nBumpRight = G.p_fold->Y_iVal(P_BumpRight);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this](Card *pCard) {
+  auto bLambdaFn = [this,nBumpRight](Card *pCard) {
 
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
@@ -430,7 +447,7 @@ void Xreshape::R_vUTE_Correct_where_BaseOn_foldExpr(void)
     G.p_sqtPred = _pCard_SqtPred(pCard);
 
     m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
-    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
+    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0,nBumpRight);
 
     m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
     G.p_sqtPred->vRemoveChild(m_pTerm_1);
@@ -451,6 +468,8 @@ void Xreshape::R_vUTE_Correct_where_BaseOn_foldExpr(void)
 
   G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
 
+  G.p_fold->Y_vSet(P_BumpedRight,nBumpRight);
+  G.p_fold->Y_vCut(P_BumpRight);
 }
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

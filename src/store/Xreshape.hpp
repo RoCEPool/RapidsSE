@@ -24,7 +24,7 @@ namespace STORE
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);
-    void R_vUTE_Correct_where_BaseOn_foldExpr(void);
+    void R_vUTE_Bump_where_BaseOn_foldExpr(void);
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);

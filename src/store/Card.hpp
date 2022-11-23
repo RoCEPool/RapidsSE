@@ -156,10 +156,14 @@ namespace STORE
 }
 
 static Stz* P_AggOp        = "bAggOp"_Stz;
+static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
+static Stz* P_BumpRight    = "nBumpRight"_Stz;
+static Stz* P_BumpedRight  = "nBumpedRight"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Inject       = "bInject"_Stz;
+static Stz* P_Injected     = "bInjected"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Level        = "eLevel"_Stz;
@@ -168,6 +172,8 @@ static Stz* P_OdnHi        = "iOdnHi"_Stz;
 static Stz* P_OdnLo        = "iOdnLo"_Stz;
 static Stz* P_ParamOdn     = "szParamOdn"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
+static Stz* P_ProjBump     = "nProjBump"_Stz;
+static Stz* P_ProjBumped   = "nProjBumped"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
 static Stz* P_Rank         = "iRank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;

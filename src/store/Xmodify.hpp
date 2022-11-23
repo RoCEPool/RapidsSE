@@ -66,8 +66,8 @@ namespace STORE
     void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
-    void M_vTerm_Bump_KeyOrdinal(Card_Term* p_term);
-    void M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term);
+    void M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy=1);
+    void M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term, i8 nBy=1);
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
 
     // generalised drill down
