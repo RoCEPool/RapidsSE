@@ -979,13 +979,20 @@ bool Xtest::T_bValue_IsSqyColOrdinal(Stz* szValue)
   char acFirst  = szValue->azChar()[0];
   char acSecond = szValue->azChar()[1];
   char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
 
   if ('_' == acFirst
       && '_' == acSecond
       && StrLib::bIsDigit(acThird))
     return true;
-  else
-    return false;
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 'S' == acThird
+      && 'Q' == acFourth)
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

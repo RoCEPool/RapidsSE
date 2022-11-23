@@ -287,9 +287,9 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   Stz* szSqyNm;
   Card_AndPred* p_andPred = nullptr;
+  Card_BolPred* p_bolPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
-  Card_ExePred* p_exePred = nullptr;
-  Card_TstPred* p_tstPred = nullptr;
+  Card_SqtPred* p_sqtPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
 
   Card_Term*    p_subQueryNm = nullptr;
@@ -342,33 +342,33 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       case TE_EXISTS:
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
-        p_tstPred = new Card_TstPred;
-        p_tstPred->vValue(p_term->sz());
-        p_tstPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vPush(p_tstPred);
-        p_tstPred = nullptr;
+        p_sqtPred = new Card_SqtPred;
+        p_sqtPred->vValue(p_term->sz());
+        p_sqtPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vPush(p_sqtPred);
+        p_sqtPred = nullptr;
         DELETE_CARD(p_term);
         break;
 
       case TE_IN:
       case TE_NOTIN:
         // <boolCalc> = <in><boolCalc>
-        p_tstPred = new Card_TstPred;
-        p_tstPred->vValue(p_term->sz());
-        p_tstPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vAppend(p_tstPred);
-        p_tstPred = nullptr;
+        p_sqtPred = new Card_SqtPred;
+        p_sqtPred->vValue(p_term->sz());
+        p_sqtPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vAppend(p_sqtPred);
+        p_sqtPred = nullptr;
         DELETE_CARD(p_term);
         break;
 
-      case TE_BOOLFN:
-        p_tstPred = new Card_TstPred;
-        p_tstPred->vValue(p_term->sz());
-        p_tstPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vAppend(p_tstPred);
-        p_tstPred = nullptr;
-        DELETE_CARD(p_term);
-        break;
+//      case TE_BOOLFN:
+//        p_sqtPred = new Card_SqtPred;
+//        p_sqtPred->vValue(p_term->sz());
+//        p_sqtPred->vTransferChildren(p_TermSeries);
+//        p_boolCalc->vAppend(p_sqtPred);
+//        p_sqtPred = nullptr;
+//        DELETE_CARD(p_term);
+//        break;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // <termSeries>
@@ -377,39 +377,10 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         DELETE_CARD(p_term);
         break;
 
-//        // <termSeries> = <termSeries><execute>
-//        p_exePred = new Card_ExePred;
-//        p_subQueryNm = _pCard_Term(p_rpnCalc->pPop());
-//        p_exePred->vValue(p_subQueryNm->sz());
-//        p_TermSeries->vAppend(p_exePred);
-//        p_exePred = nullptr;
-//        DELETE_CARD(p_term);
-//        DELETE_CARD(p_subQueryNm);
-//        break;
-
+      case TE_BOOLFN:
       case TE_OTHER:
-        if (! p_rpnCalc->nChildCards()) {
-          // <termSeries> = <termSeries><term>
-          p_TermSeries->vAppend(p_term);
-          break;
-        }
-
-        // test for sq execute
-        szSqyNm = p_term->szValue();
-        if (StrLib::bBeginsWith(szSqyNm->azChar(),"__")) {
-          // <termSeries> = <termSeries><execute>
-          p_exePred = new Card_ExePred;
-          p_exePred->vValue(szSqyNm);
-          p_TermSeries->vAppend(p_exePred);
-          p_exePred = nullptr;
-          DELETE_CARD(p_term);
-          break;
-        }
-        else {
-          // <termSeries> = <termSeries><term>
-          p_TermSeries->vAppend(p_term);
-          break;
-        }
+        p_TermSeries->vAppend(p_term);
+        break;
 
       default:
         NEVER_REACH;
@@ -420,8 +391,14 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   p_boolCalc->vDump();
 
   if (p_TermSeries->nItems()) {
-    p_TermSeries->vDump();
-    p_boolCalc->vTransferChildren(p_TermSeries);
+    RASSERT(0 == p_boolCalc->nChildCards());
+    p_boolCalc->vDump(0,"boolCalc"_Stz);
+    p_TermSeries->vDump(0,"termSeries"_Stz);
+
+    p_bolPred = new Card_BolPred;
+    p_bolPred->vTransferChildren(p_TermSeries);
+
+    p_boolCalc->vAppend(p_bolPred);
   }
 
   RASSERT(0 == p_TermSeries->nChildCards());

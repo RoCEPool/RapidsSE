@@ -54,6 +54,7 @@ namespace STORE
     Card_AggElist *         p_aggElist;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
+    Card_BolPred *          p_bolPred;
     Card_BoolCalc *         p_boolCalc;
     Card_Bounds *           p_bounds;
     Card_CalcOp *           p_calcOp;
@@ -72,7 +73,6 @@ namespace STORE
     Card_CrossPtnJoin *     p_crossPtnJoin;
     Card_CrossPtnJoinList * p_crossPtnJoinList;
     Card_Direction *        p_direction;
-    Card_ExePred *          p_exePred;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
     Card_Fold *             p_fold;
@@ -137,7 +137,7 @@ namespace STORE
     Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
     Card_Topology *         p_topology;
-    Card_TstPred *          p_tstPred;
+    Card_SqtPred *          p_sqtPred;
     Card_Twist *            p_twist;
     Card_Type *             p_type;
     Card_UBound *           p_uBound;

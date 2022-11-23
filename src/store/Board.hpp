@@ -23,6 +23,7 @@
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
+#include "Card_BolPred.hpp"
 #include "Card_BoolCalc.hpp"
 #include "Card_Bounds.hpp"
 
@@ -50,7 +51,6 @@
 #include "Card_Direction.hpp"
 
 #include "Card_EBound.hpp"
-#include "Card_ExePred.hpp"
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 
@@ -123,6 +123,7 @@
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"
+#include "Card_SqtPred.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StmColNm.hpp"
 #include "Card_StmColOdn.hpp"
@@ -136,7 +137,6 @@
 #include "Card_TblColOdn.hpp"
 #include "Card_Term.hpp"
 #include "Card_Topology.hpp"
-#include "Card_TstPred.hpp"
 #include "Card_Twist.hpp"
 #include "Card_Type.hpp"
 

@@ -823,6 +823,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_AGGELIST:         return G.p_aggElist;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_AS:               return G.p_as;
+    case CK_BOLPRED:          return G.p_bolPred;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUNDS:           return G.p_bounds;
     case CK_CALCOP:           return G.p_calcOp;
@@ -841,7 +842,6 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
     case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
     case CK_DIRECTION:        return G.p_direction;
-    case CK_EXEPRED:          return G.p_exePred;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
     case CK_FOLD:             return G.p_fold;
@@ -905,7 +905,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_TBLCOLODN:        return G.p_tblColOdn;
     case CK_TERM:             return G.p_term;
     case CK_TOPOLOGY:         return G.p_topology;
-    case CK_TSTPRED:          return G.p_tstPred;
+    case CK_SQTPRED:          return G.p_sqtPred;
     case CK_TWIST:            return G.p_twist;
     case CK_TYPE:             return G.p_type;
     case CK_UBOUND:           return G.p_uBound;
@@ -1090,6 +1090,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_aggElist         = nullptr;
   G.p_aggreg           = nullptr;
   G.p_as               = nullptr;
+  G.p_bolPred          = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bounds           = nullptr;
   G.p_calcOp           = nullptr;
@@ -1108,7 +1109,6 @@ void Xgearing::G_vClearMembers(void)
   G.p_crossPtnJoin     = nullptr;
   G.p_crossPtnJoinList = nullptr;
   G.p_direction        = nullptr;
-  G.p_exePred          = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_fold             = nullptr;
@@ -1173,7 +1173,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_tblColOdn        = nullptr;
   G.p_term             = nullptr;
   G.p_topology         = nullptr;
-  G.p_tstPred          = nullptr;
+  G.p_sqtPred          = nullptr;
   G.p_twist            = nullptr;
   G.p_type             = nullptr;
   G.p_uBound           = nullptr;
@@ -1576,6 +1576,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGGELIST:         *((Card**)&G.p_aggElist)         = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
+    case CK_BOLPRED:          *((Card**)&G.p_bolPred)          = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
     case CK_CALCOP:           *((Card**)&G.p_calcOp)           = pCard; break;
@@ -1594,7 +1595,6 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
-    case CK_EXEPRED:          *((Card**)&G.p_exePred)          = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
@@ -1658,7 +1658,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TBLCOLODN:        *((Card**)&G.p_tblColOdn)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_TSTPRED:          *((Card**)&G.p_tstPred)          = pCard; break;
+    case CK_SQTPRED:          *((Card**)&G.p_sqtPred)          = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
@@ -1961,6 +1961,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_AGGELIST:         return "G.p_aggElist"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_AS:               return "G.p_as"_Stz;
+    case CK_BOLPRED:          return "G.p_bolPred"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
     case CK_CALCOP:           return "G.p_calcOp"_Stz;
@@ -1979,7 +1980,6 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
     case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
     case CK_DIRECTION:        return "G.p_direction"_Stz;
-    case CK_EXEPRED:          return "G.p_exePred"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
     case CK_FOLD:             return "G.p_fold"_Stz;
@@ -2041,7 +2041,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TBLCOLODN:        return "G.p_tblColOdn"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_TSTPRED:          return "G.p_tstPred"_Stz;
+    case CK_SQTPRED:          return "G.p_sqtPred"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;

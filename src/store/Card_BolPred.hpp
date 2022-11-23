@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_ExePred.hpp -- Execute Predicate                                      */
+/* Card_BolPred.hpp -- Boolean Predicate                                      */
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_ExePred : public Card
+  class Card_BolPred : public Card_PRED
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ExePred(void);
-   ~Card_ExePred(void) noexcept(false);
+    Card_BolPred(void);
+   ~Card_BolPred(void) noexcept(false);
   };
 
-  Card_ExePred* _pCard_ExePred(void* aAddr);
+  Card_BolPred* _pCard_BolPred(void* aAddr);
 }
 
 /*============================================================================*/

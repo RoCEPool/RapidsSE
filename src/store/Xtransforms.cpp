@@ -1344,13 +1344,21 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vTransform(__func__, "((20))"_Stz);
 
+  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
+  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (!R_bUTE_FindAndMarkSubQryCall()) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTrace(">>>>>>>>> Found W_A_C_ro call:  %s %s %s\n"_Stz,m_sSqyArg.szStz(),m_sSqyRO.szStz(),m_sSqyNm.szStz());
+  vPrintBoard(__LINE__);
+
 
   // 1)
 
 
-
-  vR_S40_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey();
 
   vEndTransform();
 }
@@ -1432,7 +1440,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   // x) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
-    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
     NEVER_REACH
   }
   vAssert_Board_sqB();
@@ -1530,7 +1538,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   // 2) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
-    vTracer("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
     NEVER_REACH
   }
   vAssert_Board_sqB();
@@ -1776,6 +1784,19 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
     R_vUTE_Derive_foldExpr();
   }
   vPrintBoard(__LINE__);
+
+  R_vUTE_FoldIn_foldExpr();
+  G.pDeck->vRenumberRecursive();
+  vPrintBoard(__LINE__);
+
+  G_vRestart();
+  if (G_bEachMain(CK_HAVING)) {
+    R_vUTE_Unproject_foldExpr();
+    R_vUTE_Correct_having_BaseOn_foldExpr();
+  }
+
+  vPrintBoard(__LINE__);
+
 
   vEndTransform();
 }
@@ -2199,7 +2220,7 @@ void Xtransforms::vS60_T05_Twist_in_Becomes_filter(void)
 
   vAssert_Board_mqA();
 
-  while (G_bEachMainWithSub(CK_TWIST, CK_TSTPRED,"in"_Stz)) {
+  while (G_bEachMainWithSub(CK_TWIST, CK_SQTPRED,"in"_Stz)) {
     vR_S60_T05_Twist_in_Becomes_filter();
   }
 
@@ -3650,9 +3671,9 @@ void Xtransforms::vS36X_T10_Push_sqB_Into_mqA(void)
 
   vAssert_Board_mqA();
 
-  while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_SQTPRED, "exists"_Stz)) {
 
-    Stz* szSubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
+    Stz* szSubQueryNm = G.p_sqtPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
 
     if (! G_bPushBoard(szSubQueryNm)) {
@@ -3892,9 +3913,9 @@ void Xtransforms::vS37X_T10_Append_sqB_After_mqA(void)
 
   vAssert_Board_mqA();
 
-  //while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
+  //while (G_bEachMainWithSub(CK_WHERE, CK_SQTPRED, "exists"_Stz)) {
 
-  //Stz* szSubQueryNm = G.p_tstPred->pGetChild(1)->szValue();
+  //Stz* szSubQueryNm = G.p_sqtPred->pGetChild(1)->szValue();
   Stz* szSubQueryNm = "__subquery0002"_Stz;
   vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
 

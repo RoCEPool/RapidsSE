@@ -2030,6 +2030,19 @@ Card_As* Card::pSub_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_BolPred.hpp"
+Card_BolPred* Card::pSub_bolPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_BolPred* p_bolPred =
+      _pCard_BolPred(pFindSubCard(CK_BOLPRED));
+  return p_bolPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_BoolCalc.hpp"
 Card_BoolCalc* Card::pSub_boolCalc(void)
 {
@@ -2155,19 +2168,6 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
   Card_CrossJoin* p_crossJoin =
       _pCard_CrossJoin(pFindSubCard(CK_CROSSJOIN));
   return p_crossJoin;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_ExePred.hpp"
-Card_ExePred* Card::pSub_exePred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_ExePred* p_exePred =
-      _pCard_ExePred(pFindSubCard(CK_EXEPRED));
-  return p_exePred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2550,6 +2550,19 @@ Card_Size* Card::pSub_size(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_SqtPred.hpp"
+Card_SqtPred* Card::pSub_sqtPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SqtPred* p_sqtPred =
+      _pCard_SqtPred(pFindSubCard(CK_SQTPRED));
+  return p_sqtPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Stream.hpp"
 Card_Stream* Card::pSub_stream(void)
 {
@@ -2688,19 +2701,6 @@ Card_Topology* Card::pSub_topology(void)
   Card_Topology* p_stageTopo =
       _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
   return p_stageTopo;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_TstPred.hpp"
-Card_TstPred* Card::pSub_tstPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_TstPred* p_tstPred =
-      _pCard_TstPred(pFindSubCard(CK_TSTPRED));
-  return p_tstPred;
 }
 
 /*----------------------------------------------------------------------------*/

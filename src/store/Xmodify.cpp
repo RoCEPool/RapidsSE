@@ -92,16 +92,7 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
     return false;
   }
   else
-  if (CK_EXEPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
-      delete p_pred;
-      return true;
-    }
-    return false;
-  }
-  else
-  if (CK_TSTPRED == eCard_pred) {
+  if (CK_SQTPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
       M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
       delete p_pred;

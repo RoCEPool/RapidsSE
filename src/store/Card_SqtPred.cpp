@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_ExePred.cpp -- Test Predicate                                        */
+/* Card_SqtPred.cpp -- SubQuery call and Test Predicate                       */
 /*============================================================================*/
 
-#include "Card_ExePred.hpp"
+#include "Card_SqtPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_ExePred, CK_EXEPRED)
-__aNewFunction(Card_ExePred, CN_CARD)
-__vDeleteFunction(Card_ExePred, CN_CARD)
+__pCastFunction_Card(STORE, Card_SqtPred, CK_SQTPRED)
+__aNewFunction(Card_SqtPred, CN_CARD)
+__vDeleteFunction(Card_SqtPred, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ExePred::Card_ExePred(void)
-: Card(CK_EXEPRED)
+Card_SqtPred::Card_SqtPred(void)
+: Card_PRED(CK_SQTPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_ExePred::Card_ExePred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ExePred::~Card_ExePred(void) noexcept(false)
+Card_SqtPred::~Card_SqtPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
