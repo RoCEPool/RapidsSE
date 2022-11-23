@@ -1460,12 +1460,12 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
 
 
-  G_vRestart();
-  if (G_bEachMain(CK_FOLD)) {
-    G.i_FoldCard = G.i_MainCard;
-    R_vUTE_Derive_foldExpr();
-  }
-  vPrintBoard(__LINE__);
+//  G_vRestart();
+//  if (G_bEachMain(CK_FOLD)) {
+//    G.i_FoldCard = G.i_MainCard;
+//    R_vUTE_Derive_foldExpr();
+//  }
+//  vPrintBoard(__LINE__);
 
 
 

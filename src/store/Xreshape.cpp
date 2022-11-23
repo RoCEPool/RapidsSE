@@ -193,15 +193,32 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
   }
 
-//  if (G_bEachMain(CK_FOLD)) {
-//
-//    G.p_foldElist = G.p_fold->pSub_foldElist();
-//
-//    G_vPushNewChild(G.p_foldElist, CK_EXPR);
-//    G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
-//    G_vAppendNewChild(G.p_expr, CK_RPNCALC, "((?))"_Stz);
-//    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
-//  }
+  if (! G_bEachMain(CK_FOLD))
+    return;
+
+  G.p_type = G.p_projElist->pSub_type();
+
+  G_vAppendNewChild(G.p_fold, CK_FOLDELIST);
+  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+
+  if (G.p_type) {
+    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+  }
+  else {
+    G_vAppendNewChild(G.p_expr, CK_TYPE, "((type missing))"_Stz);
+  }
+  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
+
+
+  G.p_foldElist = G.p_fold->pSub_foldElist();
+
+  G_vPushNewChild(G.p_foldElist, CK_EXPR);
+  G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1GBYKEY"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_RPNCALC, "((?))"_Stz);
+  G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
