@@ -528,6 +528,7 @@ void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
   Card* pChild = new Card(eChild, szValue);
 
   pParent->vAppend(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1461,6 +1462,32 @@ void Xgearing::G_vPushIter(Board* pBoard)
   G.xBI.vChangeBoard(G.pBoard);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPushNewChild(Card* pParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pChild = new Card(eChild);
+
+  pParent->vPush(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pChild = new Card(eChild, szValue);
+
+  pParent->vPush(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */

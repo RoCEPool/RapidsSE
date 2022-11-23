@@ -169,7 +169,39 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
     G.p_gbyElist = new Card_GbyElist;
     G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
+
+    G_vAppendNewChild(G.p_gbyElist,CK_EXPR);
+    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
+    G_vAppendNewChild(G.p_expr,CK_RPNCALC,"((?))"_Stz);
+    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
+
+    G_vPushNewChild(G.p_projElist,CK_EXPR);
+    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
+    G_vAppendNewChild(G.p_expr,CK_RPNCALC,"((?))"_Stz);
+    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
+
   }
+
+  if (G.p_MainCard->bIsCard(CK_PROJECT)) {
+
+    G.p_projElist = G.p_project->pSub_projElist();
+    G_vPushNewChild(G.p_projElist, CK_EXPR);
+    G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
+    G_vAppendNewChild(G.p_expr, CK_RPNCALC, "((?))"_Stz);
+    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
+
+
+  }
+
+//  if (G_bEachMain(CK_FOLD)) {
+//
+//    G.p_foldExpr = G.p_fold->pSub_foldExpr();
+//
+//    G_vPushNewChild(G.p_foldExpr, CK_EXPR);
+//    G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
+//    G_vAppendNewChild(G.p_expr, CK_RPNCALC, "((?))"_Stz);
+//    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

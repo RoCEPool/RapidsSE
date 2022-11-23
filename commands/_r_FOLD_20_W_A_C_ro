@@ -15,7 +15,7 @@ _r_init
 /weaved
 /pipelineName = "_r_FOLD_20_W_A_C_ro"
 select count(*)
-  from lineitem, part
+  from Lineitem, Part, PartSupp
  where P_PARTKEY = L_PARTKEY
    and l_quantity < (select avg(l_quantity)
                        from lineitem
