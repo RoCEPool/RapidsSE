@@ -667,7 +667,66 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
     return;
   }
 
-  // TODO
+  std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
+
+  StreamDef* pDef = m_pStmtCtx->pStreamDef();
+  RowPix* pRowPix = pDef->pRowPix();
+
+  // Work out how many rows from this RowBuffer to serialise
+  i8 iStartingRow = 0;
+  i8 iScalingFactor = 1;  // if the serialised form doesn't fit in a single payload buffer
+  i8 iRowsInBuf = pRowBuffer->nRows();
+
+  // We might need to send multiple RowDataResponses for this RowBuffer.
+  // This can be due to a limit of rows per response
+  while(iStartingRow < iRowsInBuf) {
+
+    i8 iRowsToSend = nRowsToSend(iRowsInBuf - iStartingRow);
+    if (iRowsToSend <= 0) {
+      break;
+    }
+
+    iRowsToSend /= iScalingFactor;
+    if (iRowsToSend == 0) {
+      iRowsToSend = 1;
+    }
+
+    for (i8 i_Row = iStartingRow; i_Row < iRowsToSend; i_Row++) {
+      Row* pRow = pRowBuffer->pRowAddress(i_Row);
+      vCreateAndAddRow(&xRowList, pRow, pRowPix);
+    }
+
+    ASSERT(xRowList.size() == iRowsToSend);
+
+    RowDataResponse xRowDataResponse;
+    xRowDataResponse.__set_rows(xRowList);
+
+    // Serialise and send. Ensure that the message is < 1MB.
+    try {
+      vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse);
+
+    } catch (WLP::BufferFullException& e) {
+
+      // Special case where we cannot serialise a single row.
+      if (iScalingFactor > 1 && iRowsToSend == 1) {
+        m_pStmtCtx->vGotError(true);
+        eEC eErrCode = EC_WL_ROW_TOO_BIG;
+        Stz* szErrMsg = "Error: %s; %s; %ldd bytes"_Stz;
+        vSerialiseErrorResponse(eErrCode,
+                                szErrMsg,
+                                aEC2[eErrCode],
+                                aErrorMsg[eErrCode],
+                                WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
+        return;
+      }
+
+      ++iScalingFactor;
+      continue;
+    }
+
+    iStartingRow += iRowsToSend;
+    m_pStmtCtx->vAddAffectedRows(iRowsToSend);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
