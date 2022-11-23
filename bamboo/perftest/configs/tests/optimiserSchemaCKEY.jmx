@@ -550,7 +550,7 @@ group by
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">Required for Query6, Query15</stringProp>
+              <stringProp name="TestPlan.comments">Required for Query6, Query15, Query14</stringProp>
             </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_CUSTKEY" enabled="true">
@@ -3394,30 +3394,30 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public lineitem
+    indexscan lineitem IxL_SHIPDATE &quot;LBOUND DATE &apos;1995-09-01&apos; &gt;= UBOUND DATE &apos;1995-10-01&apos; &lt;&quot;
+    | project &quot;type INTEGER as L_PARTKEY L_PARTKEY ,
+               type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT&quot;
     | hash &quot;type INTEGER L_PARTKEY&quot;
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     indexJoin part IxP_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
-    | filter &quot; type BOOLEAN $2 $17 == &quot;
-    | filter &quot; type BOOLEAN $11 DATE &apos;1995-09-01&apos; &gt;= &quot;
-    | filter &quot; type BOOLEAN $11 DATE &apos;1995-10-01&apos;  &lt; &quot;
-    | project &quot; type DECIMAL )  $6 1.  $7 -  *  sum  ,
-                type DECIMAL )  }  }  $21 &apos;PROMO%&apos;  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
+    | project &quot; type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                type DECIMAL )  }  }  J1_P_TYPE &apos;PROMO%&apos;  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
     | combined 0
     | next
 
   stage S03 on all nodes :
-    project &quot; type DECIMAL )  $1 sum  ,
-              type DECIMAL )  $2 sum  &quot;
+    project &quot; type DECIMAL ) $1 sum  ,
+              type DECIMAL ) $2 sum  &quot;
     | combined 0
     | next
 
   stage S04 on origin :
-    project &quot; type DECIMAL )  $1 sum  ,
-              type DECIMAL )  $2 sum  &quot;
+    project &quot; type DECIMAL ) $1 sum  ,
+              type DECIMAL ) $2 sum  &quot;
     | combined 0
     | next
 
@@ -3430,7 +3430,8 @@ begin
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3440,7 +3441,8 @@ end ;</stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="TestPlan.comments">Requires the following indexes:
-create index IxP_PARTKEY  ON Orders  (P_PARTKEY)  ;
+create index IxL_SHIPDATE  ON Lineitem  (L_SHIPDATE)  
+create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
 
 </stringProp>
             </JDBCSampler>
