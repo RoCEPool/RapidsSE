@@ -550,7 +550,7 @@ group by
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">Required for Query6, Query15</stringProp>
+              <stringProp name="TestPlan.comments">Required for Query6, Query15, Query14</stringProp>
             </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_CUSTKEY" enabled="true">
@@ -2836,6 +2836,333 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop_a" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p9_a" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query9
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter &quot;type BOOLEAN }  P_NAME &apos;%green%&apos; 5 matchMiddle&quot;
+    | project &quot;type INTEGER as P_PARTKEY P_PARTKEY&quot;
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST&quot;
+    | hash &quot;type INTEGER PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin supplier IxS_SUPPKEY &quot;bound $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+    | combined 0
+    | next broadcast
+
+  stage S04 on all partitions :
+    indexJoin LINEITEM IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+    | filter &quot;type BOOLEAN J1_L_SUPPKEY PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER as L_ORDERKEY J1_L_ORDERKEY ,
+               type INTEGER as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+               type DECIMAL as AMOUNT J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT -  *  PS_SUPPLYCOST J1_L_QUANTITY *  - &quot;
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions :
+    indexJoin ORDERS IxO_ORDERKEY &quot;bound $I1 L_ORDERKEY ==&quot;
+    | project &quot;type INTEGER as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year ,
+               type DECIMAL as AMOUNT AMOUNT&quot;
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+                       type INTEGER O_YEAR
+            aggregates type INTEGER as S_NATIONKEY $K1 ,
+                       type INTEGER as O_YEAR $K2 ,
+                       type DECIMAL as SUM_PROFIT ) AMOUNT sum  &quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    aggreg &quot;groupBy type INTEGER S_NATIONKEY ,
+    type INTEGER O_YEAR
+    aggregates type INTEGER as S_NATIONKEY $K1 ,
+    type INTEGER as O_YEAR $K2 ,
+    type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+                       type INTEGER O_YEAR
+            aggregates type INTEGER as S_NATIONKEY $K1 ,
+                       type INTEGER as O_YEAR $K2 ,
+                       type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+    | hash &quot;type INTEGER S_NATIONKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S09 on all partitions :
+    indexJoin NATION IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+    | project &quot;type VARCHAR as NATION J1_N_NAME ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as SUM_PROFIT SUM_PROFIT&quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    sort &quot;type VARCHAR as NATION NATION ASC ,
+          type INTEGER as O_YEAR O_YEAR ASC&quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+  end ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+CREATE INDEX IxO_ORDERKEY ON ORDERS(O_ORDERKEY);
+CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);
+CREATE INDEX IxPS_PARTKEY ON PARTSUPP(PS_PARTKEY);
+CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);
+CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p9_a.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p9_a_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop_b" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p9_b" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query9
+begin
+stage S00 on origin :
+  start
+  | pulse once
+  | next
+
+stage S01 on all partitions :
+  scan rapidsse public part
+  | filter &quot;type BOOLEAN }  P_NAME &apos;%green%&apos; 5 matchMiddle&quot;
+  | project &quot;type INTEGER as P_PARTKEY P_PARTKEY&quot;
+  | combined 0
+  | next
+
+stage S02 on all partitions :
+  indexJoin partsupp IxPS_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+  | project &quot;type INTEGER as P_PARTKEY P_PARTKEY ,
+             type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+             type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST&quot;
+  | hash &quot;type INTEGER PS_SUPPKEY&quot;
+  | combined 0
+  | next hashcast
+
+stage S03 on all partitions :
+  indexJoin supplier IxS_SUPPKEY &quot;bound $I1 PS_SUPPKEY ==&quot;
+  | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+             type INTEGER as P_PARTKEY P_PARTKEY ,
+             type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+             type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+  | combined 0
+  | next broadcast
+
+stage S04 on all partitions :
+  indexJoin LINEITEM IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+  | filter &quot;type BOOLEAN J1_L_SUPPKEY PS_SUPPKEY ==&quot;
+  | project &quot;type INTEGER as L_ORDERKEY J1_L_ORDERKEY ,
+             type INTEGER as S_NATIONKEY S_NATIONKEY ,
+             type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+             type DECIMAL as AMOUNT J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT -  *  PS_SUPPLYCOST J1_L_QUANTITY *  - &quot;
+  | combined 0
+  | next broadcast
+
+stage S05 on all partitions :
+  indexJoin ORDERS IxO_ORDERKEY &quot;bound $I1 L_ORDERKEY ==&quot;
+  | project &quot;type INTEGER as S_NATIONKEY S_NATIONKEY ,
+             type INTEGER as O_YEAR J1_O_ORDERDATE extract_year ,
+             type DECIMAL as AMOUNT AMOUNT&quot;
+  | combined 0
+  | next
+
+stage S10 on all partitions :
+  sort &quot;type INTEGER as S_NATIONKEY S_NATIONKEY ASC ,
+        type INTEGER as O_YEAR O_YEAR ASC&quot;
+  | combined 0
+  | next
+
+stage S07 on all partitions :
+  ordAgg &quot;ordGroupBy type INTEGER S_NATIONKEY ,
+                     type INTEGER O_YEAR
+          aggregates type INTEGER as S_NATIONKEY $K1 ,
+                     type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) AMOUNT sum  &quot;
+  | combined 0
+  | next
+
+stage S08 on all nodes :
+  aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+                     type INTEGER O_YEAR
+          aggregates type INTEGER as S_NATIONKEY $K1 ,
+                     type INTEGER as O_YEAR $K2 ,
+                     type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+  | combined 0
+  | next
+
+stage S09 on origin :
+  aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+                     type INTEGER O_YEAR
+          aggregates type INTEGER as S_NATIONKEY $K1 ,
+                     type INTEGER as O_YEAR $K2 ,
+                     type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+  | hash &quot;type INTEGER S_NATIONKEY&quot;
+  | combined 0
+  | next hashcast
+
+stage S06 on all partitions :
+  indexJoin NATION IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+  | project &quot;type VARCHAR as NATION J1_N_NAME ,
+             type INTEGER as O_YEAR O_YEAR ,
+             type DECIMAL as SUM_PROFIT SUM_PROFIT&quot;
+  | combined 0
+  | next
+
+stage S10 on origin :
+  sort &quot;type VARCHAR as NATION NATION ASC ,
+        type INTEGER as O_YEAR O_YEAR ASC&quot;
+  | combined 0
+  | next
+
+stage S11 on origin :
+  output
+  | sink
+  | first
+end ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">Requires the following indexes:
+CREATE INDEX IxO_ORDERKEY ON ORDERS(O_ORDERKEY);
+CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);
+CREATE INDEX IxPS_PARTKEY ON PARTSUPP(PS_PARTKEY);
+CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);
+CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p9_b.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p9_b_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P10Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -3394,30 +3721,30 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public lineitem
+    indexscan lineitem IxL_SHIPDATE &quot;LBOUND DATE &apos;1995-09-01&apos; &gt;= UBOUND DATE &apos;1995-10-01&apos; &lt;&quot;
+    | project &quot;type INTEGER as L_PARTKEY L_PARTKEY ,
+               type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT&quot;
     | hash &quot;type INTEGER L_PARTKEY&quot;
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     indexJoin part IxP_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
-    | filter &quot; type BOOLEAN $2 $17 == &quot;
-    | filter &quot; type BOOLEAN $11 DATE &apos;1995-09-01&apos; &gt;= &quot;
-    | filter &quot; type BOOLEAN $11 DATE &apos;1995-10-01&apos;  &lt; &quot;
-    | project &quot; type DECIMAL )  $6 1.  $7 -  *  sum  ,
-                type DECIMAL )  }  }  $21 &apos;PROMO%&apos;  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
+    | project &quot; type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                type DECIMAL )  }  }  J1_P_TYPE &apos;PROMO%&apos;  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
     | combined 0
     | next
 
   stage S03 on all nodes :
-    project &quot; type DECIMAL )  $1 sum  ,
-              type DECIMAL )  $2 sum  &quot;
+    project &quot; type DECIMAL ) $1 sum  ,
+              type DECIMAL ) $2 sum  &quot;
     | combined 0
     | next
 
   stage S04 on origin :
-    project &quot; type DECIMAL )  $1 sum  ,
-              type DECIMAL )  $2 sum  &quot;
+    project &quot; type DECIMAL ) $1 sum  ,
+              type DECIMAL ) $2 sum  &quot;
     | combined 0
     | next
 
@@ -3430,7 +3757,8 @@ begin
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3440,7 +3768,8 @@ end ;</stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="TestPlan.comments">Requires the following indexes:
-create index IxP_PARTKEY  ON Orders  (P_PARTKEY)  ;
+create index IxL_SHIPDATE  ON Lineitem  (L_SHIPDATE)  
+create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
 
 </stringProp>
             </JDBCSampler>
