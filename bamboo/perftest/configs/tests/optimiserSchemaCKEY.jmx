@@ -3608,34 +3608,21 @@ begin
 
   stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY &quot;LEFT_OUTER BOUND $I1 $L1 ==&quot;
-                                 &quot;type BOOLEAN }  J1_O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
+           &quot;type BOOLEAN }  J1_O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
     | combined 0
     | next
 
   stage S03 on all partitions :
-    aggreg &quot; groupBy    type INTEGER as c_custkey $1
-             aggregates type INTEGER $K1 ,
-                        type INTEGER )  $9 count  &quot;
-    | combined 0
-    | next
-
-  stage S04 on all nodes :
-    aggreg &quot; groupBy    type INTEGER as c_custkey $1
-             aggregates type INTEGER $K1 ,
-                        type INTEGER )  $2 sum  &quot;
-    | combined 0
-    | next
-
-  stage S05 on origin :
-    aggreg &quot; groupBy    type INTEGER as c_custkey $1
-             aggregates type INTEGER $K1 ,
-                        type INTEGER as c_count )  $2 sum  &quot;
+    ordAgg &quot; ordGroupBy  type INTEGER as c_custkey $1
+             aggregates  type INTEGER $K1 ,
+                         type INTEGER )  $9 count  &quot;
     | combined 0
     | next
 
   stage S06 on origin :
     aggreg &quot; groupBy    type INTEGER as c_count $2
-             aggregates type INTEGER $K1 ,
+             aggregates
+                        type INTEGER $K1 ,
                         type INTEGER as custdist )  countAll  &quot;
     | combined 0
     | next
@@ -3650,7 +3637,8 @@ begin
    output
    | sink
    | first
- end ;</stringProp>
+ end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
