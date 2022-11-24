@@ -295,6 +295,13 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     i8 nStmCol = G.p_stream->pSub_stmColList()->nChildCards();
     G.p_stream->Y_vSet(P_OdnLo,(i8)1);
     G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
+
+    i8 nBumpBy = G.p_projElist->Y_iVal(P_ProjBump);
+
+    R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);// TODO: ,nBumpBy);
+    G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
+    G.p_projElist->Y_vCut(P_ProjBump);
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
