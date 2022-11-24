@@ -960,6 +960,47 @@ bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Stz* szParamNm = nullptr;
+  Board* pSubQryBoard = m_pBench->pGetBoard(1);
+
+  G_vPushBoard(pSubQryBoard);
+
+  if (G_bEachMainWithSub(CK_PARAMLIST,CK_PARAM)) {
+    szParamNm = G.p_param->szValue();
+  }
+
+  G_vPopBoard();
+
+  if (! szParamNm) {
+    p_term->vValue("((no-parm))"_Stz);
+    return;
+  }
+
+  //p_term->vValue(szParamNm);
+
+  if (! G_bResolveSubCard(CK_STMCOL,CK_STMCOLNM,szParamNm,G.i_MainCard)) {
+    p_term->vValue("((unresolved))"_Stz);
+    return;
+  }
+
+  RASSERT(m_pCard_resolved->bIsCard(CK_STMCOL));
+
+  G.p_tblColOdn = m_pCard_resolved->pSub_tblColOdn();
+  if (! G.p_tblColOdn) {
+    p_term->vValue("((no-tblColOdn))"_Stz);
+    return;
+  }
+
+  p_term->vValue(G.p_tblColOdn->szValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -980,7 +1021,14 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
           vTwiddle(static_cast<Card_PRED*>(p_child), vTwiddle);
           continue;
         }
-        // TODO: test for: == $d.2 %1 => == $1 [TRASNSLATE PARAM %1]
+        // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
+
+        if (T_bValue_IsParamOrdinal(p_child->szValue())) {
+          R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
+        }
+        else {
+          p_child->vValue("$1"_Stz);
+        }
       }
       return;
     }
@@ -994,6 +1042,18 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
+        if (T_bValue_IsSubQueryName(p_child->szValue())) {
+          Card* p_arg = xCI.pPrevChild();
+
+          Card_Term* p_term_new = new Card_Term("$2"_Stz);
+          p_pred->vInsertAfter(p_term_new,p_child);
+
+          p_pred->vRemoveChild(p_arg);
+          DELETE_CARD(p_arg);
+
+          p_pred->vRemoveChild(p_child);
+          DELETE_CARD(p_child);
+        }
       }
       return;
     }
