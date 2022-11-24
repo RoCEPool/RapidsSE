@@ -7603,7 +7603,7 @@ void Task::vAddMunged(Task* )
     "/* Submit a statement through the API                                         */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": adaptorWL_submitStatement params| sSmt |\n"
-    "  \"adaptorWL_submitStatement\" .\n"
+    "  \"adaptorWL_submitStatement\" .verbose\n"
     "\n"
     "  sSmt \"FORKING CHILD FOR COMMAND: %v\"  str.format .\n"
     "\n"

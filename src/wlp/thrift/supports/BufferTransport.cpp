@@ -153,7 +153,7 @@ void BufferTransport::write_virt(const uint8_t* piBuf, uint32_t iLen)
 
   i8 iRemaining = (i8)(m_iLen - m_iNext);
   if (iLen > iRemaining) {
-    throw apache::thrift::transport::TTransportException( "Buffer is full.");
+    throw WLP::BufferFullException( "Buffer is full.");
   }
 
   memcpy(m_pcBuf + m_iNext, piBuf, iLen);

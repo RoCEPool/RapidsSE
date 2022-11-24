@@ -109,7 +109,7 @@ namespace STORE
     void vDeserialiseMsg(i8 iMessageType);
     void vCleanupCurrentMsg();
     void vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...);
-    void vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType);
+    void vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, bool bHandleBufferFull = true);
     void vNextState(eState eNextState);
 
     // Wireline message handlers

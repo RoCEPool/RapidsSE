@@ -62,6 +62,11 @@
 const i8 C_MIN_SUPPORT_PROTOCOL_VER = 4;
 const i8 C_MAX_SUPPORT_PROTOCOL_VER = 4;
 
+// If the RowDataResponse message is too big to fit into the payload then we scale
+// the number of rows in it by this amount until it does fit.
+const d8 C_ROWDATARESP_SCALE_DOWN = 0.8;  // Multiplied
+const d8 C_ROWDATARESP_SCALE_UP   = 0.05; // Added
+
 using namespace com::rapidsdata::wirelineprotocol::messages::compatibility;
 using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
@@ -577,8 +582,6 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
     return;
   }
 
-  std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
-
   StreamDef* pDef = m_pStmtCtx->pStreamDef();
   RowPix* pRowPix = pDef->pRowPix();
 
@@ -586,21 +589,34 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
 
   // Work out how many rows from this CrwBuffer to serialise
   i8 iStartingRow = 0;
-  i8 iScalingFactor = 1;  // if the serialised form doesn't fit in a single payload buffer
+  d8 dScalingFactor = 1.0;  // if the serialised form doesn't fit in a single payload buffer
   i8 iRowsInBuf = pCrwBuffer->nHeads();
+  i8 iMaxRowsThatFit = 0; // how many did we sucessfully fit in a RowDataResponse?
 
   // We might need to send multiple RowDataResponses for this CrwBuffer.
   // This can be due to a limit of rows per response
   while(iStartingRow < iRowsInBuf) {
+    std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
 
     i8 iRowsToSend = nRowsToSend(iRowsInBuf - iStartingRow);
     if (iRowsToSend <= 0) {
       break;
     }
 
-    iRowsToSend /= iScalingFactor;
-    if (iRowsToSend == 0) {
-      iRowsToSend = 1;
+    // If we are sending a smaller number of rows then don't scale the quantity.
+    // We don't want the last partial filled RowDataResponse to be split into
+    // many more smaller ones.
+    if (iMaxRowsThatFit == 0 || iRowsToSend > iMaxRowsThatFit) {
+      iRowsToSend = (i8) (iRowsToSend * dScalingFactor + 0.5);
+      if (iRowsToSend == 0) {
+        iRowsToSend = 1;
+      }
+
+    } else {
+      // We're sending less rows than we have previously fit. If these don't
+      // fit then we ought to restart the scaling once again.
+      dScalingFactor = 1.0;
+      iMaxRowsThatFit = 0;
     }
 
     for (i8 i_Crw = iStartingRow; i_Crw < iRowsToSend; i_Crw++) {
@@ -626,12 +642,12 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
 
     // Serialise and send. Ensure that the message is < 1MB.
     try {
-      vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse);
+      vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse, false);
 
     } catch (WLP::BufferFullException& e) {
 
       // Special case where we cannot serialise a single row.
-      if (iScalingFactor > 1 && iRowsToSend == 1) {
+      if (dScalingFactor < 1.0 && iRowsToSend == 1) {
         m_pStmtCtx->vGotError(true);
         eEC eErrCode = EC_WL_ROW_TOO_BIG;
         Stz* szErrMsg = "Error: %s; %s; %ldd bytes"_Stz;
@@ -643,11 +659,24 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
         return;
       }
 
-      ++iScalingFactor;
+      dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
+      vTrace("RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
       continue;
     }
 
+    vTrace("RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
     iStartingRow += iRowsToSend;
+
+    if (iRowsToSend > iMaxRowsThatFit) {
+      iMaxRowsThatFit = iRowsToSend;
+    }
+
+    // Slowly increase the scaling factor
+    dScalingFactor += C_ROWDATARESP_SCALE_UP;
+    if (dScalingFactor > 1.0) {
+      dScalingFactor = 1.0;
+    }
+
     m_pStmtCtx->vAddAffectedRows(iRowsToSend);
   }
 }
@@ -667,31 +696,43 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
     return;
   }
 
-  std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
-
   StreamDef* pDef = m_pStmtCtx->pStreamDef();
   RowPix* pRowPix = pDef->pRowPix();
 
   // Work out how many rows from this RowBuffer to serialise
   i8 iStartingRow = 0;
-  i8 iScalingFactor = 1;  // if the serialised form doesn't fit in a single payload buffer
+  d8 dScalingFactor = 1.0;  // if the serialised form doesn't fit in a single payload buffer
   i8 iRowsInBuf = pRowBuffer->nRows();
+  i8 iMaxRowsThatFit = 0; // how many did we sucessfully fit in a RowDataResponse?
 
   // We might need to send multiple RowDataResponses for this RowBuffer.
   // This can be due to a limit of rows per response
   while(iStartingRow < iRowsInBuf) {
+    std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
 
     i8 iRowsToSend = nRowsToSend(iRowsInBuf - iStartingRow);
     if (iRowsToSend <= 0) {
       break;
     }
 
-    iRowsToSend /= iScalingFactor;
-    if (iRowsToSend == 0) {
-      iRowsToSend = 1;
+    // If we are sending a smaller number of rows then don't scale the quantity.
+    // We don't want the last partial filled RowDataResponse to be split into
+    // many more smaller ones.
+    if (iMaxRowsThatFit == 0 || iRowsToSend > iMaxRowsThatFit) {
+      iRowsToSend = (i8) (iRowsToSend * dScalingFactor + 0.5);
+      if (iRowsToSend == 0) {
+        iRowsToSend = 1;
+      }
+
+    } else {
+      // We're sending less rows than we have previously fit. If these don't
+      // fit then we ought to restart the scaling once again.
+      dScalingFactor = 1.0;
+      iMaxRowsThatFit = 0;
     }
 
-    for (i8 i_Row = iStartingRow; i_Row < iRowsToSend; i_Row++) {
+
+    for (i8 i_Row = iStartingRow; i_Row < iStartingRow + iRowsToSend; i_Row++) {
       Row* pRow = pRowBuffer->pRowAddress(i_Row);
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
     }
@@ -703,12 +744,12 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
 
     // Serialise and send. Ensure that the message is < 1MB.
     try {
-      vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse);
+      vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse, false);
 
     } catch (WLP::BufferFullException& e) {
 
       // Special case where we cannot serialise a single row.
-      if (iScalingFactor > 1 && iRowsToSend == 1) {
+      if (dScalingFactor < 1.0 && iRowsToSend == 1) {
         m_pStmtCtx->vGotError(true);
         eEC eErrCode = EC_WL_ROW_TOO_BIG;
         Stz* szErrMsg = "Error: %s; %s; %ldd bytes"_Stz;
@@ -720,11 +761,24 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
         return;
       }
 
-      ++iScalingFactor;
+      dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
+      vTrace("RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
       continue;
     }
 
+    vTrace("RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
     iStartingRow += iRowsToSend;
+
+    if (iRowsToSend > iMaxRowsThatFit) {
+      iMaxRowsThatFit = iRowsToSend;
+    }
+
+    // Slowly increase the scaling factor
+    dScalingFactor += C_ROWDATARESP_SCALE_UP;
+    if (dScalingFactor > 1.0) {
+      dScalingFactor = 1.0;
+    }
+
     m_pStmtCtx->vAddAffectedRows(iRowsToSend);
   }
 }
@@ -862,9 +916,11 @@ void AdaptorWL::vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...)
 
 /*----------------------------------------------------------------------------*/
 /* Serialises an abstract thrift message and adds it to the output queue.     */
-/* Throws a WLP::BufferFullException if the message doesn't fit.              */
+/* Throws a WLP::BufferFullException if the message doesn't fit and           */
+/* bHandleBufferFull is false. Otherwise it serialises an ErrorMsg & closes   */
+/* the socket.                                                                */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType)
+void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, bool bHandleBufferFull)
 {
   MessageTypes::type eMsgType = (MessageTypes::type) iMsgType;
 
@@ -878,14 +934,39 @@ void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType)
     pMsg->write(m_pProtocol.get());
 
   } catch (WLP::BufferFullException& e) {
+
     m_pTransport->vRemoveBuffer();
     delete pPayload;
-    throw;
+
+    if (!bHandleBufferFull) {
+      // We expect this exception to be caught elsewhere.
+      throw;
+    }
+
+    // Handle this situation by sending an error message and causing the client socket
+    // to be closed.
+    m_eProtocolError = EC_WL_MSG_TOO_BIG; // This causes the socket closure.
+    s2K sBuf;
+    sBuf.vSprint("Error: %s; %s;"_Stz, aEC2[m_eProtocolError], aState[m_eProtocolError]);
+
+    ErrorResponse oErrorResponse;
+    oErrorResponse.__set_errorString(sBuf.azChar());
+    oErrorResponse.__set_errorCode(m_eProtocolError);
+
+    // Recurse, but importantly, if this fails then we are sweet out of luck.
+    try {
+      vSerialiseAndSendMsg(&oErrorResponse, MessageTypes::ErrorResponse, false);
+
+    } catch (WLP::BufferFullException& e) {
+      vTrace("Unable to serialise a simple ErrorResponse about a buffer being full.\n"_Stz);
+      // Client will be disconnected anyway.
+    }
+    return;
   }
 
   // Message size needs to be written into the header of the message
   // as well as the payload object.
-  i8 iMsgSize = m_pTransport->iBytesWritten() + WLP::C_WLPHEADER_SIZE;
+  i8 iMsgSize = m_pTransport->iBytesWritten();
   pHeader->vMsgSize(iMsgSize);
   pPayload->vSetPayloadSize(iMsgSize);
   m_pTransport->vRemoveBuffer();
