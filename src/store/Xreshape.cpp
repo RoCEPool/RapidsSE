@@ -226,7 +226,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     else {
       G.p_type = G.p_stmCol->pSub_type();
       G_vNewMember(CK_EXPR);
-      G_vAppendChild(CK_EXPR,G.p_type);
+      G_vAppendChild(CK_EXPR,G.p_type->pDupCardAndSubCards());
       G_vAppendNewChild(G.p_expr, CK_RPNCALC);
       G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
       G.p_gbyElist->vAppend(G.p_expr);
@@ -248,7 +248,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
       G.p_type = _pCard_Type(G.p_expr->pSub_type()->pDupCardAndSubCards());
 
       G_vNewMember(CK_EXPR);
-      G_vAppendChild(CK_EXPR,G.p_type);
+      G_vAppendChild(CK_EXPR,G.p_type->pDupCardAndSubCards());
       G_vAppendNewChild(G.p_expr, CK_RPNCALC);
       G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$K1"_Stz);
     }
@@ -509,8 +509,8 @@ void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
 
     G.p_sqtPred = _pCard_SqtPred(pCard);
 
-    m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
-    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0,nBumpRight);
+//    m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+//    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0,nBumpRight);
 
     m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
     G.p_sqtPred->vRemoveChild(m_pTerm_1);
@@ -520,7 +520,7 @@ void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
     G.p_sqtPred->vRemoveChild(m_pTerm_1);
     DELETE_CARD(m_pTerm_1);
 
-    G_vAppendNewChild(G.p_sqtPred,CK_TERM,"$1"_Stz);
+    G_vAppendNewChild(G.p_sqtPred,CK_TERM,"$2"_Stz);
 
     G_vMorphCard(G.p_sqtPred,CK_CMPPRED);
 

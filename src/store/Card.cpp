@@ -136,7 +136,8 @@ Card::~Card(void) noexcept(false)
 
   static Card* pPriorCard = nullptr;
 
-  vTrace("Card [~%02lld] %p\n"_Stz,md__SeqNo,this);
+  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
+         md__SeqNo,this,aCK[m_eCard],m_sValue.szStz(),md_Bearing);
 
   if (this == pPriorCard)
     vDebugPoint();

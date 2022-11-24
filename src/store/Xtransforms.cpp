@@ -1446,9 +1446,6 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_AdjustStmLoHi();
-  R_vUTE_RenumberStmOdn();
-  vPrintBoard(__LINE__);
 
 
   G_vRestart();
@@ -1459,6 +1456,9 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   R_vUTE_RelabelExpressions();
   vPrintBoard(__LINE__);
 
+  R_vUTE_AdjustStmLoHi();
+  R_vUTE_RenumberStmOdn();
+  vPrintBoard(__LINE__);
 
 
 //  G_vRestart();
