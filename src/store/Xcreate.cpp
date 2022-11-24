@@ -624,7 +624,7 @@ Card_Stream* Xcreate::C_pProduce_stream_ofProject(Card_ProjElist* p_projElist)
     if (p_expr_as)
       p_stmColNm->vValue(p_expr_as->szValue());
     else
-      p_stmColNm->vValueSprint("__%lld"_Stz,i_Expr);;
+      p_stmColNm->vValueSprint("__%lld"_Stz,i_Expr);
     p_stmCol->vAppend(p_stmColNm);
 
     Card_Type* p_type = _pCard_Type(p_expr_type->pDupCardAndSubCards());

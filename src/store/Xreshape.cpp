@@ -281,7 +281,20 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
+    G.p_stream = G.p_project->pSub_stream();
 
+    G.p_project->vRemoveChild(G.p_stream);
+    DELETE_CARD(G.p_stream);
+
+    G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+    G.p_project->vAppend(G.p_stream);
+
+    G.p_projElist->Y_vCut(P_Restream);
+    G.p_projElist->Y_vSet(P_Restreamed);
+
+    i8 nStmCol = G.p_stream->pSub_stmColList()->nChildCards();
+    G.p_stream->Y_vSet(P_OdnLo,(i8)1);
+    G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
