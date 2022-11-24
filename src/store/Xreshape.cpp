@@ -960,6 +960,78 @@ bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  auto vTwiddle = [this](Card_PRED* p_pred,
+                         auto&& vTwiddle /*oddity permits recursive lambda*/)
+  {
+    if (! p_pred->bIsPRED())
+      return; /* this effectively declares twiddle as void */
+
+    if (p_pred->bIsCard(CK_CMPPRED)) {
+      CardIter xCI(p_pred);
+      while (Card* p_child = xCI.pEachChild()) {
+        if (p_child->bIsPRED()) {
+          vTwiddle(static_cast<Card_PRED*>(p_child), vTwiddle);
+          continue;
+        }
+        // TODO: test for: == $d.2 %1 => == $1 [TRASNSLATE PARAM %1]
+      }
+      return;
+    }
+    else
+    if (p_pred->bIsCard(CK_SQTPRED)) {
+      CardIter xCI(p_pred);
+      while (Card* p_child = xCI.pEachChild()) {
+        if (p_child->bIsPRED()) {
+          vTwiddle(static_cast<Card_PRED*>(p_child), vTwiddle);
+          continue;
+        }
+        // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
+
+      }
+      return;
+    }
+    else
+    if (p_pred->bIsCard(CK_BOLPRED)) {
+      CardIter xCI(p_pred);
+      while (Card* p_child = xCI.pEachChild()) {
+        if (p_child->bIsPRED()) {
+          vTwiddle(static_cast<Card_PRED *>(p_child), vTwiddle);
+          continue;
+        }
+      }
+      return;
+    }
+    else
+    if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
+      CardIter xCI(p_pred);
+      while (Card_PRED* p_PRED_child = static_cast<Card_PRED*>(xCI.pEachChild())) {
+        RASSERT(p_PRED_child->bIsPRED());
+        vTwiddle(p_PRED_child, vTwiddle);
+      }
+    }
+    else {
+      NEVER_REACH;
+    }
+
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  vTwiddle(p_PRED,vTwiddle);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
