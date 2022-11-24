@@ -2674,7 +2674,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -4096,6 +4096,183 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
             <hashTree/>
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
               <stringProp name="FileSaver.filename">p16_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop_a" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+          </LoopController>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p16_a" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter &quot; type BOOLEAN }  49  14  23  45  19  3  36  9  #8  P_SIZE in&quot;
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; !=&quot;
+    | filter &quot; type BOOLEAN }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not&quot;
+    | project &quot;type INTEGER as P_PARTKEY P_PARTKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE&quot;
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE&quot;
+    | hash &quot; type INTEGER PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | aggreg &quot; groupBy   type VARCHAR as P_TYPE P_TYPE ,
+                         type INTEGER as P_SIZE P_SIZE ,
+                         type VARCHAR as P_BRAND P_BRAND ,
+                         type INTEGER as PS_SUPPKEY PS_SUPPKEY
+             aggregates  type VARCHAR  as P_TYPE $K1 ,
+                         type INTEGER  as P_SIZE $K2 ,
+                         type VARCHAR  as P_BRAND $K3 ,
+                         type INTEGER  as PS_SUPPKEY $K4&quot;
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+     aggreg &quot; groupBy    type VARCHAR as P_TYPE P_TYPE ,
+                          type INTEGER as P_SIZE P_SIZE ,
+                          type VARCHAR as P_BRAND P_BRAND ,
+                          type INTEGER as PS_SUPPKEY PS_SUPPKEY
+               aggregates type VARCHAR  as P_TYPE $K1 ,
+                          type INTEGER  as P_SIZE $K2 ,
+                          type VARCHAR  as P_BRAND $K3 ,
+                          type INTEGER  as PS_SUPPKEY $K4&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+     aggreg &quot; groupBy    type VARCHAR as P_TYPE P_TYPE ,
+                          type INTEGER as P_SIZE P_SIZE ,
+                          type VARCHAR as P_BRAND P_BRAND ,
+                          type INTEGER as PS_SUPPKEY PS_SUPPKEY
+               aggregates type VARCHAR  as P_TYPE $K1 ,
+                          type INTEGER  as P_SIZE $K2 ,
+                          type VARCHAR  as P_BRAND $K3 ,
+                          type INTEGER  as PS_SUPPKEY $K4&quot;
+    | hash &quot; type INTEGER PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    aggreg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
+                         type INTEGER as P_SIZE P_SIZE ,
+                         type VARCHAR as P_BRAND P_BRAND
+              aggregates type VARCHAR  as P_TYPE $K1 ,
+                         type INTEGER  as P_SIZE $K2 ,
+                         type VARCHAR  as P_BRAND $K3 ,
+                         type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT&quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    aggreg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
+                         type INTEGER as P_SIZE P_SIZE ,
+                         type VARCHAR as P_BRAND P_BRAND
+             aggregates  type VARCHAR  as P_TYPE $K1 ,
+                         type INTEGER  as P_SIZE $K2 ,
+                         type VARCHAR  as P_BRAND $K3 ,
+                         type INTEGER  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    aggreg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
+                         type INTEGER as P_SIZE P_SIZE ,
+                         type VARCHAR as P_BRAND P_BRAND
+             aggregates  type VARCHAR  as P_TYPE $K1 ,
+                         type INTEGER  as P_SIZE $K2 ,
+                         type VARCHAR  as P_BRAND $K3 ,
+                         type INTEGER  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort &quot; type INTEGER $4 DESC  ,
+           type VARCHAR as P_BRAND P_BRAND ASC ,
+           type VARCHAR as P_TYPE P_TYPE ASC ,
+           type INTEGER as P_SIZE P_SIZE ASC &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">moved filter and project early (part) and added &lt;&gt; in filter to exit early
+Requires the following indexes:
+CREATE INDEX IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">p16_a.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">p16_a_</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.skipsuffix">false</boolProp>
