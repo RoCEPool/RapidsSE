@@ -219,9 +219,19 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
 
 
-    G.p_expr = D_pDerive_Gby_expr_From_stmCol(G.p_stmCol);
-    G.p_gbyElist->vAppend(G.p_expr);
+    if (AL_PARTITION == G.e_Level) {
+      G.p_expr = D_pDerive_Gby_expr_From_stmCol(G.p_stmCol);
+      G.p_gbyElist->vAppend(G.p_expr);
+    }
+    else {
+      G.p_type = G.p_stmCol->pSub_type();
+      G_vNewMember(CK_EXPR);
+      G_vAppendChild(CK_EXPR,G.p_type);
+      G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+      G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
+      G.p_gbyElist->vAppend(G.p_expr);
 
+    }
     // TODO: hack...
     G.p_expr->vCardNo(0);
 
@@ -245,21 +255,37 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
     G.p_expr->Y_vSet(P_Injected);
     G.p_projElist->vPush(G.p_expr);
+
+
+    if (AL_PARTITION != G.e_Level) {
+      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);
+      G.p_gbyElist->Y_vCut(P_ProjBump);
+      G.p_gbyElist->Y_vSet(P_ProjBumped);
+    }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pre-fold <project>
 
   if (G.p_MainCard->bIsCard(CK_PROJECT)) {
 
     G.p_projElist = G.p_project->pSub_projElist();
 
     G.p_projElist->Y_vSet(P_ProjBump,(i8)1);
+    G.p_projElist->Y_vSet(P_Restream);
+
+    G.p_type = G.p_gbyElist->pGetChild(0)->pSub_type();
 
     G_vPushNewChild(G.p_projElist, CK_EXPR);
-    G_vAppendNewChild(G.p_expr, CK_TYPE, "((?))"_Stz);
+    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
-    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "((?))"_Stz);
+    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
 
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // <fold> W_A_C_ro
 
   if (! G_bEachMain(CK_FOLD))
     return;
