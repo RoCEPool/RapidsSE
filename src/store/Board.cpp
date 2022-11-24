@@ -250,6 +250,9 @@ void Board::vPinBanners(Ribbon* pRibbon)
   if ('m' == cPrefix || 'w' == cPrefix)
     sLeftMargin.vSprint("%c "_Stz, cPrefix);
   else
+  if (m_pBench->bIsFlat() && 0 == m_i_Board)
+    sLeftMargin.vSprint("mq "_Stz);
+  else
     sLeftMargin.vSprint("%c%lld "_Stz, cPrefix,m_i_Board);
 
   pRibbon->vInsertCharsV(0,0,sLeftMargin);

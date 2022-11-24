@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_FoldExpr.cpp -- Fold Typed Expression                                 */
+/* Card_FoldElist.cpp -- Fold Typed Expression                                 */
 /*============================================================================*/
 
-#include "Card_FoldExpr.hpp"
+#include "Card_FoldElist.hpp"
 
 #include "Card_Type.hpp"
 #include "Card_As.hpp"
@@ -13,16 +13,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_FoldExpr,CK_FOLDEXPR)
-__aNewFunction(Card_FoldExpr,CN_CARD)
-__vDeleteFunction(Card_FoldExpr,CN_CARD)
+__pCastFunction_Card(STORE, Card_FoldElist, CK_FOLDELIST)
+__aNewFunction(Card_FoldElist, CN_CARD)
+__vDeleteFunction(Card_FoldElist, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_FoldExpr::Card_FoldExpr(void)
-: Card(CK_FOLDEXPR)
+Card_FoldElist::Card_FoldElist(void)
+: Card_ELIST(CK_FOLDELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -34,7 +34,7 @@ Card_FoldExpr::Card_FoldExpr(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_FoldExpr::~Card_FoldExpr(void) noexcept(false)
+Card_FoldElist::~Card_FoldElist(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -58,6 +58,7 @@ namespace STORE
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
     Card_Term* m_pTerm_2;
+    Card_Term* m_pTerm_inject;
 
 
 
@@ -163,6 +164,8 @@ namespace STORE
     void G_vPushBoard(Board* pBoard);
     bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
+    void G_vPushNewChild(Card* pParent, eCK eChild);
+    void G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue);
     void G_vPushIter(void);
     void G_vPushIter(Board* pBoard);
     void G_vPopBoard(void);

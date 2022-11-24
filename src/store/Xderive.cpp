@@ -60,6 +60,67 @@ Xderive::~Xderive(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Xderive::D_pDerive_Gby_expr_From_stmCol(Card_StmCol* p_stmCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(p_stmCol->pSub_type()->szValue());
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(p_stmCol->pSub_stmColOdn()->szValue());
+
+  p_expr->vAppend(p_type);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Xderive::D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  s32 sKn;
+  sKn.vSprint("$K%lld"_Stz,p_expr_gby->iCardNo()+1);
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(sKn.szStz());
+
+  p_expr->vAppend(p_type);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Xderive::D_pDerive_Proj_expr_From_stmCol(Card_StmCol* p_stmCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(p_stmCol->pSub_type()->szValue());
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(p_stmCol->pSub_stmColOdn()->szValue());
+
+  p_expr->vAppend(p_type);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

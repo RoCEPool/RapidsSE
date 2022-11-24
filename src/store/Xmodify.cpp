@@ -625,25 +625,41 @@ void Xmodify::M_vTable_Set_Syn(Card_Table* p_table)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTerm_Bump_KeyOrdinal(Card_Term* p_term)
+void Xmodify::M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   i8 iKeyOdn = E_iValue_KeyOdn(p_term->szValue());
 
-  M_vCard_Set_KeyOrdinal(p_term,iKeyOdn+1);
+  M_vCard_Set_KeyOrdinal(p_term,iKeyOdn+nBy);
+
+  if (p_term->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = p_term->Y_iVal(P_BumpedBy);
+    p_term->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
+  }
+  else {
+    p_term->Y_vSet(P_BumpedBy,(i8)nBy);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xmodify::M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term)
+void Xmodify::M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term, i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   i8 iStmColOdn = E_iValue_StreamColOdn(p_term->szValue());
 
-  M_vCard_Set_StreamColOrdinal(p_term,iStmColOdn+1);
+  M_vCard_Set_StreamColOrdinal(p_term,iStmColOdn+nBy);
+
+  if (p_term->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = p_term->Y_iVal(P_BumpedBy);
+    p_term->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
+  }
+  else {
+    p_term->Y_vSet(P_BumpedBy,(i8)nBy);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

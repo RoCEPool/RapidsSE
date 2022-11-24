@@ -528,6 +528,7 @@ void Xgearing::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
   Card* pChild = new Card(eChild, szValue);
 
   pParent->vAppend(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -845,7 +846,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
     case CK_FOLD:             return G.p_fold;
-    case CK_FOLDEXPR:         return G.p_foldExpr;
+    case CK_FOLDELIST:         return G.p_foldElist;
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
     case CK_GENESIS:          return G.p_genesis;
@@ -1112,7 +1113,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_fold             = nullptr;
-  G.p_foldExpr         = nullptr;
+  G.p_foldElist         = nullptr;
   G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
   G.p_genesis          = nullptr;
@@ -1240,6 +1241,7 @@ void Xgearing::G_vClearRegisters(void)
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
   m_pTerm_2            = nullptr;
+  m_pTerm_inject       = nullptr;
 
   G.sz_SubQueryNm      = nullptr;
 
@@ -1463,6 +1465,32 @@ void Xgearing::G_vPushIter(Board* pBoard)
 
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPushNewChild(Card* pParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pChild = new Card(eChild);
+
+  pParent->vPush(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pChild = new Card(eChild, szValue);
+
+  pParent->vPush(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vPopBoard(void)
@@ -1598,7 +1626,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
-    case CK_FOLDEXPR:         *((Card**)&G.p_foldExpr)         = pCard; break;
+    case CK_FOLDELIST: *((Card**)&G.p_foldElist)         = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
     case CK_GENESIS:          *((Card**)&G.p_genesis)          = pCard; break;
@@ -1983,7 +2011,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
     case CK_FOLD:             return "G.p_fold"_Stz;
-    case CK_FOLDEXPR:         return "G.p_foldExpr"_Stz;
+    case CK_FOLDELIST:         return "G.p_foldElist"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
     case CK_GENESIS:          return "G.p_genesis"_Stz;

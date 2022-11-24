@@ -63,7 +63,9 @@ Card_Bounds* Xcreate::C_pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
 /*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
-void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_filter)
+void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
+                                          Card_Filter* p_filter,
+                                          bool bParamAllowedInBounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -76,7 +78,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this,p_table](Card_PRED* p_pred_Of_filter, bool bUpwards)
+  auto bLambdaFn = [this,p_table,bParamAllowedInBounds](Card_PRED* p_pred_Of_filter, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -87,7 +89,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_fi
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
     p_cmpPred->vDump();
 
-    if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table))
+    if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
       return C_CONTINUE_RECURSION;
 
     // - - - -
@@ -292,6 +294,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   Card_SqtPred* p_sqtPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
 
+  bool bSawSqy = false;
+
   Card_Term*    p_subQueryNm = nullptr;
 
   Card_SubSet*  p_TermSeries = new Card_SubSet;
@@ -331,12 +335,22 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       case TE_COMPARE:
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
-        p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term->sz());
-        p_cmpPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vPush(p_cmpPred);
-        p_cmpPred = nullptr;
+        if (bSawSqy) {
+          p_sqtPred = new Card_SqtPred;
+          p_sqtPred->vValue(p_term->sz());
+          p_sqtPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vPush(p_sqtPred);
+          p_sqtPred = nullptr;
+        }
+        else {
+          p_cmpPred = new Card_CmpPred;
+          p_cmpPred->vValue(p_term->sz());
+          p_cmpPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vPush(p_cmpPred);
+          p_cmpPred = nullptr;
+        }
         DELETE_CARD(p_term);
+        bSawSqy = false;
         break;
 
       case TE_EXISTS:
@@ -379,6 +393,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
       case TE_BOOLFN:
       case TE_OTHER:
+        if (StrLib::bBeginsWith(p_term->szValue()->azChar(),"__"))
+          bSawSqy = true;
         p_TermSeries->vAppend(p_term);
         break;
 

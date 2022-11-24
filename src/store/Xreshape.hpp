@@ -20,9 +20,11 @@ namespace STORE
     void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
+    void R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);
+    void R_vUTE_Bump_where_BaseOn_foldExpr(void);
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
@@ -30,9 +32,11 @@ namespace STORE
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);
     void R_vUTE_Push_foldExpr_Into_gbyElist(void);
+    void R_vUTE_RelabelExpressions(void);
     void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
-    void R_vUTE_Unproject_foldExpr(void);
+    void R_vUTE_Unproject_foldExpr_After_having(void);
+    void R_vUTE_Unproject_foldExpr_After_where(void);
 
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);
@@ -89,7 +93,7 @@ namespace STORE
     void vR_S34_T30_Delete_Empty_where(void);
 
     // vSeries_36_Bound_Analysis
-    void vR_S36_T10_UpCopy_filter_pred_Into_bounds(void);
+    void vR_S36_T10_UpCopy_filter_pred_Into_bounds(bool bParamAllowedInBounds);
     void vR_S36_T20_Cull_UpCopied_filter_pred(void);
     void vR_S36_T30_Delete_Empty_filter(void);
 

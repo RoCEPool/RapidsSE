@@ -1078,6 +1078,66 @@ void Xtransforms::vS36_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy <table>/<filter> up into <table>/<bounds>                             */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T10_UpCopy_filter_pred_Into_bounds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
+
+  vAssert_Board_any();
+
+  G.pSubQuery = G.pBoard->pSubQuery();
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    bool bParamAllowedInBounds = false;
+    if (G.pSubQuery->bIsCorrelated() && G.pSubQuery->bByExists())
+      bParamAllowedInBounds = true;
+
+    vR_S36_T10_UpCopy_filter_pred_Into_bounds(bParamAllowedInBounds);
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T20_Cull_UpCopied_filter_pred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+    vR_S36_T20_Cull_UpCopied_filter_pred();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete any <table>/<filter> which is effectively empty                     */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS36_T30_Delete_Empty_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
+
+  vAssert_Board_any();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+    vR_S36_T30_Delete_Empty_filter();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vS36_TZZ_End(void)
@@ -1356,10 +1416,71 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   vPrintBoard(__LINE__);
 
 
-  // 1)
+  G_vNewMember(CK_FOLD,"W_A_C_ro"_Stz);
+  G.pDeck->vPush(G.p_fold);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // x) push to sq
+  if (! G_bPushBoard(m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 1);
+
+  vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // x) pop back to mq
+  G_vPopBoard();
+  vAssert_Board_mqA();
+
+  G.pDeck->vPush(m_pCard_yanked);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+  DELETE_CARD(m_pCard_yanked);
+
+  G.pDeck->vRenumberRecursive();
+
+  vPrintBoard(__LINE__);
+
+  R_vUTE_AdjustStmLoHi();
+  R_vUTE_RenumberStmOdn();
+  vPrintBoard(__LINE__);
+
+
+  G_vRestart();
+  if (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER)) {
+    R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
+  }
+  G.pDeck->vRenumberRecursive();
+  R_vUTE_RelabelExpressions();
+  vPrintBoard(__LINE__);
 
 
 
+//  G_vRestart();
+//  if (G_bEachMain(CK_FOLD)) {
+//    G.i_FoldCard = G.i_MainCard;
+//    R_vUTE_Derive_foldExpr();
+//  }
+//  vPrintBoard(__LINE__);
+
+
+
+  G_vRestart();
+  if (G_bEachMain(CK_FOLD)) {
+    if (G_bEachMain(CK_WHERE)) {
+      // TODO:
+      // R_vUTE_Unproject_foldExpr_After_where();
+      R_vUTE_Bump_where_BaseOn_foldExpr();
+    }
+  }
+
+  m_pBench->vIsFlat(true);
+  vPrintBoard(__LINE__);
   vEndTransform();
 }
 
@@ -1759,10 +1880,10 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
   G.pDeck->vPush(G.p_fold);
-//  G_vAppendNewChild(G.p_fold,CK_FOLDEXPR);
-//  G_vAppendNewChild(G.p_foldExpr,CK_TYPE,"((type))"_Stz);
-//  G_vAppendNewChild(G.p_foldExpr,CK_AS,"__SQ1RESULT"_Stz);
-//  G_vAppendNewChild(G.p_foldExpr,CK_RPNCALC);
+//  G_vAppendNewChild(G.p_fold,CK_FOLDELIST);
+//  G_vAppendNewChild(G.p_foldElist,CK_TYPE,"((type))"_Stz);
+//  G_vAppendNewChild(G.p_foldElist,CK_AS,"__SQ1RESULT"_Stz);
+//  G_vAppendNewChild(G.p_foldElist,CK_RPNCALC);
 //  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
 
@@ -1791,7 +1912,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   G_vRestart();
   if (G_bEachMain(CK_HAVING)) {
-    R_vUTE_Unproject_foldExpr();
+    R_vUTE_Unproject_foldExpr_After_having();
     R_vUTE_Correct_having_BaseOn_foldExpr();
   }
 
@@ -2258,60 +2379,6 @@ void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
 
   while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
     vR_S60_T20_Affix_tblColOdn_To_idxCol();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy <table>/<filter> up into <table>/<bounds>                             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T10_UpCopy_filter_pred_Into_bounds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_S36_T10_UpCopy_filter_pred_Into_bounds();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T20_Cull_UpCopied_filter_pred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S36_T20_Cull_UpCopied_filter_pred();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete any <table>/<filter> which is effectively empty                     */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T30_Delete_Empty_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S36_T30_Delete_Empty_filter();
   }
 
   vEndTransform();
