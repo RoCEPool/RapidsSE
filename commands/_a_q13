@@ -1,0 +1,94 @@
+/*============================================================================*/
+/* _a_q10 -- Query10 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+  c_count,
+  count(*) as custdist
+from (
+  select
+    c_custkey,
+    count(o_orderkey) as c_count
+  from
+    customer left outer join orders on
+    c_custkey = o_custkey
+    and o_comment not like '%special%requests%'
+  group by
+    c_custkey
+  ) as c_orders (c_custkey, c_count)
+group by
+   c_count
+order by
+   c_count,
+   custdist
+;
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : PARTSUPP, SUPPLIER, NATION
+// JOIN ORDER : NATION->SUPPLIER->PARTSUPP....>NATION->SUPPLIER->PARTSUPP
+// INDEXES    : IxS_NATIONKEY
+//              IxPS_SUPPKEY
+//              IxN_NATIONKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * as customer date is coming in custkey order and group by is on custkey
+//     we can change the aggreg to an ordAgg
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+           "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    ordAgg " ordGroupBy  type INTEGER as c_custkey $1
+             aggregates  type INTEGER $K1 ,
+                         type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg " groupBy    type INTEGER as c_count $2
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
