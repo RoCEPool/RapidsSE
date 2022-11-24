@@ -251,7 +251,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
     sLeftMargin.vSprint("%c "_Stz, cPrefix);
   else
   if (m_pBench->bIsFlat() && 0 == m_i_Board)
-    sLeftMargin.vSprint("mq "_Stz);
+    sLeftMargin.vSprint("fq "_Stz);
   else
     sLeftMargin.vSprint("%c%lld "_Stz, cPrefix,m_i_Board);
 

@@ -38,6 +38,22 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Add_PRED_To_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (p_boolCalc->nChildCards()) {
+    M_vBoolCalc_PushPred(p_boolCalc,p_PRED);
+  }
+  else {
+    p_boolCalc->vAppend(p_PRED);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* move <where> to <table>/<filter>                                           */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -840,6 +856,32 @@ void Xreshape::R_vUTE_RelabelExpressions(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Remove_filter_IfEmpty(Card* pParent, Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+
+  if (p_boolCalc->nChildCards())
+    return;
+
+  pParent->vRemoveChild(p_filter);
+  delete p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
+}
+
+/*----------------------------------------------------------------------------*/
 /* visit each stream and adjust it's lo-hi range                              */
 /*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_RenumberStmOdn(void)
@@ -986,6 +1028,18 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_where(void)
 
   // TODO : unproject $1
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Yank_Marked_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc,
+                                                     Card_PRED*& rp_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  bool b = M_bBoolCalc_Yank_PRED(p_boolCalc, MARK_AT, rp_PRED);
+  RASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/

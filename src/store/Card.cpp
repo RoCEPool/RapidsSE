@@ -916,7 +916,7 @@ bool Card::bIsAggOp(void)
 
   Stz* szTerm = szValue();
 
-  if (szTerm->bSame("avg"_Stz))      return true;
+       if (szTerm->bSame("avg"_Stz))      return true;
   else if (szTerm->bSame("count"_Stz))    return true;
   else if (szTerm->bSame("countAll"_Stz)) return true;
   else if (szTerm->bSame("max"_Stz))      return true;
@@ -951,6 +951,25 @@ bool Card::bIsCommaSeparator(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card a PRED ?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPRED(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  switch (m_eCard){
+    case CK_ANDPRED:
+    case CK_BOLPRED:
+    case CK_CMPPRED:
+    case CK_ORPRED :
+    case CK_SQTPRED:
+      return true;
+    default:
+      return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

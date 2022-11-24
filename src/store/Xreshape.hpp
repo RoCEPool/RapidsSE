@@ -15,16 +15,17 @@ namespace STORE
   public:
 
     // utilities
+    void R_vUTE_Add_PRED_To_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
     void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
     void R_vUTE_AdjustStmLoHi(void);
     void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
+    void R_vUTE_Bump_where_BaseOn_foldExpr(void);
     void R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);
-    void R_vUTE_Bump_where_BaseOn_foldExpr(void);
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
@@ -33,10 +34,13 @@ namespace STORE
     void R_vUTE_Push_foldExpr_Into_aggElist(void);
     void R_vUTE_Push_foldExpr_Into_gbyElist(void);
     void R_vUTE_RelabelExpressions(void);
+    void R_vUTE_Remove_filter_IfEmpty(Card* pParent, Card_Filter* p_filter);
+    void R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
     void R_vUTE_Unproject_foldExpr_After_having(void);
     void R_vUTE_Unproject_foldExpr_After_where(void);
+    void R_vUTE_Yank_Marked_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);
 
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);

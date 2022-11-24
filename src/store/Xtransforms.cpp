@@ -1468,7 +1468,16 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 //  }
 //  vPrintBoard(__LINE__);
 
-
+  G_vRestart();
+  if (G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC)) {
+    R_vUTE_Yank_Marked_PRED_From_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
+    R_vUTE_Remove_filter_IfEmpty(G.p_table,G.p_filter);
+    if (G_bEachMain(CK_FOLD)) {
+      if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+        R_vUTE_Add_PRED_To_boolCalc(G.p_boolCalc,G.p_PRED);
+      }
+    }
+  }
 
   G_vRestart();
   if (G_bEachMain(CK_FOLD)) {

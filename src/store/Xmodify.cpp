@@ -198,6 +198,98 @@ void Xmodify::M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc,
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
+                                    Card_PRED*& p_pred_yanked)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  RASSERT(' ' != cWithMark);
+
+  p_pred_yanked = nullptr;
+
+  if (! p_boolCalc->nChildCards()) {
+    RASSERT(! p_pred_yanked);
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  auto bYank = [this](Card_BoolCalc* p_boolCalc, char cWithMark,
+                  Card* p_test, Card_PRED*& p_pred_yanked,
+                  auto&& bYank /*oddity permits recursive lambda*/)
+  {
+    if (p_test->bIsPRED()) {
+      if (p_test->cMark1() == cWithMark) {
+        p_pred_yanked = static_cast<Card_PRED*>(p_test);
+        M_vBoolCalc_RemovePred(p_boolCalc, p_pred_yanked);
+        RASSERT(p_pred_yanked);
+        return true;
+      }
+    }
+
+    CardIter xCI(p_boolCalc);
+    while (Card* p_child = xCI.pEachChild()) {
+      if (bYank(p_boolCalc,cWithMark,p_child,p_pred_yanked,bYank)) {
+        RASSERT(p_pred_yanked);
+        return true;
+      }
+    }
+
+    RASSERT(! p_pred_yanked);
+    return false;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  CardIter xCI(p_boolCalc);
+
+  while (Card* p_child = xCI.pEachChild()) {
+    if (bYank(p_boolCalc,cWithMark,p_child,p_pred_yanked,bYank)) {
+      RASSERT(p_pred_yanked);
+      return true;
+    }
+  }
+
+  RASSERT(! p_pred_yanked);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
+                                    Card* p_test, Card_PRED*& p_pred_yanked)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  RASSERT(' ' != cWithMark);
+
+  if (p_test->bIsPRED()) {
+    if (p_test->cMark1() == cWithMark) {
+      p_pred_yanked = static_cast<Card_PRED*>(p_test);
+      M_vBoolCalc_RemovePred(p_boolCalc, p_pred_yanked);
+      RASSERT(p_pred_yanked);
+      return true;
+    }
+  }
+
+  CardIter xCI(p_boolCalc);
+  while (Card* p_child = xCI.pEachChild()) {
+    if (M_bBoolCalc_Yank_PRED(p_boolCalc,cWithMark,p_child,p_pred_yanked)) {
+      RASSERT(p_pred_yanked);
+      return true;
+    }
+  }
+
+  RASSERT(! p_pred_yanked);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vCard_Mark_Changed(Card* pCard)
