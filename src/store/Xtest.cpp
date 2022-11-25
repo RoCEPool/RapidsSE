@@ -973,6 +973,28 @@ bool Xtest::T_bValue_IsResultOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a subQuery name?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bValue_IsSubQueryName(BASE::Stz *szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 's' == acThird
+      && 'u' == acFourth)
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is value a subQuery-column ordinal?  (i.e. __n)                            */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bValue_IsSqyColOrdinal(Stz* szValue)

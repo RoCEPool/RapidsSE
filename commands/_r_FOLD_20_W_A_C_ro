@@ -16,7 +16,8 @@ _r_init
 /pipelineName = "_r_FOLD_20_W_A_C_ro"
 select count(*)
   from Lineitem, Part, PartSupp
- where P_PARTKEY = L_PARTKEY
+ where P_PARTKEY  = L_PARTKEY
+   and PS_PARTKEY = P_PARTKEY
    and l_quantity < (select avg(l_quantity)
                        from lineitem
                       where L_PARTKEY = P_PARTKEY)

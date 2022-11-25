@@ -1446,9 +1446,6 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_AdjustStmLoHi();
-  R_vUTE_RenumberStmOdn();
-  vPrintBoard(__LINE__);
 
 
   G_vRestart();
@@ -1459,6 +1456,9 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   R_vUTE_RelabelExpressions();
   vPrintBoard(__LINE__);
 
+  R_vUTE_AdjustStmLoHi();
+  R_vUTE_RenumberStmOdn();
+  vPrintBoard(__LINE__);
 
 
 //  G_vRestart();
@@ -1468,16 +1468,31 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 //  }
 //  vPrintBoard(__LINE__);
 
-
-
   G_vRestart();
-  if (G_bEachMain(CK_FOLD)) {
-    if (G_bEachMain(CK_WHERE)) {
-      // TODO:
-      // R_vUTE_Unproject_foldExpr_After_where();
-      R_vUTE_Bump_where_BaseOn_foldExpr();
+  if (G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC)) {
+    R_vUTE_Yank_Marked_PRED_From_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
+    vPrintBoard(__LINE__);
+    R_vUTE_Remove_filter_IfEmpty(G.p_table,G.p_filter);
+    vPrintBoard(__LINE__);
+    if (G_bEachMain(CK_FOLD)) {
+      if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+        R_vUTE_Add_PRED_To_boolCalc(G.p_boolCalc,G.p_PRED);
+        vPrintBoard(__LINE__);
+        R_vUTE_Twiddle_SubqueryCall_In_boolCalc(G.p_boolCalc);
+        vPrintBoard(__LINE__);
+      }
     }
   }
+  vPrintBoard(__LINE__);
+
+//  G_vRestart();
+//  if (G_bEachMain(CK_FOLD)) {
+//    if (G_bEachMain(CK_WHERE)) {
+//      // TODO:
+//      // R_vUTE_Unproject_foldExpr_After_where();
+//      R_vUTE_Bump_where_BaseOn_foldExpr();
+//    }
+//  }
 
   m_pBench->vIsFlat(true);
   vPrintBoard(__LINE__);
@@ -3193,7 +3208,7 @@ void Xtransforms::vSE0_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseLonger();
 
   vST00_Begin();
 }
@@ -3212,16 +3227,6 @@ void Xtransforms::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
   G.pBoard->vMayHaveStmColOdn(true);
 
   while (G_bEachMain()) {
-
-    if (! (   CK_FILTER       == G.e_MainCard
-           || CK_INDEXSCAN    == G.e_MainCard
-           || CK_INDEXJOIN    == G.e_MainCard
-           || CK_KEYEXISTS    == G.e_MainCard
-           || CK_KEYNOTEXISTS == G.e_MainCard
-           || CK_PROJECT      == G.e_MainCard
-           || CK_WHERE        == G.e_MainCard
-    ))
-      continue;
 
     R_vUTE_Convert_tblColOdn_To_stmOdn();
   }

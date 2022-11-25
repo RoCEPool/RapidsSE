@@ -31,6 +31,10 @@ namespace STORE
     void M_vBoolCalc_PushPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred_toBeAdded);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
+    bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
+                               Card_PRED*& p_pred_yanked);
+    bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
+                               Card* p_test, Card_PRED*& p_pred_yanked);
 
 
     void M_vCard_Mark_Changed(Card* pCard);

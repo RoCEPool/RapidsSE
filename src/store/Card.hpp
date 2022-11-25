@@ -176,6 +176,8 @@ static Stz* P_ProjBump     = "nProjBump"_Stz;
 static Stz* P_ProjBumped   = "nProjBumped"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
 static Stz* P_Rank         = "iRank"_Stz;
+static Stz* P_Restream     = "bRestream"_Stz;
+static Stz* P_Restreamed   = "bRestreamed"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
@@ -325,6 +327,7 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
     bool bIsCommaSeparator(void);
+    bool bIsPRED(void);
     bool bIsValue(Stz* szValue);
 
     Card* pLastPrintParent(void);
