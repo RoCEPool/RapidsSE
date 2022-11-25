@@ -24,8 +24,8 @@ def main() -> int:
     """Run with pipenv run python -m septest"""
     """from the outer septest directory."""
 
-    LOG.debug(f"cwd = {os.getcwd()}")
-    LOG.debug(f"repo root = {C_REPO_ROOT}")
+    LOG.info(f"cwd = {os.getcwd()}")
+    LOG.info(f"repo root = {C_REPO_ROOT}")
 
     # Validate the path
     if not os.getcwd().endswith(C_CWD_SUFFIX):
@@ -56,7 +56,7 @@ def main() -> int:
                             help="If present, do not compile RapidsSE and build the installer.")
 
     args = arg_parser.parse_args()
-    LOG.debug("Got the following arguments:  %s", args)
+    LOG.info("Got the following arguments:  %s", args)
 
     if not os.path.exists(args.job):
         LOG.error("Job file does not exist: %s", args.job)
@@ -147,7 +147,7 @@ def get_git_hash_from_system() -> str:
 
     completion_status.check_returncode()
     git_hash = completion_status.stdout.strip()
-    LOG.debug(f"Got git hash from system: {git_hash}")
+    LOG.info(f"Got git hash from system: {git_hash}")
     return git_hash
 
 

@@ -379,7 +379,7 @@ class JobRunner:
         artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
         artifact_dir = pathlib.Path(self.result_path) / artifact_name
 
-        LOG.debug(f"Making artifact dir: {str(artifact_dir)}")
+        LOG.info(f"Making artifact dir: {str(artifact_dir)}")
         os.makedirs(str(artifact_dir), exist_ok=True)
         return str(artifact_dir)
 

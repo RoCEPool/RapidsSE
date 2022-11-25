@@ -3,7 +3,7 @@ import datetime
 import glob
 import string
 import logging
-import os.path
+import os
 import pathlib
 import subprocess
 import csv
@@ -125,7 +125,7 @@ class TestRunner:
         src = str(self.local_test_file)
         dest = f"{self.ip_addr}:{self.remote_test_file}"
 
-        LOG.debug(f"About to copy a test file from {src} to {dest}")
+        LOG.info(f"About to copy a test file from {src} to {dest}")
 
         try:
             ssh.run_scp(src, dest, command_timeout)
@@ -150,7 +150,7 @@ class TestRunner:
         target_dir = f"{self.cluster_config.get_dir()}/{testops.C_SUPPORT_FILES_DIR}"
         command = f"ln -s {target_dir} {from_dir}"
 
-        LOG.debug(f"About to create a symbolic link for the test supportFiles directory on host "
+        LOG.info(f"About to create a symbolic link for the test supportFiles directory on host "
                   f"{self.ip_addr}: {command}")
 
         try:
@@ -167,7 +167,7 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
-        LOG.debug(f"Successfully created the symbolic link: {from_dir} --> {target_dir}")
+        LOG.info(f"Successfully created the symbolic link: {from_dir} --> {target_dir}")
 
     def __create_remote_dir(self):
         """
@@ -178,7 +178,7 @@ class TestRunner:
         # Create a directory to hold the test file and associated metrics
         mkdir_command = f"mkdir -p {str(self.remote_test_dir)}"
 
-        LOG.debug(f"About to make a directory to hold the test file on host {self.ip_addr}: {mkdir_command}")
+        LOG.info(f"About to make a directory to hold the test file on host {self.ip_addr}: {mkdir_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, mkdir_command, 10)
@@ -194,7 +194,7 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
-        LOG.debug(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_test_dir)}")
+        LOG.info(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_test_dir)}")
 
     def __run_jmeter_test(self):
         """
@@ -217,7 +217,7 @@ class TestRunner:
                          f"-t {self.remote_test_file} " \
                          f"-l {log_file_path}"
 
-        LOG.debug(f"About to execute the JMeter command: {jmeter_command}")
+        LOG.info(f"About to execute the JMeter command: {jmeter_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, jmeter_command)
@@ -346,6 +346,9 @@ class TestRunner:
 
         LOG.debug(f"Parsing CSV metrics file: {os.path.basename(metric_file)}")
         metrics_added = 0
+
+        if os.stat(metric_file).st_size == 0:
+            return False
 
         with open(metric_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile, dialect='excel')
