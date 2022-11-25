@@ -1145,14 +1145,6 @@ void AdaptorWL::processDisconnectRequest()
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::DisconnectRequest);
 
-  //if (!bCheckState({CONNECTED})) { return; }
-
-//  DisconnectRequest* pMsg = dynamic_cast<DisconnectRequest*>(m_pCurrentMsg);
-//  if (!pMsg) {
-//    vErrorDynamicCast(to_string(MessageTypes::type::DisconnectRequest).c_str());
-//    return;
-//  }
-
   // Nothing to do in this message. We set m_eProtocolError to cause the socket
   // to be closed.
 
