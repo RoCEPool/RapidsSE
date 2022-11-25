@@ -1,0 +1,17 @@
+/*============================================================================*/
+/* __JME : Load Job Metrics from csv files                                    */
+/*============================================================================*/
+
+print "Job Metrics Load";
+
+load se__jobMetrics    "../tmp/jobMetrics.csv";
+load se__jobOperands   "../tmp/jobMetrics.csv";
+load se__jobOperators  "../tmp/jobMetrics.csv";
+load se__jobNetwork    "../tmp/jobMetrics.csv";
+load se__jobNetDissect "../tmp/jobMetrics.csv";
+load se__sysMetrics    "../tmp/jobMetrics.csv";
+load se__sysLocks      "../tmp/jobMetrics.csv";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

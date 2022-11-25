@@ -175,9 +175,6 @@ namespace STORE
     void       vPosVecPriorToEntry_int(Key* aWithKey,
                                        Ent* aPriorVec[]);
 
-    void       vPosVecPriorToEntryDesc_int(Key* aWithKey,
-                                       Ent* aPriorVec[]);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   

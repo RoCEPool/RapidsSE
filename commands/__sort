@@ -49,8 +49,8 @@ create table datums (
 );
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
-select flt_col8 from datums order by flt_col8;
-select flt_col8 from datums order by flt_col8 desc;
+//select vch_col14 from datums order by vch_col14;
+select vch_col14 from datums where vch_col14 > 'pink' order by vch_col14 desc;
 
 /*============================================================================*/
 /* end                                                                        */

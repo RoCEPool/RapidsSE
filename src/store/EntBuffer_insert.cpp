@@ -937,16 +937,10 @@ Ent* EntBuffer::aInsertEntSkipList(Ent* aEntry)
   
   if (0 == m_iBufferHeight) {
     if (KE_GENERAL == m_eEntKind) {
-      if (aEntry->bDesc())
-        vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
-      else
-        vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
+      vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
     }
     else {
-      if (aEntry->bDesc())
-        vPosVecPriorToEntryDesc_int(aKey, xPriorVec);
-      else
-        vPosVecPriorToEntry_int(aKey, xPriorVec);
+      vPosVecPriorToEntry_int(aKey, xPriorVec);
     }
 
   }
