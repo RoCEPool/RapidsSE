@@ -3248,11 +3248,6 @@ begin
     | combined 0
     | next
 
-  stage stageNew on origin :
-    top &quot; TOP type DECIMAL REVENUE &quot; 20
-    | combined 0
-    | next
-
   stage S06 on origin :
     sort &quot; type DECIMAL REVENUE ASC  &quot;
     | combined 0
