@@ -105,6 +105,7 @@ IndexDef::IndexDef(IndexDef* pIndexDef)
 
   m_bIsPrimaryKey = pIndexDef->bIsPrimaryKey();
   m_bIsUnique     = pIndexDef->bIsUnique();
+  m_bHasDescending = false;
   
   m_nColumns      = pIndexDef->nColumns();
   
