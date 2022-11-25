@@ -21,6 +21,7 @@ C_JMETER_EXTS = ["jmx", "jmeter"]
 C_SUPPORT_FILES = "supportFiles"
 C_TEST_DIR_FMT = "j{:04d}_t{:02d}_{:02d}_{:s}"
 C_SCP_TIMEOUT_SEC = 60
+C_CLOUD_INIT_OUTPUT = "/cloud-init-output.log"
 
 # CSV fields
 C_CSV_LABEL = "label"
@@ -258,6 +259,8 @@ class TestRunner:
         # Copy the jmeter logs to this directory
         self.copy_jmeter_logs()
 
+        self.copy_cloud_init_output()
+
         # Parse the metrics and add them to the results.
         # We look for both *.csv and *.tsv files.
         csv_list = glob.glob(f"{self.artifact_dir}/*.csv")
@@ -334,6 +337,27 @@ class TestRunner:
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying of jmeter log file from remote path at {src} timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+    def copy_cloud_init_output(self):
+        """
+        Copies cloud-init output file from a remote host to the artifact directory
+        """
+
+        LOG.debug("About to copy cloud-init output file from remote node to local directory")
+        src = f"{self.ip_addr}:{C_CLOUD_INIT_OUTPUT}"
+
+        try:
+            ssh.run_scp(src=src, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
+
+        except errors.SshError as e:
+            msg = f"Error while copying cloud-init output file from remote path: {src}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of cloud-init output file from remote path at {src} timed out after {e.timeout} seconds: " \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
