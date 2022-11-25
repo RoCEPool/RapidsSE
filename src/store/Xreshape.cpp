@@ -230,9 +230,12 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
     G.p_projElist = G.p_gbyAgg->pSub_projElist();
 
+    G.p_projElist->vCard(CK_AGGELIST);
+    G.p_aggElist = _pCard_AggElist(G.p_projElist);
+
     G.p_gbyElist = new Card_GbyElist;
     G.p_gbyElist->Y_vSet(P_Injected);
-    G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_projElist);
+    G.p_gbyAgg->vInsertBefore(G.p_gbyElist,G.p_aggElist);
 
 
     if (AL_PARTITION == G.e_Level) {
@@ -251,11 +254,6 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     // TODO: hack...
     G.p_expr->vCardNo(0);
 
-//    G_vPushNewChild(G.p_projElist,CK_EXPR);
-//    G_vAppendNewChild(G.p_expr,CK_TYPE,"((?))"_Stz);
-//    G_vAppendNewChild(G.p_expr,CK_RPNCALC);
-//    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"((?))"_Stz);
-
     if (AL_PARTITION == G.e_Level) {
       G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr);
     }
@@ -270,11 +268,11 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     }
 
     G.p_expr->Y_vSet(P_Injected);
-    G.p_projElist->vPush(G.p_expr);
+    G.p_aggElist->vPush(G.p_expr);
 
 
     if (AL_PARTITION != G.e_Level) {
-      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);
+      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
       G.p_gbyElist->Y_vCut(P_ProjBump);
       G.p_gbyElist->Y_vSet(P_ProjBumped);
     }
@@ -433,31 +431,11 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 
     vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
-    if (T_bValue_IsResultOrdinal(p_term->szValue())) {
-
-      i8 iResultOrd = E_iValue_ResultOdn(p_term->szValue());
-
-      // TODO: put this in a fn
-      s32 sStmColOdn;
-      sStmColOdn.vSprint("$%lld"_Stz,iResultOrd);
-      p_term->vValue(sStmColOdn);
-
-      return C_CONTINUE_RECURSION;
-    }
-
-
     if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    Stz* szTblColOdn = p_term->szValue();
-    if (! G_bResolveSubCard(CK_SCAN,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
-      if (! G_bResolveSubCard(CK_INDEXJOIN,CK_TBLCOLODN,szTblColOdn,G.i_MainCard))
-        if (! G_bResolveSubCard(CK_KEYNOTEXISTS,CK_TBLCOLODN,szTblColOdn,G.i_MainCard+1))
-          return C_CONTINUE_RECURSION;
+    G.p_stmColOdn = R_pUTE_Resolve_tblColOdn_Into_stmColOdn(p_term,G.i_MainCard);
 
-    RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
-
-    G.p_stmColOdn = m_pCard_parent->pSub_stmColOdn();
     M_vCard_Set_Value(p_term, G.p_stmColOdn->szValue(),MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;

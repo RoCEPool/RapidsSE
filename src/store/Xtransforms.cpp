@@ -3208,7 +3208,7 @@ void Xtransforms::vSE0_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  m_pCardCtl->vUseShorter();
+  m_pCardCtl->vUseLonger();
 
   vST00_Begin();
 }
@@ -3227,16 +3227,6 @@ void Xtransforms::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
   G.pBoard->vMayHaveStmColOdn(true);
 
   while (G_bEachMain()) {
-
-    if (! (   CK_FILTER       == G.e_MainCard
-           || CK_INDEXSCAN    == G.e_MainCard
-           || CK_INDEXJOIN    == G.e_MainCard
-           || CK_KEYEXISTS    == G.e_MainCard
-           || CK_KEYNOTEXISTS == G.e_MainCard
-           || CK_PROJECT      == G.e_MainCard
-           || CK_WHERE        == G.e_MainCard
-    ))
-      continue;
 
     R_vUTE_Convert_tblColOdn_To_stmOdn();
   }
