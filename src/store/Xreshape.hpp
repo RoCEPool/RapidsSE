@@ -39,6 +39,7 @@ namespace STORE
     void R_vUTE_RenumberStmOdn(void);
     bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
     void R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term);
+    Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
     void R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc* p_boolCalc);
     void R_vUTE_Unproject_foldExpr_After_having(void);
     void R_vUTE_Unproject_foldExpr_After_where(void);

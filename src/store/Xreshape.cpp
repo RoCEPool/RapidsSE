@@ -1001,6 +1001,30 @@ void Xreshape::R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_StmColOdn* Xreshape::
+R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_StmColOdn* p_term_stmColOdn = nullptr;
+
+  G_vPushIter();
+
+  Stz* szTblColOdn = p_term_tblColOdn->szValue();
+  if (G_bResolveSubCard(CK_STMCOL,CK_TBLCOLODN,szTblColOdn,i_Before)) {
+    RASSERT(m_pCard_resolved->bIsCard(CK_STMCOL));
+
+    p_term_stmColOdn = m_pCard_resolved->pSub_stmColOdn();
+  }
+
+  G_vPopIter();
+
+  return p_term_stmColOdn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -1034,6 +1058,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
     }
     else
     if (p_pred->bIsCard(CK_SQTPRED)) {
+      p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {

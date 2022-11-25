@@ -1485,14 +1485,14 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   }
   vPrintBoard(__LINE__);
 
-  G_vRestart();
-  if (G_bEachMain(CK_FOLD)) {
-    if (G_bEachMain(CK_WHERE)) {
-      // TODO:
-      // R_vUTE_Unproject_foldExpr_After_where();
-      R_vUTE_Bump_where_BaseOn_foldExpr();
-    }
-  }
+//  G_vRestart();
+//  if (G_bEachMain(CK_FOLD)) {
+//    if (G_bEachMain(CK_WHERE)) {
+//      // TODO:
+//      // R_vUTE_Unproject_foldExpr_After_where();
+//      R_vUTE_Bump_where_BaseOn_foldExpr();
+//    }
+//  }
 
   m_pBench->vIsFlat(true);
   vPrintBoard(__LINE__);
