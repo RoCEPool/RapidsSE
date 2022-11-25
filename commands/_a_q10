@@ -139,11 +139,6 @@ begin
     | combined 0
     | next
 
-  stage stageNew on origin :
-    top " TOP type DECIMAL REVENUE " 20
-    | combined 0
-    | next
-
   stage S06 on origin :
     sort " type DECIMAL REVENUE ASC  "
     | combined 0
