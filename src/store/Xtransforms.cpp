@@ -1471,12 +1471,15 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   G_vRestart();
   if (G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC)) {
     R_vUTE_Yank_Marked_PRED_From_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
+    RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
     vPrintBoard(__LINE__);
     R_vUTE_Remove_filter_IfEmpty(G.p_table,G.p_filter);
     vPrintBoard(__LINE__);
     if (G_bEachMain(CK_FOLD)) {
       if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+        RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
         R_vUTE_Add_PRED_To_boolCalc(G.p_boolCalc,G.p_PRED);
+        RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
         vPrintBoard(__LINE__);
         R_vUTE_Twiddle_SubqueryCall_In_boolCalc(G.p_boolCalc);
         vPrintBoard(__LINE__);
@@ -1484,12 +1487,15 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
     }
   }
   vPrintBoard(__LINE__);
+
+  RASSERT(0 == m_pTransformIterList->nItems());
+
+  G_vRestart();
   if (G_bEachMain(CK_FOLD)) {
     if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-      R_vUTE_Move_Injected_cmpPred_to_table_As_bounds(G.p_boolCalc);
+      R_vUTE_Move_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
     }
   }
-  G_vRestart();
   vPrintBoard(__LINE__);
 
 

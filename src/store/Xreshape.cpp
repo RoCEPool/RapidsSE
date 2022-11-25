@@ -175,9 +175,9 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify the cmpPred with inject info
+  // identify the cmpPred which is correlated by parameter
 
-  auto bLambdaFn = [this](Card_PRED* p_pred, bool bUpwards)
+  auto bMarkCorrPred = [this](Card_PRED* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -185,16 +185,19 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     if (! p_pred->bIsCard(CK_CMPPRED))
       return C_CONTINUE_RECURSION;
 
+    bool bIsCorrPred = false;
     CardIter xCI(p_pred);
     while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
+        bIsCorrPred = true;
+        m_pTerm_inject = _pCard_Term(xCI.pPrevChild());
+        break;
+      }
+    }
 
-      if (! T_bValue_IsParamOrdinal(G.p_term->szValue()))
-        continue;
-
+    if (bIsCorrPred) {
       p_pred->vMark1(MARK_AT);
-      m_pTerm_inject = _pCard_Term(xCI.pPrevChild());
-      m_pTerm_inject->Y_vSet(P_Injected);
-      break;
+      p_pred->Y_vSet(P_CorrPred);
     }
 
     return C_CONTINUE_RECURSION;
@@ -202,9 +205,12 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
   G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
-  bool bIgnore = M_bPredRecursive(G.p_PRED,bLambdaFn);
+  bool bIgnore = M_bPredRecursive(G.p_PRED,bMarkCorrPred);
 
 
+  m_pTerm_inject->vDump();
+  G.p_stream->vDump();
+  G.p_filter->vDump();
 
   m_pCard_found = G.p_stream->pFindValueRecursive(m_pTerm_inject->szValue(),m_pCard_parent);
   G.p_stmCol = _pCard_StmCol(m_pCard_parent);
@@ -696,7 +702,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Move_Injected_cmpPred_to_table_As_bounds(Card_BoolCalc *p_boolCalc)
+void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -709,12 +715,19 @@ void Xreshape::R_vUTE_Move_Injected_cmpPred_to_table_As_bounds(Card_BoolCalc *p_
     if (! p_pred->bIsPRED())
       return; /* this effectively declares twiddle as void */
 
-    if (p_pred->bIsCard(CK_CMPPRED) && p_pred->Y_bHas(P_Injected)) {
+    if (p_pred->bIsCard(CK_CMPPRED) && p_pred->Y_bHas(P_CorrPred)) {
+
+      Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
+
       M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
 
       // todo: find table 'a' and add p_pred as bounds
 
       Card_Table* p_table = R_pUTE_Resolve_table_By_tblSyn('a',G.i_MainCard);
+
+      Card_Bounds* pBounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
+
+      p_table->vAppend(pBounds);
 
       DELETE_CARD(p_pred);
       return;
@@ -1079,7 +1092,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vTwiddle = [this](Card_PRED* p_pred,
+  auto vTwiddle = [this,p_boolCalc](Card_PRED* p_pred,
                          auto&& vTwiddle /*oddity permits recursive lambda*/)
   {
     if (! p_pred->bIsPRED())

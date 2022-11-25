@@ -159,6 +159,7 @@ static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_BumpRight    = "nBumpRight"_Stz;
 static Stz* P_BumpedRight  = "nBumpedRight"_Stz;
+static Stz* P_CorrPred     = "bCorrPred"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
