@@ -16,8 +16,12 @@ cp "${ROOT_DIR}/bin/rapidsse"      "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/se.man"        "${LAYOUT_DIR}/bin"
 
 # SE Shell
+# Note: We put seshell.sh in both the $LAYOUT_DIR and $LAYOUT_DIR/shell so that
+#       the $LAYOUT_DIR/shell directory can be copied to another machine and run
+#       as it is.
 mkdir -p "${LAYOUT_DIR}/shell"
 cp "${ROOT_DIR}/shell/"*.jar       "${LAYOUT_DIR}/shell"
+cp "${ROOT_DIR}/shell/seshell.sh"  "${LAYOUT_DIR}/shell"
 cp "${ROOT_DIR}/shell/seshell.sh"  "${LAYOUT_DIR}"
 
 # commands directory
