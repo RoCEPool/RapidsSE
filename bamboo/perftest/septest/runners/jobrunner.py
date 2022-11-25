@@ -479,6 +479,9 @@ class JobRunner:
         current_time = datetime.datetime.now()
         end_time = current_time + datetime.timedelta(seconds=timeout)
 
+        minutes_left = int((end_time - current_time).total_seconds() / 60)
+        last_minutes_left = minutes_left
+
         while current_time < end_time:
 
             if not test_thread.is_alive():
@@ -490,6 +493,12 @@ class JobRunner:
                 se_crashed = True
                 self.abnormal_exit = True
                 return timed_out, se_crashed
+
+            # Print how long the job has left, in minutes.
+            minutes_left = int((end_time - current_time).total_seconds() / 60)
+            if minutes_left != last_minutes_left:
+                last_minutes_left = minutes_left
+                LOG.info(f"Job has approximately {minutes_left} minutes left to finish.")
 
             # Test thread still running and SE not crashed. Try again in a little bit.
             time.sleep(C_TEST_MONITORING_SLEEP_IVL)

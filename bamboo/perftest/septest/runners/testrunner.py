@@ -354,6 +354,9 @@ class TestRunner:
             reader = csv.DictReader(csvfile, dialect='excel')
             fieldnames = reader.fieldnames
 
+            if fieldnames is None:
+                return False
+
             # Must have these fields minimum: label, success, Latency
             # Optional fields that can be used: timestamp, failureMessage, responseMessage, Connect
 
