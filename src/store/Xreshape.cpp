@@ -1026,10 +1026,14 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
         if (T_bValue_IsParamOrdinal(p_child->szValue())) {
-          R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
+          //R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
+          p_child->vValue("$1"_Stz);  // TODO: hack!!
         }
         else {
-          p_child->vValue("$1"_Stz);
+          //p_child->vValue("$1"_Stz);
+          char cTblSyn = E_cValue_TableColSyn(p_child->szValue());
+          cTblSyn = 'a'; // TODO: hack!!
+          M_vCard_Set_TableColSyn(p_child,cTblSyn);
         }
       }
       return;

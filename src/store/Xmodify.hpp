@@ -43,6 +43,7 @@ namespace STORE
     void M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn);
     void M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn);
     void M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn);
+    void M_vCard_Set_TableColSyn(Card* p_card, char cTblSyn);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 

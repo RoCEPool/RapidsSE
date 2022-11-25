@@ -340,6 +340,16 @@ void Xmodify::M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* replace c in $c.n                                                          */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vCard_Set_TableColSyn(Card* p_card, char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  ((char*)p_card->sz())[1] = cTblSyn;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn)
