@@ -1814,6 +1814,25 @@ bool Xgearing::G_bResolveCard(eCK eCard, i8 i_Before)
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
 /*----------------------------------------------------------------------------*/
+bool Xgearing::G_bResolveCard(eCK eCard, char cWithValue, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card* pMain = G.pDeck->pGetChild(i_Main);
+
+    if ((m_pCard_resolved = pMain->pFindValueRecursive(eCard,cWithValue,m_pCard_parent))) {
+      G_vUpdateMember(eCard, m_pCard_resolved, __func__);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve card (right-left before given i_Before                             */
+/*----------------------------------------------------------------------------*/
 bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

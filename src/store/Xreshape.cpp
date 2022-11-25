@@ -694,6 +694,51 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Move_Injected_cmpPred_to_table_As_bounds(Card_BoolCalc *p_boolCalc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  auto vTwiddle = [this](Card_PRED* p_pred, Card_BoolCalc *p_boolCalc,
+                         auto&& vTwiddle /*oddity permits recursive lambda*/)
+  {
+    if (! p_pred->bIsPRED())
+      return; /* this effectively declares twiddle as void */
+
+    if (p_pred->bIsCard(CK_CMPPRED) && p_pred->Y_bHas(P_Injected)) {
+      M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
+
+      // todo: find table 'a' and add p_pred as bounds
+
+      Card_Table* p_table = R_pUTE_Resolve_table_By_tblSyn('a',G.i_MainCard);
+
+      DELETE_CARD(p_pred);
+      return;
+
+    }
+
+    CardIter xCI(p_pred);
+    while (Card* p_child = xCI.pEachChild()) {
+      if (p_child->bIsPRED()) {
+        vTwiddle(static_cast<Card_PRED *>(p_child), p_boolCalc, vTwiddle);
+        continue;
+      }
+    }
+
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  vTwiddle(p_PRED,p_boolCalc,vTwiddle);
+}
+
+/*----------------------------------------------------------------------------*/
 /* move <where> to <table keyExists>/<constraint>                             */
 /*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where)
@@ -975,6 +1020,30 @@ void Xreshape::R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term)
 
   p_term->vValue(G.p_tblColOdn->szValue());
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Table* Xreshape::
+R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Table* p_table = nullptr;
+
+  G_vPushIter();
+
+  if (G_bResolveCard(CK_TABLE,cTblSyn,i_Before)) {
+    RASSERT(m_pCard_resolved->bIsCard(CK_TABLE));
+
+    p_table = _pCard_Table(m_pCard_resolved);
+  }
+
+  G_vPopIter();
+
+  return p_table;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

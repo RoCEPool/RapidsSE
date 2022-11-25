@@ -61,6 +61,66 @@ Card_Bounds* Xcreate::C_pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create a bounds given tblColOdn                                            */
+/*----------------------------------------------------------------------------*/
+Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
+                                                   char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Bounds* p_bounds = new Card_Bounds;
+
+  Card_Term* p_term = new Card_Term("BOUND"_Stz);
+  p_bounds->vAppend(p_term);
+
+  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+    char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+    if (cTblSyn_term_0 == cTblSyn) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bounds->vAppend(p_term);
+      p_term = new Card_Term(pTerm_1->sz());
+      p_bounds->vAppend(p_term);
+    }
+    else
+    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+      if (cTblSyn_term_1 == cTblSyn) {
+        p_term = new Card_Term("$I1"_Stz);
+        p_bounds->vAppend(p_term);
+        p_term = new Card_Term(pTerm_0->sz());
+        p_bounds->vAppend(p_term);
+      } else {
+        NEVER_REACH
+      }
+    }
+  }
+  else
+  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+    if (cTblSyn_term_1 == cTblSyn) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bounds->vAppend(p_term);
+      p_term = new Card_Term(pTerm_0->sz());
+      p_bounds->vAppend(p_term);
+    }
+    else {
+      NEVER_REACH
+    }
+  }
+  else {
+    NEVER_REACH
+  }
+
+  p_term = new Card_Term(p_cmpPred->sz());
+  p_bounds->vAppend(p_term);
+
+  return p_bounds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
 void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,

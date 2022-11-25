@@ -174,6 +174,7 @@ namespace STORE
     void G_vRemoveMain(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     bool G_bResolveCard(eCK eCard, i8 i_Before);
+    bool G_bResolveCard(eCK eCard,char cWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);

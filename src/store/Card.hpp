@@ -312,8 +312,8 @@ namespace STORE
 
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParent(Card* pSubCard);
-    Card* pFindValueRecursive(eCK eCard, Stz* szValue);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
