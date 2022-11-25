@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* __JMQ : Query Job Metrics                                                  */
+/*============================================================================*/
+
+print "Job Metrics Query";
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   NETWORK
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+select thisNodeName as thisNode,
+       otherNodeName as otherNode,
+       sum(sendCount)  as sCount,
+       sum(sendBytes)  as sBytes,
+       sum(sendBuffer) as sBuffer,
+       sum(recvCount)  as rCount,
+       sum(recvBytes)  as rBytes,
+       sum(recvBuffer) as rBuffer
+       from se__jobNetwork group by thisNodeName, otherNodeName;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

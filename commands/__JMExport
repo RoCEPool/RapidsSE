@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* __JME : Export Job Metrics to csv files                                    */
+/*============================================================================*/
+
+print "Job Metrics Export";
+
+select count(*) from se__jobMetrics;
+select count(*) from se__jobOperands;
+select count(*) from se__jobOperators;
+select count(*) from se__jobNetwork;
+select count(*) from se__jobNetDissect;
+select count(*) from se__sysMetrics;
+select count(*) from se__sysLocks;
+
+export se__jobMetrics    "../tmp/jobMetrics.csv";
+export se__jobOperands   "../tmp/jobOperands.csv";
+export se__jobOperators  "../tmp/jobOperators.csv";
+export se__jobNetwork    "../tmp/jobNetwork.csv";
+export se__jobNetDissect "../tmp/jobNetDissect.csv";
+export se__sysMetrics    "../tmp/sysMetrics.csv";
+export se__sysLocks      "../tmp/sysLocks.csv";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

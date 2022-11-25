@@ -29,7 +29,7 @@ select count(*) from se__jobMetrics;
 select max(responseUS), avg(responseUS), max(responseUS) from se__jobOperators;
 select max(newRowBuffers) from se__jobOperators;
 
-export se__jobMetrics "../tmp/report.csv";
+export se__jobMetrics "../tmp/jobMetrics.csv";
 //load se__jobReport "../tmp/report.csv";
 
 /*============================================================================*/
