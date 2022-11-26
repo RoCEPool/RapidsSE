@@ -1450,9 +1450,10 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   G_vRestart();
   if (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER)) {
-    R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
+    R_vUTE_Identify_Correlated_cmpPred();
   }
 
+  R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
 
 
   if (G.p_MainCard->bIsCard(CK_PROJECT)) {

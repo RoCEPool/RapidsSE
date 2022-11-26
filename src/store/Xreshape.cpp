@@ -230,58 +230,6 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pre-fold identify the <table>/<filter>/<boolCalc>/<cmpPred> which is correlated by parameter
-
-  auto bMarkCorrPred = [this](Card_PRED* p_pred, bool bUpwards)
-  {
-    if (bUpwards)
-      return C_CONTINUE_RECURSION;
-
-    if (! p_pred->bIsCard(CK_CMPPRED))
-      return C_CONTINUE_RECURSION;
-
-    bool bIsCorrPred = false;
-    CardIter xCI(p_pred);
-    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
-        bIsCorrPred = true;
-        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
-        break;
-      }
-    }
-
-    if (bIsCorrPred) {
-      p_pred->vMark1(MARK_AT);
-      p_pred->Y_vSet(P_CorrPred);
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  G.p_boolCalc = G.p_filter->pSub_boolCalc();
-  G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
-  bool bIgnore = M_bPredRecursive(G.p_PRED,bMarkCorrPred);
-
-
-  m_pTerm_corrPred->vDump();
-//  G.p_stream->vDump();
-//  G.p_filter->vDump();
-
-
-  // find the <table>/<stream>/<stmColList>/<stmCol>
-  //  corresponding to the correlated predicate
-
-  m_pCard_found = G.p_stream->pFindValueRecursive(m_pTerm_corrPred->szValue(), m_pCard_parent);
-  G.p_stmCol = _pCard_StmCol(m_pCard_parent);
-
-  G.p_stmCol->vMark1(MARK_AT);
-  G.p_stmCol->Y_vSet(P_CorrStmCol);
-  G.p_stmCol->vDump();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -728,6 +676,71 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
     }
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Identify_Correlated_cmpPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pre-fold identify the <table>/<filter>/<boolCalc>/<cmpPred> which is correlated by parameter
+
+  auto bMarkCorrPred = [this](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_CMPPRED))
+      return C_CONTINUE_RECURSION;
+
+    bool bIsCorrPred = false;
+    CardIter xCI(p_pred);
+    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
+        bIsCorrPred = true;
+        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
+        break;
+      }
+    }
+
+    if (bIsCorrPred) {
+      p_pred->vMark1(MARK_AT);
+      p_pred->Y_vSet(P_CorrPred);
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_boolCalc = G.p_filter->pSub_boolCalc();
+  G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
+  bool bIgnore = M_bPredRecursive(G.p_PRED,bMarkCorrPred);
+
+
+  m_pTerm_corrPred->vDump();
+//  G.p_stream->vDump();
+//  G.p_filter->vDump();
+
+
+  // find the <table>/<stream>/<stmColList>/<stmCol>
+  //  corresponding to the correlated predicate
+
+  m_pCard_found = G.p_stream->pFindValueRecursive(m_pTerm_corrPred->szValue(), m_pCard_parent);
+  G.p_stmCol = _pCard_StmCol(m_pCard_parent);
+
+  G.p_stmCol->vMark1(MARK_AT);
+  G.p_stmCol->Y_vSet(P_CorrStmCol);
+  G.p_stmCol->vDump();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 }
 
 /*----------------------------------------------------------------------------*/
