@@ -166,6 +166,61 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Change_Fold(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // <fold> W_A_C_ro
+
+  G.p_fold->Y_vSet(P_BumpRight,(i8)2);
+
+  G_vAppendNewChild(G.p_fold, CK_FOLDELIST);
+
+  G.p_stmColList = G.p_stream->pSub_stmColList();
+
+
+  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+  G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
+  G.p_type = G.p_stmCol->pSub_type();
+  G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1IGBKY1"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+  G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
+
+
+  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+  G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(1));
+  G.p_type = G.p_stmCol->pSub_type();
+  G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
+
+
+/*
+  if (G.p_type) {
+    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+  }
+  else {
+    G_vAppendNewChild(G.p_expr, CK_TYPE, "((type missing))"_Stz);
+  }
+  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
+
+
+  G.p_foldElist = G.p_fold->pSub_foldElist();
+
+  G_vPushNewChild(G.p_foldElist, CK_EXPR);
+
+  */
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -293,100 +348,61 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     }
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Change_PreFold_Project(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
 
-  if (G.p_MainCard->bIsCard(CK_PROJECT)) {
+  RASSERT (G.p_MainCard->bIsCard(CK_PROJECT));
 
-    G.p_projElist = G.p_project->pSub_projElist();
+  G.p_projElist = G.p_project->pSub_projElist();
 
-    G.p_projElist->Y_vSet(P_ProjBump,(i8)1);
-    G.p_projElist->Y_vSet(P_Restream);
+  G.p_projElist->Y_vSet(P_ProjBump,(i8)1);
+  G.p_projElist->Y_vSet(P_Restream);
 
-    G.p_type = G.p_gbyElist->pGetChild(0)->pSub_type();
+  G.p_type = G.p_gbyElist->pGetChild(0)->pSub_type();
 
-    // push <project>/__SQ1IGBKY1
-    G_vPushNewChild(G.p_projElist, CK_EXPR);
-    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-    G_vAppendNewChild(G.p_expr, CK_RPNCALC);
-    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
-
-
-    // replace <project>/<stream> now that __SQ1IGBKY1 has been added
-    G.p_stream = G.p_project->pSub_stream();
-
-    G.p_project->vRemoveChild(G.p_stream);
-    DELETE_CARD(G.p_stream);
-
-    G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
-    G.p_project->vAppend(G.p_stream);
-
-    G.p_projElist->Y_vCut(P_Restream);
-    G.p_projElist->Y_vSet(P_Restreamed);
-
-    i8 nStmCol = G.p_stream->pSub_stmColList()->nChildCards();
-    G.p_stream->Y_vSet(P_OdnLo,(i8)1);
-    G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
-
-    // bump all $n in <project>/<projElist>/<expr>/<rpnCalc>
-    //   now that __SQ1IGBKY1 has been added
-
-    i8 nBumpBy = G.p_projElist->Y_iGet(P_ProjBump);
-
-    R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);// TODO: ,nBumpBy);
-    G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
-    G.p_projElist->Y_vCut(P_ProjBump);
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // <fold> W_A_C_ro
-
-  if (! G_bEachMain(CK_FOLD))
-    return;
-
-  G.p_fold->Y_vSet(P_BumpRight,(i8)2);
-
-  G_vAppendNewChild(G.p_fold, CK_FOLDELIST);
-
-  G.p_stmColList = G.p_stream->pSub_stmColList();
-
-
-  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
-  G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
-  G.p_type = G.p_stmCol->pSub_type();
+  // push <project>/__SQ1IGBKY1
+  G_vPushNewChild(G.p_projElist, CK_EXPR);
   G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1IGBKY1"_Stz);
   G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
 
-  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
-  G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(1));
-  G.p_type = G.p_stmCol->pSub_type();
-  G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
-  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
-  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
+  // replace <project>/<stream> now that __SQ1IGBKY1 has been added
+  G.p_stream = G.p_project->pSub_stream();
+
+  G.p_project->vRemoveChild(G.p_stream);
+  DELETE_CARD(G.p_stream);
+
+  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+  G.p_project->vAppend(G.p_stream);
+
+  G.p_projElist->Y_vCut(P_Restream);
+  G.p_projElist->Y_vSet(P_Restreamed);
+
+  i8 nStmCol = G.p_stream->pSub_stmColList()->nChildCards();
+  G.p_stream->Y_vSet(P_OdnLo,(i8)1);
+  G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
+
+  // bump all $n in <project>/<projElist>/<expr>/<rpnCalc>
+  //   now that __SQ1IGBKY1 has been added
+
+  i8 nBumpBy = G.p_projElist->Y_iGet(P_ProjBump);
+
+  R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);// TODO: ,nBumpBy);
+  G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
+  G.p_projElist->Y_vCut(P_ProjBump);
 
 
-/*
-  if (G.p_type) {
-    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  }
-  else {
-    G_vAppendNewChild(G.p_expr, CK_TYPE, "((type missing))"_Stz);
-  }
-  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
-  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
-  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
-
-
-  G.p_foldElist = G.p_fold->pSub_foldElist();
-
-  G_vPushNewChild(G.p_foldElist, CK_EXPR);
-
-  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -717,7 +733,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolCalc)
+void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

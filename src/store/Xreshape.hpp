@@ -22,14 +22,16 @@ namespace STORE
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_where_BaseOn_foldExpr(void);
+    void R_vUTE_Change_Fold(void);
     void R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void);
+    void R_vUTE_Change_PreFold_Project(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
-    void R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
+    void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);

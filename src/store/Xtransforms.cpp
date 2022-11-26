@@ -1452,9 +1452,22 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   if (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER)) {
     R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
   }
+
+
+
+  if (G.p_MainCard->bIsCard(CK_PROJECT)) {
+    R_vUTE_Change_PreFold_Project();
+  }
+
+
+  if (G_bEachMain(CK_FOLD)) {
+    R_vUTE_Change_Fold();
+  }
+
   G.pDeck->vRenumberRecursive();
   R_vUTE_RelabelExpressions();
   vPrintBoard(__LINE__);
+
 
   R_vUTE_AdjustStmLoHi();
   R_vUTE_RenumberStmOdn();
@@ -1493,7 +1506,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   G_vRestart();
   if (G_bEachMain(CK_FOLD)) {
     if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-      R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
+      R_vUTE_Move_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
     }
   }
   vPrintBoard(__LINE__);
