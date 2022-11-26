@@ -38,7 +38,7 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Add_PRED_To_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
+void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -169,7 +169,7 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Change_Fold(void)
+void Xreshape::R_vUTE_Add_foldElist_To_Fold(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -225,7 +225,7 @@ void Xreshape::R_vUTE_Change_Fold(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
+void Xreshape::R_vUTE_Enrich_sq_aggreg_To_gbyAgg_Of_Correlation_Column(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -307,10 +307,9 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Change_PreFold_Project(void)
+void Xreshape::R_vUTE_Enrich_sq_project_To_Include_Correlation_Column(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
@@ -330,8 +329,9 @@ void Xreshape::R_vUTE_Change_PreFold_Project(void)
   G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added
+
   G.p_stream = G.p_project->pSub_stream();
 
   G.p_project->vRemoveChild(G.p_stream);
@@ -355,8 +355,6 @@ void Xreshape::R_vUTE_Change_PreFold_Project(void)
   R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);// TODO: ,nBumpBy);
   G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
   G.p_projElist->Y_vCut(P_ProjBump);
-
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -687,7 +685,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Identify_Correlated_cmpPred(void)
+void Xreshape::R_vUTE_Identify_Correlation_Column_cmpPred_Of_boolCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -731,6 +729,14 @@ void Xreshape::R_vUTE_Identify_Correlated_cmpPred(void)
 //  G.p_stream->vDump();
 //  G.p_filter->vDump();
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
@@ -741,13 +747,8 @@ void Xreshape::R_vUTE_Identify_Correlated_cmpPred(void)
   G.p_stmCol->vMark1(MARK_AT);
   G.p_stmCol->Y_vSet(P_CorrStmCol);
   G.p_stmCol->vDump();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1304,8 +1305,8 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Yank_Marked_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc,
-                                                     Card_PRED*& rp_PRED)
+void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_boolCalc(Card_BoolCalc* p_boolCalc,
+                                                            Card_PRED*& rp_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

@@ -1406,11 +1406,10 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
-  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!R_bUTE_FindAndMarkSubQryCall()) {
-      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-      NEVER_REACH
-    }
+  RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  if (!R_bUTE_FindAndMarkSubQryCall()) {
+    vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+    NEVER_REACH
   }
   vTrace(">>>>>>>>> Found W_A_C_ro call:  %s %s %s\n"_Stz,m_sSqyArg.szStz(),m_sSqyRO.szStz(),m_sSqyNm.szStz());
   vPrintBoard(__LINE__);
@@ -1432,7 +1431,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vPrintBoard(__LINE__);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
   // x) pop back to mq
   G_vPopBoard();
@@ -1446,39 +1445,37 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vPrintBoard(__LINE__);
 
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G_vRestart();
-  if (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER)) {
-    R_vUTE_Identify_Correlated_cmpPred();
-  }
+  RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
+  R_vUTE_Identify_Correlation_Column_cmpPred_Of_boolCalc();
+  RASSERT(m_pTerm_corrPred);
+  R_vUTE_Find_stmCol_Definition_Of_Correlation_Column();
+  RASSERT(G.p_stmCol);
 
-  if (G_bEachMain(CK_AGGREG)) {
-    R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
-  }
+  RASSERT(G_bEachMain(CK_AGGREG));
+  R_vUTE_Enrich_sq_aggreg_To_gbyAgg_Of_Correlation_Column();
 
-  if (G_bEachMain(CK_PROJECT)) {
-    R_vUTE_Change_PreFold_Project();
-  }
+  RASSERT(G_bEachMain(CK_PROJECT));
+  R_vUTE_Enrich_sq_project_To_Include_Correlation_Column();
 
-  if (G_bEachMain(CK_FOLD)) {
-    R_vUTE_Change_Fold();
-  }
+  RASSERT(G_bEachMain(CK_FOLD));
+  R_vUTE_Add_foldElist_To_Fold();
 
   G.pDeck->vRenumberRecursive();
   R_vUTE_RelabelExpressions();
   vPrintBoard(__LINE__);
 
-
   R_vUTE_AdjustStmLoHi();
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G_vRestart();
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
-
-  R_vUTE_Yank_Marked_PRED_From_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
+  R_vUTE_Yank_Correlated_cmpPred_From_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
   RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
   vPrintBoard(__LINE__);
 
@@ -1487,22 +1484,20 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   RASSERT(G_bEachMain(CK_FOLD));
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
-  R_vUTE_Add_PRED_To_boolCalc(G.p_boolCalc,G.p_PRED);
-  RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
+  R_vUTE_Push_Correlated_cmpPred_Onto_boolCalc(G.p_boolCalc, G.p_PRED);
   vPrintBoard(__LINE__);
+
   R_vUTE_Twiddle_SubqueryCall_In_boolCalc(G.p_boolCalc);
   vPrintBoard(__LINE__);
 
-
   RASSERT(0 == m_pTransformIterList->nItems());
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   G_vRestart();
-  if (G_bEachMain(CK_FOLD)) {
-    if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-      R_vUTE_Move_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
-    }
-  }
+  RASSERT(G_bEachMain(CK_FOLD));
+  RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  R_vUTE_Move_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
   vPrintBoard(__LINE__);
 
 
