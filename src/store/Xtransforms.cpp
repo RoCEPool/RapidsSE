@@ -1449,7 +1449,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   G_vRestart();
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
-  R_vUTE_Identify_Correlation_Column_cmpPred_Of_boolCalc();
+  R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_boolCalc();
   RASSERT(m_pTerm_corrPred);
   R_vUTE_Find_stmCol_Definition_Of_Correlation_Column();
   RASSERT(G.p_stmCol);
@@ -1487,7 +1487,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   R_vUTE_Push_Correlated_cmpPred_Onto_boolCalc(G.p_boolCalc, G.p_PRED);
   vPrintBoard(__LINE__);
 
-  R_vUTE_Twiddle_SubqueryCall_In_boolCalc(G.p_boolCalc);
+  R_vUTE_Resolve_SubqueryCall_In_boolCalc(G.p_boolCalc);
   vPrintBoard(__LINE__);
 
   RASSERT(0 == m_pTransformIterList->nItems());

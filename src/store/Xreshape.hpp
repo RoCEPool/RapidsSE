@@ -31,7 +31,7 @@ namespace STORE
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
-    void R_vUTE_Identify_Correlation_Column_cmpPred_Of_boolCalc(void);
+    void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_boolCalc(void);
     void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
     void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
@@ -46,7 +46,7 @@ namespace STORE
     void R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term);
     Card_Table* R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before);
     Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
-    void R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc* p_boolCalc);
+    void R_vUTE_Resolve_SubqueryCall_In_boolCalc(Card_BoolCalc* p_boolCalc);
     void R_vUTE_Unproject_foldExpr_After_having(void);
     void R_vUTE_Unproject_foldExpr_After_where(void);
     void R_vUTE_Yank_Correlated_cmpPred_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);

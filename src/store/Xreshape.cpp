@@ -685,7 +685,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Identify_Correlation_Column_cmpPred_Of_boolCalc(void)
+void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_boolCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -703,6 +703,8 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_cmpPred_Of_boolCalc(void)
     bool bIsCorrPred = false;
     CardIter xCI(p_pred);
     while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+
+      // TODO: hack... %1 $n may not be in this order
       if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
         bIsCorrPred = true;
         m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
@@ -1136,24 +1138,24 @@ R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc)
+void Xreshape::R_vUTE_Resolve_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vTwiddle = [this,p_boolCalc](Card_PRED* p_pred,
-                         auto&& vTwiddle /*oddity permits recursive lambda*/)
+  auto vResolve = [this,p_boolCalc](Card_PRED* p_pred,
+                                    auto&& vResolve /*oddity permits recursive lambda*/)
   {
     if (! p_pred->bIsPRED())
-      return; /* this effectively declares twiddle as void */
+      return; /* this effectively declares resolve as void */
 
     if (p_pred->bIsCard(CK_CMPPRED)) {
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {
-          vTwiddle(static_cast<Card_PRED*>(p_child), vTwiddle);
+          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
           continue;
         }
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
@@ -1177,7 +1179,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {
-          vTwiddle(static_cast<Card_PRED*>(p_child), vTwiddle);
+          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
           continue;
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
@@ -1202,7 +1204,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {
-          vTwiddle(static_cast<Card_PRED *>(p_child), vTwiddle);
+          vResolve(static_cast<Card_PRED *>(p_child), vResolve);
           continue;
         }
       }
@@ -1213,7 +1215,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
       CardIter xCI(p_pred);
       while (Card_PRED* p_PRED_child = static_cast<Card_PRED*>(xCI.pEachChild())) {
         RASSERT(p_PRED_child->bIsPRED());
-        vTwiddle(p_PRED_child, vTwiddle);
+        vResolve(p_PRED_child, vResolve);
       }
     }
     else {
@@ -1226,7 +1228,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
 
   Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
-  vTwiddle(p_PRED,vTwiddle);
+  vResolve(p_PRED, vResolve);
 }
 
 /*----------------------------------------------------------------------------*/
