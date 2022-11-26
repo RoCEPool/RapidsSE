@@ -1956,6 +1956,24 @@ bool Xgearing::G_bResolveSubCard(eCK eCard, i8 i_Before)
 }
 
 /*----------------------------------------------------------------------------*/
+/* step main register next main and update M member                           */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bRewindMain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if ((G.p_MainCard = G.xBI.pRewindMain())) {
+    vFocusOnMain();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.e_MainCard = CK_NONE;
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* find sub of member with given property                                     */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)

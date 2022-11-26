@@ -113,6 +113,7 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
+
     void G_vClearMembers(void);
     void G_vClearMembersRegisters(void);
     void G_vClearRegisters(void);
@@ -182,6 +183,7 @@ namespace STORE
     bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
     bool G_bResolveSubCard(eCK eSub, i8 i_Before);
     void G_vRestart(void);
+    bool G_bRewindMain(void);
 
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     bool G_bSubsequentToMain(bool bUpdateMember = false);

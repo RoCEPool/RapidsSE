@@ -1455,11 +1455,9 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   R_vUTE_Change_PreFold_aggreg_To_gbyAgg();
 
-
-  if (G.p_MainCard->bIsCard(CK_PROJECT)) {
+  if (G_bEachMain(CK_PROJECT)) {
     R_vUTE_Change_PreFold_Project();
   }
-
 
   if (G_bEachMain(CK_FOLD)) {
     R_vUTE_Change_Fold();

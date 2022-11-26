@@ -296,6 +296,9 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     }
   }
 
+  bool b = G_bRewindMain();
+  RASSERT(b);
+
 }
 
 /*----------------------------------------------------------------------------*/

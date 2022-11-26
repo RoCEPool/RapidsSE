@@ -40,7 +40,7 @@ namespace STORE
     Card* pPrevMainIf(eCK eCard);
 
     i8 i_Main(void);
-    void vRewind(void);
+    Card* pRewindMain(void);
     bool bMore(void);
     void vForward(void);
 
