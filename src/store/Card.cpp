@@ -1890,7 +1890,7 @@ void Card::Y_vSet(Stz* szPpyNm)
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, "yes"_Stz);
+  m_pProperties->vReplace(szPpyNm, "y"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

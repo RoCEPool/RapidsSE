@@ -1493,7 +1493,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   G_vRestart();
   if (G_bEachMain(CK_FOLD)) {
     if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-      R_vUTE_Move_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
+      R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
     }
   }
   vPrintBoard(__LINE__);

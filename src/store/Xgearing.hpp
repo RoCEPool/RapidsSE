@@ -58,7 +58,7 @@ namespace STORE
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
     Card_Term* m_pTerm_2;
-    Card_Term* m_pTerm_inject;
+    Card_Term* m_pTerm_corrPred;
 
 
 

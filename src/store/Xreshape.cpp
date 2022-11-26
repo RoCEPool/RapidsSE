@@ -175,7 +175,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify the cmpPred which is correlated by parameter
+  // pre-fold identify the <table>/<filter>/<boolCalc>/<cmpPred> which is correlated by parameter
 
   auto bMarkCorrPred = [this](Card_PRED* p_pred, bool bUpwards)
   {
@@ -190,7 +190,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
       if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
         bIsCorrPred = true;
-        m_pTerm_inject = _pCard_Term(xCI.pPrevChild());
+        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
         break;
       }
     }
@@ -203,19 +203,26 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     return C_CONTINUE_RECURSION;
   };
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
   G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
   bool bIgnore = M_bPredRecursive(G.p_PRED,bMarkCorrPred);
 
 
-  m_pTerm_inject->vDump();
-  G.p_stream->vDump();
-  G.p_filter->vDump();
+  m_pTerm_corrPred->vDump();
+//  G.p_stream->vDump();
+//  G.p_filter->vDump();
 
-  m_pCard_found = G.p_stream->pFindValueRecursive(m_pTerm_inject->szValue(),m_pCard_parent);
+
+  // find the <table>/<stream>/<stmColList>/<stmCol>
+  //  corresponding to the correlated predicate
+
+  m_pCard_found = G.p_stream->pFindValueRecursive(m_pTerm_corrPred->szValue(), m_pCard_parent);
   G.p_stmCol = _pCard_StmCol(m_pCard_parent);
 
-  m_pCard_parent->vMark1(MARK_AT);
+  G.p_stmCol->vMark1(MARK_AT);
+  G.p_stmCol->Y_vSet(P_CorrStmCol);
   G.p_stmCol->vDump();
 
 
@@ -223,6 +230,8 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pre-fold promote sq <aggreg> seq to <gbyAgg> seq
 
   while (G_bEachMain()) {
     if (! G.p_MainCard->bIsCard(CK_AGGREG))
@@ -285,7 +294,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pre-fold <project>
+  // pre-fold sq <project>
 
   if (G.p_MainCard->bIsCard(CK_PROJECT)) {
 
@@ -296,11 +305,14 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
 
     G.p_type = G.p_gbyElist->pGetChild(0)->pSub_type();
 
+    // push <project>/__SQ1IGBKY1
     G_vPushNewChild(G.p_projElist, CK_EXPR);
     G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
+
+    // replace <project>/<stream> now that __SQ1IGBKY1 has been added
     G.p_stream = G.p_project->pSub_stream();
 
     G.p_project->vRemoveChild(G.p_stream);
@@ -315,6 +327,9 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     i8 nStmCol = G.p_stream->pSub_stmColList()->nChildCards();
     G.p_stream->Y_vSet(P_OdnLo,(i8)1);
     G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
+
+    // bump all $n in <project>/<projElist>/<expr>/<rpnCalc>
+    //   now that __SQ1IGBKY1 has been added
 
     i8 nBumpBy = G.p_projElist->Y_iVal(P_ProjBump);
 
@@ -341,7 +356,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
   G.p_type = G.p_stmCol->pSub_type();
   G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1GBKEY1"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1IGBKY1"_Stz);
   G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
@@ -702,7 +717,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolCalc)
+void Xreshape::R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
