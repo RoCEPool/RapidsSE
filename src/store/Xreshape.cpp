@@ -236,9 +236,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold promote sq <aggreg> seq to <gbyAgg> seq
 
-  while (G_bEachMain()) {
-    if (! G.p_MainCard->bIsCard(CK_AGGREG))
-      break;
+  for (i8 i_Series = 0; i_Series < 3; i_Series++) {
 
     G.p_MainCard->vCard(CK_GBYAGG);
     G.p_gbyAgg = _pCard_GbyAgg(G.p_MainCard);
@@ -294,11 +292,16 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
       G.p_gbyElist->Y_vCut(P_ProjBump);
       G.p_gbyElist->Y_vSet(P_ProjBumped);
     }
+
+
+    if (G_bEachMain()) {
+      if (! G.p_MainCard->bIsCard(CK_AGGREG)) {
+        bool b = G_bRewindMain();
+        RASSERT(b);
+        break;
+      }
+    }
   }
-
-  bool b = G_bRewindMain();
-  RASSERT(b);
-
 }
 
 /*----------------------------------------------------------------------------*/
