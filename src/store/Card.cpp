@@ -989,7 +989,7 @@ bool Card::bIsPRED(void)
     case CK_BOLPRED:
     case CK_CMPPRED:
     case CK_ORPRED :
-    case CK_SQTPRED:
+    case CK_ROPRED:
       return true;
     default:
       return false;
@@ -2613,7 +2613,7 @@ Card_SqtPred* Card::pSub_sqtPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_SqtPred* p_sqtPred =
-      _pCard_SqtPred(pFindSubCard(CK_SQTPRED));
+      _pCard_SqtPred(pFindSubCard(CK_ROPRED));
   return p_sqtPred;
 }
 

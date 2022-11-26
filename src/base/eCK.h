@@ -109,6 +109,7 @@ enum eCK // card kind
   /* */ CK_RBOUND,
   /* */ CK_REASON,
   /* */ CK_RELNOP,
+  /* */ CK_ROPRED,
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
@@ -118,7 +119,6 @@ enum eCK // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SIZE,
   /* */ CK_SORT,
-  /* */ CK_SQTPRED,
   /* */ CK_STAGE,
   /* */ CK_STMCOL,
   /* */ CK_STMCOLLIST,
@@ -272,6 +272,7 @@ static Stz* aCK[]
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
   /* */ "CK_REASON"_Stz,       // CK_REASON
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
+  /* */ "CK_ROPRED"_Stz,       // CK_ROPRED
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
@@ -281,7 +282,6 @@ static Stz* aCK[]
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
-  /* */ "CK_SQTPRED"_Stz,      // CK_SQTPRED
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
   /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
@@ -434,6 +434,7 @@ static Stz* aCK_short[]
   /* */ "rbound"_Stz,          // CK_RBOUND
   /* */ "reason"_Stz,          // CK_REASON
   /* */ "relnOp"_Stz,          // CK_RELNOP
+  /* */ "roPred"_Stz,          // CK_ROPRED
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
@@ -443,7 +444,6 @@ static Stz* aCK_short[]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
-  /* */ "sqtPred"_Stz,         // CK_SQTPRED
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stmCol"_Stz,          // CK_STMCOL
   /* */ "stmColList"_Stz,      // CK_STMCOLLIST

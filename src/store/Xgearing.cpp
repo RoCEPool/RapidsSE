@@ -906,7 +906,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_TBLCOLODN:        return G.p_tblColOdn;
     case CK_TERM:             return G.p_term;
     case CK_TOPOLOGY:         return G.p_topology;
-    case CK_SQTPRED:          return G.p_sqtPred;
+    case CK_ROPRED:          return G.p_sqtPred;
     case CK_TWIST:            return G.p_twist;
     case CK_TYPE:             return G.p_type;
     case CK_UBOUND:           return G.p_uBound;
@@ -1686,7 +1686,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TBLCOLODN:        *((Card**)&G.p_tblColOdn)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_SQTPRED:          *((Card**)&G.p_sqtPred)          = pCard; break;
+    case CK_ROPRED: *((Card**)&G.p_sqtPred)          = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
@@ -2088,7 +2088,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TBLCOLODN:        return "G.p_tblColOdn"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_SQTPRED:          return "G.p_sqtPred"_Stz;
+    case CK_ROPRED:          return "G.p_sqtPred"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;

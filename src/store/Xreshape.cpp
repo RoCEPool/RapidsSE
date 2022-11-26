@@ -500,7 +500,7 @@ void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
 
 }
 
@@ -544,7 +544,7 @@ void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
 
   G.p_fold->Y_vSet(P_BumpedRight,nBumpRight);
   G.p_fold->Y_vCut(P_BumpRight);
@@ -677,7 +677,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   G.p_boolCalc->vDump();
 
-  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn_sqtPred);
+  G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_sqtPred);
   if (bFoundCall)
     return true;
 
@@ -1136,7 +1136,7 @@ void Xreshape::R_vUTE_Twiddle_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc
       return;
     }
     else
-    if (p_pred->bIsCard(CK_SQTPRED)) {
+    if (p_pred->bIsCard(CK_ROPRED)) {
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
@@ -4148,7 +4148,7 @@ void Xreshape::vR_S36X_T40_Delete_tstPred_In_whereA(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_boolCalc->bApplyRecursive(CK_SQTPRED, bLambdaFn);
+  G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
 
   vEndReshape();
 }

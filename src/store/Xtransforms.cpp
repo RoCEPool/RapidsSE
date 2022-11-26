@@ -2371,7 +2371,7 @@ void Xtransforms::vS60_T05_Twist_in_Becomes_filter(void)
 
   vAssert_Board_mqA();
 
-  while (G_bEachMainWithSub(CK_TWIST, CK_SQTPRED,"in"_Stz)) {
+  while (G_bEachMainWithSub(CK_TWIST, CK_ROPRED, "in"_Stz)) {
     vR_S60_T05_Twist_in_Becomes_filter();
   }
 
@@ -3758,7 +3758,7 @@ void Xtransforms::vS36X_T10_Push_sqB_Into_mqA(void)
 
   vAssert_Board_mqA();
 
-  while (G_bEachMainWithSub(CK_WHERE, CK_SQTPRED, "exists"_Stz)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_ROPRED, "exists"_Stz)) {
 
     Stz* szSubQueryNm = G.p_sqtPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
@@ -4000,7 +4000,7 @@ void Xtransforms::vS37X_T10_Append_sqB_After_mqA(void)
 
   vAssert_Board_mqA();
 
-  //while (G_bEachMainWithSub(CK_WHERE, CK_SQTPRED, "exists"_Stz)) {
+  //while (G_bEachMainWithSub(CK_WHERE, CK_ROPRED, "exists"_Stz)) {
 
   //Stz* szSubQueryNm = G.p_sqtPred->pGetChild(1)->szValue();
   Stz* szSubQueryNm = "__subquery0002"_Stz;
