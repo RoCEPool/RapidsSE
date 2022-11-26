@@ -629,7 +629,7 @@ bool Xtest::T_bStage_IsIgnorable(Card_Stage* p_stage)
   if (! p_topology)
     return false;
 
-  if (YG_ALL_PARTITIONS == p_topology->Y_iVal(P_StageTopo))
+  if (YG_ALL_PARTITIONS == p_topology->Y_iGet(P_StageTopo))
     return false;
 
   return true;
@@ -708,7 +708,7 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain
   eAL eLevel_main = reLevel;
   Card_Level* p_level = p_Main->pSub_level();
   if (p_level)
-    eLevel_main = (eAL)p_level->Y_iVal(P_Level);
+    eLevel_main = (eAL) p_level->Y_iGet(P_Level);
 
   if ((CK_FILTER == eMain || CK_WHERE == eMain) && CK_AGGREG != ePrior) {
     // filter can be at P/N/O

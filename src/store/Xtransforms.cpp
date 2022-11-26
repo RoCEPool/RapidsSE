@@ -904,7 +904,7 @@ void Xtransforms::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
 
     if (CK_PROJECT == G.e_MainCard) {
       G.p_level = G.p_MainCard->pSub_level();
-      if (G.p_level && AL_PARTITION != G.p_level->Y_iVal(P_Level))
+      if (G.p_level && AL_PARTITION != G.p_level->Y_iGet(P_Level))
         continue;
     }
 

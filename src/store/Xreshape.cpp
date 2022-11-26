@@ -241,7 +241,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     G.p_gbyAgg = _pCard_GbyAgg(G.p_MainCard);
 
     G.p_level = G.p_gbyAgg->pSub_level();
-    G.e_Level = (eAL)G.p_level->Y_iVal(P_Level);
+    G.e_Level = (eAL) G.p_level->Y_iGet(P_Level);
 
     G.p_projElist = G.p_gbyAgg->pSub_projElist();
 
@@ -331,7 +331,7 @@ void Xreshape::R_vUTE_Change_PreFold_aggreg_To_gbyAgg(void)
     // bump all $n in <project>/<projElist>/<expr>/<rpnCalc>
     //   now that __SQ1IGBKY1 has been added
 
-    i8 nBumpBy = G.p_projElist->Y_iVal(P_ProjBump);
+    i8 nBumpBy = G.p_projElist->Y_iGet(P_ProjBump);
 
     R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);// TODO: ,nBumpBy);
     G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
@@ -513,7 +513,7 @@ void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
 
   G.p_boolCalc = G.p_where->pSub_boolCalc();
 
-  i8 nBumpRight = G.p_fold->Y_iVal(P_BumpRight);
+  i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -724,8 +724,8 @@ void Xreshape::R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_bo
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vTwiddle = [this](Card_PRED* p_pred, Card_BoolCalc *p_boolCalc,
-                         auto&& vTwiddle /*oddity permits recursive lambda*/)
+  auto vMove = [this](Card_PRED* p_pred, Card_BoolCalc *p_boolCalc,
+                      auto&& vTwiddle /*oddity permits recursive lambda*/)
   {
     if (! p_pred->bIsPRED())
       return; /* this effectively declares twiddle as void */
@@ -736,7 +736,7 @@ void Xreshape::R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_bo
 
       M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
 
-      // todo: find table 'a' and add p_pred as bounds
+      // todo: find table 'd'->'a' and add p_pred as bounds
 
       Card_Table* p_table = R_pUTE_Resolve_table_By_tblSyn('a',G.i_MainCard);
 
@@ -763,7 +763,7 @@ void Xreshape::R_vUTE_Move_sq_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_bo
 
   Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
-  vTwiddle(p_PRED,p_boolCalc,vTwiddle);
+  vMove(p_PRED, p_boolCalc, vMove);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -892,7 +892,7 @@ void Xreshape::R_vUTE_RelabelExpressions(void)
     if (! (G.p_stream = G.p_MainCard->pSub_stream()))
       continue;
 
-    i_StmCol = G.p_stream->Y_iVal(P_OdnLo);
+    i_StmCol = G.p_stream->Y_iGet(P_OdnLo);
 
     G.p_stmColList = G.p_stream->pSub_stmColList();
 
@@ -967,7 +967,7 @@ void Xreshape::R_vUTE_RenumberStmOdn(void)
 
     G.p_stream = G.p_MainCard->pSub_stream();
 
-    G.i_stmColOdn = G.p_stream->Y_iVal(P_OdnLo);
+    G.i_stmColOdn = G.p_stream->Y_iGet(P_OdnLo);
 
     G.p_stmColList = G.p_stream->pSub_stmColList();
 
@@ -2656,7 +2656,7 @@ void Xreshape::vR_S50_T94_Estimate_network(void)
     else
     if (CK_PTNDJOIN == eCard) {
       if (G.p_ptndJoin) {
-        nSentOut += G.p_ptndJoin->Y_iVal(P_JoinedBuff);
+        nSentOut += G.p_ptndJoin->Y_iGet(P_JoinedBuff);
         nNetwork += nSentOut;
         G.p_ptndJoin->Y_vSet(P_SentOut, nSentOut);
       }
@@ -2686,7 +2686,7 @@ void Xreshape::vR_S50_T96_Estimate_joinOrder(void)
 
   while ((G.p_permutation =
               _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION)))) {
-    i8 iNetwork = G.p_permutation->Y_iVal(P_Network);
+    i8 iNetwork = G.p_permutation->Y_iGet(P_Network);
     if (iNetwork >= iLowestNetwork)
       continue;
     G.p_permutation_low = G.p_permutation;
@@ -3542,7 +3542,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
 
     p_main = G.pDeck->pGetChild(i_Main);
     e_main = p_main->eCard();
-    eAL e_level_main = (eAL)p_main->pSub_level()->Y_iVal(P_Level);
+    eAL e_level_main = (eAL) p_main->pSub_level()->Y_iGet(P_Level);
 
     // change of level
     if (e_level_main != e_level_running) {
@@ -3653,15 +3653,15 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
 //  for (i8 i_Main = 1; i_Main < G.pDeck->nChildCards(); i_Main++) {
 //    Card* p_main = G.pDeck->pGetChild(i_Main);
 //    eCK e_main = p_main->eCard();
-//    eAL e_level_main = (eAL)p_main->pSub_level()->Y_iVal(P_Level);
+//    eAL e_level_main = (eAL)p_main->pSub_level()->Y_iGet(P_Level);
 //
 //    Card* p_next = nullptr;
 //    eCK e_next = CK_NONE;
-//    eAL e_level_next = (eAL)p_main->pSub_level()->Y_iVal(P_Level);
+//    eAL e_level_next = (eAL)p_main->pSub_level()->Y_iGet(P_Level);
 //    if (i_Main < G.pDeck->nChildCards() - 1) {
 //      p_next = G.pDeck->pGetChild(i_Main + 1);
 //      e_next = p_next->eCard();
-//      e_level_next = (eAL)p_next->pSub_level()->Y_iVal(P_Level);
+//      e_level_next = (eAL)p_next->pSub_level()->Y_iGet(P_Level);
 //    }
 //
 //

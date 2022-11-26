@@ -375,26 +375,27 @@ namespace STORE
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
-    Stz* Y_szNm(i8 i_Property);
-    char Y_cVal(i8 i_Property);
-    char Y_cVal(Stz* szPpyNm);
-    i8   Y_iVal(i8 i_Property);
-    i8   Y_iVal(Stz* szPpyNm);
-    Object* Y_pVal(i8 i_Property);
-    Object* Y_pVal(Stz* szPptNm);
-    Stz* Y_szVal(i8 i_Property);
-    Stz* Y_szVal(Stz* szPptNm);
-
-    void Y_vSet(Stz* szPpyNm, char cPpyVal);
-    void Y_vSet(Stz* szPpyNm, i8 iPpyVal);
-    void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
-    void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
-    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-
     void Y_vCut(Stz* szPpyNm);
 
+    char Y_cGet(i8 i_Ppy);
+    char Y_cGet(Stz* szPpyNm);
+    i8   Y_iGet(i8 i_Ppy);
+    i8   Y_iGet(Stz* szPpyNm);
+    Object* Y_pGet(i8 i_Ppy);
+    Object* Y_pGet(Stz* szPptNm);
+    Stz* Y_szGet(i8 i_Ppy);
+    Stz* Y_szGet(Stz* szPptNm);
+
     bool Y_bHas(Stz* szPpyNm);
+
+    Stz* Y_szNm(i8 i_Ppy);
+
+    void Y_vSet(Stz* szPpyNm, char cPpy);
+    void Y_vSet(Stz* szPpyNm, i8 iPpy);
+    void Y_vSet(Stz* szPpyNm);
+    void Y_vSet(Stz* szPpyNm, Object* pPpy);
+    void Y_vSet(Stz* szPpyNm, Stz* szPpy);
+    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
     Card_SubSet* pYankSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
 

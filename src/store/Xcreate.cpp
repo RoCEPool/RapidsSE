@@ -269,8 +269,8 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
 //
 //    // one of {pCard_term_0,pCard_term_1} is $In
 //
-//    i8 iStreamOdnLo = p_stream->Y_iVal(P_OdnLo);
-//    i8 iStreamOdnHi = p_stream->Y_iVal(P_OdnHi);
+//    i8 iStreamOdnLo = p_stream->Y_iGet(P_OdnLo);
+//    i8 iStreamOdnHi = p_stream->Y_iGet(P_OdnHi);
 //
 //    i8 i_iOdnLo_0 = E_iTerm_StreamColOdn(pTerm_0);
 //    i8 i_iOdnLo_1 = E_iTerm_StreamColOdn(pTerm_1);

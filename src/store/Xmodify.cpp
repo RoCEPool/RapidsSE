@@ -736,7 +736,7 @@ void Xmodify::M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy)
   M_vCard_Set_KeyOrdinal(p_term,iKeyOdn+nBy);
 
   if (p_term->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = p_term->Y_iVal(P_BumpedBy);
+    i8 nBumpedBy = p_term->Y_iGet(P_BumpedBy);
     p_term->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
   }
   else {
@@ -756,7 +756,7 @@ void Xmodify::M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term, i8 nBy)
   M_vCard_Set_StreamColOrdinal(p_term,iStmColOdn+nBy);
 
   if (p_term->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = p_term->Y_iVal(P_BumpedBy);
+    i8 nBumpedBy = p_term->Y_iGet(P_BumpedBy);
     p_term->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
   }
   else {

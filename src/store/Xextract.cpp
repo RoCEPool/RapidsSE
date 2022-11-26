@@ -103,7 +103,7 @@ i8 Xextract::E_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iRank = p_candIndex->Y_iVal(P_Rank);
+  i8 iRank = p_candIndex->Y_iGet(P_Rank);
 
   return iRank;
 }
@@ -125,7 +125,7 @@ i8 Xextract::E_iStream_OdnLo(Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOdnLo = p_stream->Y_iVal(P_OdnLo);
+  i8 iOdnLo = p_stream->Y_iGet(P_OdnLo);
 
   return iOdnLo;
 }
@@ -137,7 +137,7 @@ i8 Xextract::E_iStream_OdnHi(Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOdnHi = p_stream->Y_iVal(P_OdnHi);
+  i8 iOdnHi = p_stream->Y_iGet(P_OdnHi);
 
   return iOdnHi;
 }
