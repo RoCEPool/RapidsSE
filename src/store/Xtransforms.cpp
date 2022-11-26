@@ -1427,7 +1427,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   }
   vAssert_Board_sqB();
 
-  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 1);
+  m_pCard_copied = E_pSubset_ChildrenBetween(G.pDeck, 1);
 
   vPrintBoard(__LINE__);
 
@@ -1437,31 +1437,35 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   G_vPopBoard();
   vAssert_Board_mqA();
 
-  G.pDeck->vPush(m_pCard_yanked);
-  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
-  DELETE_CARD(m_pCard_yanked);
+  G.pDeck->vPush(m_pCard_copied);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_copied);
+  DELETE_CARD(m_pCard_copied);
 
   G.pDeck->vRenumberRecursive();
 
   vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert the parameterised aggreg-sq into a gbyAgg-sq gby correlation column
+  // such that the resukt of the sq is a stream { __SQ1IGBKY , __SQ1RESULT }
 
   G_vRestart();
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
-  R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_boolCalc();
-  RASSERT(m_pTerm_corrPred);
+  R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc();
+  RASSERT(m_pTerm_corrPred); // eg $d.2 (L_PARTKEY)
+  m_pTerm_corrPred->vDump();
   R_vUTE_Find_stmCol_Definition_Of_Correlation_Column();
-  RASSERT(G.p_stmCol);
+  RASSERT(G.p_stmCol);       // eg L_PARTKEY
+  G.p_stmCol->vDump();
 
   RASSERT(G_bEachMain(CK_AGGREG));
-  R_vUTE_Enrich_sq_aggreg_To_gbyAgg_Of_Correlation_Column();
+  R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column();
 
   RASSERT(G_bEachMain(CK_PROJECT));
-  R_vUTE_Enrich_sq_project_To_Include_Correlation_Column();
+  R_vUTE_Enhance_sq_project_To_Include_Correlation_Column();
 
   RASSERT(G_bEachMain(CK_FOLD));
-  R_vUTE_Add_foldElist_To_Fold();
+  R_vUTE_Derive_foldElist_From_project_stream();
 
   G.pDeck->vRenumberRecursive();
   R_vUTE_RelabelExpressions();
@@ -1472,10 +1476,11 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert the mq to join to the gby correlation column streamed from sq
 
   G_vRestart();
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
-  R_vUTE_Yank_Correlated_cmpPred_From_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
+  R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
   RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
   vPrintBoard(__LINE__);
 
@@ -1484,10 +1489,10 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   RASSERT(G_bEachMain(CK_FOLD));
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  R_vUTE_Push_Correlated_cmpPred_Onto_boolCalc(G.p_boolCalc, G.p_PRED);
+  R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(G.p_boolCalc, G.p_PRED);
   vPrintBoard(__LINE__);
 
-  R_vUTE_Resolve_SubqueryCall_In_boolCalc(G.p_boolCalc);
+  R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(G.p_boolCalc);
   vPrintBoard(__LINE__);
 
   RASSERT(0 == m_pTransformIterList->nItems());

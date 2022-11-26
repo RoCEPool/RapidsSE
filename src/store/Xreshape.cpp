@@ -38,7 +38,7 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
+void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -169,7 +169,7 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Add_foldElist_To_Fold(void)
+void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -225,7 +225,7 @@ void Xreshape::R_vUTE_Add_foldElist_To_Fold(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Enrich_sq_aggreg_To_gbyAgg_Of_Correlation_Column(void)
+void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -307,7 +307,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_To_gbyAgg_Of_Correlation_Column(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Enrich_sq_project_To_Include_Correlation_Column(void)
+void Xreshape::R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -685,7 +685,7 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_boolCalc(void)
+void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1138,7 +1138,7 @@ R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Resolve_SubqueryCall_In_boolCalc(Card_BoolCalc *p_boolCalc)
+void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1307,8 +1307,8 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_boolCalc(Card_BoolCalc* p_boolCalc,
-                                                            Card_PRED*& rp_PRED)
+void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_boolCalc,
+                                                               Card_PRED*& rp_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

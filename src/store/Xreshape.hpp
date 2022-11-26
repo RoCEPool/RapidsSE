@@ -15,23 +15,23 @@ namespace STORE
   public:
 
     // utilities
-    void R_vUTE_Push_Correlated_cmpPred_Onto_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
+    void R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
     void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
     void R_vUTE_AdjustStmLoHi(void);
     void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_where_BaseOn_foldExpr(void);
-    void R_vUTE_Add_foldElist_To_Fold(void);
-    void R_vUTE_Enrich_sq_aggreg_To_gbyAgg_Of_Correlation_Column(void);
-    void R_vUTE_Enrich_sq_project_To_Include_Correlation_Column(void);
+    void R_vUTE_Derive_foldElist_From_project_stream(void);
+    void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
+    void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);
     void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
-    void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_boolCalc(void);
+    void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void);
     void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
     void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
@@ -46,10 +46,10 @@ namespace STORE
     void R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term);
     Card_Table* R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before);
     Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
-    void R_vUTE_Resolve_SubqueryCall_In_boolCalc(Card_BoolCalc* p_boolCalc);
+    void R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_BoolCalc* p_boolCalc);
     void R_vUTE_Unproject_foldExpr_After_having(void);
     void R_vUTE_Unproject_foldExpr_After_where(void);
-    void R_vUTE_Yank_Correlated_cmpPred_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);
+    void R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);
 
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);
