@@ -485,15 +485,15 @@ void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
-    G.p_sqtPred = _pCard_SqtPred(pCard);
+    G.p_roPred = _pCard_RoPred(pCard);
 
-    m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+    m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
     M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
 
-    m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
-    G.p_sqtPred->vRemoveChild(m_pTerm_1);
+    m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
+    G.p_roPred->vRemoveChild(m_pTerm_1);
     DELETE_CARD(m_pTerm_1);
-    G_vAppendNewChild(G.p_sqtPred,CK_TERM,"$1"_Stz);
+    G_vAppendNewChild(G.p_roPred, CK_TERM, "$1"_Stz);
 
     return C_CONTINUE_RECURSION;
   };
@@ -522,22 +522,22 @@ void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
-    G.p_sqtPred = _pCard_SqtPred(pCard);
+    G.p_roPred = _pCard_RoPred(pCard);
 
-//    m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+//    m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
 //    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0,nBumpRight);
 
-    m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
-    G.p_sqtPred->vRemoveChild(m_pTerm_1);
+    m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
+    G.p_roPred->vRemoveChild(m_pTerm_1);
     DELETE_CARD(m_pTerm_1);
 
-    m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
-    G.p_sqtPred->vRemoveChild(m_pTerm_1);
+    m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
+    G.p_roPred->vRemoveChild(m_pTerm_1);
     DELETE_CARD(m_pTerm_1);
 
-    G_vAppendNewChild(G.p_sqtPred,CK_TERM,"$2"_Stz);
+    G_vAppendNewChild(G.p_roPred, CK_TERM, "$2"_Stz);
 
-    G_vMorphCard(G.p_sqtPred,CK_CMPPRED);
+    G_vMorphCard(G.p_roPred, CK_CMPPRED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -586,64 +586,64 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn_sqtPred = [this,&bFoundCall](Card* pCard)
+  auto bLambdaFn_roPred = [this,&bFoundCall](Card* pCard)
   {
-    G.p_sqtPred = _pCard_SqtPred(pCard);
+    G.p_roPred = _pCard_RoPred(pCard);
 
-    if (G.p_sqtPred->bIsValue("exists"_Stz) || G.p_sqtPred->bIsValue("notExists"_Stz)) {
-      m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+    if (G.p_roPred->bIsValue("exists"_Stz) || G.p_roPred->bIsValue("notExists"_Stz)) {
+      m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
       m_sSqyArg = m_pTerm_0->szValue();
-      m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+      m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
       m_sSqyNm = m_pTerm_1->szValue();
 
       bFoundCall = true;
 
-      G.p_sqtPred->vMark1(MARK_AT);
+      G.p_roPred->vMark1(MARK_AT);
 
       return C_CONTINUE_RECURSION;
     }
 
-    if (G.p_sqtPred->bIsValue("in"_Stz) || G.p_sqtPred->bIsValue("notIn"_Stz)) {
-      m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+    if (G.p_roPred->bIsValue("in"_Stz) || G.p_roPred->bIsValue("notIn"_Stz)) {
+      m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
       m_sSqyNm = m_pTerm_0->szValue();
-      m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+      m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
       m_sSqyRsl = m_pTerm_1->szValue();
-      m_pTerm_2 = _pCard_Term(G.p_sqtPred->pGet(2));
+      m_pTerm_2 = _pCard_Term(G.p_roPred->pGet(2));
       m_sSqyArg = m_pTerm_2->szValue();
 
       bFoundCall = true;
 
-      G.p_sqtPred->vMark1(MARK_AT);
+      G.p_roPred->vMark1(MARK_AT);
 
       return C_CONTINUE_RECURSION;
     }
 
     // TODO: needs to be a list
-    if (G.p_sqtPred->bIsValue("<"_Stz) ||
-        G.p_sqtPred->bIsValue(">"_Stz)) {
+    if (G.p_roPred->bIsValue("<"_Stz) ||
+        G.p_roPred->bIsValue(">"_Stz)) {
 
-      if (3 == G.p_sqtPred->nChildCards()) {
-        m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+      if (3 == G.p_roPred->nChildCards()) {
+        m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
         // TODO: this doesnt seem right
         m_sSqyRO = m_pTerm_0->szValue();
 
-        m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+        m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
         m_sSqyArg = m_pTerm_1->szValue();
 
-        m_pTerm_2 = _pCard_Term(G.p_sqtPred->pGet(2));
+        m_pTerm_2 = _pCard_Term(G.p_roPred->pGet(2));
         m_sSqyNm = m_pTerm_2->szValue();
       }
       else {
-        m_pTerm_0 = _pCard_Term(G.p_sqtPred->pGet(0));
+        m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
         m_sSqyArg = m_pTerm_0->szValue();
 
-        m_pTerm_1 = _pCard_Term(G.p_sqtPred->pGet(1));
+        m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
         m_sSqyNm = m_pTerm_1->szValue();
       }
 
       bFoundCall = true;
 
-      G.p_sqtPred->vMark1(MARK_AT);
+      G.p_roPred->vMark1(MARK_AT);
 
       return C_CONTINUE_RECURSION;
     }
@@ -677,7 +677,7 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   G.p_boolCalc->vDump();
 
-  G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_sqtPred);
+  G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_roPred);
   if (bFoundCall)
     return true;
 
@@ -2750,9 +2750,9 @@ void Xreshape::vR_S60_T05_Twist_in_Becomes_filter(void)
 
   vReshape(__func__);
 
-  RASSERT(G.p_sqtPred);
+  RASSERT(G.p_roPred);
 
-  char cTblSyn = D_cPRED_TableSyn_First(G.p_sqtPred);
+  char cTblSyn = D_cPRED_TableSyn_First(G.p_roPred);
 
   if (' ' == cTblSyn)
     return;
@@ -2773,7 +2773,7 @@ void Xreshape::vR_S60_T05_Twist_in_Becomes_filter(void)
     G.p_filter->vAppend(G.p_boolCalc);
   }
 
-  Card* p_copy = G.p_sqtPred->pDupCardAndSubCards();
+  Card* p_copy = G.p_roPred->pDupCardAndSubCards();
   p_copy->vCard(CK_CMPPRED);
   p_copy->vValue("=="_Stz);
 
@@ -4137,11 +4137,11 @@ void Xreshape::vR_S36X_T40_Delete_tstPred_In_whereA(void)
 
   auto bLambdaFn = [this](Card *pCard) {
 
-    Card_SqtPred* p_sqtPred = _pCard_SqtPred(pCard);
+    Card_RoPred* p_roPred = _pCard_RoPred(pCard);
 
-    M_vBoolCalc_RemovePred(G.p_boolCalc,p_sqtPred);
+    M_vBoolCalc_RemovePred(G.p_boolCalc,p_roPred);
 
-    DELETE_CARD(p_sqtPred);
+    DELETE_CARD(p_roPred);
 
     return C_TERMINATE_RECURSION;
   };

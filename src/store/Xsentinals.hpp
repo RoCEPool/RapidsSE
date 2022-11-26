@@ -117,6 +117,7 @@ namespace STORE
     Card_PtndJoinSet *      p_ptndJoinSet;
     Card_Reason *           p_reason;
     Card_RelnOp *           p_relnOp;
+    Card_RoPred *           p_roPred;
     Card_RpnCalc *          p_rpnCalc;
     Card_SbyElist *         p_sbyElist;
     Card_Scan *             p_scan;
@@ -137,7 +138,6 @@ namespace STORE
     Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
     Card_Topology *         p_topology;
-    Card_SqtPred *          p_sqtPred;
     Card_Twist *            p_twist;
     Card_Type *             p_type;
     Card_UBound *           p_uBound;

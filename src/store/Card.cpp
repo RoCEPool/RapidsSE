@@ -2555,6 +2555,19 @@ Card_Reason* Card::pSub_reason(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_RoPred.hpp"
+Card_RoPred* Card::pSub_roPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RoPred* p_roPred =
+      _pCard_RoPred(pFindSubCard(CK_ROPRED));
+  return p_roPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_RpnCalc.hpp"
 Card_RpnCalc* Card::pSub_rpnCalc(void)
 {
@@ -2602,19 +2615,6 @@ Card_Size* Card::pSub_size(void)
   Card_Size* p_size =
       _pCard_Size(pFindSubCard(CK_SIZE));
   return p_size;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_SqtPred.hpp"
-Card_SqtPred* Card::pSub_sqtPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_SqtPred* p_sqtPred =
-      _pCard_SqtPred(pFindSubCard(CK_ROPRED));
-  return p_sqtPred;
 }
 
 /*----------------------------------------------------------------------------*/

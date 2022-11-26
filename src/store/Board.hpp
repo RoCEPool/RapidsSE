@@ -123,7 +123,7 @@
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"
-#include "Card_SqtPred.hpp"
+#include "Card_RoPred.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StmColNm.hpp"
 #include "Card_StmColOdn.hpp"

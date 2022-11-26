@@ -3760,7 +3760,7 @@ void Xtransforms::vS36X_T10_Push_sqB_Into_mqA(void)
 
   while (G_bEachMainWithSub(CK_WHERE, CK_ROPRED, "exists"_Stz)) {
 
-    Stz* szSubQueryNm = G.p_sqtPred->pGetChild(1)->szValue();
+    Stz* szSubQueryNm = G.p_roPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
 
     if (! G_bPushBoard(szSubQueryNm)) {
@@ -4002,7 +4002,7 @@ void Xtransforms::vS37X_T10_Append_sqB_After_mqA(void)
 
   //while (G_bEachMainWithSub(CK_WHERE, CK_ROPRED, "exists"_Stz)) {
 
-  //Stz* szSubQueryNm = G.p_sqtPred->pGetChild(1)->szValue();
+  //Stz* szSubQueryNm = G.p_roPred->pGetChild(1)->szValue();
   Stz* szSubQueryNm = "__subquery0002"_Stz;
   vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
 

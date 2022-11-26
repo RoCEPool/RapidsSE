@@ -113,7 +113,7 @@ namespace STORE
   class Card_Size;
   class Card_Send;
   class Card_Sort;
-  class Card_SqtPred;
+  class Card_RoPred;
   class Card_Stage;
   class Card_Stream;
   class Card_StmCol;
@@ -443,11 +443,11 @@ namespace STORE
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_Reason*        pSub_reason(void);
+    Card_RoPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
-    Card_SqtPred*       pSub_sqtPred(void);
     Card_Stream*        pSub_stream(void);
     Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);

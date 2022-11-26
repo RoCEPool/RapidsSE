@@ -351,7 +351,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   Card_AndPred* p_andPred = nullptr;
   Card_BolPred* p_bolPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
-  Card_SqtPred* p_sqtPred = nullptr;
+  Card_RoPred*  p_roPred  = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
 
   bool bSawSqy = false;
@@ -396,11 +396,11 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         if (bSawSqy) {
-          p_sqtPred = new Card_SqtPred;
-          p_sqtPred->vValue(p_term->sz());
-          p_sqtPred->vTransferChildren(p_TermSeries);
-          p_boolCalc->vPush(p_sqtPred);
-          p_sqtPred = nullptr;
+          p_roPred = new Card_RoPred;
+          p_roPred->vValue(p_term->sz());
+          p_roPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vPush(p_roPred);
+          p_roPred = nullptr;
         }
         else {
           p_cmpPred = new Card_CmpPred;
@@ -416,31 +416,31 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       case TE_EXISTS:
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
-        p_sqtPred = new Card_SqtPred;
-        p_sqtPred->vValue(p_term->sz());
-        p_sqtPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vPush(p_sqtPred);
-        p_sqtPred = nullptr;
+        p_roPred = new Card_RoPred;
+        p_roPred->vValue(p_term->sz());
+        p_roPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vPush(p_roPred);
+        p_roPred = nullptr;
         DELETE_CARD(p_term);
         break;
 
       case TE_IN:
       case TE_NOTIN:
         // <boolCalc> = <in><boolCalc>
-        p_sqtPred = new Card_SqtPred;
-        p_sqtPred->vValue(p_term->sz());
-        p_sqtPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vAppend(p_sqtPred);
-        p_sqtPred = nullptr;
+        p_roPred = new Card_RoPred;
+        p_roPred->vValue(p_term->sz());
+        p_roPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vAppend(p_roPred);
+        p_roPred = nullptr;
         DELETE_CARD(p_term);
         break;
 
 //      case TE_BOOLFN:
-//        p_sqtPred = new Card_SqtPred;
-//        p_sqtPred->vValue(p_term->sz());
-//        p_sqtPred->vTransferChildren(p_TermSeries);
-//        p_boolCalc->vAppend(p_sqtPred);
-//        p_sqtPred = nullptr;
+//        p_roPred = new Card_RoPred;
+//        p_roPred->vValue(p_term->sz());
+//        p_roPred->vTransferChildren(p_TermSeries);
+//        p_boolCalc->vAppend(p_roPred);
+//        p_roPred = nullptr;
 //        DELETE_CARD(p_term);
 //        break;
 

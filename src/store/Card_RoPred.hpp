@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_SqtPred.hpp -- Test Predicate                                        */
+/* Card_RoPred.hpp -- Ro Test Predicate                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_SqtPred : public Card_PRED
+  class Card_RoPred : public Card_PRED
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_SqtPred(void);
-   ~Card_SqtPred(void) noexcept(false);
+    Card_RoPred(void);
+   ~Card_RoPred(void) noexcept(false);
   };
 
-  Card_SqtPred* _pCard_SqtPred(void* aAddr);
+  Card_RoPred* _pCard_RoPred(void* aAddr);
 }
 
 /*============================================================================*/
