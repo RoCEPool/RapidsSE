@@ -185,19 +185,24 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
 
 
   G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+  G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq gbykey"_Stz);
   G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
+  G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
   G.p_type = G.p_stmCol->pSub_type();
   G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1IGBKY1"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
   G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
 
   G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+  G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq result"_Stz);
   G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(1));
+  G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
   G.p_type = G.p_stmCol->pSub_type();
+  G.p_as = G.p_stmCol->pSub_as();
   G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
+  G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
   G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
 
@@ -271,7 +276,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
     G.p_expr->vCardNo(0);
 
     if (AL_PARTITION == G.e_Level) {
-      G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr);
+      G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr,G.p_stmCol->szValue());
     }
     else {
       G.p_gbyElist->Y_vSet(P_ProjBump, (i8)1);
@@ -279,6 +284,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
 
       G_vNewMember(CK_EXPR);
       G_vAppendChild(CK_EXPR,G.p_type->pDupCardAndSubCards());
+      G_vAppendNewChild(G.p_expr, CK_AS,G.p_stmCol->szValue());
       G_vAppendNewChild(G.p_expr, CK_RPNCALC);
       G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$K1"_Stz);
     }
@@ -326,6 +332,7 @@ void Xreshape::R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void)
   // push <project>/__SQ1IGBKY1
   G_vPushNewChild(G.p_projElist, CK_EXPR);
   G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+  G_vAppendNewChild(G.p_expr, CK_AS,G.p_stmCol->szValue());
   G_vAppendNewChild(G.p_expr, CK_RPNCALC);
   G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
@@ -337,7 +344,7 @@ void Xreshape::R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void)
   G.p_project->vRemoveChild(G.p_stream);
   DELETE_CARD(G.p_stream);
 
-  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+  G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
   G.p_project->vAppend(G.p_stream);
 
   G.p_projElist->Y_vCut(P_Restream);
@@ -1274,7 +1281,7 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
   }
 
 
-  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+  G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
 
@@ -1601,7 +1608,7 @@ void Xreshape::vR_S22_T12_Produce_stream_Under_project(void)
 
   vReshape(__func__);
 
-  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+  G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
 
@@ -4640,7 +4647,7 @@ void Xreshape::vR_S37X_T60_Unproject_sqCol(void)
   }
 
 
-  G.p_stream = C_pProduce_stream_ofProject(G.p_projElist);
+  G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
 

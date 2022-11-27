@@ -1392,13 +1392,14 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   // further: the key-of-correlation needs to be added to group-by)
   // (refer: Q2,17)
 
-  /*
-     select count(*)
-       from lineitem, part
-      where P_PARTKEY = L_PARTKEY
-        and l_quantity < (select avg(l_quanity)
-                            from lineitem
-                           where L_PARTKEY = P_PARTKEY)
+  /* ARCHETYPE :
+    select count(*)
+      from Lineitem, Part, PartSupp
+     where P_PARTKEY  = L_PARTKEY
+       and PS_PARTKEY = P_PARTKEY
+       and l_quantity < (select avg(l_quantity)
+                           from lineitem
+                          where L_PARTKEY = P_PARTKEY)
     ;
  */
 

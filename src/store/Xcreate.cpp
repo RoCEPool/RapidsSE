@@ -649,7 +649,7 @@ Card_Stream* Xcreate::C_pProduce_stream_ofAggreg(Card_AggElist* p_aggElist)
 /*----------------------------------------------------------------------------*/
 /* produce composite <stream> of <project>                                    */
 /*----------------------------------------------------------------------------*/
-Card_Stream* Xcreate::C_pProduce_stream_ofProject(Card_ProjElist* p_projElist)
+Card_Stream* Xcreate::C_pProduce_stream_Of_project(Card_ProjElist* p_projElist)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -684,7 +684,7 @@ Card_Stream* Xcreate::C_pProduce_stream_ofProject(Card_ProjElist* p_projElist)
     if (p_expr_as)
       p_stmColNm->vValue(p_expr_as->szValue());
     else
-      p_stmColNm->vValueSprint("__%lld"_Stz,i_Expr);
+      p_stmColNm->vValueSprint("__%lld"_Stz,i_Expr-1);
     p_stmCol->vAppend(p_stmColNm);
 
     Card_Type* p_type = _pCard_Type(p_expr_type->pDupCardAndSubCards());

@@ -24,7 +24,7 @@ namespace STORE
    ~Xderive(void) noexcept(false);
 
     Card_Expr* D_pDerive_Gby_expr_From_stmCol(Card_StmCol* p_stmCol);
-    Card_Expr* D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby);
+    Card_Expr* D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     Card_Expr* D_pDerive_Proj_expr_From_stmCol(Card_StmCol* p_stmCol);
 
     void D_vDerive_JoinOrderSeq(Card_JoinOrderSeq* p_joinOrderSeq, Card_PtndJoin* p_PtndJoin);
