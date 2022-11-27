@@ -1502,6 +1502,8 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
 
+  // TODO: this should be in two steps
+
   G_vRestart();
   RASSERT(G_bEachMain(CK_FOLD));
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
@@ -1565,9 +1567,8 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
   G.pDeck->vPush(G.p_fold);
 
+  /*
   // find table for sqyarg
-
-
   char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
   G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
 
@@ -1598,7 +1599,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vPrintBoard(__LINE__);
 
-
+*/
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1629,6 +1630,56 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
   RASSERT(G_bEachMain(CK_FOLD));
   R_vUTE_Derive_foldElist_From_project_stream();
+  vPrintBoard(__LINE__);
+
+
+
+  // find table for sqyarg
+  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
+  G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
+
+  // TODO: derive cmpPred from marked tstPred and add to corresponding table
+
+  G_vNewMember(CK_CMPPRED,"=="_Stz);
+  G_vNewMember(CK_TERM,m_sSqyArg.szStz());
+  G.p_cmpPred->vAppend(G.p_term);
+  //G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
+  G_vNewMember(CK_TERM,"$1"_Stz);
+  G.p_cmpPred->vAppend(G.p_term);
+
+  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
+  vPrintBoard(__LINE__);
+
+
+  // filter into bounds
+
+  C_vBounds_DeriveFrom_filter(G.p_table,G.p_filter,false);
+  vPrintBoard(__LINE__);
+
+  G.p_boolCalc = G.p_filter->pSub_boolCalc();
+  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
+  vPrintBoard(__LINE__);
+
+  vR_S36_T30_Delete_Empty_filter();
+
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  R_vUTE_RelabelExpressions();
+
+  vPrintBoard(__LINE__);
+
+  // delete potentially empty where
+  G_vRestart();
+  G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+
+  vPrintBoard(__LINE__);
+
+
+
+
 
   R_vUTE_AdjustStmLoHi();
   vPrintBoard(__LINE__);
@@ -1638,6 +1689,118 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vEndTransform();
 }
+/*----------------------------------------------------------------------------*/
+//void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+//
+//  // W A NC I
+//  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+//  // as an aggregation-fan (projecting a single aggregated value)
+//  // (refer: Q18)
+//
+//  /* ARCHETYPE :
+//      select count(*)
+//        from orders, lineitem
+//       where O_ORDERKEY = L_ORDERKEY
+//         and O_ORDERKEY in (select L_ORDERKEY
+//                              from lineitem
+//                             group by L_ORDERKEY
+//                            having sum(l_quantity) > 100)
+//      ;
+//   */
+//
+//  vTransform(__func__, "((30))"_Stz);
+//
+//  vAssert_Board_mqA();
+//
+//
+//  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
+//  vAssert_Board_mqA();
+//  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    if (!R_bUTE_FindAndMarkSubQryCall()) {
+//      vTracer("DID NOT FIND W_A_NC_I SubQuery call\n"_Stz);
+//      NEVER_REACH
+//    }
+//  }
+//  vTrace("Found W_A_NC_I call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
+//
+//  G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
+//  G.pDeck->vPush(G.p_fold);
+//
+//  // find table for sqyarg
+//
+//
+//  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
+//  G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
+//
+//  // TODO: derive cmpPred from marked tstPred and add to corresponding table
+//
+//  G_vNewMember(CK_CMPPRED,"=="_Stz);
+//  G_vNewMember(CK_TERM,m_sSqyArg.szStz());
+//  G.p_cmpPred->vAppend(G.p_term);
+//  //G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
+//  G_vNewMember(CK_TERM,"$1"_Stz);
+//  G.p_cmpPred->vAppend(G.p_term);
+//
+//  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
+//  vPrintBoard(__LINE__);
+//
+//  G_vRestart();
+//  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+//    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+//  }
+//
+//  R_vUTE_RelabelExpressions();
+//
+//  vPrintBoard(__LINE__);
+//
+//  // delete potentially empty where
+//  G_vRestart();
+//  G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+//
+//  vPrintBoard(__LINE__);
+//
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // x) push to sq
+//  if (! G_bPushBoard(m_sSqyNm)) {
+//    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
+//    NEVER_REACH
+//  }
+//  vAssert_Board_sqB();
+//
+//  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+//
+//  vPrintBoard(__LINE__);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // x) pop back to mq
+//  G_vPopBoard();
+//  vAssert_Board_mqA();
+//
+//  G.pDeck->vPush(m_pCard_yanked);
+//  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
+//  DELETE_CARD(m_pCard_yanked);
+//
+//  vPrintBoard(__LINE__);
+//
+//  G_vRestart();
+//  RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
+//  RASSERT(G_bEachMain(CK_FOLD));
+//  R_vUTE_Derive_foldElist_From_project_stream();
+//
+//  R_vUTE_AdjustStmLoHi();
+//  vPrintBoard(__LINE__);
+//
+//  R_vUTE_RenumberStmOdn();
+//  vPrintBoard(__LINE__);
+//
+//  vEndTransform();
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

@@ -336,6 +336,10 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+
+    if (T_bValue_IsStreamColOrdinal(pTerm_1->szValue()))
+      return true;
+
     char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
 
     if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
@@ -364,6 +368,14 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
     if (cTblSyn_1 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_0->szValue()))
       return true;
     if (cTblSyn_1 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
+      return true;
+  }
+  else
+  if (T_bValue_IsStreamColOrdinal(pTerm_1->szValue())) {
+    char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+    if (cTblSyn_0 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+      return true;
+    if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
       return true;
   }
 
