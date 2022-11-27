@@ -1842,7 +1842,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   // A1) sq is a single <table>
   // A2) will have index and bound [BVO: vSeries_42_Bound_Analysis]
 
-  /*
+  /* ARCHETYPE :
       select count(*)
         from orders
        where exists (select *
@@ -1897,9 +1897,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   // put cc:<table>/* before mq:<where>
 
   G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
-
   G_vInsertBefore(G.p_fold,G.p_where);
-
 
 
   G_vInsertBefore(m_pCard_copied,G.p_fold);
@@ -1943,7 +1941,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   // as a keyExists
   // (refer: Q16)
 
-  /*
+  /* ARCHETYPE :
       select count(*)
         from partsupp, part
        where PS_PARTKEY = P_PARTKEY
@@ -2001,7 +1999,12 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   // 5) fold
   //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
   // put cc:<table>/* before mq:<where>
-  G_vInsertBefore(m_pCard_copied,G.p_where);
+
+  G_vNewMember(CK_FOLD,"W_L_NC_NI"_Stz);
+  G_vInsertBefore(G.p_fold,G.p_where);
+
+
+  G_vInsertBefore(m_pCard_copied,G.p_fold);
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
 
