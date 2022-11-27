@@ -183,28 +183,43 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
 
   G.p_stmColList = G.p_stream->pSub_stmColList();
 
+  if (G.p_stmColList->nChildCards() > 1) {
 
-  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
-  G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq gbykey"_Stz);
-  G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
-  G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
-  G.p_type = G.p_stmCol->pSub_type();
-  G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
-  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
-  G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
+    G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+    G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq gbykey"_Stz);
+    G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
+    G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
+    G.p_type = G.p_stmCol->pSub_type();
+    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+    G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
+    G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+    G_vAppendNewChild(G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
+    G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+    G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq result"_Stz);
+    G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(1));
+    G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
+    G.p_type = G.p_stmCol->pSub_type();
+    G.p_as = G.p_stmCol->pSub_as();
+    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+    G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
+    G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
+  }
+  else {
 
-  G_vAppendNewChild(G.p_foldElist, CK_EXPR);
-  G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq result"_Stz);
-  G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(1));
-  G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
-  G.p_type = G.p_stmCol->pSub_type();
-  G.p_as = G.p_stmCol->pSub_as();
-  G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
-  G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
-  G_vAppendNewChild(G.p_expr, CK_RPNCALC);
-  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
+    G_vAppendNewChild(G.p_foldElist, CK_EXPR);
+    G_vAppendNewChild(G.p_expr, CK_NOTE, "// sq result"_Stz);
+    G.p_stmCol = _pCard_StmCol(G.p_stmColList->pGetChild(0));
+    G.p_stmColNm = G.p_stmCol->pSub_stmColNm();
+    G.p_type = G.p_stmCol->pSub_type();
+    G.p_as = G.p_stmCol->pSub_as();
+    G.p_expr->vAppend(G.p_type->pDupCardAndSubCards());
+    G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
+    G_vAppendNewChild(G.p_expr, CK_RPNCALC);
+    G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
+
+  }
 
 
 /*

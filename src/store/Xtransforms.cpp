@@ -1420,6 +1420,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   G.pDeck->vPush(G.p_fold);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get copy of sq and push before mq
 
   // x) push to sq
   if (! G_bPushBoard(m_sSqyNm)) {
@@ -1448,7 +1449,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert the parameterised aggreg-sq into a gbyAgg-sq gby correlation column
-  // such that the resukt of the sq is a stream { __SQ1IGBKY , __SQ1RESULT }
+  // such that the result of the sq is a stream { __SQ1IGBKY , __SQ1RESULT }
 
   G_vRestart();
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
@@ -1499,6 +1500,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   RASSERT(0 == m_pTransformIterList->nItems());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move the correlation predicate to table as a bounds
 
   G_vRestart();
   RASSERT(G_bEachMain(CK_FOLD));
@@ -1534,7 +1536,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   // as an aggregation-fan (projecting a single aggregated value)
   // (refer: Q18)
 
-  /*
+  /* ARCHETYPE :
       select count(*)
         from orders, lineitem
        where O_ORDERKEY = L_ORDERKEY
@@ -1574,7 +1576,8 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   G_vNewMember(CK_CMPPRED,"=="_Stz);
   G_vNewMember(CK_TERM,m_sSqyArg.szStz());
   G.p_cmpPred->vAppend(G.p_term);
-  G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
+  //G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
+  G_vNewMember(CK_TERM,"$1"_Stz);
   G.p_cmpPred->vAppend(G.p_term);
 
   R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
@@ -1584,6 +1587,8 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
+
+  R_vUTE_RelabelExpressions();
 
   vPrintBoard(__LINE__);
 
@@ -1620,6 +1625,10 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vPrintBoard(__LINE__);
 
+  G_vRestart();
+  RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
+  RASSERT(G_bEachMain(CK_FOLD));
+  R_vUTE_Derive_foldElist_From_project_stream();
 
   R_vUTE_AdjustStmLoHi();
   vPrintBoard(__LINE__);
