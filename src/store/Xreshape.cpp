@@ -445,7 +445,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
     if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    G.p_stmColOdn = R_pUTE_Resolve_tblColOdn_Into_stmColOdn(p_term,G.i_MainCard);
+    G.p_stmColOdn = R_pUTE_Resolve_tblColOdn_Into_stmColOdn(p_term,G.i_MainCard+1);
 
     M_vCard_Set_Value(p_term, G.p_stmColOdn->szValue(),MARK_CHANGED);
 
