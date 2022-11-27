@@ -733,7 +733,7 @@ IndexDef* IndexTree::pIndexDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pIndexDef;
+  return m_pIndex ? m_pIndex->pIndexDef() : m_pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/

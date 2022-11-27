@@ -49,8 +49,27 @@ create table datums (
 );
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
 //select vch_col14 from datums order by vch_col14;
-select vch_col14 from datums where vch_col14 > 'pink' order by vch_col14 desc;
+//select vch_col14 from datums where vch_col14 > 'pink' order by vch_col14 desc;
+
+select pcol1 from table1 order by pcol1 desc limit 20;
 
 /*============================================================================*/
 /* end                                                                        */

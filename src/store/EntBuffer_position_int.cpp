@@ -10,6 +10,9 @@
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 
+#include "Index.hpp"
+#include "IndexDef.hpp"
+
 #define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
 
 #define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
@@ -446,7 +449,9 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
   RASSERT(KE_INT == m_eEntKind);
   
   //ASSERT(0 == m_iBufferHeight);
-        
+
+  IndexDef* pIndexDef = this->pIndexDef();
+
   i8 nLvlLevels = AM::nLvlLevels();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -482,7 +487,12 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
       i8 iWithInt = *(i8*)aWithKey;
       
       //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
-      bGreaterEqual = (iNextInt >= iWithInt);
+      if (pIndexDef->bHasDescending()) {
+        bGreaterEqual = (iNextInt <= iWithInt);
+      }
+      else {
+        bGreaterEqual = (iNextInt >= iWithInt);
+      }
 
       if (bGreaterEqual) {
         if (! aToEntry || aNextEntry_sl == aToEntry)
