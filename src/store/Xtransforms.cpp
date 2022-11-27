@@ -2021,7 +2021,12 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   vPrintBoard(__LINE__);
 
   G.p_bounds = C_pBounds_Create_Eq_ForGivenCol(m_sSqyArg);
-  m_pCard_copied->vAppend(G.p_bounds);
+  //m_pCard_copied->vAppend(G.p_bounds);
+
+  G.p_indexList = G.p_table->pSub_indexList();
+  G.p_index = G.p_table->pSub_index();
+  G.p_index->vAppend(G.p_bounds);
+
   vPrintBoard(__LINE__);
 
   G_vCopyCard(nullptr);

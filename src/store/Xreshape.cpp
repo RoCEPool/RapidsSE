@@ -802,7 +802,10 @@ void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolC
 
       Card_Bounds* pBounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
 
-      p_table->vAppend(pBounds);
+      //p_table->vAppend(pBounds);
+      Card_IndexList* p_indexList = p_table->pSub_indexList();
+      Card_Index* p_index = p_table->pSub_index();
+      p_index->vAppend(pBounds);
 
       DELETE_CARD(p_pred);
       return;
