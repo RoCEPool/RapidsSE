@@ -136,9 +136,14 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
 
   Card_PRED* p_pred_ofFilter_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
+  // TODO: this is a hack to put bounds under one and only one index
+
+  Card_IndexList* p_indexList = p_table->pSub_indexList();
+  Card_Index* p_index = p_table->pSub_index();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this,p_table,bParamAllowedInBounds](Card_PRED* p_pred_Of_filter, bool bUpwards)
+  auto bLambdaFn = [this,p_table,p_index,bParamAllowedInBounds](Card_PRED* p_pred_Of_filter, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -160,7 +165,8 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
     if (! p_bounds)
       p_bounds = new Card_Bounds;
     Card_Stream* p_stream = p_table->pSub_stream();
-    p_table->vInsertAfter(p_bounds, p_stream);
+    //p_table->vInsertAfter(p_bounds, p_stream);
+    p_index->vAppend(p_bounds);
 
     Card_Term* p_term = new Card_Term("BOUND"_Stz);
     p_bounds->vAppend(p_term);

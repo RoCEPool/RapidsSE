@@ -2056,7 +2056,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   // further: the aggregation-value is injected/factored into the main-query
   // (refer: Q11)
 
-  /*
+  /* ARCHETYPE :
       select ps_partkey,
              sum(ps_supplycost * ps_availqty) as value
         from partsupp, supplier
