@@ -401,22 +401,24 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       case TE_COMPARE:
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
-        if (bSawSqy) {
-          p_roPred = new Card_RoPred;
-          p_roPred->vValue(p_term_next->sz());
-          p_roPred->vTransferChildren(p_TermSeries);
-          //p_boolCalc->vPush(p_roPred);
-          p_boolCalc->vAppend(p_roPred);
-          p_roPred = nullptr;
-        }
-        else {
+//        if (bSawSqy) {
+//          p_roPred = new Card_RoPred;
+//          p_roPred->vValue(p_term_next->sz());
+//          p_roPred->vTransferChildren(p_TermSeries);
+//          //p_boolCalc->vPush(p_roPred);
+//          p_boolCalc->vAppend(p_roPred);
+//          p_roPred = nullptr;
+//        }
+//        else {
           p_cmpPred = new Card_CmpPred;
           p_cmpPred->vValue(p_term_next->sz());
           p_cmpPred->vTransferChildren(p_TermSeries);
+          if (T_bCmpPred_Contains_Sqy_Call(p_cmpPred))
+            p_cmpPred->vCard(CK_ROPRED);
           //p_boolCalc->vPush(p_cmpPred);
           p_boolCalc->vAppend(p_cmpPred);
           p_cmpPred = nullptr;
-        }
+//        }
         DELETE_CARD(p_term_next);
         bSawSqy = false;
         break;
