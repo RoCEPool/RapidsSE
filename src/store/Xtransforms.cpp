@@ -1687,6 +1687,9 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
   vEndTransform();
 }
 /*----------------------------------------------------------------------------*/
@@ -1937,6 +1940,9 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
   vEndTransform();
 }
 
@@ -2064,6 +2070,9 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
   vEndTransform();
 }
 
@@ -2162,6 +2171,8 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
 
   vEndTransform();
 }

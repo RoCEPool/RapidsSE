@@ -177,7 +177,6 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <fold> W_A_C_ro
 
-  G.p_fold->Y_vSet(P_BumpRight,(i8)2);
 
   G_vAppendNewChild(G.p_fold, CK_FOLDELIST);
 
@@ -205,6 +204,8 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
     G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
+
+    G.p_fold->Y_vSet(P_BumpRight,(i8)2);
   }
   else {
 
@@ -219,6 +220,7 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
+    G.p_fold->Y_vSet(P_BumpRight,(i8)1);
   }
 
 
