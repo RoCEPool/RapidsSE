@@ -981,6 +981,8 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
 
   vAssert_Board_any();
 
+  vPrintBoard(__LINE__);
+
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S34_T10_AtMark_where_pred_Wrt_table();
   }

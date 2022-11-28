@@ -611,8 +611,10 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
     }
 
     // TODO: needs to be a list
-    if (G.p_roPred->bIsValue("<"_Stz) ||
-        G.p_roPred->bIsValue(">"_Stz)) {
+    if (   G.p_roPred->bIsValue("<"_Stz)
+        || G.p_roPred->bIsValue(">"_Stz)
+        || G.p_roPred->bIsValue("=="_Stz)
+        ) {
 
       if (3 == G.p_roPred->nChildCards()) {
         m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
@@ -2146,6 +2148,8 @@ void Xreshape::vR_S34_T10_AtMark_where_pred_Wrt_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  G.p_boolCalc->vDump();
 
   vPullUp_MarkPredLeftwards(G.p_boolCalc, G.pDeck);
 

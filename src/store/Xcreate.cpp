@@ -387,6 +387,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_boolCalc->vPush(p_andPred);
         p_andPred = nullptr;
         DELETE_CARD(p_term_next);
+        p_boolCalc->vDump(0,"AND"_Stz);
         break;
 
       case TE_OR:
@@ -396,6 +397,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_boolCalc->vPush(p_orPred);
         p_orPred = nullptr;
         DELETE_CARD(p_term_next);
+        p_boolCalc->vDump(0,"OR"_Stz);
         break;
 
       case TE_COMPARE:
@@ -421,6 +423,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 //        }
         DELETE_CARD(p_term_next);
         bSawSqy = false;
+        p_boolCalc->vDump(0,"COMPARE"_Stz);
         break;
 
       case TE_EXISTS:
@@ -432,6 +435,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_boolCalc->vPush(p_roPred);
         p_roPred = nullptr;
         DELETE_CARD(p_term_next);
+        p_boolCalc->vDump(0,"EXISTS"_Stz);
         break;
 
       case TE_IN:
@@ -443,16 +447,18 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_boolCalc->vAppend(p_roPred);
         p_roPred = nullptr;
         DELETE_CARD(p_term_next);
+        p_boolCalc->vDump(0,"IN"_Stz);
         break;
 
-//      case TE_BOOLFN:
-//        p_roPred = new Card_RoPred;
-//        p_roPred->vValue(p_term_next->sz());
-//        p_roPred->vTransferChildren(p_TermSeries);
-//        p_boolCalc->vAppend(p_roPred);
-//        p_roPred = nullptr;
-//        DELETE_CARD(p_term_next);
-//        break;
+      case TE_BOOLFN:
+        p_bolPred = new Card_BolPred;
+        p_bolPred->vValue(p_term_next->sz());
+        p_bolPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vAppend(p_bolPred);
+        p_bolPred = nullptr;
+        DELETE_CARD(p_term_next);
+        p_boolCalc->vDump(0,"BOOLFN"_Stz);
+        break;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // <termSeries>
@@ -461,11 +467,11 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         DELETE_CARD(p_term_next);
         break;
 
-      case TE_BOOLFN:
       case TE_OTHER:
         if (StrLib::bBeginsWith(p_term_next->szValue()->azChar(), "__"))
           bSawSqy = true;
         p_TermSeries->vAppend(p_term_next);
+        p_TermSeries->vDump(0,"TERM_SERIES"_Stz);
         break;
 
       default:

@@ -811,6 +811,8 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  p_pred->vDump();
+
   char cWhichTable = ' ';
 
   eCK eCard = p_pred->eCard();
