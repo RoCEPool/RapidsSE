@@ -612,8 +612,11 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
     // TODO: needs to be a list
     if (   G.p_roPred->bIsValue("<"_Stz)
-        || G.p_roPred->bIsValue(">"_Stz)
+        || G.p_roPred->bIsValue("<="_Stz)
         || G.p_roPred->bIsValue("=="_Stz)
+        || G.p_roPred->bIsValue("!="_Stz)
+        || G.p_roPred->bIsValue(">="_Stz)
+        || G.p_roPred->bIsValue(">"_Stz)
         ) {
 
       if (3 == G.p_roPred->nChildCards()) {
