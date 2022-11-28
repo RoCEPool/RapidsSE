@@ -6,6 +6,7 @@
 
 #include "OptimiserCatalog.hpp"
 #include "Dynamo.hpp"
+#include "PipelineNotation.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
@@ -114,6 +115,37 @@ OptimiserFun __Opt_l
     );
 
 /*----------------------------------------------------------------------------*/
+/* read pipeline from file                                                    */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_readPipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+//  reOptAct = OA_REPRINT_BOARD;
+//
+//  pOptimiser->pCardCtl()->vUseLonger();
+
+  s256 sFile;
+  s16KB sPipeLineStatement = "";
+
+  sFile = pTknVec->pGet(1)->szChars();
+
+  PipelineNotation::vPipelineFromFile(sFile, sPipeLineStatement);
+
+//  vTrace("%s\n"_Stz, sPipeLineStatement.szStz());
+  return true;
+}
+
+OptimiserFun __Opt_r
+    (
+        "read"_Stz,       // name of the opt function
+        "r"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_readPipeline,        // function to call
+        0,0,                // spare
+        "read pipeline from file"_Stz,
+        "usage???"_Stz
+    );
+
+/*----------------------------------------------------------------------------*/
 /* shorter                                                                    */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
@@ -162,6 +194,37 @@ OptimiserFun __Opt_w
   "weave pipeline statement"_Stz,
   "usage???"_Stz
 );
+
+/*----------------------------------------------------------------------------*/
+/* write pipeline to file                                                     */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_writePipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+//  reOptAct = OA_REPRINT_BOARD;
+//
+//  pOptimiser->pCardCtl()->vUseLonger();
+
+  s256 sFile;
+  s16KB sPipeLineStatement = "";
+
+  sFile = pTknVec->pGet(1)->szChars();
+
+  PipelineNotation::vPipelineToFile(sFile, sPipeLineStatement);
+
+//  vTrace("%s\n"_Stz, sPipeLineStatement.szStz());
+  return true;
+}
+
+OptimiserFun __Opt_wr
+    (
+        "write"_Stz,       // name of the opt function
+        "wr"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_writePipeline,        // function to call
+        0,0,                // spare
+        "write pipeline from file"_Stz,
+        "usage???"_Stz
+    );
 
 /*----------------------------------------------------------------------------*/
 /* disable                                                                    */
