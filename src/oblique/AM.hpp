@@ -184,6 +184,7 @@ namespace STORE {
   class OverLine;
 
   class Pipeline;
+  class PipelineNotation;
   class LglPtnMap;
   class PtnStm_cursor;
   class PtnStream;
