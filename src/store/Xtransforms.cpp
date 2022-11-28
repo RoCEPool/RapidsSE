@@ -1880,6 +1880,17 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   }
   vPrintBoard(__LINE__);
 
+
+  G_vRestart();
+  if (G_bEachMainWith2Sub(CK_TABLE,CK_INDEX,CK_CONSTRAINT)) {
+    G.p_table->vRemoveChild(G.p_constraint);
+    G.p_index->vAppend(G.p_constraint);
+  }
+  vPrintBoard(__LINE__);
+
+
+
+
   // 3) get copy of sq:<table>/* into cc:<table>
   G_vRestart();
   if (G_bEachMain(CK_TABLE)) {
