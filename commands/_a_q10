@@ -50,7 +50,7 @@ limit 20;
 // TRICKS:
 //   * group by only on c_custkey as this key is unique. So we can drop
 //     all other group by columns.
-//   * customer projections are delated
+//   * customer projections are delayed
 //   * added TOP to get top REVENUE and then SORT
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

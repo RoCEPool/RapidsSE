@@ -17,6 +17,13 @@
 //        inuseSpace  2MB  20MB 200MB    2GB  20GB 200GB   2TB  20TB 200TB   2PB
 
 
+lineitem : 1500000714
+Orders: 375000000
+Partssupp: 200000000
+Part : 50000000
+Customer : 37500000
+Supplier : 2500000
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 region  : r_regionkey
