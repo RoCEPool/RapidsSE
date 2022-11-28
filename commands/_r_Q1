@@ -4,7 +4,16 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index C_idx0  on customer (C_CUSTKEY  );
+create index L_idx0  on lineitem (L_ORDERKEY );
+create index N_idx0  on nation   (N_NATIONKEY);
+create index O_idx0  on orders   (O_ORDERKEY );
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+create index R_idx0  on region   (R_REGIONKEY);
+create index S_idx0  on supplier (S_SUPPKEY  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -28,7 +37,7 @@ select
 
   from LineItem
 
- where l_shipdate <= DATE '1998-12-01’ - interval 90 days
+ where l_shipdate <= DATE '1998-09-01'
 
  group by l_returnflag, l_linestatus
 

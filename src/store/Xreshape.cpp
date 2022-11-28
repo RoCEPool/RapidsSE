@@ -1177,6 +1177,10 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
       return; /* this effectively declares resolve as void */
 
     if (p_pred->bIsCard(CK_CMPPRED)) {
+
+      if (! p_pred->Y_bHas(P_CorrPred))
+        return;
+
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {
