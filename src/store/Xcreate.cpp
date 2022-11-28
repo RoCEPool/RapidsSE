@@ -372,13 +372,13 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   p_rpnCalc->vDump();
 
   while (p_rpnCalc->nChildCards()) {
-    Card_Term* p_term = _pCard_Term(p_rpnCalc->pPop());
+    Card_Term* p_term_next = _pCard_Term(p_rpnCalc->pPop());
 
-    eTE eTopTerm = E_eTerm_TermEval(p_term);
+    eTE eTerm_next = E_eTerm_TermEval(p_term_next);
 
-    vTrace("%s %s\n"_Stz,aTE[eTopTerm],p_term->szValue());
+    vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
 
-    switch (eTopTerm) {
+    switch (eTerm_next) {
 
       case TE_AND:
         // <boolCalc> = <and>/<boolCalc>
@@ -386,7 +386,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_andPred->vTransferChildren(p_boolCalc);
         p_boolCalc->vPush(p_andPred);
         p_andPred = nullptr;
-        DELETE_CARD(p_term);
+        DELETE_CARD(p_term_next);
         break;
 
       case TE_OR:
@@ -395,7 +395,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_orPred->vTransferChildren(p_boolCalc);
         p_boolCalc->vPush(p_orPred);
         p_orPred = nullptr;
-        DELETE_CARD(p_term);
+        DELETE_CARD(p_term_next);
         break;
 
       case TE_COMPARE:
@@ -403,19 +403,21 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         RASSERT(p_TermSeries->nChildCards() > 0);
         if (bSawSqy) {
           p_roPred = new Card_RoPred;
-          p_roPred->vValue(p_term->sz());
+          p_roPred->vValue(p_term_next->sz());
           p_roPred->vTransferChildren(p_TermSeries);
-          p_boolCalc->vPush(p_roPred);
+          //p_boolCalc->vPush(p_roPred);
+          p_boolCalc->vAppend(p_roPred);
           p_roPred = nullptr;
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term->sz());
+          p_cmpPred->vValue(p_term_next->sz());
           p_cmpPred->vTransferChildren(p_TermSeries);
-          p_boolCalc->vPush(p_cmpPred);
+          //p_boolCalc->vPush(p_cmpPred);
+          p_boolCalc->vAppend(p_cmpPred);
           p_cmpPred = nullptr;
         }
-        DELETE_CARD(p_term);
+        DELETE_CARD(p_term_next);
         bSawSqy = false;
         break;
 
@@ -423,45 +425,45 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_roPred = new Card_RoPred;
-        p_roPred->vValue(p_term->sz());
+        p_roPred->vValue(p_term_next->sz());
         p_roPred->vTransferChildren(p_TermSeries);
         p_boolCalc->vPush(p_roPred);
         p_roPred = nullptr;
-        DELETE_CARD(p_term);
+        DELETE_CARD(p_term_next);
         break;
 
       case TE_IN:
       case TE_NOTIN:
         // <boolCalc> = <in><boolCalc>
         p_roPred = new Card_RoPred;
-        p_roPred->vValue(p_term->sz());
+        p_roPred->vValue(p_term_next->sz());
         p_roPred->vTransferChildren(p_TermSeries);
         p_boolCalc->vAppend(p_roPred);
         p_roPred = nullptr;
-        DELETE_CARD(p_term);
+        DELETE_CARD(p_term_next);
         break;
 
 //      case TE_BOOLFN:
 //        p_roPred = new Card_RoPred;
-//        p_roPred->vValue(p_term->sz());
+//        p_roPred->vValue(p_term_next->sz());
 //        p_roPred->vTransferChildren(p_TermSeries);
 //        p_boolCalc->vAppend(p_roPred);
 //        p_roPred = nullptr;
-//        DELETE_CARD(p_term);
+//        DELETE_CARD(p_term_next);
 //        break;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // <termSeries>
 
       case TE_EXECUTE:
-        DELETE_CARD(p_term);
+        DELETE_CARD(p_term_next);
         break;
 
       case TE_BOOLFN:
       case TE_OTHER:
-        if (StrLib::bBeginsWith(p_term->szValue()->azChar(),"__"))
+        if (StrLib::bBeginsWith(p_term_next->szValue()->azChar(), "__"))
           bSawSqy = true;
-        p_TermSeries->vAppend(p_term);
+        p_TermSeries->vAppend(p_term_next);
         break;
 
       default:
