@@ -2038,6 +2038,14 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   G.p_index = G.p_table->pSub_index();
   G.p_index->vAppend(G.p_bounds);
 
+
+  G_vRestart();
+  RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_KEYNOTEXISTS,CK_CONSTRAINT));
+  G.p_table->vRemoveChild(G.p_constraint);
+  G.p_indexList = G.p_table->pSub_indexList();
+  G.p_index = G.p_table->pSub_index();
+  G.p_index->vAppend(G.p_constraint);
+
   vPrintBoard(__LINE__);
 
   G_vCopyCard(nullptr);
