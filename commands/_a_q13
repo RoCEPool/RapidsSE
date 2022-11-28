@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _a_q10 -- Query10 (hand coded pipeline)                                    */
+/* _a_q13 -- Query13 (hand coded pipeline)                                    */
 /*============================================================================*/
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -27,17 +27,17 @@ order by
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-// TABLES     : PARTSUPP, SUPPLIER, NATION
-// JOIN ORDER : NATION->SUPPLIER->PARTSUPP....>NATION->SUPPLIER->PARTSUPP
-// INDEXES    : IxS_NATIONKEY
-//              IxPS_SUPPKEY
-//              IxN_NATIONKEY
+// TABLES     : CUSTOMER, ORDERS
+// JOIN ORDER : CUSTOMER->ORDERS
+// INDEXES    : IxO_CUSTKEY
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * as customer date is coming in custkey order and group by is on custkey
-//     we can change the aggreg to an ordAgg
+//   * AS CUSTOMER DATA IS COMING IN CUSTKEY ORDER AND GROUP BY IS ON CUSTKEY
+//     WE CAN CHANGE AGGREG TO ORDAGG
+// (NOTE: assumption is that the customet data is loaded in customer key order ....
+//        should we be doing an indexScan on IxC_CUSTKEY ???)
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // EXTRA NOTES:

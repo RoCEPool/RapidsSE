@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _a_q10 -- Query10 (hand coded pipeline)                                    */
+/* _a_q11 -- Query11 (hand coded pipeline)                                    */
 /*============================================================================*/
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -35,8 +35,8 @@ order by
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-// TABLES     : ORDERS, LINEITEM
-// JOIN ORDER : ORDERS->LINEITEM
+// TABLES     : PARTSUPP, SUPPLIER, NATION
+// JOIN ORDER : NATION->SUPPLIER->PARTSUPP....->NATION->SUPPLIER->PARTSUPP
 // INDEXES    : IxS_NATIONKEY
 //              IxPS_SUPPKEY
 //              IxN_NATIONKEY
@@ -44,12 +44,15 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * removed sort as order by and group by on same keys
+//   * FLATTENING WITH CROSS-JOIN
+//   * FILTER PUSH-DOWN
+//   * MINIMAL PROJECTION
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // EXTRA NOTES:
 //   CAN EXPLORE DIFFERENT JOIN ORDERS.
+//   SHOULD BE REUSING RESULT
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
