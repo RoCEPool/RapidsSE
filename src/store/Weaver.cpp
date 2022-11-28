@@ -909,7 +909,13 @@ void Weaver::vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyE
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Constraint *pCard_constraint = pCard_KeyExists->pSub_constraint();
+  Card_Index* pCard_Index = _pCard_Index(pCard_KeyExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
   if (! pCard_constraint)
     return;
 
