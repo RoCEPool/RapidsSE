@@ -2678,6 +2678,28 @@ void Xtransforms::vS75_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vS75_T05_ChooseIndexes()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMainWithSub(CK_TABLE,CK_INDEX)) {
+    G.p_index->Y_vSet(P_ChosenIndex);
+  }
+
+  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_INDEX)) {
+    G.p_index->Y_vSet(P_ChosenIndex);
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

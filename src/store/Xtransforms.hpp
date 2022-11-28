@@ -156,6 +156,7 @@ namespace STORE
     bool bS75_T00_Test(bool bEnabled);
     void vS75_T00_Skip(void);
     void vS75_T00_Begin(void);
+    void vS75_T05_ChooseIndexes(void);
     void vS75_T10_Morph_table_To_EEop(void);
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
     void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(void);

@@ -832,11 +832,17 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Bounds* pCard_joinPred = pCard_IndexJoin->pSub_bounds();
-  if (pCard_joinPred) {
-    i8 nSubs = pCard_joinPred->nChildCards();
+  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
+  if (pCard_bounds) {
+    i8 nSubs = pCard_bounds->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card* pSubCard = pCard_joinPred->pGet(i_Sub);
+      Card* pSubCard = pCard_bounds->pGet(i_Sub);
 
       if (! pSubCard->bIsCard(CK_TERM))
         continue;
@@ -874,7 +880,13 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Bounds *pCard_bounds = pCard_KeyExists->pSub_bounds();
+  Card_Index* pCard_Index = _pCard_Index(pCard_KeyExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
   if (pCard_bounds) {
     i8 nSubs = pCard_bounds->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
@@ -922,7 +934,13 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Bounds *pCard_bounds = p_keyNotExists->pSub_bounds();
+  Card_Index* pCard_Index = _pCard_Index(p_keyNotExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
   if (pCard_bounds) {
     i8 nSubs = pCard_bounds->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
