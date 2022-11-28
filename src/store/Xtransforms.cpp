@@ -1632,7 +1632,13 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   R_vUTE_Derive_foldElist_From_project_stream();
   vPrintBoard(__LINE__);
 
+  if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
+    i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
+    R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_gbyElist);
 
+    G.p_fold->Y_vCut(P_BumpRight);
+    G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
+  }
 
   // find table for sqyarg
   char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
@@ -1667,7 +1673,6 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
 
-  R_vUTE_RelabelExpressions();
 
   vPrintBoard(__LINE__);
 
@@ -1687,8 +1692,13 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
+  R_vUTE_RelabelExpressions();
+
   m_pBench->vIsFlat(true);
   G.pDeck->vClearMarksRecursive();
+
+  vPrintBoard(__LINE__);
+
 
   vEndTransform();
 }
