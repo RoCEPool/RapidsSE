@@ -2278,7 +2278,7 @@ pipeline Query15
      | next hashcast
 
    stage S06 on all partitions :
-     indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
+     indexJoin supplier IxS_SUPPKEY "BOUND $I1 supplier_no ==" //J1
      | combined 0
      | next
 

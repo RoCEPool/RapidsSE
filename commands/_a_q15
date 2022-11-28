@@ -35,6 +35,8 @@ where
 // TABLES     : LINEITEM, SUPPLIER
 // JOIN ORDER : NONE
 // INDEXES    : IxL_SHIPDATE
+//              IxS_SUPPKEY
+
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

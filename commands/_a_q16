@@ -38,7 +38,8 @@ order by
 
 // TABLES     : PARTSUPP, PART, SUPPLIER
 // JOIN ORDER : PART->PARTSUPP
-// INDEXES    : NONE
+// INDEXES    : IxPS_PARTKEY
+//              IxS_SUPPKEY
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
