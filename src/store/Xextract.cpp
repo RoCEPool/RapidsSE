@@ -290,7 +290,10 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   else if (szTerm->bSame(">="_Stz))         return TE_COMPARE;
   else if (szTerm->bSame(">"_Stz))          return TE_COMPARE;
 
-  else if (szTerm->bSame("matchMiddle1"_Stz))   return TE_BOOLFN;
+  else if (szTerm->bSame("between"_Stz))         return TE_BOOLFN;
+  else if (szTerm->bSame("matchLeading"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("matchMiddle1"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("matchTrailing"_Stz))   return TE_BOOLFN;
 
   else return TE_OTHER;
 }

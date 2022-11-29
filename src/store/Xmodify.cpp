@@ -100,6 +100,15 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
     }
     return false;
   }
+  else
+  if (CK_BOLPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
+      delete p_pred;
+      return true;
+    }
+    return false;
+  }
 
   RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
 
@@ -379,6 +388,56 @@ void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1)
   pCard->vValue(szValue);
   pCard->vMark1(cMark1);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Xmodify::E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = p_cmpPred->nChildCards();
+  RASSERT(2 == nChildren);
+
+  Card* p_child_0 = p_cmpPred->pGetChild(0);
+  Card* p_child_1 = p_cmpPred->pGetChild(1);
+
+  if (T_bValue_IsParamOrdinal(p_child_0->szValue()))
+    return _pCard_Term(p_child_1);
+
+  else
+  if (T_bValue_IsParamOrdinal(p_child_1->szValue()))
+    return _pCard_Term(p_child_0);
+
+  else
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Xmodify::E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = p_cmpPred->nChildCards();
+  RASSERT(2 == nChildren);
+
+  Card* p_child_0 = p_cmpPred->pGetChild(0);
+  Card* p_child_1 = p_cmpPred->pGetChild(1);
+
+  if (T_bValue_IsParamOrdinal(p_child_0->szValue()))
+    return _pCard_Term(p_child_0);
+
+  else
+  if (T_bValue_IsParamOrdinal(p_child_1->szValue()))
+    return _pCard_Term(p_child_1);
+
+  else
+    NEVER_REACH;
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
@@ -810,6 +869,8 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
                                         Card_Deck* p_deck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  p_pred->vDump();
 
   char cWhichTable = ' ';
 

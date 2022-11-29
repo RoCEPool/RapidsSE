@@ -265,6 +265,23 @@ Card* ChildCards::pPopChild(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* ChildCards::pPullChild(void)
+{
+
+  i8 nChildren = nChildCards();
+  if (! nChildren)
+    return nullptr;
+
+  Card* pChild = pGetChild(nChildren-1);
+  vRemoveChild(pChild);
+
+  return pChild;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void ChildCards::vPromoteSubs(Card* pChildCard)
 {
   Card* p_after = pChildCard;

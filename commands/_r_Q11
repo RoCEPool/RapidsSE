@@ -4,7 +4,12 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index PS_idx0 on partsupp (PS_PARTKEY );
+create index S_idx0  on supplier (S_SUPPKEY  );
+create index N_idx0  on nation   (N_NATIONKEY);
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

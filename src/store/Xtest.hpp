@@ -26,6 +26,7 @@ namespace STORE
     Card_CmpPred* T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound);
     Card_CmpPred* T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
 
+    bool T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* p_table,

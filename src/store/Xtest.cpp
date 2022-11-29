@@ -236,6 +236,23 @@ Card_CmpPred* Xtest::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, e
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
+bool Xtest::T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_cmpPred);
+  while (Card* p_card = xCI.pEachChild()) {
+    if (p_card->bIsCard(CK_TERM) &&
+        T_bValue_IsSubQueryName(p_card->szValue()))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this predCmp co-partitionable with given arg?                           */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -365,7 +382,9 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
   if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
 
-    if (cTblSyn_1 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+    if (bParamAllowedInBounds &&
+        cTblSyn_1 == cTblSyn  &&
+        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
       return true;
     if (cTblSyn_1 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
       return true;
@@ -373,7 +392,9 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
   else
   if (T_bValue_IsStreamColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
-    if (cTblSyn_0 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+    if (bParamAllowedInBounds &&
+        cTblSyn_0 == cTblSyn  &&
+        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
       return true;
     if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
       return true;

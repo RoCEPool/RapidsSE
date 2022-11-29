@@ -804,7 +804,7 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
-    if (bHasProperty(szPpy))
+    if (Y_bHas(szPpy))
       return this;
   }
 
@@ -901,21 +901,6 @@ bool Card::bHasSubWithValue(eCK eCard, Stz* szValue)
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does card have given property ?                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasProperty(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return false;
-
-  bool bHas = m_pProperties->bHasName(szPpyNm);
-
-  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1448,11 +1433,11 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
   bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
 
-  i8 nProperties = this->nProperties();
+  i8 nProperties = this->Y_nPpy();
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
 
-    eTN eTkn = eProperty(i_Property);
+    eTN eTkn = Y_ePpy(i_Property);
 
     switch (eTkn) {
 
@@ -1514,36 +1499,6 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
   else {
     pRibbon->vSprintRight("  %s"_Stz, szValue());
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of properties                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Card::nProperties(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return 0;
-  
-  i8 nProperties = m_pProperties->nItems();
-  
-  return nProperties;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type of property                                                       */
-/*----------------------------------------------------------------------------*/
-eTN Card::eProperty(i8 i_Property)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return TN_NONE;
-  
-  eTN eToken = m_pProperties->eToken(i_Property);
-  
-  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1879,6 +1834,36 @@ Stz* Card::Y_szNm(i8 i_Ppy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get type of property                                                       */
+/*----------------------------------------------------------------------------*/
+eTN Card::Y_ePpy(i8 i_Ppy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return TN_NONE;
+
+  eTN eToken = m_pProperties->eToken(i_Ppy);
+
+  return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of properties                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::Y_nPpy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return 0;
+
+  i8 nProperties = m_pProperties->nItems();
+
+  return nProperties;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::Y_vSet(Stz* szPpyNm, char cPpy)
@@ -1996,9 +1981,9 @@ void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s32 sName;
-  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
+  sName.vSprint("%s%s"_Stz, szCardNm(), Y_nPpy() ? " +" : "");
 
-  if (bHasProperty(P_OdnLo))
+  if (Y_bHas(P_OdnLo))
     sName.vCatSprint(" $%lld,%lld"_Stz,
                      Y_iGet(P_OdnLo), Y_iGet(P_OdnHi));
 

@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _r_schema -- create tables ; load data                                     */
+/*============================================================================*/
+
+_customer
+_lineItem
+_nation
+_orders
+_part
+_partsupp
+_region
+_supplier
+load customer "../tpch/sf_0001/customer.csv" ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
+load nation   "../tpch/sf_0001/nation.csv"   ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load part     "../tpch/sf_0001/part.csv"     ;
+load partsupp "../tpch/sf_0001/partsupp.csv" ;
+load region   "../tpch/sf_0001/region.csv"   ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

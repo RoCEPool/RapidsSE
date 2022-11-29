@@ -177,7 +177,6 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <fold> W_A_C_ro
 
-  G.p_fold->Y_vSet(P_BumpRight,(i8)2);
 
   G_vAppendNewChild(G.p_fold, CK_FOLDELIST);
 
@@ -205,6 +204,8 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
     G_vAppendNewChild(G.p_expr, CK_AS, G.p_stmColNm->szValue());
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$2"_Stz);
+
+    G.p_fold->Y_vSet(P_BumpRight,(i8)2);
   }
   else {
 
@@ -219,6 +220,7 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
     G_vAppendNewChild(G.p_expr, CK_RPNCALC);
     G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
+    G.p_fold->Y_vSet(P_BumpRight,(i8)1);
   }
 
 
@@ -609,8 +611,13 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
     }
 
     // TODO: needs to be a list
-    if (G.p_roPred->bIsValue("<"_Stz) ||
-        G.p_roPred->bIsValue(">"_Stz)) {
+    if (   G.p_roPred->bIsValue("<"_Stz)
+        || G.p_roPred->bIsValue("<="_Stz)
+        || G.p_roPred->bIsValue("=="_Stz)
+        || G.p_roPred->bIsValue("!="_Stz)
+        || G.p_roPred->bIsValue(">="_Stz)
+        || G.p_roPred->bIsValue(">"_Stz)
+        ) {
 
       if (3 == G.p_roPred->nChildCards()) {
         m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
@@ -1177,6 +1184,10 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
       return; /* this effectively declares resolve as void */
 
     if (p_pred->bIsCard(CK_CMPPRED)) {
+
+      if (! p_pred->Y_bHas(P_CorrPred))
+        return;
+
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {
@@ -1973,7 +1984,11 @@ void Xreshape::vR_S26_T20b_Sub_Query_Analysis_paramList(void)
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
-  i8 nParams = G.p_paramList->nChildCards();
+  //G.p_paramList->vDump();
+
+  // TODO: hack the number of params... fix
+  i8 nParams = 1; //G.p_paramList->nChildCards();
+
   pSubQuery->vCorrCols(nParams);
 
   vEndReshape();
@@ -2140,6 +2155,8 @@ void Xreshape::vR_S34_T10_AtMark_where_pred_Wrt_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  G.p_boolCalc->vDump();
 
   vPullUp_MarkPredLeftwards(G.p_boolCalc, G.pDeck);
 
@@ -2610,7 +2627,7 @@ void Xreshape::vR_S50_T80_Remove_invalidPermutations(void)
       continue;
     }
 
-    if (! G.p_MainCard->bHasProperty(P_Invalid)) {
+    if (! G.p_MainCard->Y_bHas(P_Invalid)) {
       G.p_MainCard->Y_vSet(P_Permutation, i_Permutation++);
       i_Main++;
       continue;
@@ -3552,8 +3569,9 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
 
   eAL e_level_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
 
-  bool bSawProjectOp = false;
   bool bSawAggOp = false;
+  bool bSawIndexJoinOp = false;
+  bool bSawProjectOp = false;
 
   auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
     Card_Combined* p_combined = new Card_Combined;
@@ -3637,32 +3655,36 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = true;
       bSawProjectOp = false;
       continue;
     }
 
-    if (CK_PROJECT == e_main && (bSawAggOp || bSawProjectOp) ) {
+    if (CK_PROJECT == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp) ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
 
-    if (CK_AGGREG == e_main && (bSawAggOp || bSawProjectOp)) {
+    if (CK_AGGREG == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp)) {
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
 
-    if (CK_GBYAGG == e_main && (bSawAggOp || bSawProjectOp)) {
+    if (CK_GBYAGG == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp)) {
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
@@ -3672,11 +3694,12 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (bSawAggOp) {
+    if (bSawAggOp || bSawIndexJoinOp) {
       vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }

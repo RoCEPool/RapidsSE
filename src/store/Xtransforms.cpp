@@ -981,6 +981,8 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
 
   vAssert_Board_any();
 
+  vPrintBoard(__LINE__);
+
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_S34_T10_AtMark_where_pred_Wrt_table();
   }
@@ -1632,7 +1634,13 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   R_vUTE_Derive_foldElist_From_project_stream();
   vPrintBoard(__LINE__);
 
+  if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
+    i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
+    R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_gbyElist);
 
+    G.p_fold->Y_vCut(P_BumpRight);
+    G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
+  }
 
   // find table for sqyarg
   char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
@@ -1667,7 +1675,6 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
 
-  R_vUTE_RelabelExpressions();
 
   vPrintBoard(__LINE__);
 
@@ -1686,6 +1693,14 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
+
+  R_vUTE_RelabelExpressions();
+
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
+  vPrintBoard(__LINE__);
+
 
   vEndTransform();
 }
@@ -1937,6 +1952,9 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
   vEndTransform();
 }
 
@@ -2064,6 +2082,9 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
   vEndTransform();
 }
 
@@ -2162,6 +2183,8 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   vPrintBoard(__LINE__);
 
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
 
   vEndTransform();
 }

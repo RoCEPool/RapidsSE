@@ -4,7 +4,12 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index O_idx0  on orders   (O_ORDERKEY );
+create index C_idx0  on customer (C_CUSTKEY  );
+create index L_idx0  on lineitem (L_ORDERKEY );
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -22,8 +27,8 @@ select
   o_totalprice,
   sum(l_quantity)
 from
-  customer,
   orders,
+  customer,
   lineitem
 where
   o_orderkey in
@@ -35,7 +40,7 @@ where
     group by
       l_orderkey
     having
-      sum(l_quantity) > 300
+      sum(l_quantity) > 100
     )
   and c_custkey = o_custkey
   and o_orderkey = l_orderkey

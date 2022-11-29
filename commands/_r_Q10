@@ -4,7 +4,13 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index C_idx0  on customer (C_CUSTKEY  );
+create index O_idx0  on orders   (O_CUSTKEY  );
+create index L_idx0  on lineitem (L_ORDERKEY );
+create index N_idx0  on nation   (N_NATIONKEY);
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -15,34 +21,35 @@ _r_init
 /weaved
 /pipelineName = "_r_Q10"
 select
-  c_custkey,
-  c_name,
-  sum(l_extendedprice * (1 - l_discount)) as revenue,
-  c_acctbal,
-  n_name,
-  c_address,
-  c_phone,
-  c_comment
+//  c_custkey,
+//  c_name,
+  o_custkey,
+  sum(l_extendedprice * (1 - l_discount)) as revenue
+//  ,c_acctbal,
+//  n_name,
+//  c_address,
+//  c_phone,
+//  c_comment
 from
-  customer,
+//  customer,
   orders,
-  lineitem,
-  nation
+  lineitem
+//  ,nation
 where
-  c_custkey = o_custkey
-  and l_orderkey = o_orderkey
+//  c_custkey = o_custkey and
+  l_orderkey = o_orderkey
   and o_orderdate >= DATE '1993-10-01'
-  and o_orderdate < DATE '1993-10-01' + interval '3' month
+  and o_orderdate < DATE '1994-01-01'
   and l_returnflag = 'R'
-  and c_nationkey = n_nationkey
+  //and c_nationkey = n_nationkey
 group by
-  c_custkey,
-  c_name,
-  c_acctbal,
-  c_phone,
-  n_name,
-  c_address,
-  c_comment
+  o_custkey
+  //,  c_name,
+  //c_acctbal,
+  //c_phone,
+  //n_name,
+  //c_address,
+  //c_comment
 order by
   revenue desc;
 
