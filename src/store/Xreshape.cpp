@@ -3565,8 +3565,9 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
 
   eAL e_level_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
 
-  bool bSawProjectOp = false;
   bool bSawAggOp = false;
+  bool bSawIndexJoinOp = false;
+  bool bSawProjectOp = false;
 
   auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
     Card_Combined* p_combined = new Card_Combined;
@@ -3650,32 +3651,36 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = true;
       bSawProjectOp = false;
       continue;
     }
 
-    if (CK_PROJECT == e_main && (bSawAggOp || bSawProjectOp) ) {
+    if (CK_PROJECT == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp) ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
 
-    if (CK_AGGREG == e_main && (bSawAggOp || bSawProjectOp)) {
+    if (CK_AGGREG == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp)) {
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
 
-    if (CK_GBYAGG == e_main && (bSawAggOp || bSawProjectOp)) {
+    if (CK_GBYAGG == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp)) {
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
@@ -3685,11 +3690,12 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (bSawAggOp) {
+    if (bSawAggOp || bSawIndexJoinOp) {
       vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
+      bSawIndexJoinOp = false;
       bSawProjectOp = false;
       continue;
     }
