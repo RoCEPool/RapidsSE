@@ -390,6 +390,56 @@ void Xmodify::M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Xmodify::E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = p_cmpPred->nChildCards();
+  RASSERT(2 == nChildren);
+
+  Card* p_child_0 = p_cmpPred->pGetChild(0);
+  Card* p_child_1 = p_cmpPred->pGetChild(1);
+
+  if (T_bValue_IsParamOrdinal(p_child_0->szValue()))
+    return _pCard_Term(p_child_1);
+
+  else
+  if (T_bValue_IsParamOrdinal(p_child_1->szValue()))
+    return _pCard_Term(p_child_0);
+
+  else
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Xmodify::E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = p_cmpPred->nChildCards();
+  RASSERT(2 == nChildren);
+
+  Card* p_child_0 = p_cmpPred->pGetChild(0);
+  Card* p_child_1 = p_cmpPred->pGetChild(1);
+
+  if (T_bValue_IsParamOrdinal(p_child_0->szValue()))
+    return _pCard_Term(p_child_0);
+
+  else
+  if (T_bValue_IsParamOrdinal(p_child_1->szValue()))
+    return _pCard_Term(p_child_1);
+
+  else
+    NEVER_REACH;
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)

@@ -47,6 +47,9 @@ namespace STORE
     void M_vCard_Set_Value(Card* pCard, Stz* szValue);
     void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 
+    Card_Term* E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred);
+    Card_Term* E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred);
+
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
