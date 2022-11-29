@@ -38,14 +38,6 @@ void PipelineNotation::vPipelineNotation(Stz* szPipelineStatement)
 {
   _static_
 
-  for(char* azCrs = szPipelineStatement->azChar(); *azCrs != ';'; azCrs++)
-  {
-    if(*azCrs=='\"')
-      *azCrs=' ';
-  }
-
-//  vTrace("%s\n"_Stz, szPipelineStatement);
-
   TokenVec* pTokenVec = AM::TOKENISE::pTokeniseSen(szPipelineStatement);
 
   // Collect "stage xx on all yy :" as a single token each
@@ -146,15 +138,13 @@ void PipelineNotation::vShorten(TokenVec* pTknVec)
   for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
     Token *pToken = pTknVec->pGet(i_Token);
 
-
-
-//    for(i8 i = 0; ! aNM[i].sFullForm->bSame("END"_Stz); i++)
-//    {
-//      if(pToken->bSame(aNM[i].sFullForm))
-//      {
-//        pToken->vUpdateChars(aNM[i].sShortForm,pTknVec);
-//      }
-//    }
+    for(i8 i = 0; ! aNM[i].sFullForm->bSame("END"_Stz); i++)
+    {
+      if(pToken->bSame(aNM[i].sFullForm))
+      {
+        pToken->vUpdateChars(aNM[i].sShortForm,pTknVec);
+      }
+    }
   }
 }
 /*----------------------------------------------------------------------------*/
