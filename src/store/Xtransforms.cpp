@@ -1465,9 +1465,15 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   RASSERT(G_bEachMain(CK_AGGREG));
   R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column();
 
-  RASSERT(G_bEachMain(CK_PROJECT));
-  R_vUTE_Enhance_sq_project_To_Include_Correlation_Column();
+  vPrintBoard(__LINE__);
 
+  if (G_bIsNextMain(CK_PROJECT)) {
+    RASSERT(G_bEachMain(CK_PROJECT));
+    R_vUTE_Enhance_sq_project_To_Include_Correlation_Column();
+  }
+  else {
+
+  }
   RASSERT(G_bEachMain(CK_FOLD));
   R_vUTE_Derive_foldElist_From_project_stream();
 

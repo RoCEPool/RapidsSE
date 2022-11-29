@@ -672,7 +672,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 /*----------------------------------------------------------------------------*/
 /* produce composite <index> of table                                         */
 /*----------------------------------------------------------------------------*/
-Card_Index* Xcreate::C_pProduce_index_ofTable(Table* pTable)
+Card_Index* Xcreate::C_pProduce_index_Of_table(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -716,7 +716,7 @@ Card_Index* Xcreate::C_pProduce_index_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* produce composite <indexList> of table                                     */
 /*----------------------------------------------------------------------------*/
-Card_IndexList* Xcreate::C_pProduce_indexList_ofTable(Table* pTable)
+Card_IndexList* Xcreate::C_pProduce_indexList_Of_table(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -766,7 +766,7 @@ Card_IndexList* Xcreate::C_pProduce_indexList_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* produce <size> of table                                                    */
 /*----------------------------------------------------------------------------*/
-Card_Size* Xcreate::C_pProduce_size_ofTable(Table* pTable)
+Card_Size* Xcreate::C_pProduce_size_Of_table(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -787,7 +787,7 @@ Card_Size* Xcreate::C_pProduce_size_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* produce composite <stream> of <aggreg>                                     */
 /*----------------------------------------------------------------------------*/
-Card_Stream* Xcreate::C_pProduce_stream_ofAggreg(Card_AggElist* p_aggElist)
+Card_Stream* Xcreate::C_pProduce_stream_Of_aggreg(Card_AggElist* p_aggElist)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -883,7 +883,7 @@ Card_Stream* Xcreate::C_pProduce_stream_Of_project(Card_ProjElist* p_projElist)
 /*----------------------------------------------------------------------------*/
 /* produce composite <stream> of table                                        */
 /*----------------------------------------------------------------------------*/
-Card_Stream* Xcreate::C_pProduce_stream_ofTable(Table* pTable)
+Card_Stream* Xcreate::C_pProduce_stream_Of_table(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -919,7 +919,7 @@ Card_Stream* Xcreate::C_pProduce_stream_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* produce <tablePtn> of table                                                */
 /*----------------------------------------------------------------------------*/
-Card_TablePtn* Xcreate::C_pProduce_tablePtn_ofTable(Card_Table* p_table)
+Card_TablePtn* Xcreate::C_pProduce_tablePtn_Of_table(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

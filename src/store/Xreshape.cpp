@@ -316,6 +316,12 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
       G.p_gbyElist->Y_vSet(P_ProjBumped);
     }
 
+    if (G.p_stream = G.p_gbyAgg->pSub_stream()) {
+      G.p_gbyAgg->vRemoveChild(G.p_stream);
+      DELETE_CARD(G.p_stream);
+    }
+    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+    G.p_gbyAgg->vAppend(G.p_stream);
 
     if (G_bEachMain()) {
       if (! G.p_MainCard->bIsCard(CK_AGGREG)) {
@@ -730,15 +736,20 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
       return C_CONTINUE_RECURSION;
 
     bool bIsCorrPred = false;
-    CardIter xCI(p_pred);
-    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+//    CardIter xCI(p_pred);
+//    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+//
+//      // TODO: hack... %1 $n may not be in this order
+//      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
+//        bIsCorrPred = true;
+//        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
+//        break;
+//      }
+//    }
 
-      // TODO: hack... %1 $n may not be in this order
-      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
-        bIsCorrPred = true;
-        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
-        break;
-      }
+    if ((m_pTerm_corrPred = E_pCmpPred_Extract_Arg_term(static_cast<Card_CmpPred*>(p_pred)))) {
+      bIsCorrPred = true;
+      m_pTerm_corrPred->vDump();
     }
 
     if (bIsCorrPred) {
@@ -1544,7 +1555,7 @@ void Xreshape::vR_S20_T20_Produce_tablePtn_Under_table(void)
 
   vReshape(__func__);
 
-  G.p_tablePtn = C_pProduce_tablePtn_ofTable(G.p_table);
+  G.p_tablePtn = C_pProduce_tablePtn_Of_table(G.p_table);
 
   G.p_table->vAppend(G.p_tablePtn);
 
@@ -1568,7 +1579,7 @@ void Xreshape::vR_S24_T10_Produce_indexList_Under_table(void)
   G.p_tableNm = G.p_table->pSub_tableNm();
   Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
 
-  G.p_indexList = C_pProduce_indexList_ofTable(pTable);
+  G.p_indexList = C_pProduce_indexList_Of_table(pTable);
 
   G_vAppendChild(CK_TABLE,CK_INDEXLIST);
 
@@ -1621,7 +1632,7 @@ void Xreshape::vR_S22_T10_Produce_stream_Under_table(void)
   vReshape(__func__);
 
   m_pTable = A_pAccess_Table(G.p_tableNm->sz());
-  G.p_stream = C_pProduce_stream_ofTable(m_pTable);
+  G.p_stream = C_pProduce_stream_Of_table(m_pTable);
 
   G.p_table->vAppend(G.p_stream);
 
@@ -1653,7 +1664,7 @@ void Xreshape::vR_S22_T14_Produce_stream_Under_aggreg(void)
 
   vReshape(__func__);
 
-  G.p_stream = C_pProduce_stream_ofAggreg(G.p_aggElist);
+  G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
 
   G.p_aggreg->vAppend(G.p_stream);
 
@@ -2946,7 +2957,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
 
       //G.p_tableNm = G.p_table->pSub_tableNm();
       //m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
-      //G.p_index = C_pProduce_index_ofTable(m_pTable);
+      //G.p_index = C_pProduce_index_Of_table(m_pTable);
 
       //G.p_note = new Card_Note(SEP_DERIVED);
       //G.p_crossJoin->vAppend(G.p_note);
@@ -3380,7 +3391,7 @@ void Xreshape::vR_S85_T20_Add_index_For_crossJoin(void)
   vReshape(__func__);
 
   m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
-  G.p_index = C_pProduce_index_ofTable(m_pTable);
+  G.p_index = C_pProduce_index_Of_table(m_pTable);
 
   G.p_note = new Card_Note(SEP_DERIVED);
   G.p_crossJoin->vAppend(G.p_note);

@@ -25,13 +25,13 @@ namespace STORE
 
     Card_StmColList* C_pDerive_streamColList(Card_ELIST* p_ELIST);
 
-    Card_Index*      C_pProduce_index_ofTable(Table* pTable);
-    Card_IndexList*  C_pProduce_indexList_ofTable(Table* pTable);
-    Card_Size*       C_pProduce_size_ofTable(Table* pTable);
-    Card_Stream*     C_pProduce_stream_ofAggreg(Card_AggElist* p_aggElist);
+    Card_Index*      C_pProduce_index_Of_table(Table* pTable);
+    Card_IndexList*  C_pProduce_indexList_Of_table(Table* pTable);
+    Card_Size*       C_pProduce_size_Of_table(Table* pTable);
+    Card_Stream*     C_pProduce_stream_Of_aggreg(Card_AggElist* p_aggElist);
     Card_Stream*     C_pProduce_stream_Of_project(Card_ProjElist* p_projElist);
-    Card_Stream*     C_pProduce_stream_ofTable(Table* pTable);
-    Card_TablePtn*   C_pProduce_tablePtn_ofTable(Card_Table* p_table);
+    Card_Stream*     C_pProduce_stream_Of_table(Table* pTable);
+    Card_TablePtn*   C_pProduce_tablePtn_Of_table(Card_Table* p_table);
 
     // must be last
     Footer m_xFooter;
