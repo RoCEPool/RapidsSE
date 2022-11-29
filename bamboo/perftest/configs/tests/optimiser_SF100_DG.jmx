@@ -786,6 +786,21 @@ group by
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">/opt/rapidsse/dbgen/generateData.sh</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">--config</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">/opt/rapidsse/cluster.config</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
                     <stringProp name="Argument.value">--sf</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
@@ -1112,11 +1127,6 @@ group by
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
                     <stringProp name="Argument.value">/mnt/disk2/data16</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value"> </stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
