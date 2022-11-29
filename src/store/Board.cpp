@@ -286,7 +286,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
     // skip non-printable horizontal lines
     if (pCardCtl->bNextHoriz(eCard) &&
-        pCard->bHasProperty(pCardCtl->szHorizExclude(eCard))) {
+        pCard->Y_bHas(pCardCtl->szHorizExclude(eCard))) {
 
       while (Card* pNextMain = xBI.pNextMain()) {
         eCK eNextCard = pNextMain->eCard();

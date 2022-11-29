@@ -321,7 +321,6 @@ namespace STORE
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
     bool bHasChildWithValue(Stz* szValue);
-    bool bHasProperty(Stz* szPpyNm);
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
     bool bHasSubWithValue(eCK eCard, Stz* szValue);
@@ -359,8 +358,6 @@ namespace STORE
     void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
-    i8   nProperties(void);
-    eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
@@ -390,6 +387,9 @@ namespace STORE
     bool Y_bHas(Stz* szPpyNm);
 
     Stz* Y_szNm(i8 i_Ppy);
+
+    eTN  Y_ePpy(i8 i_Ppy);
+    i8   Y_nPpy(void);
 
     void Y_vSet(Stz* szPpyNm, char cPpy);
     void Y_vSet(Stz* szPpyNm, i8 iPpy);

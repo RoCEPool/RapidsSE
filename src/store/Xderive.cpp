@@ -244,7 +244,7 @@ void Xderive::D_vDerive_PtndJoin(Card_PtndJoin* p_ptndJoin, Card_TableList* p_ta
     Card_Table *p_table =
         _pCard_Table(p_tableList->pGetChild(i_Table));
 
-    if (p_table->bHasProperty(P_TableUsed))
+    if (p_table->Y_bHas(P_TableUsed))
       continue;
 
     i8 nPredCmps = p_ptndJoin->nChildCards();

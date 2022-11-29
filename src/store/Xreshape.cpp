@@ -1984,7 +1984,11 @@ void Xreshape::vR_S26_T20b_Sub_Query_Analysis_paramList(void)
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
-  i8 nParams = G.p_paramList->nChildCards();
+  //G.p_paramList->vDump();
+
+  // TODO: hack the number of params... fix
+  i8 nParams = 1; //G.p_paramList->nChildCards();
+
   pSubQuery->vCorrCols(nParams);
 
   vEndReshape();
@@ -2623,7 +2627,7 @@ void Xreshape::vR_S50_T80_Remove_invalidPermutations(void)
       continue;
     }
 
-    if (! G.p_MainCard->bHasProperty(P_Invalid)) {
+    if (! G.p_MainCard->Y_bHas(P_Invalid)) {
       G.p_MainCard->Y_vSet(P_Permutation, i_Permutation++);
       i_Main++;
       continue;
