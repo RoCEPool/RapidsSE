@@ -3697,14 +3697,15 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_PROJECT == e_main && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp) ) {
+    if ((CK_PROJECT == e_main || CK_AGGREG == e_main)
+        && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp) ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
       bSawIndexJoinOp = false;
-      bSawProjectOp = false;
+      bSawProjectOp = true;
       bSawSortOp = false;
       continue;
     }
@@ -3759,9 +3760,9 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       continue;
     }
 
-    if (CK_GBYAGG == e_main || CK_AGGREG == e_main)
+    if (CK_GBYAGG == e_main)
       bSawAggOp = true;
-    if (CK_PROJECT == e_main)
+    if (CK_PROJECT == e_main || CK_AGGREG == e_main)
       bSawProjectOp = true;
   }
 

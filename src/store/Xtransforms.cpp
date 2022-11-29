@@ -1368,14 +1368,64 @@ void Xtransforms::vS40_T10_Fold_F_Before_Mq_As_opSeq(void)
   vTransform(__func__, "((20))"_Stz);
 
   vAssert_Board_mqA();
+  vPrintBoard(__LINE__);
 
-  // 1) copy sq
-  // 2) push onto mq
-  // 3)
+  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
+  vAssert_Board_mqA();
+  RASSERT(G_bEachMain(CK_CALL));
+  vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz,G.p_call->szValue());
+  vPrintBoard(__LINE__);
 
 
+  G_vNewMember(CK_FOLD,"FROM"_Stz);
+  G.pDeck->vPush(G.p_fold);
 
-  vR_S40_T10a_Fold_F_Before_Mq_As_opSeq();
+  vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get copy of sq and push before mq
+
+  // x) push to sq
+  if (! G_bPushBoard(G.p_call->szValue())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz,G.p_call->szValue());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  m_pCard_copied = E_pSubset_ChildrenBetween(G.pDeck, 0);
+
+  vPrintBoard(__LINE__);
+
+  // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
+
+  // x) pop back to mq
+  G_vPopBoard();
+  vAssert_Board_mqA();
+
+  G.pDeck->vPush(m_pCard_copied);
+  G.pDeck->vReplaceChildWithItsSubs(m_pCard_copied);
+  DELETE_CARD(m_pCard_copied);
+
+  G.pDeck->vRemoveChild(G.p_call);
+  DELETE_CARD(G.p_call);
+
+  G.pDeck->vRenumberRecursive();
+
+  vPrintBoard(__LINE__);
+
+  R_vUTE_AdjustStmLoHi();
+  vPrintBoard(__LINE__);
+
+  R_vUTE_RenumberStmOdn();
+  vPrintBoard(__LINE__);
+
+  R_vUTE_RelabelExpressions();
+
+  m_pBench->vIsFlat(true);
+  G.pDeck->vClearMarksRecursive();
+
+  vPrintBoard(__LINE__);
+
 
   vEndTransform();
 }
