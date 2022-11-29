@@ -115,6 +115,39 @@ OptimiserFun __Opt_l
     );
 
 /*----------------------------------------------------------------------------*/
+/* notation                                                                   */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  Bench* pBench = pOptimiser->pBench();
+  Card_Deck* pDeck = pBench->pGetBoard((i8)0)->pDeck();
+
+  CardIter xCI(pDeck);
+  Card* pCard;
+  while ((pCard = xCI.pEachChild()))
+  {
+    s256 sShort = "";
+    StrLib::vShortHand(sShort.azChar(), pCard->szCardNm()->azChar());
+    vTrace("%s "_Stz, sShort.azChar());
+  }
+
+  vTrace("\n"_Stz);
+
+  return true;
+}
+
+OptimiserFun __Opt_n
+    (
+        "notation"_Stz,       // name of the opt function
+        "n"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_notation,        // function to call
+        0,0,                // spare
+        "short hand notation of operators"_Stz,
+        "usage???"_Stz
+    );
+
+/*----------------------------------------------------------------------------*/
 /* read pipeline from file                                                    */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_readPipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
