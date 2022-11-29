@@ -9,15 +9,18 @@ _orders
 _part
 _partsupp
 _region
+_revenueV
 _supplier
-load customer "../tpch/sf_0001/customer.csv" ;
-load lineitem "../tpch/sf_0001/lineItem.csv" ;
-load nation   "../tpch/sf_0001/nation.csv"   ;
-load orders   "../tpch/sf_0001/orders.csv"   ;
-load part     "../tpch/sf_0001/part.csv"     ;
-load partsupp "../tpch/sf_0001/partsupp.csv" ;
-load region   "../tpch/sf_0001/region.csv"   ;
-load supplier "../tpch/sf_0001/supplier.csv" ;
+
+load Customer "../tpch/sf_0001/customer.csv" ;
+load Lineitem "../tpch/sf_0001/lineItem.csv" ;
+load Nation   "../tpch/sf_0001/nation.csv"   ;
+load Orders   "../tpch/sf_0001/orders.csv"   ;
+load Part     "../tpch/sf_0001/part.csv"     ;
+load PartSupp "../tpch/sf_0001/partsupp.csv" ;
+load Region   "../tpch/sf_0001/region.csv"   ;
+// RevenueV
+load Supplier "../tpch/sf_0001/supplier.csv" ;
 
 /*============================================================================*/
 /* end                                                                        */
