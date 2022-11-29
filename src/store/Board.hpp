@@ -93,6 +93,7 @@
 #include "Card_NCorrCols.hpp"
 #include "Card_Next.hpp"
 #include "Card_Note.hpp"
+#include "Card_NotPred.hpp"
 #include "Card_NParmCols.hpp"
 
 #include "Card_ObyElist.hpp"

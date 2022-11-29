@@ -91,6 +91,7 @@ namespace STORE
   class Card_NCorrCols;
   class Card_Next;
   class Card_Note;
+  class Card_NotPred;
   class Card_NParmCols;
 
   class Card_OrdAgg;
@@ -422,7 +423,7 @@ namespace STORE
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
     Card_Fold*          pSub_fold(void);
-    Card_FoldElist*      pSub_foldElist(void);
+    Card_FoldElist*     pSub_foldElist(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_Genesis*       pSub_genesis(void);
@@ -441,6 +442,7 @@ namespace STORE
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
+    Card_NotPred*       pSub_notPred(void);
     Card_NParmCols*     pSub_nParmCols(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);

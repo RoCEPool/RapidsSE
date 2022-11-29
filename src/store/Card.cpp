@@ -2487,6 +2487,19 @@ Card_Note* Card::pSub_note(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_NotPred.hpp"
+Card_NotPred* Card::pSub_notPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_NotPred* p_notPred =
+      _pCard_NotPred(pFindSubCard(CK_NOTPRED));
+  return p_notPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_NParmCols.hpp"
 Card_NParmCols* Card::pSub_nParmCols(void)
 {

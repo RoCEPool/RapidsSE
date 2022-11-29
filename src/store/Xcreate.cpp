@@ -386,8 +386,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
       case TE_AND:
         // <boolCalc> = <and>/<boolCalc>
-        p_childB = p_boolCalc->pPullChild();
-        p_childA = p_boolCalc->pPullChild();
+        p_childB = p_boolCalc->pPlopChild();
+        p_childA = p_boolCalc->pPlopChild();
 
         p_andPred = new Card_AndPred;
         p_andPred->vAppend(p_childA);
@@ -403,8 +403,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
       case TE_OR:
         // <boolCalc> = <or>/<boolCalc>
-        p_childB = p_boolCalc->pPullChild();
-        p_childA = p_boolCalc->pPullChild();
+        p_childB = p_boolCalc->pPlopChild();
+        p_childA = p_boolCalc->pPlopChild();
 
         p_orPred = new Card_OrPred;
         p_orPred->vAppend(p_childA);
@@ -416,6 +416,10 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_childB = nullptr;
         DELETE_CARD(p_term_next);
         //p_boolCalc->vDump(0,"OR"_Stz);
+        break;
+
+      case TE_NOT:
+        NEVER_REACH
         break;
 
       case TE_COMPARE:

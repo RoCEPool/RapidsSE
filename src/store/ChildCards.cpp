@@ -265,7 +265,7 @@ Card* ChildCards::pPopChild(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pPullChild(void)
+Card* ChildCards::pPlopChild(void)
 {
 
   i8 nChildren = nChildCards();

@@ -86,6 +86,7 @@ enum eCK // card kind
   /* */ CK_NCORRCOLS,
   /* */ CK_NEXT,
   /* */ CK_NOTE,
+  /* */ CK_NOTPRED,
   /* */ CK_NPARMCOLS,
 
   /* */ CK_OBYELIST,
@@ -249,6 +250,7 @@ static Stz* aCK[]
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
+  /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
   /* */ "CK_NPARMCOLS"_Stz,    // CK_NPARMCOLS
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
@@ -411,6 +413,7 @@ static Stz* aCK_short[]
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "next"_Stz,            // CK_NEXT
   /* */ "note"_Stz,            // CK_NOTE
+  /* */ "notPred"_Stz,         // CK_NOTPRED
   /* */ "nParmCols"_Stz,       // CK_NPARMCOLS
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST

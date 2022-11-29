@@ -33,7 +33,7 @@ namespace STORE
     Card* pGetChild(i8 i_Child, eCK& reCard);
 
     Card* pPopChild(void);
-    Card* pPullChild(void);
+    Card* pPlopChild(void);
 
     void vPromoteSubs(Card* pChildCard);
 

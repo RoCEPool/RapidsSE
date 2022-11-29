@@ -101,6 +101,7 @@ namespace STORE
     Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;
+    Card_NotPred *          p_notPred;
     Card_NParmCols *        p_nParmCols;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
