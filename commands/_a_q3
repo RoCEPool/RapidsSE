@@ -34,10 +34,10 @@ limit 10;
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * added a sort on O_ORDERKEY in stage S03 and modified aggreg to ordAgg
-//     removing all subsequent node and origin level aggregates
-//   * added stage with sort and limit on all partitions and on all nodes.
-//     This reduces the data being sorted as we move along
+//   * ADDED A SORT ON O_ORDERKEY IN STAGE S03 AND MODIFIED AGGREG TO ORDAGG
+//     REMOVING ALL SUBSEQUENT NODE AND ORIGIN LEVEL AGGREGATES
+//   * ADDED STAGE WITH SORT AND LIMIT ON ALL PARTITIONS AND ON ALL NODES.
+//     THIS REDUCES THE DATA BEING SORTED AS WE MOVE ALONG
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

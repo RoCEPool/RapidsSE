@@ -238,6 +238,7 @@ namespace BASE
     static void  vRuler(char* azDst, i8 iLength);
 
     static bool  bSame(const char* s1, const char* s2);
+    static void  vShortHand(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, i8 i_Right);
     static i8    nSize(const char* s);

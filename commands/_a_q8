@@ -52,12 +52,8 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * sort not required as order by on same columns as group by
-//   * when scanning nation added filter on n2.n_name for 'FRANCE' and 'GERMANY'
-//     as later filter is :
-//       (   (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
-//         or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE')
-//       )
+//   * SORT NOT REQUIRED AS ORDER BY ON SAME COLUMNS AS GROUP BY
+
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

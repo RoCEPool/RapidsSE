@@ -25,6 +25,7 @@ where
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
+//   * CHANGE SCAN TO INDEXSCAN
 //   * INDEXSCAN GETS THE FILTER PUSHED_DOWN
 //   * MINIMAL PROJECTIONS
 
