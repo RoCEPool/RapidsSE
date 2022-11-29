@@ -154,7 +154,8 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
     p_cmpPred->vDump();
 
-    if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
+    //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
+    if (!T_bCmpPred_MaybeBounds_v2(p_cmpPred,p_table,bParamAllowedInBounds))
       return C_CONTINUE_RECURSION;
 
     // - - - -

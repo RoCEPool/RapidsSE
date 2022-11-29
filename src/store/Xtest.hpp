@@ -50,6 +50,8 @@ namespace STORE
 
     bool T_bFilter_IsEmpty(Card_Filter* p_filter);
 
+    bool T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index);
+
     bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
 
     bool T_bStage_IsIgnorable(Card_Stage* p_stage);

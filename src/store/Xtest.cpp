@@ -403,35 +403,68 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
   return false;
 }
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred, Card_Table* pTable,
+bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
+                                      Card_Table* p_table,
                                       bool bParamAllowedInBounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  char cTblSyn = pTable->cValue();
+  // todo: make this recursive
+
+  Card_Index* p_index = p_table->pSub_index();
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-  Card_Term* pTerm_tblColOdn = nullptr;
-  Card_Term* pTerm_other = nullptr;
-
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
-    char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+    // + term_0 is $c.n
 
-    pTerm_tblColOdn = pTerm_0;
-    pTerm_other = pTerm_1;
+    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index) ||
+          T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
+        return true;
+
+      return false;
+    }
+    else {
+      // + term_0 is $c.n
+
+      // ? check term_1 is permitted param
+      if ((! bParamAllowedInBounds) &&
+          T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+        return false;
+
+      // ? is term_0:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index))
+        return true;
+
+      return false;
+    }
   }
   else
   if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-    pTerm_tblColOdn = pTerm_1;
-    pTerm_other = pTerm_0;
+    // + term_1 is $c.n
+
+    // ? maybe term_0 is permitted param
+    if ((! bParamAllowedInBounds) &&
+        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+      return false;
+
+    // ? is term_0:$c.n an index column
+    if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
+      return true;
+
+    return false;
   }
   else {
-    NEVER_REACH;
+    // + neither term is $c.n
+    return false;
   }
 
-  return false;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -911,6 +944,29 @@ bool Xtest::T_bFilter_IsEmpty(Card_Filter* p_filter)
 
   if (0 == pCard_calcBool->nChildCards())
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  ASSERT(T_bValue_IsTableColOrdinal(szTblColOdn));
+
+  p_index->vDump();
+  Card_IdxColList* p_idxColList = p_index->pSub_idxColList();
+
+  CardIter xCI(p_idxColList);
+  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild())) {
+
+    // ? does n]idxCol:$c.n match given:$c.n
+    if (p_idxCol->bSame(szTblColOdn))
+      return true;
+  }
 
   return false;
 }
