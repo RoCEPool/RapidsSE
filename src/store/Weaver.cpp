@@ -1296,6 +1296,10 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         vBoolPart(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->sz());
         break;
+      case CK_NOTPRED:
+        vBoolPart(szRpnExpr, _pCard_NotPred(pSubCard), 0);
+        szRpnExpr->vCatSprint(" not"_Stz);
+        break;
       case CK_ORPRED:
         vBoolPart(szRpnExpr, _pCard_OrPred(pSubCard), 0);
         szRpnExpr->vCatSprint(" or"_Stz);

@@ -358,8 +358,9 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   Card_AndPred* p_andPred = nullptr;
   Card_BolPred* p_bolPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
-  Card_RoPred*  p_roPred  = nullptr;
+  Card_NotPred* p_notPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
+  Card_RoPred*  p_roPred  = nullptr;
 
   Card*  p_childA  = nullptr;
   Card*  p_childB  = nullptr;
@@ -419,7 +420,15 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         break;
 
       case TE_NOT:
-        NEVER_REACH
+        p_childA = p_boolCalc->pPlopChild();
+
+        p_notPred = new Card_NotPred;
+        p_notPred->vAppend(p_childA);
+
+        p_boolCalc->vAppend(p_notPred);
+        p_notPred = nullptr;
+        p_childA  = nullptr;
+        DELETE_CARD(p_term_next);
         break;
 
       case TE_COMPARE:
