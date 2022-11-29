@@ -4,7 +4,7 @@
 
 // SF=800k rows
 
-create table partsupp (
+create table PartSupp (
 	PS_PARTKEY      INTEGER       NOT NULL,
 	PS_SUPPKEY      INTEGER       NOT NULL,
 	PS_AVAILQTY     INTEGER       NOT NULL,

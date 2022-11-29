@@ -4,7 +4,7 @@
 
 // SF=1.5m rows
 
-create table orders (
+create table Orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,  //0)
 	 O_CUSTKEY         INTEGER       NOT NULL,  //1)
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,  //2)

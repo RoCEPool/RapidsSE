@@ -4,7 +4,7 @@
 
 // SF=6m rows
 
-create table lineitem (
+create table Lineitem (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B
   L_SUPPKEY       INTEGER       NOT NULL,  //  2)  8B   3B

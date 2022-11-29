@@ -4,7 +4,7 @@
 
 // SF=150k rows
 
-create table customer (
+create table Customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
 	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)

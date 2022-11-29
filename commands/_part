@@ -4,7 +4,7 @@
 
 // SF=200k rows
 
-create table part (
+create table Part (
 	 P_PARTKEY           INTEGER       NOT NULL,
 	 P_NAME              VARCHAR(55)   NOT NULL,
 	 P_MFGR              CHAR(25)      NOT NULL,
