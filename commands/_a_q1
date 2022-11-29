@@ -26,8 +26,8 @@ select l_returnflag, l_linestatus,
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * order by can be discarded as it is on the same columns as group by
-//   * Once we have intervals , need to do literal arithmetic upfront
+//   * ORDER BY CAN BE DISCARDED AS IT IS ON THE SAME COLUMNS AS GROUP BY
+//   * ONCE WE HAVE INTERVALS WE NEED TO DO LITERAL ARITHMETIC UPFRONT
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

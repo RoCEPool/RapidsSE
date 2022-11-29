@@ -3,27 +3,28 @@
 /*============================================================================*/
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-select n_name,
-       sum(l_extendedprice * (1 - l_discount)) as revenue
+select
+  n_name,
+  sum(l_extendedprice * (1 - l_discount)) as revenue
 from customer,
-     orders,
-     lineitem,
-     supplier,
-     nation,
-     region
+  orders,
+  lineitem,
+  supplier,
+  nation,
+  region
 where c_custkey = o_custkey
-     and l_orderkey = o_orderkey
-     and l_suppkey = s_suppkey
-     and c_nationkey = s_nationkey
-     and s_nationkey = n_nationkey
-     and n_regionkey = r_regionkey
-     and r_name = 'ASIA'
-     and o_orderdate >= '1994-01-01'
-     and o_orderdate < '1995-01-01'
+  and l_orderkey = o_orderkey
+  and l_suppkey = s_suppkey
+  and c_nationkey = s_nationkey
+  and s_nationkey = n_nationkey
+  and n_regionkey = r_regionkey
+  and r_name = 'ASIA'
+  and o_orderdate >= '1994-01-01'
+  and o_orderdate < '1995-01-01'
 group by
-     n_name
+  n_name
 order by
-    revenue asc;
+  revenue asc;
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -38,9 +39,8 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * changed join order
-//   * since n_name groups can be max 25 we DO NOT apply the trick of sorting on all partitions,
-//     all nodes and then origin.
+//   * CHNAGED JOIN ORDER
+//   * SEPARATE SORT INTO DIFFERENT STAGE THAN AGGREG
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

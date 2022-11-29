@@ -62,9 +62,9 @@ limit 100;
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * filter on part pulled into sub-query
-//   * rejoin with part and supplier to get the correct supplier
-//   * get supplier columns later
+//   * FILTER ON PART PULLED FROM OUTER-QUERY INTO SUB-QUERY
+//   * REJOIN WITH PART AND SUPPLIER TO GET THE CORRECT SUPPLIER
+//   * GET SUPPLIER COLUMNS LATER
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

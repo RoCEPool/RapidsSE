@@ -27,8 +27,8 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * keyExists
-//   * Removed SORT as order by and group by on same columns
+//   * KEYEXISTS
+//   * REMOVED SORT AS ORDERBY AND GROUP BY ON SAME COLUMNS
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
