@@ -79,30 +79,54 @@ void Xreshape::R_vUTE_AdjustStmLoHi(void)
 
   i8 iOdn_shift = 0;
 
+  i8 iLoOdn_running = 0;
+  i8 iHiOdn_running = 0;
+
   // TODO: G_bEachSub(CK_STREAM)
 
   G_vRestart();
   while (G_bEachMain()) {
 
-    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
-      continue;
+//    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
+//      continue;
 
     G.p_stream = G.p_MainCard->pSub_stream();
+    if (! G.p_stream)
+      continue;
 
-    if (G.p_MainCard->bIsCard(CK_PROJECT))
+    if (G.p_MainCard->bIsCard(CK_AGGREG) ||
+        G.p_MainCard->bIsCard(CK_GBYAGG) ||
+        G.p_MainCard->bIsCard(CK_PROJECT)) {
       iOdn_shift = 0;
+      iLoOdn_running = 0;
+      iHiOdn_running = 0;
+    }
 
     G.p_stmColList = G.p_stream->pSub_stmColList();
     i8 nStmCols = G.p_stmColList->nChildCards();
 
     i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
+    if (C_UNKNOWN == iLoOdn_stream) {
+      i8 iLoOdn_adjusted = iHiOdn_running + 1;
+      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+      M_vStream_Adjust_OrdinalRange(G.p_stream, iLoOdn_adjusted, iHiOdn_adjusted);
 
-    i8 iLoOdn_adjusted = iOdn_shift + 1;
-    i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+      iOdn_shift = iHiOdn_adjusted;
+      iLoOdn_running = iLoOdn_adjusted;
+      iHiOdn_running = iHiOdn_adjusted;
 
-    M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_adjusted,iHiOdn_adjusted);
+    }
+    else {
+      i8 iLoOdn_adjusted = iOdn_shift + 1;
+      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
 
-    iOdn_shift = iHiOdn_adjusted;
+      M_vStream_Adjust_OrdinalRange(G.p_stream, iLoOdn_adjusted, iHiOdn_adjusted);
+      iOdn_shift = iHiOdn_adjusted;
+
+      iLoOdn_running = iLoOdn_adjusted;
+      iHiOdn_running = iHiOdn_adjusted;
+    }
+
   }
 
   vEndReshape();
@@ -316,6 +340,12 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
       G.p_gbyElist->Y_vSet(P_ProjBumped);
     }
 
+    if (G.p_stream = G.p_gbyAgg->pSub_stream()) {
+      G.p_gbyAgg->vRemoveChild(G.p_stream);
+      DELETE_CARD(G.p_stream);
+    }
+    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+    G.p_gbyAgg->vAppend(G.p_stream);
 
     if (G_bEachMain()) {
       if (! G.p_MainCard->bIsCard(CK_AGGREG)) {
@@ -730,15 +760,20 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
       return C_CONTINUE_RECURSION;
 
     bool bIsCorrPred = false;
-    CardIter xCI(p_pred);
-    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+//    CardIter xCI(p_pred);
+//    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
+//
+//      // TODO: hack... %1 $n may not be in this order
+//      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
+//        bIsCorrPred = true;
+//        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
+//        break;
+//      }
+//    }
 
-      // TODO: hack... %1 $n may not be in this order
-      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
-        bIsCorrPred = true;
-        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
-        break;
-      }
+    if ((m_pTerm_corrPred = E_pCmpPred_Extract_Arg_term(static_cast<Card_CmpPred*>(p_pred)))) {
+      bIsCorrPred = true;
+      m_pTerm_corrPred->vDump();
     }
 
     if (bIsCorrPred) {
@@ -1544,7 +1579,7 @@ void Xreshape::vR_S20_T20_Produce_tablePtn_Under_table(void)
 
   vReshape(__func__);
 
-  G.p_tablePtn = C_pProduce_tablePtn_ofTable(G.p_table);
+  G.p_tablePtn = C_pProduce_tablePtn_Of_table(G.p_table);
 
   G.p_table->vAppend(G.p_tablePtn);
 
@@ -1568,7 +1603,7 @@ void Xreshape::vR_S24_T10_Produce_indexList_Under_table(void)
   G.p_tableNm = G.p_table->pSub_tableNm();
   Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
 
-  G.p_indexList = C_pProduce_indexList_ofTable(pTable);
+  G.p_indexList = C_pProduce_indexList_Of_table(pTable);
 
   G_vAppendChild(CK_TABLE,CK_INDEXLIST);
 
@@ -1621,7 +1656,7 @@ void Xreshape::vR_S22_T10_Produce_stream_Under_table(void)
   vReshape(__func__);
 
   m_pTable = A_pAccess_Table(G.p_tableNm->sz());
-  G.p_stream = C_pProduce_stream_ofTable(m_pTable);
+  G.p_stream = C_pProduce_stream_Of_table(m_pTable);
 
   G.p_table->vAppend(G.p_stream);
 
@@ -1653,7 +1688,7 @@ void Xreshape::vR_S22_T14_Produce_stream_Under_aggreg(void)
 
   vReshape(__func__);
 
-  G.p_stream = C_pProduce_stream_ofAggreg(G.p_aggElist);
+  G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
 
   G.p_aggreg->vAppend(G.p_stream);
 
@@ -2946,7 +2981,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
 
       //G.p_tableNm = G.p_table->pSub_tableNm();
       //m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
-      //G.p_index = C_pProduce_index_ofTable(m_pTable);
+      //G.p_index = C_pProduce_index_Of_table(m_pTable);
 
       //G.p_note = new Card_Note(SEP_DERIVED);
       //G.p_crossJoin->vAppend(G.p_note);
@@ -3380,7 +3415,7 @@ void Xreshape::vR_S85_T20_Add_index_For_crossJoin(void)
   vReshape(__func__);
 
   m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
-  G.p_index = C_pProduce_index_ofTable(m_pTable);
+  G.p_index = C_pProduce_index_Of_table(m_pTable);
 
   G.p_note = new Card_Note(SEP_DERIVED);
   G.p_crossJoin->vAppend(G.p_note);
@@ -3572,6 +3607,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
   bool bSawAggOp = false;
   bool bSawIndexJoinOp = false;
   bool bSawProjectOp = false;
+  bool bSawSortOp = false;
 
   auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
     Card_Combined* p_combined = new Card_Combined;
@@ -3657,6 +3693,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = true;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
@@ -3668,6 +3705,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
@@ -3677,6 +3715,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
@@ -3686,6 +3725,21 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
+      continue;
+    }
+
+    if (CK_SORT == e_main) {
+      if (bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) {
+        vAddCombined(p_main, i_Main);
+      }
+
+      vAddNext(p_main, i_Main,""_Stz);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawIndexJoinOp = false;
+      bSawProjectOp = false;
+      bSawSortOp = true;
       continue;
     }
 
@@ -3701,6 +3755,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 

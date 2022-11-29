@@ -1423,6 +1423,19 @@ bool Xgearing::G_bIsBoard(Stz* szBoardNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bIsNextMain(eCK eMember)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (G.xBI.pNextMainIf(eMember))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bPushBoard(Stz* szBoardNm)
