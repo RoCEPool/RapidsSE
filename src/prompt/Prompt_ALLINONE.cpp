@@ -4290,6 +4290,8 @@ bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
   
   AM::vNapMsec(nSeconds * C_1K,CN_SEPROMPT);
 
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
+
   return true;
 }
 
