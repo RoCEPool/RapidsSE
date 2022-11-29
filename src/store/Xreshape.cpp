@@ -79,30 +79,54 @@ void Xreshape::R_vUTE_AdjustStmLoHi(void)
 
   i8 iOdn_shift = 0;
 
+  i8 iLoOdn_running = 0;
+  i8 iHiOdn_running = 0;
+
   // TODO: G_bEachSub(CK_STREAM)
 
   G_vRestart();
   while (G_bEachMain()) {
 
-    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
-      continue;
+//    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
+//      continue;
 
     G.p_stream = G.p_MainCard->pSub_stream();
+    if (! G.p_stream)
+      continue;
 
-    if (G.p_MainCard->bIsCard(CK_PROJECT))
+    if (G.p_MainCard->bIsCard(CK_AGGREG) ||
+        G.p_MainCard->bIsCard(CK_GBYAGG) ||
+        G.p_MainCard->bIsCard(CK_PROJECT)) {
       iOdn_shift = 0;
+      iLoOdn_running = 0;
+      iHiOdn_running = 0;
+    }
 
     G.p_stmColList = G.p_stream->pSub_stmColList();
     i8 nStmCols = G.p_stmColList->nChildCards();
 
     i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
+    if (C_UNKNOWN == iLoOdn_stream) {
+      i8 iLoOdn_adjusted = iHiOdn_running + 1;
+      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+      M_vStream_Adjust_OrdinalRange(G.p_stream, iLoOdn_adjusted, iHiOdn_adjusted);
 
-    i8 iLoOdn_adjusted = iOdn_shift + 1;
-    i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+      iOdn_shift = iHiOdn_adjusted;
+      iLoOdn_running = iLoOdn_adjusted;
+      iHiOdn_running = iHiOdn_adjusted;
 
-    M_vStream_Adjust_OrdinalRange(G.p_stream,iLoOdn_adjusted,iHiOdn_adjusted);
+    }
+    else {
+      i8 iLoOdn_adjusted = iOdn_shift + 1;
+      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
 
-    iOdn_shift = iHiOdn_adjusted;
+      M_vStream_Adjust_OrdinalRange(G.p_stream, iLoOdn_adjusted, iHiOdn_adjusted);
+      iOdn_shift = iHiOdn_adjusted;
+
+      iLoOdn_running = iLoOdn_adjusted;
+      iHiOdn_running = iHiOdn_adjusted;
+    }
+
   }
 
   vEndReshape();
@@ -3583,6 +3607,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
   bool bSawAggOp = false;
   bool bSawIndexJoinOp = false;
   bool bSawProjectOp = false;
+  bool bSawSortOp = false;
 
   auto vAddCombined = [this] (Card* p_main, i8& ri_main) {
     Card_Combined* p_combined = new Card_Combined;
@@ -3668,6 +3693,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = true;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
@@ -3679,6 +3705,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
@@ -3688,6 +3715,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
@@ -3697,6 +3725,21 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
+      continue;
+    }
+
+    if (CK_SORT == e_main) {
+      if (bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) {
+        vAddCombined(p_main, i_Main);
+      }
+
+      vAddNext(p_main, i_Main,""_Stz);
+      vAddStage(p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawIndexJoinOp = false;
+      bSawProjectOp = false;
+      bSawSortOp = true;
       continue;
     }
 
@@ -3712,6 +3755,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawAggOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
+      bSawSortOp = false;
       continue;
     }
 
