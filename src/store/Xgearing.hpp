@@ -106,8 +106,6 @@ namespace STORE
   protected:
     bool bIsTracing(void);
 
-    void vTracer(Stz* szFormat, ...);
-
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild);
@@ -144,12 +142,12 @@ namespace STORE
     void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoard(Stz* szBoardNm);
+    bool G_bIsNextMain(eCK eMember);
 
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
-    i8   G_i_Main(void);
     bool G_bMoreMain(void);
     void G_vMorphCard(Card* pCard, eCK eCard);
 
@@ -157,7 +155,6 @@ namespace STORE
     void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
     void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
-    bool G_bIsNextMain(eCK eMember);
 
     bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
     bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
@@ -192,9 +189,10 @@ namespace STORE
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
+    Stz* szMemberNm(eCK eMember);
 
     Stz* szT(eCK eMember);
-    Stz* szMemberNm(eCK eMember);
+    void vTracer(Stz* szFormat, ...);
   };
 }
 

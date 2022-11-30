@@ -43,6 +43,7 @@ order by
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query12
  begin
    stage S00 on origin :
@@ -85,6 +86,7 @@ pipeline Query12
      | sink
      | first
  end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */

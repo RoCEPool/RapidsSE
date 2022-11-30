@@ -53,6 +53,7 @@ where
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query15
  begin
    stage S01 on origin :
@@ -98,6 +99,7 @@ pipeline Query15
      | sink
      | first
  end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */

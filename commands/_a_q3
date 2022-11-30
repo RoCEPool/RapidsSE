@@ -46,6 +46,7 @@ limit 10;
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query3
 begin
   stage S00 on origin :
@@ -109,6 +110,7 @@ begin
     | sink
     | first
 end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */

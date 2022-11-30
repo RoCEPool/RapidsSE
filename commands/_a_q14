@@ -36,6 +36,7 @@ where
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query14
 begin
   stage S00 on origin :
@@ -81,6 +82,7 @@ begin
     | sink
     | first
 end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */
