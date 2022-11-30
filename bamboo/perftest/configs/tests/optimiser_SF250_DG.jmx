@@ -235,7 +235,7 @@
       <hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -484,7 +484,7 @@ group by
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -768,7 +768,7 @@ group by
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -778,7 +778,7 @@ group by
           <hashTree/>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="prepareData" enabled="true"/>
           <hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="downloadData" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="generateData" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
               <stringProp name="SystemSampler.command">/opt/rapidsse/dbgen/generateData.sh</stringProp>
@@ -786,27 +786,12 @@ group by
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/opt/rapidsse/dbgen/generateData.sh</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--config</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/opt/rapidsse/cluster.config</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
                     <stringProp name="Argument.value">--sf</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">250</stringProp>
+                    <stringProp name="Argument.value">${SF}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                   <elementProp name="" elementType="Argument">
@@ -836,146 +821,6 @@ group by
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data3</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data4</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data5</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data6</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data7</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data8</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data9</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data10</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data11</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data12</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data13</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data14</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data15</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data16</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
                     <stringProp name="Argument.value">/mnt/disk2/data1</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
@@ -989,171 +834,19 @@ group by
                     <stringProp name="Argument.value">/mnt/disk2/data2</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data3</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data4</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data5</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data6</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data7</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data8</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data9</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data10</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data11</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data12</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data13</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data14</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data15</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data16</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
                 </collectionProp>
               </elementProp>
               <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
-              <stringProp name="SystemSampler.directory">supportFiles</stringProp>
-              <stringProp name="TestPlan.comments">Downloads the TPC-H data from S3 and arranges it on each SSD drive of each node in the cluster, in preparation for a distributed load (dload).
-
-For machines with mounted SSD drives, data is written to /mnt/disk&lt;1..n&gt;/data/tpch/sf&lt;?&gt;.
-For machines with no SSD drives, data is written to &lt;installDir&gt;/data/tpch/sf&lt;?&gt;.
-
-The data for each table is in its own directory as a single file &lt;table&gt;.tbl.
-e.g. /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl
-
-If the --partitionsPerDisk option is given then there are multiple files per disk. If there are two disks and two partitionsPerDisk then this data will look like this:
-  /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl
-  /mnt/disk1/data2/tpch/sf1/lineitem/lineitem.tbl
-  /mnt/disk2/data1/tpch/sf1/lineitem/lineitem.tbl
-  /mnt/disk2/data2/tpch/sf1/lineitem/lineitem.tbl</stringProp>
+              <stringProp name="SystemSampler.directory"></stringProp>
+              <stringProp name="TestPlan.comments">Generates the data from dbgen</stringProp>
               <stringProp name="SystemSampler.stdout">prepareTpchData.out</stringProp>
               <stringProp name="SystemSampler.stderr">prepareTpchData.err</stringProp>
             </SystemSampler>
             <hashTree>
               <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-                <boolProp name="ResultCollector.error_logging">true</boolProp>
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
                 <objProp>
                   <name>saveConfig</name>
                   <value class="SampleSaveConfiguration">
@@ -1187,7 +880,7 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
               <hashTree/>
             </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -1205,36 +898,8 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
               <stringProp name="query">dload lineitem paths
   &quot;/mnt/disk1/data1/lineitem.tbl&quot;
   &quot;/mnt/disk1/data2/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data3/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data4/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data5/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data6/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data7/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data8/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data9/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data10/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data11/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data12/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data13/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data14/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data15/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data16/lineitem.tbl&quot;
   &quot;/mnt/disk2/data1/lineitem.tbl&quot;
   &quot;/mnt/disk2/data2/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data3/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data4/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data5/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data6/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data7/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data8/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data9/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data10/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data11/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data12/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data13/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data14/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data15/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data16/lineitem.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1298,36 +963,8 @@ dload lineitem paths
               <stringProp name="query">dload orders paths
   &quot;/mnt/disk1/data1/orders.tbl&quot;
   &quot;/mnt/disk1/data2/orders.tbl&quot;
-  &quot;/mnt/disk1/data3/orders.tbl&quot;
-  &quot;/mnt/disk1/data4/orders.tbl&quot;
-  &quot;/mnt/disk1/data5/orders.tbl&quot;
-  &quot;/mnt/disk1/data6/orders.tbl&quot;
-  &quot;/mnt/disk1/data7/orders.tbl&quot;
-  &quot;/mnt/disk1/data8/orders.tbl&quot;
-  &quot;/mnt/disk1/data9/orders.tbl&quot;
-  &quot;/mnt/disk1/data10/orders.tbl&quot;
-  &quot;/mnt/disk1/data11/orders.tbl&quot;
-  &quot;/mnt/disk1/data12/orders.tbl&quot;
-  &quot;/mnt/disk1/data13/orders.tbl&quot;
-  &quot;/mnt/disk1/data14/orders.tbl&quot;
-  &quot;/mnt/disk1/data15/orders.tbl&quot;
-  &quot;/mnt/disk1/data16/orders.tbl&quot;
   &quot;/mnt/disk2/data1/orders.tbl&quot;
   &quot;/mnt/disk2/data2/orders.tbl&quot;
-  &quot;/mnt/disk2/data3/orders.tbl&quot;
-  &quot;/mnt/disk2/data4/orders.tbl&quot;
-  &quot;/mnt/disk2/data5/orders.tbl&quot;
-  &quot;/mnt/disk2/data6/orders.tbl&quot;
-  &quot;/mnt/disk2/data7/orders.tbl&quot;
-  &quot;/mnt/disk2/data8/orders.tbl&quot;
-  &quot;/mnt/disk2/data9/orders.tbl&quot;
-  &quot;/mnt/disk2/data10/orders.tbl&quot;
-  &quot;/mnt/disk2/data11/orders.tbl&quot;
-  &quot;/mnt/disk2/data12/orders.tbl&quot;
-  &quot;/mnt/disk2/data13/orders.tbl&quot;
-  &quot;/mnt/disk2/data14/orders.tbl&quot;
-  &quot;/mnt/disk2/data15/orders.tbl&quot;
-  &quot;/mnt/disk2/data16/orders.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1383,36 +1020,8 @@ dload lineitem paths
               <stringProp name="query">dload partsupp paths
   &quot;/mnt/disk1/data1/partsupp.tbl&quot;
   &quot;/mnt/disk1/data2/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data3/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data4/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data5/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data6/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data7/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data8/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data9/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data10/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data11/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data12/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data13/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data14/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data15/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data16/partsupp.tbl&quot;
   &quot;/mnt/disk2/data1/partsupp.tbl&quot;
   &quot;/mnt/disk2/data2/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data3/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data4/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data5/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data6/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data7/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data8/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data9/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data10/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data11/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data12/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data13/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data14/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data15/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data16/partsupp.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1455,36 +1064,8 @@ dload lineitem paths
               <stringProp name="query">dload part paths
   &quot;/mnt/disk1/data1/part.tbl&quot;
   &quot;/mnt/disk1/data2/part.tbl&quot;
-  &quot;/mnt/disk1/data3/part.tbl&quot;
-  &quot;/mnt/disk1/data4/part.tbl&quot;
-  &quot;/mnt/disk1/data5/part.tbl&quot;
-  &quot;/mnt/disk1/data6/part.tbl&quot;
-  &quot;/mnt/disk1/data7/part.tbl&quot;
-  &quot;/mnt/disk1/data8/part.tbl&quot;
-  &quot;/mnt/disk1/data9/part.tbl&quot;
-  &quot;/mnt/disk1/data10/part.tbl&quot;
-  &quot;/mnt/disk1/data11/part.tbl&quot;
-  &quot;/mnt/disk1/data12/part.tbl&quot;
-  &quot;/mnt/disk1/data13/part.tbl&quot;
-  &quot;/mnt/disk1/data14/part.tbl&quot;
-  &quot;/mnt/disk1/data15/part.tbl&quot;
-  &quot;/mnt/disk1/data16/part.tbl&quot;
   &quot;/mnt/disk2/data1/part.tbl&quot;
   &quot;/mnt/disk2/data2/part.tbl&quot;
-  &quot;/mnt/disk2/data3/part.tbl&quot;
-  &quot;/mnt/disk2/data4/part.tbl&quot;
-  &quot;/mnt/disk2/data5/part.tbl&quot;
-  &quot;/mnt/disk2/data6/part.tbl&quot;
-  &quot;/mnt/disk2/data7/part.tbl&quot;
-  &quot;/mnt/disk2/data8/part.tbl&quot;
-  &quot;/mnt/disk2/data9/part.tbl&quot;
-  &quot;/mnt/disk2/data10/part.tbl&quot;
-  &quot;/mnt/disk2/data11/part.tbl&quot;
-  &quot;/mnt/disk2/data12/part.tbl&quot;
-  &quot;/mnt/disk2/data13/part.tbl&quot;
-  &quot;/mnt/disk2/data14/part.tbl&quot;
-  &quot;/mnt/disk2/data15/part.tbl&quot;
-  &quot;/mnt/disk2/data16/part.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1514,36 +1095,8 @@ dload lineitem paths
               <stringProp name="query">dload customer paths
   &quot;/mnt/disk1/data1/customer.tbl&quot;
   &quot;/mnt/disk1/data2/customer.tbl&quot;
-  &quot;/mnt/disk1/data3/customer.tbl&quot;
-  &quot;/mnt/disk1/data4/customer.tbl&quot;
-  &quot;/mnt/disk1/data5/customer.tbl&quot;
-  &quot;/mnt/disk1/data6/customer.tbl&quot;
-  &quot;/mnt/disk1/data7/customer.tbl&quot;
-  &quot;/mnt/disk1/data8/customer.tbl&quot;
-  &quot;/mnt/disk1/data9/customer.tbl&quot;
-  &quot;/mnt/disk1/data10/customer.tbl&quot;
-  &quot;/mnt/disk1/data11/customer.tbl&quot;
-  &quot;/mnt/disk1/data12/customer.tbl&quot;
-  &quot;/mnt/disk1/data13/customer.tbl&quot;
-  &quot;/mnt/disk1/data14/customer.tbl&quot;
-  &quot;/mnt/disk1/data15/customer.tbl&quot;
-  &quot;/mnt/disk1/data16/customer.tbl&quot;
   &quot;/mnt/disk2/data1/customer.tbl&quot;
   &quot;/mnt/disk2/data2/customer.tbl&quot;
-  &quot;/mnt/disk2/data3/customer.tbl&quot;
-  &quot;/mnt/disk2/data4/customer.tbl&quot;
-  &quot;/mnt/disk2/data5/customer.tbl&quot;
-  &quot;/mnt/disk2/data6/customer.tbl&quot;
-  &quot;/mnt/disk2/data7/customer.tbl&quot;
-  &quot;/mnt/disk2/data8/customer.tbl&quot;
-  &quot;/mnt/disk2/data9/customer.tbl&quot;
-  &quot;/mnt/disk2/data10/customer.tbl&quot;
-  &quot;/mnt/disk2/data11/customer.tbl&quot;
-  &quot;/mnt/disk2/data12/customer.tbl&quot;
-  &quot;/mnt/disk2/data13/customer.tbl&quot;
-  &quot;/mnt/disk2/data14/customer.tbl&quot;
-  &quot;/mnt/disk2/data15/customer.tbl&quot;
-  &quot;/mnt/disk2/data16/customer.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1586,36 +1139,8 @@ dload lineitem paths
               <stringProp name="query">dload supplier paths
   &quot;/mnt/disk1/data1/supplier.tbl&quot;
   &quot;/mnt/disk1/data2/supplier.tbl&quot;
-  &quot;/mnt/disk1/data3/supplier.tbl&quot;
-  &quot;/mnt/disk1/data4/supplier.tbl&quot;
-  &quot;/mnt/disk1/data5/supplier.tbl&quot;
-  &quot;/mnt/disk1/data6/supplier.tbl&quot;
-  &quot;/mnt/disk1/data7/supplier.tbl&quot;
-  &quot;/mnt/disk1/data8/supplier.tbl&quot;
-  &quot;/mnt/disk1/data9/supplier.tbl&quot;
-  &quot;/mnt/disk1/data10/supplier.tbl&quot;
-  &quot;/mnt/disk1/data11/supplier.tbl&quot;
-  &quot;/mnt/disk1/data12/supplier.tbl&quot;
-  &quot;/mnt/disk1/data13/supplier.tbl&quot;
-  &quot;/mnt/disk1/data14/supplier.tbl&quot;
-  &quot;/mnt/disk1/data15/supplier.tbl&quot;
-  &quot;/mnt/disk1/data16/supplier.tbl&quot;
   &quot;/mnt/disk2/data1/supplier.tbl&quot;
   &quot;/mnt/disk2/data2/supplier.tbl&quot;
-  &quot;/mnt/disk2/data3/supplier.tbl&quot;
-  &quot;/mnt/disk2/data4/supplier.tbl&quot;
-  &quot;/mnt/disk2/data5/supplier.tbl&quot;
-  &quot;/mnt/disk2/data6/supplier.tbl&quot;
-  &quot;/mnt/disk2/data7/supplier.tbl&quot;
-  &quot;/mnt/disk2/data8/supplier.tbl&quot;
-  &quot;/mnt/disk2/data9/supplier.tbl&quot;
-  &quot;/mnt/disk2/data10/supplier.tbl&quot;
-  &quot;/mnt/disk2/data11/supplier.tbl&quot;
-  &quot;/mnt/disk2/data12/supplier.tbl&quot;
-  &quot;/mnt/disk2/data13/supplier.tbl&quot;
-  &quot;/mnt/disk2/data14/supplier.tbl&quot;
-  &quot;/mnt/disk2/data15/supplier.tbl&quot;
-  &quot;/mnt/disk2/data16/supplier.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1655,7 +1180,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">loadReplicated nation &quot;/mnt/disk1/data1/tpch/sf${SF}/nation/nation.tbl&quot; ;</stringProp>
+              <stringProp name="query">loadReplicated nation &quot;/mnt/disk1/data1/nation.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1695,7 +1220,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">loadReplicated region &quot;/mnt/disk1/data1/tpch/sf${SF}/region/region.tbl&quot; ;</stringProp>
+              <stringProp name="query">loadReplicated region &quot;/mnt/disk1/data1/region.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1753,7 +1278,71 @@ dload lineitem paths
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** Checking space after load ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterLoad" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterLoad" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterLoad_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterLoad.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -1761,7 +1350,7 @@ dload lineitem paths
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount_SF100" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount_SF250" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -2007,7 +1596,7 @@ dload lineitem paths
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -2018,7 +1607,63 @@ dload lineitem paths
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Pipeline Queries" enabled="true"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceBeforeQueries" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceBeforeQueries" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceBeforeQueries_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceBeforeQueries.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p1_debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -2168,7 +1813,7 @@ end ;
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">sleep 10;</stringProp>
+            <stringProp name="query">sleep 20;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -2179,6 +1824,70 @@ end ;
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP1" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP1_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP1.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p2_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P2Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P2Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -2380,14 +2089,6 @@ create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P3Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
@@ -2401,6 +2102,70 @@ create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP2" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP2_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP2.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p3_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P3Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P3Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -2540,6 +2305,70 @@ create index IxO_CUSTKEY  ON Orders  (O_CUSTKEY)  ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP3" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP3" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP3_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP3.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p4_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P4Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P4Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2662,6 +2491,70 @@ end ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP4" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP4" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP4_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP4.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p5_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P5Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P5Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2709,8 +2602,9 @@ begin
     | project &quot;type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type INTEGER as S_NATIONKEY J1_S_NATIONKEY&quot;
+    | hash &quot;type INTEGER S_NATIONKEY&quot;
     | combined 0
-    | next 
+    | next hashcast
 
   stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
@@ -2718,8 +2612,9 @@ begin
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR as N_NAME J1_N_NAME ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY&quot;
+    | hash &quot;type INTEGER N_REGIONKEY&quot;
     | combined 0
-    | next 
+    | next hashcast
 
   stage S05 on all partitions :
     indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
@@ -2760,7 +2655,8 @@ begin
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2831,6 +2727,70 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP5" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP5" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP5_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP5.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p6_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P6Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P6Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -2935,6 +2895,70 @@ create index IxL_SHIPDATE ON Lineitem (L_SHIPDATE)  ;</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP6" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP6" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP6_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP6.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p7_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P7Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P7Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -3081,6 +3105,70 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP7" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP7" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP7_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP7.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p8_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P8Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P8Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -3276,6 +3364,70 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP8" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP8" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP8_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP8.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p9_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P9Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -3438,7 +3590,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -3793,7 +3945,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -3806,6 +3958,70 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP9" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP9" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP9_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP9.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p10_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P10Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P10Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -3974,6 +4190,70 @@ create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP10" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP10" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP10_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP10.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p11_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P11Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P11Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4141,6 +4421,70 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP11" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP11" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP11_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP11.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p12_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P12Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P12Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4269,6 +4613,70 @@ create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP12" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP12" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP12_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP12.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p13_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P13Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P13Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4388,6 +4796,70 @@ create index IxO_CUSTKEY  ON Customer  (O_CUSTKEY)  ;
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP13" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP13" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP13_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP13.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p14_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P14Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P14Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -4512,6 +4984,70 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP14" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP14" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP14_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP14.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p15_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P15Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P15Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4634,7 +5170,63 @@ create index IxS_SuppKey  ON Supplier  (S_SuppKey)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP15" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP15" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP15_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP15.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p16_debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -5031,6 +5623,70 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP16" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP16" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP16_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP16.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p17_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P17Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P17Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -5172,6 +5828,70 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP17" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP17" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP17_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP17.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p18_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P18Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P18Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -5344,6 +6064,70 @@ CREATE INDEX IxC_CUSTKEY ON CUSTOMER(C_CUSTKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP18" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP18" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP18_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP18.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p19_debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start P19Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P19Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -5480,14 +6264,6 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** All done executing pipeline queries ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
@@ -5501,6 +6277,70 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP19" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP19" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">space;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+              <stringProp name="FileSaver.filename">spaceAfterP19_</stringProp>
+              <boolProp name="FileSaver.errorsonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.skipsuffix">false</boolProp>
+              <boolProp name="FileSaver.skipautonumber">false</boolProp>
+            </ResultSaver>
+            <hashTree/>
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>false</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>false</code>
+                  <message>true</message>
+                  <threadName>false</threadName>
+                  <dataType>false</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename">spaceAfterP19.csv</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** All done executing pipeline queries ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
           <hashTree/>
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H SQL Queries" enabled="false"/>
