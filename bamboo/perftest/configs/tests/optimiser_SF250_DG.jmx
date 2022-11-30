@@ -2709,9 +2709,8 @@ begin
     | project &quot;type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type INTEGER as S_NATIONKEY J1_S_NATIONKEY&quot;
-    | hash &quot;type INTEGER S_NATIONKEY&quot;
     | combined 0
-    | next hashcast
+    | next 
 
   stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
@@ -2719,9 +2718,8 @@ begin
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR as N_NAME J1_N_NAME ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY&quot;
-    | hash &quot;type INTEGER N_REGIONKEY&quot;
     | combined 0
-    | next hashcast
+    | next 
 
   stage S05 on all partitions :
     indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
@@ -2762,8 +2760,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3279,7 +3276,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -3441,7 +3438,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
