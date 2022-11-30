@@ -68,6 +68,7 @@ from (
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query7
 begin
    stage S00 on origin :
@@ -169,6 +170,7 @@ begin
      | sink
      | first
  end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */
