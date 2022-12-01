@@ -4426,9 +4426,9 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public part
-    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; != !f
-              }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not !f and
-              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and&quot;
+    | filter &quot; type BOOLEAN }  49  14  23  45  19  3  36  9  #8  P_SIZE in&quot;
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; !=&quot;
+    | filter &quot; type BOOLEAN }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not&quot;
     | project &quot;type INTEGER as P_PARTKEY P_PARTKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
@@ -4442,52 +4442,43 @@ begin
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
                type INTEGER as P_SIZE P_SIZE&quot;
-    | hash &quot; type INTEGER PS_SUPPKEY&quot;
     | combined 0
-    | next hashcast
+    | next
 
   stage S03 on all partitions :
-    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
-               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
-    | aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
+    aggreg &quot; groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+                     type VARCHAR as P_BRAND P_BRAND ,
                        type VARCHAR as P_TYPE P_TYPE ,
-                       type INTEGER as P_SIZE P_SIZE ,
-                       type INTEGER as PS_SUPPKEY PS_SUPPKEY
+                       type INTEGER as P_SIZE P_SIZE
                aggregates
-                       type VARCHAR  as P_BRAND $K1 ,
-                       type VARCHAR  as P_TYPE $K2 ,
-                       type INTEGER  as P_SIZE $K3 ,
-                       type INTEGER  as PS_SUPPKEY $K4&quot;
+                       type INTEGER  as PS_SUPPKEY $K1 ,
+                       type VARCHAR  as P_BRAND $K2 ,
+                       type VARCHAR  as P_TYPE $K3 ,
+                       type INTEGER  as P_SIZE $K4 &quot;
+
 
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
-                     type VARCHAR as P_TYPE P_TYPE ,
-                     type INTEGER as P_SIZE P_SIZE ,
-                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
-             aggregates
-                    type VARCHAR  as P_BRAND $K1 ,
-                    type VARCHAR  as P_TYPE $K2 ,
-                    type INTEGER  as P_SIZE $K3 ,
-                    type INTEGER  as PS_SUPPKEY $K4 &quot;
-    | combined 0
-    | next
-
-  stage S05 on origin :
-    aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
-                     type VARCHAR as P_TYPE P_TYPE ,
-                     type INTEGER as P_SIZE P_SIZE ,
-                     type INTEGER as PS_SUPPKEY PS_SUPPKEY
-             aggregates
-                    type VARCHAR  as P_BRAND $K1 ,
-                    type VARCHAR  as P_TYPE $K2 ,
-                    type INTEGER  as P_SIZE $K3 ,
-                    type INTEGER  as PS_SUPPKEY $K4 &quot;
+    aggreg &quot; groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+                         type VARCHAR as P_BRAND P_BRAND ,
+                           type VARCHAR as P_TYPE P_TYPE ,
+                           type INTEGER as P_SIZE P_SIZE
+                   aggregates
+                           type INTEGER  as PS_SUPPKEY $K1 ,
+                           type VARCHAR  as P_BRAND $K2 ,
+                           type VARCHAR  as P_TYPE $K3 ,
+                           type INTEGER  as P_SIZE $K4 &quot;
     | hash &quot; type INTEGER PS_SUPPKEY&quot;
     | combined 0
     | next hashcast
+
+  stage S05 on all partitions :
+     keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | combined 0
+    | next
 
   stage S06 on all partitions :
     aggreg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
