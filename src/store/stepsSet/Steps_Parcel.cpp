@@ -350,8 +350,17 @@ void Step::vParcelPipeOut(void)
         nQueued++;
       }
 
+      /**************************************************************************
+      * ALKA : COMMENTED the following check as now we don't share
+      * rowBuffers across partitions !!!
+      * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
+      * sharing of rowBuffers does not work.
+      * Hence we now duplicate the rowBuffer for each partition.
+      * If we want to share it we will need to modify the codeSynthesier
+      * (maybe version 2)
+      **************************************************************************/
       // delete the original operand (to be optimised)
-      if (CN_ROWBUFFER != eOperandClass)
+      //if (CN_ROWBUFFER != eOperandClass)
         AM::vDeleteOperand(pOperand,pOuterJobOfTask());
       
       delete pParcel;
