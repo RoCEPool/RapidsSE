@@ -154,6 +154,15 @@ Combined::~Combined(void) noexcept(false)
 
   RowSingle* pRowSingle;
 
+  if (m_xCombinedT.m_aIndexTreePL) {
+    IndexTree* pIndexTree = _pIndexTree(m_xCombinedT.m_aIndexTreePL);
+    delete pIndexTree;
+  }
+  if (m_xCombinedT.m_aIndexDefPL) {
+    IndexDef* pIndexDef = _pIndexDef(m_xCombinedT.m_aIndexDefPL);
+    delete pIndexDef;
+  }
+
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
   delete pRowSingle;
 
