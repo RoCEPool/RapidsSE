@@ -1658,6 +1658,13 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
+
+  //               //
+  // T T W A A A   //
+  //     f         //
+  //     bc        //
+  //    @ro        //
+
   vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
@@ -1730,10 +1737,19 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   vPrintBoard(__LINE__);
 
   G_vRestart();
+
+  //           v v               //
+  // T G G G H P F T T W A A A   //
+  //           s                 //
+
   RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
   RASSERT(G_bEachMain(CK_FOLD));
   R_vUTE_Derive_foldElist_From_project_stream();
   vPrintBoard(__LINE__);
+
+  //                     v v v   //
+  // T G G G H P F T T W G G G   //
+  //                     elelel  //
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
     i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
@@ -1743,9 +1759,16 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
     G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
   }
 
-  // find table for sqyarg
+  // find table for sqyarg (will be an mq table)
   char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
   G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
+
+
+  //                             //
+  // T G G G H P F T T W G G G   //
+  //               f             //
+  //               bc            //
+  //               cp            //
 
   // TODO: derive cmpPred from marked tstPred and add to corresponding table
 
@@ -1762,6 +1785,14 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   // filter into bounds
 
+  //                             //
+  // T G G G H P F T T W G G G   //
+  //               b             //
+  //               ^             //
+  //               f             //
+  //               bc            //
+  //              @cp            //
+
   C_vBounds_DeriveFrom_filter(G.p_table,G.p_filter,false);
   vPrintBoard(__LINE__);
 
@@ -1771,13 +1802,24 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vR_S36_T30_Delete_Empty_filter();
 
+  //                             //
+  // T G G G H P F T T W A A A   //
+  //                   f         //
+  //                   bc        //
+  //                  @ro (cull) //
+
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
 
-
   vPrintBoard(__LINE__);
+
+  //                             //
+  // T G G G H P F T T W A A A   //
+  //                   f         //
+  //                   bc        //
+  //                 (empty)     //
 
   // delete potentially empty where
   G_vRestart();
