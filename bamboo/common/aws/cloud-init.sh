@@ -366,7 +366,7 @@ EOF
   echo
   amazon-linux-extras install -y epel
   yum update -y
-  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses
+  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses parallel
   yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
   if [ "${OS_DIST}" = "${CENTOS7}" ]; then
@@ -523,14 +523,22 @@ EOF
   echo
 
   bash_profile="${OS_HOME_DIR}/.bash_profile"
-  echo "" >>"${bash_profile}"
-  echo '#export PS1="[\u@\h \W]\$ ' >>"${bash_profile}"
-  echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "' >>"${bash_profile}"
-  echo "" >>"${bash_profile}"
+  {
+    echo "";
+    echo '#export PS1="[\u@\h \W]\$ ';
+    echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "';
+    echo "";
+  } >> "${bash_profile}"
 
   # ----------------------------------------------------------------------------------------
   # Git setup
   sudo -H -u "${OS_USER}" git lfs install
+
+  # ----------------------------------------------------------------------------------------
+  # Remove annoying GNU Parallel citation message
+  if which parallel &>/dev/null; then
+    echo -e "will cite\n" | parallel --citation
+  fi
 
   # ----------------------------------------------------------------------------------------
   # Indicate cloud-init has completed by dropping a file in /tmp
