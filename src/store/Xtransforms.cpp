@@ -1657,10 +1657,8 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   vAssert_Board_mqA();
 
 
-  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
-
   //               //
-  // T T W A A A   //
+  // T T W A A A   // find W_L_C_E subquery call in mq:<where>/<boolCalc>
   //     f         //
   //     bc        //
   //    @ro        //
@@ -1676,40 +1674,6 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
   G.pDeck->vPush(G.p_fold);
-
-  /*
-  // find table for sqyarg
-  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
-  G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
-
-  // TODO: derive cmpPred from marked tstPred and add to corresponding table
-
-  G_vNewMember(CK_CMPPRED,"=="_Stz);
-  G_vNewMember(CK_TERM,m_sSqyArg.szStz());
-  G.p_cmpPred->vAppend(G.p_term);
-  //G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
-  G_vNewMember(CK_TERM,"$1"_Stz);
-  G.p_cmpPred->vAppend(G.p_term);
-
-  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
-  vPrintBoard(__LINE__);
-
-  G_vRestart();
-  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
-  }
-
-  R_vUTE_RelabelExpressions();
-
-  vPrintBoard(__LINE__);
-
-  // delete potentially empty where
-  G_vRestart();
-  G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-
-  vPrintBoard(__LINE__);
-
-*/
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1730,6 +1694,12 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   G_vPopBoard();
   vAssert_Board_mqA();
 
+  // W A NC I
+  //       I-sqr-> $1            // Folded nc sq provides sqr into mq as $1
+  //               ----mq-----   //
+  // T G G G H P F T T W A A A   // push sq before Fold
+  // ----sq-----                 //
+
   G.pDeck->vPush(m_pCard_yanked);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
   DELETE_CARD(m_pCard_yanked);
@@ -1738,18 +1708,22 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   G_vRestart();
 
+  // W A NC I
+  //       I-sqr-> $1            // Put an expr describing sqr into Fold
   //           v v               //
-  // T G G G H P F T T W A A A   //
-  //           s                 //
+  // T G G G H P F T T W A A A   // derive foldElist from sq Project
+  //           s el              //
 
   RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
   RASSERT(G_bEachMain(CK_FOLD));
   R_vUTE_Derive_foldElist_From_project_stream();
   vPrintBoard(__LINE__);
 
+  // W A NC I
+  //       I-sqr-> $1            // Injection of sqr into mq adds new $1
   //                     v v v   //
-  // T G G G H P F T T W G G G   //
-  //                     elelel  //
+  // T G G G H P F T T W G G G   // bump stmOdn:$n in mq gbyElist by 1
+  //                     elelel  // (if G is actually G -- might be A)
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
     i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
@@ -1759,18 +1733,16 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
     G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
   }
 
-  // find table for sqyarg (will be an mq table)
+  // W A NC I
+  //       I-sqr-> $1            // The mq IN transforms to arg == $1 (the corr pred)
+  //                             //
+  // T G G G H P F T T W G G G   // find table for sqy arg (will be an mq table)
+  //               f             // derive cmpPred from sqy arg
+  //               bc            // add cmpPred to table
+  //               cp  @ro       //
+
   char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
   G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
-
-
-  //                             //
-  // T G G G H P F T T W G G G   //
-  //               f             //
-  //               bc            //
-  //               cp            //
-
-  // TODO: derive cmpPred from marked tstPred and add to corresponding table
 
   G_vNewMember(CK_CMPPRED,"=="_Stz);
   G_vNewMember(CK_TERM,m_sSqyArg.szStz());
@@ -1782,11 +1754,10 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
   vPrintBoard(__LINE__);
 
-
-  // filter into bounds
-
+  // W A NC I
+  //       I-sqr-> $1            // The corr pred in mq is a new bounds
   //                             //
-  // T G G G H P F T T W G G G   //
+  // T G G G H P F T T W G G G   // derive bounds from filter
   //               b             //
   //               ^             //
   //               f             //
@@ -1796,14 +1767,30 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   C_vBounds_DeriveFrom_filter(G.p_table,G.p_filter,false);
   vPrintBoard(__LINE__);
 
+  // W A NC I
+  //       I-sqr-> $1            // Moved corr pred can be culled
+  //                             //
+  // T G G G H P F T T W G G G   // cull @cp from filter
+  //               b             //
+  //               f             //
+  //               bc            //
+
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
   M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
   vPrintBoard(__LINE__);
 
+  // W A NC I
+  //       I-sqr-> $1            // Culled corr pred may leave filter empty
+  //                             //
+  // T G G G H P F T T W G G G   // delete empty filter
+  //               b             //
+
   vR_S36_T30_Delete_Empty_filter();
 
+  // W A NC I
+  //       I-sqr-> $1            // The original ro pred can now be removed
   //                             //
-  // T G G G H P F T T W A A A   //
+  // T G G G H P F T T W A A A   // cull the ro pred
   //                   f         //
   //                   bc        //
   //                  @ro (cull) //
@@ -1815,21 +1802,21 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vPrintBoard(__LINE__);
 
+  // W A NC I
+  //       I-sqr-> $1            // Removal of ro pred may leave Where empty
   //                             //
-  // T G G G H P F T T W A A A   //
+  // T G G G H P F T T W A A A   // delete potentially empty where
   //                   f         //
   //                   bc        //
   //                 (empty)     //
 
-  // delete potentially empty where
   G_vRestart();
   G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
 
   vPrintBoard(__LINE__);
 
 
-
-
+  // todo: should this be earlier? As soon as $1 is injected into mq??
 
   R_vUTE_AdjustStmLoHi();
   vPrintBoard(__LINE__);
@@ -1844,121 +1831,8 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
 
   vPrintBoard(__LINE__);
 
-
   vEndTransform();
 }
-/*----------------------------------------------------------------------------*/
-//void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-//
-//  // W A NC I
-//  // push a (single-value aggregate non-correlated in) sub-query before the main-query
-//  // as an aggregation-fan (projecting a single aggregated value)
-//  // (refer: Q18)
-//
-//  /* ARCHETYPE :
-//      select count(*)
-//        from orders, lineitem
-//       where O_ORDERKEY = L_ORDERKEY
-//         and O_ORDERKEY in (select L_ORDERKEY
-//                              from lineitem
-//                             group by L_ORDERKEY
-//                            having sum(l_quantity) > 100)
-//      ;
-//   */
-//
-//  vTransform(__func__, "((30))"_Stz);
-//
-//  vAssert_Board_mqA();
-//
-//
-//  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
-//  vAssert_Board_mqA();
-//  if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-//    if (!R_bUTE_FindAndMarkSubQryCall()) {
-//      vTracer("DID NOT FIND W_A_NC_I SubQuery call\n"_Stz);
-//      NEVER_REACH
-//    }
-//  }
-//  vTrace("Found W_A_NC_I call to %s(%s)->%s\n"_Stz,m_sSqyNm.szStz(),m_sSqyArg.szStz(),m_sSqyRsl.szStz());
-//
-//  G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
-//  G.pDeck->vPush(G.p_fold);
-//
-//  // find table for sqyarg
-//
-//
-//  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
-//  G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
-//
-//  // TODO: derive cmpPred from marked tstPred and add to corresponding table
-//
-//  G_vNewMember(CK_CMPPRED,"=="_Stz);
-//  G_vNewMember(CK_TERM,m_sSqyArg.szStz());
-//  G.p_cmpPred->vAppend(G.p_term);
-//  //G_vNewMember(CK_TERM,m_sSqyRsl.szStz());
-//  G_vNewMember(CK_TERM,"$1"_Stz);
-//  G.p_cmpPred->vAppend(G.p_term);
-//
-//  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
-//  vPrintBoard(__LINE__);
-//
-//  G_vRestart();
-//  if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-//    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
-//  }
-//
-//  R_vUTE_RelabelExpressions();
-//
-//  vPrintBoard(__LINE__);
-//
-//  // delete potentially empty where
-//  G_vRestart();
-//  G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-//
-//  vPrintBoard(__LINE__);
-//
-//
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  // x) push to sq
-//  if (! G_bPushBoard(m_sSqyNm)) {
-//    vTrace("DID NOT FIND Board %s\n"_Stz,m_sSqyNm.szStz());
-//    NEVER_REACH
-//  }
-//  vAssert_Board_sqB();
-//
-//  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
-//
-//  vPrintBoard(__LINE__);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  // x) pop back to mq
-//  G_vPopBoard();
-//  vAssert_Board_mqA();
-//
-//  G.pDeck->vPush(m_pCard_yanked);
-//  G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
-//  DELETE_CARD(m_pCard_yanked);
-//
-//  vPrintBoard(__LINE__);
-//
-//  G_vRestart();
-//  RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
-//  RASSERT(G_bEachMain(CK_FOLD));
-//  R_vUTE_Derive_foldElist_From_project_stream();
-//
-//  R_vUTE_AdjustStmLoHi();
-//  vPrintBoard(__LINE__);
-//
-//  R_vUTE_RenumberStmOdn();
-//  vPrintBoard(__LINE__);
-//
-//  vEndTransform();
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
