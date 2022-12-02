@@ -90,9 +90,8 @@ begin
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type INTEGER as S_NATIONKEY J1_S_NATIONKEY"
-    | hash "type INTEGER S_NATIONKEY"
     | combined 0
-    | next hashcast
+    | next
 
   stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
@@ -100,9 +99,8 @@ begin
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR as N_NAME J1_N_NAME ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
-    | hash "type INTEGER N_REGIONKEY"
     | combined 0
-    | next hashcast
+    | next
 
   stage S05 on all partitions :
     indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
