@@ -159,18 +159,19 @@ OptimiserFun __Opt_n
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_readPipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
-//  reOptAct = OA_REPRINT_BOARD;
-//
-//  pOptimiser->pCardCtl()->vUseLonger();
-
   s256 sFile;
-  s16KB sPipeLineStatement = "";
+  s16KB szPipeLineStatement = "";
 
   sFile = pTknVec->pGet(1)->szChars();
 
-  PipelineNotation::vPipelineFromFile(sFile, sPipeLineStatement);
+  PipelineNotation::vPipelineFromFile(sFile, szPipeLineStatement);
 
 //  vTrace("%s\n"_Stz, sPipeLineStatement.szStz());
+
+  VertexSpec* pVertexSpec = Dynamo::pToVertexSpec(szPipeLineStatement, pOptimiser->pJobTags());
+
+  pOptimiser->vToPipeSpec(pVertexSpec);
+
   return true;
 }
 
