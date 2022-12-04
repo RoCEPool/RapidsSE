@@ -2135,6 +2135,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   // T T F W A A A   // %1 -> $t.n
   //   b             //
   //   %1->$t.c      //
+  //   ke            //
 
   R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
   G_vCopyCard(nullptr);
@@ -2196,6 +2197,19 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
   // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
+
+  // W L NC NI
+  //               //
+  //               //
+  // T T W A A A   // find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //     f         //
+  //     bc        //
+  //    @ro notIn  //
+  //        __sq2  // sub-query
+  //           #1  // result
+  //         $a.2  // argument
+
+
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
       vTracer("DID NOT FIND W_L_NC_NI SubQuery call\n"_Stz);
@@ -2215,6 +2229,9 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   vAssert_Board_sqB();
 
   // x) pull <where> into <table>/<filter>
+
+
+
   vPrintBoard(__LINE__);
 
   G_vRestart();
@@ -2244,20 +2261,18 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   G_vNewMember(CK_FOLD,"W_L_NC_NI"_Stz);
   G_vInsertBefore(G.p_fold,G.p_where);
 
+  // W L NC NI
+  //                   //
+  // ------  --mq----  //
+  // T T T F W A A A   // find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //     --sq          //
+  //     kne           //
 
   G_vInsertBefore(m_pCard_copied,G.p_fold);
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
-
   G.pDeck->vRenumberRecursive();
-  vPrintBoard(__LINE__);
-
   R_vUTE_AdjustStmLoHi();
-  vPrintBoard(__LINE__);
-
-  // % -> $t.n
-  //R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
-
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
@@ -2268,6 +2283,14 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   G.p_index = G.p_table->pSub_index();
   G.p_index->vAppend(G.p_bounds);
 
+
+  vPrintBoard(__LINE__);
+
+  // W L NC NI
+  //                   //
+  // T T T F W A A A   //
+  //     b             //
+  //     kne           //
 
   G_vRestart();
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_KEYNOTEXISTS,CK_CONSTRAINT));
@@ -2280,6 +2303,18 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
   G_vCopyCard(nullptr);
 
+
+  // W L NC NI
+  //                 // Cull @ro notIn
+  //                 //
+  // T T T W A A A   //
+  //       f         //
+  //       bc        //
+  //      @ro notIn  //
+  //          __sq2  //
+  //             #1  //
+  //           $a.2  //
+
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
@@ -2287,6 +2322,13 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
 
   vPrintBoard(__LINE__);
 
+
+  // W L NC NI
+  //               // Delete potentially empty where
+  //               //
+  // T T T A A A   //
+  //               //
+  //               //
 
   // delete potentially empty where
   G_vRestart();
