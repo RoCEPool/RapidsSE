@@ -1657,8 +1657,9 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   vAssert_Board_mqA();
 
 
+  // W A NC I
   //               //
-  // T T W A A A   // find W_L_C_E subquery call in mq:<where>/<boolCalc>
+  // T T W A A A   // find W_L_NC_I subquery call in mq:<where>/<boolCalc>
   //     f         //
   //     bc        //
   //    @ro        //
@@ -2059,9 +2060,17 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
    */
 
   vTransform(__func__, "((20))"_Stz);
+  vAssert_Board_mqA();
+
+  // W L C E
+  //             //
+  //             //
+  // T W A A A   // find W_L_C_E subquery call in mq:<where>/<boolCalc>
+  //   f         //
+  //   bc        //
+  //  @ro exists //
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
-  vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
       vTracer("DID NOT FIND W_L_C_E SubQuery call\n"_Stz);
@@ -2086,16 +2095,12 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   }
   vPrintBoard(__LINE__);
 
-
   G_vRestart();
   if (G_bEachMainWith2Sub(CK_TABLE,CK_INDEX,CK_CONSTRAINT)) {
     G.p_table->vRemoveChild(G.p_constraint);
     G.p_index->vAppend(G.p_constraint);
   }
   vPrintBoard(__LINE__);
-
-
-
 
   // 3) get copy of sq:<table>/* into cc:<table>
   G_vRestart();
@@ -2109,38 +2114,54 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
   G_vPopBoard();
   vAssert_Board_mqA();
 
-  // 5) fold
-  //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
-  // put cc:<table>/* before mq:<where>
-
   G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
   G_vInsertBefore(G.p_fold,G.p_where);
 
 
+  // W L C E
+  //                 //
+  //       E-sqr->   // Insert sq table before fold
+  // --    ----mq--- //
+  // T T F W A A A   // put cc:<table>/* before mq:<where>
+  //   --sq          //
+
   G_vInsertBefore(m_pCard_copied,G.p_fold);
   G_vAppendNewChild(m_pCard_copied, CK_KEYEXISTS);
-
   vPrintBoard(__LINE__);
 
-  // % -> $t.n
+  // W L C E
+  //                 // Replace %1 parameter with calling argument
+  //                 //
+  // T T F W A A A   // %1 -> $t.n
+  //   b             //
+  //   %1->$t.c      //
+
   R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
-
   G_vCopyCard(nullptr);
-
   vPrintBoard(__LINE__);
+
+  // W L C E
+  //                 // Cull @ro exists from <where>/<filter>
+  //                 //
+  // T T F W A A A   //
+  //       f         //
+  //       bc        //
+  //      @ro exists //
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
-
   vPrintBoard(__LINE__);
 
+  // W L C E
+  //                 // Delete potentially empty where
+  //                 //
+  // T T F A A A     //
+  //                 //
 
-  // delete potentially empty where
   G_vRestart();
   G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-
   vPrintBoard(__LINE__);
 
   m_pBench->vIsFlat(true);

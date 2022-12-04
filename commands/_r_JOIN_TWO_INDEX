@@ -12,15 +12,17 @@ create index L_idx1  on lineitem (L_ORDERKEY );
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vSeries_36_Bound_Analysis"
+/glean_cue_from = "vSeries_75_EE_operators"
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_JOIN_TWO_INDEX"
 select count(*)
   from Orders, Lineitem
- where O_ORDERKEY  = L_ORDERKEY
-   and O_ORDERDATE = L_SHIPDATE
+ where
+       O_ORDERKEY  = L_ORDERKEY
+   //and
+   //    O_ORDERDATE = L_SHIPDATE
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
