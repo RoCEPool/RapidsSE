@@ -470,6 +470,70 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Xtest::T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred,
+                                           Card_Index* p_index,
+                                           bool bParamAllowedInBounds)
+{
+  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+    // + term_0 is $c.n
+
+    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index) ||
+          T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
+        return true;
+
+      // - neither term are a $c.n matching index column
+      return false;
+    }
+    else {
+      // + term_0 is $c.n
+
+      // ? check term_1 is permitted param
+      if ((! bParamAllowedInBounds) &&
+          T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+        return false;
+
+      // ? is term_0:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index))
+        return true;
+
+      // - term_0 is a $c.n but doesn't match index column
+      return false;
+    }
+  }
+  else
+  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    // + term_1 is $c.n
+
+    // ? maybe term_0 is permitted param
+    if ((! bParamAllowedInBounds) &&
+        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+      return false;
+
+    // ? is term_0:$c.n an index column
+    if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
+      return true;
+
+    // - term_1 is a $c.n but doesn't match index column
+    return false;
+  }
+  else {
+    // + neither term is $c.n
+    return false;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
