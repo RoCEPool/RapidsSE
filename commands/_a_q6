@@ -23,6 +23,7 @@ where
 
 // TRICKS:
 //   * LITERAL ARITHMETIC UPFRONT
+//   * SCAN CHANGED TO AN INDEXSCAN
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

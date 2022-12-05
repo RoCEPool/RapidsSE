@@ -50,13 +50,13 @@ limit 20;
 // TRICKS:
 //   * GROUP BY ONLY ON C_CUSTKEY AS THIS KEY IS UNIQUE.
 //   * CUSTOMER PROJECTIONS ARE DELAYED
-//   * ADDED TOP TO GET TOP REVENUE AND THEN SORT
+//   * ADDED TOP TO GET TOP REVENUE INTEAD OF SORT DESC WITH LIMIT
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // EXTRA NOTES:
 //   CAN EXPLORE DIFFERENT JOIN ORDERS.
-//   SPECIFICALLY STARING WITH LINEITEM
+//   SPECIFICALLY STARTING WITH LINEITEM
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -133,7 +133,7 @@ begin
     | next
 
   stage S08 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    top " TOP type DECIMAL REVENUE  " 20
     | combined 0
     | next
 

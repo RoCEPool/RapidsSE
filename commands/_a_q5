@@ -39,7 +39,7 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * CHNAGED JOIN ORDER
+//   * CHANGED JOIN ORDER
 //   * SEPARATE SORT INTO DIFFERENT STAGE THAN AGGREG
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
