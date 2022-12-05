@@ -274,7 +274,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  G.p_gbyAgg->vDump();
+  //G.p_gbyAgg->vDump();
 
   G.p_stream = G.p_gbyAgg->pSub_stream();
   if (! G.p_stream) {
@@ -298,6 +298,40 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
     G_vAppendNewChild(G.p_stmOrdList,CK_STMORDODN);
 
     G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,xCI.i_Child()+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_stmOrdList->vDump();
+  G.p_project->vDump();
+
+  G.p_projElist = G.p_project->pSub_projElist();
+  G.p_stream = G.p_project->pSub_stream();
+  G.p_stmColList = G.p_stream->pSub_stmColList();
+
+  Card_StmOrdList* p_stmOrdList_project = nullptr;
+
+  i8 nLeading = 0;
+  CardIter xCI(G.p_stmOrdList);
+  while ((G.p_stmOrdOdn = _pCard_StmOrdOdn(xCI.pEachChild()))) {
+    i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_stmOrdOdn);
+    if (C_UNKNOWN != i_Expr) {
+      nLeading++;
+
+      if (! p_stmOrdList_project) {
+        p_stmOrdList_project = new Card_StmOrdList;
+        G.p_stream->vAppend(p_stmOrdList_project);
+      }
+
+      G_vAppendNewChild(p_stmOrdList_project,CK_STMCOLODN);
+      G.p_stmColOdn->vValueSprint("$%lld"_Stz,i_Expr+1);
+    }
   }
 }
 

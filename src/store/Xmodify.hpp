@@ -52,6 +52,7 @@ namespace STORE
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
+    i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);

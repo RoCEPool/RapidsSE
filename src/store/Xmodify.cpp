@@ -464,6 +464,35 @@ void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+i8 Xmodify::E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Stz* szStrOrdOdn = p_stmOrdOdn->szValue();
+
+  CardIter xCI_elist(p_ELIST);
+  while (Card_Expr* p_expr = _pCard_Expr(xCI_elist.pEachChild())) {
+
+    Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+    if (! p_rpnCalc)
+      continue;
+
+    if (p_rpnCalc->nChildCards() > 1)
+      continue;
+
+    CardIter xCI_rpnCalc(p_rpnCalc);
+    while (Card_Term* p_term = _pCard_Term(xCI_rpnCalc.pEachChild())) {
+      if (p_term->bIsValue(szStrOrdOdn))
+        return xCI_elist.i_Child();
+    }
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Xmodify::E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
