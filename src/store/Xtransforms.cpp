@@ -3199,9 +3199,27 @@ void Xtransforms::vS80_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS80_T10_bounds_For_scan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "append <indexList> to <scan>"_Stz);
+
+  vAssert_Board_mqA();
+
+  if (G_bEachMain(CK_SCAN)) {
+  }
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T10_Produce_Scratch_indexList_Under_scan(void)
+void Xtransforms::vS80_TF1_Produce_Scratch_indexList_Under_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3219,7 +3237,7 @@ void Xtransforms::vS80_T10_Produce_Scratch_indexList_Under_scan(void)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T20_Affix_idxColOdn_ToAll_idxCol(void)
+void Xtransforms::vS80_TF2_Affix_idxColOdn_ToAll_idxCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3237,7 +3255,7 @@ void Xtransforms::vS80_T20_Affix_idxColOdn_ToAll_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void)
+void Xtransforms::vS80_TF3_Mark_ULRangeOf_scan_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3255,7 +3273,7 @@ void Xtransforms::vS80_T30_Mark_ULRangeOf_scan_filter_cmpPred(void)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
+void Xtransforms::vS80_TF4_Mark_IndexMatchOf_scan_filter_terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3273,7 +3291,7 @@ void Xtransforms::vS80_T40_Mark_IndexMatchOf_scan_filter_terms(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
+void Xtransforms::vS80_TF5_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3291,7 +3309,7 @@ void Xtransforms::vS80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T60_Cull_Marked_filter_cmpPred(void)
+void Xtransforms::vS80_TF6_Cull_Marked_filter_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3309,7 +3327,7 @@ void Xtransforms::vS80_T60_Cull_Marked_filter_cmpPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T70_Morph_scan_To_indexScan(void)
+void Xtransforms::vS80_TF7_Morph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3492,9 +3510,17 @@ void Xtransforms::vS90_T00_Begin(void)
 
   //m_pCardCtl->vUseShorter();
 
-  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,
-                                  CK_RPNCALC,CK_STREAM,0);
-  m_pCardCtl->vPrintSubCards(false,CK_INDEXLIST,CK_STMCOLLIST,0);
+  m_pCardCtl->vPrintSubCards(true,
+                                  CK_AGGELIST,
+                                  CK_GBYELIST,
+                                  CK_INDEXLIST,
+                                  CK_PROJELIST,
+                                  CK_RPNCALC,
+                                  CK_STREAM,
+                                  0);
+  m_pCardCtl->vPrintSubCards(false,
+                                   CK_STMCOLLIST,
+                                   0);
 
   m_pCardCtl->vPrintBelow(CK_PROJECT,true);
 

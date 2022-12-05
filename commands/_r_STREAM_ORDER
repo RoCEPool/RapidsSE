@@ -6,12 +6,13 @@ trackMemory;
 
 _r_schema
 
+create index O_idx0  on Orders   (O_ORDERKEY );
 create index L_idx0  on Lineitem (L_ORDERKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vSeries_90_Stream_Ordering"
+/glean_cue_from = "vSeries_80_Index_Scan"
 /glean_interactive
 /transliterated
 /weaved
