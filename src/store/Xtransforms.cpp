@@ -2369,8 +2369,18 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   vTransform(__func__, "((20))"_Stz);
 
-  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
+
+  // H A NC ro
+  //                  //
+  //                  //
+  // T T G G G H      //
+  //           bc     //
+  //          @ro     //
+  //              $2  //
+  //           __sq2  //
+
+  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
   if (G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
     if (!R_bUTE_FindAndMarkSubQryCall()) {
       vTrace("DID NOT FIND H_A_NC_ro SubQuery call\n"_Stz);
@@ -2405,6 +2415,12 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 //  G_vAppendNewChild(G.p_foldElist,CK_RPNCALC);
 //  G_vAppendNewChild(G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
+  // H A NC ro
+  //                               //
+  //               --mq--------    //
+  // T T A A A P F T T G G G H     //
+  // --sq--------                  //
+
 
   G.pDeck->vPush(m_pCard_yanked);
   G.pDeck->vReplaceChildWithItsSubs(m_pCard_yanked);
@@ -2418,6 +2434,12 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
+  // H A NC ro
+  //                               //
+  //                               //
+  // T T A A A P F T T G G G H     //
+  //             fe                //
+
   G_vRestart();
   if (G_bEachMain(CK_FOLD)) {
     G.i_FoldCard = G.i_MainCard;
@@ -2425,9 +2447,28 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
   }
   vPrintBoard(__LINE__);
 
+
+  // H A NC ro
+  //                               //
+  //                               //
+  // T T A A A P F T T G G G H     //
+  //                   gegege      //
+  //                   $1$1$1      //
+  //                   aeaeae      //
+  //                   k1k1k1      //
+
   R_vUTE_FoldIn_foldExpr();
   G.pDeck->vRenumberRecursive();
   vPrintBoard(__LINE__);
+
+  // H A NC ro
+  //                               //
+  //                               //
+  // T T A A A P F T T G G G H P   //
+  //                         bc    //
+  //                        @ro    //
+  //                         $3    //
+  //                         $1    //
 
   G_vRestart();
   if (G_bEachMain(CK_HAVING)) {
