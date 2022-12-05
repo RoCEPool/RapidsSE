@@ -1018,6 +1018,8 @@ void Xreshape::R_vUTE_Remove_filter_IfEmpty(Card* pParent, Card_Filter* p_filter
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  // todo: xt
+
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
 
   if (p_boolCalc->nChildCards())
@@ -1033,6 +1035,8 @@ void Xreshape::R_vUTE_Remove_filter_IfEmpty(Card* pParent, Card_Filter* p_filter
 void Xreshape::R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // todo: remove? It is unused
 
   M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
 }
@@ -1362,6 +1366,8 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_where(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  // todo: remove? It is unused
+
 
   G_vNewMember(CK_PROJECT);
   G.pDeck->vInsertAfter(G.p_project,G.p_where);
@@ -1383,6 +1389,8 @@ void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  // todo: xt
+
   bool b = M_bBoolCalc_Yank_PRED(p_boolCalc, MARK_AT, rp_PRED);
   RASSERT(b);
 }
@@ -1401,6 +1409,8 @@ void Xreshape::vR_S10_T80_Delete_Redundant_stage(void)
 
   vReshape(__func__);
 
+  // todo: remove? along with xt function as it is unused
+
   G_vRemoveDeleteMain(CK_STAGE);
 
   vEndReshape();
@@ -1414,6 +1424,8 @@ void Xreshape::vR_S10_T90_Hide_Ignorable_stage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove? along with xt function as it is unused
 
   if (! T_bStage_IsIgnorable(G.p_stage))
     return;
@@ -1432,6 +1444,8 @@ void Xreshape::vR_S10_T10_Delete_absJoin(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G_vRemoveDeleteMain(CK_ABSJOIN);
 
   vEndReshape();
@@ -1445,6 +1459,8 @@ void Xreshape::vR_S10_T20_Delete_combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vRemoveDeleteMain(CK_COMBINED);
 
@@ -1460,6 +1476,8 @@ void Xreshape::vR_S10_T30_Delete_send(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G_vRemoveDeleteMain(CK_SEND);
 
   vEndReshape();
@@ -1473,6 +1491,8 @@ void Xreshape::vR_S10_T40_Delete_stage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vRemoveDeleteMain(CK_STAGE);
 
@@ -1489,6 +1509,8 @@ void Xreshape::vR_S10_T50_Cull_scan_Leaving_table(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.pDeck->vReplaceChildWithItsSubs(G.p_scan);
   DELETE_CARD(G.p_scan);
 
@@ -1503,6 +1525,8 @@ void Xreshape::vR_S10_T60_Add_level(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_level = G.p_MainCard->pSub_level();
   if (G.p_level)
@@ -1565,6 +1589,8 @@ void Xreshape::vR_S20_T10_AAffix_tableSyn_To_table(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vTable_Set_Syn(G.p_table);
 
   vEndReshape();
@@ -1578,6 +1604,8 @@ void Xreshape::vR_S20_T20_Produce_tablePtn_Under_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_tablePtn = C_pProduce_tablePtn_Of_table(G.p_table);
 
@@ -1600,6 +1628,8 @@ void Xreshape::vR_S24_T10_Produce_indexList_Under_table(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_tableNm = G.p_table->pSub_tableNm();
   Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
 
@@ -1620,6 +1650,8 @@ void Xreshape::vR_S24_T20_Affix_tblColOdn_To_idxCol(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   CardIter xCI(G.p_indexList);
   while ((G.p_index = _pCard_Index(xCI.pEachChild()))) {
     G.p_idxColList = G.p_index->pSub_idxColList();
@@ -1635,6 +1667,8 @@ void Xreshape::vR_S24_T20_Affix_tblColOdn_To_idxCol(void)
 void Xreshape::vR_S24_T30(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // todo: remove?
 
   vReshape(__func__);
 
@@ -1655,6 +1689,8 @@ void Xreshape::vR_S22_T10_Produce_stream_Under_table(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   m_pTable = A_pAccess_Table(G.p_tableNm->sz());
   G.p_stream = C_pProduce_stream_Of_table(m_pTable);
 
@@ -1672,6 +1708,8 @@ void Xreshape::vR_S22_T12_Produce_stream_Under_project(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
@@ -1687,6 +1725,8 @@ void Xreshape::vR_S22_T14_Produce_stream_Under_aggreg(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
 
@@ -1704,6 +1744,8 @@ void Xreshape::vR_S22_T20_Derive_ordinalRange_For_table_stream(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
 
   vEndReshape();
@@ -1718,6 +1760,8 @@ void Xreshape::vR_S22_T22_Derive_ordinalRange_For_project_stream(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vStream_Derive_OrdinalRange_project(G.p_stream);
 
   vEndReshape();
@@ -1731,6 +1775,8 @@ void Xreshape::vR_S22_T24_Derive_ordinalRange_For_aggreg_stream(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
 
@@ -1751,6 +1797,8 @@ void Xreshape::vR_S26_T10a_Main_Query_Analysis_aggreg(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   // the main-query has an aggreg
 
   SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
@@ -1769,6 +1817,8 @@ void Xreshape::vR_S26_T10b_Main_Query_Analysis_gbyagg(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   // the main-query has an gnyAggr
 
   SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
@@ -1786,6 +1836,8 @@ void Xreshape::vR_S26_T10c_Main_Query_Analysis_Of_from(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   SubQuery* pSubQuery = m_pBench->pGetBoard((i8)1)->pSubQuery();
 
@@ -1978,6 +2030,8 @@ void Xreshape::vR_S26_T10f_Main_Query_Genesis(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G_vNewMember(CK_GENESIS,"mq"_Stz);
   if ((G.p_level = G.p_MainCard->pSub_level()))
     G.p_MainCard->vInsertAfter(G.p_genesis,G.p_level);
@@ -1995,6 +2049,8 @@ void Xreshape::vR_S26_T20a_Sub_Query_Analysis_Only_main(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   // there is no sub-query
 
@@ -2014,6 +2070,8 @@ void Xreshape::vR_S26_T20b_Sub_Query_Analysis_paramList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   // there is a subQuery and it has a paramList
 
@@ -2038,6 +2096,8 @@ void Xreshape::vR_S26_T20c_Sub_Query_Analysis_aggreg(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   // there is a subQuery and it has an aggreg
 
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
@@ -2056,6 +2116,8 @@ void Xreshape::vR_S26_T20d_Sub_Query_Analysis_gbyagg(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   // there is a subQuery and it has an gbyAgg
   SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
   pSubQuery->vDisposition(QD_AGGREGATION);
@@ -2071,6 +2133,8 @@ void Xreshape::vR_S26_T10e_Sub_Query_Genesis(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vNewMember(CK_GENESIS,"sq"_Stz);
   if ((G.p_level = G.p_MainCard->pSub_level()))
@@ -2089,6 +2153,8 @@ void Xreshape::vR_S26_T30(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove?
 
 
   vEndReshape();
@@ -2109,6 +2175,8 @@ void Xreshape::vR_S32_T10_Convert_sqyOp_not_To_notSqyOp(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(G.p_rpnCalc);
 
   vEndReshape();
@@ -2123,6 +2191,8 @@ void Xreshape::vR_S32_T20_Convert_where_rpnCalc_To_boolCalc(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove? not used anywhere
 
   G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
 
@@ -2191,6 +2261,8 @@ void Xreshape::vR_S34_T10_AtMark_where_pred_Wrt_table(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_boolCalc->vDump();
 
   vPullUp_MarkPredLeftwards(G.p_boolCalc, G.pDeck);
@@ -2207,6 +2279,8 @@ void Xreshape::vR_S34_T20_Move_AtMarked_where_pred_To_table_filter(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
 
   vEndReshape();
@@ -2220,6 +2294,8 @@ void Xreshape::vR_S34_T30_Delete_Empty_where(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   if (0 == G.p_boolCalc->nChildCards()) {
     G_vRemoveDeleteMain(CK_WHERE);
@@ -2242,6 +2318,8 @@ void Xreshape::vR_S36_T10_UpCopy_filter_pred_Into_bounds(bool bParamAllowedInBou
 
   vReshape(__func__);
 
+  // todo: xt
+
   C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter,bParamAllowedInBounds);
 
   vEndReshape();
@@ -2255,6 +2333,8 @@ void Xreshape::vR_S36_T20_Cull_UpCopied_filter_pred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
 
@@ -2296,6 +2376,8 @@ void Xreshape::vR_S40_T10a_Fold_F_Before_Mq_As_opSeq(void)
 
   vReshape(__func__);
 
+  // todo: remove?
+
 
   vEndReshape();
 }
@@ -2309,6 +2391,8 @@ void Xreshape::vR_S40_T20a_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
 
   vReshape(__func__);
 
+  // todo: remove?
+
   vEndReshape();
 }
 
@@ -2320,6 +2404,8 @@ void Xreshape::vR_S40_T30a_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove?
 
   vEndReshape();
 }
@@ -2333,6 +2419,8 @@ void Xreshape::vR_S40_T40a_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void)
 
   vReshape(__func__);
 
+  // todo: remove?
+
   vEndReshape();
 }
 
@@ -2345,6 +2433,8 @@ void Xreshape::vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists(void)
 
   vReshape(__func__);
 
+  // todo: remove?
+
   vEndReshape();
 }
 /*----------------------------------------------------------------------------*/
@@ -2355,6 +2445,8 @@ void Xreshape::vR_S40_T60a_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove?
 
   vEndReshape();
 }
@@ -2368,6 +2460,8 @@ void Xreshape::vR_S40_T70a_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void)
 
   vReshape(__func__);
 
+  // todo: remove?
+
   vEndReshape();
 }
 
@@ -2378,6 +2472,8 @@ void Xreshape::vR_S40_Ute_a(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  // todo: remove?
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2386,6 +2482,8 @@ void Xreshape::vR_S40_Ute_a(void)
 void Xreshape::vR_S40_Ute_b(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // todo: remove?
 
 }
 
@@ -2396,6 +2494,8 @@ void Xreshape::vR_S40_Ute_c(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  // todo: remove?
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2404,6 +2504,8 @@ void Xreshape::vR_S40_Ute_c(void)
 void Xreshape::vR_S40_Ute_d(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // todo: remove?
 
 }
 
@@ -2414,6 +2516,8 @@ void Xreshape::vR_S40_Ute_e(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  // todo: remove?
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2422,6 +2526,8 @@ void Xreshape::vR_S40_Ute_e(void)
 void Xreshape::vR_S40_Ute_f(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // todo: remove?
 
 }
 
@@ -2440,6 +2546,8 @@ void Xreshape::vR_S50_T00_Extract_tableList_From_queryBoard(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_tableList->vAppend(G.p_table->pDupCardAndSubCards());
 
   vEndReshape();
@@ -2454,6 +2562,8 @@ void Xreshape::vR_S50_T10_Extract_joinPredList(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   D_vDerive_JoinPredList(G.p_joinPredList, G.p_boolCalc);
 
   vEndReshape();
@@ -2467,6 +2577,8 @@ void Xreshape::vR_S50_T20_Compute_coPtnPredList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_coPtnPred = new Card_CoPtnPred;
   G.p_coPtnPred->vAppend(G.p_cmpPred->pDupCardAndSubCards());
@@ -2692,6 +2804,8 @@ void Xreshape::vR_S50_T90_Setup_costEst(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   while ((G.p_MainCard = G.pDeck->pGetChild(0))) {
 
     if (CK_PERMUTATION == G.p_MainCard->eCard())
@@ -2906,6 +3020,8 @@ void Xreshape::vR_S60_T10_Produce_maybeIndexJoin_Under_filter(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vTable_Produce_MaybeIndexJoin(G.p_table);
 
   vEndReshape();
@@ -2920,6 +3036,8 @@ void Xreshape::vR_S60_T20_Affix_tblColOdn_To_idxCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_stream = G.p_table->pSub_stream();;
   G.p_stmColList = G.p_table->pSub_stmColList();
@@ -2938,6 +3056,8 @@ void Xreshape::vR_S60_T60_Delete_Twist(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vRemoveDeleteMain(CK_TWIST);
 
@@ -3059,6 +3179,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_b(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_scan->pFindChild(CK_NOTE,i_Child));
 
@@ -3080,6 +3202,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_c(void)
 
   vReshape(__func__);
 
+  // todo: remove?
+
   G.p_indexJoin->vDump();
 
   i8 i_Child;
@@ -3098,6 +3222,8 @@ void Xreshape::vR_S75_T20_Morph_keyExists_filter_To_constraint(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_filter->vCard(CK_CONSTRAINT);
 
@@ -3199,6 +3325,8 @@ void Xreshape::vR_S80_T10_Produce_indexList_Under_scan(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vScan_Produce_indexList(G.p_scan);
 
   vEndReshape();
@@ -3213,6 +3341,8 @@ void Xreshape::vR_S80_T20_Affix_idxCol_name_Of_scan_To_ordinal(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
 
   vEndReshape();
@@ -3226,6 +3356,8 @@ void Xreshape::vR_S80_T30_Mark_ULBoundsOf_scan_filter_cmpPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -3328,6 +3460,8 @@ void Xreshape::vR_S80_T70_Morph_scan_To_indexScan(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_scan->vCard(CK_INDEXSCAN);
 
   vEndReshape();
@@ -3341,6 +3475,8 @@ void Xreshape::vR_S80_T70_Morph_scan_To_indexScan_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   i8 i_Child;
   G.p_note = _pCard_Note(G.p_indexScan->pFindChild(CK_NOTE,i_Child));
@@ -3357,6 +3493,8 @@ void Xreshape::vR_S80_T70_Morph_scan_To_indexScan_c(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_indexScan->vReplaceChildWithItsSubs(G.p_indexList);
   DELETE_CARD((G.p_indexList));
@@ -3378,6 +3516,8 @@ void Xreshape::vR_S85_T10a_Transmute_table_To_Scan(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_scan = new Card_Scan;
   G.p_scan->vTransferChildren(G.p_table);
 
@@ -3396,6 +3536,8 @@ void Xreshape::vR_S85_T10b_Transmute_table_To_crossJoin(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_crossJoin = new Card_CrossJoin;
   G.p_crossJoin->vTransferChildren(G.p_table);
 
@@ -3413,6 +3555,8 @@ void Xreshape::vR_S85_T20_Add_index_For_crossJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
   G.p_index = C_pProduce_index_Of_table(m_pTable);
@@ -3434,6 +3578,8 @@ void Xreshape::vR_S85_T30_Add_bounds_For_crossJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vNewMember(CK_BOUNDS);
   G.p_crossJoin->vAppend(G.p_bounds);
@@ -3462,6 +3608,8 @@ void Xreshape::vR_S90_T10_Remove_sort_IfSameAs_gby(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_gbyElist = G.p_aggreg->pSub_gbyElist();
   G.p_sbyElist = G.p_sort->pSub_sbyElist();
 
@@ -3488,6 +3636,8 @@ void Xreshape::vR_SA0_T10_Individuate_scan_filter(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_scan->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_scan);
 
@@ -3507,6 +3657,8 @@ void Xreshape::vR_SA0_T10_Individuate_indexJoin_filter_b(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_indexJoin->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_indexJoin);
 
@@ -3525,6 +3677,8 @@ void Xreshape::vR_SA0_T10c_Individuate_crossJoin_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G.p_crossJoin->vRemoveChild(G.p_filter);
   G.pDeck->vInsertAfter(G.p_filter, G.p_crossJoin);
@@ -3550,6 +3704,8 @@ void Xreshape::vR_SZ0_T20_Reinstate_stages(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   if (! T_bStage_Reinstate(G.e_MainCard, G.e_SubsequentToMain))
     return;
@@ -3885,6 +4041,8 @@ void Xreshape::vR_SZ0_T30_Reinstate_combined(void)
 
   vReshape(__func__);
 
+  // todo: xt
+
   G.p_combined = new Card_Combined;
   G.pDeck->vInsertAfter(G.p_combined, G.p_MainCard);
 
@@ -3899,6 +4057,8 @@ void Xreshape::vR_SZ0_T40_Reinstate_next(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vNewMember(CK_NEXT);
   G.pDeck->vInsertBefore(G.p_next, G.p_MainCard);
@@ -3915,6 +4075,8 @@ void Xreshape::vR_SZ0_T40_Reinstate_next_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: xt
 
   G_vNewMember(CK_NEXT);
   G.pDeck->vAppend(G.p_next);
@@ -3934,6 +4096,8 @@ void Xreshape::vRR_Convert_All_TblColOrd_to_StmColOrd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove?
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -3964,6 +4128,8 @@ void Xreshape::vRR_Convert_All_StmColOrd_to_TblColOrd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vReshape(__func__);
+
+  // todo: remove?
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

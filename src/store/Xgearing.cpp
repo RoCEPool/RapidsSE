@@ -1059,6 +1059,8 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_STMCOLLIST:       return G.p_stmColList;
     case CK_STMCOLNM:         return G.p_stmColNm;
     case CK_STMCOLODN:        return G.p_stmColOdn;
+    case CK_STMORDLIST:       return G.p_stmOrdList;
+    case CK_STMORDODN:        return G.p_stmOrdOdn;
     case CK_STREAM:           return G.p_stream;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
@@ -1940,6 +1942,8 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOLLIST:       *((Card**)&G.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
     case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
+    case CK_STMORDLIST:       *((Card**)&G.p_stmOrdList)       = pCard; break;
+    case CK_STMORDODN:        *((Card**)&G.p_stmOrdOdn)        = pCard; break;
     case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
@@ -2068,6 +2072,8 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_STMCOLLIST:       return "G.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
     case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
+    case CK_STMORDLIST:       return "G.p_stmOrdList"_Stz;
+    case CK_STMORDODN:        return "G.p_stmOrdOdn"_Stz;
     case CK_STREAM:           return "G.p_stream"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;

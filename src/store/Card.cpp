@@ -2682,6 +2682,32 @@ Card_StmColOdn* Card::pSub_stmColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_StmOrdList.hpp"
+Card_StmOrdList* Card::pSub_stmOrdList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmOrdList* p_streamOrdList =
+      _pCard_StmOrdList(pFindSubCard(CK_STMORDLIST));
+  return p_streamOrdList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StmOrdOdn.hpp"
+Card_StmOrdOdn* Card::pSub_stmOrdOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmOrdOdn* p_streamOrdOdn =
+      _pCard_StmOrdOdn(pFindSubCard(CK_STMORDODN));
+  return p_streamOrdOdn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Table.hpp"
 Card_Table* Card::pSub_table(void)
 {
