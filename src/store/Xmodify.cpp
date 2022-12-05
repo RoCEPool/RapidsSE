@@ -900,6 +900,29 @@ void Xmodify::M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList*
   p_term->vMark2(i_IdxCol);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bPRED_Descend(Card_PRED* p_pred,
+                            std::function<bool(Card_PRED* )> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(p_pred);
+  while (Card* pChildCard = xCI.pEachChild()) {
+    if (! pChildCard->bIsPRED())
+      continue;
+
+    bool bContinue = bPRED_Descend((Card_PRED*)pChildCard, bfLambdaFn);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  return C_CONTINUE_RECURSION;
+}
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Predicate Pull-Up -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

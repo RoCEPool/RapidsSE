@@ -3209,8 +3209,19 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
   vAssert_Board_mqA();
 
-  if (G_bEachMain(CK_SCAN)) {
+  if (G_bEachMainWithSub(CK_SCAN,CK_INDEXLIST)) {
+
+    if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+
+      // some /<boolCalc>/<PRED> which is a bound of an index under scan
+      
+
+      // mark such <PRED> & copy as a bound
+    }
   }
+
+  // cull pred
+  // delete empty where
 
   vEndTransform();
 }
