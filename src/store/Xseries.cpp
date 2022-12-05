@@ -90,7 +90,7 @@ void Xseries::vTransformSeries(void)
   vSeries_85_Cross_Join                      (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
   vSeries_80_Index_Scan                      (C_DISABLED);
-  vSeries_90_Stream_Ordering                 (C_DISABLED);
+  vSeries_90_Stream_Ordering   (C_ENABLED);
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement (C_ENABLED);
 
@@ -598,8 +598,9 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
   }
 
   m_pTransforms->vS90_T00_Begin();
+  m_pTransforms->vS90_T30_Add_stmOrdList();
 
-  m_pTransforms->vS90_T10_Remove_sort_IfSameAs_gby();
+  //m_pTransforms->vS90_TF0_Remove_sort_IfSameAs_gby();
 
   m_pTransforms->vS90_TZZ_End();
 

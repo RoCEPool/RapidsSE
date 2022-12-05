@@ -52,6 +52,8 @@ namespace STORE
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
+    i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
+
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
     void M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream);

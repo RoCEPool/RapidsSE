@@ -464,6 +464,32 @@ void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+i8 Xmodify::E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+  if (! p_rpnCalc)
+    return C_UNKNOWN;
+
+  if (p_rpnCalc->nChildCards() > 1)
+    return C_UNKNOWN;
+
+  CardIter xCI(p_rpnCalc);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
+    if (T_bValue_IsKeyOrdinal(p_term->szValue())) {
+      i8 i_Key = E_iValue_KeyOdn(p_term->szValue());
+      return i_Key;
+    }
+  }
+
+  return C_UNKNOWN;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

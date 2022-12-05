@@ -267,6 +267,39 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
   */
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_gbyAgg->vDump();
+
+  G.p_stream = G.p_gbyAgg->pSub_stream();
+  if (! G.p_stream) {
+    G_vAppendNewChild(G.p_gbyAgg,CK_STREAM);
+  }
+
+  if ((G.p_stmOrdList = G.p_stream->pSub_stmOrdList())) {
+    G.p_stream->vRemoveChild(G.p_stmOrdList);
+    DELETE_CARD(G.p_stmOrdList);
+  }
+
+  G_vAppendNewChild(G.p_stream,CK_STMORDLIST);
+
+  G.p_aggElist =  G.p_gbyAgg->pSub_aggElist();
+  CardIter xCI(G.p_aggElist);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+    i8 i_Key = E_iExpr_rpnCalc_WhichGbyKey(G.p_expr);
+    if (C_UNKNOWN == i_Key)
+      continue;
+
+    G_vAppendNewChild(G.p_stmOrdList,CK_STMORDODN);
+
+    G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,xCI.i_Child()+1);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

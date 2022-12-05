@@ -3490,15 +3490,54 @@ void Xtransforms::vS90_T00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  m_pCardCtl->vUseShorter();
+  //m_pCardCtl->vUseShorter();
+
+  m_pCardCtl->vPrintSubCards(true,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,
+                                  CK_RPNCALC,CK_STREAM,0);
+  m_pCardCtl->vPrintSubCards(false,CK_INDEXLIST,CK_STMCOLLIST,0);
+
+  m_pCardCtl->vPrintBelow(CK_PROJECT,true);
 
   vST00_Begin();
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS90_T30_Add_stmOrdList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (G_bEachMain()) {
+
+    if (! G.p_MainCard->bIsCard(CK_GBYAGG))
+      continue;
+
+    R_vUTE_Derive_stmOrdList_For_gbyAgg();
+
+    if (G_bIsNextMain(CK_GBYAGG)) {
+      G_bEachMain();
+      R_vUTE_Derive_stmOrdList_For_gbyAgg();
+
+      if (G_bIsNextMain(CK_GBYAGG)) {
+        G_bEachMain();
+        R_vUTE_Derive_stmOrdList_For_gbyAgg();
+      }
+    }
+
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS90_T10_Remove_sort_IfSameAs_gby(void)
+void Xtransforms::vS90_TF0_Remove_sort_IfSameAs_gby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
