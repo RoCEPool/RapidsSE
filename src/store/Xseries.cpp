@@ -89,8 +89,8 @@ void Xseries::vTransformSeries(void)
   vSeries_60_Index_Join                      (C_DISABLED);
   vSeries_85_Cross_Join                      (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
-  vSeries_80_Index_Scan        (C_DISABLED);
-  vSeries_90_Stream_Ordering   (C_DISABLED);
+  vSeries_80_Index_Scan                      (C_DISABLED);
+  vSeries_90_Stream_Ordering                 (C_DISABLED);
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement (C_ENABLED);
 

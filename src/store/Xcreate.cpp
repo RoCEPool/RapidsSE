@@ -41,6 +41,23 @@ Xcreate::~Xcreate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a bounds given tblColOdn                                            */
 /*----------------------------------------------------------------------------*/
+Card_Bounds* Xcreate::C_pBounds_CreateFrom_PRED(Card_PRED* p_PRED,
+                                                char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // todo: hack
+
+  Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_PRED);
+
+  Card_Bounds* p_bounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
+
+  return p_bounds;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a bounds given tblColOdn                                            */
+/*----------------------------------------------------------------------------*/
 Card_Bounds* Xcreate::C_pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

@@ -187,9 +187,10 @@ void Xtransforms::vS10_T60_Add_All_level(void)
   G.e_Level = AL_PARTITION;
 
   while (G_bEachMain()) {
+
     G.p_level = G.p_MainCard->pSub_level();
     if (G.p_level)
-      break;
+      continue;
 
     G.p_level = new Card_Level(AL_PARTITION);
     G.p_MainCard->vPush(G.p_level);
@@ -3238,26 +3239,41 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (G_bEachMainWithSub(CK_SCAN,CK_INDEXLIST)) {
+  if (G_bEachMainWith2Sub(CK_SCAN,CK_TABLE,CK_INDEXLIST)) {
 
     G.p_index = G.p_indexList->pSub_index();
-
+    G.p_bounds = G.p_scan->pSub_bounds();
+    char cTblSyn = G.p_table->cValue();
+    
     if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
 
       // some /<boolCalc>/<PRED> which is a bound of an index under scan
-      Card_PRED* p_rootPRED = (Card_PRED*)G.p_boolCalc->pGetChild(0);
+      Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
 
-      Card_PRED* p_boundingPRED = T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED,G.p_index,false);
-
-      if (p_boundingPRED)
-        p_boundingPRED->vMark1(MARK_AT);
+      Card_PRED *p_boundingPRED = T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
 
       // mark such <PRED> & copy as a bound
+      if (p_boundingPRED) {
+        p_boundingPRED->vMark1(MARK_AT);
+
+        RASSERT(! G.p_bounds);
+        G.p_bounds = C_pBounds_CreateFrom_PRED(p_boundingPRED, cTblSyn);
+        G.p_scan->vAppend(G.p_bounds);
+
+
+      }
+
+
     }
   }
 
+  vPrintBoard();
+
   // cull pred
+  M_vBoolCalc_CullPred(G.p_boolCalc,MARK_AT);
+
   // delete empty where
+
 
   vEndTransform();
 }

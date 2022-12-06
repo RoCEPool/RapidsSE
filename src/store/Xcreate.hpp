@@ -15,9 +15,13 @@ namespace STORE
 
     Card_BoolCalc*   C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
+    Card_Bounds*     C_pBounds_CreateFrom_PRED(Card_PRED* p_PRED,
+                                               char cTblSyn);
+
     Card_Bounds*     C_pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn);
     Card_Bounds*     C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
                                                   char cTblSyn);
+
 
     void             C_vBounds_DeriveFrom_filter(Card_Table* p_pred_Of_filter,
                                                  Card_Filter* p_filter,
