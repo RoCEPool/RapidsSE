@@ -234,6 +234,57 @@ Card_CmpPred* Xtest::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, e
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bBounds_Is_lbound(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("LBOUND"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bBounds_Is_lbound_Or_ubound(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("LBOUND"_Stz) || szBound->bSame("UBOUND"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bBounds_Is_ubound(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("UBOUND"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred)

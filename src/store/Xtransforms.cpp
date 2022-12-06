@@ -3781,6 +3781,25 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
     }
   }
 
+  G.pDeck->vRenumberRecursive();
+  vPrintBoard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+
+    if (T_bBounds_Is_lbound(G.p_bounds))
+      G.p_bounds->vCard(CK_LBOUND);
+    else
+    if (T_bBounds_Is_ubound(G.p_bounds))
+      G.p_bounds->vCard(CK_UBOUND);
+
+    if (G.p_bounds->bIsCard(CK_LBOUND) || G.p_bounds->bIsCard(CK_UBOUND)) {
+      G.p_scan->vCard(CK_INDEXSCAN);
+    }
+  }
+
   vPrintBoard();
 
   vEndTransform();
