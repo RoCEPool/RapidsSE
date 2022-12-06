@@ -55,12 +55,6 @@ namespace STORE
 
     // vSeries_10_Condense_Info
     void vR_S10_T80_Delete_Redundant_stage(void);
-    void vR_S10_T10_Delete_absJoin(void);
-    void vR_S10_T20_Delete_combined(void);
-    void vR_S10_T30_Delete_send(void);
-    void vR_S10_T40_Delete_stage(void);
-    void vR_S10_T50_Cull_scan_Leaving_table(void);
-    void vR_S10_T60_Add_level(void);
     void vR_S10_T90_Hide_Ignorable_stage(void);
 
     // vSeries_20_Table_Analysis

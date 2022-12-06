@@ -94,7 +94,7 @@ void Xtransforms::vS10_T10_Delete_All_absJoin(void)
   vAssert_Board_any();
 
   while (G_bEachMain(CK_ABSJOIN)) {
-    vR_S10_T10_Delete_absJoin();
+    G_vRemoveDeleteMain(CK_ABSJOIN);
   }
 
   vEndTransform();
@@ -112,7 +112,7 @@ void Xtransforms::vS10_T20_Delete_All_combined(void)
   vAssert_Board_any();
 
   while (G_bEachMain(CK_COMBINED)) {
-    vR_S10_T20_Delete_combined();
+    G_vRemoveDeleteMain(CK_COMBINED);
   }
 
   vEndTransform();
@@ -130,7 +130,7 @@ void Xtransforms::vS10_T30_Delete_All_send(void)
   vAssert_Board_any();
 
   while (G_bEachMain(CK_SEND)) {
-    vR_S10_T30_Delete_send();
+    G_vRemoveDeleteMain(CK_SEND);
   }
 
   vEndTransform();
@@ -148,7 +148,7 @@ void Xtransforms::vS10_T40_Delete_All_stage(void)
   vAssert_Board_any();
 
   while (G_bEachMain(CK_STAGE)) {
-    vR_S10_T40_Delete_stage();
+    G_vRemoveDeleteMain(CK_STAGE);
   }
 
   vEndTransform();
@@ -166,7 +166,8 @@ void Xtransforms::vS10_T50_Cull_scan_Leaving_table(void)
   vAssert_Board_any();
 
   while (G_bEachMain(CK_SCAN)) {
-    vR_S10_T50_Cull_scan_Leaving_table();
+    G.pDeck->vReplaceChildWithItsSubs(G.p_scan);
+    DELETE_CARD(G.p_scan);
   }
 
   vEndTransform();
@@ -186,7 +187,12 @@ void Xtransforms::vS10_T60_Add_All_level(void)
   G.e_Level = AL_PARTITION;
 
   while (G_bEachMain()) {
-    vR_S10_T60_Add_level();
+    G.p_level = G.p_MainCard->pSub_level();
+    if (G.p_level)
+      break;
+
+    G.p_level = new Card_Level(AL_PARTITION);
+    G.p_MainCard->vPush(G.p_level);
   }
 
   vEndTransform();
