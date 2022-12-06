@@ -3274,6 +3274,12 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
   // delete empty where
 
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (0 == G.p_boolCalc->nChildCards()) {
+      G_vRemoveDeleteMain(CK_WHERE);
+    }
+  }
 
   vEndTransform();
 }
