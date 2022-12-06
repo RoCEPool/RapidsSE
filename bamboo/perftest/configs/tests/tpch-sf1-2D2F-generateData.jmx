@@ -727,66 +727,6 @@ group by
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data3</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data4</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data5</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data6</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data7</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk1/data8</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
                     <stringProp name="Argument.value">/mnt/disk2/data1</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
@@ -800,73 +740,19 @@ group by
                     <stringProp name="Argument.value">/mnt/disk2/data2</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data3</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data4</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data5</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data6</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data7</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--dir</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Argument">
-                    <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">/mnt/disk2/data8</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
                 </collectionProp>
               </elementProp>
               <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="SystemSampler.directory"></stringProp>
-              <stringProp name="TestPlan.comments">Generates the data on each node in the cluster</stringProp>
+              <stringProp name="TestPlan.comments">Generates the data on each node in the cluster.
+Writes data to the output paths specified. 
+e.g.
+  /mnt/disk1/data1/lineitem.tbl
+  /mnt/disk1/data1/customer.tbl
+  ...
+  /mnt/disk1/data2/lineitem.tbl</stringProp>
               <stringProp name="SystemSampler.stdout">generateData.out</stringProp>
               <stringProp name="SystemSampler.stderr">generateData.err</stringProp>
             </SystemSampler>
@@ -916,20 +802,8 @@ group by
               <stringProp name="query">dload lineitem paths
   &quot;/mnt/disk1/data1/lineitem.tbl&quot;
   &quot;/mnt/disk1/data2/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data3/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data4/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data5/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data6/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data7/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data8/lineitem.tbl&quot;
   &quot;/mnt/disk2/data1/lineitem.tbl&quot;
   &quot;/mnt/disk2/data2/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data3/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data4/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data5/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data6/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data7/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data8/lineitem.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -942,10 +816,10 @@ group by
               <stringProp name="TestPlan.comments">For a multi-node setup with 2 local SSDs and 2 data partitions per disk the command would look like this:
 
 dload lineitem paths
-  &quot;/mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/lineitem.tbl&quot;
+  &quot;/mnt/disk1/lineitem.tbl&quot;
+  &quot;/mnt/disk2/lineitem.tbl&quot;
+  &quot;/mnt/disk2/lineitem.tbl&quot;
 ;</stringProp>
             </JDBCSampler>
             <hashTree/>
@@ -980,20 +854,8 @@ dload lineitem paths
               <stringProp name="query">dload orders paths
   &quot;/mnt/disk1/data1/orders.tbl&quot;
   &quot;/mnt/disk1/data2/orders.tbl&quot;
-  &quot;/mnt/disk1/data3/orders.tbl&quot;
-  &quot;/mnt/disk1/data4/orders.tbl&quot;
-  &quot;/mnt/disk1/data5/orders.tbl&quot;
-  &quot;/mnt/disk1/data6/orders.tbl&quot;
-  &quot;/mnt/disk1/data7/orders.tbl&quot;
-  &quot;/mnt/disk1/data8/orders.tbl&quot;
   &quot;/mnt/disk2/data1/orders.tbl&quot;
   &quot;/mnt/disk2/data2/orders.tbl&quot;
-  &quot;/mnt/disk2/data3/orders.tbl&quot;
-  &quot;/mnt/disk2/data4/orders.tbl&quot;
-  &quot;/mnt/disk2/data5/orders.tbl&quot;
-  &quot;/mnt/disk2/data6/orders.tbl&quot;
-  &quot;/mnt/disk2/data7/orders.tbl&quot;
-  &quot;/mnt/disk2/data8/orders.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1036,20 +898,8 @@ dload lineitem paths
               <stringProp name="query">dload partsupp paths
   &quot;/mnt/disk1/data1/partsupp.tbl&quot;
   &quot;/mnt/disk1/data2/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data3/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data4/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data5/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data6/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data7/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data8/partsupp.tbl&quot;
   &quot;/mnt/disk2/data1/partsupp.tbl&quot;
   &quot;/mnt/disk2/data2/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data3/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data4/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data5/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data6/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data7/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data8/partsupp.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1092,20 +942,8 @@ dload lineitem paths
               <stringProp name="query">dload part paths
   &quot;/mnt/disk1/data1/part.tbl&quot;
   &quot;/mnt/disk1/data2/part.tbl&quot;
-  &quot;/mnt/disk1/data3/part.tbl&quot;
-  &quot;/mnt/disk1/data4/part.tbl&quot;
-  &quot;/mnt/disk1/data5/part.tbl&quot;
-  &quot;/mnt/disk1/data6/part.tbl&quot;
-  &quot;/mnt/disk1/data7/part.tbl&quot;
-  &quot;/mnt/disk1/data8/part.tbl&quot;
   &quot;/mnt/disk2/data1/part.tbl&quot;
   &quot;/mnt/disk2/data2/part.tbl&quot;
-  &quot;/mnt/disk2/data3/part.tbl&quot;
-  &quot;/mnt/disk2/data4/part.tbl&quot;
-  &quot;/mnt/disk2/data5/part.tbl&quot;
-  &quot;/mnt/disk2/data6/part.tbl&quot;
-  &quot;/mnt/disk2/data7/part.tbl&quot;
-  &quot;/mnt/disk2/data8/part.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1135,20 +973,8 @@ dload lineitem paths
               <stringProp name="query">dload customer paths
   &quot;/mnt/disk1/data1/customer.tbl&quot;
   &quot;/mnt/disk1/data2/customer.tbl&quot;
-  &quot;/mnt/disk1/data3/customer.tbl&quot;
-  &quot;/mnt/disk1/data4/customer.tbl&quot;
-  &quot;/mnt/disk1/data5/customer.tbl&quot;
-  &quot;/mnt/disk1/data6/customer.tbl&quot;
-  &quot;/mnt/disk1/data7/customer.tbl&quot;
-  &quot;/mnt/disk1/data8/customer.tbl&quot;
   &quot;/mnt/disk2/data1/customer.tbl&quot;
   &quot;/mnt/disk2/data2/customer.tbl&quot;
-  &quot;/mnt/disk2/data3/customer.tbl&quot;
-  &quot;/mnt/disk2/data4/customer.tbl&quot;
-  &quot;/mnt/disk2/data5/customer.tbl&quot;
-  &quot;/mnt/disk2/data6/customer.tbl&quot;
-  &quot;/mnt/disk2/data7/customer.tbl&quot;
-  &quot;/mnt/disk2/data8/customer.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1191,20 +1017,8 @@ dload lineitem paths
               <stringProp name="query">dload supplier paths
   &quot;/mnt/disk1/data1/supplier.tbl&quot;
   &quot;/mnt/disk1/data2/supplier.tbl&quot;
-  &quot;/mnt/disk1/data3/supplier.tbl&quot;
-  &quot;/mnt/disk1/data4/supplier.tbl&quot;
-  &quot;/mnt/disk1/data5/supplier.tbl&quot;
-  &quot;/mnt/disk1/data6/supplier.tbl&quot;
-  &quot;/mnt/disk1/data7/supplier.tbl&quot;
-  &quot;/mnt/disk1/data8/supplier.tbl&quot;
   &quot;/mnt/disk2/data1/supplier.tbl&quot;
   &quot;/mnt/disk2/data2/supplier.tbl&quot;
-  &quot;/mnt/disk2/data3/supplier.tbl&quot;
-  &quot;/mnt/disk2/data4/supplier.tbl&quot;
-  &quot;/mnt/disk2/data5/supplier.tbl&quot;
-  &quot;/mnt/disk2/data6/supplier.tbl&quot;
-  &quot;/mnt/disk2/data7/supplier.tbl&quot;
-  &quot;/mnt/disk2/data8/supplier.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
