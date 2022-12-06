@@ -1038,7 +1038,7 @@ bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_ind
 }
 
 /*----------------------------------------------------------------------------*/
-/* recursively test if given predicate is MaybeBounds of given index          */
+/* recursively test if given predicate is entirely MaybeBounds of given index */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED,
                                                  Card_Index* p_index,

@@ -3218,27 +3218,33 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda_Drilldown = [this] (Card_PRED* p_PRED) {
-
-
-    if (p_PRED->bIsConjunction()) {
-      // + and, not, or
-
-      return C_CONTINUE_RECURSION;
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
+//  auto bLambda_Drilldown = [this] (Card_PRED* p_PRED) {
+//
+//
+//    if (p_PRED->bIsConjunction()) {
+//      // + and, not, or
+//
+//      return C_CONTINUE_RECURSION;
+//    }
+//
+//    return C_CONTINUE_RECURSION;
+//  };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (G_bEachMainWithSub(CK_SCAN,CK_INDEXLIST)) {
 
+    G.p_index = G.p_indexList->pSub_index();
+
     if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
 
       // some /<boolCalc>/<PRED> which is a bound of an index under scan
       Card_PRED* p_rootPRED = (Card_PRED*)G.p_boolCalc->pGetChild(0);
-      bool b = bPRED_Descend(p_rootPRED, bLambda_Drilldown);
+
+      Card_PRED* p_boundingPRED = T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED,G.p_index,false);
+
+      if (p_boundingPRED)
+        p_boundingPRED->vMark1(MARK_AT);
 
       // mark such <PRED> & copy as a bound
     }

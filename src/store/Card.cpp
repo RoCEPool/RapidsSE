@@ -967,7 +967,7 @@ bool Card::bIsCommaSeparator(void)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsConjunction(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (   bIsCard(CK_ANDPRED)
       || bIsCard(CK_NOTPRED)
