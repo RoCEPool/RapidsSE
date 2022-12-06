@@ -89,8 +89,8 @@ void Xseries::vTransformSeries(void)
   vSeries_60_Index_Join                      (C_DISABLED);
   vSeries_85_Cross_Join                      (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
-  vSeries_80_Index_Scan                      (C_DISABLED);
-  vSeries_90_Stream_Ordering                 (C_DISABLED);
+  vSeries_80_Index_Scan        (C_ENABLED);
+  vSeries_90_Stream_Ordering   (C_ENABLED);
   vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement (C_ENABLED);
 
@@ -544,13 +544,15 @@ void Xseries::vSeries_80_Index_Scan(bool bEnabled)
 
   m_pTransforms->vS80_T00_Begin();
 
-  m_pTransforms->vS80_T10_Produce_Scratch_indexList_Under_scan();
-  m_pTransforms->vS80_T20_Affix_idxColOdn_ToAll_idxCol();
-  m_pTransforms->vS80_T30_Mark_ULRangeOf_scan_filter_cmpPred();
-  m_pTransforms->vS80_T40_Mark_IndexMatchOf_scan_filter_terms();
-  m_pTransforms->vS80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
-  m_pTransforms->vS80_T60_Cull_Marked_filter_cmpPred();
-  m_pTransforms->vS80_T70_Morph_scan_To_indexScan();
+  m_pTransforms->vS80_T10_bounds_For_scan();
+
+//  m_pTransforms->vS80_TF1_Produce_Scratch_indexList_Under_scan();
+//  m_pTransforms->vS80_TF2_Affix_idxColOdn_ToAll_idxCol();
+//  m_pTransforms->vS80_TF3_Mark_ULRangeOf_scan_filter_cmpPred();
+//  m_pTransforms->vS80_TF4_Mark_IndexMatchOf_scan_filter_terms();
+//  m_pTransforms->vS80_TF5_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
+//  m_pTransforms->vS80_TF6_Cull_Marked_filter_cmpPred();
+//  m_pTransforms->vS80_TF7_Morph_scan_To_indexScan();
 
   m_pTransforms->vS80_TZZ_End();
 
@@ -598,8 +600,9 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
   }
 
   m_pTransforms->vS90_T00_Begin();
+  m_pTransforms->vS90_T30_Add_stmOrdList();
 
-  m_pTransforms->vS90_T10_Remove_sort_IfSameAs_gby();
+  //m_pTransforms->vS90_TF0_Remove_sort_IfSameAs_gby();
 
   m_pTransforms->vS90_TZZ_End();
 

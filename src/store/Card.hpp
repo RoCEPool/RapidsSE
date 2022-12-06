@@ -332,6 +332,7 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
     bool bIsCommaSeparator(void);
+    bool bIsConjunction(void);
     bool bIsPRED(void);
     bool bIsValue(Stz* szValue);
 

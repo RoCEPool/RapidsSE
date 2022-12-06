@@ -33,6 +33,8 @@ namespace STORE
                                 bool bParamAllowedInBounds);
     bool T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred, Card_Table* p_table,
                                    bool bParamAllowedInBounds);
+    bool T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred, Card_Index* p_index,
+                                        bool bParamAllowedInBounds);
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     Card_Term* E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
@@ -51,6 +53,11 @@ namespace STORE
     bool T_bFilter_IsEmpty(Card_Filter* p_filter);
 
     bool T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index);
+
+    bool T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
+                                             bool bParamAllowedInBounds);
+    Card_PRED* T_pPRED_Containing_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
+                                                      bool bParamAllowedInBounds);
 
     bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
 

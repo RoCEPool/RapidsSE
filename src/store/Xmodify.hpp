@@ -52,6 +52,9 @@ namespace STORE
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
+    i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn);
+    i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
+
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
     void M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream);
@@ -79,6 +82,8 @@ namespace STORE
     void M_vTerm_MarkIfMatchesAn_idxCol(Card_Term* p_term, Card_IdxColList* p_idxColList);
 
     // generalised drill down
+
+    bool bPRED_Descend(Card_PRED* p_pred, std::function<bool(Card_PRED* )> bfLambdaFn);
 
     // predicate pull-up
     void vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);

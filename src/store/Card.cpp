@@ -963,6 +963,23 @@ bool Card::bIsCommaSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this an AND, NOT or an OR?                                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsConjunction(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (   bIsCard(CK_ANDPRED)
+      || bIsCard(CK_NOTPRED)
+      || bIsCard(CK_ORPRED)
+      )
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is this card a PRED ?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsPRED(void)

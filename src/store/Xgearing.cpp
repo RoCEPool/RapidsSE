@@ -597,6 +597,8 @@ void Xgearing::G_vClearMembers(void)
   G.p_stmColList       = nullptr;
   G.p_stmColNm         = nullptr;
   G.p_stmColOdn        = nullptr;
+  G.p_stmOrdList       = nullptr;
+  G.p_stmOrdOdn        = nullptr;
   G.p_stream           = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
@@ -1953,7 +1955,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TBLCOLODN:        *((Card**)&G.p_tblColOdn)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_ROPRED: *((Card**)&G.p_roPred)          = pCard; break;
+    case CK_ROPRED:           *((Card**)&G.p_roPred)           = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
