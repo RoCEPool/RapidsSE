@@ -85,10 +85,11 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  Card_Term* p_term;
+  Stz* szBound;
+
   Card_Bounds* p_bounds = new Card_Bounds;
 
-  Card_Term* p_term = new Card_Term("BOUND"_Stz);
-  p_bounds->vAppend(p_term);
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
@@ -96,6 +97,9 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
     char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn) {
+      szBound = E_szBound(pTerm_1->sz());
+      p_term = new Card_Term(szBound);
+      p_bounds->vAppend(p_term);
       p_term = new Card_Term("$I1"_Stz);
       p_bounds->vAppend(p_term);
       p_term = new Card_Term(pTerm_1->sz());
@@ -105,6 +109,9 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
     if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
       char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
       if (cTblSyn_term_1 == cTblSyn) {
+        szBound = E_szBound(pTerm_1->sz());
+        p_term = new Card_Term(szBound);
+        p_bounds->vAppend(p_term);
         p_term = new Card_Term("$I1"_Stz);
         p_bounds->vAppend(p_term);
         p_term = new Card_Term(pTerm_0->sz());
@@ -118,6 +125,9 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn) {
+      szBound = E_szBound(pTerm_1->sz());
+      p_term = new Card_Term(szBound);
+      p_bounds->vAppend(p_term);
       p_term = new Card_Term("$I1"_Stz);
       p_bounds->vAppend(p_term);
       p_term = new Card_Term(pTerm_0->sz());

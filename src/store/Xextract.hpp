@@ -13,6 +13,8 @@ namespace STORE
   {
   public:
 
+    Stz* E_szBound(Stz* szRelnOp);
+
     i8   E_iCandIndex_Rank(Card_CandIndex* p_candIndex);
     void E_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
 

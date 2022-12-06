@@ -39,6 +39,22 @@ Xextract::~Xextract(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* get bound for relational op                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Xextract::E_szBound(Stz* szRelnOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz))
+    return "LBOUND"_Stz;
+
+  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz))
+    return "UBOUND"_Stz;
+
+  return "UBOUND"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
 i8 Xextract::E_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)

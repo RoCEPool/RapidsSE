@@ -3781,6 +3781,8 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
     }
   }
 
+  vPrintBoard();
+
   vEndTransform();
 }
 
