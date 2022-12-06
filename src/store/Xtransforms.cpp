@@ -3209,12 +3209,29 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
   vAssert_Board_mqA();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda_Test = [this] (Card_CmpPred* p_cmpPred) {
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda_Drilldown = [this] (Card_PRED* p_PRED) {
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (G_bEachMainWithSub(CK_SCAN,CK_INDEXLIST)) {
 
     if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
 
       // some /<boolCalc>/<PRED> which is a bound of an index under scan
-      
+      Card_PRED* p_rootPRED = (Card_PRED*)G.p_boolCalc->pGetChild(0);
+      bool b = bPRED_Descend(p_rootPRED, bLambda_Drilldown);
 
       // mark such <PRED> & copy as a bound
     }
