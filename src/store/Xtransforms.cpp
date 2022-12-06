@@ -21,6 +21,9 @@ Xtransforms::Xtransforms(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  for (i8 iIndex = 0; iIndex < OT_ENUMS; iIndex++)
+    m_eOptTranforms[iIndex] = OT_NONE;
+
   _checkInitialised_(CN_TRANSFORMS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -45,12 +48,116 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOptimiseLoop(void) {
 
+  bool bOpts;
+  i8 iOpts = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Discover the optimisation transformations
+
+  do {
+
+    bOpts = false;
+
+    if (bOT_Cut_Sort()) {
+      m_eOptTranforms[iOpts++] = OT_CUT_SORT;
+      bOpts = true;
+    }
+
+    if (bOT_Dup_Filter()) {
+      m_eOptTranforms[iOpts++] = OT_DUP_FILTER;
+      bOpts = true;
+    }
+
+    if (bOT_Ely_Filters()) {
+      m_eOptTranforms[iOpts++] = OT_ELY_FILTERS;
+      bOpts = true;
+    }
+
+    if (bOT_Ely_Projections()) {
+      m_eOptTranforms[iOpts++] = OT_ELY_PROJECTIONS;
+      bOpts = true;
+    }
+
+    if (bOT_Ely_Sort_Limit()) {
+      m_eOptTranforms[iOpts++] = OT_ELY_SORT_LIMIT;
+      bOpts = true;
+    }
+
+    if (bOT_Min_Groupby()) {
+      m_eOptTranforms[iOpts++] = OT_MIN_GROUPBY;
+      bOpts = true;
+    }
+
+
+    if (bOT_Otm_Calculations()) {
+      m_eOptTranforms[iOpts++] = OT_OTM_CALCULATIONS;
+      bOpts = true;
+    }
+
+    if (bOT_Ppn_Projections()) {
+      m_eOptTranforms[iOpts++] = OT_PPT_PROJECTIONS;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Aggreg_By_OrdAgg()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_AGGREG_BY_ORDAGG;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Aggreg_By_Sort_OrdAgg()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_AGGREG_BY_SORT_ORDAGG;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Max_By_Top()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_MAX_BY_TOP;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Scan_by_IndexScan()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_SCAN_BY_INDEXSCAN;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_SortDesc_Limit_By_Top()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_SORTDESC_LIMIT_BY_TOP;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS;
+      bOpts = true;
+    }
+
+    if (bOT_Seq_Join_Order()) {
+      m_eOptTranforms[iOpts++] = OT_SEQ_JOIN_ORDER;
+      bOpts = true;
+    }
+
+  } while (bOpts);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Apply the transformations in the order they were discovered
+
+  for (i8 iOptTransform = 0; iOptTransform < iOpts; iOptTransform++) {
+
+    switch(m_eOptTranforms[iOptTransform]) {
+
+      case OT_CUT_SORT:
+        vOT_Cut_Sort();
+        break;
+
+      default:
+        NEVER_REACH
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO10_Cut_Sort(void) {
+bool Xtransforms::bOT_Cut_Sort(void) {
 
  return false;
 }
@@ -58,14 +165,14 @@ bool Xtransforms::bO10_Cut_Sort(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO10_Cut_Sort(void) {
+void Xtransforms::vOT_Cut_Sort(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO20_Dup_Filter(void) {
+bool Xtransforms::bOT_Dup_Filter(void) {
 
   return false;
 }
@@ -73,14 +180,14 @@ bool Xtransforms::bO20_Dup_Filter(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO20_Dup_Filter(void) {
+void Xtransforms::vOT_Dup_Filter(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO30_Ely_Filters(void) {
+bool Xtransforms::bOT_Ely_Filters(void) {
 
   return false;
 }
@@ -88,14 +195,14 @@ bool Xtransforms::bO30_Ely_Filters(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO30_Ely_Filters(void) {
+void Xtransforms::vOT_Ely_Filters(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO31_Ely_Projections(void) {
+bool Xtransforms::bOT_Ely_Projections(void) {
 
   return false;
 }
@@ -103,14 +210,14 @@ bool Xtransforms::bO31_Ely_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO31_Ely_Projections(void) {
+void Xtransforms::vOT_Ely_Projections(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO32_Ely_Sort_Limit(void) {
+bool Xtransforms::bOT_Ely_Sort_Limit(void) {
 
   return false;
 }
@@ -118,14 +225,14 @@ bool Xtransforms::bO32_Ely_Sort_Limit(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO32_Ely_Sort_Limit(void) {
+void Xtransforms::vOT_Ely_Sort_Limit(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO50_Min_Groupby(void) {
+bool Xtransforms::bOT_Min_Groupby(void) {
 
   return false;
 }
@@ -133,14 +240,14 @@ bool Xtransforms::bO50_Min_Groupby(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO50_Min_Groupby(void) {
+void Xtransforms::vOT_Min_Groupby(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO50_Otm_Calculations(void) {
+bool Xtransforms::bOT_Otm_Calculations(void) {
 
   return false;
 }
@@ -148,14 +255,14 @@ bool Xtransforms::bO50_Otm_Calculations(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO50_Otm_Calculations(void) {
+void Xtransforms::vOT_Otm_Calculations(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO60_Ppn_Projections(void) {
+bool Xtransforms::bOT_Ppn_Projections(void) {
 
   return false;
 }
@@ -163,15 +270,14 @@ bool Xtransforms::bO60_Ppn_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO60_Ppn_Projections(void) {
+void Xtransforms::vOT_Ppn_Projections(void) {
 
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
+bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void) {
 
   return false;
 }
@@ -179,7 +285,7 @@ bool Xtransforms::bO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
+void Xtransforms::vOT_Rpl_Aggreg_By_OrdAgg(void) {
 
 
 }
@@ -187,7 +293,7 @@ void Xtransforms::vO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO71_Rpl_Max_By_Top(void) {
+bool Xtransforms::bOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 
   return false;
 }
@@ -195,7 +301,7 @@ bool Xtransforms::bO71_Rpl_Max_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO71_Rpl_Max_By_Top(void) {
+void Xtransforms::vOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 
 
 }
@@ -203,7 +309,7 @@ void Xtransforms::vO71_Rpl_Max_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO72_Rpl_Scan_by_IndexScan(void) {
+bool Xtransforms::bOT_Rpl_Max_By_Top(void) {
 
   return false;
 }
@@ -211,7 +317,7 @@ bool Xtransforms::bO72_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO72_Rpl_Scan_by_IndexScan(void) {
+void Xtransforms::vOT_Rpl_Max_By_Top(void) {
 
 
 }
@@ -219,7 +325,7 @@ void Xtransforms::vO72_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO73_Rpl_SortDesc_Limit_By_Top(void) {
+bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
 
   return false;
 }
@@ -227,7 +333,7 @@ bool Xtransforms::bO73_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO73_Rpl_SortDesc_Limit_By_Top(void) {
+void Xtransforms::vOT_Rpl_Scan_by_IndexScan(void) {
 
 
 }
@@ -235,7 +341,7 @@ void Xtransforms::vO73_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+bool Xtransforms::bOT_Rpl_SortDesc_Limit_By_Top(void) {
 
   return false;
 }
@@ -243,16 +349,15 @@ bool Xtransforms::bO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+void Xtransforms::vOT_Rpl_SortDesc_Limit_By_Top(void) {
 
 
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO80_Seq_Join_Order(void) {
+bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
 
   return false;
 }
@@ -260,7 +365,24 @@ bool Xtransforms::bO80_Seq_Join_Order(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO80_Seq_Join_Order(void) {
+void Xtransforms::vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bOT_Seq_Join_Order(void) {
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vOT_Seq_Join_Order(void) {
 
 
 }
