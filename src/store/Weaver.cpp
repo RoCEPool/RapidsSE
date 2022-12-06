@@ -874,6 +874,83 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for indexScan op                                            */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_LBound* p_lBound = pCard_IndexScan->pSub_lBound();
+  if (p_lBound) {
+    i8 nSubs = p_lBound->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card* pSubCard = p_lBound->pGet(i_Sub);
+
+      if (! pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term* p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
+    }
+  }
+
+  Card_UBound* p_uBound = pCard_IndexScan->pSub_uBound();
+  if (p_uBound) {
+    i8 nSubs = p_uBound->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card* pSubCard = p_uBound->pGet(i_Sub);
+
+      if (! pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term* p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
+    }
+  }
+}
+/*----------------------------------------------------------------------------*/
+//void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+//
+//  Card_CmpPred* p_predCmp;
+//  Card_Term*    p_term;
+//
+//  Card_LBound* p_lBound = pCard_IndexScan->pSub_lBound();
+//  if (p_lBound) {
+//    szRpnExpr->vConcat(" LBOUND"_Stz);
+//
+//    p_predCmp = p_lBound->pSub_cmpPred();
+//
+//    //p_term = _pCard_Term(p_predCmp->pGetChild(0));
+//
+//    //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
+//
+//    p_predCmp->vConcatChildren(szRpnExpr,CK_TERM);
+//
+//    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
+//
+//  }
+//
+//  Card_UBound* p_uBound = pCard_IndexScan->pSub_uBound();
+//  if (p_uBound) {
+//    szRpnExpr->vConcat(" UBOUND"_Stz);
+//
+//    p_predCmp = p_uBound->pSub_cmpPred();
+//
+//    //p_term = _pCard_Term(p_predCmp->pGetChild(0));
+//
+//    //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
+//
+//    p_predCmp->vConcatChildren(szRpnExpr,CK_TERM);
+//
+//    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
+//
+//  }
+//
+//}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
 void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
@@ -993,49 +1070,6 @@ void Weaver::vRpnKeyNotExists_constraint(Stz* szRpnExpr, Card_KeyNotExists* p_ke
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* produce <expr> for indexScan op                                            */
-/*----------------------------------------------------------------------------*/
-void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  Card_CmpPred* p_predCmp;
-  Card_Term*    p_term;
-
-  Card_LBound* p_lBound = pCard_IndexScan->pSub_lBound();
-  if (p_lBound) {
-    szRpnExpr->vConcat(" LBOUND"_Stz);
-
-    p_predCmp = p_lBound->pSub_cmpPred();
-
-    //p_term = _pCard_Term(p_predCmp->pGetChild(0));
-
-    //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
-
-    p_predCmp->vConcatChildren(szRpnExpr,CK_TERM);
-
-    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
-
-  }
-
-  Card_UBound* p_uBound = pCard_IndexScan->pSub_uBound();
-  if (p_uBound) {
-    szRpnExpr->vConcat(" UBOUND"_Stz);
-
-    p_predCmp = p_uBound->pSub_cmpPred();
-
-    //p_term = _pCard_Term(p_predCmp->pGetChild(0));
-
-    //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
-
-    p_predCmp->vConcatChildren(szRpnExpr,CK_TERM);
-
-    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
-
-  }
-
-}
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for limit op                                                */
 /*----------------------------------------------------------------------------*/
