@@ -143,8 +143,80 @@ void Xtransforms::vOptimiseLoop(void) {
 
     switch(m_eOptTranforms[iOptTransform]) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // CUT
       case OT_CUT_SORT:
         vOT_Cut_Sort();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // DUPLICATE
+      case OT_DUP_FILTER:
+        vOT_Dup_Filter();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // EARLY
+      case OT_ELY_FILTERS:
+        vOT_Ely_Filters();
+        break;
+
+      case OT_ELY_PROJECTIONS:
+        vOT_Ely_Projections();
+        break;
+
+      case OT_ELY_SORT_LIMIT:
+        vOT_Ely_Sort_Limit();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MINIMIZE
+      case OT_MIN_GROUPBY:
+        vOT_Min_Groupby();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // ONE-TIME CALCULATIONS
+      case OT_OTM_CALCULATIONS:
+        vOT_Otm_Calculations();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // POSTPONE
+      case OT_PPT_PROJECTIONS:
+        vOT_Ppn_Projections();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // REPLACE
+      case OT_RPL_AGGREG_BY_ORDAGG:
+        vOT_Rpl_Aggreg_By_OrdAgg();
+        break;
+
+      case OT_RPL_AGGREG_BY_SORT_ORDAGG:
+        vOT_Rpl_Aggreg_By_Sort_OrdAgg();
+        break;
+
+      case OT_RPL_MAX_BY_TOP:
+        vOT_Rpl_Max_By_Top();
+        break;
+
+      case OT_RPL_SCAN_BY_INDEXSCAN:
+        vOT_Rpl_Scan_by_IndexScan();
+        break;
+
+      case OT_RPL_SORTDESC_LIMIT_BY_TOP:
+        vOT_Rpl_SortDesc_Limit_By_Top();
+        break;
+
+      case OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS:
+        vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // SEQUENCING
+      case OT_SEQ_JOIN_ORDER:
+        vOT_Seq_Join_Order();
         break;
 
       default:
