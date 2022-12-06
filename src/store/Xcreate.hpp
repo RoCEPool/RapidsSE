@@ -13,7 +13,7 @@ namespace STORE
   {
   public:
 
-    Card_Bounds*     C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
+    Card_Bound*      C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
                                                  char cTblSyn);
 
     Card_BoolCalc*   C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
