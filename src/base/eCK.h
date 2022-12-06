@@ -16,6 +16,7 @@ enum eCK // card kind
 
   /* */ CK_BOLPRED,
   /* */ CK_BOOLCALC,
+  /* */ CK_BOUND,
   /* */ CK_BOUNDS,
 
   /* */ CK_CALCOP,
@@ -182,6 +183,7 @@ static Stz* aCK[]
 
   /* */ "CK_BOLPRED"_Stz,      // CK_BOLPRED
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOUND"_Stz,        // CK_BOUND
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CALCOP"_Stz,       // CK_CALCOP
@@ -347,6 +349,7 @@ static Stz* aCK_short[]
 
   /* */ "bolPred"_Stz,         // CK_BOLPRED
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+  /* */ "bound"_Stz,           // CK_BOUND
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "calcOp"_Stz,          // CK_CALCOP

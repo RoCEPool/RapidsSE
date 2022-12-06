@@ -347,6 +347,40 @@ bool Xtest::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCm
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given cmpPred same as given bounds?                                     */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bCmpPred_EqualTo_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("LBOUND"_Stz)) {
+    Stz* sz_bnd_idxColOdn = p_bounds->pGetChild(1)->szValue();
+    Stz* sz_bnd_stmColOdn = p_bounds->pGetChild(2)->szValue();
+    Stz* sz_bnd_rlnOpr    = p_bounds->pGetChild(3)->szValue();
+
+    Stz* sz_cmp_rlnOpr    = p_cmpPred->szValue();
+    Stz* sz_cmp_arg_0     = p_cmpPred->pGetChild(0)->szValue();
+    Stz* sz_cmp_arg_1     = p_cmpPred->pGetChild(1)->szValue();
+
+    if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
+      return false;
+
+
+  }
+
+  if (szBound->bSame("UBOUND"_Stz)) {
+
+
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Xtest::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)

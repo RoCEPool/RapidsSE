@@ -32,6 +32,7 @@ namespace STORE
 
     bool T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    bool T_bCmpPred_EqualTo_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds);
     bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* p_table,
                                 bool bParamAllowedInBounds);

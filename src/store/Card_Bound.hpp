@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BOUND.hpp -- Abstract Bound                                           */
+/* Card_Bound.hpp -- Abstract Bound                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,18 @@
 
 namespace STORE
 {
-  class Card_CmpPred;
-
-  class Card_BOUND : public Card
+  class Card_Bound : public Card
   {  
   public:
-    Card_BOUND(eCK eCard);
-   ~Card_BOUND(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    Card_Bound(void);
+    Card_Bound(eCK eCard);
+   ~Card_Bound(void) noexcept(false);
   };
+
+  Card_Bound* _pCard_Bound(void* aAddr);
 }
 
 /*============================================================================*/

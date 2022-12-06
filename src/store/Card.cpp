@@ -102,6 +102,9 @@ void Card::vInit(eCK eCard)
 
   MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
 
+  if (CK_BOUNDS == eCard)
+    vDebugPoint();
+
   m_eCard   = eCard;
   m_iCardNo = C_UNKNOWN;
 
@@ -2096,6 +2099,19 @@ Card_BoolCalc* Card::pSub_boolCalc(void)
   Card_BoolCalc* p_boolCalc =
       _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
   return p_boolCalc;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Bound.hpp"
+Card_Bound* Card::pSub_bound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Bound* p_bound =
+      _pCard_Bound(pFindSubCard(CK_BOUND));
+  return p_bound;
 }
 
 /*----------------------------------------------------------------------------*/
