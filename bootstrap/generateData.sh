@@ -35,6 +35,10 @@ FIRST_OFFSET=-1
 NO_RENAME=0
 
 declare -a OUTPUT_DIRS=()
+declare -a CORE_COUNTS=()
+declare -a CHUNK_COUNTS=()
+
+TOTAL_CORES=0
 
 CURRENT_NODE_NAME=""
 
@@ -102,7 +106,7 @@ function processArgs() {
 
   while [[ $# -gt 0 ]]
   do
-    key="$1"
+    local key="$1"
     case "${key}" in
 
       --cluster)
@@ -149,7 +153,7 @@ function processArgs() {
         OUTPUT_DIRS+=( "${key#*=}" )
         shift # past argument=value
         ;;
-  
+
       --chunks)
         argChunks=1
         CHUNKS="$2"
@@ -285,6 +289,15 @@ function processArgs() {
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks for any required tools/utilities
+## Params: None
+
+function checkPrerequisites() {
+  if ! which parallel &>/dev/null; then
+    errorExit "The utility parallel is required and must be installed."
+  fi
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Generates TPC-H data on all nodes in the cluster.
@@ -295,8 +308,13 @@ function generateClusterData() {
   local startTime
   startTime="$(date +%s)"
 
+  # Get the CPU core counts on each node in the cluster.
+  # Then use that to calculate how many chunks each node should generate
+  getClusterCoreCounts
+  getClusterChunkCounts
+
   # Calculate how many chunks there will be
-  CHUNKS=$(( ${#NODE_LIST[@]} * ${#OUTPUT_DIRS[@]} ))
+  CHUNKS=$(( ${#NODE_LIST[@]} * ${#OUTPUT_DIRS[@]} * TOTAL_CORES ))
 
   # Create all of the output directories and ensure they are writable.
   makeOutputDirs
@@ -306,10 +324,12 @@ function generateClusterData() {
   echo "Generating TPC-H data for SF${SF}. Writing the data out to these directories:"
   printIndentArray 2 "${OUTPUT_DIRS[@]}"
 
+  local i=0
   for nodeName in "${NODE_LIST[@]}"
   do
     invokeNodeGeneration "${nodeName}" "${offset}" &
-    offset=$(( offset + ${#OUTPUT_DIRS[@]} ))
+    offset=$(( offset + ${#OUTPUT_DIRS[@]} + ${CORE_COUNTS[$i]} ))
+    i=$(( i+1 ))
   done
 
   # Wait for all parallel jobs to finish.
@@ -334,6 +354,55 @@ function generateClusterData() {
   echo ""
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Calculates the number of CPU cores in the cluster and writes this to the CORE_COUNTS array.
+## Params: None
+
+function getClusterCoreCounts() {
+  local nodeName
+  local host
+  local coreCmd=""
+  local count=""
+  declare -a sshCmd=()
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    coreCmd="{ which nproc &>/dev/null && nproc; } || { getconf _NPROCESSORS_ONLN 2>/dev/null; } || { echo 0; }"
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${coreCmd}'" )
+    debugPrint "About to get core count on node ${nodeName} with the command: ${sshCmd[*]}"
+    count="$("${sshCmd[@]}")"
+
+    if [ -z "${count}" ] || [ "${count}" -ne "${count}" ]; then
+      errorExit "Could not get the CPU core count for node ${nodeName} (host: ${host})."
+    fi
+
+    # Append to the CORE_COUNTS array and add to the total count
+    CORE_COUNTS+=("${count}")
+    TOTAL_CORES=$((TOTAL_CORES + count))
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Gets the number of CPU cores on the current machine and writes this to stdout.
+## Params: None
+
+function getCurrentCoreCount() {
+
+  local host
+  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+
+  local count
+  count="$({ which nproc &>/dev/null && nproc; } || { getconf _NPROCESSORS_ONLN 2>/dev/null; } || { echo 0; })"
+
+  if [ -z "${count}" ] || [ "${count}" -ne "${count}" ]; then
+    errorExit "Could not get the CPU core count for node ${CURRENT_NODE_NAME} (host: ${host})."
+  fi
+
+  echo "${count}"
+}
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Makes the directories where the output files will reside, if applicable, and
@@ -354,8 +423,8 @@ function makeOutputDirs() {
 
     makeDirCmd=""
     checkWritableCmd=""
-    
-    for dir in "${OUTPUT_DIRS[@]}" 
+
+    for dir in "${OUTPUT_DIRS[@]}"
     do
       # Make the directory if it doesn't exist. Then check if the directory is writable.
       makeDirCmd="${makeDirCmd} if ! mkdir -p \"${dir}\"; then echo \"Cannot make directory on host ${host}: ${dir}\"; exit 1; fi ; "
@@ -405,13 +474,132 @@ function invokeNodeGeneration() {
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
   fi
- 
+
   sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   debugPrint "About to generate TPC-H data on node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not generate TPC-H data on node ${nodeName}."
- 
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Use dbgen to generate data in chunks for a given output directory.
+## This should be a standalone function that can be invoked from parallel
+## (i.e. no dependencies on global variables, etc).
+##
+## Params:
+##  (1): The dbgen executable
+##  (2): Path to the dists.dss file
+##  (3): Scale factor
+##  (4): Output directory path
+##  (5): The chunk number to generate
+##  (6): The total number of chunks that will be generated in the cluster
+##  (7): The name of the table to generate data for
+##  (8): The name of the current node
+##  (9): The hostname of the current node
+
+function generateChunk() {
+  [ $# -eq 9 ] || { echo "Invalid number of arguments: $#"; exit 1; }
+
+  local dbgen=$1
+  local dists=$2
+  local sf=$3
+  local dir=$4
+  local chunkNum=$5
+  local totalChunks=$6
+  local tableName=$7
+  local nodeName=$8
+  local host=$9
+
+  local tableCode
+
+  case "${tableName}" in
+    customer)
+      tableCode="c"
+      ;;
+
+    lineitem)
+      tableCode="L"
+      ;;
+
+    orders)
+      tableCode="O"
+      ;;
+
+    partsupp)
+      tableCode="S"
+      ;;
+
+    part)
+      tableCode="P"
+      ;;
+
+    supplier)
+      tableCode="s"
+      ;;
+
+    nation)
+      tableCode="n"
+      ;;
+
+    region)
+      tableCode="r"
+      ;;
+
+    *)
+      echo "Invalid table: ${tableName}"
+      exit 1;
+      ;;
+  esac
+
+  {
+    cd "${dir}" || exit
+
+    local paddedChunkNum=$(printf "%03d" "${chunkNum}")
+
+    echo "$(date +%T) : Table: ${tableName} : Generating chunk #${paddedChunkNum} / ${totalChunks} : Path ${dir} : Node ${nodeName} [host: ${host}]"
+
+    if [ "${totalChunks}" -ne 1 ]; then
+      "${dbgen}" -b "${dists}" -f -q -s "${sf}" -C "${totalChunks}" -S "${chunkNum}" -T "${tableCode}"
+    else
+      "${dbgen}" -b "${dists}" -f -q -s "${SF}" -T "${tableCode}"
+    fi
+  }
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+##
+## Params:
+##  (1): Scale factor
+##  (2): Output directory path
+##  (3): The name of the table to generate data for
+##  (4): The name of the current node
+##  (5): The hostname of the current node
+
+function combineChunks() {
+  [ $# -eq 5 ] || { echo "Invalid number of arguments: $#"; exit 1; }
+
+  local sf=$1
+  local dir=$2
+  local tableName=$3
+  local nodeName=$4
+  local host=$5
+
+  echo "$(date +%T) : Table: ${tableName} : Combining chunks for path ${dir}: Node ${nodeName} [host: ${host}]"
+
+  {
+    cd "${dir}" || exit
+
+    local fileList=()
+    mapfile -t fileList < <(find . -type f -name "${tableName}.tbl.*" | sort -V)
+
+#    echo "Sorting: ${fileList[*]}"
+
+    for f in "${fileList[@]}"; do
+      cat "${f}" >> "${tableName}.tbl"
+      rm -f "${f}"
+    done
+  }
 }
 
 
@@ -420,94 +608,63 @@ function invokeNodeGeneration() {
 ## Params: None
 
 function generateNodeData() {
- 
+
+  readonly chunkableTables=("customer" "lineitem" "orders" "partsupp" "part" "supplier")
+  readonly smallTables=("nation" "region")
+
   local host
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
 
-  local counter=0
+  local nCpus
+  nCpus="$(getCurrentCoreCount)"
 
-  debugPrint "Generating data for SF${SF} for chunks $(seq "${FIRST_OFFSET}" $((FIRST_OFFSET + ${#OUTPUT_DIRS[@]} -1)) | xargs) of ${CHUNKS} on node ${CURRENT_NODE_NAME} [host: ${host}]."
+  local chunksOnThisNode=$((${#OUTPUT_DIRS[@]} * nCpus))
+  debugPrint "Generating data for SF${SF} for chunks $(seq "${FIRST_OFFSET}" $((FIRST_OFFSET + chunksOnThisNode - 1)) | xargs) of ${CHUNKS} on node ${CURRENT_NODE_NAME} [host: ${host}]."
 
-  for dir in "${OUTPUT_DIRS[@]}"
-  do
-    local offset
-    offset=$((FIRST_OFFSET + counter))
-    counter=$((counter + 1))
+  # Needed/called by parallel
+  export -f generateChunk
+  export -f combineChunks
 
-    (
-      cd "${dir}" || exit
+  # Let's say that this machine has 8 CPUs and 2 output directories. It needs to generate
+  # 8*2=16 chunks for each output directories and then consolidate them into a single file
+  # per table per output path.
+  # Say we know that this node needs to start generating chunks from offset 33. Therefore we
+  # need to generate chunks #33 to (33 + 16 - 1) = #48 inclusively.
+  # We want to invoke parallel to use all available CPUs to generate chunks for each output
+  # path. i.e. chunks #33 to #40 are for disk A and chunks #41 to #48 are for disk B.
+  # We will do this by specifying 2 input parameters to parallel
+  #  1. an array of size 16 of output paths (values are repeated evenly)
+  #  2. an array of the chunk numbers to generate
+  # GNU parallel will invoke dbgen for each value of the inputs.
 
-      local chunkArgs=("-C" "${CHUNKS}" "-S" "${offset}")
-      if [ "${CHUNKS}" -eq 1 ]; then
-        chunkArgs=()
-      fi
+  local lastOffset=$((FIRST_OFFSET + ${#OUTPUT_DIRS[@]} * nCpus - 1))
+  local chunkArray=()
+  mapfile -t chunkArray < <(seq "${FIRST_OFFSET}" "${lastOffset}")
 
-      echo "$(date +%T) : Generating chunk #${offset} for customers table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T c || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for customers table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+  local dirArray=()
+  for dir in "${OUTPUT_DIRS[@]}"; do
+    for ((i = 1; i <= "${nCpus}"; i++)); do
+      dirArray+=("${dir}")
+    done
+  done
 
-      echo "$(date +%T) : Generating chunk #${offset} for orders table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T O || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for orders table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+  # Generate each table sequentially
+  for table in "${chunkableTables[@]}"; do
+    parallel --xapply --shuf generateChunk "${DBGEN_EXE}" "${DISTS}" "${SF}" "{1}" "{2}" "${CHUNKS}" "${table}" "${CURRENT_NODE_NAME}" "${host}" ::: "${dirArray[@]}" ::: "${chunkArray[@]}"
 
-      echo "$(date +%T) : Generating chunk #${offset} for lineitem table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T L || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for lineitem table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+    # Combine all of the individual chunks into a single *.tbl file for each path.
+    # Since this is I/O heavy and CPU light, we can do this in the background while
+    # we generate the next table.
+    parallel combineChunks "${SF}" "{1}" "${table}" "${CURRENT_NODE_NAME}" "${host}" ::: "${OUTPUT_DIRS[@]}" &
+  done
 
-      echo "$(date +%T) : Generating chunk #${offset} for parts table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T P || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for parts table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
-
-      echo "$(date +%T) : Generating chunk #${offset} for partsupp table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T S || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for partsupp table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
-
-      echo "$(date +%T) : Generating chunk #${offset} for supplier table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T s || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for supplier table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
-
-      # Generate the NATION and REGION tables on the first node / first drive only
-      if [ "${counter}" -eq 1 ]; then
-        echo "$(date +%T) : Generating whole nation table on node ${CURRENT_NODE_NAME} [host: ${host}] only..."
-        "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -T n || exit
-        echo "$(date +%T) : Generation of whole nation table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
-
-        echo "$(date +%T) : Generating whole region table on node ${CURRENT_NODE_NAME} [host: ${host}] only..."
-        "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -T r || exit
-        echo "$(date +%T) : Generation of whole region table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
-      fi
-    ) &
+  for table in "${smallTables[@]}"; do
+    parallel --xapply generateChunk "${DBGEN_EXE}" "${DISTS}" "${SF}" "{1}" "1" "1" "${table}" "${CURRENT_NODE_NAME}" "${host}" ::: "${OUTPUT_DIRS[@]}"
   done
 
   wait
 
-  # Rename the data files to remove the .1, .2, .3... extensions
-  if [ "${NO_RENAME}" -ne 1 ]; then
-    removeFileChunkExt
-  fi
-
-  echo "$(date +%T) : Data generation complete on node ${CURRENT_NODE_NAME} [host: ${host}]."
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Removes the chunking/offset extension from the file name. So instead of 
-## having a file lineitem.tbl.3 you simply have lineitem.tbl.
-## Params: None
-
-function removeFileChunkExt() {
-  
-  for dir in "${OUTPUT_DIRS[@]}"
-  do
-    declare -a files=()
-    mapfile -t files < <(find "${dir}" -type f -name "*.tbl.*")
-
-    for f in "${files[@]}"
-    do
-      debugPrint "Renaming file: \"${f}\" --> \"${f%.*}\""
-      mv "${f}" "${f%.*}" || errorExit "Error renaming file: ${f}"
-    done
-  done
+  echo "TPC-H SF${SF} data generation completed on node ${CURRENT_NODE_NAME} (host: ${host})"
 }
 
 
@@ -533,11 +690,13 @@ debugPrintArray 2 "${OUTPUT_DIRS[@]}"
 # Import the cluster configuration
 loadClusterConfig
 
+checkPrerequisites
+
 if [ ${CLUSTER_OP} -eq 1 ]; then
   generateClusterData
 
 else
   loadNodeName
-  generateNodeData
+  time generateNodeData
 fi
 
