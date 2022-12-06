@@ -263,60 +263,11 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
     Card_Bounds* p_bounds = p_table->pSub_bounds();
     if (! p_bounds)
       p_bounds = new Card_Bounds;
-    Card_Stream* p_stream = p_table->pSub_stream();
-    //p_table->vInsertAfter(p_bounds, p_stream);
+
     p_index->vAppend(p_bounds);
 
-    Card_Term* p_term = new Card_Term("BOUND"_Stz);
-    p_bounds->vAppend(p_term);
-
-    // - - - -
-
-    // one of {pCard_term_0,pCard_term_1} is $In
-
-    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-    if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
-      char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
-      if (cTblSyn_term_0 == cTblSyn) {
-        p_term = new Card_Term("$I1"_Stz);
-        p_bounds->vAppend(p_term);
-        p_term = new Card_Term(pTerm_1->sz());
-        p_bounds->vAppend(p_term);
-      }
-      else
-      if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-        char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
-        if (cTblSyn_term_1 == cTblSyn) {
-          p_term = new Card_Term("$I1"_Stz);
-          p_bounds->vAppend(p_term);
-          p_term = new Card_Term(pTerm_0->sz());
-          p_bounds->vAppend(p_term);
-        } else {
-          NEVER_REACH
-        }
-      }
-    }
-    else
-    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
-      if (cTblSyn_term_1 == cTblSyn) {
-        p_term = new Card_Term("$I1"_Stz);
-        p_bounds->vAppend(p_term);
-        p_term = new Card_Term(pTerm_0->sz());
-        p_bounds->vAppend(p_term);
-      }
-      else {
-        NEVER_REACH
-      }
-    }
-    else {
-      NEVER_REACH
-    }
-
-    p_term = new Card_Term(p_cmpPred->sz());
-    p_bounds->vAppend(p_term);
+    Card_Bound* p_bound = C_pBound_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
+    p_bounds->vAppend(p_bound);
 
     p_cmpPred->vMark1(MARK_UP);
 
@@ -328,6 +279,114 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
   bool bIgnore = M_bPredRecursive(p_pred_ofFilter_ROOT, bLambdaFn);
 
 }
+/*----------------------------------------------------------------------------*/
+//void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
+//                                          Card_Filter* p_filter,
+//                                          bool bParamAllowedInBounds)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+//
+//  //M.p_table->vDump();
+//
+//  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+//  RASSERT(1 == p_boolCalc->nChildCards());
+//
+//  Card_PRED* p_pred_ofFilter_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+//
+//  // TODO: this is a hack to put bounds under one and only one index
+//
+//  Card_IndexList* p_indexList = p_table->pSub_indexList();
+//  Card_Index* p_index = p_table->pSub_index();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [this,p_table,p_index,bParamAllowedInBounds](Card_PRED* p_pred_Of_filter, bool bUpwards)
+//  {
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//
+//    if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
+//      return C_CONTINUE_RECURSION;
+//
+//    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
+//    p_cmpPred->vDump();
+//
+//    //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
+//    if (!T_bCmpPred_MaybeBounds_v2(p_cmpPred,p_table,bParamAllowedInBounds))
+//      return C_CONTINUE_RECURSION;
+//
+//    // - - - -
+//
+//    char cTblSyn = p_table->cValue();
+//
+//    Card_Bounds* p_bounds = p_table->pSub_bounds();
+//    if (! p_bounds)
+//      p_bounds = new Card_Bounds;
+//    Card_Stream* p_stream = p_table->pSub_stream();
+//    //p_table->vInsertAfter(p_bounds, p_stream);
+//    p_index->vAppend(p_bounds);
+//
+//    Card_Term* p_term = new Card_Term("BOUND"_Stz);
+//    p_bounds->vAppend(p_term);
+//
+//    // - - - -
+//
+//    // one of {pCard_term_0,pCard_term_1} is $In
+//
+//    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+//    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+//
+//    if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+//      char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+//      if (cTblSyn_term_0 == cTblSyn) {
+//        p_term = new Card_Term("$I1"_Stz);
+//        p_bounds->vAppend(p_term);
+//        p_term = new Card_Term(pTerm_1->sz());
+//        p_bounds->vAppend(p_term);
+//      }
+//      else
+//      if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+//        char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+//        if (cTblSyn_term_1 == cTblSyn) {
+//          p_term = new Card_Term("$I1"_Stz);
+//          p_bounds->vAppend(p_term);
+//          p_term = new Card_Term(pTerm_0->sz());
+//          p_bounds->vAppend(p_term);
+//        } else {
+//          NEVER_REACH
+//        }
+//      }
+//    }
+//    else
+//    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+//      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+//      if (cTblSyn_term_1 == cTblSyn) {
+//        p_term = new Card_Term("$I1"_Stz);
+//        p_bounds->vAppend(p_term);
+//        p_term = new Card_Term(pTerm_0->sz());
+//        p_bounds->vAppend(p_term);
+//      }
+//      else {
+//        NEVER_REACH
+//      }
+//    }
+//    else {
+//      NEVER_REACH
+//    }
+//
+//    p_term = new Card_Term(p_cmpPred->sz());
+//    p_bounds->vAppend(p_term);
+//
+//    p_cmpPred->vMark1(MARK_UP);
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = M_bPredRecursive(p_pred_ofFilter_ROOT, bLambdaFn);
+//
+//}
 /*----------------------------------------------------------------------------*/
 //void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_filter)
 //{
