@@ -21,6 +21,9 @@ Xtransforms::Xtransforms(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  for (i8 iIndex = 0; iIndex < OT_ENUMS; iIndex++)
+    m_eOptTranforms[iIndex] = OT_NONE;
+
   _checkInitialised_(CN_TRANSFORMS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -45,12 +48,188 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOptimiseLoop(void) {
 
+  bool bOpts;
+  i8 iOpts = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Discover the optimisation transformations
+
+  do {
+
+    bOpts = false;
+
+    if (bOT_Cut_Sort()) {
+      m_eOptTranforms[iOpts++] = OT_CUT_SORT;
+      bOpts = true;
+    }
+
+    if (bOT_Dup_Filter()) {
+      m_eOptTranforms[iOpts++] = OT_DUP_FILTER;
+      bOpts = true;
+    }
+
+    if (bOT_Ely_Filters()) {
+      m_eOptTranforms[iOpts++] = OT_ELY_FILTERS;
+      bOpts = true;
+    }
+
+    if (bOT_Ely_Projections()) {
+      m_eOptTranforms[iOpts++] = OT_ELY_PROJECTIONS;
+      bOpts = true;
+    }
+
+    if (bOT_Ely_Sort_Limit()) {
+      m_eOptTranforms[iOpts++] = OT_ELY_SORT_LIMIT;
+      bOpts = true;
+    }
+
+    if (bOT_Min_Groupby()) {
+      m_eOptTranforms[iOpts++] = OT_MIN_GROUPBY;
+      bOpts = true;
+    }
+
+
+    if (bOT_Otm_Calculations()) {
+      m_eOptTranforms[iOpts++] = OT_OTM_CALCULATIONS;
+      bOpts = true;
+    }
+
+    if (bOT_Ppn_Projections()) {
+      m_eOptTranforms[iOpts++] = OT_PPT_PROJECTIONS;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Aggreg_By_OrdAgg()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_AGGREG_BY_ORDAGG;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Aggreg_By_Sort_OrdAgg()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_AGGREG_BY_SORT_ORDAGG;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Max_By_Top()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_MAX_BY_TOP;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Scan_by_IndexScan()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_SCAN_BY_INDEXSCAN;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_SortDesc_Limit_By_Top()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_SORTDESC_LIMIT_BY_TOP;
+      bOpts = true;
+    }
+
+    if (bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels()) {
+      m_eOptTranforms[iOpts++] = OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS;
+      bOpts = true;
+    }
+
+    if (bOT_Seq_Join_Order()) {
+      m_eOptTranforms[iOpts++] = OT_SEQ_JOIN_ORDER;
+      bOpts = true;
+    }
+
+  } while (bOpts);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Apply the transformations in the order they were discovered
+
+  for (i8 iOptTransform = 0; iOptTransform < iOpts; iOptTransform++) {
+
+    switch(m_eOptTranforms[iOptTransform]) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // CUT
+      case OT_CUT_SORT:
+        vOT_Cut_Sort();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // DUPLICATE
+      case OT_DUP_FILTER:
+        vOT_Dup_Filter();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // EARLY
+      case OT_ELY_FILTERS:
+        vOT_Ely_Filters();
+        break;
+
+      case OT_ELY_PROJECTIONS:
+        vOT_Ely_Projections();
+        break;
+
+      case OT_ELY_SORT_LIMIT:
+        vOT_Ely_Sort_Limit();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MINIMIZE
+      case OT_MIN_GROUPBY:
+        vOT_Min_Groupby();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // ONE-TIME CALCULATIONS
+      case OT_OTM_CALCULATIONS:
+        vOT_Otm_Calculations();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // POSTPONE
+      case OT_PPT_PROJECTIONS:
+        vOT_Ppn_Projections();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // REPLACE
+      case OT_RPL_AGGREG_BY_ORDAGG:
+        vOT_Rpl_Aggreg_By_OrdAgg();
+        break;
+
+      case OT_RPL_AGGREG_BY_SORT_ORDAGG:
+        vOT_Rpl_Aggreg_By_Sort_OrdAgg();
+        break;
+
+      case OT_RPL_MAX_BY_TOP:
+        vOT_Rpl_Max_By_Top();
+        break;
+
+      case OT_RPL_SCAN_BY_INDEXSCAN:
+        vOT_Rpl_Scan_by_IndexScan();
+        break;
+
+      case OT_RPL_SORTDESC_LIMIT_BY_TOP:
+        vOT_Rpl_SortDesc_Limit_By_Top();
+        break;
+
+      case OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS:
+        vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels();
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // SEQUENCING
+      case OT_SEQ_JOIN_ORDER:
+        vOT_Seq_Join_Order();
+        break;
+
+      default:
+        NEVER_REACH
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO10_Cut_Sort(void) {
+bool Xtransforms::bOT_Cut_Sort(void) {
 
  return false;
 }
@@ -58,14 +237,14 @@ bool Xtransforms::bO10_Cut_Sort(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO10_Cut_Sort(void) {
+void Xtransforms::vOT_Cut_Sort(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO20_Dup_Filter(void) {
+bool Xtransforms::bOT_Dup_Filter(void) {
 
   return false;
 }
@@ -73,14 +252,14 @@ bool Xtransforms::bO20_Dup_Filter(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO20_Dup_Filter(void) {
+void Xtransforms::vOT_Dup_Filter(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO30_Ely_Filters(void) {
+bool Xtransforms::bOT_Ely_Filters(void) {
 
   return false;
 }
@@ -88,14 +267,14 @@ bool Xtransforms::bO30_Ely_Filters(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO30_Ely_Filters(void) {
+void Xtransforms::vOT_Ely_Filters(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO31_Ely_Projections(void) {
+bool Xtransforms::bOT_Ely_Projections(void) {
 
   return false;
 }
@@ -103,14 +282,14 @@ bool Xtransforms::bO31_Ely_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO31_Ely_Projections(void) {
+void Xtransforms::vOT_Ely_Projections(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO32_Ely_Sort_Limit(void) {
+bool Xtransforms::bOT_Ely_Sort_Limit(void) {
 
   return false;
 }
@@ -118,14 +297,14 @@ bool Xtransforms::bO32_Ely_Sort_Limit(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO32_Ely_Sort_Limit(void) {
+void Xtransforms::vOT_Ely_Sort_Limit(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO50_Min_Groupby(void) {
+bool Xtransforms::bOT_Min_Groupby(void) {
 
   return false;
 }
@@ -133,14 +312,14 @@ bool Xtransforms::bO50_Min_Groupby(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO50_Min_Groupby(void) {
+void Xtransforms::vOT_Min_Groupby(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO50_Otm_Calculations(void) {
+bool Xtransforms::bOT_Otm_Calculations(void) {
 
   return false;
 }
@@ -148,14 +327,14 @@ bool Xtransforms::bO50_Otm_Calculations(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO50_Otm_Calculations(void) {
+void Xtransforms::vOT_Otm_Calculations(void) {
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO60_Ppn_Projections(void) {
+bool Xtransforms::bOT_Ppn_Projections(void) {
 
   return false;
 }
@@ -163,15 +342,14 @@ bool Xtransforms::bO60_Ppn_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO60_Ppn_Projections(void) {
+void Xtransforms::vOT_Ppn_Projections(void) {
 
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
+bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void) {
 
   return false;
 }
@@ -179,7 +357,7 @@ bool Xtransforms::bO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
+void Xtransforms::vOT_Rpl_Aggreg_By_OrdAgg(void) {
 
 
 }
@@ -187,7 +365,7 @@ void Xtransforms::vO70_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO71_Rpl_Max_By_Top(void) {
+bool Xtransforms::bOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 
   return false;
 }
@@ -195,7 +373,7 @@ bool Xtransforms::bO71_Rpl_Max_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO71_Rpl_Max_By_Top(void) {
+void Xtransforms::vOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 
 
 }
@@ -203,7 +381,7 @@ void Xtransforms::vO71_Rpl_Max_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO72_Rpl_Scan_by_IndexScan(void) {
+bool Xtransforms::bOT_Rpl_Max_By_Top(void) {
 
   return false;
 }
@@ -211,7 +389,7 @@ bool Xtransforms::bO72_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO72_Rpl_Scan_by_IndexScan(void) {
+void Xtransforms::vOT_Rpl_Max_By_Top(void) {
 
 
 }
@@ -219,7 +397,7 @@ void Xtransforms::vO72_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO73_Rpl_SortDesc_Limit_By_Top(void) {
+bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
 
   return false;
 }
@@ -227,7 +405,7 @@ bool Xtransforms::bO73_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO73_Rpl_SortDesc_Limit_By_Top(void) {
+void Xtransforms::vOT_Rpl_Scan_by_IndexScan(void) {
 
 
 }
@@ -235,7 +413,7 @@ void Xtransforms::vO73_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+bool Xtransforms::bOT_Rpl_SortDesc_Limit_By_Top(void) {
 
   return false;
 }
@@ -243,16 +421,15 @@ bool Xtransforms::bO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+void Xtransforms::vOT_Rpl_SortDesc_Limit_By_Top(void) {
 
 
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bO80_Seq_Join_Order(void) {
+bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
 
   return false;
 }
@@ -260,7 +437,24 @@ bool Xtransforms::bO80_Seq_Join_Order(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vO80_Seq_Join_Order(void) {
+void Xtransforms::vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtransforms::bOT_Seq_Join_Order(void) {
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vOT_Seq_Join_Order(void) {
 
 
 }
@@ -531,7 +725,7 @@ void Xtransforms::vS20_T10_Affix_tableSyn_ToAll_table(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    vR_S20_T10_AAffix_tableSyn_To_table();
+    M_vTable_Set_Syn(G.p_table);
   }
 
   vEndTransform();
@@ -549,7 +743,9 @@ void Xtransforms::vS20_T20_Produce_tablePtn_UnderAll_table(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_S20_T20_Produce_tablePtn_Under_table();
+    G.p_tablePtn = C_pProduce_tablePtn_Of_table(G.p_table);
+
+    G.p_table->vAppend(G.p_tablePtn);
   }
 
   vEndTransform();
@@ -617,7 +813,12 @@ void Xtransforms::vS24_T10_Append_indexList_UnderAll_table(void)
   vAssert_Board_any();
 
   while (G_bEachMain(CK_TABLE)) {
-    vR_S24_T10_Produce_indexList_Under_table();
+    G.p_tableNm = G.p_table->pSub_tableNm();
+    Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
+
+    G.p_indexList = C_pProduce_indexList_Of_table(pTable);
+
+    G_vAppendChild(CK_TABLE,CK_INDEXLIST);
   }
 
   vEndTransform();
@@ -635,7 +836,11 @@ void Xtransforms::vS24_T20_Affix_tblColOdn_ToAll_idxCol(void)
   vAssert_Board_any();
 
   while (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
-    vR_S24_T20_Affix_tblColOdn_To_idxCol();
+    CardIter xCI(G.p_indexList);
+    while ((G.p_index = _pCard_Index(xCI.pEachChild()))) {
+      G.p_idxColList = G.p_index->pSub_idxColList();
+      M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
+    }
   }
 
   vEndTransform();
@@ -705,7 +910,10 @@ void Xtransforms::vS22_T10_Produce_stream_UnderAll_table(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_S22_T10_Produce_stream_Under_table();
+    m_pTable = A_pAccess_Table(G.p_tableNm->sz());
+    G.p_stream = C_pProduce_stream_Of_table(m_pTable);
+
+    G.p_table->vAppend(G.p_stream);
   }
 
   vEndTransform();
@@ -725,7 +933,9 @@ void Xtransforms::vS22_T12_Produce_stream_UnderAll_project(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
-    vR_S22_T12_Produce_stream_Under_project();
+    G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
+
+    G.p_project->vAppend(G.p_stream);
   }
 
   vEndTransform();
@@ -745,7 +955,9 @@ void Xtransforms::vS22_T14_Produce_stream_UnderAll_aggreg(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
-    vR_S22_T14_Produce_stream_Under_aggreg();
+    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+
+    G.p_aggreg->vAppend(G.p_stream);
   }
 
   vEndTransform();
@@ -763,7 +975,7 @@ void Xtransforms::vS22_T20_Derive_ordinalRange_ForAll_table_stream(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    vR_S22_T20_Derive_ordinalRange_For_table_stream();
+    M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
   }
 
   vEndTransform();
@@ -781,7 +993,7 @@ void Xtransforms::vS22_T22_Derive_ordinalRange_ForAll_project_stream(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
-    vR_S22_T22_Derive_ordinalRange_For_project_stream();
+    M_vStream_Derive_OrdinalRange_project(G.p_stream);
   }
 
   vEndTransform();
@@ -799,7 +1011,7 @@ void Xtransforms::vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
-    vR_S22_T24_Derive_ordinalRange_For_aggreg_stream();
+    M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
   }
 
   vEndTransform();
@@ -867,24 +1079,41 @@ void Xtransforms::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
   vAssert_Board_mqA();
 
   while (G_bEachMain()) {
-    vR_S26_T10f_Main_Query_Genesis();
+    G_vNewMember(CK_GENESIS,"mq"_Stz);
+    if ((G.p_level = G.p_MainCard->pSub_level()))
+      G.p_MainCard->vInsertAfter(G.p_genesis,G.p_level);
+    else
+      G.p_MainCard->vPush(G.p_genesis);
   }
 
   G_vRestart();
   while (G_bEachMain(CK_AGGREG)) {
-    vR_S26_T10a_Main_Query_Analysis_aggreg();
+    // the main-query has an aggreg
+
+    SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vDisposition(QD_AGGREGATION);
   }
 
   G_vRestart();
   while (G_bEachMain(CK_GBYAGG)) {
-    vR_S26_T10b_Main_Query_Analysis_gbyagg();
+    SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vDisposition(QD_AGGREGATION);
   }
 
   i8 nBoards = m_pBench->nItems();
   if (nBoards > 1) {
     G_vRestart();
     while (G_bEachMain(CK_CALL)) {
-      vR_S26_T10c_Main_Query_Analysis_Of_from();
+      SubQuery* pSubQuery = m_pBench->pGetBoard((i8)1)->pSubQuery();
+
+      pSubQuery->vCaller(0);
+
+      pSubQuery->vClause(QC_FROM_CLAUSE);
+
+      SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
+      pMainQuery->vSubQueries(1);
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
@@ -913,7 +1142,11 @@ void Xtransforms::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
 
   i8 nBoards = m_pBench->nItems();
   if (1 == nBoards) {
-    vR_S26_T20a_Sub_Query_Analysis_Only_main();
+    // there is no sub-query
+
+    SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vSubQueries(0);
   }
   else
   if (2 == nBoards) {
@@ -924,22 +1157,41 @@ void Xtransforms::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
       pSubQuery->vDisposition(QD_LINEAR);
 
       while (G_bEachMain()) {
-        vR_S26_T10e_Sub_Query_Genesis();
+        G_vNewMember(CK_GENESIS,"sq"_Stz);
+        if ((G.p_level = G.p_MainCard->pSub_level()))
+          G.p_MainCard->vInsertAfter(G.p_genesis,G.p_level);
+        else
+          G.p_MainCard->vPush(G.p_genesis);
       }
 
       G_vRestart();
       while (G_bEachMain(CK_PARAMLIST)) {
-        vR_S26_T20b_Sub_Query_Analysis_paramList();
+        // there is a subQuery and it has a paramList
+
+        SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
+        //G.p_paramList->vDump();
+
+        // TODO: hack the number of params... fix
+        i8 nParams = 1; //G.p_paramList->nChildCards();
+
+        pSubQuery->vCorrCols(nParams);
       }
 
       G_vRestart();
       while (G_bEachMain(CK_AGGREG)) {
-        vR_S26_T20c_Sub_Query_Analysis_aggreg();
+        // there is a subQuery and it has an aggreg
+
+        SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+
+        pSubQuery->vDisposition(QD_AGGREGATION);
       }
 
       G_vRestart();
       while (G_bEachMain(CK_GBYAGG)) {
-        vR_S26_T20d_Sub_Query_Analysis_gbyagg();
+        // there is a subQuery and it has an gbyAgg
+        SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
+        pSubQuery->vDisposition(QD_AGGREGATION);
       }
 
       G_vPopBoard();
@@ -961,8 +1213,6 @@ void Xtransforms::vS26_T30(void)
   vTransform(__func__, "((30))"_Stz);
 
   vAssert_Board_mqA();
-
-  vR_S26_T30();
 
   vEndTransform();
 }
@@ -1028,7 +1278,7 @@ void Xtransforms::vS32_T10_Convert_sqyOp_not_To_notSqyOp(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_S32_T10_Convert_sqyOp_not_To_notSqyOp();
+    M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(G.p_rpnCalc);
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
@@ -1215,7 +1465,9 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
   vPrintBoard(__LINE__);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_S34_T10_AtMark_where_pred_Wrt_table();
+    G.p_boolCalc->vDump();
+
+    vPullUp_MarkPredLeftwards(G.p_boolCalc, G.pDeck);
   }
 
   vEndTransform();
@@ -1233,7 +1485,7 @@ void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_S34_T20_Move_AtMarked_where_pred_To_table_filter();
+    vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
   }
 
   vEndTransform();
@@ -1251,7 +1503,9 @@ void Xtransforms::vS34_T30_Delete_Empty_where(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vR_S34_T30_Delete_Empty_where();
+    if (0 == G.p_boolCalc->nChildCards()) {
+      G_vRemoveDeleteMain(CK_WHERE);
+    }
   }
 
   vEndTransform();
@@ -1328,7 +1582,7 @@ void Xtransforms::vS36_T10_UpCopy_filter_pred_Into_bounds(void)
     if (G.pSubQuery->bIsCorrelated() && G.pSubQuery->bByExists())
       bParamAllowedInBounds = true;
 
-    vR_S36_T10_UpCopy_filter_pred_Into_bounds(bParamAllowedInBounds);
+    C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter,bParamAllowedInBounds);
   }
 
   vEndTransform();
@@ -1346,7 +1600,9 @@ void Xtransforms::vS36_T20_Cull_UpCopied_filter_pred(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S36_T20_Cull_UpCopied_filter_pred();
+    G.p_boolCalc = G.p_filter->pSub_boolCalc();
+
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
   }
 
   vEndTransform();
@@ -2790,7 +3046,7 @@ void Xtransforms::vS50_T00_Extract_tableList_From_queryBoard(void)
     if (! (G.p_table = G.p_MainCard->pSub_table()))
       continue;
 
-    vR_S50_T00_Extract_tableList_From_queryBoard();
+    G.p_tableList->vAppend(G.p_table->pDupCardAndSubCards());
   }
 
   vEndTransform();
@@ -2821,7 +3077,7 @@ void Xtransforms::vS50_T10_Extract_joinPredList(void)
     if (!G.p_boolCalc)
       continue;
 
-    vR_S50_T10_Extract_joinPredList();
+    D_vDerive_JoinPredList(G.p_joinPredList, G.p_boolCalc);
   }
 
   vEndTransform();
@@ -2859,7 +3115,10 @@ void Xtransforms::vS50_T20_Compute_coPtnPredList(void)
     if (!T_bTableList_PredCmpIsCoPtn(G.p_tableList, G.p_cmpPred))
       continue;
 
-    vR_S50_T20_Compute_coPtnPredList();
+    G.p_coPtnPred = new Card_CoPtnPred;
+    G.p_coPtnPred->vAppend(G.p_cmpPred->pDupCardAndSubCards());
+
+    G.p_coPtnPredList->vAppend(G.p_coPtnPred);
   }
 
   vEndTransform();
@@ -3002,7 +3261,14 @@ void Xtransforms::vS50_T90_Setup_costEst(void)
 
   //m_pBoard_costEst->vDuplicateBoard(G.pBoard);
 
-  vR_S50_T90_Setup_costEst();
+  while ((G.p_MainCard = G.pDeck->pGetChild(0))) {
+
+    if (CK_PERMUTATION == G.p_MainCard->eCard())
+      break;
+
+    G.pDeck->vRemoveChild(G.p_MainCard);
+    delete G.p_MainCard;
+  }
 
   vEndTransform();
 }
@@ -3153,7 +3419,7 @@ void Xtransforms::vS60_T10_Produce_maybeIndexJoin_Under_filter(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    vR_S60_T10_Produce_maybeIndexJoin_Under_filter();
+    M_vTable_Produce_MaybeIndexJoin(G.p_table);
   }
 
   vEndTransform();
@@ -3171,7 +3437,11 @@ void Xtransforms::vS60_T20_Affix_tblColOdn_ToAll_idxCol(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_MAYBEINDEXJOIN)) {
-    vR_S60_T20_Affix_tblColOdn_To_idxCol();
+    G.p_stream = G.p_table->pSub_stream();;
+    G.p_stmColList = G.p_table->pSub_stmColList();
+    G.p_idxColList = G.p_maybeIndexJoin->pSub_idxColList();
+
+    M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
   }
 
   vEndTransform();
@@ -3189,7 +3459,7 @@ void Xtransforms::vS60_T60_Delete_Twist(void)
   vAssert_Board_mqA();
 
   while (G_bEachMain(CK_TWIST)) {
-    vR_S60_T60_Delete_Twist();
+    G_vRemoveDeleteMain(CK_TWIST);
   }
 
   vEndTransform();
@@ -3303,7 +3573,13 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
-    vR_S75_T10_Morph_table_To_EEop_b();
+    i8 i_Child;
+    G.p_note = _pCard_Note(G.p_scan->pFindChild(CK_NOTE,i_Child));
+
+    if (i_Child == G.p_scan->nChildCards() - 1) {
+      G.p_scan->vRemoveChild(G.p_note);
+      DELETE_CARD(G.p_note);
+    }
   }
   vPrintBoard(__LINE__);
 
@@ -3338,7 +3614,7 @@ void Xtransforms::vS75_T20_Morph_keyExists_filter_To_constraint(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
-    vR_S75_T20_Morph_keyExists_filter_To_constraint();
+    G.p_filter->vCard(CK_CONSTRAINT);
   }
 
   vEndTransform();
@@ -3521,7 +3797,7 @@ void Xtransforms::vS80_TF1_Produce_Scratch_indexList_Under_scan(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_TABLENM)) {
-    vR_S80_T10_Produce_indexList_Under_scan();
+    M_vScan_Produce_indexList(G.p_scan);
   }
 
   vEndTransform();
@@ -3539,7 +3815,7 @@ void Xtransforms::vS80_TF2_Affix_idxColOdn_ToAll_idxCol(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_STREAM, CK_IDXCOLLIST)) {
-    vR_S80_T20_Affix_idxCol_name_Of_scan_To_ordinal();
+    M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
   }
 
   vEndTransform();
@@ -3557,7 +3833,17 @@ void Xtransforms::vS80_TF3_Mark_ULRangeOf_scan_filter_cmpPred(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
-    vR_S80_T30_Mark_ULBoundsOf_scan_filter_cmpPred();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bfMarkPredBounds = [this](Card* pCard) {
+      Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
+      M_vCmpPred_MarkBound(p_cmpPred);
+      return C_CONTINUE_RECURSION;
+    };
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    G.p_filter->bApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
   }
 
   vEndTransform();
@@ -3575,7 +3861,22 @@ void Xtransforms::vS80_TF4_Mark_IndexMatchOf_scan_filter_terms(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
-    vR_S80_T40_Mark_IndexMatchOf_scan_filter_terms();
+    if (! (G.p_index = _pCard_Index(G.p_indexList->pGetChild(0))))
+      continue;
+    if (! (G.p_idxColList = (G.p_index->pSub_idxColList())))
+      continue;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bfPredBounds = [this](Card* pCard) {
+      Card_Term* p_term = _pCard_Term(pCard);
+      M_vTerm_MarkIfMatchesAn_idxCol(p_term, G.p_idxColList);
+      return C_CONTINUE_RECURSION;
+    };
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    G.p_filter->bApplyRecursive(CK_TERM, bfPredBounds);
   }
 
   vEndTransform();
@@ -3593,7 +3894,17 @@ void Xtransforms::vS80_TF5_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
-    vR_S80_T50_Add_scan_bounds_ByCopyingMarked_filter_cmpPred();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bfAdd = [this](Card* pCard) {
+      G.p_cmpPred = _pCard_CmpPred(pCard);
+      M_vScan_Add_cmpPred_To_bounds(G.p_scan, G.p_cmpPred);
+      return C_CONTINUE_RECURSION;
+    };
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    G.p_filter->bApplyRecursive(CK_CMPPRED, bfAdd);
   }
 
   vEndTransform();
@@ -3611,7 +3922,17 @@ void Xtransforms::vS80_TF6_Cull_Marked_filter_cmpPred(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
-    vR_S80_T60_Cull_Marked_filter_cmpPred();
+    vTracer("Culling <filter> of L & U bounds %s\n"_Stz,G.p_filter->szBearing());
+    M_vFilter_CullPred(G.p_filter, 'L');
+    M_vFilter_CullPred(G.p_filter, 'U');
+
+    //G.p_filter->vDump();
+    if (!T_bFilter_IsEmpty(G.p_filter))
+      continue;
+
+    vTracer("Deleting empty <filter> %s\n"_Stz,G.p_filter->szBearing());
+    G.p_MainCard->vRemoveSubCard(G.p_filter);
+    DELETE_CARD(G.p_filter);
   }
 
   vEndTransform();
@@ -3630,17 +3951,20 @@ void Xtransforms::vS80_TF7_Morph_scan_To_indexScan(void)
 
   while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
     //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,G.p_scan->szBearing());
-    vR_S80_T70_Morph_scan_To_indexScan();
+    G.p_scan->vCard(CK_INDEXSCAN);
   }
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
-    vR_S80_T70_Morph_scan_To_indexScan_b();
+    i8 i_Child;
+    G.p_note = _pCard_Note(G.p_indexScan->pFindChild(CK_NOTE,i_Child));
+    G.p_note->vValue(SEP_DERIVED);
   }
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXSCAN, CK_INDEXLIST)) {
-    vR_S80_T70_Morph_scan_To_indexScan_c();
+    G.p_indexScan->vReplaceChildWithItsSubs(G.p_indexList);
+    DELETE_CARD((G.p_indexList));
   }
 
   vEndTransform();
@@ -3706,14 +4030,24 @@ void Xtransforms::vS85_T10_Transmute_All_table(void)
   vAssert_Board_mqA();
 
   if (G_bEachMain(CK_TABLE)) {
-    vR_S85_T10a_Transmute_table_To_Scan();
+    G.p_scan = new Card_Scan;
+    G.p_scan->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table,G.p_scan);
+    G.p_scan->vInsert(G.p_table);
+
     while (G_bEachMain(CK_TABLE)) {
       if ( (! G.p_table->pSub_indexJoin())
            && (! G.p_table->pSub_keyExists())
            && (! G.p_table->pSub_keyNotExists())
            && (! G.p_table->pSub_bounds())
-          )
-      vR_S85_T10b_Transmute_table_To_crossJoin();
+          ) {
+        G.p_crossJoin = new Card_CrossJoin;
+        G.p_crossJoin->vTransferChildren(G.p_table);
+
+        G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
+        G.p_crossJoin->vInsert(G.p_table);
+      }
       break;
     }
   }
@@ -3733,7 +4067,13 @@ void Xtransforms::vS85_T20_Add_index_ForAll_crossJoin(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_TABLENM)) {
-    vR_S85_T20_Add_index_For_crossJoin();
+    m_pTable = A_pAccess_Table(G.p_tableNm->szValue());
+    G.p_index = C_pProduce_index_Of_table(m_pTable);
+
+    G.p_note = new Card_Note(SEP_DERIVED);
+    G.p_crossJoin->vAppend(G.p_note);
+
+    G.p_crossJoin->vAppend(G.p_index);
   }
 
   vEndTransform();
@@ -3751,7 +4091,14 @@ void Xtransforms::vS85_T30_Add_bounds_ForAll_crossJoin(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_INDEX)) {
-    vR_S85_T30_Add_bounds_For_crossJoin();
+    G_vNewMember(CK_BOUNDS);
+    G.p_crossJoin->vAppend(G.p_bounds);
+
+    G_vNewMember(CK_TERM,"bound"_Stz);
+    G.p_bounds->vAppend(G.p_term);
+
+    G_vNewMember(CK_TERM,"$I1"_Stz);
+    G.p_bounds->vAppend(G.p_term);
   }
 
   vEndTransform();
@@ -3891,7 +4238,15 @@ void Xtransforms::vS90_TF0_Remove_sort_IfSameAs_gby(void)
   while (G_bEachMain(CK_SORT)) {
     if (! G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
       break;
-    vR_S90_T10_Remove_sort_IfSameAs_gby();
+
+    G.p_gbyElist = G.p_aggreg->pSub_gbyElist();
+    G.p_sbyElist = G.p_sort->pSub_sbyElist();
+
+    // TODO: needs to be a T_ test
+    if (! G.p_gbyElist->bValuesSameRecursive(G.p_sbyElist))
+      continue;
+
+    G_vRemoveDeleteMain(CK_SORT);
   }
 
   vEndTransform();
@@ -4048,7 +4403,12 @@ void Xtransforms::vSA0_T10_Individuate_filter(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    vR_SA0_T10_Individuate_scan_filter();
+    G.p_scan->vRemoveChild(G.p_filter);
+    G.pDeck->vInsertAfter(G.p_filter, G.p_scan);
+
+    if (! G.p_filter->pSub_level()) {
+      G.p_filter->vPush(G.p_scan->pSub_level()->pDupCardAndSubCards());
+    }
   }
 
   G_vRestart();

@@ -293,12 +293,63 @@ void ChildCards::vPromoteSubs(Card* pChildCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove all children (recursive)                                            */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveAllChildren(void)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  ListExoIter2_t<Card>* pCard_I = pNewIter();
+
+  while (pCard_I->bHasNext()) {
+    Card* pSubCard = pCard_I->pNext();
+
+    pSubCard->vRemoveAllChildren();
+
+    vRemove(pSubCard);
+  }
+
+  delete pCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vRemoveChild(Card* pChildCard)
 {
 
   vRemove(pChildCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete all children (recursive)                                 */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveDeleteAllChildren(void)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  ListExoIter2_t<Card>* pCard_I = pNewIter();
+
+  while (pCard_I->bHasNext()) {
+    Card* pSubCard = pCard_I->pNext();
+
+    pSubCard->vRemoveAllChildren();
+
+    vRemoveDeleteChild(pSubCard);
+  }
+
+  delete pCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete given immediate child card (non-recursive)               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveDeleteChild(Card* pChildCard)
+{
+
+  vRemove(pChildCard);
+
+  delete pChildCard;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,6 +37,8 @@ enum eOT // Optimiser Transformations
 
   // SEQUENCING
   /* 15 */ OT_SEQ_JOIN_ORDER,             // Sequence: Join Order
+
+  /* 16 */ OT_ENUMS,
 };
 
 static Stz* aOT[]
@@ -73,6 +75,8 @@ static Stz* aOT[]
 
   // SEQUENCING
   /*  */ "JOI_ORD"_Stz,
+
+  /*  */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/
