@@ -5,13 +5,9 @@
 
 enum eOT // Optimiser Transformations
 {
-  /*   */ OT_NONE = 0,
-
-  // ADD
-  /*  */ OT_A_SORT_AT_ALLLEVELS,      // Add : add sort at all levels (aggreg->sort by ordAgg->sort)
+  /*  */ OT_NONE = 0,
 
   // CUT
-  /*  */ OT_C_AGGREG,                 // Cut : AGGREG's on NODE/ORIGIN after OT_R_AGGREG_ORDAGG
   /*  */ OT_C_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
 
   // DUPLICATE
@@ -31,10 +27,6 @@ enum eOT // Optimiser Transformations
   // Postpone
   /*  */ OT_P_PROJECTIONS,           // Postone: VARCHAR Projections after re-join
 
-  // PULLUP
-  /*  */ OT_P_FILTERS,                // Pullup: Filters
-  /*  */ OP_P_SORT_LIMIT,             // Pullup: Sort
-
   // REPLACE
   /*  */ OT_R_AGGREG_BY_ORDAGG,       // Replace: AGGREG with ORDAGG
   /*  */ OT_R_AGGREG_BY_SORT_ORDAGG,  // Replace: AGGREG with SORT AND ORDAGG
@@ -49,7 +41,38 @@ enum eOT // Optimiser Transformations
 
 static Stz* aOT[]
 {
-  /*  0 */ "NONE"_Stz,
+  /*   */ "NONE"_Stz,
+
+  // CUT
+  /*  */ "CUT_SRT"_Stz,   // CUT_GBY_SRT
+
+  // DUPLICATE
+  /*  */ "DUP_FTR"_Stz,  // DUP_FTR_PRD
+
+  // EARLY
+  /*  */ "ELY_FTR"_Stz,  // ELY_ROW_FTR
+  /*  */ "ELY_PRJ"_Stz,  // ELY_COL_PRJ
+  /*  */ "ELY_SLT"_Stz,  // ELY_SRT_LMT
+
+  // MINIMIZE
+  /*  */ "MIN_GBY"_Stz,  // MIN_GBY_COL
+
+  // ONE-TIME CALCULATIONS
+  /*  */ "OTM_CAL"_Stz,  // OTM_LIT_CAL
+
+  // Postpone
+  /*  */ "PST_PRJ"_Stz,
+
+  // REPLACE
+  /*  */ "AGG_OAG"_Stz, // AGGREGG -> ORDAGG                     // AGG-ORD_AGG
+  /*  */ "AGG_SOA"_Stz, // AGGREG -> SORT + ORDAGG               // AGG-SRT_AGG
+  /*  */ "MAX_TOP"_Stz, // MAX    -> TOP                         // MAX-TOP_ONE
+  /*  */ "SCN_ISN"_Stz, // SCAN    -> INDEXSCAN                  // SCN-IDX_SCN
+  /*  */ "SDL_TOP"_Stz, // SORT-DESC-LIMIT -> TOP                // SDL-TOP_NUM
+  /*  */ "SLO_SLA"_Stz, // SORT-LIMIT-ORIGIN -> SORT-LIMIT-ALL   // SLT-SLT-ALL
+
+  // SEQUENCING
+  /*  */ "JOI_ORD"_Stz,                                         // SEQ_JOI_ORD
 };
 
 /*============================================================================*/
