@@ -54,6 +54,11 @@ namespace STORE
 
     bool T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index);
 
+    bool T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
+                                             bool bParamAllowedInBounds);
+    Card_PRED* T_pPRED_Containing_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
+                                                      bool bParamAllowedInBounds);
+
     bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
 
     bool T_bStage_IsIgnorable(Card_Stage* p_stage);

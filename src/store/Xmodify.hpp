@@ -85,7 +85,6 @@ namespace STORE
 
     bool bPRED_Descend(Card_PRED* p_pred, std::function<bool(Card_PRED* )> bfLambdaFn);
 
-
     // predicate pull-up
     void vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);
     void vPullUp_MarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);
