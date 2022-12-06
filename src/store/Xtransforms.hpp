@@ -21,6 +21,45 @@ namespace STORE
     Xtransforms(Bench* pBench);
    ~Xtransforms(void) noexcept(false);
 
+    // optimization transformations
+    void vOptimiseLoop(void);
+
+    bool bO10_Cut_Sort(void);
+    void vO10_Cut_Sort(void);
+
+    bool bO20_Dup_Filter(void);
+    void vO20_Dup_Filter(void);
+
+    bool bO30_Ely_Filters(void);
+    void vO30_Ely_Filters(void);
+    bool bO31_Ely_Projections(void);
+    void vO31_Ely_Projections(void);
+    bool bO32_Ely_Sort_Limit(void);
+    void vO32_Ely_Sort_Limit(void);
+
+    bool bO50_Min_Groupby(void);
+    void vO50_Min_Groupby(void);
+
+    bool bO50_Otm_Calculations(void);
+    void vO50_Otm_Calculations(void);
+
+    bool bO60_Ppn_Projections(void);
+    void vO60_Ppn_Projections(void);
+
+    bool bO70_Rpl_Aggreg_By_Sort_OrdAgg(void);
+    void vO70_Rpl_Aggreg_By_Sort_OrdAgg(void);
+    bool bO71_Rpl_Max_By_Top(void);
+    void vO71_Rpl_Max_By_Top(void);
+    bool bO72_Rpl_Scan_by_IndexScan(void);
+    void vO72_Rpl_Scan_by_IndexScan(void);
+    bool bO73_Rpl_SortDesc_Limit_By_Top(void);
+    void vO73_Rpl_SortDesc_Limit_By_Top(void);
+    bool bO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void);
+    void vO74_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void);
+
+    bool bO80_Seq_Join_Order(void);
+    void vO80_Seq_Join_Order(void);
+
     //void vAdd_columnRef_Under_term(void);
 
     // vSeries_10_Condense_Info
