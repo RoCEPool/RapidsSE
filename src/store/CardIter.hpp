@@ -63,6 +63,7 @@ namespace STORE
     void vRewind(void);
 
     void vSet(Card* pChild);
+    void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
 
   private:
