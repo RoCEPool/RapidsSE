@@ -4433,9 +4433,31 @@ void Xtransforms::vSA0_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspect filters and remove cmp predicates which are in bounds              */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  while (G_bEachMain()) {
+
+    if (! (G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
+           G.p_MainCard->bIsCard(CK_INDEXJOIN)))
+      continue;
+
+    if (! (G.p_bounds = G.p_MainCard->pSub_bounds()))
+      continue;
+    if (! (G.p_filter = G.p_MainCard->pSub_filter()))
+      continue;
+
+    // todo: complete...
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSA0_T10_Individuate_filter(void)
+void Xtransforms::vSA0_T20_Individuate_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

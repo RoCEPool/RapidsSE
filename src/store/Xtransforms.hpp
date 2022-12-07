@@ -253,7 +253,8 @@ namespace STORE
     bool bSA0_T00_Test(bool bEnabled);
     void vSA0_T00_Skip(void);
     void vSA0_T00_Begin(void);
-    void vSA0_T10_Individuate_filter(void);
+    void vSA0_T10_Eliminate_bounds_From_filter(void);
+    void vSA0_T20_Individuate_filter(void);
     void vSA0_TZZ_End(void);
 
     // vSeries_B0_RestoreStmOdn

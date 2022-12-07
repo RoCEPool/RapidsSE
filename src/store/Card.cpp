@@ -6,6 +6,7 @@
 #include "CardCtl.hpp"
 #include "Board.hpp"
 #include "CardIter.hpp"
+#include "CardRecurse.hpp"
 
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove

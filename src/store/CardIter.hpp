@@ -24,6 +24,7 @@ namespace STORE
     void  operator delete(void*);
   
     CardIter(Card* pCard);
+    CardIter(CardIter* pCardIter_src);
     CardIter(eCN eClass, Card* pCard);
    ~CardIter(void) noexcept(false);
 

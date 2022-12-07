@@ -650,7 +650,8 @@ void Xseries::vSeries_A0_Filter_Refinement(bool bEnabled)
 
   m_pTransforms->vSA0_T00_Begin();
 
-  m_pTransforms->vSA0_T10_Individuate_filter();
+  m_pTransforms->vSA0_T10_Eliminate_bounds_From_filter();
+  m_pTransforms->vSA0_T20_Individuate_filter();
 
   m_pTransforms->vSA0_TZZ_End();
 
