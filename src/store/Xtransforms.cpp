@@ -3758,7 +3758,7 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
         RASSERT(! G.p_bounds);
         G.p_bounds = new Card_Bounds;
-        G.p_scan->vAppend(G.p_bounds);
+        G.p_index->vAppend(G.p_bounds);
         G.p_bound = C_pBound_CreateFrom_PRED(p_boundingPRED, cTblSyn);
         G.p_bounds->vAppend(G.p_bound);
       }
