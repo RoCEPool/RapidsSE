@@ -3772,18 +3772,21 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
       Card_PRED *p_boundingPRED = T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
 
+      //p_boundingPRED->vDump();
+
       // mark such <PRED> & copy as a bound
       if (p_boundingPRED) {
         p_boundingPRED->vMark1(MARK_AT);
 
         RASSERT(! G.p_bounds);
+//        G.p_bounds = new Card_Bounds;
+//        G.p_index->vAppend(G.p_bounds);
+//        G.p_bound = C_pBound_CreateFrom_PRED(p_boundingPRED, cTblSyn);
+//        G.p_bounds->vAppend(G.p_bound);
         G.p_bounds = C_pBounds_CreateFrom_PRED(p_boundingPRED, cTblSyn);
-        G.p_scan->vAppend(G.p_bounds);
-
-
+        G.p_index->vAppend(G.p_bounds);
+        G.p_bounds->vDump();
       }
-
-
     }
   }
 
@@ -3809,13 +3812,13 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
   G_vRestart();
   if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
 
-    if (T_bBounds_Is_lbound(G.p_bounds))
-      G.p_bounds->vCard(CK_LBOUND);
-    else
-    if (T_bBounds_Is_ubound(G.p_bounds))
-      G.p_bounds->vCard(CK_UBOUND);
+//    if (T_bBounds_Is_lbound(G.p_bounds))
+//      G.p_bounds->vCard(CK_LBOUND);
+//    else
+//    if (T_bBounds_Is_ubound(G.p_bounds))
+//      G.p_bounds->vCard(CK_UBOUND);
 
-    if (G.p_bounds->bIsCard(CK_LBOUND) || G.p_bounds->bIsCard(CK_UBOUND)) {
+    if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
       G.p_scan->vCard(CK_INDEXSCAN);
     }
   }
