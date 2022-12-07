@@ -314,6 +314,18 @@ void Xtransforms::vOT_Ely_Sort_Limit(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Min_Groupby(void) {
 
+  //
+  // Query3, Query10, Query18
+  //
+
+  // Notes:
+  // * need to get the tables from which the columns of the gbyElist are from
+  // * get the indexlist of unique indexes of the tables
+  // * match the gbyElist column with the indexList columns
+  // * if a match is found , discard all other columns off the gbyElist
+  //   except the match (unique one)
+
+
   return false;
 }
 
