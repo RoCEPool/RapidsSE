@@ -296,6 +296,36 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append new card to tail                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  Card* pCard;
+  if ( szValue != nullptr )
+    pCard = new Card(eCard, szValue);
+  else
+    pCard = new Card(eCard);
+
+  vPushTail(pCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append new card to top                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendNewCardTop(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  Card* pCard;
+  if(szValue != nullptr)
+    pCard = new Card(eCard, szValue);
+  else
+    pCard = new Card(eCard);
+
+  vPush(pCard);
+}
+
+/*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function               */
 /*----------------------------------------------------------------------------*/
 bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
@@ -1590,6 +1620,21 @@ bool Card::bSame(Stz* szArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Take all subcards from given card and move under this card (top)           */
+/*----------------------------------------------------------------------------*/
+void Card::vTakeAllSubCards(Card* pCard, bool bDeleteCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  while(Card* pSubCard = pCard->pPop()) {
+    vPush(pSubCard);
+  }
+
+  if(bDeleteCard)
+    delete pCard;
 }
 
 /*----------------------------------------------------------------------------*/

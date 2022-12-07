@@ -294,6 +294,8 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
+    void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -372,6 +374,8 @@ namespace STORE
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
+
+    void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
 
     Stz* sz(void);
     char cValue(void);
