@@ -59,8 +59,6 @@ function processStartArgs() {
   local argCluster=0
   local argNode=0
   local argConfig=0
-  local argExtra=0
-  #local argClusterInit=0
 
   while [[ $# -gt 0 ]]
   do
@@ -80,7 +78,6 @@ function processStartArgs() {
         ;;
 
       --reload)
-        argExtra=1
         ARG_EXTRA="$1"
         ARG_EXTRA_VALUE="$2"
         shift # past argument
@@ -181,5 +178,5 @@ else
     exit
   fi
 
-  startCurrentNode ${ARG_EXTRA} ${ARG_EXTRA_VALUE}
+  startCurrentNode "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}"
 fi
