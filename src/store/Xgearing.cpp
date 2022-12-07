@@ -609,11 +609,12 @@ void Xgearing::G_vClearMembers(void)
   G.p_tblColOdn        = nullptr;
   G.p_term             = nullptr;
   G.p_topology         = nullptr;
-  G.p_roPred          = nullptr;
+  G.p_roPred           = nullptr;
   G.p_twist            = nullptr;
   G.p_type             = nullptr;
   G.p_uBound           = nullptr;
   G.p_where            = nullptr;
+  G.p_xBound           = nullptr;
 
   G.p_av_aggP          = nullptr;
   G.p_av_aggPN         = nullptr;

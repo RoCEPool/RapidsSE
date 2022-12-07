@@ -32,7 +32,6 @@ namespace STORE
 
     bool T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool T_bCmpPred_EqualTo_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds);
     bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* p_table,
                                 bool bParamAllowedInBounds);
@@ -41,6 +40,7 @@ namespace STORE
     bool T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred, Card_Index* p_index,
                                         bool bParamAllowedInBounds);
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    bool T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds);
     Card_Term* E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
