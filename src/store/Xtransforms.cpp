@@ -3724,29 +3724,6 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
 
   vAssert_Board_mqA();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  auto bLambda_Test = [this] (Card_PRED* p_Pred) {
-//
-//    return C_CONTINUE_RECURSION;
-//  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  auto bLambda_Drilldown = [this] (Card_PRED* p_PRED) {
-//
-//
-//    if (p_PRED->bIsConjunction()) {
-//      // + and, not, or
-//
-//      return C_CONTINUE_RECURSION;
-//    }
-//
-//    return C_CONTINUE_RECURSION;
-//  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   if (G_bEachMainWith2Sub(CK_SCAN,CK_TABLE,CK_INDEXLIST)) {
 
     G.p_index = G.p_indexList->pSub_index();
@@ -3759,6 +3736,12 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
       Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
 
       Card_PRED *p_boundingPRED = T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
+
+
+
+
+
+
 
       //p_boundingPRED->vDump();
 
