@@ -35,7 +35,10 @@ namespace STORE
                                                  Card_Filter* p_filter,
                                                  bool bParamAllowedInBounds);
 
+
     Card_StmColList* C_pDerive_streamColList(Card_ELIST* p_ELIST);
+
+    Card_Filter*     C_pFilter_From_PRED(Card_PRED* p_PRED);
 
     Card_Index*      C_pProduce_index_Of_table(Table* pTable);
     Card_IndexList*  C_pProduce_indexList_Of_table(Table* pTable);

@@ -908,6 +908,23 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* create a filter from/duplicating given PRED                                */
+/*----------------------------------------------------------------------------*/
+Card_Filter* Xcreate::C_pFilter_From_PRED(Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Filter* p_filter = new Card_Filter;
+
+  Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
+  p_filter->vAppend(p_boolCalc);
+
+  p_boolCalc->vAppend(p_PRED->pDupCardAndSubCards());
+
+  return p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce composite <index> of table                                         */
 /*----------------------------------------------------------------------------*/
 Card_Index* Xcreate::C_pProduce_index_Of_table(Table* pTable)
