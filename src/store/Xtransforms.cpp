@@ -231,7 +231,15 @@ void Xtransforms::vOptimiseLoop(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Cut_Sort(void) {
 
- return false;
+  //
+  // Query1, Query4, Query7, Query8, Query12
+  //
+
+  // Notes:
+  // sbyElist expressions directions are all ascending
+  // sbyElist matches the gbyElist of an earlier (on all partitions) stage
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
