@@ -294,6 +294,7 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    Card* pAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);

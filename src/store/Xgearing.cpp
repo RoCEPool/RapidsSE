@@ -668,6 +668,8 @@ void Xgearing::G_vClearRegisters(void)
   G.e_SubOfMain        = CK_NONE;
   G.p_Sub2OfMain       = nullptr;
   G.e_Sub2OfMain       = CK_NONE;
+  G.p_Sub3OfMain       = nullptr;
+  G.e_Sub3OfMain       = CK_NONE;
   G.p_SubsequentToMain = nullptr;
   G.e_SubsequentToMain = CK_NONE;
 
@@ -690,45 +692,6 @@ void Xgearing::G_vClearRegisters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear the general M registers if they match given kind                     */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vClearRegistersIf(eCK eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  if (eCard == G.e_PriorToMain ||
-      (G.p_PriorToMain && eCard == G.p_PriorToMain->eCard())) {
-    G.p_PriorToMain = nullptr;
-    G.e_PriorToMain = CK_NONE;
-  }
-  if (eCard == G.e_MainCard ||
-      (G.p_MainCard && eCard == G.p_MainCard->eCard())) {
-    G.p_MainCard = nullptr;
-    G.e_MainCard = CK_NONE;
-  }
-  if (eCard == G.e_SubOfMain ||
-      (G.p_SubOfMain && eCard == G.p_SubOfMain->eCard())) {
-    G.p_SubOfMain = nullptr;
-    G.e_SubOfMain = CK_NONE;
-  }
-  if (eCard == G.e_Sub2OfMain ||
-      (G.p_Sub2OfMain && eCard == G.p_Sub2OfMain->eCard())) {
-    G.p_Sub2OfMain = nullptr;
-    G.e_Sub2OfMain = CK_NONE;
-  }
-  if (eCard == G.e_SubsequentToMain ||
-      (G.p_SubsequentToMain && eCard == G.p_SubsequentToMain->eCard())) {
-    G.p_SubsequentToMain = nullptr;
-    G.e_SubsequentToMain = CK_NONE;
-  }
-  if (eCard == G.e_SubMember ||
-      (G.p_SubMember && eCard == G.p_SubMember->eCard())) {
-    G.p_SubMember = nullptr;
-    G.e_SubMember = CK_NONE;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear the general M registers if they match given pointer                  */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vClearRegistersIf(Card* pCard)
@@ -746,6 +709,14 @@ void Xgearing::G_vClearRegistersIf(Card* pCard)
   if (pCard == G.p_SubOfMain) {
     G.p_SubOfMain = nullptr;
     G.e_SubOfMain = CK_NONE;
+  }
+  if (pCard == G.p_Sub2OfMain) {
+    G.p_Sub2OfMain = nullptr;
+    G.e_Sub2OfMain = CK_NONE;
+  }
+  if (pCard == G.p_Sub3OfMain) {
+    G.p_Sub3OfMain = nullptr;
+    G.e_Sub3OfMain = CK_NONE;
   }
   if (pCard == G.p_SubsequentToMain) {
     G.p_SubsequentToMain = nullptr;
@@ -954,6 +925,51 @@ bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
   G.p_Sub2OfMain = nullptr;
   G.e_Sub2OfMain = CK_NONE;
   G_vUpdateMember(eAndSubKind2, nullptr, __func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bEachMainWith3Sub(eCK eOfMainKind,
+                                   eCK eAndSubKind1,
+                                   eCK eAndSubKind2,
+                                   eCK eAndSubKind3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
+      continue;
+    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
+      continue;
+    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eAndSubKind3)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
+    G_vUpdateMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
+    G_vUpdateMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind1, nullptr, __func__);
+  G.p_Sub2OfMain = nullptr;
+  G.e_Sub2OfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind2, nullptr, __func__);
+  G.p_Sub3OfMain = nullptr;
+  G.e_Sub3OfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind3, nullptr, __func__);
   return false;
 }
 

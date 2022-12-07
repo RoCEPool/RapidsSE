@@ -55,6 +55,8 @@ namespace STORE
     i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
+    void M_vFilter_AddPred(Card_Filter* p_filter, Card_PRED *p_PRED);
+    void M_vFilter_AddPredUnder_main(Card* pMainCard, Card_PRED *p_PRED);
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
     void M_vFilter_DeleteIfEmpty(Card_Filter* p_filter, Card* pMainCard);
 

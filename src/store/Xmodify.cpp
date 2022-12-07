@@ -515,6 +515,44 @@ i8 Xmodify::E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr)
   return C_UNKNOWN;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vFilter_AddPred(Card_Filter* p_filter, Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_BoolCalc* p_calcBool = p_filter->pSub_boolCalc();
+
+  if (0 == p_calcBool->nChildCards()) {
+    p_calcBool->vAppend(p_PRED);
+    return;
+  }
+
+  Card* p_top = p_calcBool->pPop();
+
+  Card_AndPred* pCard_predAnd = new Card_AndPred;
+  pCard_predAnd->vAppend(p_top);
+  pCard_predAnd->vAppend(p_PRED);
+
+  p_calcBool->vAppend(pCard_predAnd);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vFilter_AddPredUnder_main(Card* pMainCard, Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Filter* p_filter = pMainCard->pSub_filter();
+  if (! p_filter) {
+    p_filter = _pCard_Filter(pMainCard->pAppendNewCardTail(CK_FILTER));
+    p_filter->vAppendNewCardTail(CK_BOOLCALC));
+  }
+
+  M_vFilter_AddPred(p_filter,p_PRED);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

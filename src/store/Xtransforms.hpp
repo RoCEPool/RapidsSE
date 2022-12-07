@@ -212,7 +212,9 @@ namespace STORE
     void vS80_T00_Skip(void);
     void vS80_T00_Begin(void);
 
-    void vS80_T10_bounds_For_scan(void);
+    void vS80_T10_filter_For_scan(void);
+    void vS80_T20_bounds_For_scan(void);
+    void vS80_T20_bounds_For_scan_v2(void);
 
     void vS80_TF1_Produce_Scratch_indexList_Under_scan(void);
     void vS80_TF2_Affix_idxColOdn_ToAll_idxCol(void);

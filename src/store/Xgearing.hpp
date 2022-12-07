@@ -115,7 +115,6 @@ namespace STORE
     void G_vClearMembers(void);
     void G_vClearMembersRegisters(void);
     void G_vClearRegisters(void);
-    void G_vClearRegistersIf(eCK eCard);
     void G_vClearRegistersIf(Card* pCard);
     void G_vCopyCard(Card* pCard);
 
@@ -129,6 +128,7 @@ namespace STORE
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
     bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
+    bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
 
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 

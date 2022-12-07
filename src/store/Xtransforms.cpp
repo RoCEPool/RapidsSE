@@ -3742,7 +3742,35 @@ void Xtransforms::vS80_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS80_T10_bounds_For_scan(void)
+void Xtransforms::vS80_T10_filter_For_scan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_INDEXLIST)) {
+
+    G.p_index = G.p_indexList->pSub_index();
+    char cTblSyn = G.p_table->cValue();
+
+    if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+
+      // some /<boolCalc>/<PRED> which is a bound of an index under scan
+      Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
+
+      Card_PRED *p_boundingPRED =
+          T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
+
+      p_boundingPRED->vMark1(MARK_AT);
+
+      M_vFilter_AddPredUnder_main(G.p_scan,p_boundingPRED);
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS80_T20_bounds_For_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -3823,6 +3851,38 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
   vPrintBoard();
 
   vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS80_T20_bounds_For_scan_v2(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "bounds for <scan>"_Stz);
+
+  vAssert_Board_mqA();
+
+  if (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_INDEXLIST)) {
+
+    char cTblSyn = G.p_table->cValue();
+    G.p_index = G.p_indexList->pSub_index();
+
+    if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+
+      // some /<boolCalc>/<PRED> which is a bound of an index under scan
+      Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
+
+      Card_PRED *p_boundingPRED =
+          T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
+      if (p_boundingPRED) {
+        //p_boundingPRED->vDump();
+        p_boundingPRED->vMark1(MARK_AT);
+        M_vFilter_AddPredUnder_main(G.p_scan, p_boundingPRED);
+      }
+    }
+  }
 }
 
 
@@ -4440,31 +4500,29 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark any cmpPred that are a bound in bounds
 
   while (G_bEachMain()) {
 
     if (! (G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-           G.p_MainCard->bIsCard(CK_INDEXJOIN)))
+           G.p_MainCard->bIsCard(CK_INDEXSCAN)))
       continue;
-
     if (! (G.p_bounds = G.p_MainCard->pSub_bounds()))
       continue;
     if (! (G.p_filter = G.p_MainCard->pSub_filter()))
       continue;
 
-    CardRecurse xCR(G.p_filter);
-    while (Card* p_card = xCR.pRecurseEach()) {
-      if (! p_card->bIsCard(CK_CMPPRED))
-        continue;
+    // have <bounds> & <filter> under <main>
 
-      G.p_cmpPred = _pCard_CmpPred(p_card);
+    CardRecurse xCR(G.p_filter);
+    while ((G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
       if (T_bCmpPred_SubsetOf_bounds(G.p_cmpPred,G.p_bounds))
         G.p_cmpPred->vMark1(MARK_AT);
     }
-
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cull marked cmpPred from filter
 
   G_vRestart();
   while (G_bEachMain()) {
@@ -4473,13 +4531,13 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete any filter if empty
 
   G_vRestart();
   while (G_bEachMain()) {
     if ((G.p_filter = G.p_MainCard->pSub_filter()))
       M_vFilter_DeleteIfEmpty(G.p_filter,G.p_MainCard);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/

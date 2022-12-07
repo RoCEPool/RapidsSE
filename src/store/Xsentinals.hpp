@@ -33,6 +33,8 @@ namespace STORE
     eCK    e_SubOfMain;
     Card * p_Sub2OfMain;
     eCK    e_Sub2OfMain;
+    Card * p_Sub3OfMain;
+    eCK    e_Sub3OfMain;
     Card * p_SubsequentToMain;
     eCK    e_SubsequentToMain;
 

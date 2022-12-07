@@ -302,6 +302,16 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card* pCard = pAppendNewCardTail(eCard,szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append new card to tail                                                    */
+/*----------------------------------------------------------------------------*/
+Card* Card::pAppendNewCardTail(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   Card* pCard;
   if ( szValue != nullptr )
     pCard = new Card(eCard, szValue);
@@ -309,6 +319,8 @@ void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
     pCard = new Card(eCard);
 
   vPushTail(pCard);
+
+  return pCard;
 }
 
 /*----------------------------------------------------------------------------*/
