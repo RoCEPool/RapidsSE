@@ -23,6 +23,7 @@ namespace STORE
    ~CardRecurse(void) noexcept(false);
 
     Card* pRecurseEach(void);
+    Card* pRecurseEach(eCK eCard);
 
   private:
 

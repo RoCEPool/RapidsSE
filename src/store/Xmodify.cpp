@@ -538,6 +538,21 @@ void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vFilter_DeleteIfEmpty(Card_Filter* p_filter, Card* pMainCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! T_bFilter_IsEmpty(p_filter))
+    return;
+
+  pMainCard->vRemoveChild(p_filter);
+  DELETE_CARD(p_filter);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream)

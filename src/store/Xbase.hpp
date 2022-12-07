@@ -5,6 +5,7 @@
 
 #include "Bench.hpp"
 #include "BoardIter.hpp"
+#include "CardRecurse.hpp"
 
 #include "SubQuery.hpp"
 

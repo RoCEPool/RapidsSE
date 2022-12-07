@@ -4439,6 +4439,8 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   while (G_bEachMain()) {
 
     if (! (G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
@@ -4450,8 +4452,34 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
     if (! (G.p_filter = G.p_MainCard->pSub_filter()))
       continue;
 
-    // todo: complete...
+    CardRecurse xCR(G.p_filter);
+    while (Card* p_card = xCR.pRecurseEach()) {
+      if (! p_card->bIsCard(CK_CMPPRED))
+        continue;
+
+      G.p_cmpPred = _pCard_CmpPred(p_card);
+      if (T_bCmpPred_SubsetOf_bounds(G.p_cmpPred,G.p_bounds))
+        G.p_cmpPred->vMark1(MARK_AT);
+    }
+
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMain()) {
+    if ((G.p_filter = G.p_MainCard->pSub_filter()))
+      M_vFilter_CullPred(G.p_filter, MARK_AT);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMain()) {
+    if ((G.p_filter = G.p_MainCard->pSub_filter()))
+      M_vFilter_DeleteIfEmpty(G.p_filter,G.p_MainCard);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
