@@ -16,6 +16,7 @@
   STD_PATH_TAG
   "
   procedure dfload
+    tags <persistentTx>
     parameters $table $file
   begin
 

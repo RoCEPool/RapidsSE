@@ -146,6 +146,7 @@ namespace STORE
     Card_Type *             p_type;
     Card_UBound *           p_uBound;
     Card_Where *            p_where;
+    Card_XBound *           p_xBound;
 
     // - - - - - - - - - - - - - - - - - -
 

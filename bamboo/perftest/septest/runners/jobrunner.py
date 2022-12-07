@@ -169,7 +169,9 @@ class JobRunner:
                     if self.current_test_runner is not None:
                         errmsg = "" if job_timed_out else ""
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
-                        self.current_test_runner.collect_test_artifacts()
+
+                        self.current_test_runner.copy_jmeter_logs()
+                        self.current_test_runner.copy_cloud_init_output()
                         self.test_results.append(self.current_test_runner.result)
 
         except errors.Ec2InstanceTimeoutError as e:
@@ -379,7 +381,7 @@ class JobRunner:
         artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
         artifact_dir = pathlib.Path(self.result_path) / artifact_name
 
-        LOG.debug(f"Making artifact dir: {str(artifact_dir)}")
+        LOG.info(f"Making artifact dir: {str(artifact_dir)}")
         os.makedirs(str(artifact_dir), exist_ok=True)
         return str(artifact_dir)
 
@@ -479,6 +481,9 @@ class JobRunner:
         current_time = datetime.datetime.now()
         end_time = current_time + datetime.timedelta(seconds=timeout)
 
+        minutes_left = int((end_time - current_time).total_seconds() / 60)
+        last_minutes_left = minutes_left
+
         while current_time < end_time:
 
             if not test_thread.is_alive():
@@ -490,6 +495,12 @@ class JobRunner:
                 se_crashed = True
                 self.abnormal_exit = True
                 return timed_out, se_crashed
+
+            # Print how long the job has left, in minutes.
+            minutes_left = int((end_time - current_time).total_seconds() / 60)
+            if minutes_left != last_minutes_left:
+                last_minutes_left = minutes_left
+                LOG.info(f"Job has approximately {minutes_left} minutes left to finish.")
 
             # Test thread still running and SE not crashed. Try again in a little bit.
             time.sleep(C_TEST_MONITORING_SLEEP_IVL)

@@ -101,6 +101,7 @@ namespace BASE
     void vSeekEnd(void);
     void vSetBuffering(i8 nBytes);
     i8   iSize(void);
+    void vSync(void);
     SysCall& oSysCall(void);
     i8   iTell(void);
     void vUngetChar(char cChar);

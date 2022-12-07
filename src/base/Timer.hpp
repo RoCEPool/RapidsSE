@@ -25,6 +25,7 @@ namespace BASE
 
     void operator =(Timer xTimer);
 
+    static i8   iGetTimeOfDay(void);
     static void vRepair(Object* pObject);
 
     void vReset(void);

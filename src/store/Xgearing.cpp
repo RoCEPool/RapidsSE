@@ -1079,6 +1079,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_TYPE:             return G.p_type;
     case CK_UBOUND:           return G.p_uBound;
     case CK_WHERE:            return G.p_where;
+    case CK_XBOUND:           return G.p_xBound;
 
     case CK_AV_AGGP:          return G.p_av_aggP;
     case CK_AV_AGGPN:         return G.p_av_aggPN;
@@ -1963,6 +1964,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
+    case CK_XBOUND:           *((Card**)&G.p_xBound)           = pCard; break;
 
     case CK_AV_AGGP:          *((Card**)&G.p_av_aggP)          = pCard; break;
     case CK_AV_AGGPN:         *((Card**)&G.p_av_aggPN)         = pCard; break;
@@ -2094,6 +2096,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
+    case CK_XBOUND:           return "G.p_xBound"_Stz;
 
     case CK_AV_AGGP:          return "G.p_av_aggP"_Stz;
     case CK_AV_AGGPN:         return "G.p_av_aggPN"_Stz;

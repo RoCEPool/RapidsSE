@@ -6,15 +6,26 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-_nation;
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
 success
+
   // N_NATIONKEY
   // N_NAME
   // N_REGIONKEY
   // N_COMMENT
 
-_region;
+CREATE TABLE region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
 success
+
   // R_REGIONKEY
   // R_NAME
   // R_COMMENT
@@ -1914,9 +1925,9 @@ unordered rows:
 
 // Negative case - expression subquery refers to a table subquery not in scope
 EXPLAIN
-WITH t1 AS (SELECT r_name FROM region WHERE r_regionkey = (SELECT * FROM t2)),
-     t2 AS (SELECT r_regionkey FROM region LIMIT 1)
-SELECT * FROM nation WHERE r_name = ( SELECT * FROM t1 );
+WITH t1 AS (SELECT R_NAME FROM region WHERE N_REGIONKEY = (SELECT * FROM t2)),
+     t2 AS (SELECT N_REGIONKEY FROM region LIMIT 1)
+SELECT * FROM nation WHERE R_NAME = ( SELECT * FROM t1 );
 
 failure contains: 'Table name refers to a table subquery alias that is not in scope: t2'
 

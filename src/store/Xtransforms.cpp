@@ -269,6 +269,13 @@ void Xtransforms::vOT_Dup_Filter(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Ely_Filters(void) {
 
+  // Query2, Query3, Query4, Query5, Query7, Query8,
+  //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
+
+  // get columns from cmpPred's and find the tables they come from in previous
+  // scan/indexScan/indexJoin cards and move them after the scan/indexJoin/indexJoin
+  // of the tables
+
   return false;
 }
 
@@ -314,6 +321,18 @@ void Xtransforms::vOT_Ely_Sort_Limit(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Min_Groupby(void) {
 
+  //
+  // Query3, Query10, Query18
+  //
+
+  // Notes:
+  // * need to get the tables from which the columns of the gbyElist are from
+  // * get the indexlist of unique indexes of the tables
+  // * match the gbyElist columns with the indexList columns
+  // * if a match is found , discard all other columns off the gbyElist
+  //   except the match (unique one)
+
+
   return false;
 }
 
@@ -328,6 +347,13 @@ void Xtransforms::vOT_Min_Groupby(void) {
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Otm_Calculations(void) {
+
+  //
+  // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
+  //   Query19, Query20
+
+  // Notes:
+
 
   return false;
 }

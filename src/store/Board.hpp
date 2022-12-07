@@ -148,6 +148,8 @@
 
 #include "Card_Where.hpp"
 
+#include "Card_XBound.hpp"
+
 #include "VertexSpec.hpp"
 #include "DeckSpec.hpp"
 #include "StageSpec.hpp"

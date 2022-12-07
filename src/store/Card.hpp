@@ -140,6 +140,8 @@ namespace STORE
 
   class Card_Where;
 
+  class Card_XBound;
+
   class Card_Av_AggP;
   class Card_Av_AggPN;
   class Card_Av_AggPNO;
@@ -292,6 +294,8 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
+    void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -370,6 +374,8 @@ namespace STORE
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
+
+    void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
 
     Stz* sz(void);
     char cValue(void);
@@ -474,6 +480,7 @@ namespace STORE
     Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
     Card_Where*         pSub_where(void);
+    Card_XBound*        pSub_xBound(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
