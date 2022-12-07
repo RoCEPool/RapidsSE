@@ -3746,6 +3746,8 @@ void Xtransforms::vS80_T10_filter_For_scan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vTransform(__func__, "<filter> for <scan>"_Stz);
+
   if (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_INDEXLIST)) {
 
     G.p_index = G.p_indexList->pSub_index();
@@ -3759,12 +3761,16 @@ void Xtransforms::vS80_T10_filter_For_scan(void)
       Card_PRED *p_boundingPRED =
           T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
 
-      p_boundingPRED->vMark1(MARK_AT);
+      //p_boundingPRED->vMark1(MARK_AT);
 
-      M_vFilter_AddPredUnder_main(G.p_scan,p_boundingPRED);
+      Card_PRED* p_newPRED = (Card_PRED*)p_boundingPRED->pDupCardAndSubCards();
+      M_vFilter_AddPredUnder_main(G.p_scan,p_newPRED);
     }
   }
 
+  vPrintBoard();
+
+  vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3878,13 +3884,16 @@ void Xtransforms::vS80_T20_bounds_For_scan_v2(void)
           T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
       if (p_boundingPRED) {
         //p_boundingPRED->vDump();
-        p_boundingPRED->vMark1(MARK_AT);
-        M_vFilter_AddPredUnder_main(G.p_scan, p_boundingPRED);
+
+        M_vBounds_AddPredUnder_index(G.p_table,G.p_index,p_boundingPRED);
       }
     }
   }
-}
 
+  vPrintBoard();
+
+  vEndTransform();
+}
 
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */

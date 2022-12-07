@@ -288,7 +288,7 @@ void Card::vAppendDupSubCards(Card* pFromCard)
 /*----------------------------------------------------------------------------*/
 void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vAppend(pNewMainCard);
 
@@ -301,7 +301,7 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 /*----------------------------------------------------------------------------*/
 void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard = pAppendNewCardTail(eCard,szValue);
 }
@@ -311,7 +311,7 @@ void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 Card* Card::pAppendNewCardTail(eCK eCard, Stz* szValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card* pCard;
   if ( szValue != nullptr )
     pCard = new Card(eCard, szValue);
@@ -328,7 +328,7 @@ Card* Card::pAppendNewCardTail(eCK eCard, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 void Card::vAppendNewCardTop(eCK eCard, Stz* szValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card* pCard;
   if(szValue != nullptr)
     pCard = new Card(eCard, szValue);

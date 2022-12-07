@@ -297,6 +297,52 @@ bool Xmodify::M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBounds_AddPred(Card_Table* p_table,
+                                Card_Index* p_index,
+                                Card_Bounds* p_bounds,
+                                Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  char cTblSyn = p_table->cValue();
+
+  Card_Bound* p_bound;
+  Card_PRED* p_childPRED;
+  if (p_PRED->bIsCard(CK_ANDPRED)) {
+    p_childPRED = (Card_PRED*)p_PRED->pGetChild(0);
+    M_vBounds_AddPred(p_table,p_index,p_bounds,p_childPRED);
+    p_childPRED = (Card_PRED*)p_PRED->pGetChild(1);
+    M_vBounds_AddPred(p_table,p_index,p_bounds,p_childPRED);
+  }
+  else
+  if (p_PRED->bIsCard(CK_CMPPRED)) {
+    p_bound = C_pBound_CreateFrom_PRED(p_PRED,cTblSyn);
+    p_bounds->vAppend(p_bound);
+  }
+  else {
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBounds_AddPredUnder_index(Card_Table* p_table,
+                                           Card_Index* p_index,
+                                           Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Bounds* p_bounds = p_index->pSub_bounds();
+  if (! p_bounds) {
+    p_bounds = _pCard_Bounds(p_index->pAppendNewCardTail(CK_BOUNDS));
+  }
+
+  M_vBounds_AddPred(p_table,p_index,p_bounds,p_PRED);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -548,7 +594,7 @@ void Xmodify::M_vFilter_AddPredUnder_main(Card* pMainCard, Card_PRED *p_PRED)
   Card_Filter* p_filter = pMainCard->pSub_filter();
   if (! p_filter) {
     p_filter = _pCard_Filter(pMainCard->pAppendNewCardTail(CK_FILTER));
-    p_filter->vAppendNewCardTail(CK_BOOLCALC));
+    p_filter->vAppendNewCardTail(CK_BOOLCALC);
   }
 
   M_vFilter_AddPred(p_filter,p_PRED);

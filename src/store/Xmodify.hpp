@@ -36,6 +36,8 @@ namespace STORE
     bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
                                Card* p_test, Card_PRED*& p_pred_yanked);
 
+    void M_vBounds_AddPred(Card_Table* p_table, Card_Index* p_index, Card_Bounds* p_bounds, Card_PRED *p_PRED);
+    void M_vBounds_AddPredUnder_index(Card_Table* p_table, Card_Index* p_index, Card_PRED *p_PRED);
 
     void M_vCard_Mark_Changed(Card* pCard);
     void M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn);
