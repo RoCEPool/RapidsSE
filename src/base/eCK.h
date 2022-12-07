@@ -146,6 +146,8 @@ enum eCK // card kind
 
   /* */ CK_WHERE,
 
+  /* */ CK_XBOUND,
+
 
   /* */ CK_AV_AGGP,
   /* */ CK_AV_AGGPN,
@@ -313,6 +315,8 @@ static Stz* aCK[]
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
+  /* */ "CK_XBOUND"_Stz,       // CK_XBOUND
+
   /* */ "CK_AV_AGGP"_Stz,      // CK_AV_AGGP
   /* */ "CK_AV_AGGPN"_Stz,     // CK_AV_AGGPN
   /* */ "CK_AV_AGGPNO"_Stz,    // CK_AV_AGGPNO
@@ -479,6 +483,8 @@ static Stz* aCK_short[]
 
   /* */ "where"_Stz,           // CK_WHERE
 
+  /* */ "xbound"_Stz,          // CK_XBOUND
+
 
   /* */ "av_aggP"_Stz,            // CK_AV_AGGP
   /* */ "av_aggPN"_Stz,           // CK_AV_AGGPN
@@ -644,6 +650,8 @@ static Stz* aCK_notation[]
     /* */ "u"_Stz,           // CK_UNIQUE
 
     /* */ "w"_Stz,           // CK_WHERE
+
+    /* */ "xB"_Stz,          // CK_XBOUND
 
 
     /* */ "av_aP"_Stz,          // CK_AV_AGGP

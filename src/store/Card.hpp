@@ -140,6 +140,8 @@ namespace STORE
 
   class Card_Where;
 
+  class Card_XBound;
+
   class Card_Av_AggP;
   class Card_Av_AggPN;
   class Card_Av_AggPNO;
@@ -474,6 +476,7 @@ namespace STORE
     Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
     Card_Where*         pSub_where(void);
+    Card_XBound*        pSub_xBound(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
