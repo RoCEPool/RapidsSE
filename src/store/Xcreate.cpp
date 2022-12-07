@@ -47,10 +47,8 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   Card_Term* p_term;
-  Stz* szBound;
 
-  Card_Bound* p_bound = new Card_Bound;
-
+  Card_Bound* p_bound = C_pBound_New(p_cmpPred->szValue());
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
@@ -58,9 +56,6 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
     char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn) {
-      szBound = E_szBound(pTerm_1->sz());
-      p_term = new Card_Term(szBound);
-      p_bound->vAppend(p_term);
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
       p_term = new Card_Term(pTerm_1->sz());
@@ -70,9 +65,6 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
     if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
       char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
       if (cTblSyn_term_1 == cTblSyn) {
-        szBound = E_szBound(pTerm_1->sz());
-        p_term = new Card_Term(szBound);
-        p_bound->vAppend(p_term);
         p_term = new Card_Term("$I1"_Stz);
         p_bound->vAppend(p_term);
         p_term = new Card_Term(pTerm_0->sz());
@@ -86,9 +78,6 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn) {
-      szBound = E_szBound(pTerm_1->sz());
-      p_term = new Card_Term(szBound);
-      p_bound->vAppend(p_term);
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
       p_term = new Card_Term(pTerm_0->sz());
@@ -104,6 +93,53 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
 
   p_term = new Card_Term(p_cmpPred->sz());
   p_bound->vAppend(p_term);
+
+  return p_bound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a bound given cmpPred                                               */
+/*----------------------------------------------------------------------------*/
+Card_Bound* Xcreate::C_pBound_New(Stz* szRelnOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Stz* szBound = E_szBound(szRelnOp);
+  Card_Term* p_term_bound = new Card_Term(szBound);
+
+  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
+   Card_LBound* p_lBound =  new Card_LBound;
+   p_lBound->vAppend(p_term_bound);
+   return p_lBound;
+  }
+
+  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz)) {
+    Card_UBound* p_uBound =  new Card_UBound;
+    p_uBound->vAppend(p_term_bound);
+    return p_uBound;
+  }
+
+  if (szRelnOp->bSame("=="_Stz)) {
+    Card_EBound* p_eBound =  new Card_EBound;
+    p_eBound->vAppend(p_term_bound);
+    return p_eBound;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a bound given pred                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Bound* Xcreate::C_pBound_CreateFrom_PRED(Card_PRED* p_PRED, char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // todo: hack
+
+  Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_PRED);
+
+  Card_Bound* p_bound = C_pBound_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
 
   return p_bound;
 }

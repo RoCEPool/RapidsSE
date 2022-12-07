@@ -51,7 +51,7 @@ Stz* Xextract::E_szBound(Stz* szRelnOp)
   if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz))
     return "UBOUND"_Stz;
 
-  return "UBOUND"_Stz;
+  return "BOUND"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

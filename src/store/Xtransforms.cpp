@@ -3757,13 +3757,11 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
         p_boundingPRED->vMark1(MARK_AT);
 
         RASSERT(! G.p_bounds);
-        G.p_bounds = C_pBounds_CreateFrom_PRED(p_boundingPRED, cTblSyn);
+        G.p_bounds = new Card_Bounds;
         G.p_scan->vAppend(G.p_bounds);
-
-
+        G.p_bound = C_pBound_CreateFrom_PRED(p_boundingPRED, cTblSyn);
+        G.p_bounds->vAppend(G.p_bound);
       }
-
-
     }
   }
 
@@ -3789,13 +3787,13 @@ void Xtransforms::vS80_T10_bounds_For_scan(void)
   G_vRestart();
   if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
 
-    if (T_bBounds_Is_lbound(G.p_bounds))
-      G.p_bounds->vCard(CK_LBOUND);
-    else
-    if (T_bBounds_Is_ubound(G.p_bounds))
-      G.p_bounds->vCard(CK_UBOUND);
+//    if (T_bBounds_Is_lbound(G.p_bounds))
+//      G.p_bounds->vCard(CK_LBOUND);
+//    else
+//    if (T_bBounds_Is_ubound(G.p_bounds))
+//      G.p_bounds->vCard(CK_UBOUND);
 
-    if (G.p_bounds->bIsCard(CK_LBOUND) || G.p_bounds->bIsCard(CK_UBOUND)) {
+    if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
       G.p_scan->vCard(CK_INDEXSCAN);
     }
   }

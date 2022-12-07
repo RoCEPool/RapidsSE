@@ -16,6 +16,11 @@ namespace STORE
     Card_Bound*      C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
                                                  char cTblSyn);
 
+    Card_Bound*      C_pBound_CreateFrom_PRED(Card_PRED* p_PRED,
+                                               char cTblSyn);
+
+    Card_Bound*      C_pBound_New(Stz* szRelnOp);
+
     Card_BoolCalc*   C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
     Card_Bounds*     C_pBounds_CreateFrom_PRED(Card_PRED* p_PRED,
