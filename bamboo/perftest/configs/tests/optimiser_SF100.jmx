@@ -2167,7 +2167,7 @@ create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P3Loop" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P3Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -2291,7 +2291,7 @@ create index IxO_CUSTKEY  ON Orders  (O_CUSTKEY)  ;</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
