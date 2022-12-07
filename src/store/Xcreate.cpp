@@ -153,14 +153,45 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_PRED(Card_PRED* p_PRED,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  // todo: hack
+  Card_Bound* p_bound;
+  Card_CmpPred* p_cmpPred;
 
-  Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_PRED);
+  Card_Bounds* p_bounds = new Card_Bounds;
 
-  Card_Bounds* p_bounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
+  if (p_PRED->bIsCard(CK_CMPPRED)) {
+    p_bound = C_pBound_CreateFrom_PRED(p_PRED,cTblSyn);
+    p_bounds->vAppend(p_bound);
+  }
+  else
+  if (p_PRED->bIsCard(CK_ANDPRED)) {
+    p_cmpPred = _pCard_CmpPred(p_PRED->pGetChild(0));
+    p_bound = C_pBound_CreateFrom_PRED(p_cmpPred,cTblSyn);
+    p_bounds->vAppend(p_bound);
+
+    p_cmpPred = _pCard_CmpPred(p_PRED->pGetChild(1));
+    p_bound = C_pBound_CreateFrom_PRED(p_cmpPred,cTblSyn);
+    p_bounds->vAppend(p_bound);
+  }
+  else {
+    NEVER_REACH
+  }
 
   return p_bounds;
 }
+/*----------------------------------------------------------------------------*/
+//Card_Bounds* Xcreate::C_pBounds_CreateFrom_PRED(Card_PRED* p_PRED,
+//                                                char cTblSyn)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+//
+//  // todo: hack
+//
+//  Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_PRED);
+//
+//  Card_Bounds* p_bounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
+//
+//  return p_bounds;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* create a bounds given tblColOdn                                            */

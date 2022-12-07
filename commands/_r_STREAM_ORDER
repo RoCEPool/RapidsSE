@@ -22,6 +22,7 @@ select o_orderkey, avg(l_extendedprice)
  where
        O_ORDERKEY = L_ORDERKEY
    and o_orderkey < 100
+   and o_orderkey > 3
  group by O_ORDERKEY
  order by O_ORDERKEY
 ;
