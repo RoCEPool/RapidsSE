@@ -3758,13 +3758,30 @@ void Xtransforms::vS80_T10_filter_For_scan(void)
       // some /<boolCalc>/<PRED> which is a bound of an index under scan
       Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
 
-      Card_PRED *p_boundingPRED =
+      Card_PRED *p_wherePRED =
           T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
 
-      //p_boundingPRED->vMark1(MARK_AT);
+      p_wherePRED->vMark1(MARK_AT);
 
-      Card_PRED* p_newPRED = (Card_PRED*)p_boundingPRED->pDupCardAndSubCards();
-      M_vFilter_AddPredUnder_main(G.p_scan,p_newPRED);
+      Card_PRED* p_boundingPRED = (Card_PRED*)p_wherePRED->pDupCardAndSubCards();
+      M_vFilter_AddPredUnder_main(G.p_scan, p_boundingPRED);
+    }
+  }
+
+  vPrintBoard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cull marked cmpPred from filter
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (0 == G.p_boolCalc->nChildCards()) {
+      G_vRemoveDeleteMain(CK_WHERE);
     }
   }
 
