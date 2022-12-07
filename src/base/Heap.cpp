@@ -304,7 +304,7 @@ i8 Heap::nCurrAllocated(void)
 /*----------------------------------------------------------------------------*/
 /* drop the lock                                                              */
 /*----------------------------------------------------------------------------*/
-void Heap::vDropLock(void)
+void Heap::vDropWriteLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -313,13 +313,24 @@ void Heap::vDropLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop the lock                                                              */
+/*----------------------------------------------------------------------------*/
+void Heap::vDropReadLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ASSERT(m_okLock.bIsLocked());
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the heap                                                              */
 /*----------------------------------------------------------------------------*/
 void Heap::vDumpHeap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  vGrabLock();
+
+  vGrabWriteLock();
 
   i8 nSizeObject = nObjectSize();
   
@@ -356,8 +367,8 @@ void Heap::vDumpHeap(void)
     }
 
   }
-  
-  vDropLock();
+
+  vDropWriteLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,13 +514,25 @@ void Heap::vFreeObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* grab the lock                                                              */
 /*----------------------------------------------------------------------------*/
-void Heap::vGrabLock()
+void Heap::vGrabWriteLock()
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   //ASSERT(!m_okLock.bIsLocked());
   m_okLock.vGrabWrite();
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab the lock                                                              */
+/*----------------------------------------------------------------------------*/
+void Heap::vGrabReadLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  //ASSERT(!m_okLock.bIsLocked());
+  m_okLock.vGrabRead();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -581,8 +604,8 @@ void Heap::vValidateContents(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   eEC eError;
-  
-  vGrabLock();
+
+  vGrabWriteLock();
 
   i8 nSizeObject = nObjectSize();
   
@@ -618,8 +641,8 @@ void Heap::vValidateContents(void)
     }
 
   }
-  
-  vDropLock();
+
+  vDropWriteLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -738,8 +761,8 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
 void Heap::vRemoveBuffer(HeapBuffer* pHeapBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  vGrabLock();
+
+  vGrabWriteLock();
   
   if (pHeapBuffer == m_pFirstBuffer)
     m_pFirstBuffer = pHeapBuffer->pNextBuffer();
@@ -756,7 +779,7 @@ void Heap::vRemoveBuffer(HeapBuffer* pHeapBuffer)
   // we have one less buffer
   m_nBufferCount--;
 
-  vDropLock();
+  vDropWriteLock();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6,6 +6,9 @@
 #include "TagConstants.h"
 #include "Job.hpp"
 #include "CmdLineArgs.hpp"
+#include "Decider.hpp"
+
+Decider gxThreadsRemaining;
 
 extern SizeHeap  gxaSizeHeap[];
 extern CmdLineArgs  gxCmdLineArgs;
@@ -457,6 +460,39 @@ Heap* Heaps::pEachHeap(eHT& reLastHeap)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Find Ptn0 reload file path                                                 */
+/*----------------------------------------------------------------------------*/
+void Heaps::vFindPtn0FilePath(Stz *szFilePath)
+{
+  i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
+  if(nDiskpaths <= 0)
+  {
+    vTrace("SE was not started with the '--disk <path-to-disk-root>' option. Cannot reload.\n"_Stz);
+    return;
+  }
+
+  for(i8 i = 0; i < nDiskpaths; i++)
+  {
+    s256 szTmp = "";
+    szTmp.vSprint("%s%ssaveFile_%s_0"_Stz,
+                  gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i].szStz(),
+                  gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+
+    if(File::bExists(szTmp))
+    {
+      szFilePath->vCopy(szTmp);
+      return;
+    }
+  }
+
+  vTrace("Unable to find %ssaveFile_%s_0 in given root disk directories.\n"
+         "Check the paths given with '--disk <path-to-disk-root>' and '--reload <dir>' argument.\n"_Stz,
+         gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+  THROW("Unable to find saveFile_<node-name>_0!!\n"_Stz);
+}
+/*----------------------------------------------------------------------------*/
 /* iterate each heap                                                          */
 /*----------------------------------------------------------------------------*/
 Heap* Heaps::pGetHeap(eHT eHeap)
@@ -491,153 +527,22 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 /*----------------------------------------------------------------------------*/
 void Heaps::vInit(void)
 {
-  if(gxCmdLineArgs.m_xSysArgs.m_bReload)
-  {
+  if(gxCmdLineArgs.m_xSysArgs.m_bReload) {
+#ifdef WITH_TSCP_TIMER
     Timer oTimer;
     oTimer.vStart();
-    /*
-    Notes:
-      This section is where we load the persistent heaps from file.
-      The file consists of pool buffers and heap buffers. They are
-      C_SIZE_POOL_BUFFER in size.
+#else
+    i8 start = Timer::iGetTimeOfDay();
+#endif
 
-      We start by opening the file, and reading the header information.
-      The header is of size sizeof(object) + 64 + 64. The last two are
-      pool buffer members.
+    vReloadPHeaps();
 
-      The object information tells us the Class type, and the pool buffer
-      member called m_pThis, tells us the address of the buffer when it was
-      written to disk.
-
-      We then search the Buffer Pool free chain for the buffer with the same
-      address. After removing it from the free chain, we copy the header info
-      into the buffer. Next, we read the rest of the info from the file into
-      this buffer.
-
-      At this point we have successfully loaded a PoolBuffer or HeapBuffer from
-      disk. We repeat this till we reach the end of the file.
-
-    */
-    char caObjectHeader[sizeof(Object) + 128];
-    Header* aHeader = (Header*) & caObjectHeader[0];
-    i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
-    i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
-
-    Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath;
-    File* pFile = new(C_VIA_MALLOC) File(nullptr);
-    bool bResult = pFile->bOpenRead(szFilePath);
-    ASSERT(bResult);
-
-    // Read the Header information to get the address of this pool buffer
-    i8 nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
-    RASSERT(nBytes == nSizeHeader);
-
-    HeapBuffer* pNextBuffer = nullptr;
-
-    while(nBytes != 0)
-    {
-      PoolBuffer* pPoolBufferHeader = reinterpret_cast<PoolBuffer*>(aHeader);
-      void *aBody;
-
-      switch(pPoolBufferHeader->eGetClassNo()) {
-        case CN_TINYPERSISTENT: {
-          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
-
-          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
-          aBody = aAdd<void *>(pBuffer, nSizeHeader);
-          nBytes = pFile->nReadBytes(aBody, nSizeBody);
-          RASSERT(nBytes == nSizeBody);
-
-          Persistent.m_pTiny = reinterpret_cast<Heap*>(pBuffer);
-          pNextBuffer = Persistent.m_pTiny->pFirstBuffer();
-
-          break;
-        }
-
-        case CN_SMALLPERSISTENT: {
-          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
-
-          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
-          aBody = aAdd<void *>(pBuffer, nSizeHeader);
-          nBytes = pFile->nReadBytes(aBody, nSizeBody);
-          RASSERT(nBytes == nSizeBody);
-
-          Persistent.m_pSmall = reinterpret_cast<Heap*>(pBuffer);
-          pNextBuffer = Persistent.m_pSmall->pFirstBuffer();
-
-          break;
-        }
-
-        case CN_MEDIUMPERSISTENT: {
-          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
-
-          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
-          aBody = aAdd<void *>(pBuffer, nSizeHeader);
-          nBytes = pFile->nReadBytes(aBody, nSizeBody);
-          RASSERT(nBytes == nSizeBody);
-
-          Persistent.m_pMedium = reinterpret_cast<Heap*>(pBuffer);
-          pNextBuffer = Persistent.m_pMedium->pFirstBuffer();
-
-          break;
-        }
-
-        case CN_LARGEPERSISTENT: {
-          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
-
-          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
-          aBody = aAdd<void *>(pBuffer, nSizeHeader);
-          nBytes = pFile->nReadBytes(aBody, nSizeBody);
-          RASSERT(nBytes == nSizeBody);
-
-          Persistent.m_pLarge = reinterpret_cast<Heap*>(pBuffer);
-          pNextBuffer = Persistent.m_pLarge->pFirstBuffer();
-
-          break;
-        }
-
-        case CN_HEAPBUFFER: {
-
-          // Sanity check that we are correctly reading the HeapBuffers that are part of the chain for the respective heaps.
-          if(pNextBuffer)
-          {
-            RASSERT(pNextBuffer == pPoolBufferHeader->m_pThis);
-          }
-
-          HeapBuffer* pHeapBuffer = (HeapBuffer*)(gpBufferPool->pReAllocHeapBuffer(pPoolBufferHeader->m_pThis));
-
-          MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
-          aBody = aAdd<void *>(pHeapBuffer, nSizeHeader);
-          nBytes = pFile->nReadBytes(aBody, nSizeBody);
-          RASSERT(nBytes == nSizeBody);
-
-          pNextBuffer = pHeapBuffer->pNextBuffer();
-
-          break;
-        }
-      }
-
-      nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
-    }
-
-    if(pFile->bIsOpen())
-      pFile->vClose();
-    delete pFile;
-
-    RASSERT(Persistent.m_pTiny);
-    Persistent.m_pTiny->vDropLock();
-
-    RASSERT(Persistent.m_pSmall);
-    Persistent.m_pSmall->vDropLock();
-
-    RASSERT(Persistent.m_pMedium);
-    Persistent.m_pMedium->vDropLock();
-
-    RASSERT(Persistent.m_pLarge);
-    Persistent.m_pLarge->vDropLock();
-
+#ifdef WITH_TSCP_TIMER
     oTimer.vUpdate();
-    vTrace("Loading of Persistent Heap: %lldms\n"_Stz,oTimer.iMilliseconds());
+    vTrace("Loading of Persistent Heaps from disk took %lld ms\n"_Stz, oTimer.iMilliseconds());
+#else
+    vTrace("Loading of Persistent Heaps from disk took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
+#endif
 
   } else {
     // create the persistent heaps
@@ -703,6 +608,265 @@ void Heaps::vInit(void)
           Virtual.m_pLarge, C_SIZE_LARGE_OBJECT);
   }
     
+}
+
+/*----------------------------------------------------------------------------*/
+/* Load the Persistent heaps, spawn threads to load the persistent buffers    */
+/* from disk                                                                  */
+/*----------------------------------------------------------------------------*/
+void Heaps::vReloadPHeaps(void)
+{
+  /*
+  Notes:
+    This section is where we load the persistent heaps from file.
+    The file consists of pool buffers and heap buffers. They are
+    C_SIZE_POOL_BUFFER in size.
+
+    We start by opening the file, and reading the header information.
+    The header is of size sizeof(object) + 64 + 64. The last two are
+    pool buffer members.
+
+    The object information tells us the Class type, and the pool buffer
+    member called m_pThis, tells us the address of the buffer when it was
+    written to disk.
+
+    We do a sanity check of this address and directly copy the header info
+    into the free chain buffer (since these addresses correspond to an
+    address in the free chain. Next, we read the rest of the info from
+    the file into this buffer. Note, we do not lock the free chain.
+
+    After the main thread loads in the various persisten heaps from disk,
+    we spawn threads based on the number of partitions. Each thread reads
+    it's corresponding file and performs the same task as what the main
+    thread did earlier, i.e read header info -> get the address -> check
+    the address -> read body into this address.
+
+    All threads are directly writing to the buffer addresses it reads
+    from the reload files.
+
+    This drastically speeds up reload times, but leaves the free chain in
+    an unstable/unusable state since different parts of the free chain
+    have been written to.
+
+    Hence, once all threads are done reloading, the main thread cleans up
+    the free chain, and repairs all the pointers, and other meta data info
+    about it, like number of allocs, number of free buffers, etc.
+
+  */
+  char caObjectHeader[sizeof(Object) + 128];
+  Header* aHeader = (Header*) & caObjectHeader[0];
+  i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
+  i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
+
+
+  // Get the name of the first file, which contains the P Heaps.
+  // Main thread first loads these in, before spawning threads to read
+  // the rest of the buffers.
+
+  s256 szNode0Path = "";
+  vFindPtn0FilePath(szNode0Path);
+
+  RASSERT( ! szNode0Path.bIsEmpty());
+
+  File* pFile = new(C_VIA_MALLOC) File(nullptr);
+  bool bResult = pFile->bOpenRead(szNode0Path);
+  ASSERT(bResult);
+
+  // Read the Header information to get the address of this pool buffer
+  i8 nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
+  RASSERT(nBytes == nSizeHeader);
+
+  while(nBytes != 0)
+  {
+    PoolBuffer* pPoolBufferHeader = reinterpret_cast<PoolBuffer*>(aHeader);
+    void *aBody;
+
+    switch(pPoolBufferHeader->eGetClassNo()) {
+      case CN_TINYPERSISTENT: {
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
+
+        MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+        aBody = aAdd<void *>(pBuffer, nSizeHeader);
+        nBytes = pFile->nReadBytes(aBody, nSizeBody);
+        RASSERT(nBytes == nSizeBody);
+
+        Persistent.m_pTiny = reinterpret_cast<Heap*>(pBuffer);
+
+        break;
+      }
+
+      case CN_SMALLPERSISTENT: {
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
+
+        MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+        aBody = aAdd<void *>(pBuffer, nSizeHeader);
+        nBytes = pFile->nReadBytes(aBody, nSizeBody);
+        RASSERT(nBytes == nSizeBody);
+
+        Persistent.m_pSmall = reinterpret_cast<Heap*>(pBuffer);
+
+        break;
+      }
+
+      case CN_MEDIUMPERSISTENT: {
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
+
+        MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+        aBody = aAdd<void *>(pBuffer, nSizeHeader);
+        nBytes = pFile->nReadBytes(aBody, nSizeBody);
+        RASSERT(nBytes == nSizeBody);
+
+        Persistent.m_pMedium = reinterpret_cast<Heap*>(pBuffer);
+
+        break;
+      }
+
+      case CN_LARGEPERSISTENT: {
+        RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+        PoolBuffer *pBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
+
+        MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+        aBody = aAdd<void *>(pBuffer, nSizeHeader);
+        nBytes = pFile->nReadBytes(aBody, nSizeBody);
+        RASSERT(nBytes == nSizeBody);
+
+        Persistent.m_pLarge = reinterpret_cast<Heap*>(pBuffer);
+
+        // Now that the Persistent heaps have been loaded in, we want to exit this loop
+        // and spawn threads to read in the rest of the buffers.
+        // So, force the loop to break by setting nBytes to zero.
+        nBytes = 0;
+        continue;
+      }
+    }
+    nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
+  }
+
+  RASSERT(Persistent.m_pTiny);
+  RASSERT(Persistent.m_pSmall);
+  RASSERT(Persistent.m_pMedium);
+  RASSERT(Persistent.m_pLarge);
+
+  // Main thread's work is done, so we close the file.
+  if(pFile->bIsOpen())
+    pFile->vClose();
+  delete pFile;
+
+  i8 iNoPtns = gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode;
+
+  // We are using an atomic counter to figure out when the threads have
+  // finished their work.
+  gxThreadsRemaining.vSetRemaining(iNoPtns);
+
+  // Spawn the threads.
+  for(i8 i = 0; i < iNoPtns; i++)
+  {
+    PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
+  }
+
+  vTrace("Main thread waiting...\n"_Stz);
+  do{
+    sleep(1);
+  } while(gxThreadsRemaining.bIsSet());
+
+  Persistent.m_pTiny->vDropWriteLock();
+  Persistent.m_pSmall->vDropWriteLock();
+  Persistent.m_pMedium->vDropWriteLock();
+  Persistent.m_pLarge->vDropWriteLock();
+
+  // Clean up the free chain
+  gpBufferPool->vCleanup(false, true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Threads call this function, to load heap buffers from disk                 */
+/*----------------------------------------------------------------------------*/
+[[noreturn]] void *vLoadHeapBuffers(void *pFuncObj)
+{
+  i8 iPtnNo = (i8) pFuncObj;
+  i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
+
+  s256 szFilePath = "";
+  szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
+                     gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo % nDiskpaths].szStz(),
+                     gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                     iPtnNo);
+
+  // Search the other disks for the reload file if we can't find it in the current dir
+  if( ! File::bExists(szFilePath)) {
+    i8 i = 0;
+    for (i = 0; i < nDiskpaths; i++) {
+      Stz *sRootDir = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i % nDiskpaths];
+      szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
+                         sRootDir,
+                         gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
+                         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                         iPtnNo);
+      if (File::bExists(szFilePath))
+        break;
+    }
+    if(i >= nDiskpaths)
+    {
+      vTrace("%s does not exist. Please check the arguments for --disk and --reload options given\n"_Stz, szFilePath.szStz());
+      THROW("Could not open savefile. Please check the arguments for --disk and --reload options given\n"_Stz);
+    }
+  }
+
+  if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("Thread got filepath %s\n"_Stz, szFilePath.szStz());
+
+  char caObjectHeader[sizeof(Object) + 128];
+  Header* aHeader = (Header*) & caObjectHeader[0];
+  i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
+  i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
+
+  File* pFile = new(C_VIA_MALLOC) File(nullptr);
+  bool bResult = pFile->bOpenRead(szFilePath);
+  RASSERT(bResult);
+
+  if(iPtnNo == 0)
+  {
+    pFile->vSeek((C_SIZE_POOL_BUFFER * 4));
+  }
+
+  // Read the Header information to get the address of this pool buffer
+  i8 nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
+  RASSERT(nBytes == nSizeHeader);
+
+  while(nBytes != 0)
+  {
+    PoolBuffer* pPoolBufferHeader = reinterpret_cast<PoolBuffer*>(aHeader);
+    void *aBody;
+
+    if(pPoolBufferHeader->eGetClassNo() == CN_HEAPBUFFER)
+    {
+      RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+      PoolBuffer *pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBufferHeader->m_pThis);
+
+      MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+      aBody = aAdd<void *>(pHeapBuffer, nSizeHeader);
+      nBytes = pFile->nReadBytes(aBody, nSizeBody);
+      RASSERT(nBytes == nSizeBody);
+    } else {
+      vTrace("Thread %lld read a non-heap buffer...\n"_Stz, iPtnNo);
+      THROW("Thread read a non-heap buffer...\n"_Stz);
+    }
+
+    nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
+  }
+
+  if(pFile->bIsOpen())
+    pFile->vClose();
+  delete pFile;
+
+  // Atomic decrement. Last thread to finish causes the main thread to wake up.
+  i8 nAcksWereRemaining;
+  gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
+  RASSERT(nAcksWereRemaining >= 0);
 }
 
 /*============================================================================*/

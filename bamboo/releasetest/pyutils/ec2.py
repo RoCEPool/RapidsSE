@@ -411,9 +411,9 @@ def __get_boot_script(path_str: str, ctx: str = "") -> str:
     cloud_init_path = pathlib.Path(path_str)
     assert cloud_init_path.exists()
 
-    LOG.debug(f"{ctx}Reading cloud-init script from path: {path_str}")
+    LOG.info(f"{ctx}Reading cloud-init script from path: {path_str}")
     txt = cloud_init_path.read_text()
-    LOG.debug(f"{ctx}Cloud-init script is {len(txt)} bytes long")
+    LOG.info(f"{ctx}Cloud-init script is {len(txt)} bytes long")
 
     assert len(txt) > 0
     assert len(txt) < 16384     # 16 KB AWS limit
@@ -609,7 +609,7 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
 
             except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
-                    LOG.debug(f"{ctx}Instance at {ip_addr} not yet accepting SSH connections: "
+                    LOG.info(f"{ctx}Instance at {ip_addr} not yet accepting SSH connections: "
                               f"Exit code = {e.returncode}, stdout = \"{e.stdout}\", stderr = \"{e.stderr}\"")
                 last_error = e.stderr
                 time.sleep(1.0)
@@ -672,7 +672,7 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
             attempts += 1
 
             if attempts % C_MSG_PERIOD == 0:
-                LOG.debug(f"{ctx}Time remaining (cloud-init): %.1f seconds", end_time - current_time)
+                LOG.info(f"{ctx}Time remaining (cloud-init): %.1f seconds", end_time - current_time)
 
             try:
                 result = subprocess.run(cmd,
@@ -686,7 +686,7 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
 
             except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
-                    LOG.debug(f"{ctx}Instance at {ip_addr} has not yet completed its cloud-init script")
+                    LOG.info(f"{ctx}Instance at {ip_addr} has not yet completed its cloud-init script")
                 last_error = e.stderr
                 time.sleep(1.0)
                 current_time = time.time()

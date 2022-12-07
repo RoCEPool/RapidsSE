@@ -103,6 +103,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
 
+    m_iSysTimeStart       = Timer::iGetTimeOfDay();
+
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)5);
 #endif
@@ -120,6 +122,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_iTscEnded       = 0;
   m_iTscCanceling   = 0;
   m_iTscCanceled    = 0;
+
+  m_iSysTimeEnd     = 0;
 
   // -- -- -- -- -- --
         
@@ -743,6 +747,27 @@ void Job::vGetTimerFromChild(Job* pChildJob)
   m_iTscEnded      = pChildJob->m_iTscEnded;
   m_iTscCanceling  = pChildJob->m_iTscCanceling;
   m_iTscCanceled   = pChildJob->m_iTscCanceled;
+
+  m_iSysTimeStart  = pChildJob->m_iSysTimeStart;
+  m_iSysTimeEnd    = pChildJob->m_iSysTimeEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sys/time.h start time                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Job::iGetSysTimerStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  return m_iSysTimeStart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sys/time.h end time                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Job::iGetSysTimerEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  return m_iSysTimeEnd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1886,6 +1911,7 @@ void Job::vResponseTimerStart(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vStart();
+  m_iSysTimeStart = Timer::iGetTimeOfDay();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1896,6 +1922,7 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
+  m_iSysTimeEnd = Timer::iGetTimeOfDay();
 }
 
 /*----------------------------------------------------------------------------*/

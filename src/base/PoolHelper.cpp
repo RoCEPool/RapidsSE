@@ -28,8 +28,8 @@ void PoolHelper::vObjectDump(i8 iAfter)
 void PoolHelper::vObjectDump(i8 iAfter, Heap* pHeap)
 {
   _static_
-  
-  pHeap->vGrabLock();
+
+  pHeap->vGrabWriteLock();
   
   i8 iCount = 0;
   for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
@@ -62,8 +62,8 @@ void PoolHelper::vObjectDump(i8 iAfter, Heap* pHeap)
   }
   if (iCount % 4)
     vTrace("\n"_Stz);
-  
-  pHeap->vDropLock();
+
+  pHeap->vDropWriteLock();
 
 }
 
@@ -90,8 +90,8 @@ void PoolHelper::vHeapDump(Heap* pHeap)
          : pHeap->eGetClassNo() == CN_LARGEPERSISTENT  ? "Large Persistent"_Stz
          : "unknown"_Stz
          );
-         
-  pHeap->vGrabLock();
+
+  pHeap->vGrabWriteLock();
   
   i8 iCount = 0;
   for (pHeapBuffer = pHeap->pFirstBuffer();
@@ -124,8 +124,8 @@ void PoolHelper::vHeapDump(Heap* pHeap)
   }
   
   vTrace("\n"_Stz);
-  
-  pHeap->vDropLock();
+
+  pHeap->vDropWriteLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,8 +143,8 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
   vTrace("%sWords in %s Heap:\n"_Stz,
          Stz::szTab(2),
          pHeap->nObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Stz : "Medium"_Stz);
-  
-  pHeap->vGrabLock();
+
+  pHeap->vGrabWriteLock();
   
   for (pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
@@ -177,8 +177,8 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
       //(pDumpFun)(eClass, (Object*)aChunk, Stz::szTab(2));
     }
   }
-  
-  pHeap->vDropLock();
+
+  pHeap->vDropWriteLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,8 +195,8 @@ void PoolHelper::vInspectObjects(i8 iAfter)
   for (Heap* pHeap = pHeaps->pEachHeap(eHeap);
        pHeap;
        pHeap = pHeaps->pEachHeap(eHeap)) {
-  
-    pHeap->vGrabLock();
+
+    pHeap->vGrabWriteLock();
     
     for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
          pHeapBuffer;
@@ -224,8 +224,8 @@ void PoolHelper::vInspectObjects(i8 iAfter)
        } // each chunk/object in heapBuffer
       
     } // each heapBuffer in heap
-    
-    pHeap->vDropLock();
+
+    pHeap->vDropWriteLock();
   
   } // each heap in heapMem
 }

@@ -62,8 +62,10 @@ namespace BASE
     static void vSearchFree(void);
 
     Heap* pEachHeap(eHT& reLastHeap);
+    void vFindPtn0FilePath(Stz* szFilePath);
     Heap* pGetHeap(eHT eHeap);
     void vInit(void);
+    void vReloadPHeaps(void);
     void vSetTraceAlloc(bool bTraceAlloc, Task* pTaskAlloc = nullptr);
     void vSetTraceAlloc(eCN eTraceAlloc);
     void vSetTraceFree(bool bTraceFree, Task* pTaskFree = nullptr);
@@ -72,7 +74,7 @@ namespace BASE
     Footer* aFooter(void);
   };
 }
-
+[[noreturn]] void *vLoadHeapBuffers(void *pFuncObj);
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

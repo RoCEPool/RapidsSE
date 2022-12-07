@@ -1,6 +1,7 @@
 import os.path
 import typing
 import logging
+import time
 
 import psycopg
 
@@ -14,6 +15,8 @@ import septest.db.dbhelper
 
 # Create a main logger
 LOG = logging.getLogger(__name__)
+
+MAX_CONNECT_ATTEMPTS: int = 10
 
 
 def record_job_start(all_configs: AllConfigs,
@@ -36,36 +39,52 @@ def record_job_start(all_configs: AllConfigs,
     token = septest.db.dbhelper.get_auth_token()
     connect_params: {} = septest.db.dbhelper.get_connect_params()
 
-    with psycopg.connect(password=token,
-                         autocommit=True,
-                         **connect_params) as conn:
-        cur = conn.cursor()
+    connect_attempts: int = 0
+    last_error: psycopg.errors.Error = None
 
-        # We need to check to see if there are config records in the jobs, hardware,
-        # cluster and tests tables. If not then we need to create a record. If a record
-        # exists then we need to check that the configuration hasn't changed in the
-        # config files.
-        hw_id       = __create_hardware_record(cur, all_configs.get_hardware(), is_regr)
-        cluster_id  = __create_cluster_record(cur, all_configs.get_cluster(), is_regr)
-        job_id      = __create_jobs_record(cur, all_configs, hw_id, cluster_id, is_regr)
-        test_tuples = __create_test_records(cur, all_configs.get_job())
+    while connect_attempts < MAX_CONNECT_ATTEMPTS:
+        try:
+            with psycopg.connect(password=token,
+                                 autocommit=True,
+                                 **connect_params) as conn:
+                cur = conn.cursor()
 
-        # Now create some records for beginning the job
-        job_result_id = __create_jobresult_record(cur,
-                                                  str(job_id),
-                                                  hw_id,
-                                                  cluster_id,
-                                                  bamboo_plan_key,
-                                                  bamboo_build_num,
-                                                  git_hash,
-                                                  git_branch,
-                                                  invoking_user)
+                # We need to check to see if there are config records in the jobs, hardware,
+                # cluster and tests tables. If not then we need to create a record. If a record
+                # exists then we need to check that the configuration hasn't changed in the
+                # config files.
+                hw_id = __create_hardware_record(cur, all_configs.get_hardware(), is_regr)
+                cluster_id = __create_cluster_record(cur, all_configs.get_cluster(), is_regr)
+                job_id = __create_jobs_record(cur, all_configs, hw_id, cluster_id, is_regr)
+                test_tuples = __create_test_records(cur, all_configs.get_job())
 
-        # add any tags to the tags table for this job_result_id
-        __create_tags(cur, job_result_id, tags)
-        return job_result_id, job_id, test_tuples
+                # Now create some records for beginning the job
+                job_result_id = __create_jobresult_record(cur,
+                                                          str(job_id),
+                                                          hw_id,
+                                                          cluster_id,
+                                                          bamboo_plan_key,
+                                                          bamboo_build_num,
+                                                          git_hash,
+                                                          git_branch,
+                                                          invoking_user)
 
-    # Database connection will be automatically closed at this point
+                # add any tags to the tags table for this job_result_id
+                __create_tags(cur, job_result_id, tags)
+                return job_result_id, job_id, test_tuples
+
+            # Database connection will be automatically closed at this point
+
+        except psycopg.errors.Error as e:
+            last_error = e
+            connect_attempts += 1
+            time.sleep(1)
+            continue
+
+    if last_error is not None:
+        raise last_error
+
+    raise errors.DatabaseError(f"Could not connect to the database after {MAX_CONNECT_ATTEMPTS} attempts.")
 
 
 def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],

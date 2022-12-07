@@ -70,7 +70,7 @@ void Step::vNodeMonitorInspectGrid(void)
 
         JobList *pPtpJobList = AM::pParticipatingJobs();
 
-        pPtpJobList->vGrabLock();
+        pPtpJobList->vGrabWriteLock();
 
         pCursor = pPtpJobList->pFirst();
 
@@ -85,7 +85,7 @@ void Step::vNodeMonitorInspectGrid(void)
           // get the next job
           pCursor = pPtpJobList->pNext(pCursor);
 
-          pPtpJobList->vDropLock();
+          pPtpJobList->vDropWriteLock();
 
           JobId tJobId = pJob->tDistId();
           vTrace("**************Aborting Participating Job %04lld.%04lld ; %s\n"_Stz,
@@ -94,9 +94,9 @@ void Step::vNodeMonitorInspectGrid(void)
                  aJP[pJob->eJobPhase()]);
 
           AM::JOB::vPtpJobNodeFailure(tJobId);
-          pPtpJobList->vGrabLock();
+          pPtpJobList->vGrabWriteLock();
         }
-        pPtpJobList->vDropLock();
+        pPtpJobList->vDropWriteLock();
 
       **/
 

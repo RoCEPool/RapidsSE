@@ -1137,6 +1137,30 @@ i8 File::iSize(void)
   return iSizeBytes;
 }
 
+/*---------------------------------------------------------------------------*/
+/* fsync file                                                                */
+/*---------------------------------------------------------------------------*/
+void File::vSync(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
+  m_oSysCall.vClear();
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.File.m_nFlushes++;
+#endif
+
+  i8 iResult = fsync(fileno(m_aFile));
+
+  if (-1 == iResult) {
+    m_oSysCall.vError(errno);
+    vTrace("File::vSync: fsync() error; errno=%d"_Stz,errno);
+    return;
+  }
+
+  m_oSysCall.vSuccess();
+}
+
 /*----------------------------------------------------------------------------*/
 /* get SysCall                                                                */
 /*----------------------------------------------------------------------------*/

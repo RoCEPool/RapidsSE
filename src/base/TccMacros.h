@@ -342,6 +342,19 @@
     }                                                                       \
   }
 
+#define _BET_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _BET_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR

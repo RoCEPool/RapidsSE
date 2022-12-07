@@ -21,7 +21,7 @@
   STD_PATH_TAG
   "
   procedure unload
-    parameters $File
+    parameters $Folder
   begin
 
   stage stageA on origin :
@@ -29,9 +29,9 @@
     | pulse once
     | next
 
-  stage stageB on all nodes :
-      unload $File
-    | next
+  stage stageB on all partitions :
+        unload $Folder
+      | next
 
   stage stageC on origin :
       output
