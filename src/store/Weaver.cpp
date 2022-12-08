@@ -1160,7 +1160,9 @@ void Weaver::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 
     vExpr(szRpnExpr,pCard_Expr);
 
-    szRpnExpr->vConcat(" ASC"_Stz);
+    Card* p_direction = pCard_Expr->pSub_direction();
+
+    szRpnExpr->vCatSprint(" %s"_Stz,p_direction->szValue());
 
   }
 
