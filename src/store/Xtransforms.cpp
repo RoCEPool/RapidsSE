@@ -435,6 +435,11 @@ void Xtransforms::vOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_Max_By_Top(void) {
 
+  // Query10
+
+  // Notes:
+  //
+
   return false;
 }
 
@@ -471,7 +476,9 @@ bool Xtransforms::bOT_Rpl_SortDesc_Limit_By_Top(void) {
 
   // Notes:
   // sbyElist expressions has a single column and its direction is descending
-  // sbyElist matches the gbyElist of an earlier (on all partitions) stage
+  // and it is followed by a limit we can replace the sort+limit by TOP.
+  // TOP will have the EList from sbyEList and the number (top limit) from limit.
+
   return false;
 }
 
