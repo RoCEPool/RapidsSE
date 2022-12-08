@@ -572,6 +572,13 @@ void Xtransforms::vS10_T10_Delete_All_absJoin(void)
     G_vRemoveDeleteMain(CK_ABSJOIN);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMain(CK_COMBINED)) {
+    G_vRemoveDeleteMain(CK_COMBINED);
+  }
+
   vEndTransform();
 }
 

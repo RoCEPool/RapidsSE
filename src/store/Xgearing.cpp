@@ -1913,7 +1913,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
-    case CK_FOLDELIST: *((Card**)&G.p_foldElist)         = pCard; break;
+    case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
     case CK_GENESIS:          *((Card**)&G.p_genesis)          = pCard; break;

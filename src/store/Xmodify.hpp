@@ -74,11 +74,16 @@ namespace STORE
 
     eAL  M_eStageTopology_To_Level(eYG eStageTopo);
 
+    bool bStream_Contains_Pred(Card_Table* p_table, Card_Stream* p_stream,
+                               Card_PRED* pCard_PRED);
     void M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn);
     void M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
+
+    char cTable_Contains_Pred(Card_Table* p_table, Card_PRED* p_pred);
+    char cTable_FindTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
     void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
@@ -94,15 +99,10 @@ namespace STORE
     void vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);
     void vPullUp_MarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);
 
-    char cPullup_FindTableForPred(Card_PRED* p_pred, Card_Deck* p_deck);
-    char cPullUp_TableContainsPred(Card_Table* p_table, Card_PRED* p_pred);
-    bool bPullUp_StreamContainsPred(Card_Table* p_table, Card_Stream* p_stream,
-                                    Card_PRED* pCard_PRED);
-
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
-    void vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing, Card_PRED* pCard_pred);
-    void vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
+    //void vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing, Card_PRED* pCard_pred);
+    //void vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
     void vPullUp_MovePredToFilter(Card_Filter* p_filter, Card_PRED* p_pred);
 
     void vStreamAnalysisReset(void);
