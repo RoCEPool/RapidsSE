@@ -462,6 +462,22 @@ void Xtransforms::vOT_Rpl_Max_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
 
+  // Query6, Query10, Query14, Query15
+
+  // Notes:
+  //
+  // If there is a Scan followed by a filter and the filter is on a single column
+  // with a lower/upper/loer+upper/equal bound then we can replace
+  // the scan and part / all of the filter with an indexScan
+
+  // Points to note:
+  // ** Some queries (eg Query1) we don't change the scan to an indexscan
+  //    because the selection range of the filter covers almost 95% of the rows.
+  //    In such a case a scan is better.
+  //
+  // ** This optimisation can be applied only after OT_ELY_FILTERS.
+  //    We won't see it till the Filters are moved close to the scans.
+
   return false;
 }
 
