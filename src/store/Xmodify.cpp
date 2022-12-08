@@ -1251,19 +1251,12 @@ bool Xmodify::bPullUp_MovePredDrillDown(Card_PRED* pCard_pred,
     Card_Table *pCard_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
 
     if (pCard_table) {
-      Card_Filter *pCard_filter_existing = pMainCard->pSub_filter();
 
-      if (pCard_filter_existing) {
-        pCard_filter_existing->vMark1(pCard_table->cMark1());
-        pCard_filter_existing->vMark2(pCard_table->cMark2());
-        vFilter_Add_Pred(pCard_filter_existing, pCard_pred);
-      } else {
-        Card_Filter *pCard_filter_new = new Card_Filter;
-        pCard_filter_new->vMark1(pCard_table->cMark1());
-        pCard_filter_new->vMark2(pCard_table->cMark2());
-        pMainCard->vAppend(pCard_filter_new);
-        vFilter_Add_Pred(pCard_filter_new, pCard_pred);
-      }
+      M_vFilter_AddPredUnder_main(pMainCard,pCard_pred);
+
+      Card_Filter *pCard_filter = pMainCard->pSub_filter();
+      pCard_filter->vMark1(pCard_table->cMark1());
+      pCard_filter->vMark2(pCard_table->cMark2());
 
       M_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
 
