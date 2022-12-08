@@ -585,33 +585,6 @@ void Xmodify::M_vFilter_AddPred(Card_Filter* p_filter, Card_PRED *p_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
-/*----------------------------------------------------------------------------*/
-void Xmodify::vFilter_Add_Pred(Card_Filter* p_filter,
-                               Card_PRED* p_pred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  if (! p_filter->nChildCards()) {
-    Card_BoolCalc* p_calcBool = new Card_BoolCalc;
-    p_filter->vAppend(p_calcBool);
-    p_calcBool->vAppend(p_pred);
-    return;
-  }
-
-  Card_BoolCalc* pCard_calcBool = p_filter->pSub_boolCalc();
-
-  Card* pCard_top = pCard_calcBool->pPop();
-
-  Card_AndPred* pCard_predAnd = new Card_AndPred;
-  pCard_predAnd->vAppend(pCard_top);
-  pCard_predAnd->vAppend(p_pred);
-
-  pCard_calcBool->vAppend(pCard_predAnd);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vFilter_AddPredUnder_main(Card* pMainCard, Card_PRED *p_PRED)
@@ -1150,19 +1123,6 @@ bool Xmodify::bPRED_Descend(Card_PRED* p_pred,
 /*----------------------------------------------------------------------------*/
 /*-- Predicate Pull-Up -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
-/*----------------------------------------------------------------------------*/
-void Xmodify::vPullUp_MarkPredLeftwards(Card_BoolCalc* p_bool,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_PRED* p_pred = static_cast<Card_PRED*>(p_bool->pGetChild(0));
-
-  vPullUp_MarkPredDrillDown(p_pred, p_deck);
-}
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
