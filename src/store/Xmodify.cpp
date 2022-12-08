@@ -122,6 +122,42 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
   return  false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* inspect <boolCalc>> and mark any <pred> which could be moved               */
+/*----------------------------------------------------------------------------*/
+void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
+                                        Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardRecurse xCR(p_boolCalc);
+  while (Card* p_card = xCR.pRecurseEach()) {
+
+    if (p_card->bIsCard(CK_ANDPRED)) {
+      p_card->vMark1('&');
+      continue;
+    }
+
+    if (p_card->bIsCard(CK_CMPPRED)) {
+      p_card->vMark1('?');
+      xCR.vDontDescend();
+      char cWhichTable = cTable_FindTableFor_Pred((Card_PRED*)p_card, p_deck);
+      if (C_UNKNOWN != cWhichTable) {
+        p_card->vMark1(MARK_AT);
+        p_card->vMark2(cWhichTable);
+      }
+      continue;
+    }
+
+    if (p_card->bIsCard(CK_ORPRED)) {
+      p_card->vMark1('|');
+      xCR.vDontDescend();
+      continue;
+    }
+
+    NEVER_REACH
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1124,96 +1160,6 @@ bool Xmodify::bPRED_Descend(Card_PRED* p_pred,
 /*-- Predicate Pull-Up -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
-/*----------------------------------------------------------------------------*/
-void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  p_pred->vDump();
-
-  char cWhichTable = ' ';
-
-  eCK eCard = p_pred->eCard();
-
-  if (CK_ORPRED == eCard) {
-    p_pred->vMark1('|');
-    return;
-  }
-
-  if (CK_CMPPRED == eCard) {
-    p_pred->vMark1('?');
-    cWhichTable =
-        cTable_FindTableFor_Pred(p_pred, p_deck);
-    if (C_UNKNOWN != cWhichTable) {
-      p_pred->vMark1(MARK_AT);
-      p_pred->vMark2(cWhichTable);
-    }
-    return;
-  }
-
-  i8 nSubCards = p_pred->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = p_pred->pGetChild(i_Child);
-
-    vPullUp_MarkPredDrillDown(static_cast<Card_PRED *>(pSubCard), p_deck);
-  }
-
-  if (CK_ANDPRED == eCard) {
-    p_pred->vMark1('&');
-    Card *pSubCard_0 = p_pred->pGetChild(0);
-    i8 iStream_0 = pSubCard_0->cMark2() - '0';
-
-    Card *pSubCard_1 = p_pred->pGetChild(1);
-    i8 iStream_1 = pSubCard_1->cMark2() - '0';
-
-    if (iStream_0 == iStream_1) {
-      p_pred->vMark1(MARK_AT);
-      p_pred->vMark2(iStream_0);
-    }
-
-    return;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <boolCalc>> and mark any <pred> which could be moved               */
-/*----------------------------------------------------------------------------*/
-void Xmodify::vPullUp_MarkPredDrillDown(Card_BoolCalc* p_boolCalc,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  CardRecurse xCR(p_boolCalc);
-  while (Card* p_card = xCR.pRecurseEach()) {
-
-    if (p_card->bIsCard(CK_ANDPRED)) {
-      p_card->vMark1('&');
-      continue;
-    }
-
-    if (p_card->bIsCard(CK_CMPPRED)) {
-      p_card->vMark1('?');
-      xCR.vDontDescend();
-      char cWhichTable = cTable_FindTableFor_Pred((Card_PRED*)p_card, p_deck);
-      if (C_UNKNOWN != cWhichTable) {
-        p_card->vMark1(MARK_AT);
-        p_card->vMark2(cWhichTable);
-      }
-      continue;
-    }
-
-    if (p_card->bIsCard(CK_ORPRED)) {
-      p_card->vMark1('|');
-      xCR.vDontDescend();
-      continue;
-    }
-
-    NEVER_REACH
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/

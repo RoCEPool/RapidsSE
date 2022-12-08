@@ -26,8 +26,7 @@ namespace STORE
   public:
     void M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     bool M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
-    //void M_vBoolCalc_DrillDown(Card_BoolCalc* p_bool, std::function<bool(Card* pCard)> bfApply);
-    //void M_vBoolCalc_Drilldown(Card_PRED* p_pred, std::function<bool(Card* pCard)> bfApply);
+    void M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc, Card_Deck* p_deck);
     void M_vBoolCalc_PushPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred_toBeAdded);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
@@ -96,9 +95,6 @@ namespace STORE
     bool bPRED_Descend(Card_PRED* p_pred, std::function<bool(Card_PRED* )> bfLambdaFn);
 
     // predicate pull-up
-    void vPullUp_MarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);
-    void vPullUp_MarkPredDrillDown(Card_BoolCalc* p_boolCalc, Card_Deck* p_deck);
-
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 
