@@ -75,8 +75,6 @@ namespace STORE
 
     eAL  M_eStageTopology_To_Level(eYG eStageTopo);
 
-    bool bStream_Contains_Pred(Card_Table* p_table, Card_Stream* p_stream,
-                               Card_PRED* pCard_PRED);
     void M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn);
@@ -84,6 +82,10 @@ namespace STORE
 
 
     char cTable_Contains_Pred(Card_Table* p_table, Card_PRED* p_pred);
+    bool bTable_Contains_Pred_b(Card_Table* p_table, Card_PRED* pCard_PRED);
+    char cTable_Contains_Pred_v2(Card_Table* p_table, Card_PRED* p_pred);
+    bool bTable_Contains_Term(Card_Table* p_table, Card_Term* p_term);
+
     char cTable_WhichTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
     void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
