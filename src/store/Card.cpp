@@ -2292,6 +2292,19 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_EBound.hpp"
+Card_EBound* Card::pSub_eBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_EBound* p_eBound =
+      _pCard_EBound(pFindSubCard(CK_EBOUND));
+  return p_eBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
 Card_Expr* Card::pSub_expr(void)
 {

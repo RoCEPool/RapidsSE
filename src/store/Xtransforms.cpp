@@ -3761,10 +3761,12 @@ void Xtransforms::vS80_T10_filter_For_scan(void)
       Card_PRED *p_wherePRED =
           T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
 
-      p_wherePRED->vMark1(MARK_AT);
+      if (p_wherePRED) {
+        p_wherePRED->vMark1(MARK_AT);
 
-      Card_PRED* p_boundingPRED = (Card_PRED*)p_wherePRED->pDupCardAndSubCards();
-      M_vFilter_AddPredUnder_main(G.p_scan, p_boundingPRED);
+        Card_PRED *p_boundingPRED = (Card_PRED *) p_wherePRED->pDupCardAndSubCards();
+        M_vFilter_AddPredUnder_main(G.p_scan, p_boundingPRED);
+      }
     }
   }
 
