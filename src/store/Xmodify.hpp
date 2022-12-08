@@ -53,6 +53,8 @@ namespace STORE
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
+    void vDeck_CopyMarkedPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
+
     i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
@@ -95,6 +97,7 @@ namespace STORE
     bool bPRED_Descend(Card_PRED* p_pred, std::function<bool(Card_PRED* )> bfLambdaFn);
 
     // predicate pull-up
+
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 

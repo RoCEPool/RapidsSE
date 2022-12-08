@@ -1552,7 +1552,7 @@ void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
+    vDeck_CopyMarkedPredLeftwards(G.p_boolCalc, G.pDeck);
   }
 
   vPrintBoard();

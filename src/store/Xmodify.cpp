@@ -544,6 +544,37 @@ void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/*----------------------------------------------------------------------------*/
+void Xmodify::vDeck_CopyMarkedPredLeftwards(Card_BoolCalc* p_calcBool,
+                                            Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card *pMainCard;
+
+  CardRecurse xCR(p_calcBool);
+  while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
+    if (MARK_AT != p_pred->cMark1())
+      continue;
+
+    char cTableSyn = p_pred->cMark2();
+    Card_Table *p_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
+    if (! p_table)
+      continue;
+
+    M_vFilter_AddPredUnder_main(pMainCard,
+                                (Card_PRED*)p_pred->pDupCardAndSubCards());
+
+    // todo: is this needed?
+    Card_Filter* p_filter = pMainCard->pSub_filter();
+    p_filter->vMark1(p_table->cMark1());
+    p_filter->vMark2(p_table->cMark2());
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Xmodify::E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn)
@@ -1159,7 +1190,6 @@ bool Xmodify::bPRED_Descend(Card_PRED* p_pred,
 /*----------------------------------------------------------------------------*/
 /*-- Predicate Pull-Up -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
