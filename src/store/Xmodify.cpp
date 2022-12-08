@@ -141,7 +141,7 @@ void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
     if (p_card->bIsCard(CK_CMPPRED)) {
       p_card->vMark1('?');
       xCR.vDontDescend();
-      char cWhichTable = cTable_FindTableFor_Pred((Card_PRED*)p_card, p_deck);
+      char cWhichTable = cTable_WhichTableFor_Pred((Card_PRED *) p_card, p_deck);
       if (C_UNKNOWN != cWhichTable) {
         p_card->vMark1(MARK_AT);
         p_card->vMark2(cWhichTable);
@@ -1002,8 +1002,8 @@ void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iH
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-char Xmodify::cTable_FindTableFor_Pred(Card_PRED* p_pred,
-                                       Card_Deck* p_deck)
+char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
+                                        Card_Deck* p_deck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1186,73 +1186,6 @@ bool Xmodify::bPRED_Descend(Card_PRED* p_pred,
   return C_CONTINUE_RECURSION;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Predicate Pull-Up -------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
-/*----------------------------------------------------------------------------*/
-void Xmodify::vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-//  while (p_calcBool->nChildCards()) {
-//    Card_PRED* p_pred = static_cast<Card_PRED*>(p_calcBool->pGetChild(0));
-//    bool bSubRemoved = bPullUp_MovePredDrillDown(p_pred, p_calcBool, p_deck);
-//    if (! bSubRemoved)
-//      break;
-//  }
-
-  CardIter xCI(p_calcBool);
-  while (Card_PRED* p_pred = (Card_PRED*)xCI.pEachChild()) {
-    bool bSubRemoved = bPullUp_MovePredDrillDown(p_pred, p_calcBool, p_deck);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::bPullUp_MovePredDrillDown(Card_PRED* pCard_pred,
-                                        Card_BoolCalc* p_calcBool,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  if (MARK_AT == pCard_pred->cMark1()) {
-
-    Card *pMainCard;
-    char cTableSyn = pCard_pred->cMark2();
-    Card_Table *pCard_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
-
-    if (pCard_table) {
-
-      M_vFilter_AddPredUnder_main(pMainCard,
-                                  (Card_PRED*)pCard_pred->pDupCardAndSubCards());
-
-      Card_Filter *pCard_filter = pMainCard->pSub_filter();
-      pCard_filter->vMark1(pCard_table->cMark1());
-      pCard_filter->vMark2(pCard_table->cMark2());
-
-      //M_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
-
-      return true;
-    }
-  }
-
-  i8 nSubCards = pCard_pred->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_pred->pGetChild(i_Child);
-
-    bool bRemoved = bPullUp_MovePredDrillDown(static_cast<Card_PRED *>(pSubCard), p_calcBool, p_deck);
-    if (bRemoved)
-      return true;
-  }
-
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

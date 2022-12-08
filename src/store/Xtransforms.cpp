@@ -1533,7 +1533,6 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     G.p_boolCalc->vDump();
 
-    //M_vBoolCalc_MarkWrt_table((Card_PRED*)G.p_boolCalc->pGetChild(0), G.pDeck);
     M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
   }
 

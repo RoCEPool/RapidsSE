@@ -84,7 +84,7 @@ namespace STORE
 
 
     char cTable_Contains_Pred(Card_Table* p_table, Card_PRED* p_pred);
-    char cTable_FindTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
+    char cTable_WhichTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
     void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
@@ -95,11 +95,6 @@ namespace STORE
     // generalised drill down
 
     bool bPRED_Descend(Card_PRED* p_pred, std::function<bool(Card_PRED* )> bfLambdaFn);
-
-    // predicate pull-up
-
-    void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
-    bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 
     void vStreamAnalysisReset(void);
 
