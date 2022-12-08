@@ -291,6 +291,21 @@ void Xtransforms::vOT_Ely_Filters(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Ely_Projections(void) {
 
+  // Query2, Query3, Query4, Query5, Query7, Query8,
+  //   Query9, Query10, Query11, Query12, Query14,
+  //      Query16, Query17, Query18, Query19
+
+  // get all $ columns from all operators -
+  // aggreg, filter, Hash, IndexJoin, keyExists, keyNotExists, OrdAgg, project, Sort, Top
+  // (leaving them as is unless its a project being modified)
+  // and find the tables they come from in previous scan/indexScan/indexJoin
+  // cards and add a project (or add to the project if already there)
+  // after the scan/indexJoin/indexJoin of the tables
+  // (ensuring no duplicate projections)
+
+  // idea being to get all pprojections realted to a table closest to
+  // its scan/indexScan/indexJoin
+
   return false;
 }
 
