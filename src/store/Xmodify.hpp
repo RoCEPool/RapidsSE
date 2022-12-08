@@ -58,6 +58,7 @@ namespace STORE
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
     void M_vFilter_AddPred(Card_Filter* p_filter, Card_PRED *p_PRED);
+    void vFilter_Add_Pred(Card_Filter* p_filter, Card_PRED* p_pred);
     void M_vFilter_AddPredUnder_main(Card* pMainCard, Card_PRED *p_PRED);
     void M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
     void M_vFilter_DeleteIfEmpty(Card_Filter* p_filter, Card* pMainCard);
@@ -101,9 +102,6 @@ namespace STORE
 
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
-    //void vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing, Card_PRED* pCard_pred);
-    //void vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
-    void vPullUp_MovePredToFilter(Card_Filter* p_filter, Card_PRED* p_pred);
 
     void vStreamAnalysisReset(void);
 
