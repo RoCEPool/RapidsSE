@@ -1473,13 +1473,14 @@ function askDiskPaths() {
   fi
 
   echo ""
-  echo "Hard Disk Paths"
+  echo "Storage Paths"
   echo "--------------------"
   echo ""
-  echo "RapidsSE requires the paths to the various hard disks mounted on each node"
-  echo "that will be used for unload and reload operations."
+  echo "RapidsSE needs to know where in the filesystem it can read and write data."
+  echo "This will currently be used during system unload and reload operations."
   echo ""
-  echo "If no paths are given, unload and reload will not be available."
+  echo "For best performance, multiple paths can be entered where those paths correspond"
+  echo "to separate mounted disks. All paths that are entered will be applied to all nodes in the cluster."
   echo ""
 
   for nodeName in "${nodeNames[@]}"
@@ -1492,18 +1493,18 @@ function askDiskPaths() {
 
     while true
     do
-      echo -n "Enter a disk path for ${nodeName} and press return [default: ${NODE_CFG_DEFAULT_DISK_PATH}] : "
+      echo -n "Enter a first filesystem path and press return [default: /opt/rapidsse] : "
       IFS=$'\n' read -r line
 
       if [ -z "${line:-}" ]; then
         # Accepting the default value
         defValue=1
-        diskroots+=("${NODE_CFG_DEFAULT_DISK_PATH}")
+        diskroots+=("/opt/rapidsse")
         break
       fi
 
-      if [[ ${line} =~ ${re} ]]; then
-        echo "Invalid input: Path cannot start with whitespace."
+      if [[ ${line} = *[[:space:]]* ]]; then
+        echo "Invalid input: Path cannot contain whitespace."
         continue
       fi
 
