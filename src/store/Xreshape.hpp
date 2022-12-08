@@ -34,6 +34,7 @@ namespace STORE
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
     void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void);
+    void R_vUTE_Individuate_filter(void);
     void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
     void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);

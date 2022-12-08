@@ -867,6 +867,21 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Individuate_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.p_MainCard->vRemoveChild(G.p_filter);
+  G.pDeck->vInsertAfter(G.p_filter, G.p_MainCard);
+
+  if (! G.p_filter->pSub_level()) {
+    G.p_filter->vPush(G.p_MainCard->pSub_level()->pDupCardAndSubCards());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

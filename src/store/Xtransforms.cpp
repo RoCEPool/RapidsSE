@@ -4616,6 +4616,11 @@ void Xtransforms::vSA0_T20_Individuate_filter(void)
   }
 
   G_vRestart();
+  while (G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
+    R_vUTE_Individuate_filter();
+  }
+
+  G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
     vR_SA0_T10_Individuate_indexJoin_filter_b();
   }
