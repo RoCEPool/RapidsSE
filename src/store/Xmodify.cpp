@@ -1169,11 +1169,16 @@ void Xmodify::vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while (p_calcBool->nChildCards()) {
-    Card_PRED* p_pred = static_cast<Card_PRED*>(p_calcBool->pGetChild(0));
+//  while (p_calcBool->nChildCards()) {
+//    Card_PRED* p_pred = static_cast<Card_PRED*>(p_calcBool->pGetChild(0));
+//    bool bSubRemoved = bPullUp_MovePredDrillDown(p_pred, p_calcBool, p_deck);
+//    if (! bSubRemoved)
+//      break;
+//  }
+
+  CardIter xCI(p_calcBool);
+  while (Card_PRED* p_pred = (Card_PRED*)xCI.pEachChild()) {
     bool bSubRemoved = bPullUp_MovePredDrillDown(p_pred, p_calcBool, p_deck);
-    if (! bSubRemoved)
-      break;
   }
 }
 
@@ -1194,13 +1199,14 @@ bool Xmodify::bPullUp_MovePredDrillDown(Card_PRED* pCard_pred,
 
     if (pCard_table) {
 
-      M_vFilter_AddPredUnder_main(pMainCard,pCard_pred);
+      M_vFilter_AddPredUnder_main(pMainCard,
+                                  (Card_PRED*)pCard_pred->pDupCardAndSubCards());
 
       Card_Filter *pCard_filter = pMainCard->pSub_filter();
       pCard_filter->vMark1(pCard_table->cMark1());
       pCard_filter->vMark2(pCard_table->cMark2());
 
-      M_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
+      //M_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
 
       return true;
     }

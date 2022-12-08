@@ -1555,6 +1555,17 @@ void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
     vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
   }
 
+  vPrintBoard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  vPrintBoard();
+
   vEndTransform();
 }
 
