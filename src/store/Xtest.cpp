@@ -591,28 +591,34 @@ bool Xtest::T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_b
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  p_cmpPred->vDump();
+
   CardIter xCI(p_bounds);
-  while (Card_Bound* p_bound = _pCard_Bound(xCI.pEachChild())) {
+  while (Card* p_bound = xCI.pEachChild()) {
+
+    p_bound->vDump();
 
     Card_Term* p_term_0 = _pCard_Term(p_bound->pGetChild(0));
     //Stz* szBound = p_term_0->szValue();
 
-    Stz* sz_bnd_idxColOdn = p_bounds->pGetChild(1)->szValue();
-    Stz* sz_bnd_stmColOdn = p_bounds->pGetChild(2)->szValue();
-    Stz* sz_bnd_rlnOpr    = p_bounds->pGetChild(3)->szValue();
+    Stz* sz_bnd_idxColOdn = p_bound->pGetChild(1)->szValue();
+    Stz* sz_bnd_stmColOdn = p_bound->pGetChild(2)->szValue();
+    Stz* sz_bnd_rlnOpr    = p_bound->pGetChild(3)->szValue();
 
     Stz* sz_cmp_rlnOpr    = p_cmpPred->szValue();
     Stz* sz_cmp_arg_0     = p_cmpPred->pGetChild(0)->szValue();
     Stz* sz_cmp_arg_1     = p_cmpPred->pGetChild(1)->szValue();
 
     if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
-      return false;
+      continue;
 
     // todo: need bounds to be bndTyp , etc
     // anyways...
 
     if (! sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
-      return false;
+      continue;
+
+    return true;
   }
 
   return false;

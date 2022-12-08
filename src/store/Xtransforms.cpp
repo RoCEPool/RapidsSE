@@ -3887,23 +3887,20 @@ void Xtransforms::vS80_T20_bounds_For_scan_v2(void)
 
   vAssert_Board_mqA();
 
-  if (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_INDEXLIST)) {
+  if (G_bEachMainWith3Sub(CK_SCAN, CK_TABLE, CK_INDEXLIST, CK_FILTER)) {
 
-    char cTblSyn = G.p_table->cValue();
     G.p_index = G.p_indexList->pSub_index();
+    G.p_boolCalc = G.p_filter->pSub_boolCalc();
 
-    if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    // some /<boolCalc>/<PRED> which is a bound of an index under scan
+    Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
 
-      // some /<boolCalc>/<PRED> which is a bound of an index under scan
-      Card_PRED *p_rootPRED = (Card_PRED *) G.p_boolCalc->pGetChild(0);
+    Card_PRED *p_boundingPRED =
+        T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
+    if (p_boundingPRED) {
+      //p_boundingPRED->vDump();
 
-      Card_PRED *p_boundingPRED =
-          T_pPRED_Containing_MaybeBoundsOf_index(p_rootPRED, G.p_index, false);
-      if (p_boundingPRED) {
-        //p_boundingPRED->vDump();
-
-        M_vBounds_AddPredUnder_index(G.p_table,G.p_index,p_boundingPRED);
-      }
+      M_vBounds_AddPredUnder_index(G.p_table,G.p_index,p_boundingPRED);
     }
   }
 
@@ -3911,6 +3908,30 @@ void Xtransforms::vS80_T20_bounds_For_scan_v2(void)
 
   vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS80_T30_Morph_scan_To_indexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
+
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+    if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
+      G.p_scan->vCard(CK_INDEXSCAN);
+    }
+  }
+
+  vPrintBoard();
+
+  vEndTransform();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
@@ -4525,6 +4546,10 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  vTransform(__func__, "((desc))"_Stz);
+
+  vAssert_Board_mqA();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds
 
@@ -4564,6 +4589,10 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
     if ((G.p_filter = G.p_MainCard->pSub_filter()))
       M_vFilter_DeleteIfEmpty(G.p_filter,G.p_MainCard);
   }
+
+  vPrintBoard();
+
+  vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/

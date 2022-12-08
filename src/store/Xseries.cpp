@@ -546,6 +546,7 @@ void Xseries::vSeries_80_Index_Scan(bool bEnabled)
 
   m_pTransforms->vS80_T10_filter_For_scan();
   m_pTransforms->vS80_T20_bounds_For_scan_v2();
+  m_pTransforms->vS80_T30_Morph_scan_To_indexScan();
 
 
   //m_pTransforms->vS80_T20_bounds_For_scan();
