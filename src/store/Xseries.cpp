@@ -126,15 +126,7 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS10_T10_Delete_All_absJoin();
-    m_pTransforms->vS10_T20_Delete_All_combined();
-    m_pTransforms->vS10_T30_Delete_All_send();
-    m_pTransforms->vS10_T40_Delete_All_stage();
-    m_pTransforms->vS10_T50_Cull_scan_Leaving_table();
-    m_pTransforms->vS10_T60_Add_All_level();
-
-    //m_pTransforms->vS10_T80_Delete_Redundant_stages();
-    //m_pTransforms->vS10_T90_Hide_Ignorable_stages();
+    m_pTransforms->vS10_Condense_Info();
   }
 
   m_pTransforms->vS10_TZZ_End();

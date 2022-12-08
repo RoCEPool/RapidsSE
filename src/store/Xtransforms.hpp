@@ -71,6 +71,7 @@ namespace STORE
     bool bS10_T00_Test(bool bEnabled);
     void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);
+    void vS10_Condense_Info(void);
     void vS10_T10_Delete_All_absJoin(void);
     void vS10_T20_Delete_All_combined(void);
     void vS10_T30_Delete_All_send(void);

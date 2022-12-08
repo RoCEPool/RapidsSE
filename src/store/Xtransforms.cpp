@@ -600,9 +600,9 @@ void Xtransforms::vS10_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete superfluous <absJoin>'s                                             */
+/* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T10_Delete_All_absJoin(void)
+void Xtransforms::vS10_Condense_Info(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -610,10 +610,14 @@ void Xtransforms::vS10_T10_Delete_All_absJoin(void)
 
   vAssert_Board_any();
 
+  // Delete All AbsJoin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   while (G_bEachMain(CK_ABSJOIN)) {
     G_vRemoveDeleteMain(CK_ABSJOIN);
   }
 
+  // Delete All Combined
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G_vRestart();
@@ -621,95 +625,36 @@ void Xtransforms::vS10_T10_Delete_All_absJoin(void)
     G_vRemoveDeleteMain(CK_COMBINED);
   }
 
-  vEndTransform();
-}
+  // Delete All Send
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*----------------------------------------------------------------------------*/
-/* delete superfluous <combined>'s                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T20_Delete_All_combined(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete superfluous <combined>'s"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMain(CK_COMBINED)) {
-    G_vRemoveDeleteMain(CK_COMBINED);
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete superfluous <send>'s                                                */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T30_Delete_All_send(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete superfluous <send>'s"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMain(CK_SEND)) {
     G_vRemoveDeleteMain(CK_SEND);
   }
 
-  vEndTransform();
-}
+  // Delete All Stage
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*----------------------------------------------------------------------------*/
-/* delete all <stage>'s                                                       */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T40_Delete_All_stage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete all <stage>'s"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMain(CK_STAGE)) {
     G_vRemoveDeleteMain(CK_STAGE);
   }
 
-  vEndTransform();
-}
+  // Cull Scan Leaving Table
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*----------------------------------------------------------------------------*/
-/* replace all <scan>'s with their children                                   */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T50_Cull_scan_Leaving_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "replace all <scan>'s with their children"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
     G.pDeck->vReplaceChildWithItsSubs(G.p_scan);
     DELETE_CARD(G.p_scan);
   }
 
-  vEndTransform();
-}
+  // Add All Level
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*----------------------------------------------------------------------------*/
-/* add level to all pile                                                      */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T60_Add_All_level(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "replace all <scan>'s with their children"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   G.e_Level = AL_PARTITION;
-
   while (G_bEachMain()) {
 
     G.p_level = G.p_MainCard->pSub_level();
@@ -720,9 +665,11 @@ void Xtransforms::vS10_T60_Add_All_level(void)
     G.p_MainCard->vPush(G.p_level);
   }
 
+  //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vEndTransform();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* linearize board by deleting all redundant <stage>'s                        */
