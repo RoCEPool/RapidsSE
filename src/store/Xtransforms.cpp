@@ -376,12 +376,15 @@ void Xtransforms::vOT_Min_Groupby(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Otm_Calculations(void) {
 
-  //
   // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
   //   Query19, Query20
 
   // Notes:
-
+  // To figure out if their are any literal calculations that can be done upfront.
+  // instead of executing the calculation for every row that is being processed.
+  // So need to decipher any arithmetic OP (+-*/) with 2 literals.
+  // eg 0.06 0.01 -
+  // date '1993-01-01' - interval '1' year
 
   return false;
 }
