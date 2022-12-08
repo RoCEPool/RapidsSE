@@ -130,6 +130,8 @@ namespace STORE
     bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
     bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
 
+    bool G_bEachSubOfMain(eCK eSubKind);
+
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 
     Card* G_pGetMember(eCK eMember);

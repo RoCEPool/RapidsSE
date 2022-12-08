@@ -815,6 +815,47 @@ eAL Xmodify::M_eStageTopology_To_Level(eYG eStageTopo)
   return eLevel;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this table+stream?                                  */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bStream_Contains_Pred(Card_Table* p_table,
+                                    Card_Stream* p_stream,
+                                    Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK ePredCard = pCard_PRED->eCard();
+
+  char cTableSyn = p_table->cValue();
+
+  if (CK_TERM == ePredCard) {
+
+    Stz* szTerm = pCard_PRED->sz();
+
+    if (T_bValue_IsParamOrdinal(szTerm))
+      return true;
+
+    if (! T_bValue_IsTableColOrdinal(szTerm))
+      return false;
+
+    char cTblColSyn = E_cValue_TableColSyn(szTerm);
+    if (cTableSyn < cTblColSyn)
+      return false;
+
+    return true;
+  }
+
+  i8 nSubCards = pCard_PRED->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
+
+    if (!bStream_Contains_Pred(p_table, p_stream, static_cast<Card_PRED *>(pSubCard)))
+      return false;
+  }
+
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -889,6 +930,63 @@ void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iH
   p_stream->Y_vSet(P_OdnHi, iHi);
 
   p_stream->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect <PRED>                                                             */
+/*----------------------------------------------------------------------------*/
+char Xmodify::cTable_FindTableFor_Pred(Card_PRED* p_pred,
+                                       Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nAbsJoin = 0;
+  i8 nTable    = 0;
+  char cWhichTable = C_UNKNOWN;
+
+  //vTraceing("iAssignPredLeft candidate %p\n"_Stz,p_pred);
+  //p_pred->vDump();
+
+  for (i8 i_Main = 0; /* none */ ; i_Main++) {
+    Card *pMainCard = p_deck->pGetChild(i_Main);
+
+    if (CK_WHERE == pMainCard->eCard())
+      return C_UNKNOWN;
+
+    eCK eMainCard = pMainCard->eCard();
+
+    if (CK_TABLE == eMainCard) {
+      nTable++;
+      cWhichTable = cTable_Contains_Pred(_pCard_Table(pMainCard), p_pred);
+      if (C_UNKNOWN != cWhichTable)
+        return cWhichTable;
+      continue;
+    }
+
+    // skip over any other card??
+    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
+  }
+
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Xmodify::cTable_Contains_Pred(Card_Table* p_table,
+                                   Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Stream* p_stream = p_table->pSub_stream();
+
+  // are all $n of <pred> in this <stream>?
+  if (bStream_Contains_Pred(p_table, p_stream, p_pred)) {
+    char cTableSyn = p_table->cValue();
+    return cTableSyn;
+  }
+
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1061,7 +1159,7 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
   if (CK_CMPPRED == eCard) {
     p_pred->vMark1('?');
     cWhichTable =
-        cPullup_FindTableForPred(p_pred, p_deck);
+        cTable_FindTableFor_Pred(p_pred, p_deck);
     if (C_UNKNOWN != cWhichTable) {
       p_pred->vMark1(MARK_AT);
       p_pred->vMark2(cWhichTable);
@@ -1091,104 +1189,6 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
 
     return;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <PRED>                                                             */
-/*----------------------------------------------------------------------------*/
-char Xmodify::cPullup_FindTableForPred(Card_PRED* p_pred,
-                                       Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nAbsJoin = 0;
-  i8 nTable    = 0;
-  char cWhichTable = C_UNKNOWN;
-
-  //vTraceing("iAssignPredLeft candidate %p\n"_Stz,p_pred);
-  //p_pred->vDump();
-
-  for (i8 i_Main = 0; /* none */ ; i_Main++) {
-    Card *pMainCard = p_deck->pGetChild(i_Main);
-
-    if (CK_WHERE == pMainCard->eCard())
-      return C_UNKNOWN;
-
-    eCK eMainCard = pMainCard->eCard();
-
-    if (CK_TABLE == eMainCard) {
-      nTable++;
-      cWhichTable = cPullUp_TableContainsPred(_pCard_Table(pMainCard), p_pred);
-      if (C_UNKNOWN != cWhichTable)
-        return cWhichTable;
-      continue;
-    }
-
-    // skip over any other card??
-    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
-  }
-
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Xmodify::cPullUp_TableContainsPred(Card_Table* p_table,
-                                        Card_PRED* p_pred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_Stream* p_stream = p_table->pSub_stream();
-
-  // are all $n of <pred> in this <stream>?
-  if (bPullUp_StreamContainsPred(p_table, p_stream, p_pred)) {
-    char cTableSyn = p_table->cValue();
-    return cTableSyn;
-  }
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given <pred> within this table+stream?                                  */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::bPullUp_StreamContainsPred(Card_Table* p_table,
-                                          Card_Stream* p_stream,
-                                          Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  eCK ePredCard = pCard_PRED->eCard();
-
-  char cTableSyn = p_table->cValue();
-
-  if (CK_TERM == ePredCard) {
-
-    Stz* szTerm = pCard_PRED->sz();
-
-    if (T_bValue_IsParamOrdinal(szTerm))
-      return true;
-
-    if (! T_bValue_IsTableColOrdinal(szTerm))
-      return false;
-
-    char cTblColSyn = E_cValue_TableColSyn(szTerm);
-    if (cTableSyn < cTblColSyn)
-      return false;
-
-    return true;
-  }
-
-  i8 nSubCards = pCard_PRED->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
-
-    if (!bPullUp_StreamContainsPred(p_table, p_stream, static_cast<Card_PRED *>(pSubCard)))
-      return false;
-  }
-
-  return true;
 }
 
 
