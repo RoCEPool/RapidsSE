@@ -966,12 +966,6 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 nAbsJoin = 0;
-  i8 nTable    = 0;
-  char cWhichTable = C_UNKNOWN;
-
-  //vTraceing("iAssignPredLeft candidate %p\n"_Stz,p_pred);
-  //p_pred->vDump();
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
     Card *pMainCard = p_deck->pGetChild(i_Main);
@@ -982,10 +976,11 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
     eCK eMainCard = pMainCard->eCard();
 
     if (CK_TABLE == eMainCard) {
-      nTable++;
-      cWhichTable = cTable_Contains_Pred(_pCard_Table(pMainCard), p_pred);
-      if (C_UNKNOWN != cWhichTable)
-        return cWhichTable;
+      Card_Table* p_table = _pCard_Table(pMainCard);
+      if (bTable_Contains_Pred(p_table, p_pred)) {
+        char cTblSyn = p_table->cValue();
+        return cTblSyn;
+      }
       continue;
     }
 
@@ -999,79 +994,18 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Xmodify::cTable_Contains_Pred(Card_Table* p_table,
+bool Xmodify::bTable_Contains_Pred(Card_Table* p_table,
                                    Card_PRED* p_pred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_Stream* p_stream = p_table->pSub_stream();
-
-  // are all $n of <pred> in this <stream>?
-  if (bTable_Contains_Pred_b(p_table, p_pred)) {
-    char cTableSyn = p_table->cValue();
-    return cTableSyn;
-  }
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given <pred> within this table+stream?                                  */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::bTable_Contains_Pred_b(Card_Table* p_table,
-                                     Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  eCK ePredCard = pCard_PRED->eCard();
-
-  char cTableSyn = p_table->cValue();
-
-  if (CK_TERM == ePredCard) {
-
-    Stz* szTerm = pCard_PRED->sz();
-
-    if (T_bValue_IsParamOrdinal(szTerm))
-      return true;
-
-    if (! T_bValue_IsTableColOrdinal(szTerm))
-      return false;
-
-    char cTblColSyn = E_cValue_TableColSyn(szTerm);
-    if (cTableSyn < cTblColSyn)
-      return false;
-
-    return true;
-  }
-
-  i8 nSubCards = pCard_PRED->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
-
-    if (!bTable_Contains_Pred_b(p_table, static_cast<Card_PRED *>(pSubCard)))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Xmodify::cTable_Contains_Pred_v2(Card_Table* p_table,
-                                      Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   CardIter xCI(p_pred);
   while (Card_Term* p_term = (Card_Term*)xCI.pEachChild()) {
     if (! bTable_Contains_Term(p_table,p_term))
-      continue;
-    char cTableSyn = p_table->cValue();
-    return cTableSyn;
+      return false;
   }
 
-  return C_UNKNOWN;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
