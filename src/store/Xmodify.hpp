@@ -97,6 +97,7 @@ namespace STORE
 
     // predicate pull-up
     void vPullUp_MarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);
+    void vPullUp_MarkPredDrillDown(Card_BoolCalc* p_boolCalc, Card_Deck* p_deck);
 
     void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);

@@ -1533,7 +1533,8 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     G.p_boolCalc->vDump();
 
-    vPullUp_MarkPredDrillDown((Card_PRED*)G.p_boolCalc->pGetChild(0), G.pDeck);
+    //vPullUp_MarkPredDrillDown((Card_PRED*)G.p_boolCalc->pGetChild(0), G.pDeck);
+    vPullUp_MarkPredDrillDown(G.p_boolCalc, G.pDeck);
   }
 
   vEndTransform();

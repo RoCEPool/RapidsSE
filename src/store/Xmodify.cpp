@@ -1178,6 +1178,42 @@ void Xmodify::vPullUp_MarkPredDrillDown(Card_PRED* p_pred,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* inspect <boolCalc>> and mark any <pred> which could be moved               */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vPullUp_MarkPredDrillDown(Card_BoolCalc* p_boolCalc,
+                                        Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardRecurse xCR(p_boolCalc);
+  while (Card* p_card = xCR.pRecurseEach()) {
+
+    if (p_card->bIsCard(CK_ANDPRED)) {
+      p_card->vMark1('&');
+      continue;
+    }
+
+    if (p_card->bIsCard(CK_CMPPRED)) {
+      p_card->vMark1('?');
+      xCR.vDontDescend();
+      char cWhichTable = cTable_FindTableFor_Pred((Card_PRED*)p_card, p_deck);
+      if (C_UNKNOWN != cWhichTable) {
+        p_card->vMark1(MARK_AT);
+        p_card->vMark2(cWhichTable);
+      }
+      continue;
+    }
+
+    if (p_card->bIsCard(CK_ORPRED)) {
+      p_card->vMark1('|');
+      xCR.vDontDescend();
+      continue;
+    }
+
+    NEVER_REACH
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
