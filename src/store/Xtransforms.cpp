@@ -262,6 +262,7 @@ bool Xtransforms::bOT_Dup_Filter(void) {
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOT_Dup_Filter(void) {
 
+  // Query7, Query18
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,6 +273,7 @@ bool Xtransforms::bOT_Ely_Filters(void) {
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
 
+  // Notes:
   // get columns from cmpPred's and find the tables they come from in previous
   // scan/indexScan/indexJoin cards and move them after the scan/indexJoin/indexJoin
   // of the tables
@@ -295,6 +297,7 @@ bool Xtransforms::bOT_Ely_Projections(void) {
   //   Query9, Query10, Query11, Query12, Query14,
   //      Query16, Query17, Query18, Query19
 
+  // Notes:
   // get all $ columns from all operators -
   // aggreg, filter, Hash, IndexJoin, keyExists, keyNotExists, OrdAgg, project, Sort, Top
   // (leaving them as is unless its a project being modified)
@@ -464,6 +467,11 @@ void Xtransforms::vOT_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_SortDesc_Limit_By_Top(void) {
 
+  // Query10
+
+  // Notes:
+  // sbyElist expressions has a single column and its direction is descending
+  // sbyElist matches the gbyElist of an earlier (on all partitions) stage
   return false;
 }
 
