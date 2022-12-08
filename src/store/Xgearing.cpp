@@ -545,7 +545,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_fold             = nullptr;
-  G.p_foldElist         = nullptr;
+  G.p_foldElist        = nullptr;
   G.p_gbyAgg           = nullptr;
   G.p_gbyElist         = nullptr;
   G.p_genesis          = nullptr;
@@ -971,6 +971,111 @@ bool Xgearing::G_bEachMainWith3Sub(eCK eOfMainKind,
   G.p_Sub3OfMain = nullptr;
   G.e_Sub3OfMain = CK_NONE;
   G_vUpdateMember(eAndSubKind3, nullptr, __func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step main register to next main which has sub and update M member          */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bEachSubOfMain(eCK eSubKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while ((G.p_MainCard = G.xBI.pEachMain())) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eSubKind, nullptr, __func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step main register to next main which has sub and update M member          */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while ((G.p_MainCard = G.xBI.pEachMain())) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
+      continue;
+
+    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eSubKind2)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
+    G_vUpdateMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eSubKind1, nullptr, __func__);
+  G.p_Sub2OfMain = nullptr;
+  G.e_Sub2OfMain = CK_NONE;
+  G_vUpdateMember(eSubKind2, nullptr, __func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step main register to next main which has sub and update M member          */
+/*----------------------------------------------------------------------------*/
+bool Xgearing::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while ((G.p_MainCard = G.xBI.pEachMain())) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
+      continue;
+
+    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eSubKind2)))
+      continue;
+
+    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eSubKind3)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
+    G_vUpdateMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
+    G_vUpdateMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eSubKind1, nullptr, __func__);
+  G.p_Sub2OfMain = nullptr;
+  G.e_Sub2OfMain = CK_NONE;
+  G_vUpdateMember(eSubKind2, nullptr, __func__);
+  G.p_Sub3OfMain = nullptr;
+  G.e_Sub3OfMain = CK_NONE;
+  G_vUpdateMember(eSubKind3, nullptr, __func__);
   return false;
 }
 

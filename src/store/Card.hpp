@@ -354,6 +354,7 @@ namespace STORE
     void vMark2(char cMark2);
     void vMark2SetIfRecursive(char cIfMark, char cSetTo);
     void vMarkResetRecursive(void);
+    bool bMerge(Card* pCard);
     void vMoveToLastChild(Card* pChildCard);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,

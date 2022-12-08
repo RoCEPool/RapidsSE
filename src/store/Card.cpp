@@ -1182,6 +1182,26 @@ void Card::vMarkResetRecursive(void)
     xCI.pChild()->vMarkResetRecursive();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Merge given card with this card only if they are of the same type          */
+/*----------------------------------------------------------------------------*/
+bool Card::bMerge(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if(pCard->eCard() != m_eCard)
+    return false;
+
+  while(Card* pSubCard = pCard->pPop()) {
+    vPush(pSubCard);
+  }
+
+  delete pCard;
+
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /* move given to child to be last child                                       */
 /*----------------------------------------------------------------------------*/
