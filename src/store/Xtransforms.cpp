@@ -435,10 +435,16 @@ void Xtransforms::vOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_Max_By_Top(void) {
 
-  // Query10
+  // Query15
 
   // Notes:
-  //
+  // If a projEList has only one item and it is a max,
+  //  then the projectOP can be replace by a TOP of the max column
+  //  with 1 as the parameter to TOP
+  // e.g
+  //   project " type DECIMAL ) $1 max "
+  // can be replace by :
+  //   top "TOP type DECIMAL $2" 1
 
   return false;
 }
@@ -4939,6 +4945,9 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
   vTransform(__func__, "reinstate stages"_Stz);
 
   vAssert_Board_mqA();
+
+  //m_pCardCtl->vPrintSubCards(true,CK_PROJELIST,0);
+  //m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
 
   vPrintBoard(__LINE__);
 
