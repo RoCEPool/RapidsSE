@@ -403,6 +403,19 @@ void Xtransforms::vOT_Ppn_Projections(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void) {
 
+  // Query13, Query17 : do we change the scan to indexScan ????
+  // Query18
+
+  // Notes:
+  // When we have a aggreg grouped on a column on which their is an index available,
+  // we can change the scan to an indexScan (jence data will come in ascending order
+  // of the group by key)
+  // and then we can change the aggreg to an ordAgg.
+  //
+  // Also Note: when the ordAgg replaces the aggreg at an all partitions level,
+  //  we can delete the aggregates on all nodes and on origin.
+  //  This further aggregation is not required.
+
   return false;
 }
 
