@@ -1264,48 +1264,61 @@ void Xmodify::vPullUp_MovePredToFilter(Card_Filter* p_filter,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (p_filter->nChildCards())
-    vPullUp_MovePredToExistingFilter(p_filter, p_pred);
-  else
-    vPullUp_MovePredToNewFilter(p_filter, p_pred);
-}
+  if (! p_filter->nChildCards()) {
+    Card_BoolCalc* p_calcBool = new Card_BoolCalc;
+    p_filter->vAppend(p_calcBool);
+    p_calcBool->vAppend(p_pred);
+    return;
+  }
 
-/*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
-/*----------------------------------------------------------------------------*/
-void Xmodify::vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing,
-                                               Card_PRED* pCard_pred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  RASSERT(p_filter_existing->nChildCards());
-
-  Card_BoolCalc* pCard_calcBool = p_filter_existing->pSub_boolCalc();
+  Card_BoolCalc* pCard_calcBool = p_filter->pSub_boolCalc();
 
   Card* pCard_top = pCard_calcBool->pPop();
 
   Card_AndPred* pCard_predAnd = new Card_AndPred;
   pCard_predAnd->vAppend(pCard_top);
-  pCard_predAnd->vAppend(pCard_pred);
+  pCard_predAnd->vAppend(p_pred);
 
   pCard_calcBool->vAppend(pCard_predAnd);
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-void Xmodify::vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new,
-                                          Card_PRED* p_pred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+//void Xmodify::vPullUp_MovePredToExistingFilter(Card_Filter* p_filter_existing,
+//                                               Card_PRED* pCard_pred)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+//
+//  RASSERT(p_filter_existing->nChildCards());
+//
+//  Card_BoolCalc* pCard_calcBool = p_filter_existing->pSub_boolCalc();
+//
+//  Card* pCard_top = pCard_calcBool->pPop();
+//
+//  Card_AndPred* pCard_predAnd = new Card_AndPred;
+//  pCard_predAnd->vAppend(pCard_top);
+//  pCard_predAnd->vAppend(pCard_pred);
+//
+//  pCard_calcBool->vAppend(pCard_predAnd);
+//}
 
-  RASSERT(! p_filter_new->nChildCards());
-
-  Card_BoolCalc* p_calcBool = new Card_BoolCalc;
-  p_filter_new->vAppend(p_calcBool);
-
-  p_calcBool->vAppend(p_pred);
-}
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+//void Xmodify::vPullUp_MovePredToNewFilter(Card_Filter* p_filter_new,
+//                                          Card_PRED* p_pred)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+//
+//  RASSERT(! p_filter_new->nChildCards());
+//
+//  Card_BoolCalc* p_calcBool = new Card_BoolCalc;
+//  p_filter_new->vAppend(p_calcBool);
+//
+//  p_calcBool->vAppend(p_pred);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
