@@ -254,6 +254,16 @@ void Xtransforms::vOT_Cut_Sort(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Dup_Filter(void) {
 
+  // Query7, Query19
+
+  // Notes:
+  // If the query has filters with an OR we need to pick all the values for a column
+  // from all the OR filters and copy them close to the table scan/indesxScan/indexJoin
+  // of the concerned table.
+
+  // Also Note: These are filters that are not being moved but extracts being
+  // copied to the tables scan/indesxScan/indexJoin.
+
   return false;
 }
 
