@@ -11,6 +11,7 @@ namespace STORE
                       public ListExo2_t<CardIter>
   {
   protected:
+    bool m_bDontDescend;
 
     // must be last
     Footer m_xFooter;
@@ -22,6 +23,7 @@ namespace STORE
     CardRecurse(Card* pCard);
    ~CardRecurse(void) noexcept(false);
 
+    void vDontDescend(void);
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
 
