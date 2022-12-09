@@ -2288,20 +2288,76 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_S75_T10_Morph_table_To_EEop_c(void)
+void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vReshape(__func__);
 
-  // todo: remove?
+  if (0 == G.i_MainCard)  {
+    G.p_scan = new Card_Scan;
+    G.p_scan->vTransferChildren(G.p_table);
 
-  G.p_indexJoin->vDump();
+    G.pBoard->pDeck()->vReplace(G.p_table,G.p_scan);
+    G.p_scan->vInsert(G.p_table);
 
-  i8 i_Child;
-  G.p_note = _pCard_Note(G.p_indexJoin->pFindChild(CK_NOTE,i_Child));
-  G.p_note->vValue(SEP_DERIVED);
+    if (G.p_indexJoin) {
+      G.p_scan->vRemoveChild(G.p_indexJoin);
+      DELETE_CARD(G.p_indexJoin);
+    }
+  }
+  else
+  if (G.p_keyExists) {
+    G.p_table->vRemoveSubCard(G.p_keyExists);
 
+    G.p_keyExists->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_keyExists);
+    G.p_keyExists->vInsert(G.p_table);
+
+    G.p_keyExists->vRemoveSubCard(G.p_index);
+    G.p_keyExists->vAppend(G.p_index);
+  }
+  else
+  if (G.p_keyNotExists) {
+    G.p_table->vRemoveSubCard(G.p_keyNotExists);
+
+    G.p_keyNotExists->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_keyNotExists);
+    G.p_keyNotExists->vInsert(G.p_table);
+
+    G.p_keyNotExists->vRemoveSubCard(G.p_index);
+    G.p_keyNotExists->vAppend(G.p_index);
+  }
+  else
+  if (! G.p_bounds) {
+
+    G.p_crossJoin = new Card_CrossJoin;
+    G.p_crossJoin->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
+    G.p_crossJoin->vInsert(G.p_table);
+
+    G_vNewMember(CK_BOUNDS);
+    G.p_crossJoin->vAppend(G.p_bounds);
+
+    G_vNewMember(CK_TERM,"bound"_Stz);
+    G.p_bounds->vAppend(G.p_term);
+
+    G_vNewMember(CK_TERM,"$I1"_Stz);
+    G.p_bounds->vAppend(G.p_term);
+  }
+  else {
+    G_vNewMember(CK_INDEXJOIN);
+    G.p_indexJoin->vTransferChildren(G.p_table);
+
+    G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
+    G.p_indexJoin->vInsert(G.p_table);
+
+    G.p_indexJoin->vRemoveSubCard(G.p_index);
+    G.p_indexJoin->vAppend(G.p_index);
+  }
 
   vEndReshape();
 }
