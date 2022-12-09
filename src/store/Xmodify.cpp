@@ -1022,10 +1022,10 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
   if (T_bValue_IsParamOrdinal(szTerm))
     return true;
 
-  // literals are (not yet) considered within scope
+  // literals are considered within scope
   if (! T_bValue_IsTableColOrdinal(szTerm)) {
     //p_term->vDump();
-    return false;
+    return true;
   }
 
   // is the table column within scope?

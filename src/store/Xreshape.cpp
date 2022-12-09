@@ -2214,6 +2214,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     G.p_scan->vInsert(G.p_table);
 
     if (G.p_indexJoin) {
+      NEVER_REACH
       G.p_scan->vRemoveChild(G.p_indexJoin);
       DELETE_CARD(G.p_indexJoin);
     }
