@@ -24,6 +24,7 @@ select o_orderkey, avg(l_extendedprice)
    and o_orderkey < 100
    and o_orderkey > 3
    and o_totalPrice > 0.0
+   and o_orderStatus = 'F'
  group by O_ORDERKEY
  order by O_ORDERKEY
 ;

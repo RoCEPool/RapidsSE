@@ -21,6 +21,8 @@ CardRecurse::CardRecurse(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  m_bDontDescend = false;
+
   _checkInitialised_(CN_CARDRECURSE);
   
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -42,11 +44,24 @@ CardRecurse::~CardRecurse(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardRecurse::vDontDescend(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  m_bDontDescend = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardRecurse::pRecurseEach(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (m_pChild) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // descend into current child
+
+  if (m_pChild && (! m_bDontDescend) ) {
     if (m_pChild->nChildCards()) {
 
       vPushIter();
@@ -56,6 +71,11 @@ Card* CardRecurse::pRecurseEach(void)
       return m_pChild;
     }
   }
+
+  m_bDontDescend = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // visit next child
 
   if (bEachChild())
     return m_pChild;

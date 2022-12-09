@@ -26,8 +26,7 @@ namespace STORE
   public:
     void M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     bool M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
-    //void M_vBoolCalc_DrillDown(Card_BoolCalc* p_bool, std::function<bool(Card* pCard)> bfApply);
-    //void M_vBoolCalc_Drilldown(Card_PRED* p_pred, std::function<bool(Card* pCard)> bfApply);
+    void M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc, Card_Deck* p_deck);
     void M_vBoolCalc_PushPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred_toBeAdded);
     void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
@@ -54,6 +53,8 @@ namespace STORE
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
+    void vDeck_CopyMarkedPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
+
     i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
@@ -74,16 +75,16 @@ namespace STORE
 
     eAL  M_eStageTopology_To_Level(eYG eStageTopo);
 
-    bool bStream_Contains_Pred(Card_Table* p_table, Card_Stream* p_stream,
-                               Card_PRED* pCard_PRED);
     void M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn);
     void M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
 
-    char cTable_Contains_Pred(Card_Table* p_table, Card_PRED* p_pred);
-    char cTable_FindTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
+    bool bTable_Contains_Pred(Card_Table* p_table, Card_PRED* p_pred);
+    bool bTable_Contains_Term(Card_Table* p_table, Card_Term* p_term);
+
+    char cTable_WhichTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
     void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
@@ -94,12 +95,6 @@ namespace STORE
     // generalised drill down
 
     bool bPRED_Descend(Card_PRED* p_pred, std::function<bool(Card_PRED* )> bfLambdaFn);
-
-    // predicate pull-up
-    void vPullUp_MarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);
-
-    void vPullUp_MovePredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
-    bool bPullUp_MovePredDrillDown(Card_PRED *pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 
     void vStreamAnalysisReset(void);
 

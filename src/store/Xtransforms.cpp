@@ -1533,7 +1533,7 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     G.p_boolCalc->vDump();
 
-    vPullUp_MarkPredDrillDown((Card_PRED*)G.p_boolCalc->pGetChild(0), G.pDeck);
+    M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
   }
 
   vEndTransform();
@@ -1551,8 +1551,19 @@ void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
   vAssert_Board_any();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vPullUp_MovePredLeftwards(G.p_boolCalc, G.pDeck);
+    vDeck_CopyMarkedPredLeftwards(G.p_boolCalc, G.pDeck);
   }
+
+  vPrintBoard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  vPrintBoard();
 
   vEndTransform();
 }
