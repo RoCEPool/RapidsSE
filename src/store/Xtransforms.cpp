@@ -615,7 +615,7 @@ void Xtransforms::vS10_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_Condense_Info(void)
+void Xtransforms::vS10_T_Condense_Info(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -623,39 +623,39 @@ void Xtransforms::vS10_Condense_Info(void)
 
   vAssert_Board_any();
 
-  // Delete All AbsJoin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All AbsJoin
 
   while (G_bEachMain(CK_ABSJOIN)) {
     G_vRemoveDeleteMain(CK_ABSJOIN);
   }
 
-  // Delete All Combined
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Combined
 
   G_vRestart();
   while (G_bEachMain(CK_COMBINED)) {
     G_vRemoveDeleteMain(CK_COMBINED);
   }
 
-  // Delete All Send
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Send
 
   G_vRestart();
   while (G_bEachMain(CK_SEND)) {
     G_vRemoveDeleteMain(CK_SEND);
   }
 
-  // Delete All Stage
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Stage
 
   G_vRestart();
   while (G_bEachMain(CK_STAGE)) {
     G_vRemoveDeleteMain(CK_STAGE);
   }
 
-  // Cull Scan Leaving Table
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Cull Scan Leaving Table
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
@@ -663,8 +663,8 @@ void Xtransforms::vS10_Condense_Info(void)
     DELETE_CARD(G.p_scan);
   }
 
-  // Add All Level
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Add All Level
 
   G_vRestart();
   G.e_Level = AL_PARTITION;
@@ -780,33 +780,25 @@ void Xtransforms::vS20_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a <tableSyn> to all <table>'s                                          */
+/* Table Analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS20_T10_Affix_tableSyn_ToAll_table(void)
+void Xtransforms::vS20_T_Table_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
 
-  vAssert_Board_any();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Affix Table Syntax To All Table
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     M_vTable_Set_Syn(G.p_table);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Table Partition Under All Table
 
-/*----------------------------------------------------------------------------*/
-/* add a <tablePtn> under every <table>                                       */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS20_T20_Produce_tablePtn_UnderAll_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <tablePtn> under every <table>"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     G.p_tablePtn = C_pProduce_tablePtn_Of_table(G.p_table);
@@ -870,13 +862,14 @@ void Xtransforms::vS24_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T10_Append_indexList_UnderAll_table(void)
+void Xtransforms::vS24_T_Index_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
-  vAssert_Board_any();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Append Index List Under All Table
 
   while (G_bEachMain(CK_TABLE)) {
     G.p_tableNm = G.p_table->pSub_tableNm();
@@ -887,19 +880,10 @@ void Xtransforms::vS24_T10_Append_indexList_UnderAll_table(void)
     G_vAppendChild(CK_TABLE,CK_INDEXLIST);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Affix TblColOdn To All IdxCol
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T20_Affix_tblColOdn_ToAll_idxCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
     CardIter xCI(G.p_indexList);
@@ -963,15 +947,18 @@ void Xtransforms::vS22_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a <stream> under every <table>                                         */
+/* Stream Analysis                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T10_Produce_stream_UnderAll_table(void)
+void Xtransforms::vS22_T_Stream_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <stream> under every <table>"_Stz);
 
   vAssert_Board_any();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Table
 
   vStreamAnalysisReset();
 
@@ -982,20 +969,10 @@ void Xtransforms::vS22_T10_Produce_stream_UnderAll_table(void)
     G.p_table->vAppend(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Project
 
-/*----------------------------------------------------------------------------*/
-/* add a <stream> under every <project>                                       */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T12_Produce_stream_UnderAll_project(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <stream> under every <project>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
@@ -1004,20 +981,10 @@ void Xtransforms::vS22_T12_Produce_stream_UnderAll_project(void)
     G.p_project->vAppend(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Agg Reg
 
-/*----------------------------------------------------------------------------*/
-/* add a <stream> under every <aggreg>                                        */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T14_Produce_stream_UnderAll_aggreg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <stream> under every <aggreg>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
@@ -1026,56 +993,26 @@ void Xtransforms::vS22_T14_Produce_stream_UnderAll_aggreg(void)
     G.p_aggreg->vAppend(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All Table Stream
 
-/*----------------------------------------------------------------------------*/
-/* derive the ordinal properties &lo..&hi range for each <stream>             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T20_Derive_ordinalRange_ForAll_table_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All Project Stream
 
-/*----------------------------------------------------------------------------*/
-/* derive the ordinal properties &lo..&hi range for each <stream>             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T22_Derive_ordinalRange_ForAll_project_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_project(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All Agg Reg Stream
 
-/*----------------------------------------------------------------------------*/
-/* derive the ordinal properties &lo..&hi range for each <stream>             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
   }
@@ -1095,7 +1032,7 @@ void Xtransforms::vS22_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  vSeries_26_SubQuery_Analysis */
+/*                                               vSeries_26_SubQuery_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -1333,35 +1270,27 @@ void Xtransforms::vS32_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
+/* SubQuery Analysis                                                          */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T10_Convert_sqyOp_not_To_notSqyOp(void)
+void Xtransforms::vS32_T_SubQuery_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
-  vAssert_Board_any();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Convert SqyOp Not To NotSqyOp
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(G.p_rpnCalc);
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-  vEndTransform();
-}
 
-/*----------------------------------------------------------------------------*/
-/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T20_Convert_rpnCalc_To_boolCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Convert RpnCalc To Bool Calc
 
-  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
 
@@ -1380,6 +1309,7 @@ void Xtransforms::vS32_T20_Convert_rpnCalc_To_boolCalc(void)
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
   vEndTransform();
 }
 

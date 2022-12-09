@@ -71,13 +71,7 @@ namespace STORE
     bool bS10_T00_Test(bool bEnabled);
     void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);
-    void vS10_Condense_Info(void);
-    void vS10_T10_Delete_All_absJoin(void);
-    void vS10_T20_Delete_All_combined(void);
-    void vS10_T30_Delete_All_send(void);
-    void vS10_T40_Delete_All_stage(void);
-    void vS10_T50_Cull_scan_Leaving_table(void);
-    void vS10_T60_Add_All_level(void);
+    void vS10_T_Condense_Info(void);
     void vS10_T80_Delete_Redundant_stages(void);
     void vS10_T90_Hide_Ignorable_stages(void);
     void vS10_TZZ_End(void);
@@ -86,28 +80,21 @@ namespace STORE
     bool bS20_T00_Test(bool bEnabled);
     void vS20_T00_Skip(void);
     void vS20_T00_Begin(void);
-    void vS20_T10_Affix_tableSyn_ToAll_table(void);
-    void vS20_T20_Produce_tablePtn_UnderAll_table(void);
+    void vS20_T_Table_Analysis(void);
     void vS20_TZZ_End(void);
 
     // vSeries_24_Index_Analysis
     bool bS24_T00_Test(bool bEnabled);
     void vS24_T00_Skip(void);
     void vS24_T00_Begin(void);
-    void vS24_T10_Append_indexList_UnderAll_table(void);
-    void vS24_T20_Affix_tblColOdn_ToAll_idxCol(void);
+    void vS24_T_Index_Analysis(void);
     void vS24_TZZ_End(void);
 
     // vSeries_22_Stream_Analysis
     bool bS22_T00_Test(bool bEnabled);
     void vS22_T00_Skip(void);
     void vS22_T00_Begin(void);
-    void vS22_T10_Produce_stream_UnderAll_table(void);
-    void vS22_T12_Produce_stream_UnderAll_project(void);
-    void vS22_T14_Produce_stream_UnderAll_aggreg(void);
-    void vS22_T20_Derive_ordinalRange_ForAll_table_stream(void);
-    void vS22_T22_Derive_ordinalRange_ForAll_project_stream(void);
-    void vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void);
+    void vS22_T_Stream_Analysis(void);
     void vS22_TZZ_End(void);
 
     // vSeries_26_SubQuery_Analysis
@@ -123,8 +110,7 @@ namespace STORE
     bool bS32_T00_Test(bool bEnabled);
     void vS32_T00_Skip(void);
     void vS32_T00_Begin(void);
-    void vS32_T10_Convert_sqyOp_not_To_notSqyOp(void);
-    void vS32_T20_Convert_rpnCalc_To_boolCalc(void);
+    void vS32_T_SubQuery_Analysis(void);
     void vS32_TZZ_End(void);
 
     // vSeries_33_To_TblColOdn

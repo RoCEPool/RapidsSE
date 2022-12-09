@@ -128,7 +128,7 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS10_Condense_Info();
+    m_pTransforms->vS10_T_Condense_Info();
   }
 
   m_pTransforms->vS10_TZZ_End();
@@ -158,8 +158,7 @@ void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS20_T10_Affix_tableSyn_ToAll_table();
-    m_pTransforms->vS20_T20_Produce_tablePtn_UnderAll_table();
+    m_pTransforms->vS20_T_Table_Analysis();
   }
 
   m_pTransforms->vS20_TZZ_End();
@@ -189,12 +188,7 @@ void Xseries::vSeries_22_Stream_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS22_T10_Produce_stream_UnderAll_table();
-    m_pTransforms->vS22_T12_Produce_stream_UnderAll_project();
-    m_pTransforms->vS22_T14_Produce_stream_UnderAll_aggreg();
-    m_pTransforms->vS22_T20_Derive_ordinalRange_ForAll_table_stream();
-    m_pTransforms->vS22_T22_Derive_ordinalRange_ForAll_project_stream();
-    m_pTransforms->vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream();
+    m_pTransforms->vS22_T_Stream_Analysis();
   }
 
   m_pTransforms->vS22_TZZ_End();
@@ -224,8 +218,7 @@ void Xseries::vSeries_24_Index_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS24_T10_Append_indexList_UnderAll_table();
-    m_pTransforms->vS24_T20_Affix_tblColOdn_ToAll_idxCol();
+    m_pTransforms->vS24_T_Index_Analysis();
   }
 
   m_pTransforms->vS24_TZZ_End();
@@ -283,8 +276,7 @@ void Xseries::vSeries_32_To_BoolCalc(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS32_T10_Convert_sqyOp_not_To_notSqyOp();
-    m_pTransforms->vS32_T20_Convert_rpnCalc_To_boolCalc();
+    m_pTransforms->vS32_T_SubQuery_Analysis();
   }
 
   m_pTransforms->vS32_TZZ_End();

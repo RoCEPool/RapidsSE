@@ -651,7 +651,7 @@ group by
               <stringProp name="TestPlan.comments">Required for pipeline3, pipeline18</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxC_NATIONKEY ON customer(c_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -679,7 +679,7 @@ group by
               <stringProp name="TestPlan.comments">Required for Query7, Query15, Query16</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxS_NATIONKEY ON supplier(s_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1121,7 +1121,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxC_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxC_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index customer IxC_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1165,7 +1165,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxS_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxS_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index supplier IxS_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2701,7 +2701,7 @@ create index IxL_SHIPDATE ON Lineitem (L_SHIPDATE)  ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P7Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P7Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -2833,7 +2833,7 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -2847,7 +2847,7 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P8Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P8Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -3027,7 +3027,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -3732,7 +3732,7 @@ create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P11Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P11Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -3885,7 +3885,7 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
