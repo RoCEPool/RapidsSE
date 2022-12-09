@@ -957,15 +957,18 @@ void Xtransforms::vS22_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a <stream> under every <table>                                         */
+/* Stream Analysis                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T10_Produce_stream_UnderAll_table(void)
+void Xtransforms::vS22_T_Stream_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "add a <stream> under every <table>"_Stz);
 
   vAssert_Board_any();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Table
 
   vStreamAnalysisReset();
 
@@ -976,20 +979,10 @@ void Xtransforms::vS22_T10_Produce_stream_UnderAll_table(void)
     G.p_table->vAppend(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Project
 
-/*----------------------------------------------------------------------------*/
-/* add a <stream> under every <project>                                       */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T12_Produce_stream_UnderAll_project(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <stream> under every <project>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
@@ -998,20 +991,10 @@ void Xtransforms::vS22_T12_Produce_stream_UnderAll_project(void)
     G.p_project->vAppend(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Agg Reg
 
-/*----------------------------------------------------------------------------*/
-/* add a <stream> under every <aggreg>                                        */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T14_Produce_stream_UnderAll_aggreg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <stream> under every <aggreg>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
@@ -1020,56 +1003,26 @@ void Xtransforms::vS22_T14_Produce_stream_UnderAll_aggreg(void)
     G.p_aggreg->vAppend(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All Table Stream
 
-/*----------------------------------------------------------------------------*/
-/* derive the ordinal properties &lo..&hi range for each <stream>             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T20_Derive_ordinalRange_ForAll_table_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All Project Stream
 
-/*----------------------------------------------------------------------------*/
-/* derive the ordinal properties &lo..&hi range for each <stream>             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T22_Derive_ordinalRange_ForAll_project_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_project(G.p_stream);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All Agg Reg Stream
 
-/*----------------------------------------------------------------------------*/
-/* derive the ordinal properties &lo..&hi range for each <stream>             */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS22_T24_Derive_ordinalRange_ForAll_aggreg_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "calculate the ordinal $low..$high range for each <stream>"_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
   }
@@ -1089,7 +1042,7 @@ void Xtransforms::vS22_TZZ_End(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  vSeries_26_SubQuery_Analysis */
+/*                                               vSeries_26_SubQuery_Analysis */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
