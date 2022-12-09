@@ -88,11 +88,9 @@ void Xseries::vTransformSeries(void)
   vSeries_40_Flatten_Query     (C_ENABLED);
 
   vSeries_50_Join_Ordering                   (C_DISABLED);
-  vSeries_60_Index_Join                      (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering                 (C_DISABLED);
-  vSeries_92_Ordered_Aggreg                  (C_DISABLED);
   vSeries_A0_Filter_Refinement (C_ENABLED);
 
   vSeries_E0_To_StmOdn         (C_ENABLED);
@@ -442,35 +440,6 @@ void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
 
   vEndSeries(BK_SUBPIPE, 0);
 }
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_60_Index_Join(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS60_T00_Test(bEnabled)) {
-    m_pTransforms->vS60_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS60_T00_Begin();
-
-  //m_pTransforms->vS60_T05_Twist_in_Becomes_filter();
-  m_pTransforms->vS60_T10_Produce_maybeIndexJoin_Under_filter();
-  m_pTransforms->vS60_T20_Affix_tblColOdn_ToAll_idxCol();
-  m_pTransforms->vS36_T10_Derive_bounds_From_filter();
-  m_pTransforms->vS36_T20_Cull_UpCopied_filter_pred();
-  m_pTransforms->vS36_T30_Delete_Empty_filter();
-  //m_pTransforms->vS60_T60_Delete_Twist();
-
-  m_pTransforms->vS60_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -562,31 +531,6 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
   m_pTransforms->vS90_T30_Add_stmOrdList();
 
   //m_pTransforms->vS90_TF0_Remove_sort_IfSameAs_gby();
-
-  m_pTransforms->vS90_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_92_Ordered_Aggreg(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS92_T00_Test(bEnabled)) {
-    m_pTransforms->vS92_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS92_T00_Begin();
-
-  m_pTransforms->vS92_T10();
-  m_pTransforms->vS92_T20();
-  m_pTransforms->vS92_T30();
 
   m_pTransforms->vS90_TZZ_End();
 

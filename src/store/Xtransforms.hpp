@@ -173,16 +173,6 @@ namespace STORE
     void vS50_T98_Extract_joinOrderSeq(void);
     void vS50_TZZ_End(void);
 
-    // vSeries_60_Index_Join
-    bool bS60_T00_Test(bool bEnabled);
-    void vS60_T00_Skip(void);
-    void vS60_T00_Begin(void);
-    void vS60_T05_Twist_in_Becomes_filter(void);
-    void vS60_T10_Produce_maybeIndexJoin_Under_filter(void);
-    void vS60_T20_Affix_tblColOdn_ToAll_idxCol(void);
-    void vS60_T60_Delete_Twist(void);
-    void vS60_TZZ_End(void);
-
     // vSeries_75_EE_operators
     bool bS75_T00_Test(bool bEnabled);
     void vS75_T00_Skip(void);
@@ -221,15 +211,6 @@ namespace STORE
     void vS90_TF0_Remove_sort_IfSameAs_gby(void);
     void vS90_TZZ_End(void);
 
-    // vSeries_92_Ordered_Aggreg
-    bool bS92_T00_Test(bool bEnabled);
-    void vS92_T00_Skip(void);
-    void vS92_T00_Begin(void);
-    void vS92_T10(void);
-    void vS92_T20(void);
-    void vS92_T30(void);
-    void vS92_TZZ_End(void);
-
     // vSeries_A0_Filter_Refinement
     bool bSA0_T00_Test(bool bEnabled);
     void vSA0_T00_Skip(void);
@@ -237,12 +218,6 @@ namespace STORE
     void vSA0_T10_Eliminate_bounds_From_filter(void);
     void vSA0_T20_Individuate_filter(void);
     void vSA0_TZZ_End(void);
-
-    // vSeries_B0_RestoreStmOdn
-    bool bSB0_T00_Test(bool bEnabled);
-    void vSB0_T00_Skip(void);
-    void vSB0_T00_Begin(void);
-    void vSB0_TZZ_End(void);
 
     // vSeries_E0_To_StmOdn
     bool bSE0_T00_Test(bool bEnabled);

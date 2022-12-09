@@ -49,12 +49,10 @@ namespace STORE
     // main query only from here...
     void vSeries_40_Flatten_Query     (bool bEnabled); //
     void vSeries_50_Join_Ordering     (bool bEnabled); // 2 days
-    void vSeries_60_Index_Join        (bool bEnabled); //
     void vSeries_75_EE_operators      (bool bEnabled); // 1 day
 //  void vSeries_79_Add_Partitioning  (bool bEnabled); //
     void vSeries_80_Index_Scan        (bool bEnabled); // 1 day
     void vSeries_90_Stream_Ordering   (bool bEnabled); // 1 day
-    void vSeries_92_Ordered_Aggreg    (bool bEnabled); // 0.5 day
 //  void vSeries_94_Simplify_Group    (bool bEnabled); // 0.5 day
 //  void vSeries_96_Eliminate_Order   (bool bEnabled); // 0.5 day
 //  void vSeries_98_Reduce_Aggreg     (bool bEnabled); // 1 day
