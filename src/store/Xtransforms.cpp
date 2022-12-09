@@ -3352,7 +3352,6 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
     G.p_indexJoin      = G.p_table->pSub_indexJoin();
     G.p_keyExists      = G.p_table->pSub_keyExists();
     G.p_keyNotExists   = G.p_table->pSub_keyNotExists();
-    G.p_maybeIndexJoin = G.p_table->pSub_maybeIndexJoin();
 
     vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
            G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());

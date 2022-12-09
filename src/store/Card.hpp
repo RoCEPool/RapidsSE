@@ -86,7 +86,6 @@ namespace STORE
   class Card_Level;
   class Card_Limit;
 
-  class Card_MaybeIndexJoin;
   class Card_Manner;
 
   class Card_NCorrCols;
@@ -452,7 +451,6 @@ namespace STORE
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
-    Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_Manner*        pSub_manner(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Next*          pSub_next(void);

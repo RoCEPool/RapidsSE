@@ -2559,19 +2559,6 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_MaybeIndexJoin.hpp"
-Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_MaybeIndexJoin* p_maybeIndexJoin =
-      _pCard_MaybeIndexJoin(pFindSubCard(CK_MAYBEINDEXJOIN));
-  return p_maybeIndexJoin;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Manner.hpp"
 Card_Manner* Card::pSub_manner(void)
 {

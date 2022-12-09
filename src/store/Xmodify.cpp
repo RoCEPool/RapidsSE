@@ -1038,30 +1038,6 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
-
-  Table* pTable = A_pAccess_Table(p_tableNm->sz());
-
-  Card_IndexList* p_indexList = C_pProduce_indexList_Of_table(pTable);
-
-  while (Card_Index* p_index = _pCard_Index(p_indexList->pPopChild())) {
-    Card_MaybeIndexJoin* p_maybeIndexJoin = new Card_MaybeIndexJoin;
-    p_maybeIndexJoin->vAppend(p_index);
-    Card_Note* p_note = new Card_Note(SEP_SCRATCH);
-    p_table->vAppend(p_note);
-    p_table->vAppend(p_maybeIndexJoin);
-  }
-
-  DELETE_CARD(p_indexList);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vTable_Set_Syn(Card_Table* p_table)

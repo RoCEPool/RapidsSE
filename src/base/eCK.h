@@ -81,7 +81,6 @@ enum eCK // card kind
   /* */ CK_LIMIT,
   /* */ CK_LINKSTO,
 
-  /* */ CK_MAYBEINDEXJOIN,
   /* */ CK_MANNER,
 
   /* */ CK_NCORRCOLS,
@@ -250,7 +249,6 @@ static Stz* aCK[]
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
 
-  /* */ "CK_MAYBEINDEXJOIN"_Stz, // CK_MAYBEINDEXJOIN
   /* */ "CK_MANNER"_Stz,       // CK_MANNER
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
@@ -418,7 +416,6 @@ static Stz* aCK_short[]
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
 
-  /* */ "maybeIndexJoin"_Stz,  // CK_MAYBEINDEXJOIN
   /* */ "manner"_Stz,          // CK_MANNER
 
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS

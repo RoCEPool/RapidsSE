@@ -101,7 +101,6 @@ namespace STORE
     Card_Level *            p_level;
     Card_Limit *            p_limit;
     Card_Manner *           p_manner;
-    Card_MaybeIndexJoin *   p_maybeIndexJoin;
     Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;

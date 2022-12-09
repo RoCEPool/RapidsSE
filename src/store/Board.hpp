@@ -88,7 +88,6 @@
 #include "Card_LinksTo.hpp"
 
 #include "Card_Manner.hpp"
-#include "Card_MaybeIndexJoin.hpp"
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Next.hpp"

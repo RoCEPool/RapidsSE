@@ -85,7 +85,6 @@ namespace STORE
     bool bTable_ScopeContains_term(Card_Table* p_table, Card_Term* p_term);
 
     char cTable_WhichTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
-    void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy=1);

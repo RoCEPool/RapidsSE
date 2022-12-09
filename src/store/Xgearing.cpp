@@ -567,7 +567,6 @@ void Xgearing::G_vClearMembers(void)
   G.p_level            = nullptr;
   G.p_limit            = nullptr;
   G.p_manner           = nullptr;
-  G.p_maybeIndexJoin   = nullptr;
   G.p_nCorrCols        = nullptr;
   G.p_next             = nullptr;
   G.p_note             = nullptr;
@@ -1156,7 +1155,6 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
     case CK_MANNER:           return G.p_manner;
-    case CK_MAYBEINDEXJOIN:   return G.p_maybeIndexJoin;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEXT:             return G.p_next;
     case CK_NOTE:             return G.p_note;
@@ -2042,7 +2040,6 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard; break;
     case CK_MANNER:           *((Card**)&G.p_manner)           = pCard; break;
-    case CK_MAYBEINDEXJOIN:   *((Card**)&G.p_maybeIndexJoin)   = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
@@ -2175,7 +2172,6 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_LIMIT:            return "G.p_limit"_Stz;
     case CK_MANNER:           return "G.p_manner"_Stz;
-    case CK_MAYBEINDEXJOIN:   return "G.p_maybeIndexJoin"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
     case CK_NOTE:             return "G.p_note"_Stz;
