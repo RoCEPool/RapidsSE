@@ -81,8 +81,8 @@ namespace STORE
     void M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
 
-    bool bTable_Contains_Pred(Card_Table* p_table, Card_PRED* p_pred);
-    bool bTable_Contains_Term(Card_Table* p_table, Card_Term* p_term);
+    bool bTable_ScopeContains_Pred(Card_Table* p_table, Card_PRED* p_pred);
+    bool bTable_ScopeContains_term(Card_Table* p_table, Card_Term* p_term);
 
     char cTable_WhichTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
     void M_vTable_Produce_MaybeIndexJoin(Card_Table* p_table);

@@ -977,7 +977,7 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 
     if (CK_TABLE == eMainCard) {
       Card_Table* p_table = _pCard_Table(pMainCard);
-      if (bTable_Contains_Pred(p_table, p_pred)) {
+      if (bTable_ScopeContains_Pred(p_table, p_pred)) {
         char cTblSyn = p_table->cValue();
         return cTblSyn;
       }
@@ -994,14 +994,14 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xmodify::bTable_Contains_Pred(Card_Table* p_table,
-                                   Card_PRED* p_pred)
+bool Xmodify::bTable_ScopeContains_Pred(Card_Table* p_table,
+                                        Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   CardIter xCI(p_pred);
   while (Card_Term* p_term = (Card_Term*)xCI.pEachChild()) {
-    if (! bTable_Contains_Term(p_table,p_term))
+    if (!bTable_ScopeContains_term(p_table, p_term))
       return false;
   }
 
@@ -1011,26 +1011,30 @@ bool Xmodify::bTable_Contains_Pred(Card_Table* p_table,
 /*----------------------------------------------------------------------------*/
 /* is given <term> within this table                                          */
 /*----------------------------------------------------------------------------*/
-bool Xmodify::bTable_Contains_Term(Card_Table* p_table,
-                                   Card_Term* p_term)
+bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
+                                        Card_Term* p_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  char cTableSyn = p_table->cValue();
-
   Stz* szTerm = p_term->sz();
 
+  // parameters are contained
   if (T_bValue_IsParamOrdinal(szTerm))
     return true;
 
-  if (! T_bValue_IsTableColOrdinal(szTerm))
+  // liters are not (yet) contained
+  if (! T_bValue_IsTableColOrdinal(szTerm)) {
+    p_term->vDump();
     return false;
+  }
 
-  char cTblColSyn = E_cValue_TableColSyn(szTerm);
-  if (cTableSyn < cTblColSyn)
-    return false;
+  // is the term within scope?
+  char cTblSyn_table = p_table->cValue();
+  char cTblSyn_term = E_cValue_TableColSyn(szTerm);
+  if (cTblSyn_term <= cTblSyn_table)
+    return true;
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
