@@ -1018,17 +1018,17 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
 
   Stz* szTerm = p_term->sz();
 
-  // parameters are contained
+  // parameters are considered within scope
   if (T_bValue_IsParamOrdinal(szTerm))
     return true;
 
-  // liters are not (yet) contained
+  // literals are (not yet) considered within scope
   if (! T_bValue_IsTableColOrdinal(szTerm)) {
-    p_term->vDump();
+    //p_term->vDump();
     return false;
   }
 
-  // is the term within scope?
+  // is the table column within scope?
   char cTblSyn_table = p_table->cValue();
   char cTblSyn_term = E_cValue_TableColSyn(szTerm);
   if (cTblSyn_term <= cTblSyn_table)

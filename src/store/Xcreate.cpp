@@ -325,14 +325,13 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
 
     // - - - -
 
-    char cTblSyn = p_table->cValue();
-
     Card_Bounds* p_bounds = p_table->pSub_bounds();
-    if (! p_bounds)
+    if (! p_bounds) {
       p_bounds = new Card_Bounds;
+      p_index->vAppend(p_bounds);
+    }
 
-    p_index->vAppend(p_bounds);
-
+    char cTblSyn = p_table->cValue();
     Card_Bound* p_bound = C_pBound_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
     p_bounds->vAppend(p_bound);
 
