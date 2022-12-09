@@ -393,67 +393,6 @@ bool Xtest::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
-                                   bool bParamAllowedInBounds)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  char cTblSyn = pTable->cValue();
-
-  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-
-  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
-
-    if (T_bValue_IsStreamColOrdinal(pTerm_1->szValue()))
-      return true;
-
-    char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
-
-    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-      char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
-
-      if (cTblSyn_0 == cTblSyn && cTblSyn_1 != cTblSyn)
-        return true;
-      else
-      if (cTblSyn_1 == cTblSyn && cTblSyn_0 != cTblSyn)
-        return true;
-      else
-        return false;
-    }
-
-    if (bParamAllowedInBounds &&
-        cTblSyn_0 == cTblSyn &&
-        T_bValue_IsParamOrdinal(pTerm_1->szValue()))
-      return true;
-    if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_1->szValue()))
-      return true;
-  }
-
-  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-    char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
-
-    if (bParamAllowedInBounds &&
-        cTblSyn_1 == cTblSyn  &&
-        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
-      return true;
-    if (cTblSyn_1 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
-      return true;
-  }
-  else
-  if (T_bValue_IsStreamColOrdinal(pTerm_1->szValue())) {
-    char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
-    if (bParamAllowedInBounds &&
-        cTblSyn_0 == cTblSyn  &&
-        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
-      return true;
-    if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
-      return true;
-  }
-
-  return false;
-}
-/*----------------------------------------------------------------------------*/
 bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
                                       Card_Table* p_table,
                                       bool bParamAllowedInBounds)
@@ -466,6 +405,8 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+  p_cmpPred->vDump();
 
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
     // + term_0 is $c.n
@@ -517,7 +458,6 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
 
   NEVER_REACH
 }
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

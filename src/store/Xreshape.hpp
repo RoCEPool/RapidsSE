@@ -97,7 +97,6 @@ namespace STORE
     void vR_S60_T05_Twist_in_Becomes_filter(void);
 
     // vSeries_75_EE_operators
-    void vR_S75_T10_Morph_table_To_EEop(void);
     void vR_S75_T10_Morph_table_To_EEop_v2(void);
     void vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);

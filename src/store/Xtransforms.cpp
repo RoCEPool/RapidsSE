@@ -3356,7 +3356,7 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
     vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
            G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());
 
-    vR_S75_T10_Morph_table_To_EEop();
+    vR_S75_T10_Morph_table_To_EEop_v2();
 
     G.pDeck->vRenumberRecursive();
 
