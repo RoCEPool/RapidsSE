@@ -110,8 +110,7 @@ namespace STORE
     bool bS32_T00_Test(bool bEnabled);
     void vS32_T00_Skip(void);
     void vS32_T00_Begin(void);
-    void vS32_T10_Convert_sqyOp_not_To_notSqyOp(void);
-    void vS32_T20_Convert_rpnCalc_To_boolCalc(void);
+    void vS32_T_SubQuery_Analysis(void);
     void vS32_TZZ_End(void);
 
     // vSeries_33_To_TblColOdn

@@ -1270,35 +1270,27 @@ void Xtransforms::vS32_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
+/* SubQuery Analysis                                                          */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T10_Convert_sqyOp_not_To_notSqyOp(void)
+void Xtransforms::vS32_T_SubQuery_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
 
-  vAssert_Board_any();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Convert SqyOp Not To NotSqyOp
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(G.p_rpnCalc);
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-  vEndTransform();
-}
 
-/*----------------------------------------------------------------------------*/
-/* convert <where>//<rpnCalc> to <where>//<boolCalc>                          */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS32_T20_Convert_rpnCalc_To_boolCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Convert RpnCalc To Bool Calc
 
-  vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
-
-  vAssert_Board_any();
-
+  G_vRestart();
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
 
@@ -1317,6 +1309,7 @@ void Xtransforms::vS32_T20_Convert_rpnCalc_To_boolCalc(void)
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
   vEndTransform();
 }
 

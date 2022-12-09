@@ -274,8 +274,7 @@ void Xseries::vSeries_32_To_BoolCalc(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS32_T10_Convert_sqyOp_not_To_notSqyOp();
-    m_pTransforms->vS32_T20_Convert_rpnCalc_To_boolCalc();
+    m_pTransforms->vS32_T_SubQuery_Analysis();
   }
 
   m_pTransforms->vS32_TZZ_End();
