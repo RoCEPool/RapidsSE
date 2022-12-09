@@ -70,10 +70,6 @@ namespace STORE
                                                       // ---------
                                                       // 2.5 weeks
 
-    void vSeries_35X_Flatten_From     (bool bEnabled); //
-    void vSeries_36X_Flatten_Where    (bool bEnabled); //
-    void vSeries_37X_Flatten_Having   (bool bEnabled); //
-
     void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
