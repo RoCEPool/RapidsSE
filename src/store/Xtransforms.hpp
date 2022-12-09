@@ -147,7 +147,7 @@ namespace STORE
     bool bS36_T00_Test(bool bEnabled);
     void vS36_T00_Skip(void);
     void vS36_T00_Begin(void);
-    void vS36_T10_UpCopy_filter_pred_Into_bounds(void);
+    void vS36_T10_Derive_bounds_From_filter(void);
     void vS36_T20_Cull_UpCopied_filter_pred(void);
     void vS36_T30_Delete_Empty_filter(void);
     void vS36_T40(void);

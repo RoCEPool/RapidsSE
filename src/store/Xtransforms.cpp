@@ -1644,7 +1644,7 @@ void Xtransforms::vS36_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T10_UpCopy_filter_pred_Into_bounds(void)
+void Xtransforms::vS36_T10_Derive_bounds_From_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
