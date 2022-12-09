@@ -53,7 +53,6 @@ namespace STORE
     void vSeries_75_EE_operators      (bool bEnabled); // 1 day
 //  void vSeries_79_Add_Partitioning  (bool bEnabled); //
     void vSeries_80_Index_Scan        (bool bEnabled); // 1 day
-    void vSeries_85_Cross_Join        (bool bEnabled); // 1 day
     void vSeries_90_Stream_Ordering   (bool bEnabled); // 1 day
     void vSeries_92_Ordered_Aggreg    (bool bEnabled); // 0.5 day
 //  void vSeries_94_Simplify_Group    (bool bEnabled); // 0.5 day

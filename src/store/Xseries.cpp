@@ -89,7 +89,6 @@ void Xseries::vTransformSeries(void)
 
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_60_Index_Join                      (C_DISABLED);
-  vSeries_85_Cross_Join                      (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering                 (C_DISABLED);
@@ -544,32 +543,6 @@ void Xseries::vSeries_80_Index_Scan(bool bEnabled)
 
   vEndSeries(BK_SUBPIPE, 0);
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_85_Cross_Join(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS85_T00_Test(bEnabled)) {
-    m_pTransforms->vS85_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS85_T00_Begin();
-
-  m_pTransforms->vS85_T10_Transmute_All_table();
-  m_pTransforms->vS85_T20_Add_index_ForAll_crossJoin();
-  m_pTransforms->vS85_T30_Add_bounds_ForAll_crossJoin();
-
-  m_pTransforms->vS85_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

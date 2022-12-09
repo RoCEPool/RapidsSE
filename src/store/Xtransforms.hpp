@@ -213,15 +213,6 @@ namespace STORE
     void vS80_TF7_Morph_scan_To_indexScan(void);
     void vS80_TZZ_End(void);
 
-    // vSeries_85_Cross_Join
-    bool bS85_T00_Test(bool bEnabled);
-    void vS85_T00_Skip(void);
-    void vS85_T00_Begin(void);
-    void vS85_T10_Transmute_All_table(void);
-    void vS85_T20_Add_index_ForAll_crossJoin(void);
-    void vS85_T30_Add_bounds_ForAll_crossJoin(void);
-    void vS85_TZZ_End(void);
-
     // vSeries_90_Stream_Ordering
     bool bS90_T00_Test(bool bEnabled);
     void vS90_T00_Skip(void);
