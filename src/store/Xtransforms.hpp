@@ -72,8 +72,6 @@ namespace STORE
     void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);
     void vS10_T_Condense_Info(void);
-    void vS10_T80_Delete_Redundant_stages(void);
-    void vS10_T90_Hide_Ignorable_stages(void);
     void vS10_TZZ_End(void);
 
     // vSeries_20_Table_Analysis
@@ -134,9 +132,6 @@ namespace STORE
     void vS36_T00_Skip(void);
     void vS36_T00_Begin(void);
     void vS36_T10_Derive_bounds_From_filter(void);
-    void vS36_T20_Cull_UpCopied_filter_pred(void);
-    void vS36_T30_Delete_Empty_filter(void);
-    void vS36_T40(void);
     void vS36_TZZ_End(void);
 
     // vSeries_40_Flatten_Query
@@ -231,12 +226,7 @@ namespace STORE
     bool bSZ0_T00_Test(bool bEnabled);
     void vSZ0_T00_Skip(void);
     void vSZ0_T00_Begin(void);
-    void vSZ0_T10_Restore_stmColOdn_from_tblColOdn(void);
-    void vSZ0_T20_Reinstate_stages(void);
-    void vSZ0_T20_Reinstate_stagesV2(void);
     void vSZ0_T20_Reinstate_stagesV3(void);
-    void vSZ0_T30_Reinstate_combined(void);
-    void vSZ0_T40_Reinstate_next(void);
     void vSZ0_TZZ_End(void);
 
   private:

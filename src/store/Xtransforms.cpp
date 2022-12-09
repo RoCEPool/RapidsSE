@@ -685,51 +685,6 @@ void Xtransforms::vS10_T_Condense_Info(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* linearize board by deleting all redundant <stage>'s                        */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T80_Delete_Redundant_stages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "linearize board by deleting all duplicate <stage>'s"_Stz);
-
-  vAssert_Board_any();
-
-  //G.pDeck->vDump(0,(Stz*)(__func__));
-
-  Card_Stage* p_stage_PRIOR = nullptr;
-
-  while (G_bEachMain(CK_STAGE)) {
-    if (! T_bStage_IsRedundant(G.p_stage,p_stage_PRIOR))   {
-      p_stage_PRIOR = G.p_stage;
-      continue;
-    }
-
-    vR_S10_T80_Delete_Redundant_stage();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* hide ignorable <stage>'s                                                   */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_T90_Hide_Ignorable_stages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "hide ignorable <stage>'s"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMain(CK_STAGE)) {
-    vR_S10_T90_Hide_Ignorable_stage();
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vS10_TZZ_End(void)
@@ -1590,44 +1545,6 @@ void Xtransforms::vS36_T10_Derive_bounds_From_filter(void)
       bParamAllowedInBounds = true;
 
     C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter,bParamAllowedInBounds);
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete <table>/<filter>//<pred> that are now <table>/<bounds>//<pred>      */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T20_Cull_UpCopied_filter_pred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    G.p_boolCalc = G.p_filter->pSub_boolCalc();
-
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete any <table>/<filter> which is effectively empty                     */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS36_T30_Delete_Empty_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete any <table>/<filter> which is effectively empty"_Stz);
-
-  vAssert_Board_any();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    vR_S36_T30_Delete_Empty_filter();
   }
 
   vEndTransform();
@@ -4411,61 +4328,6 @@ void Xtransforms::vSZ0_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSZ0_T20_Reinstate_stages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "reinstate stages"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
-    vR_SZ0_T20_Reinstate_stages();
-  }
-
-  i8 i_Stage = 1;
-  G_vRestart();
-  while (G_bEachMain(CK_STAGE))
-    G.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* reinstate stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vSZ0_T20_Reinstate_stagesV2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "reinstate stages"_Stz);
-
-  vAssert_Board_mqA();
-
-  G.e_Level = AL_PARTITION;
-
-//  G.p_stage = new Card_Stage;
-//
-//  G.p_topology = new Card_Topology(YG_ALL_PARTITIONS);
-//  G.p_stage->vAppend(G.p_topology);
-//  G.pDeck->vPush(G.p_stage);
-
-  G.p_PriorToMain = nullptr;
-  while (G_bEachMain())  {
-    vR_SZ0_T20_Reinstate_stagesV2();
-  }
-
-  i8 i_Stage = 1;
-  G_vRestart();
-  while (G_bEachMain(CK_STAGE))
-    G.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* reinstate stages                                                           */
-/*----------------------------------------------------------------------------*/
 void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -4480,53 +4342,6 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
   vPrintBoard(__LINE__);
 
   vR_SZ0_T20_Reinstate_stagesV3();
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vSZ0_T30_Reinstate_combined(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "((replace with an explanation))"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMain()) {
-    G_vSubsequentToMain();
-    if (T_bCombined_Reinstate(G.e_MainCard, G.e_SubsequentToMain)) {
-      vR_SZ0_T30_Reinstate_combined();
-      G_vSkipNextMain();
-    }
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vSZ0_T40_Reinstate_next(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "((replace with an explanation))"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMain(CK_STAGE)) {
-    if (! G.i_MainCard)
-      continue;
-
-    G.p_MainCard->vDump();
-
-    vR_SZ0_T40_Reinstate_next();
-  }
-
-  vR_SZ0_T40_Reinstate_next_b();
 
   vEndTransform();
 }
