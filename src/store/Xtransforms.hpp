@@ -71,13 +71,7 @@ namespace STORE
     bool bS10_T00_Test(bool bEnabled);
     void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);
-    void vS10_Condense_Info(void);
-    void vS10_T10_Delete_All_absJoin(void);
-    void vS10_T20_Delete_All_combined(void);
-    void vS10_T30_Delete_All_send(void);
-    void vS10_T40_Delete_All_stage(void);
-    void vS10_T50_Cull_scan_Leaving_table(void);
-    void vS10_T60_Add_All_level(void);
+    void vS10_T_Condense_Info(void);
     void vS10_T80_Delete_Redundant_stages(void);
     void vS10_T90_Hide_Ignorable_stages(void);
     void vS10_TZZ_End(void);

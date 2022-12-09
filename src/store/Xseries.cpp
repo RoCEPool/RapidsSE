@@ -126,7 +126,7 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS10_Condense_Info();
+    m_pTransforms->vS10_T_Condense_Info();
   }
 
   m_pTransforms->vS10_TZZ_End();

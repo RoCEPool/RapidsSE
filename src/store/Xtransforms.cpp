@@ -615,7 +615,7 @@ void Xtransforms::vS10_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS10_Condense_Info(void)
+void Xtransforms::vS10_T_Condense_Info(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -623,39 +623,39 @@ void Xtransforms::vS10_Condense_Info(void)
 
   vAssert_Board_any();
 
-  // Delete All AbsJoin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All AbsJoin
 
   while (G_bEachMain(CK_ABSJOIN)) {
     G_vRemoveDeleteMain(CK_ABSJOIN);
   }
 
-  // Delete All Combined
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Combined
 
   G_vRestart();
   while (G_bEachMain(CK_COMBINED)) {
     G_vRemoveDeleteMain(CK_COMBINED);
   }
 
-  // Delete All Send
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Send
 
   G_vRestart();
   while (G_bEachMain(CK_SEND)) {
     G_vRemoveDeleteMain(CK_SEND);
   }
 
-  // Delete All Stage
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Stage
 
   G_vRestart();
   while (G_bEachMain(CK_STAGE)) {
     G_vRemoveDeleteMain(CK_STAGE);
   }
 
-  // Cull Scan Leaving Table
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Cull Scan Leaving Table
 
   G_vRestart();
   while (G_bEachMain(CK_SCAN)) {
@@ -663,8 +663,8 @@ void Xtransforms::vS10_Condense_Info(void)
     DELETE_CARD(G.p_scan);
   }
 
-  // Add All Level
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Add All Level
 
   G_vRestart();
   G.e_Level = AL_PARTITION;
