@@ -788,8 +788,6 @@ void Xtransforms::vS20_T_Table_Analysis(void)
 
   vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
 
-  vAssert_Board_any();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
 
@@ -864,13 +862,14 @@ void Xtransforms::vS24_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T10_Append_indexList_UnderAll_table(void)
+void Xtransforms::vS24_T_Index_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "move @c predicates to a filter under table"_Stz);
 
-  vAssert_Board_any();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Append Index List Under All Table
 
   while (G_bEachMain(CK_TABLE)) {
     G.p_tableNm = G.p_table->pSub_tableNm();
@@ -881,19 +880,10 @@ void Xtransforms::vS24_T10_Append_indexList_UnderAll_table(void)
     G_vAppendChild(CK_TABLE,CK_INDEXLIST);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Affix TblColOdn To All IdxCol
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T20_Affix_tblColOdn_ToAll_idxCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
     CardIter xCI(G.p_indexList);

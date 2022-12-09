@@ -216,8 +216,7 @@ void Xseries::vSeries_24_Index_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS24_T10_Append_indexList_UnderAll_table();
-    m_pTransforms->vS24_T20_Affix_tblColOdn_ToAll_idxCol();
+    m_pTransforms->vS24_T_Index_Analysis();
   }
 
   m_pTransforms->vS24_TZZ_End();

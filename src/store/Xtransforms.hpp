@@ -87,8 +87,7 @@ namespace STORE
     bool bS24_T00_Test(bool bEnabled);
     void vS24_T00_Skip(void);
     void vS24_T00_Begin(void);
-    void vS24_T10_Append_indexList_UnderAll_table(void);
-    void vS24_T20_Affix_tblColOdn_ToAll_idxCol(void);
+    void vS24_T_Index_Analysis(void);
     void vS24_TZZ_End(void);
 
     // vSeries_22_Stream_Analysis
