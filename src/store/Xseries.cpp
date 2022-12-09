@@ -156,8 +156,7 @@ void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS20_T10_Affix_tableSyn_ToAll_table();
-    m_pTransforms->vS20_T20_Produce_tablePtn_UnderAll_table();
+    m_pTransforms->vS20_T_Table_Analysis();
   }
 
   m_pTransforms->vS20_TZZ_End();

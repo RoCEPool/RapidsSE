@@ -780,9 +780,9 @@ void Xtransforms::vS20_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a <tableSyn> to all <table>'s                                          */
+/* Table Analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS20_T10_Affix_tableSyn_ToAll_table(void)
+void Xtransforms::vS20_T_Table_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -790,23 +790,17 @@ void Xtransforms::vS20_T10_Affix_tableSyn_ToAll_table(void)
 
   vAssert_Board_any();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Affix Table Syntax To All Table
+
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     M_vTable_Set_Syn(G.p_table);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Table Partition Under All Table
 
-/*----------------------------------------------------------------------------*/
-/* add a <tablePtn> under every <table>                                       */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS20_T20_Produce_tablePtn_UnderAll_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "add a <tablePtn> under every <table>"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     G.p_tablePtn = C_pProduce_tablePtn_Of_table(G.p_table);

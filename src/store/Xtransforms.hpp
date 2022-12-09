@@ -80,8 +80,7 @@ namespace STORE
     bool bS20_T00_Test(bool bEnabled);
     void vS20_T00_Skip(void);
     void vS20_T00_Begin(void);
-    void vS20_T10_Affix_tableSyn_ToAll_table(void);
-    void vS20_T20_Produce_tablePtn_UnderAll_table(void);
+    void vS20_T_Table_Analysis(void);
     void vS20_TZZ_End(void);
 
     // vSeries_24_Index_Analysis
