@@ -63,18 +63,11 @@ namespace STORE
     void vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
     void vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
 
-    // vSeries_32_To_BoolCalc
-    void vR_S32_T20_Convert_where_rpnCalc_To_boolCalc(void);
-
     // vSeries_33_To_TblColOdn
     void vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void);
 
-    // vSeries_34_Predicate_Pullup
-
     // vSeries_36_Bound_Analysis
     void vR_S36_T30_Delete_Empty_filter(void);
-
-    // vSeries_40_Flatten_Query
 
     // vSeries_50_Join_Ordering
     void vR_S50_T30_Compute_coPtnJoinList(void);
@@ -93,26 +86,12 @@ namespace STORE
     void vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
-    // vSeries_80_Index_Scan
-
-    // vSeries_85_Cross_Join
-
-    // vSeries_90_Stream_Ordering
-
     // vSeries_A0_Filter_Refinement
     void vR_SA0_T10_Individuate_indexJoin_filter_b(void);
     void vR_SA0_T10c_Individuate_crossJoin_filter(void);
 
     // vSeries_Z0_Restate_Pipeline
-    void vR_SZ0_T20_Reinstate_stages(void);
-    void vR_SZ0_T20_Reinstate_stagesV2(void);
     void vR_SZ0_T20_Reinstate_stagesV3(void);
-    void vR_SZ0_T30_Reinstate_combined(void);
-    void vR_SZ0_T40_Reinstate_next(void);
-    void vR_SZ0_T40_Reinstate_next_b(void);
-
-    void vRR_Convert_All_TblColOrd_to_StmColOrd(void);
-    void vRR_Convert_All_StmColOrd_to_TblColOrd(void);
 
     // must be last
     Footer m_xFooter;
