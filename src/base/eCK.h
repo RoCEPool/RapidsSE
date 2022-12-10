@@ -66,7 +66,6 @@ enum eCK // card kind
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
   /* */ CK_INDEXNM,
-  /* */ CK_INDEXPRED,
   /* */ CK_INDEXSCAN,
 
   /* */ CK_JOINORDER,
@@ -234,7 +233,6 @@ static Stz* aCK[]
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
-  /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
@@ -401,7 +399,6 @@ static Stz* aCK_short[]
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST
   /* */ "indexNm"_Stz,         // CK_INDEXNM
-  /* */ "indexPred"_Stz,       // CK_INDEXPRED
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
@@ -569,7 +566,6 @@ static Stz* aCK_notation[]
     /* */ "iJ"_Stz,           // CK_INDEXJOIN
     /* */ "iL"_Stz,           // CK_INDEXLIST
     /* */ "iN"_Stz,           // CK_INDEXNM
-    /* */ "iP"_Stz,           // CK_INDEXPRED
     /* */ "iS"_Stz,           // CK_INDEXSCAN
 
     /* */ "jO"_Stz,           // CK_JOINORDER

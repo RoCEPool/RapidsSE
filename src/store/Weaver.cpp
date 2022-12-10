@@ -836,24 +836,7 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
     return;
   }
 
-  Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
-
-  if (! pCard_IndexPred) {
-    szRpnExpr->vConcat(" <<no: indexPred>>"_Stz);
-    return;
-  }
-
-  i8 nSubs = pCard_IndexPred->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pCard_IndexPred->pGet(i_Sub);
-
-    if (! pSubCard->bIsCard(CK_TERM))
-      continue;
-
-    Card_Term* p_term = _pCard_Term(pSubCard);
-    szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
-  }
-
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/

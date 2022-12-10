@@ -73,7 +73,6 @@ namespace STORE
   class Card_IndexJoin;
   class Card_IndexList;
   class Card_IndexNm;
-  class Card_IndexPred;
   class Card_IndexScan;
 
   class Card_JoinOrderSeq;
