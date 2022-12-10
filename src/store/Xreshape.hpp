@@ -22,6 +22,11 @@ namespace STORE
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_where_BaseOn_foldExpr(void);
+    void R_vUTE_Choose_index_For_crossJoin(void);
+    void R_vUTE_Choose_index_For_indexJoin(void);
+    void R_vUTE_Choose_index_For_indexScan(void);
+    void R_vUTE_Choose_index_For_keyExists(void);
+    void R_vUTE_Choose_index_For_keyNotExists(void);
     void R_vUTE_Derive_foldElist_From_project_stream(void);
     void R_vUTE_Derive_stmOrdList_For_gbyAgg(void);
     void R_vUTE_Derive_stmOrdList_For_project(void);
@@ -92,9 +97,6 @@ namespace STORE
     void vR_S50_T94_Estimate_network(void);
     void vR_S50_T96_Estimate_joinOrder(void);
     void vR_S50_T98_Extract_joinOrderSeq(void);
-
-    // vSeries_60_Index_Join
-    void vR_S60_T05_Twist_in_Becomes_filter(void);
 
     // vSeries_75_EE_operators
     void vR_S75_T10_Morph_table_To_EEop_v2(void);

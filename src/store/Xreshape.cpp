@@ -193,6 +193,46 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Choose_index_For_crossJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Choose_index_For_indexJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Choose_index_For_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Choose_index_For_keyExists(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Choose_index_For_keyNotExists(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -2148,52 +2188,6 @@ void Xreshape::vR_S50_T98_Extract_joinOrderSeq(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                      vSeries_60_Index_Join */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S60_T05_Twist_in_Becomes_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  RASSERT(G.p_roPred);
-
-  char cTblSyn = D_cPRED_TableSyn_First(G.p_roPred);
-
-  if (' ' == cTblSyn)
-    return;
-
-  s32 sTblSyn;
-  sTblSyn.vSprint("%c"_Stz,cTblSyn);
-  if (! G_bLocateCard(CK_TABLE,sTblSyn,C_UNKNOWN))
-    return;
-
-  vDebugPoint();
-
-  G.p_table = _pCard_Table(G.p_Located);
-  G.p_filter = G.p_table->pSub_filter();
-  if (! G.p_filter) {
-    G_vNewMember(CK_FILTER);
-    G.p_table->vAppend(G.p_filter);
-    G_vNewMember(CK_BOOLCALC);
-    G.p_filter->vAppend(G.p_boolCalc);
-  }
-
-  Card* p_copy = G.p_roPred->pDupCardAndSubCards();
-  p_copy->vCard(CK_CMPPRED);
-  p_copy->vValue("=="_Stz);
-
-  G.p_boolCalc->vAppend(p_copy);
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 /*                                                    vSeries_75_EE_operators */
 /*============================================================================*/
 
@@ -2221,6 +2215,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   }
   else
   if (G.p_keyExists) {
+    R_vUTE_Choose_index_For_keyExists();
+
     G.p_table->vRemoveSubCard(G.p_keyExists);
 
     G.p_keyExists->vTransferChildren(G.p_table);
@@ -2233,6 +2229,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   }
   else
   if (G.p_keyNotExists) {
+    R_vUTE_Choose_index_For_keyNotExists();
+
     G.p_table->vRemoveSubCard(G.p_keyNotExists);
 
     G.p_keyNotExists->vTransferChildren(G.p_table);
@@ -2245,6 +2243,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   }
   else
   if (! G.p_bounds) {
+    R_vUTE_Choose_index_For_crossJoin();
 
     G.p_crossJoin = new Card_CrossJoin;
     G.p_crossJoin->vTransferChildren(G.p_table);
@@ -2262,7 +2261,10 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     G.p_bounds->vAppend(G.p_term);
   }
   else {
+    R_vUTE_Choose_index_For_indexJoin();
+
     G_vNewMember(CK_INDEXJOIN);
+
     G.p_indexJoin->vTransferChildren(G.p_table);
 
     G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
