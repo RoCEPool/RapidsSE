@@ -403,6 +403,9 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
 
   Card_Index* p_index = p_table->pSub_index();
 
+  if (! p_index)
+    return false;
+
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 

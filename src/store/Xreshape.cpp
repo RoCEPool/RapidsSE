@@ -2150,6 +2150,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
   vReshape(__func__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SCAN
   if (0 == G.i_MainCard)  {
     G.p_scan = new Card_Scan;
     G.p_scan->vTransferChildren(G.p_table);
@@ -2163,8 +2165,9 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
       DELETE_CARD(G.p_indexJoin);
     }
   }
-  else
-  if (G.p_keyExists) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // KEYEXISTS
+  else if (G.p_keyExists) {
     R_vUTE_Choose_index_For_keyExists();
 
     G.p_table->vRemoveSubCard(G.p_keyExists);
@@ -2177,8 +2180,9 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     G.p_keyExists->vRemoveSubCard(G.p_index);
     G.p_keyExists->vAppend(G.p_index);
   }
-  else
-  if (G.p_keyNotExists) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // KEYNOTEXISTS
+  else if (G.p_keyNotExists) {
     R_vUTE_Choose_index_For_keyNotExists();
 
     G.p_table->vRemoveSubCard(G.p_keyNotExists);
@@ -2191,8 +2195,9 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     G.p_keyNotExists->vRemoveSubCard(G.p_index);
     G.p_keyNotExists->vAppend(G.p_index);
   }
-  else
-  if (! G.p_bounds) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CROSSJOIN
+  else if (! G.p_bounds) {
     R_vUTE_Choose_index_For_crossJoin();
 
     G.p_crossJoin = new Card_CrossJoin;
@@ -2204,12 +2209,17 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     G_vNewMember(CK_BOUNDS);
     G.p_crossJoin->vAppend(G.p_bounds);
 
+    G_vNewMember(CK_XBOUND);
+    G.p_bounds->vAppend(G.p_xBound);
+
     G_vNewMember(CK_TERM,"bound"_Stz);
-    G.p_bounds->vAppend(G.p_term);
+    G.p_xBound->vAppend(G.p_term);
 
     G_vNewMember(CK_TERM,"$I1"_Stz);
-    G.p_bounds->vAppend(G.p_term);
+    G.p_xBound->vAppend(G.p_term);
   }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INDEXJOIN
   else {
     R_vUTE_Choose_index_For_indexJoin();
 

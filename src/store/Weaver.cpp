@@ -669,39 +669,21 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Bounds* pCard_joinPred = pCard_CrossJoin->pSub_bounds();
-  if (pCard_joinPred) {
-    i8 nSubs = pCard_joinPred->nChildCards();
-    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card* pSubCard = pCard_joinPred->pGet(i_Sub);
+  Card_Bounds* pCard_bounds = pCard_CrossJoin->pSub_bounds();
+  RASSERT(pCard_bounds);
+  Card_XBound* pCard_xBound = pCard_bounds->pSub_xBound();
+  RASSERT(pCard_xBound);
 
-      if (! pSubCard->bIsCard(CK_TERM))
-        continue;
+  i8 nSubs = pCard_xBound->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubs; i_Child++) {
+    Card* pChildCard = pCard_xBound->pGet(i_Child);
 
-      Card_Term* p_term = _pCard_Term(pSubCard);
-      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
-    }
-    return;
-  }
-
-  Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_CrossJoin->pFindSubCard(CK_INDEXPRED));
-
-  if (! pCard_IndexPred) {
-    szRpnExpr->vConcat(" <<no: indexPred>>"_Stz);
-    return;
-  }
-
-  i8 nSubs = pCard_IndexPred->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pCard_IndexPred->pGet(i_Sub);
-
-    if (! pSubCard->bIsCard(CK_TERM))
+    if (! pChildCard->bIsCard(CK_TERM))
       continue;
 
-    Card_Term* p_term = _pCard_Term(pSubCard);
+    Card_Term* p_term = _pCard_Term(pChildCard);
     szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
