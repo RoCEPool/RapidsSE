@@ -1483,93 +1483,83 @@ function askDiskPaths() {
   echo "to separate mounted disks. All paths that are entered will be applied to all nodes in the cluster."
   echo ""
 
-  for nodeName in "${nodeNames[@]}"
+  # Get the first path
+  local line
+  local re="^( |[[:space:]])+"
+  declare -a diskroots=()
+  local defValue=0
+
+  while true
   do
-    # Get the first path
-    local line
-    local re="^( |[[:space:]])+"
-    declare -a diskroots=()
-    local defValue=0
+    echo -n "Enter a first filesystem path and press return [default: /opt/rapidsse] : "
+    IFS=$'\n' read -r line
 
-    while true
-    do
-      echo -n "Enter a first filesystem path and press return [default: /opt/rapidsse] : "
-      IFS=$'\n' read -r line
-
-      if [ -z "${line:-}" ]; then
-        # Accepting the default value
-        defValue=1
-        diskroots+=("/opt/rapidsse")
-        break
-      fi
-
-      if [[ ${line} = *[[:space:]]* ]]; then
-        echo "Invalid input: Path cannot contain whitespace."
-        continue
-      fi
-
-      if [[ "${line:0:1}" != "/" ]]; then
-        echo "Invalid input: Path cannot be a relative path."
-        continue
-      fi
-
-      # Paths cannot contain quotes - it's just too difficult for all involved
-      if [[ "${line}" =~ [\'\"] ]]; then
-        echo "Invalid input: Path cannot contain single or double quotes."
-        continue
-      fi
-
-      # Warn against whitespace in directory path
-      if [[ "${line}" = *[[:space:]]* ]]; then
-        echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
-      fi
-
-      diskroots+=("${line}")
+    if [ -z "${line:-}" ]; then
+      # Accepting the default value
+      defValue=1
+      diskroots+=("/opt/rapidsse")
       break
-    done
-
-    while true
-    do
-      if [ ${defValue} -eq 1 ]; then
-        break
-      fi
-
-      echo -n "Enter another disk path for ${nodeName}, or enter an empty line to finish : "
-      IFS=$'\n' read -r line
-
-      if [[ ${line} =~ ${re} ]]; then
-        echo "Invalid input: Path cannot start with whitespace."
-        continue
-      fi
-
-      if [ -z "${line:-}" ]; then
-        break
-      fi
-
-      if [[ "${line:0:1}" != "/" ]]; then
-        echo "Invalid input: Path cannot be a relative path."
-        continue
-      fi
-
-      # Paths cannot contain quotes - it's just too difficult for all involved
-      if [[ "${line}" =~ [\'\"] ]]; then
-        echo "Invalid input: Path cannot contain single or double quotes."
-        continue
-      fi
-
-      # Warn against whitespace in directory path
-      if [[ "${line}" = *[[:space:]]* ]]; then
-        echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
-      fi
-
-      diskroots+=("${line}")
-    done
-
-    if [ ${DEBUG} -eq 1 ]; then
-      debugPrint "\nGot the following disk paths for ${nodeName}:"
-      printIndentArray 2 "${diskroots[@]}"
     fi
 
+    if [[ ${line} =~ ${re} ]]; then
+        echo "Invalid input: Path cannot start with whitespace."
+      continue
+    fi
+
+    if [[ "${line:0:1}" != "/" ]]; then
+      echo "Invalid input: Path cannot be a relative path."
+      continue
+    fi
+
+    # Paths cannot contain quotes - it's just too difficult for all involved
+    if [[ "${line}" =~ [\'\"] ]]; then
+      echo "Invalid input: Path cannot contain single or double quotes."
+      continue
+    fi
+
+    diskroots+=("${line}")
+    break
+  done
+
+  while true
+  do
+    if [ ${defValue} -eq 1 ]; then
+      break
+    fi
+
+    echo -n "Enter another disk path, or enter an empty line to finish : "
+    IFS=$'\n' read -r line
+
+    if [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: Path cannot start with whitespace."
+      continue
+    fi
+
+    if [ -z "${line:-}" ]; then
+      break
+    fi
+
+    if [[ "${line:0:1}" != "/" ]]; then
+      echo "Invalid input: Path cannot be a relative path."
+      continue
+    fi
+
+    # Paths cannot contain quotes - it's just too difficult for all involved
+    if [[ "${line}" =~ [\'\"] ]]; then
+      echo "Invalid input: Path cannot contain single or double quotes."
+      continue
+    fi
+
+    diskroots+=("${line}")
+  done
+
+  if [ ${DEBUG} -eq 1 ]; then
+    debugPrint "\nGot the following disk paths:"
+    printIndentArray 2 "${diskroots[@]}"
+  fi
+
+  for nodeName in "${nodeNames[@]}"
+  do
     singleNodeCfgsSetValues "${NODE_CFG_DISK_KEY}" "${nodeName}" "${diskroots[@]}"
   done
 }
@@ -2130,7 +2120,7 @@ function doNodeInstall() {
   local installDir
   local hostname
   local cmd
-  local -a diskPaths
+  local diskPaths
 
   installDir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
   hostname="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
@@ -2186,9 +2176,8 @@ function doNodeInstall() {
     mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   fi
 
-  # diskPaths above is a string. Let's turn it into an array based on spaces.
-  declare -a diskpathsArray=()
-  IFS=' ' read -r -a diskpathsArray <<< "${diskPaths}"
+  # diskPaths above is a string. Let's turn it into an array based on : delimiter
+  IFS=: read -r -d '' -a diskpathsArray < <(printf '%s:\0' "$diskPaths")
 
   # If the disk paths are given, check if they exist and are writable.
   if [ ${#diskpathsArray[@]} -ne 0 ]; then

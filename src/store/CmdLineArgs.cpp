@@ -363,7 +363,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       /* Note: This is the path to a disk root directory. Under this directory,
        * we search for or add the dir/saveFile that is used during unload/reload.
        */
-      m_xSysArgs.m_sDiskRootDir[i_DiskPath] = (Stz*)argv[++i_Arg];
+      Stz* szPath = argv[++i_Arg];
+      m_xSysArgs.m_sDiskRootDir[i_DiskPath].vConcat(szPath);
+      szPath = argv[++i_Arg];
+      while( (i_Arg < argc) &&
+             (! szPath->bContains("--"_Stz))
+        ) {
+        m_xSysArgs.m_sDiskRootDir[i_DiskPath].vConcat(" "_Stz);
+        m_xSysArgs.m_sDiskRootDir[i_DiskPath].vConcat(szPath);
+        szPath = argv[++i_Arg];
+      }
+      --i_Arg;
+
       if( ! Dir::bExists(m_xSysArgs.m_sDiskRootDir[i_DiskPath]))
       {
         vTrace("Disk directory %s does not exist!!\n"_Stz,
