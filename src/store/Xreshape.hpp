@@ -59,16 +59,6 @@ namespace STORE
     void R_vUTE_Unproject_foldExpr_After_where(void);
     void R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);
 
-    // vSeries_10_Condense_Info
-    void vR_S10_T80_Delete_Redundant_stage(void);
-    void vR_S10_T90_Hide_Ignorable_stage(void);
-
-    // vSeries_20_Table_Analysis
-
-    // vSeries_22_Stream_Analysis
-
-    // vSeries_24_Index_Analysis
-
     // vSeries_26_SubQuery_Analysis
     void vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
     void vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);

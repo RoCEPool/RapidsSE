@@ -1534,46 +1534,6 @@ void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   vSeries_10_Condense_Info */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S10_T80_Delete_Redundant_stage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  // todo: remove? along with xt function as it is unused
-
-  G_vRemoveDeleteMain(CK_STAGE);
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S10_T90_Hide_Ignorable_stage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  // todo: remove? along with xt function as it is unused
-
-  if (! T_bStage_IsIgnorable(G.p_stage))
-    return;
-
-  G.p_stage->Y_vSet(P_HideHeat);
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 /*                                               vSeries_26_SubQuery_Analysis */
 /*============================================================================*/
 
