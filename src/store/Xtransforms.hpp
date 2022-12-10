@@ -101,7 +101,6 @@ namespace STORE
     void vS26_T00_Begin(void);
     void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
     void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
-    void vS26_T30(void);
     void vS26_TZZ_End(void);
 
     // vSeries_32_To_BoolCalc
@@ -181,19 +180,7 @@ namespace STORE
     bool bS80_T00_Test(bool bEnabled);
     void vS80_T00_Skip(void);
     void vS80_T00_Begin(void);
-
-    void vS80_T10_filter_For_scan(void);
-    void vS80_T20_bounds_For_scan(void);
-    void vS80_T20_bounds_For_scan_v2(void);
     void vS80_T30_Morph_scan_To_indexScan(void);
-
-    void vS80_TF1_Produce_Scratch_indexList_Under_scan(void);
-    void vS80_TF2_Affix_idxColOdn_ToAll_idxCol(void);
-    void vS80_TF3_Mark_ULRangeOf_scan_filter_cmpPred(void);
-    void vS80_TF4_Mark_IndexMatchOf_scan_filter_terms(void);
-    void vS80_TF5_Add_scan_bounds_ByCopyingMarked_filter_cmpPred(void);
-    void vS80_TF6_Cull_Marked_filter_cmpPred(void);
-    void vS80_TF7_Morph_scan_To_indexScan(void);
     void vS80_TZZ_End(void);
 
     // vSeries_90_Stream_Ordering
