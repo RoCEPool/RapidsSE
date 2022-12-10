@@ -65,7 +65,7 @@ namespace STORE
     bool bOT_Seq_Join_Order(void);
     void vOT_Seq_Join_Order(void);
 
-    //void vAdd_columnRef_Under_term(void);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // vSeries_10_Condense_Info
     bool bS10_T00_Test(bool bEnabled);
@@ -172,10 +172,8 @@ namespace STORE
     bool bS75_T00_Test(bool bEnabled);
     void vS75_T00_Skip(void);
     void vS75_T00_Begin(void);
-    void vS75_T05_ChooseIndexes(void);
     void vS75_T10_Morph_table_To_EEop(void);
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
-    void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
     void vS75_TZZ_End(void);
 
@@ -229,17 +227,15 @@ namespace STORE
     void vSZ0_T20_Reinstate_stagesV3(void);
     void vSZ0_TZZ_End(void);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
 
     void vAssert_Board_any(void);
     void vAssert_Board_mqA(void);
     void vAssert_Board_sqB(void);
 
-
     void vST00_Begin(void);
     void vSTZZ_End(void);
-
-    void vSH_DeleteMain(eCK eCard);
 
     Footer* aFooter(void);
   };

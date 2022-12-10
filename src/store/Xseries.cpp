@@ -416,9 +416,6 @@ void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
   //
   m_pTransforms->vS50_T00_Extract_tableList_From_queryBoard();
 
-  // add <term/<columnRef> to all ordinal <term>
-  //m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
-
   m_pTransforms->vS50_T10_Extract_joinPredList();
   m_pTransforms->vS50_T20_Compute_coPtnPredList();
   m_pTransforms->vS50_T30_Compute_coPtnJoinList();
@@ -434,7 +431,6 @@ void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
   m_pTransforms->vS50_T94_Estimate_network();
   m_pTransforms->vS50_T96_Estimate_joinOrder();
   m_pTransforms->vS50_T98_Extract_joinOrderSeq();
-
 
   m_pTransforms->vS50_TZZ_End();
 

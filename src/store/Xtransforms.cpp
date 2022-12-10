@@ -3313,28 +3313,6 @@ void Xtransforms::vS75_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS75_T05_ChooseIndexes()
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_TABLE,CK_INDEX)) {
-    G.p_index->Y_vSet(P_ChosenIndex);
-  }
-
-  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_INDEX)) {
-    G.p_index->Y_vSet(P_ChosenIndex);
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
-/*----------------------------------------------------------------------------*/
 void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -3412,24 +3390,6 @@ void Xtransforms::vS75_T20_Morph_keyExists_filter_To_constraint(void)
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
     G.p_filter->vCard(CK_CONSTRAINT);
-  }
-
-  vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vTransform(__func__, "((description))"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (G_bEachMainWithSub(CK_KEYEXISTS,CK_STREAM)) {
-    vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream();
   }
 
   vEndTransform();
@@ -4421,20 +4381,6 @@ void Xtransforms::vSTZZ_End(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vSH_DeleteMain(eCK eCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (G_bEachMain(eCard)) {
-    G_vRemoveDeleteMain(eCard);
-  }
-
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
