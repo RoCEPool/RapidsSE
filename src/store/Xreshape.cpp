@@ -196,6 +196,9 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
 void Xreshape::R_vUTE_Choose_index_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_index->Y_vSet(P_ChosenIndex);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,6 +207,9 @@ void Xreshape::R_vUTE_Choose_index_For_crossJoin(void)
 void Xreshape::R_vUTE_Choose_index_For_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_index->Y_vSet(P_ChosenIndex);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +218,9 @@ void Xreshape::R_vUTE_Choose_index_For_indexJoin(void)
 void Xreshape::R_vUTE_Choose_index_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_index->Y_vSet(P_ChosenIndex);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,6 +229,9 @@ void Xreshape::R_vUTE_Choose_index_For_indexScan(void)
 void Xreshape::R_vUTE_Choose_index_For_keyExists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_index->Y_vSet(P_ChosenIndex);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,6 +240,9 @@ void Xreshape::R_vUTE_Choose_index_For_keyExists(void)
 void Xreshape::R_vUTE_Choose_index_For_keyNotExists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_index->Y_vSet(P_ChosenIndex);
+
 }
 
 /*----------------------------------------------------------------------------*/

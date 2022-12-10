@@ -457,7 +457,7 @@ void Xseries::vSeries_75_EE_operators(bool bEnabled)
 
   m_pTransforms->vS75_T00_Begin();
 
-  m_pTransforms->vS75_T05_ChooseIndexes();
+  //m_pTransforms->vS75_T05_ChooseIndexes();
   m_pTransforms->vS75_T10_Morph_table_To_EEop();
   m_pTransforms->vS75_T20_Morph_keyExists_filter_To_constraint();
   m_pTransforms->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
