@@ -202,8 +202,7 @@ from (
  end ;
 */
 
-//nation->customer->...
-//SF10: 4.3s
+//customer->nation
 pipeline Query7
 begin
    stage S00 on origin :
@@ -212,19 +211,17 @@ begin
      | next
 
    stage S01 on all partitions :
-     scan nation
-     | filter "type BOOLEAN N_NAME 'IRAN' == N_NAME 'GERMANY' == OR"
-     | project "type INTEGER as N_NATIONKEY N_NATIONKEY ,
-                type VARCHAR as N2_N_NAME N_NAME"
+     scan customer
+     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
      | combined 0
      | next
 
-   stage S02 on all partitions :
-     indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
-     | project "type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME"
-     | combined 0
-     | next
+  stage S02 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | filter "type BOOLEAN J1_N_NAME 'FRANCE' == J1_N_NAME 'GERMANY' == OR"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME J1_N_NAME"
+    | combined 0
+    | next
 
    stage S03 on all partitions :
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
@@ -256,8 +253,8 @@ begin
 
    stage S06 on all partitions :
      indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
-     | filter "type BOOLEAN J1_N_NAME 'IRAN' == N2_N_NAME 'GERMANY' == and
-                            J1_N_NAME 'GERMANY' == N2_N_NAME 'IRAN' == and or"
+     | filter "type BOOLEAN J1_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
+                            J1_N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
      | project "type VARCHAR as N1_N_NAME J1_N_NAME ,
                 type VARCHAR as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,

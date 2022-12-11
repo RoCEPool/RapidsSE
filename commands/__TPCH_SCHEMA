@@ -73,7 +73,7 @@ _supplier
 
 //customer
 CREATE INDEX IxC_CUSTKEY ON customer(C_CUSTKEY);
-CREATE INDEX IxC_NATIONKEY ON customer(C_NATIONKEY);
+
 
 //lineitem
 CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
@@ -103,7 +103,6 @@ CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME on REGION (R_NAME);
 
 //supplier
-CREATE INDEX IxS_NATIONKEY ON supplier(S_NATIONKEY);
 CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
