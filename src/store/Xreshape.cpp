@@ -363,8 +363,21 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  RASSERT(G.p_stmColList);
   RASSERT(G.p_stmOrdList);
+  RASSERT(G.p_indexList);
 
+  G.p_index = T_pIndex_Find_chosenIndex(G.p_indexList);
+  if (! G.p_index)
+    return;
+
+  G.p_bounds = G.p_index->pSub_bounds();
+  if (! G.p_bounds)
+    return;
+
+  G.p_eBound = G.p_bounds->pSub_eBound();
+  if (! G.p_eBound)
+    return;
 
 }
 
@@ -457,10 +470,11 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
+    G.p_stmColList = G.p_indexScan->pSub_stmColList();
     G.p_stmOrdList = G.p_indexScan->pSub_stmOrdList();
 
     for (;;) {
-      if (! G_bEachMain(CK_INDEXJOIN))
+      if (! G_bEachMainWithSub(CK_INDEXJOIN,CK_INDEXLIST))
         break;
       R_vUTE_Derive_stmOrdList_For_indexJoin();
     }

@@ -1079,6 +1079,8 @@ Card_Index* Xtest::T_pIndex_Find_chosenIndex(STORE::Card_IndexList *p_indexList)
 
   CardIter xCI(p_indexList);
   while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+    if (p_index->Y_bHas(P_ChosenIndex))
+      return p_index;
   }
 
   return nullptr;

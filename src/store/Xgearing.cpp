@@ -542,6 +542,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_crossPtnJoin     = nullptr;
   G.p_crossPtnJoinList = nullptr;
   G.p_direction        = nullptr;
+  G.p_eBound           = nullptr;
   G.p_expr             = nullptr;
   G.p_filter           = nullptr;
   G.p_fold             = nullptr;
@@ -1130,10 +1131,11 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
     case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
     case CK_DIRECTION:        return G.p_direction;
+    case CK_EBOUND:           return G.p_eBound;
     case CK_EXPR:             return G.p_expr;
     case CK_FILTER:           return G.p_filter;
     case CK_FOLD:             return G.p_fold;
-    case CK_FOLDELIST:         return G.p_foldElist;
+    case CK_FOLDELIST:        return G.p_foldElist;
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_GBYELIST:         return G.p_gbyElist;
     case CK_GENESIS:          return G.p_genesis;
@@ -2015,6 +2017,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
+    case CK_EBOUND:           *((Card**)&G.p_eBound)           = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
@@ -2149,10 +2152,11 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
     case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
     case CK_DIRECTION:        return "G.p_direction"_Stz;
+    case CK_EBOUND:           return "G.p_eBound"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
     case CK_FOLD:             return "G.p_fold"_Stz;
-    case CK_FOLDELIST:         return "G.p_foldElist"_Stz;
+    case CK_FOLDELIST:        return "G.p_foldElist"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
     case CK_GENESIS:          return "G.p_genesis"_Stz;
