@@ -1,0 +1,14 @@
+--------------------------------------------------------------------------------
+-- sleep test - to cause a sleep in between queries so we get memory back from
+--              from the previous query
+--              (else we run low on memory on a 2N4Ptest with 6GB on each node)
+--------------------------------------------------------------------------------
+
+sleep 4;
+success
+
+CLEANUP {
+  bye;
+  mute
+}
+
