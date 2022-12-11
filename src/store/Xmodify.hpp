@@ -35,6 +35,9 @@ namespace STORE
     bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
                                Card* p_test, Card_PRED*& p_pred_yanked);
 
+    Stz* E_szEBound_Get_tblColOdn(Card_EBound* p_eBound);
+
+
     void M_vBounds_AddPred(Card_Table* p_table, Card_Index* p_index, Card_Bounds* p_bounds, Card_PRED *p_PRED);
     void M_vBounds_AddPredUnder_index(Card_Table* p_table, Card_Index* p_index, Card_PRED *p_PRED);
 

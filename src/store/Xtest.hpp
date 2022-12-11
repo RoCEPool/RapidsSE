@@ -74,6 +74,7 @@ namespace STORE
 
     Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& ri_StreamColNo);
     Card_StmCol* T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList, Stz *szTblColOdn, i8& ri_StmCol);
+    Card_StmCol* T_pStmCol_FindBy_stmOdn(Card_StmColList* p_stmColList, Stz *szStmOdn, i8& ri_StmCol);
 
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);

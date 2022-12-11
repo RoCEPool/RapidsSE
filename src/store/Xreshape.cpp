@@ -364,8 +364,12 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   RASSERT(G.p_stmColList);
+  Card_StmColList* p_stmColList_rr = G.p_stmColList;
   RASSERT(G.p_stmOrdList);
+  Card_StmOrdList* p_stmOrdList_rr = G.p_stmOrdList;
+
   RASSERT(G.p_indexList);
+  RASSERT(G.p_stream);
 
   G.p_index = T_pIndex_Find_chosenIndex(G.p_indexList);
   if (! G.p_index)
@@ -379,6 +383,26 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   if (! G.p_eBound)
     return;
 
+  Stz* szTblColOdn_eb = E_szEBound_Get_tblColOdn(G.p_eBound);
+  if (! szTblColOdn_eb)
+    return;
+
+  vTrace("szTblColOdn_eb %s\n"_Stz, szTblColOdn_eb);
+
+
+  // find the stmCol == szTblColOdn_eb in prior stream stmColList
+  i8 i_StmCol;
+  Card_StmCol* p_stmCol_rr =
+      T_pStmCol_FindBy_tblColOdn(p_stmColList_rr,szTblColOdn_eb,i_StmCol);
+  if (! p_stmCol_rr)
+    return;
+
+  Card_StmColOdn* p_stmColOdn_rr = p_stmCol_rr->pSub_stmColOdn();
+
+  Card_StmOrdList* p_stmOrdList_ij = new Card_StmOrdList;
+  G.p_stream->vAppend(p_stmOrdList_ij);
+
+  p_stmOrdList_ij->vAppendNewCardTail(CK_STMCOLODN,p_stmColOdn_rr->szValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -467,6 +491,8 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
     R_vUTE_Derive_stmOrdList_For_indexScan();
   }
 
+  vPrintBoard();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
@@ -474,11 +500,13 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
     G.p_stmOrdList = G.p_indexScan->pSub_stmOrdList();
 
     for (;;) {
-      if (! G_bEachMainWithSub(CK_INDEXJOIN,CK_INDEXLIST))
+      if (! G_bEachMainWith2Sub(CK_INDEXJOIN,CK_INDEXLIST,CK_STREAM))
         break;
       R_vUTE_Derive_stmOrdList_For_indexJoin();
     }
   }
+
+  vPrintBoard();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

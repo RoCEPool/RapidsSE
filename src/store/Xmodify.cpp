@@ -334,6 +334,22 @@ bool Xmodify::M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bound for relational op                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Xmodify::E_szEBound_Get_tblColOdn(Card_EBound* p_eBound)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_eBound);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (T_bValue_IsTableColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vBounds_AddPred(Card_Table* p_table,
