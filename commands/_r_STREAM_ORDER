@@ -16,7 +16,7 @@ create index L_idx0  on Lineitem (L_ORDERKEY );
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_JOIN_TWO_INDEX"
+/pipelineName = "_r_STREAM_ORDER"
 select o_orderkey, avg(l_extendedprice)
   from Orders, Lineitem
  where

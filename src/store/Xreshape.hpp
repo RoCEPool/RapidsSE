@@ -29,6 +29,7 @@ namespace STORE
     void R_vUTE_Choose_index_For_keyNotExists(void);
     void R_vUTE_Derive_foldElist_From_project_stream(void);
     void R_vUTE_Derive_stmOrdList_For_gbyAgg(void);
+    void R_vUTE_Derive_stmOrdList_For_indexJoin(void);
     void R_vUTE_Derive_stmOrdList_For_indexScan(void);
     void R_vUTE_Derive_stmOrdList_For_project(void);
     void R_vUTE_Derive_Stream_Order(void);

@@ -1073,6 +1073,20 @@ bool Xtest::T_bFilter_IsEmpty(Card_Filter* p_filter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Index* Xtest::T_pIndex_Find_chosenIndex(STORE::Card_IndexList *p_indexList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_indexList);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

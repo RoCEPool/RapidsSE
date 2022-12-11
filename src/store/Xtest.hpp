@@ -55,6 +55,7 @@ namespace STORE
 
     bool T_bFilter_IsEmpty(Card_Filter* p_filter);
 
+    Card_Index* T_pIndex_Find_chosenIndex(Card_IndexList* p_indexList);
     bool T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index);
 
     bool T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,

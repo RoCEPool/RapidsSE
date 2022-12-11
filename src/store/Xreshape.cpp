@@ -359,6 +359,18 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  RASSERT(G.p_stmOrdList);
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -434,11 +446,24 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create stream order for index scan
+
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
-
     R_vUTE_Derive_stmOrdList_For_indexScan();
+  }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  G_vRestart();
+  while (G_bEachMain(CK_INDEXSCAN)) {
+    G.p_stmOrdList = G.p_indexScan->pSub_stmOrdList();
+
+    for (;;) {
+      if (! G_bEachMain(CK_INDEXJOIN))
+        break;
+      R_vUTE_Derive_stmOrdList_For_indexJoin();
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2330,8 +2355,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     G.pBoard->pDeck()->vReplace(G.p_table, G.p_indexJoin);
     G.p_indexJoin->vInsert(G.p_table);
 
-    G.p_indexJoin->vRemoveSubCard(G.p_index);
-    G.p_indexJoin->vAppend(G.p_index);
+    //G.p_indexJoin->vRemoveSubCard(G.p_index);
+    //G.p_indexJoin->vAppend(G.p_index);
   }
 
   vEndReshape();
