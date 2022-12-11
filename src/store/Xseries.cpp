@@ -90,7 +90,7 @@ void Xseries::vTransformSeries(void)
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
   vSeries_80_Index_Scan        (C_ENABLED);
-  vSeries_90_Stream_Ordering                 (C_DISABLED);
+  vSeries_90_Stream_Ordering   (C_ENABLED);
 
   // ---
   vSeries_A0_Filter_Refinement (C_ENABLED);

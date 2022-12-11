@@ -359,6 +359,43 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G.p_stream = G.p_indexScan->pSub_stream();
+  if (! G.p_stream)
+    return;
+  G.p_stmColList = G.p_stream->pSub_stmColList();
+  if (! G.p_stmColList)
+    return;
+
+  G.p_stmOrdList = nullptr;
+
+  i8 i_StmCol;
+  G.p_index = G.p_indexScan->pSub_index();
+  G.p_idxColList = G.p_index->pSub_idxColList();
+  CardIter xCI(G.p_idxColList);
+  while ((G.p_idxCol = _pCard_IdxCol(xCI.pEachChild()))) {
+    G.p_stmCol = T_pStmCol_FindBy_tblColOdn(G.p_stmColList,
+                                            G.p_idxCol->szValue(),
+                                            i_StmCol);
+    if (! G.p_stmCol)
+      return;
+
+    if (! G.p_stmOrdList) {
+      G.p_stmOrdList = new Card_StmOrdList;
+      G.p_stream->vAppend(G.p_stmOrdList);
+    }
+
+    G_vAppendNewChild(G.p_stmOrdList,CK_STMCOLODN);
+    G.p_stmColOdn->vValueSprint("$%lld"_Stz,i_StmCol+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -389,6 +426,69 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
     }
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_Stream_Order(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G_vRestart();
+  while (G_bEachMain(CK_INDEXSCAN)) {
+
+    R_vUTE_Derive_stmOrdList_For_indexScan();
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMain()) {
+
+    if (! G.p_MainCard->bIsCard(CK_GBYAGG))
+      continue;
+
+    R_vUTE_Derive_stmOrdList_For_gbyAgg();
+
+    if (G_bIsNextMain(CK_GBYAGG)) {
+      G_bEachMain();
+      R_vUTE_Derive_stmOrdList_For_gbyAgg();
+
+      if (G_bIsNextMain(CK_GBYAGG)) {
+        G_bEachMain();
+        R_vUTE_Derive_stmOrdList_For_gbyAgg();
+      }
+    }
+
+  }
+
+  G.pDeck->vRenumberRecursive();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMain()) {
+
+    if (!G.p_MainCard->bIsCard(CK_GBYAGG))
+      continue;
+
+    G.p_stmOrdList = G.p_gbyAgg->pSub_stmOrdList();
+    while (G_bIsNextMain(CK_GBYAGG)) {
+      G_bEachMain();
+      G.p_stmOrdList = G.p_gbyAgg->pSub_stmOrdList();
+    }
+
+    if (G_bIsNextMain(CK_PROJECT)) {
+      G_bEachMain();
+      R_vUTE_Derive_stmOrdList_For_project();
+    }
+
+    break;
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

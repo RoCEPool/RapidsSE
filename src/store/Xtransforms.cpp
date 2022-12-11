@@ -3546,48 +3546,7 @@ void Xtransforms::vS90_T30_Add_stmOrdList(void)
 
   vAssert_Board_mqA();
 
-  while (G_bEachMain()) {
-
-    if (! G.p_MainCard->bIsCard(CK_GBYAGG))
-      continue;
-
-    R_vUTE_Derive_stmOrdList_For_gbyAgg();
-
-    if (G_bIsNextMain(CK_GBYAGG)) {
-      G_bEachMain();
-      R_vUTE_Derive_stmOrdList_For_gbyAgg();
-
-      if (G_bIsNextMain(CK_GBYAGG)) {
-        G_bEachMain();
-        R_vUTE_Derive_stmOrdList_For_gbyAgg();
-      }
-    }
-
-  }
-
-  G.pDeck->vRenumberRecursive();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  G_vRestart();
-  while (G_bEachMain()) {
-
-    if (!G.p_MainCard->bIsCard(CK_GBYAGG))
-      continue;
-
-    G.p_stmOrdList = G.p_gbyAgg->pSub_stmOrdList();
-    while (G_bIsNextMain(CK_GBYAGG)) {
-      G_bEachMain();
-      G.p_stmOrdList = G.p_gbyAgg->pSub_stmOrdList();
-    }
-
-    if (G_bIsNextMain(CK_PROJECT)) {
-      G_bEachMain();
-      R_vUTE_Derive_stmOrdList_For_project();
-    }
-
-    break;
-  }
+  R_vUTE_Derive_Stream_Order();
 
   vEndTransform();
 }

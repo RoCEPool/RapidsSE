@@ -976,6 +976,28 @@ Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_StmCol* Xtest::T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList,
+                                               Stz *szTblColOdn,
+                                               i8& ri_StmCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  CardIter xCI(p_stmColList);
+  while (Card_StmCol *p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
+    Card_TblColOdn* p_tblColOdn = p_stmCol->pSub_tblColOdn();
+    if (p_tblColOdn->bSame(szTblColOdn)) {
+      ri_StmCol = xCI.i_Child();
+      return p_stmCol;
+    }
+  }
+
+  ri_StmCol = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
