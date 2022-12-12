@@ -57,10 +57,14 @@ extern i8   giProgressPoint;
 
 static const i8 nIterations = 1000000000;
 
-i8 __attribute__((FN_OPT)) iTest_rdtscp()
+void __attribute__((FN_OPT)) vTest_rdtscp()
 {
   volatile i8 iVal;
   i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
 
   #pragma unroll
   for (i8 i=0; i<nIterations; i++) {
@@ -68,14 +72,49 @@ i8 __attribute__((FN_OPT)) iTest_rdtscp()
     ++iActualIters;
   }
 
-  return iActualIters;
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "rdtscp", iTimeTaken, fTimePerCall);
 }
 
-i8 __attribute__((FN_OPT)) iTest_clock_gettime()
+void __attribute__((FN_OPT)) vTest_clock_gettime_realtime()
 {
   struct timespec ts;
   volatile i8 iVal;
   i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
+
+  #pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = clock_gettime(CLOCK_REALTIME, &ts);
+    ++iActualIters;
+  }
+
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "clock_gettime(CLOCK_REALTIME)", iTimeTaken, fTimePerCall);
+}
+
+void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic()
+{
+  struct timespec ts;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
 
   #pragma unroll
   for (i8 i=0; i<nIterations; i++) {
@@ -83,14 +122,74 @@ i8 __attribute__((FN_OPT)) iTest_clock_gettime()
     ++iActualIters;
   }
 
-  return iActualIters;
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "clock_gettime(CLOCK_MONOTONIC)", iTimeTaken, fTimePerCall);
 }
 
-i8 __attribute__((FN_OPT)) iTest_gettimeofday()
+void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_raw()
+{
+  struct timespec ts;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
+
+  #pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
+    ++iActualIters;
+  }
+
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "clock_gettime(CLOCK_MONOTONIC_RAW)", iTimeTaken, fTimePerCall);
+}
+
+void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_raw_approx()
+{
+  struct timespec ts;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
+
+#pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX, &ts);
+    ++iActualIters;
+  }
+
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "clock_gettime(CLOCK_MONOTONIC_RAW_APPROX)", iTimeTaken, fTimePerCall);
+}
+
+void __attribute__((FN_OPT)) vTest_gettimeofday()
 {
   struct timeval tv;
   volatile i8 iVal;
   i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
 
   #pragma unroll
   for (i8 i=0; i<nIterations; i++) {
@@ -98,7 +197,13 @@ i8 __attribute__((FN_OPT)) iTest_gettimeofday()
     ++iActualIters;
   }
 
-  return iActualIters;
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "gettimeofday()", iTimeTaken, fTimePerCall);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,46 +214,67 @@ int main(int argc, char* argv[])
 
   // Test code for measuring the calls to:
   //  (1) rdtscp
-  //  (2) clock_gettime()
-  //  (3) gettimeofday()
+  //  (2) clock_gettime(CLOCK_REALTIME)
+  //  (3) clock_gettime(CLOCK_MONOTONIC)
+  //  (4) clock_gettime(CLOCK_MONOTONIC_RAW)
+  //  (5) clock_gettime(CLOCK_MONOTONIC_RAW_APPROX)
+  //  (6) gettimeofday()
 
   if (argc != 2) {
     printf("Num of arguments must be 2\n");
     exit(1);
   }
 
-  i8 iActualIters = 0;
-  i8 iStartTime;
-  i8 iEndTime;
-  volatile i8 iVal;
-  struct timespec ts;
 
   if (strcmp(argv[1], "rdtscp") == 0) {
-    iStartTime = Hardware::iReadClock();
-    iActualIters = iTest_rdtscp();
-    iEndTime = Hardware::iReadClock();
+    vTest_rdtscp();
 
-  } else if (strcmp(argv[1], "clock_gettime") == 0) {
-    iStartTime = Hardware::iReadClock();
-    iActualIters = iTest_clock_gettime();
-    iEndTime = Hardware::iReadClock();
+  } else if (strcmp(argv[1], "clock_gettime_realtime") == 0) {
+    vTest_clock_gettime_realtime();
 
+  } else if (strcmp(argv[1], "clock_gettime_monotonic") == 0) {
+    vTest_clock_gettime_monotonic();
+
+  } else if (strcmp(argv[1], "clock_gettime_monotonic_raw") == 0) {
+    vTest_clock_gettime_monotonic_raw();
+
+  } else if (strcmp(argv[1], "clock_gettime_monotonic_raw_approx") == 0) {
+    vTest_clock_gettime_monotonic_raw_approx();
 
   } else if (strcmp(argv[1], "gettimeofday") == 0) {
-    iStartTime = Hardware::iReadClock();
-    iActualIters = iTest_gettimeofday();
-    iEndTime = Hardware::iReadClock();
+    vTest_gettimeofday();
+
+  } else if (strcmp(argv[1], "all") == 0) {
+    vTest_rdtscp();
+    vTest_rdtscp();
+    vTest_rdtscp();
+    vTest_clock_gettime_realtime();
+    vTest_clock_gettime_realtime();
+    vTest_clock_gettime_realtime();
+    vTest_clock_gettime_monotonic();
+    vTest_clock_gettime_monotonic();
+    vTest_clock_gettime_monotonic();
+    vTest_clock_gettime_monotonic_raw();
+    vTest_clock_gettime_monotonic_raw();
+    vTest_clock_gettime_monotonic_raw();
+    vTest_clock_gettime_monotonic_raw_approx();
+    vTest_clock_gettime_monotonic_raw_approx();
+    vTest_clock_gettime_monotonic_raw_approx();
+    vTest_gettimeofday();
+    vTest_gettimeofday();
+    vTest_gettimeofday();
 
   } else {
-    printf("Invalid argument. Valid arguments are: rdtscp, clock_gettime and gettimeofday\n");
+    printf("Invalid argument. Valid arguments are:\n"
+           " rdtscp\n"
+           " clock_gettime_realtime\n"
+           " clock_gettime_monotonic\n"
+           " clock_gettime_monotonic_raw\n"
+           " clock_gettime_monotonic_raw_approx\n"
+           " gettimeofday\n"
+           " all\n");
     exit(1);
   }
-
-  i8 iTimeTaken = iEndTime - iStartTime;
-  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
-
-  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
-         nIterations, argv[1], iTimeTaken, fTimePerCall);
 
   exit(0);
 
