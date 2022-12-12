@@ -156,6 +156,7 @@ void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_raw()
          nIterations, "clock_gettime(CLOCK_MONOTONIC_RAW)", iTimeTaken, fTimePerCall);
 }
 
+#ifdef WITH_APPLE
 void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_raw_approx()
 {
   struct timespec ts;
@@ -180,6 +181,59 @@ void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_raw_approx()
   printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
          nIterations, "clock_gettime(CLOCK_MONOTONIC_RAW_APPROX)", iTimeTaken, fTimePerCall);
 }
+#endif
+
+#ifdef WITH_LINUX
+void __attribute__((FN_OPT)) vTest_clock_gettime_realtime_coarse()
+{
+  struct timespec ts;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
+
+#pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = clock_gettime(CLOCK_REALTIME_COARSE, &ts);
+    ++iActualIters;
+  }
+
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "clock_gettime(CLOCK_REALTIME_COARSE)", iTimeTaken, fTimePerCall);
+}
+
+void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_coarse()
+{
+  struct timespec ts;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+
+  iStartTime = Hardware::iReadClock();
+
+#pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = clock_gettime(CLOCK_MONOTONIC_COARSE, &ts);
+    ++iActualIters;
+  }
+
+  iEndTime = Hardware::iReadClock();
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, "clock_gettime(CLOCK_REALTIME_COARSE)", iTimeTaken, fTimePerCall);
+}
+#endif
 
 void __attribute__((FN_OPT)) vTest_gettimeofday()
 {
@@ -239,7 +293,19 @@ int main(int argc, char* argv[])
     vTest_clock_gettime_monotonic_raw();
 
   } else if (strcmp(argv[1], "clock_gettime_monotonic_raw_approx") == 0) {
+#ifdef WITH_APPLE
     vTest_clock_gettime_monotonic_raw_approx();
+#endif
+
+  } else if (strcmp(argv[1], "clock_gettime_realtime_coarse") == 0) {
+#ifdef WITH_LINUX
+    vTest_clock_gettime_realtime_coarse();
+#endif
+
+  } else if (strcmp(argv[1], "clock_gettime_monotonic_coarse") == 0) {
+#ifdef WITH_LINUX
+    vTest_clock_gettime_monotonic_coarse();
+#endif
 
   } else if (strcmp(argv[1], "gettimeofday") == 0) {
     vTest_gettimeofday();
@@ -257,9 +323,22 @@ int main(int argc, char* argv[])
     vTest_clock_gettime_monotonic_raw();
     vTest_clock_gettime_monotonic_raw();
     vTest_clock_gettime_monotonic_raw();
+
+#ifdef WITH_APPLE
     vTest_clock_gettime_monotonic_raw_approx();
     vTest_clock_gettime_monotonic_raw_approx();
     vTest_clock_gettime_monotonic_raw_approx();
+#endif
+
+#ifdef WITH_LINUX
+    vTest_clock_gettime_realtime_coarse();
+    vTest_clock_gettime_realtime_coarse();
+    vTest_clock_gettime_realtime_coarse();
+    vTest_clock_gettime_monotonic_coarse();
+    vTest_clock_gettime_monotonic_coarse();
+    vTest_clock_gettime_monotonic_coarse();
+#endif
+
     vTest_gettimeofday();
     vTest_gettimeofday();
     vTest_gettimeofday();
@@ -270,7 +349,9 @@ int main(int argc, char* argv[])
            " clock_gettime_realtime\n"
            " clock_gettime_monotonic\n"
            " clock_gettime_monotonic_raw\n"
-           " clock_gettime_monotonic_raw_approx\n"
+           " clock_gettime_monotonic_raw_approx (Apple only)\n"
+           " clock_gettime_realtime_coarse (Linux only)\n"
+           " clock_gettime_monotonic_coarse (Linux only)\n"
            " gettimeofday\n"
            " all\n");
     exit(1);
