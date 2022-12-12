@@ -383,30 +383,33 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   if (! G.p_eBound)
     return;
 
+  // get tblColOdn of eBound
   Stz* szTblColOdn_r = E_szEBound_Get_tblColOdn(G.p_eBound);
   if (! szTblColOdn_r)
     return;
-
   vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
 
-
-  // find the stmCol_r == szTblColOdn_r in prior stream stmColList
-  i8 i_StmCol;
+  // find the stmCol_l == szTblColOdn_r in prior stream stmColList_l
+  i8 i_StmCol_l;
   Card_StmCol* p_stmCol_l =
-      T_pStmCol_FindBy_tblColOdn(p_stmColList_l, szTblColOdn_r, i_StmCol);
+      T_pStmCol_FindBy_tblColOdn(p_stmColList_l, szTblColOdn_r, i_StmCol_l);
   if (! p_stmCol_l)
     return;
 
+  // get the stmColOdn_l of stmCol_l
   Card_StmColOdn* p_stmColOdn_l = p_stmCol_l->pSub_stmColOdn();
   Stz* szStmColOdn_l = p_stmColOdn_l->szValue();
 
 
+  // find the stmOrdOdn_l == szStmColOdn_l in prior stream stmColList_l
   i8 i_StmOrdOdn;
   Card_StmOrdOdn* p_stmOrdOdn_l =
     T_pStmOrdOdn_FindBy_stmColOdn(p_stmOrdList_l,szStmColOdn_l,i_StmOrdOdn);
-
   if (! p_stmOrdOdn_l)
     return;
+
+  // navigated: ../<eBound>/<tblColOdn_r> -> ../<stmCol_l>/<stmColOdn_l>
+  //                                      -> ../<stmOrdOrdn_l>
 
   Card_StmOrdList* p_stmOrdList_ij = new Card_StmOrdList;
   G.p_stream->vAppend(p_stmOrdList_ij);
