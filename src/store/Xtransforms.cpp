@@ -553,6 +553,19 @@ void Xtransforms::vOT_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
 
+  // Query3
+
+  // Notes:
+  // If an aggreg is replaced by an OrdAgg, we know that we don't need the
+  // ordAgg at all nodes and origin. It can be only at the partition level.
+  // You don't need to aggregate all nodes etc.
+  // Because we know that the ordered data being aggregated at all partitions
+  // is complete we can replace a sort on origin that follows the aggreg
+  // by a sort and limit on all partitions/ on all nodes and on origin.
+  //
+  // This ways reduced that data to be sorted at each level and reducing the rows
+  // moving around as we have applied the limit as well
+
   return false;
 }
 
