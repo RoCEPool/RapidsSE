@@ -231,7 +231,7 @@ void __attribute__((FN_OPT)) vTest_clock_gettime_monotonic_coarse()
   d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
 
   printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
-         nIterations, "clock_gettime(CLOCK_REALTIME_COARSE)", iTimeTaken, fTimePerCall);
+         nIterations, "clock_gettime(CLOCK_MONOTONIC_COARSE)", iTimeTaken, fTimePerCall);
 }
 #endif
 
