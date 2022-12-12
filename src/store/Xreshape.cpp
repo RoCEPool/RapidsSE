@@ -364,9 +364,9 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   RASSERT(G.p_stmColList);
-  Card_StmColList* p_stmColList_rr = G.p_stmColList;
+  Card_StmColList* p_stmColList_l = G.p_stmColList;
   RASSERT(G.p_stmOrdList);
-  Card_StmOrdList* p_stmOrdList_rr = G.p_stmOrdList;
+  Card_StmOrdList* p_stmOrdList_l = G.p_stmOrdList;
 
   RASSERT(G.p_indexList);
   RASSERT(G.p_stream);
@@ -383,26 +383,35 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   if (! G.p_eBound)
     return;
 
-  Stz* szTblColOdn_eb = E_szEBound_Get_tblColOdn(G.p_eBound);
-  if (! szTblColOdn_eb)
+  Stz* szTblColOdn_r = E_szEBound_Get_tblColOdn(G.p_eBound);
+  if (! szTblColOdn_r)
     return;
 
-  vTrace("szTblColOdn_eb %s\n"_Stz, szTblColOdn_eb);
+  vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
 
 
-  // find the stmCol == szTblColOdn_eb in prior stream stmColList
+  // find the stmCol_r == szTblColOdn_r in prior stream stmColList
   i8 i_StmCol;
-  Card_StmCol* p_stmCol_rr =
-      T_pStmCol_FindBy_tblColOdn(p_stmColList_rr,szTblColOdn_eb,i_StmCol);
-  if (! p_stmCol_rr)
+  Card_StmCol* p_stmCol_l =
+      T_pStmCol_FindBy_tblColOdn(p_stmColList_l, szTblColOdn_r, i_StmCol);
+  if (! p_stmCol_l)
     return;
 
-  Card_StmColOdn* p_stmColOdn_rr = p_stmCol_rr->pSub_stmColOdn();
+  Card_StmColOdn* p_stmColOdn_l = p_stmCol_l->pSub_stmColOdn();
+  Stz* szStmColOdn_l = p_stmColOdn_l->szValue();
+
+
+  i8 i_StmOrdOdn;
+  Card_StmOrdOdn* p_stmOrdOdn_l =
+    T_pStmOrdOdn_FindBy_stmColOdn(p_stmOrdList_l,szStmColOdn_l,i_StmOrdOdn);
+
+  if (! p_stmOrdOdn_l)
+    return;
 
   Card_StmOrdList* p_stmOrdList_ij = new Card_StmOrdList;
   G.p_stream->vAppend(p_stmOrdList_ij);
 
-  p_stmOrdList_ij->vAppendNewCardTail(CK_STMCOLODN,p_stmColOdn_rr->szValue());
+  p_stmOrdList_ij->vAppendNewCardTail(CK_STMORDODN, p_stmOrdOdn_l->szValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,8 +446,8 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
       G.p_stream->vAppend(G.p_stmOrdList);
     }
 
-    G_vAppendNewChild(G.p_stmOrdList,CK_STMCOLODN);
-    G.p_stmColOdn->vValueSprint("$%lld"_Stz,i_StmCol+1);
+    G_vAppendNewChild(G.p_stmOrdList,CK_STMORDODN);
+    G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,i_StmCol+1);
   }
 }
 
@@ -470,8 +479,8 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
         G.p_stream->vAppend(p_stmOrdList_project);
       }
 
-      G_vAppendNewChild(p_stmOrdList_project,CK_STMCOLODN);
-      G.p_stmColOdn->vValueSprint("$%lld"_Stz,i_Expr+1);
+      G_vAppendNewChild(p_stmOrdList_project,CK_STMORDODN);
+      G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,i_Expr+1);
     }
   }
 }
