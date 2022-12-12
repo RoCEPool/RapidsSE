@@ -121,9 +121,7 @@ namespace STORE
     bool bS34_T00_Test(bool bEnabled);
     void vS34_T00_Skip(void);
     void vS34_T00_Begin(void);
-    void vS34_T10_AtMark_where_pred_Wrt_table(void);
-    void vS34_T20_Move_AtMarked_where_pred_To_table_filter(void);
-    void vS34_T30_Delete_Empty_where(void);
+    void vS34_T_Predicate_Pullup(void);
     void vS34_TZZ_End(void);
 
     // vSeries_36_Bound_Analysis

@@ -1406,15 +1406,18 @@ void Xtransforms::vS34_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put a table @c mark against where predicates which can be moved under table*/
+/* Predicate Pullup                                                           */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
+void Xtransforms::vS34_T_Predicate_Pullup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransform(__func__, "put a table @c against where pred"_Stz);
 
   vAssert_Board_any();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
 
   vPrintBoard(__LINE__);
 
@@ -1424,19 +1427,10 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
     M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
 
-/*----------------------------------------------------------------------------*/
-/* move where predicates with an @c table mark to new <table>/<filter>        */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vDeck_CopyMarkedPredLeftwards(G.p_boolCalc, G.pDeck);
@@ -1444,28 +1438,19 @@ void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
 
   vPrintBoard();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   G_vRestart();
+
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
 
   vPrintBoard();
 
-  vEndTransform();
-}
 
-/*----------------------------------------------------------------------------*/
-/* delete <where> if it is effectively empty                                  */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS34_T30_Delete_Empty_where(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete Empty Where
 
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (0 == G.p_boolCalc->nChildCards()) {
