@@ -78,11 +78,6 @@ void Xtransforms::vOptimiseLoop(void) {
       bOpts = true;
     }
 
-    if (bOT_Ely_Sort_Limit()) {
-      m_eOptTranforms[iOpts++] = OT_ELY_SORT_LIMIT;
-      bOpts = true;
-    }
-
     if (bOT_Min_Groupby()) {
       m_eOptTranforms[iOpts++] = OT_MIN_GROUPBY;
       bOpts = true;
@@ -163,10 +158,6 @@ void Xtransforms::vOptimiseLoop(void) {
 
       case OT_ELY_PROJECTIONS:
         vOT_Ely_Projections();
-        break;
-
-      case OT_ELY_SORT_LIMIT:
-        vOT_Ely_Sort_Limit();
         break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -332,21 +323,6 @@ void Xtransforms::vOT_Ely_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bOT_Ely_Sort_Limit(void) {
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vOT_Ely_Sort_Limit(void) {
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Min_Groupby(void) {
 
   //
@@ -400,6 +376,16 @@ void Xtransforms::vOT_Otm_Calculations(void) {
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Ppn_Projections(void) {
+
+  // Query2, Query10
+
+  // Notes:
+  // If a query has an aggregate and either :
+  //   the group by columns don't include the columns in the select list
+  //   or due to an optimisation OT_MIN_GROUPBY the columns are reduced from
+  //     the group by list
+  // then we need to rejoin with the particular table/tables and get the required
+  // selected columns
 
   return false;
 }
@@ -542,6 +528,19 @@ void Xtransforms::vOT_Rpl_SortDesc_Limit_By_Top(void) {
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+
+  // Query3
+
+  // Notes:
+  // If an aggreg is replaced by an OrdAgg, we know that we don't need the
+  // ordAgg at all nodes and origin. It can be only at the partition level.
+  // You don't need to aggregate all nodes etc.
+  // Because we know that the ordered data being aggregated at all partitions
+  // is complete we can replace a sort on origin that follows the aggreg
+  // by a sort and limit on all partitions/ on all nodes and on origin.
+  //
+  // This ways reduced that data to be sorted at each level and reducing the rows
+  // moving around as we have applied the limit as well
 
   return false;
 }
@@ -1404,9 +1403,9 @@ void Xtransforms::vS34_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put a table @c mark against where predicates which can be moved under table*/
+/* Predicate Pullup                                                           */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
+void Xtransforms::vS34_T_Predicate_Pullup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1414,25 +1413,19 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
 
   vAssert_Board_any();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
+
   vPrintBoard(__LINE__);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
   }
 
-  vEndTransform();
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
 
-/*----------------------------------------------------------------------------*/
-/* move where predicates with an @c table mark to new <table>/<filter>        */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransform(__func__, "move @c predicates to a filter under table"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vDeck_CopyMarkedPredLeftwards(G.p_boolCalc, G.pDeck);
@@ -1440,28 +1433,19 @@ void Xtransforms::vS34_T20_Move_AtMarked_where_pred_To_table_filter(void)
 
   vPrintBoard();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   G_vRestart();
+
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
   }
 
   vPrintBoard();
 
-  vEndTransform();
-}
 
-/*----------------------------------------------------------------------------*/
-/* delete <where> if it is effectively empty                                  */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vS34_T30_Delete_Empty_where(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete Empty Where
 
-  vTransform(__func__, "delete where if it is effectively empty"_Stz);
-
-  vAssert_Board_any();
+  G_vRestart();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (0 == G.p_boolCalc->nChildCards()) {

@@ -324,9 +324,7 @@ void Xseries::vSeries_34_Predicate_Pullup(bool bEnabled)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-    m_pTransforms->vS34_T10_AtMark_where_pred_Wrt_table();
-    m_pTransforms->vS34_T20_Move_AtMarked_where_pred_To_table_filter();
-    m_pTransforms->vS34_T30_Delete_Empty_where();
+    m_pTransforms->vS34_T_Predicate_Pullup();
   }
 
   m_pTransforms->vS34_TZZ_End();

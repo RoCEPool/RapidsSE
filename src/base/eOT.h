@@ -16,29 +16,28 @@ enum eOT // Optimiser Transformations
   // EARLY
   /* 03 */ OT_ELY_FILTERS,                // Early: Filters
   /* 04 */ OT_ELY_PROJECTIONS,            // Early: Projections
-  /* 05 */ OT_ELY_SORT_LIMIT,             // Early: Sort and Limit
 
   // MINIMIZE
-  /* 06 */ OT_MIN_GROUPBY,                // Minimize: group by keys based on unique keys
+  /* 05 */ OT_MIN_GROUPBY,                // Minimize: group by keys based on unique keys
 
   // one-time CALCULATIONS
-  /* 07 */ OT_OTM_CALCULATIONS,           // One-Time: CALCULATIONS
+  /* 06 */ OT_OTM_CALCULATIONS,           // One-Time: CALCULATIONS
 
   // Postpone
-  /* 08 */ OT_PPT_PROJECTIONS,           // Postone: VARCHAR Projections after re-join
+  /* 07 */ OT_PPT_PROJECTIONS,           // Postone: VARCHAR Projections after re-join
 
   // REPLACE
-  /* 09 */ OT_RPL_AGGREG_BY_ORDAGG,       // Replace: AGGREG with ORDAGG
-  /* 10 */ OT_RPL_AGGREG_BY_SORT_ORDAGG,  // Replace: AGGREG with SORT AND ORDAGG
-  /* 11 */ OT_RPL_MAX_BY_TOP,             // Replace: MAX with TOP
-  /* 12 */ OT_RPL_SCAN_BY_INDEXSCAN,      // Replace: SCAN with INDEXSCAN
-  /* 13 */ OT_RPL_SORTDESC_LIMIT_BY_TOP,  // Replace: SORTDESC +LIMIT with TOP
-  /* 14 */ OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS,  // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
+  /* 08 */ OT_RPL_AGGREG_BY_ORDAGG,       // Replace: AGGREG with ORDAGG
+  /* 09 */ OT_RPL_AGGREG_BY_SORT_ORDAGG,  // Replace: AGGREG with SORT AND ORDAGG
+  /* 10 */ OT_RPL_MAX_BY_TOP,             // Replace: MAX with TOP
+  /* 11 */ OT_RPL_SCAN_BY_INDEXSCAN,      // Replace: SCAN with INDEXSCAN
+  /* 12 */ OT_RPL_SORTDESC_LIMIT_BY_TOP,  // Replace: SORTDESC +LIMIT with TOP
+  /* 13 */ OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS,  // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
 
   // SEQUENCING
-  /* 15 */ OT_SEQ_JOIN_ORDER,             // Sequence: Join Order
+  /* 14 */ OT_SEQ_JOIN_ORDER,             // Sequence: Join Order
 
-  /* 16 */ OT_ENUMS,
+  /* 15 */ OT_ENUMS,
 };
 
 static Stz* aOT[]
@@ -54,7 +53,6 @@ static Stz* aOT[]
   // EARLY
   /*  */ "ELY_FILTERS"_Stz,
   /*  */ "ELY_PROJECTIONS"_Stz,
-  /*  */ "ELY_SORT_LIMIT"_Stz,
 
   // MINIMIZE
   /*  */ "MIN_GROUPBY"_Stz,
