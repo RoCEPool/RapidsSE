@@ -32,6 +32,7 @@ namespace STORE
     void R_vUTE_Derive_stmOrdList_For_indexJoin(void);
     void R_vUTE_Derive_stmOrdList_For_indexScan(void);
     void R_vUTE_Derive_stmOrdList_For_project(void);
+    void R_vUTE_Derive_stmOrdList_For_sort(void);
     void R_vUTE_Derive_Stream_Order(void);
     void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
     void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);

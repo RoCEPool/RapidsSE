@@ -80,15 +80,15 @@ void Xseries::vTransformSeries(void)
   vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
-  // ---
-
   vSeries_33_To_TblColOdn      (C_ENABLED);
   vSeries_34_Predicate_Pullup  (C_ENABLED);
   vSeries_36_Bound_Analysis    (C_ENABLED);
-  vSeries_40_Flatten_Query     (C_ENABLED);
 
+  // ---
+  vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
+
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
 

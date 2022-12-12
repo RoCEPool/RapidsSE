@@ -776,6 +776,25 @@ eYG Xmodify::M_eLevel_To_StageTopology(eAL eLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the one (and only) stmColOdn from rpnCalc                              */
+/*----------------------------------------------------------------------------*/
+Card_Term* Xmodify::M_pRpnCalc_GetSingle_stmColOdn(Card_RpnCalc* p_rpnCalc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (1 != p_rpnCalc->nChildCards())
+    return nullptr;
+
+  Card_Term* p_term = p_rpnCalc->pSub_term();
+  Stz* szTerm = p_term->szValue();
+  if (! T_bValue_IsStreamColOrdinal(szTerm))
+    return nullptr;
+
+  return p_term;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(Card_RpnCalc* p_rpnCalc)

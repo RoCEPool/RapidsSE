@@ -71,6 +71,8 @@ namespace STORE
     char M_eLevel_To_char(eAL eLevel);
     eYG  M_eLevel_To_StageTopology(eAL eLevel);
 
+    Card_Term* M_pRpnCalc_GetSingle_stmColOdn(Card_RpnCalc* p_rpnCalc);
+
     void M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(Card_RpnCalc* p_rpnCalc);
 
     void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);

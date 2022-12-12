@@ -488,6 +488,31 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  // todo: need a stream?
+
+  G.p_stream = _pCard_Stream(G.p_sort->pAppendNewCardTail(CK_STREAM));
+  G.p_stmOrdList = _pCard_StmOrdList(G.p_sort->pAppendNewCardTail(CK_STMORDLIST));
+
+  CardIter xCI(G.p_sbyElist);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
+    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+    if (! (G.p_term = M_pRpnCalc_GetSingle_stmColOdn(G.p_rpnCalc)))
+      break;
+
+    Stz* szStmColOdn = G.p_term->szValue();
+    Stz* szStmOrdOdn = szStmColOdn;
+    G.p_stmOrdList->vAppendNewCardTail(CK_STMORDODN,szStmOrdOdn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_Stream_Order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -562,6 +587,16 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
 
     break;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_SORT,CK_SBYELIST)) {
+    R_vUTE_Derive_stmOrdList_For_sort();
+  }
+
+  G.pDeck->vRenumberRecursive();
+  vPrintBoard();
 
 }
 
