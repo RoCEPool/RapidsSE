@@ -140,16 +140,16 @@ Card::~Card(void) noexcept(false)
 
   static Card* pPriorCard = nullptr;
 
-  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-         md__SeqNo,this,aCK[m_eCard],m_sValue.szStz(),md_Bearing);
-
-  if (this == pPriorCard)
-    vDebugPoint();
-
-  if (678 == md__SeqNo) {
-    pPriorCard = this;
-    vDebugPoint();
-  }
+//  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
+//         md__SeqNo,this,aCK[m_eCard],m_sValue.szStz(),md_Bearing);
+//
+//  if (this == pPriorCard)
+//    vDebugPoint();
+//
+//  if (678 == md__SeqNo) {
+//    pPriorCard = this;
+//    vDebugPoint();
+//  }
 
   gapCard[md__SeqNo] = nullptr;
 

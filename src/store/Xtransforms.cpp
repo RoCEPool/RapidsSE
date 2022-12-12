@@ -3965,6 +3965,9 @@ void Xtransforms::vST00_Begin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  if (! m_pCardCtl->bBoardPrint())
+    return;
+
   char* azSeparator = (char*)
       "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
       "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
