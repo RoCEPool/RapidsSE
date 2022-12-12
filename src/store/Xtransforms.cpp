@@ -78,11 +78,6 @@ void Xtransforms::vOptimiseLoop(void) {
       bOpts = true;
     }
 
-    if (bOT_Ely_Sort_Limit()) {
-      m_eOptTranforms[iOpts++] = OT_ELY_SORT_LIMIT;
-      bOpts = true;
-    }
-
     if (bOT_Min_Groupby()) {
       m_eOptTranforms[iOpts++] = OT_MIN_GROUPBY;
       bOpts = true;
@@ -163,10 +158,6 @@ void Xtransforms::vOptimiseLoop(void) {
 
       case OT_ELY_PROJECTIONS:
         vOT_Ely_Projections();
-        break;
-
-      case OT_ELY_SORT_LIMIT:
-        vOT_Ely_Sort_Limit();
         break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -326,21 +317,6 @@ bool Xtransforms::bOT_Ely_Projections(void) {
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOT_Ely_Projections(void) {
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtransforms::bOT_Ely_Sort_Limit(void) {
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtransforms::vOT_Ely_Sort_Limit(void) {
 
 }
 
