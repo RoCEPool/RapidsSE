@@ -37,7 +37,7 @@
   i8 iHeadSize = aCombinedT->m_iHeadSize;
 
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
-struct HeadLine_T* aHeadLineSav = aHeadLine;
+  struct HeadLine_T* aHeadLineSav = aHeadLine;
   enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
