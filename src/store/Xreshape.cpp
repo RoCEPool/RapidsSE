@@ -492,10 +492,8 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  // todo: need a stream?
-
-  G.p_stream = _pCard_Stream(G.p_sort->pAppendNewCardTail(CK_STREAM));
-  G.p_stmOrdList = _pCard_StmOrdList(G.p_sort->pAppendNewCardTail(CK_STMORDLIST));
+  G.p_stream = G.p_sort->pSub_stream();
+  G.p_stmOrdList = _pCard_StmOrdList(G.p_stream->pAppendNewCardTail(CK_STMORDLIST));
 
   CardIter xCI(G.p_sbyElist);
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {

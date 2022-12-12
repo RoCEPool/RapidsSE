@@ -949,6 +949,23 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All Sort
+
+  G_vRestart();
+  vStreamAnalysisReset();
+
+  while (G_bEachMain(CK_SORT)) {
+
+    if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
+      G.p_stream = _pCard_Stream(G.p_stream->pDupCardAndSubCards());
+      G.p_sort->vAppend(G.p_stream);
+    }
+  }
+
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Derive Ordinal Range For All Table Stream
 
   G_vRestart();
