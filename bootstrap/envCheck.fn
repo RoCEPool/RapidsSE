@@ -74,6 +74,10 @@ function validateInstallationEnvironment() {
   # Check that the number of threads is acceptable.
   validateThreads
 
+  # Check that the storage dirs can be created (if not already) on each node,
+  # and that it is writable.
+  validateStorageDirsIsWritable
+
   # Check that the installation dir can be created (if not already) on each node,
   # and that it is writable.
   validateInstallDirIsWritable
@@ -1079,6 +1083,117 @@ function validateThreads() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the storage disk directories on each node can be created
+## and is writable. Exits out if not.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateStorageDirsIsWritable() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local diskPaths
+  local remoteCmd
+  local response
+
+  declare -a sshCmd=()
+  declare -A errors
+
+  for nodeName in "${nodeNames[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    diskPaths="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DISK_KEY}")"
+
+    # diskPaths above is a string. Let's turn it into an array based on : delimiter
+    IFS=: read -r -d '' -a diskpathsArray < <(printf '%s:\0' "$diskPaths")
+
+    for dirPath in "${diskpathsArray[@]}"
+    do
+      remoteCmd="$(cat <<-EOF
+if [ -d "${dirPath}" ]; then
+if [ ! -w "${dirPath}" ]; then
+echo "Storage disk directory exists (${dirPath}) but is not writable.";
+false;
+exit;
+fi
+else
+isWritable=0
+dname="${dirPath}"
+
+while [ "\${dname}" != "/"  ]; do
+if [[ -d "\${dname}" && -w "\${dname}" ]]; then
+isWritable=1
+break
+fi
+
+if [ "\$(dirname "\${dname}")" = "/" ]; then
+break;
+fi
+
+dname="\$(dirname "\${dname}")"
+done
+
+if [ "\${isWritable}" -ne 1 ]; then
+echo "Storage disk directory (${dirPath}) cannot be created because the parent directory (\${dname}) is not writable.";
+false;
+exit;
+fi
+fi
+true;
+EOF
+      )"
+      sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'" )
+
+      debugPrint "About to validate the storage disk directory on node ${nodeName} with the command: ${sshCmd[*]}"
+
+      if ! response="$("${sshCmd[@]}")"; then
+        debugPrint "Storage disk directory validation failed: ${response}"
+
+        if [ -z "${response:-}" ]; then
+          response="<no error returned>"
+        fi
+
+        # Save the response and the node name
+        errors["${nodeName}"]="${response}"
+      fi
+    done
+  done
+
+  ## Be careful with checking associative arrays. They may be declared but
+  ## can be unset. And with set -b (unbound variables) this can cause issues.
+  ## Reference here:
+  ## https://stackoverflow.com/questions/26925905/in-bash-test-if-associative-array-is-declared
+  ## Also note that the "-v" operator seems to work differently on CentOS 7 compared
+  ## to Ubuntu 20 when applied to arrays. So we are using the parameter substitution
+  ## when the variable is null trick below to avoid unbound variable problems with arrays.
+
+  if [ "${errors[*]:-x}" != "x" ] && [ "${#errors[@]}" -gt 0 ]; then
+    local errMsg="Validation of the storage disk directory failed:"
+
+    for nodeName in "${!errors[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
+    done
+
+    echo ""
+    errorExit "${errMsg}"
+  fi
+
+  debugPrint "Successfully validated that the storage disk directories are writable."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the installation directory on each node can be created 
 ## and is writable. Exits out if not.
 ## Params:
@@ -1110,7 +1225,7 @@ function validateInstallDirIsWritable() {
     dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     remoteCmd="$(cat <<-EOF
-			if [ -d "${dir}" ]; then 
+			if [ -d "${dir}" ]; then
 				if [ ! -w "${dir}" ]; then
 					echo "Installation directory exists (${dir}) but is not writable.";
 					false;

@@ -59,6 +59,9 @@ void Step::vUnloadToDisk(void)
   if( ! Dir::bExists(sDirPath.szStz()))
     Dir::bMake(sDirPath.szStz());
 
+  // todo: Arjun - Check if there is enough space on disk for unload operations
+
+
   s256 sFilePath = ""_Stz;
 
   sFilePath.vCatSprint("%ssaveFile_%s_%lld"_Stz,
