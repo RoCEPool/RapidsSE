@@ -2,6 +2,7 @@
 /* main.cpp -- main entry                                                     */
 /*============================================================================*/
 
+#include <sys/time.h>
 #include "BASE.h"
 
 #include "Version.h"
@@ -48,11 +49,108 @@ extern i8   giProgressPoint;
 #include "TagConstants.h"
 #include "RowBuffer.hpp"
 
+#ifdef WITH_APPLE
+  #define FN_OPT optnone
+#elif defined(WITH_LINUX)
+  #define FN_OPT optimize("O0")
+#endif
+
+static const i8 nIterations = 1000000000;
+
+i8 __attribute__((FN_OPT)) iTest_rdtscp()
+{
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+
+  #pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = Hardware::iReadTsc();
+    ++iActualIters;
+  }
+
+  return iActualIters;
+}
+
+i8 __attribute__((FN_OPT)) iTest_clock_gettime()
+{
+  struct timespec ts;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+
+  #pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = clock_gettime(CLOCK_MONOTONIC, &ts);
+    ++iActualIters;
+  }
+
+  return iActualIters;
+}
+
+i8 __attribute__((FN_OPT)) iTest_gettimeofday()
+{
+  struct timeval tv;
+  volatile i8 iVal;
+  i8 iActualIters = 0;
+
+  #pragma unroll
+  for (i8 i=0; i<nIterations; i++) {
+    iVal = gettimeofday(&tv, nullptr);
+    ++iActualIters;
+  }
+
+  return iActualIters;
+}
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
+
+  // Test code for measuring the calls to:
+  //  (1) rdtscp
+  //  (2) clock_gettime()
+  //  (3) gettimeofday()
+
+  if (argc != 2) {
+    printf("Num of arguments must be 2\n");
+    exit(1);
+  }
+
+  i8 iActualIters = 0;
+  i8 iStartTime;
+  i8 iEndTime;
+  volatile i8 iVal;
+  struct timespec ts;
+
+  if (strcmp(argv[1], "rdtscp") == 0) {
+    iStartTime = Hardware::iReadClock();
+    iActualIters = iTest_rdtscp();
+    iEndTime = Hardware::iReadClock();
+
+  } else if (strcmp(argv[1], "clock_gettime") == 0) {
+    iStartTime = Hardware::iReadClock();
+    iActualIters = iTest_clock_gettime();
+    iEndTime = Hardware::iReadClock();
+
+
+  } else if (strcmp(argv[1], "gettimeofday") == 0) {
+    iStartTime = Hardware::iReadClock();
+    iActualIters = iTest_gettimeofday();
+    iEndTime = Hardware::iReadClock();
+
+  } else {
+    printf("Invalid argument. Valid arguments are: rdtscp, clock_gettime and gettimeofday\n");
+    exit(1);
+  }
+
+  i8 iTimeTaken = iEndTime - iStartTime;
+  d8 fTimePerCall = (d8) iTimeTaken / (d8) iActualIters;
+
+  printf("%lld iterations of %s took %lld nanoseconds (%.1f ns / call)\n",
+         nIterations, argv[1], iTimeTaken, fTimePerCall);
+
+  exit(0);
 
   // ********************************************************************************
   // NOTE: Till initial command line options are parsed and trace file is
