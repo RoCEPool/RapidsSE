@@ -226,7 +226,7 @@ void Weaver::vOp(Card* pCard)
     case CK_WHERE:         vArgWhere       (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
-      vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+      vTrace("  FÏskipping %s\n"_Stz,aCK[eCard]);
       return;
   }
 

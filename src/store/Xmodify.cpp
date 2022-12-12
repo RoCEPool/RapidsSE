@@ -1059,7 +1059,6 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
 
   // literals are considered within scope
   if (! T_bValue_IsTableColOrdinal(szTerm)) {
-    //p_term->vDump();
     return true;
   }
 

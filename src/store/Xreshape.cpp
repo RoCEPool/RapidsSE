@@ -329,8 +329,6 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  //G.p_gbyAgg->vDump();
-
   G.p_stream = G.p_gbyAgg->pSub_stream();
   if (! G.p_stream) {
     G_vAppendNewChild(G.p_gbyAgg,CK_STREAM);
@@ -387,7 +385,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   Stz* szTblColOdn_r = E_szEBound_Get_tblColOdn(G.p_eBound);
   if (! szTblColOdn_r)
     return;
-  vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
+  //vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
 
   // find the stmCol_l == szTblColOdn_r in prior stream stmColList_l
   i8 i_StmCol_l;
@@ -460,9 +458,6 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
 void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  G.p_stmOrdList->vDump();
-  G.p_project->vDump();
 
   G.p_projElist = G.p_project->pSub_projElist();
   G.p_stream = G.p_project->pSub_stream();
@@ -806,7 +801,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
     if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
@@ -1016,36 +1011,10 @@ bool Xreshape::R_bUTE_FindAndMarkSubQryCall(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  auto bLambdaFn_cmpPred = [this,&bFoundCall](Card* pCard)
-//  {
-//    G.p_cmpPred = _pCard_CmpPred(pCard);
-//    m_sSqyRO  =  G.p_cmpPred->szValue();
-//
-//    m_pTerm_0 = _pCard_Term(G.p_cmpPred->pGet(0));
-//    m_sSqyArg = m_pTerm_0->szValue();
-//
-//    m_pTerm_1 = _pCard_Term(G.p_cmpPred->pGet(1));
-//    m_sSqyNm = m_pTerm_1->szValue();
-//
-//    bFoundCall = true;
-//
-//    G.p_cmpPred->vMark1(MARK_AT);
-//
-//    return C_CONTINUE_RECURSION;
-//  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  G.p_boolCalc->vDump();
 
   G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_roPred);
   if (bFoundCall)
     return true;
-
-//  G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_cmpPred);
-//  if (bFoundCall)
-//    return true;
-
 
   return bFoundCall;
 }
@@ -1107,7 +1076,6 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
 
     if ((m_pTerm_corrPred = E_pCmpPred_Extract_Arg_term(static_cast<Card_CmpPred*>(p_pred)))) {
       bIsCorrPred = true;
-      m_pTerm_corrPred->vDump();
     }
 
     if (bIsCorrPred) {
@@ -1123,12 +1091,6 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
   G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
   bool bIgnore = M_bPredRecursive(G.p_PRED,bMarkCorrPred);
-
-
-  m_pTerm_corrPred->vDump();
-//  G.p_stream->vDump();
-//  G.p_filter->vDump();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1161,7 +1123,6 @@ void Xreshape::R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void)
 
   G.p_stmCol->vMark1(MARK_AT);
   G.p_stmCol->Y_vSet(P_CorrStmCol);
-  G.p_stmCol->vDump();
 }
 
 
@@ -1279,8 +1240,6 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
 void Xreshape::R_vUTE_Push_foldExpr_Into_aggElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  G.p_foldElist->vDump();
 
   G_vNewMember(CK_EXPR);
 
@@ -1665,10 +1624,6 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
 
   if (! G_bResolveCardWithSub(CK_GBYAGG, CK_AGGELIST, G.i_MainCard))
     return;
-
-  G.p_gbyAgg->vDump();
-
-  G.p_aggElist->vDump();
 
   G_vNewMember(CK_PROJECT);
   G.pDeck->vAppend(G.p_project);

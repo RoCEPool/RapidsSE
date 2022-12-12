@@ -18,7 +18,6 @@ namespace STORE
   {
   protected:
     Bench*      m_pBench;
-    CardCtl*    m_pCardCtl;
 
     i8          m_iXform;
     i8          m_iTrace;

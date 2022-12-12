@@ -1145,8 +1145,6 @@ void Xtransforms::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
 
         SubQuery* pSubQuery = m_pBench->pGetBoard(1)->pSubQuery();
 
-        //G.p_paramList->vDump();
-
         // TODO: hack the number of params... fix
         i8 nParams = 1; //G.p_paramList->nChildCards();
 
@@ -1419,8 +1417,6 @@ void Xtransforms::vS34_T10_AtMark_where_pred_Wrt_table(void)
   vPrintBoard(__LINE__);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    G.p_boolCalc->vDump();
-
     M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
   }
 
@@ -1927,10 +1923,8 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(voi
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
   R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc();
   RASSERT(m_pTerm_corrPred); // eg $d.2 (L_PARTKEY)
-  m_pTerm_corrPred->vDump();
   R_vUTE_Find_stmCol_Definition_Of_Correlation_Column();
   RASSERT(G.p_stmCol);       // eg L_PARTKEY
-  G.p_stmCol->vDump();
 
 
   // T A A A P F T T T W A A A     //
@@ -3334,8 +3328,8 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
     G.p_keyExists      = G.p_table->pSub_keyExists();
     G.p_keyNotExists   = G.p_table->pSub_keyNotExists();
 
-    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
-           G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());
+//    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
+//           G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());
 
     RASSERT(! G.p_indexJoin);
     vR_S75_T10_Morph_table_To_EEop_v2();

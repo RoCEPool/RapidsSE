@@ -294,8 +294,6 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  //M.p_table->vDump();
-
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
   RASSERT(1 == p_boolCalc->nChildCards());
 
@@ -317,7 +315,6 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
       return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
-    p_cmpPred->vDump();
 
     //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
     if (!T_bCmpPred_MaybeBounds_v2(p_cmpPred,p_table,bParamAllowedInBounds))
@@ -345,197 +342,6 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
   bool bIgnore = M_bPredRecursive(p_pred_ofFilter_ROOT, bLambdaFn);
 
 }
-/*----------------------------------------------------------------------------*/
-//void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
-//                                          Card_Filter* p_filter,
-//                                          bool bParamAllowedInBounds)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-//
-//  //M.p_table->vDump();
-//
-//  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-//  RASSERT(1 == p_boolCalc->nChildCards());
-//
-//  Card_PRED* p_pred_ofFilter_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-//
-//  // TODO: this is a hack to put bounds under one and only one index
-//
-//  Card_IndexList* p_indexList = p_table->pSub_indexList();
-//  Card_Index* p_index = p_table->pSub_index();
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  auto bLambdaFn = [this,p_table,p_index,bParamAllowedInBounds](Card_PRED* p_pred_Of_filter, bool bUpwards)
-//  {
-//    if (bUpwards)
-//      return C_CONTINUE_RECURSION;
-//
-//    if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
-//      return C_CONTINUE_RECURSION;
-//
-//    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
-//    p_cmpPred->vDump();
-//
-//    //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
-//    if (!T_bCmpPred_MaybeBounds_v2(p_cmpPred,p_table,bParamAllowedInBounds))
-//      return C_CONTINUE_RECURSION;
-//
-//    // - - - -
-//
-//    char cTblSyn = p_table->cValue();
-//
-//    Card_Bounds* p_bounds = p_table->pSub_bounds();
-//    if (! p_bounds)
-//      p_bounds = new Card_Bounds;
-//    Card_Stream* p_stream = p_table->pSub_stream();
-//    //p_table->vInsertAfter(p_bounds, p_stream);
-//    p_index->vAppend(p_bounds);
-//
-//    Card_Term* p_term = new Card_Term("BOUND"_Stz);
-//    p_bounds->vAppend(p_term);
-//
-//    // - - - -
-//
-//    // one of {pCard_term_0,pCard_term_1} is $In
-//
-//    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-//    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-//
-//    if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
-//      char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
-//      if (cTblSyn_term_0 == cTblSyn) {
-//        p_term = new Card_Term("$I1"_Stz);
-//        p_bounds->vAppend(p_term);
-//        p_term = new Card_Term(pTerm_1->sz());
-//        p_bounds->vAppend(p_term);
-//      }
-//      else
-//      if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-//        char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
-//        if (cTblSyn_term_1 == cTblSyn) {
-//          p_term = new Card_Term("$I1"_Stz);
-//          p_bounds->vAppend(p_term);
-//          p_term = new Card_Term(pTerm_0->sz());
-//          p_bounds->vAppend(p_term);
-//        } else {
-//          NEVER_REACH
-//        }
-//      }
-//    }
-//    else
-//    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-//      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
-//      if (cTblSyn_term_1 == cTblSyn) {
-//        p_term = new Card_Term("$I1"_Stz);
-//        p_bounds->vAppend(p_term);
-//        p_term = new Card_Term(pTerm_0->sz());
-//        p_bounds->vAppend(p_term);
-//      }
-//      else {
-//        NEVER_REACH
-//      }
-//    }
-//    else {
-//      NEVER_REACH
-//    }
-//
-//    p_term = new Card_Term(p_cmpPred->sz());
-//    p_bounds->vAppend(p_term);
-//
-//    p_cmpPred->vMark1(MARK_UP);
-//
-//    return C_CONTINUE_RECURSION;
-//  };
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  bool bIgnore = M_bPredRecursive(p_pred_ofFilter_ROOT, bLambdaFn);
-//
-//}
-/*----------------------------------------------------------------------------*/
-//void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table, Card_Filter* p_filter)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-//
-//  //M.p_table->vDump();
-//
-//  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-//  RASSERT(1 == p_boolCalc->nChildCards());
-//
-//  Card_PRED* p_pred_ofFilter_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  auto bLambdaFn = [this,p_table](Card_PRED* p_pred_Of_filter, bool bUpwards)
-//  {
-//    if (bUpwards)
-//      return C_TERMINATE_RECURSION;
-//
-//    if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
-//      return C_CONTINUE_RECURSION;
-//
-//    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
-//
-//    Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-//    Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-//
-//    if (! T_bValue_IsTableColOrdinal(pTerm_0->szValue()) ||
-//        ! T_bValue_IsTableColOrdinal(pTerm_1->szValue()))
-//      return C_CONTINUE_RECURSION;
-//
-//    // - - - -
-//
-//    Card_Bounds* p_bounds = p_table->pSub_bounds();
-//    if (! p_bounds)
-//      p_bounds = new Card_Bounds;
-//    Card_Stream* p_stream = p_table->pSub_stream();
-//    p_table->vInsertAfter(p_bounds, p_stream);
-//
-//    Card_Term* p_term = new Card_Term("BOUND"_Stz);
-//    p_bounds->vAppend(p_term);
-//
-//    // - - - -
-//
-//    // one of {pCard_term_0,pCard_term_1} is $In
-//
-//    i8 iStreamOdnLo = p_stream->Y_iGet(P_OdnLo);
-//    i8 iStreamOdnHi = p_stream->Y_iGet(P_OdnHi);
-//
-//    i8 i_iOdnLo_0 = E_iTerm_StreamColOdn(pTerm_0);
-//    i8 i_iOdnLo_1 = E_iTerm_StreamColOdn(pTerm_1);
-//
-//    if (i_iOdnLo_0 >= iStreamOdnLo && i_iOdnLo_0 <= iStreamOdnHi) {
-//      p_term = new Card_Term("$I1"_Stz);
-//      p_bounds->vAppend(p_term);
-//      p_term = new Card_Term(pTerm_1->sz());
-//      p_bounds->vAppend(p_term);
-//    }
-//    else
-//    if (i_iOdnLo_1 >= iStreamOdnLo && i_iOdnLo_1 <= iStreamOdnHi) {
-//      p_term = new Card_Term("$I1"_Stz);
-//      p_bounds->vAppend(p_term);
-//      p_term = new Card_Term(pTerm_0->sz());
-//      p_bounds->vAppend(p_term);
-//    }
-//    else {
-//      NEVER_REACH
-//    }
-//
-//    p_term = new Card_Term(p_cmpPred->sz());
-//    p_bounds->vAppend(p_term);
-//
-//    p_cmpPred->vMark1(MARK_UP);
-//
-//    return C_CONTINUE_RECURSION;
-//  };
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  bool bIgnore = M_bPredRecursive(p_pred_ofFilter_ROOT, bLambdaFn);
-//
-//}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -597,14 +403,12 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   //G_vNewMember(CK_BOOLCALC);
   Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
 
-  p_rpnCalc->vDump();
-
   while (p_rpnCalc->nChildCards()) {
     Card_Term* p_term_next = _pCard_Term(p_rpnCalc->pPop());
 
     eTE eTerm_next = E_eTerm_TermEval(p_term_next);
 
-    vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
+    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
 
     switch (eTerm_next) {
 
@@ -734,8 +538,6 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
     }
   }
 
-  p_boolCalc->vDump();
-
   if (p_TermSeries->nItems()) {
     RASSERT(0 == p_boolCalc->nChildCards());
     p_boolCalc->vDump(0,"boolCalc"_Stz);
@@ -752,159 +554,6 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   return p_boolCalc;
 }
-/*----------------------------------------------------------------------------*/
-//Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-//
-//  Stz* szSqyNm;
-//  Card_AndPred* p_andPred = nullptr;
-//  Card_BolPred* p_bolPred = nullptr;
-//  Card_CmpPred* p_cmpPred = nullptr;
-//  Card_RoPred*  p_roPred  = nullptr;
-//  Card_OrPred*  p_orPred  = nullptr;
-//
-//  Card*  p_childA  = nullptr;
-//  Card*  p_childB  = nullptr;
-//
-//  bool bSawSqy = false;
-//
-//  Card_Term*    p_subQueryNm = nullptr;
-//
-//  Card_SubSet*  p_TermSeries = new Card_SubSet;
-//
-//  //G_vNewMember(CK_BOOLCALC);
-//  Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
-//
-//  p_rpnCalc->vDump();
-//
-//  while (p_rpnCalc->nChildCards()) {
-//    Card_Term* p_term_next = _pCard_Term(p_rpnCalc->pPop());
-//
-//    eTE eTerm_next = E_eTerm_TermEval(p_term_next);
-//
-//    vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
-//
-//    switch (eTerm_next) {
-//
-//      case TE_AND:
-//        // <boolCalc> = <and>/<boolCalc>
-//        p_andPred = new Card_AndPred;
-//        //p_andPred->vTransferChildren(p_boolCalc);
-//        p_boolCalc->vPush(p_andPred);
-//        p_andPred = nullptr;
-//        DELETE_CARD(p_term_next);
-//        p_boolCalc->vDump(0,"AND"_Stz);
-//        break;
-//
-//      case TE_OR:
-//        // <boolCalc> = <or>/<boolCalc>
-//        p_orPred = new Card_OrPred;
-//        p_orPred->vTransferChildren(p_boolCalc);
-//        p_boolCalc->vPush(p_orPred);
-//        p_orPred = nullptr;
-//        DELETE_CARD(p_term_next);
-//        p_boolCalc->vDump(0,"OR"_Stz);
-//        break;
-//
-//      case TE_COMPARE:
-//        // <boolCalc> = <cmpPred><termSeries><boolCalc>
-//        RASSERT(p_TermSeries->nChildCards() > 0);
-////        if (bSawSqy) {
-////          p_roPred = new Card_RoPred;
-////          p_roPred->vValue(p_term_next->sz());
-////          p_roPred->vTransferChildren(p_TermSeries);
-////          //p_boolCalc->vPush(p_roPred);
-////          p_boolCalc->vAppend(p_roPred);
-////          p_roPred = nullptr;
-////        }
-////        else {
-//        p_cmpPred = new Card_CmpPred;
-//        p_cmpPred->vValue(p_term_next->sz());
-//        p_cmpPred->vTransferChildren(p_TermSeries);
-//        if (T_bCmpPred_Contains_Sqy_Call(p_cmpPred))
-//          p_cmpPred->vCard(CK_ROPRED);
-//        //p_boolCalc->vPush(p_cmpPred);
-//        p_boolCalc->vAppend(p_cmpPred);
-//        p_cmpPred = nullptr;
-////        }
-//        DELETE_CARD(p_term_next);
-//        bSawSqy = false;
-//        p_boolCalc->vDump(0,"COMPARE"_Stz);
-//        break;
-//
-//      case TE_EXISTS:
-//      case TE_NOTEXISTS:
-//        // <boolCalc> = <exists><boolCalc>
-//        p_roPred = new Card_RoPred;
-//        p_roPred->vValue(p_term_next->sz());
-//        p_roPred->vTransferChildren(p_TermSeries);
-//        p_boolCalc->vPush(p_roPred);
-//        p_roPred = nullptr;
-//        DELETE_CARD(p_term_next);
-//        p_boolCalc->vDump(0,"EXISTS"_Stz);
-//        break;
-//
-//      case TE_IN:
-//      case TE_NOTIN:
-//        // <boolCalc> = <in><boolCalc>
-//        p_roPred = new Card_RoPred;
-//        p_roPred->vValue(p_term_next->sz());
-//        p_roPred->vTransferChildren(p_TermSeries);
-//        p_boolCalc->vAppend(p_roPred);
-//        p_roPred = nullptr;
-//        DELETE_CARD(p_term_next);
-//        p_boolCalc->vDump(0,"IN"_Stz);
-//        break;
-//
-//      case TE_BOOLFN:
-//        p_bolPred = new Card_BolPred;
-//        p_bolPred->vValue(p_term_next->sz());
-//        p_bolPred->vTransferChildren(p_TermSeries);
-//        p_boolCalc->vAppend(p_bolPred);
-//        p_bolPred = nullptr;
-//        DELETE_CARD(p_term_next);
-//        p_boolCalc->vDump(0,"BOOLFN"_Stz);
-//        break;
-//
-//        // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//        // <termSeries>
-//
-//      case TE_EXECUTE:
-//      DELETE_CARD(p_term_next);
-//        break;
-//
-//      case TE_OTHER:
-//        if (StrLib::bBeginsWith(p_term_next->szValue()->azChar(), "__"))
-//          bSawSqy = true;
-//        p_TermSeries->vAppend(p_term_next);
-//        p_TermSeries->vDump(0,"TERM_SERIES"_Stz);
-//        break;
-//
-//      default:
-//        NEVER_REACH;
-//        break;
-//    }
-//  }
-//
-//  p_boolCalc->vDump();
-//
-//  if (p_TermSeries->nItems()) {
-//    RASSERT(0 == p_boolCalc->nChildCards());
-//    p_boolCalc->vDump(0,"boolCalc"_Stz);
-//    p_TermSeries->vDump(0,"termSeries"_Stz);
-//
-//    p_bolPred = new Card_BolPred;
-//    p_bolPred->vTransferChildren(p_TermSeries);
-//
-//    p_boolCalc->vAppend(p_bolPred);
-//  }
-//
-//  RASSERT(0 == p_TermSeries->nChildCards());
-//  delete p_TermSeries;
-//
-//  return p_boolCalc;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* create a filter from/duplicating given PRED                                */

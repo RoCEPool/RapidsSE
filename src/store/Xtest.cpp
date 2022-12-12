@@ -409,8 +409,6 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-  p_cmpPred->vDump();
-
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
     // + term_0 is $c.n
 
@@ -534,12 +532,8 @@ bool Xtest::T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_b
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  p_cmpPred->vDump();
-
   CardIter xCI(p_bounds);
   while (Card* p_bound = xCI.pEachChild()) {
-
-    p_bound->vDump();
 
     Card_Term* p_term_0 = _pCard_Term(p_bound->pGetChild(0));
     //Stz* szBound = p_term_0->szValue();
@@ -573,9 +567,6 @@ bool Xtest::T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_b
 bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  //this->vDump();
-  //p_PredCmp_arg->vDump();
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   char cTableSyn_this_0 = E_cColumnRef_TableSyn(p_columnRef_this_0);
@@ -1117,7 +1108,6 @@ bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_ind
 
   ASSERT(T_bValue_IsTableColOrdinal(szTblColOdn));
 
-  p_index->vDump();
   Card_IdxColList* p_idxColList = p_index->pSub_idxColList();
 
   CardIter xCI(p_idxColList);
