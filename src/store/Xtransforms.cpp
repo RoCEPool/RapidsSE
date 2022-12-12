@@ -401,6 +401,16 @@ void Xtransforms::vOT_Otm_Calculations(void) {
 /*----------------------------------------------------------------------------*/
 bool Xtransforms::bOT_Ppn_Projections(void) {
 
+  // Query2, Query10
+
+  // Notes:
+  // If a query has an aggregate and either :
+  //   the group by columns don't include the columns in the select list
+  //   or due to an optimisation OT_MIN_GROUPBY the columns are reduced from
+  //     the group by list
+  // then we need to rejoin with the particular table/tables and get the required
+  // selected columns
+
   return false;
 }
 
