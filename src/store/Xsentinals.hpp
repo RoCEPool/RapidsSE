@@ -107,6 +107,7 @@ namespace STORE
     Card_Note *             p_note;
     Card_NotPred *          p_notPred;
     Card_NParmCols *        p_nParmCols;
+    Card_Order *            p_order;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;
@@ -134,7 +135,6 @@ namespace STORE
     Card_StmColList *       p_stmColList;
     Card_StmColNm *         p_stmColNm;
     Card_StmColOdn *        p_stmColOdn;
-    Card_Order *       p_stmOrdList;
     Card_StmOrdOdn *        p_stmOrdOdn;
     Card_Stream *           p_stream;
     Card_SubSet *           p_subSet;

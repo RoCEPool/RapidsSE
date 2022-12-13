@@ -2637,6 +2637,19 @@ Card_NParmCols* Card::pSub_nParmCols(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Order.hpp"
+Card_Order* Card::pSub_order(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Order* p_order =
+      _pCard_Order(pFindSubCard(CK_ORDER));
+  return p_order;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_PmzWhere.hpp"
 Card_PmzWhere* Card::pSub_pmzWhere(void)
 {
@@ -2801,19 +2814,6 @@ Card_StmColOdn* Card::pSub_stmColOdn(void)
   Card_StmColOdn* p_streamColOrd =
       _pCard_StmColOdn(pFindSubCard(CK_STMCOLODN));
   return p_streamColOrd;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Order.hpp"
-Card_Order* Card::pSub_stmOrdList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Order* p_order =
-      _pCard_Order(pFindSubCard(CK_ORDER));
-  return p_order;
 }
 
 /*----------------------------------------------------------------------------*/

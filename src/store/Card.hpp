@@ -94,6 +94,7 @@ namespace STORE
   class Card_NParmCols;
 
   class Card_OrdAgg;
+  class Card_Order;
   class Card_OrPred;
   class Card_ObyElist;
 
@@ -120,7 +121,6 @@ namespace STORE
   class Card_StmColList;
   class Card_StmColNm;
   class Card_StmColOdn;
-  class Card_Order;
   class Card_StmOrdOdn;
   class Card_SubSet;
 
@@ -456,6 +456,7 @@ namespace STORE
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
     Card_NParmCols*     pSub_nParmCols(void);
+    Card_Order*         pSub_order(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_Reason*        pSub_reason(void);
@@ -469,7 +470,6 @@ namespace STORE
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
-    Card_Order*    pSub_stmOrdList(void);
     Card_StmOrdOdn*     pSub_stmOrdOdn(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);

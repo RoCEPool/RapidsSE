@@ -573,6 +573,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_note             = nullptr;
   G.p_notPred          = nullptr;
   G.p_nParmCols        = nullptr;
+  G.p_order            = nullptr;
   G.p_param            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
@@ -599,7 +600,6 @@ void Xgearing::G_vClearMembers(void)
   G.p_stmColList       = nullptr;
   G.p_stmColNm         = nullptr;
   G.p_stmColOdn        = nullptr;
-  G.p_stmOrdList       = nullptr;
   G.p_stmOrdOdn        = nullptr;
   G.p_stream           = nullptr;
   G.p_subSet           = nullptr;
@@ -1162,6 +1162,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_NOTE:             return G.p_note;
     case CK_NOTPRED:          return G.p_notPred;
     case CK_NPARMCOLS:        return G.p_nParmCols;
+    case CK_ORDER:            return G.p_order;
     case CK_PARAM:            return G.p_param;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
@@ -1187,8 +1188,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_STMCOLLIST:       return G.p_stmColList;
     case CK_STMCOLNM:         return G.p_stmColNm;
     case CK_STMCOLODN:        return G.p_stmColOdn;
-    case CK_ORDER:       return G.p_stmOrdList;
-    case CK_STMORDODN:        return G.p_stmOrdOdn;
+   case CK_STMORDODN:        return G.p_stmOrdOdn;
     case CK_STREAM:           return G.p_stream;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
@@ -2048,6 +2048,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard; break;
     case CK_NPARMCOLS:        *((Card**)&G.p_nParmCols)        = pCard; break;
+    case CK_ORDER:            *((Card**)&G.p_order)            = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
@@ -2073,7 +2074,6 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOLLIST:       *((Card**)&G.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
     case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
-    case CK_ORDER: *((Card**)&G.p_stmOrdList)       = pCard; break;
     case CK_STMORDODN:        *((Card**)&G.p_stmOrdOdn)        = pCard; break;
     case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
@@ -2181,6 +2181,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_NOTE:             return "G.p_note"_Stz;
     case CK_NOTPRED:          return "G.p_notPred"_Stz;
     case CK_NPARMCOLS:        return "G.p_nParmCols"_Stz;
+    case CK_ORDER:            return "G.p_order"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
@@ -2206,7 +2207,6 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_STMCOLLIST:       return "G.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
     case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
-    case CK_ORDER:       return "G.p_stmOrdList"_Stz;
     case CK_STMORDODN:        return "G.p_stmOrdOdn"_Stz;
     case CK_STREAM:           return "G.p_stream"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;

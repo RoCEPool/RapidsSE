@@ -334,9 +334,9 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
     G_vAppendNewChild(G.p_gbyAgg,CK_STREAM);
   }
 
-  if ((G.p_stmOrdList = G.p_stream->pSub_stmOrdList())) {
-    G.p_stream->vRemoveChild(G.p_stmOrdList);
-    DELETE_CARD(G.p_stmOrdList);
+  if ((G.p_order = G.p_stream->pSub_order())) {
+    G.p_stream->vRemoveChild(G.p_order);
+    DELETE_CARD(G.p_order);
   }
 
   G_vAppendNewChild(G.p_stream, CK_ORDER);
@@ -348,7 +348,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
     if (C_UNKNOWN == i_Key)
       continue;
 
-    G_vAppendNewChild(G.p_stmOrdList,CK_STMORDODN);
+    G_vAppendNewChild(G.p_order, CK_STMORDODN);
 
     G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,xCI.i_Child()+1);
   }
@@ -363,8 +363,8 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
 
   RASSERT(G.p_stmColList);
   Card_StmColList* p_stmColList_l = G.p_stmColList;
-  RASSERT(G.p_stmOrdList);
-  Card_Order* p_stmOrdList_l = G.p_stmOrdList;
+  RASSERT(G.p_order);
+  Card_Order* p_stmOrdList_l = G.p_order;
 
   RASSERT(G.p_indexList);
   RASSERT(G.p_stream);
@@ -429,7 +429,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
   if (! G.p_stmColList)
     return;
 
-  G.p_stmOrdList = nullptr;
+  G.p_order = nullptr;
 
   i8 i_StmCol;
   G.p_index = G.p_indexScan->pSub_index();
@@ -442,12 +442,12 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
     if (! G.p_stmCol)
       return;
 
-    if (! G.p_stmOrdList) {
-      G.p_stmOrdList = new Card_Order;
-      G.p_stream->vAppend(G.p_stmOrdList);
+    if (! G.p_order) {
+      G.p_order = new Card_Order;
+      G.p_stream->vAppend(G.p_order);
     }
 
-    G_vAppendNewChild(G.p_stmOrdList,CK_STMORDODN);
+    G_vAppendNewChild(G.p_order, CK_STMORDODN);
     G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,i_StmCol+1);
   }
 }
@@ -466,7 +466,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
   Card_Order* p_stmOrdList_project = nullptr;
 
   i8 nLeading = 0;
-  CardIter xCI(G.p_stmOrdList);
+  CardIter xCI(G.p_order);
   while ((G.p_stmOrdOdn = _pCard_StmOrdOdn(xCI.pEachChild()))) {
     i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_stmOrdOdn);
     if (C_UNKNOWN != i_Expr) {
@@ -491,7 +491,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G.p_stream = G.p_sort->pSub_stream();
-  G.p_stmOrdList = _pCard_Order(G.p_stream->pAppendNewCardTail(CK_ORDER));
+  G.p_order = _pCard_Order(G.p_stream->pAppendNewCardTail(CK_ORDER));
 
   CardIter xCI(G.p_sbyElist);
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
@@ -502,7 +502,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
 
     Stz* szStmColOdn = G.p_term->szValue();
     Stz* szStmOrdOdn = szStmColOdn;
-    G.p_stmOrdList->vAppendNewCardTail(CK_STMORDODN,szStmOrdOdn);
+    G.p_order->vAppendNewCardTail(CK_STMORDODN, szStmOrdOdn);
   }
 }
 
@@ -527,7 +527,7 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
     G.p_stmColList = G.p_indexScan->pSub_stmColList();
-    G.p_stmOrdList = G.p_indexScan->pSub_stmOrdList();
+    G.p_order = G.p_indexScan->pSub_order();
 
     for (;;) {
       if (! G_bEachMainWith2Sub(CK_INDEXJOIN,CK_INDEXLIST,CK_STREAM))
@@ -570,10 +570,10 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
     if (!G.p_MainCard->bIsCard(CK_GBYAGG))
       continue;
 
-    G.p_stmOrdList = G.p_gbyAgg->pSub_stmOrdList();
+    G.p_order = G.p_gbyAgg->pSub_order();
     while (G_bIsNextMain(CK_GBYAGG)) {
       G_bEachMain();
-      G.p_stmOrdList = G.p_gbyAgg->pSub_stmOrdList();
+      G.p_order = G.p_gbyAgg->pSub_order();
     }
 
     if (G_bIsNextMain(CK_PROJECT)) {
