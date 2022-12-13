@@ -354,7 +354,8 @@ void Xreshape::R_vUTE_Derive_group_order_For_gbyAgg(void)
 
     Stz* szStmColOdn = G.p_term->szValue();
     Stz* szOrdElmOdn = szStmColOdn;
-    G.p_order->vAppendNewCardTail(CK_ORDELMODN, szOrdElmOdn);
+    G.p_ordElmOdn = _pCard_OrdElmOdn(G.p_order->pAppendNewCardTail(CK_ORDELMODN, szOrdElmOdn));
+    G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
 
 }
@@ -388,6 +389,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_gbyAgg(void)
     G_vAppendNewChild(G.p_order, CK_ORDELMODN);
 
     G.p_ordElmOdn->vValueSprint("$%lld"_Stz, xCI.i_Child() + 1);
+    G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
 }
 
@@ -449,7 +451,10 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexJoin(void)
   Card_Order* p_stmOrdList_ij = new Card_Order;
   G.p_stream->vAppend(p_stmOrdList_ij);
 
-  p_stmOrdList_ij->vAppendNewCardTail(CK_ORDELMODN, p_stmOrdOdn_l->szValue());
+  G.p_ordElmOdn =
+      _pCard_OrdElmOdn(p_stmOrdList_ij->pAppendNewCardTail(CK_ORDELMODN,
+                                                           p_stmOrdOdn_l->szValue()));
+  G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,6 +491,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexScan(void)
 
     G_vAppendNewChild(G.p_order, CK_ORDELMODN);
     G.p_ordElmOdn->vValueSprint("$%lld"_Stz, i_StmCol + 1);
+    G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
 }
 
