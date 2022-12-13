@@ -79,8 +79,8 @@ void Xseries::vTransformSeries(void)
 //  vSeries_24_Index_Analysis    (C_ENABLED);
 //  vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
-  vSeries_32_To_BoolCalc       (C_ENABLED);
-  vSeries_33_To_TblColOdn      (C_ENABLED);
+//  vSeries_32_To_BoolCalc       (C_ENABLED);
+//  vSeries_33_To_TblColOdn      (C_ENABLED);
   vSeries_34_Predicate_Pullup  (C_ENABLED);
   vSeries_36_Bound_Analysis    (C_ENABLED);
 
@@ -135,6 +135,16 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 
   m_pTransforms->vS26_T10_SubQuery_Analysis_Of_Main_Query();
   m_pTransforms->vS26_T20_SubQuery_Analysis_Of_Sub_Query();
+
+  for (i8 i_Board = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
+       i_Board++) {
+
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+
+    m_pTransforms->vS32_T_SubQuery_Analysis();
+    m_pTransforms->vS33_T10_Convert_stmColOdn_To_tblColOdn();
+  }
 
   m_pTransforms->vS10_TZZ_End();
 
