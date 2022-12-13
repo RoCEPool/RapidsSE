@@ -331,6 +331,32 @@ void Xreshape::R_vUTE_Derive_group_order_For_gbyAgg(void)
 
   // todo: to be coded...
 
+  //G.p_group = _pCard_Group(G.p_gbyAgg->pAppendNewCardTail(CK_GROUP));
+
+  if ((G.p_group = G.p_gbyAgg->pSub_group()))
+    G_vRemoveDeleteMain(CK_GROUP);
+
+  G_vAppendNewChild(G.p_gbyAgg, CK_GROUP);
+  G_vAppendNewChild(G.p_group, CK_ORDER);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect the leading $c.n in <gbyAgg>/<gbyElist>/<expr>/<rpnCalc>/<term=$c.n>
+  //  into <gbyAgg>/<group>/<order>/<ordElmOdn=$c.n>
+
+  G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
+
+  CardIter xCI(G.p_gbyElist);
+  while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
+    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
+
+    if (! (G.p_term = M_pRpnCalc_GetSingle_stmColOdn(G.p_rpnCalc)))
+      break;
+
+    Stz* szStmColOdn = G.p_term->szValue();
+    Stz* szOrdElmOdn = szStmColOdn;
+    G.p_order->vAppendNewCardTail(CK_ORDELMODN, szOrdElmOdn);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -560,14 +586,17 @@ void Xreshape::R_vUTE_Derive_order(void)
     if (! G.p_MainCard->bIsCard(CK_GBYAGG))
       continue;
 
+    R_vUTE_Derive_group_order_For_gbyAgg();
     R_vUTE_Derive_stream_order_For_gbyAgg();
 
     if (G_bIsNextMain(CK_GBYAGG)) {
       G_bEachMain();
+      R_vUTE_Derive_group_order_For_gbyAgg();
       R_vUTE_Derive_stream_order_For_gbyAgg();
 
       if (G_bIsNextMain(CK_GBYAGG)) {
         G_bEachMain();
+        R_vUTE_Derive_group_order_For_gbyAgg();
         R_vUTE_Derive_stream_order_For_gbyAgg();
       }
     }
