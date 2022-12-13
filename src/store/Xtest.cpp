@@ -1122,6 +1122,19 @@ bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_ind
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_b_Order_AreSame(Card_Order* p_order1, Card_Order* p_order2)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (p_order1->bValuesSameRecursive(p_order2))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* recursively test if given predicate is entirely MaybeBounds of given index */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED,
