@@ -1975,6 +1975,7 @@ void vDdlLockAssertNone(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
+  void vStreamDefOutSelectColumns(void);
   void vStreamDefOutSet(void);
 
   // stream def Right

@@ -40,6 +40,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
   vAddStep("StreamDefOut[].newFromTable"_Stz,&Step::vStreamDefOutNewFromTable);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
+  vAddStep("StreamDefOut[].selectColumns"_Stz,   &Step::vStreamDefOutSelectColumns);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }
 
@@ -246,6 +247,24 @@ void Step::vStreamDefOutPrint(void)
   StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
   
   pStreamDefOut->vPrint();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].selectColumns -- generate select columns from expr          */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutSelectColumns(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
+
+  s4K sExpr;
+  m_pDataStack->vPopStr(sExpr, __func__);
+
+  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefOut, sExpr, &m_pLogicUnit->m_uSelectColumns);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
