@@ -498,6 +498,11 @@ bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOT_Rpl_Scan_by_IndexScan(void) {
 
+  // Query7, Query10, Query14 and Query15
+
+  // Notes:
+  // If their is a bounds on an index (filter that matches an index column)
+  // we can replace a scan with an indexScan
 
 }
 
