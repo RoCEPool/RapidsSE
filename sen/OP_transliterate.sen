@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 : _Call_Optimiser
 
-  "_Call_Optimiser" .
+  // "_Call_Optimiser" .
 
   "<CallingOptimiser>" 1 [job].tagSet@ tagSet.appendInt
 
