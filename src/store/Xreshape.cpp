@@ -539,7 +539,12 @@ void Xreshape::R_vUTE_Derive_stream_order_For_sort(void)
 
     Stz* szStmColOdn = G.p_term->szValue();
     Stz* szStmOrdOdn = szStmColOdn;
-    G.p_order->vAppendNewCardTail(CK_ORDELMODN, szStmOrdOdn);
+    G.p_ordElmOdn = _pCard_OrdElmOdn(G.p_order->pAppendNewCardTail(CK_ORDELMODN, szStmOrdOdn));
+
+    if ((G.p_direction = G.p_expr->pSub_direction()))
+      G.p_ordElmOdn->vAppend(G.p_direction->pDupCardAndSubCards());
+    else
+      G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
 }
 
