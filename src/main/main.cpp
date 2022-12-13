@@ -278,35 +278,49 @@ int main(int argc, char* argv[])
   clock_getres(CLOCK_MONOTONIC_RAW, &ts);
   printf("Resolution of clock %s is %ld sec %ld ns\n", "CLOCK_MONOTONIC_RAW", ts.tv_sec, ts.tv_nsec);
 
-  if (argc == 1 && strcmp(argv[1], "rdtscp") == 0) {
+  if (argc == 2 && strcmp(argv[1], "rdtscp") == 0) {
     vTest_rdtscp();
 
-  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_realtime") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "clock_gettime_realtime") == 0) {
     vTest_clock_gettime_realtime();
 
-  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "clock_gettime_monotonic") == 0) {
     vTest_clock_gettime_monotonic();
 
-  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic_raw") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "clock_gettime_monotonic_raw") == 0) {
     vTest_clock_gettime_monotonic_raw();
 
-  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic_raw_approx") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "clock_gettime_monotonic_raw_approx") == 0) {
 #ifdef WITH_APPLE
     vTest_clock_gettime_monotonic_raw_approx();
 #endif
 
-  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_realtime_coarse") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "clock_gettime_realtime_coarse") == 0) {
 #ifdef WITH_LINUX
     vTest_clock_gettime_realtime_coarse();
 #endif
 
-  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic_coarse") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "clock_gettime_monotonic_coarse") == 0) {
 #ifdef WITH_LINUX
     vTest_clock_gettime_monotonic_coarse();
 #endif
 
-  } else if (argc == 1 && strcmp(argv[1], "gettimeofday") == 0) {
+  } else if (argc == 2 && strcmp(argv[1], "gettimeofday") == 0) {
     vTest_gettimeofday();
+
+  } else if (argc == 2 && strcmp(argv[1], "rdtscp_array") == 0) {
+    const i8 nSize = 100;
+    i8 iArr[nSize];
+    i8 i = 0;
+
+    for (i=0; i<nSize; i++) {
+      iArr[i] = Hardware::iReadTsc();
+    }
+
+    printf("%lld consecutive rdtscp readings:\n", nSize);
+    for (i=0; i<nSize; i++) {
+      printf("  %lld\n", iArr[i]);
+    }
 
   } else {
     printf("Running tests of all time APIs\n\n");
