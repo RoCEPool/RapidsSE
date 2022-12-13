@@ -1,22 +1,22 @@
 /*============================================================================*/
-/* Card_StmOrdOdn.cpp -- Stream Ordered Ordinal                               */
+/* Card_OrdElmOdn.cpp -- Order Element Ordinal                                */
 /*============================================================================*/
 
-#include "Card_StmOrdOdn.hpp"
+#include "Card_OrdElmOdn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_StmOrdOdn, CK_STMORDODN)
-__aNewFunction(Card_StmOrdOdn, CN_CARD)
-__vDeleteFunction(Card_StmOrdOdn, CN_CARD)
+__pCastFunction_Card(STORE, Card_OrdElmOdn, CK_STMORDODN)
+__aNewFunction(Card_OrdElmOdn, CN_CARD)
+__vDeleteFunction(Card_OrdElmOdn, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StmOrdOdn::Card_StmOrdOdn(void)
+Card_OrdElmOdn::Card_OrdElmOdn(void)
     : Card(CK_STMORDODN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -29,7 +29,7 @@ Card_StmOrdOdn::Card_StmOrdOdn(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StmOrdOdn::~Card_StmOrdOdn(void) noexcept(false)
+Card_OrdElmOdn::~Card_OrdElmOdn(void) noexcept(false)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -401,7 +401,7 @@ void Xreshape::R_vUTE_Derive_order_For_indexJoin(void)
 
   // find the stmOrdOdn_l == szStmColOdn_l in prior stream stmColList_l
   i8 i_StmOrdOdn;
-  Card_StmOrdOdn* p_stmOrdOdn_l =
+  Card_OrdElmOdn* p_stmOrdOdn_l =
     T_pStmOrdOdn_FindBy_stmColOdn(p_stmOrdList_l,szStmColOdn_l,i_StmOrdOdn);
   if (! p_stmOrdOdn_l)
     return;
@@ -467,7 +467,7 @@ void Xreshape::R_vUTE_Derive_order_For_project(void)
 
   i8 nLeading = 0;
   CardIter xCI(G.p_order);
-  while ((G.p_stmOrdOdn = _pCard_StmOrdOdn(xCI.pEachChild()))) {
+  while ((G.p_stmOrdOdn = _pCard_OrdElmOdn(xCI.pEachChild()))) {
     i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_stmOrdOdn);
     if (C_UNKNOWN != i_Expr) {
       nLeading++;

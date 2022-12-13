@@ -58,7 +58,7 @@ namespace STORE
 
     void vDeck_CopyMarkedPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 
-    i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_StmOrdOdn* p_stmOrdOdn);
+    i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_OrdElmOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
     void M_vFilter_AddPred(Card_Filter* p_filter, Card_PRED *p_PRED);

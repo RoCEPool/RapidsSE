@@ -991,15 +991,15 @@ Card_StmCol* Xtest::T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList,
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StmOrdOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList,
+Card_OrdElmOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList,
                                                      Stz *szStmColOdn,
                                                      i8& ri_StmOrdOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   CardIter xCI(p_stmOrdList);
-  while (Card_StmOrdOdn *p_stmOrdOdn =
-           _pCard_StmOrdOdn(xCI.pEachChild(CK_STMORDODN))) {
+  while (Card_OrdElmOdn *p_stmOrdOdn =
+      _pCard_OrdElmOdn(xCI.pEachChild(CK_STMORDODN))) {
      if (p_stmOrdOdn->bSame(szStmColOdn)) {
        ri_StmOrdOdn = xCI.i_Child();
       return p_stmOrdOdn;

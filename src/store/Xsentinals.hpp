@@ -135,7 +135,7 @@ namespace STORE
     Card_StmColList *       p_stmColList;
     Card_StmColNm *         p_stmColNm;
     Card_StmColOdn *        p_stmColOdn;
-    Card_StmOrdOdn *        p_stmOrdOdn;
+    Card_OrdElmOdn *        p_stmOrdOdn;
     Card_Stream *           p_stream;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;

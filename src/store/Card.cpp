@@ -2819,13 +2819,13 @@ Card_StmColOdn* Card::pSub_stmColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StmOrdOdn.hpp"
-Card_StmOrdOdn* Card::pSub_stmOrdOdn(void)
+#include "Card_OrdElmOdn.hpp"
+Card_OrdElmOdn* Card::pSub_stmOrdOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StmOrdOdn* p_streamOrdOdn =
-      _pCard_StmOrdOdn(pFindSubCard(CK_STMORDODN));
+  Card_OrdElmOdn* p_streamOrdOdn =
+      _pCard_OrdElmOdn(pFindSubCard(CK_STMORDODN));
   return p_streamOrdOdn;
 }
 
