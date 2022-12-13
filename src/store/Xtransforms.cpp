@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Xtransforms.hpp"
+#include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,169 +52,31 @@ void Xtransforms::vOptimiseLoop(void) {
   bool bOpts;
   i8 iOpts = 0;
 
+  vTrace("%s\n"_Stz, m_pBench->pOptimiser()->szWeave());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Discover the optimisation transformations
+  // Discover and perform the optimisation transformations
 
   do {
 
     bOpts = false;
 
-    if (bOT_Cut_Sort()) {
-      m_eOptTranforms[iOpts++] = OT_CUT_SORT;
-      bOpts = true;
-    }
-
-    if (bOT_Dup_Filter()) {
-      m_eOptTranforms[iOpts++] = OT_DUP_FILTER;
-      bOpts = true;
-    }
-
-    if (bOT_Ely_Filters()) {
-      m_eOptTranforms[iOpts++] = OT_ELY_FILTERS;
-      bOpts = true;
-    }
-
-    if (bOT_Ely_Projections()) {
-      m_eOptTranforms[iOpts++] = OT_ELY_PROJECTIONS;
-      bOpts = true;
-    }
-
-    if (bOT_Min_Groupby()) {
-      m_eOptTranforms[iOpts++] = OT_MIN_GROUPBY;
-      bOpts = true;
-    }
-
-
-    if (bOT_Otm_Calculations()) {
-      m_eOptTranforms[iOpts++] = OT_OTM_CALCULATIONS;
-      bOpts = true;
-    }
-
-    if (bOT_Ppn_Projections()) {
-      m_eOptTranforms[iOpts++] = OT_PPT_PROJECTIONS;
-      bOpts = true;
-    }
-
-    if (bOT_Rpl_Aggreg_By_OrdAgg()) {
-      m_eOptTranforms[iOpts++] = OT_RPL_AGGREG_BY_ORDAGG;
-      bOpts = true;
-    }
-
-    if (bOT_Rpl_Aggreg_By_Sort_OrdAgg()) {
-      m_eOptTranforms[iOpts++] = OT_RPL_AGGREG_BY_SORT_ORDAGG;
-      bOpts = true;
-    }
-
-    if (bOT_Rpl_Max_By_Top()) {
-      m_eOptTranforms[iOpts++] = OT_RPL_MAX_BY_TOP;
-      bOpts = true;
-    }
-
-    if (bOT_Rpl_Scan_by_IndexScan()) {
-      m_eOptTranforms[iOpts++] = OT_RPL_SCAN_BY_INDEXSCAN;
-      bOpts = true;
-    }
-
-    if (bOT_Rpl_SortDesc_Limit_By_Top()) {
-      m_eOptTranforms[iOpts++] = OT_RPL_SORTDESC_LIMIT_BY_TOP;
-      bOpts = true;
-    }
-
-    if (bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels()) {
-      m_eOptTranforms[iOpts++] = OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS;
-      bOpts = true;
-    }
-
-    if (bOT_Seq_Join_Order()) {
-      m_eOptTranforms[iOpts++] = OT_SEQ_JOIN_ORDER;
-      bOpts = true;
-    }
+    bOpts |= bOT_Cut_Sort();
+    bOpts |= bOT_Dup_Filter();
+    bOpts |= bOT_Ely_Filters();
+    bOpts |= bOT_Ely_Projections();
+    bOpts |= bOT_Min_Groupby();
+    bOpts |= bOT_Otm_Calculations();
+    bOpts |= bOT_Ppn_Projections();
+    bOpts |= bOT_Rpl_Aggreg_By_OrdAgg();
+    bOpts |= bOT_Rpl_Aggreg_By_Sort_OrdAgg();
+    bOpts |= bOT_Rpl_Max_By_Top();
+    bOpts |= bOT_Rpl_Scan_by_IndexScan();
+    bOpts |= bOT_Rpl_SortDesc_Limit_By_Top();
+    bOpts |= bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels();
+    bOpts |= bOT_Seq_Join_Order();
 
   } while (bOpts);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Apply the transformations in the order they were discovered
-
-  for (i8 iOptTransform = 0; iOptTransform < iOpts; iOptTransform++) {
-
-    switch(m_eOptTranforms[iOptTransform]) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // CUT
-      case OT_CUT_SORT:
-        vOT_Cut_Sort();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // DUPLICATE
-      case OT_DUP_FILTER:
-        vOT_Dup_Filter();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // EARLY
-      case OT_ELY_FILTERS:
-        vOT_Ely_Filters();
-        break;
-
-      case OT_ELY_PROJECTIONS:
-        vOT_Ely_Projections();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MINIMIZE
-      case OT_MIN_GROUPBY:
-        vOT_Min_Groupby();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // ONE-TIME CALCULATIONS
-      case OT_OTM_CALCULATIONS:
-        vOT_Otm_Calculations();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // POSTPONE
-      case OT_PPT_PROJECTIONS:
-        vOT_Ppn_Projections();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // REPLACE
-      case OT_RPL_AGGREG_BY_ORDAGG:
-        vOT_Rpl_Aggreg_By_OrdAgg();
-        break;
-
-      case OT_RPL_AGGREG_BY_SORT_ORDAGG:
-        vOT_Rpl_Aggreg_By_Sort_OrdAgg();
-        break;
-
-      case OT_RPL_MAX_BY_TOP:
-        vOT_Rpl_Max_By_Top();
-        break;
-
-      case OT_RPL_SCAN_BY_INDEXSCAN:
-        vOT_Rpl_Scan_by_IndexScan();
-        break;
-
-      case OT_RPL_SORTDESC_LIMIT_BY_TOP:
-        vOT_Rpl_SortDesc_Limit_By_Top();
-        break;
-
-      case OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS:
-        vOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels();
-        break;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // SEQUENCING
-      case OT_SEQ_JOIN_ORDER:
-        vOT_Seq_Join_Order();
-        break;
-
-      default:
-        NEVER_REACH
-    }
-  }
 
 }
 
@@ -227,8 +90,25 @@ bool Xtransforms::bOT_Cut_Sort(void) {
   //
 
   // Notes:
-  // sbyElist expressions directions are all ascending
   // sbyElist matches the gbyElist of an earlier (on all partitions) stage
+  //   including the direction
+
+  G_vRestart();
+  if (G_bEachMain(CK_SORT)) {
+    Card_Order* p_order1 = G.p_sort->pSub_stream()->pSub_order();
+
+    if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
+      Card_Order *p_order2 = G.p_stream->pSub_order();
+
+      // are the two order's the same?
+      if (T_b_Order_AreSame(p_order1, p_order2)) {
+
+        G_vRemoveDeleteMain(CK_SORT);
+        return true;
+      }
+
+    }
+  }
 
   return false;
 }
@@ -237,6 +117,7 @@ bool Xtransforms::bOT_Cut_Sort(void) {
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOT_Cut_Sort(void) {
+
 
 }
 
@@ -417,18 +298,18 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
   //  we can delete the aggregates on all nodes and on origin.
   //  This further aggregation is not required.
 
-  G_vRestart();
-  if (G_bEachMain(CK_GBYAGG)) {
-    Card_Order* p_order1 = G.p_gbyAgg->pSub_stream()->pSub_order();
-
-    if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
-      Card_Order *p_order2 = G.p_stream->pSub_order();
-
-      // are the two order's the same?
-      if (T_b_Order_AreSame(p_order1, p_order2))
-        return true;
-    }
-  }
+//  G_vRestart();
+//  if (G_bEachMain(CK_GBYAGG)) {
+//    Card_Order* p_order1 = G.p_gbyAgg->pSub_stream()->pSub_order();
+//
+//    if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
+//      Card_Order *p_order2 = G.p_stream->pSub_order();
+//
+//      // are the two order's the same?
+//      if (T_b_Order_AreSame(p_order1, p_order2))
+//        return true;
+//    }
+//  }
 
   return false;
 }

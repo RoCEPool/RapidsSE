@@ -91,12 +91,16 @@ void Xseries::vTransformSeries(void)
 
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
+
+  m_pTransforms->vOptimiseLoop();
+
   vSeries_92_Project_Pullup                  (C_DISABLED);
 
   // ---
   vSeries_A0_Filter_Refinement (C_ENABLED);
   vSeries_E0_To_StmOdn         (C_ENABLED);
   vSeries_Z0_Restate_Pipeline  (C_ENABLED);
+
 }
 
 /*----------------------------------------------------------------------------*/
