@@ -1,22 +1,22 @@
 /*============================================================================*/
-/* Card_StmOrdList.cpp -- Stream Ordered List                                 */
+/* Card_Order.cpp -- Order                                                    */
 /*============================================================================*/
 
-#include "Card_StmOrdList.hpp"
+#include "Card_Order.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StmOrdList,CK_STMORDLIST)
-__aNewFunction(Card_StmOrdList,CN_CARD)
-__vDeleteFunction(Card_StmOrdList,CN_CARD)
+__pCastFunction_Card(STORE, Card_Order, CK_ORDER)
+__aNewFunction(Card_Order, CN_CARD)
+__vDeleteFunction(Card_Order, CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StmOrdList::Card_StmOrdList(void)
-    : Card(CK_STMORDLIST)
+Card_Order::Card_Order(void)
+    : Card(CK_ORDER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -28,7 +28,7 @@ Card_StmOrdList::Card_StmOrdList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StmOrdList::~Card_StmOrdList(void) noexcept(false)
+Card_Order::~Card_Order(void) noexcept(false)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

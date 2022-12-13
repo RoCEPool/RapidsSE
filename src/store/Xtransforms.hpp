@@ -189,6 +189,13 @@ namespace STORE
     void vS90_TF0_Remove_sort_IfSameAs_gby(void);
     void vS90_TZZ_End(void);
 
+    // vSeries_92_Project_Pullup
+    bool bS92_T00_Test(bool bEnabled);
+    void vS92_T00_Skip(void);
+    void vS92_T00_Begin(void);
+    void vS92_T10_Project_Pullup(void);
+    void vS92_TZZ_End(void);
+
     // vSeries_A0_Filter_Refinement
     bool bSA0_T00_Test(bool bEnabled);
     void vSA0_T00_Skip(void);

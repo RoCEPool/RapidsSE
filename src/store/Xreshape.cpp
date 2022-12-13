@@ -339,7 +339,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
     DELETE_CARD(G.p_stmOrdList);
   }
 
-  G_vAppendNewChild(G.p_stream,CK_STMORDLIST);
+  G_vAppendNewChild(G.p_stream, CK_ORDER);
 
   G.p_aggElist =  G.p_gbyAgg->pSub_aggElist();
   CardIter xCI(G.p_aggElist);
@@ -364,7 +364,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   RASSERT(G.p_stmColList);
   Card_StmColList* p_stmColList_l = G.p_stmColList;
   RASSERT(G.p_stmOrdList);
-  Card_StmOrdList* p_stmOrdList_l = G.p_stmOrdList;
+  Card_Order* p_stmOrdList_l = G.p_stmOrdList;
 
   RASSERT(G.p_indexList);
   RASSERT(G.p_stream);
@@ -409,7 +409,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
   // navigated: ../<eBound>/<tblColOdn_r> -> ../<stmCol_l>/<stmColOdn_l>
   //                                      -> ../<stmOrdOrdn_l>
 
-  Card_StmOrdList* p_stmOrdList_ij = new Card_StmOrdList;
+  Card_Order* p_stmOrdList_ij = new Card_Order;
   G.p_stream->vAppend(p_stmOrdList_ij);
 
   p_stmOrdList_ij->vAppendNewCardTail(CK_STMORDODN, p_stmOrdOdn_l->szValue());
@@ -443,7 +443,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
       return;
 
     if (! G.p_stmOrdList) {
-      G.p_stmOrdList = new Card_StmOrdList;
+      G.p_stmOrdList = new Card_Order;
       G.p_stream->vAppend(G.p_stmOrdList);
     }
 
@@ -463,7 +463,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
   G.p_stream = G.p_project->pSub_stream();
   G.p_stmColList = G.p_stream->pSub_stmColList();
 
-  Card_StmOrdList* p_stmOrdList_project = nullptr;
+  Card_Order* p_stmOrdList_project = nullptr;
 
   i8 nLeading = 0;
   CardIter xCI(G.p_stmOrdList);
@@ -473,7 +473,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
       nLeading++;
 
       if (! p_stmOrdList_project) {
-        p_stmOrdList_project = new Card_StmOrdList;
+        p_stmOrdList_project = new Card_Order;
         G.p_stream->vAppend(p_stmOrdList_project);
       }
 
@@ -491,7 +491,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   G.p_stream = G.p_sort->pSub_stream();
-  G.p_stmOrdList = _pCard_StmOrdList(G.p_stream->pAppendNewCardTail(CK_STMORDLIST));
+  G.p_stmOrdList = _pCard_Order(G.p_stream->pAppendNewCardTail(CK_ORDER));
 
   CardIter xCI(G.p_sbyElist);
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {

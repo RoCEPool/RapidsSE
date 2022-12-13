@@ -2806,14 +2806,14 @@ Card_StmColOdn* Card::pSub_stmColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StmOrdList.hpp"
-Card_StmOrdList* Card::pSub_stmOrdList(void)
+#include "Card_Order.hpp"
+Card_Order* Card::pSub_stmOrdList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StmOrdList* p_streamOrdList =
-      _pCard_StmOrdList(pFindSubCard(CK_STMORDLIST));
-  return p_streamOrdList;
+  Card_Order* p_order =
+      _pCard_Order(pFindSubCard(CK_ORDER));
+  return p_order;
 }
 
 /*----------------------------------------------------------------------------*/

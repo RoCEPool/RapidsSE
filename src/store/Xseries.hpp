@@ -53,6 +53,7 @@ namespace STORE
 //  void vSeries_79_Add_Partitioning  (bool bEnabled); //
     void vSeries_80_Index_Scan        (bool bEnabled); // 1 day
     void vSeries_90_Stream_Ordering   (bool bEnabled); // 1 day
+    void vSeries_92_Project_Pullup    (bool bEnabled); // 1 day
 //  void vSeries_94_Simplify_Group    (bool bEnabled); // 0.5 day
 //  void vSeries_96_Eliminate_Order   (bool bEnabled); // 0.5 day
 //  void vSeries_98_Reduce_Aggreg     (bool bEnabled); // 1 day

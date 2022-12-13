@@ -991,7 +991,7 @@ Card_StmCol* Xtest::T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList,
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StmOrdOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_StmOrdList* p_stmOrdList,
+Card_StmOrdOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList,
                                                      Stz *szStmColOdn,
                                                      i8& ri_StmOrdOdn)
 {

@@ -120,7 +120,7 @@ namespace STORE
   class Card_StmColList;
   class Card_StmColNm;
   class Card_StmColOdn;
-  class Card_StmOrdList;
+  class Card_Order;
   class Card_StmOrdOdn;
   class Card_SubSet;
 
@@ -469,7 +469,7 @@ namespace STORE
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
-    Card_StmOrdList*    pSub_stmOrdList(void);
+    Card_Order*    pSub_stmOrdList(void);
     Card_StmOrdOdn*     pSub_stmOrdOdn(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
