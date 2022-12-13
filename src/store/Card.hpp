@@ -456,6 +456,7 @@ namespace STORE
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
     Card_NParmCols*     pSub_nParmCols(void);
+    Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
@@ -470,7 +471,6 @@ namespace STORE
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
-    Card_OrdElmOdn*     pSub_stmOrdOdn(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);

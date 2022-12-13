@@ -348,9 +348,9 @@ void Xreshape::R_vUTE_Derive_order_For_gbyAgg(void)
     if (C_UNKNOWN == i_Key)
       continue;
 
-    G_vAppendNewChild(G.p_order, CK_STMORDODN);
+    G_vAppendNewChild(G.p_order, CK_ORDELMODN);
 
-    G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,xCI.i_Child()+1);
+    G.p_ordElmOdn->vValueSprint("$%lld"_Stz, xCI.i_Child() + 1);
   }
 }
 
@@ -412,7 +412,7 @@ void Xreshape::R_vUTE_Derive_order_For_indexJoin(void)
   Card_Order* p_stmOrdList_ij = new Card_Order;
   G.p_stream->vAppend(p_stmOrdList_ij);
 
-  p_stmOrdList_ij->vAppendNewCardTail(CK_STMORDODN, p_stmOrdOdn_l->szValue());
+  p_stmOrdList_ij->vAppendNewCardTail(CK_ORDELMODN, p_stmOrdOdn_l->szValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -447,8 +447,8 @@ void Xreshape::R_vUTE_Derive_order_For_indexScan(void)
       G.p_stream->vAppend(G.p_order);
     }
 
-    G_vAppendNewChild(G.p_order, CK_STMORDODN);
-    G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,i_StmCol+1);
+    G_vAppendNewChild(G.p_order, CK_ORDELMODN);
+    G.p_ordElmOdn->vValueSprint("$%lld"_Stz, i_StmCol + 1);
   }
 }
 
@@ -467,8 +467,8 @@ void Xreshape::R_vUTE_Derive_order_For_project(void)
 
   i8 nLeading = 0;
   CardIter xCI(G.p_order);
-  while ((G.p_stmOrdOdn = _pCard_OrdElmOdn(xCI.pEachChild()))) {
-    i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_stmOrdOdn);
+  while ((G.p_ordElmOdn = _pCard_OrdElmOdn(xCI.pEachChild()))) {
+    i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_ordElmOdn);
     if (C_UNKNOWN != i_Expr) {
       nLeading++;
 
@@ -477,8 +477,8 @@ void Xreshape::R_vUTE_Derive_order_For_project(void)
         G.p_stream->vAppend(p_stmOrdList_project);
       }
 
-      G_vAppendNewChild(p_stmOrdList_project,CK_STMORDODN);
-      G.p_stmOrdOdn->vValueSprint("$%lld"_Stz,i_Expr+1);
+      G_vAppendNewChild(p_stmOrdList_project, CK_ORDELMODN);
+      G.p_ordElmOdn->vValueSprint("$%lld"_Stz, i_Expr + 1);
     }
   }
 }
@@ -502,7 +502,7 @@ void Xreshape::R_vUTE_Derive_order_For_sort(void)
 
     Stz* szStmColOdn = G.p_term->szValue();
     Stz* szStmOrdOdn = szStmColOdn;
-    G.p_order->vAppendNewCardTail(CK_STMORDODN, szStmOrdOdn);
+    G.p_order->vAppendNewCardTail(CK_ORDELMODN, szStmOrdOdn);
   }
 }
 

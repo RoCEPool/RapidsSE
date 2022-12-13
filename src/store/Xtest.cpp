@@ -999,7 +999,7 @@ Card_OrdElmOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList,
 
   CardIter xCI(p_stmOrdList);
   while (Card_OrdElmOdn *p_stmOrdOdn =
-      _pCard_OrdElmOdn(xCI.pEachChild(CK_STMORDODN))) {
+      _pCard_OrdElmOdn(xCI.pEachChild(CK_ORDELMODN))) {
      if (p_stmOrdOdn->bSame(szStmColOdn)) {
        ri_StmOrdOdn = xCI.i_Child();
       return p_stmOrdOdn;

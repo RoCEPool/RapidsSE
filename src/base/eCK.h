@@ -91,6 +91,7 @@ enum eCK // card kind
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
+  /* */ CK_ORDELMODN,
   /* */ CK_ORDER,
   /* */ CK_ORPRED,
 
@@ -125,7 +126,6 @@ enum eCK // card kind
   /* */ CK_STMCOLLIST,
   /* */ CK_STMCOLNM,
   /* */ CK_STMCOLODN,
-  /* */ CK_STMORDODN,
   /* */ CK_STREAM,
   /* */ CK_SUBSET,
 
@@ -258,6 +258,7 @@ static Stz* aCK[]
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
+  /* */ "CK_ORDELMODN"_Stz,    // CK_ORDELMODN
   /* */ "CK_ORDER"_Stz,        // CK_ORDER
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
 
@@ -292,7 +293,6 @@ static Stz* aCK[]
   /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
-  /* */ "CK_STMORDODN"_Stz,    // CK_STMORDODN
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
@@ -424,6 +424,7 @@ static Stz* aCK_short[]
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
+  /* */ "ordElmOdn"_Stz,       // CK_ORDELMODN
   /* */ "order"_Stz,           // CK_ORDER
   /* */ "orPred"_Stz,          // CK_ORPRED
 
@@ -458,7 +459,6 @@ static Stz* aCK_short[]
   /* */ "stmColList"_Stz,      // CK_STMCOLLIST
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
-  /* */ "stmOrdOdn"_Stz,       // CK_STMORDODN
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "subSet"_Stz,          // CK_SUBSET
 
@@ -591,6 +591,7 @@ static Stz* aCK_notation[]
     /* */ "oEL"_Stz,          // CK_OBYELIST
     /* */ "opt"_Stz,          // CK_OPTION
     /* */ "oA"_Stz,           // CK_ORDAGG
+    /* */ "sOO"_Stz,         // CK_ORDELMODN
     /* */ "sOL"_Stz,          // CK_ORDER
     /* */ "oP"_Stz,           // CK_ORPRED
 
@@ -625,7 +626,6 @@ static Stz* aCK_notation[]
     /* */ "sCL"_Stz,          // CK_STMCOLLIST
     /* */ "sCN"_Stz,          // CK_STMCOLNM
     /* */ "sCO"_Stz,         // CK_STMCOLODN
-    /* */ "sOO"_Stz,         // CK_STMORDODN
     /* */ "strm"_Stz,        // CK_STREAM
     /* */ "sS"_Stz,          // CK_SUBSET
 
