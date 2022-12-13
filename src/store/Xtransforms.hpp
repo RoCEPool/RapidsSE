@@ -185,7 +185,7 @@ namespace STORE
     bool bS90_T00_Test(bool bEnabled);
     void vS90_T00_Skip(void);
     void vS90_T00_Begin(void);
-    void vS90_T30_Add_order(void);
+    void vS90_T30_Derive_order(void);
     void vS90_TF0_Remove_sort_IfSameAs_gby(void);
     void vS90_TZZ_End(void);
 

@@ -504,7 +504,7 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
   }
 
   m_pTransforms->vS90_T00_Begin();
-  m_pTransforms->vS90_T30_Add_order();
+  m_pTransforms->vS90_T30_Derive_order();
 
   //m_pTransforms->vS90_TF0_Remove_sort_IfSameAs_gby();
 

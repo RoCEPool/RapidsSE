@@ -55,6 +55,7 @@ enum eCK // card kind
   /* */ CK_GBYAGG,
   /* */ CK_GBYELIST,
   /* */ CK_GENESIS,
+  /* */ CK_GROUP,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
@@ -222,6 +223,7 @@ static Stz* aCK[]
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
   /* */ "CK_GENESIS"_Stz,      // CK_GENESIS
+  /* */ "CK_GROUP"_Stz,        // CK_GROUP
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
@@ -388,6 +390,7 @@ static Stz* aCK_short[]
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
   /* */ "genesis"_Stz,         // CK_GENESIS
+  /* */ "group"_Stz,           // CK_GROUP
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
@@ -555,6 +558,7 @@ static Stz* aCK_notation[]
     /* */ "gA"_Stz,           // CK_GBYAGG
     /* */ "gEL"_Stz,          // CK_GBYELIST
     /* */ "g"_Stz,            // CK_GENESIS
+    /* */ "gr"_Stz,           // CK_GROUP
 
     /* */ "h"_Stz,            // CK_HASH
     /* */ "ha"_Stz,           // CK_HAVING

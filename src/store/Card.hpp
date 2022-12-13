@@ -62,6 +62,7 @@ namespace STORE
   class Card_GbyAgg;
   class Card_GbyElist;
   class Card_Genesis;
+  class Card_Group;
 
   class Card_Hash;
   class Card_Having;
@@ -440,6 +441,7 @@ namespace STORE
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_Genesis*       pSub_genesis(void);
+    Card_Group*         pSub_group(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IdxColNm*      pSub_idxColNm(void);
     Card_Index*         pSub_index(void);

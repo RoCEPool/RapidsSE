@@ -3554,7 +3554,7 @@ void Xtransforms::vS90_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS90_T30_Add_order(void)
+void Xtransforms::vS90_T30_Derive_order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
