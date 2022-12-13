@@ -536,14 +536,17 @@ void Xreshape::R_vUTE_Derive_order(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   G_vRestart();
-  while (G_bEachMain(CK_INDEXJOIN)) {
-    G.p_stmColList = G.p_indexJoin->pSub_stmColList();
-    G.p_order = G.p_indexJoin->pSub_order();
+  while (G_bEachMain(CK_INDEXSCAN)) {
+    G.p_stmColList = G.p_indexScan->pSub_stmColList();
+    G.p_order = G.p_indexScan->pSub_order();
 
     for (;;) {
       if (! G_bEachMainWith2Sub(CK_INDEXJOIN,CK_INDEXLIST,CK_STREAM))
         break;
       R_vUTE_Derive_stream_order_For_indexJoin();
+      G.p_stmColList = G.p_indexJoin->pSub_stmColList();
+      G.p_order = G.p_indexJoin->pSub_order();
+
     }
   }
 
