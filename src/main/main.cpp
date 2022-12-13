@@ -274,6 +274,9 @@ int main(int argc, char* argv[])
   //  (5) clock_gettime(CLOCK_MONOTONIC_RAW_APPROX)
   //  (6) gettimeofday()
 
+  struct timespec ts;
+  clock_getres(CLOCK_MONOTONIC_RAW, &ts);
+  printf("Resolution of clock %s is %ld sec %ld ns\n", "CLOCK_MONOTONIC_RAW", ts.tv_sec, ts.tv_nsec);
 
   if (argc == 1 && strcmp(argv[1], "rdtscp") == 0) {
     vTest_rdtscp();
