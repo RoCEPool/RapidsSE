@@ -5,10 +5,6 @@ trackMemory;
 success
 
 /optimise
-/glean_cue_from = "vSeries_10_Condense_Info"
-/glean_interactive
-/transliterated
-/weaved
 /pipelineName = "_r_Q2"
 select
   s_acctbal,

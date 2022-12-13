@@ -5,10 +5,6 @@ trackMemory;
 success
 
 /optimise
-/glean_cue_from = "vSeries_34_Predicate_Pullup"
-/glean_interactive
-/transliterated
-/weaved
 /pipelineName = "_r_Q4"
 select o_orderpriority,
   count(*) as order_count
