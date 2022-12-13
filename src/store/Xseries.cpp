@@ -77,7 +77,7 @@ void Xseries::vTransformSeries(void)
 //  vSeries_20_Table_Analysis    (C_ENABLED);
 //  vSeries_22_Stream_Analysis   (C_ENABLED);
 //  vSeries_24_Index_Analysis    (C_ENABLED);
-  vSeries_26_SubQuery_Analysis (C_ENABLED);
+//  vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
   vSeries_33_To_TblColOdn      (C_ENABLED);
@@ -130,6 +130,11 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
     m_pTransforms->vS22_T_Stream_Analysis();
     m_pTransforms->vS24_T_Index_Analysis();
   }
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  m_pTransforms->vS26_T10_SubQuery_Analysis_Of_Main_Query();
+  m_pTransforms->vS26_T20_SubQuery_Analysis_Of_Sub_Query();
 
   m_pTransforms->vS10_TZZ_End();
 
