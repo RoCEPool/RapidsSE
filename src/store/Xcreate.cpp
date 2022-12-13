@@ -345,35 +345,34 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_StmColList* Xcreate::C_pDerive_streamColList(Card_ELIST* p_ELIST)
+Card_StmColList* Xcreate::C_pStmColList_DeriveFrom_ELIST(Card_ELIST* p_ELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_StmColList* pCard_StreamColList = new Card_StmColList;
+  Card_StmColList* p_stmColList = new Card_StmColList;
 
-  eCK eSubCard;
-  i8 nSubCards = p_ELIST->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = p_ELIST->pGetChild(i_Child, eSubCard);
+  CardIter xCI(p_ELIST);
+  while (Card_Expr* p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR))) {
 
-    Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
-    Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
+    Card *p_type = p_expr->pFindSubCard(CK_TYPE);
+    Card *p_as = p_expr->pFindSubCard(CK_AS);
 
     Card_StmCol* pCard_StreamCol = new Card_StmCol;
-    pCard_StreamColList->vAppend(pCard_StreamCol);
+    p_stmColList->vAppend(pCard_StreamCol);
 
-    if (pCard_As)
-      pCard_StreamCol->vAppend(pCard_As->pDupCardAndSubCards());
+    if (p_as)
+      p_as = _pCard_As(p_as->pDupCardAndSubCards());
     else {
       s32 sAs;
-      sAs.vSprint("$%lld"_Stz,i_Child + 1);
-      pCard_As = new Card_As(sAs);
-      pCard_StreamCol->vAppend(pCard_As);
+      sAs.vSprint("$%lld"_Stz,xCI.i_Child() + 1);
+      p_as = new Card_As(sAs);
     }
-    pCard_StreamCol->vAppend(pCard_Type->pDupCardAndSubCards());
+
+    pCard_StreamCol->vAppend(p_as);
+    pCard_StreamCol->vAppend(p_type->pDupCardAndSubCards());
   }
 
-  return pCard_StreamColList;
+  return p_stmColList;
 }
 
 /*----------------------------------------------------------------------------*/

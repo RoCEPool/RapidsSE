@@ -36,7 +36,7 @@ namespace STORE
                                                  bool bParamAllowedInBounds);
 
 
-    Card_StmColList* C_pDerive_streamColList(Card_ELIST* p_ELIST);
+    Card_StmColList* C_pStmColList_DeriveFrom_ELIST(Card_ELIST* p_ELIST);
 
     Card_Filter*     C_pFilter_From_PRED(Card_PRED* p_PRED);
 
