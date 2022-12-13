@@ -11,7 +11,7 @@ enum eOT // Optimiser Transformations
   /* 01 */ OT_CUT_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
 
   // DUPLICATE
-  /* 02 */ OT_DUP_FILTER,                // Duplicate: Join-dependent predicate duplicates
+  /* 02 */ OT_DUP_FILTER,                 // Duplicate: Join-dependent predicate duplicates
 
   // EARLY
   /* 03 */ OT_ELY_FILTERS,                // Early: Filters
@@ -24,7 +24,7 @@ enum eOT // Optimiser Transformations
   /* 06 */ OT_OTM_CALCULATIONS,           // One-Time: CALCULATIONS
 
   // Postpone
-  /* 07 */ OT_PPT_PROJECTIONS,           // Postone: VARCHAR Projections after re-join
+  /* 07 */ OT_PPT_PROJECTIONS,            // Postpone: VARCHAR Projections after re-join
 
   // REPLACE
   /* 08 */ OT_RPL_AGGREG_BY_ORDAGG,       // Replace: AGGREG with ORDAGG

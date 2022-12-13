@@ -400,7 +400,9 @@ void Xtransforms::vOT_Ppn_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void) {
+bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   // Query13, Query17 : do we change the scan to indexScan ????
   // Query18
@@ -415,15 +417,29 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void) {
   //  we can delete the aggregates on all nodes and on origin.
   //  This further aggregation is not required.
 
+  G_vRestart();
+  if (G_bEachMain(CK_GBYAGG)) {
+    Card_Order* p_order1 = G.p_gbyAgg->pSub_stream()->pSub_order();
+
+    if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
+      Card_Order *p_order2 = G.p_stream->pSub_order();
+
+      if (T_b_Order_AreSame(p_order1, p_order2))
+        return true;
+    }
+  }
+
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vOT_Rpl_Aggreg_By_OrdAgg(void) {
+void Xtransforms::vOT_Rpl_Aggreg_By_OrdAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-
+  G.p_gbyAgg->vCard(CK_ORDAGG);
 }
 
 /*----------------------------------------------------------------------------*/
