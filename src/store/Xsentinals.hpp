@@ -84,6 +84,7 @@ namespace STORE
     Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
     Card_Genesis *          p_genesis;
+    Card_Group *            p_group;
     Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
