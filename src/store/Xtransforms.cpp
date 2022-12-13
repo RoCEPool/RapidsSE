@@ -119,7 +119,7 @@ void Xtransforms::vOptimiseLoop(void) {
       bOpts = true;
     }
 
-    if (bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels()) {
+    if (bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels()) {
       m_eOptTranforms[iOpts++] = OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS;
       bOpts = true;
     }
@@ -201,7 +201,7 @@ void Xtransforms::vOptimiseLoop(void) {
         break;
 
       case OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS:
-        vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels();
+        vOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels();
         break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -406,8 +406,8 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void) {
   // Query18
 
   // Notes:
-  // When we have a aggreg grouped on a column on which their is an index available,
-  // we can change the scan to an indexScan (jence data will come in ascending order
+  // When we have an aggreg grouped on a column on which their is an index available,
+  // we can change the scan to an indexScan (hence data will come in ascending order
   // of the group by key)
   // and then we can change the aggreg to an ordAgg.
   //
@@ -498,6 +498,11 @@ bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vOT_Rpl_Scan_by_IndexScan(void) {
 
+  // Query7, Query10, Query14 and Query15
+
+  // Notes:
+  // If their is a bounds on an index (filter that matches an index column)
+  // we can replace a scan with an indexScan
 
 }
 
@@ -527,7 +532,7 @@ void Xtransforms::vOT_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void) {
 
   // Query3
 
@@ -548,7 +553,7 @@ bool Xtransforms::bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void) {
+void Xtransforms::vOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void) {
 
 
 }

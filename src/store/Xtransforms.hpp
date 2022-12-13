@@ -59,8 +59,8 @@ namespace STORE
     void vOT_Rpl_Scan_by_IndexScan(void);
     bool bOT_Rpl_SortDesc_Limit_By_Top(void);
     void vOT_Rpl_SortDesc_Limit_By_Top(void);
-    bool bOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void);
-    void vOT_Rpl_Sort_Limit_OnOrogin_By_AllLevels(void);
+    bool bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void);
+    void vOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void);
 
     bool bOT_Seq_Join_Order(void);
     void vOT_Seq_Join_Order(void);
