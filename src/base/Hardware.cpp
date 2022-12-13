@@ -347,26 +347,25 @@ i8 Hardware::iReadClock(void)
 {
   _static_
 
-#ifdef WITH_APPLE
+//#ifdef WITH_APPLE
   struct timespec tp;
-  int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
+  int iResult = clock_gettime(CLOCK_MONOTONIC_RAW,&tp);
   UNUSED(iResult);
-  //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
 
   i8 iTicks = tp.tv_sec * C_1G;
   iTicks += tp.tv_nsec;
   
-#elif defined(WITH_LINUX)
-  struct timeval iTimeval;
-  
-  if (gettimeofday(&iTimeval, NULL) < 0) {
-    return 0;
-  }
-  i8 iTicks = iTimeval.tv_sec;
-  iTicks *= C_1M;  // convert to micros
-  iTicks += iTimeval.tv_usec;
-  iTicks *= C_1K;  // convert to nanos
-#endif
+//#elif defined(WITH_LINUX)
+//  struct timeval iTimeval;
+//
+//  if (gettimeofday(&iTimeval, NULL) < 0) {
+//    return 0;
+//  }
+//  i8 iTicks = iTimeval.tv_sec;
+//  iTicks *= C_1M;  // convert to micros
+//  iTicks += iTimeval.tv_usec;
+//  iTicks *= C_1K;  // convert to nanos
+//#endif
   
   return iTicks;
 }
