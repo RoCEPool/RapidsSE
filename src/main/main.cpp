@@ -274,87 +274,71 @@ int main(int argc, char* argv[])
   //  (5) clock_gettime(CLOCK_MONOTONIC_RAW_APPROX)
   //  (6) gettimeofday()
 
-  if (argc != 2) {
-    printf("Num of arguments must be 2\n");
-    exit(1);
-  }
 
-
-  if (strcmp(argv[1], "rdtscp") == 0) {
+  if (argc == 1 && strcmp(argv[1], "rdtscp") == 0) {
     vTest_rdtscp();
 
-  } else if (strcmp(argv[1], "clock_gettime_realtime") == 0) {
+  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_realtime") == 0) {
     vTest_clock_gettime_realtime();
 
-  } else if (strcmp(argv[1], "clock_gettime_monotonic") == 0) {
+  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic") == 0) {
     vTest_clock_gettime_monotonic();
 
-  } else if (strcmp(argv[1], "clock_gettime_monotonic_raw") == 0) {
+  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic_raw") == 0) {
     vTest_clock_gettime_monotonic_raw();
 
-  } else if (strcmp(argv[1], "clock_gettime_monotonic_raw_approx") == 0) {
+  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic_raw_approx") == 0) {
 #ifdef WITH_APPLE
     vTest_clock_gettime_monotonic_raw_approx();
 #endif
 
-  } else if (strcmp(argv[1], "clock_gettime_realtime_coarse") == 0) {
+  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_realtime_coarse") == 0) {
 #ifdef WITH_LINUX
     vTest_clock_gettime_realtime_coarse();
 #endif
 
-  } else if (strcmp(argv[1], "clock_gettime_monotonic_coarse") == 0) {
+  } else if (argc == 1 && strcmp(argv[1], "clock_gettime_monotonic_coarse") == 0) {
 #ifdef WITH_LINUX
     vTest_clock_gettime_monotonic_coarse();
 #endif
 
-  } else if (strcmp(argv[1], "gettimeofday") == 0) {
-    vTest_gettimeofday();
-
-  } else if (strcmp(argv[1], "all") == 0) {
-    vTest_rdtscp();
-    vTest_rdtscp();
-    vTest_rdtscp();
-    vTest_clock_gettime_realtime();
-    vTest_clock_gettime_realtime();
-    vTest_clock_gettime_realtime();
-    vTest_clock_gettime_monotonic();
-    vTest_clock_gettime_monotonic();
-    vTest_clock_gettime_monotonic();
-    vTest_clock_gettime_monotonic_raw();
-    vTest_clock_gettime_monotonic_raw();
-    vTest_clock_gettime_monotonic_raw();
-
-#ifdef WITH_APPLE
-    vTest_clock_gettime_monotonic_raw_approx();
-    vTest_clock_gettime_monotonic_raw_approx();
-    vTest_clock_gettime_monotonic_raw_approx();
-#endif
-
-#ifdef WITH_LINUX
-    vTest_clock_gettime_realtime_coarse();
-    vTest_clock_gettime_realtime_coarse();
-    vTest_clock_gettime_realtime_coarse();
-    vTest_clock_gettime_monotonic_coarse();
-    vTest_clock_gettime_monotonic_coarse();
-    vTest_clock_gettime_monotonic_coarse();
-#endif
-
-    vTest_gettimeofday();
-    vTest_gettimeofday();
+  } else if (argc == 1 && strcmp(argv[1], "gettimeofday") == 0) {
     vTest_gettimeofday();
 
   } else {
-    printf("Invalid argument. Valid arguments are:\n"
-           " rdtscp\n"
-           " clock_gettime_realtime\n"
-           " clock_gettime_monotonic\n"
-           " clock_gettime_monotonic_raw\n"
-           " clock_gettime_monotonic_raw_approx (Apple only)\n"
-           " clock_gettime_realtime_coarse (Linux only)\n"
-           " clock_gettime_monotonic_coarse (Linux only)\n"
-           " gettimeofday\n"
-           " all\n");
-    exit(1);
+    printf("Running tests of all time APIs\n\n");
+
+    vTest_rdtscp();
+    vTest_rdtscp();
+    vTest_rdtscp();
+    vTest_clock_gettime_realtime();
+    vTest_clock_gettime_realtime();
+    vTest_clock_gettime_realtime();
+    vTest_clock_gettime_monotonic();
+    vTest_clock_gettime_monotonic();
+    vTest_clock_gettime_monotonic();
+    vTest_clock_gettime_monotonic_raw();
+    vTest_clock_gettime_monotonic_raw();
+    vTest_clock_gettime_monotonic_raw();
+
+#ifdef WITH_APPLE
+    vTest_clock_gettime_monotonic_raw_approx();
+    vTest_clock_gettime_monotonic_raw_approx();
+    vTest_clock_gettime_monotonic_raw_approx();
+#endif
+
+#ifdef WITH_LINUX
+    vTest_clock_gettime_realtime_coarse();
+    vTest_clock_gettime_realtime_coarse();
+    vTest_clock_gettime_realtime_coarse();
+    vTest_clock_gettime_monotonic_coarse();
+    vTest_clock_gettime_monotonic_coarse();
+    vTest_clock_gettime_monotonic_coarse();
+#endif
+
+    vTest_gettimeofday();
+    vTest_gettimeofday();
+    vTest_gettimeofday();
   }
 
   exit(0);
