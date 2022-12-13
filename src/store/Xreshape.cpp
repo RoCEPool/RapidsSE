@@ -325,7 +325,7 @@ void Xreshape::R_vUTE_Derive_foldElist_From_project_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
+void Xreshape::R_vUTE_Derive_order_For_gbyAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -357,7 +357,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
+void Xreshape::R_vUTE_Derive_order_For_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -418,7 +418,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
+void Xreshape::R_vUTE_Derive_order_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -455,7 +455,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
+void Xreshape::R_vUTE_Derive_order_For_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -486,7 +486,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_project(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
+void Xreshape::R_vUTE_Derive_order_For_sort(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -509,7 +509,7 @@ void Xreshape::R_vUTE_Derive_stmOrdList_For_sort(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_Stream_Order(void)
+void Xreshape::R_vUTE_Derive_order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -518,7 +518,7 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
 
   G_vRestart();
   while (G_bEachMain(CK_INDEXSCAN)) {
-    R_vUTE_Derive_stmOrdList_For_indexScan();
+    R_vUTE_Derive_order_For_indexScan();
   }
 
   vPrintBoard();
@@ -532,7 +532,7 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
     for (;;) {
       if (! G_bEachMainWith2Sub(CK_INDEXJOIN,CK_INDEXLIST,CK_STREAM))
         break;
-      R_vUTE_Derive_stmOrdList_For_indexJoin();
+      R_vUTE_Derive_order_For_indexJoin();
     }
   }
 
@@ -546,15 +546,15 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
     if (! G.p_MainCard->bIsCard(CK_GBYAGG))
       continue;
 
-    R_vUTE_Derive_stmOrdList_For_gbyAgg();
+    R_vUTE_Derive_order_For_gbyAgg();
 
     if (G_bIsNextMain(CK_GBYAGG)) {
       G_bEachMain();
-      R_vUTE_Derive_stmOrdList_For_gbyAgg();
+      R_vUTE_Derive_order_For_gbyAgg();
 
       if (G_bIsNextMain(CK_GBYAGG)) {
         G_bEachMain();
-        R_vUTE_Derive_stmOrdList_For_gbyAgg();
+        R_vUTE_Derive_order_For_gbyAgg();
       }
     }
 
@@ -578,7 +578,7 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
 
     if (G_bIsNextMain(CK_PROJECT)) {
       G_bEachMain();
-      R_vUTE_Derive_stmOrdList_For_project();
+      R_vUTE_Derive_order_For_project();
     }
 
     break;
@@ -588,7 +588,7 @@ void Xreshape::R_vUTE_Derive_Stream_Order(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_SORT,CK_SBYELIST)) {
-    R_vUTE_Derive_stmOrdList_For_sort();
+    R_vUTE_Derive_order_For_sort();
   }
 
   G.pDeck->vRenumberRecursive();

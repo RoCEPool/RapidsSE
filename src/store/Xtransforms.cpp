@@ -3538,7 +3538,7 @@ void Xtransforms::vS90_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS90_T30_Add_stmOrdList(void)
+void Xtransforms::vS90_T30_Add_order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -3546,7 +3546,7 @@ void Xtransforms::vS90_T30_Add_stmOrdList(void)
 
   vAssert_Board_mqA();
 
-  R_vUTE_Derive_Stream_Order();
+  R_vUTE_Derive_order();
 
   vEndTransform();
 }
