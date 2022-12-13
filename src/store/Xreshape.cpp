@@ -512,17 +512,22 @@ void Xreshape::R_vUTE_Derive_stream_order_For_project(void)
   CardIter xCI(G.p_order);
   while ((G.p_ordElmOdn = _pCard_OrdElmOdn(xCI.pEachChild()))) {
     i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_ordElmOdn);
-    if (C_UNKNOWN != i_Expr) {
-      nLeading++;
+    if (C_UNKNOWN == i_Expr)
+      continue;
 
-      if (! p_stmOrdList_project) {
-        p_stmOrdList_project = new Card_Order;
-        G.p_stream->vAppend(p_stmOrdList_project);
-      }
+    nLeading++;
 
-      G_vAppendNewChild(p_stmOrdList_project, CK_ORDELMODN);
-      G.p_ordElmOdn->vValueSprint("$%lld"_Stz, i_Expr + 1);
+    if (! p_stmOrdList_project) {
+      p_stmOrdList_project = new Card_Order;
+      G.p_stream->vAppend(p_stmOrdList_project);
     }
+
+    G.p_direction = G.p_ordElmOdn->pSub_direction();
+
+    G_vAppendNewChild(p_stmOrdList_project, CK_ORDELMODN);
+    G.p_ordElmOdn->vValueSprint("$%lld"_Stz, i_Expr + 1);
+    if (G.p_direction)
+      G.p_ordElmOdn->vAppend(G.p_direction->pDupCardAndSubCards());
   }
 }
 
