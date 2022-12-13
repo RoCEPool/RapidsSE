@@ -74,9 +74,9 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveXhand();
 
   vSeries_10_Condense_Info     (C_ENABLED);
-  vSeries_20_Table_Analysis    (C_ENABLED);
-  vSeries_22_Stream_Analysis   (C_ENABLED);
-  vSeries_24_Index_Analysis    (C_ENABLED);
+//  vSeries_20_Table_Analysis    (C_ENABLED);
+//  vSeries_22_Stream_Analysis   (C_ENABLED);
+//  vSeries_24_Index_Analysis    (C_ENABLED);
   vSeries_26_SubQuery_Analysis (C_ENABLED);
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
   vSeries_32_To_BoolCalc       (C_ENABLED);
@@ -126,6 +126,9 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vS10_T_Condense_Info();
+    m_pTransforms->vS20_T_Table_Analysis();
+    m_pTransforms->vS22_T_Stream_Analysis();
+    m_pTransforms->vS24_T_Index_Analysis();
   }
 
   m_pTransforms->vS10_TZZ_End();
