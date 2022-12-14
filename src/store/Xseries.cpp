@@ -87,7 +87,7 @@ void Xseries::vTransformSeries(void)
   // ---
 //  vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
-  vSeries_75_EE_operators      (C_ENABLED);
+//  vSeries_75_EE_operators      (C_ENABLED);
 
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
@@ -152,6 +152,11 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
   vSeries(BK_SUBPIPE, 0, __func__);
 
   m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
+
+
+  m_pTransforms->vS75_T10_Morph_table_To_EEop();
+  m_pTransforms->vS75_T20_Morph_keyExists_filter_To_constraint();
+  m_pTransforms->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
 
   vEndSeries(BK_SUBPIPE);
 }
