@@ -850,6 +850,19 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Stream Under All GbyAgg
+
+  G_vRestart();
+  vStreamAnalysisReset();
+
+  while (G_bEachMainWithSub(CK_GBYAGG,CK_AGGELIST)) {
+    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+
+    G.p_gbyAgg->vAppend(G.p_stream);
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Stream Under All Sort
 
   G_vRestart();
@@ -889,6 +902,15 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
     M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Derive Ordinal Range For All GbyAgg Stream
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_GBYAGG,CK_STREAM)) {
+    M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
+  }
+
 
   vEndTransform();
 }
