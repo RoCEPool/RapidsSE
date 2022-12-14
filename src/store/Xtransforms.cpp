@@ -304,6 +304,8 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
 
     if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
       Card_Order *p_order2 = G.p_stream->pSub_order();
+      if (! p_order2)
+        return false;
 
       // are the two order's the same?
       if (T_b_Order_AreSame(p_order1, p_order2))

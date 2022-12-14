@@ -155,6 +155,12 @@ void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
       continue;
     }
 
+    if (p_card->bIsCard(CK_ROPRED))
+      continue;
+
+    if (p_card->bIsCard(CK_TERM))
+      continue;
+
     NEVER_REACH
   }
 }
