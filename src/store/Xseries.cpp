@@ -74,20 +74,9 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveXhand();
 
   vSeries_10_Make_Runnable();
-//  vSeries_20_Table_Analysis    (C_ENABLED);
-//  vSeries_22_Stream_Analysis   (C_ENABLED);
-//  vSeries_24_Index_Analysis    (C_ENABLED);
-//  vSeries_26_SubQuery_Analysis (C_ENABLED);
-//vSeries_30_Literal_Arithmetic(C_ENABLED);
-//  vSeries_32_To_BoolCalc       (C_ENABLED);
-//  vSeries_33_To_TblColOdn      (C_ENABLED);
-//  vSeries_34_Predicate_Pullup  (C_ENABLED);
-//  vSeries_36_Bound_Analysis    (C_ENABLED);
 
   // ---
-//  vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
-//  vSeries_75_EE_operators      (C_ENABLED);
 
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
@@ -98,8 +87,6 @@ void Xseries::vTransformSeries(void)
 
   // ---
   vSeries_A0_Filter_Refinement (C_ENABLED);
-  vSeries_E0_To_StmOdn         (C_ENABLED);
-  vSeries_Z0_Restate_Pipeline  (C_ENABLED);
 
 }
 
@@ -164,263 +151,6 @@ void Xseries::vSeries_10_Make_Runnable(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_20_Table_Analysis(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS20_T00_Test(bEnabled)) {
-    m_pTransforms->vS20_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS20_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS20_T_Table_Analysis();
-  }
-
-  m_pTransforms->vS20_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_22_Stream_Analysis(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (!m_pTransforms->bS22_T00_Test(bEnabled)) {
-    m_pTransforms->vS22_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS22_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS22_T_Stream_Analysis();
-  }
-
-  m_pTransforms->vS22_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_24_Index_Analysis(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS24_T00_Test(bEnabled)) {
-    m_pTransforms->vS24_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS24_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS24_T_Index_Analysis();
-  }
-
-  m_pTransforms->vS24_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_26_SubQuery_Analysis(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (!m_pTransforms->bS26_T00_Test(bEnabled)) {
-    m_pTransforms->vS26_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS26_T00_Begin();
-
-  m_pTransforms->vS26_T10_SubQuery_Analysis_Of_Main_Query();
-  m_pTransforms->vS26_T20_SubQuery_Analysis_Of_Sub_Query();
-
-  m_pTransforms->vS26_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_32_To_BoolCalc(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (!m_pTransforms->bS32_T00_Test(bEnabled)) {
-    m_pTransforms->vS32_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS32_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS32_T_SubQuery_Analysis();
-  }
-
-  m_pTransforms->vS32_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_33_To_TblColOdn(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (!m_pTransforms->bS33_T00_Test(bEnabled)) {
-    m_pTransforms->vS33_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS33_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS33_T10_Convert_stmColOdn_To_tblColOdn();
-  }
-
-  m_pTransforms->vS33_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_34_Predicate_Pullup(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS34_T00_Test(bEnabled)) {
-    m_pTransforms->vS34_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS34_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS34_T_Predicate_Pullup();
-  }
-
-  m_pTransforms->vS34_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_36_Bound_Analysis(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS36_T00_Test(bEnabled)) {
-    m_pTransforms->vS36_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS36_T00_Begin();
-
-  for (i8 i_Board = 0;
-       m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
-       i_Board++) {
-
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
-
-    m_pTransforms->vS36_T10_Derive_bounds_From_filter();
-  }
-
-  m_pTransforms->vS36_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* flatten query                                                              */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_40_Flatten_Query(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (!m_pTransforms->bS40_T00_Test(bEnabled)) {
-    m_pTransforms->vS40_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS40_T00_Begin();
-
-  m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
-
-  m_pTransforms->vS40_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
@@ -458,32 +188,6 @@ void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
   m_pTransforms->vS50_T98_Extract_joinOrderSeq();
 
   m_pTransforms->vS50_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_75_EE_operators(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS75_T00_Test(bEnabled)) {
-    m_pTransforms->vS75_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS75_T00_Begin();
-
-  //m_pTransforms->vS75_T05_ChooseIndexes();
-  m_pTransforms->vS75_T10_Morph_table_To_EEop();
-  m_pTransforms->vS75_T20_Morph_keyExists_filter_To_constraint();
-  m_pTransforms->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
-
-  m_pTransforms->vS75_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
@@ -588,55 +292,12 @@ void Xseries::vSeries_A0_Filter_Refinement(bool bEnabled)
   m_pTransforms->vSA0_T10_Eliminate_bounds_From_filter();
   m_pTransforms->vSA0_T20_Individuate_filter();
 
-  m_pTransforms->vSA0_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_E0_To_StmOdn(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bSE0_T00_Test(bEnabled)) {
-    m_pTransforms->vSE0_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vSE0_T00_Begin();
-
   m_pTransforms->vSE0_T10_Convert_TblColOdn_To_StmOdn();
   m_pTransforms->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
 
-  m_pTransforms->vSE0_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_Z0_Restate_Pipeline(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bSZ0_T00_Test(bEnabled)) {
-    m_pTransforms->vSZ0_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vSZ0_T00_Begin();
-
   m_pTransforms->vSZ0_T20_Reinstate_stagesV3();
 
-  m_pTransforms->vSZ0_TZZ_End();
+  m_pTransforms->vSA0_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
