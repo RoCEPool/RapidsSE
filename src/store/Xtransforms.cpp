@@ -215,11 +215,11 @@ bool Xtransforms::bOT_Min_Groupby(void) {
   //
 
   // Notes:
-  // * need to get the tables from which the columns of the gbyElist are from
-  // * get the indexlist of unique indexes of the tables
-  // * match the gbyElist columns with the indexList columns
+  // * need to get the index if the groupby colum is coming from an indexscan
+  // * and check if index is a unique index on that column
   // * if a match is found , discard all other columns off the gbyElist
-  //   except the match (unique one)
+  //   except the match (unique one) and need to rejoin with the same table
+  //   to get the columns if they were being projected
 
 
   return false;
@@ -321,6 +321,17 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
       // are the two order's the same?
       if (T_b_Order_AreSame(p_order1, p_order2)) {
         G.p_gbyAgg->vCard(CK_ORDAGG);
+
+        vPrintBoard(__LINE__);
+
+        RASSERT(G_bEachMain(CK_GBYAGG));
+        G_vRemoveDeleteMain(CK_GBYAGG);
+
+        vPrintBoard(__LINE__);
+
+        RASSERT(G_bEachMain(CK_GBYAGG));
+        G_vRemoveDeleteMain(CK_GBYAGG);
+
         return true;
       }
     }
