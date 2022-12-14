@@ -35,7 +35,7 @@ namespace STORE
   private:
 
     // we start with multiple sub_queries...
-    void vSeries_10_Condense_Info     (bool bEnabled); //
+    void vSeries_10_Make_Runnable(void);
     void vSeries_20_Table_Analysis    (bool bEnabled); //
     void vSeries_22_Stream_Analysis   (bool bEnabled); //
     void vSeries_24_Index_Analysis    (bool bEnabled);

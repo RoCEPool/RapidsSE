@@ -67,7 +67,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // vSeries_10_Condense_Info
+    // vSeries_10_Make_Runnable
     bool bS10_T00_Test(bool bEnabled);
     void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);

@@ -73,7 +73,7 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveShorter();
   m_pCardCtl->vSaveXhand();
 
-  vSeries_10_Condense_Info     (C_ENABLED);
+  vSeries_10_Make_Runnable();
 //  vSeries_20_Table_Analysis    (C_ENABLED);
 //  vSeries_22_Stream_Analysis   (C_ENABLED);
 //  vSeries_24_Index_Analysis    (C_ENABLED);
@@ -106,16 +106,16 @@ void Xseries::vTransformSeries(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_10_Condense_Info(bool bEnabled)
+void Xseries::vSeries_10_Make_Runnable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS10_T00_Test(bEnabled)) {
-    m_pTransforms->vS10_T00_Skip();
-    return;
-  }
+//  if (! m_pTransforms->bS10_T00_Test(bEnabled)) {
+//    m_pTransforms->vS10_T00_Skip();
+//    return;
+//  }
 
   m_pTransforms->vS10_T00_Begin();
 
