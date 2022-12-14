@@ -642,10 +642,13 @@ Card_IndexList* Xcreate::C_pProduce_indexList_Of_table(Table* pTable)
     p_indexNm->vValue(pIndex->szIndexNm());
     p_index->vAppend(p_indexNm);
 
+    IndexDef* pIndexDef = pIndex->pIndexDef();
+    if (pIndexDef->bIsUnique()) {
+      p_index->vAppendNewCardTail(CK_UNIQUE);
+    }
+
     Card_IdxColList* p_idxColList = new Card_IdxColList;
     p_index->vAppend(p_idxColList);
-
-    IndexDef* pIndexDef = pIndex->pIndexDef();
 
     i8 nColumns = pIndexDef->nColumns();
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {

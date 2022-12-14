@@ -6,7 +6,7 @@ trackMemory;
 
 _r_schema
 
-create index O_idx0  on Orders   (O_ORDERKEY );
+create unique index O_idx0  on Orders   (O_ORDERKEY );
 create index L_idx0  on Lineitem (L_ORDERKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
