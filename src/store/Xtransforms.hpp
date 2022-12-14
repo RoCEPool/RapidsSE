@@ -28,42 +28,20 @@ namespace STORE
     void vOptimiseLoop(void);
 
     bool bOT_Cut_Sort(void);
-    void vOT_Cut_Sort(void);
-
     bool bOT_Dup_Filter(void);
-    void vOT_Dup_Filter(void);
-
     bool bOT_Ely_Filters(void);
-    void vOT_Ely_Filters(void);
     bool bOT_Ely_Projections(void);
-    void vOT_Ely_Projections(void);
-    bool bOT_Ely_Sort_Limit(void);
-    void vOT_Ely_Sort_Limit(void);
-
     bool bOT_Min_Groupby(void);
-    void vOT_Min_Groupby(void);
-
     bool bOT_Otm_Calculations(void);
-    void vOT_Otm_Calculations(void);
-
     bool bOT_Ppn_Projections(void);
-    void vOT_Ppn_Projections(void);
-
     bool bOT_Rpl_Aggreg_By_OrdAgg(void);
-    void vOT_Rpl_Aggreg_By_OrdAgg(void);
     bool bOT_Rpl_Aggreg_By_Sort_OrdAgg(void);
-    void vOT_Rpl_Aggreg_By_Sort_OrdAgg(void);
     bool bOT_Rpl_Max_By_Top(void);
-    void vOT_Rpl_Max_By_Top(void);
     bool bOT_Rpl_Scan_by_IndexScan(void);
-    void vOT_Rpl_Scan_by_IndexScan(void);
     bool bOT_Rpl_SortDesc_Limit_By_Top(void);
-    void vOT_Rpl_SortDesc_Limit_By_Top(void);
     bool bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void);
-    void vOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void);
 
     bool bOT_Seq_Join_Order(void);
-    void vOT_Seq_Join_Order(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
