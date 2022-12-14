@@ -89,7 +89,7 @@ void Xseries::vTransformSeries(void)
   vSeries_50_Join_Ordering                   (C_DISABLED);
 //  vSeries_75_EE_operators      (C_ENABLED);
 
-  vSeries_80_Index_Scan        (C_ENABLED);
+//  vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
 
   m_pTransforms->vOptimiseLoop();

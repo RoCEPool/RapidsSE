@@ -389,6 +389,17 @@ bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
   // ** This optimisation can be applied only after OT_ELY_FILTERS.
   //    We won't see it till the Filters are moved close to the scans.
 
+  G_vRestart();
+  if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+    if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
+      G.p_scan->vCard(CK_INDEXSCAN);
+
+      vPrintBoard(__LINE__);
+
+      return true;
+    }
+  }
+
   return false;
 }
 
@@ -1520,6 +1531,9 @@ void Xtransforms::vS40_T00_Begin(void)
 void Xtransforms::vS40_T05_Flatten_By_Decision_Tree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (1 == m_pBench->nItems())
+    return;
 
   vTransform(__func__, "((10))"_Stz);
 
