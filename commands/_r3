@@ -25,7 +25,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vSeries_10_Condense_Info"
+/glean_cue_from = "vSeries_10_Make_Runnable"
 /glean_interactive
 /transliterated
 /weaved

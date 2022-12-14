@@ -73,7 +73,7 @@ void Xseries::vTransformSeries(void)
   m_pCardCtl->vSaveShorter();
   m_pCardCtl->vSaveXhand();
 
-  vSeries_10_Condense_Info     (C_ENABLED);
+  vSeries_10_Make_Runnable();
 //  vSeries_20_Table_Analysis    (C_ENABLED);
 //  vSeries_22_Stream_Analysis   (C_ENABLED);
 //  vSeries_24_Index_Analysis    (C_ENABLED);
@@ -81,15 +81,15 @@ void Xseries::vTransformSeries(void)
 //vSeries_30_Literal_Arithmetic(C_ENABLED);
 //  vSeries_32_To_BoolCalc       (C_ENABLED);
 //  vSeries_33_To_TblColOdn      (C_ENABLED);
-  vSeries_34_Predicate_Pullup  (C_ENABLED);
-  vSeries_36_Bound_Analysis    (C_ENABLED);
+//  vSeries_34_Predicate_Pullup  (C_ENABLED);
+//  vSeries_36_Bound_Analysis    (C_ENABLED);
 
   // ---
-  vSeries_40_Flatten_Query     (C_ENABLED);
+//  vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
-  vSeries_75_EE_operators      (C_ENABLED);
+//  vSeries_75_EE_operators      (C_ENABLED);
 
-  vSeries_80_Index_Scan        (C_ENABLED);
+//  vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
 
   m_pTransforms->vOptimiseLoop();
@@ -106,16 +106,16 @@ void Xseries::vTransformSeries(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_10_Condense_Info(bool bEnabled)
+void Xseries::vSeries_10_Make_Runnable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  if (! m_pTransforms->bS10_T00_Test(bEnabled)) {
-    m_pTransforms->vS10_T00_Skip();
-    return;
-  }
+//  if (! m_pTransforms->bS10_T00_Test(bEnabled)) {
+//    m_pTransforms->vS10_T00_Skip();
+//    return;
+//  }
 
   m_pTransforms->vS10_T00_Begin();
 
@@ -144,9 +144,19 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
 
     m_pTransforms->vS32_T_SubQuery_Analysis();
     m_pTransforms->vS33_T10_Convert_stmColOdn_To_tblColOdn();
+
+    m_pTransforms->vS34_T_Predicate_Pullup();
+    m_pTransforms->vS36_T10_Derive_bounds_From_filter();
   }
 
-  m_pTransforms->vS10_TZZ_End();
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
+
+
+  m_pTransforms->vS75_T10_Morph_table_To_EEop();
+  m_pTransforms->vS75_T20_Morph_keyExists_filter_To_constraint();
+  m_pTransforms->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
 
   vEndSeries(BK_SUBPIPE);
 }
