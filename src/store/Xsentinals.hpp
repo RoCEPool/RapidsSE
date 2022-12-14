@@ -150,6 +150,7 @@ namespace STORE
     Card_Twist *            p_twist;
     Card_Type *             p_type;
     Card_UBound *           p_uBound;
+    Card_Unique *           p_unique;
     Card_Where *            p_where;
     Card_XBound *           p_xBound;
 

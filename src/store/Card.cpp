@@ -2962,6 +2962,19 @@ Card_UBound* Card::pSub_uBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Unique.hpp"
+Card_Unique* Card::pSub_unique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Unique* p_unique =
+      _pCard_Unique(pFindSubCard(CK_UNIQUE));
+  return p_unique;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Where.hpp"
 Card_Where* Card::pSub_where(void)
 {

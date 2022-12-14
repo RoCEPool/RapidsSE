@@ -616,6 +616,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_twist            = nullptr;
   G.p_type             = nullptr;
   G.p_uBound           = nullptr;
+  G.p_unique           = nullptr;
   G.p_where            = nullptr;
   G.p_xBound           = nullptr;
 
@@ -1202,10 +1203,11 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_TBLCOLODN:        return G.p_tblColOdn;
     case CK_TERM:             return G.p_term;
     case CK_TOPOLOGY:         return G.p_topology;
-    case CK_ROPRED:          return G.p_roPred;
+    case CK_ROPRED:           return G.p_roPred;
     case CK_TWIST:            return G.p_twist;
     case CK_TYPE:             return G.p_type;
     case CK_UBOUND:           return G.p_uBound;
+    case CK_UNIQUE:           return G.p_unique;
     case CK_WHERE:            return G.p_where;
     case CK_XBOUND:           return G.p_xBound;
 
@@ -2094,6 +2096,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
+    case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
     case CK_XBOUND:           *((Card**)&G.p_xBound)           = pCard; break;
 
@@ -2225,10 +2228,11 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_TBLCOLODN:        return "G.p_tblColOdn"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_ROPRED:          return "G.p_roPred"_Stz;
+    case CK_ROPRED:           return "G.p_roPred"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;
+    case CK_UNIQUE:           return "G.p_unique"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
     case CK_XBOUND:           return "G.p_xBound"_Stz;
 

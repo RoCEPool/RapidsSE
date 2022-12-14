@@ -482,6 +482,7 @@ namespace STORE
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
+    Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
     Card_XBound*        pSub_xBound(void);
 
