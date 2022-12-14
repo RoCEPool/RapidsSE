@@ -85,7 +85,7 @@ void Xseries::vTransformSeries(void)
 //  vSeries_36_Bound_Analysis    (C_ENABLED);
 
   // ---
-  vSeries_40_Flatten_Query     (C_ENABLED);
+//  vSeries_40_Flatten_Query     (C_ENABLED);
   vSeries_50_Join_Ordering                   (C_DISABLED);
   vSeries_75_EE_operators      (C_ENABLED);
 
@@ -149,7 +149,9 @@ void Xseries::vSeries_10_Condense_Info(bool bEnabled)
     m_pTransforms->vS36_T10_Derive_bounds_From_filter();
   }
 
-  m_pTransforms->vS10_TZZ_End();
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
 
   vEndSeries(BK_SUBPIPE);
 }
