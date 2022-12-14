@@ -574,6 +574,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_note             = nullptr;
   G.p_notPred          = nullptr;
   G.p_nParmCols        = nullptr;
+  G.p_ordAgg           = nullptr;
   G.p_ordElmOdn        = nullptr;
   G.p_order            = nullptr;
   G.p_param            = nullptr;
@@ -1164,6 +1165,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_NOTE:             return G.p_note;
     case CK_NOTPRED:          return G.p_notPred;
     case CK_NPARMCOLS:        return G.p_nParmCols;
+    case CK_ORDAGG:           return G.p_ordAgg;
     case CK_ORDELMODN:        return G.p_ordElmOdn;
     case CK_ORDER:            return G.p_order;
     case CK_PARAM:            return G.p_param;
@@ -2051,6 +2053,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard; break;
     case CK_NPARMCOLS:        *((Card**)&G.p_nParmCols)        = pCard; break;
+    case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard; break;
     case CK_ORDELMODN:        *((Card**)&G.p_ordElmOdn)        = pCard; break;
     case CK_ORDER:            *((Card**)&G.p_order)            = pCard; break;
     case CK_PARAM:            *((Card**)&G.p_param)            = pCard; break;
@@ -2185,6 +2188,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_NOTE:             return "G.p_note"_Stz;
     case CK_NOTPRED:          return "G.p_notPred"_Stz;
     case CK_NPARMCOLS:        return "G.p_nParmCols"_Stz;
+    case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
     case CK_ORDELMODN:        return "G.p_ordElmOdn"_Stz;
     case CK_ORDER:            return "G.p_order"_Stz;
     case CK_PARAM:            return "G.p_param"_Stz;

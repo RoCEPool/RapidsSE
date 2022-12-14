@@ -220,6 +220,7 @@ void Weaver::vOp(Card* pCard)
     case CK_KEYNOTEXISTS:  vArgKeyNotExists(sOpArgs,_pCard_KeyNotExists(pCard)); break;
     case CK_LIMIT:         vArgLimit       (sOpArgs,_pCard_Limit(pCard));        break;
     case CK_NEXT:          vArgNext        (sOpArgs,_pCard_Next(pCard));         break;
+    case CK_ORDAGG:        vArgOrdAgg      (sOpArgs,_pCard_OrdAgg(pCard));       break;
     case CK_PROJECT:       vArgProject     (sOpArgs,_pCard_Project(pCard));      break;
     case CK_SCAN:          vArgScan        (sOpArgs,_pCard_Scan(pCard));         break;
     case CK_SORT:          vArgSort        (sOpArgs,_pCard_Sort(pCard));         break;
@@ -521,7 +522,7 @@ void Weaver::vArgNext(Stz* szOpArgs, Card_Next* pCard_Next)
 /*----------------------------------------------------------------------------*/
 /* weave : ordagg <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgOrdAgg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
+void Weaver::vArgOrdAgg(Stz* szOpArgs, Card_OrdAgg* pCard_OrdAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -529,7 +530,7 @@ void Weaver::vArgOrdAgg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
 
   s4K sRpnExpr;
   
-  vRpnAggreg(sRpnExpr,pCard_Aggreg);
+  vRpnOrdAgg(sRpnExpr, pCard_OrdAgg);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -1052,6 +1053,78 @@ void Weaver::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   szRpnExpr->vCatSprint(" %lls"_Stz,pCard_Limit->sz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for ordagg op                                               */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnOrdAgg(Stz* szRpnExpr, Card_OrdAgg* pCard_OrdAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  i8 nSubCards;
+
+  Card_GbyElist* pCard_GbyElist =
+      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_GBYELIST));
+
+  if (! pCard_GbyElist)
+    return;
+
+  szRpnExpr->vConcat(" ordGroupBy"_Stz);
+
+  nSubCards = pCard_GbyElist->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_GbyElist->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+  Card_AggElist* pCard_AggElist =
+      _pCard_AggElist(pCard_OrdAgg->pFindSubCard(CK_AGGELIST));
+
+  if (! pCard_AggElist)
+    return;
+
+  szRpnExpr->vConcat("\n                 "_Stz);
+  szRpnExpr->vConcat(" aggregates"_Stz);
+
+  nSubCards = pCard_AggElist->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_AggElist->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -58,7 +58,7 @@ namespace STORE
     void vArgKeyNotExists(Stz* szOpArgs,  Card_KeyNotExists* pCard_KeyNotExists);
     void vArgLimit       (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
     void vArgNext        (Stz* szOpArgs,  Card_Next*      pCard_Next);
-    void vArgOrdAgg      (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
+    void vArgOrdAgg      (Stz* szOpArgs,  Card_OrdAgg*    pCard_OrdAgg);
     void vArgProject     (Stz* szOpArgs,  Card_Project*   pCard_Project);
     void vArgScan        (Stz* szOpArgs,  Card_Scan*      pCard_Scan);
     void vArgSort        (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
@@ -77,6 +77,7 @@ namespace STORE
     void vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* pCard_KeyNotExists);
     void vRpnKeyNotExists_constraint(Stz* szRpnExpr, Card_KeyNotExists* pCard_KeyNotExists);
     void vRpnLimit       (Stz* szRpnExpr, Card_Limit*     pCard_Limit);
+    void vRpnOrdAgg      (Stz* szRpnExpr, Card_OrdAgg*    pCard_OrdAgg);
     void vRpnProject     (Stz* szRpnExpr, Card_Project*   pCard_Project);
     void vRpnScan        (Stz* szRpnExpr, Card_Scan*      pCard_Scan);
     void vRpnSort        (Stz* szRpnExpr, Card_Sort*      pCard_Sort);

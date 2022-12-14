@@ -96,9 +96,13 @@ bool Xtransforms::bOT_Cut_Sort(void) {
   G_vRestart();
   if (G_bEachMain(CK_SORT)) {
     Card_Order* p_order1 = G.p_sort->pSub_stream()->pSub_order();
+    if (! p_order1)
+      return false;
 
     if (G_bResolveSubCard(CK_STREAM,G.i_MainCard)) {
       Card_Order *p_order2 = G.p_stream->pSub_order();
+      if (! p_order2)
+        return false;
 
       // are the two order's the same?
       if (T_b_Order_AreSame(p_order1, p_order2)) {
@@ -298,6 +302,10 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
   //  we can delete the aggregates on all nodes and on origin.
   //  This further aggregation is not required.
 
+  G.pDeck->vRenumberRecursive();
+
+  vPrintBoard(__LINE__);
+
   G_vRestart();
   if (G_bEachMain(CK_GBYAGG)) {
     Card_Order* p_order1 = G.p_gbyAgg->pSub_stream()->pSub_order();
@@ -307,9 +315,14 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
       if (! p_order2)
         return false;
 
+      p_order1->vDump(0,"ORDER1"_Stz);
+      p_order2->vDump(0,"ORDER2"_Stz);
+
       // are the two order's the same?
-      if (T_b_Order_AreSame(p_order1, p_order2))
+      if (T_b_Order_AreSame(p_order1, p_order2)) {
         G.p_gbyAgg->vCard(CK_ORDAGG);
+        return true;
+      }
     }
   }
 
@@ -389,16 +402,20 @@ bool Xtransforms::bOT_Rpl_Scan_by_IndexScan(void) {
   // ** This optimisation can be applied only after OT_ELY_FILTERS.
   //    We won't see it till the Filters are moved close to the scans.
 
-  G_vRestart();
-  if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
-    if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
-      G.p_scan->vCard(CK_INDEXSCAN);
-
-      vPrintBoard(__LINE__);
-
-      return true;
-    }
-  }
+//  G_vRestart();
+//  if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+//    if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
+//      G.p_scan->vCard(CK_INDEXSCAN);
+//
+//      vPrintBoard(__LINE__);
+//
+//      vS90_T30_Derive_order();
+//
+//      vPrintBoard(__LINE__);
+//
+//      return true;
+//    }
+//  }
 
   return false;
 }
@@ -3654,6 +3671,7 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds
 
+  G_vRestart();
   while (G_bEachMain()) {
 
     if (! (G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
@@ -3707,6 +3725,7 @@ void Xtransforms::vSA0_T20_Individuate_filter(void)
 
   vAssert_Board_mqA();
 
+  G_vRestart();
   while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     G.p_scan->vRemoveChild(G.p_filter);
     G.pDeck->vInsertAfter(G.p_filter, G.p_scan);
