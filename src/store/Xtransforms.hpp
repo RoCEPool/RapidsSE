@@ -77,13 +77,13 @@ namespace STORE
 
     // vSeries_40_Flatten_Query
     void vS40_T05_Flatten_By_Decision_Tree(void);
-    void vS40_T10_Fold_F_Before_Mq_As_opSeq(void);
-    void vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
-    void vS40_T30_Fold_W_A_NC_I_Before_Mq_As_aggFanAval(void);
-    void vS40_T40_Fold_W_A_NC_ro_Before_Mq_As_aggFanAval(void);
-    void vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void);
-    void vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
-    void vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
+    void vS40_T10_Fold_F(void);
+    void vS40_T20_Fold_W_A_C_ro(void);
+    void vS40_T30_Fold_W_A_NC_I(void);
+    void vS40_T40_Fold_W_A_NC_ro(void);
+    void vS40_T50_Fold_W_L_C_E(void);
+    void vS40_T60_Fold_W_L_NC_NI(void);
+    void vS40_T70_Fold_H_A_NC_ro(void);
 
     // vSeries_50_Join_Ordering
     bool bS50_T00_Test(bool bEnabled);
