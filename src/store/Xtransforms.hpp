@@ -46,73 +46,36 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // vSeries_10_Make_Runnable
-    bool bS10_T00_Test(bool bEnabled);
-    void vS10_T00_Skip(void);
     void vS10_T00_Begin(void);
     void vS10_T_Condense_Info(void);
-    void vS10_TZZ_End(void);
 
     // vSeries_20_Table_Analysis
-    bool bS20_T00_Test(bool bEnabled);
-    void vS20_T00_Skip(void);
-    void vS20_T00_Begin(void);
     void vS20_T_Table_Analysis(void);
-    void vS20_TZZ_End(void);
 
     // vSeries_24_Index_Analysis
-    bool bS24_T00_Test(bool bEnabled);
-    void vS24_T00_Skip(void);
-    void vS24_T00_Begin(void);
     void vS24_T_Index_Analysis(void);
-    void vS24_TZZ_End(void);
 
     // vSeries_22_Stream_Analysis
-    bool bS22_T00_Test(bool bEnabled);
-    void vS22_T00_Skip(void);
-    void vS22_T00_Begin(void);
     void vS22_T_Stream_Analysis(void);
-    void vS22_TZZ_End(void);
 
     // vSeries_26_SubQuery_Analysis
-    bool bS26_T00_Test(bool bEnabled);
-    void vS26_T00_Skip(void);
-    void vS26_T00_Begin(void);
+
     void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
     void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
-    void vS26_TZZ_End(void);
 
     // vSeries_32_To_BoolCalc
-    bool bS32_T00_Test(bool bEnabled);
-    void vS32_T00_Skip(void);
-    void vS32_T00_Begin(void);
     void vS32_T_SubQuery_Analysis(void);
-    void vS32_TZZ_End(void);
 
     // vSeries_33_To_TblColOdn
-    bool bS33_T00_Test(bool bEnabled);
-    void vS33_T00_Skip(void);
-    void vS33_T00_Begin(void);
     void vS33_T10_Convert_stmColOdn_To_tblColOdn(void);
-    void vS33_TZZ_End(void);
 
     // vSeries_34_Predicate_Pullup
-    bool bS34_T00_Test(bool bEnabled);
-    void vS34_T00_Skip(void);
-    void vS34_T00_Begin(void);
     void vS34_T_Predicate_Pullup(void);
-    void vS34_TZZ_End(void);
 
     // vSeries_36_Bound_Analysis
-    bool bS36_T00_Test(bool bEnabled);
-    void vS36_T00_Skip(void);
-    void vS36_T00_Begin(void);
     void vS36_T10_Derive_bounds_From_filter(void);
-    void vS36_TZZ_End(void);
 
     // vSeries_40_Flatten_Query
-    bool bS40_T00_Test(bool bEnabled);
-    void vS40_T00_Skip(void);
-    void vS40_T00_Begin(void);
     void vS40_T05_Flatten_By_Decision_Tree(void);
     void vS40_T10_Fold_F_Before_Mq_As_opSeq(void);
     void vS40_T20_Fold_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey(void);
@@ -121,7 +84,6 @@ namespace STORE
     void vS40_T50_Fold_W_L_C_E_Before_Mq_As_keyExists(void);
     void vS40_T60_Fold_W_L_NC_NI_Into_Mq_As_keyNotExists(void);
     void vS40_T70_Fold_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq(void);
-    void vS40_TZZ_End(void);
 
     // vSeries_50_Join_Ordering
     bool bS50_T00_Test(bool bEnabled);
@@ -144,13 +106,9 @@ namespace STORE
     void vS50_TZZ_End(void);
 
     // vSeries_75_EE_operators
-    bool bS75_T00_Test(bool bEnabled);
-    void vS75_T00_Skip(void);
-    void vS75_T00_Begin(void);
     void vS75_T10_Morph_table_To_EEop(void);
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
     void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
-    void vS75_TZZ_End(void);
 
     // vSeries_80_Index_Scan
     bool bS80_T00_Test(bool bEnabled);
@@ -164,7 +122,6 @@ namespace STORE
     void vS90_T00_Skip(void);
     void vS90_T00_Begin(void);
     void vS90_T30_Derive_order(void);
-    void vS90_TF0_Remove_sort_IfSameAs_gby(void);
     void vS90_TZZ_End(void);
 
     // vSeries_92_Project_Pullup
@@ -183,19 +140,11 @@ namespace STORE
     void vSA0_TZZ_End(void);
 
     // vSeries_E0_To_StmOdn
-    bool bSE0_T00_Test(bool bEnabled);
-    void vSE0_T00_Skip(void);
-    void vSE0_T00_Begin(void);
     void vSE0_T10_Convert_TblColOdn_To_StmOdn(void);
     void vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
-    void vSE0_TZZ_End(void);
 
     // vSeries_Z0_Restate_Pipeline
-    bool bSZ0_T00_Test(bool bEnabled);
-    void vSZ0_T00_Skip(void);
-    void vSZ0_T00_Begin(void);
     void vSZ0_T20_Reinstate_stagesV3(void);
-    void vSZ0_TZZ_End(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
