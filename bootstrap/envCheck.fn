@@ -284,7 +284,7 @@ function validateHostsAreResolvable() {
 
     # Check if the hostname is an IP address
     local re="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-  
+
     if [[ "${host}" =~ ${re} ]]; then
       # We've got an IPv4 address
       # Check the quads
@@ -309,8 +309,8 @@ function validateHostsAreResolvable() {
       # This is a valid IPv6 address
       continue
     fi
- 
-   
+
+
     # We must have a hostname to resolve. There are a few different tools that
     # can be used to resolve it, depending on what is installed.
 
@@ -321,7 +321,7 @@ function validateHostsAreResolvable() {
       if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
       fi
-  
+
       # Host was resolved.
       continue
 
@@ -340,7 +340,7 @@ function validateHostsAreResolvable() {
 
     # No dig, then try nslookup
     elif command -v nslookup &>/dev/null; then
-      
+
       output="$(nslookup "${host}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
       if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
@@ -597,7 +597,7 @@ function validateHostsReachableBySsh() {
   fi
 
   local nodeName
-  local host 
+  local host
 
   declare -a sshArgs=()
   declare -a jobArray=()
@@ -616,7 +616,7 @@ function validateHostsReachableBySsh() {
         >&2 echo "${output}"
         errorExit "Node ${nodeName} [host: ${host}] cannot be reached by password-less SSH."
       fi
-  
+
       true
     ) &
 
@@ -813,7 +813,7 @@ function validateInternalPortNotInUse() {
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
     local errMsg="The internal port specified for RapidsSE is already in use on the following nodes:"
-    
+
     for nodeName in "${failedNodes[@]}"
     do
       host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
@@ -869,7 +869,7 @@ function validateClientPortNotInUse() {
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
     local errMsg="The client port specified for RapidsSE is already in use on the following nodes:"
-    
+
     for nodeName in "${failedNodes[@]}"
     do
       host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
@@ -881,7 +881,7 @@ function validateClientPortNotInUse() {
   fi
 }
 
-  
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the shared memory segment does not exceed the size of shared
 ## memory on any node.
@@ -944,7 +944,7 @@ function validateShmAgainstRAM() {
     ram="${NODE_TOTAL_MEM[${nodeName}]}"
 
     if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ] &&
-       [ "$(echo "${nodeShm} > (${ram} - 10)" | bc -l)" -eq 1 ]; then  
+       [ "$(echo "${nodeShm} > (${ram} - 10)" | bc -l)" -eq 1 ]; then
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
     fi
   done
@@ -1240,16 +1240,27 @@ function validateStorageDirsHaveSpace() {
     do
       remoteCmd="$(cat <<-EOF
 if [ -d "${dirPath}" ]; then
-maxDirSpace=$(df -m "${dirPath}" | awk '/\/dev\//{print $2}');
+maxDirSpace=$(df -m "${dirPath}" | awk '/\/dev\//{print $2}')
 if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
 echo "Storage disk directory (${dirPath}) does not have enough space.";
 false;
 exit;
 fi
 else
-echo "Storage disk directory (${dirPath}) does not exist.";
+dname="$(dirname "${dirPath}")"
+if [ -d "\${dname}" ]; then
+mkdir -p "${dirPath}" || echo "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
+maxDirSpace=$(df -m "${dirPath}" | awk '/\/dev\//{print $2}')
+if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
+echo "Storage disk directory (${dirPath}) does not have enough space.";
 false;
 exit;
+fi
+else
+echo "Storage disk parent directory (\${dname}) does not exist.";
+false;
+exit;
+fi
 fi
 true;
 EOF
@@ -1296,7 +1307,7 @@ EOF
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validates that the installation directory on each node can be created 
+## Validates that the installation directory on each node can be created
 ## and is writable. Exits out if not.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
@@ -1311,12 +1322,12 @@ function validateInstallDirIsWritable() {
     nodeNames=( "$@" )
   fi
 
-  local nodeName 
+  local nodeName
   local host
   local dir
   local remoteCmd
   local response
-  
+
   declare -a sshCmd=()
   declare -A errors
 
@@ -1389,7 +1400,7 @@ function validateInstallDirIsWritable() {
 
     for nodeName in "${!errors[@]}"
     do
-      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")" 
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
       errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
     done
 
@@ -1419,7 +1430,7 @@ function validateNodeNames() {
   # Test for uniqueness of node names.
   declare -a dups=()
   readarray -t dups < <(printf "%s\n" "${NODE_LIST[@]}" | sort | uniq -d | uniq -u)
-  
+
   if [ "${#dups[@]}" -gt 0 ]; then
     errorExit "Cannot have duplicate node names: ${dups[*]}"
   fi
@@ -2042,7 +2053,7 @@ function validateFirewallSequential() {
     exit 1
   fi
 
-  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then 
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then
     echo -e "\nInstallation can continue with the above warnings, but they may prevent RapidsSE from starting correctly."
   fi
 
@@ -2168,7 +2179,7 @@ function validateFirewallParallel() {
   if [ -z "${sequentialServers[*]:-}" ]; then
     sequentialServers=()
   fi
-  
+
   # Launch all of the unique server name UDP tests
   for nodeName in "${nodeNames[@]}"; do
 
