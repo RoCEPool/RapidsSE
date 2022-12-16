@@ -68,7 +68,8 @@ void Xtransforms::vOptimiseLoop(void) {
     bOpts |= bOT_Min_Groupby();
     bOpts |= bOT_Otm_Calculations();
     bOpts |= bOT_Ppn_Projections();
-    bOpts |= bOT_Rpl_Aggreg_By_OrdAgg();
+    // todo: disuss with Alka
+//    bOpts |= bOT_Rpl_Aggreg_By_OrdAgg();
     bOpts |= bOT_Rpl_Aggreg_By_Sort_OrdAgg();
     bOpts |= bOT_Rpl_Max_By_Top();
     bOpts |= bOT_Rpl_Scan_by_IndexScan();
@@ -1020,73 +1021,6 @@ void Xtransforms::vS40_T05_Flatten_By_Decision_Tree(void)
   vTransform(__func__, "((10))"_Stz);
 
   vAssert_Board_mqA();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (from) sub-query before the main-query
-  // as an op-sequence
-  // (refer: Q7,8,9)
-
-  auto L_vFold_10_F_Before_Mq_As_opSeq = [this] (void) {
-    vS40_T10_Fold_F();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (single-value aggregate correlated ro) sub-query before the main-query
-  // as an aggregation-fan (projecting key-of-correlation and aggregated value)
-  // further: the key-of-correlation needs to be added to group-by)
-  // (refer: Q2,17)
-
-  auto L_vFold_20_W_A_C_ro_Before_Mq_As_AggFanKcorrAval_GbyKey = [this] (void) {
-    vS40_T20_Fold_W_A_C_ro();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (single-value aggregate non-correlated in) sub-query before the main-query
-  // as an aggregation-fan (projecting a single aggregated value)
-  // (refer: Q18)
-
-  auto L_vFold_30_W_A_NC_I_Before_Mq_As_aggFanAval = [this] (void) {
-    vS40_T30_Fold_W_A_NC_I();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (single-value aggregate non-correlated in) sub-query before the main-query
-  // as an aggregation-fan (projecting a single aggregated value)
-  // (refer: Q15)
-
-  auto L_vFold_40_W_A_NC_ro_Before_Mq_As_aggFanAval = [this] (void) {
-    vS40_T40_Fold_W_A_NC_ro();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (linear correlated exists) sub-query before the main-query
-  // as a keyExists.  join ordering will be required to make it runnable
-  // (refer: Q4)
-
-  auto L_vFold_50_W_L_C_E_Before_Mq_As_keyExists = [this] (void) {
-    vS40_T50_Fold_W_L_C_E();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (linear non-correlated not-in) sub-query before the main-query
-  // as a keyExists
-  // (refer: Q16)
-
-  auto L_vFold_60_W_L_NC_NI_Into_Mq_As_keyNotExists = [this] (void) {
-    vS40_T60_Fold_W_L_NC_NI();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push a (single-value aggregate non-correlated ro) sub query before main queryy
-  // as am aggregation-fan
-  // further: the aggregation-value is injected/factored into the main-query
-  // (refer: Q11)
-
-  auto L_vFold_70_H_A_NC_ro_Before_Mq_As_AggFan_AvalInjectMq = [this] (void) {
-    vS40_T70_Fold_H_A_NC_ro();
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.pSubQuery = m_pBench->pGetBoard(C_SQ_BOARD)->pSubQuery();
 
