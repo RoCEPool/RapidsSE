@@ -3,27 +3,28 @@
 /*============================================================================*/
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-select n_name,
-       sum(l_extendedprice * (1 - l_discount)) as revenue
+select
+  n_name,
+  sum(l_extendedprice * (1 - l_discount)) as revenue
 from customer,
-     orders,
-     lineitem,
-     supplier,
-     nation,
-     region
+  orders,
+  lineitem,
+  supplier,
+  nation,
+  region
 where c_custkey = o_custkey
-     and l_orderkey = o_orderkey
-     and l_suppkey = s_suppkey
-     and c_nationkey = s_nationkey
-     and s_nationkey = n_nationkey
-     and n_regionkey = r_regionkey
-     and r_name = 'ASIA'
-     and o_orderdate >= '1994-01-01'
-     and o_orderdate < '1995-01-01'
+  and l_orderkey = o_orderkey
+  and l_suppkey = s_suppkey
+  and c_nationkey = s_nationkey
+  and s_nationkey = n_nationkey
+  and n_regionkey = r_regionkey
+  and r_name = 'ASIA'
+  and o_orderdate >= '1994-01-01'
+  and o_orderdate < '1995-01-01'
 group by
-     n_name
+  n_name
 order by
-    revenue asc;
+  revenue asc;
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -38,9 +39,8 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * changed join order
-//   * since n_name groups can be max 25 we DO NOT apply the trick of sorting on all partitions,
-//     all nodes and then origin.
+//   * CHANGED JOIN ORDER
+//   * SEPARATE SORT INTO DIFFERENT STAGE THAN AGGREG
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -49,6 +49,7 @@ order by
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * /
 
+// pipeline begin
 pipeline Query5
 begin
   stage stageStart on origin :
@@ -89,9 +90,8 @@ begin
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type INTEGER as S_NATIONKEY J1_S_NATIONKEY"
-    | hash "type INTEGER S_NATIONKEY"
     | combined 0
-    | next hashcast
+    | next
 
   stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
@@ -99,9 +99,8 @@ begin
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR as N_NAME J1_N_NAME ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
-    | hash "type INTEGER N_REGIONKEY"
     | combined 0
-    | next hashcast
+    | next
 
   stage S05 on all partitions :
     indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
@@ -143,6 +142,7 @@ begin
     | sink
     | first
 end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */

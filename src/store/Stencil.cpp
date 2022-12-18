@@ -981,6 +981,10 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // row buffer processing
       m_bRowBuffer = true;
     }
+    else {
+      vSetupScan(pCombined, pStream, pOp);
+      bInflateGenerated = true;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP

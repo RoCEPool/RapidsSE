@@ -592,7 +592,7 @@ void CardCtl::vReset(void)
   vPrintValue(CK_ANDPRED, false);
   vPrintProperties(CK_ANDPRED, false);
 
-  vPrintProperties(CK_CMPPRED, false);
+  //vPrintProperties(CK_CMPPRED, false);
 
   vPrintName(CK_COMMENT,false);
   vPrintProperties(CK_COMMENT,false);

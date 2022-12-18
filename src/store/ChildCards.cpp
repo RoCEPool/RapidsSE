@@ -265,6 +265,23 @@ Card* ChildCards::pPopChild(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* ChildCards::pPlopChild(void)
+{
+
+  i8 nChildren = nChildCards();
+  if (! nChildren)
+    return nullptr;
+
+  Card* pChild = pGetChild(nChildren-1);
+  vRemoveChild(pChild);
+
+  return pChild;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void ChildCards::vPromoteSubs(Card* pChildCard)
 {
   Card* p_after = pChildCard;
@@ -276,12 +293,47 @@ void ChildCards::vPromoteSubs(Card* pChildCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove all children (non-recursive)                                        */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveAllChildren(void)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  while(Card* pChild = pPopChild()) {
+    vRemoveChild(pChild);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vRemoveChild(Card* pChildCard)
 {
 
   vRemove(pChildCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete all children (non-recursive)                             */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveDeleteAllChildren(void)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  while(Card* pChild = pPopChild()) {
+    vRemoveDeleteChild(pChild);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete given immediate child card (non-recursive)               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveDeleteChild(Card* pChildCard)
+{
+
+  vRemove(pChildCard);
+
+  delete pChildCard;
 }
 
 /*----------------------------------------------------------------------------*/

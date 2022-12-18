@@ -286,7 +286,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
     // skip non-printable horizontal lines
     if (pCardCtl->bNextHoriz(eCard) &&
-        pCard->bHasProperty(pCardCtl->szHorizExclude(eCard))) {
+        pCard->Y_bHas(pCardCtl->szHorizExclude(eCard))) {
 
       while (Card* pNextMain = xBI.pNextMain()) {
         eCK eNextCard = pNextMain->eCard();
@@ -317,12 +317,12 @@ void Board::vPinCards(Ribbon* pRibbon)
         || pCard->bIsCard(CK_PROJECT)) {
       Card_Level* p_level = pCard->pSub_level();
       if (p_level)
-        eLevel = (eAL)p_level->Y_iVal(P_Level);
+        eLevel = (eAL)p_level->Y_iGet(P_Level);
     }
     else
     if (pCard->bIsCard(CK_STAGE)) {
       Card_Topology* p_topology = pCard->pSub_topology();
-      eYG eStageTopo = (eYG)p_topology->Y_iVal(P_StageTopo);
+      eYG eStageTopo = (eYG)p_topology->Y_iGet(P_StageTopo);
       switch (eStageTopo) {
         case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
         case YG_ALL_NODES      : eLevel = AL_NODE;      break;
@@ -336,7 +336,7 @@ void Board::vPinCards(Ribbon* pRibbon)
     eAL eLevel = AL_NONE;
     Card_Level* p_level = pCard->pSub_level();
     if (p_level)
-      eLevel = (eAL)p_level->Y_iVal(P_Level);
+      eLevel = (eAL) p_level->Y_iGet(P_Level);
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
   }
 

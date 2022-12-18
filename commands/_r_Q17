@@ -4,7 +4,10 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index L_idx0  on lineitem (L_ORDERKEY );
+create index P_idx0  on part     (P_PARTKEY  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

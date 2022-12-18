@@ -1,23 +1,24 @@
 /*============================================================================*/
-/* Card_SqtPred.hpp -- Test Predicate                                        */
+/* Card_Bound.hpp -- Abstract Bound                                           */
 /*============================================================================*/
 #pragma once
 
-#include "Card_PRED.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_SqtPred : public Card_PRED
-  {
+  class Card_Bound : public Card
+  {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Card_SqtPred(void);
-   ~Card_SqtPred(void) noexcept(false);
+
+    Card_Bound(void);
+    Card_Bound(eCK eCard);
+   ~Card_Bound(void) noexcept(false);
   };
 
-  Card_SqtPred* _pCard_SqtPred(void* aAddr);
+  Card_Bound* _pCard_Bound(void* aAddr);
 }
 
 /*============================================================================*/

@@ -35,6 +35,17 @@ CardIter::CardIter(Card*  pCard)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+CardIter::CardIter(CardIter* pCardIter_src)
+    : Object(CN_CARDITER)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vSet(pCardIter_src);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 CardIter::CardIter(eCN eClass, Card*  pCard)
     : Object(eClass)
 {
@@ -469,6 +480,21 @@ void CardIter::vSet(Card* pChild)
   else
     m_pChild = pChild;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSet(CardIter* pCardIter_src)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  m_pCard   = pCardIter_src->m_pCard;
+  m_i_Child = pCardIter_src->m_i_Child;
+  m_pChild  = pCardIter_src->m_pChild;
+
+  m_bActive = pCardIter_src->m_bActive;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

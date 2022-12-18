@@ -44,6 +44,12 @@ rows:
 (12)
 (13)
 
+select * from datums where int_col1 between NULL and 5;
+rows: 0
+
+select * from datums where int_col1 between 5 and null;
+rows: 0
+
 //------------------------------------------------------------------------------
 select int_col1 + 1 from datums where int_col0 = 11;
 rows:

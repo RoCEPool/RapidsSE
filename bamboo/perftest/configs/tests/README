@@ -20,16 +20,16 @@ Examples:
 (1) tpch-sf100-2D1F.jmx is expecting to run on a cluster where each machine has
     2 disk drives and there is one partition of data on each drive.
     For example the lineitem data would be located at:
-      /mnt/disk1/data1/tpch/sf100/lineitem/lineitem.tbl
-      /mnt/disk2/data1/tpch/sf100/lineitem/lineitem.tbl
+      /mnt/disk1/data1/lineitem.tbl
+      /mnt/disk2/data1/lineitem.tbl
 
 (2) tpch-sf100-2D2F.jmx is expecting to run on a cluster where each machine has
     2 disk drives and there are two partitions of data on each drive.
     For example the lineitem data would be located at:
-      /mnt/disk1/data1/tpch/sf100/lineitem/lineitem.tbl
-      /mnt/disk1/data2/tpch/sf100/lineitem/lineitem.tbl
-      /mnt/disk2/data1/tpch/sf100/lineitem/lineitem.tbl
-      /mnt/disk2/data2/tpch/sf100/lineitem/lineitem.tbl
+      /mnt/disk1/data1/lineitem.tbl
+      /mnt/disk1/data2/lineitem.tbl
+      /mnt/disk2/data1/lineitem.tbl
+      /mnt/disk2/data2/lineitem.tbl
 
 This is so that it can take advantage of parallel loading from multiple disks. But we can
 also have the TPC-H data arranged in multiple files per disk in order to play with

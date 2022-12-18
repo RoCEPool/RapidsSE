@@ -33,10 +33,14 @@ namespace STORE
     Card* pGetChild(i8 i_Child, eCK& reCard);
 
     Card* pPopChild(void);
+    Card* pPlopChild(void);
 
     void vPromoteSubs(Card* pChildCard);
 
+    void vRemoveAllChildren(void);
     void vRemoveChild(Card* pChildCard);
+    void vRemoveDeleteAllChildren(void);
+    void vRemoveDeleteChild(Card* pChildCard);
     void vRemoveSubCard(Card* pSubCard);
     void vReplaceChildWithItsSubs(Card* pChildCard);
     void vReplaceChild(Card* pChildCard, Card* pWithCard);

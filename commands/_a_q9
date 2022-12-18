@@ -48,8 +48,8 @@ order by
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * just tried a few join orders. Staring with part worked best
-//     not tried all possibilities
+//   * JUST TRIED A FEW JOIN ORDERS. STARTING WITH PART WORKED BEST.
+//     NOT TRIED ALL POSSIBILITIES
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -58,6 +58,7 @@ order by
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query9
   begin
   stage S00 on origin :
@@ -155,6 +156,7 @@ pipeline Query9
     | sink
     | first
   end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */

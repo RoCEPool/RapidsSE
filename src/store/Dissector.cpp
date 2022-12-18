@@ -461,11 +461,11 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   pCard_IndexJoin->vAppend(p_index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index predicate????
+  // index bounds????
 
-  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferChildren(pCard_RpnTerms);
-  pCard_IndexJoin->vAppend(pCard_IndexPred);
+  Card_Bounds* pCard_Bounds = new Card_Bounds;
+  pCard_Bounds->vTransferChildren(pCard_RpnTerms);
+  pCard_IndexJoin->vAppend(pCard_Bounds);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -508,11 +508,11 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   p_indexNm->vValue(pIndex->szIndexNm());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index predicate????
+  // index bounds
 
-  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferChildren(pCard_RpnTerms);
-  pCard_IndexScan->vAppend(pCard_IndexPred);
+  Card_Bounds* pCard_Bounds = new Card_Bounds;
+  pCard_Bounds->vTransferChildren(pCard_RpnTerms);
+  pCard_IndexScan->vAppend(pCard_Bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

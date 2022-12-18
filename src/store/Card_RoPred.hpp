@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_MaybeIndexJoin.hpp -- Maybe Index Join                                */
+/* Card_RoPred.hpp -- Ro Test Predicate                                       */
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_MaybeIndexJoin : public Card
+  class Card_RoPred : public Card_PRED
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_MaybeIndexJoin(void);
-   ~Card_MaybeIndexJoin(void) noexcept(false);
+    Card_RoPred(void);
+   ~Card_RoPred(void) noexcept(false);
   };
 
-  Card_MaybeIndexJoin* _pCard_MaybeIndexJoin(void* aAddr);
+  Card_RoPred* _pCard_RoPred(void* aAddr);
 }
 
 /*============================================================================*/

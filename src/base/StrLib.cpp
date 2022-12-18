@@ -4236,6 +4236,65 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Given a word, convert it to a short hand notation                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShortHand(char *azDst, const char *azSrc)
+{
+  _static_
+
+  char cStart = *azSrc;
+  if(cStart >= 97 && cStart <= 122)
+  {
+    // indexJoin -> iJ
+    *azDst = cStart;
+
+    azSrc++;
+
+    while(*azSrc != '\0')
+    {
+      if(*azSrc >= 65 && *azSrc <= 90)
+      {
+        azDst++;
+        *azDst = *azSrc;
+        azDst++;
+        *azDst = '\0';
+        return;
+      }
+      azSrc++;
+    }
+  } else if(cStart >= 65 && cStart <= 90)
+  {
+    // if the first char is caps
+    // IndexJoin -> IJ
+    // INDEXJOIN -> I
+    *azDst = cStart;
+
+    azSrc++;
+
+    // search for the next caps letter
+    bool bSmall = 0;
+    while(*azSrc >= 97 && *azSrc <= 122 && *azSrc != '\0')
+    {
+      azSrc++;
+      bSmall = 1;
+    }
+
+    // Add the next caps char if we found at lease one small char before
+    if(*azSrc != '\0' && bSmall == 1)
+    {
+      azDst++;
+      *azDst = *azSrc;
+    }
+    azDst++;
+    *azDst = '\0';
+    return;
+  } else
+  {
+    *azDst = '\0';
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* shuffle substring left                                                     */
 /*----------------------------------------------------------------------------*/
 void StrLib::vShuffleLeft(char* azDst, const char* azSrc)

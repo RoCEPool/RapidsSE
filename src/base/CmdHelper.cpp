@@ -92,7 +92,7 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
       pSrcCmdTknVec->vRemoveToken(0);
       pSrcCmdTknVec->vRemoveToken(0);
       pSrcCmdTknVec->vRemoveToken(0);
-      pSrcCmdTknVec->vDumpVec(0);
+      //pSrcCmdTknVec->vDumpVec(0);
     }
     else {
       pDstCmdTagSet->vInsert(sTag,1);

@@ -62,9 +62,9 @@ limit 100;
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * filter on part pulled into sub-query
-//   * rejoin with part and supplier to get the correct supplier
-//   * get supplier columns later
+//   * FILTER ON PART PULLED FROM OUTER-QUERY INTO SUB-QUERY
+//   * REJOIN WITH PART AND SUPPLIER TO GET THE CORRECT SUPPLIER
+//   * GET SUPPLIER COLUMNS LATER
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -73,7 +73,7 @@ limit 100;
 
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+// pipeline begin
 pipeline Query2
 begin
   stage S00 on origin :
@@ -83,7 +83,7 @@ begin
 
   stage S01 on all partitions :
     scan part
-    | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing P_SIZE 20 == and"
+    | filter " type BOOLEAN  }  P_TYPE '%BRASS'  6 matchTrailing P_SIZE 15 == and"
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
@@ -117,7 +117,7 @@ begin
 
   stage S05 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
+    | filter " type BOOLEAN  J1_R_NAME 'EUROPE'  == "
     | aggreg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min "
@@ -210,7 +210,7 @@ begin
     | sink
     | first
 end ;
-
+// pipeline end
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

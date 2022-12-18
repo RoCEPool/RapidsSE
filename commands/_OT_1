@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* _OT_1 -- TCPH Optimiser Test 1                                             */
+/*============================================================================*/
+
+/*============================================================================*/
+/* OT_RPL_SCAN_BY_INDEXSCAN                                                   */
+/* OT_RPL_GBYAGG_BY_ORDAGG                                                    */
+/* OT_CUT_SORT                                                                */
+/*============================================================================*/
+
+trackMemory;
+
+_customer
+_orders_custkey
+
+create index O_idx0  on orders   (O_CUSTKEY);
+create index C_idx0  on customer (C_CUSTKEY);
+
+load Customer "../tpch/sf_0001/customer.csv" ;
+load Orders   "../tpch/sf_0001/orders.csv"   ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_OT_1"
+
+select
+  c_custkey,
+  count(o_orderkey) as o_count
+from
+  customer, orders
+where
+  o_custkey = c_custkey
+  and c_custkey < 50
+group by
+  c_custkey
+order by
+  c_custkey
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* EXPECTED OPTIMISED PIPELINE                                                */
+/*============================================================================*/
+/*
+
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Customer C_idx0 "UBOUND $I1 50 <"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders O_idx0 "BOUND $I1 C_CUSTKEY =="
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+               type INTEGER as O_ORDERKEY J1_O_ORDERKEY"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    ordAgg " ordGroupBy type INTEGER C_CUSTKEY
+             aggregates type INTEGER as C_CUSTKEY $K1 ,
+                        type INTEGER as O_COUNT ) O_ORDERKEY count  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

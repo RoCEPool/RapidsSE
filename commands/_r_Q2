@@ -4,12 +4,18 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+create index S_idx0  on supplier (S_SUPPKEY  );
+create index N_idx0  on nation   (N_NATIONKEY);
+create index R_idx0  on region   (R_REGIONKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_cue_from = "vSeries_10_Make_Runnable"
 /glean_interactive
 /transliterated
 /weaved
@@ -25,8 +31,8 @@ select
   s_comment
 from
   part,
-  supplier,
   partsupp,
+  supplier,
   nation,
   region
 where

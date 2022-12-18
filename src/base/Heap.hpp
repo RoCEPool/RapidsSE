@@ -38,13 +38,15 @@ namespace BASE
     void    vAnalyse(i8 xCounts[]);
     i8      nBufferCount(void);
     i8      nCurrAllocated(void);
-    void    vDropLock(void);
+    void    vDropWriteLock(void);
+    void    vDropReadLock(void);
     void    vDumpHeap(void);
     HeapBuffer* pFirstBuffer(void);
     void    vFixedHeap(bool bFixed);
     i8      nFreeChunks(void);
     void    vFreeObject(Object* pObject);
-    void    vGrabLock(void);
+    void    vGrabWriteLock(void);
+    void    vGrabReadLock(void);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
     void    vSummaryReport(String* pReportString);

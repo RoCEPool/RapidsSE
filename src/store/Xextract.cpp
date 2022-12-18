@@ -39,6 +39,22 @@ Xextract::~Xextract(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* get bound for relational op                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Xextract::E_szBound(Stz* szRelnOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz))
+    return "LBOUND"_Stz;
+
+  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz))
+    return "UBOUND"_Stz;
+
+  return "BOUND"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
 i8 Xextract::E_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
@@ -103,7 +119,7 @@ i8 Xextract::E_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iRank = p_candIndex->Y_iVal(P_Rank);
+  i8 iRank = p_candIndex->Y_iGet(P_Rank);
 
   return iRank;
 }
@@ -125,7 +141,7 @@ i8 Xextract::E_iStream_OdnLo(Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOdnLo = p_stream->Y_iVal(P_OdnLo);
+  i8 iOdnLo = p_stream->Y_iGet(P_OdnLo);
 
   return iOdnLo;
 }
@@ -137,7 +153,7 @@ i8 Xextract::E_iStream_OdnHi(Card_Stream* p_stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iOdnHi = p_stream->Y_iVal(P_OdnHi);
+  i8 iOdnHi = p_stream->Y_iGet(P_OdnHi);
 
   return iOdnHi;
 }
@@ -274,12 +290,14 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   Stz* szTerm = p_term->sz();
 
        if (szTerm->bSame("and"_Stz))        return TE_AND;
+  else if (szTerm->bSame("or"_Stz))         return TE_OR;
+  else if (szTerm->bSame("not"_Stz))        return TE_NOT;
+
   else if (szTerm->bSame("}"_Stz))          return TE_EXECUTE;
   else if (szTerm->bSame("exists"_Stz))     return TE_EXISTS;
   else if (szTerm->bSame("in"_Stz))         return TE_IN;
   else if (szTerm->bSame("notExists"_Stz))  return TE_NOTEXISTS;
   else if (szTerm->bSame("notIn"_Stz))      return TE_NOTIN;
-  else if (szTerm->bSame("or"_Stz))         return TE_OR;
 
   else if (szTerm->bSame("<"_Stz))          return TE_COMPARE;
   else if (szTerm->bSame("<="_Stz))         return TE_COMPARE;
@@ -290,7 +308,11 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   else if (szTerm->bSame(">="_Stz))         return TE_COMPARE;
   else if (szTerm->bSame(">"_Stz))          return TE_COMPARE;
 
-  else if (szTerm->bSame("matchMiddle1"_Stz))   return TE_BOOLFN;
+  else if (szTerm->bSame("between"_Stz))         return TE_BOOLFN;
+  else if (szTerm->bSame("matchLeading"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("matchMiddle"_Stz))     return TE_BOOLFN;
+  else if (szTerm->bSame("matchMiddle1"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("matchTrailing"_Stz))   return TE_BOOLFN;
 
   else return TE_OTHER;
 }

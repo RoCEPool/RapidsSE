@@ -61,6 +61,7 @@
 #include "Card_GbyAgg.hpp"
 #include "Card_GbyElist.hpp"
 #include "Card_Genesis.hpp"
+#include "Card_Group.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
@@ -72,7 +73,6 @@
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_IndexNm.hpp"
-#include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 
 #include "Card_JoinOrder.hpp"
@@ -88,11 +88,11 @@
 #include "Card_LinksTo.hpp"
 
 #include "Card_Manner.hpp"
-#include "Card_MaybeIndexJoin.hpp"
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Next.hpp"
 #include "Card_Note.hpp"
+#include "Card_NotPred.hpp"
 #include "Card_NParmCols.hpp"
 
 #include "Card_ObyElist.hpp"
@@ -123,10 +123,12 @@
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"
-#include "Card_SqtPred.hpp"
+#include "Card_RoPred.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StmColNm.hpp"
 #include "Card_StmColOdn.hpp"
+#include "Card_Order.hpp"
+#include "Card_OrdElmOdn.hpp"
 #include "Card_Stream.hpp"
 #include "Card_SubSet.hpp"
 
@@ -144,6 +146,8 @@
 #include "Card_Unique.hpp"
 
 #include "Card_Where.hpp"
+
+#include "Card_XBound.hpp"
 
 #include "VertexSpec.hpp"
 #include "DeckSpec.hpp"

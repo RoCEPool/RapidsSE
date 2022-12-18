@@ -6,6 +6,7 @@
 
 #include "OptimiserCatalog.hpp"
 #include "Dynamo.hpp"
+#include "PipelineNotation.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
@@ -114,6 +115,78 @@ OptimiserFun __Opt_l
     );
 
 /*----------------------------------------------------------------------------*/
+/* notation                                                                   */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  Bench* pBench = pOptimiser->pBench();
+  Card_Deck* pDeck = pBench->pGetBoard((i8)0)->pDeck();
+
+  CardIter xCI(pDeck);
+
+  while (Card* pCard = xCI.pEachChild())
+  {
+    s256 sShort = "";
+    StrLib::vShortHand(sShort.azChar(), pCard->szCardNm()->azChar());
+    vTrace("%s "_Stz, sShort.azChar());
+
+    Card_TableNm* pCard_TableNm = pCard->pSub_tableNm();
+    if(pCard_TableNm != nullptr)
+    {
+      Card* pTableCard = _pCard(pCard_TableNm);
+      vTrace("%s "_Stz, pTableCard->szValue()->azChar());
+    }
+  }
+
+  vTrace("\n"_Stz);
+
+  return true;
+}
+
+OptimiserFun __Opt_n
+    (
+        "notation"_Stz,       // name of the opt function
+        "n"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_notation,        // function to call
+        0,0,                // spare
+        "short hand notation of operators"_Stz,
+        "usage???"_Stz
+    );
+
+/*----------------------------------------------------------------------------*/
+/* read pipeline from file                                                    */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_readPipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  s256 sFile;
+  s16KB szPipeLineStatement = "";
+
+  sFile = pTknVec->pGet(1)->szChars();
+
+  PipelineNotation::vPipelineFromFile(sFile, szPipeLineStatement);
+
+//  vTrace("%s\n"_Stz, sPipeLineStatement.szStz());
+
+  VertexSpec* pVertexSpec = Dynamo::pToVertexSpec(szPipeLineStatement, pOptimiser->pJobTags());
+
+  pOptimiser->vToPipeSpec(pVertexSpec);
+
+  return true;
+}
+
+OptimiserFun __Opt_r
+    (
+        "read"_Stz,       // name of the opt function
+        "r"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_readPipeline,        // function to call
+        0,0,                // spare
+        "read pipeline from file"_Stz,
+        "usage???"_Stz
+    );
+
+/*----------------------------------------------------------------------------*/
 /* shorter                                                                    */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
@@ -162,6 +235,37 @@ OptimiserFun __Opt_w
   "weave pipeline statement"_Stz,
   "usage???"_Stz
 );
+
+/*----------------------------------------------------------------------------*/
+/* write pipeline to file                                                     */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_writePipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+//  reOptAct = OA_REPRINT_BOARD;
+//
+//  pOptimiser->pCardCtl()->vUseLonger();
+
+  s256 sFile;
+  s16KB sPipeLineStatement = "";
+
+  sFile = pTknVec->pGet(1)->szChars();
+
+  PipelineNotation::vPipelineToFile(sFile, sPipeLineStatement);
+
+//  vTrace("%s\n"_Stz, sPipeLineStatement.szStz());
+  return true;
+}
+
+OptimiserFun __Opt_wr
+    (
+        "write"_Stz,       // name of the opt function
+        "wr"_Stz,            // command first word
+        nullptr,            // command second word
+        bOpt_writePipeline,        // function to call
+        0,0,                // spare
+        "write pipeline from file"_Stz,
+        "usage???"_Stz
+    );
 
 /*----------------------------------------------------------------------------*/
 /* disable                                                                    */

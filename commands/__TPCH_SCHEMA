@@ -71,9 +71,10 @@ _part
 _region_replicated
 _supplier
 
+/*
 //customer
 CREATE INDEX IxC_CUSTKEY ON customer(C_CUSTKEY);
-CREATE INDEX IxC_NATIONKEY ON customer(C_NATIONKEY);
+
 
 //lineitem
 CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
@@ -85,12 +86,13 @@ CREATE INDEX IxL_RECEIPTDATE ON lineitem(L_RECEIPTDATE);
 //nation
 CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
 CREATE INDEX IxN_REGIONKEY on NATION (N_REGIONKEY);
+*/
 
 //orders
 CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);
-CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
-CREATE INDEX IxO_ORDERDATE ON orders(O_ORDERDATE);
-
+//CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
+//CREATE INDEX IxO_ORDERDATE ON orders(O_ORDERDATE);
+/*
 //partsupp
 CREATE INDEX IxPS_PARTKEY ON partsupp(PS_PARTKEY);
 CREATE INDEX IxPS_SUPPKEY ON partsupp(PS_SUPPKEY);
@@ -103,8 +105,8 @@ CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME on REGION (R_NAME);
 
 //supplier
-CREATE INDEX IxS_NATIONKEY ON supplier(S_NATIONKEY);
 CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);
+*/
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /time loadReplicated region   "<tpch_dir>/region.<suffix>"   ;

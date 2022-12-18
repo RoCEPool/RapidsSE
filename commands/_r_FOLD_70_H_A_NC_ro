@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_FOLD_70_W_L_NC_ro -- sub-query flattening test : refer Q11              */
+/* _r_FOLD_70_H_L_NC_ro -- sub-query flattening test : refer Q11              */
 /*============================================================================*/
 
 trackMemory;
@@ -13,7 +13,7 @@ _r_init
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_70_W_L_NC_ro"
+/pipelineName = "_r_FOLD_70_H_L_NC_ro"
 select ps_partkey,
        sum(ps_supplycost * ps_availqty) as value
   from partsupp, supplier

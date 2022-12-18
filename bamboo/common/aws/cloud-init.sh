@@ -231,10 +231,10 @@ fi
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
-  # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
+  # Get the name of any device (sans "/dev/") that is mounted under /
+  # including the root filesystem, as we don't want to format this device.
   # e.g. /dev/nvme0n1 --> nvme0n1
-  # We don't want to partition/format this disk!
-  root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
+  ignore_devices=($(df -h | grep -E "^/dev/" | awk '{if($6 ~ "^/") print $1;}' | cut -c 6-))
 
   # Get the list of block devices in the system.
   ssds=($(lsblk -d -n -o NAME))
@@ -242,13 +242,17 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
   for device in "${ssds[@]}"
   do
-    # ignore block devices that are a subset of the device the root filesystem is mounted on.
-    if [[ "${root_device}" =~ ^"${device}".* ]]
-    then
-      # ignore this device
-      echo "Ignoring root device ${device}"
-      continue
-    fi
+    # Ignore devices that are already mounted and devices that are a subset of
+    # the device the root filesystem is mounted on.
+    ignore_device=0
+    for ignore_device_name in ${ignore_devices[@]}; do
+      if [[ "${ignore_device_name}" =~ ^"${device}".* ]]; then
+        ignore_device=1
+        break
+      fi
+    done
+
+    [ "${ignore_device}" -eq 1 ] && echo "Ignoring device ${device}" && continue
 
     # ignore non-nvme devices
     if ! [[ "${device}" =~ ^nvme.* ]]
@@ -272,7 +276,7 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
       echo "w"  # write the changes and exit
     ) | fdisk "${device}" || exit
 
-    sleep 1
+    sleep 2
 
     # Get the partition name
     partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
@@ -362,7 +366,7 @@ EOF
   echo
   amazon-linux-extras install -y epel
   yum update -y
-  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses
+  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses parallel
   yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
   if [ "${OS_DIST}" = "${CENTOS7}" ]; then
@@ -519,14 +523,22 @@ EOF
   echo
 
   bash_profile="${OS_HOME_DIR}/.bash_profile"
-  echo "" >>"${bash_profile}"
-  echo '#export PS1="[\u@\h \W]\$ ' >>"${bash_profile}"
-  echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "' >>"${bash_profile}"
-  echo "" >>"${bash_profile}"
+  {
+    echo "";
+    echo '#export PS1="[\u@\h \W]\$ ';
+    echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "';
+    echo "";
+  } >> "${bash_profile}"
 
   # ----------------------------------------------------------------------------------------
   # Git setup
   sudo -H -u "${OS_USER}" git lfs install
+
+  # ----------------------------------------------------------------------------------------
+  # Remove annoying GNU Parallel citation message
+  if which parallel &>/dev/null; then
+    echo -e "will cite\n" | parallel --citation
+  fi
 
   # ----------------------------------------------------------------------------------------
   # Indicate cloud-init has completed by dropping a file in /tmp

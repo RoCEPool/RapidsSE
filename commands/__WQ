@@ -1,0 +1,147 @@
+/*============================================================================*/
+/* __WQ -- query alka is working on                                           */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+/time pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+    | combined 0
+    | next broadcast
+
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1"
+    | filter " type BOOLEAN J1_N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    aggreg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    aggreg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE ASC  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*
+/time pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+ stage S01 on all partitions :
+   scan nation
+   | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
+   | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
+   | combined 0
+   | next
+
+ stage S02 on all partitions :
+   indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+   | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+   | combined 0
+   | next broadcast
+
+stage S03 on all partitions :
+  indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+  | aggreg " groupBy    type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+  | combined 0
+  | next
+
+  stage S04 on all nodes :
+    aggreg " groupBy    type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE ) VALUE sum"
+    | combined 0
+    | next
+
+  stage S5 on origin :
+    aggreg " groupBy    type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE as VALUE ) VALUE sum"
+    | combined 0
+    | next //| S09
+/*
+  stage S06 on origin :
+    project " type DECIMAL as VALUE )  VALUE  sum  0.000001 *  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    toCsv
+    | wrFile "../tmp/x.csv"
+    | next
+
+  stage S09 on origin :
+  // rdFile "type ... " $V1
+    //filter " type BOOLEAN  value $V1  >  "
+    filter " type BOOLEAN  value 810291.37 > "
+    //| project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE ASC  "
+    | combined 0
+    | next
+*/
+  stage S10 on origin :
+    output
+    | sink
+    | first
+end ;
+
+*/

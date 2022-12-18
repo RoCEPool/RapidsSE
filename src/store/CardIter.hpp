@@ -24,6 +24,7 @@ namespace STORE
     void  operator delete(void*);
   
     CardIter(Card* pCard);
+    CardIter(CardIter* pCardIter_src);
     CardIter(eCN eClass, Card* pCard);
    ~CardIter(void) noexcept(false);
 
@@ -62,6 +63,7 @@ namespace STORE
     void vRewind(void);
 
     void vSet(Card* pChild);
+    void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
 
   private:

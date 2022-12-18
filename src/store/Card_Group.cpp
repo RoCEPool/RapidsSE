@@ -1,39 +1,44 @@
 /*============================================================================*/
-/* Card_SqtPred.cpp -- SubQuery call and Test Predicate                       */
+/* Card_Group.cpp -- Group information                                        */
 /*============================================================================*/
 
-#include "Card_SqtPred.hpp"
+#include "Card_Group.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_SqtPred, CK_SQTPRED)
-__aNewFunction(Card_SqtPred, CN_CARD)
-__vDeleteFunction(Card_SqtPred, CN_CARD)
+__pCastFunction_Card(STORE,Card_Group,CK_GROUP)
+__aNewFunction(Card_Group,CN_CARD)
+__vDeleteFunction(Card_Group,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_SqtPred::Card_SqtPred(void)
-: Card_PRED(CK_SQTPRED)
+Card_Group::Card_Group(void)
+: Card(CK_GROUP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_SqtPred::~Card_SqtPred(void) noexcept(false)
+Card_Group::~Card_Group(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+//*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

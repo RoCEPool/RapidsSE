@@ -29,6 +29,7 @@ namespace STORE
 
   class Card_BolPred;
   class Card_BoolCalc;
+  class Card_Bound;
   class Card_Bounds;
 
   class Card_CalcOp;
@@ -61,6 +62,7 @@ namespace STORE
   class Card_GbyAgg;
   class Card_GbyElist;
   class Card_Genesis;
+  class Card_Group;
 
   class Card_Hash;
   class Card_Having;
@@ -72,7 +74,6 @@ namespace STORE
   class Card_IndexJoin;
   class Card_IndexList;
   class Card_IndexNm;
-  class Card_IndexPred;
   class Card_IndexScan;
 
   class Card_JoinOrderSeq;
@@ -85,15 +86,16 @@ namespace STORE
   class Card_Level;
   class Card_Limit;
 
-  class Card_MaybeIndexJoin;
   class Card_Manner;
 
   class Card_NCorrCols;
   class Card_Next;
   class Card_Note;
+  class Card_NotPred;
   class Card_NParmCols;
 
   class Card_OrdAgg;
+  class Card_Order;
   class Card_OrPred;
   class Card_ObyElist;
 
@@ -113,13 +115,14 @@ namespace STORE
   class Card_Size;
   class Card_Send;
   class Card_Sort;
-  class Card_SqtPred;
+  class Card_RoPred;
   class Card_Stage;
   class Card_Stream;
   class Card_StmCol;
   class Card_StmColList;
   class Card_StmColNm;
   class Card_StmColOdn;
+  class Card_OrdElmOdn;
   class Card_SubSet;
 
   class Card_TableList;
@@ -135,6 +138,8 @@ namespace STORE
   class Card_Unique;
 
   class Card_Where;
+
+  class Card_XBound;
 
   class Card_Av_AggP;
   class Card_Av_AggPN;
@@ -159,6 +164,9 @@ static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_BumpRight    = "nBumpRight"_Stz;
 static Stz* P_BumpedRight  = "nBumpedRight"_Stz;
+static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
+static Stz* P_CorrPred     = "bCorrPred"_Stz;
+static Stz* P_CorrStmCol   = "bCorrStmCol"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
@@ -285,6 +293,9 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    Card* pAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
+    void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
+    void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -312,13 +323,12 @@ namespace STORE
 
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParent(Card* pSubCard);
-    Card* pFindValueRecursive(eCK eCard, Stz* szValue);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
     bool bHasChildWithValue(Stz* szValue);
-    bool bHasProperty(Stz* szPpyNm);
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
     bool bHasSubWithValue(eCK eCard, Stz* szValue);
@@ -327,6 +337,7 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
     bool bIsCommaSeparator(void);
+    bool bIsConjunction(void);
     bool bIsPRED(void);
     bool bIsValue(Stz* szValue);
 
@@ -342,6 +353,7 @@ namespace STORE
     void vMark2(char cMark2);
     void vMark2SetIfRecursive(char cIfMark, char cSetTo);
     void vMarkResetRecursive(void);
+    bool bMerge(Card* pCard);
     void vMoveToLastChild(Card* pChildCard);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
@@ -356,8 +368,6 @@ namespace STORE
     void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
-    i8   nProperties(void);
-    eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
@@ -366,6 +376,8 @@ namespace STORE
 
     bool bSame(Stz* szArg);
 
+    void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
+
     Stz* sz(void);
     char cValue(void);
     Stz* szValue(void);
@@ -373,26 +385,30 @@ namespace STORE
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
-    Stz* Y_szNm(i8 i_Property);
-    char Y_cVal(i8 i_Property);
-    char Y_cVal(Stz* szPpyNm);
-    i8   Y_iVal(i8 i_Property);
-    i8   Y_iVal(Stz* szPpyNm);
-    Object* Y_pVal(i8 i_Property);
-    Object* Y_pVal(Stz* szPptNm);
-    Stz* Y_szVal(i8 i_Property);
-    Stz* Y_szVal(Stz* szPptNm);
-
-    void Y_vSet(Stz* szPpyNm, char cPpyVal);
-    void Y_vSet(Stz* szPpyNm, i8 iPpyVal);
-    void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
-    void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
-    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-
     void Y_vCut(Stz* szPpyNm);
 
+    char Y_cGet(i8 i_Ppy);
+    char Y_cGet(Stz* szPpyNm);
+    i8   Y_iGet(i8 i_Ppy);
+    i8   Y_iGet(Stz* szPpyNm);
+    Object* Y_pGet(i8 i_Ppy);
+    Object* Y_pGet(Stz* szPptNm);
+    Stz* Y_szGet(i8 i_Ppy);
+    Stz* Y_szGet(Stz* szPptNm);
+
     bool Y_bHas(Stz* szPpyNm);
+
+    Stz* Y_szNm(i8 i_Ppy);
+
+    eTN  Y_ePpy(i8 i_Ppy);
+    i8   Y_nPpy(void);
+
+    void Y_vSet(Stz* szPpyNm, char cPpy);
+    void Y_vSet(Stz* szPpyNm, i8 iPpy);
+    void Y_vSet(Stz* szPpyNm);
+    void Y_vSet(Stz* szPpyNm, Object* pPpy);
+    void Y_vSet(Stz* szPpyNm, Stz* szPpy);
+    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
     Card_SubSet* pYankSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
 
@@ -406,6 +422,7 @@ namespace STORE
     Card_As*            pSub_as(void);
     Card_BolPred*       pSub_bolPred(void);
     Card_BoolCalc*      pSub_boolCalc(void);
+    Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
     Card_CalcOp*        pSub_calcOp(void);
     Card_Cast*          pSub_cast(void);
@@ -415,13 +432,16 @@ namespace STORE
     Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_Direction*     pSub_direction(void);
+    Card_EBound*        pSub_eBound(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
     Card_Fold*          pSub_fold(void);
-    Card_FoldElist*      pSub_foldElist(void);
+    Card_FoldElist*     pSub_foldElist(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_Genesis*       pSub_genesis(void);
+    Card_Group*         pSub_group(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IdxColNm*      pSub_idxColNm(void);
     Card_Index*         pSub_index(void);
@@ -432,20 +452,22 @@ namespace STORE
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
-    Card_MaybeIndexJoin* pSub_maybeIndexJoin(void);
     Card_Manner*        pSub_manner(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
+    Card_NotPred*       pSub_notPred(void);
     Card_NParmCols*     pSub_nParmCols(void);
+    Card_OrdElmOdn*     pSub_ordElmOdn(void);
+    Card_Order*         pSub_order(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_ProjElist*     pSub_projElist(void);
     Card_Reason*        pSub_reason(void);
+    Card_RoPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
-    Card_SqtPred*       pSub_sqtPred(void);
     Card_Stream*        pSub_stream(void);
     Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);
@@ -460,7 +482,9 @@ namespace STORE
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
     Card_UBound*        pSub_uBound(void);
+    Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
+    Card_XBound*        pSub_xBound(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

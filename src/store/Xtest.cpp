@@ -234,6 +234,74 @@ Card_CmpPred* Xtest::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, e
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bBounds_Is_lbound(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("LBOUND"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bBounds_Is_lbound_Or_ubound(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("LBOUND"_Stz) || szBound->bSame("UBOUND"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bBounds_Is_ubound(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Term* p_term_0 = p_bounds->pSub_term();
+
+  Stz* szBound = p_term_0->szValue();
+
+  if (szBound->bSame("UBOUND"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this predCmp co-partitionable with given arg?                           */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_cmpPred);
+  while (Card* p_card = xCI.pEachChild()) {
+    if (p_card->bIsCard(CK_TERM) &&
+        T_bValue_IsSubQueryName(p_card->szValue()))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
@@ -325,72 +393,173 @@ bool Xtest::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
-                                   bool bParamAllowedInBounds)
+bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
+                                      Card_Table* p_table,
+                                      bool bParamAllowedInBounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  char cTblSyn = pTable->cValue();
+  // todo: make this recursive
+
+  Card_Index* p_index = p_table->pSub_index();
+
+  if (! p_index)
+    return false;
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
   if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
-    char cTblSyn_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+    // + term_0 is $c.n
 
     if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-      char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+      // + both are term:$c.n
 
-      if (cTblSyn_0 == cTblSyn && cTblSyn_1 != cTblSyn)
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index) ||
+          T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
         return true;
-      else
-      if (cTblSyn_1 == cTblSyn && cTblSyn_0 != cTblSyn)
-        return true;
-      else
-        return false;
+
+      return false;
     }
+    else {
+      // + term_0 is $c.n
 
-    if (bParamAllowedInBounds &&
-        cTblSyn_0 == cTblSyn &&
-        T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+      // ? check term_1 is permitted param
+      if ((! bParamAllowedInBounds) &&
+          T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+        return false;
+
+      // ? is term_0:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index))
+        return true;
+
+      return false;
+    }
+  }
+  else
+  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    // + term_1 is $c.n
+
+    // ? maybe term_0 is permitted param
+    if ((! bParamAllowedInBounds) &&
+        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+      return false;
+
+    // ? is term_0:$c.n an index column
+    if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
       return true;
-    if (cTblSyn_0 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_1->szValue()))
-      return true;
+
+    return false;
+  }
+  else {
+    // + neither term is $c.n
+    return false;
   }
 
-  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
-    char cTblSyn_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+  NEVER_REACH
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred,
+                                           Card_Index* p_index,
+                                           bool bParamAllowedInBounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-    if (cTblSyn_1 == cTblSyn && T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+
+  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+    // + term_0 is $c.n
+
+    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index) ||
+          T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
+        return true;
+
+      // - neither term are a $c.n matching index column
+      return false;
+    }
+    else {
+      // + term_0 is $c.n
+
+      // ? check term_1 is permitted param
+      if ((! bParamAllowedInBounds) &&
+          T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+        return false;
+
+      // ? is term_0:$c.n an index column
+      if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_0->szValue(), p_index))
+        return true;
+
+      // - term_0 is a $c.n but doesn't match index column
+      return false;
+    }
+  }
+  else
+  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    // + term_1 is $c.n
+
+    // ? maybe term_0 is permitted param
+    if ((! bParamAllowedInBounds) &&
+        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+      return false;
+
+    // ? is term_0:$c.n an index column
+    if (T_bIndex_tblColOdn_IsKeyIn_index(pTerm_1->szValue(), p_index) )
       return true;
-    if (cTblSyn_1 == cTblSyn && T_bValue_IsResultOrdinal(pTerm_0->szValue()))
-      return true;
+
+    // - term_1 is a $c.n but doesn't match index column
+    return false;
+  }
+  else {
+    // + neither term is $c.n
+    return false;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given cmpPred a subset of bounds?                                       */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_bounds);
+  while (Card* p_bound = xCI.pEachChild()) {
+
+    Card_Term* p_term_0 = _pCard_Term(p_bound->pGetChild(0));
+    //Stz* szBound = p_term_0->szValue();
+
+    Stz* sz_bnd_idxColOdn = p_bound->pGetChild(1)->szValue();
+    Stz* sz_bnd_stmColOdn = p_bound->pGetChild(2)->szValue();
+    Stz* sz_bnd_rlnOpr    = p_bound->pGetChild(3)->szValue();
+
+    Stz* sz_cmp_rlnOpr    = p_cmpPred->szValue();
+    Stz* sz_cmp_arg_0     = p_cmpPred->pGetChild(0)->szValue();
+    Stz* sz_cmp_arg_1     = p_cmpPred->pGetChild(1)->szValue();
+
+    if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
+      continue;
+
+    // todo: need bounds to be bndTyp , etc
+    // anyways...
+
+    if (! sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
+      continue;
+
+    return true;
   }
 
   return false;
 }
-/*----------------------------------------------------------------------------*/
-//bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-//
-//  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-//  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-//
-//  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue()) &&
-//      T_bValue_IsTableColOrdinal(pTerm_1->szValue()))
-//    return true;
-//
-//  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue()) &&
-//      (T_bValue_IsParamOrdinal(pTerm_1->szValue()) || T_bValue_IsResultOrdinal(pTerm_1->szValue())))
-//    return true;
-//
-//  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue()) &&
-//      (T_bValue_IsParamOrdinal(pTerm_0->szValue()) || T_bValue_IsResultOrdinal(pTerm_0->szValue())))
-//    return true;
-//
-//  return false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -398,9 +567,6 @@ bool Xtest::T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* pTable,
 bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  //this->vDump();
-  //p_PredCmp_arg->vDump();
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   char cTableSyn_this_0 = E_cColumnRef_TableSyn(p_columnRef_this_0);
@@ -629,7 +795,7 @@ bool Xtest::T_bStage_IsIgnorable(Card_Stage* p_stage)
   if (! p_topology)
     return false;
 
-  if (YG_ALL_PARTITIONS == p_topology->Y_iVal(P_StageTopo))
+  if (YG_ALL_PARTITIONS == p_topology->Y_iGet(P_StageTopo))
     return false;
 
   return true;
@@ -708,7 +874,7 @@ bool Xtest::T_bStage_ReinstateV2(eAL& reLevel, Card* p_Main, Card* p_PriorToMain
   eAL eLevel_main = reLevel;
   Card_Level* p_level = p_Main->pSub_level();
   if (p_level)
-    eLevel_main = (eAL)p_level->Y_iVal(P_Level);
+    eLevel_main = (eAL) p_level->Y_iGet(P_Level);
 
   if ((CK_FILTER == eMain || CK_WHERE == eMain) && CK_AGGREG != ePrior) {
     // filter can be at P/N/O
@@ -801,6 +967,50 @@ Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_StmCol* Xtest::T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList,
+                                               Stz *szTblColOdn,
+                                               i8& ri_StmCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  CardIter xCI(p_stmColList);
+  while (Card_StmCol *p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
+    Card_TblColOdn* p_tblColOdn = p_stmCol->pSub_tblColOdn();
+    if (p_tblColOdn->bSame(szTblColOdn)) {
+      ri_StmCol = xCI.i_Child();
+      return p_stmCol;
+    }
+  }
+
+  ri_StmCol = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_OrdElmOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList,
+                                                     Stz *szStmColOdn,
+                                                     i8& ri_StmOrdOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  CardIter xCI(p_stmOrdList);
+  while (Card_OrdElmOdn *p_stmOrdOdn =
+      _pCard_OrdElmOdn(xCI.pEachChild(CK_ORDELMODN))) {
+     if (p_stmOrdOdn->bSame(szStmColOdn)) {
+       ri_StmOrdOdn = xCI.i_Child();
+      return p_stmOrdOdn;
+    }
+  }
+
+  ri_StmOrdOdn = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
@@ -871,6 +1081,139 @@ bool Xtest::T_bFilter_IsEmpty(Card_Filter* p_filter)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Index* Xtest::T_pIndex_Find_chosenIndex(STORE::Card_IndexList *p_indexList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(p_indexList);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+    if (p_index->Y_bHas(P_ChosenIndex))
+      return p_index;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  ASSERT(T_bValue_IsTableColOrdinal(szTblColOdn));
+
+  Card_IdxColList* p_idxColList = p_index->pSub_idxColList();
+
+  CardIter xCI(p_idxColList);
+  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild())) {
+
+    // ? does n]idxCol:$c.n match given:$c.n
+    if (p_idxCol->bSame(szTblColOdn))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_b_Order_AreSame(Card_Order* p_order1, Card_Order* p_order2)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (p_order1->bValuesSameRecursive(p_order2))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recursively test if given predicate is entirely MaybeBounds of given index */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED,
+                                                 Card_Index* p_index,
+                                                 bool bParamAllowedInBounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (p_PRED->bIsConjunction()) {
+    // + conjunction
+
+    // ! all child predicates of conjunction must be MaybeBounds of index
+    CardIter xCI(p_PRED);
+    while (Card_PRED* p_childPRED = (Card_PRED*)xCI.pEachChild()) {
+      if (! T_bPRED_AllSubs_MaybeBoundsOf_index(p_childPRED, p_index, bParamAllowedInBounds))
+        return false;
+    }
+
+    // + all child predicates of conjunction are MaybeBounds of index
+    return true;
+  }
+  else
+  if (p_PRED->bIsCard(CK_CMPPRED)) {
+    // + cmpPred
+
+    if (! T_bCmpPred_MaybeBoundsOf_index(_pCard_CmpPred(p_PRED),p_index,bParamAllowedInBounds))
+      return false;
+
+    // + cmpPred MaybeBounds of index
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PRED* Xtest::T_pPRED_Containing_MaybeBoundsOf_index(Card_PRED* p_PRED,
+                                                         Card_Index* p_index,
+                                                         bool bParamAllowedInBounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (p_PRED->bIsConjunction()) {
+    // + conjunction
+
+    // * test if all child predicates of conjunction are MaybeBounds of index
+    bool bAllChildren = true;
+    CardIter xCI(p_PRED);
+    while (Card_PRED* p_childPRED = (Card_PRED*)xCI.pEachChild()) {
+      if (! T_bPRED_AllSubs_MaybeBoundsOf_index(p_childPRED, p_index, bParamAllowedInBounds)) {
+        bAllChildren = false;
+        break;
+      }
+    }
+
+    if (bAllChildren)
+      // + all child predicates of given pred are MaybeBounds of index
+      return p_PRED;
+
+    // * descend to find first sub predicate of conjunction which contains MaybeBounds of index
+    xCI.vRestart();
+    while (Card_PRED* p_childPRED = (Card_PRED*)xCI.pEachChild()) {
+      Card_PRED *pSubPRED = T_pPRED_Containing_MaybeBoundsOf_index(p_childPRED, p_index, bParamAllowedInBounds);
+      if (pSubPRED)
+        return pSubPRED;
+    }
+    return nullptr;
+  }
+  else
+  if (p_PRED->bIsCard(CK_CMPPRED)) {
+    if (T_bCmpPred_MaybeBoundsOf_index(_pCard_CmpPred(p_PRED), p_index, bParamAllowedInBounds))
+      return p_PRED;
+    return nullptr;
+  }
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -82,7 +82,7 @@ Card_Expr* Xderive::D_pDerive_Gby_expr_From_stmCol(Card_StmCol* p_stmCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Xderive::D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby)
+Card_Expr* Xderive::D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -91,10 +91,13 @@ Card_Expr* Xderive::D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby)
 
   Card_Expr*    p_expr    = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
+  Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = new Card_Term(sKn.szStz());
 
   p_expr->vAppend(p_type);
+  if (p_as)
+    p_expr->vAppend(p_as);
   p_expr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
@@ -241,7 +244,7 @@ void Xderive::D_vDerive_PtndJoin(Card_PtndJoin* p_ptndJoin, Card_TableList* p_ta
     Card_Table *p_table =
         _pCard_Table(p_tableList->pGetChild(i_Table));
 
-    if (p_table->bHasProperty(P_TableUsed))
+    if (p_table->Y_bHas(P_TableUsed))
       continue;
 
     i8 nPredCmps = p_ptndJoin->nChildCards();

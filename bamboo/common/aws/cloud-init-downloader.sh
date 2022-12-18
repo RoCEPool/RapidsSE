@@ -31,18 +31,31 @@ SCRIPT="cloud-init.sh"
 
 
 # Set up any pre-requisites
+# Note that we retry any network operations as these can fail or timeout for
+# various reasons. A timeout means that we ultimately cannot connect to this
+# machine.
+
 if ! which aws; then
   # AWS CLI needs curl and unzip
-  yum install -y curl unzip
+  while ! yum install -y curl unzip; do
+    sleep 1
+  done
 
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  while ! curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+    sleep 1
+  done
+
   unzip awscliv2.zip
   ./aws/install
 fi
 
 # Download the script
 echo "Downloading the real cloud-init script"
-aws s3 cp "${BUCKET}/${SCRIPT}" /tmp/"${SCRIPT}" || errorExit "Could not download the cloud-init script"
+
+while ! aws s3 cp "${BUCKET}/${SCRIPT}" /tmp/"${SCRIPT}"; do
+  sleep 1
+done
+
 chmod +x /tmp/"${SCRIPT}"
 
 # Run it!

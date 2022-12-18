@@ -26,8 +26,8 @@ select l_returnflag, l_linestatus,
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * order by can be discarded as it is on the same columns as group by
-//   * Once we have intervals , need to do literal arithmetic upfront
+//   * ORDER BY CAN BE DISCARDED AS IT IS ON THE SAME COLUMNS AS GROUP BY
+//   * ONCE WE HAVE INTERVALS WE NEED TO DO LITERAL ARITHMETIC UPFRONT
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -36,7 +36,7 @@ select l_returnflag, l_linestatus,
 
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+// pipeline begin
 pipeline Query1
 begin
   stage S00 on origin :
@@ -51,10 +51,10 @@ begin
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
-      type DECIMAL ) as SUM_QTY L_QUANTITY sum  ,
-      type DECIMAL ) as SUM_BASE_PRICE L_EXTENDEDPRICE sum  ,
-      type DECIMAL ) as SUM_DISC_PRICE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-      type DECIMAL ) as SUM_CHARGE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
       type INTEGER ) L_EXTENDEDPRICE count  ,
       type INTEGER ) L_QUANTITY count  ,
       type DECIMAL ) L_DISCOUNT sum  ,
@@ -117,7 +117,7 @@ begin
     | sink
     | first
 end ;
-
+// pipeline end
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

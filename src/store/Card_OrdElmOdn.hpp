@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BOUND.hpp -- Abstract Bound                                           */
+/* Card_OrdElmOdn.hpp -- Order Element Ordinal                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,17 @@
 
 namespace STORE
 {
-  class Card_CmpPred;
-
-  class Card_BOUND : public Card
-  {  
+  class Card_OrdElmOdn : public Card
+  {
   public:
-    Card_BOUND(eCK eCard);
-   ~Card_BOUND(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    Card_OrdElmOdn(void);
+    ~Card_OrdElmOdn(void) noexcept(false);
   };
+
+  Card_OrdElmOdn* _pCard_OrdElmOdn(void* aAddr);
 }
 
 /*============================================================================*/

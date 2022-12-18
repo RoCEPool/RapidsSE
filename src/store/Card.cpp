@@ -5,7 +5,8 @@
 #include "Card.hpp"
 #include "CardCtl.hpp"
 #include "Board.hpp"
-#include "CardIter.hpp"
+//#include "CardIter.hpp"
+#include "CardRecurse.hpp"
 
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
@@ -102,6 +103,9 @@ void Card::vInit(eCK eCard)
 
   MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
 
+  if (CK_BOUNDS == eCard)
+    vDebugPoint();
+
   m_eCard   = eCard;
   m_iCardNo = C_UNKNOWN;
 
@@ -136,16 +140,16 @@ Card::~Card(void) noexcept(false)
 
   static Card* pPriorCard = nullptr;
 
-  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-         md__SeqNo,this,aCK[m_eCard],m_sValue.szStz(),md_Bearing);
-
-  if (this == pPriorCard)
-    vDebugPoint();
-
-  if (678 == md__SeqNo) {
-    pPriorCard = this;
-    vDebugPoint();
-  }
+//  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
+//         md__SeqNo,this,aCK[m_eCard],m_sValue.szStz(),md_Bearing);
+//
+//  if (this == pPriorCard)
+//    vDebugPoint();
+//
+//  if (678 == md__SeqNo) {
+//    pPriorCard = this;
+//    vDebugPoint();
+//  }
 
   gapCard[md__SeqNo] = nullptr;
 
@@ -284,12 +288,54 @@ void Card::vAppendDupSubCards(Card* pFromCard)
 /*----------------------------------------------------------------------------*/
 void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vAppend(pNewMainCard);
 
   if (bRenumber)
     vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* append new card to tail                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pCard = pAppendNewCardTail(eCard,szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append new card to tail                                                    */
+/*----------------------------------------------------------------------------*/
+Card* Card::pAppendNewCardTail(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  Card* pCard;
+  if ( szValue != nullptr )
+    pCard = new Card(eCard, szValue);
+  else
+    pCard = new Card(eCard);
+
+  vPushTail(pCard);
+
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append new card to top                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendNewCardTop(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  Card* pCard;
+  if(szValue != nullptr)
+    pCard = new Card(eCard, szValue);
+  else
+    pCard = new Card(eCard);
+
+  vPush(pCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -751,6 +797,30 @@ Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParen
 /*----------------------------------------------------------------------------*/
 /* attempt find of value in this pile                                         */
 /*----------------------------------------------------------------------------*/
+Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Card* _pWalkParent_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
+
+  if (eCard == m_eCard && cValue() == cWithValue) {
+    rpParent = _pWalkParent_;
+    return this;
+  }
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(eCard,cWithValue, rpParent, this))
+      return pFoundCard;
+  }
+
+  rpParent = nullptr;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt find of value in this pile                                         */
+/*----------------------------------------------------------------------------*/
 Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -780,7 +850,7 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
-    if (bHasProperty(szPpy))
+    if (Y_bHas(szPpy))
       return this;
   }
 
@@ -880,21 +950,6 @@ bool Card::bHasSubWithValue(eCK eCard, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does card have given property ?                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasProperty(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return false;
-
-  bool bHas = m_pProperties->bHasName(szPpyNm);
-
-  return bHas;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does the card have a value?                                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasValue(void)
@@ -954,6 +1009,23 @@ bool Card::bIsCommaSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this an AND, NOT or an OR?                                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsConjunction(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (   bIsCard(CK_ANDPRED)
+      || bIsCard(CK_NOTPRED)
+      || bIsCard(CK_ORPRED)
+      )
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is this card a PRED ?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsPRED(void)
@@ -965,7 +1037,7 @@ bool Card::bIsPRED(void)
     case CK_BOLPRED:
     case CK_CMPPRED:
     case CK_ORPRED :
-    case CK_SQTPRED:
+    case CK_ROPRED:
       return true;
     default:
       return false;
@@ -1108,6 +1180,26 @@ void Card::vMarkResetRecursive(void)
   CardIter xCI(this);
   while (xCI.bEachChild())
     xCI.pChild()->vMarkResetRecursive();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Merge given card with this card only if they are of the same type          */
+/*----------------------------------------------------------------------------*/
+bool Card::bMerge(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if(pCard->eCard() != m_eCard)
+    return false;
+
+  while(Card* pSubCard = pCard->pPop()) {
+    vPush(pSubCard);
+  }
+
+  delete pCard;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1424,17 +1516,17 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
   bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
 
-  i8 nProperties = this->nProperties();
+  i8 nProperties = this->Y_nPpy();
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
 
-    eTN eTkn = eProperty(i_Property);
+    eTN eTkn = Y_ePpy(i_Property);
 
     switch (eTkn) {
 
       case TN_INTEGER: {
         Stz* szName = Y_szNm(i_Property);
-        i8   iValue = Y_iVal(i_Property);
+        i8   iValue = Y_iGet(i_Property);
 
         Stz* szDecode = szDecodeEnum(szName,iValue);
         if (szDecode)
@@ -1449,7 +1541,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
       case TN_OBJECT: {
         Stz* szName = Y_szNm(i_Property);
-        Object* pObject = Y_pVal(i_Property);
+        Object* pObject = Y_pGet(i_Property);
         pRibbon->vSprintRight("%s->  "_Stz,szName);
         pRibbon->vSprintRight("%p"_Stz,pObject);
         pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
@@ -1458,7 +1550,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
       case TN_STRING: {
         Stz* szName  = Y_szNm(i_Property);
-        Stz* szValue = Y_szVal(i_Property);
+        Stz* szValue = Y_szGet(i_Property);
         if (bPrintPptName)
           pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
         else
@@ -1490,36 +1582,6 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
   else {
     pRibbon->vSprintRight("  %s"_Stz, szValue());
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of properties                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Card::nProperties(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return 0;
-  
-  i8 nProperties = m_pProperties->nItems();
-  
-  return nProperties;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type of property                                                       */
-/*----------------------------------------------------------------------------*/
-eTN Card::eProperty(i8 i_Property)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return TN_NONE;
-  
-  eTN eToken = m_pProperties->eToken(i_Property);
-  
-  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1591,6 +1653,21 @@ bool Card::bSame(Stz* szArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Take all subcards from given card and move under this card (top)           */
+/*----------------------------------------------------------------------------*/
+void Card::vTakeAllSubCards(Card* pCard, bool bDeleteCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  while(Card* pSubCard = pCard->pPop()) {
+    vPush(pSubCard);
+  }
+
+  if(bDeleteCard)
+    delete pCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1690,24 +1767,22 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get given property name                                                    */
+/* remove given property                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* Card::Y_szNm(i8 i_Property)
+void Card::Y_vCut(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
-    return nullptr;
+    return;
 
-  Stz* szName = m_pProperties->szName(i_Property);
-
-  return szName;
+  m_pProperties->vDelete(szPpyNm);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::Y_cVal(Stz* szPpyNm)
+char Card::Y_cGet(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1724,14 +1799,14 @@ char Card::Y_cVal(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::Y_cVal(i8 i_Property)
+char Card::Y_cGet(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return ' ';
 
-  Stz* szValue = m_pProperties->szValue(i_Property);
+  Stz* szValue = m_pProperties->szValue(i_Ppy);
   if (! szValue)
     return ' ';
 
@@ -1741,7 +1816,7 @@ char Card::Y_cVal(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card::Y_iVal(Stz* szPpyNm)
+i8 Card::Y_iGet(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1756,14 +1831,14 @@ i8 Card::Y_iVal(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card::Y_iVal(i8 i_Property)
+i8 Card::Y_iGet(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
 
-  i8 iValue = m_pProperties->iValue(i_Property);
+  i8 iValue = m_pProperties->iValue(i_Ppy);
 
   return iValue;
 }
@@ -1771,7 +1846,7 @@ i8 Card::Y_iVal(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Card::Y_pVal(Stz* szPptNm)
+Object* Card::Y_pGet(Stz* szPptNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1786,14 +1861,14 @@ Object* Card::Y_pVal(Stz* szPptNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Card::Y_pVal(i8 i_Property)
+Object* Card::Y_pGet(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
 
-  Object* pValue = m_pProperties->pValue(i_Property);
+  Object* pValue = m_pProperties->pValue(i_Ppy);
 
   return pValue;
 }
@@ -1801,7 +1876,7 @@ Object* Card::Y_pVal(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card::Y_szVal(Stz* szPptNm)
+Stz* Card::Y_szGet(Stz* szPptNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1816,22 +1891,80 @@ Stz* Card::Y_szVal(Stz* szPptNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card::Y_szVal(i8 i_Property)
+Stz* Card::Y_szGet(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
 
-  Stz* szValue = m_pProperties->szValue(i_Property);
+  Stz* szValue = m_pProperties->szValue(i_Ppy);
 
   return szValue;
 }
 
 /*----------------------------------------------------------------------------*/
+/* has given property ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::Y_bHas(Stz* szPpyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  return m_pProperties->bHasName(szPpyNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property name                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* Card::Y_szNm(i8 i_Ppy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Stz* szName = m_pProperties->szName(i_Ppy);
+
+  return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type of property                                                       */
+/*----------------------------------------------------------------------------*/
+eTN Card::Y_ePpy(i8 i_Ppy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return TN_NONE;
+
+  eTN eToken = m_pProperties->eToken(i_Ppy);
+
+  return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of properties                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::Y_nPpy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return 0;
+
+  i8 nProperties = m_pProperties->nItems();
+
+  return nProperties;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, char cPpyVal)
+void Card::Y_vSet(Stz* szPpyNm, char cPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1839,21 +1972,21 @@ void Card::Y_vSet(Stz* szPpyNm, char cPpyVal)
     m_pProperties = new TagSet;
 
   s32 sPptVal;
-  sPptVal.vSprint("%c"_Stz, cPpyVal);
+  sPptVal.vSprint("%c"_Stz, cPpy);
   m_pProperties->vReplace(szPpyNm, sPptVal);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, i8 iPpyVal)
+void Card::Y_vSet(Stz* szPpyNm, i8 iPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, iPpyVal);
+  m_pProperties->vReplace(szPpyNm, iPpy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1866,7 +1999,7 @@ void Card::Y_vSet(Stz* szPpyNm)
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, "yes"_Stz);
+  m_pProperties->vReplace(szPpyNm, "y"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1889,54 +2022,27 @@ void Card::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, Object* pPpyVal)
+void Card::Y_vSet(Stz* szPpyNm, Object* pPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, pPpyVal);
+  m_pProperties->vReplace(szPpyNm, pPpy);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, Stz* szPpyVal)
+void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, szPpyVal);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* remove given property                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vCut(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return;
-
-  m_pProperties->vDelete(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* has given property ?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Card::Y_bHas(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return false;
-
-  return m_pProperties->bHasName(szPpyNm);
+  m_pProperties->vReplace(szPpyNm, szPpy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1973,11 +2079,11 @@ void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s32 sName;
-  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
+  sName.vSprint("%s%s"_Stz, szCardNm(), Y_nPpy() ? " +" : "");
 
-  if (bHasProperty(P_OdnLo))
+  if (Y_bHas(P_OdnLo))
     sName.vCatSprint(" $%lld,%lld"_Stz,
-                     Y_iVal(P_OdnLo), Y_iVal(P_OdnHi));
+                     Y_iGet(P_OdnLo), Y_iGet(P_OdnHi));
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
@@ -2071,6 +2177,19 @@ Card_BoolCalc* Card::pSub_boolCalc(void)
   Card_BoolCalc* p_boolCalc =
       _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
   return p_boolCalc;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Bound.hpp"
+Card_Bound* Card::pSub_bound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Bound* p_bound =
+      _pCard_Bound(pFindSubCard(CK_BOUND));
+  return p_bound;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2193,6 +2312,32 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Direction.hpp"
+Card_Direction* Card::pSub_direction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Direction* p_direction =
+      _pCard_Direction(pFindSubCard(CK_DIRECTION));
+  return p_direction;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_EBound.hpp"
+Card_EBound* Card::pSub_eBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_EBound* p_eBound =
+      _pCard_EBound(pFindSubCard(CK_EBOUND));
+  return p_eBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
 Card_Expr* Card::pSub_expr(void)
 {
@@ -2279,6 +2424,19 @@ Card_Genesis* Card::pSub_genesis(void)
   Card_Genesis* p_genesis =
       _pCard_Genesis(pFindSubCard(CK_GENESIS));
   return p_genesis;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Group.hpp"
+Card_Group* Card::pSub_group(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Group* p_group =
+      _pCard_Group(pFindSubCard(CK_GROUP));
+  return p_group;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2414,19 +2572,6 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_MaybeIndexJoin.hpp"
-Card_MaybeIndexJoin* Card::pSub_maybeIndexJoin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_MaybeIndexJoin* p_maybeIndexJoin =
-      _pCard_MaybeIndexJoin(pFindSubCard(CK_MAYBEINDEXJOIN));
-  return p_maybeIndexJoin;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Manner.hpp"
 Card_Manner* Card::pSub_manner(void)
 {
@@ -2479,6 +2624,19 @@ Card_Note* Card::pSub_note(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_NotPred.hpp"
+Card_NotPred* Card::pSub_notPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_NotPred* p_notPred =
+      _pCard_NotPred(pFindSubCard(CK_NOTPRED));
+  return p_notPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_NParmCols.hpp"
 Card_NParmCols* Card::pSub_nParmCols(void)
 {
@@ -2487,6 +2645,32 @@ Card_NParmCols* Card::pSub_nParmCols(void)
   Card_NParmCols* p_nParmCols =
       _pCard_NParmCols(pFindSubCard(CK_NPARMCOLS));
   return p_nParmCols;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_OrdElmOdn.hpp"
+Card_OrdElmOdn* Card::pSub_ordElmOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_OrdElmOdn* p_streamOrdOdn =
+      _pCard_OrdElmOdn(pFindSubCard(CK_ORDELMODN));
+  return p_streamOrdOdn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Order.hpp"
+Card_Order* Card::pSub_order(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Order* p_order =
+      _pCard_Order(pFindSubCard(CK_ORDER));
+  return p_order;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2526,6 +2710,19 @@ Card_Reason* Card::pSub_reason(void)
   Card_Reason* p_reason =
       _pCard_Reason(pFindSubCard(CK_REASON));
   return p_reason;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_RoPred.hpp"
+Card_RoPred* Card::pSub_roPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RoPred* p_roPred =
+      _pCard_RoPred(pFindSubCard(CK_ROPRED));
+  return p_roPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2578,19 +2775,6 @@ Card_Size* Card::pSub_size(void)
   Card_Size* p_size =
       _pCard_Size(pFindSubCard(CK_SIZE));
   return p_size;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_SqtPred.hpp"
-Card_SqtPred* Card::pSub_sqtPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_SqtPred* p_sqtPred =
-      _pCard_SqtPred(pFindSubCard(CK_SQTPRED));
-  return p_sqtPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2778,6 +2962,19 @@ Card_UBound* Card::pSub_uBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Unique.hpp"
+Card_Unique* Card::pSub_unique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Unique* p_unique =
+      _pCard_Unique(pFindSubCard(CK_UNIQUE));
+  return p_unique;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Where.hpp"
 Card_Where* Card::pSub_where(void)
 {
@@ -2786,6 +2983,19 @@ Card_Where* Card::pSub_where(void)
   Card_Where* p_where =
       _pCard_Where(pFindSubCard(CK_WHERE));
   return p_where;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_XBound.hpp"
+Card_XBound* Card::pSub_xBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_XBound* p_xBound =
+      _pCard_XBound(pFindSubCard(CK_XBOUND));
+  return p_xBound;
 }
 
 

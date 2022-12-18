@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Card_IndexPred.cpp -- Index Predicate                                      */
+/* Card_RoPred.cpp -- SubQuery call and Test Predicate                       */
 /*============================================================================*/
 
-#include "Card_IndexPred.hpp"
+#include "Card_RoPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_IndexPred,CK_INDEXPRED)
-__aNewFunction(Card_IndexPred,CN_CARD)
-__vDeleteFunction(Card_IndexPred,CN_CARD)
+__pCastFunction_Card(STORE, Card_RoPred, CK_ROPRED)
+__aNewFunction(Card_RoPred, CN_CARD)
+__vDeleteFunction(Card_RoPred, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IndexPred::Card_IndexPred(void)
-: Card_PRED(CK_INDEXPRED)
+Card_RoPred::Card_RoPred(void)
+: Card_PRED(CK_ROPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
+  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -29,7 +29,7 @@ Card_IndexPred::Card_IndexPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_IndexPred::~Card_IndexPred(void) noexcept(false)
+Card_RoPred::~Card_RoPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

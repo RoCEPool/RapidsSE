@@ -58,7 +58,7 @@ namespace STORE
     void vArgKeyNotExists(Stz* szOpArgs,  Card_KeyNotExists* pCard_KeyNotExists);
     void vArgLimit       (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
     void vArgNext        (Stz* szOpArgs,  Card_Next*      pCard_Next);
-    void vArgOrdAgg      (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
+    void vArgOrdAgg      (Stz* szOpArgs,  Card_OrdAgg*    pCard_OrdAgg);
     void vArgProject     (Stz* szOpArgs,  Card_Project*   pCard_Project);
     void vArgScan        (Stz* szOpArgs,  Card_Scan*      pCard_Scan);
     void vArgSort        (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
@@ -77,6 +77,7 @@ namespace STORE
     void vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* pCard_KeyNotExists);
     void vRpnKeyNotExists_constraint(Stz* szRpnExpr, Card_KeyNotExists* pCard_KeyNotExists);
     void vRpnLimit       (Stz* szRpnExpr, Card_Limit*     pCard_Limit);
+    void vRpnOrdAgg      (Stz* szRpnExpr, Card_OrdAgg*    pCard_OrdAgg);
     void vRpnProject     (Stz* szRpnExpr, Card_Project*   pCard_Project);
     void vRpnScan        (Stz* szRpnExpr, Card_Scan*      pCard_Scan);
     void vRpnSort        (Stz* szRpnExpr, Card_Sort*      pCard_Sort);
@@ -85,11 +86,12 @@ namespace STORE
     void vExpr        (Stz* szRpnExpr, Card_Expr*      pCard_Expr);
     void vRpnCalc     (Stz* szRpnExpr, Card_RpnCalc*   pCard_RpnCalc);
     void vBoolCalc    (Stz* szRpnExpr, Card_BoolCalc*  pCard_BoolCalc);
+    void vBoolPart    (Stz* szRpnExpr, Card*           p_part, i8 i);
     void vOrPred      (Stz* szRpnExpr, Card_OrPred*    pCard_OrPred, i8 i);
     void vAndPred     (Stz* szRpnExpr, Card_AndPred*   pCard_AndPred, i8 i);
     void vCmpPred     (Stz* szRpnExpr, Card_CmpPred*   pCard_CmpPred, i8 i);
     void vBolPred     (Stz* szRpnExpr, Card_BolPred*   pCard_BolPred, i8 i);
-    void vSqtPred     (Stz* szRpnExpr, Card_SqtPred*   pCard_TstPred, i8 i);
+    void vRoPred      (Stz* szRpnExpr, Card_RoPred*    pCard_RoPred, i8 i);
     void vTermPred    (Stz* szRpnExpr, Card_Term*      pCard_Term, i8 i);
 
     void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);

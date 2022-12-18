@@ -26,11 +26,19 @@ namespace STORE
     Card_CmpPred* T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound);
     Card_CmpPred* T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
 
+    bool T_bBounds_Is_lbound(Card_Bounds* p_bounds);
+    bool T_bBounds_Is_lbound_Or_ubound(Card_Bounds* p_bounds);
+    bool T_bBounds_Is_ubound(Card_Bounds* p_bounds);
+
+    bool T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool T_bCmpPred_MaybeBounds(Card_CmpPred* p_cmpPred, Card_Table* p_table,
-                                bool bParamAllowedInBounds);
+    bool T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred, Card_Table* p_table,
+                                   bool bParamAllowedInBounds);
+    bool T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred, Card_Index* p_index,
+                                        bool bParamAllowedInBounds);
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    bool T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds);
     Card_Term* E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
@@ -47,6 +55,16 @@ namespace STORE
 
     bool T_bFilter_IsEmpty(Card_Filter* p_filter);
 
+    Card_Index* T_pIndex_Find_chosenIndex(Card_IndexList* p_indexList);
+    bool T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_index);
+
+    bool T_b_Order_AreSame(Card_Order* p_order1, Card_Order* p_order2);
+
+    bool T_bPRED_AllSubs_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
+                                             bool bParamAllowedInBounds);
+    Card_PRED* T_pPRED_Containing_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
+                                                      bool bParamAllowedInBounds);
+
     bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
 
     bool T_bStage_IsIgnorable(Card_Stage* p_stage);
@@ -57,6 +75,8 @@ namespace STORE
     bool T_bStage_ReinstateV3(eAL& reLevel, Card* p_Main, Card* p_PriorToMain);
 
     Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& ri_StreamColNo);
+    Card_StmCol* T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList, Stz *szTblColOdn, i8& ri_StmCol);
+    Card_OrdElmOdn* T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList, Stz *szStmColOdn, i8& ri_StmOrdOdn);
 
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);

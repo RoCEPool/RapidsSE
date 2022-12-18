@@ -33,6 +33,8 @@ namespace STORE
     eCK    e_SubOfMain;
     Card * p_Sub2OfMain;
     eCK    e_Sub2OfMain;
+    Card * p_Sub3OfMain;
+    eCK    e_Sub3OfMain;
     Card * p_SubsequentToMain;
     eCK    e_SubsequentToMain;
 
@@ -56,6 +58,7 @@ namespace STORE
     Card_As *               p_as;
     Card_BolPred *          p_bolPred;
     Card_BoolCalc *         p_boolCalc;
+    Card_Bound *            p_bound;
     Card_Bounds *           p_bounds;
     Card_CalcOp *           p_calcOp;
     Card_Call *             p_call;
@@ -73,6 +76,7 @@ namespace STORE
     Card_CrossPtnJoin *     p_crossPtnJoin;
     Card_CrossPtnJoinList * p_crossPtnJoinList;
     Card_Direction *        p_direction;
+    Card_EBound *           p_eBound;
     Card_Expr *             p_expr;
     Card_Filter *           p_filter;
     Card_Fold *             p_fold;
@@ -80,6 +84,7 @@ namespace STORE
     Card_GbyAgg *           p_gbyAgg;
     Card_GbyElist *         p_gbyElist;
     Card_Genesis *          p_genesis;
+    Card_Group *            p_group;
     Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
@@ -96,12 +101,16 @@ namespace STORE
     Card_KeyNotExists *     p_keyNotExists;
     Card_LBound *           p_lBound;
     Card_Level *            p_level;
+    Card_Limit *            p_limit;
     Card_Manner *           p_manner;
-    Card_MaybeIndexJoin *   p_maybeIndexJoin;
     Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;
+    Card_NotPred *          p_notPred;
     Card_NParmCols *        p_nParmCols;
+    Card_OrdAgg *           p_ordAgg;
+    Card_OrdElmOdn *        p_ordElmOdn;
+    Card_Order *            p_order;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;
@@ -117,6 +126,7 @@ namespace STORE
     Card_PtndJoinSet *      p_ptndJoinSet;
     Card_Reason *           p_reason;
     Card_RelnOp *           p_relnOp;
+    Card_RoPred *           p_roPred;
     Card_RpnCalc *          p_rpnCalc;
     Card_SbyElist *         p_sbyElist;
     Card_Scan *             p_scan;
@@ -137,11 +147,12 @@ namespace STORE
     Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
     Card_Topology *         p_topology;
-    Card_SqtPred *          p_sqtPred;
     Card_Twist *            p_twist;
     Card_Type *             p_type;
     Card_UBound *           p_uBound;
+    Card_Unique *           p_unique;
     Card_Where *            p_where;
+    Card_XBound *           p_xBound;
 
     // - - - - - - - - - - - - - - - - - -
 

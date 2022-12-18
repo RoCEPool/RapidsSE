@@ -3,7 +3,7 @@ import datetime
 import glob
 import string
 import logging
-import os.path
+import os
 import pathlib
 import subprocess
 import csv
@@ -21,6 +21,7 @@ C_JMETER_EXTS = ["jmx", "jmeter"]
 C_SUPPORT_FILES = "supportFiles"
 C_TEST_DIR_FMT = "j{:04d}_t{:02d}_{:02d}_{:s}"
 C_SCP_TIMEOUT_SEC = 60
+C_CLOUD_INIT_OUTPUT = "/cloud-init-output.log"
 
 # CSV fields
 C_CSV_LABEL = "label"
@@ -129,7 +130,7 @@ class TestRunner:
         src = str(self.local_test_file)
         dest = f"{self.ip_addr}:{self.remote_test_file}"
 
-        LOG.debug(f"About to copy a test file from {src} to {dest}")
+        LOG.info(f"About to copy a test file from {src} to {dest}")
 
         try:
             ssh.run_scp(src, dest, command_timeout)
@@ -154,7 +155,7 @@ class TestRunner:
         target_dir = f"{self.cluster_config.get_dir()}/{testops.C_SUPPORT_FILES_DIR}"
         command = f"ln -s {target_dir} {from_dir}"
 
-        LOG.debug(f"About to create a symbolic link for the test supportFiles directory on host "
+        LOG.info(f"About to create a symbolic link for the test supportFiles directory on host "
                   f"{self.ip_addr}: {command}")
 
         try:
@@ -171,7 +172,7 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
-        LOG.debug(f"Successfully created the symbolic link: {from_dir} --> {target_dir}")
+        LOG.info(f"Successfully created the symbolic link: {from_dir} --> {target_dir}")
 
     def __create_remote_dir(self):
         """
@@ -182,7 +183,7 @@ class TestRunner:
         # Create a directory to hold the test file and associated metrics
         mkdir_command = f"mkdir -p {str(self.remote_test_dir)}"
 
-        LOG.debug(f"About to make a directory to hold the test file on host {self.ip_addr}: {mkdir_command}")
+        LOG.info(f"About to make a directory to hold the test file on host {self.ip_addr}: {mkdir_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, mkdir_command, 10)
@@ -198,7 +199,7 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
-        LOG.debug(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_test_dir)}")
+        LOG.info(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_test_dir)}")
 
     def __run_jmeter_test(self):
         """
@@ -221,7 +222,7 @@ class TestRunner:
                          f"-t {self.remote_test_file} " \
                          f"-l {log_file_path}"
 
-        LOG.debug(f"About to execute the JMeter command: {jmeter_command}")
+        LOG.info(f"About to execute the JMeter command: {jmeter_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, jmeter_command)
@@ -261,6 +262,8 @@ class TestRunner:
 
         # Copy the jmeter logs to this directory
         self.copy_jmeter_logs()
+
+        self.copy_cloud_init_output()
 
         # Parse the metrics and add them to the results.
         # We look for both *.csv and *.tsv files.
@@ -342,6 +345,27 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
+    def copy_cloud_init_output(self):
+        """
+        Copies cloud-init output file from a remote host to the artifact directory
+        """
+
+        LOG.debug("About to copy cloud-init output file from remote node to local directory")
+        src = f"{self.ip_addr}:{C_CLOUD_INIT_OUTPUT}"
+
+        try:
+            ssh.run_scp(src=src, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
+
+        except errors.SshError as e:
+            msg = f"Error while copying cloud-init output file from remote path: {src}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of cloud-init output file from remote path at {src} timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
     def __parse_csv_metrics(self, metric_file: string) -> bool:
         """
         Parses a single CSV file containing test metrics and saves the metrics into the result.
@@ -351,9 +375,15 @@ class TestRunner:
         LOG.debug(f"Parsing CSV metrics file: {os.path.basename(metric_file)}")
         metrics_added = 0
 
+        if os.stat(metric_file).st_size == 0:
+            return False
+
         with open(metric_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile, dialect='excel')
             fieldnames = reader.fieldnames
+
+            if fieldnames is None:
+                return False
 
             # Must have these fields minimum: label, success, Latency
             # Optional fields that can be used: timestamp, failureMessage, responseMessage, Connect

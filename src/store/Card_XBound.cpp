@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* Card_MaybeIndexJoin.cpp -- Index Join                                           */
+/* Card_XBound.cpp -- Cross Bound                                             */
 /*============================================================================*/
 
-#include "Card_MaybeIndexJoin.hpp"
+#include "Card_XBound.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_MaybeIndexJoin,CK_MAYBEINDEXJOIN)
-__aNewFunction(Card_MaybeIndexJoin,CN_CARD)
-__vDeleteFunction(Card_MaybeIndexJoin,CN_CARD)
+__pCastFunction_Card(STORE,Card_XBound,CK_XBOUND)
+__aNewFunction(Card_XBound,CN_CARD)
+__vDeleteFunction(Card_XBound,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_MaybeIndexJoin::Card_MaybeIndexJoin(void)
-: Card(CK_MAYBEINDEXJOIN)
+Card_XBound::Card_XBound(void)
+    : Card_Bound(CK_XBOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_MaybeIndexJoin::~Card_MaybeIndexJoin(void) noexcept(false)
+Card_XBound::~Card_XBound(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

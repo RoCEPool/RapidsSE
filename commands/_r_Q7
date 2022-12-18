@@ -4,7 +4,14 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index S_idx0  on supplier (S_SUPPKEY  );
+create index L_idx0  on lineitem (L_SUPPKEY  );
+create index O_idx0  on orders   (O_ORDERKEY );
+create index C_idx0  on customer (C_CUSTKEY  );
+create index N_idx0  on nation   (N_NATIONKEY);
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -37,8 +44,8 @@ from (
     and c_custkey = o_custkey
     and s_nationkey = n1.n_nationkey
     and c_nationkey = n2.n_nationkey
-    and ( (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
-    or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE'))
+    and (   (n1.n_name = 'IRAN'    and n2.n_name = 'GERMANY')
+         or (n1.n_name = 'GERMANY' and n2.n_name = 'IRAN'))
     and l_shipdate between '1995-01-01' and '1996-12-31'
   )as shipping
 group by
@@ -49,7 +56,6 @@ order by
   supp_nation,
   cust_nation,
   l_year;
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

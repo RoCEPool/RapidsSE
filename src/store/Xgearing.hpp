@@ -18,7 +18,6 @@ namespace STORE
   {
   protected:
     Bench*      m_pBench;
-    CardCtl*    m_pCardCtl;
 
     i8          m_iXform;
     i8          m_iTrace;
@@ -58,7 +57,7 @@ namespace STORE
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
     Card_Term* m_pTerm_2;
-    Card_Term* m_pTerm_inject;
+    Card_Term* m_pTerm_corrPred;
 
 
 
@@ -106,17 +105,15 @@ namespace STORE
   protected:
     bool bIsTracing(void);
 
-    void vTracer(Stz* szFormat, ...);
-
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
+
     void G_vClearMembers(void);
     void G_vClearMembersRegisters(void);
     void G_vClearRegisters(void);
-    void G_vClearRegistersIf(eCK eCard);
     void G_vClearRegistersIf(Card* pCard);
     void G_vCopyCard(Card* pCard);
 
@@ -130,6 +127,11 @@ namespace STORE
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
     bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
+    bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
+
+    bool G_bEachSubOfMain(eCK eSubKind);
+    bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
+    bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 
@@ -143,12 +145,12 @@ namespace STORE
     void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoard(Stz* szBoardNm);
+    bool G_bIsNextMain(eCK eMember);
 
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
-    i8   G_i_Main(void);
     bool G_bMoreMain(void);
     void G_vMorphCard(Card* pCard, eCK eCard);
 
@@ -174,6 +176,7 @@ namespace STORE
     void G_vRemoveMain(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     bool G_bResolveCard(eCK eCard, i8 i_Before);
+    bool G_bResolveCard(eCK eCard,char cWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
     bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);
@@ -181,6 +184,7 @@ namespace STORE
     bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
     bool G_bResolveSubCard(eCK eSub, i8 i_Before);
     void G_vRestart(void);
+    bool G_bRewindMain(void);
 
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     bool G_bSubsequentToMain(bool bUpdateMember = false);
@@ -188,9 +192,10 @@ namespace STORE
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
+    Stz* szMemberNm(eCK eMember);
 
     Stz* szT(eCK eMember);
-    Stz* szMemberNm(eCK eMember);
+    void vTracer(Stz* szFormat, ...);
   };
 }
 

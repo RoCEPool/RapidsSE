@@ -4,7 +4,10 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index S_idx0  on Supplier (S_SUPPKEY  );
+create index RV_idx0 on RevenueV (RV_SUPPKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -14,37 +17,21 @@ _r_init
 /transliterated
 /weaved
 /pipelineName = "_r_Q15"
-create view revenue0 (supplier_no, total_revenue) as
-	select
-		l_suppkey,
-		sum(l_extendedprice * (1 - l_discount))
-	from
-		lineitem where l_shipdate >= date '1996-01-01'
-		and l_shipdate < date '1996-01-01' + interval '3' month
-	group by
-		l_suppkey;
-
 select
 	s_suppkey,
 	s_name,
 	s_address,
 	s_phone,
-	total_revenue
+	rv_revenue
 from
-	supplier,
-	revenue0
+	Supplier,
+	RevenueV
 where
-	s_suppkey = supplier_no
-	and total_revenue = (
-		select
-			max(total_revenue)
-		from
-			revenue0
-	)
+	S_SUPPKEY = RV_SUPPKEY
+	and rv_revenue = (select max(rv_revenue)
+                        from RevenueV)
 order by
 	s_suppkey;
-
-drop view revenue0;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

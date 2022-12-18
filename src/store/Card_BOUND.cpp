@@ -1,17 +1,34 @@
 /*============================================================================*/
-/* Card_BOUND.cpp -- Abstract Bound                                           */
+/* Card_Bound.cpp -- Abstract Bound                                           */
 /*============================================================================*/
 
-#include "Card_BOUND.hpp"
+#include "Card_Bound.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction_Card(STORE, Card_Bound, CK_BOUND)
+__aNewFunction(Card_Bound, CN_CARD)
+__vDeleteFunction(Card_Bound, CN_CARD)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_BOUND::Card_BOUND(eCK eCard)
+Card_Bound::Card_Bound(void)
+    : Card(CK_BOUND)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Bound::Card_Bound(eCK eCard)
 : Card(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -24,7 +41,7 @@ Card_BOUND::Card_BOUND(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_BOUND::~Card_BOUND(void) noexcept(false)
+Card_Bound::~Card_Bound(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -48,19 +48,19 @@ limit 20;
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // TRICKS:
-//   * group by only on c_custkey as this key is unique. So we can drop
-//     all other group by columns.
-//   * customer projections are delated
-//   * added TOP to get top REVENUE and then SORT
+//   * GROUP BY ONLY ON C_CUSTKEY AS THIS KEY IS UNIQUE.
+//   * CUSTOMER PROJECTIONS ARE DELAYED
+//   * ADDED TOP TO GET TOP REVENUE INTEAD OF SORT DESC WITH LIMIT
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // EXTRA NOTES:
 //   CAN EXPLORE DIFFERENT JOIN ORDERS.
-//   SPECIFICALLY STARING WITH LINEITEM
+//   SPECIFICALLY STARTING WITH LINEITEM
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// pipeline begin
 pipeline Query10
 begin
 
@@ -73,18 +73,11 @@ begin
     indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
     | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | combined 0
-    | next
-
-  stage S02 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
     | hash expr type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions :
+  stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
     | aggreg  "groupby    type INTEGER O_CUSTKEY
@@ -93,27 +86,27 @@ begin
     | combined 0
     | next
 
-  stage S04 on all nodes :
+  stage S03 on all nodes :
     aggreg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S04 on origin :
     aggreg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
-  stage stageNew on origin :
+  stage S05 on origin :
     top " TOP type DECIMAL REVENUE " 20
     | hash expr type INTEGER O_CUSTKEY
     | combined 0
     | next hashcast
 
-  stage S07 on all partitions :
+  stage S06 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
@@ -126,7 +119,7 @@ begin
     | combined 0
     | next
 
-  stage S08 on all partitions :
+  stage S07 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type VARCHAR as C_NAME C_NAME ,
@@ -139,16 +132,17 @@ begin
     | combined 0
     | next
 
-  stage S06 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+  stage S08 on origin :
+    top " TOP type DECIMAL REVENUE  " 20
     | combined 0
     | next
 
-  stage S10 on origin :
+  stage S08 on origin :
     output
     | sink
     | first
 end ;
+// pipeline end
 
 /*============================================================================*/
 /* end                                                                        */
