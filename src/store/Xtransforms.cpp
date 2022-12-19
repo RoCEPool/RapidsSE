@@ -2599,6 +2599,24 @@ void Xtransforms::vS50_TZZ_End(void)
 
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS50_T00_Join_Ordering_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  vAssert_Board_mqA();
+
+  //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);
+  //G.pDeck->vApply(G.p_joinOrder);
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                    vSeries_75_EE_operators */
 /*============================================================================*/

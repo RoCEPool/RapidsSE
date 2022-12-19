@@ -105,6 +105,9 @@ namespace STORE
     void vS50_T98_Extract_joinOrderSeq(void);
     void vS50_TZZ_End(void);
 
+    void vS50_T00_Join_Ordering_v2(void);
+
+
     // vSeries_75_EE_operators
     void vS75_T10_Morph_table_To_EEop(void);
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
