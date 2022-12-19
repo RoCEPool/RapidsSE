@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_CrossPtnJoinList.hpp"
 
 namespace STORE
 {
@@ -15,6 +15,8 @@ namespace STORE
   
     Card_PtndJoinSet(void);
    ~Card_PtndJoinSet(void) noexcept(false);
+
+    static Card_PtndJoinSet* pExtract(Card_CrossPtnJoinList* p_crossPtnJoinList);
   };
 
   Card_PtndJoinSet* _pCard_PtndJoinSet(void* aAddr);

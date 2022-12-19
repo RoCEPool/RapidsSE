@@ -2897,6 +2897,19 @@ Card_TblColOdn* Card::pSub_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_TblSyn.hpp"
+Card_TblSyn* Card::pSub_tblSyn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TblSyn* p_tblSyn =
+      _pCard_TblSyn(pFindSubCard(CK_TBLSYN));
+  return p_tblSyn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Term.hpp"
 Card_Term* Card::pSub_term(void)
 {
