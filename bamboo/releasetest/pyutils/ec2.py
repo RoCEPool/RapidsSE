@@ -747,3 +747,62 @@ def __copy_cloudinit_logs(ip_addresses: [str], cloudinit_src: pathlib.Path, clou
         except errors.SshError as e:
             LOG.error(e)
             # Keep trying other instances in this test
+
+def record_started_instances(instance_ids: [str], instance_file: pathlib.Path):
+    """
+    Records the list of running instances to file.
+    :param instance_ids: list of the instances IDs that were started
+    :param instance_file: path of the file to write to
+    :return: None
+    """
+
+    if instance_ids is None or len(instance_ids) == 0:
+        LOG.info("No running instance IDs to record to file for later cleanup.")
+        return
+
+    with open(instance_file, 'w') as f:
+        for instance_id in instance_ids:
+            f.write(instance_id)
+            f.write('\n')
+
+    LOG.info(f"Recorded {len(instance_ids)} instance IDs to file for later cleanup: {str(instance_file)}")
+
+def terminate_instances_from_file(instance_file: pathlib.Path):
+    """
+    Terminates the instance IDs found in the file
+    :param instance_file: the path of the file containing the instance IDs
+    :return: None
+    """
+    if not instance_file.exists():
+        LOG.info(f"No running instance file exists. No instances to stop: {str(instance_file)}")
+        return
+
+    instance_ids: [str] = []
+
+    with open(instance_file, 'r') as f:
+        lines = f.readlines()
+
+        for line in lines:
+            line = line.strip()
+
+            if len(line) == 0:
+                continue
+
+            if line.startswith('#'):
+                continue
+
+            instance_ids.append(line)
+
+    if len(instance_ids) == 0:
+        LOG.info(f"There were no instance IDs to be terminated in the file: {str(instance_file)}")
+        return
+
+    LOG.info(f"Found {len(instance_ids)} instance(s) to be terminated in file: {str(instance_file)}")
+    try:
+        terminate_instances(instance_ids)
+
+    except (Exception,):
+        LOG.error(f"Error encountered while terminating the following instance IDs: {', '.join(instance_ids)}")
+        raise
+
+    LOG.info(f"{len(instance_ids)} instances terminated.")

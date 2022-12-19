@@ -25,6 +25,9 @@ LOG = logging.getLogger(__name__)
 # and be ready to use?
 C_EC2_BOOT_TIMEOUT_SEC = 300
 
+# The file that contains the list of running instance IDs
+C_EC2_INSTANCE_FILE = pathlib.Path("runningInstances.txt")
+
 # The format specification for the artifact directory for each test result
 C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
 
@@ -257,6 +260,10 @@ class JobRunner:
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0
 
+        # Record the started instances to file so that they can always be terminated by
+        # a cleanup script
+        ec2.record_started_instances(self.instance_ids, C_EC2_INSTANCE_FILE)
+
         # Copy and modify the cluster config file for the AWS hosts that were started.
         orig_cluster_cfg = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
         self.custom_cluster_config = clusterops.customise_cluster_cfg_hostnames(orig_cluster_cfg,
@@ -454,7 +461,9 @@ class JobRunner:
                   f"{str(self.instance_ids)}"
             LOG.warning(msg)
 
-        pass
+        # Remove the file that contains the list of instances that were started
+        if os.path.exists(C_EC2_INSTANCE_FILE):
+            os.remove(C_EC2_INSTANCE_FILE)
 
     def __record_results(self, abnormal_exit: bool):
         """Record the results of the test into the database and prepare the result files for Bamboo"""
@@ -509,3 +518,13 @@ class JobRunner:
         timed_out = True
         self.abnormal_exit = True
         return timed_out, se_crashed
+
+
+def terminate_instances_from_file():
+    """If an instance file exists, then terminate the instances running in it."""
+    try:
+        ec2.terminate_instances_from_file(C_EC2_INSTANCE_FILE)
+
+    finally:
+        if os.path.exists(C_EC2_INSTANCE_FILE):
+            os.remove(C_EC2_INSTANCE_FILE)
