@@ -7,6 +7,8 @@
 
 #include "Table.hpp"
 #include "PtnDef.hpp"
+#include "Card_TableNm.hpp"
+#include "Xaccess.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -39,8 +41,35 @@ Card_TablePtn::~Card_TablePtn(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- private -----------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* produce <tablePtn> of table                                                */
+/*----------------------------------------------------------------------------*/
+Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
+{
+  _static_
+
+  Card_TableNm* p_tableNm = p_table->pSub_tableNm();
+  Table* pTable = AM::pTableFind(p_tableNm->sz());
+  char cTableSyn = p_table->cValue();
+
+  PtnDef* pPtnDef = pTable->pPtnDef();
+  Column* pPtnColumn = pPtnDef->pGetColumn(0);
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  Column* pStmColumn = pStreamDef->pFindColumn(pPtnColumn->szColNm());
+  i8 iStmColNo = pStmColumn->iColumnNo();
+  s32 sTablePtn;
+  sTablePtn.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo + 1);
+
+  Card_TablePtn* p_tablePtn = new Card_TablePtn;
+  p_tablePtn->vValue(sTablePtn);
+
+  return p_tablePtn;
+}
 
 
 /*============================================================================*/
