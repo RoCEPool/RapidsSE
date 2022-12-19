@@ -2609,8 +2609,30 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vAssert_Board_mqA();
 
+  Board* pBoard = new Board(aBK[BK_PARTITION],
+                            BK_PARTITION,
+                            C_UNKNOWN,
+                            BT_ORIGINAL,
+                            m_pBench);
+
+  G.p_tableList = Card_TableList::pExtract(G.pDeck);
+
+  G_vPushBoard(pBoard);
+
+  G.pDeck->vAppend(G.p_tableList);
+
+  vPrintBoard(__LINE__);
+
   //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);
   //G.pDeck->vApply(G.p_joinOrder);
+
+
+  pBoard = G.pBoard;
+  G_vPopBoard();
+
+  m_pBench->vRemove(pBoard);
+
+  delete pBoard;
 
   vEndTransform();
 }
