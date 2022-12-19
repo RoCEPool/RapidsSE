@@ -15,6 +15,8 @@ namespace STORE
   
     Card_Size(void);
    ~Card_Size(void) noexcept(false);
+
+   static Card_Size* pDerive(Table* pTable);
   };
 
   Card_Size* _pCard_Size(void* aAddr);

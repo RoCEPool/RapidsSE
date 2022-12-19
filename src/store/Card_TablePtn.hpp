@@ -15,6 +15,8 @@ namespace STORE
   
     Card_TablePtn(void);
    ~Card_TablePtn(void) noexcept(false);
+
+   static Card_TablePtn* pDerive(Card_Table* p_table);
   };
 
   Card_TablePtn* _pCard_TablePtn(void* aAddr);

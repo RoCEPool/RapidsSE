@@ -894,7 +894,7 @@ void Xmodify::M_vScan_Produce_indexList(Card_Scan* p_scan)
   Card_TableNm* p_tableNm = p_scan->pSub_tableNm();
   Table* pTable = A_pAccess_Table(p_tableNm->sz());
 
-  Card_IndexList* p_indexList = C_pProduce_indexList_Of_table(pTable);
+  Card_IndexList* p_indexList = Card_IndexList::pDerive(pTable);
   if (! p_indexList)
     return;
 
