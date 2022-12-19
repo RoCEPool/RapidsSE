@@ -506,7 +506,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
 
       // set the column as descending
-      pIndexDef->pGetColumn(i_ColumnOrdinal)->vIsAscending(false);
+      pIndexDef->pGetColumn(pIndexDef->nColumns() - 1)->vIsAscending(false);
       pIndexDef->vHasDescending(true);
 
         pPreExpStack->vPush(ePreExp);

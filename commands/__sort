@@ -1,8 +1,9 @@
 /*============================================================================*/
 /* __sort                                                                     */
 /*============================================================================*/
-_nation;
+
 /*
+_nation;
 /time load nation   "<tpch_dir>/nation.<suffix>" ;
 
 explain stage transliterate select n_nationkey from nation order by n_nationkey desc;
@@ -28,48 +29,26 @@ begin
     | first
 end ;
 
-*/
-create table datums (
+
+create table sortData (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
   vch_col14  VARCHAR(32),
   vch_col15  VARCHAR(32)
 );
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load sortData "../DATA/Datums/sortData.csv" ;
 
-create table TABLE1 (
-  pcol1   INTEGER NOT NULL,
-  tcol1   INTEGER NOT NULL,
-  cola1   INTEGER,
-  colb1   VARCHAR(20),
-  colc1   TIMESTAMP,
-  cold1   FLOAT,
-  cole1   DECIMAL(15, 2),
-  colf1   INTEGER,
-  colg1   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
+//select int_col0 from sortData order by int_col0 desc;
+//select int_col1 from sortData order by int_col1 desc;
+select int_col0, int_col1 from sortData order by int_col0 asc, int_col1 desc;
+//select int_col1, int_col0 from sortData order by int_col1, int_col0;
 
-Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+*/
+__TPCH_SCHEMA;
 
-//select vch_col14 from datums order by vch_col14;
-//select vch_col14 from datums where vch_col14 > 'pink' order by vch_col14 desc;
-
-select pcol1 from table1 order by pcol1 desc limit 20;
+select PS_PARTKEY, PS_SUPPLYCOST from partsupp order by PS_PARTKEY DESC , PS_SUPPLYCOST;
+//select PS_PARTKEY, PS_AVAILQTY from partsupp order by PS_PARTKEY, PS_AVAILQTY DESC;
 
 /*============================================================================*/
 /* end                                                                        */

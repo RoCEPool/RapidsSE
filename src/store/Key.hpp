@@ -22,11 +22,14 @@ namespace STORE
   
     static eKC  eCompare(Key* aLeft, Key* aRight);
     static bool bEqualTo(Key* aLeft, Key* aRight);
+    static i8   iGetStrSize(byte* ayKeyBytes);
     static bool bGreaterThan(Key* aLeft, Key* aRight);
     static bool bGreaterEqual(Key* aLeft, Key* aRight);
+    static bool bGreaterEqual(IndexDef* pIndexDef, Key* aLeft, Key* aRight);
     static bool bLessEqual(Key* aLeft, Key* aRight);
     static bool bLessThan(Key* aLeft, Key* aRight);
     static bool bNotEqual(Key* aLeft, Key* aRight);
+    static eKC  eMixCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r);
 
     i8    iGetIntElm(void);
     i8    iGetIntElm(IndexDef* pIndexDef, i8 i_Element);

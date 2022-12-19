@@ -296,6 +296,8 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
+  IndexDef* pIndexDef = this->pIndexDef();
+
   for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     i8 iItemAtScanLevel = 0;
@@ -307,9 +309,14 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
       
       Key* aNextKey = _aKey(aNextEntry_sl->aElmSeq_dtm());
       UNUSED(aNextKey);
-      
-      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
-      
+
+      if (pIndexDef->bHasDescending()) {
+        bIsJuxta = Key::bGreaterEqual(pIndexDef, aNextEntry_sl->aKey(), aWithKey);
+      }
+      else {
+        bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
+      }
+
       if (bIsJuxta) {
         if (! aToEntry || aNextEntry_sl == aToEntry)
           break;
