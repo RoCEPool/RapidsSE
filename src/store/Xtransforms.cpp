@@ -548,7 +548,7 @@ void Xtransforms::vS24_T_Index_Analysis(void)
     G.p_tableNm = G.p_table->pSub_tableNm();
     Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
 
-    G.p_indexList = C_pProduce_indexList_Of_table(pTable);
+    G.p_indexList = Card_IndexList::pDerive(pTable);
 
     G_vAppendChild(CK_TABLE,CK_INDEXLIST);
   }

@@ -4,6 +4,14 @@
 
 #include "Card_IndexList.hpp"
 
+#include "Index.hpp"
+#include "Card_Index.hpp"
+#include "Table.hpp"
+#include "Card_IndexNm.hpp"
+#include "Card_IdxColList.hpp"
+#include "Card_IdxCol.hpp"
+#include "Card_IdxColNm.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -32,6 +40,59 @@ Card_IndexList::Card_IndexList(void)
 Card_IndexList::~Card_IndexList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce composite <indexList> of table                                     */
+/*----------------------------------------------------------------------------*/
+Card_IndexList* Card_IndexList::pDerive(Table* pTable)
+{
+  _static_
+
+  if (!pTable)
+    return nullptr;
+
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  if (! pIdxVec)
+    return nullptr;
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+
+  i8 nIndexes = pIdxVec->nItems();
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    Index* pIndex = pIdxVec->pGet(i_Index);
+
+    Card_Index*  p_index = new Card_Index;
+    p_indexList->vAppend(p_index);
+
+    Card_IndexNm* p_indexNm = new Card_IndexNm;
+    p_indexNm->vValue(pIndex->szIndexNm());
+    p_index->vAppend(p_indexNm);
+
+    IndexDef* pIndexDef = pIndex->pIndexDef();
+    if (pIndexDef->bIsUnique()) {
+      p_index->vAppendNewCardTail(CK_UNIQUE);
+    }
+
+    Card_IdxColList* p_idxColList = new Card_IdxColList;
+    p_index->vAppend(p_idxColList);
+
+    i8 nColumns = pIndexDef->nColumns();
+    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+
+      Column* pColumn = pIndexDef->pGetColumn(i_Col);
+      Card_IdxCol* p_idxCol = new Card_IdxCol;
+      p_idxCol->vValue(pColumn->szColNm());
+
+      p_idxColList->vAppend(p_idxCol);
+
+      Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
+      p_idxColNm->vValue(pColumn->szColNm());
+      p_idxCol->vAppend(p_idxColNm);
+    }
+  }
+
+  return p_indexList;
 }
 
 /*----------------------------------------------------------------------------*/
