@@ -616,7 +616,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_AGGREG,CK_AGGELIST)) {
-    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+    G.p_stream = Card_Stream::pDerive(G.p_aggElist);
 
     G.p_aggreg->vAppend(G.p_stream);
   }
@@ -628,7 +628,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_GBYAGG,CK_AGGELIST)) {
-    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+    G.p_stream = Card_Stream::pDerive(G.p_aggElist);
 
     G.p_gbyAgg->vAppend(G.p_stream);
   }
@@ -1691,13 +1691,13 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
     else
     if (G_bIsNextMain(CK_AGGREG)) {
       RASSERT(G_bEachMainWithSub(CK_AGGREG, CK_PROJELIST));
-      G.p_stream = C_pProduce_stream_Of_aggreg((Card_AggElist*)(G.p_projElist));
+      G.p_stream = Card_Stream::pDerive((Card_AggElist*)(G.p_projElist));
       G.p_aggreg->vAppend(G.p_stream);
       RASSERT(G_bEachMainWithSub(CK_AGGREG, CK_PROJELIST));
-      G.p_stream = C_pProduce_stream_Of_aggreg((Card_AggElist*)(G.p_projElist));
+      G.p_stream = Card_Stream::pDerive((Card_AggElist*)(G.p_projElist));
       G.p_aggreg->vAppend(G.p_stream);
       RASSERT(G_bEachMainWithSub(CK_AGGREG, CK_PROJELIST));
-      G.p_stream = C_pProduce_stream_Of_aggreg((Card_AggElist*)(G.p_projElist));
+      G.p_stream = Card_Stream::pDerive((Card_AggElist*)(G.p_projElist));
       G.p_aggreg->vAppend(G.p_stream);
       break;
     }

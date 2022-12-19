@@ -732,7 +732,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
       G.p_gbyAgg->vRemoveChild(G.p_stream);
       DELETE_CARD(G.p_stream);
     }
-    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+    G.p_stream = Card_Stream::pDerive(G.p_aggElist);
     G.p_gbyAgg->vAppend(G.p_stream);
 
     if (G_bEachMain()) {

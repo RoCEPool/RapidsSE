@@ -16,6 +16,8 @@ namespace STORE
   
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
+
+   static Card_Stream* pDerive(Card_AggElist* p_aggElist);
   };
 
   Card_Stream* _pCard_Stream(void* aAddr);
