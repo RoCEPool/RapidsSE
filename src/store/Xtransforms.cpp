@@ -2609,21 +2609,24 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vAssert_Board_mqA();
 
+  Card_Deck* pPipeline = G.pDeck;
+
   Board* pBoard = new Board(aBK[BK_PARTITION],
                             BK_PARTITION,
                             C_UNKNOWN,
                             BT_ORIGINAL,
                             m_pBench);
-
-  G.p_tableList = Card_TableList::pExtract(G.pDeck);
-
-
-  G.p_joinPredList = Card_JoinPredList::pExtract(G.pDeck);
-
   G_vPushBoard(pBoard);
+
+  G.p_tableList = Card_TableList::pExtract(pPipeline);
+
+  G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
+
+  G.p_coPtnPredList = Card_CoPtnPredList::pExtract(G.p_joinPredList,G.p_tableList);
 
   G.pDeck->vAppend(G.p_tableList);
   G.pDeck->vAppend(G.p_joinPredList);
+  G.pDeck->vAppend(G.p_coPtnPredList);
 
   vPrintBoard(__LINE__);
 
