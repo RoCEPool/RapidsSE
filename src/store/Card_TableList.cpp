@@ -39,7 +39,7 @@ Card_TableList::~Card_TableList(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +57,32 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
       p_tableList->vAppend(p_table->pDupCardAndSubCards());
 
   return p_tableList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Table* Card_TableList::pFind(char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    if (CK_TABLE != pChildCard->eCard())
+      continue;
+
+    Card_Table* p_table = _pCard_Table(pChildCard);
+    char cTableSyn = p_table->cValue();
+    if (cTableSyn == cTblSyn)
+      return p_table;
+  }
+
+  return nullptr;
 }
 
 /*============================================================================*/
