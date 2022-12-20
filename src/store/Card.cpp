@@ -667,51 +667,6 @@ void Card::vCopyProperties(Card* pFrom)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete child-card                                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vDeleteChild(eCK eCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 i_Child;
-  Card* pChildCard = pFindChild(eCard, i_Child);
-
-  if (pChildCard) {
-    vRemoveChild(pChildCard);
-    delete pChildCard;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete given property                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vDeleteProperty(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return;
-
-  m_pProperties->vDelete(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete given property (recursively)                                        */
-/*----------------------------------------------------------------------------*/
-void Card::vDeletePropertyRecursive(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vDeleteProperty(szPpyNm);
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pChildCard = pGetChild(i_Child);
-    pChildCard->vDeletePropertyRecursive(szPpyNm);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(i8 iDepth, Stz* szTitle)
@@ -1932,6 +1887,22 @@ void Card::Y_vCut(Stz* szPpyNm)
     return;
 
   m_pProperties->vDelete(szPpyNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete given property (recursively)                                        */
+/*----------------------------------------------------------------------------*/
+void Card::Y_vCutRecursive(Stz* szPpyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Y_vCut(szPpyNm);
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pChildCard = pGetChild(i_Child);
+    pChildCard->Y_vCutRecursive(szPpyNm);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

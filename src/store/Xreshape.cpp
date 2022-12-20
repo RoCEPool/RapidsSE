@@ -2235,7 +2235,7 @@ void Xreshape::vR_S50_T92_Estimate_ptndJoins(void)
   while ((G.p_MainCard = xBI.pEachMain())) {
     eCK eCard = G.p_MainCard->eCard();
     if (CK_PERMUTATION == eCard) {
-      G.p_tableList->vDeletePropertyRecursive(P_TableUsed);
+      G.p_tableList->Y_vCutRecursive(P_TableUsed);
       continue;
     }
     if (CK_PTNDJOIN != eCard)
