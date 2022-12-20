@@ -2659,6 +2659,8 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vPrintBoard(__LINE__);
 
+  i8 i_Permutation = G.pDeck->iFindChild(CK_PERMUTATION);
+  G.p_subSet = G.pDeck->pDupSubCards(i_Permutation);
 
 
   pBoard = new Board(aBK[BK_COSTEST],
@@ -2666,7 +2668,17 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
                      C_UNKNOWN,
                      BT_ORIGINAL,
                      m_pBench);
+
   G_vPushBoard(pBoard);
+
+  G.pDeck->vTransferChildren(G.p_subSet);
+
+  DELETE_CARD(G.p_subSet);
+
+
+  vPrintBoard(__LINE__);
+
+
 
   pBoard = G.pBoard;
   G_vPopBoard();
