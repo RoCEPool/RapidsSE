@@ -9,6 +9,7 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/mount.h>
 
 #include "MY.hpp"
 
@@ -201,6 +202,29 @@ void Dir::vRepair(Object* pObject)
 
   // delete the dir object
   delete pDir;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the free space of given dir in bytes                                   */
+/*----------------------------------------------------------------------------*/
+i8 Dir::iFreeSpace(Stz *szDirPath)
+{
+  _static_
+
+  struct statfs vfs;
+
+  char* aPath = szDirPath->azChar();
+
+  if (statfs(aPath, & vfs) != 0) {
+    vTrace("Dir::uFreeSpace: statfs() error; errno=%d"_Stz,errno);
+    return -1;
+  }
+
+  long long free_space = vfs.f_bfree;
+  free_space *= vfs.f_bsize; // vfs.f_frsize;
+
+  return free_space;
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -30,6 +30,7 @@ void Step::vUnloadToDisk(void)
   ENTRY();
 
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
+  i8 iShmSize = gxCmdLineArgs.m_xSysArgs.m_iRegionSize;
 
   if(nDiskpaths <= 0)
   {
@@ -59,8 +60,24 @@ void Step::vUnloadToDisk(void)
   if( ! Dir::bExists(sDirPath.szStz()))
     Dir::bMake(sDirPath.szStz());
 
-  // todo: Arjun - Check if there is enough space on disk for unload operations
+  // Check disk space before unload
 
+  i8 iFreeSpace = Dir::iFreeSpace(sDirPath.szStz());
+
+  if(iFreeSpace < 0) {
+    vTrace("Error getting free space of dir %s. Cannot unload.\n"_Stz, sDirPath.szStz());
+    return;
+  }
+
+  i8 iMinSpace = iShmSize / nDiskpaths;
+  if(iFreeSpace < iMinSpace)
+  {
+    vTrace("Warning: Dir %s does not contain enough space for unload.\n"_Stz, sDirPath.szStz());
+    vTrace("Dir has %lld bytes\n"_Stz, iFreeSpace);
+    vTrace("Minimum space required %lld bytes\n"_Stz, iMinSpace);
+    vTrace("Cannot unload\n"_Stz);
+    return;
+  }
 
   s256 sFilePath = ""_Stz;
 

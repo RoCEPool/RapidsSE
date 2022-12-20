@@ -46,6 +46,7 @@ namespace BASE
     static bool bMake(Stz* szDirPath);
     static bool bRemove(Stz* szDirPath);
     static void vRepair(Object* pObject);
+    static i8   iFreeSpace(Stz* szDirPath);
     
     void vClose(void);
     Stz* szEntryNm(void);
