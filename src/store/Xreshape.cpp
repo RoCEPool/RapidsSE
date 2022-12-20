@@ -732,7 +732,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
       G.p_gbyAgg->vRemoveChild(G.p_stream);
       DELETE_CARD(G.p_stream);
     }
-    G.p_stream = C_pProduce_stream_Of_aggreg(G.p_aggElist);
+    G.p_stream = Card_Stream::pDerive_Of_aggreg(G.p_aggElist);
     G.p_gbyAgg->vAppend(G.p_stream);
 
     if (G_bEachMain()) {
@@ -779,7 +779,7 @@ void Xreshape::R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void)
   G.p_project->vRemoveChild(G.p_stream);
   DELETE_CARD(G.p_stream);
 
-  G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
+  G.p_stream = Card_Stream::pDerive_Of_project(G.p_projElist);
   G.p_project->vAppend(G.p_stream);
 
   G.p_projElist->Y_vCut(P_Restream);
@@ -1712,7 +1712,7 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
   }
 
 
-  G.p_stream = C_pProduce_stream_Of_project(G.p_projElist);
+  G.p_stream = Card_Stream::pDerive_Of_project(G.p_projElist);
 
   G.p_project->vAppend(G.p_stream);
 
@@ -2376,6 +2376,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
   vReshape(__func__);
 
+  Card* pMain = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SCAN
   if (0 == G.i_MainCard)  {
@@ -2390,6 +2392,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
       G.p_scan->vRemoveChild(G.p_indexJoin);
       DELETE_CARD(G.p_indexJoin);
     }
+
+    pMain = G.p_scan;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KEYEXISTS
@@ -2405,6 +2409,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     G.p_keyExists->vRemoveSubCard(G.p_index);
     G.p_keyExists->vAppend(G.p_index);
+
+    pMain = G.p_keyExists;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KEYNOTEXISTS
@@ -2420,6 +2426,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     G.p_keyNotExists->vRemoveSubCard(G.p_index);
     G.p_keyNotExists->vAppend(G.p_index);
+
+    pMain = G.p_keyNotExists;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CROSSJOIN
@@ -2443,6 +2451,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     G_vNewMember(CK_TERM,"$I1"_Stz);
     G.p_xBound->vAppend(G.p_term);
+
+    pMain = G.p_crossJoin;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // INDEXJOIN
@@ -2458,6 +2468,17 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     //G.p_indexJoin->vRemoveSubCard(G.p_index);
     //G.p_indexJoin->vAppend(G.p_index);
+
+    pMain = G.p_indexJoin;
+  }
+
+  if ((G.p_tableNm = pMain->pSub_tableNm())) {
+    pMain->vRemoveSubCard(G.p_tableNm);
+    G.p_table->vAppend(G.p_tableNm);
+  }
+  if ((G.p_tablePtn = pMain->pSub_tablePtn())) {
+    pMain->vRemoveSubCard(G.p_tablePtn);
+    G.p_table->vAppend(G.p_tablePtn);
   }
 
   vEndReshape();
@@ -2795,6 +2816,8 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
     if (CK_PROJECT == e_main || CK_AGGREG == e_main)
       bSawProjectOp = true;
   }
+
+  e_prev = e_main;
 
   i8 i_End = C_UNKNOWN;
   if (CK_SCAN != e_prev)

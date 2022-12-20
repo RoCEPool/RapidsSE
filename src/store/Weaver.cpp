@@ -1265,7 +1265,8 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
         
       default:
         //{;}
-        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+        break;
     }
     
   }
@@ -1296,7 +1297,8 @@ void Weaver::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 
       default:
         //{;}
-        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+        break;
     }
 
   }
@@ -1887,6 +1889,8 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vEnd();
+
+  //vTrace("%s\n"_Stz, szOptStmt());
 }
 
 /*============================================================================*/

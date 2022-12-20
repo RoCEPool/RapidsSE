@@ -76,6 +76,7 @@ namespace STORE
   class Card_IndexNm;
   class Card_IndexScan;
 
+  class Card_JoinOrder;
   class Card_JoinOrderSeq;
   class Card_JoinPredList;
 
@@ -129,6 +130,7 @@ namespace STORE
   class Card_TableNm;
   class Card_TablePtn;
   class Card_TblColOdn;
+  class Card_TblSyn;
   class Card_Term;
   class Card_Topology;
   class Card_Twist;
@@ -477,6 +479,7 @@ namespace STORE
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TblColOdn*     pSub_tblColOdn(void);
+    Card_TblSyn*        pSub_tblSyn(void);
     Card_Term*          pSub_term(void);
     Card_Topology*      pSub_topology(void);
     Card_Twist*         pSub_twist(void);

@@ -15,6 +15,8 @@ namespace STORE
   
     Card_TableList(void);
    ~Card_TableList(void) noexcept(false);
+
+    static Card_TableList* pExtract(Card_Deck* p_deck);
   };
 
   Card_TableList* _pCard_TableList(void* aAddr);

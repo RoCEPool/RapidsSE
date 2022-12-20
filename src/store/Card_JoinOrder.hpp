@@ -16,7 +16,9 @@ namespace STORE
     Card_JoinOrder(void);
     Card_JoinOrder(Stz* szValue);
    ~Card_JoinOrder(void) noexcept(false);
-  };
+
+     static Card_JoinOrder* pExtract(Card_Deck* pDeck);
+   };
 
   Card_JoinOrder* _pCard_JoinOrder(void* aAddr);
 }

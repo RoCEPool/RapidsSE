@@ -6,7 +6,7 @@
 #include "Card.hpp"
 
 #include "Card_CoPtnJoin.hpp"
-#include "Card_CoPtnPred.hpp"
+#include "Card_CoPtnPredList.hpp"
 
 namespace STORE
 {
@@ -18,6 +18,8 @@ namespace STORE
   
     Card_CoPtnJoinList(void);
    ~Card_CoPtnJoinList(void) noexcept(false);
+
+    static Card_CoPtnJoinList* pExtract(Card_CoPtnPredList* p_joinPredList);
   };
 
   Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);

@@ -15,6 +15,10 @@ namespace STORE
   
     Card_CoPtnPredList(void);
    ~Card_CoPtnPredList(void) noexcept(false);
+
+    static Card_CoPtnPredList* pExtract(Card_JoinPredList* p_joinPredList,
+                                        Card_TableList* p_tableList);
+
   };
 
   Card_CoPtnPredList* _pCard_CoPtnPredList(void* aAddr);
