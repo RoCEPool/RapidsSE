@@ -11,7 +11,7 @@
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
 
-Card* gapCard[C_10K];
+//Card* gapCard[C_10K];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -117,7 +117,7 @@ void Card::vInit(eCK eCard)
   m_pLastPrintParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;
-  gapCard[md__SeqNo] = this;
+  //gapCard[md__SeqNo] = this;
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
@@ -151,7 +151,7 @@ Card::~Card(void) noexcept(false)
 //    vDebugPoint();
 //  }
 
-  gapCard[md__SeqNo] = nullptr;
+  //gapCard[md__SeqNo] = nullptr;
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -170,14 +170,14 @@ void Card::vCardLeaks(void)
 {
   _static_
 
-  for (i8 i_Card = 0; i_Card < C_10K; i_Card++) {
-    if (gapCard[i_Card]) {
-      Card *pLeaked = gapCard[i_Card];
-      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->sz());
-      vDebugPoint();
-    }
-  }
+//  for (i8 i_Card = 0; i_Card < C_10K; i_Card++) {
+//    if (gapCard[i_Card]) {
+//      Card *pLeaked = gapCard[i_Card];
+//      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->sz());
+//      vDebugPoint();
+//    }
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,40 +187,40 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 {
   _static_
 
-  for (i8 i_Card = 0; i_Card < m__iSeqGen; i_Card++) {
-    if (! gapCard[i_Card])
-      continue;
-
-    Card* p_cardInQuestion = gapCard[i_Card];
-
-    // is this the first time a transformation has seen this card?
-    if (C_UNKNOWN == p_cardInQuestion->md__FirstDetected)
-      p_cardInQuestion->md__FirstDetected = iTransformNo;
-
-    // is the card the entire deck?
-    if (p_cardInQuestion == p_deck)
-      continue;
-
-    // is the card in the deck?
-    if (p_deck->pFindParent(p_cardInQuestion))
-      continue;
-
-    // **Leak Detected**
-
-    // is this the first time this card has been detected?
-    if (C_UNKNOWN != p_cardInQuestion->md__LeakDetected)
-      continue;
-
-    // report the leak
-    p_cardInQuestion->md__LeakDetected = iTransformNo;
-    vTrace("Card leak detected : %04lld %p %s:%s\n"_Stz,
-         i_Card,
-         p_cardInQuestion,
-         aCK[p_cardInQuestion->eCard()],
-         p_cardInQuestion->sz());
-    vDebugPoint();
-  }
-
+//  for (i8 i_Card = 0; i_Card < m__iSeqGen; i_Card++) {
+//    if (! gapCard[i_Card])
+//      continue;
+//
+//    Card* p_cardInQuestion = gapCard[i_Card];
+//
+//    // is this the first time a transformation has seen this card?
+//    if (C_UNKNOWN == p_cardInQuestion->md__FirstDetected)
+//      p_cardInQuestion->md__FirstDetected = iTransformNo;
+//
+//    // is the card the entire deck?
+//    if (p_cardInQuestion == p_deck)
+//      continue;
+//
+//    // is the card in the deck?
+//    if (p_deck->pFindParent(p_cardInQuestion))
+//      continue;
+//
+//    // **Leak Detected**
+//
+//    // is this the first time this card has been detected?
+//    if (C_UNKNOWN != p_cardInQuestion->md__LeakDetected)
+//      continue;
+//
+//    // report the leak
+//    p_cardInQuestion->md__LeakDetected = iTransformNo;
+//    vTrace("Card leak detected : %04lld %p %s:%s\n"_Stz,
+//         i_Card,
+//         p_cardInQuestion,
+//         aCK[p_cardInQuestion->eCard()],
+//         p_cardInQuestion->sz());
+//    vDebugPoint();
+//  }
+//
 }
 
 /*----------------------------------------------------------------------------*/
