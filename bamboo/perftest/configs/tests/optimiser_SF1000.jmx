@@ -2001,7 +2001,7 @@ begin
                  type VARCHAR as S_ADDRESS S_ADDRESS ,
                  type VARCHAR as S_PHONE S_PHONE ,
                  type VARCHAR as S_COMMENT S_COMMENT &quot;
-    | sort &quot;type DECIMAL S_ACCTBAL ASC ,
+    | sort &quot;type DECIMAL S_ACCTBAL DESC ,
             type VARCHAR N_NAME ASC ,
             type VARCHAR S_NAME ASC ,
             type INTEGER P_PARTKEY ASC&quot;
@@ -2010,7 +2010,7 @@ begin
     | next
 
   stage S12 on all nodes :
-    sort &quot;type DECIMAL S_ACCTBAL ASC ,
+    sort &quot;type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC&quot;
@@ -2019,7 +2019,7 @@ begin
     | next
 
   stage S13 on origin :
-    sort &quot;type DECIMAL S_ACCTBAL ASC ,
+    sort &quot;type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC&quot;
@@ -2031,8 +2031,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>

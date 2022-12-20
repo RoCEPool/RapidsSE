@@ -336,19 +336,19 @@ begin
   stage S11 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME J1_N_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_MFGR P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
-    | sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    | sort "type DECIMAL S_ACCTBAL DESC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
   stage S12 on all nodes :
-    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    sort "type DECIMAL S_ACCTBAL DESC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
   stage S13 on origin :
-    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    sort "type DECIMAL S_ACCTBAL DESC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
@@ -370,7 +370,7 @@ begin
 
   stage S01 on all partitions :
     scan part
-    | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing P_SIZE 20 == and"
+    | filter " type BOOLEAN  }  P_TYPE '%BRASS' 6 matchTrailing P_SIZE 15 == and"
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
@@ -404,7 +404,7 @@ begin
 
   stage S05 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
+    | filter " type BOOLEAN  J1_R_NAME 'EUROPE'  == "
     | aggreg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min "
@@ -466,7 +466,7 @@ begin
                  type VARCHAR as S_ADDRESS S_ADDRESS ,
                  type VARCHAR as S_PHONE S_PHONE ,
                  type VARCHAR as S_COMMENT S_COMMENT "
-    | sort "type DECIMAL S_ACCTBAL ASC ,
+    | sort "type DECIMAL S_ACCTBAL DESC ,
             type VARCHAR N_NAME ASC ,
             type VARCHAR S_NAME ASC ,
             type INTEGER P_PARTKEY ASC"
@@ -475,7 +475,7 @@ begin
     | next
 
   stage S12 on all nodes :
-    sort "type DECIMAL S_ACCTBAL ASC ,
+    sort "type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
@@ -484,7 +484,7 @@ begin
     | next
 
   stage S13 on origin :
-    sort "type DECIMAL S_ACCTBAL ASC ,
+    sort "type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"

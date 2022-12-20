@@ -21,20 +21,10 @@
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE' )
 
-       order by s_acctbal asc, n_name, s_name, p_partkey limit 100;
+       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
 
   -- verfified
   rows: 0
-
-select p_partkey, min(ps_supplycost)
-      from part, partsupp, supplier, nation, region
-      where p_size = 15
-      and p_type like '%BRASS'
-      and p_partkey = ps_partkey
-      and s_suppkey = ps_suppkey
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name = 'EUROPE' group by p_partkey  order by p_partkey ;
 
 // for SF0001 changed %BRASS to %STEEL, p_size = 15 to p_size = 20, r_name EUROPE to AFRICA
 select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
@@ -54,7 +44,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'AFRICA' )
-       order by s_acctbal asc, n_name, s_name, p_partkey limit 100;
+       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
 
 verified
    4641.08 | Supplier#000000004 | MOROCCO | 24 | Manufacturer#5 | Bk7ah4CK8SYQTepEmvMkkgMwg | 25-843-787-7479 | riously even requests above the exp
@@ -341,7 +331,6 @@ rows:
   (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
 */
 
-// PIPELINE-START
 pipeline Query2
 begin
   stage S00 on origin :
@@ -447,7 +436,7 @@ begin
                  type VARCHAR as S_ADDRESS S_ADDRESS ,
                  type VARCHAR as S_PHONE S_PHONE ,
                  type VARCHAR as S_COMMENT S_COMMENT "
-    | sort "type DECIMAL S_ACCTBAL ASC ,
+    | sort "type DECIMAL S_ACCTBAL DESC ,
             type VARCHAR N_NAME ASC ,
             type VARCHAR S_NAME ASC ,
             type INTEGER P_PARTKEY ASC"
@@ -456,7 +445,7 @@ begin
     | next
 
   stage S12 on all nodes :
-    sort "type DECIMAL S_ACCTBAL ASC ,
+    sort "type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
@@ -465,7 +454,7 @@ begin
     | next
 
   stage S13 on origin :
-    sort "type DECIMAL S_ACCTBAL ASC ,
+    sort "type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
@@ -478,11 +467,10 @@ begin
     | sink
     | first
 end ;
-// PIPELINE-END
 
-rows:
-  (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
+ordered rows:
   (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
+  (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
 
 CLEANUP {
   bye;

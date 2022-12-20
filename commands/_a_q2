@@ -43,7 +43,7 @@ where
       and r_name = 'EUROPE' )
 
 order by
-  s_acctbal asc,    //DESC
+  s_acctbal desc,
   n_name,
   s_name,
   p_partkey
@@ -179,7 +179,7 @@ begin
                  type VARCHAR as S_ADDRESS S_ADDRESS ,
                  type VARCHAR as S_PHONE S_PHONE ,
                  type VARCHAR as S_COMMENT S_COMMENT "
-    | sort "type DECIMAL S_ACCTBAL ASC ,
+    | sort "type DECIMAL S_ACCTBAL DESC ,
             type VARCHAR N_NAME ASC ,
             type VARCHAR S_NAME ASC ,
             type INTEGER P_PARTKEY ASC"
@@ -188,7 +188,7 @@ begin
     | next
 
   stage S12 on all nodes :
-    sort "type DECIMAL S_ACCTBAL ASC ,
+    sort "type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
@@ -197,7 +197,7 @@ begin
     | next
 
   stage S13 on origin :
-    sort "type DECIMAL S_ACCTBAL ASC ,
+    sort "type DECIMAL S_ACCTBAL DESC ,
           type VARCHAR N_NAME ASC ,
           type VARCHAR S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
