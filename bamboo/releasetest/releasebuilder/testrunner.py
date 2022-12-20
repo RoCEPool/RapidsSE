@@ -678,6 +678,7 @@ class InstanceRunner:
 
         # Remove the file that contains the list of instances that were started
         if os.path.exists(self.runningInstancesPath):
+            LOG.info(f"Test {self.test_name}: Removing running instance file {str(self.runningInstancesPath)}")
             os.remove(self.runningInstancesPath)
 
     def force_stop(self) -> None:
@@ -730,10 +731,15 @@ def terminate_instances_from_file():
 
     files = pathlib.Path('.').glob(C_EC2_INSTANCE_FILE_GLOB)
 
+    count = 0
+
     for file in files:
         try:
+            count += 1
             ec2.terminate_instances_from_file(file)
 
         finally:
             if os.path.exists(file):
                 os.remove(file)
+
+    LOG.info(f"Found {count} files with running instances to be terminated.")
