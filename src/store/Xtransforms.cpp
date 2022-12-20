@@ -2651,9 +2651,14 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vPrintBoard(__LINE__);
 
-  //G.p_ptndJoinSet->vPermute(G.pDeck);
+  G.p_ptndJoinSet->vPermute(G.pDeck);
 
   vPrintBoard(__LINE__);
+
+  Card_Permutation::vRemoveInvalid(G.pDeck);
+
+  vPrintBoard(__LINE__);
+
 
 
   //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);
