@@ -279,6 +279,106 @@ bool Card::bIsParamOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a result ordinal?  (i.e. #n)                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsResultOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a subQuery name?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSubQueryName(BASE::Stz *szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 's' == acThird
+      && 'u' == acFourth)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a subQuery-column ordinal?  (i.e. __n)                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSqyColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && StrLib::bIsDigit(acThird))
+    return true;
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 'S' == acThird
+      && 'Q' == acFourth)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a stream-column ordinal?  (i.e. $n)                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsStreamColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a table-column ordinal?  (i.e. $c.n)                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsTableColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eTo_eCK(Stz* szCardNm)

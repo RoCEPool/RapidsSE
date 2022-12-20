@@ -294,7 +294,7 @@ bool Xtest::T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred)
   CardIter xCI(p_cmpPred);
   while (Card* p_card = xCI.pEachChild()) {
     if (p_card->bIsCard(CK_TERM) &&
-        T_bValue_IsSubQueryName(p_card->szValue()))
+        Card::bIsSubQueryName(p_card->szValue()))
       return true;
   }
 
@@ -409,10 +409,10 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
     // + term_0 is $c.n
 
-    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -438,7 +438,7 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
     }
   }
   else
-  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
     // + term_1 is $c.n
 
     // ? maybe term_0 is permitted param
@@ -471,10 +471,10 @@ bool Xtest::T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred,
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
-  if (T_bValue_IsTableColOrdinal(pTerm_0->szValue())) {
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
     // + term_0 is $c.n
 
-    if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -502,7 +502,7 @@ bool Xtest::T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred,
     }
   }
   else
-  if (T_bValue_IsTableColOrdinal(pTerm_1->szValue())) {
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
     // + term_1 is $c.n
 
     // ? maybe term_0 is permitted param
@@ -1106,7 +1106,7 @@ bool Xtest::T_bIndex_tblColOdn_IsKeyIn_index(Stz* szTblColOdn, Card_Index* p_ind
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  ASSERT(T_bValue_IsTableColOrdinal(szTblColOdn));
+  ASSERT(Card::bIsTableColOrdinal(szTblColOdn));
 
   Card_IdxColList* p_idxColList = p_index->pSub_idxColList();
 
@@ -1228,178 +1228,6 @@ bool Xtest::T_bTblColSyn_Same(char cTblSyn0, char cTblSyn1)
 
   return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* is term an index-column ordinal?  (i.e. $In)                               */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsIndexColOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-
-  if ('$' == acFirst
-      && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a key ordinal?  (i.e. $Kn)                                        */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsKeyOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-
-  if ('$' == acFirst
-      && ('K' == acSecond || 'k' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a parameter ordinal?  (i.e. $Pn)                                  */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsParamOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-/*----------------------------------------------------------------------------*/
-//bool Xtest::T_bValue_IsParamOrdinal(Stz* szValue)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-//
-//  char acFirst  = szValue->azChar()[0];
-//  char acSecond = szValue->azChar()[1];
-//  char acThird  = szValue->azChar()[2];
-//
-//  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
-//      && StrLib::bIsDigit(acThird))
-//    return true;
-//  else
-//    return false;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* is value a result ordinal?  (i.e. #n)                                      */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsResultOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a subQuery name?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsSubQueryName(BASE::Stz *szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 's' == acThird
-      && 'u' == acFourth)
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* is value a subQuery-column ordinal?  (i.e. __n)                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsSqyColOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && StrLib::bIsDigit(acThird))
-    return true;
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 'S' == acThird
-      && 'Q' == acFourth)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a stream-column ordinal?  (i.e. $n)                               */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsStreamColOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a table-column ordinal?  (i.e. $c.n)                              */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bValue_IsTableColOrdinal(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
-    return true;
-  else
-    return false;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
