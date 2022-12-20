@@ -2641,7 +2641,19 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vPrintBoard(__LINE__);
 
+  // copy ptndJoinSet
+  G.pDeck->vAppendMain(new Card_Note("PERMUTATIONS"_Stz));
+  G.p_subSet = G.p_ptndJoinSet->pDupSubCards();
+  while ((m_pCard_popped = G.p_subSet->pPop())) {
+    G.pDeck->vAppendMain(m_pCard_popped);
+  }
+  DELETE_CARD(G.p_subSet);
 
+  vPrintBoard(__LINE__);
+
+  //G.p_ptndJoinSet->vPermute(G.pDeck);
+
+  vPrintBoard(__LINE__);
 
 
   //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);

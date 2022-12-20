@@ -187,9 +187,9 @@ void CardCtl::vFormPrompt(String* sPrompt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bNextHoriz for card                                                    */
+/* get bHeatNext for card                                                    */
 /*----------------------------------------------------------------------------*/
-bool CardCtl::bNextHoriz(i8 i_Card)
+bool CardCtl::bHeatNext(i8 i_Card)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
@@ -199,9 +199,9 @@ bool CardCtl::bNextHoriz(i8 i_Card)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set bNextHoriz for card                                                    */
+/* set bHeatNext for card                                                    */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vNextHorizon(i8 i_Card, bool bNextHoriz)
+void CardCtl::vHeatNext(i8 i_Card, bool bNextHoriz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
@@ -611,7 +611,9 @@ void CardCtl::vReset(void)
   vPrintValue(CK_ORPRED, false);
   vPrintProperties(CK_ORPRED, false);
 
-  vNextHorizon(CK_STAGE, true);
+  vHeatNext(CK_PERMUTATION, true);
+
+  vHeatNext(CK_STAGE, true);
   vHorizExclude(CK_STAGE, P_HideHeat);
 
   vPrintByKind(CK_TABLE,true);

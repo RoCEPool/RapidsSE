@@ -2119,7 +2119,7 @@ void Xreshape::vR_S50_T60_Copy_ptndJoinSet(void)
 
   vReshape(__func__);
 
-  m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
+  m_pBench->pCardCtl()->vHeatNext(CK_PERMUTATION, true);
 
   G.p_ptndJoinSet =
       _pCard_PtndJoinSet(G.pDeck->pFindChild(CK_PTNDJOINSET));
