@@ -95,6 +95,29 @@ Card_CoPtnJoin* Card_CoPtnJoinList::pFind(Card_CoPtnPred* p_coPtnPred)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CoPtnJoinList::bHasEqPredCmp(Card_CmpPred* p_cmpPred_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren_coPtn = nChildCards();
+  for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
+    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(pGetChild(i_Child_coPtn));
+
+    i8 nChildren_cmpPred = p_coPtnJoin->nChildCards();
+    for (i8 i_Child_cmpPred = 0; i_Child_cmpPred < nChildren_cmpPred; i_Child_cmpPred++) {
+      Card_CmpPred *p_cmpPred = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_cmpPred));
+
+      if (p_cmpPred->bIsEq(p_cmpPred_arg))
+        return true;
+    }
+  }
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

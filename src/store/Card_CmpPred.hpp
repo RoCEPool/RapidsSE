@@ -20,7 +20,7 @@ namespace STORE
    ~Card_CmpPred(void) noexcept(false);
 
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
-    bool bIsEq(Card_CmpPred* p_cmpPred_arg)
+    bool bIsEq(Card_CmpPred* p_cmpPred_arg);
     bool bOverlapsWith(Card_CmpPred* p_cmpPred_arg);
 
   };
