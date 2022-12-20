@@ -16,7 +16,9 @@ namespace STORE
     Card_JoinPredList(void);
    ~Card_JoinPredList(void) noexcept(false);
 
-    static Card_JoinPredList* pExtract(Card_TableList* p_tableList);
+    static Card_JoinPredList* pExtract(Card_Deck* p_deck);
+
+    void vConcat(Card_BoolCalc* p_boolCalc);
 
   };
 

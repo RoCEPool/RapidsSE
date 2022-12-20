@@ -39,6 +39,7 @@ namespace STORE
 
     // main query only from here...
     void vSeries_50_Join_Ordering     (bool bEnabled); // 2 days
+    void vSeries_50_Join_Ordering_v2  (void);
     void vSeries_80_Index_Scan        (bool bEnabled); // 1 day
     void vSeries_90_Stream_Ordering   (bool bEnabled); // 1 day
     void vSeries_92_Project_Pullup    (bool bEnabled); // 1 day

@@ -2376,6 +2376,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
   vReshape(__func__);
 
+  Card* pMain = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SCAN
   if (0 == G.i_MainCard)  {
@@ -2390,6 +2392,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
       G.p_scan->vRemoveChild(G.p_indexJoin);
       DELETE_CARD(G.p_indexJoin);
     }
+
+    pMain = G.p_scan;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KEYEXISTS
@@ -2405,6 +2409,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     G.p_keyExists->vRemoveSubCard(G.p_index);
     G.p_keyExists->vAppend(G.p_index);
+
+    pMain = G.p_keyExists;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KEYNOTEXISTS
@@ -2420,6 +2426,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     G.p_keyNotExists->vRemoveSubCard(G.p_index);
     G.p_keyNotExists->vAppend(G.p_index);
+
+    pMain = G.p_keyNotExists;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CROSSJOIN
@@ -2443,6 +2451,8 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     G_vNewMember(CK_TERM,"$I1"_Stz);
     G.p_xBound->vAppend(G.p_term);
+
+    pMain = G.p_crossJoin;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // INDEXJOIN
@@ -2458,6 +2468,17 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 
     //G.p_indexJoin->vRemoveSubCard(G.p_index);
     //G.p_indexJoin->vAppend(G.p_index);
+
+    pMain = G.p_indexJoin;
+  }
+
+  if ((G.p_tableNm = pMain->pSub_tableNm())) {
+    pMain->vRemoveSubCard(G.p_tableNm);
+    G.p_table->vAppend(G.p_tableNm);
+  }
+  if ((G.p_tablePtn = pMain->pSub_tablePtn())) {
+    pMain->vRemoveSubCard(G.p_tablePtn);
+    G.p_table->vAppend(G.p_tablePtn);
   }
 
   vEndReshape();

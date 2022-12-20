@@ -76,7 +76,8 @@ void Xseries::vTransformSeries(void)
   vSeries_10_Make_Runnable();
 
   // ---
-  vSeries_50_Join_Ordering                   (C_DISABLED);
+  //vSeries_50_Join_Ordering                   (C_DISABLED);
+  vSeries_50_Join_Ordering_v2();
 
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
@@ -188,6 +189,20 @@ void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
   m_pTransforms->vS50_T98_Extract_joinOrderSeq();
 
   m_pTransforms->vS50_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_50_Join_Ordering_v2(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  m_pTransforms->vS50_T00_Join_Ordering_v2();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
