@@ -537,6 +537,10 @@ Card* Dissector::pOp_Limit(TagSet* pArgTags)
 
   Card_Limit* pCard_Limit = new Card_Limit(sRows);
 
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+  pCard_Limit->vAppend(pCard_AggLevel);
+
   return pCard_Limit;
 }
 
