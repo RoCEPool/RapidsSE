@@ -103,11 +103,11 @@ void Card_PtndJoinSet::vPermute(Card_Deck* pDeck)
       Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(pCard_child);
 
       // todo: ...
-//      if (!T_bPtndJoin_MayFollowAfter(p_ptndJoin, p_subSet)) {
-//        pDeck->vAppendMain(new Card_Note("**DOESN'T FOLLOW**"_Stz));
-//        p_permutation->Y_vSet(P_Invalid);
-//        break;
-//      }
+      if (! p_ptndJoin->bMayFollowAfter(p_subSet)) {
+        pDeck->vAppendMain(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+        p_permutation->Y_vSet(P_Invalid);
+        break;
+      }
       p_subSet->vAppend(pCard_child);
     }
     p_subSet->vRemoveAll();

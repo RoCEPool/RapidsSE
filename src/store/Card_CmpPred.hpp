@@ -18,6 +18,9 @@ namespace STORE
     Card_CmpPred(void);
     Card_CmpPred(Stz* szCmp);
    ~Card_CmpPred(void) noexcept(false);
+
+    bool bOverlapsWith(Card_CmpPred* p_cmpPred_arg);
+
   };
 
   Card_CmpPred* _pCard_CmpPred(void* aAddr);
