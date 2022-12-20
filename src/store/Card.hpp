@@ -287,6 +287,22 @@ namespace STORE
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
 
+    static bool bIsIndexColOrdinal(Stz* szValue);  // $In
+
+    static bool bIsKeyOrdinal(Stz* szValue);       // #n
+
+    static bool bIsParamOrdinal(Stz* szValue);     // $Pn
+
+    static bool IsResultOrdinal(Stz* szValue);     // #n
+
+    static bool bIsSubQueryName(Stz* szValue);     // __subqueryN
+
+    static bool bIsSqyColOrdinal(Stz* szValue);    // __n
+
+    static bool bIsStreamColOrdinal(Stz* szValue); // $n
+
+    static bool bIsTableColOrdinal(Stz* szValue);  // $c.n
+
     static eCK  eTo_eCK(Stz* szCardNm);
 
     static char cTypeShort(Stz* szType);

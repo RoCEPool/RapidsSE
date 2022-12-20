@@ -152,7 +152,7 @@ void Xreshape::R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
     while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
       Stz *szTerm = G.p_term->szValue();
 
-      if (T_bValue_IsKeyOrdinal(szTerm)) {
+      if (Card::bIsKeyOrdinal(szTerm)) {
         M_vTerm_Bump_KeyOrdinal(G.p_term);
         G.p_term->vMark1(MARK_CHANGED);
         continue;
@@ -1126,7 +1126,7 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
 //    while ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
 //
 //      // TODO: hack... %1 $n may not be in this order
-//      if (T_bValue_IsParamOrdinal(G.p_term->szValue())) {
+//      if (Card::bIsParamOrdinal(G.p_term->szValue())) {
 //        bIsCorrPred = true;
 //        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
 //        break;
@@ -1602,7 +1602,7 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
         }
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (T_bValue_IsParamOrdinal(p_child->szValue())) {
+        if (Card::bIsParamOrdinal(p_child->szValue())) {
           //R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
           p_child->vValue("$1"_Stz);  // TODO: hack!!
         }
