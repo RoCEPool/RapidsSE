@@ -11,6 +11,7 @@
 #endif
 
 #include <sys/time.h>
+#include <x86intrin.h>
 
 /*----------------------------------------------------------------------------*/
 /* get byte order                                                             */
@@ -132,6 +133,7 @@ i8 Hardware::iCpuCount(void)
 
 /*----------------------------------------------------------------------------*/
 /* get cpu frequency of this machine                                          */
+/* Note: Do not use for trying to convert TSC (from rdtscp) to nanoseconds.   */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iCpuFrequency(void)
 {
@@ -170,6 +172,8 @@ i8 Hardware::iCpuFrequency(void)
 
   // First try to get the frequency from the file:
   // /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+  //
+  // Please note that this file does not exist in virtualised environments such as AWS.
   FILE* aFile = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", "r");
   
   if (aFile) {
@@ -184,7 +188,10 @@ i8 Hardware::iCpuFrequency(void)
   }
 
  
-  // open the /Proc/cpuinfo file
+  // Open the /Proc/cpuinfo file
+  //
+  // Please note that this frequency changes dynamically depending on the load
+  // on the machine and any thermal throttling that may be going on.
   aFile = fopen("/proc/cpuinfo", "r");
   if (! aFile) {
     vTrace("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
@@ -341,7 +348,7 @@ i8 Hardware::iPhysicalMemory(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read ticks from clock                                                      */
+/* read nanoseconds from clock                                                */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iReadClock(void)
 {
@@ -353,8 +360,8 @@ i8 Hardware::iReadClock(void)
   UNUSED(iResult);
   //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
 
-  i8 iTicks = tp.tv_sec * C_1G;
-  iTicks += tp.tv_nsec;
+  i8 iNanos = tp.tv_sec * C_1G;
+  iNanos += tp.tv_nsec;
   
 #elif defined(WITH_LINUX)
   struct timeval iTimeval;
@@ -362,17 +369,22 @@ i8 Hardware::iReadClock(void)
   if (gettimeofday(&iTimeval, NULL) < 0) {
     return 0;
   }
-  i8 iTicks = iTimeval.tv_sec;
-  iTicks *= C_1M;  // convert to micros
-  iTicks += iTimeval.tv_usec;
-  iTicks *= C_1K;  // convert to nanos
+  i8 iNanos = iTimeval.tv_sec;
+  iNanos *= C_1M;  // convert to micros
+  iNanos += iTimeval.tv_usec;
+  iNanos *= C_1K;  // convert to nanos
 #endif
   
-  return iTicks;
+  return iNanos;
 }
 
 /*----------------------------------------------------------------------------*/
-/* read ticks from hardware timestamp counter                                 */
+/* Read ticks from hardware timestamp counter (TSC). x86 only                 */
+/* Note: on a machine with more than one physical CPU, each CPU maintains its */
+/*       own TSC. Comparing two TSC values may result in abnormal tick        */
+/*       differences because the TSC on each CPU are not in sync. This can    */
+/*       result in a negative result or a larger than expected positive       */
+/*       difference.                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iReadTsc(void)
 {
@@ -383,27 +395,37 @@ i8 Hardware::iReadTsc(void)
    The processor monotonically increments the time-stamp counter MSR
    every clock cycle and resets it to 0 whenever the processor is reset.
    -----------------
-   
+
+   Note however, that the frequency that the TSC is updated is not necessarily
+   related to the max or base frequency of the processor. It can be wildly
+   different. The Linux kernel will determine this TSC update frequency at
+   boot time experimentally if it cannot retrieve it from the processor
+   directly. This TSC update frequency is not available in userspace unfortunately
+   so it is not possible to accurately convert TSC differences to a time
+   difference. Instead, simply compare ticks with ticks.
+
    The time stamp counter in newer processors may support an enhancement,
    referred to as invariant TSC. Processor’s support for invariant TSC is
-   indicated by CPUID.80000007H:EDX[8].
+   indicated by CPUID.80000007H:EDX[8]. On Linux you can also see this with
+   the flag "constant_tsc" in /proc/cpuinfo.
    
    The invariant TSC will run at a constant rate in all ACPI P-, C-. and
-   T-states. This is the architectural behavior moving forward.
+   T-states. This is the architectural behavior moving forward. This can also
+   be seen on Linux by the presence of the flag "nonstop_tsc" in /proc/cpuinfo.
    On processors with invariant TSC support, the OS may use the TSC for
    wall clock timer services (instead of ACPI or HPET timers). TSC reads
    are much more efficient and do not incur the overhead associated with
    a ring transition or access to a platform resource.
    */
   
-  i8 iTscp = BASE::iRdtscp();
+  u4 uLogicalProcessorId;
+  i8 iTscp = (i8) __rdtscp(&uLogicalProcessorId);
   return iTscp;
-  
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* get get host name of this machine                                          */
+/* get the host name of this machine                                          */
 /*----------------------------------------------------------------------------*/
 void Hardware::vHostName(s32& sName)
 {
@@ -415,7 +437,7 @@ void Hardware::vHostName(s32& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get get login name                                                         */
+/* get the login name                                                         */
 /*----------------------------------------------------------------------------*/
 void Hardware::vLoginName(s32& sName)
 {
