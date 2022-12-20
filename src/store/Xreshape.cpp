@@ -181,7 +181,7 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
     while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
       Stz *szTerm = G.p_term->szValue();
 
-      if (T_bValue_IsStreamColOrdinal(szTerm)) {
+      if (Card::bIsStreamColOrdinal(szTerm)) {
         M_vTerm_Bump_StreamColOrdinal(G.p_term);
         G.p_term->vMark1(MARK_CHANGED);
         continue;
@@ -826,7 +826,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
+    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, p_term->szValue(), i_Main + 1);
@@ -862,7 +862,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 
     //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
-    if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
+    if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     G.p_stmColOdn = R_pUTE_Resolve_tblColOdn_Into_stmColOdn(p_term,G.i_MainCard+1);
@@ -1626,7 +1626,7 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (T_bValue_IsSubQueryName(p_child->szValue())) {
+        if (Card::bIsSubQueryName(p_child->szValue())) {
           Card* p_arg = xCI.pPrevChild();
 
           Card_Term* p_term_new = new Card_Term("$2"_Stz);
@@ -1703,7 +1703,7 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
     G.p_expr = _pCard_Expr(G.p_aggElist->pGetChild(i_expr_aggElist));
     G.p_as = G.p_expr->pSub_as();
 
-    if (T_bValue_IsSqyColOrdinal(G.p_as->szValue()))
+    if (Card::bIsSqyColOrdinal(G.p_as->szValue()))
       continue;
 
     Card_Expr* p_expr_simple = D_pProject_Simple_expr_Of(G.p_expr,i_Col);
@@ -1820,10 +1820,10 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
       break;
     }
     else
-    if (T_bValue_IsResultOrdinal(szValue_term)) {
+    if (Card::bIsResultOrdinal(szValue_term)) {
       if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
         szValue_term = G.p_term->szValue();
-        if (T_bValue_IsStreamColOrdinal(szValue_term)) {
+        if (Card::bIsStreamColOrdinal(szValue_term)) {
           if ((G.p_term = _pCard_Term(xCI.pEachChild()))) {
             szValue_term = G.p_term->szValue();
             if (szValue_term->bSame("in"_Stz)) {
@@ -1953,7 +1953,7 @@ void Xreshape::vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void)
   auto bLambdaFn = [this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
-    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
+    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     Stz* szStmColOdn = p_term->szValue();
@@ -2500,7 +2500,7 @@ void Xreshape::vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
   auto bLambdaFn = [this, iOrdLo_stream](Card* pCard)
   {
     Card_StmColOdn* p_stmColOrd = _pCard_StmColOdn(pCard);
-    if (! T_bValue_IsStreamColOrdinal(p_stmColOrd->szValue()))
+    if (! Card::bIsStreamColOrdinal(p_stmColOrd->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iStmColOdn = E_iValue_StreamColOdn(p_stmColOrd->szValue());
@@ -2546,7 +2546,7 @@ void Xreshape::vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! T_bValue_IsStreamColOrdinal(p_term->szValue()))
+    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, p_term->szValue(), i_Main + 1);

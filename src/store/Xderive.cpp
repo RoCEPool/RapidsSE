@@ -275,7 +275,7 @@ char Xderive::D_cPRED_TableSyn_First(Card_PRED* p_PRED)
 
   auto bLambdaFn = [this,&cTblSyn](Card_Term* p_term)
   {
-    if (! T_bValue_IsTableColOrdinal(p_term->szValue()))
+    if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     char cTblSyn_test = E_cValue_TableColSyn((p_term->szValue()));

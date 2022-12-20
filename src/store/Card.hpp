@@ -293,7 +293,7 @@ namespace STORE
 
     static bool bIsParamOrdinal(Stz* szValue);     // $Pn
 
-    static bool IsResultOrdinal(Stz* szValue);     // #n
+    static bool bIsResultOrdinal(Stz* szValue);     // #n
 
     static bool bIsSubQueryName(Stz* szValue);     // __subqueryN
 

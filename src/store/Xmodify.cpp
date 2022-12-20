@@ -348,7 +348,7 @@ Stz* Xmodify::E_szEBound_Get_tblColOdn(Card_EBound* p_eBound)
 
   CardIter xCI(p_eBound);
   while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
-    if (T_bValue_IsTableColOrdinal(p_term->szValue()))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
       return p_term->szValue();
 
   return nullptr;
@@ -793,7 +793,7 @@ Card_Term* Xmodify::M_pRpnCalc_GetSingle_stmColOdn(Card_RpnCalc* p_rpnCalc)
 
   Card_Term* p_term = p_rpnCalc->pSub_term();
   Stz* szTerm = p_term->szValue();
-  if (! T_bValue_IsStreamColOrdinal(szTerm))
+  if (! Card::bIsStreamColOrdinal(szTerm))
     return nullptr;
 
   return p_term;
@@ -1064,7 +1064,7 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
     return true;
 
   // literals are considered within scope
-  if (! T_bValue_IsTableColOrdinal(szTerm)) {
+  if (! Card::bIsTableColOrdinal(szTerm)) {
     return true;
   }
 

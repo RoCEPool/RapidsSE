@@ -51,10 +51,10 @@ void Xverify::V_vNo_Terms_StmColOdn(Card* p_card)
       continue;
 
     if (p_child->bIsCard(CK_TERM)) {
-      if (T_bValue_IsStreamColOrdinal(p_card->szValue()))
+      if (Card::bIsStreamColOrdinal(p_card->szValue()))
         vDebugPoint();
 
-      RASSERT(! T_bValue_IsStreamColOrdinal(p_card->szValue()));
+      RASSERT(! Card::bIsStreamColOrdinal(p_card->szValue()));
       continue;
     }
 
