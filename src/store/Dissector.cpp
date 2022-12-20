@@ -705,6 +705,10 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Sort* pCard_Sort = new Card_Sort;
 
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+  pCard_Sort->vAppend(pCard_AggLevel);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
