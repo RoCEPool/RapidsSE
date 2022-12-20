@@ -2624,9 +2624,12 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   G.p_coPtnPredList = Card_CoPtnPredList::pExtract(G.p_joinPredList,G.p_tableList);
 
+  G.p_coPtnJoinList = Card_CoPtnJoinList::pExtract(G.p_coPtnPredList);
+
   G.pDeck->vAppend(G.p_tableList);
   G.pDeck->vAppend(G.p_joinPredList);
   G.pDeck->vAppend(G.p_coPtnPredList);
+  G.pDeck->vAppend(G.p_coPtnJoinList);
 
   vPrintBoard(__LINE__);
 
