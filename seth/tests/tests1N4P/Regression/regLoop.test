@@ -23,11 +23,13 @@ INCLUDE 'regrLoadData.test';
 //------------------------------------------------------------------------------
 
 
+/* OPT
 LOG 'AndOrNot.test ...';
 INCLUDE 'AndOrNot.test';
 
 LOG 'inNotIn.test ...';
 INCLUDE 'InNotIn.test';
+*/
 
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';
@@ -37,8 +39,10 @@ INCLUDE 'InNotIn.test';
 LOG 'aggs-avg.test ...';
 INCLUDE 'aggs-avg.test';
 
+/* OPT
 LOG 'aggs-count.test ...';
 INCLUDE 'aggs-count.test';
+*/
 
 LOG 'aggs-max.test ...';
 INCLUDE 'aggs-max.test';
@@ -49,12 +53,13 @@ INCLUDE 'aggs-min.test';
 LOG 'aggs-sum.test ...';
 INCLUDE 'aggs-sum.test';
 
-LOG 'aggs-sum.test ...';
+LOG 'alias.test ...';
 INCLUDE 'alias.test';
 
 LOG 'aliasSelAll.test ...';
 INCLUDE 'aliasSelAll.test';
 
+/* OPT
 LOG 'between.test ...';
 INCLUDE 'between.test';
 
@@ -63,6 +68,7 @@ INCLUDE 'case.test';
 
 LOG 'cast.test ...';
 INCLUDE 'cast.test';
+*/
 
 //INCLUDE 'ctas.test';
 
@@ -75,8 +81,10 @@ INCLUDE 'cast.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
 
+/* OPT
 LOG 'functions-extract.test ...';
 INCLUDE 'functions-extract.test';
+*/
 
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';
@@ -94,19 +102,25 @@ INCLUDE 'functions-substr.test';
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
 
+/* OPT
 LOG 'having.test ...';
 INCLUDE 'having.test';
+*/
 
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
 
+/* OPT
 LOG 'isnull.test ...';
 INCLUDE 'isnull.test';
+*/
 
 //INCLUDE 'joinTests.test';
 
+/* OPT
 LOG 'like.test ...';
 INCLUDE 'like.test';
+*/
 
 //INCLUDE 'subqueries-select.test';
 //INCLUDE 'subqueries-where-single.test';

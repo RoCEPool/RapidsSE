@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_ChildExit \handler
 
-  //"EV_X_CHILDEXIT" .verbose
+  "EV_X_CHILDEXIT" .verbose
 
   true LogicUnit[].RcvdChildExit!
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_End \handler
 
-  //"EV_M_END_handler" .verbose
+  "EV_M_END_handler" .verbose
 
   true LogicUnit[].RcvdEnd!
 
@@ -77,7 +77,7 @@
 
   "<CallingOptimiser>" 1 [job].tagSet@ tagSet.appendInt
 
-  Text[] .
+  //Text[] .
 
   Dynamo[].new
 
@@ -163,11 +163,13 @@
     Text[] "Tranliterated: \n%v"  str.format .
   then
 
-  "<optimise>" [job].tagSet@ tagSet.hasName if
+  //Text[] .
+
+  //"<optimise>" [job].tagSet@ tagSet.hasName if
     _Call_Optimiser
-  then
+  //then
 
-
+  //Text[] .
 
   [Op] [job].responseOp!
   STD_NORMALFORK_TAG Text[] api::forkChild not if

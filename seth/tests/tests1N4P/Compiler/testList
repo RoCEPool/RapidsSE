@@ -3,10 +3,10 @@ select.test
 explain.test
 expressions/aggregates.test
 expressions/inExpr.test
-expressions/likeExpr.test
-expressions/betweenExpr.test
+//expressions/likeExpr.test
+//expressions/betweenExpr.test
 expressions/extractExpr.test
-expressions/substringExpr.test
+//expressions/substringExpr.test
 expressions/caseExpr.test
 expressions/castExpr.test
 expressions/exprSubqueries.test
