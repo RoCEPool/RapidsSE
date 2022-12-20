@@ -8,7 +8,7 @@ decimal.test
 time.test
 filterInteger.test
 filterDecimal.test
-//limit.test
+limit.test
 //indexJoin.test
 //indexJoinHash.test
 minMax.test
