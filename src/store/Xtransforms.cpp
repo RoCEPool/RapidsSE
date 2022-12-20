@@ -2661,8 +2661,21 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
 
 
+  pBoard = new Board(aBK[BK_COSTEST],
+                     BK_COSTEST,
+                     C_UNKNOWN,
+                     BT_ORIGINAL,
+                     m_pBench);
+  G_vPushBoard(pBoard);
+
+  pBoard = G.pBoard;
+  G_vPopBoard();
+  m_pBench->vRemove(pBoard);
+  delete pBoard;
+
   //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);
   //G.pDeck->vApply(G.p_joinOrder);
+
 
 
   pBoard = G.pBoard;
