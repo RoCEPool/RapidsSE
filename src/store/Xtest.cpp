@@ -427,7 +427,7 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
 
       // ? check term_1 is permitted param
       if ((! bParamAllowedInBounds) &&
-          T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+          Card::bIsParamOrdinal(pTerm_1->szValue()))
         return false;
 
       // ? is term_0:$c.n an index column
@@ -443,7 +443,7 @@ bool Xtest::T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred,
 
     // ? maybe term_0 is permitted param
     if ((! bParamAllowedInBounds) &&
-        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+        Card::bIsParamOrdinal(pTerm_0->szValue()))
       return false;
 
     // ? is term_0:$c.n an index column
@@ -490,7 +490,7 @@ bool Xtest::T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred,
 
       // ? check term_1 is permitted param
       if ((! bParamAllowedInBounds) &&
-          T_bValue_IsParamOrdinal(pTerm_1->szValue()))
+          Card::bIsParamOrdinal(pTerm_1->szValue()))
         return false;
 
       // ? is term_0:$c.n an index column
@@ -507,7 +507,7 @@ bool Xtest::T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred,
 
     // ? maybe term_0 is permitted param
     if ((! bParamAllowedInBounds) &&
-        T_bValue_IsParamOrdinal(pTerm_0->szValue()))
+        Card::bIsParamOrdinal(pTerm_0->szValue()))
       return false;
 
     // ? is term_0:$c.n an index column
@@ -599,14 +599,14 @@ Card_Term* Xtest::E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred)
   if (! p_term_0)
     return nullptr;
 
-  if (T_bValue_IsParamOrdinal(p_term_0->szValue()))
+  if (Card::bIsParamOrdinal(p_term_0->szValue()))
     return p_term_0;
 
   Card_Term* p_term_1 =_pCard_Term(p_cmpPred->pGetChild(1));
   if (! p_term_1)
     return nullptr;
 
-  if (T_bValue_IsParamOrdinal(p_term_1->szValue()))
+  if (Card::bIsParamOrdinal(p_term_1->szValue()))
     return p_term_1;
 
   return nullptr;

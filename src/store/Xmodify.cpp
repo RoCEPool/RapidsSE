@@ -228,7 +228,7 @@ void Xmodify::M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc,
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! T_bValue_IsParamOrdinal(p_term->szValue()))
+    if (! Card::bIsParamOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOdn));
@@ -506,11 +506,11 @@ Card_Term* Xmodify::E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred)
   Card* p_child_0 = p_cmpPred->pGetChild(0);
   Card* p_child_1 = p_cmpPred->pGetChild(1);
 
-  if (T_bValue_IsParamOrdinal(p_child_0->szValue()))
+  if (Card::bIsParamOrdinal(p_child_0->szValue()))
     return _pCard_Term(p_child_1);
 
   else
-  if (T_bValue_IsParamOrdinal(p_child_1->szValue()))
+  if (Card::bIsParamOrdinal(p_child_1->szValue()))
     return _pCard_Term(p_child_0);
 
   else
@@ -530,11 +530,11 @@ Card_Term* Xmodify::E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred)
   Card* p_child_0 = p_cmpPred->pGetChild(0);
   Card* p_child_1 = p_cmpPred->pGetChild(1);
 
-  if (T_bValue_IsParamOrdinal(p_child_0->szValue()))
+  if (Card::bIsParamOrdinal(p_child_0->szValue()))
     return _pCard_Term(p_child_0);
 
   else
-  if (T_bValue_IsParamOrdinal(p_child_1->szValue()))
+  if (Card::bIsParamOrdinal(p_child_1->szValue()))
     return _pCard_Term(p_child_1);
 
   else
@@ -641,7 +641,7 @@ i8 Xmodify::E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr)
 
   CardIter xCI(p_rpnCalc);
   while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
-    if (T_bValue_IsKeyOrdinal(p_term->szValue())) {
+    if (Card::bIsKeyOrdinal(p_term->szValue())) {
       i8 i_Key = E_iValue_KeyOdn(p_term->szValue());
       return i_Key;
     }
@@ -1060,7 +1060,7 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
   Stz* szTerm = p_term->sz();
 
   // parameters are considered within scope
-  if (T_bValue_IsParamOrdinal(szTerm))
+  if (Card::bIsParamOrdinal(szTerm))
     return true;
 
   // literals are considered within scope

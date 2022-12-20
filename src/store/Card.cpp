@@ -224,6 +224,61 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsIndexColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst
+      && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a key ordinal?  (i.e. $Kn)                                        */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsKeyOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst
+      && ('K' == acSecond || 'k' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a parameter ordinal?  (i.e. $Pn)                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsParamOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('%' == acFirst
+      && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eTo_eCK(Stz* szCardNm)
