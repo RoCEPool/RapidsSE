@@ -2629,11 +2629,15 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   G.p_crossPtnJoinList = Card_CrossPtnJoinList::pExtract(G.p_joinPredList,
                                                          G.p_coPtnJoinList);
 
+  G.p_ptndJoinSet = Card_PtndJoinSet::pExtract(G.p_coPtnJoinList,
+                                               G.p_crossPtnJoinList);
+
   G.pDeck->vAppend(G.p_tableList);
   G.pDeck->vAppend(G.p_joinPredList);
   G.pDeck->vAppend(G.p_coPtnPredList);
   G.pDeck->vAppend(G.p_coPtnJoinList);
   G.pDeck->vAppend(G.p_crossPtnJoinList);
+  G.pDeck->vAppend(G.p_ptndJoinSet);
 
   vPrintBoard(__LINE__);
 
