@@ -59,8 +59,8 @@ Card_CrossPtnJoinList* Card_CrossPtnJoinList::pExtract(Card_JoinPredList* p_join
         _pCard_CmpPred(p_joinPredList->pGetChild(i_Child));
 
     // todo: ...
-    //if (T_bCoPtnJoinList_HasEqPredCmp(p_coPtnJoinList, p_cmpPred))
-    //  continue;
+    if (p_coPtnJoinList->bHasEqPredCmp(p_cmpPred))
+      continue;
 
     Card_CrossPtnJoin* p_crossPtnJoin = new Card_CrossPtnJoin;
     p_crossPtnJoin->vAppend(p_cmpPred->pDupCardAndSubCards());

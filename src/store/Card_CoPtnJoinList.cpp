@@ -100,7 +100,7 @@ Card_CoPtnJoin* Card_CoPtnJoinList::pFind(Card_CoPtnPred* p_coPtnPred)
 /*----------------------------------------------------------------------------*/
 bool Card_CoPtnJoinList::bHasEqPredCmp(Card_CmpPred* p_cmpPred_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   i8 nChildren_coPtn = nChildCards();
   for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
