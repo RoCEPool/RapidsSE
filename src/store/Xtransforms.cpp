@@ -2617,11 +2617,18 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   G.p_tableList = Card_TableList::pExtract(G.pDeck);
 
+
+  G.p_joinPredList = Card_JoinPredList::pExtract(G.pDeck);
+
   G_vPushBoard(pBoard);
 
   G.pDeck->vAppend(G.p_tableList);
+  G.pDeck->vAppend(G.p_joinPredList);
 
   vPrintBoard(__LINE__);
+
+
+
 
   //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);
   //G.pDeck->vApply(G.p_joinOrder);
