@@ -52,7 +52,7 @@ void Xtransforms::vOptimiseLoop(void) {
   bool bOpts;
   i8 iOpts = 0;
 
-  vTrace("%s\n"_Stz, m_pBench->pOptimiser()->szWeave());
+  //vTrace("%s\n"_Stz, m_pBench->pOptimiser()->szWeave());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Discover and perform the optimisation transformations

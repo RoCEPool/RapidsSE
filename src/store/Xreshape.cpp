@@ -2796,6 +2796,8 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
       bSawProjectOp = true;
   }
 
+  e_prev = e_main;
+
   i8 i_End = C_UNKNOWN;
   if (CK_SCAN != e_prev)
     vAddCombined(p_main, i_End);
