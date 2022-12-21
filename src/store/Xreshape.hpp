@@ -91,7 +91,7 @@ namespace STORE
     void vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
-    // vSeries_A0_Filter_Refinement
+    // vSeries_A0_Make_Weavable
     void vR_SA0_T10_Individuate_indexJoin_filter_b(void);
     void vR_SA0_T10c_Individuate_crossJoin_filter(void);
 

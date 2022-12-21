@@ -87,25 +87,6 @@ namespace STORE
     void vS40_T70_Fold_H_A_NC_ro(void);
 
     // vSeries_50_Join_Ordering
-    bool bS50_T00_Test(bool bEnabled);
-    void vS50_T00_Skip(void);
-    void vS50_T00_Begin(void);
-    void vS50_T00_Extract_tableList_From_queryBoard(void);
-    void vS50_T10_Extract_joinPredList(void);
-    void vS50_T20_Compute_coPtnPredList(void);
-    void vS50_T30_Compute_coPtnJoinList(void);
-    void vS50_T40_Compute_crossPtnJoinList(void);
-    void vS50_T50_Compute_ptndJoinSet(void);
-    void vS50_T60_Copy_ptndJoinSet(void);
-    void vS50_T70_Generate_ptndPermutations(void);
-    void vS50_T80_Remove_invalidPermutations(void);
-    void vS50_T90_Setup_costEst(void);
-    void vS50_T92_Estimate_ptndJoins(void);
-    void vS50_T94_Estimate_network(void);
-    void vS50_T96_Estimate_joinOrder(void);
-    void vS50_T98_Extract_joinOrderSeq(void);
-    void vS50_TZZ_End(void);
-
     void vS50_T00_Join_Ordering_v2(void);
 
 
@@ -135,9 +116,7 @@ namespace STORE
     void vS92_T10_Project_Pullup(void);
     void vS92_TZZ_End(void);
 
-    // vSeries_A0_Filter_Refinement
-    bool bSA0_T00_Test(bool bEnabled);
-    void vSA0_T00_Skip(void);
+    // vSeries_A0_Make_Weavable
     void vSA0_T00_Begin(void);
     void vSA0_T10_Eliminate_bounds_From_filter(void);
     void vSA0_T20_Individuate_filter(void);

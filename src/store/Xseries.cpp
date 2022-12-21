@@ -76,8 +76,6 @@ void Xseries::vTransformSeries(void)
   vSeries_10_Make_Runnable();
 
   // ---
-  //vSeries_50_Join_Ordering                   (C_DISABLED);
-  //vSeries_50_Join_Ordering_v2();
 
   vSeries_80_Index_Scan        (C_ENABLED);
   vSeries_90_Stream_Ordering   (C_ENABLED);
@@ -87,7 +85,7 @@ void Xseries::vTransformSeries(void)
   vSeries_92_Project_Pullup                  (C_DISABLED);
 
   // ---
-  vSeries_A0_Filter_Refinement (C_ENABLED);
+  vSeries_A0_Make_Weavable();
 
 }
 
@@ -152,64 +150,6 @@ void Xseries::vSeries_10_Make_Runnable(void)
   m_pTransforms->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
 
   vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_50_Join_Ordering(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS50_T00_Test(bEnabled)) {
-    m_pTransforms->vS50_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS50_T00_Begin();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // PARTITION BOARD
-
-  //
-  m_pTransforms->vS50_T00_Extract_tableList_From_queryBoard();
-
-  m_pTransforms->vS50_T10_Extract_joinPredList();
-  m_pTransforms->vS50_T20_Compute_coPtnPredList();
-  m_pTransforms->vS50_T30_Compute_coPtnJoinList();
-  m_pTransforms->vS50_T40_Compute_crossPtnJoinList();
-  m_pTransforms->vS50_T50_Compute_ptndJoinSet();
-
-  m_pTransforms->vS50_T60_Copy_ptndJoinSet();
-  m_pTransforms->vS50_T70_Generate_ptndPermutations();
-  m_pTransforms->vS50_T80_Remove_invalidPermutations();
-
-  m_pTransforms->vS50_T90_Setup_costEst();
-  m_pTransforms->vS50_T92_Estimate_ptndJoins();
-  m_pTransforms->vS50_T94_Estimate_network();
-  m_pTransforms->vS50_T96_Estimate_joinOrder();
-  m_pTransforms->vS50_T98_Extract_joinOrderSeq();
-
-  m_pTransforms->vS50_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_50_Join_Ordering_v2(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  m_pTransforms->vS50_T00_Join_Ordering_v2();
-
-  vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,16 +236,11 @@ void Xseries::vSeries_92_Project_Pullup(bool bEnabled)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xseries::vSeries_A0_Filter_Refinement(bool bEnabled)
+void Xseries::vSeries_A0_Make_Weavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bSA0_T00_Test(bEnabled)) {
-    m_pTransforms->vSA0_T00_Skip();
-    return;
-  }
 
   m_pTransforms->vSA0_T00_Begin();
 
