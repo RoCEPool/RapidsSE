@@ -1013,6 +1013,7 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  Scope* pScope = nullptr;
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
     Card *pMainCard = p_deck->pGetChild(i_Main);
@@ -1024,7 +1025,7 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 
     if (CK_TABLE == eMainCard) {
       Card_Table* p_table = _pCard_Table(pMainCard);
-      if (bTable_ScopeContains_Pred(p_table, p_pred)) {
+      if (bTable_ScopeContains_Pred(p_table, p_pred, pScope)) {
         char cTblSyn = p_table->cValue();
         return cTblSyn;
       }
@@ -1042,13 +1043,14 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xmodify::bTable_ScopeContains_Pred(Card_Table* p_table,
-                                        Card_PRED* p_pred)
+                                        Card_PRED* p_pred,
+                                        Scope* pScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   CardIter xCI(p_pred);
   while (Card_Term* p_term = (Card_Term*)xCI.pEachChild()) {
-    if (!bTable_ScopeContains_term(p_table, p_term))
+    if (! bTable_ScopeContains_term(p_table, p_term, pScope))
       return false;
   }
 
@@ -1059,7 +1061,8 @@ bool Xmodify::bTable_ScopeContains_Pred(Card_Table* p_table,
 /* is given <term> within this table                                          */
 /*----------------------------------------------------------------------------*/
 bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
-                                        Card_Term* p_term)
+                                        Card_Term* p_term,
+                                        Scope* pScope)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
