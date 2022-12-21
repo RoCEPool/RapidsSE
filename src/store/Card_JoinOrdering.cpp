@@ -53,6 +53,41 @@ Card_JoinOrdering::~Card_JoinOrdering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_JoinOrdering* Card_JoinOrdering::pCompute(Card_Deck* pDeck)
+{
+  _static_
+
+  i8 iLowestNetwork = 999999999;
+  Card_Permutation* p_permutation_low = nullptr;
+
+  CardIter xCI(pDeck);
+
+  while (Card_Permutation* p_permutation =
+      _pCard_Permutation(xCI.pEachChild(CK_PERMUTATION))) {
+
+    i8 iNetwork = p_permutation->Y_iGet(P_Network);
+    if (iNetwork >= iLowestNetwork)
+      continue;
+    p_permutation_low = p_permutation;
+    iLowestNetwork = iNetwork;
+  }
+
+  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+  pDeck->vAppendMain(p_joinOrdering);
+  p_joinOrdering->Y_vSet(P_Network, iLowestNetwork);
+
+  xCI.vRestart();
+  xCI.vSet(p_permutation_low);
+  while (Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(xCI.pEachChild(CK_PTNDJOIN))) {
+    p_joinOrdering->vConcat(p_ptndJoin);
+  }
+
+  return p_joinOrdering;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_JoinOrdering::vEstimateJoinedBuff(Card_Deck* pDeck,
                                          Card_TableList* p_tableList)
 {
@@ -78,41 +113,6 @@ void Card_JoinOrdering::vEstimateJoinedBuff(Card_Deck* pDeck,
   }
 
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_JoinOrdering::vEstimateJoinOrder(Card_Deck* pDeck)
-{
-  _static_
-
-  i8 iLowestNetwork = 999999999;
-  Card_Permutation* p_permutation_low = nullptr;
-
-  CardIter xCI(pDeck);
-
-  while (Card_Permutation* p_permutation =
-             _pCard_Permutation(xCI.pEachChild(CK_PERMUTATION))) {
-
-    i8 iNetwork = p_permutation->Y_iGet(P_Network);
-    if (iNetwork >= iLowestNetwork)
-      continue;
-    p_permutation_low = p_permutation;
-    iLowestNetwork = iNetwork;
-  }
-
-  Card_JoinOrdering* p_joinOrderSeq = new Card_JoinOrdering;
-  pDeck->vAppendMain(p_joinOrderSeq);
-  p_joinOrderSeq->Y_vSet(P_Network, iLowestNetwork);
-
-  xCI.vRestart();
-  xCI.vSet(p_permutation_low);
-  while (Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(xCI.pEachChild(CK_PTNDJOIN))) {
-    p_joinOrderSeq->vConcat(p_ptndJoin);
-  }
-
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -192,6 +192,16 @@ void Card_JoinOrdering::vConcat(Card_PtndJoin* p_PtndJoin)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+
+}
 
 //*===========================================================================*/
 /* end                                                                        */

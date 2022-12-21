@@ -17,6 +17,7 @@ namespace STORE
    ~Card_TableList(void) noexcept(false);
 
     static Card_TableList* pExtract(Card_Deck* p_deck);
+    static Card_TableList* pExtract_v2(Card_Deck* p_deck);
 
     Card_Table* pFind(char cTblSyn);
 

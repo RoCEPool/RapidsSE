@@ -720,6 +720,21 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 }
 
 /*----------------------------------------------------------------------------*/
+/* duplicate this card, its value and properties                              */
+/*----------------------------------------------------------------------------*/
+Card* Card::pDup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pCard_dup = new Card(m_eCard);
+  pCard_dup->vValue(szValue());
+  if (m_pProperties)
+    pCard_dup->vCopyProperties(this);
+
+  return pCard_dup;
+}
+
+/*----------------------------------------------------------------------------*/
 /* duplicate this card and its sub cards                                      */
 /*----------------------------------------------------------------------------*/
 Card* Card::pDupCardAndSubCards(void)

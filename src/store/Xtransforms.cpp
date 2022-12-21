@@ -2691,8 +2691,12 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   Card_JoinOrdering::vEstimateNetwork(G.pDeck);
   vPrintBoard(__LINE__);
 
-  Card_JoinOrdering::vEstimateJoinOrder(G.pDeck);
+  Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pCompute(G.pDeck);
+
   vPrintBoard(__LINE__);
+
+  G.pDeck->vRemoveChild(p_joinOrdering);
+
 
   pBoard = G.pBoard;
   G_vPopBoard();
@@ -2710,6 +2714,10 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   m_pBench->vRemove(pBoard);
 
   delete pBoard;
+
+  p_joinOrdering->vReorder(G.pDeck);
+
+  DELETE_CARD(p_joinOrdering);
 
   vEndTransform();
 }

@@ -330,6 +330,7 @@ namespace STORE
     void vCopyProperties(Card* pFrom);
 
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
+    Card* pDup(void);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
     Card_SubSet* pDupSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);

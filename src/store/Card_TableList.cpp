@@ -7,7 +7,9 @@
 #include "CardIter.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
+#include "Card_Size.hpp"
 #include "Card_Table.hpp"
+#include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"
 #include "Card_Term.hpp"
 
@@ -62,6 +64,39 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
 
   return p_tableList;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_TableList* Card_TableList::pExtract_v2(Card_Deck* p_deck)
+{
+  _static_
+
+  Card_TableList* p_tableList = new Card_TableList;
+
+  CardIter xCI(p_deck);
+  while (Card_Table* p_table = _pCard_Table(xCI.pEachChild(CK_TABLE))) {
+    p_table = _pCard_Table(p_table->pDup());
+    p_tableList->vAppend(p_table);
+
+    if (Card_TableNm* p_tableNm = p_table->pSub_tableNm()) {
+      p_tableNm = _pCard_TableNm(p_tableNm->pDup());
+      p_tableList->vAppend(p_table);
+    }
+    if (Card_TablePtn* p_tablePtn = p_table->pSub_tablePtn()) {
+      p_tablePtn = _pCard_TablePtn(p_tablePtn->pDup());
+      p_tableList->vAppend(p_tablePtn);
+    }
+    if (Card_Size* p_size = p_table->pSub_size()) {
+      p_size = _pCard_Size(p_size->pDup());
+      p_tableList->vAppend(p_size);
+    }
+
+  }
+
+  return p_tableList;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
