@@ -28,7 +28,6 @@ void Step::vAddSteps_Timer(void)
   vAddStep("timer.reset"_Stz,     &Step::vTimerReset);
   vAddStep("timer.secs"_Stz,      &Step::vTimerSecs);
   vAddStep("timer.start"_Stz,     &Step::vTimerStart);
-  vAddStep("timer.ticks"_Stz,     &Step::vTimerTicks);
   vAddStep("timer.update"_Stz,    &Step::vTimerUpdate);
   
   vAddStep("time.current"_Stz,    &Step::vTimeCurrent);
@@ -199,23 +198,6 @@ void Step::vTimerStart(void)
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   pTimer->vStart();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* timer.ticks -- get elapsed ticks                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vTimerTicks(void)
-{
-  ENTRY();
-  
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TIMER == pTimer->eGetClassNo());
-  
-  i8 iTicks = pTimer->iTickDelta();
-  
-  m_pDataStack->vPushInt(iTicks);
   
   EXIT();
 }

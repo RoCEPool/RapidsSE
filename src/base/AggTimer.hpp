@@ -11,7 +11,7 @@ namespace BASE
   
   private:
   
-    i8 m_iTicks;   //
+    i8 m_iNanos;   //
   
     i8 m_nTimes;   //
     
@@ -36,7 +36,6 @@ namespace BASE
     i8 iMicroseconds(void);
     i8 iMilliseconds(void);
     i8 iSeconds(void);
-    i8 iTicks(void);
     i8 nTimes(void);
 
     d8 dRatePerSec(i8 nItems);

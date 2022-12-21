@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RU_Cpu.cpp - CPU Resource Ussage                                           */
+/* RU_Cpu.cpp - CPU Resource Usage                                            */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,7 +14,7 @@ RU_Cpu::RU_Cpu(void)
   
   m_nBuffers = 0;
   m_nRows  = 0;
-  m_nTicks = 0;
+  m_iNanos = 0;
   //m_oTimer;
   
   _checkInitialised_(CN_RUCPU);
@@ -44,7 +44,7 @@ void RU_Cpu::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
   
   m_oTimer.vUpdate();
-  m_nTicks += m_oTimer.iTickDelta();
+  m_iNanos += m_oTimer.iNanoseconds();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,14 +79,13 @@ void RU_Cpu::vWriteReport(File* pFile)
   
   AM::vFilePrint(pFile, "  Buffers#, Rows#, Time(ms), Time/Row(ns)\n"_Stz);
   
-  i8 iTimeMs = TickingDevice::iToMsec(m_nTicks);
-  i8 iTimeNs = TickingDevice::iToNsec(m_nTicks);
-  
+  i8 iTimeMs = m_iNanos / C_1M;
+
   AM::vFilePrint(pFile, "  %6lld, %6lld, %6lld, %6lld\n"_Stz,
          m_nBuffers,
          m_nRows,
          iTimeMs,
-         m_nRows ? iTimeNs/m_nRows : 0
+         m_nRows ? m_iNanos/m_nRows : 0
          );
 }
 

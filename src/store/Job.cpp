@@ -100,7 +100,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
 
-    m_iSysTimeStart       = Timer::iGetTimeOfDay();
+    m_iSysTimeStart       = Hardware::iReadClock();
 
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)5);
@@ -1863,7 +1863,7 @@ void Job::vResponseTimerStart(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vStart();
-  m_iSysTimeStart = Timer::iGetTimeOfDay();
+  m_iSysTimeStart = Hardware::iReadClock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1874,7 +1874,7 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
-  m_iSysTimeEnd = Timer::iGetTimeOfDay();
+  m_iSysTimeEnd = Hardware::iReadClock();
 }
 
 /*----------------------------------------------------------------------------*/

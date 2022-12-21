@@ -26917,7 +26917,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  timer[] timer.update\n"
     "\n"
-    "  timer[] timer.ticks aggTimer[] aggTimer.add\n"
+    "  timer[] timer.nanosecs aggTimer[] aggTimer.add\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

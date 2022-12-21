@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Timer.hpp -- timer                                                         */
+/* Timer.hpp -- for timing things in nanoseconds (as opposed to "ticks")      */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@ namespace BASE
   public:
   
   private:
-    i8 m_iStart;   // starting ticks
+    i8 m_iStart;   // starting nanos
     i8 m_iUpdate;  // update point
     
     // must be last
@@ -25,7 +25,6 @@ namespace BASE
 
     void operator =(Timer xTimer);
 
-    static i8   iGetTimeOfDay(void);
     static void vRepair(Object* pObject);
 
     void vReset(void);
@@ -38,8 +37,8 @@ namespace BASE
     i8 iMilliseconds(void);
     i8 iNanoseconds(void);
     i8 iSeconds(void);
-    i8 iTickDelta(void);
-  
+    i8 iDelta(void);
+
     i8 iStart(void);
     i8 iUpdate(void);
 

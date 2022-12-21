@@ -834,9 +834,9 @@ bool SePrompt::bPromptFunction(eEC* eErrorCode)
 //    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
 // sys/time timer
-  i8 start = Timer::iGetTimeOfDay();
+  i8 start = Hardware::iReadClock();
   (pPromptDesc->m_fPrompt)(this);
-  i8 end = Timer::iGetTimeOfDay();
+  i8 end = Hardware::iReadClock();
   if (m_pInpTagSet->bHasName(C_TAG_TIME))
     vTrace("time %lldms\n\n"_Stz,(end - start) / 1000000);
 
