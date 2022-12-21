@@ -1547,7 +1547,7 @@ void Engine::vPrintWelcome(void)
   vGetCopyright(sCopyright);
 
   if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
-    vTrace("%s\n"_Stz,sWelcome.szStz());
+    vTrace("\n%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
   }
 }

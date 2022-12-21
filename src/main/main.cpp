@@ -163,6 +163,8 @@ int main(int argc, char* argv[])
   // Initialise the random number generator
   Mersenne::init_genrand64(TickingDevice::iGetTick());
 
+  Hardware::vChooseClockType();
+
   TlsKeys::vInit();
 
   IntLib::vInitGlobals();
