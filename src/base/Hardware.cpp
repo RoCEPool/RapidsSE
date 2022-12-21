@@ -489,6 +489,7 @@ i8 Hardware::iReadTsc(u4* puLogicalProcessorId)
    */
   
   i8 iTscp = (i8) __rdtscp(puLogicalProcessorId);
+  _mm_lfence();
   return iTscp;
 }
 
