@@ -528,7 +528,7 @@ Card* Dissector::pOp_Limit(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  pArgTags->vDumpSet(true);
+  //pArgTags->vDumpSet(true);
 
   i8 nRows = iArgCheckLast(pArgTags,0);
 
