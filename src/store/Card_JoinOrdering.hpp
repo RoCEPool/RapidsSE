@@ -16,6 +16,10 @@ namespace STORE
     Card_JoinOrdering(void);
    ~Card_JoinOrdering(void) noexcept(false);
 
+    static void vEstimateJoinedBuff(Card_Deck* pDeck, Card_TableList* p_tableList);
+    static void vEstimateJoinOrder(Card_Deck* pDeck);
+    static void vEstimateNetwork(Card_Deck* pDeck);
+
     void vConcat(Card_PtndJoin* p_PtndJoin);
   };
 

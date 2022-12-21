@@ -2685,13 +2685,13 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   vPrintBoard(__LINE__);
 
 
-  Card_JoinOrder::vEstimateJoinedBuff(G.pDeck, G.p_tableList);
+  Card_JoinOrdering::vEstimateJoinedBuff(G.pDeck, G.p_tableList);
   vPrintBoard(__LINE__);
 
-  Card_JoinOrder::vEstimateNetwork(G.pDeck);
+  Card_JoinOrdering::vEstimateNetwork(G.pDeck);
   vPrintBoard(__LINE__);
 
-  Card_JoinOrder::vEstimateJoinOrder(G.pDeck);
+  Card_JoinOrdering::vEstimateJoinOrder(G.pDeck);
   vPrintBoard(__LINE__);
 
   pBoard = G.pBoard;
