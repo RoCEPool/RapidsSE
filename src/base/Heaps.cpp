@@ -528,21 +528,14 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 void Heaps::vInit(void)
 {
   if(gxCmdLineArgs.m_xSysArgs.m_bReload) {
-#ifdef WITH_TSCP_TIMER
+
     Timer oTimer;
     oTimer.vStart();
-#else
-    i8 start = Timer::iGetTimeOfDay();
-#endif
 
     vReloadPHeaps();
 
-#ifdef WITH_TSCP_TIMER
     oTimer.vUpdate();
     vTrace("Loading of Persistent Heaps from disk took %lld ms\n"_Stz, oTimer.iMilliseconds());
-#else
-    vTrace("Loading of Persistent Heaps from disk took %lld ms\n"_Stz, (Timer::iGetTimeOfDay() - start) / 1000000);
-#endif
 
   } else {
     // create the persistent heaps
