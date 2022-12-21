@@ -407,7 +407,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
     eTE eTerm_next = E_eTerm_TermEval(p_term_next);
 
-    vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
+    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
 
     switch (eTerm_next) {
 
