@@ -41,12 +41,12 @@ namespace BASE
 
     static bool bAccess(Stz* szDirPath, i8 iPermission);
     static bool bChangeCurrent(Stz* szDirPath);
+    static i8   iFreeSpace(Stz* szDirPath);
     static bool bGetCurrent(Stz* szDirPath);
     static bool bExists(Stz* szDirPath);
     static bool bMake(Stz* szDirPath);
     static bool bRemove(Stz* szDirPath);
     static void vRepair(Object* pObject);
-    static i8   iFreeSpace(Stz* szDirPath);
     
     void vClose(void);
     Stz* szEntryNm(void);
