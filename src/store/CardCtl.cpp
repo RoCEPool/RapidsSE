@@ -499,7 +499,12 @@ void CardCtl::vPrintSubCards(bool bPrintSubCards, ...)
   va_start(args,bPrintSubCards);
 
   for (;;) {
-    eCK e_Card = va_arg(args, eCK);
+    // Alka: On linux the following statement causes an illegal instruction
+    // cannot pass an enum type to va_arg, figured it passes the enum as an int
+    //eCK e_Card = va_arg(args, eCK);
+
+    eCK e_Card = (eCK)va_arg(args, int);
+
     if (e_Card == CK_NONE || e_Card == CK_ENUMS)
       break;
     m_xaCardCtl[e_Card].m_bPrintSubCards = bPrintSubCards;

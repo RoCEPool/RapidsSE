@@ -165,9 +165,9 @@
 
   //Text[] .
 
-  "<optimise>" [job].tagSet@ tagSet.hasName if
+  //"<optimise>" [job].tagSet@ tagSet.hasName if
     _Call_Optimiser
-  then
+  //then
 
   //Text[] .
 
