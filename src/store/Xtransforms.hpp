@@ -71,6 +71,7 @@ namespace STORE
 
     // vSeries_34_Predicate_Pullup
     void vS34_T_Predicate_Pullup(void);
+    void vS34_T_Predicate_Reposition(void);
 
     // vSeries_36_Bound_Analysis
     void vS36_T10_Derive_bounds_From_filter(void);
