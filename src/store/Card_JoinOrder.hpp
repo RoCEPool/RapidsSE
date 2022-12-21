@@ -17,6 +17,9 @@ namespace STORE
     Card_JoinOrder(Stz* szValue);
    ~Card_JoinOrder(void) noexcept(false);
 
+     static void vEstimateJoinedBuff(Card_Deck* pDeck, Card_TableList* p_tableList);
+     static void vEstimateNetwork(Card_Deck* pDeck);
+
      static Card_JoinOrder* pExtract(Card_Deck* pDeck);
    };
 

@@ -10,7 +10,6 @@
 #include "Card_SubSet.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
-#include "CardIter.hpp"
 
 #include "Table.hpp"
 #include "StreamDef.hpp"
@@ -43,39 +42,6 @@ Card_PtndJoin::Card_PtndJoin(void)
 Card_PtndJoin::~Card_PtndJoin(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_PtndJoin::vEstimatePtndJoins(Card_Deck* pDeck,
-                                       Card_TableList* p_tableList)
-{
-  _static_
-
-
-
-  CardIter xCI(pDeck);
-
-//  while (G.p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
-  while (Card* pMainCard = xCI.pEachChild()) {
-    eCK eCard = pMainCard->eCard();
-    if (CK_PERMUTATION == eCard) {
-      p_tableList->Y_vCutRecursive(P_TableUsed);
-      continue;
-    }
-
-    if (CK_PTNDJOIN != eCard)
-      continue;
-
-    Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(pMainCard);
-    p_ptndJoin->vEstimateJoinBuff(p_tableList);
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
