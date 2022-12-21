@@ -2319,8 +2319,8 @@ void Xreshape::vR_S50_T96_Estimate_joinOrder(void)
     iLowestNetwork = iNetwork;
   }
 
-  G.pDeck->vAppendMain((G.p_joinOrderSeq = new Card_JoinOrderSeq));
-  G.p_joinOrderSeq->Y_vSet(P_Network, iLowestNetwork);
+  G.pDeck->vAppendMain((G.p_joinOrdering = new Card_JoinOrdering));
+  G.p_joinOrdering->Y_vSet(P_Network, iLowestNetwork);
 
   xBI.vSet(G.p_permutation_low);
   while ((G.p_MainCard = xBI.pEachMain())) {
@@ -2328,7 +2328,7 @@ void Xreshape::vR_S50_T96_Estimate_joinOrder(void)
       break;
 
     G.p_ptndJoin = _pCard_PtndJoin(G.p_MainCard);
-    D_vDerive_JoinOrderSeq(G.p_joinOrderSeq, G.p_ptndJoin);
+    D_vDerive_JoinOrderSeq(G.p_joinOrdering, G.p_ptndJoin);
   }
 
 
@@ -2344,7 +2344,7 @@ void Xreshape::vR_S50_T98_Extract_joinOrderSeq(void)
 
   vReshape(__func__);
 
-  G.pDeck->vAppendMain((G.p_joinOrderSeq = new Card_JoinOrderSeq));
+  G.pDeck->vAppendMain((G.p_joinOrdering = new Card_JoinOrdering));
 
   BoardIter xBI(G.pBoard);
 
@@ -2355,7 +2355,7 @@ void Xreshape::vR_S50_T98_Extract_joinOrderSeq(void)
 
 
     G.p_ptndJoin = _pCard_PtndJoin(G.p_MainCard);
-    D_vDerive_JoinOrderSeq(G.p_joinOrderSeq, G.p_ptndJoin);
+    D_vDerive_JoinOrderSeq(G.p_joinOrdering, G.p_ptndJoin);
   }
 
   vEndReshape();

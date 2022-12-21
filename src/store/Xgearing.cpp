@@ -561,7 +561,7 @@ void Xgearing::G_vClearMembers(void)
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
   G.p_joinOrder        = nullptr;
-  G.p_joinOrderSeq     = nullptr;
+  G.p_joinOrdering     = nullptr;
   G.p_joinPredList     = nullptr;
   G.p_keyExists        = nullptr;
   G.p_keyNotExists     = nullptr;
@@ -1153,7 +1153,7 @@ Card* Xgearing::G_pGetMember(eCK eMember)
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
     case CK_JOINORDER:        return G.p_joinOrder;
-    case CK_JOINORDERSEQ:     return G.p_joinOrderSeq;
+    case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
@@ -2042,7 +2042,7 @@ void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
-    case CK_JOINORDERSEQ:     *((Card**)&G.p_joinOrderSeq)     = pCard; break;
+    case CK_JOINORDERING: *((Card**)&G.p_joinOrdering)     = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard; break;
@@ -2178,7 +2178,7 @@ Stz* Xgearing::szMemberNm(eCK eMember)
     case CK_INDEXNM:          return "G.p_indexNm"_Stz;
     case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
     case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
-    case CK_JOINORDERSEQ:     return "G.p_joinOrderSeq"_Stz;
+    case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;

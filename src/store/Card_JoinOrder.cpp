@@ -8,7 +8,7 @@
 #include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
-#include "Card_JoinOrderSeq.hpp"
+#include "Card_JoinOrdering.hpp"
 #include "Card_Permutation.hpp"
 #include "Card_PtndJoin.hpp"
 #include "Card_Table.hpp"
@@ -115,7 +115,7 @@ void Card_JoinOrder::vEstimateJoinOrder(Card_Deck* pDeck)
     iLowestNetwork = iNetwork;
   }
 
-  Card_JoinOrderSeq* p_joinOrderSeq = new Card_JoinOrderSeq;
+  Card_JoinOrdering* p_joinOrderSeq = new Card_JoinOrdering;
   pDeck->vAppendMain(p_joinOrderSeq);
   p_joinOrderSeq->Y_vSet(P_Network, iLowestNetwork);
 

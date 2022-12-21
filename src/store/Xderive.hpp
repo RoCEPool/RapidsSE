@@ -27,7 +27,7 @@ namespace STORE
     Card_Expr* D_pDerive_Proj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     Card_Expr* D_pDerive_Proj_expr_From_stmCol(Card_StmCol* p_stmCol);
 
-    void D_vDerive_JoinOrderSeq(Card_JoinOrderSeq* p_joinOrderSeq, Card_PtndJoin* p_PtndJoin);
+    void D_vDerive_JoinOrderSeq(Card_JoinOrdering* p_joinOrderSeq, Card_PtndJoin* p_PtndJoin);
     void D_vDerive_JoinPredList(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc);
 
     void D_vDerive_ObyElist(Card_ObyElist* p_obyElist, Index* pIndex);

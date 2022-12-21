@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinOrderSeq.cpp -- Table List                                        */
+/* Card_JoinOrdering.cpp -- Table List                                        */
 /*============================================================================*/
 
-#include "Card_JoinOrderSeq.hpp"
+#include "Card_JoinOrdering.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_ColumnRef.hpp"
@@ -15,16 +15,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_JoinOrderSeq,CK_JOINORDERSEQ)
-__aNewFunction(Card_JoinOrderSeq,CN_CARD)
-__vDeleteFunction(Card_JoinOrderSeq,CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinOrdering, CK_JOINORDERING)
+__aNewFunction(Card_JoinOrdering, CN_CARD)
+__vDeleteFunction(Card_JoinOrdering, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrderSeq::Card_JoinOrderSeq(void)
-: Card(CK_JOINORDERSEQ)
+Card_JoinOrdering::Card_JoinOrdering(void)
+: Card(CK_JOINORDERING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -36,7 +36,7 @@ Card_JoinOrderSeq::Card_JoinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrderSeq::~Card_JoinOrderSeq(void) noexcept(false)
+Card_JoinOrdering::~Card_JoinOrdering(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -48,7 +48,7 @@ Card_JoinOrderSeq::~Card_JoinOrderSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_JoinOrderSeq::vConcat(Card_PtndJoin* p_PtndJoin)
+void Card_JoinOrdering::vConcat(Card_PtndJoin* p_PtndJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -88,14 +88,14 @@ namespace STORE
     Card_Having *           p_having;
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
-    Card_IdxColNm *         p_idxColNm;//
+    Card_IdxColNm *         p_idxColNm;
     Card_Index *            p_index;
     Card_IndexJoin *        p_indexJoin;
     Card_IndexList *        p_indexList;
     Card_IndexNm *          p_indexNm;
     Card_IndexScan *        p_indexScan;
     Card_JoinOrder *        p_joinOrder;
-    Card_JoinOrderSeq *     p_joinOrderSeq;
+    Card_JoinOrdering *     p_joinOrdering;
     Card_JoinPredList *     p_joinPredList;
     Card_KeyExists *        p_keyExists;
     Card_KeyNotExists *     p_keyNotExists;

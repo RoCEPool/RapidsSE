@@ -70,7 +70,7 @@ enum eCK // card kind
   /* */ CK_INDEXSCAN,
 
   /* */ CK_JOINORDER,
-  /* */ CK_JOINORDERSEQ,
+  /* */ CK_JOINORDERING,
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEYEXISTS,
@@ -239,7 +239,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
-  /* */ "CK_JOINORDERSEQ"_Stz, // CK_JOINORDERSEQ
+  /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
@@ -407,7 +407,7 @@ static Stz* aCK_short[]
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
-  /* */ "joinOrderSeq"_Stz,    // CK_JOINORDERSEQ
+  /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
@@ -576,7 +576,7 @@ static Stz* aCK_notation[]
     /* */ "iS"_Stz,           // CK_INDEXSCAN
 
     /* */ "jO"_Stz,           // CK_JOINORDER
-    /* */ "jOS"_Stz,          // CK_JOINORDERSEQ
+    /* */ "jOG"_Stz,          // CK_JOINORDERING
     /* */ "jPL"_Stz,          // CK_JOINPREDLIST
 
     /* */ "kE"_Stz,           // CK_KEYEXISTS

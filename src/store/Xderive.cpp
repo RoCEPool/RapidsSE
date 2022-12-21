@@ -128,7 +128,7 @@ Card_Expr* Xderive::D_pDerive_Proj_expr_From_stmCol(Card_StmCol* p_stmCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xderive::D_vDerive_JoinOrderSeq(Card_JoinOrderSeq* p_joinOrderSeq,
+void Xderive::D_vDerive_JoinOrderSeq(Card_JoinOrdering* p_joinOrderSeq,
                                      Card_PtndJoin* p_PtndJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

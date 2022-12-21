@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinOrderSeq.hpp -- Join Order Sequence                               */
+/* Card_JoinOrdering.hpp -- Join Order Sequence                               */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_JoinOrderSeq : public Card
+  class Card_JoinOrdering : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinOrderSeq(void);
-   ~Card_JoinOrderSeq(void) noexcept(false);
+    Card_JoinOrdering(void);
+   ~Card_JoinOrdering(void) noexcept(false);
 
     void vConcat(Card_PtndJoin* p_PtndJoin);
   };
 
-  Card_JoinOrderSeq* _pCard_JoinOrderSeq(void* aAddr);
+  Card_JoinOrdering* _pCard_JoinOrdering(void* aAddr);
 }
 
 /*============================================================================*/

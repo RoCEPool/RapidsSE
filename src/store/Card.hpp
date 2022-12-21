@@ -77,7 +77,7 @@ namespace STORE
   class Card_IndexScan;
 
   class Card_JoinOrder;
-  class Card_JoinOrderSeq;
+  class Card_JoinOrdering;
   class Card_JoinPredList;
 
   class Card_KeyExists;
