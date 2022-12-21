@@ -56,7 +56,7 @@ namespace STORE
 
     void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
 
-    void vDeck_CopyMarkedPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
+    void vDeck_CopyMarkedPredToTable(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 
     i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_OrdElmOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);

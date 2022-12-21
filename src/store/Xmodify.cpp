@@ -574,8 +574,8 @@ void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Xmodify::vDeck_CopyMarkedPredLeftwards(Card_BoolCalc* p_calcBool,
-                                            Card_Deck* p_deck)
+void Xmodify::vDeck_CopyMarkedPredToTable(Card_BoolCalc* p_calcBool,
+                                          Card_Deck* p_deck)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

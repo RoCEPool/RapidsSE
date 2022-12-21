@@ -952,7 +952,7 @@ void Xtransforms::vS34_T_Predicate_Pullup(void)
   G_vRestart();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vDeck_CopyMarkedPredLeftwards(G.p_boolCalc, G.pDeck);
+    vDeck_CopyMarkedPredToTable(G.p_boolCalc, G.pDeck);
   }
 
   vPrintBoard();
@@ -976,6 +976,62 @@ void Xtransforms::vS34_T_Predicate_Pullup(void)
       G_vRemoveDeleteMain(CK_WHERE);
     }
   }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Predicate Pullup                                                           */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS34_T_Predicate_Reposition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
+
+  vPrintBoard(__LINE__);
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
+  }
+
+  vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
+
+  G_vRestart();
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    vDeck_CopyMarkedPredToTable(G.p_boolCalc, G.pDeck);
+  }
+
+  vPrintBoard();
+
+  G_vRestart();
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+  }
+
+  vPrintBoard();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete Empty Where
+
+  G_vRestart();
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    R_vUTE_Remove_filter_IfEmpty(G.p_table,G.p_filter);
+  }
+
+  vPrintBoard();
 
   vEndTransform();
 }
@@ -2716,6 +2772,8 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   delete pBoard;
 
   p_joinOrdering->vReorder(G.pDeck);
+
+  vPrintBoard(__LINE__);
 
   DELETE_CARD(p_joinOrdering);
 
