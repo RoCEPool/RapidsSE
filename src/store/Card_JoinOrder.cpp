@@ -8,6 +8,7 @@
 #include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
+#include "Card_JoinOrderSeq.hpp"
 #include "Card_Permutation.hpp"
 #include "Card_PtndJoin.hpp"
 #include "Card_Table.hpp"
@@ -91,6 +92,41 @@ void Card_JoinOrder::vEstimateJoinedBuff(Card_Deck* pDeck,
   }
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinOrder::vEstimateJoinOrder(Card_Deck* pDeck)
+{
+  _static_
+
+  i8 iLowestNetwork = 999999999;
+  Card_Permutation* p_permutation_low = nullptr;
+
+  CardIter xCI(pDeck);
+
+  while (Card_Permutation* p_permutation =
+           _pCard_Permutation(xCI.pEachChild(CK_PERMUTATION))) {
+
+    i8 iNetwork = p_permutation->Y_iGet(P_Network);
+    if (iNetwork >= iLowestNetwork)
+      continue;
+    p_permutation_low = p_permutation;
+    iLowestNetwork = iNetwork;
+  }
+
+  Card_JoinOrderSeq* p_joinOrderSeq = new Card_JoinOrderSeq;
+  pDeck->vAppendMain(p_joinOrderSeq);
+  p_joinOrderSeq->Y_vSet(P_Network, iLowestNetwork);
+
+  xCI.vRestart();
+  xCI.vSet(p_permutation_low);
+  while (Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(xCI.pEachChild(CK_PTNDJOIN))) {
+    p_joinOrderSeq->vConcat(p_ptndJoin);
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

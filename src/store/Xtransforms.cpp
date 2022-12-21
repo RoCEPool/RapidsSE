@@ -2691,6 +2691,9 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   Card_JoinOrder::vEstimateNetwork(G.pDeck);
   vPrintBoard(__LINE__);
 
+  Card_JoinOrder::vEstimateJoinOrder(G.pDeck);
+  vPrintBoard(__LINE__);
+
   pBoard = G.pBoard;
   G_vPopBoard();
   m_pBench->vRemove(pBoard);
