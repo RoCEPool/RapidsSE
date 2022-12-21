@@ -13,7 +13,7 @@ limit.test
 //indexJoinHash.test
 minMax.test
 project.test
-//query6.test
+query6.test
 selectTypes.test
 sort.test
 sum.test

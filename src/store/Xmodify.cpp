@@ -138,6 +138,12 @@ void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
       continue;
     }
 
+    if (p_card->bIsCard(CK_BOLPRED)) {
+      p_card->vMark1('b');
+      xCR.vDontDescend();
+      continue;
+    }
+
     if (p_card->bIsCard(CK_CMPPRED)) {
       p_card->vMark1('?');
       xCR.vDontDescend();
