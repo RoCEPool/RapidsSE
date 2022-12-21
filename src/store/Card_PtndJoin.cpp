@@ -3,11 +3,14 @@
 /*============================================================================*/
 
 #include "Card_PtndJoin.hpp"
-#include "Card_SubSet.hpp"
+
 #include "Card_CmpPred.hpp"
+#include "Card_Deck.hpp"
+#include "Card_Size.hpp"
+#include "Card_SubSet.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
-#include "Card_Size.hpp"
+#include "CardIter.hpp"
 
 #include "Table.hpp"
 #include "StreamDef.hpp"
@@ -43,9 +46,41 @@ Card_PtndJoin::~Card_PtndJoin(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_PtndJoin::vEstimatePtndJoins(Card_Deck* pDeck,
+                                       Card_TableList* p_tableList)
+{
+  _static_
+
+
+
+  CardIter xCI(pDeck);
+
+//  while (G.p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
+  while (Card* pMainCard = xCI.pEachChild()) {
+    eCK eCard = pMainCard->eCard();
+    if (CK_PERMUTATION == eCard) {
+      p_tableList->Y_vCutRecursive(P_TableUsed);
+      continue;
+    }
+
+    if (CK_PTNDJOIN != eCard)
+      continue;
+
+    Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(pMainCard);
+    p_ptndJoin->vEstimateJoinBuff(p_tableList);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
