@@ -15,6 +15,8 @@ namespace STORE
   
     Card_JoinOrderSeq(void);
    ~Card_JoinOrderSeq(void) noexcept(false);
+
+    void vConcat(Card_PtndJoin* p_PtndJoin);
   };
 
   Card_JoinOrderSeq* _pCard_JoinOrderSeq(void* aAddr);
