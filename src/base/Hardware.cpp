@@ -8,10 +8,91 @@
 #include <sys/sysctl.h>
 #else
 #include <linux/sysctl.h>
+#include <sys/utsname.h>
 #endif
 
 #include <sys/time.h>
 #include <x86intrin.h>
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Choose the appropriate default clock type to use for all measurements      */
+/*----------------------------------------------------------------------------*/
+static clockid_t xChooseClock()
+{
+#ifdef WITH_APPLE
+  // On MacOs we always want to use CLOCK_MONOTONIC_RAW.
+  // It's performance is adequate (~30ns/call)
+  return CLOCK_MONOTONIC_RAW;
+
+#endif
+
+#ifdef WITH_LINUX
+  // On Linux we need to be careful which clock we choose.
+  // Kernel 2.6 introduced vDSO which eliminates many system calls when
+  // calling gettimeofday() and clock_gettime(), however this was not
+  // implemented for CLOCK_MONOTONIC_RAW until kernel 5.3.
+  //
+  // So if the kernel is less than 5.3 we will fall back to CLOCK_MONOTONIC
+  // instead. The MONOTONIC clock doesn't step (e.g. DST) but it does slew
+  // (e.g. NTP), but it has the advantage that it doesn't invoke a system call
+  // so it is still pretty fast.
+  //
+  // If the kernel is >= 5.3  then we can use CLOCK_MONOTONIC_RAW as desired.
+
+  struct utsname xBuf{};
+  i8 iResult = uname(&xBuf);
+  if (iResult != 0) {
+    perror("Unable to get the kernel version information while choosing a clock type. "
+           "Falling back to CLOCK_MONOTONIC ");
+    return CLOCK_MONOTONIC;
+  }
+
+  char* psChar = xBuf.release;
+  i8 iMajor = 0;
+  i8 iMinor = 0;
+  i8 nDigits = 0;
+  bool bOk;
+
+  bOk = StrLib::bExtractInteger(&psChar, &iMajor, nDigits);
+  if (!bOk) {
+    vTrace("Unable to extract kernel major version while choosing a clock type. "
+           "Falling back to CLOCK_MONOTONIC."_Stz);
+    return CLOCK_MONOTONIC;
+  }
+
+  RASSERT(*psChar == '.');
+  ++psChar;
+
+  bOk = StrLib::bExtractInteger(&psChar, &iMinor, nDigits);
+  if (!bOk) {
+    vTrace("Unable to extract kernel minor version while choosing a clock type. "
+           "Falling back to CLOCK_MONOTONIC."_Stz);
+    return CLOCK_MONOTONIC;
+  }
+
+  if (iMajor >= 5 && iMinor >= 3) {
+    return CLOCK_MONOTONIC_RAW;
+  }
+
+  // The default safe case, though this does include slewing (e.g. NTP).
+  return CLOCK_MONOTONIC;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* The variable that holds the default clock type to be used on this machine  */
+/*----------------------------------------------------------------------------*/
+static clockid_t S_clockSource = xChooseClock();
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get byte order                                                             */
@@ -354,27 +435,16 @@ i8 Hardware::iReadClock(void)
 {
   _static_
 
-#ifdef WITH_APPLE
-  struct timespec tp;
-  int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
-  UNUSED(iResult);
-  //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
+  struct timespec ts{0, 0};
 
-  i8 iNanos = tp.tv_sec * C_1G;
-  iNanos += tp.tv_nsec;
-  
-#elif defined(WITH_LINUX)
-  struct timeval iTimeval;
-  
-  if (gettimeofday(&iTimeval, NULL) < 0) {
-    return 0;
-  }
-  i8 iNanos = iTimeval.tv_sec;
-  iNanos *= C_1M;  // convert to micros
-  iNanos += iTimeval.tv_usec;
-  iNanos *= C_1K;  // convert to nanos
-#endif
-  
+  // Note: We have already chosen the type of clock to use for this machine.
+  // Typically we want CLOCK_MONOTONIC_RAW, but in some cases we need to use
+  // CLOCK_MONOTONIC instead. See the function xChooseClock() at the top of file.
+
+  int iResult = clock_gettime(S_clockSource, &ts);
+  UNUSED(iResult);
+
+  i8 iNanos = (ts.tv_sec * C_1B) + ts.tv_nsec;
   return iNanos;
 }
 
