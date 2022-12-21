@@ -2717,6 +2717,8 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   p_joinOrdering->vReorder(G.pDeck);
 
+  vPrintBoard(__LINE__);
+
   DELETE_CARD(p_joinOrdering);
 
   vEndTransform();
