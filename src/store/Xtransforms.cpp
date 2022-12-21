@@ -519,9 +519,15 @@ void Xtransforms::vS20_T_Table_Analysis(void)
   G_vRestart();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    G.p_tablePtn = Card_TablePtn::pDerive(G.p_table);
 
+    G.p_tablePtn = Card_TablePtn::pDerive(G.p_table);
     G.p_table->vAppend(G.p_tablePtn);
+
+    Card_TableNm* p_tableNm = G.p_table->pSub_tableNm();
+    Table* pTable = AM::pTableFind(p_tableNm->sz());
+
+    G.p_size = Card_Size::pDerive(pTable);
+    G.p_table->vAppend(G.p_size);
   }
 
   vEndTransform();
@@ -2678,6 +2684,9 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vPrintBoard(__LINE__);
 
+
+  Card_PtndJoin::vEstimatePtndJoins(G.pDeck,G.p_tableList);
+  vPrintBoard(__LINE__);
 
 
   pBoard = G.pBoard;

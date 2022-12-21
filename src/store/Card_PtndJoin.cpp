@@ -87,7 +87,7 @@ void Card_PtndJoin::vEstimatePtndJoins(Card_Deck* pDeck,
 /*----------------------------------------------------------------------------*/
 void Card_PtndJoin::vEstimateJoinBuff(Card_TableList* p_tableList)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   i8 nJoinedBuff = 0;
 
@@ -105,10 +105,10 @@ void Card_PtndJoin::vEstimateJoinBuff(Card_TableList* p_tableList)
           _pCard_CmpPred(pGetChild(i_PredCmp));
 
       // todo: ...
-//      if (T_bCmpPred_UsesTable(p_predCmp, p_table->cValue())) {
-//        nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
-//        p_table->Y_vSet(P_TableUsed);
-//      }
+      if (p_predCmp->bUsesTable(p_table->cValue())) {
+        nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
+        p_table->Y_vSet(P_TableUsed);
+      }
     }
 
   }

@@ -146,7 +146,7 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bUsesTable(char cTableSyn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
   char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];

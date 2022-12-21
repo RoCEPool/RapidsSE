@@ -2480,6 +2480,10 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     pMain->vRemoveSubCard(G.p_tablePtn);
     G.p_table->vAppend(G.p_tablePtn);
   }
+  if ((G.p_size = pMain->pSub_size())) {
+    pMain->vRemoveSubCard(G.p_size);
+    G.p_table->vAppend(G.p_size);
+  }
 
   vEndReshape();
 }
