@@ -120,8 +120,9 @@ void ObjectSnapshot::vDeltaList(ObjectSnapshot* pWithObjectSnapshot_newer)
 void ObjectSnapshot::vTakeSnapshot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
-  
-  m_iWhenSnapshot = Hardware::iReadTsc();
+
+  u4 uProcId;
+  m_iWhenSnapshot = Hardware::iReadTsc(&uProcId);
 
   PoolHelper::vObjectSnapshot(this);
 }

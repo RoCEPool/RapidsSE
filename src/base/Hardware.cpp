@@ -456,7 +456,7 @@ i8 Hardware::iReadClock(void)
 /*       result in a negative result or a larger than expected positive       */
 /*       difference.                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Hardware::iReadTsc(void)
+i8 Hardware::iReadTsc(u4* puLogicalProcessorId)
 {
   _static_
   
@@ -488,8 +488,7 @@ i8 Hardware::iReadTsc(void)
    a ring transition or access to a platform resource.
    */
   
-  u4 uLogicalProcessorId;
-  i8 iTscp = (i8) __rdtscp(&uLogicalProcessorId);
+  i8 iTscp = (i8) __rdtscp(puLogicalProcessorId);
   return iTscp;
 }
 
