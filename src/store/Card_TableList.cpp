@@ -76,22 +76,22 @@ Card_TableList* Card_TableList::pExtract_v2(Card_Deck* p_deck)
 
   CardIter xCI(p_deck);
   while (Card_Table* p_table = _pCard_Table(xCI.pEachChild(CK_TABLE))) {
-    p_table = _pCard_Table(p_table->pDup());
-    p_tableList->vAppend(p_table);
+
+    Card* p_table_dup = _pCard_Table(p_table->pDup());
+    p_tableList->vAppend(p_table_dup);
 
     if (Card_TableNm* p_tableNm = p_table->pSub_tableNm()) {
       p_tableNm = _pCard_TableNm(p_tableNm->pDup());
-      p_tableList->vAppend(p_table);
+      p_table_dup->vAppend(p_tableNm);
     }
     if (Card_TablePtn* p_tablePtn = p_table->pSub_tablePtn()) {
       p_tablePtn = _pCard_TablePtn(p_tablePtn->pDup());
-      p_tableList->vAppend(p_tablePtn);
+      p_table_dup->vAppend(p_tablePtn);
     }
     if (Card_Size* p_size = p_table->pSub_size()) {
       p_size = _pCard_Size(p_size->pDup());
-      p_tableList->vAppend(p_size);
+      p_table_dup->vAppend(p_size);
     }
-
   }
 
   return p_tableList;

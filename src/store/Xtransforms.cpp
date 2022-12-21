@@ -2624,7 +2624,7 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
                             m_pBench);
   G_vPushBoard(pBoard);
 
-  G.p_tableList = Card_TableList::pExtract(pPipeline);
+  G.p_tableList = Card_TableList::pExtract_v2(pPipeline);
 
   G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
 

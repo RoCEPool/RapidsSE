@@ -141,6 +141,9 @@ void Xseries::vSeries_10_Make_Runnable(void)
 
   m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
 
+  //m_pTransforms->vS50_T00_Join_Ordering_v2();
+
+
 
   m_pTransforms->vS75_T10_Morph_table_To_EEop();
   m_pTransforms->vS75_T20_Morph_keyExists_filter_To_constraint();
