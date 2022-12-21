@@ -156,6 +156,7 @@
 #include "OpSpec.hpp"
 
 #include "SubQuery.hpp"
+#include "Scope.hpp"
 
 
 #include "Card_Av_AggP.hpp"

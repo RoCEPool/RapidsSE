@@ -300,6 +300,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
+  /* */ CN_SCOPE,
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
@@ -728,6 +729,7 @@ static Stz* aCN[]
   /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
+  /* */ "SCOPE"_Stz,                // CN_SCOPE
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME

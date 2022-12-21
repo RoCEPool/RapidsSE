@@ -252,6 +252,7 @@
 #include "PpySet.hpp"
 #include "Xseries.hpp"
 #include "CardRecurse.hpp"
+#include "Scope.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -563,6 +564,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,FILL },
   { CN_SCHEDULER,                sizeof(Scheduler),          HT_INVALID   ,FILL },
   { CN_SCHEMA,                   sizeof(Schema),             HT_T_TINY    ,FILL },
+  { CN_SCOPE,                    sizeof(Scope),              HT_T_TINY    ,FILL },
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,FILL },
   { CN_SEDEPUTY,        sizeof(SeDeputy),           HT_T_MEDIUM  , FILL },
   { CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
