@@ -22,6 +22,7 @@ namespace STORE
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
     bool bIsEq(Card_CmpPred* p_cmpPred_arg);
     bool bOverlapsWith(Card_CmpPred* p_cmpPred_arg);
+    bool bUsesTable(char cTableSyn);
 
   };
 

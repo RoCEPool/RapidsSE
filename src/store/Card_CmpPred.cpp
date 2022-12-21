@@ -141,6 +141,25 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bUsesTable(char cTableSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
+  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
+  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+
+  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
+    return true;
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
