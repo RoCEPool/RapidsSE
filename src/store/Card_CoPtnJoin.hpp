@@ -16,6 +16,8 @@ namespace STORE
   
     Card_CoPtnJoin(void);
    ~Card_CoPtnJoin(void) noexcept(false);
+
+   bool bIsCoPtnWith(Card_CoPtnPred* p_coPtnPred);
   };
 
   Card_CoPtnJoin* _pCard_CoPtnJoin(void* aAddr);

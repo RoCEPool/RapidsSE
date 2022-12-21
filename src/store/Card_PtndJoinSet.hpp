@@ -16,7 +16,10 @@ namespace STORE
     Card_PtndJoinSet(void);
    ~Card_PtndJoinSet(void) noexcept(false);
 
-    static Card_PtndJoinSet* pExtract(Card_CrossPtnJoinList* p_crossPtnJoinList);
+    static Card_PtndJoinSet* pExtract(Card_CoPtnJoinList* p_coPtnJoinList,
+                                      Card_CrossPtnJoinList* p_crossPtnJoinList);
+
+    void vPermute(Card_Deck* pDeck);
   };
 
   Card_PtndJoinSet* _pCard_PtndJoinSet(void* aAddr);

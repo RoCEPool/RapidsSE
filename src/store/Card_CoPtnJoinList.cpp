@@ -58,10 +58,11 @@ Card_CoPtnJoinList* Card_CoPtnJoinList::pExtract(Card_CoPtnPredList* p_coPtnPred
 
     Card_SubSet* p_subSet = p_coPtnPred->pDupSubCards();
 
-//    if (! (G.p_coPtnJoin = T_pCoPtnJoinList_Find_coPtn_for(G.p_coPtnJoinList, G.p_coPtnPred)) ) {
-      Card_CoPtnJoin* p_coPtnJoin = new Card_CoPtnJoin;
+    Card_CoPtnJoin* p_coPtnJoin = nullptr;
+    if (! (p_coPtnJoin = p_coPtnJoinList->pFind(p_coPtnPred)) ) {
+      p_coPtnJoin = new Card_CoPtnJoin;
       p_coPtnJoinList->vAppend(p_coPtnJoin);
-//    }
+    }
 
     p_coPtnJoin->vTransferChildren(p_subSet);
     DELETE_CARD(p_subSet);
@@ -75,6 +76,48 @@ Card_CoPtnJoinList* Card_CoPtnJoinList::pExtract(Card_CoPtnPredList* p_coPtnPred
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_CoPtnJoin* Card_CoPtnJoinList::pFind(Card_CoPtnPred* p_coPtnPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren =nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(pGetChild(i_Child));
+
+    if (p_coPtnJoin->bIsCoPtnWith(p_coPtnPred))
+      return p_coPtnJoin;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CoPtnJoinList::bHasEqPredCmp(Card_CmpPred* p_cmpPred_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren_coPtn = nChildCards();
+  for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
+    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(pGetChild(i_Child_coPtn));
+
+    i8 nChildren_cmpPred = p_coPtnJoin->nChildCards();
+    for (i8 i_Child_cmpPred = 0; i_Child_cmpPred < nChildren_cmpPred; i_Child_cmpPred++) {
+      Card_CmpPred *p_cmpPred = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_cmpPred));
+
+      if (p_cmpPred->bIsEq(p_cmpPred_arg))
+        return true;
+    }
+  }
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

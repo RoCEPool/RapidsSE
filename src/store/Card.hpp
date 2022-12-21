@@ -329,9 +329,6 @@ namespace STORE
     void vClearMarksRecursive(void);
     void vCopyProperties(Card* pFrom);
 
-    void vDeleteChild(eCK eCard);
-    void vDeleteProperty(Stz* szPpyNm);
-    void vDeletePropertyRecursive(Stz* szPpyNm);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
@@ -404,6 +401,7 @@ namespace STORE
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
     void Y_vCut(Stz* szPpyNm);
+    void Y_vCutRecursive(Stz* szPpyNm);
 
     char Y_cGet(i8 i_Ppy);
     char Y_cGet(Stz* szPpyNm);

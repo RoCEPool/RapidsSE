@@ -68,6 +68,24 @@ void ChildCards::vConcatChildren(Stz* szTerms, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
+i8 ChildCards::iFindChild(eCK eCard)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card* pTestCard = pGetChild(i_Sub);
+
+    if (pTestCard->bIsCard(eCard))
+      return i_Sub;
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
 i8 ChildCards::iFindChild(Card* pChild)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

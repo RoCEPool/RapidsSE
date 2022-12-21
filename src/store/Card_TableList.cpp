@@ -5,8 +5,12 @@
 #include "Card_TableList.hpp"
 
 #include "CardIter.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Table.hpp"
+#include "Card_TablePtn.hpp"
+#include "Card_Term.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -39,7 +43,7 @@ Card_TableList::~Card_TableList(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -58,6 +62,62 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
 
   return p_tableList;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Table* Card_TableList::pFind(char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    if (CK_TABLE != pChildCard->eCard())
+      continue;
+
+    Card_Table* p_table = _pCard_Table(pChildCard);
+    char cTableSyn = p_table->cValue();
+    if (cTableSyn == cTblSyn)
+      return p_table;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_TableList::bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_0 = _pCard_Term(p_cmpPred->pGetChild(0));
+  char cTableSyn_0 = p_term_0->szValue()->azChar()[1];
+  Card_Term* p_term_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+  char cTableSyn_1 = p_term_1->szValue()->azChar()[1];
+
+  if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
+    return true;
+
+  Card_Table* p_table_0 = pFind(cTableSyn_0);
+  Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
+  Stz* szTablePtn_0 = p_tablePtn_0->sz();
+
+  Card_Table* p_table_1 = pFind(cTableSyn_1);
+  Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
+  Stz* szTablePtn_1 = p_tablePtn_1->sz();
+
+  if (szTablePtn_0->bSame(p_term_0->sz()) && szTablePtn_1->bSame(p_term_1->sz()))
+    return true;
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

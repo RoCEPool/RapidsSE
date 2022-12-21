@@ -2119,7 +2119,7 @@ void Xreshape::vR_S50_T60_Copy_ptndJoinSet(void)
 
   vReshape(__func__);
 
-  m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
+  m_pBench->pCardCtl()->vHeatNext(CK_PERMUTATION, true);
 
   G.p_ptndJoinSet =
       _pCard_PtndJoinSet(G.pDeck->pFindChild(CK_PTNDJOINSET));
@@ -2235,7 +2235,7 @@ void Xreshape::vR_S50_T92_Estimate_ptndJoins(void)
   while ((G.p_MainCard = xBI.pEachMain())) {
     eCK eCard = G.p_MainCard->eCard();
     if (CK_PERMUTATION == eCard) {
-      G.p_tableList->vDeletePropertyRecursive(P_TableUsed);
+      G.p_tableList->Y_vCutRecursive(P_TableUsed);
       continue;
     }
     if (CK_PTNDJOIN != eCard)

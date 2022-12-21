@@ -2626,18 +2626,68 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   G.p_coPtnJoinList = Card_CoPtnJoinList::pExtract(G.p_coPtnPredList);
 
+  G.p_crossPtnJoinList = Card_CrossPtnJoinList::pExtract(G.p_joinPredList,
+                                                         G.p_coPtnJoinList);
+
+  G.p_ptndJoinSet = Card_PtndJoinSet::pExtract(G.p_coPtnJoinList,
+                                               G.p_crossPtnJoinList);
+
   G.pDeck->vAppend(G.p_tableList);
   G.pDeck->vAppend(G.p_joinPredList);
   G.pDeck->vAppend(G.p_coPtnPredList);
   G.pDeck->vAppend(G.p_coPtnJoinList);
+  G.pDeck->vAppend(G.p_crossPtnJoinList);
+  G.pDeck->vAppend(G.p_ptndJoinSet);
+
+  vPrintBoard(__LINE__);
+
+  // copy ptndJoinSet
+  G.pDeck->vAppendMain(new Card_Note("PERMUTATIONS"_Stz));
+  G.p_subSet = G.p_ptndJoinSet->pDupSubCards();
+  while ((m_pCard_popped = G.p_subSet->pPop())) {
+    G.pDeck->vAppendMain(m_pCard_popped);
+  }
+  DELETE_CARD(G.p_subSet);
+
+  vPrintBoard(__LINE__);
+
+  G.p_ptndJoinSet->vPermute(G.pDeck);
+
+  vPrintBoard(__LINE__);
+
+  Card_Permutation::vRemoveInvalid(G.pDeck);
+
+  vPrintBoard(__LINE__);
+
+  i8 i_Permutation = G.pDeck->iFindChild(CK_PERMUTATION);
+  G.p_subSet = G.pDeck->pDupSubCards(i_Permutation);
+
+
+  pBoard = new Board(aBK[BK_COSTEST],
+                     BK_COSTEST,
+                     C_UNKNOWN,
+                     BT_ORIGINAL,
+                     m_pBench);
+
+  G_vPushBoard(pBoard);
+
+  G.pDeck->vTransferChildren(G.p_subSet);
+
+  DELETE_CARD(G.p_subSet);
+
 
   vPrintBoard(__LINE__);
 
 
 
+  pBoard = G.pBoard;
+  G_vPopBoard();
+  m_pBench->vRemove(pBoard);
+  delete pBoard;
 
   //G.p_joinOrder = Card_JoinOrder::pExtract(G.pDeck);
   //G.pDeck->vApply(G.p_joinOrder);
+
 
 
   pBoard = G.pBoard;

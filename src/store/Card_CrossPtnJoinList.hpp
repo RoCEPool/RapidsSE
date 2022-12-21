@@ -16,7 +16,8 @@ namespace STORE
     Card_CrossPtnJoinList(void);
    ~Card_CrossPtnJoinList(void) noexcept(false);
 
-    static Card_CrossPtnJoinList* pExtract(Card_CoPtnJoinList* p_coPtnJoinList);
+    static Card_CrossPtnJoinList* pExtract(Card_JoinPredList* p_joinPredList,
+                                           Card_CoPtnJoinList* p_coPtnJoinList);
   };
 
   Card_CrossPtnJoinList* _pCard_CrossPtnJoinList(void* aAddr);

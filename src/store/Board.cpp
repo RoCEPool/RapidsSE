@@ -285,12 +285,12 @@ void Board::vPinCards(Ribbon* pRibbon)
     eCK eCard = pCard->eCard();
 
     // skip non-printable horizontal lines
-    if (pCardCtl->bNextHoriz(eCard) &&
+    if (pCardCtl->bHeatNext(eCard) &&
         pCard->Y_bHas(pCardCtl->szHorizExclude(eCard))) {
 
       while (Card* pNextMain = xBI.pNextMain()) {
         eCK eNextCard = pNextMain->eCard();
-        if (pCardCtl->bNextHoriz(eNextCard))
+        if (pCardCtl->bHeatNext(eNextCard))
           break;
         xBI.vForward();
       }
@@ -301,7 +301,7 @@ void Board::vPinCards(Ribbon* pRibbon)
     if (! nCount++)
       pSubRibbon->vLaneFirst();
     else
-    if (pSubRibbon->i_Char() && pCardCtl->bNextHoriz(eCard))
+    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(eCard))
       pSubRibbon->vHeatNext();
     else
       pSubRibbon->vLaneNext();

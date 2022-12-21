@@ -59,9 +59,8 @@ Card_CoPtnPredList* Card_CoPtnPredList::pExtract(Card_JoinPredList* p_joinPredLi
     Card_CmpPred* p_cmpPred =
         _pCard_CmpPred(p_joinPredList->pGetChild(i_joinPred));
 
-    // todo: fix this...
-    //if (!T_bTableList_PredCmpIsCoPtn(G.p_tableList, G.p_cmpPred))
-    //  continue;
+    if (! p_tableList->bIsCmpPredCoPtn(p_cmpPred))
+      continue;
 
     Card_CoPtnPred* p_coPtnPred = new Card_CoPtnPred;
     p_coPtnPred->vAppend(p_cmpPred->pDupCardAndSubCards());

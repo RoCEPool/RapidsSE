@@ -69,8 +69,8 @@ namespace STORE
                      char cPrefix, Stz* szXhand, Stz* szXform,
                      i8 i_Board, i8 nBpards, i8 iLineNo);
 
-    bool bNextHoriz(i8 i_Card);
-    void vNextHorizon(i8 i_Card, bool bNextHoriz);
+    bool bHeatNext(i8 i_Card);
+    void vHeatNext(i8 i_Card, bool bNextHoriz);
 
     bool bPrintBelow(i8 i_Card);
     void vPrintBelow(i8 i_Card, bool bPrintBelow);

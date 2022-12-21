@@ -20,6 +20,9 @@ namespace STORE
    ~Card_CoPtnJoinList(void) noexcept(false);
 
     static Card_CoPtnJoinList* pExtract(Card_CoPtnPredList* p_coPtnPredList);
+
+    Card_CoPtnJoin* pFind(Card_CoPtnPred* p_coPtnPred);
+    bool bHasEqPredCmp(Card_CmpPred* p_cmpPred_arg);
   };
 
   Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);
