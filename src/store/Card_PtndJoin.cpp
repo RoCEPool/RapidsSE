@@ -48,8 +48,38 @@ Card_PtndJoin::~Card_PtndJoin(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_PtndJoin::vEstimateJoinBuff(Card_TableList* p_tableList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nJoinedBuff = 0;
+
+  i8 nTables = p_tableList->nChildCards();
+  for (i8 i_Table = 0; i_Table < nTables; i_Table++) {
+    Card_Table *p_table =
+        _pCard_Table(p_tableList->pGetChild(i_Table));
+
+    if (p_table->Y_bHas(P_TableUsed))
+      continue;
+
+    i8 nPredCmps = nChildCards();
+    for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
+      Card_CmpPred *p_predCmp =
+          _pCard_CmpPred(pGetChild(i_PredCmp));
+
+      // todo: ...
+//      if (T_bCmpPred_UsesTable(p_predCmp, p_table->cValue())) {
+//        nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
+//        p_table->Y_vSet(P_TableUsed);
+//      }
+    }
+
+  }
+
+  Y_vSet(P_JoinedBuff, nJoinedBuff);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

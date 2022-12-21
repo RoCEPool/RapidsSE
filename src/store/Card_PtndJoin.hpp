@@ -16,9 +16,8 @@ namespace STORE
     Card_PtndJoin(void);
    ~Card_PtndJoin(void) noexcept(false);
 
- // private:
+    void vEstimateJoinBuff(Card_TableList* p_tableList);
     bool bMayFollowAfter(Card_SubSet* pPriorPtnJoins_sofar);
-
   };
 
   Card_PtndJoin* _pCard_PtndJoin(void* aAddr);
