@@ -72,7 +72,7 @@ void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRE
 /*----------------------------------------------------------------------------*/
 /* visit each stream and adjust it's lo-hi range                              */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_AdjustStmLoHi(void)
+void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
   vReshape(__func__);

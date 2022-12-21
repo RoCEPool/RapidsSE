@@ -1225,7 +1225,7 @@ void Xtransforms::vS40_T10_Fold_F(void)
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_AdjustStmLoHi();
+  R_vUTE_Stream_AdjustLoHi();
   vPrintBoard(__LINE__);
 
   R_vUTE_RenumberStmOdn();
@@ -1359,7 +1359,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
 
-  R_vUTE_AdjustStmLoHi();
+  R_vUTE_Stream_AdjustLoHi();
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
@@ -1629,7 +1629,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   // todo: should this be earlier? As soon as $1 is injected into mq??
 
-  R_vUTE_AdjustStmLoHi();
+  R_vUTE_Stream_AdjustLoHi();
   vPrintBoard(__LINE__);
 
   R_vUTE_RenumberStmOdn();
@@ -1823,10 +1823,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   vPrintBoard(__LINE__);
 
 
-
-
-
-  R_vUTE_AdjustStmLoHi();
+  R_vUTE_Stream_AdjustLoHi();
   vPrintBoard(__LINE__);
 
   R_vUTE_RenumberStmOdn();
@@ -2082,7 +2079,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
   G.pDeck->vRenumberRecursive();
-  R_vUTE_AdjustStmLoHi();
+  R_vUTE_Stream_AdjustLoHi();
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
@@ -2238,7 +2235,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_AdjustStmLoHi();
+  R_vUTE_Stream_AdjustLoHi();
   vPrintBoard(__LINE__);
 
   R_vUTE_RenumberStmOdn();
@@ -2776,6 +2773,11 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
   vPrintBoard(__LINE__);
 
   DELETE_CARD(p_joinOrdering);
+
+  R_vUTE_Stream_AdjustLoHi();
+  R_vUTE_RenumberStmOdn();
+
+  vPrintBoard(__LINE__);
 
   vEndTransform();
 }

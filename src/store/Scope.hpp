@@ -13,6 +13,9 @@ namespace STORE
   {
   private:
 
+    // something quick ...
+    bool m_baKnown[26];
+
     // must be last
     Footer m_xFooter;
  
@@ -23,7 +26,10 @@ namespace STORE
     Scope(void);
    ~Scope(void) noexcept(false);
 
-  private:
+  public:
+
+    bool bInScope(char cTblSyn);
+    void vInScope(char cTblSyn, bool bInScope);
 
     Footer* aFooter(void);
   };

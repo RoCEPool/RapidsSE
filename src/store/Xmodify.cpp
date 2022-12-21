@@ -5,6 +5,7 @@
 #include "Xmodify.hpp"
 
 #include "Table.hpp"
+#include "Scope.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1013,20 +1014,25 @@ char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Scope* pScope = nullptr;
+  Scope* pScope = new Scope;
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
     Card *pMainCard = p_deck->pGetChild(i_Main);
 
-    if (CK_WHERE == pMainCard->eCard())
+    if (CK_WHERE == pMainCard->eCard()) {
+      delete pScope;
       return C_UNKNOWN;
+    }
 
     eCK eMainCard = pMainCard->eCard();
 
     if (CK_TABLE == eMainCard) {
       Card_Table* p_table = _pCard_Table(pMainCard);
+      char cTblSyn = p_table->cValue();
+      pScope->vInScope(cTblSyn,true);
       if (bTable_ScopeContains_Pred(p_table, p_pred, pScope)) {
         char cTblSyn = p_table->cValue();
+        delete pScope;
         return cTblSyn;
       }
       continue;
@@ -1080,7 +1086,9 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
   // is the table column within scope?
   char cTblSyn_table = p_table->cValue();
   char cTblSyn_term = E_cValue_TableColSyn(szTerm);
-  if (cTblSyn_term <= cTblSyn_table)
+//  if (cTblSyn_term <= cTblSyn_table)
+//    return true;
+  if (pScope->bInScope(cTblSyn_term))
     return true;
 
   return false;
