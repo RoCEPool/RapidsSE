@@ -2970,13 +2970,51 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
 /*----------------------------------------------------------------------------*/
 /* add partitioning                                                           */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vSZ0_T30_Add_Partioning(void)
+void Xtransforms::vSZ0_T30_Add_Partitioning(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   vTransform(__func__, "add partitioning"_Stz);
 
   vAssert_Board_mqA();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Next* p_next_prior = nullptr;
+
+  if (G_bEachMain(CK_NEXT)) {
+    p_next_prior = G.p_next;
+  }
+  else {
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  while (G_bEachMain()) {
+    if (CK_INDEXSCAN == G.e_MainCard) {
+      G.p_table = G.p_MainCard->pSub_table();
+      G.p_bounds = G.p_MainCard->pSub_bounds();
+      R_vUTE_Stage_Partitioning(p_next_prior);
+    }
+    else
+    if (CK_KEYEXISTS == G.e_MainCard) {
+      G.p_table = G.p_MainCard->pSub_table();
+      G.p_bounds = G.p_MainCard->pSub_bounds();
+      R_vUTE_Stage_Partitioning(p_next_prior);
+    }
+    else
+    if (CK_KEYNOTEXISTS == G.e_MainCard) {
+      G.p_table = G.p_MainCard->pSub_table();
+      G.p_bounds = G.p_MainCard->pSub_bounds();
+      R_vUTE_Stage_Partitioning(p_next_prior);
+    }
+    else
+    if (CK_NEXT == G.e_MainCard) {
+      p_next_prior = G.p_next;
+    }
+
+  }
 
   vEndTransform();
 }

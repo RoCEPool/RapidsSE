@@ -128,7 +128,7 @@ namespace STORE
 
     // vSeries_Z0_Restate_Pipeline
     void vSZ0_T20_Reinstate_stagesV3(void);
-    void vSZ0_T30_Add_Partioning(void);
+    void vSZ0_T30_Add_Partitioning(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
