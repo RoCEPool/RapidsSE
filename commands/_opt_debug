@@ -17,13 +17,19 @@ create table TABLE1 (
 );
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-explain stage transliterate
-select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
+//explain stage transliterate
+//select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
 
+/glean_cue_from = "vS50_T00_Join_Ordering_v2"
 /glean_interactive
+/transliterated
 /weaved
-select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
-
+/pipelineName = "_r_opt_debug"
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc
+  from table1
+ group by colb1, ucolvc
+having avg(ucol) < 200
+;
 
 /*============================================================================*/
 /* end                                                                        */

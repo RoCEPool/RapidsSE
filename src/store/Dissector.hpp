@@ -19,6 +19,7 @@ namespace STORE
     OpSpec*      m_pOpSpec;
 
     bool m_bSawAggOp;
+    bool m_bSawProjectOp;
 
   private:
     // must be last
