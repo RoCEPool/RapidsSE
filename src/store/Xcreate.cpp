@@ -397,7 +397,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   Card_Term*    p_subQueryNm = nullptr;
 
-  Card_SubSet*  p_TermSeries = new Card_SubSet;
+  Card_RpnTerms*  p_TermSeries = new Card_RpnTerms;
 
   //G_vNewMember(CK_BOOLCALC);
   Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
@@ -496,15 +496,54 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         break;
 
       case TE_IN:
+       // <boolCalc> = <in><boolCalc>
+        if (p_TermSeries->bIsInList()) {
+          p_bolPred = new Card_BolPred;
+          p_bolPred->vValue(p_term_next->sz());
+          p_bolPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vAppend(p_bolPred);
+          p_bolPred = nullptr;
+          DELETE_CARD(p_term_next);
+          //p_boolCalc->vDump(0,"BOOLFN"_Stz);
+        }
+        else {
+          p_roPred = new Card_RoPred;
+          p_roPred->vValue(p_term_next->sz());
+          p_roPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vAppend(p_roPred);
+          p_roPred = nullptr;
+          DELETE_CARD(p_term_next);
+          //p_boolCalc->vDump(0,"IN"_Stz);
+        }
+        break;
+
       case TE_NOTIN:
         // <boolCalc> = <in><boolCalc>
-        p_roPred = new Card_RoPred;
-        p_roPred->vValue(p_term_next->sz());
-        p_roPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vAppend(p_roPred);
-        p_roPred = nullptr;
-        DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"IN"_Stz);
+        if (p_TermSeries->bIsInList()) {
+          p_bolPred = new Card_BolPred;
+          p_bolPred->vValue("in"_Stz);
+          p_bolPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vAppend(p_bolPred);
+          p_bolPred = nullptr;
+          DELETE_CARD(p_term_next);
+          //p_boolCalc->vDump(0,"BOOLFN"_Stz);
+
+          p_childA = p_boolCalc->pPlopChild();
+          p_notPred = new Card_NotPred;
+          p_notPred->vAppend(p_childA);
+          p_boolCalc->vAppend(p_notPred);
+          p_notPred = nullptr;
+          p_childA  = nullptr;
+        }
+        else {
+          p_roPred = new Card_RoPred;
+          p_roPred->vValue(p_term_next->sz());
+          p_roPred->vTransferChildren(p_TermSeries);
+          p_boolCalc->vAppend(p_roPred);
+          p_roPred = nullptr;
+          DELETE_CARD(p_term_next);
+          //p_boolCalc->vDump(0,"IN"_Stz);
+        }
         break;
 
       case TE_BOOLFN:

@@ -111,7 +111,7 @@ bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred,
     return false;
   }
 
-  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
+  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred || CK_NOTPRED == eCard_pred);
 
   i8 nChildren = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -134,6 +134,11 @@ void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
   CardRecurse xCR(p_boolCalc);
   while (Card* p_card = xCR.pRecurseEach()) {
 
+    if (p_card->bIsCard(CK_NOTPRED)) {
+      p_card->vMark1('!');
+      xCR.vDontDescend();
+      continue;
+    }
     if (p_card->bIsCard(CK_ANDPRED)) {
       p_card->vMark1('&');
       continue;
