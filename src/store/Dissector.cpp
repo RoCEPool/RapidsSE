@@ -35,7 +35,8 @@ Dissector::Dissector(Bench* pBench)
   m_pOpSpec       = nullptr;
   
   m_bSawAggOp     = false;
-  
+  m_bSawProjectOp = false;
+
   _checkInitialised_(CN_DISSECTOR);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
@@ -79,6 +80,7 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
   m_bSawAggOp  = false;
+  m_bSawProjectOp = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +166,8 @@ void Dissector::vStage(i8 i_StageSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_bSawAggOp = false;
-  
+  m_bSawProjectOp = false;
+
   i8 nOpSpecs = m_pStageSpec->nItems();
   for (i8 i_OpSpec = 0; i_OpSpec < nOpSpecs; i_OpSpec++) {
     m_pOpSpec = m_pStageSpec->pGet(i_OpSpec);
@@ -374,7 +377,7 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?
   
-  if (m_bSawAggOp) {
+  if (m_bSawAggOp || m_bSawProjectOp) {
     Card_Having* pCard_Having = new Card_Having;
     pCard_Having->vTransferChildren(pCard_Filter);
     delete pCard_Filter;
@@ -602,7 +605,8 @@ Card* Dissector::pOp_Pulse(TagSet* pArgTags)
 Card* Dissector::pOp_Project(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  
+
+  m_bSawProjectOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
 
