@@ -1082,7 +1082,7 @@ bool Dynamo::bPass3_includes(void)
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
     if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
-      vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
+      vTrace("Has Include 0: %s\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
   }
@@ -1090,7 +1090,7 @@ bool Dynamo::bPass3_includes(void)
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
     if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
-      vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
+      vTrace("Has Include 1: %s\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
   }
@@ -1098,7 +1098,7 @@ bool Dynamo::bPass3_includes(void)
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
     if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
-      vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
+      vTrace("Has Include 2: %s\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
   }
@@ -1125,7 +1125,7 @@ bool Dynamo::bPass3_include(Stz *szIncludePipNm)
                                            pIncludeTknVec,
                                            &pwMatchedProc);
 
-  vTrace("Including: %lls\n"_Stz, sPipelineSmt.szStz());
+  vTrace("Including: %s\n"_Stz, sPipelineSmt.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

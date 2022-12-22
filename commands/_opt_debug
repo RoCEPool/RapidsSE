@@ -2,28 +2,38 @@
 /* _opt_debug --                                                              */
 /*============================================================================*/
 
-create table TABLE4 (
-  pcol4   INTEGER NOT NULL,
-  scol4   INTEGER NOT NULL,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5),
-  cola4   INTEGER,
-  colb4   VARCHAR(10),
-  colc4   TIMESTAMP,
-  cole4   DECIMAL(15, 2)
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
 );
-Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 
-/optimise
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+
+//explain stage transliterate
+//select tsp_col12 from datums where EXTRACT (YEAR FROM tsp_col12) = 1941;
+
+/glean_cue_from = "vS50_T00_Join_Ordering_v2"
 /glean_interactive
 /transliterated
 /weaved
-select colb4, pcol4
-  from table4
- where
-       colb4 like '__ack'
-       and
-       ucolvc not in ('fff', 'qqq', 'sss', 'iii' )
+/pipelineName = "_r_opt_debug"
+select tsp_col12
+  from datums
+ where EXTRACT (YEAR FROM tsp_col12) = 1941
 ;
 
 /*============================================================================*/
