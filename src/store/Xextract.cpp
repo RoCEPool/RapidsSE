@@ -315,6 +315,7 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
 //  else if (szTerm->bSame("extract_month"_Stz))   return TE_BOOLFN;
 //  else if (szTerm->bSame("extract_second"_Stz))  return TE_BOOLFN;
 //  else if (szTerm->bSame("extract_year"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("isNull"_Stz))          return TE_BOOLFN;
   else if (szTerm->bSame("like2"_Stz))           return TE_BOOLFN;
   else if (szTerm->bSame("like3"_Stz))           return TE_BOOLFN;
   else if (szTerm->bSame("matchLeading"_Stz))    return TE_BOOLFN;
