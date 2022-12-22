@@ -163,8 +163,6 @@ int main(int argc, char* argv[])
   // Initialise the random number generator
   Mersenne::init_genrand64(TickingDevice::iGetTick());
 
-  Hardware::vChooseClockType();
-
   TlsKeys::vInit();
 
   IntLib::vInitGlobals();
@@ -172,6 +170,10 @@ int main(int argc, char* argv[])
   FltLib::vInitGlobals();
 
   Engine::vEnvFlags();
+
+  // Set the default clock type for Hardware::iReadClock().
+  // This needs to be done after IntLib::vInitGlobals() above.
+  Hardware::vChooseClockType();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
