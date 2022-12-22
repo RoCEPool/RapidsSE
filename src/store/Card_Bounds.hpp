@@ -15,6 +15,9 @@ namespace STORE
   
     Card_Bounds(void);
    ~Card_Bounds(void) noexcept(false);
+
+    eXK eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tablePtn_r,
+                  Card_Term*& rp_term_hash);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

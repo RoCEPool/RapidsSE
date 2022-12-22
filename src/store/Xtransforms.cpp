@@ -2981,13 +2981,15 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Next* p_next_prior = nullptr;
+  Card_Table* p_table_prior = nullptr;
+  Card_Bounds* p_bounds_prior = nullptr;
 
-  if (G_bEachMain(CK_NEXT)) {
-    p_next_prior = G.p_next;
-  }
-  else {
-
-  }
+//  if (G_bEachMain(CK_NEXT)) {
+//    p_next_prior = G.p_next;
+//  }
+//  else {
+//    NEVER_REACH
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2995,19 +2997,28 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
     if (CK_INDEXSCAN == G.e_MainCard) {
       G.p_table = G.p_MainCard->pSub_table();
       G.p_bounds = G.p_MainCard->pSub_bounds();
-      R_vUTE_Stage_Partitioning(p_next_prior);
+      if (p_table_prior)
+        R_vUTE_Stage_Partitioning(p_next_prior,p_table_prior,p_bounds_prior);
+      p_table_prior = G.p_table;
+      p_bounds_prior = G.p_bounds;
     }
     else
     if (CK_KEYEXISTS == G.e_MainCard) {
       G.p_table = G.p_MainCard->pSub_table();
       G.p_bounds = G.p_MainCard->pSub_bounds();
-      R_vUTE_Stage_Partitioning(p_next_prior);
+      if (p_table_prior)
+        R_vUTE_Stage_Partitioning(p_next_prior,p_table_prior,p_bounds_prior);
+      p_table_prior = G.p_table;
+      p_bounds_prior = G.p_bounds;
     }
     else
     if (CK_KEYNOTEXISTS == G.e_MainCard) {
       G.p_table = G.p_MainCard->pSub_table();
       G.p_bounds = G.p_MainCard->pSub_bounds();
-      R_vUTE_Stage_Partitioning(p_next_prior);
+      if (p_table_prior)
+        R_vUTE_Stage_Partitioning(p_next_prior,p_table_prior,p_bounds_prior);
+      p_table_prior = G.p_table;
+      p_bounds_prior = G.p_bounds;
     }
     else
     if (CK_NEXT == G.e_MainCard) {

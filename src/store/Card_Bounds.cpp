@@ -34,6 +34,20 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eXK Card_Bounds::eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tablePtn_r,
+                           Card_Term*& rp_term_hash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  rp_term_hash = nullptr;
+
+  return XK_NONE;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

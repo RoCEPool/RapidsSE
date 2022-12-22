@@ -1676,10 +1676,40 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Stage_Partitioning(Card_Next* p_next_prior)
+void Xreshape::R_vUTE_Stage_Partitioning(Card_Next* p_next_prior,
+                                         Card_Table* p_table_prior,
+                                         Card_Bounds* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  Card_TablePtn* p_tablePtn_prior = p_table_prior->pSub_tablePtn();
+  //Card_Bounds*   p_bounds_prior   = p_table_prior->pSub_bounds();
+
+  Card_TablePtn* p_tablePtn_curr  = G.p_table->pSub_tablePtn();
+  Card_Bounds*   p_bounds_curr    = G.p_table->pSub_bounds();
+
+  Card_Hash* p_hash;
+  Card_Term* p_term_hash;
+  eXK eCastKind =  p_bounds_curr->eCastKind(p_tablePtn_prior, p_tablePtn_curr,
+                                            p_term_hash);
+
+  switch (eCastKind) {
+    case XK_BROADCAST:
+      p_next_prior->vValue("broadcast"_Stz);
+      break;
+
+    case XK_HASHCAST:
+      p_next_prior->vValue("hashcast"_Stz);
+      p_hash = Card_Hash::pDerive(p_term_hash);
+      G_vInsertBefore(p_hash,p_next_prior);
+      break;
+
+    case XK_UNICAST:
+      break;
+
+    default:
+      NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
