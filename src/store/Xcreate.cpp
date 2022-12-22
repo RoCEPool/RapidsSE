@@ -54,7 +54,7 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
   if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
-    char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+    char cTblSyn_term_0 = Card::cTableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
@@ -63,7 +63,7 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
     }
     else
     if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
-      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+      char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
       if (cTblSyn_term_1 == cTblSyn) {
         p_term = new Card_Term("$I1"_Stz);
         p_bound->vAppend(p_term);
@@ -76,7 +76,7 @@ Card_Bound* Xcreate::C_pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   }
   else
   if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
-    char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+    char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
@@ -104,7 +104,7 @@ Card_Bound* Xcreate::C_pBound_New(Stz* szRelnOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  Stz* szBound = E_szBound(szRelnOp);
+  Stz* szBound = Card::szBound(szRelnOp);
   Card_Term* p_term_bound = new Card_Term(szBound);
 
   if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
@@ -233,9 +233,9 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
 
   if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
-    char cTblSyn_term_0 = E_cValue_TableColSyn(pTerm_0->szValue());
+    char cTblSyn_term_0 = Card::cTableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn) {
-      szBound = E_szBound(pTerm_1->sz());
+      szBound = Card::szBound(pTerm_1->sz());
       p_term = new Card_Term(szBound);
       p_bounds->vAppend(p_term);
       p_term = new Card_Term("$I1"_Stz);
@@ -245,9 +245,9 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
     }
     else
     if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
-      char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+      char cTblSyn_term_1 = Card::cTableColSyn(pTerm_0->szValue());
       if (cTblSyn_term_1 == cTblSyn) {
-        szBound = E_szBound(pTerm_1->sz());
+        szBound = Card::szBound(pTerm_1->sz());
         p_term = new Card_Term(szBound);
         p_bounds->vAppend(p_term);
         p_term = new Card_Term("$I1"_Stz);
@@ -261,9 +261,9 @@ Card_Bounds* Xcreate::C_pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   }
   else
   if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
-    char cTblSyn_term_1 = E_cValue_TableColSyn(pTerm_1->szValue());
+    char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn) {
-      szBound = E_szBound(pTerm_1->sz());
+      szBound = Card::szBound(pTerm_1->sz());
       p_term = new Card_Term(szBound);
       p_bounds->vAppend(p_term);
       p_term = new Card_Term("$I1"_Stz);
@@ -339,7 +339,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = M_bPredRecursive(p_pred_ofFilter_ROOT, bLambdaFn);
+  bool bIgnore = p_pred_ofFilter_ROOT->bPredRecursive(bLambdaFn);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -405,7 +405,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   while (p_rpnCalc->nChildCards()) {
     Card_Term* p_term_next = _pCard_Term(p_rpnCalc->pPop());
 
-    eTE eTerm_next = E_eTerm_TermEval(p_term_next);
+    eTE eTerm_next = p_term_next->eTermEval();
 
     //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
 

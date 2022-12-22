@@ -105,7 +105,7 @@ void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
     G.p_stmColList = G.p_stream->pSub_stmColList();
     i8 nStmCols = G.p_stmColList->nChildCards();
 
-    i8 iLoOdn_stream = E_iStream_OdnLo(G.p_stream);
+    i8 iLoOdn_stream = G.p_stream->iGetOdnLow();
     if (C_UNKNOWN == iLoOdn_stream) {
       i8 iLoOdn_adjusted = iHiOdn_running + 1;
       i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
@@ -840,7 +840,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 
   vEndReshape();
 }
@@ -1149,7 +1149,7 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
   G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
-  bool bIgnore = M_bPredRecursive(G.p_PRED,bMarkCorrPred);
+  bool bIgnore = G.p_PRED->bPredRecursive(bMarkCorrPred);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1608,7 +1608,7 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
         }
         else {
           //p_child->vValue("$1"_Stz);
-          char cTblSyn = E_cValue_TableColSyn(p_child->szValue());
+          char cTblSyn = Card::cTableColSyn(p_child->szValue());
           cTblSyn = 'a'; // TODO: hack!!
           M_vCard_Set_TableColSyn(p_child,cTblSyn);
         }
@@ -2148,7 +2148,7 @@ void Xreshape::vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 
   vReshape(__func__);
 
-  i8 iOrdLo_stream = E_iStream_OdnLo(G.p_stream);
+  i8 iOrdLo_stream = G.p_stream->iGetOdnLow();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2158,7 +2158,7 @@ void Xreshape::vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
     if (! Card::bIsStreamColOrdinal(p_stmColOrd->szValue()))
       return C_CONTINUE_RECURSION;
 
-    i8 iStmColOdn = E_iValue_StreamColOdn(p_stmColOrd->szValue());
+    i8 iStmColOdn = Card::iGetColOdn(p_stmColOrd->szValue());
     i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
     M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn_corrected);
 
@@ -2215,7 +2215,7 @@ void Xreshape::vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 
   vEndReshape();
 }

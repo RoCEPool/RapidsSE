@@ -552,7 +552,7 @@ void Xtransforms::vS24_T_Index_Analysis(void)
 
   while (G_bEachMain(CK_TABLE)) {
     G.p_tableNm = G.p_table->pSub_tableNm();
-    Table* pTable = A_pAccess_Table(G.p_tableNm->sz());
+    Table* pTable = Card::pAccess_Table(G.p_tableNm->sz());
 
     G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -597,7 +597,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
   vStreamAnalysisReset();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    m_pTable = A_pAccess_Table(G.p_tableNm->sz());
+    m_pTable = Card::pAccess_Table(G.p_tableNm->sz());
     G.p_stream = Card_Stream::pDerive_Of_table(m_pTable);
 
     G.p_table->vAppend(G.p_stream);
@@ -1204,7 +1204,7 @@ void Xtransforms::vS40_T10_Fold_F(void)
   }
   vAssert_Board_sqB();
 
-  m_pCard_copied = E_pSubset_ChildrenBetween(G.pDeck, 0);
+  m_pCard_copied = G.pDeck->pDupSubCards(0);
 
   vPrintBoard(__LINE__);
 
@@ -1293,7 +1293,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   }
   vAssert_Board_sqB();
 
-  m_pCard_copied = E_pSubset_ChildrenBetween(G.pDeck, 1);
+  m_pCard_copied = G.pDeck->pDupSubCards(1);
 
   vPrintBoard(__LINE__);
 
@@ -1495,7 +1495,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   }
   vAssert_Board_sqB();
 
-  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+  m_pCard_yanked = G.pDeck->pDupSubCards(0);
 
   vPrintBoard(__LINE__);
 
@@ -1552,7 +1552,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   //               bc            // add cmpPred to table
   //               cp  @ro       //
 
-  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
+  char cTblSyn = Card::cTableColSyn(m_sSqyArg);
   G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
 
   G_vNewMember(CK_CMPPRED,"=="_Stz);
@@ -1680,7 +1680,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
 
   /*
   // find table for sqyarg
-  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
+  char cTblSyn = Card::cTableColSyn(m_sSqyArg);
   G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
 
   // TODO: derive cmpPred from marked tstPred and add to corresponding table
@@ -1721,7 +1721,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   }
   vAssert_Board_sqB();
 
-  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+  m_pCard_yanked = G.pDeck->pDupSubCards(0);
 
   vPrintBoard(__LINE__);
 
@@ -1781,7 +1781,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   }
 
   // find table for sqyarg
-  char cTblSyn = E_cValue_TableColSyn(m_sSqyArg);
+  char cTblSyn = Card::cTableColSyn(m_sSqyArg);
   G.p_table = G.pDeck->pFindTableCard(cTblSyn, G.p_MainCard);
 
   // TODO: derive cmpPred from marked tstPred and add to corresponding table
@@ -2206,7 +2206,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
   }
   vAssert_Board_sqB();
 
-  m_pCard_yanked = E_pSubset_ChildrenBetween(G.pDeck, 0);
+  m_pCard_yanked = G.pDeck->pDupSubCards(0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -17,6 +17,12 @@ namespace STORE
     Card_Term(void);
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
+
+    ePB  eEvalBound(void);
+    i8   iGetOdnNo(void);
+    eRO  eEvalRelOp(void);
+    char cGetTableSyn(void);
+    eTE  eTermEval(void);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

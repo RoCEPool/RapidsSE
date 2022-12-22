@@ -145,7 +145,7 @@ void Xderive::D_vDerive_JoinOrderSeq(Card_JoinOrdering* p_joinOrderSeq,
 
       Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
       s32 sTableSyn;
-      E_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
+      T_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
 
       if (p_joinOrderSeq->bHasChildWithValue(sTableSyn))
         continue;
@@ -278,7 +278,7 @@ char Xderive::D_cPRED_TableSyn_First(Card_PRED* p_PRED)
     if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    char cTblSyn_test = E_cValue_TableColSyn((p_term->szValue()));
+    char cTblSyn_test = Card::cTableColSyn((p_term->szValue()));
     if (' ' == cTblSyn)
       cTblSyn = cTblSyn_test;
     else

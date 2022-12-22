@@ -257,7 +257,7 @@ void Xmodify::M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = M_bPredRecursive(p_pred_ROOT,bfXYZ);
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bfXYZ);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -654,7 +654,7 @@ i8 Xmodify::E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr)
   CardIter xCI(p_rpnCalc);
   while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
     if (Card::bIsKeyOrdinal(p_term->szValue())) {
-      i8 i_Key = E_iValue_KeyOdn(p_term->szValue());
+      i8 i_Key = Card::iGetColOdn(p_term->szValue());
       return i_Key;
     }
   }
@@ -904,7 +904,7 @@ void Xmodify::M_vScan_Produce_indexList(Card_Scan* p_scan)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   Card_TableNm* p_tableNm = p_scan->pSub_tableNm();
-  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+  Table* pTable = Card::pAccess_Table(p_tableNm->sz());
 
   Card_IndexList* p_indexList = Card_IndexList::pDerive(pTable);
   if (! p_indexList)
@@ -1090,7 +1090,7 @@ bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
 
   // is the table column within scope?
   char cTblSyn_table = p_table->cValue();
-  char cTblSyn_term = E_cValue_TableColSyn(szTerm);
+  char cTblSyn_term = Card::cTableColSyn(szTerm);
 //  if (cTblSyn_term <= cTblSyn_table)
 //    return true;
   if (pScope->bInScope(cTblSyn_term))
@@ -1108,7 +1108,7 @@ void Xmodify::M_vTable_Set_Syn(Card_Table* p_table)
 
   Card_TableNm* p_tableNm = p_table->pSub_tableNm();
 
-  Table* pTable = A_pAccess_Table(p_tableNm->sz());
+  Table* pTable = Card::pAccess_Table(p_tableNm->sz());
 
   p_table->vMark1(MARK_CHANGED);
 
@@ -1128,7 +1128,7 @@ void Xmodify::M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  i8 iKeyOdn = E_iValue_KeyOdn(p_term->szValue());
+  i8 iKeyOdn = Card::iGetColOdn(p_term->szValue());
 
   M_vCard_Set_KeyOrdinal(p_term,iKeyOdn+nBy);
 
@@ -1148,7 +1148,7 @@ void Xmodify::M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term, i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  i8 iStmColOdn = E_iValue_StreamColOdn(p_term->szValue());
+  i8 iStmColOdn = Card::iGetColOdn(p_term->szValue());
 
   M_vCard_Set_StreamColOrdinal(p_term,iStmColOdn+nBy);
 

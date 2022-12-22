@@ -180,7 +180,7 @@ void Card_JoinOrdering::vConcat(Card_PtndJoin* p_PtndJoin)
 
       Card_Term* p_term = _pCard_Term(pChild);
       s32 sTableSyn;
-      //E_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
+      //T_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
       sTableSyn.vSprint("%c"_Stz, p_term->sz()->azChar()[1]);
 
       if (bHasChildWithValue(sTableSyn))

@@ -164,6 +164,34 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* access table                                                               */
+/*----------------------------------------------------------------------------*/
+Table* Card::pAccess_Table(Stz* szTableNm)
+{
+  _static_
+
+  Table* pTable = AM::pTableFind(szTableNm);
+
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bound for relational op                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szBound(Stz* szRelnOp)
+{
+  _static_
+
+  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz))
+    return "LBOUND"_Stz;
+
+  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz))
+    return "UBOUND"_Stz;
+
+  return "BOUND"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* check for leaks                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vCardLeaks(void)
@@ -221,6 +249,18 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //    vDebugPoint();
 //  }
 //
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column ordinal n  (i.e. $n)                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iGetColOdn(Stz* szValue)
+{
+  _static_
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,6 +416,24 @@ bool Card::bIsTableColOrdinal(Stz* szValue)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column syn from $c.n                                             */
+/*----------------------------------------------------------------------------*/
+char Card::cTableColSyn(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  RASSERT('$' == acFirst);
+  RASSERT('.' == acThird);
+
+  return acSecond;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -57,6 +57,32 @@ bool Xtest::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get table syn of column ref                                                */
+/*----------------------------------------------------------------------------*/
+char Xtest::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Stz* szColumnRef = p_columnRef->sz();
+
+  char cFirst  = szColumnRef->azChar()[0]; // $
+  char cSecond = szColumnRef->azChar()[1]; // $
+  char cThird  = szColumnRef->azChar()[2]; // c
+
+  return cThird;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtest::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  psTableSyn->vSprint("%c"_Stz, T_cColumnRef_TableSyn(p_columnRef));
+}
+
+/*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
@@ -102,7 +128,7 @@ bool Xtest::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (PB_NONE == E_eTerm_Bound(pTerm2))
+  if (PB_NONE == pTerm2->eEvalBound())
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
@@ -354,7 +380,7 @@ Card_CmpPred* Xtest::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (eBound != E_eTerm_Bound(pTerm2))
+  if (eBound != pTerm2->eEvalBound())
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
@@ -569,14 +595,14 @@ bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pre
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = E_cColumnRef_TableSyn(p_columnRef_this_0);
+  char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = E_cColumnRef_TableSyn(p_columnRef_this_1);
+  char cTableSyn_this_1 = T_cColumnRef_TableSyn(p_columnRef_this_1);
 
   Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = E_cColumnRef_TableSyn(p_columnRef_arg_0);
+  char cTableSyn_arg_0 = T_cColumnRef_TableSyn(p_columnRef_arg_0);
   Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = E_cColumnRef_TableSyn(p_columnRef_arg_1);
+  char cTableSyn_arg_1 = T_cColumnRef_TableSyn(p_columnRef_arg_1);
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0
          || cTableSyn_this_0 == cTableSyn_arg_1
@@ -621,9 +647,9 @@ bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = E_cColumnRef_TableSyn(p_columnRef_this_0);
+  char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = E_cColumnRef_TableSyn(p_columnRef_this_1);
+  char cTableSyn_this_1 = T_cColumnRef_TableSyn(p_columnRef_this_1);
 
   if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
     return true;
@@ -1025,8 +1051,8 @@ bool Xtest::T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPre
       _pCard_ColumnRef(p_predCmp->pGetChild(1));
   Stz* szPredColumnRef_1 = p_columnRef_1->sz();
 
-  char cTableSyn_0 = E_cColumnRef_TableSyn(p_columnRef_0);
-  char cTableSyn_1 = E_cColumnRef_TableSyn(p_columnRef_1);
+  char cTableSyn_0 = T_cColumnRef_TableSyn(p_columnRef_0);
+  char cTableSyn_1 = T_cColumnRef_TableSyn(p_columnRef_1);
 
   if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
     return true;

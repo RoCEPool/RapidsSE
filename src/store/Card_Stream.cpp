@@ -182,6 +182,30 @@ Card_Stream* Card_Stream::pDerive_Of_table(Table* pTable)
   return p_stream;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get stream ordinal low                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Card_Stream::iGetOdnLow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 iOdnLo = Y_iGet(P_OdnLo);
+
+  return iOdnLo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream ordinal high                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Card_Stream::iGetOdnHigh(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 iOdnHi = Y_iGet(P_OdnHi);
+
+  return iOdnHi;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

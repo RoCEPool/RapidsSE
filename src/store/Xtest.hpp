@@ -48,6 +48,9 @@ namespace STORE
     bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
 
     bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
+    char T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);
+    void T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
+
 
     bool            T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
