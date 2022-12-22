@@ -22,11 +22,8 @@ INCLUDE 'regrLoadData.test';
 
 //------------------------------------------------------------------------------
 
-
-/* OPT
 LOG 'AndOrNot.test ...';
 INCLUDE 'AndOrNot.test';
-*/
 
 LOG 'inNotIn.test ...';
 INCLUDE 'InNotIn.test';
