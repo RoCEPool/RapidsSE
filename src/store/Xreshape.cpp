@@ -1682,16 +1682,17 @@ void Xreshape::R_vUTE_Stage_Partitioning(Card_Next* p_next_prior,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  Card_TablePtn* p_tablePtn_prior = p_table_prior->pSub_tablePtn();
-  //Card_Bounds*   p_bounds_prior   = p_table_prior->pSub_bounds();
+  Card_Stream* p_stream_prior = p_table_prior->pSub_stream();
+  Card_StmColList* p_stmColList_prior = p_stream_prior->pSub_stmColList();
 
-  Card_TablePtn* p_tablePtn_curr  = G.p_table->pSub_tablePtn();
   Card_Bounds*   p_bounds_curr    = G.p_table->pSub_bounds();
 
   Card_Hash* p_hash;
   Card_Term* p_term_hash;
-  eXK eCastKind =  p_bounds_curr->eCastKind(p_tablePtn_prior, p_tablePtn_curr,
-                                            p_term_hash);
+  Card_StmCol* p_stmCol;
+  Stz* szTblColOdn;
+  i8 i_StmCol;
+  eXK eCastKind = p_bounds_curr->eCastKind(p_table_prior, G.p_table, p_term_hash);
 
   switch (eCastKind) {
     case XK_BROADCAST:
@@ -1700,7 +1701,10 @@ void Xreshape::R_vUTE_Stage_Partitioning(Card_Next* p_next_prior,
 
     case XK_HASHCAST:
       p_next_prior->vValue("hashcast"_Stz);
-      p_hash = Card_Hash::pDerive(p_term_hash);
+
+      szTblColOdn = p_term_hash->szValue();
+      p_stmCol = T_pStmCol_FindBy_tblColOdn(p_stmColList_prior,szTblColOdn,i_StmCol);
+      p_hash = Card_Hash::pDerive(p_stmCol);
       G_vInsertBefore(p_hash,p_next_prior);
       break;
 

@@ -4,6 +4,11 @@
 
 #include "Card_Hash.hpp"
 
+#include "Card_StmCol.hpp"
+#include "Card_StmColOdn.hpp"
+#include "Card_Type.hpp"
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -41,11 +46,17 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Hash* Card_Hash::pDerive(Card_Term* p_term)
+Card_Hash* Card_Hash::pDerive(Card_StmCol* p_stmCol)
 {
   _static_
 
   Card_Hash* p_hash = new Card_Hash;
+
+  Card_Type* p_type = p_stmCol->pSub_type();
+  p_hash->vAppend(p_type);
+
+  Card_StmColOdn* p_stmColOdn = p_stmCol->pSub_stmColOdn();
+  p_hash->vAppend(p_stmColOdn);
 
   return p_hash;
 }

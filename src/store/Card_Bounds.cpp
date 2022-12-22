@@ -4,6 +4,13 @@
 
 #include "Card_Bounds.hpp"
 
+#include "Card_Bound.hpp"
+#include "Card_Table.hpp"
+#include "Card_TablePtn.hpp"
+#include "Card_Term.hpp"
+
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -37,16 +44,47 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Bounds::eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tablePtn_r,
+eXK Card_Bounds::eCastKind(Card_Table* p_table_l, Card_Table* p_table_r,
                            Card_Term*& rp_term_hash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_TablePtn* p_tablePtn_l = p_table_l->pSub_tablePtn();
+  Card_TablePtn* p_tablePtn_r = p_table_r->pSub_tablePtn();
+
   rp_term_hash = nullptr;
 
-  return XK_NONE;
-}
 
+  CardIter xCI_bounds(this);
+  while (Card_Bound* p_bound = _pCard_Bound(xCI_bounds.pEachChild(CK_BOUND))) {
+
+    bool bMatch_l = false;
+    bool bMatch_r = false;
+    CardIter xCI_bound(p_bound);
+    while (Card_Term* p_term_bound = _pCard_Term(xCI_bound.pEachChild(CK_TERM))) {
+
+      if (p_tablePtn_l->bSame(p_term_bound->szValue())) {
+        bMatch_l = true;
+      }
+      else
+      if (p_tablePtn_r->bSame(p_term_bound->szValue())) {
+        bMatch_r = true;
+        rp_term_hash = p_term_bound;
+      }
+    }
+
+    if (bMatch_l) {
+      if (bMatch_r)
+        return XK_UNICAST;
+    }
+    else {
+      if (bMatch_r)
+        return XK_HASHCAST;
+    }
+  }
+
+  return XK_BROADCAST;
+}
 
 /*============================================================================*/
 /* end                                                                        */
