@@ -31,30 +31,17 @@ namespace STORE
     bool T_bBounds_Is_ubound(Card_Bounds* p_bounds);
 
     bool T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred);
-    bool T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_MaybeBounds_v2(Card_CmpPred* p_cmpPred, Card_Table* p_table,
                                    bool bParamAllowedInBounds);
     bool T_bCmpPred_MaybeBoundsOf_index(Card_CmpPred* p_cmpPred, Card_Index* p_index,
                                         bool bParamAllowedInBounds);
-    bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_bounds);
     Card_Term* E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred);
-    bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
     i8 T_iCard_ConvertableTo_StmColOdn(Card* p_card);
     i8 T_iCard_ConvertableTo_TblColOdn(Card* p_card);
 
     bool T_bCombined_Reinstate(eCK eMain, eCK eSubsequent);
-
-    bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
-    char T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);
-    void T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
-
-
-    bool            T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
-    Card_CoPtnJoin* T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
-    bool            T_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
 
     bool T_bFilter_IsEmpty(Card_Filter* p_filter);
 
@@ -68,8 +55,6 @@ namespace STORE
     Card_PRED* T_pPRED_Containing_MaybeBoundsOf_index(Card_PRED* p_PRED, Card_Index* p_index,
                                                       bool bParamAllowedInBounds);
 
-    bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
-
     bool T_bStage_IsIgnorable(Card_Stage* p_stage);
     bool T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior);
     bool T_bStage_Reinstate(eCK eMain, eCK eSubsequent);
@@ -80,9 +65,6 @@ namespace STORE
     Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& ri_StreamColNo);
     Card_StmCol* T_pStmCol_FindBy_tblColOdn(Card_StmColList* p_stmColList, Stz *szTblColOdn, i8& ri_StmCol);
     Card_OrdElmOdn* T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList, Stz *szStmColOdn, i8& ri_StmOrdOdn);
-
-    Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
-    bool         T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
 
     bool T_bTblColSyn_Same(char cTblSyn0, char cTblSyn1);
 

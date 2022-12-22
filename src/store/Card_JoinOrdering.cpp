@@ -5,7 +5,6 @@
 #include "Card_JoinOrdering.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
 #include "Card_JoinOrder.hpp"

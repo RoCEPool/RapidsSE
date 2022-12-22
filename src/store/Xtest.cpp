@@ -37,52 +37,6 @@ Xtest::~Xtest(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* is atom a column ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szColumnRef = p_columnRef->sz();
-
-  char cFirst  = szColumnRef->azChar()[0];
-  char cSecond = szColumnRef->azChar()[1];
-  char cThird  = szColumnRef->azChar()[2];
-  char cFourth = szColumnRef->azChar()[3];
-
-  if ('$' == cFirst && '$' == cSecond && '.' == cFourth)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table syn of column ref                                                */
-/*----------------------------------------------------------------------------*/
-char Xtest::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szColumnRef = p_columnRef->sz();
-
-  char cFirst  = szColumnRef->azChar()[0]; // $
-  char cSecond = szColumnRef->azChar()[1]; // $
-  char cThird  = szColumnRef->azChar()[2]; // c
-
-  return cThird;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xtest::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  psTableSyn->vSprint("%c"_Stz, T_cColumnRef_TableSyn(p_columnRef));
-}
-
-/*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
@@ -328,51 +282,6 @@ bool Xtest::T_bCmpPred_Contains_Sqy_Call(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this predCmp co-partitionable with given arg?                           */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_ColumnRef* p_columnRef_this_0 =
-      _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
-  char cTableSyn_this_0 = szColumnRef_this_0->cTableSyn();
-
-  Card_ColumnRef* p_columnRef_this_1 =
-      _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
-  char cTableSyn_this_1 = szColumnRef_this_1->cTableSyn();
-
-
-  Card_ColumnRef* p_columnRef_arg_0 =
-      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
-  char cTableSyn_arg_0 = szColumnRef_arg_0->cTableSyn();
-
-  Card_ColumnRef* p_columnRef_arg_1 =
-      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
-  char cTableSyn_arg_1 = szColumnRef_arg_1->cTableSyn();
-
-  bool bAreCoPtn = false;
-
-  if (   cTableSyn_arg_0 == cTableSyn_this_0
-         || cTableSyn_arg_0 == cTableSyn_this_1
-         || cTableSyn_arg_1 == cTableSyn_this_0
-         || cTableSyn_arg_1 == cTableSyn_this_1
-      )
-    bAreCoPtn = true;
-
-  vTrace("(%c,%c) - (%c,%c) are%s co-partitioned\n"_Stz,
-         cTableSyn_this_0,cTableSyn_this_1,
-         cTableSyn_arg_0,cTableSyn_arg_1,
-         bAreCoPtn ? "" : " NOT");
-
-  return bAreCoPtn;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Xtest::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
@@ -390,30 +299,6 @@ Card_CmpPred* Xtest::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex
     return nullptr;
 
   return _pCard_CmpPred(this);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
-
-  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
-  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
-
-  if (szColumnRef_this_0->bSame(szColumnRef_arg_0) &&
-      szColumnRef_this_1->bSame(szColumnRef_arg_1))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -588,33 +473,6 @@ bool Xtest::T_bCmpPred_SubsetOf_bounds(Card_CmpPred* p_cmpPred, Card_Bounds* p_b
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = T_cColumnRef_TableSyn(p_columnRef_this_1);
-
-  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = T_cColumnRef_TableSyn(p_columnRef_arg_0);
-  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = T_cColumnRef_TableSyn(p_columnRef_arg_1);
-
-  if (   cTableSyn_this_0 == cTableSyn_arg_0
-         || cTableSyn_this_0 == cTableSyn_arg_1
-         || cTableSyn_this_1 == cTableSyn_arg_0
-         || cTableSyn_this_1 == cTableSyn_arg_1
-      )
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
 Card_Term* Xtest::E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred)
@@ -638,24 +496,6 @@ Card_Term* Xtest::E_pCmpPred_Term_param(Card_CmpPred* p_cmpPred)
   return nullptr;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = T_cColumnRef_TableSyn(p_columnRef_this_1);
-
-  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
-    return true;
-
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* back to stream column ordinal $n                                           */
@@ -712,99 +552,6 @@ bool Xtest::T_bCombined_Reinstate(eCK eMain, eCK eSubsequent)
       CK_PROJECT   == eMain ||
       CK_SORT      == eMain )
     return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
-  Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
-
-  if (T_bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_CoPtnJoin* Xtest::T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nChildren = p_coPtnJoinList->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(p_coPtnJoinList->pGetChild(i_Child));
-
-    if (T_bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_coPtnPred))
-      return p_coPtnJoin;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nChildren_coPtn = p_coPtnJoinList->nChildCards();
-  for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
-    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(p_coPtnJoinList->pGetChild(i_Child_coPtn));
-
-    i8 nChildren_predCmp = p_coPtnJoin->nChildCards();
-    for (i8 i_Child_predCmp = 0; i_Child_predCmp < nChildren_predCmp; i_Child_predCmp++) {
-      Card_CmpPred *p_predCmp = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_predCmp));
-
-
-      if (T_bCmpPred_IsEq(p_predCmp, p_predCmp))
-        return true;
-    }
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nPtnJoins_sofar = pPriorPtnJoins_sofar->nChildCards();
-  if (! nPtnJoins_sofar)
-    return true;
-
-  for (i8 i_PtnJoin_sofar = 0; i_PtnJoin_sofar < nPtnJoins_sofar; i_PtnJoin_sofar++) {
-    Card_PtndJoin* p_ptndJoin_sofar =
-        _pCard_PtndJoin(pPriorPtnJoins_sofar->pGetChild(i_PtnJoin_sofar));
-
-    i8 nPredCmps_sofar = p_ptndJoin_sofar->nChildCards();
-    for (i8 i_PredCmp_sofar = 0; i_PredCmp_sofar < nPredCmps_sofar; i_PredCmp_sofar++) {
-      Card_CmpPred* p_predCmp_sofar =
-          _pCard_CmpPred(p_ptndJoin_sofar->pGetChild(i_PredCmp_sofar));
-
-      i8 nPredCmps_this = p_ptndJoin->nChildCards();
-      for (i8 i_PredCmp_this = 0; i_PredCmp_this < nPredCmps_this; i_PredCmp_this++) {
-        Card_CmpPred *p_predCmp_this =
-            _pCard_CmpPred(p_ptndJoin->pGetChild(i_PredCmp_this));
-
-        if (T_bCmpPred_OverlapsWith(p_predCmp_this, p_predCmp_sofar))
-          return true;
-      }
-
-    }
-  }
 
   return false;
 }
@@ -1033,63 +780,6 @@ Card_OrdElmOdn* Xtest::T_pStmOrdOdn_FindBy_stmColOdn(Card_Order* p_stmOrdList,
   }
 
   ri_StmOrdOdn = C_UNKNOWN;
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_ColumnRef* p_columnRef_0 =
-      _pCard_ColumnRef(p_predCmp->pGetChild(0));
-  Stz* szPredColumnRef_0 = p_columnRef_0->sz();
-
-  Card_ColumnRef* p_columnRef_1 =
-      _pCard_ColumnRef(p_predCmp->pGetChild(1));
-  Stz* szPredColumnRef_1 = p_columnRef_1->sz();
-
-  char cTableSyn_0 = T_cColumnRef_TableSyn(p_columnRef_0);
-  char cTableSyn_1 = T_cColumnRef_TableSyn(p_columnRef_1);
-
-  if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
-    return true;
-
-  Card_Table* p_table_0 = T_pTableList_FindTable(p_tableList, cTableSyn_0);
-  Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
-  Stz* szTablePtn_0 = p_tablePtn_0->sz();
-
-  Card_Table* p_table_1 = T_pTableList_FindTable(p_tableList, cTableSyn_1);
-  Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
-  Stz* szTablePtn_1 = p_tablePtn_1->sz();
-
-  if (szTablePtn_0->bSame(szPredColumnRef_0) && szTablePtn_1->bSame(szPredColumnRef_1))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Table* Xtest::T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nChildren = p_tableList->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChildCard = p_tableList->pGetChild(i_Child);
-    if (CK_TABLE != pChildCard->eCard())
-      continue;
-
-    Card_Table* p_table = _pCard_Table(pChildCard);
-    char cTableSyn = p_table->cValue();
-    if (cTableSyn == cSyn)
-      return p_table;
-  }
-
   return nullptr;
 }
 
