@@ -4,7 +4,7 @@
 
 #include "Card_Bounds.hpp"
 
-#include "Card_Bound.hpp"
+#include "Card_EBound.hpp"
 #include "Card_Table.hpp"
 #include "Card_TablePtn.hpp"
 #include "Card_Term.hpp"
@@ -56,11 +56,11 @@ eXK Card_Bounds::eCastKind(Card_Table* p_table_l, Card_Table* p_table_r,
 
 
   CardIter xCI_bounds(this);
-  while (Card_Bound* p_bound = _pCard_Bound(xCI_bounds.pEachChild(CK_BOUND))) {
+  while (Card_EBound* p_ebound = _pCard_EBound(xCI_bounds.pEachChild(CK_EBOUND))) {
 
     bool bMatch_l = false;
     bool bMatch_r = false;
-    CardIter xCI_bound(p_bound);
+    CardIter xCI_bound(p_ebound);
     while (Card_Term* p_term_bound = _pCard_Term(xCI_bound.pEachChild(CK_TERM))) {
 
       if (p_tablePtn_l->bSame(p_term_bound->szValue())) {

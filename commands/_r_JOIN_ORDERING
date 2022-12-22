@@ -13,8 +13,7 @@ create index S_idx0  on Supplier (S_SUPPKEY  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimise
-/glean_cue_from = "vS50_T00_Join_Ordering_v2"
+/glean_cue_from = "vSZ0_T30_Add_Partitioning"
 /glean_interactive
 /transliterated
 /weaved

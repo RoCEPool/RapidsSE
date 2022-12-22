@@ -2984,41 +2984,26 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
   Card_Table* p_table_prior = nullptr;
   Card_Bounds* p_bounds_prior = nullptr;
 
-//  if (G_bEachMain(CK_NEXT)) {
-//    p_next_prior = G.p_next;
-//  }
-//  else {
-//    NEVER_REACH
-//  }
+  Card* p_main_prior = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (G_bEachMain()) {
-    if (CK_INDEXSCAN == G.e_MainCard) {
-      G.p_table = G.p_MainCard->pSub_table();
+    if (CK_INDEXJOIN == G.e_MainCard ||
+        CK_INDEXSCAN == G.e_MainCard ||
+        CK_KEYEXISTS == G.e_MainCard ||
+        CK_KEYNOTEXISTS == G.e_MainCard ||
+        CK_SCAN == G.e_MainCard) {
+      G.p_table  = G.p_MainCard->pSub_table();
       G.p_bounds = G.p_MainCard->pSub_bounds();
-      if (p_table_prior)
-        R_vUTE_Stage_Partitioning(p_next_prior,p_table_prior,p_bounds_prior);
+      if (p_table_prior) {
+        R_vUTE_Stage_Partitioning(p_main_prior, G.p_MainCard, p_next_prior);
+        vPrintBoard(__LINE__);
+        vDebugPoint();
+      }
       p_table_prior = G.p_table;
       p_bounds_prior = G.p_bounds;
-    }
-    else
-    if (CK_KEYEXISTS == G.e_MainCard) {
-      G.p_table = G.p_MainCard->pSub_table();
-      G.p_bounds = G.p_MainCard->pSub_bounds();
-      if (p_table_prior)
-        R_vUTE_Stage_Partitioning(p_next_prior,p_table_prior,p_bounds_prior);
-      p_table_prior = G.p_table;
-      p_bounds_prior = G.p_bounds;
-    }
-    else
-    if (CK_KEYNOTEXISTS == G.e_MainCard) {
-      G.p_table = G.p_MainCard->pSub_table();
-      G.p_bounds = G.p_MainCard->pSub_bounds();
-      if (p_table_prior)
-        R_vUTE_Stage_Partitioning(p_next_prior,p_table_prior,p_bounds_prior);
-      p_table_prior = G.p_table;
-      p_bounds_prior = G.p_bounds;
+      p_main_prior = G.p_MainCard;
     }
     else
     if (CK_NEXT == G.e_MainCard) {
