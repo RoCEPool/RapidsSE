@@ -1240,7 +1240,7 @@ function validateStorageDirsHaveSpace() {
     do
       remoteCmd="$(cat <<-EOF
 if [ -d "${dirPath}" ]; then
-maxDirSpace=$(df -m "${dirPath}" | awk '/\/dev\//{print $2}')
+maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
 if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
 echo "Storage disk directory (${dirPath}) does not have enough space.";
 false;
@@ -1249,8 +1249,8 @@ fi
 else
 dname="$(dirname "${dirPath}")"
 if [ -d "\${dname}" ]; then
-mkdir -p "${dirPath}" || echo "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
-maxDirSpace=$(df -m "${dirPath}" | awk '/\/dev\//{print $2}')
+mkdir -p "${dirPath}" || errorExit "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
+maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
 if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
 echo "Storage disk directory (${dirPath}) does not have enough space.";
 false;
