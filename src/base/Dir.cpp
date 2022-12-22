@@ -10,6 +10,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/mount.h>
+//#include <sys/statvfs.h>
+//#ifdef WITH_LINUX
+//#include <sys/vfs.h>
 
 #include "MY.hpp"
 

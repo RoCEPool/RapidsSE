@@ -223,6 +223,8 @@ function startRemoteNode() {
 
 function startCurrentNode() {
 
+# extract params into named variables
+
   # Get all of the settings for the current node
   local host
   local port

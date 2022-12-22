@@ -1265,6 +1265,7 @@ fi
 true;
 EOF
       )"
+      # test ssh command locally, issue could be single quotes in sshCmd
       sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'" )
 
       debugPrint "About to validate the storage disk directory space on node ${nodeName} with the command: ${sshCmd[*]}"
