@@ -8,11 +8,10 @@
 #include "Resources.hpp" //?
 
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <sys/mount.h>
-//#include <sys/statvfs.h>
-//#ifdef WITH_LINUX
-//#include <sys/vfs.h>
+#ifdef WITH_LINUX
+#include <sys/vfs.h>
+#endif
 
 #include "MY.hpp"
 
