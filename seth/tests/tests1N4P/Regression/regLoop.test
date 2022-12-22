@@ -81,10 +81,8 @@ INCLUDE 'cast.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
 
-/* OPT
 LOG 'functions-extract.test ...';
 INCLUDE 'functions-extract.test';
-*/
 
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';
