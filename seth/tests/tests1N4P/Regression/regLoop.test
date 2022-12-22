@@ -26,10 +26,10 @@ INCLUDE 'regrLoadData.test';
 /* OPT
 LOG 'AndOrNot.test ...';
 INCLUDE 'AndOrNot.test';
+*/
 
 LOG 'inNotIn.test ...';
 INCLUDE 'InNotIn.test';
-*/
 
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';
@@ -65,10 +65,10 @@ INCLUDE 'between.test';
 
 LOG 'case.test ...';
 INCLUDE 'case.test';
-
+*/
 LOG 'cast.test ...';
 INCLUDE 'cast.test';
-*/
+
 
 //INCLUDE 'ctas.test';
 
@@ -81,10 +81,8 @@ INCLUDE 'cast.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
 
-/* OPT
 LOG 'functions-extract.test ...';
 INCLUDE 'functions-extract.test';
-*/
 
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';
@@ -115,12 +113,11 @@ LOG 'isnull.test ...';
 INCLUDE 'isnull.test';
 */
 
+//LOG 'joinTests.test ...';
 //INCLUDE 'joinTests.test';
 
-/* OPT
 LOG 'like.test ...';
 INCLUDE 'like.test';
-*/
 
 //INCLUDE 'subqueries-select.test';
 //INCLUDE 'subqueries-where-single.test';
