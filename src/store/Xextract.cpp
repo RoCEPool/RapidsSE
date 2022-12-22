@@ -309,11 +309,21 @@ eTE Xextract::E_eTerm_TermEval(Card_Term* p_term)
   else if (szTerm->bSame(">"_Stz))          return TE_COMPARE;
 
   else if (szTerm->bSame("between"_Stz))         return TE_BOOLFN;
-  else if (szTerm->bSame("like2"_Stz))           return TE_BOOLFN;  //added
+  else if (szTerm->bSame("extract_day"_Stz))     return TE_BOOLFN;
+  else if (szTerm->bSame("extract_hour"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("extract_minute"_Stz))  return TE_BOOLFN;
+  else if (szTerm->bSame("extract_month"_Stz))   return TE_BOOLFN;
+  else if (szTerm->bSame("extract_second"_Stz))  return TE_BOOLFN;
+  else if (szTerm->bSame("extract_year"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("like2"_Stz))           return TE_BOOLFN;
+  else if (szTerm->bSame("like3"_Stz))           return TE_BOOLFN;
   else if (szTerm->bSame("matchLeading"_Stz))    return TE_BOOLFN;
   else if (szTerm->bSame("matchMiddle"_Stz))     return TE_BOOLFN;
   else if (szTerm->bSame("matchMiddle1"_Stz))    return TE_BOOLFN;
+  else if (szTerm->bSame("matchMiddle2"_Stz))    return TE_BOOLFN;
   else if (szTerm->bSame("matchTrailing"_Stz))   return TE_BOOLFN;
+  else if (szTerm->bSame("subString2"_Stz))      return TE_BOOLFN;
+  else if (szTerm->bSame("subString3"_Stz))      return TE_BOOLFN;
 
   else return TE_OTHER;
 }
