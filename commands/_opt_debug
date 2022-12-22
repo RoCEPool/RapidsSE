@@ -2,39 +2,28 @@
 /* _opt_debug --                                                              */
 /*============================================================================*/
 
-create table datums (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
 );
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+explain stage transliterate
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
 
-//explain stage transliterate
-//select tsp_col12 from datums where EXTRACT (YEAR FROM tsp_col12) = 1941;
-
-/glean_cue_from = "vS50_T00_Join_Ordering_v2"
 /glean_interactive
-/transliterated
 /weaved
-/pipelineName = "_r_opt_debug"
-select tsp_col12
-  from datums
- where EXTRACT (YEAR FROM tsp_col12) = 1941
-;
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
+
 
 /*============================================================================*/
 /* end                                                                        */
