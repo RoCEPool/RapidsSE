@@ -251,6 +251,7 @@ void Xseries::vSeries_A0_Make_Weavable(void)
   m_pTransforms->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
 
   m_pTransforms->vSZ0_T20_Reinstate_stagesV3();
+  m_pTransforms->vSZ0_T30_Add_Partioning();
 
   m_pTransforms->vSA0_TZZ_End();
 

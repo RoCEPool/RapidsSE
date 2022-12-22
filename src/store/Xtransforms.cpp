@@ -2967,6 +2967,20 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/* add partitioning                                                           */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vSZ0_T30_Add_Partioning(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "add partitioning"_Stz);
+
+  vAssert_Board_mqA();
+
+  vEndTransform();
+}
+
 
 
 /*----------------------------------------------------------------------------*/
