@@ -101,10 +101,8 @@ INCLUDE 'functions-substr.test';
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
 
-/* OPT
 LOG 'having.test ...';
 INCLUDE 'having.test';
-*/
 
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
