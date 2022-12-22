@@ -1052,7 +1052,7 @@ void Weaver::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  szRpnExpr->vCatSprint(" %lls"_Stz,pCard_Limit->sz());
+  szRpnExpr->vCatSprint(" %s"_Stz,pCard_Limit->sz());
 }
 
 /*----------------------------------------------------------------------------*/
