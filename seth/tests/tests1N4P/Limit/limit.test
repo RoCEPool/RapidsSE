@@ -41,7 +41,7 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select * from lineitem limit 4;
+/weaved select * from lineitem limit 4;
 rows: 4
 
 //------------------------------------------------------------------------------

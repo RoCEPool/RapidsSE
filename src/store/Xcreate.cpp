@@ -455,29 +455,20 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_notPred = nullptr;
         p_childA  = nullptr;
         DELETE_CARD(p_term_next);
+        //p_boolCalc->vDump(0,"NOT"_Stz);
         break;
 
       case TE_COMPARE:
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
-//        if (bSawSqy) {
-//          p_roPred = new Card_RoPred;
-//          p_roPred->vValue(p_term_next->sz());
-//          p_roPred->vTransferChildren(p_TermSeries);
-//          //p_boolCalc->vPush(p_roPred);
-//          p_boolCalc->vAppend(p_roPred);
-//          p_roPred = nullptr;
-//        }
-//        else {
-          p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->sz());
-          p_cmpPred->vTransferChildren(p_TermSeries);
-          if (T_bCmpPred_Contains_Sqy_Call(p_cmpPred))
-            p_cmpPred->vCard(CK_ROPRED);
-          //p_boolCalc->vPush(p_cmpPred);
-          p_boolCalc->vAppend(p_cmpPred);
-          p_cmpPred = nullptr;
-//        }
+        p_cmpPred = new Card_CmpPred;
+        p_cmpPred->vValue(p_term_next->sz());
+        p_cmpPred->vTransferChildren(p_TermSeries);
+        if (T_bCmpPred_Contains_Sqy_Call(p_cmpPred))
+          p_cmpPred->vCard(CK_ROPRED);
+        //p_boolCalc->vPush(p_cmpPred);
+        p_boolCalc->vAppend(p_cmpPred);
+        p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);
         bSawSqy = false;
         //p_boolCalc->vDump(0,"COMPARE"_Stz);
@@ -504,7 +495,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
           p_boolCalc->vAppend(p_bolPred);
           p_bolPred = nullptr;
           DELETE_CARD(p_term_next);
-          //p_boolCalc->vDump(0,"BOOLFN"_Stz);
+          //p_boolCalc->vDump(0,"BOOLFN/IN"_Stz);
         }
         else {
           p_roPred = new Card_RoPred;
@@ -526,7 +517,6 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
           p_boolCalc->vAppend(p_bolPred);
           p_bolPred = nullptr;
           DELETE_CARD(p_term_next);
-          //p_boolCalc->vDump(0,"BOOLFN"_Stz);
 
           p_childA = p_boolCalc->pPlopChild();
           p_notPred = new Card_NotPred;
@@ -534,6 +524,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
           p_boolCalc->vAppend(p_notPred);
           p_notPred = nullptr;
           p_childA  = nullptr;
+          //p_boolCalc->vDump(0,"BOOLFN/NOTIN"_Stz);
         }
         else {
           p_roPred = new Card_RoPred;
@@ -542,7 +533,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
           p_boolCalc->vAppend(p_roPred);
           p_roPred = nullptr;
           DELETE_CARD(p_term_next);
-          //p_boolCalc->vDump(0,"IN"_Stz);
+          //p_boolCalc->vDump(0,"NOTIN"_Stz);
         }
         break;
 
@@ -589,6 +580,8 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   RASSERT(0 == p_TermSeries->nChildCards());
   delete p_TermSeries;
+
+  //p_boolCalc->vDump();
 
   return p_boolCalc;
 }

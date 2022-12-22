@@ -21,7 +21,8 @@ Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 select colb4, pcol4
   from table4
  where
-       //colb4 like '__ack' and
+       colb4 like '__ack'
+       and
        ucolvc not in ('fff', 'qqq', 'sss', 'iii' )
 ;
 
