@@ -2,43 +2,29 @@
 /* _opt_debug --                                                              */
 /*============================================================================*/
 
-CREATE TABLE caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
-load caseExpr "../DATA/Expressions/caseExpr.csv";
-
-explain stage aggregateSplit
-select * from caseExpr where case  when true then d<0  end;
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
+);
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 
 explain stage transliterate
-select * from caseExpr where case  when true then d<0  end;
-
+select colb4, pcol4 from table4 where colb4 like '__ack' and ucolvc not in ('fff', 'qqq', 'sss', 'iii' ) order by pcol4;
 
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_opt_debug"
-select * from caseExpr where case  when true then d<0  end;
+select colb4, pcol4 from table4 where colb4 like '__ack' and ucolvc not in ('fff', 'qqq', 'sss', 'iii' ) order by pcol4;
+
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
 
-/*
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0642
-  stage stageMarker0642 on all partitions :
-    scan rapidsse public caseExpr
-    | filter " type BOOLEAN  } type BOOLEAN true  WHEN  $4 0.00  <  THEN  null  ELSE  ENDIF  CASE  "
-    | project " type VARCHAR as a $1 , type VARCHAR as b $2 , type DECIMAL as c $3 , type DECIMAL as d $4 , type TIMESTAMP as e $5 , type BOOLEAN as f $6 , type INTEGER as g $7 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-*/
