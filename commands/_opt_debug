@@ -2,31 +2,43 @@
 /* _opt_debug --                                                              */
 /*============================================================================*/
 
-_nation
-Load nation "../DATA/TPCH/nation.tbl" ;
+CREATE TABLE caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
+load caseExpr "../DATA/Expressions/caseExpr.csv";
+
+explain stage aggregateSplit
+select * from caseExpr where case  when true then d<0  end;
 
 explain stage transliterate
-SELECT *
-  FROM nation
-  WHERE CASE
-          WHEN n_name = 'AUSTRALIA' THEN 'here'
-          WHEN n_name = 'INDIA' THEN 'there'
-          ELSE 'everywhere'
-        END = 'everywhere';
+select * from caseExpr where case  when true then d<0  end;
+
 
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_opt_debug"
-SELECT *
-  FROM nation
-  WHERE CASE
-          WHEN n_name = 'AUSTRALIA' THEN 'here'
-          WHEN n_name = 'INDIA' THEN 'there'
-          ELSE 'everywhere'
-        END = 'everywhere';
-;
+select * from caseExpr where case  when true then d<0  end;
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0642
+  stage stageMarker0642 on all partitions :
+    scan rapidsse public caseExpr
+    | filter " type BOOLEAN  } type BOOLEAN true  WHEN  $4 0.00  <  THEN  null  ELSE  ENDIF  CASE  "
+    | project " type VARCHAR as a $1 , type VARCHAR as b $2 , type DECIMAL as c $3 , type DECIMAL as d $4 , type TIMESTAMP as e $5 , type BOOLEAN as f $6 , type INTEGER as g $7 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
