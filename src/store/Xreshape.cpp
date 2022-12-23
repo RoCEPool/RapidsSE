@@ -1676,7 +1676,7 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Stage_Partitioning(Card* p_main_prior,
+bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
                                          Card_Combined* p_combined_prior,
                                          Card_Next* p_next_prior,
                                          Card* p_main_curr)
@@ -1688,36 +1688,47 @@ void Xreshape::R_vUTE_Stage_Partitioning(Card* p_main_prior,
   Card_StmColList* p_stmColList_prior = p_stream_prior->pSub_stmColList();
 
   Card_Table*  p_table_curr  = p_main_curr->pSub_table();
+  Card_Index*  p_index_curr  = p_main_curr->pSub_index();
   Card_Bounds* p_bounds_curr = p_main_curr->pSub_bounds();
 
   Card_Hash* p_hash;
   Card_Term* p_term_hash;
-  Card_StmCol* p_stmCol;
   Stz* szTblColOdn;
+  Card_StmCol* p_stmCol_hash;
   i8 i_StmCol;
 
-  eXK eCastKind = p_bounds_curr->eCastKind(p_table_prior, p_table_curr, p_term_hash);
+  eXK eCastKind = p_bounds_curr->eCastKind(p_index_curr, p_table_prior, p_table_curr,
+                                           p_term_hash);
 
   switch (eCastKind) {
     case XK_BROADCAST:
       p_next_prior->vValue("broadcast"_Stz);
-      break;
+      return false;
 
     case XK_HASHCAST:
       p_next_prior->vValue("hashcast"_Stz);
 
       szTblColOdn = p_term_hash->szValue();
-      p_stmCol = T_pStmCol_FindBy_tblColOdn(p_stmColList_prior,szTblColOdn,i_StmCol);
-      p_hash = Card_Hash::pDerive(p_stmCol);
-      G_vInsertBefore(p_hash,p_combined_prior);
-      break;
+      p_stmCol_hash = T_pStmCol_FindBy_tblColOdn(p_stmColList_prior,szTblColOdn,i_StmCol);
+      p_hash = Card_Hash::pDerive(p_stmCol_hash);
+
+      if (p_combined_prior)
+        G_vInsertBefore(p_hash,p_combined_prior);
+      else
+      if (p_next_prior)
+        G_vInsertBefore(p_hash,p_next_prior);
+      else
+        NEVER_REACH
+      return true;
 
     case XK_UNICAST:
-      break;
+      return false;
 
     default:
       NEVER_REACH
   }
+
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/

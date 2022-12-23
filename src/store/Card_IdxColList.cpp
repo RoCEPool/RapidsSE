@@ -45,6 +45,24 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_IdxCol* Card_IdxColList::pIdxCol_byIdxColOdn(Stz* szIdxColOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_IdxCol = StrLib::iGleanInt(szIdxColOdn->azChar()) - 1;
+
+  if (i_IdxCol < 0 || i_IdxCol >= nChildCards())
+    return nullptr;
+
+  Card_IdxCol* pIdxCol = _pCard_IdxCol(pGetChild(i_IdxCol));
+
+  return pIdxCol;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

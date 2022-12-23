@@ -59,7 +59,7 @@ namespace STORE
     Card_Table* R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before);
     Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
     void R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_BoolCalc* p_boolCalc);
-    void R_vUTE_Stage_Partitioning(Card* p_main_prior,
+    bool R_bUTE_Stage_Partitioning(Card* p_main_prior,
                                    Card_Combined* p_combined_prior,
                                    Card_Next* p_next_prior,
                                    Card* p_main_curr);

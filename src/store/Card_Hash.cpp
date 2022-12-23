@@ -53,10 +53,10 @@ Card_Hash* Card_Hash::pDerive(Card_StmCol* p_stmCol)
   Card_Hash* p_hash = new Card_Hash;
 
   Card_Type* p_type = p_stmCol->pSub_type();
-  p_hash->vAppend(p_type);
+  p_hash->vAppend(p_type->pDupCardAndSubCards());
 
   Card_StmColOdn* p_stmColOdn = p_stmCol->pSub_stmColOdn();
-  p_hash->vAppend(p_stmColOdn);
+  p_hash->vAppend(p_stmColOdn->pDupCardAndSubCards());
 
   return p_hash;
 }
