@@ -36,10 +36,8 @@ INCLUDE 'InNotIn.test';
 LOG 'aggs-avg.test ...';
 INCLUDE 'aggs-avg.test';
 
-/* OPT
 LOG 'aggs-count.test ...';
 INCLUDE 'aggs-count.test';
-*/
 
 LOG 'aggs-max.test ...';
 INCLUDE 'aggs-max.test';
@@ -104,10 +102,8 @@ INCLUDE 'having.test';
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
 
-/* OPT
 LOG 'isnull.test ...';
 INCLUDE 'isnull.test';
-*/
 
 //LOG 'joinTests.test ...';
 //INCLUDE 'joinTests.test';
