@@ -5,6 +5,8 @@
 #include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -33,6 +35,22 @@ Card_RpnCalc::Card_RpnCalc(void)
 Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsBraced(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM))) {
+    if (p_term->bNeedsBrace())
+      return true;
+  }
+
+  return false;
 }
 
 /*============================================================================*/

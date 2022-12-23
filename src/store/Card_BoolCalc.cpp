@@ -3,8 +3,11 @@
 /*============================================================================*/
 
 #include "Card_BoolCalc.hpp"
+
 #include "Card_PRED.hpp"
+#include "Card_BolPred.hpp"
 #include "Card_CmpPred.hpp"
+#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -39,6 +42,32 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bIsBraced(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bBraced = false;
+  auto bTestBraced=[&bBraced](Card* p_card) {
+
+    Card_BolPred* p_bolPred = _pCard_BolPred(p_card);
+
+    if (p_bolPred->bNeedsBrace()) {
+      bBraced = true;
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  bApplyRecursive(CK_BOLPRED,bTestBraced);
+
+  return bBraced;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

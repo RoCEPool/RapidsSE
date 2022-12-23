@@ -380,6 +380,8 @@ namespace STORE
     bool bMerge(Card* pCard);
     void vMoveToLastChild(Card* pChildCard);
 
+    bool bNeedsBrace(void);
+
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
                              bool bPrintBelow);

@@ -1397,6 +1397,31 @@ void Card::vMoveToLastChild(Card* pChildCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bNeedsBrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bSame("between"_Stz))
+    return true;
+  if (bSame("case"_Stz))
+    return true;
+  if (bSame("in"_Stz))
+    return true;
+  if (bSame("matchLeading"_Stz))
+    return true;
+  if (bSame("matchMiddle"_Stz))
+    return true;
+  if (bSame("matchMiddle1"_Stz))
+    return true;
+  if (bSame("matchTrailing"_Stz))
+
+    return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,

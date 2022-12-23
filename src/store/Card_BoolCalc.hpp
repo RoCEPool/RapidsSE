@@ -15,6 +15,8 @@ namespace STORE
   
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
+
+    bool bIsBraced(void);
   };
 
   Card_BoolCalc* _pCard_BoolCalc(void* aAddr);

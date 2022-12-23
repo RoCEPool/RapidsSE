@@ -1253,7 +1253,9 @@ void Weaver::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
 void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
+
+  Card_RpnCalc* p_rpnCalc;
+
   i8 nSubCards = pCard_Expr->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card* pCard = pCard_Expr->pGet(i_Child);
@@ -1271,6 +1273,10 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
         break;
         
       case CK_RPNCALC:
+        p_rpnCalc = _pCard_RpnCalc(pCard);
+        if (p_rpnCalc->bIsBraced()) {
+          szRpnExpr->vConcat(" }"_Stz);
+        }
         vRpnCalc(szRpnExpr, _pCard_RpnCalc(pCard));
         break;
 
@@ -1329,6 +1335,10 @@ void Weaver::vBoolCalc(Stz* szRpnExpr, Card_BoolCalc* pCard_BoolCalc)
 
 //  Card *pSubCard = pCard_BoolCalc->pGet(0);
 //  vBoolPart(szRpnExpr, pSubCard, 0);
+
+  if (pCard_BoolCalc->bIsBraced())
+    szRpnExpr->vConcat(" }"_Stz);
+
   vBoolPart(szRpnExpr, pCard_BoolCalc, 0);
 
 
