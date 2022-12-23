@@ -409,6 +409,14 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
     //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
 
+    if (TE_COMPARE == eTerm_next) {
+      if (p_rpnCalc->nChildCards()) {
+        Card_Term *p_term_peek = _pCard_Term(p_rpnCalc->pPeek(0));
+        if (p_term_peek->bSame("WHEN"_Stz))
+          eTerm_next = TE_OTHER;
+      }
+    }
+
     switch (eTerm_next) {
 
       case TE_AND:

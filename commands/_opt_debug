@@ -14,7 +14,10 @@ SELECT *
           ELSE 'everywhere'
         END = 'everywhere';
 
+/glean_interactive
+/transliterated
 /weaved
+/pipelineName = "_r_opt_debug"
 SELECT *
   FROM nation
   WHERE CASE
