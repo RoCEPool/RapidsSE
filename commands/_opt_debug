@@ -2,26 +2,35 @@
 /* _opt_debug --                                                              */
 /*============================================================================*/
 
-create table TABLE4 (
-  pcol4   INTEGER NOT NULL,
-  scol4   INTEGER NOT NULL,
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
   ucol    INTEGER,
-  ucolvc  VARCHAR(5),
-  cola4   INTEGER,
-  colb4   VARCHAR(10),
-  colc4   TIMESTAMP,
-  cole4   DECIMAL(15, 2)
+  ucolvc  VARCHAR(5)
 );
-Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+Load TABLE9 "../DATA/Load/tbl9data.csv";
+
 
 explain stage transliterate
-select colb4, pcol4 from table4 where colb4 like '__ack' and ucolvc not in ('fff', 'qqq', 'sss', 'iii' ) order by pcol4;
+select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end
+  from table9
+  where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;
+
 
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_opt_debug"
-select colb4, pcol4 from table4 where colb4 like '__ack' and ucolvc not in ('fff', 'qqq', 'sss', 'iii' ) order by pcol4;
+select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end
+  from table9
+  where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;
+
 
 
 /*============================================================================*/
