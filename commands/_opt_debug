@@ -2,33 +2,26 @@
 /* _opt_debug --                                                              */
 /*============================================================================*/
 
-create table TABLE1 (
-  pcol1   INTEGER NOT NULL,
-  tcol1   INTEGER NOT NULL,
-  cola1   INTEGER,
-  colb1   VARCHAR(20),
-  colc1   TIMESTAMP,
-  cold1   FLOAT,
-  cole1   DECIMAL(15, 2),
-  colf1   INTEGER,
-  colg1   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
-Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+_nation
+Load nation "../DATA/TPCH/nation.tbl" ;
 
-//explain stage transliterate
-//select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
+explain stage transliterate
+SELECT *
+  FROM nation
+  WHERE CASE
+          WHEN n_name = 'AUSTRALIA' THEN 'here'
+          WHEN n_name = 'INDIA' THEN 'there'
+          ELSE 'everywhere'
+        END = 'everywhere';
 
-/glean_cue_from = "vS50_T00_Join_Ordering_v2"
-/glean_interactive
-/transliterated
 /weaved
-/pipelineName = "_r_opt_debug"
-select sum(cola1) as ColA, avg(ucol), colb1, ucolvc
-  from table1
- group by colb1, ucolvc
-having avg(ucol) < 200
+SELECT *
+  FROM nation
+  WHERE CASE
+          WHEN n_name = 'AUSTRALIA' THEN 'here'
+          WHEN n_name = 'INDIA' THEN 'there'
+          ELSE 'everywhere'
+        END = 'everywhere';
 ;
 
 /*============================================================================*/
