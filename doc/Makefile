@@ -15,7 +15,14 @@ ifdef SPHINX_INSTALLED
 	@echo "Building HTML documentation"
 	@$(MAKE) html
 else
-	$(warning Not building the documentation because $(SPHINXBUILD) is not installed)
+	$(warning *** Not building the documentation because $(SPHINXBUILD) is not installed ***)
+	@echo "Building the RapidsSE documentation requires the following pre-requisites:"
+	@echo "  1. Python 3"
+	@echo "  2. Sphinx"
+	@echo ""
+	@echo "After installing Python 3, you can install Sphinx with the following command:"
+	@echo "  sudo python3 -m pip install -U sphinx"
+	@echo ""
 endif
 
 clean:
