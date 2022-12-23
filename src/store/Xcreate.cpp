@@ -382,6 +382,23 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // does the rpn calc have a when in it?
+
+  if (p_rpnCalc->bHasWhen()) {
+
+    Card_BolPred*p_bolPred = new Card_BolPred;
+    p_bolPred->vTransferChildren(p_rpnCalc);
+
+    p_boolCalc->vAppend(p_bolPred);
+
+    return p_boolCalc;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Stz* szSqyNm;
   Card_AndPred* p_andPred = nullptr;
   Card_BolPred* p_bolPred = nullptr;
@@ -399,23 +416,12 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   Card_RpnTerms*  p_TermSeries = new Card_RpnTerms;
 
-  //G_vNewMember(CK_BOOLCALC);
-  Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
-
   while (p_rpnCalc->nChildCards()) {
     Card_Term* p_term_next = _pCard_Term(p_rpnCalc->pPop());
 
     eTE eTerm_next = p_term_next->eTermEval();
 
     //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
-
-    if (TE_COMPARE == eTerm_next) {
-      if (p_rpnCalc->nChildCards()) {
-        Card_Term *p_term_peek = _pCard_Term(p_rpnCalc->pPeek(0));
-        if (p_term_peek->bSame("WHEN"_Stz) || p_term_peek->bSame("THEN"_Stz))
-          eTerm_next = TE_OTHER;
-      }
-    }
 
     switch (eTerm_next) {
 

@@ -17,6 +17,7 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     bool bIsBraced(void);
+    bool bHasWhen(void);
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);

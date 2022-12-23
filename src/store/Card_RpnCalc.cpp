@@ -53,6 +53,22 @@ bool Card_RpnCalc::bIsBraced(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bHasWhen(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM))) {
+    if (p_term->bSame("WHEN"_Stz))
+      return true;
+  }
+
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
