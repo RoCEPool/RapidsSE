@@ -54,7 +54,6 @@ eXK Card_Bounds::eCastKind(Card_Table* p_table_l, Card_Table* p_table_r,
 
   rp_term_hash = nullptr;
 
-
   CardIter xCI_bounds(this);
   while (Card_EBound* p_ebound = _pCard_EBound(xCI_bounds.pEachChild(CK_EBOUND))) {
 
@@ -63,10 +62,13 @@ eXK Card_Bounds::eCastKind(Card_Table* p_table_l, Card_Table* p_table_r,
     CardIter xCI_bound(p_ebound);
     while (Card_Term* p_term_bound = _pCard_Term(xCI_bound.pEachChild(CK_TERM))) {
 
+      vTrace("term_bound %s tblptn_l %s tblptn_r %s\n"_Stz,
+             p_term_bound->szValue(),p_tablePtn_l->szValue(),p_tablePtn_r->szValue());
+
       if (p_tablePtn_l->bSame(p_term_bound->szValue())) {
         bMatch_l = true;
       }
-      else
+
       if (p_tablePtn_r->bSame(p_term_bound->szValue())) {
         bMatch_r = true;
         rp_term_hash = p_term_bound;

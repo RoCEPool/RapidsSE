@@ -2981,8 +2981,7 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Next* p_next_prior = nullptr;
-  Card_Table* p_table_prior = nullptr;
-  Card_Bounds* p_bounds_prior = nullptr;
+  Card_Combined* p_combined_prior = nullptr;
 
   Card* p_main_prior = nullptr;
 
@@ -2994,16 +2993,16 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
         CK_KEYEXISTS == G.e_MainCard ||
         CK_KEYNOTEXISTS == G.e_MainCard ||
         CK_SCAN == G.e_MainCard) {
-      G.p_table  = G.p_MainCard->pSub_table();
-      G.p_bounds = G.p_MainCard->pSub_bounds();
-      if (p_table_prior) {
-        R_vUTE_Stage_Partitioning(p_main_prior, G.p_MainCard, p_next_prior);
+      if (p_main_prior) {
+        R_vUTE_Stage_Partitioning(p_main_prior, p_combined_prior, p_next_prior, G.p_MainCard);
         vPrintBoard(__LINE__);
         vDebugPoint();
       }
-      p_table_prior = G.p_table;
-      p_bounds_prior = G.p_bounds;
       p_main_prior = G.p_MainCard;
+    }
+    else
+    if (CK_COMBINED == G.e_MainCard) {
+      p_combined_prior = G.p_combined;
     }
     else
     if (CK_NEXT == G.e_MainCard) {
