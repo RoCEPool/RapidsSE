@@ -104,8 +104,10 @@ INCLUDE 'having.test';
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
 
+/* OPT
 LOG 'isnull.test ...';
 INCLUDE 'isnull.test';
+*/
 
 //LOG 'joinTests.test ...';
 //INCLUDE 'joinTests.test';
