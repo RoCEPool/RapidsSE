@@ -412,7 +412,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
     if (TE_COMPARE == eTerm_next) {
       if (p_rpnCalc->nChildCards()) {
         Card_Term *p_term_peek = _pCard_Term(p_rpnCalc->pPeek(0));
-        if (p_term_peek->bSame("WHEN"_Stz))
+        if (p_term_peek->bSame("WHEN"_Stz) || p_term_peek->bSame("THEN"_Stz))
           eTerm_next = TE_OTHER;
       }
     }
