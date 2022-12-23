@@ -53,9 +53,7 @@ bool Card_BoolCalc::bIsBraced(void)
   bool bBraced = false;
   auto bTestBraced=[&bBraced](Card* p_card) {
 
-    Card_BolPred* p_bolPred = _pCard_BolPred(p_card);
-
-    if (p_bolPred->bNeedsBrace()) {
+    if (p_card->bNeedsBrace()) {
       bBraced = true;
       return C_TERMINATE_RECURSION;
     }
@@ -63,7 +61,7 @@ bool Card_BoolCalc::bIsBraced(void)
     return C_CONTINUE_RECURSION;
   };
 
-  bApplyRecursive(CK_BOLPRED,bTestBraced);
+  bApplyRecursive(CK_NONE,bTestBraced);
 
   return bBraced;
 }
