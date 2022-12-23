@@ -213,6 +213,7 @@ void Weaver::vOp(Card* pCard)
     case CK_CROSSJOIN:     vArgCrossJoin   (sOpArgs,_pCard_CrossJoin(pCard));    break;
     case CK_FILTER:        vArgFilter      (sOpArgs,_pCard_Filter(pCard));       break;
     case CK_GBYAGG:        vArgGbyAgg      (sOpArgs,_pCard_GbyAgg(pCard));       break;
+    case CK_HASH:          vArgHash        (sOpArgs,_pCard_Hash(pCard));         break;
     case CK_HAVING:        vArgHaving      (sOpArgs,_pCard_Having(pCard));       break;
     case CK_INDEXJOIN:     vArgIndexJoin   (sOpArgs,_pCard_IndexJoin(pCard));    break;
     case CK_INDEXSCAN:     vArgIndexScan   (sOpArgs,_pCard_IndexScan(pCard));    break;
@@ -363,6 +364,20 @@ void Weaver::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
+
+/*----------------------------------------------------------------------------*/
+/* weave : hash  <expr>                                                       */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_Type* p_type = pCard_Hash->pSub_type();
+  Card_StmColOdn* p_stmColOdn = pCard_Hash->pSub_stmColOdn();
+
+  szOpArgs->vCatSprint("\"type %s %s\""_Stz,p_type->szValue(),p_stmColOdn->szValue());
+}
+
 /*----------------------------------------------------------------------------*/
 /* weave : having  <expr>                                                     */
 /*----------------------------------------------------------------------------*/

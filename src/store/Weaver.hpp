@@ -51,6 +51,7 @@ namespace STORE
     void vArgCombined    (Stz* szOpArgs,  Card_Combined*  pCard_Combine);
     void vArgCrossJoin   (Stz* szOpArgs,  Card_CrossJoin* pCard_CrossJoin);
     void vArgFilter      (Stz* szOpArgs,  Card_Filter*    pCard_Filter);
+    void vArgHash        (Stz* szOpArgs,  Card_Hash*      pCard_Hash);
     void vArgHaving      (Stz* szOpArgs,  Card_Having*    pCard_Having);
     void vArgIndexJoin   (Stz* szOpArgs,  Card_IndexJoin* pCard_IndexJoin);
     void vArgIndexScan   (Stz* szOpArgs,  Card_IndexScan* pCard_IndexScan);
