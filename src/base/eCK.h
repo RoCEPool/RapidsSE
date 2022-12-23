@@ -25,7 +25,6 @@ enum eCK // card kind
   /* */ CK_CAST,
   /* */ CK_CLAUSE,
   /* */ CK_CMPPRED,
-  /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
   /* */ CK_COMMENT,
   /* */ CK_CONSTRAINT,
@@ -194,7 +193,6 @@ static Stz* aCK[]
   /* */ "CK_CAST"_Stz,         // CK_CAST
   /* */ "CK_CLAUSE"_Stz,       // CK_CLAUSE
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
-  /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_COMMENT"_Stz,      // CK_COMMENT
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
@@ -362,7 +360,6 @@ static Stz* aCK_short[]
   /* */ "cast"_Stz,            // CK_CAST
   /* */ "clause"_Stz,          // CK_CLAUSE
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
-  /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "comment"_Stz,         // CK_COMMENT
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
@@ -531,7 +528,6 @@ static Stz* aCK_notation[]
     /* */ "cast"_Stz,         // CK_CAST
     /* */ "clause"_Stz,       // CK_CLAUSE
     /* */ "cP"_Stz,           // CK_CMPPRED
-    /* */ "cR"_Stz,           // CK_COLUMNREF
     /* */ "cmb"_Stz,          // CK_COMBINED
     /* */ "cmt"_Stz,          // CK_COMMENT
     /* */ "constraint"_Stz,   // CK_CONSTRAINT

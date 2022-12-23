@@ -15,6 +15,8 @@ namespace STORE
 
     Card_IdxColList(void);
    ~Card_IdxColList(void) noexcept(false);
+
+    Card_IdxCol* pIdxCol_byIdxColOdn(Stz* szIdxColOdn);
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);

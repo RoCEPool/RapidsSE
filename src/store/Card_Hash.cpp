@@ -4,6 +4,11 @@
 
 #include "Card_Hash.hpp"
 
+#include "Card_StmCol.hpp"
+#include "Card_StmColOdn.hpp"
+#include "Card_Type.hpp"
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -32,6 +37,28 @@ Card_Hash::Card_Hash(void)
 Card_Hash::~Card_Hash(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Hash* Card_Hash::pDerive(Card_StmCol* p_stmCol)
+{
+  _static_
+
+  Card_Hash* p_hash = new Card_Hash;
+
+  Card_Type* p_type = p_stmCol->pSub_type();
+  p_hash->vAppend(p_type->pDupCardAndSubCards());
+
+  Card_StmColOdn* p_stmColOdn = p_stmCol->pSub_stmColOdn();
+  p_hash->vAppend(p_stmColOdn->pDupCardAndSubCards());
+
+  return p_hash;
 }
 
 /*============================================================================*/

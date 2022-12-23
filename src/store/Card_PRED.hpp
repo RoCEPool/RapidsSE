@@ -13,6 +13,8 @@ namespace STORE
     Card_PRED(eCK eCard);
     Card_PRED(eCK eCard, Stz* szValue);
    ~Card_PRED(void) noexcept(false);
+
+   bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
   };
 }
 

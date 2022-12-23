@@ -53,7 +53,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   _static_
 
   Card_TableNm* p_tableNm = p_table->pSub_tableNm();
-  Table* pTable = AM::pTableFind(p_tableNm->sz());
+  Table* pTable = Card::pAccess_Table(p_tableNm->sz());
   char cTableSyn = p_table->cValue();
 
   PtnDef* pPtnDef = pTable->pPtnDef();

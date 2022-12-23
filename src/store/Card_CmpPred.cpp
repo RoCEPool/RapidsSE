@@ -4,7 +4,6 @@
 
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
-#include "Card_ColumnRef.hpp"
 
 #include "Table.hpp"
 

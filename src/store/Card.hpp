@@ -283,9 +283,15 @@ namespace STORE
 
    ~Card(void) noexcept(false);
 
+    static Table* pAccess_Table(Stz* szTableNm);
+
+    static Stz* szBound(Stz* szRelnOp);
+
     static void vCardLeaks(void);
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
+
+    static i8   iGetColOdn(Stz* szValue);
 
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In
 
@@ -302,6 +308,8 @@ namespace STORE
     static bool bIsStreamColOrdinal(Stz* szValue); // $n
 
     static bool bIsTableColOrdinal(Stz* szValue);  // $c.n
+
+    static char cTableColSyn(Stz* szValue);
 
     static eCK  eTo_eCK(Stz* szCardNm);
 
