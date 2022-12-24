@@ -643,7 +643,6 @@ bool EntBuffer::bVerifyKeyOrder(void)
 
 
     // next key should be greater than or equal to curr key
-    /*
     if (KE_GENERAL == m_eEntKind) {
       Key* aCurrKey = aEnt->aKey();
       Key* aNextKey = aNextEntry->aKey();
@@ -665,17 +664,6 @@ bool EntBuffer::bVerifyKeyOrder(void)
         vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
-    }
-    */
-
-    Key* aCurrKey = aEnt->aKey();
-    Key* aNextKey = aNextEntry->aKey();
-
-    bGreaterEqual = Key::bGreaterEqual(pIndexDef, aNextKey, aCurrKey);
-    if (! bGreaterEqual) {
-      vDump();
-      vVerifyFault(__func__, __FILE__, __LINE__);
-      return false;
     }
 
   }
