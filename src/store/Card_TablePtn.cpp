@@ -8,7 +8,6 @@
 #include "Table.hpp"
 #include "PtnDef.hpp"
 #include "Card_TableNm.hpp"
-#include "Xaccess.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

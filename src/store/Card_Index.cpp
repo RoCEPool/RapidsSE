@@ -9,6 +9,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColNm.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -82,6 +83,28 @@ Card_Index* Card_Index::pDerive(Table* pTable)
   }
 
   return p_index;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  ASSERT(Card::bIsTableColOrdinal(szTblColOdn));
+
+  Card_IdxColList* p_idxColList = this->pSub_idxColList();
+
+  CardIter xCI(p_idxColList);
+  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild())) {
+
+    // ? does n]idxCol:$c.n match given:$c.n
+    if (p_idxCol->bSame(szTblColOdn))
+      return true;
+  }
+
+  return false;
 }
 
 /*============================================================================*/

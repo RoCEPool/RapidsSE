@@ -15,6 +15,9 @@ namespace STORE
   
     Card_OrPred(void);
    ~Card_OrPred(void) noexcept(false);
+
+    Card_CmpPred* pOrPredFindBound(Index* pIndex, ePB eBound);
+    bool bOrPredHasBounds(Index* pIndex);
   };
 
   Card_OrPred* _pCard_OrPred(void* aAddr);

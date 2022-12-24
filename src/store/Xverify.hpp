@@ -3,15 +3,22 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xtest.hpp"
+#include "Bench.hpp"
+#include "Bench.hpp"
+#include "BoardIter.hpp"
+#include "CardRecurse.hpp"
+
+#include "SubQuery.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xverify : public Xtest
+  class Xverify : public Object
   {
   public:
+
+    CardCtl*    m_pCardCtl;
 
     void V_vNo_Terms_StmColOdn(Card* p_card);
 

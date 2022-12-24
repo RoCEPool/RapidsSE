@@ -17,6 +17,7 @@ namespace STORE
    ~Card_IndexList(void) noexcept(false);
 
     static Card_IndexList* pDerive(Table* pTable);
+    Card_Index* pFindChosenIndex(void);
   };
 
   Card_IndexList* _pCard_IndexList(void* aAddr);

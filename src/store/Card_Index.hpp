@@ -16,7 +16,8 @@ namespace STORE
     Card_Index(void);
    ~Card_Index(void) noexcept(false);
 
-   static Card_Index* pDerive(Table* pTable);
+    static Card_Index* pDerive(Table* pTable);
+    bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
   };
 
   Card_Index* _pCard_Index(void* aAddr);

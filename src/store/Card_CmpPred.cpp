@@ -4,6 +4,9 @@
 
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
+#include "CardIter.hpp"
+#include "Card_Table.hpp"
+#include "Xverify.hpp"
 
 #include "Table.hpp"
 
@@ -53,6 +56,65 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the E_eTerm_Bound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* pTerm2 = _pCard_Term(this->pGet(2));
+  if (eBound != pTerm2->eEvalBound())
+    return nullptr;
+
+  Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
+  Stz* szTerm0 = pTerm0->sz();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return nullptr;
+
+  return _pCard_CmpPred(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this comparePred a bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bCmpPredHasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
+
+  Card_Term* pTerm2 = _pCard_Term(this->pGet(2));
+  if (PB_NONE == pTerm2->eEvalBound())
+    return false;
+
+  Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
+  Stz* szTerm0 = pTerm0->sz();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this predCmp co-partitionable with given arg?                           */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bContains_Sqy_Call(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card* p_card = xCI.pEachChild()) {
+    if (p_card->bIsCard(CK_TERM) &&
+        Card::bIsSubQueryName(p_card->szValue()))
+      return true;
+  }
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
@@ -112,6 +174,137 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bMaybeBounds_v2(Card_Table* p_table, bool bParamAllowedInBounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // todo: make this recursive
+
+  Card_Index* p_index = p_table->pSub_index();
+
+  if (! p_index)
+    return false;
+
+  Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
+
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+    // + term_0 is $c.n
+
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()) ||
+          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+        return true;
+
+      return false;
+    }
+    else {
+      // + term_0 is $c.n
+
+      // ? check term_1 is permitted param
+      if ((! bParamAllowedInBounds) &&
+          Card::bIsParamOrdinal(pTerm_1->szValue()))
+        return false;
+
+      // ? is term_0:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()))
+        return true;
+
+      return false;
+    }
+  }
+  else
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    // + term_1 is $c.n
+
+    // ? maybe term_0 is permitted param
+    if ((! bParamAllowedInBounds) &&
+        Card::bIsParamOrdinal(pTerm_0->szValue()))
+      return false;
+
+    // ? is term_0:$c.n an index column
+    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+      return true;
+
+    return false;
+  }
+  else {
+    // + neither term is $c.n
+    return false;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bMaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
+
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+    // + term_0 is $c.n
+
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()) ||
+          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+        return true;
+
+      // - neither term are a $c.n matching index column
+      return false;
+    }
+    else {
+      // + term_0 is $c.n
+
+      // ? check term_1 is permitted param
+      if ((! bParamAllowedInBounds) &&
+          Card::bIsParamOrdinal(pTerm_1->szValue()))
+        return false;
+
+      // ? is term_0:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()))
+        return true;
+
+      // - term_0 is a $c.n but doesn't match index column
+      return false;
+    }
+  }
+  else
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    // + term_1 is $c.n
+
+    // ? maybe term_0 is permitted param
+    if ((! bParamAllowedInBounds) &&
+        Card::bIsParamOrdinal(pTerm_0->szValue()))
+      return false;
+
+    // ? is term_0:$c.n an index column
+    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+      return true;
+
+    // - term_1 is a $c.n but doesn't match index column
+    return false;
+  }
+  else {
+    // + neither term is $c.n
+    return false;
+  }
+
+  NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -136,6 +329,42 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
       || cTableSyn_this_1 == cTableSyn_arg_1
       )
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given cmpPred a subset of bounds?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(p_bounds);
+  while (Card* p_bound = xCI.pEachChild()) {
+
+    Card_Term* p_term_0 = _pCard_Term(p_bound->pGetChild(0));
+    //Stz* szBound = p_term_0->szValue();
+
+    Stz* sz_bnd_idxColOdn = p_bound->pGetChild(1)->szValue();
+    Stz* sz_bnd_stmColOdn = p_bound->pGetChild(2)->szValue();
+    Stz* sz_bnd_rlnOpr    = p_bound->pGetChild(3)->szValue();
+
+    Stz* sz_cmp_rlnOpr    = this->szValue();
+    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szValue();
+    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szValue();
+
+    if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
+      continue;
+
+    // todo: need bounds to be bndTyp , etc
+    // anyways...
+
+    if (! sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
+      continue;
+
+    return true;
+  }
 
   return false;
 }

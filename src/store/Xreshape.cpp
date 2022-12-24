@@ -408,7 +408,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexJoin(void)
   RASSERT(G.p_indexList);
   RASSERT(G.p_stream);
 
-  G.p_index = T_pIndex_Find_chosenIndex(G.p_indexList);
+  G.p_index = G.p_indexList->pFindChosenIndex();
   if (! G.p_index)
     return;
 
@@ -429,7 +429,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexJoin(void)
   // find the stmCol_l == szTblColOdn_r in prior stream stmColList_l
   i8 i_StmCol_l;
   Card_StmCol* p_stmCol_l =
-      T_pStmCol_FindBy_tblColOdn(p_stmColList_l, szTblColOdn_r, i_StmCol_l);
+      p_stmColList_l->pStmCol_FindBy_tblColOdn(szTblColOdn_r, i_StmCol_l);
   if (! p_stmCol_l)
     return;
 
@@ -441,7 +441,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexJoin(void)
   // find the stmOrdOdn_l == szStmColOdn_l in prior stream stmColList_l
   i8 i_StmOrdOdn;
   Card_OrdElmOdn* p_stmOrdOdn_l =
-    T_pStmOrdOdn_FindBy_stmColOdn(p_stmOrdList_l,szStmColOdn_l,i_StmOrdOdn);
+      p_stmOrdList_l->pStmOrdOdn_FindBy_stmColOdn(szStmColOdn_l,i_StmOrdOdn);
   if (! p_stmOrdOdn_l)
     return;
 
@@ -478,9 +478,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexScan(void)
   G.p_idxColList = G.p_index->pSub_idxColList();
   CardIter xCI(G.p_idxColList);
   while ((G.p_idxCol = _pCard_IdxCol(xCI.pEachChild()))) {
-    G.p_stmCol = T_pStmCol_FindBy_tblColOdn(G.p_stmColList,
-                                            G.p_idxCol->szValue(),
-                                            i_StmCol);
+    G.p_stmCol = G.p_stmColList->pStmCol_FindBy_tblColOdn(G.p_idxCol->szValue(), i_StmCol);
     if (! G.p_stmCol)
       return;
 
@@ -1709,7 +1707,7 @@ bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
       p_next_prior->vValue("hashcast"_Stz);
 
       szTblColOdn = p_term_hash->szValue();
-      p_stmCol_hash = T_pStmCol_FindBy_tblColOdn(p_stmColList_prior,szTblColOdn,i_StmCol);
+      p_stmCol_hash = p_stmColList_prior->pStmCol_FindBy_tblColOdn(szTblColOdn, i_StmCol);
       p_hash = Card_Hash::pDerive(p_stmCol_hash);
 
       if (p_combined_prior)
@@ -2053,7 +2051,7 @@ void Xreshape::vR_S36_T30_Delete_Empty_filter(void)
 
   vReshape(__func__);
 
-  if (! T_bFilter_IsEmpty(G.p_filter))
+  if (! G.p_filter->bIsEmpty())
     return;
 
   G.p_MainCard->vRemoveChild(G.p_filter);

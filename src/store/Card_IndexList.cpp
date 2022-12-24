@@ -11,6 +11,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColNm.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -98,6 +99,22 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Index* Card_IndexList::pFindChosenIndex(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+    if (p_index->Y_bHas(P_ChosenIndex))
+      return p_index;
+  }
+
+  return nullptr;
+}
 
 //*============================================================================*/
 /* end                                                                        */
