@@ -25,7 +25,7 @@
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
-#define SCAN_IS_AT_PRIOR_POS_DESC(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
+//#define SCAN_IS_AT_PRIOR_POS_DESC(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
 
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
 
@@ -65,15 +65,17 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
 
-      if (pIndexDef()->bHasDescending()) {
-        if (SCAN_IS_AT_PRIOR_POS_DESC(iWithIntElm0,iNextEnt_IntElm0))
+//      if (pIndexDef()->bHasDescending()) {
+//        if (SCAN_IS_AT_PRIOR_POS_DESC(iWithIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+//      else {
+//        if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+      RASSERT( ! pIndexDef()->bHasDescending() );
+      if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
           break;
-      }
-      else {
-        if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
-          break;
-      }
-
       aScanEnt = aNextEnt_int;
     }
 
@@ -131,15 +133,17 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
 
-      if (pIndexDef()->bHasDescending()) {
-        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
-          break;
-      }
-      else {
-        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
-          break;
-      }
-
+//      if (pIndexDef()->bHasDescending()) {
+//        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+//      else {
+//        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+      RASSERT( ! pIndexDef()->bHasDescending() );
+      if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+        break;
       
       aScanEnt = aNextEnt_int;
     }
@@ -416,15 +420,18 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
       aNextEnt_int = GET_ENTRY(tNextEnt);
       iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
 
-      if (pIndexDef()->bHasDescending()) {
-        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
-          break;
-      }
-      else {
-        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
-          break;
-      }
+//      if (pIndexDef()->bHasDescending()) {
+//        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+//      else {
+//        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
 
+      RASSERT( ! pIndexDef()->bHasDescending() );
+      if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+        break;
       
       aScanEnt = aNextEnt_int;
       
@@ -487,12 +494,15 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
       i8 iWithInt = *(i8*)aWithKey;
       
       //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
-      if (pIndexDef->bHasDescending()) {
-        bGreaterEqual = (iNextInt <= iWithInt);
-      }
-      else {
-        bGreaterEqual = (iNextInt >= iWithInt);
-      }
+//      if (pIndexDef->bHasDescending()) {
+//        bGreaterEqual = (iNextInt <= iWithInt);
+//      }
+//      else {
+//        bGreaterEqual = (iNextInt >= iWithInt);
+//      }
+
+      RASSERT( ! pIndexDef->bHasDescending() );
+      bGreaterEqual = (iNextInt >= iWithInt);
 
       if (bGreaterEqual) {
         if (! aToEntry || aNextEntry_sl == aToEntry)
@@ -523,7 +533,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
 #undef GET_ENTRY
 #undef NEXT_TICKET
 #undef SCAN_IS_AT_PRIOR_POS
-#define SCAN_IS_AT_PRIOR_POS_DESC
+#undef SCAN_IS_AT_PRIOR_POS_DESC
 #undef STORE_PRIOR_POS
 
 /*============================================================================*/
