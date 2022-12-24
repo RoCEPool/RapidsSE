@@ -66,8 +66,13 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare left key with right key                                            */
 /*----------------------------------------------------------------------------*/
-eKC Key::eCompare(Key* aKey_l, Key* aKey_r)
+eKC Key::eCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
+
+  if (pIndexDef->bHasDescending()) {
+    return eMixCompare(pIndexDef, aKey_l, aKey_r);
+  }
+
   i8 nKeyBytes_l = aKey_l->nElmSeqSize();
   i8 nKeyBytes_r = aKey_r->nElmSeqSize();
   
@@ -98,9 +103,9 @@ eKC Key::eCompare(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 /* is left key is equal to right key ?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bEqualTo(Key* aKey_l, Key* aKey_r)
+bool Key::bEqualTo(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
-  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
   
   return eCmp == KC_SAME ? true : false;
 }
@@ -108,21 +113,12 @@ bool Key::bEqualTo(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 /* is left key greater than right key ?                                       */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterThan(Key* aKey_l, Key* aKey_r)
+bool Key::bGreaterThan(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
-  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
-  
-  return eCmp == KC_AFTER ? true : false;
-}
+  eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
 
-/*----------------------------------------------------------------------------*/
-/* is left key greater than equal to right key ?                              */
-/*----------------------------------------------------------------------------*/
-bool Key::bGreaterEqual(Key* aKey_l, Key* aKey_r)
-{
-  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
-  
-  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
+  return eCmp == KC_AFTER ? true : false;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,17 +126,17 @@ bool Key::bGreaterEqual(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 bool Key::bGreaterEqual(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
-  eKC eCmp = Key::eMixCompare(pIndexDef, aKey_l,aKey_r);
-
+  eKC eCmp = Key::eCompare(pIndexDef, aKey_l,aKey_r);
+  
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is left key less than eqiual to right key ?                                */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessEqual(Key* aKey_l, Key* aKey_r)
+bool Key::bLessEqual(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
-  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
   
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
 }
@@ -148,9 +144,9 @@ bool Key::bLessEqual(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 /* is left key less than right key ?                                          */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessThan(Key* aKey_l, Key* aKey_r)
+bool Key::bLessThan(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
-  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
   
   return eCmp == KC_BEFORE ? true : false;
 }
@@ -158,9 +154,9 @@ bool Key::bLessThan(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 /* is left key not equal to right key ?                                       */
 /*----------------------------------------------------------------------------*/
-bool Key::bNotEqual(Key* aKey_l, Key* aKey_r)
+bool Key::bNotEqual(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
-  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
   
   return eCmp != KC_SAME ? true : false;
 }

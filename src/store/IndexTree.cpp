@@ -200,7 +200,9 @@ Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode)
   try {
     Ent *aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-    //pIndexTree->vDump(false);
+//RAY: VERIFY
+//    if ( ! pIndexTree->pRootBuffer()->bVerify() )
+//      pIndexTree->vDump(false);
 
     return aInsertedEntry;
   }
@@ -248,6 +250,8 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 
   //pIndexTree->vDump(false);
 
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+
   Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
   if ( !aEnt )
     return nullptr;
@@ -259,7 +263,7 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
   Key* aEntKey = aEnt->aKey();
 
   if (KE_GENERAL == aEnt->eKind()) {
-    eCmp = Key::eCompare(aEntKey,aKey);
+    eCmp = Key::eCompare(pIndexDef, aEntKey,aKey);
   }
   else {
     i8 iEntVal = *(i8 *) aEntKey;
@@ -692,7 +696,7 @@ Rrf IndexTree::xwGetRef(Key* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   Rrf xwNilRef;
-  
+
   EntBuffer* pEntBuffer = pPositionH0Buffer(aFindKey);
   if (! pEntBuffer)
     return xwNilRef;
@@ -709,7 +713,7 @@ Rrf IndexTree::xwGetRef(Key* aFindKey)
     return xwNilRef;;
   }
   
-  eKC eCompare = Key::eCompare(aEntPos->aKey(),aFindKey);
+  eKC eCompare = Key::eCompare(pIndexDef(),aEntPos->aKey(),aFindKey);
   if (KC_SAME != eCompare)
     return xwNilRef;
 

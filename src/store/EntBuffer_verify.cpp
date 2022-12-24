@@ -445,7 +445,8 @@ bool EntBuffer::bVerifyFirstKeys(void)
    */
   
   ASSERT(m_iBufferHeight >= 1);
-  
+  IndexDef* pIndexDef = this->pIndexDef();
+
   //vShow();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
@@ -461,7 +462,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
     
    // the two keys should match
     if (KE_GENERAL == m_eEntKind) {
-      bool bEqual = Key::bEqualTo(aChildFirstEntry->aKey(), aEnt->aKey());
+      bool bEqual = Key::bEqualTo(pIndexDef,aChildFirstEntry->aKey(), aEnt->aKey());
       if (! bEqual) {
         vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
@@ -631,6 +632,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
    */
   
   bool bGreaterEqual;
+  IndexDef* pIndexDef = this->pIndexDef();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -638,13 +640,15 @@ bool EntBuffer::bVerifyKeyOrder(void)
     Ent* aNextEntry = this->aNextEntry(aEnt,0);
     if (! aNextEntry)
       break;
-        
+
+
     // next key should be greater than or equal to curr key
+    /*
     if (KE_GENERAL == m_eEntKind) {
       Key* aCurrKey = aEnt->aKey();
       Key* aNextKey = aNextEntry->aKey();
       
-      bGreaterEqual = Key::bGreaterEqual(aNextKey, aCurrKey);
+      bGreaterEqual = Key::bGreaterEqual(pIndexDef, aNextKey, aCurrKey);
       if (! bGreaterEqual) {
         vDump();
         vVerifyFault(__func__,__FILE__,__LINE__);
@@ -662,7 +666,17 @@ bool EntBuffer::bVerifyKeyOrder(void)
         return false;
       }
     }
-    
+    */
+
+    Key* aCurrKey = aEnt->aKey();
+    Key* aNextKey = aNextEntry->aKey();
+
+    bGreaterEqual = Key::bGreaterEqual(pIndexDef, aNextKey, aCurrKey);
+    if (! bGreaterEqual) {
+      vDump();
+      vVerifyFault(__func__, __FILE__, __LINE__);
+      return false;
+    }
 
   }
   

@@ -255,6 +255,7 @@ void IndexDef::vHasDescending(bool bHasDescending)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 
+  m_eKeyKind = KE_GENERAL;
   m_bHasDescending = bHasDescending;
 }
 

@@ -432,7 +432,8 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey,
         goto L_Exit;
     }
     else {
-      eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+      eKC eCompare = Key::eCompare(pIndexDef,
+                                   xEntWrkUpper.aKey(),
                                    xEntWrkLower.aKey());
       
       if (eCompare == KC_BEFORE)
