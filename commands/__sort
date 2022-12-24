@@ -2,53 +2,16 @@
 /* __sort                                                                     */
 /*============================================================================*/
 
-/*
-_nation;
-/time load nation   "<tpch_dir>/nation.<suffix>" ;
+_part
+/time load part "<tpch_dir>/part.<suffix>"     ;
 
-explain stage transliterate select n_nationkey from nation order by n_nationkey desc;
-
-
-/ccode pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-
-  stage stageMarker0204 on all partitions :
-    scan rapidsse public nation
-    | project " type INTEGER as N_NATIONKEY $1 "
-    | sort " type INTEGER as n_nationkey $1 DESC  "
-    | combined 0
-    | next
-
-  stage stageLast on origin :
-    output
-    | sink
-    | first
-end ;
+// Ray: uncomment lines 204-205 and the following crashes (SF0001)
+// select P_PARTKEY from part order by P_PARTKEY;
 
 
-create table sortData (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
-);
-
-load sortData "../DATA/Datums/sortData.csv" ;
-
-//select int_col0 from sortData order by int_col0 desc;
-//select int_col1 from sortData order by int_col1 desc;
-select int_col0, int_col1 from sortData order by int_col0 asc, int_col1 desc;
-//select int_col1, int_col0 from sortData order by int_col1, int_col0;
-
-*/
-__TPCH_SCHEMA;
-
-select PS_PARTKEY, PS_SUPPLYCOST from partsupp order by PS_PARTKEY DESC , PS_SUPPLYCOST;
-//select PS_PARTKEY, PS_AVAILQTY from partsupp order by PS_PARTKEY, PS_AVAILQTY DESC;
+// I am trying to get the following working and with Verify, verify crashes (SF1)
+// without verify ~indexTree crashes with a FREECHUNK while truncating the Index
+//select P_PARTKEY from part order by P_PARTKEY desc;
 
 /*============================================================================*/
 /* end                                                                        */
