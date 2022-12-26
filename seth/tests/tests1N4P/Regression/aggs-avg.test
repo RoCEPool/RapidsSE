@@ -67,6 +67,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg11.sql
 // Result file: ../queries/aggs/avg/results/avg11.res
+// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
+/*
 select colb1, cast((avg(cold1)) as decimal(10,7)), cast((avg(cold1) * 0.35) as decimal(10,7))  from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 150.0150000, 52.5052500)
@@ -97,6 +99,7 @@ ordered rows:
   ('teal', 116.5975000, 40.8091250)
   ('violet', 113.3750000, 39.6812500)
   ('yellow', 241.2400000, 84.4340000)
+*/
 
 // Source file: ../queries/aggs/avg/ravg11.sql
 // Result file: ../queries/aggs/avg/results/avg11.res
@@ -821,6 +824,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg6.sql
 // Result file: ../queries/aggs/avg/results/avg6.res
+// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
+/*
 select colb1, avg(cola1) from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 283)
@@ -851,6 +856,7 @@ ordered rows:
   ('teal', 304)
   ('violet', 203)
   ('yellow', 2)
+*/
 
 // Source file: ../queries/aggs/avg/ravg6.sql
 // Result file: ../queries/aggs/avg/results/avg6.res
