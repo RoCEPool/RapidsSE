@@ -57,8 +57,6 @@ ordered rows:
 
 // Source file: ../queries/aggs/count/rcount6.sql
 // Result file: ../queries/aggs/count/results/count6.res
-// TODO: WHEN OPTIMISER (SORT))
-/*
 select colb1, count(*) as totCt from table1 group by colb1 order by colb1, totCt;
 ordered rows:
   ('BLACK', 8)
@@ -89,7 +87,7 @@ ordered rows:
   ('teal', 4)
   ('violet', 4)
   ('yellow', 1)
-*/
+
 
 // Source file: ../queries/aggs/count/rcount6.sql
 // Result file: ../queries/aggs/count/results/count6.res
