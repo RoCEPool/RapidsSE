@@ -1416,8 +1416,9 @@ bool Card::bNeedsBrace(void)
   if (bSame("matchMiddle1"_Stz))
     return true;
   if (bSame("matchTrailing"_Stz))
+    return true;
 
-    return false;
+  return false;
 }
 
 
