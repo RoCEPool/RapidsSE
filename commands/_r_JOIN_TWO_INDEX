@@ -6,8 +6,8 @@ trackMemory;
 
 _r_schema
 
-create index L_idx0  on lineitem (L_SHIPDATE );
-create index L_idx1  on lineitem (L_ORDERKEY );
+create index L_idx_SHIPDATE  on lineitem (L_SHIPDATE );
+create index L_idx_ORDERKEY  on lineitem (L_ORDERKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

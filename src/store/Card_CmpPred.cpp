@@ -177,13 +177,10 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bMaybeBounds_v2(Card_Table* p_table, bool bParamAllowedInBounds)
+bool Card_CmpPred::bMaybeBounds_v2(Card_Table* p_table, Card_Index* p_index,
+                                   bool bParamAllowedInBounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // todo: make this recursive
-
-  Card_Index* p_index = p_table->pSub_index();
 
   if (! p_index)
     return false;

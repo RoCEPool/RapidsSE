@@ -419,9 +419,16 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 //  //Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
 
   Card_TableNm* p_tableNm = pCard_IndexJoin->pSub_tableNm();
-  Card_IndexNm* p_indexNm = pCard_IndexJoin->pSub_indexNm();
 
-  vRpnIndexJoin(sRpnExpr,pCard_IndexJoin);
+  Card_Index* p_index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! p_index) {
+    NEVER_REACH
+    //szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    //return;
+  }
+  Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
+
+  vRpnIndexJoin(sRpnExpr, p_index);
 
   szOpArgs->vCatSprint("%s %s \"%s \""_Stz
                        ,p_tableNm->szValue()
@@ -826,15 +833,18 @@ void Weaver::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
+void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
+                           Card_Index* pCard_Index)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
-  if (! pCard_Index) {
-    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
-    return;
-  }
+//  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+//  if (! pCard_Index) {
+//    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+//    return;
+//  }
+
+  //pCard_Index->vDump();
 
   Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
   if (pCard_bounds) {

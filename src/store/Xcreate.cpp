@@ -302,45 +302,48 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
   // TODO: this is a hack to put bounds under one and only one index
 
   Card_IndexList* p_indexList = p_table->pSub_indexList();
-  Card_Index* p_index = p_table->pSub_index();
+  //Card_Index* p_index = p_table->pSub_index();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  CardIter xCI(p_indexList);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
 
-  auto bLambdaFn = [this,p_table,p_index,bParamAllowedInBounds](Card_PRED* p_pred_Of_filter, bool bUpwards)
-  {
-    if (bUpwards)
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bLambdaFn = [this, p_table, p_index, bParamAllowedInBounds](Card_PRED *p_pred_Of_filter, bool bUpwards) {
+      if (bUpwards)
+        return C_CONTINUE_RECURSION;
+
+      if (!p_pred_Of_filter->bIsCard(CK_CMPPRED))
+        return C_CONTINUE_RECURSION;
+
+      Card_CmpPred *p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
+
+      //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
+      if (!p_cmpPred->bMaybeBounds_v2(p_table, p_index, bParamAllowedInBounds))
+        return C_CONTINUE_RECURSION;
+
+      // - - - -
+
+      Card_Bounds *p_bounds = p_table->pSub_bounds();
+      if (!p_bounds) {
+        p_bounds = new Card_Bounds;
+        p_index->vAppend(p_bounds);
+      }
+
+      char cTblSyn = p_table->cValue();
+      Card_Bound *p_bound = C_pBound_CreateFrom_cmpPred(p_cmpPred, cTblSyn);
+      p_bounds->vAppend(p_bound);
+
+      p_cmpPred->vMark1(MARK_UP);
+
       return C_CONTINUE_RECURSION;
+    };
 
-    if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
-      return C_CONTINUE_RECURSION;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
+    bool bIgnore = p_pred_ofFilter_ROOT->bPredRecursive(bLambdaFn);
 
-    //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
-    if ( ! p_cmpPred->bMaybeBounds_v2(p_table,bParamAllowedInBounds) )
-      return C_CONTINUE_RECURSION;
-
-    // - - - -
-
-    Card_Bounds* p_bounds = p_table->pSub_bounds();
-    if (! p_bounds) {
-      p_bounds = new Card_Bounds;
-      p_index->vAppend(p_bounds);
-    }
-
-    char cTblSyn = p_table->cValue();
-    Card_Bound* p_bound = C_pBound_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
-    p_bounds->vAppend(p_bound);
-
-    p_cmpPred->vMark1(MARK_UP);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = p_pred_ofFilter_ROOT->bPredRecursive(bLambdaFn);
-
+  }
 }
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

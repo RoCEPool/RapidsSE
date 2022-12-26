@@ -2447,6 +2447,7 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
     G.p_bounds         = G.p_table->pSub_bounds();
     G.p_index          = G.p_table->pSub_index();
     G.p_indexJoin      = G.p_table->pSub_indexJoin();
+    G.p_indexList      = G.p_table->pSub_indexList();
     G.p_keyExists      = G.p_table->pSub_keyExists();
     G.p_keyNotExists   = G.p_table->pSub_keyNotExists();
 
