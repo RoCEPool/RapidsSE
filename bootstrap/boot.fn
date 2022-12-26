@@ -203,7 +203,11 @@ function startRemoteNode() {
   host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 $3"
+  if [ "--reload" = "$2" ]; then
+    remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 \"$3\""
+  else
+    remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 $3"
+  fi
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
@@ -235,7 +239,18 @@ function startCurrentNode() {
   local mem
   local clusterId
   local diskPaths
+  local argExtra
+  local argExtraValue
   local params
+
+  if [ ! -z "$1" ]
+  then
+    argExtra=("$1")
+    if [ ! -z "$2" ]
+    then
+      argExtraValue=("$2")
+    fi
+  fi
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
   internal_port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
@@ -292,12 +307,12 @@ function startCurrentNode() {
     done
   fi
   startCmd+=("${paramsArray[@]}")
-  if [ ! -z $1 ]
+  if [ ! -z "$argExtra" ]
   then
-    startCmd+=("$1")
-    if [ ! -z $2 ]
+    startCmd+=("$argExtra")
+    if [ ! -z "$argExtraValue" ]
     then
-      startCmd+=("$2")
+      startCmd+=("$argExtraValue")
     fi
   fi
 
