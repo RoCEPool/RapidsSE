@@ -106,7 +106,7 @@ ordered rows:
   (812, 'violet')
 */
 
-select sum(cola1) as SumOf, colb1 from table1 group by colb1 having SumOf > 500;
+select sum(cola1) as SumOf, colb1 from table1 group by colb1 having sum(cola1) > 500;
 rows:
   (2270,'BLACK')
   (547,'BLUE')
