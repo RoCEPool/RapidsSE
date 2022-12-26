@@ -104,7 +104,6 @@ ordered rows:
   (1373, 'tan')
   (1217, 'teal')
   (812, 'violet')
-*/
 
 select sum(cola1) as SumOf, colb1 from table1 group by colb1 having sum(cola1) > 500;
 rows:
