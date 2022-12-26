@@ -1,6 +1,21 @@
 /*============================================================================*/
-/* _opt_debug -- (between.test)                                               */
+/* _opt_debug -- (join)                                                       */
 /*============================================================================*/
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
 create table TABLE9 (
   pcol9   INTEGER NOT NULL,
@@ -14,24 +29,14 @@ create table TABLE9 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
+
+create index TABLE9_PCOL9 on TABLE9(pcol9);
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-
 explain stage transliterate
-select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end
-  from table9
-  where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;
+  select a.colb1, b.colb9 from table1 a join table9 b on pcol1 = pcol9 limit 10;
 
-
-/glean_interactive
-/transliterated
-/weaved
-/pipelineName = "_r_opt_debug"
-select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end
-  from table9
-  where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;
-
-
+/weaved select a.colb1, b.colb9 from table1 a join table9 b on pcol1 = pcol9 limit 10;
 
 /*============================================================================*/
 /* end                                                                        */
