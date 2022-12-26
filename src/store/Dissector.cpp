@@ -233,8 +233,11 @@ Card* Dissector::pOp_AbsJoin(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // expr : exression list
 
-  Card_RpnCalc* pCard_ExprCalc = pCalc(pCard_RpnTerms);
-  pCard_AbsJoin->vAppend(pCard_ExprCalc);
+  Card_RpnCalc* pCard_RpnCalc = pCalc(pCard_RpnTerms);
+  Card_On* pCard_On = new Card_On;
+  pCard_On->vAppend(pCard_RpnCalc);
+
+  pCard_AbsJoin->vAppend(pCard_On);
 
   delete pCard_RpnTerms;
 
@@ -934,8 +937,8 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 
 
   // <calcExpr>
-  Card_RpnCalc* pCard_ExprCalc = pCalc(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_ExprCalc);
+  Card_RpnCalc* pCard_RpnCalc = pCalc(pCard_RpnTerms);
+  pCard_Expr->vAppend(pCard_RpnCalc);
 
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
@@ -981,7 +984,7 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_RpnCalc* pCard_ExprCalc = new Card_RpnCalc;
+  Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc;
 
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
@@ -1002,12 +1005,12 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
     }
 
     if (pCard_Term_popped->bIsAggOp())
-      pCard_ExprCalc->Y_vSet(P_AggOp);
+      pCard_RpnCalc->Y_vSet(P_AggOp);
 
-    pCard_ExprCalc->vAppend(pCard_Term_popped);
+    pCard_RpnCalc->vAppend(pCard_Term_popped);
   }
 
-  return pCard_ExprCalc;
+  return pCard_RpnCalc;
 }
 
 
