@@ -43,7 +43,7 @@ INCLUDE 'supplier.test';
 LOG 'Running tpch query 1...';
 INCLUDE 'OptQ1.test';
 INCLUDE 'sleep.test';
-
+/*
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 2...';
 //INCLUDE 'OptQ2.test';
@@ -63,12 +63,14 @@ INCLUDE 'sleep.test';
 LOG 'Running tpch query 5...';
 INCLUDE 'OptQ5.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 6...';
 INCLUDE 'OptQ6.test';
 INCLUDE 'sleep.test';
 
+/*
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 7...';
 INCLUDE 'OptQ7.test';
@@ -148,6 +150,7 @@ INCLUDE 'sleep.test';
 LOG 'Running tpch query 22...';
 INCLUDE 'OptQ22.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';

@@ -4,8 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/pipelineName = "_r_Q1"
 select
          l_returnflag,
          l_linestatus,
