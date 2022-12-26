@@ -1,14 +1,31 @@
 
 // Source file: ../queries/having/rnhaving1.sql
 // Result file: none
-/*
-// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
 select sum(cola1) as SumOf, colb1 from table1 group by colb1 having SumOf > 500 order by colb1;
-failure contains: 'Result file missing'
-
+ordered rows:
+ (2270,'BLACK')
+ (547,'BLUE')
+ (1188,'GREEN')
+ (1268,'PINK')
+ (1510,'PURPLE')
+ (1455,'TEAL')
+ (1444,'WHITE')
+ (1527,'YELLOW')
+ (660,'blue')
+ (563,'brown')
+ (700,'gold')
+ (1295,'green')
+ (601,'indigo')
+ (1557,'maroon')
+ (1657,'orange')
+ (688,'purple')
+ (1373,'tan')
+ (1217,'teal')
+ (812,'violet')
 
 // Source file: ../queries/having/rhaving2.sql
 // Result file: ../queries/having/results/having2.res
+/* TODO: ORDERBY
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 ordered rows:
   (62, 128, 'BLACK', 'ttt')
@@ -33,7 +50,7 @@ ordered rows:
   (26, 86, 'peach', 'ooo')
   (215, 140, 'purple', 'rrr')
   (154, 178, 'violet', 'ddd')
-
+*/
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res

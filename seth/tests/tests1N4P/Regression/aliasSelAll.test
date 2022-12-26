@@ -2,6 +2,7 @@
 // Source file: ../queries/aliasSelAll/xselAll-1.sql
 // Result file: ../queries/aliasSelAll/results/selAll-1.res
 // TODO: ENABLE WHEN OPTIMISER (JOINS)
+/*
 select a.pcol1, b.* from table1 a, table9 b where a.pcol1 = b.pcol9 and a.pcol1 between 25 and 40;
 rows:
   (35, 35, 114, 310, 'peach', 28.22, -48.550000000000, 14, -92, 379, 'hhh')
@@ -20,6 +21,7 @@ rows:
   (36, 36, 161, 446, 'black', 77.67, 2.540000000000, 1, -16, 267, 'www')
   (38, 38, 216, 376, 'RED', -218.4, -83.500000000000, 13, -37, 805, 'lll')
   (40, 40, 188, 396, 'tan', 212.09, 95.670000000000, 15, 43, 327, 'lll')
+*/
 
 // Source file: ../queries/aliasSelAll/xselAll-5.sql
 // Result file: ../queries/aliasSelAll/results/selAll-5.res

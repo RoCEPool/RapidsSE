@@ -22,8 +22,6 @@ failure contains: 'Nested aggregate expressions are not permitted'
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
-/*
 select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2270.38)
@@ -43,7 +41,6 @@ ordered rows:
   ('gold', 700.38)
   ('green', 1295.38)
   ('grey', 260.38)
-*/
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
@@ -127,10 +124,13 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/aggs/sum/rsum20.sql
 // Result file: ../queries/aggs/sum/results/sum20.res
-// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
-/*
 select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
+ ('BLACK',4.501200000e+02)
+ ('BLUE',-5.893000000e+02)
+ ('GREEN',9.210000000e+01)
+
+ /*
   ('BLACK', 450.1200000000001)
   ('BLUE', -589.3)
   ('GREEN', 92.09999999999991)
@@ -186,10 +186,13 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum18.sql
 // Result file: ../queries/aggs/sum/results/sum18.res
-// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
-/*
 select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
+ ('BLACK',1.180120000e+03)
+ ('BLUE',1.407000000e+02)
+ ('GREEN',8.221000000e+02)
+
+/*
   ('BLACK', 1180.1200000000001)
   ('BLUE', 140.7)
   ('GREEN', 822.0999999999999)
@@ -205,14 +208,17 @@ unordered rows:
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
-// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
-/*
 select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
+ ('BLACK',3.000300000e+02)
+ ('BLUE',4.017500000e+01)
+ ('GREEN',2.105250000e+02)
+
+ /*
   ('BLACK', 300.03)
   ('BLUE', 40.175)
   ('GREEN', 210.52499999999998)
-*/
+ */
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
