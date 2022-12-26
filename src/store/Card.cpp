@@ -2862,6 +2862,19 @@ Card_NParmCols* Card::pSub_nParmCols(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_On.hpp"
+Card_On* Card::pSub_on(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_On* p_On =
+      _pCard_On(pFindSubCard(CK_ON));
+  return p_On;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_OrdElmOdn.hpp"
 Card_OrdElmOdn* Card::pSub_ordElmOdn(void)
 {

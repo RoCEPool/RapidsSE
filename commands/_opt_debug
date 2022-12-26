@@ -36,7 +36,15 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 explain stage transliterate
   select a.colb1, b.colb9 from table1 a join table9 b on pcol1 = pcol9 limit 10;
 
-/weaved select a.colb1, b.colb9 from table1 a join table9 b on pcol1 = pcol9 limit 10;
+/weaved
+/glean_interactive
+/pipelineName = "_r_opt_debug"
+select a.colb1, b.colb9
+  from table1 a
+  join table9 b
+       on pcol1 = pcol9
+ limit 10
+;
 
 /*============================================================================*/
 /* end                                                                        */

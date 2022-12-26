@@ -95,6 +95,7 @@ namespace STORE
   class Card_NotPred;
   class Card_NParmCols;
 
+  class Card_On;
   class Card_OrdAgg;
   class Card_Order;
   class Card_OrPred;
@@ -485,6 +486,7 @@ namespace STORE
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
     Card_NParmCols*     pSub_nParmCols(void);
+    Card_On*            pSub_on(void);
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
