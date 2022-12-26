@@ -737,9 +737,12 @@ bool EntBuffer::bVerifyRowRefs(void)
    */
   
   ASSERT(0 == m_iBufferHeight);
-  
+
+  i8 nEnt = 0;
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
-    
+
+    nEnt++;
+
     // get the row buffer that this H0 key leaf references
     Rrf xRef = aEnt->rxRef();
     //CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
