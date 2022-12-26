@@ -106,7 +106,7 @@ bool Xtransforms::bOT_Cut_Sort(void) {
         return false;
 
       // are the two order's the same?
-      if (T_b_Order_AreSame(p_order1, p_order2)) {
+      if (p_order1->bValuesSameRecursive(p_order2)) {
 
         G_vRemoveDeleteMain(CK_SORT);
         return true;
@@ -269,7 +269,7 @@ bool Xtransforms::bOT_Rpl_Aggreg_By_OrdAgg(void)
       p_order2->vDump(0,"ORDER2"_Stz);
 
       // are the two order's the same?
-      if (T_b_Order_AreSame(p_order1, p_order2)) {
+      if (p_order1->bValuesSameRecursive(p_order2)) {
         G.p_gbyAgg->vCard(CK_ORDAGG);
 
         vPrintBoard(__LINE__);
@@ -2808,7 +2808,7 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
 
     CardRecurse xCR(G.p_filter);
     while ((G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
-      if (T_bCmpPred_SubsetOf_bounds(G.p_cmpPred,G.p_bounds))
+      if (G.p_cmpPred->bSubsetOf_bounds(G.p_bounds))
         G.p_cmpPred->vMark1(MARK_AT);
     }
   }

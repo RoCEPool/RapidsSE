@@ -15,6 +15,9 @@ namespace STORE
   
     Card_StmColList(void);
    ~Card_StmColList(void) noexcept(false);
+
+    Card_StmCol* pStmColList_Find_streamCol(Stz *szColNm, i8& ri_StreamColNo);
+    Card_StmCol* pStmCol_FindBy_tblColOdn(Stz *szTblColOdn, i8& ri_StmCol);
   };
 
   Card_StmColList* _pCard_StmColList(void* aAddr);

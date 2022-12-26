@@ -15,6 +15,9 @@ namespace STORE
 
     Card_Order(void);
     ~Card_Order(void) noexcept(false);
+
+
+    Card_OrdElmOdn* pStmOrdOdn_FindBy_stmColOdn(Stz *szStmColOdn, i8& ri_StmOrdOdn);
   };
 
   Card_Order* _pCard_Order(void* aAddr);

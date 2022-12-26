@@ -44,6 +44,22 @@ Card_Filter::~Card_Filter(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Filter::bIsEmpty(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_BoolCalc* pCard_calcBool =
+      _pCard_BoolCalc(this->pFindSubCard(CK_BOOLCALC));
+
+  if (0 == pCard_calcBool->nChildCards())
+    return true;
+
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

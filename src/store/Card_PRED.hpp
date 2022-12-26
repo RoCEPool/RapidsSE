@@ -14,7 +14,11 @@ namespace STORE
     Card_PRED(eCK eCard, Stz* szValue);
    ~Card_PRED(void) noexcept(false);
 
-   bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
+    bool bAllSubs_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
+    Card_PRED* pContaining_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
+    Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
+    bool bPredHasBounds (Index* pIndex);
+    bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
   };
 }
 

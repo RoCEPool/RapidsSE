@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_Order.hpp"
+#include "CardIter.hpp"
+#include "Card_OrdElmOdn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -40,6 +42,27 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_OrdElmOdn* Card_Order::pStmOrdOdn_FindBy_stmColOdn(Stz *szStmColOdn,
+                                                             i8& ri_StmOrdOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_OrdElmOdn *p_stmOrdOdn =
+      _pCard_OrdElmOdn(xCI.pEachChild(CK_ORDELMODN))) {
+    if (p_stmOrdOdn->bSame(szStmColOdn)) {
+      ri_StmOrdOdn = xCI.i_Child();
+      return p_stmOrdOdn;
+    }
+  }
+
+  ri_StmOrdOdn = C_UNKNOWN;
+  return nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */

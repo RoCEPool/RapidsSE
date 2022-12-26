@@ -18,7 +18,7 @@ __aFooterFunction(Xverify)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xverify::Xverify(eCN eClass)
-: Xtest(eClass)
+: Object(eClass)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

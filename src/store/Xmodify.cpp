@@ -729,7 +729,7 @@ void Xmodify::M_vFilter_DeleteIfEmpty(Card_Filter* p_filter, Card* pMainCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  if (! T_bFilter_IsEmpty(p_filter))
+  if (! p_filter->bIsEmpty())
     return;
 
   pMainCard->vRemoveChild(p_filter);
@@ -753,7 +753,7 @@ void Xmodify::M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_
     Stz* szColNm = p_idxCol->sz();
 
     Card_StmCol* p_streamCol =
-        T_pStmColList_Find_streamCol(p_streamColList, szColNm, i_StreamColNo);
+        p_streamColList->pStmColList_Find_streamCol(szColNm, i_StreamColNo);
 
     Card_TblColOdn* p_tblColOdn = p_streamCol->pSub_tblColOdn();
     Stz* szTblColOdn = p_tblColOdn->sz();

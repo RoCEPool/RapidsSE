@@ -317,7 +317,7 @@ void Xcreate::C_vBounds_DeriveFrom_filter(Card_Table* p_table,
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
 
     //if (!T_bCmpPred_MaybeBounds(p_cmpPred,p_table,bParamAllowedInBounds))
-    if (!T_bCmpPred_MaybeBounds_v2(p_cmpPred,p_table,bParamAllowedInBounds))
+    if ( ! p_cmpPred->bMaybeBounds_v2(p_table,bParamAllowedInBounds) )
       return C_CONTINUE_RECURSION;
 
     // - - - -
@@ -478,7 +478,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
         p_cmpPred = new Card_CmpPred;
         p_cmpPred->vValue(p_term_next->sz());
         p_cmpPred->vTransferChildren(p_TermSeries);
-        if (T_bCmpPred_Contains_Sqy_Call(p_cmpPred))
+        if (p_cmpPred->bContains_Sqy_Call())
           p_cmpPred->vCard(CK_ROPRED);
         //p_boolCalc->vPush(p_cmpPred);
         p_boolCalc->vAppend(p_cmpPred);
