@@ -115,7 +115,7 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast3.sql
 // Result file: ../queries/cast/results/cast3.res
-//TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select a.colb1, b.colb9, cast((avg(a.cola1 + b.colg9 + a.cole1 + b.cole9) / 4) as decimal(10,7)) as OverAvg from table1 a join table9 b on pcol1 = pcol9 where lower(a.colb1) like '%ee%' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
@@ -164,7 +164,7 @@ QA results
 
 // Source file: ../queries/cast/rcast22.sql
 // Result file: ../queries/cast/results/cast22.res
-//TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select pcol1, cast(colc1 as timestamp), pcol7, cast(colc7 as timestamp) from table1 join table7 on pcol1 = pcol7 where colb1 like 'bl%' order by pcol1, pcol7;
 ordered rows:
@@ -580,7 +580,7 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast24.sql
 // Result file: ../queries/cast/results/cast24.res
-//TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select cast(cole1 as decimal(10,4)), cast(cole9 as decimal(10,3)), cast(cole4 as decimal(10,2)) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
 ordered rows:

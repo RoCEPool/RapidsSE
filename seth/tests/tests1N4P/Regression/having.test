@@ -2,7 +2,7 @@
 // Source file: ../queries/having/rnhaving1.sql
 // Result file: none
 /*
-// TODO: ENABLE WHEN OPTIMIZER separates aggreg and sort
+// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
 select sum(cola1) as SumOf, colb1 from table1 group by colb1 having SumOf > 500 order by colb1;
 failure contains: 'Result file missing'
 

@@ -2,7 +2,7 @@
 // Source file: ../queries/case/rcase19.sql
 // Result file: ../queries/case/results/case19.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, a.cola4;
 ordered rows:
   ('gold', 'lll', 0, 'www', false)
@@ -123,7 +123,7 @@ unordered rows:
 // Source file: ../queries/case/rcase14.sql
 // Result file: ../queries/case/results/case14.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' when a.colb1 = c.colb4 then 'its a match' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb4 in ('black','BLACK','BLUE','blue','pink') order by a.cola1, colb1;
 ordered rows:
   (136.010000000000, 110.850000000000, 1.2270, 'maroon', 'peach', 'blue', 'over 1')
@@ -370,7 +370,7 @@ ordered rows:
 
 // Source file: ../queries/case/rncase1.sql
 // Result file: ../queries/case/results/ncase1.res
-//TODO: ENABLE WHEN expression subqueries, ISNULL, ORDER BY, JOIN.
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 /*
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then (select b.cola1 from table1 where pcol1 = 5;) when b.colh8 = 1 then (select b.cola1 from table1 where pcol1 = 10;) when b.colh8 is null then (select b.cola1 from table1 where pcol1 = 15;) end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 failure contains: 'EC_SYNTAX_ERROR'
@@ -379,7 +379,7 @@ failure contains: 'EC_SYNTAX_ERROR'
 // Source file: ../queries/case/rcase16.sql
 // Result file: ../queries/case/results/case16.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, ucolvc;
 ordered rows:
   ('violet', 'ddd', 0)
@@ -449,7 +449,7 @@ ordered rows:
 // Source file: ../queries/case/rcase17.sql
 // Result file: ../queries/case/results/case17.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.colb1, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where b.ucolvc = 'www' order by TorF, colb1;
 ordered rows:
   ('brown', 'ooo', 0, 'www', false)
@@ -671,7 +671,7 @@ unordered rows:
 // Source file: ../queries/case/rcase11.sql
 // Result file: ../queries/case/results/case11.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end from table1 a join table4 b on a.cola1 = b.cola4 where b.cola4 between 100 and 135 order by a.cola1, b.colb4;
 ordered rows:
   (102, 102, 'gold', TIMESTAMP '2015-05-12 00:00:00.0', 'white', 'case4')
@@ -718,7 +718,7 @@ ordered rows:
 // Source file: ../queries/case/rcase12.sql
 // Result file: ../queries/case/results/case12.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end as CSTMT from table1 a join table4 b on a.cola1 = b.cola4 where cola1 > 400 order by CSTMT, b.colb4, a.cola1;
 ordered rows:
   (416, 416, 'PURPLE', TIMESTAMP '2015-01-29 00:00:00.0', 'BLUE', 'case3')
@@ -770,7 +770,7 @@ ordered rows:
 // Source file: ../queries/case/rcase10.sql
 // Result file: ../queries/case/results/case10.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when b.colb4 <> 'ccc' then 'case3' else 'no case match' end from table1 a join table4 b on a.cola1 = b.cola4 where b.cola4 between 50 and 75 order by a.cola1, b.colb4;
 ordered rows:
   (55, 55, 'TEAL', TIMESTAMP '2015-08-10 00:00:00.0', 'aqua', 'case1')
@@ -818,7 +818,7 @@ contains rows:
 // Source file: ../queries/case/rcase13.sql
 // Result file: ../queries/case/results/case13.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where cole1 > 81.5 order by colb1, colb2, colb4;
 ordered rows:
   (129.730000000000, 26.550000000000, 4.8863, 'BLACK', 'peach', 'RED', 'over 1')
@@ -868,7 +868,7 @@ failure contains: 'EC_SYNTAX_ERROR'
 // Source file: ../queries/case/rcase20.sql
 // Result file: ../queries/case/results/case20.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then b.cola8 / 2 when b.colh8 = 1 then (b.cola8 * 2) / 5 when b.colh8 is null then b.cola8 end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 ordered rows:
   ('peach', 'www', 1, 'www', 2)
@@ -892,7 +892,7 @@ ordered rows:
 // Source file: ../queries/case/rcase15.sql
 // Result file: ../queries/case/results/case15.res
 /*
-TODO: ENABLE WHEN JOIN
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case  when a.colb1 = c.colb4 then 'its a match' when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb1 != upper('black') or colb1 != lower('BLACK') and cola1 > 90 order by cola1, pcol1, colb1, colb2, colb4;
 ordered rows:
   (136.010000000000, 57.310000000000, 2.3732, 'maroon', 'peach', 'RED', 'over 1')

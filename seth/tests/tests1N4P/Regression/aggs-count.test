@@ -42,7 +42,7 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount10.sql
 // Result file: ../queries/aggs/count/results/count10.res
-// TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select colb1, count(distinct colb9) from table1 ?*+HASH*? join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
 ordered rows:
@@ -126,7 +126,7 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount8.sql
 // Result file: ../queries/aggs/count/results/count8.res
-// TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select colb1, colb9, count(*) from table1 join table9 using (ucolvc) where table9.ucolvc < 'ccc' and colb9 = 'orange' group by colb1, colb9 order by colb1, colb9;
 ordered rows:
@@ -141,7 +141,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/count/rcount3.sql
 // Result file: ../queries/aggs/count/results/count3.res
-// TODO: ENABLE WHEN OPTIMIZER (COUNT DISCTINCT)
+// TODO: ENABLE WHEN OPTIMISER (COUNT DISCTINCT)
 /*
 select count(distinct colb1) from table1;
 rows:
@@ -163,7 +163,7 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount9.sql
 // Result file: ../queries/aggs/count/results/count9.res
-// TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select colb1, count(distinct colb9) from table1 join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
 ordered rows:
@@ -227,7 +227,7 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount11.sql
 // Result file: ../queries/aggs/count/results/count11.res
-// TODO: ENABLE WHEN OPTIMIZER (COUNT DISCTINCT)
+// TODO: ENABLE WHEN OPTIMISER (COUNT DISCTINCT)
 /*
 select x, y from (select count(distinct colb9) as x, ucolvc as y from table9 where ucolvc < 'ccc' group by ucolvc) as InQry order by y;
 ordered rows:

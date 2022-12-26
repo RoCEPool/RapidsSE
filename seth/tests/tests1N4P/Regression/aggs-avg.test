@@ -67,7 +67,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg11.sql
 // Result file: ../queries/aggs/avg/results/avg11.res
-// TODO: ENABLE WHEN OPTIMISER (SORT)
+// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
 /*
 select colb1, cast((avg(cold1)) as decimal(10,7)), cast((avg(cold1) * 0.35) as decimal(10,7))  from table1 group by colb1 order by colb1;
 ordered rows:
@@ -335,7 +335,7 @@ rows:
 
 // Source file: ../queries/aggs/avg/ravg10.sql
 // Result file: ../queries/aggs/avg/results/avg10.res
-//TODO: ENABLE WHEN OPTIMISER (SORT)
+// TODO: ENABLE WHEN OPTIMISER (SORT)
 /*
 select colb1, avg(colg1), avg(colg1) - .6 from table1 group by colb1 order by colb1;
 ordered rows:
@@ -824,7 +824,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg6.sql
 // Result file: ../queries/aggs/avg/results/avg6.res
-//TODO: ENABLE WHEN OPTIMISER (SORT)
+// TODO: ENABLE WHEN OPTIMISER (AGGREG & SORT)
 /*
 select colb1, avg(cola1) from table1 group by colb1 order by colb1;
 ordered rows:
