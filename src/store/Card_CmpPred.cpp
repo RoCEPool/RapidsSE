@@ -185,6 +185,10 @@ bool Card_CmpPred::bMaybeBounds_v2(Card_Table* p_table, Card_Index* p_index,
   if (! p_index)
     return false;
 
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
