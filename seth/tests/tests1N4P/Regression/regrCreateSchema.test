@@ -114,6 +114,9 @@ create table TABLE9 (
 );
 success
 
+create index table9_pcol9 on table9(pcol9);
+success
+
 create table CUSTOMERH (
   c_custkey INTEGER NOT NULL,
   c_name VARCHAR(25),

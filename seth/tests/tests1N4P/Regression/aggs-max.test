@@ -83,8 +83,7 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax17.sql
 // Result file: ../queries/aggs/max/results/max17.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
+/* HASH JOIN
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a ?*+HASH*? join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   (396, 'BLACK', -223.05, 'GREEN')
@@ -114,20 +113,17 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax16.sql
 // Result file: ../queries/aggs/max/results/max16.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
-  (396, 'BLACK', -223.05, 'GREEN')
-  (349, 'BLACK', -215.84, 'ORANGE')
-  (418, 'BLACK', -143.43, 'WHITE')
-  (44, 'BLACK', -122.76, 'black')
-  (82, 'BLACK', -181.22, 'red')
-  (434, 'BLACK', 223.71, 'white')
-  (485, 'BLACK', -12.13, 'yellow')
-  (194, 'BLUE', -40.56, 'WHITE')
-  (353, 'BLUE', -21.71, 'maroon')
-*/
+  (396,'BLACK',-2.230500000e+02,'GREEN')
+  (349,'BLACK',-2.158400000e+02,'ORANGE')
+  (418,'BLACK',-1.434300000e+02,'WHITE')
+  (44,'BLACK',-1.227600000e+02,'black')
+  (82,'BLACK',-1.812200000e+02,'red')
+  (434,'BLACK',2.237100000e+02,'white')
+  (485,'BLACK',-1.213000000e+01,'yellow')
+  (194,'BLUE',-4.056000000e+01,'WHITE')
+  (353,'BLUE',-2.171000000e+01,'maroon')
 
 // Source file: ../queries/aggs/max/rmax14.sql
 // Result file: none
@@ -217,9 +213,6 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax15.sql
 // Result file: ../queries/aggs/max/results/max15.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
 select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 rows:
-  (-225.22)
-*/
+  (-2.252200000e+02)
