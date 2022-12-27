@@ -1955,9 +1955,9 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
     if (eCard_a != eCard_b)
       return false;
 
-    if (CK_TERM == eCard_a)
-      if (!this->sz()->bSame(pCard_b->sz()))
-        return false;
+    //if (CK_TERM == eCard_a)
+    if (! this->sz()->bSame(pCard_b->sz()))
+      return false;
   }
 
   i8 nChildren_a = this->nChildCards();
@@ -1968,7 +1968,7 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
   for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
     Card* pChild_a = this->pGetChild(i_Child);
     Card* pChild_b = pCard_b->pGetChild(i_Child);
-    if (!pChild_a->bValuesSameRecursive(pChild_b, iDepth, bTestL0))
+    if (! pChild_a->bValuesSameRecursive(pChild_b, iDepth+1, bTestL0))
       return false;
   }
 
