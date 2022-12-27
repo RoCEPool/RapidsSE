@@ -16,6 +16,7 @@ namespace STORE
     Card_RpnCalc(void);
    ~Card_RpnCalc(void) noexcept(false);
 
+    void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
     bool bIsBraced(void);
     bool bHasWhen(void);
   };

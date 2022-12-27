@@ -36,6 +36,21 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Add_where(Card* p_after)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  G_vNewMember(CK_WHERE);
+
+  G.pDeck->vInsertAfter(G.p_where,p_after);
+
+  G_vAppendNewChild(G.p_where,CK_RPNCALC);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
@@ -1242,6 +1257,33 @@ void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolC
   Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
   vMove(p_PRED, p_boolCalc, vMove);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::R_vUTE_Move_on_To_where(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc_on = G.p_on->pSub_rpnCalc();
+  if (! p_rpnCalc_on->nChildCards())
+    return;
+  Card_Term* p_term_0 = _pCard_Term(p_rpnCalc_on->pGetChild(0));
+  if (p_term_0->bSame("CROSS"_Stz))
+    return;
+
+  if (! G.p_where) {
+    R_vUTE_Add_where(G.p_absJoin);
+  }
+
+  G.p_absJoin->vRemoveChild(G.p_on);
+
+  G.p_rpnCalc = G.p_where->pSub_rpnCalc();
+
+  G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
+
+  DELETE_CARD(G.p_on);
 }
 
 /*----------------------------------------------------------------------------*/

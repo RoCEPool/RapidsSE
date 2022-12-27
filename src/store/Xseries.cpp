@@ -111,6 +111,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
+    m_pTransforms->vS05_T_Move_On();
     m_pTransforms->vS10_T_Condense_Info();
     m_pTransforms->vS20_T_Table_Analysis();
     m_pTransforms->vS22_T_Stream_Analysis();

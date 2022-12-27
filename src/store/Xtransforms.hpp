@@ -47,6 +47,7 @@ namespace STORE
 
     // vSeries_10_Make_Runnable
     void vS10_T00_Begin(void);
+    void vS05_T_Move_On(void);
     void vS10_T_Condense_Info(void);
 
     // vSeries_20_Table_Analysis
