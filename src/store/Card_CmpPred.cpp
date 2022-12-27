@@ -361,10 +361,11 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
     // todo: need bounds to be bndTyp , etc
     // anyways...
 
-    if (! sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
-      continue;
+    if (sz_cmp_arg_0->bSame(sz_bnd_stmColOdn))
+      return true;
+    if (sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
+      return true;
 
-    return true;
   }
 
   return false;
