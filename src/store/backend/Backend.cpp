@@ -150,11 +150,9 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bStartStage      = false;
   m_bCombinedOp      = false;
   m_pPrevStageMarker = nullptr;
-  m_bJoinPredicate   = false;
   m_bInSubquery      = false;
   m_sIndent          = ""_Stz;
 
-  m_iColumnsOfLeftChild = C_UNKNOWN;
   m_pColExprList        = nullptr;
 
   _checkInitialised_(CN_BACKEND);
@@ -637,17 +635,6 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
   QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
 
-  // Get the joinType property
-  //eJT eJoinType = JoinOp::eJoinType(pNode);
-
-  // Get the joinPredicate property
-  //QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
-  //ASSERT(pJoinPredicate);
-
-  // save the left child columns
-  pBackend->m_bJoinPredicate = true;
-  pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
-
   pBackend->vAppendNextOp("abstractJoin \""_Stz);
   switch(JoinOp::eJoinType(pNode)) {
     case JT_INNER:                   /* sPipeline->vCatSprint("INNER"_Stz); */ break;
@@ -667,10 +654,6 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
 
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
-
-  // reset left child columns
-  pBackend->m_bJoinPredicate = false;
-  pBackend->m_iColumnsOfLeftChild = C_UNKNOWN;
 
   // cleanup
   pBackend->m_pColExprList->vDeleteAll();
@@ -1066,62 +1049,25 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
   if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
     QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
-    bool bJoinPredicate = pBackend->m_bJoinPredicate;
-
-    RASSERT(pBackend->m_iColumnsOfLeftChild);
 
     i8 iColumnOrdinal = ColumnOrdinal::iOrdinal(pColumnOrdinal);
 
-    if (bJoinPredicate) {
-
-      if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
-        sPipeline->vCatSprint(
-            " $L%lld"
-            ""_Stz,
-            iColumnOrdinal);
-      else
-        sPipeline->vCatSprint(
-            " $R%lld"
-            ""_Stz,
-            iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
-
-    }
-    else {
-      sPipeline->vCatSprint(
-          " $%lld"
-          ""_Stz,
-          ColumnOrdinal::iOrdinal(pColumnOrdinal));
-    }
+    sPipeline->vCatSprint(
+        " $%lld"
+        ""_Stz,
+        ColumnOrdinal::iOrdinal(pColumnOrdinal));
   }
 
   if (ColumnParameter::bIsOfType(pOrdinalExpr)) {
     QueryNode* pColumnParameter = _pQueryNode(pOrdinalExpr);
-    bool bJoinPredicate = pBackend->m_bJoinPredicate;
 
-    RASSERT(pBackend->m_iColumnsOfLeftChild);
 
     i8 iColumnParameter = ColumnParameter::iParameter(pColumnParameter);
 
-    if (bJoinPredicate) {
-
-      if (iColumnParameter - pBackend->m_iColumnsOfLeftChild <= 0 )
-        sPipeline->vCatSprint(
-            " $L%lld"
-            ""_Stz,
-            iColumnParameter);
-      else
-        sPipeline->vCatSprint(
-            " $R%lld"
-            ""_Stz,
-            iColumnParameter - pBackend->m_iColumnsOfLeftChild);
-
-    }
-    else {
-      sPipeline->vCatSprint(
-          " %%%lld"
-          ""_Stz,
-          iColumnParameter);
-    }
+    sPipeline->vCatSprint(
+        " %%%lld"
+        ""_Stz,
+        iColumnParameter);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

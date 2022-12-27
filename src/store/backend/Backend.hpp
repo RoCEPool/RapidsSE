@@ -24,10 +24,8 @@ namespace STORE
     bool           m_bStartStage;
     bool           m_bCombinedOp;
     QueryNode*     m_pPrevStageMarker;
-    bool           m_bJoinPredicate;
     bool           m_bInSubquery;
     s32            m_sIndent;
-    i8             m_iColumnsOfLeftChild;
     QueryNodeList* m_pColExprList;
 
     // must be last
