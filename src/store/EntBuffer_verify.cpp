@@ -746,7 +746,14 @@ bool EntBuffer::bVerifyRowRefs(void)
     // get the row buffer that this H0 key leaf references
     Rrf xRef = aEnt->rxRef();
     //CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
-    
+
+    i8 i_PoolBuffer = xRef.iBuffer();
+
+    // skip this step if no row references.
+    // e.g Payload entry buffers
+    if (i_PoolBuffer == 0)
+      return true;
+
     DataBuffer* pDataBuffer = DataBuffer::pRefdDataBuffer(xRef);
     
     // get the row entry from referenced entry buffer
