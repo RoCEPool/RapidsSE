@@ -17,20 +17,19 @@ create table TABLE1 (
 );
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
+create index idx on TABLE1 (colc1);
 
 explain stage transliterate
-select colb1, cola1, colf1 from table1
-  where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 and colb1 in ('orange','violet','purple') order by cola1;
+select * from table1
+  where colc1 < TIMESTAMP '2015-08-23 00:00:00';
 
 
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_opt_debug"
-select colb1, cola1, colf1 from table1
-  where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 and colb1 in ('orange','violet','purple') order by cola1;
-
-
+select * from table1
+  where colc1 < TIMESTAMP '2015-08-23 00:00:00';
 
 /*============================================================================*/
 /* end                                                                        */
