@@ -200,8 +200,8 @@ Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode)
   try {
     Ent *aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-//    if ( ! pIndexTree->pRootBuffer()->bVerify() )
-//      pIndexTree->vDump(false);
+    //RASSERT(pIndexTree->pRootBuffer()->bVerify());
+    //pIndexTree->vDump(false);
 
     return aInsertedEntry;
   }

@@ -204,8 +204,7 @@ eKC Key::eMixCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 
       if (iCmp == 0) {
         if (nKeyBytes_l < nKeyBytes_r) {
-          //return KC_BEFORE;
-          continue;
+          return KC_BEFORE;
         }
 
         if (nKeyBytes_l == nKeyBytes_r) {
@@ -243,7 +242,7 @@ eKC Key::eMixCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 
         if (nKeyBytes_l > nKeyBytes_r) {
           //vTrace("BEFORE\n"_Stz);
-         continue;
+          return KC_BEFORE;
         }
 
       }
@@ -257,7 +256,7 @@ eKC Key::eMixCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
   }
 
   //vTrace("BEFORE\n"_Stz);
-  return KC_BEFORE;
+  return KC_SAME;
 }
 
 /*----------------------------------------------------------------------------*/
