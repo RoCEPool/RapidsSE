@@ -34,19 +34,26 @@ create index TABLE9_PCOL9 on TABLE9(pcol9);
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 explain stage transliterate
-  select a.colb1, b.colb9 from table1 a join table9 b on pcol1 = pcol9 limit 10;
+  select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9
+    where b.colb9 < 'INDIGO' group by a.colb1, b.colb9
+    order by b.colb9, a.colb1;
+
+
+// RAY: Notice the sort is cut
+// the groupby and orderby keys are not in the same order
+// I see that Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0) is not comparing the coreect things
+// the CK_DIECTION's m_sValue needs to match
+// and the columns ordinal numbers need to match
+// here group by is  a.colb1, b.colb9
+//      and order by b.colb9, a.colb1
 
 /weaved
 /glean_interactive
 /pipelineName = "_r_opt_debug"
-select a.colb1, b.colb9
-  from table1 a
-  join table9 b on pcol1 = pcol9
-  //where a.colb1 != 'grey'
-  //, table9 b where pcol1 = pcol9
-  //             and a.colb1 != 'grey'
+select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9
+  where b.colb9 < 'INDIGO' group by a.colb1, b.colb9
+  order by b.colb9, a.colb1;
 
- limit 10
 ;
 
 /*============================================================================*/
