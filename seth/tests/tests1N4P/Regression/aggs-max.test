@@ -213,6 +213,9 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax15.sql
 // Result file: ../queries/aggs/max/results/max15.res
+// TODO: ENABLE WHEN OPTIMISER (JOINS)
+/*
 select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 rows:
   (-2.252200000e+02)
+*/
