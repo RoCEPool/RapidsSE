@@ -423,6 +423,28 @@ void Xtransforms::vS10_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vS05_T_Move_On(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
+
+  vAssert_Board_any();
+
+  if (G_bEachMain(CK_WHERE))
+    {;}
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_ABSJOIN,CK_ON)) {
+    R_vUTE_Move_on_To_where();
+  }
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Condense Info                                                              */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vS10_T_Condense_Info(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

@@ -40,6 +40,25 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bAddAnd = false;
+  if (nChildCards())
+    bAddAnd = true;
+
+  vTransferChildren(p_rpnCalc);
+
+  if (bAddAnd) {
+    Card_Term *p_term_and = new Card_Term("and"_Stz);
+    vAppend(p_term_and);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsBraced(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

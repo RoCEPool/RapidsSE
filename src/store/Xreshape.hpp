@@ -17,6 +17,7 @@ namespace STORE
     // utilities
     void R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
     void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
+    void R_vUTE_Add_where(Card* p_after);
     void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
     void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
@@ -46,6 +47,7 @@ namespace STORE
     void R_vUTE_Individuate_filter(void);
     void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
     void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
+    void R_vUTE_Move_on_To_where(void);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);
