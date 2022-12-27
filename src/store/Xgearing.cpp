@@ -1675,6 +1675,8 @@ void Xgearing::G_vPushIter(void)
   pTransformIterSave->vCopyFrom(this->aXsentinels());
 
   m_pTransformIterList->vPush(pTransformIterSave);
+
+//  this->Xsentinals::vSave();
 }
 
 /*----------------------------------------------------------------------------*/

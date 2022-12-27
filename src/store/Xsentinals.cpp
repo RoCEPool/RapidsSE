@@ -54,6 +54,31 @@ void Xsentinals::vCopyFrom(_Xsentinels* aFrom)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Xsentinals::vRestore(void)
+{
+  Xsentinals* pTransformIterRestore = pPop();
+
+  this->vCopyFrom(pTransformIterRestore->aXsentinels());
+
+  delete pTransformIterRestore;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xsentinals::vSave(void)
+{
+  Xsentinals* pTransformIterSave = new Xsentinals;
+
+  pTransformIterSave->vCopyFrom(this->aXsentinels());
+
+  vPush(pTransformIterSave);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 _Xsentinels* Xsentinals::aXsentinels(void)
 {
   return &G;

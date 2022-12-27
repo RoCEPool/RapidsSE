@@ -179,6 +179,7 @@ namespace STORE
 
   class Xsentinals : public Xderive
                    , public ListItem_t<Xsentinals>
+                   , public ListExo2_t<Xsentinals>
   {
   public:
     _Xsentinels G;
@@ -195,6 +196,9 @@ namespace STORE
    ~Xsentinals(void) noexcept(false);
 
     void vCopyFrom(_Xsentinels* aTransformIterMembers);
+
+    void vRestore(void);
+    void vSave(void);
 
     _Xsentinels* aXsentinels(void);
 
