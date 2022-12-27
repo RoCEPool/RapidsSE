@@ -845,7 +845,7 @@ void Xtransforms::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
         pSubQuery->vDisposition(QD_AGGREGATION);
       }
 
-      G_vPopBoard();
+      G_vPopIter();
     }
   }
   else
@@ -1233,7 +1233,7 @@ void Xtransforms::vS40_T10_Fold_F(void)
   // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
   // x) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   G.pDeck->vPush(m_pCard_copied);
@@ -1322,7 +1322,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
   // x) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   G.pDeck->vPush(m_pCard_copied);
@@ -1524,7 +1524,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // x) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   // W A NC I
@@ -1750,7 +1750,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // x) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   G.pDeck->vPush(m_pCard_yanked);
@@ -1940,7 +1940,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 4) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
@@ -2080,7 +2080,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 4) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   // 5) fold
@@ -2233,7 +2233,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 4) pop back to mq
-  G_vPopBoard();
+  G_vPopIter();
   vAssert_Board_mqA();
 
   G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
@@ -2415,7 +2415,7 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
 
   pBoard = G.pBoard;
-  G_vPopBoard();
+  G_vPopIter();
   m_pBench->vRemove(pBoard);
   delete pBoard;
 
@@ -2425,7 +2425,7 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
 
   pBoard = G.pBoard;
-  G_vPopBoard();
+  G_vPopIter();
 
   m_pBench->vRemove(pBoard);
 

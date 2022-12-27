@@ -1546,7 +1546,7 @@ void Xreshape::R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term)
     szParamNm = G.p_param->szValue();
   }
 
-  G_vPopBoard();
+  G_vPopIter();
 
   if (! szParamNm) {
     p_term->vValue("((no-parm))"_Stz);

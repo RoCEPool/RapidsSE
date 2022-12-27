@@ -1703,20 +1703,6 @@ void Xgearing::G_vPushIter(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
-void Xgearing::G_vPopBoard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
-
-  this->vCopyFrom(pTransformIterRestore->aXsentinels());
-
-  delete pTransformIterRestore;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop/restore M iterator from iter stack                                     */
-/*----------------------------------------------------------------------------*/
 void Xgearing::G_vPopIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -1947,6 +1933,19 @@ bool Xgearing::G_bRewindMain(void)
 
   G.e_MainCard = CK_NONE;
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xgearing::G_vSetBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  G.pBoard = pBoard;
+  G.pDeck  = G.pBoard->pDeck();
+
+  G.xBI.vChangeBoard(G.pBoard);
 }
 
 /*----------------------------------------------------------------------------*/

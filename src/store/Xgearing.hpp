@@ -170,7 +170,6 @@ namespace STORE
     void G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue);
     void G_vPushIter(void);
     void G_vPushIter(Board* pBoard);
-    void G_vPopBoard(void);
     void G_vPopIter(void);
 
     void G_vRemoveMain(eCK eCrossCheck);
@@ -186,6 +185,7 @@ namespace STORE
     void G_vRestart(void);
     bool G_bRewindMain(void);
 
+    void G_vSetBoard(Board* pBoard);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     bool G_bSubsequentToMain(bool bUpdateMember = false);
     void G_vSubsequentToMain(bool bUpdateMember = false);
