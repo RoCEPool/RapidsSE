@@ -1,15 +1,12 @@
 
 // Source file: ../queries/alias/ralias-1.sql
 // Result file: ../queries/alias/results/alias-1.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
 select m_qualitycode as QualCode from manufacturer m join returnitems r on m.m_mfgkey = r.m_mfgkey where r_returndate >= '2013-12-26 00:00:00' and r_returndate <= '2014-12-31 00:00:00' and m_specialorders = 'Y'order by m.m_mfgkey;
 ordered rows:
-  (79)
-  (37)
-  (37)
-  (19)
-  */
+  ('79')
+  ('37')
+  ('37')
+  ('19')
 
 // Source file: ../queries/alias/ralias-6.sql
 // Result file: ../queries/alias/results/alias-6.res
