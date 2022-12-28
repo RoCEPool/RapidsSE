@@ -133,6 +133,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
     m_pTransforms->vS33_T10_Convert_stmColOdn_To_tblColOdn();
 
     m_pTransforms->vS34_T_Predicate_Pullup();
+    // ALKA: join ordering
     //m_pTransforms->vS50_T00_Join_Ordering_v2();
     //m_pTransforms->vS34_T_Predicate_Reposition();
 
