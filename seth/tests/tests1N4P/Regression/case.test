@@ -378,9 +378,9 @@ failure contains: 'EC_SYNTAX_ERROR'
 
 // Source file: ../queries/case/rcase16.sql
 // Result file: ../queries/case/results/case16.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
-select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, ucolvc;
+// order by has an ambiguous column.SE compiler gives appropriate error
+//select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, ucolvc;
+select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, a.ucolvc;
 ordered rows:
   ('violet', 'ddd', 0)
   ('violet', 'yyy', 0)
@@ -389,7 +389,6 @@ ordered rows:
   ('purple', 'rrr', 1)
   ('purple', 'uuu', 1)
   ('purple', 'xxx', 1)
-*/
 
 // Source file: ../queries/case/rcase23.sql
 // Result file: ../queries/case/results/case23.res
@@ -448,14 +447,11 @@ ordered rows:
 
 // Source file: ../queries/case/rcase17.sql
 // Result file: ../queries/case/results/case17.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.colb1, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where b.ucolvc = 'www' order by TorF, colb1;
 ordered rows:
   ('brown', 'ooo', 0, 'www', false)
   ('tan', 'qqq', 0, 'www', false)
   ('orange', 'bbb', 1, 'www', true)
-*/
 
 // Source file: ../queries/case/rcase1.sql
 // Result file: ../queries/case/results/case1.res
@@ -670,8 +666,6 @@ unordered rows:
 
 // Source file: ../queries/case/rcase11.sql
 // Result file: ../queries/case/results/case11.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end from table1 a join table4 b on a.cola1 = b.cola4 where b.cola4 between 100 and 135 order by a.cola1, b.colb4;
 ordered rows:
   (102, 102, 'gold', TIMESTAMP '2015-05-12 00:00:00.0', 'white', 'case4')
@@ -680,7 +674,6 @@ ordered rows:
   (124, 124, 'black', TIMESTAMP '2015-01-07 00:00:00.0', 'black', 'case2')
   (124, 124, 'black', TIMESTAMP '2015-01-07 00:00:00.0', 'white', 'case2')
   (127, 127, 'ORANGE', TIMESTAMP '2015-01-04 00:00:00.0', 'gold', 'case3')
-*/
 
 // Source file: ../queries/case/rcase6.sql
 // Result file: ../queries/case/results/case6.res
@@ -717,10 +710,10 @@ ordered rows:
 
 // Source file: ../queries/case/rcase12.sql
 // Result file: ../queries/case/results/case12.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end as CSTMT from table1 a join table4 b on a.cola1 = b.cola4 where cola1 > 400 order by CSTMT, b.colb4, a.cola1;
-ordered rows:
+// since duplicates seth gives error if not in order as expected
+//ordered rows:
+rows:
   (416, 416, 'PURPLE', TIMESTAMP '2015-01-29 00:00:00.0', 'BLUE', 'case3')
   (411, 411, 'WHITE', TIMESTAMP '2015-01-10 00:00:00.0', 'PINK', 'case3')
   (438, 438, 'PINK', TIMESTAMP '2015-01-30 00:00:00.0', 'PINK', 'case3')
@@ -749,7 +742,6 @@ ordered rows:
   (434, 434, 'BLACK', TIMESTAMP '2015-12-05 00:00:00.0', 'violet', 'case4')
   (493, 493, 'maroon', TIMESTAMP '2015-09-02 00:00:00.0', 'indigo', 'no case match')
   (493, 493, 'maroon', TIMESTAMP '2015-09-02 00:00:00.0', 'indigo', 'no case match')
-*/
 
 // Source file: ../queries/case/rcase5.sql
 // Result file: ../queries/case/results/case5.res
@@ -769,8 +761,6 @@ ordered rows:
 
 // Source file: ../queries/case/rcase10.sql
 // Result file: ../queries/case/results/case10.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when b.colb4 <> 'ccc' then 'case3' else 'no case match' end from table1 a join table4 b on a.cola1 = b.cola4 where b.cola4 between 50 and 75 order by a.cola1, b.colb4;
 ordered rows:
   (55, 55, 'TEAL', TIMESTAMP '2015-08-10 00:00:00.0', 'aqua', 'case1')
@@ -780,7 +770,6 @@ ordered rows:
   (62, 62, 'BLACK', TIMESTAMP '2015-07-30 00:00:00.0', 'PINK', 'case1')
   (73, 73, 'indigo', TIMESTAMP '2015-07-14 00:00:00.0', 'RED', 'case1')
   (73, 73, 'indigo', TIMESTAMP '2015-07-14 00:00:00.0', 'peach', 'case1')
-*/
 
 // Source file: ../queries/case/rcase21.sql
 // Result file: ../queries/case/results/case21.res

@@ -61,6 +61,9 @@ create table TABLE4 (
 );
 success
 
+create index table4_cola4 on table4(cola4);
+success
+
 create index table4_ucol on table4(ucol);
 success
 
