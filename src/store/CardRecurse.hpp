@@ -7,8 +7,8 @@
 
 namespace STORE
 {
-  class CardRecurse : public CardIter,
-                      public ListExo2_t<CardIter>
+  class CardRecurse : public CardIter
+//                    , public ListExo2_t<CardIter>
   {
   protected:
     bool m_bDontDescend;

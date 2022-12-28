@@ -7,7 +7,8 @@
 
 namespace STORE
 {
-  class CardIter : public Object
+  class CardIter : public Object,
+                   public ListExo2_t<CardIter>
   {
   protected:
     Card*  m_pCard;
