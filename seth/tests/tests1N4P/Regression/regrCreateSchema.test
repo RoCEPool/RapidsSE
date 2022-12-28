@@ -18,6 +18,9 @@ create table TABLE1 (
 );
 success
 
+create index TABLE1_UCOL on table1(ucol);
+success
+
 create table TABLE2 (
   pcol2   INTEGER NOT NULL,
   scol2   INTEGER NOT NULL,
@@ -101,6 +104,9 @@ create table TABLE8 (
   colh8   INTEGER,
   coli8   VARCHAR(5)
 );
+success
+
+create index table8_pcol8 on table8(pcol8);
 success
 
 create table TABLE9 (

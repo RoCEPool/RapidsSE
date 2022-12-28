@@ -176,7 +176,7 @@ failure contains: 'Expression type combination is invalid'
 
 // Source file: ../queries/like/rlike10.sql
 // Result file: ../queries/like/results/like10.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
+// TODO: ENABLE WHEN LOWER
 /*
 select colb4, pcol4, colb9, pcol9 from table4 join table9 on pcol4 = pcol9 where colb4 like 'bl%' and colb9 like lower('bl%') order by colb4, pcol4;
 ordered rows:
