@@ -826,7 +826,7 @@ bool Xgearing::G_bEachMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_MainCard = G.xBI.pEachMain())) {
+  if ((G.p_MainCard = G.xBI.pEachChild())) {
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
@@ -843,7 +843,7 @@ bool Xgearing::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+  if ((G.p_MainCard = G.xBI.pEachChild(eOfMainKind))) {
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
@@ -861,7 +861,7 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+  while ((G.p_MainCard = G.xBI.pEachChild(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -889,7 +889,7 @@ bool Xgearing::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain_reverse(eOfMainKind))) {
+  while ((G.p_MainCard = G.xBI.pEachChild_reverse(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -935,7 +935,7 @@ bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+  while ((G.p_MainCard = G.xBI.pEachChild(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -973,7 +973,7 @@ bool Xgearing::G_bEachMainWith3Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain(eOfMainKind))) {
+  while ((G.p_MainCard = G.xBI.pEachChild(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -1015,7 +1015,7 @@ bool Xgearing::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain())) {
+  while ((G.p_MainCard = G.xBI.pEachChild())) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
@@ -1042,7 +1042,7 @@ bool Xgearing::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain())) {
+  while ((G.p_MainCard = G.xBI.pEachChild())) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1077,7 +1077,7 @@ bool Xgearing::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI.pEachMain())) {
+  while ((G.p_MainCard = G.xBI.pEachChild())) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1292,7 +1292,7 @@ bool Xgearing::G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_PriorToMain = G.xBI.pPrevMainIf(eOfPriorKind))) {
+  if ((G.p_PriorToMain = G.xBI.pPrevChildIf(eOfPriorKind))) {
     G.e_PriorToMain = G.p_PriorToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);

@@ -38,6 +38,7 @@ namespace STORE
     Card* pEachChild(eCK eCard);
     Card* pEachChild(eCK eCard, i8& ri_Main);
     Card* pEachChild(i8& ri_Main, eCK& reCard);
+    Card* pEachChild_reverse(eCK eCard);
 
     void vForward(void);
 

@@ -252,6 +252,38 @@ Card* CardIter::pEachChild(i8& ri_Main, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* CardIter::pEachChild_reverse(eCK eCard)
+{
+  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  if (C_UNKNOWN == m_i_Child)
+    m_i_Child = m_pCard->nChildCards() - 1;
+  else
+    m_i_Child--;
+
+  for (;;) {
+
+    if (m_i_Child < 0) {
+      m_pChild = nullptr;
+      return nullptr;
+    }
+
+    m_pChild = m_pCard->pGetChild(m_i_Child);
+
+    eCK eCardMain = m_pChild->eCard();
+    if (eCardMain == eCard) {
+      return m_pChild;
+    }
+
+    m_i_Child--;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::vForward(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -297,6 +329,8 @@ bool CardIter::bLess(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(m_bActive);
+
   if (m_i_Child - 1 >= 0)
     return true;
 
@@ -309,6 +343,8 @@ bool CardIter::bLess(void)
 bool CardIter::bMore(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(m_bActive);
 
   if (m_i_Child + 1 < m_pCard->nChildCards())
     return true;
@@ -369,6 +405,23 @@ Card* CardIter::pPrevChild(void)
 
   return pChild;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pPrevChildIf(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  RASSERT(m_bActive);
+
+  Card* pPrevMain = this->pPrevChild();
+  if (! pPrevMain || eCard != pPrevMain->eCard())
+    return nullptr;
+
+  return pPrevMain;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

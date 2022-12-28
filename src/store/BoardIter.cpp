@@ -62,16 +62,16 @@ BoardIter::~BoardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pEachMain(void)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  i8 i_Main;
-
-  m_pChild = pEachChild(i_Main);
-
-  return m_pChild;
-}
+//Card* BoardIter::pEachMain(void)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  i8 i_Main;
+//
+//  m_pChild = pEachChild(i_Main);
+//
+//  return m_pChild;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -100,65 +100,65 @@ Card* BoardIter::pEachMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pEachMain(eCK eCard)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (C_UNKNOWN == m_i_Child)
-    m_i_Child = 0;
-  else
-    m_i_Child++;
-
-  for (;;) {
-
-    if (m_i_Child >= m_pCard->nChildCards()) {
-      m_pChild = nullptr;
-      return nullptr;
-    }
-
-    m_pChild =  m_pCard->pGetChild(m_i_Child);
-
-    eCK eCardMain = m_pChild->eCard();
-    if (eCardMain == eCard) {
-      return m_pChild;
-    }
-    m_i_Child++;
-  }
-
-  NEVER_REACH
-}
+//Card* BoardIter::pEachMain(eCK eCard)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  if (C_UNKNOWN == m_i_Child)
+//    m_i_Child = 0;
+//  else
+//    m_i_Child++;
+//
+//  for (;;) {
+//
+//    if (m_i_Child >= m_pCard->nChildCards()) {
+//      m_pChild = nullptr;
+//      return nullptr;
+//    }
+//
+//    m_pChild =  m_pCard->pGetChild(m_i_Child);
+//
+//    eCK eCardMain = m_pChild->eCard();
+//    if (eCardMain == eCard) {
+//      return m_pChild;
+//    }
+//    m_i_Child++;
+//  }
+//
+//  NEVER_REACH
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pEachMain_reverse(eCK eCard)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (C_UNKNOWN == m_i_Child)
-    m_i_Child = m_pCard->nChildCards() - 1;
-  else
-    m_i_Child--;
-
-  for (;;) {
-
-    if (m_i_Child < 0) {
-      m_pChild = nullptr;
-      return nullptr;
-    }
-
-    m_pChild = m_pCard->pGetChild(m_i_Child);
-
-    eCK eCardMain = m_pChild->eCard();
-    if (eCardMain == eCard) {
-      return m_pChild;
-    }
-
-    m_i_Child--;
-  }
-
-  NEVER_REACH
-}
+//Card* BoardIter::pEachMain_reverse(eCK eCard)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  if (C_UNKNOWN == m_i_Child)
+//    m_i_Child = m_pCard->nChildCards() - 1;
+//  else
+//    m_i_Child--;
+//
+//  for (;;) {
+//
+//    if (m_i_Child < 0) {
+//      m_pChild = nullptr;
+//      return nullptr;
+//    }
+//
+//    m_pChild = m_pCard->pGetChild(m_i_Child);
+//
+//    eCK eCardMain = m_pChild->eCard();
+//    if (eCardMain == eCard) {
+//      return m_pChild;
+//    }
+//
+//    m_i_Child--;
+//  }
+//
+//  NEVER_REACH
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -212,29 +212,29 @@ Card* BoardIter::pEachMain_reverse(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pPrevMainIf(eCK eCard)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  Card* pPrevMain = this->pPrevChild();
-  if (! pPrevMain || eCard != pPrevMain->eCard())
-    return nullptr;
-
-  return pPrevMain;
-}
+//Card* BoardIter::pPrevMainIf(eCK eCard)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  Card* pPrevMain = this->pPrevChild();
+//  if (! pPrevMain || eCard != pPrevMain->eCard())
+//    return nullptr;
+//
+//  return pPrevMain;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool BoardIter::bMore(void)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (m_i_Child + 1 < m_pCard->nChildCards())
-    return true;
-
-  return false;
-}
+//bool BoardIter::bMore(void)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  if (m_i_Child + 1 < m_pCard->nChildCards())
+//    return true;
+//
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

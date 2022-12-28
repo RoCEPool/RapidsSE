@@ -281,7 +281,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   i8 nCount = 0;
 
-  while (Card* pCard = xBI.pEachMain()) {
+  while (Card* pCard = xBI.pEachChild()) {
     eCK eCard = pCard->eCard();
 
     // skip non-printable horizontal lines
