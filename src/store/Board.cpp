@@ -277,7 +277,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
 
-  BoardIter xBI(m_pCard_Deck);
+  CardIter xBI(m_pCard_Deck);
 
   i8 nCount = 0;
 

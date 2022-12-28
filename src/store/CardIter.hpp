@@ -22,7 +22,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    CardIter(void);
     CardIter(Card* pCard);
     CardIter(CardIter* pCardIter_src);
     CardIter(eCN eClass, Card* pCard);

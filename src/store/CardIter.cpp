@@ -16,6 +16,26 @@ __aFooterFunction(CardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+CardIter::CardIter(void)
+    : Object(CN_CARDITER)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  m_pCard   = nullptr;
+  m_i_Child = C_UNKNOWN;
+  m_pChild  = nullptr;
+
+  m_bActive = false;
+
+  _checkInitialised_(CN_CARDITER);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 CardIter::CardIter(Card*  pCard)
 : Object(CN_CARDITER)
 {
@@ -254,7 +274,7 @@ Card* CardIter::pEachChild(i8& ri_Main, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild_reverse(eCK eCard)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = m_pCard->nChildCards() - 1;
