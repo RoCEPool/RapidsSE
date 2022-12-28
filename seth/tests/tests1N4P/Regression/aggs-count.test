@@ -42,9 +42,9 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount10.sql
 // Result file: ../queries/aggs/count/results/count10.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
+// TODO: ENABLE WHEN OPTIMISER (COUNT DISTINCT)
 /*
-select colb1, count(distinct colb9) from table1 ?*+HASH*? join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
+select colb1, count(distinct colb9) from table1 join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 1)
   ('GREEN', 1)
