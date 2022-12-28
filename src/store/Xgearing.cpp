@@ -347,7 +347,7 @@ i8 Xgearing::iTransformDepth(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  return m_pTransformIterList->nItems();
+  return iSentinalsDepth();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1585,18 +1585,15 @@ void Xgearing::G_vPushBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Xsentinals* pTransformIterSave = new Xsentinals;
-
-  pTransformIterSave->vCopyFrom(this->aXsentinels());
-
-  m_pTransformIterList->vPush(pTransformIterSave);
+  G_vPushIter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.pBoard = pBoard;
-  G.pDeck  = G.pBoard->pDeck();
-
-  G.xBI.vChangeBoard(G.pBoard);
+//  G.pBoard = pBoard;
+//  G.pDeck  = G.pBoard->pDeck();
+//
+//  G.xBI.vChangeBoard(G.pBoard);
+  G_vSetBoard(pBoard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1632,7 +1629,7 @@ bool Xgearing::G_bPushBoard(Stz* szBoardNm)
 
   vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
 
-  G_vPushIter(pSubQueryBoard);
+  G_vPushBoard(pSubQueryBoard);
 
   return true;
 }
@@ -1670,34 +1667,13 @@ void Xgearing::G_vPushIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Xsentinals* pTransformIterSave = new Xsentinals;
+//  Xsentinals* pTransformIterSave = new Xsentinals;
+//
+//  pTransformIterSave->vCopyFrom(this->aXsentinels());
+//
+//  m_pTransformIterList->vPush(pTransformIterSave);
 
-  pTransformIterSave->vCopyFrom(this->aXsentinels());
-
-  m_pTransformIterList->vPush(pTransformIterSave);
-
-//  this->Xsentinals::vSave();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPushIter(Board* pBoard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Xsentinals* pTransformIterSave = new Xsentinals;
-
-  pTransformIterSave->vCopyFrom(this->aXsentinels());
-
-  m_pTransformIterList->vPush(pTransformIterSave);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  G.pBoard = pBoard;
-  G.pDeck  = G.pBoard->pDeck();
-
-  G.xBI.vChangeBoard(G.pBoard);
+  this->Xsentinals::vSave();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1707,11 +1683,13 @@ void Xgearing::G_vPopIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
+//  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
+//
+//  this->vCopyFrom(pTransformIterRestore->aXsentinels());
+//
+//  delete pTransformIterRestore;
 
-  this->vCopyFrom(pTransformIterRestore->aXsentinels());
-
-  delete pTransformIterRestore;
+  this->Xsentinals::vRestore();
 }
 
 /*----------------------------------------------------------------------------*/

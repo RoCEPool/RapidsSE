@@ -169,7 +169,6 @@ namespace STORE
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue);
     void G_vPushIter(void);
-    void G_vPushIter(Board* pBoard);
     void G_vPopIter(void);
 
     void G_vRemoveMain(eCK eCrossCheck);

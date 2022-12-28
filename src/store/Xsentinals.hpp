@@ -200,6 +200,9 @@ namespace STORE
     void vRestore(void);
     void vSave(void);
 
+    i8   iSentinalsDepth(void);
+
+
     _Xsentinels* aXsentinels(void);
 
     Footer* aFooter(void);
