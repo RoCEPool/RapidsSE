@@ -236,15 +236,15 @@ bool Optimiser::bTransform(void)
 
   Board* pBoard = m_pBench->pHead();
 
-  m_pTransformer->vTransform();
+  bool bClean = m_pTransformer->bTransform();
 
-   if (bInteractive) {
+   if (bClean && bInteractive) {
     m_pWeaver->vWeaveOptStmt(pBoard);
     vTrace("%s\n"_Stz,m_pWeaver->szOptStmt());
     Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
   }
 
-   return true;
+   return bClean;
 }
 
 /*----------------------------------------------------------------------------*/

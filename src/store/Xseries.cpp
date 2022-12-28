@@ -59,7 +59,7 @@ Xseries::~Xseries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
-void Xseries::vTransformSeries(void)
+bool Xseries::bTransformSeries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
 
@@ -86,6 +86,8 @@ void Xseries::vTransformSeries(void)
 
   // ---
   vSeries_A0_Make_Weavable();
+
+  return true;
 
 }
 

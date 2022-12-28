@@ -32,7 +32,7 @@ namespace STORE
     Transformer(Bench* pBench);
    ~Transformer(void) noexcept(false);
 
-    void vTransform(void);
+    bool bTransform(void);
 
     Footer* aFooter(void);
   };
