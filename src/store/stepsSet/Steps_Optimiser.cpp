@@ -104,7 +104,9 @@ void Step::vOptimiserTransform(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpOptimiser->vTransform();
+  b8 b = m_pLogicUnit->m_xpOptimiser->bTransform();
+
+  m_pDataStack->vPushBol(b);
 
   EXIT();
 }

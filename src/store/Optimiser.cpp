@@ -226,7 +226,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vTransform(void)
+bool Optimiser::bTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -236,13 +236,15 @@ void Optimiser::vTransform(void)
 
   Board* pBoard = m_pBench->pHead();
 
-  m_pTransformer->vTransform();
+  bool bClean = m_pTransformer->bTransform();
 
-   if (bInteractive) {
+   if (bClean && bInteractive) {
     m_pWeaver->vWeaveOptStmt(pBoard);
     vTrace("%s\n"_Stz,m_pWeaver->szOptStmt());
     Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
   }
+
+   return bClean;
 }
 
 /*----------------------------------------------------------------------------*/

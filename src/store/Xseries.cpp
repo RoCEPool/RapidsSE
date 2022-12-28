@@ -7,8 +7,10 @@
 #include "Optimiser.hpp"
 #include "Job.hpp"
 
+#include "Error.hpp"
+
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle --------------------------Ï-------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE,Xseries,CN_XSERIES)
@@ -59,34 +61,53 @@ Xseries::~Xseries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
-void Xseries::vTransformSeries(void)
+bool Xseries::bTransformSeries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
+
+  bool bClean = true;
 
   //m_pCardCtl->vReset();
   //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
   //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
   //m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
 
-  m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,
-                                   CK_RPNCALC,CK_STREAM,0);
-  m_pCardCtl->vSaveShorter();
-  m_pCardCtl->vSaveXhand();
+  try {
+    m_pCardCtl->vPrintSubCards(false, CK_AGGELIST, CK_GBYELIST, CK_PROJELIST,
+                               CK_RPNCALC, CK_STREAM, 0);
+    m_pCardCtl->vSaveShorter();
+    m_pCardCtl->vSaveXhand();
 
-  vSeries_10_Make_Runnable();
+    vSeries_10_Make_Runnable();
 
-  // ---
+    // ---
 
-  vSeries_80_Index_Scan        (C_ENABLED);
-  vSeries_90_Stream_Ordering   (C_ENABLED);
+    vSeries_80_Index_Scan(C_ENABLED);
+    vSeries_90_Stream_Ordering(C_ENABLED);
 
-  m_pTransforms->vOptimiseLoop();
+    m_pTransforms->vOptimiseLoop();
 
-  vSeries_92_Project_Pullup                  (C_DISABLED);
+    vSeries_92_Project_Pullup(C_DISABLED);
 
-  // ---
-  vSeries_A0_Make_Weavable();
+    // ---
+    vSeries_A0_Make_Weavable();
 
+    bClean = true;
+  }
+
+  catch (Exception xException) {
+    bClean = false;
+  }
+
+  catch (Error xError) {
+    eEC eError = xError.eErrorCode();
+    // todo: this should read xError.szErrorMsg()
+    Stz* szError = xError.aErrorMsg();
+
+    bClean = false;
+  }
+
+  return bClean;
 }
 
 /*----------------------------------------------------------------------------*/

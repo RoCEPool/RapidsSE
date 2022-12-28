@@ -17,6 +17,8 @@ namespace STORE
     Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
+    void vBounds_DeriveFrom_filter(Card_Filter* p_filter,
+                                   bool bParamAllowedInBounds);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

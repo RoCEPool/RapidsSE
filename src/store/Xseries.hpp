@@ -30,7 +30,7 @@ namespace STORE
     Xseries(Bench* pBench);
    ~Xseries(void) noexcept(false);
    
-    void vTransformSeries(void);
+    bool bTransformSeries(void);
 
   private:
 

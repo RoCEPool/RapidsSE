@@ -59,11 +59,13 @@ Transformer::~Transformer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform                                                                  */
 /*----------------------------------------------------------------------------*/
-void Transformer::vTransform(void)
+bool Transformer::bTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pXseries->vTransformSeries();
+  bool bClean = m_pXseries->bTransformSeries();
+
+  return bClean;
 }
 
 /*============================================================================*/

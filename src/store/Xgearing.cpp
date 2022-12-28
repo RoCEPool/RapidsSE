@@ -18,7 +18,7 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xgearing::Xgearing(eCN eClass, Bench* pBench)
-: Xsentinals(eClass)
+: Xderive(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

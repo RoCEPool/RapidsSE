@@ -8,6 +8,7 @@
 #include "PtnDef.hpp"
 
 #include "RelOp.hpp"
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -212,8 +213,14 @@ void Xreshape::R_vUTE_Choose_index_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  G.p_index->Y_vSet(P_ChosenIndex);
+  if (! G.p_index) {
+    s256 sErrorMsg;
+    sErrorMsg.vSprint("No index for table %s"_Stz,G.p_table->pSub_tableNm()->szValue());
+    Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
+    throw xError;
+  }
 
+  G.p_index->Y_vSet(P_ChosenIndex);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1230,7 +1237,7 @@ void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolC
 
       Card_Table* p_table = R_pUTE_Resolve_table_By_tblSyn('a',G.i_MainCard);
 
-      Card_Bounds* pBounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
+      Card_Bounds* pBounds = Card_Bounds::pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
 
       //p_table->vAppend(pBounds);
       Card_IndexList* p_indexList = p_table->pSub_indexList();

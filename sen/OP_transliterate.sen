@@ -98,9 +98,15 @@
 
   PipeSpec[] Optimiser[].dissect
 
-  Optimiser[].transform
+  Optimiser[].transform if
 
-  Optimiser[].weave to Text[] // discard
+    Optimiser[].weave to Text[] // discard
+
+  else
+
+    "Alka: optimiser error" .
+
+  then
 
   Optimiser[].delete
 

@@ -16,7 +16,7 @@ __aFooterFunction(Xsentinals)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xsentinals::Xsentinals(void)
-: Xderive(CN_TRANSFORMITER)
+: Object(CN_TRANSFORMITER)
 {
 }
 
@@ -24,7 +24,7 @@ Xsentinals::Xsentinals(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xsentinals::Xsentinals(eCN eClass)
-: Xderive (eClass)
+: Object (eClass)
 {
 }
 

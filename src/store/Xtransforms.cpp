@@ -882,7 +882,7 @@ void Xtransforms::vS32_T_SubQuery_Analysis(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
+    G.p_boolCalc = G.p_rpnCalc->pToBoolCalc();
 
     G.p_where->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
 
@@ -891,7 +891,7 @@ void Xtransforms::vS32_T_SubQuery_Analysis(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-    G.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(G.p_rpnCalc);
+    G.p_boolCalc = G.p_rpnCalc->pToBoolCalc();
 
     G.p_having->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
 
@@ -935,7 +935,7 @@ void Xtransforms::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
     vR_S33_T10_Convert_stmColOdn_To_tblColOdn();
   }
 
-  V_vNo_Terms_StmColOdn(G.pDeck);
+  G.pDeck->vNoTermsStmColOdn();
 
   G.pBoard->vMayHaveStmColOdn(false);
 
@@ -1081,7 +1081,7 @@ void Xtransforms::vS36_T10_Derive_bounds_From_filter(void)
     if (G.pSubQuery->bIsCorrelated() && G.pSubQuery->bByExists())
       bParamAllowedInBounds = true;
 
-    C_vBounds_DeriveFrom_filter(G.p_table, G.p_filter,bParamAllowedInBounds);
+    G.p_table->vBounds_DeriveFrom_filter(G.p_filter,bParamAllowedInBounds);
   }
 
   vEndTransform();
@@ -1597,7 +1597,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   //               bc            //
   //              @cp            //
 
-  C_vBounds_DeriveFrom_filter(G.p_table,G.p_filter,false);
+  G.p_table->vBounds_DeriveFrom_filter(G.p_filter,false);
   vPrintBoard(__LINE__);
 
   // W A NC I
@@ -1821,7 +1821,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
 
   // filter into bounds
 
-  C_vBounds_DeriveFrom_filter(G.p_table,G.p_filter,false);
+  G.p_table->vBounds_DeriveFrom_filter(G.p_filter,false);
   vPrintBoard(__LINE__);
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
@@ -2105,7 +2105,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   R_vUTE_RenumberStmOdn();
   vPrintBoard(__LINE__);
 
-  G.p_bounds = C_pBounds_Create_Eq_ForGivenCol(m_sSqyArg);
+  G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(m_sSqyArg);
   //m_pCard_copied->vAppend(G.p_bounds);
 
   G.p_indexList = G.p_table->pSub_indexList();

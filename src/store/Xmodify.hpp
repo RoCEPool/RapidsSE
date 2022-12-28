@@ -3,18 +3,20 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xcreate.hpp"
+#include "Xsentinals.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xmodify : public Xcreate
+  class Xmodify : public Xsentinals
   {
   public:
-    i8   m_iOdnLo;
-    i8   m_iOdnHi;
-    char m_cTableSyn;
+    i8           m_iOdnLo;
+    i8           m_iOdnHi;
+    char         m_cTableSyn;
+    CardCtl*     m_pCardCtl;
+
 
     // must be last
     Footer m_xFooter;
