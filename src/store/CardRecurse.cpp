@@ -21,7 +21,7 @@ CardRecurse::CardRecurse(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  m_bDontDescend = false;
+//  m_bDontDescend = false;
 
   _checkInitialised_(CN_CARDRECURSE);
   

@@ -25,6 +25,8 @@ CardIter::CardIter(void)
   m_i_Child = C_UNKNOWN;
   m_pChild  = nullptr;
 
+  m_bDontDescend = false;
+
   m_bActive = false;
 
   _checkInitialised_(CN_CARDITER);

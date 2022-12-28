@@ -11,7 +11,7 @@ namespace STORE
 //                    , public ListExo2_t<CardIter>
   {
   protected:
-    bool m_bDontDescend;
+    //bool m_bDontDescend;
 
     // must be last
     Footer m_xFooter;
