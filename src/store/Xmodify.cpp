@@ -17,7 +17,7 @@ __aFooterFunction(Xmodify)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xmodify::Xmodify(eCN eClass)
-: Object(eClass)
+: Xsentinals(eClass)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

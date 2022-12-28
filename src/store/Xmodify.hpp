@@ -3,18 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Bench.hpp"
-#include "Bench.hpp"
-#include "BoardIter.hpp"
-#include "CardRecurse.hpp"
-
-#include "SubQuery.hpp"
+#include "Xsentinals.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xmodify : public Object
+  class Xmodify : public Xsentinals
   {
   public:
     i8           m_iOdnLo;

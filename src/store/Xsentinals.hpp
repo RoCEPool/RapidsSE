@@ -5,8 +5,9 @@
 
 #include "Bench.hpp"
 #include "BoardIter.hpp"
+#include "CardRecurse.hpp"
 
-#include "Xderive.hpp"
+#include "SubQuery.hpp"
 
 namespace STORE
 {
@@ -177,7 +178,7 @@ namespace STORE
     Card_Av_Sort *           p_av_sort;
   } ;
 
-  class Xsentinals : public Xderive
+  class Xsentinals : public Object
                    , public ListItem_t<Xsentinals>
                    , public ListExo2_t<Xsentinals>
   {
