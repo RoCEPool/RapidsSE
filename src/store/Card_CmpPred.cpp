@@ -6,8 +6,8 @@
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 #include "Card_Table.hpp"
-#include "Xverify.hpp"
-
+#include "Card_Index.hpp"
+#include "Card_Bounds.hpp"
 #include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/

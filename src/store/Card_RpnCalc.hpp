@@ -19,6 +19,7 @@ namespace STORE
     void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
     bool bIsBraced(void);
     bool bHasWhen(void);
+    Card_BoolCalc*   pToBoolCalc(void);
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);

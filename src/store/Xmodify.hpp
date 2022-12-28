@@ -3,18 +3,25 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xcreate.hpp"
+#include "Bench.hpp"
+#include "Bench.hpp"
+#include "BoardIter.hpp"
+#include "CardRecurse.hpp"
+
+#include "SubQuery.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xmodify : public Xcreate
+  class Xmodify : public Object
   {
   public:
-    i8   m_iOdnLo;
-    i8   m_iOdnHi;
-    char m_cTableSyn;
+    i8           m_iOdnLo;
+    i8           m_iOdnHi;
+    char         m_cTableSyn;
+    CardCtl*     m_pCardCtl;
+
 
     // must be last
     Footer m_xFooter;
