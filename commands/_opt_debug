@@ -17,46 +17,139 @@ create table TABLE1 (
 );
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-create table TABLE9 (
-  pcol9   INTEGER NOT NULL,
-  scol9   INTEGER NOT NULL,
-  tcol9   INTEGER NOT NULL,
-  colb9   VARCHAR(20),
-  cold9   FLOAT,
-  cole9   DECIMAL,
-  colf9   INTEGER,
-  colg9   INTEGER,
+create table TABLE2 (
+  pcol2   INTEGER NOT NULL,
+  scol2   INTEGER NOT NULL,
+  cola2   INTEGER,
+  colb2   VARCHAR(10),
+  colc2   TIMESTAMP,
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
 
-create index TABLE9_PCOL9 on TABLE9(pcol9);
-Load TABLE9 "../DATA/Load/tbl9data.csv";
+create index TABLE2_PCOL2 on TABLE2 (pcol2);
+Load TABLE2 "../DATA/Load/tbl2data.csv" ;
 
-explain stage transliterate
-  select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9
-    where b.colb9 < 'INDIGO' group by a.colb1, b.colb9
-    order by b.colb9, a.colb1;
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
+);
+
+create index TABLE4_PCOL4 on TABLE4 (pcol4);
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 
 
-// RAY: Notice the sort is cut
-// the groupby and orderby keys are not in the same order
-// I see that Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0) is not comparing the coreect things
-// the CK_DIECTION's m_sValue needs to match
-// and the columns ordinal numbers need to match
-// here group by is  a.colb1, b.colb9
-//      and order by b.colb9, a.colb1
+// RAY: I have simplified the statement that was failing.
+// It is a 3-way join.
+// I see that one of the filters is in the wrong place in the weaved pipeline
 
-/weaved
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
 /glean_interactive
-/pipelineName = "_r_opt_debug"
-select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9
-  where b.colb9 < 'INDIGO' group by a.colb1, b.colb9
-  order by b.colb9, a.colb1;
-
-;
+/transliterated
+/weaved
+select a.cole1,
+  b.colb2,
+  c.cole4
+from table1 a
+join table2 b on a.cola1 = b.cola2
+join table4 c on a.cola1 = c.cola4;
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
 
+/*
+Weaved PIPELINE
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      TABLE1
+    | filter    " type BOOLEAN $3 $23 == "
+    | combined  0
+    | next
+
+  stage S02 on all partitions :
+      indexJoin TABLE2 TABLE2_PCOL2 " bound $I1 "
+    | filter    " type BOOLEAN $3 $14 == "
+    | combined  0
+    | next
+
+  stage S03 on all partitions :
+      indexJoin TABLE4 TABLE4_PCOL4 " bound $I1 "
+    | combined  0
+    | next
+
+  stage S04 on all partitions :
+      project   "   type DECIMAL as cole1 $7
+                  , type VARCHAR as colb2 $15
+                  , type DECIMAL as cole4 $26 "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+
+
+
+
+// MOVED THE FILTER from Stage S01 to S03:
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      TABLE1
+    | next
+
+  stage S02 on all partitions :
+      indexJoin TABLE2 TABLE2_PCOL2 " bound $I1 "
+    | filter    " type BOOLEAN $3 $14 == "
+    | combined  0
+    | next
+
+  stage S03 on all partitions :
+      indexJoin TABLE4 TABLE4_PCOL4 " bound $I1 "
+     | filter    " type BOOLEAN $3 $23 == "
+     | combined  0
+    | next
+
+  stage S04 on all partitions :
+      project   "   type DECIMAL as cole1 $7
+                  , type VARCHAR as colb2 $15
+                  , type DECIMAL as cole4 $26 "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+*/
