@@ -885,6 +885,35 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
+bool Xgearing::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while ((G.p_MainCard = G.xBI.pEachMain_reverse(eOfMainKind))) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind, nullptr, __func__);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
 bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);

@@ -161,6 +161,38 @@ Card* BoardIter::pEachMain(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* BoardIter::pEachMain_reverse(eCK eCard)
+{
+  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  if (C_UNKNOWN == m_i_Child)
+    m_i_Child = m_pCard->nChildCards() - 1;
+  else
+    m_i_Child--;
+
+  for (;;) {
+
+    if (m_i_Child < 0) {
+      m_pChild = nullptr;
+      return nullptr;
+    }
+
+    m_pChild = m_pCard->pGetChild(m_i_Child);
+
+    eCK eCardMain = m_pChild->eCard();
+    if (eCardMain == eCard) {
+      return m_pChild;
+    }
+
+    m_i_Child--;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* BoardIter::pNextMain(void)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);

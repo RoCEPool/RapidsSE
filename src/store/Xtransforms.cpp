@@ -435,7 +435,7 @@ void Xtransforms::vS05_T_Move_On(void)
     {;}
 
   G_vRestart();
-  while (G_bEachMainWithSub(CK_ABSJOIN,CK_ON)) {
+  while (G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
     R_vUTE_Move_on_To_where();
   }
 
