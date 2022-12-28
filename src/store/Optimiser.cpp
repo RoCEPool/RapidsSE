@@ -226,7 +226,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vTransform(void)
+bool Optimiser::bTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -243,6 +243,8 @@ void Optimiser::vTransform(void)
     vTrace("%s\n"_Stz,m_pWeaver->szOptStmt());
     Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
   }
+
+   return true;
 }
 
 /*----------------------------------------------------------------------------*/

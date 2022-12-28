@@ -98,9 +98,11 @@
 
   PipeSpec[] Optimiser[].dissect
 
-  Optimiser[].transform
+  Optimiser[].transform if
 
-  Optimiser[].weave to Text[] // discard
+    Optimiser[].weave to Text[] // discard
+
+  then
 
   Optimiser[].delete
 
