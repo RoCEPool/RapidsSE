@@ -166,6 +166,7 @@ enum eEC : u2 // error codes
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
   EC_MAX_TABLE_NAME_LENGTH,
+  EC_MISSING_JOIN_INDEX,
 
   /* _N_ */
   EC_NO_COLUMNS_DIC,
@@ -428,6 +429,7 @@ static Stz* aEC[] =
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
