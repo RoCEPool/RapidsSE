@@ -17,7 +17,7 @@ __aFooterFunction(Xmodify)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xmodify::Xmodify(eCN eClass)
-: Xcreate(eClass)
+: Xsentinals(eClass)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -389,7 +389,7 @@ void Xmodify::M_vBounds_AddPred(Card_Table* p_table,
   }
   else
   if (p_PRED->bIsCard(CK_CMPPRED)) {
-    p_bound = C_pBound_CreateFrom_PRED(p_PRED,cTblSyn);
+    p_bound = Card_Bound::pBound_CreateFrom_PRED(p_PRED,cTblSyn);
     p_bounds->vAppend(p_bound);
   }
   else {

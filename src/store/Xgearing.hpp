@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "Xderive.hpp"
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
@@ -14,7 +15,7 @@
 
 namespace STORE
 {
-  class Xgearing : public Xsentinals
+  class Xgearing : public Xderive
   {
   protected:
     Bench*      m_pBench;

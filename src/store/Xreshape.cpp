@@ -1237,7 +1237,7 @@ void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolC
 
       Card_Table* p_table = R_pUTE_Resolve_table_By_tblSyn('a',G.i_MainCard);
 
-      Card_Bounds* pBounds = C_pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
+      Card_Bounds* pBounds = Card_Bounds::pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
 
       //p_table->vAppend(pBounds);
       Card_IndexList* p_indexList = p_table->pSub_indexList();
