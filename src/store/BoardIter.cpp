@@ -24,7 +24,6 @@ BoardIter::BoardIter(void)
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
 
-  m_pBoard = nullptr;
   m_pCard  = nullptr;
 
   _checkInitialised_(CN_BOARDITER);
@@ -41,8 +40,7 @@ BoardIter::BoardIter(Board* pBoard)
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
 
-  m_pBoard = pBoard;
-  m_pCard  = m_pBoard ? m_pBoard->pDeck() : nullptr;
+  m_pCard  = pBoard ? pBoard->pDeck() : nullptr;
 
   _checkInitialised_(CN_BOARDITER);
   
@@ -66,25 +64,11 @@ BoardIter::~BoardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BoardIter::vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  while (Card* pCard = pEachMain(eCard))
-    vfApply(pCard);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void BoardIter::vChangeBoard(Board* pBoard)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  m_pBoard = pBoard;
-
-  vChangeCard(m_pBoard->pDeck());
+  vChangeCard(pBoard->pDeck());
 
   vRestart();
 }

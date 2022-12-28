@@ -12,7 +12,6 @@ namespace STORE
   class BoardIter : public CardIter
   {
   private:
-    Board* m_pBoard;
 
     // must be last
     Footer m_xFooter;
@@ -24,8 +23,6 @@ namespace STORE
     BoardIter(void);
     BoardIter(Board* pBoard);
    ~BoardIter(void) noexcept(false);
-
-    void  vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply);
 
     void vChangeBoard(Board* pBoard);
 
