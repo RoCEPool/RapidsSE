@@ -100,14 +100,17 @@ void Step::vOptimiserNew(void)
 /*----------------------------------------------------------------------------*/
 /* Optimiser[].transform -- transform a pipeline                              */
 /*----------------------------------------------------------------------------*/
-void Step::vOptimiserTransform(void)
-{
+void Step::vOptimiserTransform(void) {
   ENTRY();
 
-  b8 b = m_pLogicUnit->m_xpOptimiser->bTransform();
+  eEC eErrorCode;
+  b8 bResult = m_pLogicUnit->m_xpOptimiser->bTransform(&eErrorCode);
 
-  m_pDataStack->vPushBol(b);
+  // push error code
+  if (!bResult)
+    m_pDataStack->vPushInt((i8)eErrorCode);
 
+    m_pDataStack->vPushBol(bResult);
   EXIT();
 }
 

@@ -59,11 +59,11 @@ Transformer::~Transformer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Transformer::bTransform(void)
+bool Transformer::bTransform(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  bool bClean = m_pXseries->bTransformSeries();
+  bool bClean = m_pXseries->bTransformSeries(peErrorCode);
 
   return bClean;
 }

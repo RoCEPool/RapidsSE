@@ -226,7 +226,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bTransform(void)
+bool Optimiser::bTransform(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -236,7 +236,7 @@ bool Optimiser::bTransform(void)
 
   Board* pBoard = m_pBench->pHead();
 
-  bool bClean = m_pTransformer->bTransform();
+  bool bClean = m_pTransformer->bTransform(peErrorCode);
 
    if (bClean && bInteractive) {
     m_pWeaver->vWeaveOptStmt(pBoard);

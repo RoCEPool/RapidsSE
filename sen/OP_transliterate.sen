@@ -87,6 +87,7 @@
   ErrorCode[] EC_NONE == not if
     // - error compile
     //"Error Compile" .
+    false
     exit
   then
 
@@ -103,9 +104,9 @@
     Optimiser[].weave to Text[] // discard
 
   else
-
-    "Alka: optimiser error" .
-
+    op__execErr
+    false
+    exit
   then
 
   Optimiser[].delete
@@ -116,6 +117,7 @@
     Text[] "Weaved: \n%v"  str.format .
   then
 
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -171,9 +173,10 @@
 
   //Text[] .
 
-  //"<optimise>" [job].tagSet@ tagSet.hasName if
-    _Call_Optimiser
-  //then
+  _Call_Optimiser not if
+    true
+    exit
+  then
 
   //Text[] .
 

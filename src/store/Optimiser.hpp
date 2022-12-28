@@ -52,7 +52,7 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
-    bool bTransform(void);
+    bool bTransform(eEC* peErrorCode);
     Transformer* pTransformer(void);
 
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);

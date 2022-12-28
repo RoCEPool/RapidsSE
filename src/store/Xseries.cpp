@@ -61,7 +61,7 @@ Xseries::~Xseries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
-bool Xseries::bTransformSeries(void)
+bool Xseries::bTransformSeries(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
 
@@ -96,13 +96,14 @@ bool Xseries::bTransformSeries(void)
   }
 
   catch (Exception xException) {
+    // set peErrorCode
     bClean = false;
   }
 
   catch (Error xError) {
-    eEC eError = xError.eErrorCode();
+    *peErrorCode = xError.eErrorCode();
     // todo: this should read xError.szErrorMsg()
-    Stz* szError = xError.aErrorMsg();
+    //Stz* szError = xError.aErrorMsg();
 
     bClean = false;
   }
