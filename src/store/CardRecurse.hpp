@@ -23,10 +23,10 @@ namespace STORE
     CardRecurse(Card* pCard);
    ~CardRecurse(void) noexcept(false);
 
-    void vDontDescend(void);
-    Card* pRecurseEach(void);
-    Card* pRecurseEach(eCK eCard);
-
+//    void vDontDescend(void);
+//    Card* pRecurseEach(void);
+//    Card* pRecurseEach(eCK eCard);
+//
   private:
 
 //    bool bPopIter(void);

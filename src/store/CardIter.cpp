@@ -133,6 +133,17 @@ Card* CardIter::pChild(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vDontDescend(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  m_bDontDescend = true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bEachChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -444,6 +455,56 @@ Card* CardIter::pPrevChildIf(eCK eCard)
   return pPrevMain;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pRecurseEach(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // descend into current child
+
+  if (m_pChild && (! m_bDontDescend) ) {
+    if (m_pChild->nChildCards()) {
+
+      vPushIter();
+      vChangeCard(m_pChild);
+      m_pChild = pEachChild();
+
+      return m_pChild;
+    }
+  }
+
+  m_bDontDescend = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // visit next child
+
+  if (bEachChild())
+    return m_pChild;
+
+  while (bPopIter()) {
+    if (bEachChild())
+      return m_pChild;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pRecurseEach(eCK eCard)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  while (Card* p_card = pRecurseEach())
+    if (p_card->bIsCard(eCard))
+      return p_card;
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

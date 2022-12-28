@@ -36,6 +36,8 @@ namespace STORE
     i8 i_Child(void);
     Card* pChild(void);
 
+    void vDontDescend(void);
+
     bool  bEachChild(void);
     Card* pEachChild(void);
     Card* pEachChild(i8& ri_Child);
@@ -60,6 +62,8 @@ namespace STORE
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
 
+    Card* pRecurseEach(void);
+    Card* pRecurseEach(eCK eCard);
     void vRemoveChild(Card* pChild);
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteChild(Card*& rpChild);
