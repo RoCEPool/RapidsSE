@@ -29,8 +29,8 @@ namespace STORE
 
   private:
 
-    bool bPopIter(void);
-    void vPushIter(void);
+//    bool bPopIter(void);
+//    void vPushIter(void);
 
 
     Footer* aFooter(void);

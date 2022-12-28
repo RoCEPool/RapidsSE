@@ -72,6 +72,11 @@ namespace STORE
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
 
+  protected:
+
+    bool bPopIter(void);
+    void vPushIter(void);
+
   private:
 
     Footer* aFooter(void);

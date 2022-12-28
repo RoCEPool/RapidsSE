@@ -108,29 +108,29 @@ Card* CardRecurse::pRecurseEach(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardRecurse::bPopIter(void)
-{
-  if (! nItems())
-    return false;
-
-  CardIter* pCardIter_copy = pPop();
-
-  vSet(pCardIter_copy);
-
-  delete pCardIter_copy;
-
-  return true;
-}
+//bool CardRecurse::bPopIter(void)
+//{
+//  if (! nItems())
+//    return false;
+//
+//  CardIter* pCardIter_copy = pPop();
+//
+//  vSet(pCardIter_copy);
+//
+//  delete pCardIter_copy;
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardRecurse::vPushIter(void)
-{
-  CardIter* pCardIter_copy = new CardIter((CardIter*)this);
-
-  vPush(pCardIter_copy);
-}
+//void CardRecurse::vPushIter(void)
+//{
+//  CardIter* pCardIter_copy = new CardIter((CardIter*)this);
+//
+//  vPush(pCardIter_copy);
+//}
 
 /*============================================================================*/
 /* end                                                                        */
