@@ -178,8 +178,7 @@ namespace STORE
   } ;
 
   class Xsentinals : public Object
-                   , public ListItem_t<Xsentinals>
-                   , public ListExo2_t<Xsentinals>
+                    , public ListExo2_t<Xsentinals>
   {
   public:
     _Xsentinels G;
@@ -195,14 +194,14 @@ namespace STORE
     Xsentinals(eCN eClass);
    ~Xsentinals(void) noexcept(false);
 
-    void vCopyFrom(_Xsentinels* aTransformIterMembers);
+    void vCopyFrom(_Xsentinels* aXsentinals);
 
     void vRestore(void);
     void vSave(void);
 
     i8   iSentinalsDepth(void);
 
-
+  private:
     _Xsentinels* aXsentinels(void);
 
     Footer* aFooter(void);
