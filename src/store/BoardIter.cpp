@@ -35,12 +35,10 @@ BoardIter::BoardIter(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BoardIter::BoardIter(Board* pBoard)
-: CardIter(CN_BOARDITER, pBoard ? pBoard->pDeck() : nullptr)
+BoardIter::BoardIter(Card* pCard)
+: CardIter(CN_BOARDITER, pCard)
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
-
-  m_pCard  = pBoard ? pBoard->pDeck() : nullptr;
 
   _checkInitialised_(CN_BOARDITER);
   
@@ -60,18 +58,6 @@ BoardIter::~BoardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void BoardIter::vChangeBoard(Board* pBoard)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  vChangeCard(pBoard->pDeck());
-
-  vRestart();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

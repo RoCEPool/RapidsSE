@@ -21,10 +21,8 @@ namespace STORE
     void  operator delete(void*);
 
     BoardIter(void);
-    BoardIter(Board* pBoard);
+    BoardIter(Card* pCard);
    ~BoardIter(void) noexcept(false);
-
-    void vChangeBoard(Board* pBoard);
 
     Card* pEachMain(void);
     Card* pEachMain(i8& ri_Main);

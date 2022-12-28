@@ -360,7 +360,7 @@ void Xgearing::vUsingBoard(eBK eBoard, i8 i_Board)
   G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
   G.pDeck  = G.pBoard->pDeck();
 
-  G.xBI.vChangeBoard(G.pBoard);
+  G.xBI.vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1952,7 +1952,7 @@ void Xgearing::G_vSetBoard(Board* pBoard)
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
 
-  G.xBI.vChangeBoard(G.pBoard);
+  G.xBI.vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/
