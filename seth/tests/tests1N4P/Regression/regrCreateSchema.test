@@ -29,6 +29,9 @@ create table TABLE2 (
 );
 success
 
+create index TABLE2_PCOL2 on TABLE2 (pcol2);
+success
+
 create table TABLE3 (
   pcol3   INTEGER NOT NULL,
   scol3   INTEGER NOT NULL,
@@ -263,6 +266,9 @@ create table RETURNITEMS (
   r_returndate TIMESTAMP,
   r_comments VARCHAR(75)
 );
+success
+
+create index RETURNITEMS_M_MFGKEY on RETURNITEMS(m_mfgkey);
 success
 
 CLEANUP {
