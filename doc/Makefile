@@ -12,6 +12,11 @@ all:
 ifdef SPHINX_INSTALLED
 	@echo "Checking links"
 	@$(MAKE) linkcheck
+	@echo
+	@echo "Updating version information"
+	@./updateVersion.sh
+	@echo "done"
+	@echo
 	@echo "Building HTML documentation"
 	@$(MAKE) html
 else

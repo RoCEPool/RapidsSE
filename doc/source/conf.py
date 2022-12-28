@@ -9,6 +9,8 @@
 project = 'RapidsSE'
 copyright = '2022, Boray Data Technology Limited'
 author = 'Boray Data Technology Limited'
+version = '1.1'
+release = '1.1.0-dev0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
