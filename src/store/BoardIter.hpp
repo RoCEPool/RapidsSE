@@ -35,20 +35,20 @@ namespace STORE
 //    Card* pPrevMain(void);
 //    Card* pPrevMainIf(eCK eCard);
 
-    i8 i_Main(void);
-    Card* pRewindMain(void);
+//    i8 i_Main(void);
+//    Card* pRewindMain(void);
 //    bool bMore(void);
-    void vForward(void);
+//    void vForward(void);
 
 
     // - - - - - - - - - - - - - - - - - -
 
-    void vRemoveCard(Card* pCard);
-    void vRemoveCurr(eCK eCrossCheck);
-    void vRemoveDeleteCurr(eCK eCrossCheck);
+//    void vRemoveCard(Card* pCard);
+//    void vRemoveCurr(eCK eCrossCheck);
+//    void vRemoveDeleteCurr(eCK eCrossCheck);
 
-    void vSet(Card* pCurrMain);
-    void vSet(i8 i_Main, Card* pCurrMain);
+//    void vSet(Card* pCurrMain);
+//    void vSet(i8 i_Main, Card* pCurrMain);
 
   private:
 

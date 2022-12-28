@@ -1932,7 +1932,7 @@ bool Xgearing::G_bRewindMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_MainCard = G.xBI.pRewindMain())) {
+  if ((G.p_MainCard = G.xBI.pRewindChild())) {
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;

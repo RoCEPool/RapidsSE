@@ -62,6 +62,7 @@ namespace STORE
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void vRestart(void);
     void vRewind(void);
+    Card* pRewindChild(void);
 
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);

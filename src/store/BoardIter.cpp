@@ -239,110 +239,110 @@ BoardIter::~BoardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BoardIter::vForward(void)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  m_i_Child++;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void BoardIter::vRemoveCard(Card* pCard)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (pCard == m_pChild) {
-    vRemoveCurr(m_pChild->eCard());
-    return;
-  }
-
-  m_pCard->vRemoveChild(pCard);
-}
+//void BoardIter::vForward(void)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  m_i_Child++;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BoardIter::vRemoveCurr(eCK eCrossCheck)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  RASSERT(eCrossCheck == m_pChild->eCard());
-  m_pCard->vRemoveChild(m_pChild);
-  m_i_Child--;
-  if (m_i_Child < m_pCard->nChildCards())
-    m_pChild =  m_pCard->pGetChild(m_i_Child);
-  else
-    m_pChild = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  RASSERT(eCrossCheck == m_pChild->eCard());
-  m_pCard->vRemoveChild(m_pChild);
-  delete m_pChild;
-  m_i_Child--;
-  if (m_i_Child < m_pCard->nChildCards())
-    m_pChild =  m_pCard->pGetChild(m_i_Child);
-  else
-    m_pChild = nullptr;
-}
+//void BoardIter::vRemoveCard(Card* pCard)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  if (pCard == m_pChild) {
+//    vRemoveCurr(m_pChild->eCard());
+//    return;
+//  }
+//
+//  m_pCard->vRemoveChild(pCard);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pRewindMain(void)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (m_i_Child == 0) {
-    m_i_Child = C_UNKNOWN;
-    return nullptr;
-  }
-
-  m_i_Child--;
-
-  if (m_i_Child < m_pCard->nChildCards())
-    m_pChild =  m_pCard->pGetChild(m_i_Child);
-  else
-    m_pChild = nullptr;
-
-  return m_pChild;
-}
-
+//void BoardIter::vRemoveCurr(eCK eCrossCheck)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  RASSERT(eCrossCheck == m_pChild->eCard());
+//  m_pCard->vRemoveChild(m_pChild);
+//  m_i_Child--;
+//  if (m_i_Child < m_pCard->nChildCards())
+//    m_pChild =  m_pCard->pGetChild(m_i_Child);
+//  else
+//    m_pChild = nullptr;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BoardIter::vSet(Card* pCurrMain)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  RASSERT(eCrossCheck == m_pChild->eCard());
+//  m_pCard->vRemoveChild(m_pChild);
+//  delete m_pChild;
+//  m_i_Child--;
+//  if (m_i_Child < m_pCard->nChildCards())
+//    m_pChild =  m_pCard->pGetChild(m_i_Child);
+//  else
+//    m_pChild = nullptr;
+//}
 
-  m_i_Child = m_pCard->iFindChild(pCurrMain);
-
-  if (C_UNKNOWN == m_i_Child)
-    m_pChild = nullptr;
-  else
-    m_pChild = pCurrMain;
-}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//Card* BoardIter::pRewindMain(void)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  if (m_i_Child == 0) {
+//    m_i_Child = C_UNKNOWN;
+//    return nullptr;
+//  }
+//
+//  m_i_Child--;
+//
+//  if (m_i_Child < m_pCard->nChildCards())
+//    m_pChild =  m_pCard->pGetChild(m_i_Child);
+//  else
+//    m_pChild = nullptr;
+//
+//  return m_pChild;
+//}
 
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BoardIter::vSet(i8 i_Main, Card* pCurrMain)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//void BoardIter::vSet(Card* pCurrMain)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  m_i_Child = m_pCard->iFindChild(pCurrMain);
+//
+//  if (C_UNKNOWN == m_i_Child)
+//    m_pChild = nullptr;
+//  else
+//    m_pChild = pCurrMain;
+//}
 
-  m_i_Child = i_Main;
-  m_pChild = pCurrMain;
-}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void BoardIter::vSet(i8 i_Main, Card* pCurrMain)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  m_i_Child = i_Main;
+//  m_pChild = pCurrMain;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
