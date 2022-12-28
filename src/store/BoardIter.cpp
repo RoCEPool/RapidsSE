@@ -68,7 +68,7 @@ Card* BoardIter::pEachMain(void)
 
   i8 i_Main;
 
-  m_pChild = pEachMain(i_Main);
+  m_pChild = pEachChild(i_Main);
 
   return m_pChild;
 }
@@ -76,26 +76,26 @@ Card* BoardIter::pEachMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pEachMain(i8& ri_Main)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (C_UNKNOWN == m_i_Child)
-    m_i_Child = 0;
-  else
-    m_i_Child++;
-
-  if (m_i_Child >= m_pCard->nChildCards()) {
-    m_pChild = nullptr;
-    ri_Main = C_UNKNOWN;
-    return nullptr;
-  }
-
-  m_pChild = m_pCard->pGetChild(m_i_Child);
-  ri_Main = m_i_Child;
-
-  return m_pChild;
-}
+//Card* BoardIter::pEachMain(i8& ri_Main)
+//{
+//  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  if (C_UNKNOWN == m_i_Child)
+//    m_i_Child = 0;
+//  else
+//    m_i_Child++;
+//
+//  if (m_i_Child >= m_pCard->nChildCards()) {
+//    m_pChild = nullptr;
+//    ri_Main = C_UNKNOWN;
+//    return nullptr;
+//  }
+//
+//  m_pChild = m_pCard->pGetChild(m_i_Child);
+//  ri_Main = m_i_Child;
+//
+//  return m_pChild;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -163,51 +163,51 @@ Card* BoardIter::pEachMain_reverse(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pNextMain(void)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  i8 i_Next = m_i_Child + 1;
-
-  if (i_Next >= m_pCard->nChildCards())
-    return nullptr;
-
-  Card* pNextMain =  m_pCard->pGetChild(i_Next);
-
-  return pNextMain;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* BoardIter::pNextMainIf(eCK eCard)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  Card* pNextMain = this->pNextMain();
-  if (! pNextMain || eCard != pNextMain->eCard())
-    return nullptr;
-
-  return pNextMain;
-}
-
+//Card* BoardIter::pNextMain(void)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  i8 i_Next = m_i_Child + 1;
+//
+//  if (i_Next >= m_pCard->nChildCards())
+//    return nullptr;
+//
+//  Card* pNextMain =  m_pCard->pGetChild(i_Next);
+//
+//  return pNextMain;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* BoardIter::pPrevMain(void)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//Card* BoardIter::pNextMainIf(eCK eCard)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  Card* pNextMain = this->pNextMain();
+//  if (! pNextMain || eCard != pNextMain->eCard())
+//    return nullptr;
+//
+//  return pNextMain;
+//}
 
-  i8 i_Prev = m_i_Child - 1;
 
-  if (i_Prev < 0)
-    return nullptr;
-
-  Card* pPrevMain =  m_pCard->pGetChild(i_Prev);
-
-  return pPrevMain;
-}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//Card* BoardIter::pPrevMain(void)
+//{
+//  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+//
+//  i8 i_Prev = m_i_Child - 1;
+//
+//  if (i_Prev < 0)
+//    return nullptr;
+//
+//  Card* pPrevMain =  m_pCard->pGetChild(i_Prev);
+//
+//  return pPrevMain;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -216,7 +216,7 @@ Card* BoardIter::pPrevMainIf(eCK eCard)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  Card* pPrevMain = this->pPrevMain();
+  Card* pPrevMain = this->pPrevChild();
   if (! pPrevMain || eCard != pPrevMain->eCard())
     return nullptr;
 

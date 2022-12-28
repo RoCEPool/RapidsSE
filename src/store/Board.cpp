@@ -288,7 +288,7 @@ void Board::vPinCards(Ribbon* pRibbon)
     if (pCardCtl->bHeatNext(eCard) &&
         pCard->Y_bHas(pCardCtl->szHorizExclude(eCard))) {
 
-      while (Card* pNextMain = xBI.pNextMain()) {
+      while (Card* pNextMain = xBI.pNextChild()) {
         eCK eNextCard = pNextMain->eCard();
         if (pCardCtl->bHeatNext(eNextCard))
           break;

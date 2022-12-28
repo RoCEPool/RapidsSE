@@ -25,14 +25,14 @@ namespace STORE
    ~BoardIter(void) noexcept(false);
 
     Card* pEachMain(void);
-    Card* pEachMain(i8& ri_Main);
+//    Card* pEachMain(i8& ri_Main);
     Card* pEachMain(eCK eCard);
     Card* pEachMain_reverse(eCK eCard);
 
-    Card* pNextMain(void);
-    Card* pNextMainIf(eCK eCard);
+//    Card* pNextMain(void);
+//    Card* pNextMainIf(eCK eCard);
 
-    Card* pPrevMain(void);
+//    Card* pPrevMain(void);
     Card* pPrevMainIf(eCK eCard);
 
     i8 i_Main(void);

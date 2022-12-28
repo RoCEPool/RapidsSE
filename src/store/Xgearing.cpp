@@ -1274,7 +1274,7 @@ bool Xgearing::G_bHasPriorToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_PriorToMain = G.xBI.pPrevMain())) {
+  if ((G.p_PriorToMain = G.xBI.pPrevChild())) {
     G.e_PriorToMain = G.p_PriorToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
@@ -1313,7 +1313,7 @@ bool Xgearing::G_bHasSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_SubsequentToMain = G.xBI.pNextMain())) {
+  if ((G.p_SubsequentToMain = G.xBI.pNextChild())) {
     G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
@@ -1331,7 +1331,7 @@ bool Xgearing::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMembe
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_SubsequentToMain = G.xBI.pNextMainIf(eOfSubsequentKind))) {
+  if ((G.p_SubsequentToMain = G.xBI.pNextChildIf(eOfSubsequentKind))) {
     G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
@@ -1384,7 +1384,7 @@ bool Xgearing::G_bIsNextMain(eCK eMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (G.xBI.pNextMainIf(eMember))
+  if (G.xBI.pNextChildIf(eMember))
     return true;
 
   return false;
@@ -1978,7 +1978,7 @@ bool Xgearing::G_bSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_SubsequentToMain = G.xBI.pNextMain())) {
+  if ((G.p_SubsequentToMain = G.xBI.pNextChild())) {
     G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
