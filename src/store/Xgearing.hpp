@@ -5,7 +5,6 @@
 
 #include "Xderive.hpp"
 #include "Bench.hpp"
-#include "BoardIter.hpp"
 
 #include "PermGen.hpp"
 #include "TransformIterList.hpp"

@@ -240,7 +240,6 @@
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 #include "Transformer.hpp"
-#include "BoardIter.hpp"
 #include "PermGen.hpp"
 #include "CardIter.hpp"
 #include "Xtransforms.hpp"
@@ -299,7 +298,6 @@ SizeHeap gxaSizeHeap[]
   { CN_BENCH,                    sizeof(Bench),              HT_T_SMALL   ,FILL },
   { CN_BIRTH,                    sizeof(Birth),              HT_INVALID   ,FILL },
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
-  { CN_BOARDITER,                sizeof(BoardIter),          HT_T_TINY    ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_BUCKET,                   sizeof(Bucket),             HT_T_TINY    ,FILL },
   { CN_BUCKETGET,                sizeof(BucketGet),          HT_T_TINY    ,FILL },
