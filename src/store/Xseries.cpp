@@ -7,8 +7,10 @@
 #include "Optimiser.hpp"
 #include "Job.hpp"
 
+#include "Error.hpp"
+
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle --------------------------Ï-------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE,Xseries,CN_XSERIES)
@@ -94,6 +96,14 @@ bool Xseries::bTransformSeries(void)
   }
 
   catch (Exception xException) {
+    bClean = false;
+  }
+
+  catch (Error xError) {
+    eEC eError = xError.eErrorCode();
+    // todo: this should read xError.szErrorMsg()
+    Stz* szError = xError.aErrorMsg();
+
     bClean = false;
   }
 
