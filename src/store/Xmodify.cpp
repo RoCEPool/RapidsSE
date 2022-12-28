@@ -131,7 +131,7 @@ void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  CardRecurse xCR(p_boolCalc);
+  CardIter xCR(p_boolCalc);
   while (Card* p_card = xCR.pRecurseEach()) {
 
     if (p_card->bIsCard(CK_NOTPRED)) {
@@ -587,7 +587,7 @@ void Xmodify::vDeck_CopyMarkedPredToTable(Card_BoolCalc* p_calcBool,
 
   Card *pMainCard;
 
-  CardRecurse xCR(p_calcBool);
+  CardIter xCR(p_calcBool);
   while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
     if (MARK_AT != p_pred->cMark1())
       continue;

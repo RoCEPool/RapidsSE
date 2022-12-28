@@ -2829,7 +2829,7 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
 
     // have <bounds> & <filter> under <main>
 
-    CardRecurse xCR(G.p_filter);
+    CardIter xCR(G.p_filter);
     while ((G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
       if (G.p_cmpPred->bSubsetOf_bounds(G.p_bounds))
         G.p_cmpPred->vMark1(MARK_AT);
