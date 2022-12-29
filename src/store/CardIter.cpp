@@ -631,6 +631,30 @@ Card* CardIter::pRewindChild(void)
   return m_pChild;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vRestore(void)
+{
+  CardIter* pCardIterRestore = pPop();
+
+  this->vCopyFrom(pCardIterRestore);
+
+  delete pCardIterRestore;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSave(void)
+{
+  CardIter* pCardIterSave = new CardIter;
+
+  pCardIterSave->vCopyFrom(this);
+
+  vPush(pCardIterSave);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -714,6 +738,18 @@ void CardIter::vPushRecurseIter(void)
 
   m_pRecurseStack->vPush(pCardIter_copy);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vCopyFrom(CardIter* pCardIter)
+{
+  MemLib::vCopy(this,
+                pCardIter,
+                sizeof(CardIter),
+                BASE::CN_CARDITER);
+}
+
 
 
 /*============================================================================*/

@@ -4,10 +4,12 @@
 #pragma once
 
 #include "Card.hpp"
+//#include "CardIter.h"
 
 namespace STORE
 {
   class CardIter : public Object
+                 , public ListExo2_t<CardIter>
  {
   protected:
     Card*  m_pCard;
@@ -70,9 +72,11 @@ namespace STORE
     void vRemoveDeleteChild(Card*& rpChild);
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void vRestart(void);
+    void vRestore(void);
     void vRewind(void);
     Card* pRewindChild(void);
 
+    void vSave(void);
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
@@ -83,6 +87,7 @@ namespace STORE
     void vPushRecurseIter(void);
 
   private:
+    void vCopyFrom(CardIter* pCardIter);
 
     Footer* aFooter(void);
   };
