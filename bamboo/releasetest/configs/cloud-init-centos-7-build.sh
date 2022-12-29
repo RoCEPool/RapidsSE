@@ -75,7 +75,6 @@ SUDO_FILE="/etc/sudoers.d/ec2-user"
 
 chmod 0400 "${SUDO_FILE}"
 
-
 # Set up SSH. We do this early so that we can still login if something goes wrong later on.
 echo
 echo "*** Installing a common internal SSH key ***"
@@ -295,6 +294,39 @@ echo
 chown root:wheel /opt
 chmod g+w /opt
 
+# Set up any pre-requisites
+# Note that we retry any network operations as these can fail or timeout for
+# various reasons. A timeout means that we ultimately cannot connect to this
+# machine.
+
+if ! which aws; then
+  # AWS CLI needs curl and unzip
+  while ! yum install -y curl unzip; do
+    sleep 1
+  done
+
+  while ! curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+    sleep 1
+  done
+
+  unzip awscliv2.zip
+  ./aws/install
+fi
+
+# Install Tex Live in parallel in the background to /usr/local/texlive.
+# This is for generating PDF documentation.
+{
+  cd /usr/local
+  aws s3 cp s3://rapidsse-build-support/texlive/texlive.2022.centos7.tar.gz - | tar xz
+  {
+    echo
+    echo 'TEXLIVEDIR="/usr/local/texlive"'
+    echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+    echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+    echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
+    echo
+  } >> /etc/profile.d/sh.local
+} > /dev/null &
 
 # Apply any package updates
 echo
@@ -309,9 +341,12 @@ if [ "${OS_DIST}" = "${CENTOS7}" ]; then
 fi
 
 # Need to have
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip
+yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip python3 perl-Digest-MD5
 yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
+
+# Documentation generator
+python3 -m pip install -U sphinx
 
 # Runtimes
 # yum install -y libatomic nmap-netcat iproute
@@ -360,6 +395,8 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
 
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
+# Wait for the Tex Live installation to complete
+wait
 
 # Indicate cloud-init has completed by dropping a file in /tmp
 echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
