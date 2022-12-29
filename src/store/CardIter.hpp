@@ -7,8 +7,7 @@
 
 namespace STORE
 {
-  class CardIter : public Object,
-                   public ListExo2_t<CardIter>
+  class CardIter : public Object
   {
   protected:
     Card*  m_pCard;
@@ -18,6 +17,8 @@ namespace STORE
     bool   m_bDontDescend;
 
     bool   m_bActive;
+
+    ListExo2_t<CardIter>* m_pRecurseStack;
 
     // must be last
     Footer m_xFooter;
@@ -78,8 +79,8 @@ namespace STORE
 
   protected:
 
-    bool bPopIter(void);
-    void vPushIter(void);
+    bool bPopRecurseIter(void);
+    void vPushRecurseIter(void);
 
   private:
 

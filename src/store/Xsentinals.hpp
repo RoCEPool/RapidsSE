@@ -24,7 +24,6 @@ namespace STORE
     Xsentinals(eCN eClass);
    ~Xsentinals(void) noexcept(false);
 
-    void vCopyFrom(_Xsentinels* aXsentinals);
 
     void vRestore(void);
     void vSave(void);
@@ -32,6 +31,7 @@ namespace STORE
     i8   iSentinalsDepth(void);
 
   private:
+    void vCopyFrom(_Xsentinels* aXsentinals);
     _Xsentinels* aXsentinels(void);
 
     Footer* aFooter(void);
