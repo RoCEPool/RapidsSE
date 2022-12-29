@@ -50,6 +50,7 @@ namespace STORE
     void R_vUTE_Move_on_To_where(void);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
+    bool R_bUTE_Order_Joins(void);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);
     void R_vUTE_Push_foldExpr_Into_gbyElist(void);
     void R_vUTE_RelabelExpressions(void);

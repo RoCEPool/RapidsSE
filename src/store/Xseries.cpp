@@ -156,8 +156,10 @@ void Xseries::vSeries_10_Make_Runnable(void)
 
     m_pTransforms->vS34_T_Predicate_Pullup();
     // ALKA: join ordering
-    //m_pTransforms->vS50_T00_Join_Ordering_v2();
-    //m_pTransforms->vS34_T_Predicate_Reposition();
+//    if (m_pTransforms->R_bUTE_Order_Joins()) {
+//      m_pTransforms->vS50_T00_Join_Ordering_v2();
+//      m_pTransforms->vS34_T_Predicate_Reposition();
+//    }
 
     m_pTransforms->vS36_T10_Derive_bounds_From_filter();
   }

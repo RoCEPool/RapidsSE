@@ -1349,6 +1349,20 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Xreshape::R_bUTE_Order_Joins(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  CardIter xCI(G.pDeck);
+  if (xCI.pEachChild(CK_TABLE) && xCI.pEachChild(CK_TABLE))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Push_foldExpr_Into_aggElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
