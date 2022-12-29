@@ -21,6 +21,7 @@ create index table9_pcol9 on table9(pcol9);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
+/glean_interactive
 select count(ucol) - max(cold9) from table9 where ucol > 0;
 
 /*============================================================================*/
