@@ -61,6 +61,8 @@ void Xsentinals::vRestore(void)
   this->vCopyFrom(pTransformIterRestore->aXsentinels());
 
   delete pTransformIterRestore;
+
+  MemLib::vCopy(&xBI_x,&G.xBI_g,sizeof(xBI_x),CN_XSENTINALS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +73,8 @@ void Xsentinals::vSave(void)
   Xsentinals* pTransformIterSave = new Xsentinals;
 
   pTransformIterSave->vCopyFrom(this->aXsentinels());
+
+  //MemLib::vCopy(&pTransformIterSave->G.xBI_g,&xBI_x,sizeof(xBI_x),CN_XSENTINALS);
 
   vPush(pTransformIterSave);
 }

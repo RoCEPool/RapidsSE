@@ -10,7 +10,7 @@ namespace STORE
 {
   struct _Xsentinals
   {
-    CardIter xBI;
+    CardIter xBI_g;
 
     Board*      pBoard;
     Card_Deck*  pDeck;

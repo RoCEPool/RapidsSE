@@ -96,7 +96,7 @@ void Card_JoinOrdering::vEstimateJoinedBuff(Card_Deck* pDeck,
 
   CardIter xCI(pDeck);
 
-//  while (G.p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
+//  while (G.p_ptndJoin = _pCard_PtndJoin(xBI_g.pEachMain(CK_PTNDJOIN))) {
   while (Card* pMainCard = xCI.pEachChild()) {
     eCK eCard = pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {

@@ -11,6 +11,8 @@ namespace STORE
                     , public ListExo2_t<Xsentinals>
   {
   public:
+    CardIter xBI_x;
+
     _Xsentinals G;
 
     // must be last
