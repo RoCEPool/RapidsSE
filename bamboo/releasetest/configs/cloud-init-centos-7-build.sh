@@ -315,7 +315,7 @@ fi
 
 # Install Tex Live in parallel in the background to /usr/local/texlive.
 # This is for generating PDF documentation.
-{
+(
   cd /usr/local
   aws s3 cp s3://rapidsse-build-support/texlive/texlive.2022.centos7.tar.gz - | tar xz
   {
@@ -325,8 +325,8 @@ fi
     echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
     echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
     echo
-  } >> /etc/profile.d/sh.local
-} > /dev/null &
+  } >>/etc/profile.d/sh.local
+) > /dev/null &
 
 # Apply any package updates
 echo

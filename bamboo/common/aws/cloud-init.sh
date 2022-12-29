@@ -366,16 +366,19 @@ EOF
   echo
   amazon-linux-extras install -y epel
   yum update -y
-  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses parallel
+  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses parallel python3
   yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
   if [ "${OS_DIST}" = "${CENTOS7}" ]; then
     yum install -y epel-release
-    yum install -y java vim mysql python3 jq
+    yum install -y java vim mysql jq
   fi
 
   # ----------------------------------------------------------------------------------------
   # Install JMeter to /opt/jmeter
+  echo
+  echo "*** Installing jmeter ***"
+  echo
   pushd "$(pwd)"
   cd /opt
   JMETER_VER="5.4.3"
@@ -400,7 +403,17 @@ EOF
   } >>"${bash_profile}"
 
   # ----------------------------------------------------------------------------------------
+  # Installing Sphinx for documentation generation
+  echo
+  echo "*** Installing Sphinx ***"
+  echo
+  sudo "${OS_USER}" python3 -m pip install --user -U sphinx
+
+  # ----------------------------------------------------------------------------------------
   # Installing AWS CLI
+  echo
+  echo "*** Installing AWS CLI ***"
+  echo
   if ! which aws; then
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
@@ -532,10 +545,16 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Git setup
+  echo
+  echo "*** Git LFS initialisation ***"
+  echo
   sudo -H -u "${OS_USER}" git lfs install
 
   # ----------------------------------------------------------------------------------------
   # Remove annoying GNU Parallel citation message
+  echo
+  echo "*** GNU Parallel citation ***"
+  echo
   if which parallel &>/dev/null; then
     echo -e "will cite\n" | parallel --citation
   fi
