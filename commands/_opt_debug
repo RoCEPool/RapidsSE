@@ -35,7 +35,7 @@ create index table9_ucolvc on table9(ucolvc);
 create index table9_colb9 on table9(colb9);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv";
-
+/*
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_interactive
 /transliterated
@@ -43,6 +43,33 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 select pcol8, colb8, pcol9, colb9
   from table8 join table9 on colb8 = colb9
   where pcol9 between 219 and 221 order by pcol9, pcol8;
+*/
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      TABLE8
+    | next
+
+  stage S02 on all partitions :
+      indexJoin TABLE9 table9_colb9 " BOUND $I1 $4 == "
+    | combined  0
+    | next
+
+
+  stage S07 on origin :
+      output
+    | sink
+    | first
+
+end ;
 
 /*============================================================================*/
 /* end                                                                        */

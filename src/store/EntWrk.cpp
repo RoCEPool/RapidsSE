@@ -121,6 +121,16 @@ void EntWrk::vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue)
 {
   _static_
 
+  // Alka: entwrk reset
+  /*
+  static i8 nTimes = 0;
+
+  if (161 == nTimes)
+    vDebugPoint();
+
+  vTrace("vAppendElementEntStz: call# %03lld %s\n"_Stz,nTimes++,sValue->azChar());
+  */
+
   if ((i8)sValue == C_DATUM_NULL)
     pEntWrk->vAppendNull();
   else
@@ -384,6 +394,9 @@ void EntWrk::vAppendStz(Stz* szArg)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   char* aDst = (char*)ayElmNext_dtm();
+
+  // Alka: entwrk reset
+  //vTrace("aDst %p\n"_Stz,aDst);
   
   i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
   
