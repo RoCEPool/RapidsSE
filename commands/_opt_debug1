@@ -17,6 +17,7 @@ create table TABLE1 (
 );
 
 create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_pcol1 on table1(pcol1);
 
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
