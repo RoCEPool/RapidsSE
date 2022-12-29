@@ -1,21 +1,6 @@
 /*============================================================================*/
-/* _opt_debug -- (case.test)                                                  */
+/* _opt_debug1 -- (case.test)                                                  */
 /*============================================================================*/
-
-create table TABLE1 (
-  pcol1   INTEGER NOT NULL,
-  tcol1   INTEGER NOT NULL,
-  cola1   INTEGER,
-  colb1   VARCHAR(20),
-  colc1   TIMESTAMP,
-  cold1   FLOAT,
-  cole1   DECIMAL(15, 2),
-  colf1   INTEGER,
-  colg1   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
-Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
 create table TABLE9 (
   pcol9   INTEGER NOT NULL,
@@ -30,72 +15,13 @@ create table TABLE9 (
   ucolvc  VARCHAR(5)
 );
 
-create index TABLE9_PCOL9 on TABLE9(pcol9);
+create index table9_pcol9 on table9(pcol9);
+create index table9_ucolvc on table9(ucolvc);
+
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
-/glean_cue_trace = "x"
-/glean_interactive
-/transliterated
-/weaved
-select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 
-
-/******************************************************************
- RAY: The above gets weaved as the following pipleine.
- NOTICE: that stage S01 should be broadcast to StageS02
- as the TABLE 1 and TABLE9 are not partitioned on the join columns
-******************************************************************/
-/*
-pipeline _unnamed_
-  tag <optimised> = 1 endTag
-begin
-
-  stage S00 on origin :
-      start
-    | pulse     once
-    | next
-
-  stage S01 on all partitions :
-      scan      TABLE1
-    | next
-
-  stage S02 on all partitions :
-      indexJoin TABLE9 idx " bound $I1 "
-    | filter    " type BOOLEAN $10 $20 == "
-    | combined  0
-    | next
-
-  stage S03 on all partitions :
-      project   "   type FLOAT ) $16 min
-                  , type FLOAT ) $6 min "
-    | combined  0
-    | next
-
-  stage S04 on all nodes :
-      project   "   type FLOAT ) $1 min
-                  , type FLOAT ) $2 min "
-    | combined  0
-    | next
-
-  stage S05 on origin :
-      project   "   type FLOAT ) $1 min
-                  , type FLOAT ) $2 min "
-    | combined  0
-    | next
-
-  stage S06 on origin :
-      project   " type FLOAT $2 $1 + "
-    | combined  0
-    | next
-
-  stage S07 on origin :
-      output
-    | sink
-    | first
-
-end ;
-*/
+/weaved select cold9, ucolvc from table9 where ucolvc < 'indigo';
 
 /*============================================================================*/
 /* end                                                                        */
