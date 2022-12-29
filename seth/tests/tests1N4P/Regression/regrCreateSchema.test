@@ -32,6 +32,9 @@ create table TABLE2 (
 );
 success
 
+create index TABLE2_COLA2 on TABLE2 (cola2);
+success
+
 create index TABLE2_PCOL2 on TABLE2 (pcol2);
 success
 
@@ -132,7 +135,13 @@ create table TABLE9 (
 );
 success
 
+create index table9_colb9 on table9(colb9);
+success
+
 create index table9_ucol on table9(ucol);
+success
+
+create index table9_ucolvc on table9(ucolvc);
 success
 
 create index table9_pcol9 on table9(pcol9);
