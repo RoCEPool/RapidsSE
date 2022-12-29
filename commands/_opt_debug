@@ -30,126 +30,41 @@ create table TABLE2 (
 create index TABLE2_PCOL2 on TABLE2 (pcol2);
 Load TABLE2 "../DATA/Load/tbl2data.csv" ;
 
-create table TABLE4 (
-  pcol4   INTEGER NOT NULL,
-  scol4   INTEGER NOT NULL,
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
   ucol    INTEGER,
-  ucolvc  VARCHAR(5),
-  cola4   INTEGER,
-  colb4   VARCHAR(10),
-  colc4   TIMESTAMP,
-  cole4   DECIMAL(15, 2)
+  ucolvc  VARCHAR(5)
 );
 
-create index TABLE4_PCOL4 on TABLE4 (pcol4);
-Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+create index table9_pcol9 on table9(pcol9);
+//create index table9_ucolvc on table9(ucolvc);
 
+Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-// RAY: I have simplified the statement that was failing.
-// It is a 3-way join.
-// I see that one of the filters is in the wrong place in the weaved pipeline
+// TRYING TO GET THE FOLLOWING RUNNING:
+//select a.pcol1, b.ucolvc, c.* from table1 a, table2 b, table9 c
+//  where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc and a.ucolvc < 'ddd' and c.pcol9 < 20 order by a.pcol1, c.pcol9;
+
+// RAY: Simplified the satatement and noticed
+// the following picks the wrong index table9_pcol9
 
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_cue_trace = "x"
 /glean_interactive
 /transliterated
 /weaved
-select a.cole1,
-  b.colb2,
-  c.cole4
-from table1 a
-join table2 b on a.cola1 = b.cola2
-join table4 c on a.cola1 = c.cola4;
+select a.pcol1, b.ucolvc, c.* from table1 a, table2 b, table9 c
+  where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc;
+
+
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
-/*
-Weaved PIPELINE
-pipeline _unnamed_
-  tag <optimised> = 1 endTag
-begin
-
-  stage S00 on origin :
-      start
-    | pulse     once
-    | next
-
-  stage S01 on all partitions :
-      scan      TABLE1
-    | filter    " type BOOLEAN $3 $23 == "
-    | combined  0
-    | next
-
-  stage S02 on all partitions :
-      indexJoin TABLE2 TABLE2_PCOL2 " bound $I1 "
-    | filter    " type BOOLEAN $3 $14 == "
-    | combined  0
-    | next
-
-  stage S03 on all partitions :
-      indexJoin TABLE4 TABLE4_PCOL4 " bound $I1 "
-    | combined  0
-    | next
-
-  stage S04 on all partitions :
-      project   "   type DECIMAL as cole1 $7
-                  , type VARCHAR as colb2 $15
-                  , type DECIMAL as cole4 $26 "
-    | combined  0
-    | next
-
-  stage S05 on origin :
-      output
-    | sink
-    | first
-
-end ;
-
-
-
-
-
-
-// MOVED THE FILTER from Stage S01 to S03:
-pipeline _unnamed_
-  tag <optimised> = 1 endTag
-begin
-
-  stage S00 on origin :
-      start
-    | pulse     once
-    | next
-
-  stage S01 on all partitions :
-      scan      TABLE1
-    | next
-
-  stage S02 on all partitions :
-      indexJoin TABLE2 TABLE2_PCOL2 " bound $I1 "
-    | filter    " type BOOLEAN $3 $14 == "
-    | combined  0
-    | next
-
-  stage S03 on all partitions :
-      indexJoin TABLE4 TABLE4_PCOL4 " bound $I1 "
-     | filter    " type BOOLEAN $3 $23 == "
-     | combined  0
-    | next
-
-  stage S04 on all partitions :
-      project   "   type DECIMAL as cole1 $7
-                  , type VARCHAR as colb2 $15
-                  , type DECIMAL as cole4 $26 "
-    | combined  0
-    | next
-
-  stage S05 on origin :
-      output
-    | sink
-    | first
-
-end ;
-
-*/
