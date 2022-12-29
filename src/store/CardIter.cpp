@@ -29,6 +29,8 @@ CardIter::CardIter(void)
 
   m_bActive = false;
 
+  m_pRecurseStack = nullptr;
+
   _checkInitialised_(CN_CARDITER);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -49,6 +51,8 @@ CardIter::CardIter(Card*  pCard)
 
   m_bActive = true;
 
+  m_pRecurseStack = nullptr;
+
   _checkInitialised_(CN_CARDITER);
   
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -61,6 +65,8 @@ CardIter::CardIter(CardIter* pCardIter_src)
     : Object(CN_CARDITER)
 {
   _precondition_(_MAGIC_,_FOOTER_);
+
+  m_pRecurseStack = nullptr;
 
   vSet(pCardIter_src);
 }
@@ -79,6 +85,8 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 
   m_bActive = true;
 
+  m_pRecurseStack = nullptr;
+
   _checkInitialised_(CN_CARDITER);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -90,7 +98,8 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-  
+
+  delete m_pRecurseStack;
 }
 
 
@@ -468,7 +477,7 @@ Card* CardIter::pRecurseEach(void)
   if (m_pChild && (! m_bDontDescend) ) {
     if (m_pChild->nChildCards()) {
 
-      vPushIter();
+      vPushRecurseIter();
       vChangeCard(m_pChild);
       m_pChild = pEachChild();
 
@@ -484,7 +493,7 @@ Card* CardIter::pRecurseEach(void)
   if (bEachChild())
     return m_pChild;
 
-  while (bPopIter()) {
+  while (bPopRecurseIter()) {
     if (bEachChild())
       return m_pChild;
   }
@@ -675,14 +684,14 @@ void CardIter::vSet(i8 iChild, Card* pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bPopIter(void)
+bool CardIter::bPopRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  if (! nItems())
+  if (! m_pRecurseStack || ! m_pRecurseStack->nItems())
     return false;
 
-  CardIter* pCardIter_copy = pPop();
+  CardIter* pCardIter_copy = m_pRecurseStack->pPop();
 
   vSet(pCardIter_copy);
 
@@ -694,13 +703,16 @@ bool CardIter::bPopIter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPushIter(void)
+void CardIter::vPushRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  if (! m_pRecurseStack)
+    m_pRecurseStack = new ListExo2_t<CardIter>;
+
   CardIter* pCardIter_copy = new CardIter((CardIter*)this);
 
-  vPush(pCardIter_copy);
+  m_pRecurseStack->vPush(pCardIter_copy);
 }
 
 

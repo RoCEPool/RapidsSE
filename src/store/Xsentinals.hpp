@@ -11,7 +11,7 @@ namespace STORE
                     , public ListExo2_t<Xsentinals>
   {
   public:
-    _Xsentinels G;
+    _Xsentinals G;
 
     // must be last
     Footer m_xFooter;
@@ -24,7 +24,6 @@ namespace STORE
     Xsentinals(eCN eClass);
    ~Xsentinals(void) noexcept(false);
 
-    void vCopyFrom(_Xsentinels* aXsentinals);
 
     void vRestore(void);
     void vSave(void);
@@ -32,7 +31,8 @@ namespace STORE
     i8   iSentinalsDepth(void);
 
   private:
-    _Xsentinels* aXsentinels(void);
+    void vCopyFrom(_Xsentinals* aXsentinals);
+    _Xsentinals* aXsentinels(void);
 
     Footer* aFooter(void);
   };

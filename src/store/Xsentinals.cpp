@@ -43,11 +43,11 @@ Xsentinals::~Xsentinals(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xsentinals::vCopyFrom(_Xsentinels* aXsentinals)
+void Xsentinals::vCopyFrom(_Xsentinals* aXsentinals)
 {
   MemLib::vCopy(aXsentinels(),
                 aXsentinals,
-                sizeof(_Xsentinels),
+                sizeof(_Xsentinals),
                 CN_XSENTINALS);
 }
 
@@ -91,7 +91,7 @@ i8 Xsentinals::iSentinalsDepth(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-_Xsentinels* Xsentinals::aXsentinels(void)
+_Xsentinals* Xsentinals::aXsentinels(void)
 {
   return &G;
 }

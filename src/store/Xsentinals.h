@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  struct _Xsentinels
+  struct _Xsentinals
   {
     CardIter xBI;
 
