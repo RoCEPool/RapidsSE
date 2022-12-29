@@ -124,8 +124,6 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount8.sql
 // Result file: ../queries/aggs/count/results/count8.res
-// TODO: ENABLE WHEN OPTIMISER (BROADCAST)
-/*
 select colb1, colb9, count(*) from table1 join table9 using (ucolvc) where table9.ucolvc < 'ccc' and colb9 = 'orange' group by colb1, colb9 order by colb1, colb9;
 ordered rows:
   ('BLACK', 'orange', 1)
@@ -135,7 +133,6 @@ ordered rows:
   ('brown', 'orange', 1)
   ('maroon', 'orange', 1)
   ('orange', 'orange', 2)
-*/
 
 // Source file: ../queries/aggs/count/rcount3.sql
 // Result file: ../queries/aggs/count/results/count3.res

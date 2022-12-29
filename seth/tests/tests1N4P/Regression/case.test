@@ -806,25 +806,22 @@ contains rows:
 
 // Source file: ../queries/case/rcase13.sql
 // Result file: ../queries/case/results/case13.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
 select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where cole1 > 81.5 order by colb1, colb2, colb4;
 ordered rows:
-  (129.730000000000, 26.550000000000, 4.8863, 'BLACK', 'peach', 'RED', 'over 1')
-  (135.500000000000, 54.960000000000, 2.4654, 'TEAL', 'ORANGE', 'pink', 'over 1')
-  (135.500000000000, 107.980000000000, 1.2549, 'TEAL', 'ORANGE', 'teal', 'over 1')
-  (120.400000000000, 38.710000000000, 3.1103, 'WHITE', 'YELLOW', 'ORANGE', 'over 1')
-  (120.400000000000, 130.670000000000, 0.9214, 'WHITE', 'YELLOW', 'gold', 'under 1')
-  (99.460000000000, 113.370000000000, 0.8773, 'blue', 'GREEN', 'gold', 'under 1')
-  (99.460000000000, 31.840000000000, 3.1237, 'blue', 'GREEN', 'pink', 'over 1')
-  (136.010000000000, 57.310000000000, 2.3732, 'maroon', 'peach', 'RED', 'over 1')
-  (136.010000000000, 110.850000000000, 1.2270, 'maroon', 'peach', 'blue', 'over 1')
-  (136.010000000000, 96.440000000000, 1.4103, 'maroon', 'peach', 'gold', 'over 1')
-  (139.180000000000, 53.600000000000, 2.5966, 'purple', 'GREEN', 'ORANGE', 'over 1')
-  (139.180000000000, 53.600000000000, 2.5966, 'purple', 'white', 'ORANGE', 'over 1')
-  (85.840000000000, 113.370000000000, 0.7572, 'tan', 'GREEN', 'gold', 'under 1')
-  (85.840000000000, 31.840000000000, 2.6960, 'tan', 'GREEN', 'pink', 'over 1')
-*/
+  (129.73,26.55,4.89,'BLACK','peach','RED','over 1')
+  (135.50,54.96,2.47,'TEAL','ORANGE','pink','over 1')
+  (135.50,107.98,1.25,'TEAL','ORANGE','teal','over 1')
+  (120.40,38.71,3.11,'WHITE','YELLOW','ORANGE','over 1')
+  (120.40,130.67,0.92,'WHITE','YELLOW','gold','under 1')
+  (99.46,113.37,0.88,'blue','GREEN','gold','under 1')
+  (99.46,31.84,3.12,'blue','GREEN','pink','over 1')
+  (136.01,57.31,2.37,'maroon','peach','RED','over 1')
+  (136.01,110.85,1.23,'maroon','peach','blue','over 1')
+  (136.01,96.44,1.41,'maroon','peach','gold','over 1')
+  (139.18,53.60,2.60,'purple','GREEN','ORANGE','over 1')
+  (139.18,53.60,2.60,'purple','white','ORANGE','over 1')
+  (85.84,113.37,0.76,'tan','GREEN','gold','under 1')
+  (85.84,31.84,2.70,'tan','GREEN','pink','over 1')
 
 // Source file: ../queries/case/rcase18.sql
 // Result file: ../queries/case/results/case18.res
@@ -857,7 +854,7 @@ failure contains: 'EC_SYNTAX_ERROR'
 // Source file: ../queries/case/rcase20.sql
 // Result file: ../queries/case/results/case20.res
 /*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
+// TODO: ALKA TO FIX
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then b.cola8 / 2 when b.colh8 = 1 then (b.cola8 * 2) / 5 when b.colh8 is null then b.cola8 end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 ordered rows:
   ('peach', 'www', 1, 'www', 2)
@@ -881,7 +878,7 @@ ordered rows:
 // Source file: ../queries/case/rcase15.sql
 // Result file: ../queries/case/results/case15.res
 /*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
+// TODO: ENABLE WHEN UPPER/LOWER
 select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case  when a.colb1 = c.colb4 then 'its a match' when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb1 != upper('black') or colb1 != lower('BLACK') and cola1 > 90 order by cola1, pcol1, colb1, colb2, colb4;
 ordered rows:
   (136.010000000000, 57.310000000000, 2.3732, 'maroon', 'peach', 'RED', 'over 1')
