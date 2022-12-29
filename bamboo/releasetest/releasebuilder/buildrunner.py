@@ -108,6 +108,7 @@ class BuildRunner:
         instance_ids, ip_addrs = ec2.start_instances(self.config.get_build_instance(),
                                                      self.config.get_build_image(),
                                                      self.config.get_build_cloudinit(),
+                                                     self.config.get_build_iam_role_name(),
                                                      1,
                                                      name_tag,
                                                      C_INSTANCE_START_TIMEOUT,

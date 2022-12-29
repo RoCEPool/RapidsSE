@@ -79,6 +79,7 @@ class TestRunner:
         instance_params = list(zip(self.config.get_test_names(),
                                    self.config.get_test_images(),
                                    self.config.get_test_cloudinits_paths(),
+                                   self.config.get_test_iam_role_names(),
                                    self.config.get_test_cluster_config_paths(),
                                    self.config.get_test_cluster_configs()))
 
@@ -90,8 +91,9 @@ class TestRunner:
             test_name: str = param[0]
             image_id: str = param[1]
             cloud_init_path: pathlib.Path = param[2]
-            cluster_config_path: pathlib.Path = param[3]
-            cluster_config: ClusterConfig = param[4]
+            iam_role_name: str = param[3]
+            cluster_config_path: pathlib.Path = param[4]
+            cluster_config: ClusterConfig = param[5]
 
             base_cluster_id += 1
 
@@ -99,6 +101,7 @@ class TestRunner:
                                              instance_type,
                                              image_id,
                                              pathlib.Path(cloud_init_path),
+                                             iam_role_name,
                                              cluster_config_path,
                                              cluster_config,
                                              self.artifact_path,
@@ -161,6 +164,7 @@ class InstanceRunner:
                  instance_type: str,
                  image_id: str,
                  cloudinit_path: pathlib.Path,
+                 iam_role_name: str,
                  cluster_config_path: pathlib.Path,
                  cluster_config: ClusterConfig,
                  artifact_path: pathlib.Path,
@@ -174,6 +178,7 @@ class InstanceRunner:
         self.instance_type = instance_type
         self.image_id = image_id
         self.cloudinit_path = cloudinit_path
+        self.iam_role_name = iam_role_name
         self.local_cluster_config_path = cluster_config_path
         self.cluster_config = cluster_config
         self.artifact_path = artifact_path
@@ -319,6 +324,7 @@ class InstanceRunner:
         instance_ids, ip_addrs = ec2.start_instances(self.instance_type,
                                                      self.image_id,
                                                      str(self.cloudinit_path),
+                                                     self.iam_role_name,
                                                      num_instances,
                                                      name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
