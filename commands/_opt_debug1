@@ -21,7 +21,13 @@ create index table9_ucolvc on table9(ucolvc);
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 
-/weaved select cold9, ucolvc from table9 where ucolvc < 'indigo';
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_opt_debug1"
+select cold9, ucolvc
+  from table9
+ where ucolvc < 'indigo';
 
 /*============================================================================*/
 /* end                                                                        */

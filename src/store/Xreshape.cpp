@@ -247,7 +247,14 @@ void Xreshape::R_vUTE_Choose_index_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  G.p_index->Y_vSet(P_ChosenIndex);
+  CardIter xCI(G.p_indexList);
+
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+    if (p_index->pSub_bounds()) {
+      p_index->Y_vSet(P_ChosenIndex);
+      break;
+    }
+  }
 
 }
 

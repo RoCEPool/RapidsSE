@@ -448,12 +448,16 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
 
   Card_TableNm* p_tableNm = pCard_IndexScan->pSub_tableNm();
 
-  //Index* pIndex = pCard_IndexScan->pSub_indexPtr()->pIndex();
+  Card_Index* p_index = _pCard_Index(pCard_IndexScan->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! p_index) {
+    NEVER_REACH
+  }
 
-  Card_IndexNm* p_indexNm = pCard_IndexScan->pSub_indexNm();
+
+  Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
   s4K sRpnExpr;
 
-  vRpnIndexScan(sRpnExpr, pCard_IndexScan);
+  vRpnIndexScan(sRpnExpr, p_index);
   
   szOpArgs->vCatSprint("%s %s\n"_Stz,p_tableNm->szValue(),p_indexNm->szValue());
   szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
@@ -868,11 +872,11 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
+void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_LBound* p_lBound = pCard_IndexScan->pSub_lBound();
+  Card_LBound* p_lBound = pCard_Index->pSub_lBound();
   if (p_lBound) {
     i8 nSubs = p_lBound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
@@ -886,7 +890,7 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
     }
   }
 
-  Card_UBound* p_uBound = pCard_IndexScan->pSub_uBound();
+  Card_UBound* p_uBound = pCard_Index->pSub_uBound();
   if (p_uBound) {
     i8 nSubs = p_uBound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {

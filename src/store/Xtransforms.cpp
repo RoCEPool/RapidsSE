@@ -2604,9 +2604,11 @@ void Xtransforms::vS80_T30_Morph_scan_To_indexScan(void)
   vAssert_Board_mqA();
 
   G_vRestart();
-  if (G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+  if (G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
     if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
       G.p_scan->vCard(CK_INDEXSCAN);
+
+      R_vUTE_Choose_index_For_indexScan();
     }
   }
 
