@@ -23,7 +23,10 @@ namespace STORE
     bool bCmpPredHasBounds(Index* pIndex);
     bool bContains_Sqy_Call(void);
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
+    Card_Term* pExtractArgTerm(void);
+    Card_Term* pExtractParamTerm(void);
     bool bIsEq(Card_CmpPred* p_cmpPred_arg);
+    void vMarkBound(void);
     bool bMaybeBounds_v2(Card_Table* p_table, Card_Index* p_index, bool bParamAllowedInBounds);
     bool bMaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
     bool bOverlapsWith(Card_CmpPred* p_cmpPred_arg);

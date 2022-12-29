@@ -41,148 +41,6 @@ Xmodify::~Xmodify(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Mark_Changed(Card* pCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  pCard->vMark1(MARK_CHANGED);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  p_card->vValueSprint("$I%lld"_Stz, iIdxColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_KeyOrdinal(Card* p_card, i8 iKeyOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  p_card->vValueSprint("$K%lld"_Stz, iKeyOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  p_card->vValueSprint("$P%lld"_Stz, iParamOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  p_card->vValueSprint("$%lld"_Stz, iStmColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace c in $c.n                                                          */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_TableColSyn(Card* p_card, char cTblSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  ((char*)p_card->sz())[1] = cTblSyn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  p_card->vValueSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Term* Xmodify::E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nChildren = p_cmpPred->nChildCards();
-  RASSERT(2 == nChildren);
-
-  Card* p_child_0 = p_cmpPred->pGetChild(0);
-  Card* p_child_1 = p_cmpPred->pGetChild(1);
-
-  if (Card::bIsParamOrdinal(p_child_0->szValue()))
-    return _pCard_Term(p_child_1);
-
-  else
-  if (Card::bIsParamOrdinal(p_child_1->szValue()))
-    return _pCard_Term(p_child_0);
-
-  else
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Term* Xmodify::E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nChildren = p_cmpPred->nChildCards();
-  RASSERT(2 == nChildren);
-
-  Card* p_child_0 = p_cmpPred->pGetChild(0);
-  Card* p_child_1 = p_cmpPred->pGetChild(1);
-
-  if (Card::bIsParamOrdinal(p_child_0->szValue()))
-    return _pCard_Term(p_child_0);
-
-  else
-  if (Card::bIsParamOrdinal(p_child_1->szValue()))
-    return _pCard_Term(p_child_1);
-
-  else
-    NEVER_REACH;
-  return nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* mark the bounds of this <predCmp>                                          */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szCmp = p_cmpPred->sz();
-
-  char cBound = '?';
-
-  if (szCmp->bSame("<"_Stz))  cBound = 'U';
-  else if (szCmp->bSame("<="_Stz)) cBound = 'U';
-  else if (szCmp->bSame("="_Stz))  cBound = 'E';
-  else if (szCmp->bSame("=="_Stz)) cBound = 'E';
-  else if (szCmp->bSame("!="_Stz)) cBound = 'N';
-  else if (szCmp->bSame(">="_Stz)) cBound = 'L';
-  else if (szCmp->bSame(">"_Stz))  cBound = 'L';
-
-  p_cmpPred->vMark1(cBound);
-}
-
-/*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
 void Xmodify::vDeck_CopyMarkedPredToTable(Card_BoolCalc* p_calcBool,
@@ -589,11 +447,11 @@ void Xmodify::M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cT
   i8 iStmColOdn = m_iOdnLo;
   while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
     Card_StmColOdn* p_stmColOrd = new Card_StmColOdn;
-    M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn);
+    p_stmColOrd->vSetStreamColOrdinal(iStmColOdn);
     p_stmCol->vAppend(p_stmColOrd);
 
     Card_TblColOdn* p_tblColOrd = new Card_TblColOdn;
-    M_vCard_Set_TableColOrdinal(p_tblColOrd, cTblSyn, iTblColOdn);
+    p_tblColOrd->vSetTableColOrdinal(cTblSyn, iTblColOdn);
     p_stmCol->vAppend(p_tblColOrd);
 
     iStmColOdn++;
@@ -647,7 +505,7 @@ void Xmodify::M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy)
 
   i8 iKeyOdn = Card::iGetColOdn(p_term->szValue());
 
-  M_vCard_Set_KeyOrdinal(p_term,iKeyOdn+nBy);
+  p_term->vSetKeyOrdinal(iKeyOdn+nBy);
 
   if (p_term->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = p_term->Y_iGet(P_BumpedBy);
@@ -667,7 +525,7 @@ void Xmodify::M_vTerm_Bump_StreamColOrdinal(Card_Term* p_term, i8 nBy)
 
   i8 iStmColOdn = Card::iGetColOdn(p_term->szValue());
 
-  M_vCard_Set_StreamColOrdinal(p_term,iStmColOdn+nBy);
+  p_term->vSetStreamColOrdinal(iStmColOdn+nBy);
 
   if (p_term->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = p_term->Y_iGet(P_BumpedBy);

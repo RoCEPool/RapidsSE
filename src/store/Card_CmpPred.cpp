@@ -153,6 +153,55 @@ bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_cmpPred_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Term* Card_CmpPred::pExtractArgTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = this->nChildCards();
+  RASSERT(2 == nChildren);
+
+  Card* p_child_0 = this->pGetChild(0);
+  Card* p_child_1 = this->pGetChild(1);
+
+  if (Card::bIsParamOrdinal(p_child_0->szValue()))
+    return _pCard_Term(p_child_1);
+
+  else
+  if (Card::bIsParamOrdinal(p_child_1->szValue()))
+    return _pCard_Term(p_child_0);
+
+  else
+    NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_CmpPred::pExtractParamTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = this->nChildCards();
+  RASSERT(2 == nChildren);
+
+  Card* p_child_0 = this->pGetChild(0);
+  Card* p_child_1 = this->pGetChild(1);
+
+  if (Card::bIsParamOrdinal(p_child_0->szValue()))
+    return _pCard_Term(p_child_0);
+
+  else
+  if (Card::bIsParamOrdinal(p_child_1->szValue()))
+    return _pCard_Term(p_child_1);
+
+  else
+    NEVER_REACH;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -172,6 +221,28 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark the bounds of this <predCmp>                                          */
+/*----------------------------------------------------------------------------*/
+void Card_CmpPred::vMarkBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szCmp = this->sz();
+
+  char cBound = '?';
+
+  if (szCmp->bSame("<"_Stz))  cBound = 'U';
+  else if (szCmp->bSame("<="_Stz)) cBound = 'U';
+  else if (szCmp->bSame("="_Stz))  cBound = 'E';
+  else if (szCmp->bSame("=="_Stz)) cBound = 'E';
+  else if (szCmp->bSame("!="_Stz)) cBound = 'N';
+  else if (szCmp->bSame(">="_Stz)) cBound = 'L';
+  else if (szCmp->bSame(">"_Stz))  cBound = 'L';
+
+  this->vMark1(cBound);
 }
 
 /*----------------------------------------------------------------------------*/

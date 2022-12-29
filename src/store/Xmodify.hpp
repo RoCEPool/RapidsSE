@@ -26,19 +26,6 @@ namespace STORE
    ~Xmodify(void) noexcept(false);
 
   public:
-    void M_vCard_Mark_Changed(Card* pCard);
-    void M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn);
-    void M_vCard_Set_KeyOrdinal(Card* p_card, i8 iKeyOdn);
-    void M_vCard_Set_ParamOrdinal(Card* p_card, i8 iParamOdn);
-    void M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn);
-    void M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn);
-    void M_vCard_Set_TableColSyn(Card* p_card, char cTblSyn);
-
-    Card_Term* E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred);
-    Card_Term* E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred);
-
-    void M_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
-
     void vDeck_CopyMarkedPredToTable(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
 
     i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_OrdElmOdn* p_stmOrdOdn);

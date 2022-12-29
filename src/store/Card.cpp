@@ -1887,6 +1887,66 @@ bool Card::bSame(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSetIndexColOrdinal(i8 iIdxColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$I%lld"_Stz, iIdxColOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSetKeyOrdinal(i8 iKeyOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$K%lld"_Stz, iKeyOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSetParamOrdinal(i8 iParamOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$P%lld"_Stz, iParamOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSetStreamColOrdinal(i8 iStmColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$%lld"_Stz, iStmColOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace c in $c.n                                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vSetTableColSyn(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  ((char*)this->sz())[1] = cTblSyn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Take all subcards from given card and move under this card (top)           */
 /*----------------------------------------------------------------------------*/
 void Card::vTakeAllSubCards(Card* pCard, bool bDeleteCard)

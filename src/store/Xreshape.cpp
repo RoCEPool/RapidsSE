@@ -1166,7 +1166,7 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
 //      }
 //    }
 
-    if ((m_pTerm_corrPred = E_pCmpPred_Extract_Arg_term(static_cast<Card_CmpPred*>(p_pred)))) {
+    if ((m_pTerm_corrPred = static_cast<Card_CmpPred*>(p_pred)->pExtractArgTerm())) {
       bIsCorrPred = true;
     }
 
@@ -1502,7 +1502,7 @@ void Xreshape::R_vUTE_RenumberStmOdn(void)
     if (! G.p_stmColOdn)
       return C_CONTINUE_RECURSION;
 
-    M_vCard_Set_StreamColOrdinal(G.p_stmColOdn,G.i_stmColOdn++);
+    G.p_stmColOdn->vSetStreamColOrdinal(G.i_stmColOdn++);
 
     return C_CONTINUE_RECURSION;
   };
@@ -1684,7 +1684,7 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
           //p_child->vValue("$1"_Stz);
           char cTblSyn = Card::cTableColSyn(p_child->szValue());
           cTblSyn = 'a'; // TODO: hack!!
-          M_vCard_Set_TableColSyn(p_child,cTblSyn);
+          p_child->vSetTableColSyn(cTblSyn);
         }
       }
       return;
@@ -2291,7 +2291,7 @@ void Xreshape::vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 
     i8 iStmColOdn = Card::iGetColOdn(p_stmColOrd->szValue());
     i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
-    M_vCard_Set_StreamColOrdinal(p_stmColOrd, iStmColOdn_corrected);
+    p_stmColOrd->vSetStreamColOrdinal(iStmColOdn_corrected);
 
     p_stmColOrd->vMark1(MARK_CHANGED);
 

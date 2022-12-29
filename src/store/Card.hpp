@@ -403,6 +403,12 @@ namespace STORE
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
+    void vSetIndexColOrdinal(i8 iIdxColOdn);
+    void vSetKeyOrdinal(i8 iKeyOdn);
+    void vSetParamOrdinal(i8 iParamOdn);
+    void vSetStreamColOrdinal(i8 iStmColOdn);
+    void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
+    void vSetTableColSyn(char cTblSyn);
     void vSetValueMark1(Stz* szValue, char cMark1);
 
     void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
