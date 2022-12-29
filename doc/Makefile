@@ -35,10 +35,10 @@ ifdef LATEXMK_INSTALLED
 else
 	$(warning *** Not generating PDF documentation because latex and/or latexmk is not installed ***)
 ifeq ($(UNAME_S),Linux)
-	@echo "To install latex and latexmk on Linux, the easiest way is to run the command:"
-	@echo "  sudo yum install latexmk"
-	@echo "or"
-	@echo "  sudo apt install latexmk"
+	@echo "To install latex and latexmk on Linux, the easiest way is to install the full"
+	@echo "TeX Live installation via the instructions at:"
+	@echo "  https://www.tug.org/texlive/quickinstall.html"
+	@echo "(approx 4GB download)"
 else ifeq ($(UNAME_S),Darwin)
 	@echo "To install latex and latexmk on MacOS, the easiest way is to run the command:"
 	@echo "  brew install mactex-no-gui"
@@ -60,6 +60,7 @@ ifeq ($(UNAME_S),Linux)
 	@echo "To install latex and latexmk on Linux, the easiest way is to install the full"
 	@echo "TeX Live installation via the instructions at:"
 	@echo "  https://www.tug.org/texlive/quickinstall.html"
+	@echo "(approx 4GB download)"
 else ifeq ($(UNAME_S),Darwin)
 	@echo "To install latex and latexmk on MacOS, the easiest way is to run the command:"
 	@echo "  brew install mactex-no-gui"
