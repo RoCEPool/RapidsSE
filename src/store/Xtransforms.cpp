@@ -965,7 +965,7 @@ void Xtransforms::vS34_T_Predicate_Pullup(void)
   vPrintBoard(__LINE__);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
+    G.p_boolCalc->vBoolCalc_MarkWrt_table(G.pDeck);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -982,7 +982,7 @@ void Xtransforms::vS34_T_Predicate_Pullup(void)
   G_vRestart();
 
   while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
   vPrintBoard();
@@ -1019,7 +1019,7 @@ void Xtransforms::vS34_T_Predicate_Reposition(void)
   vPrintBoard(__LINE__);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
-    M_vBoolCalc_MarkWrt_table(G.p_boolCalc, G.pDeck);
+    G.p_boolCalc->vBoolCalc_MarkWrt_table(G.pDeck);
   }
 
   vPrintBoard(__LINE__);
@@ -1038,7 +1038,7 @@ void Xtransforms::vS34_T_Predicate_Reposition(void)
   G_vRestart();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
   vPrintBoard();
@@ -1607,7 +1607,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   //               bc            //
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
-  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
+  G.p_boolCalc->vBoolCalc_CullPred(MARK_UP);
   vPrintBoard(__LINE__);
 
   // W A NC I
@@ -1628,7 +1628,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
   vPrintBoard(__LINE__);
@@ -1717,7 +1717,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
   R_vUTE_RelabelExpressions();
@@ -1823,14 +1823,14 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   vPrintBoard(__LINE__);
 
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
-  M_vBoolCalc_CullPred(G.p_boolCalc, MARK_UP);
+  G.p_boolCalc->vBoolCalc_CullPred(MARK_UP);
   vPrintBoard(__LINE__);
 
   vR_S36_T30_Delete_Empty_filter();
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
 
@@ -1978,7 +1978,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E(void)
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
   vPrintBoard(__LINE__);
 
@@ -2144,7 +2144,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    M_vBoolCalc_CullPred(G.p_boolCalc, MARK_AT);
+    G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
   vPrintBoard(__LINE__);

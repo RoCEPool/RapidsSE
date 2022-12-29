@@ -16,6 +16,12 @@ namespace STORE
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
 
+    void vBoolCalc_CullPred(char cWithMark);
+    bool bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark);
+    void vBoolCalc_MarkWrt_table(Card_Deck* p_deck);
+    void vBoolCalc_PushPred(Card_PRED* p_pred_toBeAdded);
+    void vBoolCalc_RemovePred(Card_PRED* p_pred);
+
     bool bIsBraced(void);
   };
 

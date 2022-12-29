@@ -8,7 +8,9 @@
 #include "Card_AndPred.hpp"
 #include "Card_CmpPred.hpp"
 #include "CardIter.hpp"
-
+#include "Card_Table.hpp"
+#include "Card_Deck.hpp"
+#include "Scope.hpp"
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -231,6 +233,44 @@ bool Card_PRED::bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwar
   // apply pred function for upwards
   bContinue = bfApply(this,true);
   return bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect <PRED>                                                             */
+/*----------------------------------------------------------------------------*/
+char Card_PRED::cTable_WhichTableFor_Pred(Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Scope* pScope = new Scope;
+
+  for (i8 i_Main = 0; /* none */ ; i_Main++) {
+    Card *pMainCard = p_deck->pGetChild(i_Main);
+
+    if (CK_WHERE == pMainCard->eCard()) {
+      delete pScope;
+      return C_UNKNOWN;
+    }
+
+    eCK eMainCard = pMainCard->eCard();
+
+    if (CK_TABLE == eMainCard) {
+      Card_Table* p_table = _pCard_Table(pMainCard);
+      char cTblSyn = p_table->cValue();
+      pScope->vInScope(cTblSyn,true);
+      if (p_table->bScopeContains_Pred(this, pScope)) {
+        char cTblSyn = p_table->cValue();
+        delete pScope;
+        return cTblSyn;
+      }
+      continue;
+    }
+
+    // skip over any other card??
+    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
+  }
+
+  NEVER_REACH;
 }
 
 /*============================================================================*/

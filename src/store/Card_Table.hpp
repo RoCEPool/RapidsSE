@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
+#include "Scope.hpp"
 
 namespace STORE
 {
@@ -19,6 +20,8 @@ namespace STORE
 
     void vBounds_DeriveFrom_filter(Card_Filter* p_filter,
                                    bool bParamAllowedInBounds);
+    bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
+    bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

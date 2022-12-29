@@ -13,7 +13,10 @@
 #include "Card_CmpPred.hpp"
 #include "Card_Bounds.hpp"
 #include "Card_Bound.hpp"
+#include "Card_Term.hpp"
+#include "Card_TableNm.hpp"
 #include "PtnDef.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -121,6 +124,53 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
     bool bIgnore = p_pred_ofFilter_ROOT->bPredRecursive(bLambdaFn);
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Table::bScopeContains_Pred(Card_PRED* p_pred,
+                                        Scope* pScope)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(p_pred);
+  while (Card_Term* p_term = (Card_Term*)xCI.pEachChild()) {
+    if (! this->bScopeContains_term(p_term, pScope))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given <term> within this table                                          */
+/*----------------------------------------------------------------------------*/
+bool Card_Table::bScopeContains_term(Card_Term* p_term,
+                                        Scope* pScope)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szTerm = p_term->sz();
+
+  // parameters are considered within scope
+  if (Card::bIsParamOrdinal(szTerm))
+    return true;
+
+  // literals are considered within scope
+  if (! Card::bIsTableColOrdinal(szTerm)) {
+    return true;
+  }
+
+  // is the table column within scope?
+  char cTblSyn_table = this->cValue();
+  char cTblSyn_term = Card::cTableColSyn(szTerm);
+//  if (cTblSyn_term <= cTblSyn_table)
+//    return true;
+  if (pScope->bInScope(cTblSyn_term))
+    return true;
+
+  return false;
 }
 
 /*============================================================================*/

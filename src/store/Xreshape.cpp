@@ -59,7 +59,7 @@ void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   if (p_boolCalc->nChildCards()) {
-    M_vBoolCalc_PushPred(p_boolCalc,p_PRED);
+    p_boolCalc->vBoolCalc_PushPred(p_PRED);
   }
   else {
     p_boolCalc->vAppend(p_PRED);
@@ -76,7 +76,7 @@ void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRE
 
   if ((G.p_filter = p_table->pSub_filter())) {
     G.p_boolCalc = G.p_filter->pSub_boolCalc();
-    M_vBoolCalc_PushPred(G.p_boolCalc,p_PRED);
+    G.p_boolCalc->vBoolCalc_PushPred(p_PRED);
   }
   else {
     G_vAppendNewChild(p_table,CK_FILTER);
@@ -1231,7 +1231,7 @@ void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolC
 
       Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
 
-      M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
+      p_boolCalc->vBoolCalc_RemovePred(p_pred);
 
       // todo: find table 'd'->'a' and add p_pred as bounds
 
@@ -1311,7 +1311,7 @@ void Xreshape::R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Whe
 
   if ((G.p_constraint = p_table->pSub_constraint())) {
     G.p_boolCalc = G.p_constraint->pSub_boolCalc();
-    M_vBoolCalc_PushPred(G.p_boolCalc,G.p_PRED);
+    G.p_boolCalc->vBoolCalc_PushPred(G.p_PRED);
   }
   else {
     G_vAppendNewChild(p_table,CK_CONSTRAINT);
@@ -1337,7 +1337,7 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
 
   if ((G.p_filter = p_table->pSub_filter())) {
     G.p_boolCalc = G.p_filter->pSub_boolCalc();
-    M_vBoolCalc_PushPred(G.p_boolCalc,G.p_PRED);
+    G.p_boolCalc->vBoolCalc_PushPred(G.p_PRED);
   }
   else {
     G_vAppendNewChild(p_table,CK_FILTER);
@@ -1472,7 +1472,7 @@ void Xreshape::R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_
 
   // todo: remove? It is unused
 
-  M_vBoolCalc_RemovePred(p_boolCalc,p_pred);
+  p_boolCalc->vBoolCalc_RemovePred(p_pred);
 }
 
 /*----------------------------------------------------------------------------*/

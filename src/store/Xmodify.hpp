@@ -26,11 +26,6 @@ namespace STORE
    ~Xmodify(void) noexcept(false);
 
   public:
-    void M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
-    bool M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
-    void M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc, Card_Deck* p_deck);
-    void M_vBoolCalc_PushPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred_toBeAdded);
-    void M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
     bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
                                Card_PRED*& p_pred_yanked);
@@ -87,11 +82,6 @@ namespace STORE
     void M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn);
     void M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
-
-    bool bTable_ScopeContains_Pred(Card_Table* p_table, Card_PRED* p_pred, Scope* pScope);
-    bool bTable_ScopeContains_term(Card_Table* p_table, Card_Term* p_term, Scope* pScope);
-
-    char cTable_WhichTableFor_Pred(Card_PRED* p_pred, Card_Deck* p_deck);
     void M_vTable_Set_Syn(Card_Table* p_table);
 
     void M_vTerm_Bump_KeyOrdinal(Card_Term* p_term, i8 nBy=1);

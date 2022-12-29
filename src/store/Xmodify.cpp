@@ -41,188 +41,6 @@ Xmodify::~Xmodify(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  if (! p_boolCalc->nChildCards())
-    return;
-
-  Card_PRED* pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-
-  while (pCard_pred &&
-         M_bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) &&
-         p_boolCalc->nChildCards()) {
-    pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::M_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  eCK eCard_pred = p_pred->eCard();
-
-  if (CK_ANDPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
-      delete p_pred;
-      return true;
-    }
-  }
-  else
-  if (CK_ORPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
-      delete p_pred;
-      return true;
-    }
-  }
-  else
-  if (CK_CMPPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
-      delete p_pred;
-      return true;
-    }
-    return false;
-  }
-  else
-  if (CK_ROPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
-      delete p_pred;
-      return true;
-    }
-    return false;
-  }
-  else
-  if (CK_BOLPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred);
-      delete p_pred;
-      return true;
-    }
-    return false;
-  }
-
-  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred || CK_NOTPRED == eCard_pred);
-
-  i8 nChildren = p_pred->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
-    if (M_bBoolCalc_CullPred(p_boolCalc, pCard_pred_child, cWithMark))
-      return true;
-  }
-
-  return  false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <boolCalc>> and mark any <pred> which could be moved               */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vBoolCalc_MarkWrt_table(Card_BoolCalc* p_boolCalc,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  CardIter xCR(p_boolCalc);
-  while (Card* p_card = xCR.pRecurseEach()) {
-
-    if (p_card->bIsCard(CK_NOTPRED)) {
-      p_card->vMark1('!');
-      xCR.vDontDescend();
-      continue;
-    }
-    if (p_card->bIsCard(CK_ANDPRED)) {
-      p_card->vMark1('&');
-      continue;
-    }
-
-    if (p_card->bIsCard(CK_BOLPRED)) {
-      p_card->vMark1('b');
-      xCR.vDontDescend();
-      continue;
-    }
-
-    if (p_card->bIsCard(CK_CMPPRED)) {
-      p_card->vMark1('?');
-      xCR.vDontDescend();
-      char cWhichTable = cTable_WhichTableFor_Pred((Card_PRED *) p_card, p_deck);
-      if (C_UNKNOWN != cWhichTable) {
-        p_card->vMark1(MARK_AT);
-        p_card->vMark2(cWhichTable);
-      }
-      continue;
-    }
-
-    if (p_card->bIsCard(CK_ORPRED)) {
-      p_card->vMark1('|');
-      xCR.vDontDescend();
-      continue;
-    }
-
-    if (p_card->bIsCard(CK_ROPRED))
-      continue;
-
-    if (p_card->bIsCard(CK_TERM))
-      continue;
-
-    NEVER_REACH
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vBoolCalc_PushPred(Card_BoolCalc* p_boolCalc,
-                                   Card_PRED* p_pred_toBeAdded)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_PRED* p_pred_oldTop = static_cast<Card_PRED*>(p_boolCalc->pPop());
-  RASSERT(! p_boolCalc->nChildCards());
-
-  Card_AndPred* p_andPred_new = new Card_AndPred;
-  p_andPred_new->vAppend(p_pred_oldTop);
-  p_andPred_new->vAppend(p_pred_toBeAdded);
-
-  p_boolCalc->vPush(p_andPred_new);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card* pParentCard = p_boolCalc->pFindParent(p_pred);
-
-  pParentCard->vRemoveSubCard(p_pred);
-
-  if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
-
-    if (0 == pParentCard->nChildCards()) {
-      p_boolCalc->vRemoveSubCard(pParentCard);
-    }
-    else {
-      Card* pSiblingCard = pParentCard->pGetChild(0);
-      Card* pGrandCard = p_boolCalc->pFindParent((pParentCard));
-      pParentCard->vRemoveSubCard(pSiblingCard);
-      pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
-    }
-
-    delete pParentCard;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* resolve the parameters terms in given boolCalc                             */
 /*----------------------------------------------------------------------------*/
 void Xmodify::M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc,
@@ -286,7 +104,7 @@ bool Xmodify::M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
     if (p_test->bIsPRED()) {
       if (p_test->cMark1() == cWithMark) {
         p_pred_yanked = static_cast<Card_PRED*>(p_test);
-        M_vBoolCalc_RemovePred(p_boolCalc, p_pred_yanked);
+        p_boolCalc->vBoolCalc_RemovePred(p_pred_yanked);
         RASSERT(p_pred_yanked);
         return true;
       }
@@ -333,7 +151,7 @@ bool Xmodify::M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
   if (p_test->bIsPRED()) {
     if (p_test->cMark1() == cWithMark) {
       p_pred_yanked = static_cast<Card_PRED*>(p_test);
-      M_vBoolCalc_RemovePred(p_boolCalc, p_pred_yanked);
+      p_boolCalc->vBoolCalc_RemovePred(p_pred_yanked);
       RASSERT(p_pred_yanked);
       return true;
     }
@@ -718,7 +536,7 @@ void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 
     Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
 
-    M_vBoolCalc_CullPred(p_boolCalc, cWithMark);
+    p_boolCalc->vBoolCalc_CullPred(cWithMark);
   }
 }
 
@@ -1009,94 +827,6 @@ void Xmodify::M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iH
   p_stream->Y_vSet(P_OdnHi, iHi);
 
   p_stream->vMark1(MARK_CHANGED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <PRED>                                                             */
-/*----------------------------------------------------------------------------*/
-char Xmodify::cTable_WhichTableFor_Pred(Card_PRED* p_pred,
-                                        Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Scope* pScope = new Scope;
-
-  for (i8 i_Main = 0; /* none */ ; i_Main++) {
-    Card *pMainCard = p_deck->pGetChild(i_Main);
-
-    if (CK_WHERE == pMainCard->eCard()) {
-      delete pScope;
-      return C_UNKNOWN;
-    }
-
-    eCK eMainCard = pMainCard->eCard();
-
-    if (CK_TABLE == eMainCard) {
-      Card_Table* p_table = _pCard_Table(pMainCard);
-      char cTblSyn = p_table->cValue();
-      pScope->vInScope(cTblSyn,true);
-      if (bTable_ScopeContains_Pred(p_table, p_pred, pScope)) {
-        char cTblSyn = p_table->cValue();
-        delete pScope;
-        return cTblSyn;
-      }
-      continue;
-    }
-
-    // skip over any other card??
-    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
-  }
-
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::bTable_ScopeContains_Pred(Card_Table* p_table,
-                                        Card_PRED* p_pred,
-                                        Scope* pScope)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  CardIter xCI(p_pred);
-  while (Card_Term* p_term = (Card_Term*)xCI.pEachChild()) {
-    if (! bTable_ScopeContains_term(p_table, p_term, pScope))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given <term> within this table                                          */
-/*----------------------------------------------------------------------------*/
-bool Xmodify::bTable_ScopeContains_term(Card_Table* p_table,
-                                        Card_Term* p_term,
-                                        Scope* pScope)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Stz* szTerm = p_term->sz();
-
-  // parameters are considered within scope
-  if (Card::bIsParamOrdinal(szTerm))
-    return true;
-
-  // literals are considered within scope
-  if (! Card::bIsTableColOrdinal(szTerm)) {
-    return true;
-  }
-
-  // is the table column within scope?
-  char cTblSyn_table = p_table->cValue();
-  char cTblSyn_term = Card::cTableColSyn(szTerm);
-//  if (cTblSyn_term <= cTblSyn_table)
-//    return true;
-  if (pScope->bInScope(cTblSyn_term))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
