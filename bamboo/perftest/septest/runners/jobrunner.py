@@ -249,6 +249,7 @@ class JobRunner:
             ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
                                 self.all_configs.get_hardware().get_image_id(),
                                 C_CLOUD_INIT_SCRIPT,
+                                self.all_configs.get_hardware().get_iam_role_name(),
                                 self.all_configs.get_hardware().get_num_machines(),
                                 C_INSTANCE_NAME_PREFIX,
                                 C_EC2_BOOT_TIMEOUT_SEC,
