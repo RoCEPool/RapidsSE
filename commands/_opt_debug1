@@ -20,7 +20,6 @@ create index TABLE1_UCOL on table1(ucol);
 
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-
 create table TABLE9 (
   pcol9   INTEGER NOT NULL,
   scol9   INTEGER NOT NULL,
@@ -37,17 +36,21 @@ create table TABLE9 (
 create index table9_pcol9 on table9(pcol9);
 create index table9_colb9 on table9(colb9);
 
-
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
+
+// RAY: NOTE: Please uncomment the join ordering lines in Xseries.cpp
+// before trying this test
 
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_opt_debug1"
-select a.colb1, b.colb9, avg(a.colf1 + b.colf9)
+select max(a.cola1), a.colb1, max(b.cold9), b.colb9
   from table1 a join table9 b on pcol1 = pcol9
-  where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+  where a.colb1 < 'GRE' group by a.colb1, b.colb9
+  order by a.colb1, b.colb9;
+
 
 /*============================================================================*/
 /* end                                                                        */
