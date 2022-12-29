@@ -604,7 +604,7 @@ void Xreshape::R_vUTE_Derive_order(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   G_vRestart();
-  while (G_bEachMain(CK_INDEXSCAN)) {
+  if (G_bEachMain(CK_INDEXSCAN)) {
     G.p_stmColList = G.p_indexScan->pSub_stmColList();
     G.p_order = G.p_indexScan->pSub_order();
 
