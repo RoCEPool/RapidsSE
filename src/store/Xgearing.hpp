@@ -59,10 +59,6 @@ namespace STORE
     Card_Term* m_pTerm_2;
     Card_Term* m_pTerm_corrPred;
 
-
-
-    TransformIterList* m_pTransformIterList;
-
     s256 m_sT;
 
   public:

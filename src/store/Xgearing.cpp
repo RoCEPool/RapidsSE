@@ -53,8 +53,6 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_pCard_temp     = nullptr;
   m_pCard_yanked   = nullptr;
 
-  m_pTransformIterList = new TransformIterList;
-
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
@@ -77,7 +75,6 @@ Xgearing::~Xgearing(void) noexcept(false)
   //delete m_pM;
   delete m_pPermGen;
 
-  delete m_pTransformIterList;
 }
 
 

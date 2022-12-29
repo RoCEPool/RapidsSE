@@ -1425,8 +1425,6 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(G.p_boolCalc);
   vPrintBoard(__LINE__);
 
-  RASSERT(0 == m_pTransformIterList->nItems());
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
 
