@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aNewFunction(Xsentinals, CN_TRANSFORMITER)
-__vDeleteFunction(Xsentinals, CN_TRANSFORMITER)
+__aNewFunction(Xsentinals, CN_XSENTINALS)
+__vDeleteFunction(Xsentinals, CN_XSENTINALS)
 __aFooterFunction(Xsentinals)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xsentinals::Xsentinals(void)
-: Object(CN_TRANSFORMITER)
+: Object(CN_XSENTINALS)
 {
 }
 
@@ -48,7 +48,7 @@ void Xsentinals::vCopyFrom(_Xsentinels* aXsentinals)
   MemLib::vCopy(aXsentinels(),
                 aXsentinals,
                 sizeof(_Xsentinels),
-                CN_TRANSFORMITER);
+                CN_XSENTINALS);
 }
 
 /*----------------------------------------------------------------------------*/

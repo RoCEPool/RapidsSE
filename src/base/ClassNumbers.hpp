@@ -401,7 +401,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TRACELOCK,
   /* */ CN_TRACEMULTILOCK,
   /* */ CN_TRANSFORMER,
-  /* */ CN_TRANSFORMITER,
   /* */ CN_TRANSFORMS,
   /* */ CN_TSPVAL,
   /* */ CN_TUB,
@@ -425,6 +424,7 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
+  /* */ CN_XSENTINALS,
   /* */ CN_XSERIES,
 
   /* */ CN__Y__,
@@ -827,7 +827,6 @@ static Stz* aCN[]
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TRANSFORMER"_Stz,          // CN_TRANSFORMER
-  /* */ "TRANSFORMITER"_Stz,        // CN_TRANSFORMITER
   /* */ "TRANSFORMS"_Stz,           // CN_TRANSFORMS
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
   /* */ "TUB"_Stz,                  // CN_TUB
@@ -851,6 +850,7 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
+  /* */ "XSENTINALS"_Stz,           // CN_XSENTINALS
   /* */ "XSERIES"_Stz,              // CN_XSERIES
 
   /* */ "_Y__"_Stz,                 // CN__Y__
