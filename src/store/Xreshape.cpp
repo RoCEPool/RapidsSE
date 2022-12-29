@@ -2198,32 +2198,40 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CROSSJOIN
-  else if (! G.p_bounds) {
-    R_vUTE_Choose_index_For_crossJoin();
-
-    G.p_crossJoin = new Card_CrossJoin;
-    G.p_crossJoin->vTransferChildren(G.p_table);
-
-    G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
-    G.p_crossJoin->vInsert(G.p_table);
-
-    G_vNewMember(CK_BOUNDS);
-    G.p_crossJoin->vAppend(G.p_bounds);
-
-    G_vNewMember(CK_XBOUND);
-    G.p_bounds->vAppend(G.p_xBound);
-
-    G_vNewMember(CK_TERM,"bound"_Stz);
-    G.p_xBound->vAppend(G.p_term);
-
-    G_vNewMember(CK_TERM,"$I1"_Stz);
-    G.p_xBound->vAppend(G.p_term);
-
-    pMain = G.p_crossJoin;
-  }
+//  else if (! G.p_bounds) {
+//    R_vUTE_Choose_index_For_crossJoin();
+//
+//    G.p_crossJoin = new Card_CrossJoin;
+//    G.p_crossJoin->vTransferChildren(G.p_table);
+//
+//    G.pBoard->pDeck()->vReplace(G.p_table,G.p_crossJoin);
+//    G.p_crossJoin->vInsert(G.p_table);
+//
+//    G_vNewMember(CK_BOUNDS);
+//    G.p_crossJoin->vAppend(G.p_bounds);
+//
+//    G_vNewMember(CK_XBOUND);
+//    G.p_bounds->vAppend(G.p_xBound);
+//
+//    G_vNewMember(CK_TERM,"bound"_Stz);
+//    G.p_xBound->vAppend(G.p_term);
+//
+//    G_vNewMember(CK_TERM,"$I1"_Stz);
+//    G.p_xBound->vAppend(G.p_term);
+//
+//    pMain = G.p_crossJoin;
+//  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // INDEXJOIN
   else {
+
+    if (! G.p_bounds) {
+      s256 sErrorMsg;
+      sErrorMsg.vSprint("No index for table %s"_Stz,G.p_table->pSub_tableNm()->szValue());
+      Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
+      throw xError;
+    }
+
     R_vUTE_Choose_index_For_indexJoin();
 
     G_vNewMember(CK_INDEXJOIN);

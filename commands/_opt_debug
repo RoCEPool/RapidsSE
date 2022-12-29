@@ -44,7 +44,7 @@ create table TABLE9 (
 );
 
 create index table9_pcol9 on table9(pcol9);
-//create index table9_ucolvc on table9(ucolvc);
+create index table9_ucolvc on table9(ucolvc);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
@@ -55,15 +55,27 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 // RAY: Simplified the satatement and noticed
 // the following picks the wrong index table9_pcol9
 
+
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
-/glean_cue_trace = "x"
 /glean_interactive
 /transliterated
 /weaved
-select a.pcol1, b.ucolvc, c.* from table1 a, table2 b, table9 c
-  where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc;
+select a.pcol1, b.pcol2, a.ucolvc, c.ucolvc
+  from table1 a, table2 b, table9 c
+ where a.pcol1 = b.pcol2
+   and a.ucolvc = c.ucolvc
+;
 
 
+/*
+/glean_interactive
+/transliterated
+/weaved
+select a.pcol1, b.pcol2
+  from table1 a, table2 b
+ where a.pcol1 = b.pcol2
+;
+*/
 
 /*============================================================================*/
 /* end                                                                        */
