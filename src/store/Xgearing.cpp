@@ -198,7 +198,7 @@ void Xgearing::vFocusOnMain(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   G.e_MainCard = G.p_MainCard->eCard();
-  G.i_MainCard = G.xBI_g.i_Child();
+  G.i_MainCard = xBI_x.i_Child();
 
   G.p_MainCard->Y_vSet(P_Focus);
 }
@@ -330,7 +330,7 @@ void Xgearing::vTransform(const char* azFunc, Stz* szXdesc)
 
   //m_pCardCtl->vUseXform();
 
-  G.xBI_g.vRestart();
+  xBI_x.vRestart();
 
   if (m_pCardCtl->bTracing(szXhand(), szXform())) {
     vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
@@ -357,7 +357,7 @@ void Xgearing::vUsingBoard(eBK eBoard, i8 i_Board)
   G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
   G.pDeck  = G.pBoard->pDeck();
 
-  G.xBI_g.vChangeCard(G.pBoard->pDeck());
+  xBI_x.vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -783,7 +783,7 @@ void Xgearing::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  RASSERT(G.xBI_g.bJustRestarted());
+  RASSERT(xBI_x.bJustRestarted());
 
   if (! G_bEachMainWithSub(eMain,eSub))
     return;
@@ -823,7 +823,7 @@ bool Xgearing::G_bEachMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_MainCard = G.xBI_g.pEachChild())) {
+  if ((G.p_MainCard = xBI_x.pEachChild())) {
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
@@ -840,7 +840,7 @@ bool Xgearing::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_MainCard = G.xBI_g.pEachChild(eOfMainKind))) {
+  if ((G.p_MainCard = xBI_x.pEachChild(eOfMainKind))) {
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
@@ -858,7 +858,7 @@ bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild(eOfMainKind))) {
+  while ((G.p_MainCard = xBI_x.pEachChild(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -886,7 +886,7 @@ bool Xgearing::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild_reverse(eOfMainKind))) {
+  while ((G.p_MainCard = xBI_x.pEachChild_reverse(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -932,7 +932,7 @@ bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild(eOfMainKind))) {
+  while ((G.p_MainCard = xBI_x.pEachChild(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -970,7 +970,7 @@ bool Xgearing::G_bEachMainWith3Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild(eOfMainKind))) {
+  while ((G.p_MainCard = xBI_x.pEachChild(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -1012,7 +1012,7 @@ bool Xgearing::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild())) {
+  while ((G.p_MainCard = xBI_x.pEachChild())) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
@@ -1039,7 +1039,7 @@ bool Xgearing::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild())) {
+  while ((G.p_MainCard = xBI_x.pEachChild())) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1074,7 +1074,7 @@ bool Xgearing::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while ((G.p_MainCard = G.xBI_g.pEachChild())) {
+  while ((G.p_MainCard = xBI_x.pEachChild())) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1271,7 +1271,7 @@ bool Xgearing::G_bHasPriorToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_PriorToMain = G.xBI_g.pPrevChild())) {
+  if ((G.p_PriorToMain = xBI_x.pPrevChild())) {
     G.e_PriorToMain = G.p_PriorToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
@@ -1289,7 +1289,7 @@ bool Xgearing::G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_PriorToMain = G.xBI_g.pPrevChildIf(eOfPriorKind))) {
+  if ((G.p_PriorToMain = xBI_x.pPrevChildIf(eOfPriorKind))) {
     G.e_PriorToMain = G.p_PriorToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
@@ -1310,7 +1310,7 @@ bool Xgearing::G_bHasSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_SubsequentToMain = G.xBI_g.pNextChild())) {
+  if ((G.p_SubsequentToMain = xBI_x.pNextChild())) {
     G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
@@ -1328,7 +1328,7 @@ bool Xgearing::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMembe
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_SubsequentToMain = G.xBI_g.pNextChildIf(eOfSubsequentKind))) {
+  if ((G.p_SubsequentToMain = xBI_x.pNextChildIf(eOfSubsequentKind))) {
     G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
@@ -1381,7 +1381,7 @@ bool Xgearing::G_bIsNextMain(eCK eMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (G.xBI_g.pNextChildIf(eMember))
+  if (xBI_x.pNextChildIf(eMember))
     return true;
 
   return false;
@@ -1462,7 +1462,7 @@ bool Xgearing::G_bMoreMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if (G.xBI_g.bMore())
+  if (xBI_x.bMore())
     return true;
 
   return false;
@@ -1618,7 +1618,7 @@ void Xgearing::G_vPushBoard(Board* pBoard)
 //  G.pBoard = pBoard;
 //  G.pDeck  = G.pBoard->pDeck();
 //
-//  G.xBI_g.vChangeBoard(G.pBoard);
+//  xBI_x.vChangeBoard(G.pBoard);
   G_vSetBoard(pBoard);
 }
 
@@ -1725,7 +1725,7 @@ void Xgearing::G_vRemoveMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.xBI_g.vRemoveCurr(eCrossCheck);
+  xBI_x.vRemoveCurr(eCrossCheck);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1735,7 +1735,7 @@ void Xgearing::G_vRemoveDeleteMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.xBI_g.vRemoveDeleteCurr(eCrossCheck);
+  xBI_x.vRemoveDeleteCurr(eCrossCheck);
 
   G.p_MainCard = nullptr;
   G.e_MainCard = CK_NONE;
@@ -1916,7 +1916,7 @@ void Xgearing::G_vRestart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.xBI_g.vRestart();
+  xBI_x.vRestart();
 
   G_vClearMembers();
   G_vClearRegisters();
@@ -1929,7 +1929,7 @@ bool Xgearing::G_bRewindMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_MainCard = G.xBI_g.pRewindChild())) {
+  if ((G.p_MainCard = xBI_x.pRewindChild())) {
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
@@ -1949,7 +1949,7 @@ void Xgearing::G_vSetBoard(Board* pBoard)
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
 
-  G.xBI_g.vChangeCard(G.pBoard->pDeck());
+  xBI_x.vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1959,7 +1959,7 @@ void Xgearing::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  G.xBI_g.vForward();
+  xBI_x.vForward();
 
   if (bClearMembers)
     G_vClearMembers();
@@ -1975,7 +1975,7 @@ bool Xgearing::G_bSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((G.p_SubsequentToMain = G.xBI_g.pNextChild())) {
+  if ((G.p_SubsequentToMain = xBI_x.pNextChild())) {
     G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
     if (bUpdateMember)
       G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);

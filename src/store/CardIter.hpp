@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
-//#include "CardIter.h"
+#include "Xsentinals2.h"
 
 namespace STORE
 {
@@ -12,6 +12,10 @@ namespace STORE
                  , public ListExo2_t<CardIter>
  {
   protected:
+
+    _Xsentinals2 G2;
+
+
     Card*  m_pCard;
     i8     m_i_Child;
     Card*  m_pChild;
