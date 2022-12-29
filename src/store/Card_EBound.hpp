@@ -15,6 +15,8 @@ namespace STORE
   
     Card_EBound(void);
    ~Card_EBound(void) noexcept(false);
+
+    Stz* szGet_tblColOdn(void);
   };
 
   Card_EBound* _pCard_EBound(void* aAddr);

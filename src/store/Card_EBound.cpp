@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_EBound.hpp"
+#include "CardIter.hpp"
+#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -32,6 +34,25 @@ Card_EBound::Card_EBound(void)
 Card_EBound::~Card_EBound(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get bound for relational op                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card_EBound::szGet_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
 }
 
 /*============================================================================*/

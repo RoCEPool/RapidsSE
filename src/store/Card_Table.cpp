@@ -67,6 +67,35 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vBounds_AddPred(Card_Index* p_index,
+                                Card_Bounds* p_bounds,
+                                Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  char cTblSyn = this->cValue();
+
+  Card_Bound* p_bound;
+  Card_PRED* p_childPRED;
+  if (p_PRED->bIsCard(CK_ANDPRED)) {
+    p_childPRED = (Card_PRED*)p_PRED->pGetChild(0);
+    this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
+    p_childPRED = (Card_PRED*)p_PRED->pGetChild(1);
+    this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
+  }
+  else
+  if (p_PRED->bIsCard(CK_CMPPRED)) {
+    p_bound = Card_Bound::pBound_CreateFrom_PRED(p_PRED,cTblSyn);
+    p_bounds->vAppend(p_bound);
+  }
+  else {
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,

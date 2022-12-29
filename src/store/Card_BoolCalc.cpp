@@ -10,6 +10,8 @@
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 #include "Card_AndPred.hpp"
+#include "Card_Param.hpp"
+#include "Card_TblColOdn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -248,6 +250,132 @@ bool Card_BoolCalc::bIsBraced(void)
   return bBraced;
 }
 
+/*----------------------------------------------------------------------------*/
+/* resolve the parameters terms in given boolCalc                             */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vBoolCalc_Substitute_Parameters(Card_ParamList* p_paramList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfXYZ = [this,p_paramList](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (! Card::bIsParamOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOdn));
+    if (! p_param)
+      return false;
+
+    //Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
+    //M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
+    Card_TblColOdn* p_tblColOrd = p_param->pSub_tblColOdn();
+    p_term->vSetValueMark1(p_tblColOrd->szValue(), MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bfXYZ);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(' ' != cWithMark);
+
+  p_pred_yanked = nullptr;
+
+  if (! this->nChildCards()) {
+    RASSERT(! p_pred_yanked);
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  auto bYank = [](Card_BoolCalc* p_boolCalc, char cWithMark,
+                      Card* p_test, Card_PRED*& p_pred_yanked,
+                      auto&& bYank /*oddity permits recursive lambda*/)
+  {
+    if (p_test->bIsPRED()) {
+      if (p_test->cMark1() == cWithMark) {
+        p_pred_yanked = static_cast<Card_PRED*>(p_test);
+        p_boolCalc->vBoolCalc_RemovePred(p_pred_yanked);
+        RASSERT(p_pred_yanked);
+        return true;
+      }
+    }
+
+    CardIter xCI(p_boolCalc);
+    while (Card* p_child = xCI.pEachChild()) {
+      if (bYank(p_boolCalc,cWithMark,p_child,p_pred_yanked,bYank)) {
+        RASSERT(p_pred_yanked);
+        return true;
+      }
+    }
+
+    RASSERT(! p_pred_yanked);
+    return false;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  CardIter xCI(this);
+
+  while (Card* p_child = xCI.pEachChild()) {
+    if (bYank(this,cWithMark,p_child,p_pred_yanked,bYank)) {
+      RASSERT(p_pred_yanked);
+      return true;
+    }
+  }
+
+  RASSERT(! p_pred_yanked);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card* p_test,
+                                        Card_PRED*& p_pred_yanked)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(' ' != cWithMark);
+
+  if (p_test->bIsPRED()) {
+    if (p_test->cMark1() == cWithMark) {
+      p_pred_yanked = static_cast<Card_PRED*>(p_test);
+      this->vBoolCalc_RemovePred(p_pred_yanked);
+      RASSERT(p_pred_yanked);
+      return true;
+    }
+  }
+
+  CardIter xCI(this);
+  while (Card* p_child = xCI.pEachChild()) {
+    if (this->bBoolCalc_Yank_PRED(cWithMark,p_child,p_pred_yanked)) {
+      RASSERT(p_pred_yanked);
+      return true;
+    }
+  }
+
+  RASSERT(! p_pred_yanked);
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

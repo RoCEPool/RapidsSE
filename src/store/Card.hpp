@@ -403,6 +403,7 @@ namespace STORE
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
+    void vSetValueMark1(Stz* szValue, char cMark1);
 
     void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
 

@@ -456,7 +456,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_indexJoin(void)
     return;
 
   // get tblColOdn of eBound
-  Stz* szTblColOdn_r = E_szEBound_Get_tblColOdn(G.p_eBound);
+  Stz* szTblColOdn_r = G.p_eBound->szGet_tblColOdn();
   if (! szTblColOdn_r)
     return;
   //vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
@@ -866,7 +866,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 
     Card_StmColNm* p_stmColNm = G.p_stmCol->pSub_stmColNm();
 
-    M_vCard_Set_Value(p_term,p_stmColNm->szValue(),MARK_CHANGED);
+    p_term->vSetValueMark1(p_stmColNm->szValue(), MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -900,7 +900,7 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 
     G.p_stmColOdn = R_pUTE_Resolve_tblColOdn_Into_stmColOdn(p_term,G.i_MainCard+1);
 
-    M_vCard_Set_Value(p_term, G.p_stmColOdn->szValue(),MARK_CHANGED);
+    p_term->vSetValueMark1(G.p_stmColOdn->szValue(), MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -1886,7 +1886,7 @@ void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_
 
   // todo: xt
 
-  bool b = M_bBoolCalc_Yank_PRED(p_boolCalc, MARK_AT, rp_PRED);
+  bool b = p_boolCalc->bBoolCalc_Yank_PRED(MARK_AT, rp_PRED);
   RASSERT(b);
 }
 
@@ -2095,7 +2095,7 @@ void Xreshape::vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void)
     RASSERT(m_pCard_parent->bIsCard(CK_STMCOL));
 
     G.p_tblColOdn = m_pCard_parent->pSub_tblColOdn();
-    M_vCard_Set_Value(p_term, G.p_tblColOdn->szValue(),MARK_CHANGED);
+    p_term->vSetValueMark1(G.p_tblColOdn->szValue(), MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -2339,7 +2339,7 @@ void Xreshape::vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
 
     Card_StmColNm* p_stmColNm = G.p_stmCol->pSub_stmColNm();
 
-    M_vCard_Set_Value(p_term,p_stmColNm->szValue(),MARK_CHANGED);
+    p_term->vSetValueMark1(p_stmColNm->szValue(), MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };

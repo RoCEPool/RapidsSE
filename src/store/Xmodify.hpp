@@ -26,18 +26,6 @@ namespace STORE
    ~Xmodify(void) noexcept(false);
 
   public:
-    void M_vBoolCalc_Substitute_Parameters(Card_BoolCalc* p_boolCalc, Card_ParamList* p_paramList);
-    bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
-                               Card_PRED*& p_pred_yanked);
-    bool M_bBoolCalc_Yank_PRED(Card_BoolCalc* p_boolCalc, char cWithMark,
-                               Card* p_test, Card_PRED*& p_pred_yanked);
-
-    Stz* E_szEBound_Get_tblColOdn(Card_EBound* p_eBound);
-
-
-    void M_vBounds_AddPred(Card_Table* p_table, Card_Index* p_index, Card_Bounds* p_bounds, Card_PRED *p_PRED);
-    void M_vBounds_AddPredUnder_index(Card_Table* p_table, Card_Index* p_index, Card_PRED *p_PRED);
-
     void M_vCard_Mark_Changed(Card* pCard);
     void M_vCard_Set_IndexColOrdinal(Card* p_card, i8 iIdxColOdn);
     void M_vCard_Set_KeyOrdinal(Card* p_card, i8 iKeyOdn);
@@ -45,8 +33,6 @@ namespace STORE
     void M_vCard_Set_StreamColOrdinal(Card* p_card, i8 iStmColOdn);
     void M_vCard_Set_TableColOrdinal(Card* p_card, char cTblSyn, i8 iTblColOdn);
     void M_vCard_Set_TableColSyn(Card* p_card, char cTblSyn);
-    void M_vCard_Set_Value(Card* pCard, Stz* szValue);
-    void M_vCard_Set_Value(Card* pCard, Stz* szValue, char cMark1);
 
     Card_Term* E_pCmpPred_Extract_Arg_term(Card_CmpPred* p_cmpPred);
     Card_Term* E_pCmpPred_Extract_Param_term(Card_CmpPred* p_cmpPred);

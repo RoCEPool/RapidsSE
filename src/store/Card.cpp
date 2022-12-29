@@ -1946,6 +1946,17 @@ void Card::vValue(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set card value and Mark1                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vSetValueMark1(Stz* szValue, char cMark1)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValue(szValue);
+  vMark1(cMark1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint card value                                                          */
 /*----------------------------------------------------------------------------*/
 void Card::vValueSprint(Stz* szFormat, ...)
