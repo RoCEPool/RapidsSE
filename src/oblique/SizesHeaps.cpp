@@ -246,7 +246,6 @@
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
 #include "Xsentinals.hpp"
-#include "TransformIterList.hpp"
 #include "Ppy.hpp"
 #include "PpySet.hpp"
 #include "Xseries.hpp"
@@ -664,7 +663,6 @@ SizeHeap gxaSizeHeap[]
   { CN_TRACEMULTILOCK,           sizeof(TraceMultiLock),         HT_T_TINY    , FILL },
   { CN_TRANSFORMER,              sizeof(Transformer),            HT_T_TINY    , FILL },
   { CN_TRANSFORMITER,            sizeof(Xsentinals),             HT_T_SMALL   , FILL },
-  { CN_TRANSFORMITERLIST,        sizeof(TransformIterList),      HT_T_TINY    , FILL },
   { CN_TRANSFORMS,               sizeof(Xtransforms),            HT_T_SMALL   , FILL },
   { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
   { CN_TUB,                      sizeof(Tub),                    HT_T_TINY    , FILL },
