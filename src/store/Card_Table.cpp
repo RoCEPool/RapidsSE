@@ -104,7 +104,7 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
 
       // - - - -
 
-      Card_Bounds *p_bounds = this->pSub_bounds();
+      Card_Bounds *p_bounds = p_index->pSub_bounds();
       if (!p_bounds) {
         p_bounds = new Card_Bounds;
         p_index->vAppend(p_bounds);
