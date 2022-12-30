@@ -213,8 +213,6 @@ ordered rows:
 
 // Source file: ../queries/isnull/risnull1.sql
 // Result file: ../queries/isnull/results/isnull1.res
-/*
-TODO: ENABLE WHEN DESC
 select colb9, ucolvc from table9 where colb9 is null order by ucolvc desc;
 ordered rows:
   (NULL, 'zzz')
@@ -225,4 +223,3 @@ ordered rows:
   (NULL, 'mmm')
   (NULL, 'iii')
   (NULL, 'bbb')
-*/

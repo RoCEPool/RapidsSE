@@ -174,8 +174,6 @@ failure: 'System exception on node NODE1:'
 
 // Source file: ../queries/functions/substr/rsubstr2.sql
 // Result file: ../queries/functions/substr/results/substr2.res
-//TODO: ENABLE WHEN DESC
-/*
 select colb1, substring(colb1,4,2) from table1 where pcol1 < 15 order by colb1 desc;
 ordered rows:
   ('red', '')
@@ -193,7 +191,6 @@ ordered rows:
   ('PURPLE', 'PL')
   ('PINK', 'K')
   ('PINK', 'K')
-*/
 
 // Source file: ../queries/functions/substr/rsubstr5.sql
 // Result file: ../queries/functions/substr/results/substr5.res
