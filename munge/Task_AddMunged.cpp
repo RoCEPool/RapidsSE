@@ -29329,6 +29329,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  else\n"
     "    op__execErr\n"
+    "    Optimiser[].delete\n"
+    "    PipeSpec[].delete\n"
     "    false\n"
     "    exit\n"
     "  then\n"

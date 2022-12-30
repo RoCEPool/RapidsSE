@@ -105,6 +105,8 @@
 
   else
     op__execErr
+    Optimiser[].delete
+    PipeSpec[].delete
     false
     exit
   then
