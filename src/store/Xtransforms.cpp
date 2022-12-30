@@ -590,7 +590,7 @@ void Xtransforms::vS24_T_Index_Analysis(void)
     CardIter xCI(G.p_indexList);
     while ((G.p_index = _pCard_Index(xCI.pEachChild()))) {
       G.p_idxColList = G.p_index->pSub_idxColList();
-      M_vIdxColList_Affix_tblColOdn(G.p_idxColList, G.p_stream);
+      G.p_idxColList->vAffix_tblColOdn(G.p_stream);
     }
   }
 
@@ -692,7 +692,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
-    M_vStream_Derive_OrdinalRange_project(G.p_stream);
+    G.p_stream->vDerive_OrdinalRange_project();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -700,7 +700,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
-    M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
+    G.p_stream->vDerive_OrdinalRange_aggreg();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -708,7 +708,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_GBYAGG,CK_STREAM)) {
-    M_vStream_Derive_OrdinalRange_aggreg(G.p_stream);
+    G.p_stream->vDerive_OrdinalRange_aggreg();
   }
 
 
@@ -872,7 +872,7 @@ void Xtransforms::vS32_T_SubQuery_Analysis(void)
   // Convert SqyOp Not To NotSqyOp
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(G.p_rpnCalc);
+    G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
   }
 
   m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);

@@ -292,6 +292,10 @@ namespace STORE
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
 
+    static char cAggrLevelToChar(eAL eLevel);
+
+    static eYG  eAggrLevelToStageTopology(eAL eLevel);
+
     static i8   iGetColOdn(Stz* szValue);
 
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In
@@ -315,6 +319,8 @@ namespace STORE
     static eCK  eTo_eCK(Stz* szCardNm);
 
     static char cTypeShort(Stz* szType);
+
+    static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

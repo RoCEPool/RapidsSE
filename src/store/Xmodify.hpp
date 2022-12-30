@@ -29,24 +29,7 @@ namespace STORE
     i8 E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_OrdElmOdn* p_stmOrdOdn);
     i8 E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr);
 
-    void M_vIdxColList_Affix_tblColOdn(Card_IdxColList* p_idxColList, Card_Stream* p_stream);
-
-    char M_eLevel_To_char(eAL eLevel);
-    eYG  M_eLevel_To_StageTopology(eAL eLevel);
-
-    Card_Term* M_pRpnCalc_GetSingle_stmColOdn(Card_RpnCalc* p_rpnCalc);
-
-    void M_vRpnCalc_Convert_sqyOp_not_To_notSqyOp(Card_RpnCalc* p_rpnCalc);
-
-    void M_vScan_Add_cmpPred_To_bounds(Card_Scan* p_scan, Card_CmpPred* p_cmpPred);
-    void M_vScan_Produce_indexList(Card_Scan* p_scan);
-
-    eAL  M_eStageTopology_To_Level(eYG eStageTopo);
-
-    void M_vStream_Derive_OrdinalRange_aggreg(Card_Stream* p_stream);
-    void M_vStream_Derive_OrdinalRange_project(Card_Stream* p_stream);
     void M_vStream_Derive_OrdinalRange_table(Card_Stream* p_stream, char cTblSyn);
-    void M_vStream_Adjust_OrdinalRange(Card_Stream* p_stream, i8 iLo, i8 iHi);
 
     void M_vTable_Set_Syn(Card_Table* p_table);
 

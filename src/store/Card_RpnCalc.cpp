@@ -66,6 +66,66 @@ void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
+
+    if (! xCI.bMore())
+      break;
+
+    if (p_term->bSame("exists"_Stz)) {
+
+      Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
+      if (p_term_next->bSame("not"_Stz)) {
+        xCI.vRewind();
+        this->vRemoveChild(p_term_next);
+        p_term->vValue("notExists"_Stz);
+        continue;
+      }
+      continue;
+    }
+
+    if (p_term->bSame("in"_Stz)) {
+
+      Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
+      if (p_term_next->bSame("not"_Stz)) {
+        xCI.vRewind();
+        this->vRemoveChild(p_term_next);
+        p_term->vValue("notIn"_Stz);
+        DELETE_CARD(p_term_next);
+        continue;
+      }
+      continue;
+    }
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the one (and only) stmColOdn from rpnCalc                              */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (1 != this->nChildCards())
+    return nullptr;
+
+  Card_Term* p_term = this->pSub_term();
+  Stz* szTerm = p_term->szValue();
+  if (! Card::bIsStreamColOrdinal(szTerm))
+    return nullptr;
+
+  return p_term;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsBraced(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -45,7 +45,7 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
@@ -183,6 +183,23 @@ Card_Stream* Card_Stream::pDerive_Of_table(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vAdjust_OrdinalRange(i8 iLo, i8 iHi)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  this->Y_vSet(P_OdnLo, iLo);
+  this->Y_vSet(P_OdnHi, iHi);
+
+  this->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stream ordinal low                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Card_Stream::iGetOdnLow(void)
@@ -204,6 +221,34 @@ i8 Card_Stream::iGetOdnHigh(void)
   i8 iOdnHi = Y_iGet(P_OdnHi);
 
   return iOdnHi;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vDerive_OrdinalRange_aggreg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nStreamCols = this->pSub_stmColList()->nChildCards();
+  this->Y_vSet(P_OdnLo, (i8)1);
+  this->Y_vSet(P_OdnHi, nStreamCols);
+
+  this->vMark1(MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vDerive_OrdinalRange_project(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nStreamCols = this->pSub_stmColList()->nChildCards();
+  this->Y_vSet(P_OdnLo, (i8)1);
+  this->Y_vSet(P_OdnHi, nStreamCols);
+
+  this->vMark1(MARK_CHANGED);
 }
 
 /*============================================================================*/
