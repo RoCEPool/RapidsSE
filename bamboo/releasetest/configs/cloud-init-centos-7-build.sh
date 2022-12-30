@@ -363,7 +363,7 @@ yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
 
 # Documentation generator
-python3 -m pip install -U sphinx
+sudo -H -u "${OS_USER}" python3 -m pip install -U --user sphinx
 
 # Runtimes
 # yum install -y libatomic nmap-netcat iproute
