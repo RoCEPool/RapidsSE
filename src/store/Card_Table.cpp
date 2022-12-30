@@ -202,6 +202,28 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set synonym of table                                                       */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vSet_Syn(char* cTableSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TableNm* p_tableNm = this->pSub_tableNm();
+
+  Table* pTable = Card::pAccess_Table(p_tableNm->sz());
+
+  this->vMark1(MARK_CHANGED);
+
+  char cTableSyn_actual = *cTableSyn;
+  if (pTable->bIsReplicated())
+    cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
+  this->vValueSprint("%c"_Stz,cTableSyn_actual);
+
+  (*cTableSyn)++;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

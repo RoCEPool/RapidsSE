@@ -24,6 +24,7 @@ namespace STORE
                                    bool bParamAllowedInBounds);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
+    void vSet_Syn(char* cTableSyn);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

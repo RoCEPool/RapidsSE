@@ -14,6 +14,11 @@ namespace STORE
 
     eOT m_eOptTranforms[OT_ENUMS];
 
+  public:
+    i8           m_iOdnLo;
+    i8           m_iOdnHi;
+    char         m_cTableSyn;
+
     // must be last
     Footer m_xFooter;
 
@@ -132,6 +137,11 @@ namespace STORE
     void vSZ0_T30_Add_Partitioning(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    void vStreamAnalysisReset(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   private:
 
     void vAssert_Board_any(void);

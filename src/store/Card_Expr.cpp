@@ -8,6 +8,7 @@
 #include "Card_As.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -37,6 +38,35 @@ Card_Expr::Card_Expr(void)
 Card_Expr::~Card_Expr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc = this->pSub_rpnCalc();
+  if (! p_rpnCalc)
+    return C_UNKNOWN;
+
+  if (p_rpnCalc->nChildCards() > 1)
+    return C_UNKNOWN;
+
+  CardIter xCI(p_rpnCalc);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
+    if (Card::bIsKeyOrdinal(p_term->szValue())) {
+      i8 i_Key = Card::iGetColOdn(p_term->szValue());
+      return i_Key;
+    }
+  }
+
+  return C_UNKNOWN;
 }
 
 //*============================================================================*/

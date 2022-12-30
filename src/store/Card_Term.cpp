@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_Term.hpp"
+#include "Card_IdxColList.hpp"
+#include "Card_IdxCol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -53,6 +55,46 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vBump_KeyOrdinal(i8 nBy)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 iKeyOdn = Card::iGetColOdn(this->szValue());
+
+  this->vSetKeyOrdinal(iKeyOdn+nBy);
+
+  if (this->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = this->Y_iGet(P_BumpedBy);
+    this->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
+  }
+  else {
+    this->Y_vSet(P_BumpedBy,(i8)nBy);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vBump_StreamColOrdinal(i8 nBy)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 iStmColOdn = Card::iGetColOdn(this->szValue());
+
+  this->vSetStreamColOrdinal(iStmColOdn+nBy);
+
+  if (this->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = this->Y_iGet(P_BumpedBy);
+    this->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
+  }
+  else {
+    this->Y_vSet(P_BumpedBy,(i8)nBy);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
@@ -127,6 +169,27 @@ char Card_Term::cGetTableSyn(void)
   return cSyn;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szTerm = this->sz();
+  if (!szTerm->bIsStreamColOrd())
+    return;
+
+  i8 i_IdxCol = C_UNKNOWN;
+
+  Card_IdxCol* p_idxCol =
+      _pCard_IdxCol(p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol));
+  if (! p_idxCol)
+    return;
+
+  this->vMark1('I');
+  this->vMark2(i_IdxCol);
+}
 
 
 /*----------------------------------------------------------------------------*/

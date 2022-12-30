@@ -134,6 +134,26 @@ Card_PRED* Card_PRED::pContaining_MaybeBoundsOf_index(Card_Index* p_index,
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card* pChildCard = xCI.pEachChild()) {
+    if (! pChildCard->bIsPRED())
+      continue;
+
+    bool bContinue = ((Card_PRED*)pChildCard)->bDescend(bfLambdaFn);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  return C_CONTINUE_RECURSION;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_PRED::pPredFindBound(Index* pIndex, ePB eBound)

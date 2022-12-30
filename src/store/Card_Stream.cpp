@@ -251,6 +251,40 @@ void Card_Stream::vDerive_OrdinalRange_project(void)
   this->vMark1(MARK_CHANGED);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vDerive_OrdinalRange_table(char cTblSyn, i8* iOdnHi, i8* iOdnLo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // <scan>/<stream>:iOrdLo,iOdnHi
+  i8 nStreamCols = this->pSub_stmColList()->nChildCards();
+  this->Y_vSet(P_OdnLo, *iOdnLo);
+  *iOdnHi = *iOdnLo + nStreamCols - 1;
+  this->Y_vSet(P_OdnHi, *iOdnHi);
+
+  this->vMark1(MARK_CHANGED);
+
+  CardIter xCI(this->pSub_stmColList());
+  i8 iTblColOdn = 1;
+  i8 iStmColOdn = *iOdnLo;
+  while (Card_StmCol* p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
+    Card_StmColOdn* p_stmColOrd = new Card_StmColOdn;
+    p_stmColOrd->vSetStreamColOrdinal(iStmColOdn);
+    p_stmCol->vAppend(p_stmColOrd);
+
+    Card_TblColOdn* p_tblColOrd = new Card_TblColOdn;
+    p_tblColOrd->vSetTableColOrdinal(cTblSyn, iTblColOdn);
+    p_stmCol->vAppend(p_tblColOrd);
+
+    iStmColOdn++;
+    iTblColOdn++;
+  }
+
+  *iOdnLo = *iOdnHi + 1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

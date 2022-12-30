@@ -25,6 +25,10 @@ Xtransforms::Xtransforms(Bench* pBench)
   for (i8 iIndex = 0; iIndex < OT_ENUMS; iIndex++)
     m_eOptTranforms[iIndex] = OT_NONE;
 
+  m_iOdnLo      = 1;
+  m_iOdnHi      = C_UNKNOWN;
+  m_cTableSyn   = 'a';
+
   _checkInitialised_(CN_TRANSFORMS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -532,7 +536,7 @@ void Xtransforms::vS20_T_Table_Analysis(void)
   // Affix Table Syntax To All Table
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    M_vTable_Set_Syn(G.p_table);
+    G.p_table->vSet_Syn(&m_cTableSyn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -684,7 +688,7 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    M_vStream_Derive_OrdinalRange_table(G.p_stream, G.p_table->cValue());
+    G.p_stream->vDerive_OrdinalRange_table(G.p_table->cValue(), &m_iOdnHi, &m_iOdnLo);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3038,7 +3042,17 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
   vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vStreamAnalysisReset(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
+  m_iOdnLo      = 1;
+  m_iOdnHi      = C_UNKNOWN;
+  m_cTableSyn   = 'a';
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -28,6 +28,8 @@ namespace STORE
 
     void vDerive_OrdinalRange_aggreg(void);
     void vDerive_OrdinalRange_project(void);
+    void vDerive_OrdinalRange_table(char cTblSyn, i8* iOdnHi, i8* iOdnLo);
+
 
   };
 

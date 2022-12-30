@@ -169,7 +169,7 @@ void Xreshape::R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
       Stz *szTerm = G.p_term->szValue();
 
       if (Card::bIsKeyOrdinal(szTerm)) {
-        M_vTerm_Bump_KeyOrdinal(G.p_term);
+        G.p_term->vBump_KeyOrdinal();
         G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
@@ -198,7 +198,7 @@ void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
       Stz *szTerm = G.p_term->szValue();
 
       if (Card::bIsStreamColOrdinal(szTerm)) {
-        M_vTerm_Bump_StreamColOrdinal(G.p_term);
+        G.p_term->vBump_StreamColOrdinal();
         G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
@@ -417,7 +417,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_gbyAgg(void)
   G.p_aggElist =  G.p_gbyAgg->pSub_aggElist();
   CardIter xCI(G.p_aggElist);
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
-    i8 i_Key = E_iExpr_rpnCalc_WhichGbyKey(G.p_expr);
+    i8 i_Key = G.p_expr->iRpnCalc_WhichGbyKey();
     if (C_UNKNOWN == i_Key)
       continue;
 
@@ -544,7 +544,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_project(void)
   i8 nLeading = 0;
   CardIter xCI(G.p_order);
   while ((G.p_ordElmOdn = _pCard_OrdElmOdn(xCI.pEachChild()))) {
-    i8 i_Expr = E_iELIST_rpnCalc_Has_stmOrdOdn(G.p_projElist,G.p_ordElmOdn);
+    i8 i_Expr = G.p_projElist->iRpnCalc_Has_stmOrdOdn(G.p_ordElmOdn);
     if (C_UNKNOWN == i_Expr)
       continue;
 
@@ -931,7 +931,7 @@ void Xreshape::R_vUTE_Correct_having_BaseOn_foldExpr(void)
     G.p_roPred = _pCard_RoPred(pCard);
 
     m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
-    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0);
+    m_pTerm_0->vBump_StreamColOrdinal();
 
     m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
     G.p_roPred->vRemoveChild(m_pTerm_1);
@@ -968,7 +968,7 @@ void Xreshape::R_vUTE_Bump_where_BaseOn_foldExpr(void)
     G.p_roPred = _pCard_RoPred(pCard);
 
 //    m_pTerm_0 = _pCard_Term(G.p_roPred->pGet(0));
-//    M_vTerm_Bump_StreamColOrdinal(m_pTerm_0,nBumpRight);
+//    m_pTerm_0->vBump_StreamColOrdinal(nBumpRight);
 
     m_pTerm_1 = _pCard_Term(G.p_roPred->pGet(1));
     G.p_roPred->vRemoveChild(m_pTerm_1);
