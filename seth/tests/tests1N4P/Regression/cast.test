@@ -441,7 +441,7 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast13.sql
 // Result file: ../queries/cast/results/cast13.res
-//TODO: FIX
+//TODO: ALKA TO FIX
 /*
 select cast(cole1 as decimal), cast(cole9 as decimal), cast(cole4 as decimal) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
 ordered rows:
