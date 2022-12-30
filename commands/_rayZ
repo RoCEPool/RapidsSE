@@ -24,6 +24,8 @@ Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 /glean_interactive
 select count(ucol) - max(cold9) from table9 where ucol > 0;
 
+//select * from table9;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

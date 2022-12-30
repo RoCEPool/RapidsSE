@@ -43,7 +43,7 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 // RAY: NOTE: Please uncomment the join ordering lines in Xseries.cpp
 // before trying this test
 
-/*
+
 /glean_interactive
 /transliterated
 /weaved
@@ -51,7 +51,7 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9
   from table1 a join table9 b on pcol1 = pcol9
   group by a.colb1, b.colb9;
-*/
+
 
 /*============================================================================*/
 /* end                                                                        */
