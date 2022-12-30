@@ -3,15 +3,16 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xmodify.hpp"
+#include "Xsentinals.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xderive : public Xmodify
+  class Xderive : public Xsentinals
   {
   public:
+    CardCtl*     m_pCardCtl;
 
     // must be last
     Footer m_xFooter;
