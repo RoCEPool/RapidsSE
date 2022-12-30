@@ -25,7 +25,6 @@ C_INSTANCE_START_TIMEOUT = 600.0
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_EC2_BOOT_TIMEOUT_SEC = 300
 C_SE_TEST_TIMEOUT_SEC = 1200
 C_SE_INSTALL_TIMEOUT_SEC = 120
 C_TEST_MONITORING_SLEEP_IVL = 10

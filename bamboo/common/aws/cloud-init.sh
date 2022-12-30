@@ -450,7 +450,7 @@ EOF
   echo
   echo "*** Installing Sphinx ***"
   echo
-  sudo "${OS_USER}" python3 -m pip install --user -U sphinx
+  sudo -H -u "${OS_USER}" python3 -m pip install --user -U sphinx
 
   # ----------------------------------------------------------------------------------------
   # Setting JAVA_HOME
