@@ -15,6 +15,7 @@ release = '1.1.0-dev0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+root_doc = 'index'
 extensions = []
 
 templates_path = ['_templates']
@@ -27,3 +28,11 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+
+
+# -- Options for Latex (& PDF) output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
+
+# We are setting the output filename here.
+# Tuple format: (root document, output latex filename, title, author, latex theme, exclude root document)
+latex_documents = [ (root_doc, f"rapidsse-{release}.tex", "", author, "manual", False) ]

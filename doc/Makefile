@@ -13,41 +13,28 @@ LATEXMK_INSTALLED:= $(shell command -v latexmk 2> /dev/null)
 UNAME_S := $(shell uname -s)
 
 # Put it first so that "make" without argument is like "make all".
-all:
-ifdef SPHINX_INSTALLED
-	@echo "Checking links"
+all: checkSphinx checkLatex
+	@echo "Validating links in rst files..."
 	@echo
 	@$(MAKE) linkcheck
 	@echo
-	@echo "Updating version information"
+	@echo "Updating version information..."
 	@./updateVersion.sh
 	@echo "done"
 	@echo
-	@echo "Building HTML documentation"
+	@echo "Building HTML documentation..."
 	@echo
 	@$(MAKE) html
 	@echo
 	
-	@echo "Building PDF documentation"
+	@echo "Building PDF documentation..."
 	@echo
-ifdef LATEXMK_INSTALLED
 	@$(MAKE) latexpdf
-else
-	$(warning *** Not generating PDF documentation because latex and/or latexmk is not installed ***)
-ifeq ($(UNAME_S),Linux)
-	@echo "To install latex and latexmk on Linux, the easiest way is to install the full"
-	@echo "TeX Live installation via the instructions at:"
-	@echo "  https://www.tug.org/texlive/quickinstall.html"
-	@echo "(approx 4GB download)"
-else ifeq ($(UNAME_S),Darwin)
-	@echo "To install latex and latexmk on MacOS, the easiest way is to run the command:"
-	@echo "  brew install mactex-no-gui"
-	@echo "(requires ~4.7GB download)"
-endif # UNAME_S
-endif # LATEXMK_INSTALLED
+	@echo
 
-else
-	$(warning *** Not building the documentation because $(SPHINXBUILD) is not installed ***)
+checkSphinx:
+ifndef SPHINX_INSTALLED
+	$(error ERROR: Not building the documentation because $(SPHINXBUILD) is not installed ***)
 	@echo "Building the RapidsSE documentation requires the following pre-requisites:"
 	@echo "  1. Python 3"
 	@echo "  2. Sphinx"
@@ -60,13 +47,30 @@ ifeq ($(UNAME_S),Linux)
 	@echo "To install latex and latexmk on Linux, the easiest way is to install the full"
 	@echo "TeX Live installation via the instructions at:"
 	@echo "  https://www.tug.org/texlive/quickinstall.html"
-	@echo "(approx 4GB download)"
+	@echo "This is about a 4GB download."
 else ifeq ($(UNAME_S),Darwin)
 	@echo "To install latex and latexmk on MacOS, the easiest way is to run the command:"
 	@echo "  brew install mactex-no-gui"
-	@echo "(requires ~4.7GB download)"
+	@echo "This is about a 4.7GB download."
 endif # UNAME_S
 endif # SPHINX_INSTALLED
+
+checkLatex:
+ifndef LATEXMK_INSTALLED
+	$(error ERROR: Not building the documentation because latex and/or latexmk is not installed ***)
+	@echo "If you only wish to build the HTML documentation, you can simply run: make html"
+	@echo
+ifeq ($(UNAME_S),Linux)
+	@echo "To install latex and latexmk on Linux, the easiest way is to install the full"
+	@echo "TeX Live installation via the instructions at:"
+	@echo "  https://www.tug.org/texlive/quickinstall.html"
+	@echo "This is about a 4GB download."
+else ifeq ($(UNAME_S),Darwin)
+	@echo "To install latex and latexmk on MacOS, the easiest way is to run the command:"
+	@echo "  brew install mactex-no-gui"
+	@echo "This is about a 4.7GB download."
+endif # UNAME_S
+endif # LATEXMK_INSTALLED
 
 clean:
 	@rm -rf "$(BUILDDIR)"
@@ -74,7 +78,7 @@ clean:
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: all clean help Makefile
+.PHONY: all checkSphinx checkLatex clean help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

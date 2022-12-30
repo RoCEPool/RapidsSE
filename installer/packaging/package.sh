@@ -21,6 +21,7 @@ set -Eeo pipefail
 #  NO_BUILD      - don't compile the software
 #  NO_SHELLCHECK - don't run shellcheck on the scripts beforehand.
 #  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD
+#  NO_DOCS       - don't build documentation
 
 ###############################################################################
 ### Constants                                                               ###
@@ -30,6 +31,7 @@ readonly ROOT_DIR="$(realpath "${DIR}/../..")"
 readonly LAYOUT_DIR="${ROOT_DIR}/installer/layout"
 readonly OUTPUT_DIR="${ROOT_DIR}/installer/output"
 readonly SOURCE_DIR="${ROOT_DIR}/src"
+readonly DOC_DIR="${ROOT_DIR}/doc"
 readonly OBJECT_DIR="${ROOT_DIR}/build/obj"
 readonly BIN_DIR="${ROOT_DIR}/build/bin"
 
@@ -271,6 +273,16 @@ esac
         make clean && make -s  -j "$(nproc)"
       )
     fi
+  fi
+
+
+  ### (Optional) Compile the documentation
+  if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+    if [ -n "${DEBUG}" ] ; then echo "Compiling documentation"; fi;
+    (
+      cd "${DOC_DIR}"
+      make clean && make
+    )
   fi
 
 
