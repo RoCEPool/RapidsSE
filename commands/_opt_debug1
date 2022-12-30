@@ -43,17 +43,81 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 // RAY: NOTE: Please uncomment the join ordering lines in Xseries.cpp
 // before trying this test
 
+/*
 /glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_opt_debug1"
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9
   from table1 a join table9 b on pcol1 = pcol9
-  where a.colb1 < 'GRE' group by a.colb1, b.colb9
-  order by a.colb1, b.colb9;
-
+  group by a.colb1, b.colb9;
+*/
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*
+pipeline _opt_debug1
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      TABLE9
+    | next
+
+  stage S02 on all partitions :
+      indexJoin TABLE1 TABLE1_pcol1 " BOUND $I1 $1 == "
+    | combined  0
+    | next
+
+  stage S03 on all partitions :
+      aggreg    " groupBy
+                    type VARCHAR $14
+                  , type VARCHAR $4
+                  aggregates
+                    type INTEGER as COL_1 ) $13 max
+                  , type VARCHAR as COL_2 $K1
+                  , type FLOAT as COL_3 ) $5 max
+                  , type VARCHAR as COL_4 $K2 "
+    | combined  0
+    | next
+
+  stage S04 on all nodes :
+      aggreg    " groupBy
+                    type VARCHAR $2
+                  , type VARCHAR $4
+                  aggregates
+                    type INTEGER as COL_1 ) $1 max
+                  , type VARCHAR as COL_2 $K1
+                  , type FLOAT as COL_3 ) $3 max
+                  , type VARCHAR as COL_4 $K2 "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      aggreg    " groupBy
+                    type VARCHAR $2
+                  , type VARCHAR $4
+                  aggregates
+                    type INTEGER as COL_1 ) $1 max
+                  , type VARCHAR as COL_2 $K1
+                  , type FLOAT as COL_3 ) $3 max
+                  , type VARCHAR as COL_4 $K2 "
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+*/
 
