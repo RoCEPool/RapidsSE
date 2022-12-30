@@ -44,7 +44,6 @@ ordered rows:
 
 // Source file: ../queries/aliasSelAll/xselAll-2.sql
 // Result file: ../queries/aliasSelAll/results/selAll-2.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select a.pcol1, b.ucolvc, c.* from table1 a, table2 b, table9 c where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc and a.ucolvc < 'ddd' and c.pcol9 < 20 order by a.pcol1, c.pcol9;
 ordered rows:
