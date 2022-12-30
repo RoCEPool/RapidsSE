@@ -9,12 +9,14 @@ Welcome to the RapidsSE documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :numbered:
 
-
-
-Indices and tables
-==================
+   overview/index
+   instMgmt/index
+   usersGuide/index
+   interfaces/index
+   releases/index
+   appendices/index
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
