@@ -359,6 +359,47 @@ EOF
   chown root:wheel /opt
   chmod g+w /opt
 
+
+  # ----------------------------------------------------------------------------------------
+  # Installing AWS CLI
+  # Note that we retry any network operations as these can fail or timeout for
+  # various reasons. A timeout means that we ultimately cannot connect to this
+  # machine.
+  echo
+  echo "*** Installing AWS CLI ***"
+  echo
+  if ! which aws; then
+    # AWS CLI needs curl and unzip
+    while ! yum install -y curl unzip; do
+      sleep 1
+    done
+
+    while ! curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+      sleep 1
+    done
+
+    unzip awscliv2.zip
+    ./aws/install
+  fi
+
+  # ----------------------------------------------------------------------------------------
+  # Install Tex Live in parallel in the background to /usr/local/texlive.
+  # This is for generating PDF documentation.
+  (
+    cd /usr/local
+    aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
+    chown -R root:root /usr/local/texlive
+    chmod -R g-w /usr/local/texlive
+    {
+      echo
+      echo 'TEXLIVEDIR="/usr/local/texlive"'
+      echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+      echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+      echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
+      echo
+    } >>/etc/profile.d/sh.local
+  ) > /dev/null &
+
   # ----------------------------------------------------------------------------------------
   # Apply any package updates
   echo
@@ -408,17 +449,6 @@ EOF
   echo "*** Installing Sphinx ***"
   echo
   sudo "${OS_USER}" python3 -m pip install --user -U sphinx
-
-  # ----------------------------------------------------------------------------------------
-  # Installing AWS CLI
-  echo
-  echo "*** Installing AWS CLI ***"
-  echo
-  if ! which aws; then
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    ./aws/install
-  fi
 
   # ----------------------------------------------------------------------------------------
   # Setting JAVA_HOME
@@ -558,6 +588,13 @@ EOF
   if which parallel &>/dev/null; then
     echo -e "will cite\n" | parallel --citation
   fi
+
+  # ----------------------------------------------------------------------------------------
+  # Wait for any background processes (e.g. TexLive) to finish
+  echo
+  echo "*** Waiting for any background subprocesses to complete ***"
+  echo
+  wait
 
   # ----------------------------------------------------------------------------------------
   # Indicate cloud-init has completed by dropping a file in /tmp
