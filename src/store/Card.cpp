@@ -251,6 +251,36 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert eLevel to P/N/O                                                    */
+/*----------------------------------------------------------------------------*/
+char Card::cAggrLevelToChar(eAL eLevel)
+{
+  _static_
+
+  switch (eLevel) {
+    case AL_PARTITION : return 'P';
+    case AL_NODE      : return 'N';
+    case AL_ORIGIN    : return 'O';
+    default           : return '?';
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert eAL to eYG                                                         */
+/*----------------------------------------------------------------------------*/
+eYG Card::eAggrLevelToStageTopology(eAL eLevel)
+{
+  _static_
+
+  switch (eLevel) {
+    case AL_PARTITION : return YG_ALL_PARTITIONS;
+    case AL_NODE      : return YG_ALL_NODES;
+    case AL_ORIGIN    : return YG_ORIGIN_NODE;
+    default           : return YG_ALL_PARTITIONS;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
 i8 Card::iGetColOdn(Stz* szValue)
@@ -467,6 +497,24 @@ char Card::cTypeShort(Stz* szType)
   return cCT_char[CT_ENUMS];
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert eYG to eAL                                                         */
+/*----------------------------------------------------------------------------*/
+eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
+{
+  _static_
+
+  eAL eLevel;
+
+  switch (eStageTopo) {
+    case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
+    case YG_ALL_NODES      : eLevel = AL_NODE;      break;
+    case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
+    default                : eLevel = AL_NONE;      break;
+  }
+
+  return eLevel;
+}
 
 
 /*----------------------------------------------------------------------------*/

@@ -125,7 +125,7 @@ void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
     if (C_UNKNOWN == iLoOdn_stream) {
       i8 iLoOdn_adjusted = iHiOdn_running + 1;
       i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
-      M_vStream_Adjust_OrdinalRange(G.p_stream, iLoOdn_adjusted, iHiOdn_adjusted);
+      G.p_stream->vAdjust_OrdinalRange(iLoOdn_adjusted, iHiOdn_adjusted);
 
       iOdn_shift = iHiOdn_adjusted;
       iLoOdn_running = iLoOdn_adjusted;
@@ -136,7 +136,7 @@ void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
       i8 iLoOdn_adjusted = iOdn_shift + 1;
       i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
 
-      M_vStream_Adjust_OrdinalRange(G.p_stream, iLoOdn_adjusted, iHiOdn_adjusted);
+      G.p_stream->vAdjust_OrdinalRange(iLoOdn_adjusted, iHiOdn_adjusted);
       iOdn_shift = iHiOdn_adjusted;
 
       iLoOdn_running = iLoOdn_adjusted;
@@ -384,7 +384,7 @@ void Xreshape::R_vUTE_Derive_group_order_For_gbyAgg(void)
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
     G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
 
-    if (! (G.p_term = M_pRpnCalc_GetSingle_stmColOdn(G.p_rpnCalc)))
+    if (! (G.p_term = G.p_rpnCalc->pGetSingle_stmColOdn()))
       break;
 
     Stz* szStmColOdn = G.p_term->szValue();
@@ -578,7 +578,7 @@ void Xreshape::R_vUTE_Derive_stream_order_For_sort(void)
   while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
     G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
 
-    if (! (G.p_term = M_pRpnCalc_GetSingle_stmColOdn(G.p_rpnCalc)))
+    if (! (G.p_term = G.p_rpnCalc->pGetSingle_stmColOdn()))
       break;
 
     Stz* szStmColOdn = G.p_term->szValue();
@@ -2436,7 +2436,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
   p_stage->vAppend(p_topology);
   G.pDeck->vPush(p_stage);
 
-  eAL e_level_running = M_eStageTopology_To_Level(YG_ALL_PARTITIONS);
+  eAL e_level_running = Card::eStageTopologyToAggrLevel(YG_ALL_PARTITIONS);
 
   bool bSawAggOp = false;
   bool bSawIndexJoinOp = false;
@@ -2469,7 +2469,7 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
   auto vAddStage = [this] (Card* p_main, i8& ri_main, eAL e_level_running, i8& nStages) {
     Card_Stage *p_stage = new Card_Stage;
     p_stage->vValueSprint("S%02lld"_Stz,++nStages);
-    eYG eStageTopo = M_eLevel_To_StageTopology(e_level_running);
+    eYG eStageTopo = Card::eAggrLevelToStageTopology(e_level_running);
     Card_Topology *p_topology = new Card_Topology(eStageTopo);
     p_stage->vAppend(p_topology);
     G.pDeck->vInsertBefore(p_stage, p_main);

@@ -21,8 +21,14 @@ namespace STORE
     static Card_Stream* pDerive_Of_project(Card_ProjElist* p_projElist);
     static Card_Stream* pDerive_Of_table(Table* pTable);
 
+    void vAdjust_OrdinalRange(i8 iLo, i8 iHi);
+
     i8 iGetOdnLow(void);
     i8 iGetOdnHigh(void);
+
+    void vDerive_OrdinalRange_aggreg(void);
+    void vDerive_OrdinalRange_project(void);
+
   };
 
   Card_Stream* _pCard_Stream(void* aAddr);

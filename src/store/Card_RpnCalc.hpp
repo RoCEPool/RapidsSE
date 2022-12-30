@@ -17,6 +17,8 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
+    void vConvert_sqyOp_not_To_notSqyOp(void);
+    Card_Term* pGetSingle_stmColOdn(void);
     bool bIsBraced(void);
     bool bHasWhen(void);
     Card_BoolCalc*   pToBoolCalc(void);
