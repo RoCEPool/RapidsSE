@@ -87,7 +87,7 @@ if [ -d "${ROOT_DIR}/doc/build" ]; then
 
   # PDF documentation
   mkdir -p "${LAYOUT_DIR}/doc/pdf"
-  cp "${ROOT_DIR}/doc/build/latex/*.pdf" "${LAYOUT_DIR}/doc/pdf"
+  cp "${ROOT_DIR}/doc/build/latex/"*.pdf "${LAYOUT_DIR}/doc/pdf"
 fi
 
 # demo files

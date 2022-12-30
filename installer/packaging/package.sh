@@ -278,7 +278,7 @@ esac
 
   ### (Optional) Compile the documentation
   if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
-    if [ -n "${DEBUG}" ] ; then echo "Compiling documentation"; fi;
+    echo "Compiling documentation"
     (
       cd "${DOC_DIR}"
       make clean && make
