@@ -146,6 +146,7 @@ DynamicSymbol xaSymbolSet1[]
   { "vEntWrk_entKind"_Stz,             (const void *)EntWrk::vEntKind            },
   { "vEntWrk_payloadCreate"_Stz,       (const void *)EntWrk::vPayloadCreate      },
   { "vEntWrk_print"_Stz,               (const void *)EntWrk::vPrint              },
+  { "vEntWrk_reset"_Stz,               (const void *)EntWrk::vEntReset           },
 
   { "aIndexTree_allotPayStr"_Stz,      (const void *)IndexTree::aAllotPayStr     },
   { "aIndexTree_begin"_Stz,            (const void *)IndexTree::aIndexBegin      },

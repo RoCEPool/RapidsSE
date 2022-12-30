@@ -588,6 +588,11 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ, 
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iIndexJoinInit = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  if (pIndexDefJ->eKeyKind() == KE_GENERAL) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_reset(aCombinedT->m_aEntWrkJ);");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  }
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
