@@ -474,6 +474,22 @@ char Card::cTypeShort(Stz* szType)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vAddPredUnder_main(Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Filter* p_filter = this->pSub_filter();
+  if (! p_filter) {
+    p_filter = _pCard_Filter(this->pAppendNewCardTail(CK_FILTER));
+    p_filter->vAppendNewCardTail(CK_BOOLCALC);
+  }
+
+  p_filter->vAddPred(p_PRED);
+}
+
+/*----------------------------------------------------------------------------*/
 /* duplicate the sub cards                                                    */
 /*----------------------------------------------------------------------------*/
 void Card::vAppendDupSubCards(Card* pFromCard)
@@ -721,6 +737,21 @@ void Card::vCopyProperties(Card* pFrom)
 
   vPropertiesEnsure();
   m_pProperties->vCopy(pFrom->m_pProperties);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteFilterIfEmpty(Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_filter->bIsEmpty())
+    return;
+
+  this->vRemoveChild(p_filter);
+  DELETE_CARD(p_filter);
+
 }
 
 /*----------------------------------------------------------------------------*/

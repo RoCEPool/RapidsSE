@@ -318,13 +318,14 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vAppendDupSubCards(Card* pFromCard);
-    void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    void  vAddPredUnder_main(Card_PRED *p_PRED);
+    void  vAppendDupSubCards(Card* pFromCard);
+    void  vAppendMain(Card* pNewMainCard, bool bRenumber= true);
     Card* pAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
-    void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
-    void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
-    bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
-    void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
+    void  vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
+    void  vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
+    bool  bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    void  vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     Stz* szBearing(void);
     void vBearing(void);
@@ -338,6 +339,7 @@ namespace STORE
     void vClearMarksRecursive(void);
     void vCopyProperties(Card* pFrom);
 
+    void vDeleteFilterIfEmpty(Card_Filter* p_filter);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDup(void);
     Card* pDupCardAndSubCards(void);

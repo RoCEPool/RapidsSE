@@ -12,6 +12,9 @@
 #include "Card_AndPred.hpp"
 #include "Card_Param.hpp"
 #include "Card_TblColOdn.hpp"
+#include "Card_Filter.hpp"
+#include "Card_Table.hpp"
+#include "Card_Deck.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -48,9 +51,38 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vCopyMarkedPredToTable(Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card *pMainCard;
+
+  CardIter xCR(this);
+  while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
+    if (MARK_AT != p_pred->cMark1())
+      continue;
+
+    char cTableSyn = p_pred->cMark2();
+    Card_Table *p_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
+    if (! p_table)
+      continue;
+
+    pMainCard->vAddPredUnder_main((Card_PRED*)p_pred->pDupCardAndSubCards());
+
+    // todo: is this needed?
+    Card_Filter* p_filter = pMainCard->pSub_filter();
+    p_filter->vMark1(p_table->cMark1());
+    p_filter->vMark2(p_table->cMark2());
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBoolCalc_CullPred(char cWithMark)
+void Card_BoolCalc::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -60,8 +92,8 @@ void Card_BoolCalc::vBoolCalc_CullPred(char cWithMark)
   Card_PRED* pCard_pred = static_cast<Card_PRED*>(this->pGetChild(0));
 
   while (pCard_pred &&
-      bBoolCalc_CullPred(pCard_pred, cWithMark) &&
-      this->nChildCards()) {
+      bCullPred(pCard_pred, cWithMark) &&
+         this->nChildCards()) {
     pCard_pred = static_cast<Card_PRED*>(this->pGetChild(0));
   }
 }
@@ -69,7 +101,7 @@ void Card_BoolCalc::vBoolCalc_CullPred(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
+bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -77,7 +109,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
 
   if (CK_ANDPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
-      this->vBoolCalc_RemovePred(p_pred);
+      this->vRemovePred(p_pred);
       delete p_pred;
       return true;
     }
@@ -85,7 +117,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
   else
   if (CK_ORPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
-      this->vBoolCalc_RemovePred(p_pred);
+      this->vRemovePred(p_pred);
       delete p_pred;
       return true;
     }
@@ -93,7 +125,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
   else
   if (CK_CMPPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
-      this->vBoolCalc_RemovePred(p_pred);
+      this->vRemovePred(p_pred);
       delete p_pred;
       return true;
     }
@@ -102,7 +134,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
   else
   if (CK_ROPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
-      this->vBoolCalc_RemovePred(p_pred);
+      this->vRemovePred(p_pred);
       delete p_pred;
       return true;
     }
@@ -111,7 +143,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
   else
   if (CK_BOLPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
-      this->vBoolCalc_RemovePred(p_pred);
+      this->vRemovePred(p_pred);
       delete p_pred;
       return true;
     }
@@ -123,7 +155,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
   i8 nChildren = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
-    if (this->bBoolCalc_CullPred(pCard_pred_child, cWithMark))
+    if (this->bCullPred(pCard_pred_child, cWithMark))
       return true;
   }
 
@@ -133,7 +165,7 @@ bool Card_BoolCalc::bBoolCalc_CullPred(Card_PRED* p_pred, char cWithMark)
 /*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <pred> which could be moved               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBoolCalc_MarkWrt_table(Card_Deck* p_deck)
+void Card_BoolCalc::vMarkWrt_table(Card_Deck* p_deck)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -186,7 +218,7 @@ void Card_BoolCalc::vBoolCalc_MarkWrt_table(Card_Deck* p_deck)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBoolCalc_PushPred(Card_PRED* p_pred_toBeAdded)
+void Card_BoolCalc::vPushPred(Card_PRED* p_pred_toBeAdded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -203,7 +235,7 @@ void Card_BoolCalc::vBoolCalc_PushPred(Card_PRED* p_pred_toBeAdded)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBoolCalc_RemovePred(Card_PRED* p_pred)
+void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -253,7 +285,7 @@ bool Card_BoolCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* resolve the parameters terms in given boolCalc                             */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBoolCalc_Substitute_Parameters(Card_ParamList* p_paramList)
+void Card_BoolCalc::vSubstitute_Parameters(Card_ParamList* p_paramList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -290,7 +322,7 @@ void Card_BoolCalc::vBoolCalc_Substitute_Parameters(Card_ParamList* p_paramList)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
+bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -312,7 +344,7 @@ bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card_PRED*& p_pred_yanke
     if (p_test->bIsPRED()) {
       if (p_test->cMark1() == cWithMark) {
         p_pred_yanked = static_cast<Card_PRED*>(p_test);
-        p_boolCalc->vBoolCalc_RemovePred(p_pred_yanked);
+        p_boolCalc->vRemovePred(p_pred_yanked);
         RASSERT(p_pred_yanked);
         return true;
       }
@@ -349,8 +381,8 @@ bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card_PRED*& p_pred_yanke
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card* p_test,
-                                        Card_PRED*& p_pred_yanked)
+bool Card_BoolCalc::bYank_PRED(char cWithMark, Card* p_test,
+                               Card_PRED*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -359,7 +391,7 @@ bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card* p_test,
   if (p_test->bIsPRED()) {
     if (p_test->cMark1() == cWithMark) {
       p_pred_yanked = static_cast<Card_PRED*>(p_test);
-      this->vBoolCalc_RemovePred(p_pred_yanked);
+      this->vRemovePred(p_pred_yanked);
       RASSERT(p_pred_yanked);
       return true;
     }
@@ -367,7 +399,7 @@ bool Card_BoolCalc::bBoolCalc_Yank_PRED(char cWithMark, Card* p_test,
 
   CardIter xCI(this);
   while (Card* p_child = xCI.pEachChild()) {
-    if (this->bBoolCalc_Yank_PRED(cWithMark,p_child,p_pred_yanked)) {
+    if (this->bYank_PRED(cWithMark, p_child, p_pred_yanked)) {
       RASSERT(p_pred_yanked);
       return true;
     }

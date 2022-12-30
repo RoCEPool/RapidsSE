@@ -59,7 +59,7 @@ void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
   if (p_boolCalc->nChildCards()) {
-    p_boolCalc->vBoolCalc_PushPred(p_PRED);
+    p_boolCalc->vPushPred(p_PRED);
   }
   else {
     p_boolCalc->vAppend(p_PRED);
@@ -76,7 +76,7 @@ void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRE
 
   if ((G.p_filter = p_table->pSub_filter())) {
     G.p_boolCalc = G.p_filter->pSub_boolCalc();
-    G.p_boolCalc->vBoolCalc_PushPred(p_PRED);
+    G.p_boolCalc->vPushPred(p_PRED);
   }
   else {
     G_vAppendNewChild(p_table,CK_FILTER);
@@ -1238,7 +1238,7 @@ void Xreshape::R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc *p_boolC
 
       Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
 
-      p_boolCalc->vBoolCalc_RemovePred(p_pred);
+      p_boolCalc->vRemovePred(p_pred);
 
       // todo: find table 'd'->'a' and add p_pred as bounds
 
@@ -1318,7 +1318,7 @@ void Xreshape::R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Whe
 
   if ((G.p_constraint = p_table->pSub_constraint())) {
     G.p_boolCalc = G.p_constraint->pSub_boolCalc();
-    G.p_boolCalc->vBoolCalc_PushPred(G.p_PRED);
+    G.p_boolCalc->vPushPred(G.p_PRED);
   }
   else {
     G_vAppendNewChild(p_table,CK_CONSTRAINT);
@@ -1344,7 +1344,7 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
 
   if ((G.p_filter = p_table->pSub_filter())) {
     G.p_boolCalc = G.p_filter->pSub_boolCalc();
-    G.p_boolCalc->vBoolCalc_PushPred(G.p_PRED);
+    G.p_boolCalc->vPushPred(G.p_PRED);
   }
   else {
     G_vAppendNewChild(p_table,CK_FILTER);
@@ -1479,7 +1479,7 @@ void Xreshape::R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_
 
   // todo: remove? It is unused
 
-  p_boolCalc->vBoolCalc_RemovePred(p_pred);
+  p_boolCalc->vRemovePred(p_pred);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1886,7 +1886,7 @@ void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_
 
   // todo: xt
 
-  bool b = p_boolCalc->bBoolCalc_Yank_PRED(MARK_AT, rp_PRED);
+  bool b = p_boolCalc->bYank_PRED(MARK_AT, rp_PRED);
   RASSERT(b);
 }
 

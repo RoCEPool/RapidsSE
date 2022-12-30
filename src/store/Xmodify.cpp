@@ -41,37 +41,6 @@ Xmodify::~Xmodify(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
-/*----------------------------------------------------------------------------*/
-void Xmodify::vDeck_CopyMarkedPredToTable(Card_BoolCalc* p_calcBool,
-                                          Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Card *pMainCard;
-
-  CardIter xCR(p_calcBool);
-  while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
-    if (MARK_AT != p_pred->cMark1())
-      continue;
-
-    char cTableSyn = p_pred->cMark2();
-    Card_Table *p_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
-    if (! p_table)
-      continue;
-
-    M_vFilter_AddPredUnder_main(pMainCard,
-                                (Card_PRED*)p_pred->pDupCardAndSubCards());
-
-    // todo: is this needed?
-    Card_Filter* p_filter = pMainCard->pSub_filter();
-    p_filter->vMark1(p_table->cMark1());
-    p_filter->vMark2(p_table->cMark2());
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Xmodify::E_iELIST_rpnCalc_Has_stmOrdOdn(Card_ELIST* p_ELIST, Card_OrdElmOdn* p_stmOrdOdn)
@@ -123,81 +92,6 @@ i8 Xmodify::E_iExpr_rpnCalc_WhichGbyKey(Card_Expr* p_expr)
   }
 
   return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vFilter_AddPred(Card_Filter* p_filter, Card_PRED *p_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Card_BoolCalc* p_calcBool = p_filter->pSub_boolCalc();
-
-  if (0 == p_calcBool->nChildCards()) {
-    p_calcBool->vAppend(p_PRED);
-    return;
-  }
-
-  Card* p_top = p_calcBool->pPop();
-
-  Card_AndPred* pCard_predAnd = new Card_AndPred;
-  pCard_predAnd->vAppend(p_top);
-  pCard_predAnd->vAppend(p_PRED);
-
-  p_calcBool->vAppend(pCard_predAnd);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vFilter_AddPredUnder_main(Card* pMainCard, Card_PRED *p_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Card_Filter* p_filter = pMainCard->pSub_filter();
-  if (! p_filter) {
-    p_filter = _pCard_Filter(pMainCard->pAppendNewCardTail(CK_FILTER));
-    p_filter->vAppendNewCardTail(CK_BOOLCALC);
-  }
-
-  M_vFilter_AddPred(p_filter,p_PRED);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nChildren = p_filter->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChildCard = p_filter->pGetChild(i_Child);
-
-    eCK eCard = pChildCard->eCard();
-    if (eCard != CK_BOOLCALC)
-      continue;
-
-    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
-
-    p_boolCalc->vBoolCalc_CullPred(cWithMark);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xmodify::M_vFilter_DeleteIfEmpty(Card_Filter* p_filter, Card* pMainCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (! p_filter->bIsEmpty())
-    return;
-
-  pMainCard->vRemoveChild(p_filter);
-  DELETE_CARD(p_filter);
-
 }
 
 /*----------------------------------------------------------------------------*/

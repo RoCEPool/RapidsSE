@@ -17,6 +17,8 @@ namespace STORE
     Card_Filter(void);
    ~Card_Filter(void) noexcept(false);
 
+    void vAddPred(Card_PRED *p_PRED);
+    void vCullPred(char cWithMark);
     bool bIsEmpty(void);
   };
 
