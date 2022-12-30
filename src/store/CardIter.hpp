@@ -81,6 +81,7 @@ namespace STORE
     Card* pRewindChild(void);
 
     void vSave(void);
+    i8   iSentinalsDepth(void);
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
