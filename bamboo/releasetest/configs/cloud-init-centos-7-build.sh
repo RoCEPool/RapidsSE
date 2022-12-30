@@ -325,6 +325,8 @@ fi
     echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
     echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
     echo
+    echo 'export PATH MANPATH INFOPATH'
+    echo
   } >>/etc/profile.d/sh.local
 ) > /dev/null &
 
