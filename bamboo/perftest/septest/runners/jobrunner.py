@@ -23,7 +23,7 @@ LOG = logging.getLogger(__name__)
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_EC2_BOOT_TIMEOUT_SEC = 300
+C_EC2_BOOT_TIMEOUT_SEC = 600
 
 # The file that contains the list of running instance IDs
 C_EC2_INSTANCE_FILE = pathlib.Path("runningInstances.txt")
