@@ -458,7 +458,7 @@
     iArg1 = *(--paW);                                                       \
     if (eErrorCode != EC_NONE ||                                            \
         iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       iInCount = *(--paW);                                                  \
