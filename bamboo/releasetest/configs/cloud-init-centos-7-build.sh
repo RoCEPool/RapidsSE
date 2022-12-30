@@ -7,6 +7,7 @@
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
+TEXLIVE_OUTPUT="/texlive-output.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
 
 {
@@ -18,6 +19,9 @@ TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
   fi
 } > "${CLOUD_INIT_OUTPUT}"
 chmod a+r "${CLOUD_INIT_OUTPUT}"
+
+touch "${TEXLIVE_OUTPUT}"
+chmod a+r "${TEXLIVE_OUTPUT}"
 
 {
 echo
@@ -316,8 +320,16 @@ fi
 # Install Tex Live in parallel in the background to /usr/local/texlive.
 # This is for generating PDF documentation.
 (
+  echo
+  echo "*** Installing TexLive ***"
+  echo
   cd /usr/local
-  aws s3 cp s3://rapidsse-build-support/texlive/texlive.2022.centos7.tar.gz - | tar xz
+  aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
+  chown -R root:root /usr/local/texlive
+  chmod -R g-w /usr/local/texlive
+
+  echo
+  echo "Setting up TexLive environment variables"
   {
     echo
     echo 'TEXLIVEDIR="/usr/local/texlive"'
@@ -328,7 +340,10 @@ fi
     echo 'export PATH MANPATH INFOPATH'
     echo
   } >>/etc/profile.d/sh.local
-) > /dev/null &
+
+  echo
+  echo "TexLive installation complete"
+) > "${TEXLIVE_OUTPUT}" &
 
 # Apply any package updates
 echo
