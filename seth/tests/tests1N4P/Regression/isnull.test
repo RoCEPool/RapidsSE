@@ -167,8 +167,6 @@ ordered rows:
 
 // Source file: ../queries/isnull/risnull13.sql
 // Result file: ../queries/isnull/results/isnull13.res
-//TODO: ALKA TO FIX
-/*
 select pcol8, colb8, pcol9, colb9 from table8 join table9 on colb8 = colb9 where pcol9 between 219 and 221 order by pcol9, pcol8;
 ordered rows:
   (11, 'grey', 219, 'grey')
@@ -194,7 +192,6 @@ ordered rows:
   (464, 'violet', 221, 'violet')
   (467, 'violet', 221, 'violet')
   (493, 'violet', 221, 'violet')
-*/
 
 // Source file: ../queries/isnull/risnull6.sql
 // Result file: ../queries/isnull/results/isnull6.res
