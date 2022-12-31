@@ -31,7 +31,7 @@ CardIter::CardIter(void)
 
   G2.m_bActive = false;
 
-  m_pRecurseStack = nullptr;
+  //m_pRecurseStack = nullptr;
 
 
   _checkInitialised_(CN_CARDITER);
@@ -56,7 +56,7 @@ CardIter::CardIter(Card*  pCard)
 
   G2.m_bActive = true;
 
-  m_pRecurseStack = nullptr;
+  //m_pRecurseStack = nullptr;
 
 
   _checkInitialised_(CN_CARDITER);
@@ -74,7 +74,7 @@ CardIter::CardIter(CardIter* pCardIter_src)
 
   //MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
 
-  m_pRecurseStack = nullptr;
+  //m_pRecurseStack = nullptr;
 
   vSet(pCardIter_src);
 }
@@ -95,7 +95,7 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 
   G2.m_bActive = true;
 
-  m_pRecurseStack = nullptr;
+  //m_pRecurseStack = nullptr;
 
 
   _checkInitialised_(CN_CARDITER);
@@ -110,7 +110,7 @@ CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  delete m_pRecurseStack;
+  //delete m_pRecurseStack;
 }
 
 
@@ -732,19 +732,21 @@ bool CardIter::bPopRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  if (! m_pRecurseStack || ! m_pRecurseStack->nItems())
+//  if (! m_pRecurseStack || ! m_pRecurseStack->nItems())
+//    return false;
+
+  _Xsentinals2* pXsentinals2 = pPeek(0);
+  if (! pXsentinals2 || ! pXsentinals2->m_bRecursed)
     return false;
 
-  CardIter* pCardIter_copy = m_pRecurseStack->pPeek(0);
-  if (!pCardIter_copy->G2.m_bRecursed)
-    return false;
+//  pXsentinals2 = pPop();
+//
+//
+//  vSet(pCardIter_copy);
+//
+//  delete pCardIter_copy;
 
-  pCardIter_copy = m_pRecurseStack->pPop();
-
-
-  vSet(pCardIter_copy);
-
-  delete pCardIter_copy;
+  vRestore();
 
   return true;
 }
@@ -758,12 +760,13 @@ void CardIter::vPushRecurseIter(void)
 
   RASSERT(G2.m_bRecursed);
 
-  if (! m_pRecurseStack)
-    m_pRecurseStack = new ListExo2_t<CardIter>;
-
-  CardIter* pCardIter_copy = new CardIter((CardIter*)this);
-
-  m_pRecurseStack->vPush(pCardIter_copy);
+//  if (! m_pRecurseStack)
+//    m_pRecurseStack = new ListExo2_t<CardIter>;
+//
+//  CardIter* pCardIter_copy = new CardIter((CardIter*)this);
+//
+//  m_pRecurseStack->vPush(pCardIter_copy);
+  vSave();
 }
 
 

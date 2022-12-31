@@ -15,7 +15,7 @@ namespace STORE
 
     _Xsentinals2 G2;
 
-    ListExo2_t<CardIter>* m_pRecurseStack;
+    //ListExo2_t<CardIter>* m_pRecurseStack;
 
     // must be last
     Footer m_xFooter;

@@ -346,7 +346,10 @@ ITEM* ListExo2_t<ITEM>::pPeek(i8 nThItem)
 {
   ListExoNode_t<ITEM>* pScanNode = nullptr;
   ITEM* pScanItem = nullptr;
-  
+
+  if (! nItems())
+    return nullptr;
+
   i8 i_Scan = 0;
   for (pScanNode = m_pHeadNode;
        pScanNode;
