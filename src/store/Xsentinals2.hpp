@@ -194,7 +194,10 @@ namespace STORE
     _Xsentinals2(void);
    ~_Xsentinals2(void) noexcept(false);
 
+    void vCopyFrom(_Xsentinals2* pXsentinals2);
+
   private:
+
     Footer* aFooter(void);
   } ;
 

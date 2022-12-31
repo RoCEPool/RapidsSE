@@ -9,7 +9,7 @@
 namespace STORE
 {
   class CardIter : public Object
-                 , public ListExo2_t<CardIter>
+                 , public ListExo2_t<_Xsentinals2>
  {
   protected:
 
@@ -83,7 +83,6 @@ namespace STORE
     void vPushRecurseIter(void);
 
   private:
-    void vCopyFrom(CardIter* pCardIter);
 
     Footer* aFooter(void);
   };
