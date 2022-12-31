@@ -16,13 +16,13 @@ namespace STORE
     _Xsentinals2 G2;
 
 
-    Card*  m_pCard;
-    i8     m_i_Child;
-    Card*  m_pChild;
+    //Card*  G2.m_pCard;
+    //i8     G2.m_i_Child;
+    //Card*  G2.m_pChild;
 
-    bool   m_bDontDescend;
+    //bool   G2.m_bDontDescend;
 
-    bool   m_bActive;
+    //bool   G2.m_bActive;
 
     ListExo2_t<CardIter>* m_pRecurseStack;
 
