@@ -10,6 +10,16 @@ namespace STORE
 {
   struct _Xsentinals2
   {
+    Card*  m_pCard;
+    i8     m_i_Child;
+    Card*  m_pChild;
+
+    bool   m_bDontDescend;
+
+    bool   m_bActive;
+
+    // - - - - - - - - - - - - -
+
     Board*      pBoard;
     Card_Deck*  pDeck;
     SubQuery*   pSubQuery;
