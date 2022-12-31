@@ -544,19 +544,19 @@ begin
     | next
 
    stage S05 on all partitions :
-     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
      | limit 10
      | combined 0
      | next
 
    stage S06 on all nodes :
-     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
      | limit 10
      | combined 0
      | next
 
    stage S07 on origin :
-     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
      | limit 10
      | combined 0
      | next
@@ -610,19 +610,19 @@ begin
     | next
 
   stage S05 on all partitions :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S06 on all nodes :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S07 on origin :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
@@ -809,7 +809,7 @@ begin
     | next
 
   stage S09 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
 
@@ -903,7 +903,7 @@ begin
     | next
 
   stage S09 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
 
@@ -1544,7 +1544,7 @@ QUERY 9
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC , type INTEGER as O_YEAR O_YEAR ASC"
+    sort "type VARCHAR as NATION NATION ASC , type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 
@@ -1644,7 +1644,7 @@ pipeline Query9
 
   stage S10 on origin :
     sort "type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR ASC"
+          type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 
