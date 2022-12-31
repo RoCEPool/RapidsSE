@@ -147,7 +147,7 @@ pipeline Query9
 
   stage S10 on origin :
     sort "type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR ASC"
+          type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 

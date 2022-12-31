@@ -632,108 +632,145 @@ pipeline Query9
 rows: 41
 
 pipeline Query9
-begin
-stage S00 on origin :
-  start
-  | pulse once
-  | next
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
 
-stage S01 on all partitions :
-  scan rapidsse public part
-  | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
-  | project "type INTEGER as P_PARTKEY P_PARTKEY"
-  | combined 0
-  | next
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next
 
-stage S02 on all partitions :
-  indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
-  | project "type INTEGER as P_PARTKEY P_PARTKEY ,
-             type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
-             type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST"
-  | hash "type INTEGER PS_SUPPKEY"
-  | combined 0
-  | next hashcast
+  stage S02 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST"
+    | combined 0
+    | next broadcast
 
-stage S03 on all partitions :
-  indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
-  | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
-             type INTEGER as P_PARTKEY P_PARTKEY ,
-             type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-             type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
-  | combined 0
-  | next broadcast
+  stage S03 on all partitions :
+    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    | filter "type BOOLEAN J1_L_SUPPKEY PS_SUPPKEY =="
+    | project "type INTEGER as L_ORDERKEY J1_L_ORDERKEY ,
+               type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+               type DECIMAL as AMOUNT J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT -  *  PS_SUPPLYCOST J1_L_QUANTITY *  - "
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
 
-stage S04 on all partitions :
-  indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
-  | filter "type BOOLEAN J1_L_SUPPKEY PS_SUPPKEY =="
-  | project "type INTEGER as L_ORDERKEY J1_L_ORDERKEY ,
-             type INTEGER as S_NATIONKEY S_NATIONKEY ,
-             type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
-             type DECIMAL as AMOUNT J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT -  *  PS_SUPPLYCOST J1_L_QUANTITY *  - "
-  | combined 0
-  | next broadcast
+  stage S04 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type INTEGER as L_ORDERKEY L_ORDERKEY ,
+               type DECIMAL as AMOUNT AMOUNT "
+    | combined 0
+    | next broadcast
 
-stage S05 on all partitions :
-  indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-  | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-             type INTEGER as O_YEAR J1_O_ORDERDATE extract_year ,
-             type DECIMAL as AMOUNT AMOUNT"
-  | combined 0
-  | next
+  stage S05 on all partitions :
+    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year ,
+               type DECIMAL as AMOUNT AMOUNT"
+    | combined 0
+    | next
 
-stage S10 on all partitions :
-  sort "type INTEGER as S_NATIONKEY S_NATIONKEY ASC ,
-        type INTEGER as O_YEAR O_YEAR ASC"
-  | combined 0
-  | next
+  stage S06 on all partitions :
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | project "type VARCHAR as NATION J1_N_NAME ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as AMOUNT AMOUNT"
+    | combined 0
+    | next
 
-stage S07 on all partitions :
-  ordAgg "ordGroupBy type INTEGER S_NATIONKEY ,
-                     type INTEGER O_YEAR
-          aggregates type INTEGER as S_NATIONKEY $K1 ,
-                     type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
-  | combined 0
-  | next
+  stage S07 on all partitions :
+    aggreg "groupBy type VARCHAR NATION ,
+                    type INTEGER O_YEAR
+            aggregates
+                    type VARCHAR as NATION $K1 ,
+                    type INTEGER as O_YEAR $K2 ,
+                    type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
+    | combined 0
+    | next
 
-stage S08 on all nodes :
-  aggreg "groupBy    type INTEGER S_NATIONKEY ,
-                     type INTEGER O_YEAR
-          aggregates type INTEGER as S_NATIONKEY $K1 ,
+  stage S08 on all nodes :
+    aggreg "groupBy type VARCHAR NATION ,
+                    type INTEGER O_YEAR
+            aggregates
+                     type VARCHAR as NATION $K1 ,
                      type INTEGER as O_YEAR $K2 ,
                      type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
-  | combined 0
-  | next
+    | combined 0
+    | next
 
-stage S09 on origin :
-  aggreg "groupBy    type INTEGER S_NATIONKEY ,
-                     type INTEGER O_YEAR
-          aggregates type INTEGER as S_NATIONKEY $K1 ,
+  stage S09 on origin :
+    aggreg "groupBy type VARCHAR NATION ,
+                    type INTEGER O_YEAR
+            aggregates
+                     type VARCHAR as NATION $K1 ,
                      type INTEGER as O_YEAR $K2 ,
                      type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
-  | hash "type INTEGER S_NATIONKEY"
-  | combined 0
-  | next hashcast
+    | combined 0
+    | next
 
-stage S06 on all partitions :
-  indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-  | project "type VARCHAR as NATION J1_N_NAME ,
-             type INTEGER as O_YEAR O_YEAR ,
-             type DECIMAL as SUM_PROFIT SUM_PROFIT"
-  | combined 0
-  | next
+  stage S10 on origin :
+    sort "type VARCHAR as NATION NATION ASC ,
+          type INTEGER as O_YEAR O_YEAR DESC"
+    | combined 0
+    | next
 
-stage S10 on origin :
-  sort "type VARCHAR as NATION NATION ASC ,
-        type INTEGER as O_YEAR O_YEAR ASC"
-  | combined 0
-  | next
-
-stage S11 on origin :
-  output
-  | sink
-  | first
-end ;
-rows: 41
+  stage S11 on origin :
+    output
+    | sink
+    | first
+  end ;
+  
+rows:
+ ('ARGENTINA',1998,-419055.24)
+ ('ARGENTINA',1997,-436760.81)
+ ('ARGENTINA',1996,-318328.79)
+ ('ARGENTINA',1995,-578217.20)
+ ('ARGENTINA',1994,-621194.32)
+ ('ARGENTINA',1993,-552384.90)
+ ('ARGENTINA',1992,-458738.64)
+ ('IRAN',1997,-180388.92)
+ ('IRAN',1996,-429987.60)
+ ('IRAN',1995,-336785.92)
+ ('IRAN',1994,-153745.88)
+ ('IRAN',1993,-570838.08)
+ ('IRAN',1992,-401772.12)
+ ('IRAQ',1998,-402638.36)
+ ('IRAQ',1997,-547157.56)
+ ('IRAQ',1996,-665277.60)
+ ('IRAQ',1995,-647499.08)
+ ('IRAQ',1994,-544533.96)
+ ('IRAQ',1993,-985782.88)
+ ('IRAQ',1992,-302350.22)
+ ('KENYA',1998,-40301.88)
+ ('KENYA',1997,-105136.44)
+ ('KENYA',1996,-215488.36)
+ ('KENYA',1995,-419160.12)
+ ('KENYA',1994,-131197.08)
+ ('KENYA',1993,-322905.08)
+ ('KENYA',1992,-392335.72)
+ ('MOROCCO',1998,-74149.92)
+ ('MOROCCO',1997,-183387.00)
+ ('MOROCCO',1996,-21783.86)
+ ('MOROCCO',1995,-59660.49)
+ ('MOROCCO',1994,-140614.84)
+ ('MOROCCO',1993,-312128.74)
+ ('MOROCCO',1992,-343648.03)
+ ('UNITED KINGDOM',1998,-154214.69)
+ ('UNITED KINGDOM',1997,-590320.76)
+ ('UNITED KINGDOM',1996,-534419.20)
+ ('UNITED KINGDOM',1995,-124186.13)
+ ('UNITED KINGDOM',1994,-105642.74)
+ ('UNITED KINGDOM',1993,-430280.83)
+ ('UNITED KINGDOM',1992,-541653.61)
 
 CLEANUP {
   bye;
