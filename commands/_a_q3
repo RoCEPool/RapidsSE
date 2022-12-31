@@ -20,7 +20,7 @@ group by
      o_orderdate,
      o_shippriority
 order by
-     revenue asc,
+     revenue desc,
      o_orderdate
 limit 10;
 
@@ -89,19 +89,19 @@ begin
     | next
 
   stage S05 on all partitions :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S06 on all nodes :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S07 on origin :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
