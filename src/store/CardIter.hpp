@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
-#include "Xsentinals2.h"
+#include "Xsentinals2.hpp"
 
 namespace STORE
 {
@@ -14,15 +14,6 @@ namespace STORE
   protected:
 
     _Xsentinals2 G2;
-
-
-    //Card*  G2.m_pCard;
-    //i8     G2.m_i_Child;
-    //Card*  G2.m_pChild;
-
-    //bool   G2.m_bDontDescend;
-
-    //bool   G2.m_bActive;
 
     ListExo2_t<CardIter>* m_pRecurseStack;
 

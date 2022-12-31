@@ -21,7 +21,7 @@ CardIter::CardIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
+  //MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
 
   G2.m_pCard   = nullptr;
   G2.m_i_Child = C_UNKNOWN;
@@ -48,7 +48,7 @@ CardIter::CardIter(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
+  //MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
 
   G2.m_pCard   = pCard;
   G2.m_i_Child = C_UNKNOWN;
@@ -72,7 +72,7 @@ CardIter::CardIter(CardIter* pCardIter_src)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
+  //MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
 
   m_pRecurseStack = nullptr;
 
@@ -87,7 +87,7 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
+  //MemLib::vZero(&G2,sizeof(G2),CN_CARDITER);
 
   G2.m_pCard   = pCard;
   G2.m_i_Child = C_UNKNOWN;
