@@ -488,6 +488,7 @@ Card* CardIter::pRecurseEach(void)
   if (G2.m_pChild && (! G2.m_bDontDescend) ) {
     if (G2.m_pChild->nChildCards()) {
 
+      G2.m_bRecursed = true;
       vPushRecurseIter();
       vChangeCard(G2.m_pChild);
       G2.m_pChild = pEachChild();
@@ -734,7 +735,12 @@ bool CardIter::bPopRecurseIter(void)
   if (! m_pRecurseStack || ! m_pRecurseStack->nItems())
     return false;
 
-  CardIter* pCardIter_copy = m_pRecurseStack->pPop();
+  CardIter* pCardIter_copy = m_pRecurseStack->pPeek(0);
+  if (!pCardIter_copy->G2.m_bRecursed)
+    return false;
+
+  pCardIter_copy = m_pRecurseStack->pPop();
+
 
   vSet(pCardIter_copy);
 
@@ -749,6 +755,8 @@ bool CardIter::bPopRecurseIter(void)
 void CardIter::vPushRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
+
+  RASSERT(G2.m_bRecursed);
 
   if (! m_pRecurseStack)
     m_pRecurseStack = new ListExo2_t<CardIter>;

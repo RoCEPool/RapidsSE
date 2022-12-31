@@ -15,6 +15,7 @@ namespace STORE
     i8     m_i_Child;
     Card*  m_pChild;
 
+    bool   m_bRecursed;
     bool   m_bDontDescend;
 
     bool   m_bActive;
