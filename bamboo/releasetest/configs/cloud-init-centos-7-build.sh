@@ -7,7 +7,7 @@
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-TEXLIVE_OUTPUT="/texlive-output.log"
+TEXLIVE_OUTPUT="/cloud-init-texlive.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
 
 {
@@ -411,9 +411,6 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
 } >>"${bash_profile}"
 
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
-
-# Wait for the Tex Live installation to complete
-wait
 
 # Indicate cloud-init has completed by dropping a file in /tmp
 echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete

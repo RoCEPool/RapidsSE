@@ -6,7 +6,7 @@
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-TEXLIVE_OUTPUT="/texlive-output.log"
+TEXLIVE_OUTPUT="/cloud-init-texlive.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
 
 {
@@ -603,13 +603,6 @@ EOF
   if which parallel &>/dev/null; then
     echo -e "will cite\n" | parallel --citation
   fi
-
-  # ----------------------------------------------------------------------------------------
-  # Wait for any background processes (e.g. TexLive) to finish
-  echo
-  echo "*** Waiting for any background subprocesses to complete ***"
-  echo
-  wait
 
   # ----------------------------------------------------------------------------------------
   # Indicate cloud-init has completed by dropping a file in /tmp
