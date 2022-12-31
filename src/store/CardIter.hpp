@@ -13,7 +13,7 @@ namespace STORE
  {
   protected:
 
-    _Xsentinals2 G2;
+    _Xsentinals2 G;
 
     //ListExo2_t<CardIter>* m_pRecurseStack;
 
@@ -25,6 +25,7 @@ namespace STORE
     void  operator delete(void*);
 
     CardIter(void);
+    CardIter(eCN eClass);
     CardIter(Card* pCard);
     CardIter(CardIter* pCardIter_src);
     CardIter(eCN eClass, Card* pCard);

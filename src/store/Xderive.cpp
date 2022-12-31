@@ -18,7 +18,7 @@ __aFooterFunction(Xderive)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xderive::Xderive(eCN eClass)
-: Xsentinals(eClass)
+: CardIter(eClass)
 {
 }
 

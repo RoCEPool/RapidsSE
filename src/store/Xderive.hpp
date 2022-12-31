@@ -9,7 +9,7 @@ namespace STORE
 {
   class Table;
 
-  class Xderive : public Xsentinals
+  class Xderive : public CardIter
   {
   public:
     CardCtl*     m_pCardCtl;
