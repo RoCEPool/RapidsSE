@@ -4,12 +4,23 @@
 #pragma once
 
 #include "Board.hpp"
-#include "CardIter.hpp"
+
 
 namespace STORE
 {
-  struct _Xsentinals2
+  class _Xsentinals2 : public Object
   {
+  public:
+    Card*  m_pCard;
+    i8     m_i_Child;
+    Card*  m_pChild;
+
+    bool   m_bDontDescend;
+
+    bool   m_bActive;
+
+    // - - - - - - - - - - - - -
+
     Board*      pBoard;
     Card_Deck*  pDeck;
     SubQuery*   pSubQuery;
@@ -171,6 +182,23 @@ namespace STORE
     Card_Av_ScanJoinSeries * p_av_scanJoinSeries;
     Card_Av_ScanOnly *       p_av_scanOnly;
     Card_Av_Sort *           p_av_sort;
+
+  private:
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    _Xsentinals2(void);
+   ~_Xsentinals2(void) noexcept(false);
+
+    void vCopyFrom(_Xsentinals2* pXsentinals2);
+
+  private:
+
+    Footer* aFooter(void);
   } ;
 
 }

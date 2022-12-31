@@ -425,6 +425,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__X__,
   /* */ CN_XSENTINALS,
+  /* */ CN_XSENTINALS2,
   /* */ CN_XSERIES,
 
   /* */ CN__Y__,
@@ -851,6 +852,7 @@ static Stz* aCN[]
 
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XSENTINALS"_Stz,           // CN_XSENTINALS
+  /* */ "XSENTINALS2"_Stz,          // CN_XSENTINALS2
   /* */ "XSERIES"_Stz,              // CN_XSERIES
 
   /* */ "_Y__"_Stz,                 // CN__Y__

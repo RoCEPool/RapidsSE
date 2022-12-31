@@ -4,25 +4,16 @@
 #pragma once
 
 #include "Card.hpp"
-#include "Xsentinals2.h"
+#include "Xsentinals2.hpp"
 
 namespace STORE
 {
   class CardIter : public Object
-                 , public ListExo2_t<CardIter>
+                 , public ListExo2_t<_Xsentinals2>
  {
   protected:
 
     _Xsentinals2 G2;
-
-
-    Card*  m_pCard;
-    i8     m_i_Child;
-    Card*  m_pChild;
-
-    bool   m_bDontDescend;
-
-    bool   m_bActive;
 
     ListExo2_t<CardIter>* m_pRecurseStack;
 
@@ -92,7 +83,6 @@ namespace STORE
     void vPushRecurseIter(void);
 
   private:
-    void vCopyFrom(CardIter* pCardIter);
 
     Footer* aFooter(void);
   };
