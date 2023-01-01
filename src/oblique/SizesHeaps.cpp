@@ -312,6 +312,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
   { CN_CARDCTL,                  sizeof(CardCtl),          HT_T_LARGE   , FILL },
   { CN_CARDITER,                 sizeof(CardIter),         HT_T_SMALL   , FILL },
+  { CN_CARDITERMEMBERS,          sizeof(CardIterMembers),  HT_T_SMALL   , FILL },
   { CN_CATALOG,                  sizeof(Catalog),          HT_INVALID   , FILL },
   { CN_CHARSER,                  sizeof(Charser),          HT_T_LARGE   , FILL },
   { CN_CHILDEXIT,                sizeof(ChildExit),        HT_T_TINY    , FILL },
@@ -677,23 +678,22 @@ SizeHeap gxaSizeHeap[]
   { CN_VERTEX,                   sizeof(Vertex),      HT_T_SMALL   , FILL },
   { CN_VERTEXSPEC,               sizeof(VertexSpec),  HT_T_TINY    , FILL },
 
-  { CN__W__,                     'W' - ('A' - 1),     HT_INVALID   , FILL },
-  { CN_WAKEUP,                   sizeof(Wakeup),      HT_INVALID   , FILL },
-  { CN_WEAVER,                   sizeof(Weaver),      HT_T_LARGE   , FILL },
-  { CN_WILDERNESS,               sizeof(Wilderness),  HT_INVALID   , FILL },
-  { CN_WORD,                     sizeof(Word),        HT_T_TINY    , FILL },
-  { CN_WSPCONVERGENT_t,          0,                   HT_INVALID   , FILL },
+  {CN__W__,                     'W' - ('A' - 1),         HT_INVALID   , FILL },
+  {CN_WAKEUP,                   sizeof(Wakeup),          HT_INVALID   , FILL },
+  {CN_WEAVER,                   sizeof(Weaver),          HT_T_LARGE   , FILL },
+  {CN_WILDERNESS,               sizeof(Wilderness),      HT_INVALID   , FILL },
+  {CN_WORD,                     sizeof(Word),            HT_T_TINY    , FILL },
+  {CN_WSPCONVERGENT_t,          0,                       HT_INVALID   , FILL },
 
-  { CN__X__,                    'X' - ('A' - 1),      HT_INVALID   , FILL },
-  { CN_XSENTINALS,              sizeof(Xsentinals),   HT_T_SMALL   , FILL },
-  { CN_XSENTINALS2,             sizeof(_Xsentinals2), HT_T_SMALL   , FILL },
-  { CN_XSERIES,                 sizeof(Xseries),      HT_T_TINY    , FILL },
+  {CN__X__,                    'X' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN_XSENTINALS,               sizeof(Xsentinals),      HT_T_SMALL   , FILL },
+  {CN_XSERIES,                  sizeof(Xseries),         HT_T_TINY    , FILL },
 
-  { CN__Y__,                    'Y' - ('A' - 1),     HT_INVALID   , FILL },
+  {CN__Y__,                    'Y' - ('A' - 1),          HT_INVALID   , FILL },
 
-  { CN__Z__,                    'Z' - ('A' - 1),     HT_INVALID   , FILL },
+  {CN__Z__,                    'Z' - ('A' - 1),          HT_INVALID   , FILL },
 
-  { CN_ENUMS,                    C_VARGS_END,                HT_INVALID   ,FILL }
+  {CN_ENUMS,                    C_VARGS_END,             HT_INVALID   , FILL }
 };
 
 #undef FILL

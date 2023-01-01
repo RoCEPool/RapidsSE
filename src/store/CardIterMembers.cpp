@@ -1,32 +1,32 @@
 /*============================================================================*/
-/* _Xsentinals2.cpp --                                                       */
+/* CardIterMembers.cpp --                                                     */
 /*============================================================================*/
 
-#include "Xsentinals2.hpp"
+#include "CardIterMembers.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aNewFunction(_Xsentinals2, CN_XSENTINALS2)
-__vDeleteFunction(_Xsentinals2, CN_XSENTINALS2)
-__aFooterFunction(_Xsentinals2)
+__aNewFunction(CardIterMembers, CN_CARDITERMEMBERS)
+__vDeleteFunction(CardIterMembers, CN_CARDITERMEMBERS)
+__aFooterFunction(CardIterMembers)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-_Xsentinals2::_Xsentinals2(void)
-: Object(CN_XSENTINALS2)
+CardIterMembers::CardIterMembers(void)
+: Object(CN_CARDITERMEMBERS)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  MemLib::vZero(this,sizeof(_Xsentinals2),CN_XSENTINALS2);
+  MemLib::vZero(this, sizeof(CardIterMembers), CN_CARDITERMEMBERS);
 
   vSetMagic();
-  vSetClassNo(CN_XSENTINALS2);
+  vSetClassNo(CN_CARDITERMEMBERS);
   m_xFooter.vSetFooter();
 
-  _checkInitialised_(CN_XSENTINALS2);
+  _checkInitialised_(CN_CARDITERMEMBERS);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -34,7 +34,7 @@ _Xsentinals2::_Xsentinals2(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-_Xsentinals2::~_Xsentinals2(void) noexcept(false)
+CardIterMembers::~CardIterMembers(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -48,12 +48,12 @@ _Xsentinals2::~_Xsentinals2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void _Xsentinals2::vCopyFrom(_Xsentinals2* pXsentinals2)
+void CardIterMembers::vCopyFrom(CardIterMembers* pXsentinals2)
 {
   MemLib::vCopy(this,
                 pXsentinals2,
-                sizeof(_Xsentinals2),
-                CN_XSENTINALS2);
+                sizeof(CardIterMembers),
+                CN_CARDITERMEMBERS);
 }
 
 

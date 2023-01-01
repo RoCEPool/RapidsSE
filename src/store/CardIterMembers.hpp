@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Xsentinals2.h --                                                           */
+/* CardIterMembers.hpp --                                                     */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class _Xsentinals2 : public Object
+  class CardIterMembers : public Object
   {
   public:
     Card*  m_pCard;
@@ -192,10 +192,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    _Xsentinals2(void);
-   ~_Xsentinals2(void) noexcept(false);
+    CardIterMembers(void);
+   ~CardIterMembers(void) noexcept(false);
 
-    void vCopyFrom(_Xsentinals2* pXsentinals2);
+    void vCopyFrom(CardIterMembers* pXsentinals2);
 
   private:
 

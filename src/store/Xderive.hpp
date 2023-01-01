@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xsentinals.hpp"
+#include "CardIter.hpp"
 
 namespace STORE
 {

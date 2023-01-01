@@ -674,7 +674,7 @@ Card* CardIter::pRewindChild(void)
 /*----------------------------------------------------------------------------*/
 void CardIter::vRestore(void)
 {
-  _Xsentinals2* pRestore = pPop();
+  CardIterMembers* pRestore = pPop();
 
   G.vCopyFrom(pRestore);
 
@@ -686,7 +686,7 @@ void CardIter::vRestore(void)
 /*----------------------------------------------------------------------------*/
 void CardIter::vSave(void)
 {
-  _Xsentinals2* pSave = new _Xsentinals2;
+  CardIterMembers* pSave = new CardIterMembers;
 
   pSave->vCopyFrom(&G);
 
@@ -761,7 +761,7 @@ bool CardIter::bPopRecurseIter(void)
 //  if (! m_pRecurseStack || ! m_pRecurseStack->nItems())
 //    return false;
 
-  _Xsentinals2* pXsentinals2 = pPeek(0);
+  CardIterMembers* pXsentinals2 = pPeek(0);
   if (! pXsentinals2 || ! pXsentinals2->m_bRecursed)
     return false;
 

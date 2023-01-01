@@ -4,18 +4,16 @@
 #pragma once
 
 #include "Card.hpp"
-#include "Xsentinals2.hpp"
+#include "CardIterMembers.hpp"
 
 namespace STORE
 {
   class CardIter : public Object
-                 , public ListExo2_t<_Xsentinals2>
+                 , public ListExo2_t<CardIterMembers>
  {
   protected:
 
-    _Xsentinals2 G;
-
-    //ListExo2_t<CardIter>* m_pRecurseStack;
+    CardIterMembers G;
 
     // must be last
     Footer m_xFooter;

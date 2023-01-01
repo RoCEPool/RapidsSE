@@ -51,6 +51,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD,
   /* */ CN_CARDCTL,
   /* */ CN_CARDITER,
+  /* */ CN_CARDITERMEMBERS,
   /* */ CN_CATALOG,
   /* */ CN_CHARSER,
   /* */ CN_CHILDEXIT,
@@ -425,7 +426,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__X__,
   /* */ CN_XSENTINALS,
-  /* */ CN_XSENTINALS2,
   /* */ CN_XSERIES,
 
   /* */ CN__Y__,
@@ -478,6 +478,7 @@ static Stz* aCN[]
   /* */ "CARD"_Stz,                 // CN_CARD
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
   /* */ "CARDITER"_Stz,             // CN_CARDITER
+  /* */ "CARDITERMEMBERS"_Stz,      // CN_CARDITERMEMBERS
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
@@ -852,7 +853,6 @@ static Stz* aCN[]
 
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XSENTINALS"_Stz,           // CN_XSENTINALS
-  /* */ "XSENTINALS2"_Stz,          // CN_XSENTINALS2
   /* */ "XSERIES"_Stz,              // CN_XSERIES
 
   /* */ "_Y__"_Stz,                 // CN__Y__
