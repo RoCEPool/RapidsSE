@@ -106,8 +106,6 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
 
-    void G_vClearMembers(void);
-    void G_vClearMembersRegisters(void);
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(Card* pCard);
     void G_vCopyCard(Card* pCard);
@@ -131,7 +129,6 @@ namespace STORE
 
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 
-    Card* G_pGetMember(eCK eMember);
 
     bool G_bHasPriorToMain(bool bUpdateMember = false);
     bool G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
@@ -185,9 +182,7 @@ namespace STORE
     bool G_bSubsequentToMain(bool bUpdateMember = false);
     void G_vSubsequentToMain(bool bUpdateMember = false);
 
-    void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
-    Stz* szMemberNm(eCK eMember);
 
     Stz* szT(eCK eMember);
     void vTracer(Stz* szFormat, ...);

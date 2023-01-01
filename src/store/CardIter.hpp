@@ -32,6 +32,8 @@ namespace STORE
     void vChangeCard(Card* pCard);
     i8 i_Child(void);
     Card* pChild(void);
+    void G_vClearMembers(void);
+
 
     void vDontDescend(void);
 
@@ -46,11 +48,13 @@ namespace STORE
     void vForward(void);
 
     Card* pGetChild(i8 i_Child);
+    Card* G_pGetMember(eCK eMember);
 
     bool bJustRestarted(void);
 
     bool bLess(void);
 
+    Stz* szMemberNm(eCK eMember);
     bool bMore(void);
 
     Card* pNextChild(void);
@@ -75,6 +79,8 @@ namespace STORE
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
+
+    void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
   protected:
 
