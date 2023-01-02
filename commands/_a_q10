@@ -133,7 +133,7 @@ begin
     | next
 
   stage S08 on origin :
-    top " TOP type DECIMAL REVENUE  " 20
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
 

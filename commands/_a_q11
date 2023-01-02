@@ -31,7 +31,7 @@ having
       and n_name = 'GERMANY' )
 
 order by
-  value asc; //desc
+  value desc;
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

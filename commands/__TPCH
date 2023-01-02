@@ -1716,7 +1716,7 @@ begin
     | next
 
   stage S08 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
 
@@ -1800,7 +1800,7 @@ begin
     | next
 
   stage S08 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
 
@@ -1890,7 +1890,7 @@ begin
   stage S11 on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
     | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
-    | sort " type DECIMAL VALUE ASC  "
+    | sort " type DECIMAL VALUE DESC  "
     | combined 0
     | next
 
@@ -1984,7 +1984,7 @@ begin
     filter " type BOOLEAN  value INNERRESULT  >  "
     | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
                 type DECIMAL as VALUE VALUE"
-    | sort " type DECIMAL VALUE ASC  "
+    | sort " type DECIMAL VALUE DESC  "
     | combined 0
     | next
 

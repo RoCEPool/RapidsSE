@@ -728,7 +728,7 @@ pipeline Query9
     | sink
     | first
   end ;
-  
+
 rows:
  ('ARGENTINA',1998,-419055.24)
  ('ARGENTINA',1997,-436760.81)
