@@ -18,7 +18,13 @@ create table TABLE1 (
 );
 success
 
+create index TABLE1_PCOL1 on table1(pcol1);
+success
+
 create index TABLE1_UCOL on table1(ucol);
+success
+
+create index TABLE1_UCOLVC on table1(ucolvc);
 success
 
 create table TABLE2 (

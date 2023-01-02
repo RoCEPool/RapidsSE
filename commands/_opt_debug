@@ -2,20 +2,25 @@
 /* _opt_debug -- (join)                                                       */
 /*============================================================================*/
 
-create table TABLE8 (
-  pcol8   INTEGER NOT NULL,
-  tcol8   INTEGER NOT NULL,
-  cola8   INTEGER,
-  colb8   VARCHAR(10),
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
   ucol    INTEGER,
-  ucolvc  VARCHAR(5),
-  colh8   INTEGER,
-  coli8   VARCHAR(5)
+  ucolvc  VARCHAR(5)
 );
 
-create index table8_pcol8 on table8(pcol8);
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc););
 
-Load TABLE8 "../DATA/Load/tbl8data.csv";
+Load TABLE1 "../DATA/Load/tbl1data.csv";
 
 create table TABLE9 (
   pcol9   INTEGER NOT NULL,
@@ -33,18 +38,24 @@ create table TABLE9 (
 create index table9_pcol9 on table9(pcol9);
 create index table9_ucolvc on table9(ucolvc);
 create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv";
-/*
+
+select * from dummy;
+
+trackMemory;
+
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_interactive
 /transliterated
 /weaved
-select pcol8, colb8, pcol9, colb9
-  from table8 join table9 on colb8 = colb9
-  where pcol9 between 219 and 221 order by pcol9, pcol8;
-*/
+select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 
+MemoryLeaks;
+
+
+/*
 pipeline _unnamed_
   tag <optimised> = 1 endTag
 begin
@@ -55,14 +66,37 @@ begin
     | next
 
   stage S01 on all partitions :
-      scan      TABLE8
+      scan      TABLE9
     | next
 
   stage S02 on all partitions :
-      indexJoin TABLE9 table9_colb9 " BOUND $I1 $4 == "
+      indexJoin TABLE1 TABLE1_UCOL " BOUND $I1 $9 == "
     | combined  0
     | next
 
+  stage S03 on all partitions :
+      project   "   type FLOAT ) $16 min
+                  , type FLOAT ) $6 min " //----------------------------->
+                                          // RAY NOTE: THIS SHOULD BE $5
+    | combined  0
+    | next
+
+  stage S04 on all nodes :
+      project   "   type FLOAT ) $1 min
+                  , type FLOAT ) $2 min "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      project   "   type FLOAT ) $1 min
+                  , type FLOAT ) $2 min "
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      project   " type FLOAT $2 $1 + "
+    | combined  0
+    | next
 
   stage S07 on origin :
       output
@@ -70,6 +104,7 @@ begin
     | first
 
 end ;
+*/
 
 /*============================================================================*/
 /* end                                                                        */
