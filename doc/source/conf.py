@@ -24,6 +24,7 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+# https://alabaster.readthedocs.io/en/latest/customization.html
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
@@ -38,7 +39,6 @@ html_theme_options = {
 # -- Options for Latex (& PDF) output ----------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
 # https://www.sphinx-doc.org/en/master/latex.html
-# https://alabaster.readthedocs.io/en/latest/customization.html
 
 # We are setting the output filename here.
 # Tuple format: (root document, output latex filename, title, author, latex theme, exclude root document)

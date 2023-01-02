@@ -1,9 +1,10 @@
-Overview
-========
+.. _overview:
+
+Overview of RapidsSE
+====================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
 
-
-
+   aboutSE
+   features
