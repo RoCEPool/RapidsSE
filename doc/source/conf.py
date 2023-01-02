@@ -2,6 +2,7 @@
 #
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+from datetime import date
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -27,7 +28,8 @@ exclude_patterns = []
 # https://alabaster.readthedocs.io/en/latest/customization.html
 
 html_theme = 'alabaster'
-html_static_path = ['_static']
+html_static_path = ['_static',
+                    '_static/custom.css']
 html_copy_source = False
 
 html_theme_options = {
@@ -50,3 +52,21 @@ latex_documents = [ (root_doc, f"rapidsse-{release}.tex", "", author, "manual", 
 # Display todos by setting to True
 # https://www.sphinx-doc.org/en/master/usage/extensions/todo.html
 todo_include_todos = True
+
+
+# -- Making variables accessible within rst files ----------------------------
+# Credit here: https://stackoverflow.com/a/69211912
+
+release_date = date.today().strftime("%d %B, %Y")
+
+variables_to_export = [
+  "project",
+  "copyright",
+  "author",
+  "version",
+  "release",
+  "release_date",
+]
+frozen_locals = dict(locals())
+rst_epilog = '\n'.join(map(lambda x: f".. |{x}| replace:: {frozen_locals[x]}", variables_to_export))
+del frozen_locals

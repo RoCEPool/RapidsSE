@@ -1,6 +1,9 @@
 ======================================
 Welcome to the RapidsSE documentation!
 ======================================
+
+|project| release |release| (|release_date|)
+
 -----------------
 Table of Contents
 -----------------
@@ -8,7 +11,6 @@ Table of Contents
 .. toctree::
    :name: mastertoc
    :maxdepth: 1
-   :caption: Contents:
    :numbered:
 
    overview/index

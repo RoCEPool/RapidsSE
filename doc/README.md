@@ -69,6 +69,7 @@ Here are some primers and introductions to reStructuredText:
 * WriteTheDocs [introduction to reStructuredText](https://www.writethedocs.org/guide/writing/reStructuredText/)
 * Docutils [quickstart](https://docutils.sourceforge.io/docs/user/rst/quickstart.html#sections)
 * Docutils [quick reference](https://docutils.sourceforge.io/docs/user/rst/quickref.html)
+* [rST Cheat Sheet](https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.pdf)
 
 reStructuredText directives are defined in the docutils project, however Sphinx
 extends this to add more useful ones. Here are some links to reStructuredText 

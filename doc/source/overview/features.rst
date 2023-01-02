@@ -13,8 +13,8 @@ RapidsSE currently sports the following features:
 * Natively compiled and executed queries;
 * Query and join optimiser;
 * Deterministic & efficient non-garbage collected memory model;
-* Table partitioning across nodes;
-* Table indexes;
+* Table partitioning across nodes (on multiple columns);
+* Table indexes (on multiple columns);
 * CLI (SE Shell) and (soon) programmatic (JDBC) interfaces;
 * Data unload and reload;
 * Low-memory job management

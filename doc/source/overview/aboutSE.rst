@@ -3,13 +3,14 @@
 About RapidsSE
 ==============
 
-RapidsSE is a high performance clustered database optimised for OLAP-style data
-processing of big data environments. RapidsSE is built upon a unique and
-flexible architecture that allows it to support highly concurrent queries that
-can maximise the computing resources of the cluster.
+RapidsSE is a high volume, high performance clustered database optimised for
+OLAP-style grid and stream processing in big data environments. RapidsSE is
+built upon a unique and patent-pending architecture that allows it to support
+highly concurrent queries that can maximise the computing resources of the
+cluster.
 
-The goal of RapidsSE is to provide efficient management of customer data with
-industry-leading performance at a highly competitive price point.
+The goal of RapidsSE is to provide highly efficient management of customer data
+with industry-leading performance at a highly competitive price point.
 
 RapidsSE currently supports relational data stored in row format, in memory,
 in a peer-to-peer clustered environment. The architecture of RapidsSE does not
