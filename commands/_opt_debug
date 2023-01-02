@@ -47,9 +47,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-select a.cola1 from table1 a join table4 b on a.cola1 = b.cola4
-   where cola1 > 400 // and cola1 < 500
-   order by a.cola1;
+select * from table1 where pcol1 >= 1;
 
 MemoryLeaks;
 
