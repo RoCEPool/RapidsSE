@@ -2856,14 +2856,16 @@ void Xtransforms::vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void)
 
         xCI_bounds.G.m_pChild->vMark1(MARK_AT);
       }
+
+      vPrintBoard(__LINE__);
+      G.p_bounds->vCullBound(MARK_AT);
+
     }
   }
 
-  vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  G.p_bounds->vCullBound(MARK_AT);
 
   vPrintBoard();
 
