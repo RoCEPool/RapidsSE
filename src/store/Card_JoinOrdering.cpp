@@ -215,6 +215,8 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
       pDeck->vPush(p_table);
 
     pAfter = p_table;
+
+    DELETE_CARD(p_joinOrder);
   }
 
 }
