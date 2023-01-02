@@ -2120,7 +2120,7 @@ begin
     | next
 
   stage S05 on origin :
-    sort " type INTEGER $1  , type INTEGER as c_count $2  "
+    sort " type INTEGER $1 DESC , type INTEGER as c_count $2 DESC "
     | combined 0
     | next
 
@@ -2167,8 +2167,8 @@ begin
     | next
 
   stage S05 on origin :
-    sort " type INTEGER $1  ,
-           type INTEGER as c_count $2  "
+    sort " type INTEGER $1 DESC ,
+           type INTEGER as c_count $2 DESC "
     | combined 0
     | next
 

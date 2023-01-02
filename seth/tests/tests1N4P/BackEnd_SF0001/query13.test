@@ -325,8 +325,8 @@ begin
     | next
 
   stage S05 on origin :
-    sort " type INTEGER $1  ,
-           type INTEGER as c_count $2  "
+    sort " type INTEGER $1 DESC ,
+           type INTEGER as c_count $2 DESC "
     | combined 0
     | next
 
@@ -336,12 +336,13 @@ begin
    | first
  end ;
 
- rows:
-  (0,1)
-  (8,2)
-  (9,11)
-  (10,135)
-  (20,1)
+rows:
+ (20,1)
+ (10,135)
+ (9,11)
+ (8,2)
+ (0,1)
+
 
  CLEANUP {
    bye;
