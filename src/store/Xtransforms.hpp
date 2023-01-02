@@ -124,6 +124,7 @@ namespace STORE
 
     // vSeries_A0_Make_Weavable
     void vSA0_T00_Begin(void);
+    void vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void);
     void vSA0_T10_Eliminate_bounds_From_filter(void);
     void vSA0_T20_Individuate_filter(void);
     void vSA0_TZZ_End(void);

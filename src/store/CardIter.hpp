@@ -11,10 +11,11 @@ namespace STORE
   class CardIter : public Object
                  , public ListExo2_t<CardIterMembers>
  {
-  protected:
+  public:
 
     CardIterMembers G;
 
+  protected:
     // must be last
     Footer m_xFooter;
 

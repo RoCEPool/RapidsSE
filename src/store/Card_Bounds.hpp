@@ -23,6 +23,8 @@ namespace STORE
                                                   char cTblSyn);
     eXK eCastKind(Card_Index* p_index_r, Card_Table* p_table_l, Card_Table* p_table_r,
                   Card_Term*& rp_term_hash);
+
+    void vCullBound(char cWithMark);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

@@ -1016,9 +1016,18 @@ void CardIter::vRewind(void)
 
   RASSERT(G.m_bActive);
 
-//  Card* pChild = pPrevChild();
-//
-//  UNUSED(pChild);
+  if (G.m_i_Child == 0) {
+    G.m_i_Child = C_UNKNOWN;
+    G.m_pChild = nullptr;
+    return;
+  }
+
+  G.m_i_Child--;
+
+  if (G.m_i_Child < G.m_pCard->nChildCards())
+    G.m_pChild =  G.m_pCard->pGetChild(G.m_i_Child);
+  else
+    G.m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

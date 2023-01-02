@@ -2811,6 +2811,69 @@ void Xtransforms::vSA0_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* inspect filters and remove cmp predicates which are in bounds              */
 /*----------------------------------------------------------------------------*/
+void Xtransforms::vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransform(__func__, "((desc))"_Stz);
+
+  vAssert_Board_mqA();
+
+  vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  G_vRestart();
+  while (G_bEachMain()) {
+
+    if (!(G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
+          G.p_MainCard->bIsCard(CK_INDEXSCAN)))
+      continue;
+    if (!(G.p_indexList = G.p_MainCard->pSub_indexList()))
+      continue;
+
+    // have <bounds> & <filter> under <main>
+
+    // find & ignore the first ebound
+    bool bFoundFirst = false;
+
+    CardIter xCI_indexes(G.p_indexList);
+    while ((G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
+
+      bool bChosenIndex = G.p_index->Y_bHas(P_ChosenIndex);
+
+      G.p_bounds = G.p_index->pSub_bounds();
+      if (! G.p_bounds)
+        continue;
+
+      CardIter xCI_bounds(G.p_bounds);
+      while (xCI_bounds.bEachChild()) {
+        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
+          bFoundFirst = true;
+          continue;
+        }
+
+        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
+      }
+    }
+  }
+
+  vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  G.p_bounds->vCullBound(MARK_AT);
+
+  vPrintBoard();
+
+  vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* inspect filters and remove cmp predicates which are in bounds              */
+/*----------------------------------------------------------------------------*/
 void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -2818,6 +2881,8 @@ void Xtransforms::vSA0_T10_Eliminate_bounds_From_filter(void)
   vTransform(__func__, "((desc))"_Stz);
 
   vAssert_Board_mqA();
+
+  vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds

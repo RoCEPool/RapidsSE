@@ -238,6 +238,24 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
   return XK_BROADCAST;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vCullBound(char cWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI_bounds(this);
+  while (xCI_bounds.bEachChild()) {
+    if (xCI_bounds.G.m_pChild->cMark1() != cWithMark)
+      continue;
+
+    vRemoveChild(xCI_bounds.G.m_pChild);
+    DELETE_CARD(xCI_bounds.G.m_pChild);
+    xCI_bounds.vRewind();
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
