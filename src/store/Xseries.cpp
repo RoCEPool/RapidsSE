@@ -270,6 +270,7 @@ void Xseries::vSeries_A0_Make_Weavable(void)
 
   m_pTransforms->vSA0_T00_Begin();
 
+  m_pTransforms->vSA0_T05_Cull_Nonused_bounds_of_Chosen_index();
   m_pTransforms->vSA0_T10_Eliminate_bounds_From_filter();
   m_pTransforms->vSA0_T20_Individuate_filter();
 
