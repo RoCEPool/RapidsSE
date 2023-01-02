@@ -21,6 +21,9 @@ success
 create index TABLE1_PCOL1 on table1(pcol1);
 success
 
+create index TABLE1_COLA1 on table1(cola1);
+success
+
 create index TABLE1_UCOL on table1(ucol);
 success
 
@@ -125,6 +128,9 @@ create table TABLE8 (
 success
 
 create index table8_pcol8 on table8(pcol8);
+success
+
+create index table8_colb8 on table8(colb8);
 success
 
 create table TABLE9 (
@@ -290,6 +296,9 @@ create table MANUFACTURER (
   m_specialorders VARCHAR(1),
   m_comments VARCHAR(50)
 );
+success
+
+create index MANUFACTURER_M_MFGKEY on MANUFACTURER(m_mfgkey);
 success
 
 create table RETURNITEMS (

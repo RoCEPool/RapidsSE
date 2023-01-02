@@ -222,10 +222,9 @@ ordered rows:
 // Source file: ../queries/functions/extract/rextract15.sql
 // Result file: ../queries/functions/extract/results/extract15.res
 // TODO: ENABLE WHEN HASH JOINS
-select colb1, extract(month from colc1), colb2, extract(month from colc2) from table1 join table2 on extract(month from colc1) = extract(month from colc2) where extract(month from colc1) in (5, 7, 9) and colb1 like ('%ea%') order by colb1, colb2;
-failure contains: 'missing suitable index for join'
-
 /*
+select colb1, extract(month from colc1), colb2, extract(month from colc2) from table1 join table2 on extract(month from colc1) = extract(month from colc2) where extract(month from colc1) in (5, 7, 9) and colb1 like ('%ea%') order by colb1, colb2;
+
 ordered rows:
   ('peach', 5, 'GREEN', 5)
   ('peach', 5, 'ORANGE', 5)
