@@ -41,6 +41,99 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pGby_expr_From_stmCol(Card_StmCol* p_stmCol)
+{
+  _static_
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(p_stmCol->pSub_type()->szValue());
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(p_stmCol->pSub_stmColOdn()->szValue());
+
+  p_expr->vAppend(p_type);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
+{
+  _static_
+
+  s32 sKn;
+  sKn.vSprint("$K%lld"_Stz,p_expr_gby->iCardNo()+1);
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
+  Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(sKn.szStz());
+
+  p_expr->vAppend(p_type);
+  if (p_as)
+    p_expr->vAppend(p_as);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pProj_expr_From_stmCol(Card_StmCol* p_stmCol)
+{
+  _static_
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(p_stmCol->pSub_type()->szValue());
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(p_stmCol->pSub_stmColOdn()->szValue());
+
+  p_expr->vAppend(p_type);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
+{
+  _static_
+
+  //Card_Expr* p_expr_simple = _pCard_Expr(p_expr->pDupCardAndSubCards());
+
+  Card_Expr* p_expr_simple = new Card_Expr;
+
+  p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term* p_term = new Card_Term;
+  p_term->vValueSprint("$%lld"_Stz,i_Col);
+  p_rpnCalc->vAppend(p_term);
+
+  p_expr_simple->vAppend(p_rpnCalc);
+
+  p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardAndSubCards());
+
+  return p_expr_simple;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

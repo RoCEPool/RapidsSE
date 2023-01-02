@@ -722,7 +722,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
 
 
     if (AL_PARTITION == G.e_Level) {
-      G.p_expr = D_pDerive_Gby_expr_From_stmCol(G.p_stmCol);
+      G.p_expr = Card_Expr::pGby_expr_From_stmCol(G.p_stmCol);
       G.p_gbyElist->vAppend(G.p_expr);
     }
     else {
@@ -738,7 +738,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
     G.p_expr->vCardNo(0);
 
     if (AL_PARTITION == G.e_Level) {
-      G.p_expr = D_pDerive_Proj_expr_From_Gby_expr(G.p_expr,G.p_stmCol->szValue());
+      G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(G.p_expr,G.p_stmCol->szValue());
     }
     else {
       G.p_gbyElist->Y_vSet(P_ProjBump, (i8)1);
@@ -1838,7 +1838,7 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_having(void)
     if (Card::bIsSqyColOrdinal(G.p_as->szValue()))
       continue;
 
-    Card_Expr* p_expr_simple = D_pProject_Simple_expr_Of(G.p_expr,i_Col);
+    Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(G.p_expr,i_Col);
 
     G_vAppendChild(CK_PROJELIST,p_expr_simple);
   }

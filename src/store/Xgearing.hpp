@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xderive.hpp"
+#include "CardIter.hpp"
 #include "Bench.hpp"
 
 #include "PermGen.hpp"
@@ -13,7 +13,7 @@
 
 namespace STORE
 {
-  class Xgearing : public Xderive
+  class Xgearing : public CardIter
   {
   protected:
     Bench*      m_pBench;
@@ -39,6 +39,8 @@ namespace STORE
     IndexDef*   m_pIndexDef;
     StreamDef*  m_pStreamDef;
     Table*      m_pTable;
+
+    CardCtl*     m_pCardCtl;
 
     Card* m_pCard_child;
     Card* m_pCard_copied;
@@ -186,6 +188,8 @@ namespace STORE
 
     Stz* szT(eCK eMember);
     void vTracer(Stz* szFormat, ...);
+
+    Footer* aFooter(void);
   };
 }
 
