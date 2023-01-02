@@ -2743,7 +2743,7 @@ QUERY 18
      | next
 
    stage S07 on origin :
-     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
      | limit 100
      | combined 0
      | next
@@ -2840,7 +2840,7 @@ begin
      | next
 
    stage S07 on origin :
-     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
      | limit 100
      | combined 0
      | next

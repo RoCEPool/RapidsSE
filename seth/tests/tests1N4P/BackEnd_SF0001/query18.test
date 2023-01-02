@@ -13,7 +13,7 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
      and c_custkey = o_custkey
      and o_orderkey = l_orderkey
      group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice
-     order by o_totalprice asc, o_orderdate limit 100;
+     order by o_totalprice desc, o_orderdate limit 100;
 
 // changed 300 to 100 for SF0001
 select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
@@ -26,7 +26,7 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
      and c_custkey = o_custkey
      and o_orderkey = l_orderkey
      group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice
-     order by c_custkey ;
+     order by o_totalprice desc, o_orderdate limit 100;
 */
 
 
@@ -157,55 +157,55 @@ begin
      | next
 
    stage S04 on all partitions :
-     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                        type DATE as O_ORDERDATE O_ORDERDATE ,
-                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                        aggregates
-                        type VARCHAR as C_NAME $K1 ,
-                        type INTEGER as C_CUSTKEY $K2 ,
-                        type INTEGER as O_ORDERKEY $K3 ,
-                        type DATE as O_ORDERDATE $K4 ,
-                        type DECIMAL as O_TOTALPRICE $K5 ,
-                        type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     aggreg " groupBy type VARCHAR as C_NAME C_NAME ,
+                      type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR as C_NAME $K1 ,
+                      type INTEGER as C_CUSTKEY $K2 ,
+                      type INTEGER as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL as O_TOTALPRICE $K5 ,
+                      type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S05 on all nodes :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                             type DATE as O_ORDERDATE O_ORDERDATE ,
-                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                             aggregates
-                             type VARCHAR as C_NAME $K1 ,
-                             type INTEGER as C_CUSTKEY $K2 ,
-                             type INTEGER as O_ORDERKEY $K3 ,
-                             type DATE as O_ORDERDATE $K4 ,
-                             type DECIMAL as O_TOTALPRICE $K5 ,
-                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S06 on origin :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                             type DATE as O_ORDERDATE O_ORDERDATE ,
-                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                             aggregates
-                             type VARCHAR as C_NAME $K1 ,
-                             type INTEGER as C_CUSTKEY $K2 ,
-                             type INTEGER as O_ORDERKEY $K3 ,
-                             type DATE as O_ORDERDATE $K4 ,
-                             type DECIMAL as O_TOTALPRICE $K5 ,
-                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S07 on origin :
-     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
      | limit 100
      | combined 0
      | next
@@ -216,88 +216,109 @@ begin
      | first
  end ;
 
-contains rows:
+ordered rows:
 
- ('Customer#000000109',109,109, DATE '1992-02-22',1156.67,102.00)
- ('Customer#000000110',110,1310,DATE '1994-05-27',1521.47,110.00)
- ('Customer#000000104',104,854, DATE '1996-09-23',2170.42,137.00)
- ('Customer#000000096',96,996,  DATE '1994-04-21',2721.08,117.00)
- ('Customer#000000042',42,42,   DATE '1995-05-08',2726.45,137.00)
- ('Customer#000000060',60,60,   DATE '1993-02-25',2749.87,103.00)
- ('Customer#000000081',81,1431, DATE '1993-05-16',3098.62,167.00)
- ('Customer#000000010',10,1360, DATE '1997-01-12',3537.48,133.00)
- ('Customer#000000044',44,644,  DATE '1994-09-09',4826.38,107.00)
- ('Customer#000000099',99,699,  DATE '1995-09-30',5636.84,110.00)
- ('Customer#000000128',128,1028,DATE '1996-03-12',6384.72,142.00)
- ('Customer#000000049',49,499,  DATE '1994-04-30',6525.18,132.00)
- ('Customer#000000033',33,633,  DATE '1996-08-20',6633.85,133.00)
- ('Customer#000000061',61,1111, DATE '1995-02-17',6719.14,141.00)
- ('Customer#000000030',30,1380, DATE '1996-06-21',7352.98,103.00)
- ('Customer#000000062',62,362,  DATE '1994-07-05',7714.98,150.00)
- ('Customer#000000040',40,1390, DATE '1996-04-20',7866.49,123.00)
- ('Customer#000000058',58,1108, DATE '1994-06-18',8209.35,124.00)
- ('Customer#000000084',84,384,  DATE '1997-01-26',8588.61,118.00)
- ('Customer#000000065',65,65,   DATE '1998-03-28',8649.81,113.00)
- ('Customer#000000028',28,1378, DATE '1993-11-08',9183.33,112.00)
- ('Customer#000000087',87,987,  DATE '1996-01-11',13017.17,115.00)
- ('Customer#000000128',128,278, DATE '1997-12-24',13365.87,108.00)
- ('Customer#000000014',14,314,  DATE '1992-09-29',13394.58,125.00)
- ('Customer#000000027',27,1227, DATE '1993-10-18',13424.25,110.00)
- ('Customer#000000109',109,1159,DATE '1993-08-27',13624.67,156.00)
- ('Customer#000000144',144,1044,DATE '1998-07-03',14322.76,139.00)
- ('Customer#000000025',25,175,  DATE '1995-12-15',15157.64,116.00)
- ('Customer#000000019',19,1219, DATE '1992-05-21',16100.11,105.00)
- ('Customer#000000104',104,1304,DATE '1997-08-14',16866.72,116.00)
- ('Customer#000000123',123,1473,DATE '1995-05-23',17438.12,119.00)
- ('Customer#000000018',18,468,  DATE '1996-04-04',17566.30,147.00)
- ('Customer#000000007',7,307,   DATE '1995-10-05',17690.25,124.00)
- ('Customer#000000063',63,813,  DATE '1992-06-03',18705.77,128.00)
- ('Customer#000000040',40,790,  DATE '1992-06-28',19551.67,115.00)
- ('Customer#000000103',103,103, DATE '1994-11-17',20890.17,101.00)
- ('Customer#000000083',83,1283, DATE '1998-02-10',21380.79,120.00)
- ('Customer#000000132',132,132, DATE '1998-04-21',21920.56,119.00)
- ('Customer#000000035',35,185,  DATE '1992-04-26',22759.44,132.00)
- ('Customer#000000070',70,1420, DATE '1995-03-22',23434.01,111.00)
- ('Customer#000000120',120,120, DATE '1993-05-08',23699.64,128.00)
- ('Customer#000000059',59,959,  DATE '1997-08-26',23820.21,126.00)
- ('Customer#000000066',66,1266, DATE '1998-03-23',23874.18,116.00)
- ('Customer#000000037',37,937,  DATE '1993-09-29',24891.04,133.00)
- ('Customer#000000100',100,1150,DATE '1996-07-04',25870.88,118.00)
- ('Customer#000000144',144,144, DATE '1997-05-13',26276.64,148.00)
- ('Customer#000000018',18,1068, DATE '1992-05-16',26530.32,113.00)
- ('Customer#000000107',107,1457,DATE '1995-02-21',27651.47,111.00)
- ('Customer#000000137',137,137, DATE '1995-11-07',28984.07,104.00)
- ('Customer#000000057',57,1257, DATE '1997-02-03',29448.72,104.00)
- ('Customer#000000068',68,668,  DATE '1995-08-05',29464.99,102.00)
- ('Customer#000000129',129,1029,DATE '1993-11-22',29639.90,118.00)
- ('Customer#000000136',136,586, DATE '1997-09-15',29723.34,106.00)
- ('Customer#000000072',72,372,  DATE '1996-06-27',29828.57,124.00)
- ('Customer#000000059',59,359,  DATE '1994-05-29',30155.90,109.00)
- ('Customer#000000043',43,343,  DATE '1998-04-20',30164.33,115.00)
- ('Customer#000000078',78,828,  DATE '1995-07-15',30188.56,118.00)
- ('Customer#000000132',132,732, DATE '1995-12-27',30455.66,149.00)
- ('Customer#000000103',103,1453,DATE '1997-10-15',30720.30,115.00)
- ('Customer#000000014',14,1064, DATE '1992-04-05',31477.46,183.00)
- ('Customer#000000106',106,556, DATE '1994-03-23',31599.39,129.00)
- ('Customer#000000019',19,169,  DATE '1994-03-10',31899.02,147.00)
- ('Customer#000000088',88,238,  DATE '1996-07-03',32426.69,134.00)
- ('Customer#000000003',3,153,   DATE '1994-06-01',32712.15,124.00)
- ('Customer#000000038',38,1088, DATE '1997-11-26',33219.60,118.00)
- ('Customer#000000041',41,191,  DATE '1996-10-04',33545.04,122.00)
- ('Customer#000000084',84,1134, DATE '1997-05-01',33642.91,118.00)
- ('Customer#000000144',144,294, DATE '1996-06-30',34242.19,117.00)
- ('Customer#000000107',107,1307,DATE '1997-02-27',34964.44,116.00)
- ('Customer#000000112',112,1462,DATE '1993-03-25',35147.95,101.00)
- ('Customer#000000039',39,1089, DATE '1997-12-12',35564.49,144.00)
- ('Customer#000000103',103,403, DATE '1993-07-31',35608.23,119.00)
- ('Customer#000000044',44,344,  DATE '1997-05-04',35815.36,107.00)
- ('Customer#000000086',86,1436, DATE '1997-08-03',36131.89,123.00)
- ('Customer#000000003',3,303,   DATE '1995-11-07',37286.20,124.00)
- ('Customer#000000057',57,1407, DATE '1992-01-01',37356.47,109.00)
- ('Customer#000000011',11,761,  DATE '1997-06-03',37519.81,109.00)
- ('Customer#000000088',88,838,  DATE '1996-02-18',37579.19,163.00)
- ('Customer#000000028',28,178,  DATE '1995-09-09',37704.79,107.00)
-
+row: ('Customer#000000047',47,647,  DATE '1998-02-27',407282.71,102.00)
+row: ('Customer#000000073',73,373,  DATE '1997-08-24',372279.48,108.00)
+row: ('Customer#000000079',79,979,  DATE '1992-08-19',371304.75,126.00)
+row: ('Customer#000000101',101,701, DATE '1998-03-14',368991.44,116.00)
+row: ('Customer#000000118',118,868, DATE '1995-10-03',367924.77,130.00)
+row: ('Customer#000000134',134,134, DATE '1998-02-08',355180.76,102.00)
+row: ('Customer#000000098',98,1298, DATE '1996-08-03',346637.90,134.00)
+row: ('Customer#000000007',7,907,   DATE '1996-11-20',346459.59,125.00)
+row: ('Customer#000000097',97,1297, DATE '1997-07-25',344824.32,106.00)
+row: ('Customer#000000108',108,108, DATE '1995-10-31',343254.06,104.00)
+row: ('Customer#000000018',18,1368, DATE '1993-04-11',342875.97,133.00)
+row: ('Customer#000000094',94,1294, DATE '1997-01-21',339682.58,103.00)
+row: ('Customer#000000008',8,158,   DATE '1992-12-01',337176.45,115.00)
+row: ('Customer#000000143',143,1493,DATE '1993-12-27',334683.11,126.00)
+row: ('Customer#000000110',110,1010,DATE '1993-11-14',333302.19,157.00)
+row: ('Customer#000000038',38,638,  DATE '1996-07-17',332451.75,142.00)
+row: ('Customer#000000082',82,232,  DATE '1995-03-02',331325.36,129.00)
+row: ('Customer#000000102',102,552, DATE '1995-05-01',331019.93,172.00)
+row: ('Customer#000000020',20,20,   DATE '1998-04-18',330793.52,115.00)
+row: ('Customer#000000096',96,1296, DATE '1998-07-20',329124.49,151.00)
+row: ('Customer#000000012',12,1062, DATE '1992-03-04',328130.28,111.00)
+row: ('Customer#000000124',124,124, DATE '1997-01-03',327889.57,158.00)
+row: ('Customer#000000107',107,1157,DATE '1998-03-05',327841.55,146.00)
+row: ('Customer#000000129',129,1479,DATE '1997-01-01',327457.26,141.00)
+row: ('Customer#000000002',2,902,   DATE '1995-05-13',324420.14,116.00)
+row: ('Customer#000000059',59,1409, DATE '1998-05-31',322284.72,107.00)
+row: ('Customer#000000119',119,869, DATE '1993-01-31',321158.00,152.00)
+row: ('Customer#000000099',99,249,  DATE '1995-09-10',321155.99,143.00)
+row: ('Customer#000000137',137,737, DATE '1996-01-03',319752.31,128.00)
+row: ('Customer#000000135',135,435, DATE '1996-01-06',317068.68,105.00)
+row: ('Customer#000000097',97,247,  DATE '1992-06-21',316887.82,135.00)
+row: ('Customer#000000087',87,837,  DATE '1992-09-16',316845.96,145.00)
+row: ('Customer#000000023',23,323,  DATE '1996-08-30',315573.61,105.00)
+row: ('Customer#000000051',51,1251, DATE '1996-01-06',315007.76,108.00)
+row: ('Customer#000000064',64,364,  DATE '1994-12-06',313834.99,113.00)
+row: ('Customer#000000077',77,1427, DATE '1992-07-30',310998.43,119.00)
+row: ('Customer#000000079',79,1279, DATE '1992-04-22',309127.93,125.00)
+row: ('Customer#000000049',49,799,  DATE '1994-07-15',306500.52,145.00)
+row: ('Customer#000000064',64,514,  DATE '1994-06-02',304485.79,121.00)
+row: ('Customer#000000028',28,1228, DATE '1992-06-30',304346.68,102.00)
+row: ('Customer#000000114',114,414, DATE '1997-08-13',303176.64,156.00)
+row: ('Customer#000000077',77,1277, DATE '1993-09-03',302544.84,157.00)
+row: ('Customer#000000078',78,378,  DATE '1992-09-21',301881.77,103.00)
+row: ('Customer#000000092',92,842,  DATE '1995-07-29',298819.26,101.00)
+row: ('Customer#000000148',148,1048,DATE '1998-04-19',298397.90,182.00)
+row: ('Customer#000000118',118,1168,DATE '1995-11-07',298102.04,146.00)
+row: ('Customer#000000142',142,742, DATE '1997-07-06',297421.11,111.00)
+row: ('Customer#000000142',142,292, DATE '1996-10-19',297308.42,131.00)
+row: ('Customer#000000121',121,1021,DATE '1992-05-13',297194.36,117.00)
+row: ('Customer#000000113',113,413, DATE '1995-02-08',296568.42,127.00)
+row: ('Customer#000000139',139,1189,DATE '1992-07-07',296154.21,138.00)
+row: ('Customer#000000032',32,182,  DATE '1993-01-02',295703.61,115.00)
+row: ('Customer#000000031',31,781,  DATE '1993-07-24',295217.85,132.00)
+row: ('Customer#000000045',45,645,  DATE '1998-02-28',293551.19,120.00)
+row: ('Customer#000000026',26,326,  DATE '1993-05-14',293396.88,144.00)
+row: ('Customer#000000117',117,267, DATE '1994-02-27',290211.77,121.00)
+row: ('Customer#000000074',74,224,  DATE '1993-03-09',285882.29,143.00)
+row: ('Customer#000000136',136,436, DATE '1993-11-29',285193.99,128.00)
+row: ('Customer#000000112',112,412, DATE '1997-06-17',284967.18,132.00)
+row: ('Customer#000000126',126,126, DATE '1996-03-11',284644.07,129.00)
+row: ('Customer#000000092',92,542,  DATE '1994-06-03',283459.87,102.00)
+row: ('Customer#000000113',113,713, DATE '1996-04-30',282488.42,131.00)
+row: ('Customer#000000095',95,545,  DATE '1997-01-20',280803.60,140.00)
+row: ('Customer#000000118',118,1318,DATE '1992-07-26',280392.62,110.00)
+row: ('Customer#000000148',148,748, DATE '1996-09-14',279365.71,106.00)
+row: ('Customer#000000116',116,1316,DATE '1996-02-17',278983.74,137.00)
+row: ('Customer#000000017',17,1217, DATE '1997-06-07',278866.99,113.00)
+row: ('Customer#000000004',4,154,   DATE '1995-08-02',278270.15,112.00)
+row: ('Customer#000000084',84,234,  DATE '1994-12-17',277890.79,140.00)
+row: ('Customer#000000039',39,1239, DATE '1993-05-25',277626.78,161.00)
+row: ('Customer#000000130',130,430, DATE '1995-05-07',277549.66,125.00)
+row: ('Customer#000000127',127,1027,DATE '1992-08-21',277542.23,130.00)
+row: ('Customer#000000023',23,23,   DATE '1998-01-24',276992.74,118.00)
+row: ('Customer#000000025',25,625,  DATE '1992-08-27',276801.77,151.00)
+row: ('Customer#000000111',111,1461,DATE '1997-01-11',276788.81,129.00)
+row: ('Customer#000000110',110,560, DATE '1992-03-06',276496.15,114.00)
+row: ('Customer#000000002',2,1052,  DATE '1998-05-15',276377.59,151.00)
+row: ('Customer#000000121',121,1321,DATE '1995-11-02',276131.78,112.00)
+row: ('Customer#000000060',60,960,  DATE '1998-07-17',275635.82,121.00)
+row: ('Customer#000000074',74,824,  DATE '1994-10-19',274657.96,122.00)
+row: ('Customer#000000059',59,1259, DATE '1997-08-30',271328.84,119.00)
+row: ('Customer#000000037',37,637,  DATE '1997-03-24',269844.93,135.00)
+row: ('Customer#000000051',51,651,  DATE '1995-12-14',269836.82,116.00)
+row: ('Customer#000000014',14,1364, DATE '1995-03-18',268933.45,121.00)
+row: ('Customer#000000042',42,942,  DATE '1995-04-30',267417.49,146.00)
+row: ('Customer#000000014',14,914,  DATE '1992-05-28',267415.46,157.00)
+row: ('Customer#000000033',33,483,  DATE '1997-07-07',266428.59,133.00)
+row: ('Customer#000000081',81,381,  DATE '1993-07-08',265947.58,107.00)
+row: ('Customer#000000137',137,437, DATE '1996-05-12',265070.67,133.00)
+row: ('Customer#000000091',91,241,  DATE '1995-06-04',263327.51,129.00)
+row: ('Customer#000000122',122,722, DATE '1995-08-22',263220.81,116.00)
+row: ('Customer#000000145',145,595, DATE '1998-01-07',262602.78,148.00)
+row: ('Customer#000000126',126,876, DATE '1994-11-24',261195.39,104.00)
+row: ('Customer#000000053',53,1403, DATE '1992-06-20',261057.27,134.00)
+row: ('Customer#000000033',33,33,   DATE '1992-11-19',261013.14,147.00)
+row: ('Customer#000000100',100,850, DATE '1996-05-05',260546.82,173.00)
+row: ('Customer#000000085',85,985,  DATE '1997-11-30',260261.19,117.00)
+row: ('Customer#000000056',56,56,   DATE '1994-06-18',259960.36,107.00)
+row: ('Customer#000000043',43,643,  DATE '1993-11-19',259320.78,126.00)
+row: ('Customer#000000080',80,680,  DATE '1993-06-08',259281.51,154.00)
+success: 100 rows fetched
 // same
 pipeline Query18
 begin
@@ -335,55 +356,55 @@ begin
      | next
 
    stage S04 on all partitions :
-     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                        type DATE as O_ORDERDATE O_ORDERDATE ,
-                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                        aggregates
-                        type VARCHAR as C_NAME $K1 ,
-                        type INTEGER as C_CUSTKEY $K2 ,
-                        type INTEGER as O_ORDERKEY $K3 ,
-                        type DATE as O_ORDERDATE $K4 ,
-                        type DECIMAL as O_TOTALPRICE $K5 ,
-                        type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     aggreg " groupBy type VARCHAR as C_NAME C_NAME ,
+                      type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR as C_NAME $K1 ,
+                      type INTEGER as C_CUSTKEY $K2 ,
+                      type INTEGER as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL as O_TOTALPRICE $K5 ,
+                      type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S05 on all nodes :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                             type DATE as O_ORDERDATE O_ORDERDATE ,
-                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                             aggregates
-                             type VARCHAR as C_NAME $K1 ,
-                             type INTEGER as C_CUSTKEY $K2 ,
-                             type INTEGER as O_ORDERKEY $K3 ,
-                             type DATE as O_ORDERDATE $K4 ,
-                             type DECIMAL as O_TOTALPRICE $K5 ,
-                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S06 on origin :
      aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                             type DATE as O_ORDERDATE O_ORDERDATE ,
-                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                             aggregates
-                             type VARCHAR as C_NAME $K1 ,
-                             type INTEGER as C_CUSTKEY $K2 ,
-                             type INTEGER as O_ORDERKEY $K3 ,
-                             type DATE as O_ORDERDATE $K4 ,
-                             type DECIMAL as O_TOTALPRICE $K5 ,
-                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S07 on origin :
-     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
      //| limit 100
      | combined 0
      | next
@@ -393,7 +414,7 @@ begin
      | sink
      | first
  end ;
- 
+
  rows: 761
 
 CLEANUP {
