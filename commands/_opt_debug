@@ -18,29 +18,26 @@ create table TABLE1 (
 
 create index TABLE1_PCOL1 on table1(pcol1);
 create index TABLE1_UCOL on table1(ucol);
-create index TABLE1_UCOLVC on table1(ucolvc););
+create index TABLE1_UCOLVC on table1(ucolvc);
+create index TABLE1_COLA1 on table1(cola1);
 
 Load TABLE1 "../DATA/Load/tbl1data.csv";
 
-create table TABLE9 (
-  pcol9   INTEGER NOT NULL,
-  scol9   INTEGER NOT NULL,
-  tcol9   INTEGER NOT NULL,
-  colb9   VARCHAR(20),
-  cold9   FLOAT,
-  cole9   DECIMAL,
-  colf9   INTEGER,
-  colg9   INTEGER,
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
   ucol    INTEGER,
-  ucolvc  VARCHAR(5)
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
 );
 
-create index table9_pcol9 on table9(pcol9);
-create index table9_ucolvc on table9(ucolvc);
-create index table9_colb9 on table9(colb9);
-create index table9_ucol on table9(ucol);
+create index table4_cola4 on table4(cola4);
+create index table4_ucol on table4(ucol);
 
-Load TABLE9 "../DATA/Load/tbl9data.csv";
+Load TABLE4 "../DATA/Load/tbl4data.csv";
 
 select * from dummy;
 
@@ -50,61 +47,11 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-select min(cold1) + min(cold9) from table1 join table9 using (ucol);
+select a.cola1 from table1 a join table4 b on a.cola1 = b.cola4
+   where cola1 > 400
+   order by a.cola1;
 
 MemoryLeaks;
-
-
-/*
-pipeline _unnamed_
-  tag <optimised> = 1 endTag
-begin
-
-  stage S00 on origin :
-      start
-    | pulse     once
-    | next
-
-  stage S01 on all partitions :
-      scan      TABLE9
-    | next
-
-  stage S02 on all partitions :
-      indexJoin TABLE1 TABLE1_UCOL " BOUND $I1 $9 == "
-    | combined  0
-    | next
-
-  stage S03 on all partitions :
-      project   "   type FLOAT ) $16 min
-                  , type FLOAT ) $6 min " //----------------------------->
-                                          // RAY NOTE: THIS SHOULD BE $5
-    | combined  0
-    | next
-
-  stage S04 on all nodes :
-      project   "   type FLOAT ) $1 min
-                  , type FLOAT ) $2 min "
-    | combined  0
-    | next
-
-  stage S05 on origin :
-      project   "   type FLOAT ) $1 min
-                  , type FLOAT ) $2 min "
-    | combined  0
-    | next
-
-  stage S06 on origin :
-      project   " type FLOAT $2 $1 + "
-    | combined  0
-    | next
-
-  stage S07 on origin :
-      output
-    | sink
-    | first
-
-end ;
-*/
 
 /*============================================================================*/
 /* end                                                                        */
