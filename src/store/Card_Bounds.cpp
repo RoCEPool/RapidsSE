@@ -207,8 +207,8 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
         if (! p_idxCol)
           continue;
 
-        vTrace("p_idxCol %s tblptn_l %s tblptn_r %s\n"_Stz,
-               p_idxCol->szValue(),p_tablePtn_l->szValue(),p_tablePtn_r->szValue());
+        //vTrace("p_idxCol %s tblptn_l %s tblptn_r %s\n"_Stz,
+        //       p_idxCol->szValue(),p_tablePtn_l->szValue(),p_tablePtn_r->szValue());
 
         if (p_tablePtn_r->bSame(p_idxCol->szValue())) {
           bMatch_r = true;
