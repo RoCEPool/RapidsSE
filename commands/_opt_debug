@@ -2,42 +2,12 @@
 /* _opt_debug -- (join)                                                       */
 /*============================================================================*/
 
-create table TABLE1 (
-  pcol1   INTEGER NOT NULL,
-  tcol1   INTEGER NOT NULL,
-  cola1   INTEGER,
-  colb1   VARCHAR(20),
-  colc1   TIMESTAMP,
-  cold1   FLOAT,
-  cole1   DECIMAL(15, 2),
-  colf1   INTEGER,
-  colg1   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
+_orders_custkey;
+_lineitem;
+CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 
-create index TABLE1_PCOL1 on table1(pcol1);
-create index TABLE1_UCOL on table1(ucol);
-create index TABLE1_UCOLVC on table1(ucolvc);
-create index TABLE1_COLA1 on table1(cola1);
-
-Load TABLE1 "../DATA/Load/tbl1data.csv";
-
-create table TABLE4 (
-  pcol4   INTEGER NOT NULL,
-  scol4   INTEGER NOT NULL,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5),
-  cola4   INTEGER,
-  colb4   VARCHAR(10),
-  colc4   TIMESTAMP,
-  cole4   DECIMAL(15, 2)
-);
-
-create index table4_cola4 on table4(cola4);
-create index table4_ucol on table4(ucol);
-
-Load TABLE4 "../DATA/Load/tbl4data.csv";
+/time load orders             "<tpch_dir>/orders.<suffix>"   ;
+/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
 
 select * from dummy;
 
@@ -47,7 +17,13 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-select * from table1 where pcol1 >= 1;
+select l_orderkey,
+       o_orderdate
+ from  orders,
+       lineitem
+ where l_orderkey = o_orderkey
+       and o_orderdate < '1995-03-15'
+       and l_shipdate > '1995-03-15';
 
 MemoryLeaks;
 
