@@ -34,7 +34,8 @@ html_copy_source = False
 
 html_theme_options = {
   'show_powered_by' : 'False',
-  'show_relbars' : 'True',
+  'show_relbars'    : 'True',
+  'logo'            : 'logo200px.png',
 }
 
 

@@ -81,3 +81,10 @@ Headings and subheadings in reStructuredText are underlined. Headings of differe
 levels are underlined with different characters. This documentation should follow
 the docutils recommendation for characters used for underlining headings:
 ```= - ` : ' " ~ ^ _ * + # < >```
+
+## Other Notes
+
+On my Mac, the alabaster theme is found in ``~/.pyenv/versions/3.10.0/lib/python3.10/site-packages/alabaster``.
+
+Link to [Jinja template designer documentation](https://jinja.palletsprojects.com/en/3.1.x/templates/)
+Link to [Write The Docs Documentation Guide](https://www.writethedocs.org/guide/)

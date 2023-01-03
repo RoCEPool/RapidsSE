@@ -1,1 +1,8 @@
 /* A stylesheet for overriding CSS in the default Sphinx template. */
+table#installation-modes tr td:nth-child(2), table#installation-modes tr td:nth-child(3) {
+    text-align: center;
+}
+
+table.docutils {
+    margin-bottom: 25px;
+}

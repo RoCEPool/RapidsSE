@@ -1,11 +1,13 @@
 .. contents:: Contents of this section:
-   :depth: 2
+   :depth: 3
    :backlinks: none
 
 .. _requirements:
 
 System Requirements
 ===================
+
+.. _supportedOperatingSystems:
 
 Supported Operating Systems
 ---------------------------

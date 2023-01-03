@@ -5,6 +5,6 @@ Installation and Management
    :maxdepth: 1
 
    requirements
-
-
+   installation
+   startstop
 
