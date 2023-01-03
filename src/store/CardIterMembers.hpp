@@ -149,6 +149,7 @@ namespace STORE
     Card_StmColNm *         p_stmColNm;
     Card_StmColOdn *        p_stmColOdn;
     Card_Stream *           p_stream;
+    Card_StreamModel *      p_streamModel;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;
     Card_TableList *        p_tableList;
@@ -156,6 +157,7 @@ namespace STORE
     Card_TablePtn *         p_tablePtn;
     Card_TblColOdn *        p_tblColOdn;
     Card_Term *             p_term;
+    Card_Top *              p_top;
     Card_Topology *         p_topology;
     Card_Twist *            p_twist;
     Card_Type *             p_type;

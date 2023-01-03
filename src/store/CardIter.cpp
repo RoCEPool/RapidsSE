@@ -246,6 +246,7 @@ void CardIter::G_vClearMembers(void)
   G.p_stmColNm         = nullptr;
   G.p_stmColOdn        = nullptr;
   G.p_stream           = nullptr;
+  G.p_streamModel      = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
@@ -253,6 +254,7 @@ void CardIter::G_vClearMembers(void)
   G.p_tablePtn         = nullptr;
   G.p_tblColOdn        = nullptr;
   G.p_term             = nullptr;
+  G.p_top              = nullptr;
   G.p_topology         = nullptr;
   G.p_roPred           = nullptr;
   G.p_twist            = nullptr;
@@ -587,6 +589,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STMCOLNM:         return G.p_stmColNm;
     case CK_STMCOLODN:        return G.p_stmColOdn;
     case CK_STREAM:           return G.p_stream;
+    case CK_STREAMMODEL:      return G.p_streamModel;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
@@ -594,6 +597,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TABLEPTN:         return G.p_tablePtn;
     case CK_TBLCOLODN:        return G.p_tblColOdn;
     case CK_TERM:             return G.p_term;
+    case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
     case CK_ROPRED:           return G.p_roPred;
     case CK_TWIST:            return G.p_twist;
@@ -751,6 +755,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
     case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
     case CK_STREAM:           return "G.p_stream"_Stz;
+    case CK_STREAMMODEL:      return "G.p_streamModel"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
@@ -758,6 +763,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
     case CK_TBLCOLODN:        return "G.p_tblColOdn"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
+    case CK_TOP:              return "G.p_top"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
     case CK_ROPRED:           return "G.p_roPred"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
@@ -1228,6 +1234,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
     case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
     case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
+    case CK_STREAMMODEL:      *((Card**)&G.p_streamModel)      = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
@@ -1235,6 +1242,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
     case CK_TBLCOLODN:        *((Card**)&G.p_tblColOdn)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
+    case CK_TOP:              *((Card**)&G.p_top)              = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
     case CK_ROPRED:           *((Card**)&G.p_roPred)           = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
