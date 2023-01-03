@@ -255,6 +255,41 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
 }
 
 /*----------------------------------------------------------------------------*/
+eXK Card_Bounds::eCastKind_v2(Card_Index* p_index_r,
+                              Card_Table* p_table_l, Card_Table* p_table_r,
+                              Card_Term*& rp_left_column_to_be_hashed)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_IdxColList* p_idxColList = p_index_r->pSub_idxColList();
+  Card_TablePtn*   p_tablePtn_l = p_table_l->pSub_tablePtn();
+  Card_TablePtn*   p_tablePtn_r = p_table_r->pSub_tablePtn();
+
+  p_idxColList->vDump();
+  p_tablePtn_l->vDump();
+  p_tablePtn_r->vDump();
+
+
+  Card_EBound *p_ebound = pSub_eBound();
+
+  Card_Term* pIdxColOdn_inBounds = p_ebound->pGet_idxColOdn();
+  Card_IdxCol *p_idxCol_inBounds =
+      p_idxColList->pIdxCol_byIdxColOdn(pIdxColOdn_inBounds->szValue());
+
+  Card_Term* pTblColOdn_inBounds = p_ebound->pGet_tblColOdn();
+  rp_left_column_to_be_hashed = pTblColOdn_inBounds;
+
+  if (p_idxCol_inBounds->bSameValue(p_tablePtn_r))
+    if (pTblColOdn_inBounds->bSameValue(p_tablePtn_l))
+      return XK_UNICAST;
+    else
+      return XK_HASHCAST;
+  else
+    return XK_BROADCAST;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Bounds::vCullBound(char cWithMark)

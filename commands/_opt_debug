@@ -94,6 +94,8 @@ select count(*)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // HASHCAST
+/glean_interactive
+/transliterated
 /weaved
 select count(*)
   from Lineitem,

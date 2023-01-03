@@ -43,6 +43,22 @@ Card_EBound::~Card_EBound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get $In of ebound                                                          */
 /*----------------------------------------------------------------------------*/
+Card_Term* Card_EBound::pGet_idxColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsIndexColOrdinal(p_term->szValue()))
+      return p_term;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get $In of ebound                                                          */
+/*----------------------------------------------------------------------------*/
 Stz* Card_EBound::szGet_idxColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -54,6 +70,22 @@ Stz* Card_EBound::szGet_idxColOdn(void)
 
   return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get $t.c of ebound                                                         */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_EBound::pGet_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
+      return p_term;
+
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */

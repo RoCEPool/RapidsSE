@@ -1984,6 +1984,20 @@ bool Card::bSame(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card's value the same as given arg?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameValue(Card* pArg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (szValue()->bSame(pArg->szValue()))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vSetIndexColOrdinal(i8 iIdxColOdn)
