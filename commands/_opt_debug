@@ -29,9 +29,7 @@ create table orders (
 )
 partition by (O_CUSTKEY);
 
-
 create index IxO_CUSTKEY  on Orders    (O_CUSTKEY);
-
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,
@@ -52,9 +50,7 @@ create table lineitem (
   L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-
 create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
-
 
 create table supplier (
 S_SUPPKEY       INTEGER NOT NULL,
@@ -77,15 +73,31 @@ load Orders   "../tpch/sf_0001/orders.csv"   ;
 load Supplier "../tpch/sf_0001/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// HASHCAST
+// UNICAST
+/weaved
+select count(*)
+  from Customer,
+       Orders
+ where C_CUSTKEY  = O_CUSTKEY;
+//expected rows: (1500)
 
-/glean_interactive
-/transliterated
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// HASHCAST
 /weaved
 select count(*)
   from Lineitem,
        Orders
- where L_ORDERKEY  = O_CUSTKEY;
+ where L_ORDERKEY  = O_ORDERKEY;
+//expected rows: (5996)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BROADCAST
+/weaved
+select count(*)
+  from Lineitem,
+       PartSupp
+ where L_SUPPKEY  = PS_SUPPKEY;
+//expected rows: (576000)
 
 /*============================================================================*/
 /* end                                                                        */
