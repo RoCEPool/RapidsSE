@@ -138,6 +138,7 @@ enum eCK // card kind
   /* */ CK_TBLCOLODN,
   /* */ CK_TBLSYN,
   /* */ CK_TERM,
+  /* */ CK_TOP,
   /* */ CK_TOPOLOGY,
   /* */ CK_TWIST,
   /* */ CK_TYPE,
@@ -308,6 +309,7 @@ static Stz* aCK[]
   /* */ "CK_TBLCOLODN"_Stz,    // CK_TBLCOLODN
   /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TOP"_Stz,          // CK_TOP
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
   /* */ "CK_TWIST"_Stz,        // CK_TWIST
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
@@ -477,6 +479,7 @@ static Stz* aCK_short[]
   /* */ "tblColOdn"_Stz,       // CK_TBLCOLODN
   /* */ "tblSyn"_Stz,          // CK_TBLSYN
   /* */ "term"_Stz,            // CK_TERM
+  /* */ "top"_Stz,             // CK_TOP
   /* */ "topology"_Stz,        // CK_TOPOLOGY
   /* */ "twist"_Stz,           // CK_TWIST
   /* */ "type"_Stz,            // CK_TYPE
@@ -647,6 +650,7 @@ static Stz* aCK_notation[]
     /* */ "tCO"_Stz,         // CK_TBLCOLODN
     /* */ "tSyn"_Stz,        // CK_TBLSYN
     /* */ "trm"_Stz,         // CK_TERM
+    /* */ "top"_Stz,         // CK_TOP
     /* */ "tplgy"_Stz,       // CK_TOPOLOGY
     /* */ "tw"_Stz,          // CK_TWIST
     /* */ "ty"_Stz,          // CK_TYPE

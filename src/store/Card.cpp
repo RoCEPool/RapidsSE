@@ -3365,6 +3365,19 @@ Card_Term* Card::pSub_term(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Top.hpp"
+Card_Top* Card::pSub_top(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Top* p_top =
+      _pCard_Top(pFindSubCard(CK_TOP));
+  return p_top;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Topology.hpp"
 Card_Topology* Card::pSub_topology(void)
 {

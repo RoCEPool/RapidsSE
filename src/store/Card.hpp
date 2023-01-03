@@ -134,6 +134,7 @@ namespace STORE
   class Card_TblColOdn;
   class Card_TblSyn;
   class Card_Term;
+  class Card_Top;
   class Card_Topology;
   class Card_Twist;
   class Card_Type;
@@ -528,6 +529,7 @@ namespace STORE
     Card_TblColOdn*     pSub_tblColOdn(void);
     Card_TblSyn*        pSub_tblSyn(void);
     Card_Term*          pSub_term(void);
+    Card_Top*           pSub_top(void);
     Card_Topology*      pSub_topology(void);
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
