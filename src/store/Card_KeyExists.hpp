@@ -15,6 +15,9 @@ namespace STORE
   
     Card_KeyExists(void);
    ~Card_KeyExists(void) noexcept(false);
+
+    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+
   };
 
   Card_KeyExists* _pCard_KeyExists(void* aAddr);

@@ -15,6 +15,9 @@ namespace STORE
   
     Card_OrdAgg(void);
    ~Card_OrdAgg(void) noexcept(false);
+
+    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+
   };
 
   Card_OrdAgg* _pCard_OrdAgg(void* aAddr);

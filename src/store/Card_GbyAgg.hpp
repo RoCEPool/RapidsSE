@@ -15,6 +15,9 @@ namespace STORE
   
     Card_GbyAgg(void);
    ~Card_GbyAgg(void) noexcept(false);
+
+    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+
   };
 
   Card_GbyAgg* _pCard_GbyAgg(void* aAddr);

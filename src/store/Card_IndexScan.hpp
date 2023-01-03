@@ -15,6 +15,8 @@ namespace STORE
   
     Card_IndexScan(void);
    ~Card_IndexScan(void) noexcept(false);
+
+    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
   };
 
   Card_IndexScan* _pCard_IndexScan(void* aAddr);

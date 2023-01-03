@@ -15,6 +15,9 @@ namespace STORE
   
     Card_Sort(void);
    ~Card_Sort(void) noexcept(false);
+
+    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+
   };
 
   Card_Sort* _pCard_Sort(void* aAddr);

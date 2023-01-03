@@ -15,6 +15,9 @@ namespace STORE
   
     Card_Aggreg(void);
    ~Card_Aggreg(void) noexcept(false);
+
+    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+
   };
 
   Card_Aggreg* _pCard_Aggreg(void* aAddr);
