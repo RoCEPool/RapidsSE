@@ -12,10 +12,9 @@ create table Customer (
 	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
 	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
 );
-success
 
 create index IxC_CUSTKEY  on Customer  (C_CUSTKEY);
-success
+
 
 create table orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
@@ -29,10 +28,10 @@ create table orders (
 	 O_COMMENT         VARCHAR(79)   NOT NULL
 )
 partition by (O_CUSTKEY);
-success
+
 
 create index IxO_CUSTKEY  on Orders    (O_CUSTKEY);
-success
+
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,
@@ -52,10 +51,10 @@ create table lineitem (
   L_SHIPMODE      VARCHAR(10) NOT NULL,
   L_COMMENT       VARCHAR(44) NOT NULL
 );
-success
+
 
 create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
-success
+
 
 create table supplier (
 S_SUPPKEY       INTEGER NOT NULL,
@@ -66,32 +65,27 @@ S_PHONE         VARCHAR(15) NOT NULL,
 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 S_COMMENT       VARCHAR(101) NOT NULL
 );
-success
 
 create index IxS_SUPPKEY  on Supplier  (S_SUPPKEY);
-success
 
 load Customer "../tpch/sf_0001/customer.csv" ;
-success
 
 load Lineitem "../tpch/sf_0001/lineItem.csv" ;
-success
 
 load Orders   "../tpch/sf_0001/orders.csv"   ;
-success
 
 load Supplier "../tpch/sf_0001/supplier.csv" ;
-success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // HASHCAST
+
+/glean_interactive
+/transliterated
 /weaved
 select count(*)
   from Lineitem,
        Orders
  where L_ORDERKEY  = O_CUSTKEY;
-
-MemoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */
