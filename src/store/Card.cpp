@@ -1940,6 +1940,24 @@ void Card::vRenumberRecursive(Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vRemove_filter_IfEmpty(Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // todo: xt
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+
+  if (p_boolCalc->nChildCards())
+    return;
+
+  this->vRemoveChild(p_filter);
+  delete p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace subCard                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vReplaceSubCard(Card* pSub, Card* pWith)

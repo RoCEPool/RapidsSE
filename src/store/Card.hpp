@@ -408,6 +408,7 @@ namespace STORE
     void vPropertiesEnsure(void);
 
     void vRenumberRecursive(Card* pParent=nullptr);
+    void vRemove_filter_IfEmpty(Card_Filter* p_filter);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);

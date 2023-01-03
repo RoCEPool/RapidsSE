@@ -9,6 +9,7 @@
 
 #include "RelOp.hpp"
 #include "Error.hpp"
+#include "Xute.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -49,23 +50,6 @@ void Xreshape::R_vUTE_Add_where(Card* p_after)
 
   G_vAppendNewChild(G.p_where,CK_RPNCALC);
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_boolCalc, STORE::Card_PRED *p_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (p_boolCalc->nChildCards()) {
-    p_boolCalc->vPushPred(p_PRED);
-  }
-  else {
-    p_boolCalc->vAppend(p_PRED);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
@@ -146,138 +130,6 @@ void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
   }
 
   vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-
-  CardIter xCI(p_ELIST);
-  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
-
-    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
-
-    if (! G.p_rpnCalc)
-      continue;
-
-    CardIter xCI2(G.p_rpnCalc);
-    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
-      Stz *szTerm = G.p_term->szValue();
-
-      if (Card::bIsKeyOrdinal(szTerm)) {
-        G.p_term->vBump_KeyOrdinal();
-        G.p_term->vMark1(MARK_CHANGED);
-        continue;
-      }
-    }
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  CardIter xCI(p_ELIST);
-  while ((G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
-
-    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
-
-    if (! G.p_rpnCalc)
-      continue;
-
-    CardIter xCI2(G.p_rpnCalc);
-    while ((G.p_term = _pCard_Term(xCI2.pEachChild()))) {
-      Stz *szTerm = G.p_term->szValue();
-
-      if (Card::bIsStreamColOrdinal(szTerm)) {
-        G.p_term->vBump_StreamColOrdinal();
-        G.p_term->vMark1(MARK_CHANGED);
-        continue;
-      }
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Choose_index_For_crossJoin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (! G.p_index) {
-    s256 sErrorMsg;
-    sErrorMsg.vSprint("No index for table %s"_Stz,G.p_table->pSub_tableNm()->szValue());
-    Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
-    throw xError;
-  }
-
-  G.p_index->Y_vSet(P_ChosenIndex);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Choose_index_For_indexJoin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  CardIter xCI(G.p_indexList);
-
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_eBound()) {
-      p_index->Y_vSet(P_ChosenIndex);
-      break;
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Choose_index_For_indexScan(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  CardIter xCI(G.p_indexList);
-
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_bounds()) {
-      p_index->Y_vSet(P_ChosenIndex);
-      break;
-    }
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Choose_index_For_keyExists(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  G.p_index->Y_vSet(P_ChosenIndex);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Choose_index_For_keyNotExists(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  G.p_index->Y_vSet(P_ChosenIndex);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,70 +283,6 @@ void Xreshape::R_vUTE_Derive_stream_order_For_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stream_order_For_indexJoin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  RASSERT(G.p_stmColList);
-  Card_StmColList* p_stmColList_l = G.p_stmColList;
-  RASSERT(G.p_order);
-  Card_Order* p_stmOrdList_l = G.p_order;
-
-  RASSERT(G.p_indexList);
-  RASSERT(G.p_stream);
-
-  G.p_index = G.p_indexList->pFindChosenIndex();
-  if (! G.p_index)
-    return;
-
-  G.p_bounds = G.p_index->pSub_bounds();
-  if (! G.p_bounds)
-    return;
-
-  G.p_eBound = G.p_bounds->pSub_eBound();
-  if (! G.p_eBound)
-    return;
-
-  // get tblColOdn of eBound
-  Stz* szTblColOdn_r = G.p_eBound->szGet_tblColOdn();
-  if (! szTblColOdn_r)
-    return;
-  //vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
-
-  // find the stmCol_l == szTblColOdn_r in prior stream stmColList_l
-  i8 i_StmCol_l;
-  Card_StmCol* p_stmCol_l =
-      p_stmColList_l->pStmCol_FindBy_tblColOdn(szTblColOdn_r, i_StmCol_l);
-  if (! p_stmCol_l)
-    return;
-
-  // get the stmColOdn_l of stmCol_l
-  Card_StmColOdn* p_stmColOdn_l = p_stmCol_l->pSub_stmColOdn();
-  Stz* szStmColOdn_l = p_stmColOdn_l->szValue();
-
-
-  // find the stmOrdOdn_l == szStmColOdn_l in prior stream stmColList_l
-  i8 i_StmOrdOdn;
-  Card_OrdElmOdn* p_stmOrdOdn_l =
-      p_stmOrdList_l->pStmOrdOdn_FindBy_stmColOdn(szStmColOdn_l,i_StmOrdOdn);
-  if (! p_stmOrdOdn_l)
-    return;
-
-  // navigated: ../<eBound>/<tblColOdn_r> -> ../<stmCol_l>/<stmColOdn_l>
-  //                                      -> ../<stmOrdOrdn_l>
-
-  Card_Order* p_stmOrdList_ij = new Card_Order;
-  G.p_stream->vAppend(p_stmOrdList_ij);
-
-  G.p_ordElmOdn =
-      _pCard_OrdElmOdn(p_stmOrdList_ij->pAppendNewCardTail(CK_ORDELMODN,
-                                                           p_stmOrdOdn_l->szValue()));
-  G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_stream_order_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -567,34 +355,6 @@ void Xreshape::R_vUTE_Derive_stream_order_For_project(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Derive_stream_order_For_sort(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  G.p_stream = G.p_sort->pSub_stream();
-  G.p_order = _pCard_Order(G.p_stream->pAppendNewCardTail(CK_ORDER));
-
-  CardIter xCI(G.p_sbyElist);
-  while ((G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
-    G.p_rpnCalc = G.p_expr->pSub_rpnCalc();
-
-    if (! (G.p_term = G.p_rpnCalc->pGetSingle_stmColOdn()))
-      break;
-
-    Stz* szStmColOdn = G.p_term->szValue();
-    Stz* szStmOrdOdn = szStmColOdn;
-    G.p_ordElmOdn = _pCard_OrdElmOdn(G.p_order->pAppendNewCardTail(CK_ORDELMODN, szStmOrdOdn));
-
-    if ((G.p_direction = G.p_expr->pSub_direction()))
-      G.p_ordElmOdn->vAppend(G.p_direction->pDupCardAndSubCards());
-    else
-      G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Derive_order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -618,7 +378,7 @@ void Xreshape::R_vUTE_Derive_order(void)
     for (;;) {
       if (! G_bEachMainWith2Sub(CK_INDEXJOIN,CK_INDEXLIST,CK_STREAM))
         break;
-      R_vUTE_Derive_stream_order_For_indexJoin();
+      Xute::vDerive_stream_order_For_indexJoin(static_cast<CardIter*>(this));
       G.p_stmColList = G.p_indexJoin->pSub_stmColList();
       G.p_order = G.p_indexJoin->pSub_order();
 
@@ -680,7 +440,7 @@ void Xreshape::R_vUTE_Derive_order(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_SORT,CK_SBYELIST)) {
-    R_vUTE_Derive_stream_order_For_sort();
+    Xute::vDerive_stream_order_For_sort(static_cast<CardIter*>(this));
   }
 
   G.pDeck->vRenumberRecursive();
@@ -756,7 +516,7 @@ void Xreshape::R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void)
 
 
     if (AL_PARTITION != G.e_Level) {
-      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
+      Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast<CardIter*>(this) ,G.p_aggElist);
       G.p_gbyElist->Y_vCut(P_ProjBump);
       G.p_gbyElist->Y_vSet(P_ProjBumped);
     }
@@ -827,7 +587,7 @@ void Xreshape::R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void)
 
   i8 nBumpBy = G.p_projElist->Y_iGet(P_ProjBump);
 
-  R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_projElist);// TODO: ,nBumpBy);
+  Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast<CardIter*>(this), G.p_projElist);// TODO: ,nBumpBy);
   G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
   G.p_projElist->Y_vCut(P_ProjBump);
 }
@@ -1123,11 +883,11 @@ void Xreshape::R_vUTE_FoldIn_foldExpr(void)
     if (CK_GBYAGG == G.e_MainCard) {
 
       G.p_gbyElist = G.p_gbyAgg->pSub_gbyElist();
-      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_gbyElist);
+      Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_gbyElist);
 
       G.p_aggElist = G.p_gbyAgg->pSub_aggElist();
-      R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
-      R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_aggElist);
+      Xute::vBump_keyOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_aggElist);
+      Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_aggElist);
 
       R_vUTE_Push_foldExpr_Into_aggElist();
       R_vUTE_Push_foldExpr_Into_gbyElist();
@@ -1183,21 +943,6 @@ void Xreshape::R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void
   G.p_boolCalc = G.p_filter->pSub_boolCalc();
   G.p_PRED = static_cast<Card_PRED*>(G.p_boolCalc->pGetChild(0));
   bool bIgnore = G.p_PRED->bPredRecursive(bMarkCorrPred);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Individuate_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  G.p_MainCard->vRemoveChild(G.p_filter);
-  G.pDeck->vInsertAfter(G.p_filter, G.p_MainCard);
-
-  if (! G.p_filter->pSub_level()) {
-    G.p_filter->vPush(G.p_MainCard->pSub_level()->pDupCardAndSubCards());
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1356,20 +1101,6 @@ void Xreshape::R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xreshape::R_bUTE_Order_Joins(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  CardIter xCI(G.pDeck);
-  if (xCI.pEachChild(CK_TABLE) && xCI.pEachChild(CK_TABLE))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_Push_foldExpr_Into_aggElist(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
@@ -1453,36 +1184,6 @@ void Xreshape::R_vUTE_RelabelExpressions(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Remove_filter_IfEmpty(Card* pParent, Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  // todo: xt
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-
-  if (p_boolCalc->nChildCards())
-    return;
-
-  pParent->vRemoveChild(p_filter);
-  delete p_filter;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  // todo: remove? It is unused
-
-  p_boolCalc->vRemovePred(p_pred);
-}
-
-/*----------------------------------------------------------------------------*/
 /* visit each stream and adjust it's lo-hi range                              */
 /*----------------------------------------------------------------------------*/
 void Xreshape::R_vUTE_RenumberStmOdn(void)
@@ -1525,37 +1226,6 @@ void Xreshape::R_vUTE_RenumberStmOdn(void)
   }
 
   vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/* find sub card with given value and replace                                 */
-/*----------------------------------------------------------------------------*/
-bool Xreshape::R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  bool bReplaced = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [this, szValue, szWith, &bReplaced](Card *pCard)
-  {
-    G.p_term = _pCard_Term(pCard);
-
-    if (! G.p_term->bIsValue(szValue))
-      return C_CONTINUE_RECURSION;
-
-    G.p_term->vValue(szWith);
-    bReplaced = true;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCard->bApplyRecursive(eSub, bLambdaFn);
-
-  return bReplaced;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2172,7 +1842,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KEYEXISTS
   else if (G.p_keyExists) {
-    R_vUTE_Choose_index_For_keyExists();
+    Xute::vChoose_index_For_keyExists(static_cast<CardIter*>(this));
 
     G.p_table->vRemoveSubCard(G.p_keyExists);
 
@@ -2189,7 +1859,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KEYNOTEXISTS
   else if (G.p_keyNotExists) {
-    R_vUTE_Choose_index_For_keyNotExists();
+    Xute::vChoose_index_For_keyNotExists(static_cast<CardIter*>(this));
 
     G.p_table->vRemoveSubCard(G.p_keyNotExists);
 
@@ -2206,7 +1876,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CROSSJOIN
 //  else if (! G.p_bounds) {
-//    R_vUTE_Choose_index_For_crossJoin();
+//    Xute::vChoose_index_For_crossJoin(static_cast<CardIter*>(this));
 //
 //    G.p_crossJoin = new Card_CrossJoin;
 //    G.p_crossJoin->vTransferChildren(G.p_table);
@@ -2239,7 +1909,7 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
       throw xError;
     }
 
-    R_vUTE_Choose_index_For_indexJoin();
+    Xute::vChoose_index_For_indexJoin(static_cast<CardIter*>(this));
 
     G_vNewMember(CK_INDEXJOIN);
 

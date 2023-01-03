@@ -4,6 +4,7 @@
 
 #include "Xtransforms.hpp"
 #include "Optimiser.hpp"
+#include "Xute.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1056,7 +1057,7 @@ void Xtransforms::vS34_T_Predicate_Reposition(void)
   G_vRestart();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    R_vUTE_Remove_filter_IfEmpty(G.p_table,G.p_filter);
+    G.p_table->vRemove_filter_IfEmpty(G.p_filter);
   }
 
   vPrintBoard();
@@ -1407,7 +1408,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
   vPrintBoard(__LINE__);
 
-  R_vUTE_Remove_filter_IfEmpty(G.p_table, G.p_filter);
+  G.p_table->vRemove_filter_IfEmpty(G.p_filter);
   vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
@@ -1418,7 +1419,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
 
   RASSERT(G_bEachMain(CK_FOLD));
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(G.p_boolCalc, G.p_PRED);
+  Xute::vPush_Correlated_cmpPred_Onto_mq_boolCalc(G.p_boolCalc, G.p_PRED);
   vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
@@ -1564,7 +1565,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
     i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
-    R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_gbyElist);
+    Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_gbyElist);
 
     G.p_fold->Y_vCut(P_BumpRight);
     G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
@@ -1800,7 +1801,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
     i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
-    R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(G.p_gbyElist);
+    Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_gbyElist);
 
     G.p_fold->Y_vCut(P_BumpRight);
     G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
@@ -1970,7 +1971,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E(void)
   //   %1->$t.c      //
   //   ke            //
 
-  R_bUTE_ReplaceValueOfSub(m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
+  Xute::bReplaceValueOfSub(static_cast<CardIter*>(this), m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
   G_vCopyCard(nullptr);
   vPrintBoard(__LINE__);
 
@@ -2614,7 +2615,7 @@ void Xtransforms::vS80_T30_Morph_scan_To_indexScan(void)
     if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
       G.p_scan->vCard(CK_INDEXSCAN);
 
-      R_vUTE_Choose_index_For_indexScan();
+      Xute::vChoose_index_For_indexScan(static_cast<CardIter*>(this));
     }
   }
 
@@ -2955,7 +2956,7 @@ void Xtransforms::vSA0_T20_Individuate_filter(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
-    R_vUTE_Individuate_filter();
+    Xute::vIndividuate_filter(static_cast<CardIter*>(this));
   }
 
   G_vRestart();

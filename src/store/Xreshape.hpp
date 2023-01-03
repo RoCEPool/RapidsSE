@@ -15,25 +15,15 @@ namespace STORE
   public:
 
     // utilities
-    void R_vUTE_Push_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
     void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
     void R_vUTE_Add_where(Card* p_after);
     void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
-    void R_vUTE_Bump_keyOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
-    void R_vUTE_Bump_stmOdn_In_rpnCalc_Of_Elist(Card_ELIST* p_ELIST);
     void R_vUTE_Bump_where_BaseOn_foldExpr(void);
-    void R_vUTE_Choose_index_For_crossJoin(void);
-    void R_vUTE_Choose_index_For_indexJoin(void);
-    void R_vUTE_Choose_index_For_indexScan(void);
-    void R_vUTE_Choose_index_For_keyExists(void);
-    void R_vUTE_Choose_index_For_keyNotExists(void);
     void R_vUTE_Derive_foldElist_From_project_stream(void);
     void R_vUTE_Derive_group_order_For_gbyAgg(void);
     void R_vUTE_Derive_stream_order_For_gbyAgg(void);
-    void R_vUTE_Derive_stream_order_For_indexJoin(void);
     void R_vUTE_Derive_stream_order_For_indexScan(void);
     void R_vUTE_Derive_stream_order_For_project(void);
-    void R_vUTE_Derive_stream_order_For_sort(void);
     void R_vUTE_Derive_order(void);
     void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
     void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);
@@ -44,20 +34,15 @@ namespace STORE
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
     void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void);
-    void R_vUTE_Individuate_filter(void);
     void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
     void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
     void R_vUTE_Move_on_To_where(void);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
-    bool R_bUTE_Order_Joins(void);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);
     void R_vUTE_Push_foldExpr_Into_gbyElist(void);
     void R_vUTE_RelabelExpressions(void);
-    void R_vUTE_Remove_filter_IfEmpty(Card* pParent, Card_Filter* p_filter);
-    void R_vUTE_Remove_PRED_From_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
     void R_vUTE_RenumberStmOdn(void);
-    bool R_bUTE_ReplaceValueOfSub(Card* pCard, eCK eSub, Stz* szValue, Stz* szWith);
     void R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term);
     Card_Table* R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before);
     Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
