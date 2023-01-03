@@ -41,7 +41,22 @@ Card_EBound::~Card_EBound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bound for relational op                                                */
+/* get $In of ebound                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Card_EBound::szGet_idxColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsIndexColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get $t.c of ebound                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Card_EBound::szGet_tblColOdn(void)
 {

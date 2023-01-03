@@ -1413,13 +1413,14 @@ bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
-  Card_Table*      p_table_prior = p_main_prior->pSub_table();
-  Card_Stream*     p_stream_prior = p_main_prior->pSub_stream();
+  Card_Table*      p_table_prior      = p_main_prior->pSub_table();
+  Card_Stream*     p_stream_prior     = p_main_prior->pSub_stream();
   Card_StmColList* p_stmColList_prior = p_stream_prior->pSub_stmColList();
 
-  Card_Table*  p_table_curr  = p_main_curr->pSub_table();
-  Card_Index*  p_index_curr  = p_main_curr->pSub_index();
-  Card_Bounds* p_bounds_curr = p_main_curr->pSub_bounds();
+  Card_Table*      p_table_curr     = p_main_curr->pSub_table();
+  Card_IndexList*  p_indexList_curr = p_main_curr->pSub_indexList();
+  Card_Index*      p_index_curr     = p_indexList_curr->pFindChosenIndex();
+  Card_Bounds*     p_bounds_curr    = p_main_curr->pSub_bounds();
 
   Card_Hash* p_hash;
   Card_Term* p_term_hash;

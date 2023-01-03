@@ -16,6 +16,7 @@ namespace STORE
     Card_EBound(void);
    ~Card_EBound(void) noexcept(false);
 
+    Stz* szGet_idxColOdn(void);
     Stz* szGet_tblColOdn(void);
   };
 
