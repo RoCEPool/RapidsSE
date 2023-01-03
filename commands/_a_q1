@@ -46,7 +46,7 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public lineitem
-    | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
+    | filter " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
     | aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,

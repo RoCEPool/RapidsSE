@@ -42,7 +42,7 @@ pipeline Query6
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
-     | filter " type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. < and"
+     | filter " type BOOLEAN  }  0.05 0.07 L_DISCOUNT between L_QUANTITY 24. < and"
      | project " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next

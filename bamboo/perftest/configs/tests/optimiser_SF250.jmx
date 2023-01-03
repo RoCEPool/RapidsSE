@@ -1687,7 +1687,7 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public lineitem
-    | filter &quot; type BOOLEAN  $11 DATE &apos;1998-10-01&apos;  &lt;=  &quot;
+    | filter &quot; type BOOLEAN  $11 DATE &apos;1998-09-01&apos;  &lt;=  &quot;
     | aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
@@ -1757,8 +1757,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1905,7 +1904,7 @@ begin
 
   stage S01 on all partitions :
     scan part
-    | filter &quot; type BOOLEAN  }  P_TYPE &apos;%BRASS&apos;  6 matchTrailing P_SIZE 15 == and&quot;
+    | filter &quot; type BOOLEAN  }  P_TYPE &apos;%BRASS&apos; 6 matchTrailing P_SIZE 15 == and&quot;
     | project &quot; type INTEGER as P_PARTKEY P_PARTKEY&quot;
     | combined 0
     | next
@@ -2214,19 +2213,19 @@ begin
     | next
 
   stage S05 on all partitions :
-    sort &quot; type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  &quot;
+    sort &quot; type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  &quot;
     | limit 10
     | combined 0
     | next
 
   stage S06 on all nodes :
-    sort &quot; type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  &quot;
+    sort &quot; type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  &quot;
     | limit 10
     | combined 0
     | next
 
   stage S07 on origin :
-    sort &quot; type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  &quot;
+    sort &quot; type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  &quot;
     | limit 10
     | combined 0
     | next
@@ -2644,7 +2643,7 @@ begin
     | next
 
   stage S09 on origin :
-    sort &quot; type DECIMAL REVENUE ASC  &quot;
+    sort &quot; type DECIMAL REVENUE DESC  &quot;
     | combined 0
     | next
 
@@ -2804,7 +2803,7 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
-     | filter &quot; type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. &lt; and&quot;
+     | filter &quot; type BOOLEAN  }  0.05 0.07 L_DISCOUNT between L_QUANTITY 24. &lt; and&quot;
      | project &quot; type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  &quot;
      | combined 0
      | next
@@ -2823,8 +2822,7 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
      output
      | sink
      | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2971,21 +2969,22 @@ begin
      | next
 
    stage S01 on all partitions :
-     scan nation
-     | filter &quot;type BOOLEAN N_NAME &apos;FRANCE&apos; == N_NAME &apos;GERMANY&apos; == OR&quot;
-     | project &quot;type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N2_N_NAME N_NAME&quot;
+     scan customer
+     | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY&quot;
      | combined 0
      | next
 
-   stage S02 on all partitions :
-     indexJoin customer IxC_NATIONKEY &quot;BOUND $I1 N_NATIONKEY ==&quot;
-     | project &quot;type INTEGER as C_CUSTKEY J1_C_CUSTKEY , type VARCHAR as N2_N_NAME N2_N_NAME&quot;
-     | combined 0
-     | next
+  stage S02 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
+    | filter &quot;type BOOLEAN J1_N_NAME &apos;FRANCE&apos; == J1_N_NAME &apos;GERMANY&apos; == OR&quot;
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME J1_N_NAME&quot;
+    | combined 0
+    | next
 
    stage S03 on all partitions :
      indexJoin orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
-     | project &quot;type integer as O_ORDERKEY J1_O_ORDERKEY , type VARCHAR as N2_N_NAME N2_N_NAME&quot;
+     | project &quot;type integer as O_ORDERKEY J1_O_ORDERKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME&quot;
      | hash &quot;type INTEGER O_ORDERKEY&quot;
      | combined 0
      | next hashcast
@@ -2993,36 +2992,66 @@ begin
    stage S04 on all partitions :
      indexJoin LineItem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
      | filter &quot;type BOOLEAN } DATE &apos;1995-01-01&apos;  DATE &apos;1996-12-31&apos; J1_L_SHIPDATE between&quot;
-     | project &quot;type INTEGER as L_SUPPKEY J1_L_SUPPKEY , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR J1_L_SHIPDATE extract_year , type DECIMAL as volume J1_L_EXTENDEDPRICE 1.00 J1_L_DISCOUNT -  * &quot;
+     | project &quot;type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR J1_L_SHIPDATE extract_year ,
+                type DECIMAL as volume J1_L_EXTENDEDPRICE 1.00 J1_L_DISCOUNT -  * &quot;
      | hash &quot;type INTEGER L_SUPPKEY &quot;
      | combined 0
      | next hashcast
 
    stage S05 on all partitions :
      indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
-     | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as VOLUME VOLUME&quot;
+     | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR L_YEAR ,
+                type DECIMAL as VOLUME VOLUME&quot;
      | combined 0
      | next
 
    stage S06 on all partitions :
      indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
-     | filter &quot;type BOOLEAN J1_N_NAME &apos;FRANCE&apos; == N2_N_NAME &apos;GERMANY&apos; == and J1_N_NAME &apos;GERMANY&apos; == N2_N_NAME &apos;FRANCE&apos; == and or&quot;
-     | project &quot;type VARCHAR as N1_N_NAME J1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as VOLUME VOLUME&quot;
+     | filter &quot;type BOOLEAN J1_N_NAME &apos;FRANCE&apos; == N2_N_NAME &apos;GERMANY&apos; == and
+                            J1_N_NAME &apos;GERMANY&apos; == N2_N_NAME &apos;FRANCE&apos; == and or&quot;
+     | project &quot;type VARCHAR as N1_N_NAME J1_N_NAME ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR L_YEAR ,
+                type DECIMAL as VOLUME VOLUME&quot;
      | combined 0
      | next
 
   stage S07 on all partitions :
-     aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) VOLUME sum  &quot;
+     aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR as N2_N_NAME N2_N_NAME ,
+                      type INTEGER as L_YEAR L_YEAR aggregates
+                      type VARCHAR as N1_N_NAME $K1 ,
+                      type VARCHAR as N2_N_NAME $K2 ,
+                      type INTEGER as L_YEAR $K3 ,
+                      type DECIMAL AS REVENUE ) VOLUME sum  &quot;
      | combined 0
      | next
 
    stage S08 on all nodes :
-    aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  &quot;
+    aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR as N2_N_NAME N2_N_NAME ,
+                     type INTEGER as L_YEAR L_YEAR
+                     aggregates
+                     type VARCHAR as N1_N_NAME $K1 ,
+                     type VARCHAR as N2_N_NAME $K2 ,
+                     type INTEGER as L_YEAR $K3 ,
+                     type DECIMAL AS REVENUE ) REVENUE sum  &quot;
      | combined 0
      | next
 
    stage S09 on origin :
-     aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  &quot;
+     aggreg &quot; groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR as CUST_NATION N2_N_NAME ,
+                      type INTEGER as L_YEAR L_YEAR
+                      aggregates
+                      type VARCHAR as N1_N_NAME $K1 ,
+                      type VARCHAR as N2_N_NAME $K2 ,
+                      type INTEGER as L_YEAR $K3 ,
+                      type DECIMAL AS REVENUE ) REVENUE sum  &quot;
      | combined 0
      | next
 
@@ -3030,7 +3059,7 @@ begin
      output
      | sink
      | first
-end ;</stringProp>
+ end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3173,7 +3202,7 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p8" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">pipeline Q8
+              <stringProp name="query">pipeline Query8
 begin
   stage S00 on origin :
     start
@@ -3181,28 +3210,30 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public region
-    | filter &quot;type BOOLEAN R_NAME &apos;AMERICA&apos; ==&quot;
-    | project &quot;type INTEGER R_REGIONKEY as R_REGIONKEY&quot;
+    scan customer
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY , 
+               type INTEGER as C_NATIONKEY C_NATIONKEY&quot;
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin nation IxN_REGIONKEY &quot;BOUND $I1 R_REGIONKEY ==&quot;
-    | project &quot;type INTEGER as N_NATIONKEY J1_N_NATIONKEY&quot;
+    indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY , 
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY&quot;
     | combined 0
     | next
 
   stage S03 on all partitions :
-    indexJoin customer IxC_NATIONKEY &quot;BOUND $I1 N_NATIONKEY ==&quot;
-    | project &quot;type INTEGER as C_CUSTKEY J1_C_CUSTKEY&quot;
+    indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
+    | filter &quot;type BOOLEAN J1_R_NAME &apos;AMERICA&apos; ==&quot;
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY&quot;
     | combined 0
     | next
 
   stage S04 on all partitions :
     indexJoin orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
     | filter &quot;type BOOLEAN J1_O_ORDERDATE DATE &apos;1995-01-01&apos; &gt;=  J1_O_ORDERDATE DATE &apos;1996-12-31&apos; &lt;= and&quot;
-    | project &quot;type integer as O_ORDERKEY J1_O_ORDERKEY ,
+    | project &quot;type integer as O_ORDERKEY J1_O_ORDERKEY , 
                type INTEGER as O_YEAR J1_O_ORDERDATE extract_year&quot;
     | hash &quot;type INTEGER O_ORDERKEY&quot;
     | combined 0
@@ -3210,10 +3241,10 @@ begin
 
   stage S05 on all partitions :
     indexJoin LineItem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
-    | project &quot;type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
-               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
-               type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as l_extendedprice J1_l_extendedprice ,
+    | project &quot;type INTEGER as L_SUPPKEY J1_L_SUPPKEY , 
+               type INTEGER as L_PARTKEY J1_L_PARTKEY , 
+               type INTEGER as O_YEAR O_YEAR , 
+               type DECIMAL as l_extendedprice J1_l_extendedprice , 
                type DECIMAL as l_discount J1_l_discount&quot;
     | hash &quot;type INTEGER L_PARTKEY&quot;
     | combined 0
@@ -3222,9 +3253,9 @@ begin
   stage S06 on all partitions :
     indexJoin part IxP_PARTKEY &quot;BOUND $I1 L_PARTKEY ==&quot;
     | filter &quot;type BOOLEAN J1_P_TYPE &apos;ECONOMY ANODIZED STEEL&apos; ==&quot;
-    | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY ,
-               type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as l_extendedprice l_extendedprice ,
+    | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY , 
+               type INTEGER as O_YEAR O_YEAR , 
+               type DECIMAL as l_extendedprice l_extendedprice , 
                type DECIMAL as l_discount l_discount&quot;
     | hash &quot;type INTEGER L_SUPPKEY&quot;
     | combined 0
@@ -3232,55 +3263,52 @@ begin
 
   stage S07 on all partitions :
     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
-    | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
-               type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as l_extendedprice l_extendedprice ,
+    | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY , 
+               type INTEGER as O_YEAR O_YEAR , 
+               type DECIMAL as l_extendedprice l_extendedprice , 
                type DECIMAL as l_discount l_discount&quot;
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
-    | project &quot;type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
+    | project &quot;type INTEGER as O_YEAR O_YEAR , 
+               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , 
                type VARCHAR as NATION J1_N_NAME&quot;
     | combined 0
     | next
 
   stage S09 on all partitions :
-    aggreg &quot; groupBy type INTEGER O_YEAR
-             aggregates
-                     type INTEGER as O_YEAR $K1 ,
-                     type DECIMAL  ) VOLUME sum  ,
-                     type DECIMAL )  } type DECIMAL NATION &apos;BRAZIL&apos;  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  &quot;
+    aggreg &quot; groupBy    type INTEGER O_YEAR 
+             aggregates type INTEGER as O_YEAR $K1 , 
+                        type DECIMAL  ) VOLUME sum  , 
+                        type DECIMAL )  } type DECIMAL NATION &apos;BRAZIL&apos;  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  &quot;
     | combined 0
     | next
 
-  stage S010 on all nodes :
-    aggreg &quot; groupBy type INTEGER O_YEAR
-             aggregates
-                     type INTEGER as O_YEAR $K1 ,
-                     type DECIMAL )  $2 sum  ,
-                     type DECIMAL )  $3 sum  &quot;
+  stage S10 on all nodes :
+    aggreg &quot; groupBy    type INTEGER O_YEAR 
+             aggregates type INTEGER as O_YEAR $K1 , 
+                        type DECIMAL )  $2 sum  , 
+                        type DECIMAL )  $3 sum  &quot;
     | combined 0
     | next
 
-  stage S011 on origin :
-    aggreg &quot; groupBy type INTEGER O_YEAR
-             aggregates
-                     type INTEGER as O_YEAR $K1 ,
-                     type DECIMAL )  $2 sum  ,
-                     type DECIMAL )  $3 sum  &quot;
+  stage S11 on origin :
+    aggreg &quot; groupBy    type INTEGER O_YEAR 
+             aggregates type INTEGER as O_YEAR $K1 , 
+                        type DECIMAL )  $2 sum  , 
+                        type DECIMAL )  $3 sum  &quot;
     | combined 0
     | next
 
-  stage S012 on origin :
-    project &quot; type INTEGER as O_YEAR O_YEAR ,
+  stage S12 on origin :
+    project &quot; type INTEGER as O_YEAR O_YEAR , 
               type DECIMAL as mkt_share $3 $2 /  &quot;
     | combined 0
     | next
 
-  stage S013 on origin :
+  stage S13 on origin :
     output
     | sink
     | first
@@ -3519,7 +3547,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
 
   stage S10 on origin :
     sort &quot;type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR ASC&quot;
+          type INTEGER as O_YEAR O_YEAR DESC&quot;
     | combined 0
     | next
 
@@ -3527,8 +3555,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
     output
     | sink
     | first
-  end ;
-</stringProp>
+  end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
