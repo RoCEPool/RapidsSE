@@ -120,6 +120,7 @@ namespace STORE
   class Card_RoPred;
   class Card_Stage;
   class Card_Stream;
+  class Card_StreamModel;
   class Card_StmCol;
   class Card_StmColList;
   class Card_StmColNm;
@@ -516,6 +517,7 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
+    Card_StreamModel*   pSub_streamModel(void);
     Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);

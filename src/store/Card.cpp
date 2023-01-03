@@ -3222,6 +3222,19 @@ Card_Stream* Card::pSub_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_StreamModel.hpp"
+Card_StreamModel* Card::pSub_streamModel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamModel* p_streamModel =
+      _pCard_StreamModel(pFindSubCard(CK_STREAM));
+  return p_streamModel;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_StmCol.hpp"
 Card_StmCol* Card::pSub_stmCol(void)
 {

@@ -96,8 +96,10 @@
 
 #include "Card_ObyElist.hpp"
 #include "Card_On.hpp"
-#include "Card_OrPred.hpp"
 #include "Card_OrdAgg.hpp"
+#include "Card_Order.hpp"
+#include "Card_OrdElmOdn.hpp"
+#include "Card_OrPred.hpp"
 
 #include "Card_Param.hpp"
 #include "Card_ParamList.hpp"
@@ -115,6 +117,7 @@
 #include "Card_RBound.hpp"
 #include "Card_Reason.hpp"
 #include "Card_RelnOp.hpp"
+#include "Card_RoPred.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_RpnTerms.hpp"
 
@@ -123,13 +126,11 @@
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"
-#include "Card_RoPred.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StmColNm.hpp"
 #include "Card_StmColOdn.hpp"
-#include "Card_Order.hpp"
-#include "Card_OrdElmOdn.hpp"
 #include "Card_Stream.hpp"
+#include "Card_StreamModel.hpp"
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
