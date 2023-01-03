@@ -29,7 +29,7 @@ all: checkSphinx checkLatex
 	
 	@echo "Building PDF documentation..."
 	@echo
-	@$(MAKE) latexpdf
+	@$(MAKE) latexpdf LATEXMKOPTS="-interaction=nonstopmode"
 	@echo
 
 checkSphinx:
