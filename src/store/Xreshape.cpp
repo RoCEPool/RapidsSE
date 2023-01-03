@@ -1428,7 +1428,7 @@ bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
   Card_StmCol* p_stmCol_hash;
   i8 i_StmCol;
 
-  eXK eCastKind = p_bounds_curr->eCastKind(p_index_curr,
+  eXK eCastKind = p_bounds_curr->eCastKind_v2(p_index_curr,
                                               p_table_prior, p_table_curr,
                                               p_term_hash);
 
