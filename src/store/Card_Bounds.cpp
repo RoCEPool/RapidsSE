@@ -184,7 +184,7 @@ Card_Bounds* Card_Bounds::pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
 /*----------------------------------------------------------------------------*/
 eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
                            Card_Table* p_table_l, Card_Table* p_table_r,
-                           Card_Term*& rp_term_hash)
+                           Card_Term*& rp_left_column_to_be_hashed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -196,52 +196,59 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
   p_tablePtn_l->vDump();
   p_tablePtn_r->vDump();
 
-  rp_term_hash = nullptr;
+  rp_left_column_to_be_hashed = nullptr;
 
   CardIter xCI_bounds(this);
   while (Card_EBound* p_ebound = _pCard_EBound(xCI_bounds.pEachChild(CK_EBOUND))) {
 
-    bool bMatch_l = false;
-    bool bMatch_r = false;
+    bool b_EBound_Index_Colummn_Matches_PtnOf_Right_Table = false;
+    bool b_EBound_Left_Column_Matches_PtnOf_Left_Table    = false;
+
     CardIter xCI_bound(p_ebound);
     while (Card_Term* p_term_bound = _pCard_Term(xCI_bound.pEachChild(CK_TERM))) {
 
       p_term_bound->vDump();
 
       if (Card::bIsIndexColOrdinal(p_term_bound->szValue())) {
-        Card_IdxCol* p_idxCol = p_idxColList->pIdxCol_byIdxColOdn(p_term_bound->szValue());
-        if (! p_idxCol)
+        //+ p_term_bound is the indexed right column ordinal in the ebound
+
+        // decode the index column ordinal to ultimately get table-column ordinal
+        Card_IdxCol* p_idxCol_r = p_idxColList->pIdxCol_byIdxColOdn(p_term_bound->szValue());
+        if (! p_idxCol_r)
           continue;
 
-        //vTrace("p_idxCol %s tblptn_l %s tblptn_r %s\n"_Stz,
-        //       p_idxCol->szValue(),p_tablePtn_l->szValue(),p_tablePtn_r->szValue());
+        //vTrace("p_idxCol_r %s tblptn_l %s tblptn_r %s\n"_Stz,
+        //       p_idxCol_r->szValue(),p_tablePtn_l->szValue(),p_tablePtn_r->szValue());
 
-        if (p_tablePtn_r->bSame(p_idxCol->szValue())) {
-          bMatch_r = true;
-        }
+        if (p_tablePtn_r->bSame(p_idxCol_r->szValue()))
+          b_EBound_Index_Colummn_Matches_PtnOf_Right_Table = true;
 
       }
       else
       if (Card::bIsTableColOrdinal(p_term_bound->szValue())) {
+        //+ p_term_bound is the left column as it appears in the ebound
 
-        rp_term_hash = p_term_bound;
-        if (p_tablePtn_l->bSame(p_term_bound->szValue())) {
-          bMatch_l = true;
-        }
+        rp_left_column_to_be_hashed = p_term_bound;
+
+        if (p_tablePtn_l->bSame(p_term_bound->szValue()))
+          b_EBound_Left_Column_Matches_PtnOf_Left_Table = true;
 
       }
 
     }
 
-    if (bMatch_l) {
-      if (bMatch_r)
+    if (b_EBound_Left_Column_Matches_PtnOf_Left_Table)
+      if (b_EBound_Index_Colummn_Matches_PtnOf_Right_Table)
         return XK_UNICAST;
       else
-        return XK_HASHCAST;
+        continue;
+    else
+    if (b_EBound_Index_Colummn_Matches_PtnOf_Right_Table) {
+      RASSERT(rp_left_column_to_be_hashed);
+      return XK_HASHCAST;
     }
     else
-    if (bMatch_r)
-      return XK_HASHCAST;
+      continue;
   }
 
   return XK_BROADCAST;

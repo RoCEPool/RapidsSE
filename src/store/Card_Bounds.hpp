@@ -22,7 +22,7 @@ namespace STORE
     static Card_Bounds*     pBounds_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
                                                   char cTblSyn);
     eXK eCastKind(Card_Index* p_index_r, Card_Table* p_table_l, Card_Table* p_table_r,
-                  Card_Term*& rp_term_hash);
+                  Card_Term*& rp_left_column_to_be_hashed);
 
     void vCullBound(char cWithMark);
   };
