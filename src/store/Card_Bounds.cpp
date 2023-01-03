@@ -192,6 +192,10 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
   Card_TablePtn* p_tablePtn_l = p_table_l->pSub_tablePtn();
   Card_TablePtn* p_tablePtn_r = p_table_r->pSub_tablePtn();
 
+  p_idxColList->vDump();
+  p_tablePtn_l->vDump();
+  p_tablePtn_r->vDump();
+
   rp_term_hash = nullptr;
 
   CardIter xCI_bounds(this);
@@ -201,6 +205,8 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
     bool bMatch_r = false;
     CardIter xCI_bound(p_ebound);
     while (Card_Term* p_term_bound = _pCard_Term(xCI_bound.pEachChild(CK_TERM))) {
+
+      p_term_bound->vDump();
 
       if (Card::bIsIndexColOrdinal(p_term_bound->szValue())) {
         Card_IdxCol* p_idxCol = p_idxColList->pIdxCol_byIdxColOdn(p_term_bound->szValue());
@@ -218,9 +224,9 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
       else
       if (Card::bIsTableColOrdinal(p_term_bound->szValue())) {
 
+        rp_term_hash = p_term_bound;
         if (p_tablePtn_l->bSame(p_term_bound->szValue())) {
           bMatch_l = true;
-          rp_term_hash = p_term_bound;
         }
 
       }
@@ -233,6 +239,9 @@ eXK Card_Bounds::eCastKind(Card_Index* p_index_r,
       else
         return XK_HASHCAST;
     }
+    else
+    if (bMatch_r)
+      return XK_HASHCAST;
   }
 
   return XK_BROADCAST;

@@ -6,6 +6,9 @@ _orders_custkey;
 _lineitem;
 CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 
+tag default <tpch_dir> = "../tpch/SF_0001" ;
+tag default <suffix>   = "csv" ;
+
 /time load orders             "<tpch_dir>/orders.<suffix>"   ;
 /time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
 

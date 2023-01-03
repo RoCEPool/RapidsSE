@@ -1688,7 +1688,7 @@ void Xgearing::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  this->vForward();
+  pEachChild();
 
   if (bClearMembers)
     G_vClearMembers();
