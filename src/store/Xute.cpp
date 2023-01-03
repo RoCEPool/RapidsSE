@@ -329,5 +329,96 @@ void Xute::vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_boolCalc,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                  vSeries_36_Bound_Analysis */
+/*============================================================================*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xute::vS36_T30_Delete_Empty_filter(CardIter* pCardIter)
+{
+  _static_
+
+  if (! pCardIter->G.p_filter->bIsEmpty())
+    return;
+
+  pCardIter->G.p_MainCard->vRemoveChild(pCardIter->G.p_filter);
+  DELETE_CARD(pCardIter->G.p_filter);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    vSeries_75_EE_operators */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xute::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCardIter)
+{
+  _static_
+
+  i8 iOrdLo_stream = pCardIter->G.p_stream->iGetOdnLow();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [iOrdLo_stream](Card* pCard)
+  {
+    Card_StmColOdn* p_stmColOrd = _pCard_StmColOdn(pCard);
+    if (! Card::bIsStreamColOrdinal(p_stmColOrd->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    i8 iStmColOdn = Card::iGetColOdn(p_stmColOrd->szValue());
+    i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
+    p_stmColOrd->vSetStreamColOrdinal(iStmColOdn_corrected);
+
+    p_stmColOrd->vMark1(MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCardIter->G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                               vSeries_A0_Make_Weavable */
+/*============================================================================*/
+
+void Xute::vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCardIter)
+{
+  _static_
+
+  // todo: xt
+
+  pCardIter->G.p_indexJoin->vRemoveChild(pCardIter->G.p_filter);
+  pCardIter->G.pDeck->vInsertAfter(pCardIter->G.p_filter,
+                                   pCardIter->G.p_indexJoin);
+
+  if (! pCardIter->G.p_filter->pSub_level()) {
+    pCardIter->G.p_filter->vPush(pCardIter->G.p_indexJoin->pSub_level()->pDupCardAndSubCards());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xute::vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCardIter)
+{
+  _static_
+
+  // todo: xt
+
+  pCardIter->G.p_crossJoin->vRemoveChild(pCardIter->G.p_filter);
+  pCardIter->G.pDeck->vInsertAfter(pCardIter->G.p_filter,
+                                   pCardIter->G.p_crossJoin);
+
+  if (! pCardIter->G.p_filter->pSub_level()) {
+    pCardIter->G.p_filter->vPush(pCardIter->G.p_crossJoin->pSub_level()->pDupCardAndSubCards());
+  }
+}
 

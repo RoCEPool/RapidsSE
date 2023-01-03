@@ -54,7 +54,6 @@ namespace STORE
     void R_vUTE_Stream_AdjustLoHi(void);
     void R_vUTE_Unproject_foldExpr_After_having(void);
     void R_vUTE_Unproject_foldExpr_After_where(void);
-    void R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);
 
     // vSeries_26_SubQuery_Analysis
     void vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
@@ -63,17 +62,9 @@ namespace STORE
     // vSeries_33_To_TblColOdn
     void vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void);
 
-    // vSeries_36_Bound_Analysis
-    void vR_S36_T30_Delete_Empty_filter(void);
-
     // vSeries_75_EE_operators
     void vR_S75_T10_Morph_table_To_EEop_v2(void);
-    void vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
     void vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
-
-    // vSeries_A0_Make_Weavable
-    void vR_SA0_T10_Individuate_indexJoin_filter_b(void);
-    void vR_SA0_T10c_Individuate_crossJoin_filter(void);
 
     // vSeries_Z0_Restate_Pipeline
     void vR_SZ0_T20_Reinstate_stagesV3(void);

@@ -1404,7 +1404,8 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   //                               //             %1
 
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
-  R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(G.p_boolCalc,/*r*/G.p_PRED);
+  bool b = G.p_boolCalc->bYank_PRED(MARK_AT, G.p_PRED);
+  RASSERT(b);
   RASSERT(G.p_PRED->Y_bHas(P_CorrPred));
   vPrintBoard(__LINE__);
 
@@ -1623,7 +1624,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   // T G G G H P F T T W G G G   // delete empty filter
   //               b             //
 
-  vR_S36_T30_Delete_Empty_filter();
+  Xute::vS36_T30_Delete_Empty_filter(static_cast<CardIter*>(this));
 
   // W A NC I
   //       I-sqr-> $1            // The original ro pred can now be removed
@@ -1833,7 +1834,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   G.p_boolCalc->vCullPred(MARK_UP);
   vPrintBoard(__LINE__);
 
-  vR_S36_T30_Delete_Empty_filter();
+  Xute::vS36_T30_Delete_Empty_filter(static_cast<CardIter*>(this));
 
   G_vRestart();
   if (G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
@@ -2961,12 +2962,12 @@ void Xtransforms::vSA0_T20_Individuate_filter(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    vR_SA0_T10_Individuate_indexJoin_filter_b();
+    Xute::vSA0_T10_Individuate_indexJoin_filter_b(static_cast<CardIter*>(this));
   }
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    vR_SA0_T10c_Individuate_crossJoin_filter();
+    Xute::vSA0_T10c_Individuate_crossJoin_filter(static_cast<CardIter*>(this));
   }
 
 

@@ -101,16 +101,16 @@ namespace STORE
     static void vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void);
 
     // vSeries_36_Bound_Analysis
-    static void vR_S36_T30_Delete_Empty_filter(void);
+    static void vS36_T30_Delete_Empty_filter(CardIter* pCardIter);
 
     // vSeries_75_EE_operators
     static void vR_S75_T10_Morph_table_To_EEop_v2(void);
-    static void vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void);
+    static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCardIter);
     static void vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
     // vSeries_A0_Make_Weavable
-    static void vR_SA0_T10_Individuate_indexJoin_filter_b(void);
-    static void vR_SA0_T10c_Individuate_crossJoin_filter(void);
+    static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCardIter);
+    static void vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCardIter);
 
     // vSeries_Z0_Restate_Pipeline
     static void vR_SZ0_T20_Reinstate_stagesV3(void);
