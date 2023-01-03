@@ -165,15 +165,6 @@ eOA Xgearing::eCueUser(Stz* szPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end of reshape                                                             */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vEndReshape(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vEndTransform(void)
@@ -285,14 +276,6 @@ void Xgearing::vPrintBoard(i8 iLineNo)
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
         break;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin and record reshape information                                       */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vReshape(const char* azFunc)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

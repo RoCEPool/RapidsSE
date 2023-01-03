@@ -75,7 +75,6 @@ void Xreshape::R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRE
 void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-  vReshape(__func__);
 
   i8 iOdn_shift = 0;
 
@@ -128,8 +127,6 @@ void Xreshape::R_vUTE_Stream_AdjustLoHi(void)
     }
 
   }
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -599,8 +596,6 @@ void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vReshape(__func__);
-
   i8 i_Main = G.pDeck->iFindChild(G.p_MainCard);
 
   Card_BoolCalc* p_boolCalc = G.p_constraint->pSub_boolCalc();
@@ -634,8 +629,6 @@ void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -644,8 +637,6 @@ void Xreshape::R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -668,8 +659,6 @@ void Xreshape::R_vUTE_Convert_tblColOdn_To_stmOdn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1189,7 +1178,6 @@ void Xreshape::R_vUTE_RelabelExpressions(void)
 void Xreshape::R_vUTE_RenumberStmOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-  vReshape(__func__);
 
   // TODO: G_bEachSub(CK_STREAM)
 
@@ -1224,8 +1212,6 @@ void Xreshape::R_vUTE_RenumberStmOdn(void)
 
     G.p_stmColList->bApplyRecursive(CK_STMCOL,bLambdaFn);
   }
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1547,20 +1533,6 @@ void Xreshape::R_vUTE_Unproject_foldExpr_After_where(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_boolCalc,
-                                                               Card_PRED*& rp_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  // todo: xt
-
-  bool b = p_boolCalc->bYank_PRED(MARK_AT, rp_PRED);
-  RASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                               vSeries_26_SubQuery_Analysis */
 /*============================================================================*/
@@ -1571,8 +1543,6 @@ void Xreshape::R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_
 void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
 
   SubQuery* pSubQuery = m_pBench->pGetBoard((i8)1)->pSubQuery();
 
@@ -1659,8 +1629,6 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
 
   SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
   pMainQuery->vSubQueries(1);
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1669,8 +1637,6 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
 void Xreshape::vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
 
   SubQuery* pSubQuery = m_pBench->pGetBoard((i8)1)->pSubQuery();
 
@@ -1731,8 +1697,6 @@ void Xreshape::vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
 
   SubQuery* pMainQuery = m_pBench->pGetBoard((i8)0)->pSubQuery();
   pMainQuery->vSubQueries(1);
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1747,8 +1711,6 @@ void Xreshape::vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void)
 void Xreshape::vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1773,37 +1735,6 @@ void Xreshape::vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
-
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                vSeries_34_Predicate_Pullup */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                  vSeries_36_Bound_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S36_T30_Delete_Empty_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  if (! G.p_filter->bIsEmpty())
-    return;
-
-  G.p_MainCard->vRemoveChild(G.p_filter);
-  DELETE_CARD(G.p_filter);
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1817,8 +1748,6 @@ void Xreshape::vR_S36_T30_Delete_Empty_filter(void)
 void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vReshape(__func__);
 
   Card* pMain = nullptr;
 
@@ -1936,43 +1865,6 @@ void Xreshape::vR_S75_T10_Morph_table_To_EEop_v2(void)
     pMain->vRemoveSubCard(G.p_size);
     G.p_table->vAppend(G.p_size);
   }
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vReshape(__func__);
-
-  i8 iOrdLo_stream = G.p_stream->iGetOdnLow();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [this, iOrdLo_stream](Card* pCard)
-  {
-    Card_StmColOdn* p_stmColOrd = _pCard_StmColOdn(pCard);
-    if (! Card::bIsStreamColOrdinal(p_stmColOrd->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    i8 iStmColOdn = Card::iGetColOdn(p_stmColOrd->szValue());
-    i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
-    p_stmColOrd->vSetStreamColOrdinal(iStmColOdn_corrected);
-
-    p_stmColOrd->vMark1(MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
-
-  vEndReshape();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1981,8 +1873,6 @@ void Xreshape::vR_S75_T30_Correct_stmColOdn_Of_keyExists_stream(void)
 void Xreshape::vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vReshape(__func__);
 
   i8 i_Main = G.pDeck->iFindChild(G.p_MainCard);
 
@@ -2017,72 +1907,7 @@ void Xreshape::vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
-
-  vEndReshape();
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                      vSeries_80_Index_Scan */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                      vSeries_85_Cross_Join */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                 vSeries_90_Stream_Ordering */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                               vSeries_A0_Make_Weavable */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_SA0_T10_Individuate_indexJoin_filter_b(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  // todo: xt
-
-  G.p_indexJoin->vRemoveChild(G.p_filter);
-  G.pDeck->vInsertAfter(G.p_filter, G.p_indexJoin);
-
-  if (! G.p_filter->pSub_level()) {
-    G.p_filter->vPush(G.p_indexJoin->pSub_level()->pDupCardAndSubCards());
-  }
-
-  vEndReshape();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xreshape::vR_SA0_T10c_Individuate_crossJoin_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vReshape(__func__);
-
-  // todo: xt
-
-  G.p_crossJoin->vRemoveChild(G.p_filter);
-  G.pDeck->vInsertAfter(G.p_filter, G.p_crossJoin);
-
-  if (! G.p_filter->pSub_level()) {
-    G.p_filter->vPush(G.p_crossJoin->pSub_level()->pDupCardAndSubCards());
-  }
-
-  vEndReshape();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -2095,8 +1920,6 @@ void Xreshape::vR_SA0_T10c_Individuate_crossJoin_filter(void)
 void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  vReshape(__func__);
 
   i8 nStages = 0;
 
@@ -2279,8 +2102,6 @@ void Xreshape::vR_SZ0_T20_Reinstate_stagesV3(void)
   if (CK_SCAN != e_prev)
     vAddCombined(p_main, i_End);
   vAddNext(p_main, i_End,""_Stz);
-
-  vEndReshape();
 }
 
 /*============================================================================*/
