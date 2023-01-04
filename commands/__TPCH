@@ -1730,8 +1730,11 @@ QUERY 11
 
 /////////////////////////
 //SF001:               //
-//SF1:                 //
-//SF10:  1.6s          //
+//SF1:    (.0001/1)    //
+//SF10:   (.00001)     //
+//SF100:  (.000001)    //
+//SF250:  (.0000004)   //
+//SF1000: (.0000001)   //
 /////////////////////////
 
 /time pipeline Query11
@@ -1766,7 +1769,7 @@ begin
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.0001  *  "
     | combined 0
     | next broadcast
 
@@ -1847,7 +1850,7 @@ begin
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.0001  *  "
     | combined 0
     | next broadcast
 
