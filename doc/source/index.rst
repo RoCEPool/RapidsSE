@@ -2,7 +2,9 @@
 Welcome to the RapidsSE documentation!
 ======================================
 
-|project| release |release| (|release_date|)
+.. only:: html
+
+  |project| release |release| (|release_date|)
 
 -----------------
 Table of Contents

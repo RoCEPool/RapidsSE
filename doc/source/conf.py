@@ -42,11 +42,21 @@ html_theme_options = {
 # -- Options for Latex (& PDF) output ----------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
 # https://www.sphinx-doc.org/en/master/latex.html
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_engine
 
 # We are setting the output filename here.
 # Tuple format: (root document, output latex filename, title, author, latex theme, exclude root document)
 latex_documents = [ (root_doc, f"rapidsse-{release}.tex", "", author, "manual", False) ]
 
+latex_engine = 'xelatex' # to support unicode characters
+
+# Various latex customisations
+# Sources:
+#  https://stackoverflow.com/questions/5422997/sphinx-docs-remove-blank-pages-from-generated-pdfs?rq=1
+#  https://stackoverflow.com/questions/26120632/sphinx-remove-chapter-title-in-my-pdf-with-latexpdf?rq=1
+latex_elements = {
+  'extraclassoptions': 'openany,oneside'  # remove blank pages after title and TOC
+}
 
 # -- Options for extensions --------------------------------------------------
 

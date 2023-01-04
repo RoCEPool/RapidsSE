@@ -1,6 +1,8 @@
-.. contents:: Contents of this section:
-   :depth: 3
-   :backlinks: none
+.. only:: html
+
+  .. contents:: Contents of this section:
+     :depth: 3
+     :backlinks: none
 
 .. _installation:
 
@@ -225,6 +227,8 @@ advanced wizard modes is presented below:
 .. csv-table:: Installation Modes Compared
    :header: "Item", "Basic Mode (default)", "Advanced Mode", "Description"
    :name: installation-modes
+   :class: longtable
+   :widths: 15, 15, 15, 55
 
    "Node names", "", "✅", "The prefix to be given to uniquely name each node. A
    sequential incrementing number is appended after this name.
@@ -275,6 +279,7 @@ advanced wizard modes is presented below:
 
    Default: """" (empty string)"
 
+
 Refer to the section `Sizing Considerations`_ below for details and limitations
 on how to set the shared memory, partitions and threads appropriately for your
 cluster.
@@ -315,6 +320,7 @@ The RapidsSE installation file accepts the following arguments:
 
 .. csv-table:: Installation Arguments
    :header: "Argument", "Description"
+   :widths: 20, 80
 
    "``--``", "Indicates that all arguments that follow are for the cluster
    installation setup script. This must be specified before any of the

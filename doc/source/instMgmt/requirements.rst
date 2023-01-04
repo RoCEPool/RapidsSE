@@ -1,6 +1,8 @@
-.. contents:: Contents of this section:
-   :depth: 3
-   :backlinks: none
+.. only:: html
+
+  .. contents:: Contents of this section:
+     :depth: 3
+     :backlinks: none
 
 .. _requirements:
 
@@ -30,6 +32,9 @@ Minimum Requirements
 RapidsSE has the following minimum system requirements:
 
 .. csv-table:: Minimum RapidsSE requirements
+   :name: minimum-requirements
+   :class: longtable
+   :widths: 20, 80
 
    "**Nodes:**", "1 node"
    "**CPU:**", "4 cores"
