@@ -3677,7 +3677,7 @@ begin
     | next
 
   stage S08 on origin :
-    sort &quot; type DECIMAL REVENUE ASC  &quot;
+    sort &quot; type DECIMAL REVENUE DESC  &quot;
     | combined 0
     | next
 
@@ -3685,8 +3685,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3773,17 +3772,18 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan nation
-    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
-    | project &quot; type INTEGER as N_NATIONKEY N_NATIONKEY&quot;
-    | combined 0
-    | next
-
-  stage S02 on all partitions :
-    indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
-    | project &quot; type INTEGER as S_SUPPKEY J1_S_SUPPKEY&quot;
+    scan supplier
+    | project &quot; type INTEGER as S_SUPPKEY S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY S_NATIONKEY&quot;
     | combined 0
     | next broadcast
+
+  stage S01 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+    | filter &quot; type BOOLEAN J1_N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER as S_SUPPKEY S_SUPPKEY&quot;
+    | combined 0
+    | next
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
@@ -3797,21 +3797,22 @@ begin
     | next
 
   stage S05 on origin :
-    project &quot; type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  &quot;
+    project &quot; type DECIMAL as INNERRESULT )  $1 sum  0.000001  *  &quot;
     | combined 0
     | next broadcast
 
-  stage S06 on all partitions :
-    indexJoin nation IxN_NATIONKEY &quot;bound $I1&quot;
-    | filter &quot; type BOOLEAN J1_N_NAME &apos;GERMANY&apos;  ==  &quot;
-    | project &quot; type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+  stage S07 on all partitions :
+    indexJoin supplier IxS_SUPPKEY &quot;bound $I1&quot;
+    | project &quot; type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT&quot;
     | combined 0
     | next
 
-  stage S07 on all partitions :
-    indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
-    | project &quot; type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+    | filter &quot; type BOOLEAN J1_N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER as S_SUPPKEY S_SUPPKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT&quot;
     | combined 0
     | next broadcast
@@ -3819,9 +3820,8 @@ begin
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
     | aggreg &quot; groupBy    type INTEGER J1_PS_PARTKEY
-               aggregates
-                          type INTEGER as PS_PARTKEY $K1 ,
-                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+               aggregates type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
                           type DECIMAL as INNERRESULT INNERRESULT&quot;
     | combined 0
     | next
@@ -3829,14 +3829,15 @@ begin
   stage S09 on all nodes :
     aggreg &quot; groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
-                        type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT&quot;
+                        type DECIMAL as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT&quot;
     | combined 0
     | next
 
   stage S10 on origin :
     aggreg &quot; groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
-                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as VALUE )  VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT&quot;
     | combined 0
     | next
@@ -3845,7 +3846,7 @@ begin
     filter &quot; type BOOLEAN  value INNERRESULT  &gt;  &quot;
     | project &quot; type INTEGER as PS_PARTKEY PS_PARTKEY ,
                 type DECIMAL as VALUE VALUE&quot;
-    | sort &quot; type DECIMAL VALUE ASC  &quot;
+    | sort &quot; type DECIMAL VALUE DESC  &quot;
     | combined 0
     | next
 
@@ -3853,7 +3854,8 @@ begin
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>

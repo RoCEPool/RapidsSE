@@ -56,6 +56,15 @@ order by
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/////////////////////////
+//SF001:               //
+//SF1:    (.0001/1)    //
+//SF10:   (.00001)     //
+//SF100:  (.000001)    //
+//SF250:  (.0000004)   //
+//SF1000: (.0000001)   //
+/////////////////////////
+
 // pipeline begin
 pipeline Query11
 begin
@@ -65,17 +74,18 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan nation
-    | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
-    | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
-    | combined 0
-    | next
-
-  stage S02 on all partitions :
-    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
-    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+    scan supplier
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY S_NATIONKEY"
     | combined 0
     | next broadcast
+
+  stage S01 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY"
+    | combined 0
+    | next
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
@@ -89,21 +99,22 @@ begin
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    project " type DECIMAL as INNERRESULT )  $1 sum   0.0001  *  "
     | combined 0
     | next broadcast
 
-  stage S06 on all partitions :
-    indexJoin nation IxN_NATIONKEY "bound $I1"
-    | filter " type BOOLEAN J1_N_NAME 'GERMANY'  ==  "
-    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+  stage S07 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1"
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
-  stage S07 on all partitions :
-    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
-    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
@@ -111,9 +122,8 @@ begin
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
     | aggreg " groupBy    type INTEGER J1_PS_PARTKEY
-               aggregates
-                          type INTEGER as PS_PARTKEY $K1 ,
-                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+               aggregates type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
                           type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
@@ -121,14 +131,15 @@ begin
   stage S09 on all nodes :
     aggreg " groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
-                        type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+                        type DECIMAL as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S10 on origin :
     aggreg " groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
-                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as VALUE )  VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
@@ -137,7 +148,7 @@ begin
     filter " type BOOLEAN  value INNERRESULT  >  "
     | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
                 type DECIMAL as VALUE VALUE"
-    | sort " type DECIMAL VALUE ASC  "
+    | sort " type DECIMAL VALUE DESC  "
     | combined 0
     | next
 
@@ -146,6 +157,7 @@ begin
     | sink
     | first
 end ;
+
 // pipeline end
 
 /*============================================================================*/
