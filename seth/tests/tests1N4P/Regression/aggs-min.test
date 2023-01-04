@@ -149,12 +149,9 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin24.sql
 // Result file: ../queries/aggs/min/results/min24.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
-/*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < 0 or Y > 0;
 rows:
-  (-249.08, -148.190000000000, -15)
-*/
+  (-2.490800000e+02,-148.19,-15)
 
 // Source file: ../queries/aggs/min/rmin13.sql
 // Result file: ../queries/aggs/min/results/min13.res
@@ -201,11 +198,8 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin23.sql
 // Result file: ../queries/aggs/min/results/min23.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
-/*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < 0 and Y > 0;
 rows: 0
-*/
 
 // Source file: ../queries/aggs/min/rmin12.sql
 // Result file: ../queries/aggs/min/results/min12.res
@@ -222,24 +216,21 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin25.sql
 // Result file: ../queries/aggs/min/results/min25.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
-/*
 select x*-1, y*-1, z*-1, color from (select min(cold9) as x, min(cole9) as y, min(colf9) as z, colb9 as color from table9 group by colb9) as TbX where x*-1 between 100 and 225 order by color desc;
 ordered rows:
-  (205.19, 53.480000000000, 10, 'violet')
-  (186.92, -13.770000000000, 13, 'teal')
-  (200.61, 108.140000000000, 15, 'tan')
-  (199.13, 139.670000000000, 15, 'red')
-  (186.31, 141.520000000000, 15, 'peach')
-  (192.75, 145.190000000000, 15, 'maroon')
-  (129.82, 117.470000000000, 15, 'indigo')
-  (216.12, 146.900000000000, 15, 'blue')
-  (195.53, 140.720000000000, 11, 'TEAL')
-  (218.4, 140.140000000000, 14, 'RED')
-  (129.34, 143.590000000000, 11, 'PURPLE')
-  (222.14, 145.470000000000, 13, 'BLUE')
-  (209.03, 141.430000000000, 7, 'BLACK')
-*/
+  (2.051900000e+02,53.48,10,'violet')
+  (1.869200000e+02,-13.77,13,'teal')
+  (2.006100000e+02,108.14,15,'tan')
+  (1.991300000e+02,139.67,15,'red')
+  (1.863100000e+02,141.52,15,'peach')
+  (1.927500000e+02,145.19,15,'maroon')
+  (1.298200000e+02,117.47,15,'indigo')
+  (2.161200000e+02,146.90,15,'blue')
+  (1.955300000e+02,140.72,11,'TEAL')
+  (2.184000000e+02,140.14,14,'RED')
+  (1.293400000e+02,143.59,11,'PURPLE')
+  (2.221400000e+02,145.47,13,'BLUE')
+  (2.090300000e+02,141.43,7,'BLACK')
 
 // Source file: ../queries/aggs/min/rnmin1.sql
 // Result file: ../queries/aggs/min/results/nmin1.res
