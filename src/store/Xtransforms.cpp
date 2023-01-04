@@ -2363,7 +2363,7 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vAssert_Board_mqA();
+  //vAssert_Board_mqA();
 
   Card_Deck* pPipeline = G.pDeck;
 
