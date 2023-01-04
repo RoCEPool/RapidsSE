@@ -3092,7 +3092,9 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
         CK_KEYNOTEXISTS == G.e_MainCard ||
         CK_SCAN == G.e_MainCard) {
       if (p_main_prior) {
-        if (R_bUTE_Stage_Partitioning(p_main_prior, p_combined_prior, p_next_prior, G.p_MainCard))
+        i8 nSkip = R_iUTE_Stage_Partitioning(p_main_prior, p_combined_prior,
+                                             p_next_prior, G.p_MainCard);
+        while (nSkip--)
           G_vSkipNextMain();
         vPrintBoard(__LINE__);
         vDebugPoint();

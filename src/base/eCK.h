@@ -46,6 +46,7 @@ enum eCK // card kind
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   /* */ CK_EXPRBOOL,
+  /* */ CK_EXPRLIST,
 
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
@@ -219,6 +220,7 @@ static Stz* aCK[]
   /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
+  /* */ "CK_EXPRLIST"_Stz,     // CK_EXPRLIST
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
@@ -391,6 +393,7 @@ static Stz* aCK_short[]
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprBool"_Stz,        // CK_EXPRBOOL
+  /* */ "exprList"_Stz,        // CK_EXPRLIST
 
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
@@ -563,6 +566,7 @@ static Stz* aCK_notation[]
     /* */ "exi"_Stz,          // CK_EXISTS
     /* */ "ex"_Stz,           // CK_EXPR
     /* */ "exB"_Stz,          // CK_EXPRBOOL
+    /* */ "exL"_Stz,          // CK_EXPRLIST
 
     /* */ "f"_Stz,            // CK_FILTER
     /* */ "fE"_Stz,           // CK_FILTELIST

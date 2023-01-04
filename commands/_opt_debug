@@ -98,7 +98,7 @@ load PartSupp "../tpch/sf_0001/partsupp.csv" ;
 
 
 
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST
 /weaved
@@ -107,6 +107,7 @@ select count(*)
        Orders
  where C_CUSTKEY  = O_CUSTKEY;
 //expected rows: (1500)
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // HASHCAST
@@ -119,6 +120,7 @@ select count(*)
  where L_ORDERKEY  = O_ORDERKEY;
 //expected rows: (5996)
 
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST
 /glean_interactive
@@ -129,6 +131,7 @@ select count(*)
        PartSupp
  where L_SUPPKEY  = PS_SUPPKEY;
 //expected rows: (576000)
+*/
 
 /*============================================================================*/
 /* end                                                                        */
