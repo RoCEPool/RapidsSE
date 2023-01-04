@@ -24,6 +24,9 @@ success
 create index TABLE1_COLA1 on table1(cola1);
 success
 
+create index TABLE1_COLB1 on table1(colb1);
+success
+
 create index TABLE1_UCOL on table1(ucol);
 success
 

@@ -62,7 +62,8 @@ rows:
 // Source file: ../queries/AndOrNot/raon3.sql
 // Result file: ../queries/AndOrNot/results/aon3.res
 select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9 where colb1='green' or colb9='blue' order by pcol1;
-ordered rows:
+//ordered rows:
+rows:
   (2, 3, 'green', 'green')
   (2, 12, 'green', 'green')
   (2, 80, 'green', 'green')
