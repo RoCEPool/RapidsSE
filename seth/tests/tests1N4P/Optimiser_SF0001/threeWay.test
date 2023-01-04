@@ -1,0 +1,53 @@
+/*============================================================================*/
+/* threeWayJoins -- partitioning test                                         */
+/*============================================================================*/
+
+trackMemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNICAST+HASHCAST+HASHCAST
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem,
+       Supplier
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY;
+rows:
+  (5996)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BROADCAST+UNICAST+BROADCAST
+select count(*)
+  from Lineitem,
+       PartSupp,
+       Part,
+       Supplier
+ where P_PARTKEY = PS_PARTKEY
+   and L_SUPPKEY  = PS_SUPPKEY
+   and PS_SUPPKEY = S_SUPPKEY;
+rows:
+  (576000)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BROADCAST+BROADCAST+HASHCAST
+select count(*)
+  from Part,
+       Lineitem,
+       PartSupp,
+       Supplier
+ where P_PARTKEY = L_PARTKEY
+   and L_SUPPKEY  = PS_SUPPKEY
+   and PS_SUPPKEY = S_SUPPKEY;
+rows:
+ (576000)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+MemoryLeaks;
+rows: 0
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
