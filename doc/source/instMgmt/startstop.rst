@@ -75,40 +75,6 @@ A successful stop of the cluster looks like this:
    Stopped all nodes in the cluster.
 
 
-Checking The Cluster Status
----------------------------
-
-The status of the cluster can be checked at any time by
-navigating to the installation directory and executing: ::
-
-  ./status.sh
-
-This script will use SSH to login to each node, change to the installation
-directory, read the pidfile (``se.pid``) and confirm if that process is
-running. A summary of the status of each node in the cluster is then printed
-to the screen.
-
-An example of a running cluster looks like this:
-
-.. code:: console
-
-   craig@hubble:rapidsse$ ./status.sh
-   Cluster status:
-     MACHINE1 (host hubble) :        running (pid 6662)
-     MACHINE2 (host copernicus) :    running (pid 4073)
-   All nodes are running.
-
-An example of a stopped cluster looks like this:
-
-.. code:: console
-
-   craig@hubble:rapidsse$ ./status.sh
-   Cluster status:
-     NODE1 (host hubble) :        NOT RUNNING
-     NODE2 (host copernicus) :    NOT RUNNING
-   0 nodes out of 2 are running. 2 nodes are stopped.
-
-
 .. _sePrompt:
 
 SE Prompt

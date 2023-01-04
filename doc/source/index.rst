@@ -12,12 +12,13 @@ Table of Contents
 
 .. toctree::
    :name: mastertoc
-   :maxdepth: 1
+   :maxdepth: 2
    :numbered:
 
    overview/index
    instMgmt/index
    usersGuide/index
+   cmdRef/index
    interfaces/index
    releases/index
    appendices/index

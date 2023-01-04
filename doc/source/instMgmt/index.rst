@@ -5,6 +5,7 @@ Installation and Management
    :maxdepth: 1
 
    requirements
+   sizingGuide
    installation
    startstop
    managing

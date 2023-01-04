@@ -284,7 +284,7 @@ advanced wizard modes is presented below:
    Default: """" (empty string)"
 
 
-Refer to the section `Sizing Considerations`_ below for details and limitations
+Refer to the section :ref:`considerationsInstaller` below for details and limitations
 on how to set the shared memory, partitions and threads appropriately for your
 cluster.
 
@@ -362,9 +362,10 @@ For example, to run the installation wizard in advanced mode, specify it as foll
 
   ./rapids-<version>.run -- --advanced
 
+.. _considerationsInstaller:
 
-Sizing Considerations
-`````````````````````
+Considerations For Overriding Installer Settings
+````````````````````````````````````````````````
 Unless an existing cluster configuration file is passed to the installer, the
 installation wizard will try to automatically configure RapidsSE for the size
 of the nodes in the cluster. There are three main parameters to be considered:
