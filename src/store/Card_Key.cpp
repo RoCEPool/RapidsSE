@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Key,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Key::Card_Key(void)
-: Card(CK_KEY)
+: Card_ELIST(CK_KEY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
