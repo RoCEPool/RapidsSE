@@ -133,6 +133,33 @@ select count(*)
 //expected rows: (576000)
 */
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNICAST+HASHCAST
+/glean_interactive
+/transliterated
+/weaved
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY;
+//expected rows: (5996)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNICAST+HASHCAST+HASHCAST
+/glean_interactive
+/transliterated
+/weaved
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem,
+       Supplier
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY;
+  //expected rows: (5996)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

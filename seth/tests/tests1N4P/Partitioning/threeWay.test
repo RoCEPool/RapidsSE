@@ -132,7 +132,7 @@ rows:
   (5996)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BROADCAST+HASHCAST+BROADCAST
+// BROADCAST+UNICAST+BROADCAST
 /weaved
 select count(*)
   from Lineitem,

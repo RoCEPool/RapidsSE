@@ -116,7 +116,7 @@ select count(*)
        Orders
  where L_ORDERKEY  = O_ORDERKEY;
 rows:
-  (6000)
+  (5996)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST
