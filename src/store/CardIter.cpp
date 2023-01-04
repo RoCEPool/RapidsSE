@@ -1156,6 +1156,29 @@ Card* CardIter::G_pGetMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.pDeck->vInsertBefore(pCard,pBefore);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bIsBoard(Stz* szBoardNm)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (m_pBench->pGetBoard(szBoardNm))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bIsNextMain(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -1421,6 +1444,37 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 }
 
 /*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
+                              eCK eOf, bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G_vNewMember(eMember, bUpdateMember);
+
+  m_pCard_new->vValue(szValue);
+
+  G_vAppendChild(eOf,eMember);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop/restore M iterator from iter stack                                     */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vPopIter(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+//  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
+//
+//  this->vCopyFrom(pTransformIterRestore->aXsentinels());
+//
+//  delete pTransformIterRestore;
+
+  this->vRestore();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pPrevChild(void)
@@ -1453,6 +1507,104 @@ Card* CardIter::pPrevChildIf(eCK eCard)
     return nullptr;
 
   return pPrevMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vPushBoard(Board* pBoard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G_vPushIter();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  G.pBoard = pBoard;
+//  G.pDeck  = G.pBoard->pDeck();
+//
+//  this->vChangeBoard(G.pBoard);
+  G_vSetBoard(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push board                                                                 */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPushBoard(i8 i_Board)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Board* pBoard = m_pBench->pGetBoard(i_Board);
+  RASSERT(pBoard);
+
+  if (pBoard) {
+    G_vPushBoard(pBoard);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPushBoard(Stz* szBoardNm)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
+  if (! pSubQueryBoard) {
+    vTracer("DID NOT FIND Board: %s\n"_Stz,szBoardNm);
+    return false;
+  }
+
+  vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
+
+  G_vPushBoard(pSubQueryBoard);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vPushNewChild(Card* pParent, eCK eChild)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pChild = new Card(eChild);
+
+  pParent->vPush(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pChild = new Card(eChild, szValue);
+
+  pParent->vPush(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vPushIter(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+//  Xsentinals* pTransformIterSave = new Xsentinals;
+//
+//  pTransformIterSave->vCopyFrom(this->aXsentinels());
+//
+//  m_pTransformIterList->vPush(pTransformIterSave);
+
+  this->vSave();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1741,7 +1893,7 @@ bool CardIter::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 
 /* resolve card (r-l) with grand-sub with given value before given i_Before   */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bResolveSubCard(eCK eCard, i8 i_Before) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = G.pDeck->pGetChild(i_Main);
@@ -1918,6 +2070,39 @@ void CardIter::vSet(i8 iChild, Card* pChild)
 
   G.m_i_Child = iChild;
   G.m_pChild = pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vSetBoard(Board* pBoard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.pBoard = pBoard;
+  G.pDeck  = G.pBoard->pDeck();
+
+  this->vChangeCard(G.pBoard->pDeck());
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally trace                                                        */
+/*----------------------------------------------------------------------------*/
+void CardIter::vTracer(Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! bIsTracing())
+    return;
+
+  s256 sValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  vTrace("  [%02lld] %s"_Stz,m_iTrace++,sValue.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

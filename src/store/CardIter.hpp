@@ -93,7 +93,6 @@ namespace STORE
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(Card* pCard);
 
-
     void vDontDescend(void);
 
     bool  bEachChild(void);
@@ -120,6 +119,8 @@ namespace STORE
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);
 
+    void G_vInsertBefore(Card* pCard, Card* pBefore);
+    bool G_bIsBoard(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
 
     bool bJustRestarted(void);
@@ -132,11 +133,20 @@ namespace STORE
 
     void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void  G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
+    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
 
+
+    void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
+    void G_vPushBoard(Board* pBoard);
+    bool G_bPushBoard(i8 i_Board);
+    bool G_bPushBoard(Stz* szBoardNm);
+    void G_vPushNewChild(Card* pParent, eCK eChild);
+    void G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue);
+    void G_vPushIter(void);
 
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
@@ -165,6 +175,7 @@ namespace STORE
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
+    void G_vSetBoard(Board* pBoard);
 
     bool bIsTracing(void);
 
@@ -172,6 +183,8 @@ namespace STORE
 
     Stz* szXform(void);
     Stz* szXhand(void);
+
+    void vTracer(Stz* szFormat, ...);
 
   protected:
 

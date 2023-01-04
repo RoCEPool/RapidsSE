@@ -62,8 +62,6 @@ namespace STORE
     bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
     void G_vInsertAfter(Card* pCard, Card* pAfter);
-    void G_vInsertBefore(Card* pCard, Card* pBefore);
-    bool G_bIsBoard(Stz* szBoardNm);
 
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
@@ -72,23 +70,14 @@ namespace STORE
     bool G_bMoreMain(void);
 
     void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
-    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
 
     bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
     bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
     bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
     bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
-    void G_vPushBoard(Board* pBoard);
-    bool G_bPushBoard(i8 i_Board);
-    bool G_bPushBoard(Stz* szBoardNm);
-    void G_vPushNewChild(Card* pParent, eCK eChild);
-    void G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue);
-    void G_vPushIter(void);
-    void G_vPopIter(void);
 
     void G_vRemoveMain(eCK eCrossCheck);
 
-    void G_vSetBoard(Board* pBoard);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     bool G_bSubsequentToMain(bool bUpdateMember = false);
     void G_vSubsequentToMain(bool bUpdateMember = false);
@@ -96,7 +85,6 @@ namespace STORE
 
 
     Stz* szT(eCK eMember);
-    void vTracer(Stz* szFormat, ...);
 
     Footer* aFooter(void);
   };

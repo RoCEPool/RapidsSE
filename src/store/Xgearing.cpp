@@ -540,31 +540,6 @@ void Xgearing::G_vInsertAfter(Card* pCard, Card* pAfter)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vInsertBefore(Card* pCard, Card* pBefore)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  G.pDeck->vInsertBefore(pCard,pBefore);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::G_bIsBoard(Stz* szBoardNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  if (m_pBench->pGetBoard(szBoardNm))
-    return true;
-
-  return false;
-}
-
-
-
-/*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given i_After                               */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bLocateCard(eCK eLocate, Stz* szWithValue, i8 i_After)
@@ -663,21 +638,6 @@ void Xgearing::G_vNewMemberBefore(eCK eMember, Stz* szValue,
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vNewMemberOf(eCK eMember, Stz* szValue,
-                              eCK eOf, bool bUpdateMember)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  G_vNewMember(eMember, bUpdateMember);
-
-  m_pCard_new->vValue(szValue);
-
-  G_vAppendChild(eOf,eMember);
-}
-
-/*----------------------------------------------------------------------------*/
 /* search for sub of member                                                   */
 /*----------------------------------------------------------------------------*/
 bool Xgearing::G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
@@ -747,120 +707,6 @@ bool Xgearing::G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool b
 }
 
 /*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPushBoard(Board* pBoard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  G_vPushIter();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  G.pBoard = pBoard;
-//  G.pDeck  = G.pBoard->pDeck();
-//
-//  this->vChangeBoard(G.pBoard);
-  G_vSetBoard(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push board                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::G_bPushBoard(i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Board* pBoard = m_pBench->pGetBoard(i_Board);
-  RASSERT(pBoard);
-
-  if (pBoard) {
-    G_vPushBoard(pBoard);
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-bool Xgearing::G_bPushBoard(Stz* szBoardNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
-
-  Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
-  if (! pSubQueryBoard) {
-    vTracer("DID NOT FIND Board: %s\n"_Stz,szBoardNm);
-    return false;
-  }
-
-  vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
-
-  G_vPushBoard(pSubQueryBoard);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPushNewChild(Card* pParent, eCK eChild)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card* pChild = new Card(eChild);
-
-  pParent->vPush(pChild);
-  G_vUpdateMember(eChild,pChild,__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card* pChild = new Card(eChild, szValue);
-
-  pParent->vPush(pChild);
-  G_vUpdateMember(eChild,pChild,__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPushIter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-//  Xsentinals* pTransformIterSave = new Xsentinals;
-//
-//  pTransformIterSave->vCopyFrom(this->aXsentinels());
-//
-//  m_pTransformIterList->vPush(pTransformIterSave);
-
-  this->vSave();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop/restore M iterator from iter stack                                     */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPopIter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-//  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
-//
-//  this->vCopyFrom(pTransformIterRestore->aXsentinels());
-//
-//  delete pTransformIterRestore;
-
-  this->vRestore();
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove main card from deck (do not clear M members or registers)           */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vRemoveMain(eCK eCrossCheck)
@@ -868,19 +714,6 @@ void Xgearing::G_vRemoveMain(eCK eCrossCheck)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   this->vRemoveCurr(eCrossCheck);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vSetBoard(Board* pBoard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  G.pBoard = pBoard;
-  G.pDeck  = G.pBoard->pDeck();
-
-  this->vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -944,26 +777,6 @@ Stz* Xgearing::szT(eCK eMember)
     m_sT.vSprint("%s=null"_Stz,szMemberNm);
 
   return m_sT;
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally trace                                                        */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vTracer(Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  if (! bIsTracing())
-    return;
-
-  s256 sValue;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
-  va_end(xArgs);
-
-  vTrace("  [%02lld] %s"_Stz,m_iTrace++,sValue.szStz());
 }
 
 /*============================================================================*/
