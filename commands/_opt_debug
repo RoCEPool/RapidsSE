@@ -49,8 +49,10 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 /glean_interactive
 /transliterated
 /weaved
-  select * from
-    (select colf1 from table1 join table9 using (ucol));
+  select x, y, z from
+    (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX
+      where x < (select min(cold9) from table9 where colb9 like 'gr%');
+
 
 
 /*============================================================================*/
