@@ -3152,7 +3152,7 @@ void Xtransforms::vStreamAnalysisReset(void)
 
   m_iOdnLo      = 1;
   m_iOdnHi      = C_UNKNOWN;
-  m_cTableSyn   = 'a';
+  //m_cTableSyn   = 'a';
 }
 
 /*----------------------------------------------------------------------------*/
