@@ -1406,7 +1406,7 @@ void Xreshape::R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_Bool
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
+i8 Xreshape::R_iUTE_Stage_Partitioning(Card* p_main_prior,
                                          Card_Combined* p_combined_prior,
                                          Card_Next* p_next_prior,
                                          Card* p_main_curr)
@@ -1435,7 +1435,7 @@ bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
   switch (eCastKind) {
     case XK_BROADCAST:
       p_next_prior->vValue("broadcast"_Stz);
-      return false;
+      return 0;
 
     case XK_HASHCAST:
       p_next_prior->vValue("hashcast"_Stz);
@@ -1444,17 +1444,22 @@ bool Xreshape::R_bUTE_Stage_Partitioning(Card* p_main_prior,
       p_stmCol_hash = p_stmColList_prior->pStmCol_FindBy_tblColOdn(szTblColOdn, i_StmCol);
       p_hash = Card_Hash::pDerive(p_stmCol_hash);
 
-      if (p_combined_prior)
-        G_vInsertBefore(p_hash,p_combined_prior);
+      if (p_combined_prior) {
+        G_vInsertBefore(p_hash, p_combined_prior);
+        return 1;
+      }
       else
-      if (p_next_prior)
-        G_vInsertBefore(p_hash,p_next_prior);
+      if (p_next_prior) {
+        G_vInsertBefore(p_hash, p_next_prior);
+        Card_Combined* p_combined = new Card_Combined;
+        G_vInsertBefore(p_combined, p_next_prior);
+        return 2;
+      }
       else
         NEVER_REACH
-      return true;
 
     case XK_UNICAST:
-      return false;
+      return 0;
 
     default:
       NEVER_REACH
