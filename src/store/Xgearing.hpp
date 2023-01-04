@@ -15,53 +15,6 @@ namespace STORE
 {
   class Xgearing : public CardIter
   {
-  protected:
-    Bench*      m_pBench;
-
-    i8          m_iXform;
-    i8          m_iTrace;
-
-    s32         m_sXhand;
-    s256        m_sXform;
-    s256        m_sXdesc;
-
-    s32         m_sSqyNm;
-    s32         m_sSqyArg;
-    s32         m_sSqyCol;
-    s32         m_sSqyRO;
-    s32         m_sSqyRsl;
-
-    PermGen*    m_pPermGen;
-
-    Column*     m_pColumn;
-    IdxVec*     m_pIdxVec;
-    Index*      m_pIndex;
-    IndexDef*   m_pIndexDef;
-    StreamDef*  m_pStreamDef;
-    Table*      m_pTable;
-
-    CardCtl*     m_pCardCtl;
-
-    Card* m_pCard_child;
-    Card* m_pCard_copied;
-    Card* m_pCard_dup;
-    Card* m_pCard_found;
-    Card* m_pCard_located;
-    Card* m_pCard_member;
-    Card* m_pCard_new;
-    Card* m_pCard_parent;
-    Card* m_pCard_popped;
-    Card* m_pCard_resolved;
-    Card* m_pCard_temp;
-    Card* m_pCard_yanked;
-
-    Card_Term* m_pTerm_0;
-    Card_Term* m_pTerm_1;
-    Card_Term* m_pTerm_2;
-    Card_Term* m_pTerm_corrPred;
-
-    s256 m_sT;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -91,22 +44,10 @@ namespace STORE
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);
-    Stz* szXform(void);
     void vXform(Stz* szTransformation);
-    Stz* szXhand(void);
     void vXhand(const char* asXhand);
 
   protected:
-    bool bIsTracing(void);
-
-    void G_vAppendChild(eCK eParent, eCK eChild);
-    void G_vAppendChild(eCK eParent, Card* pChild);
-    void G_vAppendNewChild(Card* pParent, eCK eChild);
-    void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
-
-
-    void G_vClearRegisters(void);
-    void G_vClearRegistersIf(Card* pCard);
     void G_vCopyCard(Card* pCard);
 
     void G_vDeleteMember(eCK eMember);
@@ -146,8 +87,6 @@ namespace STORE
     bool G_bMoreMain(void);
     void G_vMorphCard(Card* pCard, eCK eCard);
 
-    void G_vNewMember(eCK eMember, bool bUpdateMember= true);
-    void G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
     void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
 

@@ -106,6 +106,69 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+CardIter::CardIter(eCN eClass, Bench* pBench)
+    : Object(eClass)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  G.m_pCard   = nullptr;
+  G.m_i_Child = C_UNKNOWN;
+  G.m_pChild  = nullptr;
+
+  G.m_bDontDescend = false;
+
+  G.m_bActive = false;
+
+  // members from Xgearing - - - - - - - - - - - - - - - - - - - - - -
+  m_pBench   = pBench;
+  m_pCardCtl = m_pBench->pCardCtl();
+
+  Job* pJob = MY::pJob();
+//  TagSet* pJobTags = pJob->pJobTags();
+
+  m_iXform     = 0;
+  m_iTrace     = 0;
+
+  m_pPermGen   = nullptr;
+
+  m_pColumn    = nullptr;
+  m_pIdxVec    = nullptr;
+  m_pIndex     = nullptr;
+  m_pIndexDef  = nullptr;
+  m_pStreamDef = nullptr;
+  m_pTable     = nullptr;
+
+  m_pCard_child    = nullptr;
+  m_pCard_copied   = nullptr;
+  m_pCard_dup      = nullptr;
+  m_pCard_found    = nullptr;
+  m_pCard_located  = nullptr;
+  m_pCard_member   = nullptr;
+  m_pCard_new      = nullptr;
+  m_pCard_parent   = nullptr;
+  m_pCard_popped   = nullptr;
+  m_pCard_resolved = nullptr;
+  m_pCard_temp     = nullptr;
+  m_pCard_yanked   = nullptr;
+
+
+  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pBoard    = nullptr;
+  G.pDeck     = nullptr;
+  G.pSubQuery = nullptr;
+  G_vClearMembers();
+  G_vClearRegisters();
+
+
+  _checkInitialised_(CN_CARDITER);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 CardIter::~CardIter(void) noexcept(false)
@@ -118,6 +181,71 @@ CardIter::~CardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendChild(eCK eParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pParent = G_pGetMember(eParent);
+  Card* pChild  = G_pGetMember(eChild);
+
+  pParent->vAppend(pChild);
+
+  if (! bIsTracing())
+    return;
+
+  vTrace("  %s\n"_Stz,__func__);
+  vTrace("    parent %s\n"_Stz,pParent->szBearing());
+  vTrace("    child  %s\n"_Stz,pChild->szBearing());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendChild(eCK eParent, Card* pChild)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  Card* pParent = G_pGetMember(eParent);
+
+  pParent->vAppend(pChild);
+
+  if (! bIsTracing())
+    return;
+
+  vTrace("  %s\n"_Stz,__func__);
+  vTrace("    parent %s\n"_Stz,pParent->szBearing());
+  vTrace("    child  %s\n"_Stz,pChild->szBearing());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pChild = new Card(eChild);
+
+  pParent->vAppend(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  Card* pChild = new Card(eChild, szValue);
+
+  pParent->vAppend(pChild);
+  G_vUpdateMember(eChild,pChild,__func__);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -284,6 +412,88 @@ void CardIter::G_vClearMembers(void)
   G.p_av_scanJoinSeries = nullptr;
   G.p_av_scanOnly      = nullptr;
   G.p_av_sort          = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the general M registers                                              */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vClearRegisters(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.p_Located          = nullptr;
+  G.e_Located          = CK_NONE;
+  G.p_PriorToMain      = nullptr;
+  G.e_PriorToMain      = CK_NONE;
+  G.p_MainCard         = nullptr;
+  G.e_MainCard         = CK_NONE;
+  G.i_MainCard         = C_UNKNOWN;
+  G.p_SubLocated       = nullptr;
+  G.e_SubLocated       = CK_NONE;
+  G.p_SubLocatedParent = nullptr;
+  G.e_SubLocatedParent = CK_NONE;
+  G.p_SubOfMain        = nullptr;
+  G.e_SubOfMain        = CK_NONE;
+  G.p_Sub2OfMain       = nullptr;
+  G.e_Sub2OfMain       = CK_NONE;
+  G.p_Sub3OfMain       = nullptr;
+  G.e_Sub3OfMain       = CK_NONE;
+  G.p_SubsequentToMain = nullptr;
+  G.e_SubsequentToMain = CK_NONE;
+
+  G.p_SubMember        = nullptr;
+  G.e_SubMember        = CK_NONE;
+
+  m_pTerm_0            = nullptr;
+  m_pTerm_1            = nullptr;
+  m_pTerm_2            = nullptr;
+  m_pTerm_corrPred       = nullptr;
+
+  G.sz_SubQueryNm      = nullptr;
+
+  G.e_Level = AL_NONE;
+
+  G.i_stmColOdn = C_UNKNOWN;
+  G.i_FoldCard = C_UNKNOWN;
+
+  G.p_PRED = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the general M registers if they match given pointer                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vClearRegistersIf(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (pCard == G.p_PriorToMain) {
+    G.p_PriorToMain = nullptr;
+    G.e_PriorToMain = CK_NONE;
+  }
+  if (pCard == G.p_MainCard) {
+    G.p_MainCard = nullptr;
+    G.e_MainCard = CK_NONE;
+  }
+  if (pCard == G.p_SubOfMain) {
+    G.p_SubOfMain = nullptr;
+    G.e_SubOfMain = CK_NONE;
+  }
+  if (pCard == G.p_Sub2OfMain) {
+    G.p_Sub2OfMain = nullptr;
+    G.e_Sub2OfMain = CK_NONE;
+  }
+  if (pCard == G.p_Sub3OfMain) {
+    G.p_Sub3OfMain = nullptr;
+    G.e_Sub3OfMain = CK_NONE;
+  }
+  if (pCard == G.p_SubsequentToMain) {
+    G.p_SubsequentToMain = nullptr;
+    G.e_SubsequentToMain = CK_NONE;
+  }
+  if (pCard == G.p_SubMember) {
+    G.p_SubMember = nullptr;
+    G.e_SubMember = CK_NONE;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -856,6 +1066,31 @@ Card* CardIter::pNextChildIf(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create a new card and optionally set member                                */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vNewMember(eCK eMember, bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  m_pCard_new = new Card(eMember);
+
+  if (bUpdateMember)
+    G_vUpdateMember(eMember, m_pCard_new, __func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G_vNewMember(eMember, bUpdateMember);
+
+  m_pCard_new->vValue(szValue);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pPrevChild(void)
@@ -1146,6 +1381,16 @@ void CardIter::vSet(i8 iChild, Card* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bIsTracing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  return m_pCardCtl->bTracing(szXhand(),szXform());
+}
+
+/*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
@@ -1285,6 +1530,26 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     default:
       NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* CardIter::szXform(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_sXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* CardIter::szXhand(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_sXhand;
 }
 
 /*----------------------------------------------------------------------------*/
