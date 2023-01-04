@@ -159,6 +159,7 @@ void CardIter::G_vClearMembers(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   G.p_absJoin          = nullptr;
+  G.p_agg              = nullptr;
   G.p_aggElist         = nullptr;
   G.p_aggreg           = nullptr;
   G.p_as               = nullptr;
@@ -204,6 +205,7 @@ void CardIter::G_vClearMembers(void)
   G.p_joinOrder        = nullptr;
   G.p_joinOrdering     = nullptr;
   G.p_joinPredList     = nullptr;
+  G.p_key              = nullptr;
   G.p_keyExists        = nullptr;
   G.p_keyNotExists     = nullptr;
   G.p_lBound           = nullptr;
@@ -503,6 +505,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return G.p_absJoin;
+    case CK_AGG:              return G.p_agg;
     case CK_AGGELIST:         return G.p_aggElist;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_AS:               return G.p_as;
@@ -548,6 +551,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
+    case CK_KEY:              return G.p_key;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
     case CK_LBOUND:           return G.p_lBound;
@@ -670,6 +674,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
+    case CK_AGG:              return "G.p_agg"_Stz;
     case CK_AGGELIST:         return "G.p_aggElist"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_AS:               return "G.p_as"_Stz;
@@ -714,6 +719,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
     case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
+    case CK_KEY:              return "G.p_key"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
     case CK_LBOUND:           return "G.p_lBound"_Stz;
@@ -1148,6 +1154,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
   switch (eMember) {
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
+    case CK_AGG:              *((Card**)&G.p_agg)              = pCard; break;
     case CK_AGGELIST:         *((Card**)&G.p_aggElist)         = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
@@ -1193,6 +1200,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
+    case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard; break;
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;

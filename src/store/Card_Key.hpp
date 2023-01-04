@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* Card_Key.hpp -- Key                                                        */
+/*============================================================================*/
+#pragma once
+
+#include "Card.hpp"
+
+namespace STORE
+{
+  class Card_Key : public Card
+  {  
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_Key(void);
+   ~Card_Key(void) noexcept(false);
+  };
+
+  Card_Key* _pCard_Key(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

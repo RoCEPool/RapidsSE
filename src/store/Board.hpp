@@ -18,6 +18,7 @@
 
 #include "Card_AbsJoin.hpp"
 #include "Card_AggElist.hpp"
+#include "Card_Agg.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_Aggregates.hpp"
 #include "Card_AndPred.hpp"
@@ -78,6 +79,7 @@
 #include "Card_JoinOrdering.hpp"
 #include "Card_JoinPredList.hpp"
 
+#include "Card_Key.hpp"
 #include "Card_KeyExists.hpp"
 #include "Card_KeyNotExists.hpp"
 

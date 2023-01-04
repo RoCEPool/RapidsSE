@@ -2546,6 +2546,19 @@ void Card::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Agg.hpp"
+Card_Agg* Card::pSub_agg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Agg* p_agg =
+      _pCard_Agg(pFindSubCard(CK_AGG));
+  return p_agg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_AggElist.hpp"
 Card_AggElist* Card::pSub_aggElist(void)
 {
@@ -2931,6 +2944,19 @@ Card_IndexNm* Card::pSub_indexNm(void)
   Card_IndexNm* p_indexNm =
       _pCard_IndexNm(pFindSubCard(CK_INDEXNM));
   return p_indexNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Key.hpp"
+Card_Key* Card::pSub_key(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Key* p_key =
+      _pCard_Key(pFindSubCard(CK_KEY));
+  return p_key;
 }
 
 /*----------------------------------------------------------------------------*/

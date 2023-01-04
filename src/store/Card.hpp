@@ -21,6 +21,7 @@
 namespace STORE
 {
   class Card_AbsJoin;
+  class Card_Agg;
   class Card_AggElist;
   class Card_Aggreg;
   class Card_Aggregates;
@@ -80,6 +81,7 @@ namespace STORE
   class Card_JoinOrdering;
   class Card_JoinPredList;
 
+  class Card_Key;
   class Card_KeyExists;
   class Card_KeyNotExists;
 
@@ -465,6 +467,7 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+    Card_Agg*           pSub_agg(void);
     Card_AggElist*      pSub_aggElist(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
@@ -496,6 +499,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_LBound*        pSub_lBound(void);

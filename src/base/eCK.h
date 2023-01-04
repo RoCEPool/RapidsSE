@@ -8,6 +8,7 @@ enum eCK // card kind
   /* */ CK_NONE=0,
 
   /* */ CK_ABSJOIN,
+  /* */ CK_AGG,
   /* */ CK_AGGELIST,
   /* */ CK_AGGREG,
   /* */ CK_AGGREGATES,
@@ -72,6 +73,7 @@ enum eCK // card kind
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPREDLIST,
 
+  /* */ CK_KEY,
   /* */ CK_KEYEXISTS,
   /* */ CK_KEYNOTEXISTS,
 
@@ -179,6 +181,7 @@ static Stz* aCK[]
   /* */ "NONE"_Stz,
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
+  /* */ "CK_AGG"_Stz,          // CK_AGG
   /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
@@ -243,6 +246,7 @@ static Stz* aCK[]
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
+  /* */ "CK_KEY"_Stz,          // CK_KEY
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
   /* */ "CK_KEYNOTEXISTS"_Stz, // CK_KEYNOTEXISTS
 
@@ -349,6 +353,7 @@ static Stz* aCK_short[]
   /* */ "NONE"_Stz,
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
+  /* */ "agg"_Stz,             // CK_AGG
   /* */ "aggElist"_Stz,        // CK_AGGELIST
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "aggregates"_Stz,      // CK_AGGREGATES
@@ -413,6 +418,7 @@ static Stz* aCK_short[]
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
+  /* */ "key"_Stz,             // CK_KEY
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
   /* */ "keyNotExists"_Stz,    // CK_KEYNOTEXISTS
 
@@ -584,6 +590,7 @@ static Stz* aCK_notation[]
     /* */ "jOG"_Stz,          // CK_JOINORDERING
     /* */ "jPL"_Stz,          // CK_JOINPREDLIST
 
+    /* */ "key"_Stz,          // CK_KEY
     /* */ "kE"_Stz,           // CK_KEYEXISTS
     /* */ "kNE"_Stz,          // CK_KEYNOTEXISTS
 

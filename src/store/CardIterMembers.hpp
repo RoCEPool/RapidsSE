@@ -61,6 +61,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *          p_absJoin;
+    Card_Agg *              p_agg;
     Card_AggElist *         p_aggElist;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
@@ -106,6 +107,7 @@ namespace STORE
     Card_JoinOrder *        p_joinOrder;
     Card_JoinOrdering *     p_joinOrdering;
     Card_JoinPredList *     p_joinPredList;
+    Card_Key *              p_key;
     Card_KeyExists *        p_keyExists;
     Card_KeyNotExists *     p_keyNotExists;
     Card_LBound *           p_lBound;
