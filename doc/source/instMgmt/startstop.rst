@@ -75,8 +75,8 @@ A successful stop of the cluster looks like this:
    Stopped all nodes in the cluster.
 
 
-Checking Cluster Status
------------------------
+Checking The Cluster Status
+---------------------------
 
 The status of the cluster can be checked at any time by
 navigating to the installation directory and executing: ::
@@ -107,3 +107,40 @@ An example of a stopped cluster looks like this:
      NODE1 (host hubble) :        NOT RUNNING
      NODE2 (host copernicus) :    NOT RUNNING
    0 nodes out of 2 are running. 2 nodes are stopped.
+
+
+.. _sePrompt:
+
+SE Prompt
+---------
+
+The SE prompt is the current mechanism for interactively submitting commands
+into RapidsSE. The SE Prompt must be executed on one of the nodes in the
+cluster as it communicates with the node via a shared memory interface.
+
+The SE Prompt can be launched by navigating to the installation directory on
+any of the nodes and executing: ``./prompt.sh``
+
+SE prompt does not support up-arrow command histories, cursor word/line jumping,
+or text replacement (other than simple backspacing). The SE Prompt is intended
+to be replaced by the ``rapids-shell``.
+
+When it starts up, the SE prompt will print some internal version information
+before printing the console input marker. An example of this is shown below:
+
+.. code:: console
+
+   craig@hubble:rapidsse$ ./prompt.sh
+   RapidsSE 1.0.0 (release version, pid 3980, git 3225a7b5bb386300)
+   (c) 2020 Rapids Data Technology Co. Ltd
+   se>
+
+Commands that are submitted to the SE Prompt must be terminated with a
+semicolon.
+
+Sequences of commands can also be put into a file in the ``Commands``
+subdirectory and that entire file executed by simply typing its file name.
+e.g. the file ``Commands/_demoSetup`` contains various commands for setting
+up a TPC-H demo. It can be executed from the SE Prompt by simply typing ``_demoSetup;``.
+
+To quit the SE Prompt, either enter the command ``bye;`` or simply press ``Control-C``.

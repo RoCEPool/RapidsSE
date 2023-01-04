@@ -262,6 +262,10 @@ advanced wizard modes is presented below:
    "Installation Path", "✅", "✅", "The path on each node where RapidsSE will be installed.
 
    Default: ``/opt/rapidsse``"
+   "Disk Paths", "✅", "✅", "Where to write persistent data (e.g. an unload command).
+   One or more paths can be specified.
+
+   Default: ``<installation_path>/data``"
    "Shared memory reservation", "✅", "✅", "How much shared memory that RapidsSE will
    reserve on each node in the cluster.
 
