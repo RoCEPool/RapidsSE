@@ -367,7 +367,7 @@ ordered rows:
 
 // Source file: ../queries/case/rncase1.sql
 // Result file: ../queries/case/results/ncase1.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
+// TODO: NOT SURE WHAT THIS IS
 /*
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then (select b.cola1 from table1 where pcol1 = 5;) when b.colh8 = 1 then (select b.cola1 from table1 where pcol1 = 10;) when b.colh8 is null then (select b.cola1 from table1 where pcol1 = 15;) end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 failure contains: 'EC_SYNTAX_ERROR'
