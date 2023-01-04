@@ -40,10 +40,26 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running oneWay...';
+INCLUDE 'oneWay.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running twoWay...';
+INCLUDE 'oneWay.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running threeWay...';
+INCLUDE 'oneWay.test';
+INCLUDE 'sleep.test';
+
+/*
+//------------------------------------------------------------------------------
 LOG 'Running tpch query 1...';
 INCLUDE 'OptQ1.test';
 INCLUDE 'sleep.test';
-/*
+
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 2...';
 //INCLUDE 'OptQ2.test';

@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* twoWayJoins -- partitioning test                                           */
+/*============================================================================*/
+
+trackMemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNICAST+HASHCAST
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY;
+rows:
+  (5996)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNICAST+BROADCAST
+select count(*)
+  from Lineitem,
+       PartSupp,
+       Part
+ where P_PARTKEY = PS_PARTKEY
+   and L_SUPPKEY  = PS_SUPPKEY;
+rows:
+  (576000)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// HASHCAST+BROADCAST
+select count(*)
+  from Part,
+       Lineitem,
+       PartSupp
+ where P_PARTKEY = L_PARTKEY
+   and L_SUPPKEY  = PS_SUPPKEY;
+rows:
+ (576000)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+MemoryLeaks;
+rows: 0
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
