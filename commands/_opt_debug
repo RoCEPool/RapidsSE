@@ -30,6 +30,7 @@ create table orders (
 partition by (O_CUSTKEY);
 
 create index IxO_CUSTKEY  on Orders    (O_CUSTKEY);
+create index IxO_ORDERKEY on Orders    (O_ORDERKEY);
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,
@@ -109,6 +110,7 @@ select count(*)
 //expected rows: (1500)
 */
 
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // HASHCAST
 /glean_interactive
@@ -119,6 +121,7 @@ select count(*)
        Orders
  where L_ORDERKEY  = O_ORDERKEY;
 //expected rows: (5996)
+*/
 
 /*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,6 +136,7 @@ select count(*)
 //expected rows: (576000)
 */
 
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST+HASHCAST
 /glean_interactive
@@ -145,6 +149,7 @@ select count(*)
  where C_CUSTKEY  = O_CUSTKEY
    and L_ORDERKEY = O_ORDERKEY;
 //expected rows: (5996)
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST+HASHCAST+HASHCAST
@@ -160,6 +165,8 @@ select count(*)
    and L_ORDERKEY = O_ORDERKEY
    and L_SUPPKEY  = S_SUPPKEY;
   //expected rows: (5996)
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

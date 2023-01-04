@@ -1441,8 +1441,13 @@ i8 Xreshape::R_iUTE_Stage_Partitioning(Card* p_main_prior,
       p_next_prior->vValue("hashcast"_Stz);
 
       szTblColOdn = p_term_hash->szValue();
-      p_stmCol_hash = p_stmColList_prior->pStmCol_FindBy_tblColOdn(szTblColOdn, i_StmCol);
-      p_hash = Card_Hash::pDerive(p_stmCol_hash);
+      //p_stmCol_hash = p_stmColList_prior->pStmCol_FindBy_tblColOdn(szTblColOdn, i_StmCol);
+      //p_hash = Card_Hash::pDerive(p_stmCol_hash);
+
+      RASSERT(G_bResolveSubCard(CK_STMCOL,CK_TBLCOLODN,szTblColOdn,G.i_MainCard));
+
+      p_hash = Card_Hash::pDerive(G.p_stmCol);
+
 
       if (p_combined_prior) {
         G_vInsertBefore(p_hash, p_combined_prior);
