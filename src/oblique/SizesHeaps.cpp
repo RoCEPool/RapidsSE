@@ -686,7 +686,7 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,          0,                       HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),          HT_INVALID   , FILL },
-  {CN_XSENTINALS,               sizeof(Xsentinals),      HT_T_SMALL   , FILL },
+  {CN_XSENTINALS,               sizeof(Xsentinals),      HT_T_MEDIUM  , FILL },
   {CN_XSERIES,                  sizeof(Xseries),         HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),          HT_INVALID   , FILL },
