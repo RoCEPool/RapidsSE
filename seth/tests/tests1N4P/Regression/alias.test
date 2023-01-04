@@ -44,7 +44,7 @@ ordered rows:
 
 // Source file: ../queries/alias/ralias-3.sql
 // Result file: ../queries/alias/results/alias-3.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND IN-SUBQUERIES)
 /*
 select a.ucolvc, b.ucolvc from table1 a, table9 b where a.pcol1 = b.pcol9 and b.ucolvc in (select b.ucolvc from table9 a join table4 b on pcol9=pcol4 and b.ucolvc between 'ddd' and 'fff') order by b.ucolvc, a.ucolvc;
 ordered rows:

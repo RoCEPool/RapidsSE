@@ -2,7 +2,7 @@
 // Source file: ../queries/case/rcase19.sql
 // Result file: ../queries/case/results/case19.res
 /*
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES) --- SYNTAX ERROR
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, a.cola4;
 ordered rows:
   ('gold', 'lll', 0, 'www', false)
@@ -122,16 +122,13 @@ unordered rows:
 
 // Source file: ../queries/case/rcase14.sql
 // Result file: ../queries/case/results/case14.res
-/*
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' when a.colb1 = c.colb4 then 'its a match' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb4 in ('black','BLACK','BLUE','blue','pink') order by a.cola1, colb1;
 ordered rows:
-  (136.010000000000, 110.850000000000, 1.2270, 'maroon', 'peach', 'blue', 'over 1')
-  (99.460000000000, 31.840000000000, 3.1237, 'blue', 'GREEN', 'pink', 'over 1')
-  (85.840000000000, 31.840000000000, 2.6960, 'tan', 'GREEN', 'pink', 'over 1')
-  (135.500000000000, 54.960000000000, 2.4654, 'TEAL', 'ORANGE', 'pink', 'over 1')
-  (73.020000000000, 54.960000000000, 1.3286, 'teal', 'ORANGE', 'pink', 'over 1')
-*/
+  (136.01,110.85,1.23,'maroon','peach','blue','over 1')
+  (99.46,31.84,3.12,'blue','GREEN','pink','over 1')
+  (85.84,31.84,2.70,'tan','GREEN','pink','over 1')
+  (135.50,54.96,2.47,'TEAL','ORANGE','pink','over 1')
+  (73.02,54.96,1.33,'teal','ORANGE','pink','over 1')
 
 // Source file: ../queries/case/rcase2.sql
 // Result file: ../queries/case/results/case2.res
