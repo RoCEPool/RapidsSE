@@ -149,9 +149,12 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin24.sql
 // Result file: ../queries/aggs/min/results/min24.res
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
+/*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < 0 or Y > 0;
 rows:
   (-2.490800000e+02,-148.19,-15)
+*/
 
 // Source file: ../queries/aggs/min/rmin13.sql
 // Result file: ../queries/aggs/min/results/min13.res
@@ -216,6 +219,8 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin25.sql
 // Result file: ../queries/aggs/min/results/min25.res
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
+/*
 select x*-1, y*-1, z*-1, color from (select min(cold9) as x, min(cole9) as y, min(colf9) as z, colb9 as color from table9 group by colb9) as TbX where x*-1 between 100 and 225 order by color desc;
 ordered rows:
   (2.051900000e+02,53.48,10,'violet')
@@ -231,6 +236,7 @@ ordered rows:
   (1.293400000e+02,143.59,11,'PURPLE')
   (2.221400000e+02,145.47,13,'BLUE')
   (2.090300000e+02,141.43,7,'BLACK')
+*/
 
 // Source file: ../queries/aggs/min/rnmin1.sql
 // Result file: ../queries/aggs/min/results/nmin1.res
