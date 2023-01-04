@@ -3957,25 +3957,17 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
      | next
 
    stage S03 on all partitions :
-     aggreg &quot; groupBy    type VARCHAR as L_SHIPMODE L_SHIPMODE 
-              aggregates type VARCHAR $K1 , 
-                         type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , 
-                         type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
+     aggreg &quot; groupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
      | combined 0
      | next
 
    stage S04 on all nodes :
-     aggreg &quot; groupBy     type VARCHAR as L_SHIPMODE $1
-              aggregates  type VARCHAR $K1 , 
-                          type INTEGER )  $2 sum  , type INTEGER )  $3 sum  &quot;
+     aggreg &quot; groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  &quot;
      | combined 0
      | next
 
    stage S05 on origin :
-     aggreg &quot; groupBy     type VARCHAR as L_SHIPMODE $1 
-              aggregates  type VARCHAR $K1 , 
-                          type INTEGER as high_line_count )  $2 sum  , 
-                          type INTEGER as low_line_count )  $3 sum  &quot;
+     aggreg &quot; groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  &quot;
      | combined 0
      | next
 
@@ -3983,8 +3975,7 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
      output
      | sink
      | first
- end ;
-</stringProp>
+ end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4075,18 +4066,20 @@ begin
 
   stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY &quot;LEFT_OUTER BOUND $I1 $L1 ==&quot;
-           &quot;type BOOLEAN }  J1_O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
+        &quot;type BOOLEAN }  J1_O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY ,
+               type INTEGER as O_ORDERKEY J1_O_ORDERKEY&quot;
     | combined 0
     | next
 
   stage S03 on all partitions :
-    ordAgg &quot; ordGroupBy  type INTEGER as c_custkey $1
+    ordAgg &quot; ordGroupBy  type INTEGER as C_CUSTKEY $1
              aggregates  type INTEGER $K1 ,
-                         type INTEGER )  $9 count  &quot;
+                         type INTEGER ) O_ORDERKEY count  &quot;
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S04 on origin :
     aggreg &quot; groupBy    type INTEGER as c_count $2
              aggregates
                         type INTEGER $K1 ,
@@ -4094,18 +4087,17 @@ begin
     | combined 0
     | next
 
-  stage S07 on origin :
-    sort &quot; type INTEGER $1  ,
-           type INTEGER as c_count $2  &quot;
+  stage S05 on origin :
+    sort &quot; type INTEGER $1 DESC ,
+           type INTEGER as c_count $2 DESC &quot;
     | combined 0
     | next
 
- stage S08 on origin :
+ stage S06 on origin :
    output
    | sink
    | first
- end ;
-</stringProp>
+ end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4226,8 +4218,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>

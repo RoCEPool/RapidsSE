@@ -336,7 +336,7 @@ begin
    | first
  end ;
 
-rows:
+ordered rows:
  (20,1)
  (10,135)
  (9,11)
