@@ -15,28 +15,16 @@ namespace STORE
   public:
 
     // utilities
-    void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
-    void R_vUTE_Add_where(Card* p_after);
-    void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
-    void R_vUTE_Bump_where_BaseOn_foldExpr(void);
-    void R_vUTE_Derive_foldElist_From_project_stream(void);
-    void R_vUTE_Derive_group_order_For_gbyAgg(void);
-    void R_vUTE_Derive_stream_order_For_gbyAgg(void);
-    void R_vUTE_Derive_stream_order_For_indexScan(void);
-    void R_vUTE_Derive_stream_order_For_project(void);
-    void R_vUTE_Derive_order(void);
     void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
     void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);
     void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
     void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     void R_vUTE_Correct_having_BaseOn_foldExpr(void);
-    void R_vUTE_Derive_foldExpr(void);
     bool R_bUTE_FindAndMarkSubQryCall(void);
     void R_vUTE_FoldIn_foldExpr(void);
     void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void);
     void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
     void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
-    void R_vUTE_Move_on_To_where(void);
     void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
     void R_vUTE_Push_foldExpr_Into_aggElist(void);

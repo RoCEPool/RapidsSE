@@ -58,73 +58,6 @@ Board* Xgearing::pBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cue user                                                                   */
-/*----------------------------------------------------------------------------*/
-eOA Xgearing::eCueUser(Stz* szPrompt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  TokenVec* pTknVec = nullptr;
-
-  if (m_pCardCtl->bCueDisabled())
-    return OA_CONTINUE_TRANSFORMING;
-
-  szPrompt->vConcat(" >> "_Stz);
-
-  m_pCardCtl->vCued(true);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  L_Input:
-
-  s4K sInput;
-  Cue::vGetInput(szPrompt,sInput);
-
-  if (0 == sInput.nLength())
-    return OA_CONTINUE_TRANSFORMING;
-
-  if (sInput.nLength() > 1)
-    vDebugPoint();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  RASSERT(! pTknVec);
-  pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
-  i8 nTokens = pTknVec->nTokens();
-
-  if (0 == nTokens)
-    return OA_CONTINUE_TRANSFORMING;
-
-  OptimiserFun* pOptFun = nullptr;
-  if (1 == nTokens)
-    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
-                                          nullptr);
-  else
-    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
-                                          pTknVec->pGet(1)->szChars());
-  if (! pOptFun) {
-    vTrace("Unknown command\n"_Stz);
-    delete pTknVec;
-    pTknVec = nullptr;
-    goto L_Input;
-  }
-
-  eOA eOptAct = OA_CONTINUE_TRANSFORMING;
-  bool bExecuted = pOptFun->m_fpOptFun(m_pBench->pOptimiser(),pTknVec,eOptAct);
-
-  delete pTknVec;
-  pTknVec = nullptr;
-
-  if (OA_INPUT_AGAIN == eOptAct)
-    goto L_Input;
-
-  if (OA_DISABLE_CUEING == eOptAct)
-    m_pCardCtl->vCueDisabled(true);
-
-  return eOptAct;
-}
-
-/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void Xgearing::vEndTransform(void)
@@ -187,41 +120,6 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_Board)
                             i_Board, nBoards, C_UNKNOWN);
     if (OA_REPRINT_BOARD != eCueUser(sPrompt))
       break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print the board                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::vPrintBoard(i8 iLineNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  if (! m_pCardCtl->bBoardPrint())
-    return;
-
-  char cPrefix = m_pBench->cPrefix();
-
-  s256 sPrompt;
-
-  i8 nBoards = m_pBench->nItems();
-
-  for (;;) {
-    G.pBoard->vPrintBoard(szXdesc());
-
-    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt,
-                              cPrefix, szXhand(), szXform(),
-                              G.pBoard->i_Board(), nBoards, iLineNo);
-      printf("%s\n", sPrompt.azChar());
-      break;
-    }
-
-    m_pCardCtl->vFormPrompt(sPrompt,
-                            cPrefix, szXhand(), szXform(),
-                            G.pBoard->i_Board(), nBoards, iLineNo);
-    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-        break;
   }
 }
 
@@ -293,16 +191,6 @@ void Xgearing::vUsingBoard(eBK eBoard, i8 i_Board)
   G.pDeck  = G.pBoard->pDeck();
 
   this->vChangeCard(G.pBoard->pDeck());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Xgearing::szXdesc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  return m_sXdesc;
 }
 
 /*----------------------------------------------------------------------------*/

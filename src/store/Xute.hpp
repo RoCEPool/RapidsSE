@@ -26,13 +26,12 @@ namespace STORE
   public:
 
     // utilities
-    static void R_vUTE_AddPredToTableFilter(Card_Table* p_table, Card_PRED* p_PRED);
-    static void R_vUTE_Add_where(Card* p_after);
-    static void R_vUTE_Append_unproject_Of_foldExpr_After_having(void);
+    static void vAdd_where(CardIter* pCI, Card* p_after);
+    static void vAddPredToTableFilter(CardIter* pCI, Card_Table* p_table, Card_PRED* p_PRED);
 
     static void vBump_keyOdn_In_rpnCalc_Of_Elist(CardIter* pCardIter, Card_ELIST* p_ELIST);
     static void vBump_stmOdn_In_rpnCalc_Of_Elist(CardIter* pCardIter, Card_ELIST* p_ELIST);
-    static void R_vUTE_Bump_where_BaseOn_foldExpr(void);
+    static void vBump_where_BaseOn_foldExpr(CardIter* pCI);
 
     static void vChoose_index_For_crossJoin(CardIter* pCardIter);
     static void vChoose_index_For_indexJoin(CardIter* pCardIter);
@@ -43,15 +42,15 @@ namespace STORE
     static void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
     static void R_vUTE_Correct_having_BaseOn_foldExpr(void);
 
-    static void R_vUTE_Derive_foldElist_From_project_stream(void);
-    static void R_vUTE_Derive_group_order_For_gbyAgg(void);
-    static void R_vUTE_Derive_stream_order_For_gbyAgg(void);
-    static void vDerive_stream_order_For_indexJoin(CardIter* pCardIter);
-    static void R_vUTE_Derive_stream_order_For_indexScan(void);
-    static void R_vUTE_Derive_stream_order_For_project(void);
+    static void vDerive_foldElist_From_project_stream(CardIter* pCI);
+    static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
+    static void vDerive_stream_order_For_gbyAgg(CardIter* pCI);
+    static void vDerive_stream_order_For_indexJoin(CardIter* pCI);
+    static void vDerive_stream_order_For_indexScan(CardIter* pCI);
+    static void vDerive_stream_order_For_project(CardIter* pCI);
     static void vDerive_stream_order_For_sort(CardIter* pCardIter);
-    static void R_vUTE_Derive_order(void);
-    static void R_vUTE_Derive_foldExpr(void);
+    static void vDerive_order(CardIter* pCI);
+    static void vDerive_foldExpr(CardIter* pCI);
 
     static void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
     static void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);

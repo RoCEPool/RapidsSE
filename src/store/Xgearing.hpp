@@ -24,12 +24,9 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eOA eCueUser(Stz* szPrompt);
-
     void vEndTransform(void);
 
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vPrintBoard(i8 iLineNo=C_UNKNOWN);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);

@@ -3,6 +3,11 @@
 /*============================================================================*/
 
 #include "CardIter.hpp"
+#include "Cue.hpp"
+#include "OptimiserFun.hpp"
+#include "OptimiserCatalog.hpp"
+
+extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -494,6 +499,73 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
     G.p_SubMember = nullptr;
     G.e_SubMember = CK_NONE;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cue user                                                                   */
+/*----------------------------------------------------------------------------*/
+eOA CardIter::eCueUser(Stz* szPrompt)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  TokenVec* pTknVec = nullptr;
+
+  if (m_pCardCtl->bCueDisabled())
+    return OA_CONTINUE_TRANSFORMING;
+
+  szPrompt->vConcat(" >> "_Stz);
+
+  m_pCardCtl->vCued(true);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L_Input:
+
+  s4K sInput;
+  Cue::vGetInput(szPrompt,sInput);
+
+  if (0 == sInput.nLength())
+    return OA_CONTINUE_TRANSFORMING;
+
+  if (sInput.nLength() > 1)
+    vDebugPoint();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(! pTknVec);
+  pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
+  i8 nTokens = pTknVec->nTokens();
+
+  if (0 == nTokens)
+    return OA_CONTINUE_TRANSFORMING;
+
+  OptimiserFun* pOptFun = nullptr;
+  if (1 == nTokens)
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                          nullptr);
+  else
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                          pTknVec->pGet(1)->szChars());
+  if (! pOptFun) {
+    vTrace("Unknown command\n"_Stz);
+    delete pTknVec;
+    pTknVec = nullptr;
+    goto L_Input;
+  }
+
+  eOA eOptAct = OA_CONTINUE_TRANSFORMING;
+  bool bExecuted = pOptFun->m_fpOptFun(m_pBench->pOptimiser(),pTknVec,eOptAct);
+
+  delete pTknVec;
+  pTknVec = nullptr;
+
+  if (OA_INPUT_AGAIN == eOptAct)
+    goto L_Input;
+
+  if (OA_DISABLE_CUEING == eOptAct)
+    m_pCardCtl->vCueDisabled(true);
+
+  return eOptAct;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1510,6 +1582,41 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the board                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPrintBoard(i8 iLineNo)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (! m_pCardCtl->bBoardPrint())
+    return;
+
+  char cPrefix = m_pBench->cPrefix();
+
+  s256 sPrompt;
+
+  i8 nBoards = m_pBench->nItems();
+
+  for (;;) {
+    G.pBoard->vPrintBoard(szXdesc());
+
+    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+      m_pCardCtl->vFormPrompt(sPrompt,
+                              cPrefix, szXhand(), szXform(),
+                              G.pBoard->i_Board(), nBoards, iLineNo);
+      printf("%s\n", sPrompt.azChar());
+      break;
+    }
+
+    m_pCardCtl->vFormPrompt(sPrompt,
+                            cPrefix, szXhand(), szXform(),
+                            G.pBoard->i_Board(), nBoards, iLineNo);
+    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vPushBoard(Board* pBoard)
@@ -2255,6 +2362,15 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     default:
       NEVER_REACH
   }
+}
+/*----------------------------------------------------------------------------*/
+/* get description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+Stz* CardIter::szXdesc(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_sXdesc;
 }
 
 /*----------------------------------------------------------------------------*/

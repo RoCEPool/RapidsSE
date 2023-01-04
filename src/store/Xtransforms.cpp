@@ -441,7 +441,7 @@ void Xtransforms::vS05_T_Move_On(void)
 
   G_vRestart();
   while (G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
-    R_vUTE_Move_on_To_where();
+    Xute::vMove_on_To_where(static_cast<CardIter*>(this));
   }
 
   vEndTransform();
@@ -1407,7 +1407,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
 
   }
   RASSERT(G_bEachMain(CK_FOLD));
-  R_vUTE_Derive_foldElist_From_project_stream();
+  Xute::vDerive_foldElist_From_project_stream(static_cast<CardIter*>(this));
 
   G.pDeck->vRenumberRecursive();
   R_vUTE_RelabelExpressions();
@@ -1583,7 +1583,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   RASSERT(G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
   RASSERT(G_bEachMain(CK_FOLD));
-  R_vUTE_Derive_foldElist_From_project_stream();
+  Xute::vDerive_foldElist_From_project_stream(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   // W A NC I
@@ -1618,7 +1618,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   G_vNewMember(CK_TERM,"$1"_Stz);
   G.p_cmpPred->vAppend(G.p_term);
 
-  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
+  Xute::vAddPredToTableFilter(static_cast<CardIter*>(this), G.p_table,G.p_cmpPred);
   vPrintBoard(__LINE__);
 
   // W A NC I
@@ -1825,7 +1825,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   }
 
   RASSERT(G_bEachMain(CK_FOLD));
-  R_vUTE_Derive_foldElist_From_project_stream();
+  Xute::vDerive_foldElist_From_project_stream(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
@@ -1849,7 +1849,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   G_vNewMember(CK_TERM,"$1"_Stz);
   G.p_cmpPred->vAppend(G.p_term);
 
-  R_vUTE_AddPredToTableFilter(G.p_table,G.p_cmpPred);
+  Xute::vAddPredToTableFilter(static_cast<CardIter*>(this),G.p_table,G.p_cmpPred);
   vPrintBoard(__LINE__);
 
 
@@ -2306,7 +2306,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
   G_vRestart();
   if (G_bEachMain(CK_FOLD)) {
     G.i_FoldCard = G.i_MainCard;
-    R_vUTE_Derive_foldExpr();
+    Xute::vDerive_foldExpr(static_cast<CardIter*>(this));
   }
   vPrintBoard(__LINE__);
 
@@ -2728,7 +2728,7 @@ void Xtransforms::vS90_T30_Derive_order(void)
 
   vAssert_Board_mqA();
 
-  R_vUTE_Derive_order();
+  Xute::vDerive_order(static_cast<CardIter*>(this));
 
   vEndTransform();
 }

@@ -86,12 +86,13 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
-    void vChangeCard(Card* pCard);
-    i8 i_Child(void);
+    void  vChangeCard(Card* pCard);
+    i8    i_Child(void);
     Card* pChild(void);
-    void G_vClearMembers(void);
-    void G_vClearRegisters(void);
-    void G_vClearRegistersIf(Card* pCard);
+    void  G_vClearMembers(void);
+    void  G_vClearRegisters(void);
+    void  G_vClearRegistersIf(Card* pCard);
+    eOA   eCueUser(Stz* szPrompt);
 
     void vDontDescend(void);
 
@@ -141,6 +142,7 @@ namespace STORE
     void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
+    void  vPrintBoard(i8 iLineNo=C_UNKNOWN);
     void G_vPushBoard(Board* pBoard);
     bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
@@ -181,6 +183,7 @@ namespace STORE
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
+    Stz* szXdesc(void);
     Stz* szXform(void);
     Stz* szXhand(void);
 
