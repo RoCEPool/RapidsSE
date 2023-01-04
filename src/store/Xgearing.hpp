@@ -28,8 +28,6 @@ namespace STORE
 
     void vEndTransform(void);
 
-    void vFocusOnMain(void);
-
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
 
@@ -55,18 +53,6 @@ namespace STORE
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
     void G_vDuplicateMember(eCK eMember);
 
-    bool G_bEachMain(void);
-    bool G_bEachMain(eCK eOfMainKind);
-    bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
-    bool G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
-    bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
-    bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
-    bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
-
-    bool G_bEachSubOfMain(eCK eSubKind);
-    bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
-    bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
-
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
 
 
@@ -78,14 +64,12 @@ namespace STORE
     void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoard(Stz* szBoardNm);
-    bool G_bIsNextMain(eCK eMember);
 
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     bool G_bMoreMain(void);
-    void G_vMorphCard(Card* pCard, eCK eCard);
 
     void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
@@ -103,17 +87,6 @@ namespace STORE
     void G_vPopIter(void);
 
     void G_vRemoveMain(eCK eCrossCheck);
-    void G_vRemoveDeleteMain(eCK eCrossCheck);
-    bool G_bResolveCard(eCK eCard, i8 i_Before);
-    bool G_bResolveCard(eCK eCard,char cWithValue, i8 i_Before);
-    bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
-    bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
-    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);
-    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore);
-    bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
-    bool G_bResolveSubCard(eCK eSub, i8 i_Before);
-    void G_vRestart(void);
-    bool G_bRewindMain(void);
 
     void G_vSetBoard(Board* pBoard);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);

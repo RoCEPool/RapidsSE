@@ -103,11 +103,24 @@ namespace STORE
     Card* pEachChild(eCK eCard, i8& ri_Main);
     Card* pEachChild(i8& ri_Main, eCK& reCard);
     Card* pEachChild_reverse(eCK eCard);
+    bool G_bEachMain(void);
+    bool G_bEachMain(eCK eOfMainKind);
+    bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
+    bool G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
+    bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
+    bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
+    bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
+    bool G_bEachSubOfMain(eCK eSubKind);
+    bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
+    bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
+    void vFocusOnMain(void);
     void vForward(void);
 
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);
+
+    bool G_bIsNextMain(eCK eMember);
 
     bool bJustRestarted(void);
 
@@ -115,6 +128,7 @@ namespace STORE
 
     Stz* szMemberNm(eCK eMember);
     bool bMore(void);
+    void G_vMorphCard(Card* pCard, eCK eCard);
 
     void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void  G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
@@ -130,10 +144,21 @@ namespace STORE
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteChild(Card*& rpChild);
     void vRemoveDeleteCurr(eCK eCrossCheck);
+    void G_vRemoveDeleteMain(eCK eCrossCheck);
+    bool G_bResolveCard(eCK eCard, i8 i_Before);
+    bool G_bResolveCard(eCK eCard,char cWithValue, i8 i_Before);
+    bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
+    bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
+    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);
+    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore);
+    bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
+    bool G_bResolveSubCard(eCK eSub, i8 i_Before);
     void vRestart(void);
+    void G_vRestart(void);
     void vRestore(void);
     void vRewind(void);
     Card* pRewindChild(void);
+    bool G_bRewindMain(void);
 
     void vSave(void);
     i8   iSentinalsDepth(void);
