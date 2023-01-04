@@ -2,169 +2,55 @@
 /* _opt_debug -- (join)                                                       */
 /*============================================================================*/
 
-create table Customer (
-	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
-	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
-	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
-	C_NATIONKEY     INTEGER       NOT NULL,  // 3)
-	C_PHONE         CHAR(15)      NOT NULL,  // 4)
-	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
-	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
-	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
+create index TABLE1_COLA1 on table1(cola1);
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,  //1
+  scol9   INTEGER NOT NULL,  //2
+  tcol9   INTEGER NOT NULL,  //3
+  colb9   VARCHAR(20),       //4
+  cold9   FLOAT,             //5
+  cole9   DECIMAL,           //6
+  colf9   INTEGER,           //7
+  colg9   INTEGER,           //8
+  ucol    INTEGER,           //9
+  ucolvc  VARCHAR(5)         //10
 );
 
-create index IxC_CUSTKEY  on Customer  (C_CUSTKEY);
+create index table9_pcol9 on table9(pcol9);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
 
-
-create table orders (
-	 O_ORDERKEY        INTEGER       NOT NULL,
-	 O_CUSTKEY         INTEGER       NOT NULL,
-	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
-	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-	 O_ORDERDATE       DATE          NOT NULL,
-	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
-	 O_CLERK           CHAR(15)      NOT NULL,
-	 O_SHIPPRIORITY    INTEGER       NOT NULL,
-	 O_COMMENT         VARCHAR(79)   NOT NULL
-)
-partition by (O_CUSTKEY);
-
-create index IxO_CUSTKEY  on Orders    (O_CUSTKEY);
-create index IxO_ORDERKEY on Orders    (O_ORDERKEY);
-
-create table lineitem (
-  L_ORDERKEY      INTEGER NOT NULL,
-  L_PARTKEY       INTEGER NOT NULL,
-  L_SUPPKEY       INTEGER NOT NULL,
-  L_LINENUMBER    INTEGER NOT NULL,
-  L_QUANTITY      DECIMAL(15,2) NOT NULL,
-  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
-  L_DISCOUNT      DECIMAL(15,2) NOT NULL,
-  L_TAX           DECIMAL(15,2) NOT NULL,
-  L_RETURNFLAG    VARCHAR(1) NOT NULL,
-  L_LINESTATUS    VARCHAR(1) NOT NULL,
-  l_SHIPDATE      DATE NOT NULL,
-  L_COMMITDATE    DATE NOT NULL,
-  L_RECEIPTDATE   DATE NOT NULL,
-  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,
-  L_SHIPMODE      VARCHAR(10) NOT NULL,
-  L_COMMENT       VARCHAR(44) NOT NULL
-);
-
-create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
-create index IxL_SUPPKEY   on Lineitem (L_SUPPKEY );
-
-create table supplier (
-S_SUPPKEY       INTEGER NOT NULL,
-S_NAME          VARCHAR(25) NOT NULL,
-S_ADDRESS       VARCHAR(40) NOT NULL,
-S_NATIONKEY     INTEGER NOT NULL,
-S_PHONE         VARCHAR(15) NOT NULL,
-S_ACCTBAL       DECIMAL(15,2) NOT NULL,
-S_COMMENT       VARCHAR(101) NOT NULL
-);
-
-create index IxS_SUPPKEY  on Supplier  (S_SUPPKEY);
-
-
-create table PartSupp (
-	PS_PARTKEY      INTEGER       NOT NULL,
-	PS_SUPPKEY      INTEGER       NOT NULL,
-	PS_AVAILQTY     INTEGER       NOT NULL,
-	PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
-	PS_COMMENT      VARCHAR(199)  NOT NULL
-);
-
-create index IxPS_SUPPKEY  on PartSupp  (PS_SUPPKEY);
+Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 
 
-load Customer "../tpch/sf_0001/customer.csv" ;
-
-load Lineitem "../tpch/sf_0001/lineItem.csv" ;
-
-load Orders   "../tpch/sf_0001/orders.csv"   ;
-
-load Supplier "../tpch/sf_0001/supplier.csv" ;
-
-load PartSupp "../tpch/sf_0001/partsupp.csv" ;
-
-
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// NOTE: RUN THESES TESTS IN 1N4P
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-
-/*
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// UNICAST
-/weaved
-select count(*)
-  from Customer,
-       Orders
- where C_CUSTKEY  = O_CUSTKEY;
-//expected rows: (1500)
-*/
-
-/*
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// HASHCAST
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
 /glean_interactive
 /transliterated
 /weaved
-select count(*)
-  from Lineitem,
-       Orders
- where L_ORDERKEY  = O_ORDERKEY;
-//expected rows: (5996)
-*/
-
-/*
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BROADCAST
-/glean_interactive
-/transliterated
-/weaved
-select count(*)
-  from Lineitem,
-       PartSupp
- where L_SUPPKEY  = PS_SUPPKEY;
-//expected rows: (576000)
-*/
-
-/*
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// UNICAST+HASHCAST
-/glean_interactive
-/transliterated
-/weaved
-select count(*)
-  from Customer,
-       Orders,
-       Lineitem
- where C_CUSTKEY  = O_CUSTKEY
-   and L_ORDERKEY = O_ORDERKEY;
-//expected rows: (5996)
-*/
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// UNICAST+HASHCAST+HASHCAST
-/glean_interactive
-/transliterated
-/weaved
-select count(*)
-  from Customer,
-       Orders,
-       Lineitem,
-       Supplier
- where C_CUSTKEY  = O_CUSTKEY
-   and L_ORDERKEY = O_ORDERKEY
-   and L_SUPPKEY  = S_SUPPKEY;
-  //expected rows: (5996)
+  select * from
+    (select colf1 from table1 join table9 using (ucol));
 
 
 /*============================================================================*/
