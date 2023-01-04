@@ -105,6 +105,7 @@ enum eCK // card kind
   /* */ CK_PERMUTATION,
   /* */ CK_PMZWHERE,
   /* */ CK_PROJECT,
+  /* */ CK_PROJECTION,
   /* */ CK_PROJELIST,
   /* */ CK_PTNCOL,
   /* */ CK_PTNCOLLIST,
@@ -131,7 +132,6 @@ enum eCK // card kind
   /* */ CK_STMCOLNM,
   /* */ CK_STMCOLODN,
   /* */ CK_STREAM,
-  /* */ CK_STREAMMODEL,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -279,6 +279,7 @@ static Stz* aCK[]
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PMZWHERE"_Stz,     // CK_PMZWHERE
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
+  /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
   /* */ "CK_PTNCOL"_Stz,       // CK_PTNCOL
   /* */ "CK_PTNCOLLIST"_Stz,   // CK_PTNCOLLIST
@@ -305,7 +306,6 @@ static Stz* aCK[]
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
-  /* */ "CK_STREAMMODEL"_Stz,  // CK_STREAMMODEL
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -452,6 +452,7 @@ static Stz* aCK_short[]
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "pmzWhere"_Stz,        // CK_PMZWHERE
   /* */ "project"_Stz,         // CK_PROJECT
+  /* */ "projection"_Stz,      // CK_PROJECTION
   /* */ "projElist"_Stz,       // CK_PROJELIST
   /* */ "ptnCol"_Stz,          // CK_PTNCOL
   /* */ "ptnColList"_Stz,      // CK_PTNCOLLIST
@@ -478,7 +479,6 @@ static Stz* aCK_short[]
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
   /* */ "stream"_Stz,          // CK_STREAM
-  /* */ "streamModel"_Stz,     // CK_STREAMMODEL
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
@@ -625,6 +625,7 @@ static Stz* aCK_notation[]
     /* */ "pmut"_Stz,         // CK_PERMUTATION
     /* */ "pW"_Stz,           // CK_PMZWHERE
     /* */ "pj"_Stz,           // CK_PROJECT
+    /* */ "pjtn"_Stz,         // CK_PROJECTION
     /* */ "pjEL"_Stz,         // CK_PROJELIST
     /* */ "pC"_Stz,           // CK_PTNCOL
     /* */ "pCL"_Stz,          // CK_PTNCOLLIST
@@ -651,7 +652,6 @@ static Stz* aCK_notation[]
     /* */ "sCN"_Stz,          // CK_STMCOLNM
     /* */ "sCO"_Stz,          // CK_STMCOLODN
     /* */ "strm"_Stz,         // CK_STREAM
-    /* */ "strmMdl"_Stz,      // CK_STREAMMODEL
     /* */ "sS"_Stz,           // CK_SUBSET
 
     /* */ "t"_Stz,           // CK_TABLE

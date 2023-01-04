@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StreamModel.hpp -- Stream Model                                       */
+/* Card_Projection.hpp -- Stream Model                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_StreamModel : public Card
+  class Card_Projection : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StreamModel(void);
-   ~Card_StreamModel(void) noexcept(false);
+    Card_Projection(void);
+   ~Card_Projection(void) noexcept(false);
   };
 
-  Card_StreamModel* _pCard_StreamModel(void* aAddr);
+  Card_Projection* _pCard_Projection(void* aAddr);
 }
 
 /*============================================================================*/

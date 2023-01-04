@@ -362,6 +362,7 @@ void CardIter::G_vClearMembers(void)
   G.p_permutation_low  = nullptr;
   G.p_pmzWhere         = nullptr;
   G.p_project          = nullptr;
+  G.p_projection       = nullptr;
   G.p_projElist        = nullptr;
   G.p_ptnCol           = nullptr;
   G.p_ptnColList       = nullptr;
@@ -382,7 +383,6 @@ void CardIter::G_vClearMembers(void)
   G.p_stmColNm         = nullptr;
   G.p_stmColOdn        = nullptr;
   G.p_stream           = nullptr;
-  G.p_streamModel      = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
@@ -1164,6 +1164,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PERMUTATION:      return G.p_permutation;
     case CK_PMZWHERE:         return G.p_pmzWhere;
     case CK_PROJECT:          return G.p_project;
+    case CK_PROJECTION:       return G.p_projection;
     case CK_PROJELIST:        return G.p_projElist;
     case CK_PTNCOL:           return G.p_ptnCol;
     case CK_PTNCOLLIST:       return G.p_ptnColList;
@@ -1184,7 +1185,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STMCOLNM:         return G.p_stmColNm;
     case CK_STMCOLODN:        return G.p_stmColOdn;
     case CK_STREAM:           return G.p_stream;
-    case CK_STREAMMODEL:      return G.p_streamModel;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
@@ -1369,6 +1369,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PMZWHERE:         return "G.p_pmzWhere"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
+    case CK_PROJECTION:       return "G.p_projection"_Stz;
     case CK_PROJELIST:        return "G.p_projElist"_Stz;
     case CK_PTNCOL:           return "G.p_ptnCol"_Stz;
     case CK_PTNCOLLIST:       return "G.p_ptnColList"_Stz;
@@ -1389,7 +1390,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
     case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
     case CK_STREAM:           return "G.p_stream"_Stz;
-    case CK_STREAMMODEL:      return "G.p_streamModel"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
@@ -2303,6 +2303,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PMZWHERE:         *((Card**)&G.p_pmzWhere)         = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
+    case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
     case CK_PROJELIST:        *((Card**)&G.p_projElist)        = pCard; break;
     case CK_PTNCOL:           *((Card**)&G.p_ptnCol)           = pCard; break;
     case CK_PTNCOLLIST:       *((Card**)&G.p_ptnColList)       = pCard; break;
@@ -2323,7 +2324,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
     case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
     case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
-    case CK_STREAMMODEL:      *((Card**)&G.p_streamModel)      = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
@@ -2355,7 +2355,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AV_JOINSERIES:    *((Card**)&G.p_av_joinSeries)    = pCard; break;
     case CK_AV_LIMIT:         *((Card**)&G.p_av_limit)         = pCard; break;
     case CK_AV_PROJECT:       *((Card**)&G.p_av_project)       = pCard; break;
-    case CK_AV_SCANJOINSERIES: *((Card**)&G.p_av_scanJoinSeries) = pCard; break;
+    case CK_AV_SCANJOINSERIES:*((Card**)&G.p_av_scanJoinSeries)= pCard; break;
     case CK_AV_SCANONLY:      *((Card**)&G.p_av_scanOnly)      = pCard; break;
     case CK_AV_SORT:          *((Card**)&G.p_av_sort)          = pCard; break;
 

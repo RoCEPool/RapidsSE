@@ -110,6 +110,7 @@
 #include "Card_Permutation.hpp"
 #include "Card_PmzWhere.hpp"
 #include "Card_Project.hpp"
+#include "Card_Projection.hpp"
 #include "Card_ProjElist.hpp"
 #include "Card_PtnCol.hpp"
 #include "Card_PtnColList.hpp"
@@ -133,7 +134,6 @@
 #include "Card_StmColNm.hpp"
 #include "Card_StmColOdn.hpp"
 #include "Card_Stream.hpp"
-#include "Card_StreamModel.hpp"
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"

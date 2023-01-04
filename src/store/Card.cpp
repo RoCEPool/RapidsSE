@@ -3144,6 +3144,19 @@ Card_PmzWhere* Card::pSub_pmzWhere(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Projection.hpp"
+Card_Projection* Card::pSub_projection(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Projection* p_projection =
+      _pCard_Projection(pFindSubCard(CK_STREAM));
+  return p_projection;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_ProjElist.hpp"
 Card_ProjElist* Card::pSub_projElist(void)
 {
@@ -3243,19 +3256,6 @@ Card_Stream* Card::pSub_stream(void)
   Card_Stream* p_stream =
       _pCard_Stream(pFindSubCard(CK_STREAM));
   return p_stream;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_StreamModel.hpp"
-Card_StreamModel* Card::pSub_streamModel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StreamModel* p_streamModel =
-      _pCard_StreamModel(pFindSubCard(CK_STREAM));
-  return p_streamModel;
 }
 
 /*----------------------------------------------------------------------------*/

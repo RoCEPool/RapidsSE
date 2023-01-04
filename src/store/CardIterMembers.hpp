@@ -131,6 +131,7 @@ namespace STORE
     Card_Permutation *      p_permutation_low;
     Card_PmzWhere *         p_pmzWhere;
     Card_Project *          p_project;
+    Card_Projection *       p_projection;
     Card_ProjElist *        p_projElist;
     Card_PtnCol *           p_ptnCol;
     Card_PtnColList *       p_ptnColList;
@@ -152,7 +153,6 @@ namespace STORE
     Card_StmColNm *         p_stmColNm;
     Card_StmColOdn *        p_stmColOdn;
     Card_Stream *           p_stream;
-    Card_StreamModel *      p_streamModel;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;
     Card_TableList *        p_tableList;

@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_StreamModel.cpp -- Stream                                                  */
+/* Card_Projection.cpp -- Stream                                                  */
 /*============================================================================*/
 
-#include "Card_StreamModel.hpp"
+#include "Card_Projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StreamModel,CK_STREAMMODEL)
-__aNewFunction(Card_StreamModel,CN_CARD)
-__vDeleteFunction(Card_StreamModel,CN_CARD)
+__pCastFunction_Card(STORE, Card_Projection, CK_PROJECTION)
+__aNewFunction(Card_Projection, CN_CARD)
+__vDeleteFunction(Card_Projection, CN_CARD)
 
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamModel::Card_StreamModel(void)
-: Card(CK_STREAMMODEL)
+Card_Projection::Card_Projection(void)
+: Card(CK_PROJECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -30,7 +30,7 @@ Card_StreamModel::Card_StreamModel(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamModel::~Card_StreamModel(void) noexcept(false)
+Card_Projection::~Card_Projection(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
