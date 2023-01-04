@@ -50,8 +50,8 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 /transliterated
 /weaved
   select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX
-     ;
-     //where x < 0 or y > 0;
+     //;
+     where x < 0 or y > 0;
 
 
 

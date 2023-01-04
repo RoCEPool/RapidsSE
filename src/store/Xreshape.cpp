@@ -1558,6 +1558,9 @@ void Xreshape::vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void)
 
   SubQuery* pSubQuery = m_pBench->pGetBoard((i8)1)->pSubQuery();
 
+  if (pSubQuery->bViaFrom())
+    return;
+
   pSubQuery->vCaller(0);
 
   // there is a subQuery, how is it called?
