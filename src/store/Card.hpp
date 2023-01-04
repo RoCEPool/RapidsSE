@@ -55,6 +55,7 @@ namespace STORE
   class Card_ELIST;
   class Card_Exists;
   class Card_Expr;
+  class Card_ExprList;
 
   class Card_Filter;
   class Card_Fold;
@@ -486,6 +487,7 @@ namespace STORE
     Card_Direction*     pSub_direction(void);
     Card_EBound*        pSub_eBound(void);
     Card_Expr*          pSub_expr(void);
+    Card_ExprList*      pSub_exprList(void);
     Card_Filter*        pSub_filter(void);
     Card_Fold*          pSub_fold(void);
     Card_FoldElist*     pSub_foldElist(void);

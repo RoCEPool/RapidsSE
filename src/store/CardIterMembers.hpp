@@ -87,6 +87,7 @@ namespace STORE
     Card_Direction *        p_direction;
     Card_EBound *           p_eBound;
     Card_Expr *             p_expr;
+    Card_ExprList *         p_exprList;
     Card_Filter *           p_filter;
     Card_Fold *             p_fold;
     Card_FoldElist *        p_foldElist;
