@@ -63,6 +63,7 @@ namespace STORE
 
     // vSeries_22_Stream_Analysis
     void vS22_T_Stream_Analysis(void);
+    void vS22b_T_Stream_Analysis(void);
 
     // vSeries_26_SubQuery_Analysis
 

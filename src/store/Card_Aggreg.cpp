@@ -41,7 +41,7 @@ Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vApplyStream(Card_StreamModel* pStreamModel)
+void Card_Aggreg::vApplyStream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

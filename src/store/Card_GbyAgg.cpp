@@ -41,7 +41,7 @@ Card_GbyAgg::~Card_GbyAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vApplyStream(Card_StreamModel* pStreamModel)
+void Card_GbyAgg::vApplyStream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

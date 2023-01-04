@@ -41,7 +41,7 @@ Card_Limit::~Card_Limit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Limit::vApplyStream(Card_StreamModel* pStreamModel)
+void Card_Limit::vApplyStream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

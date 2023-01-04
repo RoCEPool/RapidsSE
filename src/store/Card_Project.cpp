@@ -48,7 +48,7 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vApplyStream(Card_StreamModel* pStreamModel)
+void Card_Project::vApplyStream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

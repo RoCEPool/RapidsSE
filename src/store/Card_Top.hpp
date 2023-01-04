@@ -16,7 +16,7 @@ namespace STORE
     Card_Top(Stz* szRows);
    ~Card_Top(void) noexcept(false);
 
-    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+    void vApplyStream(CardIter* pCI); // prototype
 
   };
 

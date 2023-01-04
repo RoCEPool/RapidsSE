@@ -166,6 +166,8 @@ namespace STORE
   class Card_Av_ScanJoinSeries;
   class Card_Av_ScanOnly;
   class Card_Av_Sort;
+
+  class CardIter;
 }
 
 static Stz* P_AggOp        = "bAggOp"_Stz;

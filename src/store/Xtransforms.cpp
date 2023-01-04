@@ -559,6 +559,31 @@ void Xtransforms::vS20_T_Table_Analysis(void)
 
   vEndTransform();
 }
+/*----------------------------------------------------------------------------*/
+//void Xtransforms::vS20b_T_Table_Analysis(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+//
+//  vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // Affix Table Syntax To All Table
+//
+//  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
+//    G.p_table->vSet_Syn(&m_cTableSyn);
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // Produce Table Partition Under All Table
+//
+//  G_vRestart();
+//
+//  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
+//    G.p_table->vApplyStream(this);
+//
+//
+//  vEndTransform();
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -623,14 +648,17 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
 
   vStreamAnalysisReset();
 
-  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    m_pTable = Card::pAccess_Table(G.p_tableNm->sz());
-    G.p_stream = Card_Stream::pDerive_Of_table(m_pTable);
+//  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
+//    m_pTable = Card::pAccess_Table(G.p_tableNm->sz());
+//    G.p_stream = Card_Stream::pDerive_Of_table(m_pTable);
+//
+//    G.p_table->vAppend(G.p_stream);
+//  }
 
-    G.p_table->vAppend(G.p_stream);
-  }
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
+    G.p_table->vApplyStream(this);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Stream Under All Project
 
   G_vRestart();

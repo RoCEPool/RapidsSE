@@ -41,7 +41,7 @@ Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vApplyStream(Card_StreamModel* pStreamModel)
+void Card_IndexScan::vApplyStream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

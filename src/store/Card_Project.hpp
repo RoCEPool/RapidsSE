@@ -16,7 +16,7 @@ namespace STORE
     Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
 
-    void vApplyStream(Card_StreamModel* pStreamModel); // prototype
+    void vApplyStream(CardIter* pCI); // prototype
 
   };
 

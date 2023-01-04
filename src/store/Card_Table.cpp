@@ -69,9 +69,14 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vApplyStream(Card_StreamModel* pStreamModel)
+void Card_Table::vApplyStream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
+  pCI->G.p_stream = Card_Stream::pDerive_Of_table(pTable);
+
+  vAppend(pCI->G.p_stream);
 }
 
 
