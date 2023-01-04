@@ -216,12 +216,9 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin18.sql
 // Result file: ../queries/aggs/min/results/min18.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
-/*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX;
 rows:
-  (-249.08, -148.190000000000, -15)
-*/
+  (-2.490800000e+02,-148.19,-15)
 
 // Source file: ../queries/aggs/min/rmin25.sql
 // Result file: ../queries/aggs/min/results/min25.res

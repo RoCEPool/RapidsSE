@@ -83,7 +83,7 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/alias/ralias-5.sql
 // Result file: ../queries/alias/results/alias-5.res
-// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
+// TODO: ENABLE WHEN DISTINCT
 /*
 select distinct a.pcol9 from table9 a join table9 b on a.pcol9=b.scol9 order by a.pcol9 limit 15;
 ordered rows:
