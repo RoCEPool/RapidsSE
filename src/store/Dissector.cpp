@@ -632,6 +632,14 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
     pCard_Project->vCard(CK_AGGREG);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // projection : projection expression list
+
+  Card* p_dup = pCard_ProjElist->pDupCardAndSubCards();
+  p_dup->vCard(CK_PROJECTION);
+  Card_Projection* pCard_Projection = _pCard_Projection(p_dup);
+  pCard_Project->vAppend(pCard_Projection);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_RpnTerms;
 
@@ -838,6 +846,32 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect <projection> terms :                                               */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_Projection* pCard_Projection = new Card_Projection;
+
+  Card_Term* pCard_Term_head = nullptr;
+  while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
+
+    // SEPARATOR
+    if (pCard_Term_head->bIsCommaSeparator()) {
+      delete pCard_RpnTerms->pPop();
+      continue;
+    }
+
+    // TYPE <type> [ AS <as> ] <calcExpr>
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
+    pCard_Projection->vAppend(pCard_Expr);
+  }
+
+  return pCard_Projection;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect <project> terms :                                                  */
 /*----------------------------------------------------------------------------*/
 Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
@@ -846,6 +880,7 @@ Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
 
   Card_ProjElist* pCard_ProjElist = new Card_ProjElist;
 
+  i8 i_Expr = 1;
   Card_Term* pCard_Term_head = nullptr;
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
         
@@ -857,6 +892,7 @@ Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
         
     // TYPE <type> [ AS <as> ] <calcExpr>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
+    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
     pCard_ProjElist->vAppend(pCard_Expr);
   }
   

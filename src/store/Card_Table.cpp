@@ -99,6 +99,10 @@ void Card_Table::vComputeProjection(CardIter* pCI)
 //    p_stmCol->vValue(pColumn->szColNm());
 //    p_expr->vAppend(p_stmCol);
 
+    Stz* szType = aCT[pColumn->eColumnType()];
+    Card_Type *pCard_Type = new Card_Type(szType);
+    p_expr->vAppend(pCard_Type);
+
     Card_As* p_as = new Card_As(pColumn->szColNm());
     p_expr->vAppend(p_as);
 
@@ -106,9 +110,6 @@ void Card_Table::vComputeProjection(CardIter* pCI)
     p_colNm->vValue(pColumn->szColNm());
     p_expr->vAppend(p_colNm);
 
-    Stz* szType = aCT[pColumn->eColumnType()];
-    Card_Type *pCard_Type = new Card_Type(szType);
-    p_expr->vAppend(pCard_Type);
   }
 
   vAppend(p_projection);

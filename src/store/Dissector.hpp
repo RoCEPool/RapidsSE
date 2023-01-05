@@ -62,6 +62,7 @@ namespace STORE
 
     Card_AggElist*  pAggElist    (Card_RpnTerms* pCard_RpnTerms);
     Card_GbyElist*  pGbyElist    (Card_RpnTerms* pCard_RpnTerms);
+    Card_Projection* pProjection  (Card_RpnTerms* pCard_RpnTerms);
     Card_ProjElist* pProjElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pSbyElist    (Card_RpnTerms* pCard_RpnTerms);
 
