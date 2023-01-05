@@ -74,18 +74,25 @@ void Card_Table::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  pCI->G.p_tableNm = pSub_tableNm();
+
   Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
+  Card_Projection* p_projection;
+  if (pCI->G.p_projection)
+    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
+  else
+    p_projection = new Card_Projection;
 
-  Card_Projection* p_projection = new Card_Projection;
+  i8 i_Expr = p_projection->nChildCards() + 1;
 
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    p_expr->vValueSprint("$%lld"_Stz,i_Col+1);
+    p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
     p_projection->vAppend(p_expr);
 
 //    Card_StmCol* p_stmCol = new Card_StmCol();
@@ -105,6 +112,8 @@ void Card_Table::vComputeProjection(CardIter* pCI)
   }
 
   vAppend(p_projection);
+
+  pCI->G.p_projection = p_projection;
 }
 
 

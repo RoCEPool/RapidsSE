@@ -764,8 +764,11 @@ void Xtransforms::vS24_T_Projection_Analysis(void)
   vAssert_Board_any();
 
 
-  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-    G.p_table->vComputeProjection(this);
+  while (G_bEachMain()) {
+
+    if (CK_TABLE == G.e_MainCard)
+      G.p_table->vComputeProjection(this);
+  }
 
   vEndTransform();
 }
