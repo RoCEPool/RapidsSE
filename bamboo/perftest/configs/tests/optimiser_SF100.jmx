@@ -4304,7 +4304,7 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
      | next
 
    stage S02 on all partitions :
-     indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1993-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1993-04-01&apos; &lt;&quot;
+     indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1996-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1996-04-01&apos; &lt;&quot;
      | aggreg &quot; groupBy    type INTEGER as l_suppkey $3
                 aggregates type INTEGER $K1 ,
                            type DECIMAL )  $6 1.00  $7 -  *  sum  &quot;
@@ -4321,7 +4321,7 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
    stage S04 on origin :
      aggreg &quot; groupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER as supplier_no $K1 ,
-                         type DECIMAL )  $2 sum  &quot;
+                         type DECIMAL as TOTAL_REVENUE ) $2 sum  &quot;
      | combined 0
      | next
 
@@ -4332,7 +4332,12 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
      | next hashcast
 
    stage S06 on all partitions :
-     indexJoin supplier IxS_SuppKey &quot;BOUND $I1 supplier_no ==&quot; //J1
+     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 supplier_no ==&quot; 
+     | project &quot;type INTEGER as S_SUPPKEY J1_S_SUPPKEY , 
+                type VARCHAR as S_NAME J1_S_NAME , 
+                type VARCHAR as S_ADDRESS J1_S_ADDRESS , 
+                type VARCHAR as S_PHONE J1_S_PHONE , 
+                type DECIMAL TOTAL_REVENUE &quot;
      | combined 0
      | next
 
@@ -4340,8 +4345,7 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
      output
      | sink
      | first
- end ;
-</stringProp>
+ end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
