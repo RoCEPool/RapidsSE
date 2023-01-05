@@ -51,7 +51,11 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 /glean_interactive
 /transliterated
 /weaved
-  select count(*) from table1 a, table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
+select count(*)
+  from table1 a, table9 b
+ where (colb1 = 'green')
+    or (colb9 = 'blue' and a.ucol = b.ucol)
+;
 
 /*============================================================================*/
 /* end                                                                        */

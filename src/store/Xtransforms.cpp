@@ -441,7 +441,9 @@ void Xtransforms::vS05_T_Move_On(void)
   if (G_bEachMain(CK_WHERE))
     {;}
 
-  G_vRestart();
+  //G_vRestart();
+  vRestart();
+
   while (G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
     Xute::vMove_on_To_where(static_cast<CardIter*>(this));
   }
