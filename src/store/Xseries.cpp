@@ -138,7 +138,8 @@ void Xseries::vSeries_10_Make_Runnable(void)
     m_pTransforms->vS10_T_Condense_Info();
     m_pTransforms->vS20_T_Table_Analysis();
     m_pTransforms->vS22_T_Stream_Analysis();
-    m_pTransforms->vS24_T_Index_Analysis();
+    //m_pTransforms->vS24_T_Projection_Analysis();
+    m_pTransforms->vS26_T_Index_Analysis();
   }
 
   vSeries(BK_SUBPIPE, 0, __func__);

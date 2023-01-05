@@ -69,14 +69,38 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vApplyStream(CardIter* pCI)
+void Card_Table::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
-  pCI->G.p_stream = Card_Stream::pDerive_Of_table(pTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
 
-  vAppend(pCI->G.p_stream);
+
+  Card_Projection* p_projection = new Card_Projection;
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_Expr* p_expr = new Card_Expr;
+    p_expr->vValueSprint("$%lld"_Stz,i_Col+1);
+    p_projection->vAppend(p_expr);
+
+//    Card_StmCol* p_stmCol = new Card_StmCol();
+//    p_stmCol->vValue(pColumn->szColNm());
+//    p_expr->vAppend(p_stmCol);
+
+    Card_StmColNm* p_stmColNm = new Card_StmColNm();
+    p_stmColNm->vValue(pColumn->szColNm());
+    p_expr->vAppend(p_stmColNm);
+
+    Stz* szType = aCT[pColumn->eColumnType()];
+    Card_Type *pCard_Type = new Card_Type(szType);
+    p_expr->vAppend(pCard_Type);
+  }
+
+  vAppend(p_projection);
 }
 
 

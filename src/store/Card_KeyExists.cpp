@@ -41,7 +41,7 @@ Card_KeyExists::~Card_KeyExists(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_KeyExists::vApplyStream(CardIter* pCI)
+void Card_KeyExists::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

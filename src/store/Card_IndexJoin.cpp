@@ -41,7 +41,7 @@ Card_IndexJoin::~Card_IndexJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vApplyStream(CardIter* pCI)
+void Card_IndexJoin::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

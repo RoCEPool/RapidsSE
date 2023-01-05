@@ -16,7 +16,7 @@ namespace STORE
     Card_KeyExists(void);
    ~Card_KeyExists(void) noexcept(false);
 
-    void vApplyStream(CardIter* pCI); // prototype
+    void vComputeProjection(CardIter* pCI); // prototype
 
   };
 

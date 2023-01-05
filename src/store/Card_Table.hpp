@@ -18,7 +18,7 @@ namespace STORE
     Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
-    void vApplyStream(CardIter* pCI); // prototype
+    void vComputeProjection(CardIter* pCI); // prototype
 
     void vBounds_AddPred(Card_Index* p_index,
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);

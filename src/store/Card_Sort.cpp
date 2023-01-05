@@ -41,7 +41,7 @@ Card_Sort::~Card_Sort(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Sort::vApplyStream(CardIter* pCI)
+void Card_Sort::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

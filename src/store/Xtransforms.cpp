@@ -583,7 +583,7 @@ void Xtransforms::vS20_T_Table_Analysis(void)
 //  G_vRestart();
 //
 //  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-//    G.p_table->vApplyStream(this);
+//    G.p_table->vComputeProjection(this);
 //
 //
 //  vEndTransform();
@@ -597,7 +597,7 @@ void Xtransforms::vS20_T_Table_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vS24_T_Index_Analysis(void)
+void Xtransforms::vS26_T_Index_Analysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -652,15 +652,15 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
 
   vStreamAnalysisReset();
 
-//  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-//    m_pTable = Card::pAccess_Table(G.p_tableNm->sz());
-//    G.p_stream = Card_Stream::pDerive_Of_table(m_pTable);
-//
-//    G.p_table->vAppend(G.p_stream);
-//  }
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
+    m_pTable = Card::pAccess_Table(G.p_tableNm->sz());
+    G.p_stream = Card_Stream::pDerive_Of_table(m_pTable);
 
-  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-    G.p_table->vApplyStream(this);
+    G.p_table->vAppend(G.p_stream);
+  }
+
+//  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
+//    G.p_table->vComputeProjection(this);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Stream Under All Project
@@ -748,6 +748,24 @@ void Xtransforms::vS22_T_Stream_Analysis(void)
     G.p_stream->vDerive_OrdinalRange_aggreg();
   }
 
+
+  vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Projection Analysis                                                        */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vS24_T_Projection_Analysis(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransform(__func__, "((desc))"_Stz);
+
+  vAssert_Board_any();
+
+
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
+    G.p_table->vComputeProjection(this);
 
   vEndTransform();
 }

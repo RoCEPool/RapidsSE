@@ -16,7 +16,7 @@ namespace STORE
     Card_Limit(Stz* szRows);
    ~Card_Limit(void) noexcept(false);
 
-    void vApplyStream(CardIter* pCI); // prototype
+    void vComputeProjection(CardIter* pCI); // prototype
 
   };
 

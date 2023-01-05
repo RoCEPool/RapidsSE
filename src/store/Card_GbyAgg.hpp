@@ -16,7 +16,7 @@ namespace STORE
     Card_GbyAgg(void);
    ~Card_GbyAgg(void) noexcept(false);
 
-    void vApplyStream(CardIter* pCI); // prototype
+    void vComputeProjection(CardIter* pCI); // prototype
 
   };
 

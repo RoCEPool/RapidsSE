@@ -19,7 +19,7 @@ namespace STORE
 
     void vAddPred(Card_PRED *p_PRED);
 
-    void vApplyStream(CardIter* pCI); // prototype
+    void vComputeProjection(CardIter* pCI); // prototype
 
     void vCullPred(char cWithMark);
     bool bIsEmpty(void);

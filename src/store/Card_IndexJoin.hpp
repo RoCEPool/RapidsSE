@@ -16,7 +16,7 @@ namespace STORE
     Card_IndexJoin(void);
    ~Card_IndexJoin(void) noexcept(false);
 
-    void vApplyStream(CardIter* pCI); // prototype
+    void vComputeProjection(CardIter* pCI); // prototype
   };
 
   Card_IndexJoin* _pCard_IndexJoin(void* aAddr);

@@ -74,7 +74,7 @@ void Card_Filter::vAddPred(Card_PRED *p_PRED)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vApplyStream(CardIter* pCI)
+void Card_Filter::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
