@@ -7,13 +7,13 @@ User's Guide
    :maxdepth: 1
 
    usingRapidsSE
-..   dataTypes
+   dataTypes
+   dataManipulation
 ..   operators
 ..   indexes
 ..   typeConversion
 ..   constraints
 ..   dataDefinition
-..   dataManipulation
 ..   queries
 ..   expressions
 
