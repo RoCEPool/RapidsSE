@@ -233,6 +233,9 @@ create table SUPPLIER (
 );
 success
 
+create index SUPPLIER_S_NATIONKEY on SUPPLIER(s_nationkey);
+success
+
 create table PARTSUPP (
   ps_partkey INTEGER NOT NULL,
   ps_suppkey INTEGER NOT NULL,
@@ -251,6 +254,9 @@ create table NATION (
 success
 
 create index NATION_N_NATIONKEY on NATION(n_nationkey);
+success
+
+create index NATION_N_REGIONKEY on NATION(n_regionkey);
 success
 
 create table REGION (

@@ -22,14 +22,11 @@ rows:
 
 // Source file: ../queries/aliasSelAll/xselAll-5.sql
 // Result file: ../queries/aliasSelAll/results/selAll-5.res
-// TODO: ENABLE WHEN JOIN ORDER
-/*
 select a.s_name, a.s_nationkey, b.* from supplier a, region b, nation c where a.s_nationkey = c.n_nationkey and c.n_regionkey = b.r_regionkey and a.s_name like 'T%';
 rows:
   ('TruValue', 16, 4, 'SOUTH AMERICA', 'csvbdcavbscdbvacdhvjhxdkgnlkglfglksdnja shc asbvda')
   ('TruValue', 15, 4, 'SOUTH AMERICA', 'csvbdcavbscdbvacdhvjhxdkgnlkglfglksdnja shc asbvda')
   ('TruValue', 12, 3, 'EUROPE', 'dxldgkzcsoisjoicnkjebfjhqwgrygwuihvokjdgojdvpds')
-*/
 
 // Source file: ../queries/aliasSelAll/xselAll-3.sql
 // Result file: ../queries/aliasSelAll/results/selAll-3.res
