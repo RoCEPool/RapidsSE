@@ -1300,6 +1300,17 @@ void Xtransforms::vS40_T10_Fold_F(void)
   vPrintBoard(__LINE__);
 
 
+  // discuss with Alka
+  G_vRestart();
+  if (G_bEachMain(CK_FOLD)) {
+    if (G_bEachMain(CK_WHERE)) {
+      Card_Level* p_level_where = G.p_where->pSub_level();
+      if (G_bEachMainWithSub(CK_PROJECT, CK_LEVEL)) {
+        p_level_where->Y_vSet(P_Level,G.p_level->Y_iGet(P_Level));
+      }
+    }
+  }
+
   vEndTransform();
 }
 
