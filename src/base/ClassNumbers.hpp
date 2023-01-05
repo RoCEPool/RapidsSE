@@ -106,6 +106,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
+  /* */ CN_FOLD_W_A_C_ro,
   /* */ CN_FORMAT,
   /* */ CN_FREEPOOLBUFFER,
   /* */ CN_FREECHUNK,
@@ -533,6 +534,7 @@ static Stz* aCN[]
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
+  /* */ "FOLD_W_A_C_ro"_Stz,        // CN_FOLD_W_A_C_ro
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEPOOLBUFFER"_Stz,       // CN_FREEPOOLBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK

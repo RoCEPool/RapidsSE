@@ -250,6 +250,7 @@
 #include "PpySet.hpp"
 #include "Xseries.hpp"
 #include "Scope.hpp"
+#include "Fold_W_A_C_ro.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -367,6 +368,7 @@ SizeHeap gxaSizeHeap[]
   { CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
   { CN_FLATTEN,                  sizeof(Flatten), /*yes*/    HT_T_TINY    ,     FILL },
   { CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
+  { CN_FOLD_W_A_C_ro,            sizeof(CN_FOLD_W_A_C_ro),       HT_T_TINY    , FILL },
   { CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
   { CN_FREEPOOLBUFFER,           sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,     FILL },
   { CN_FREECHUNK,                sizeof(FreeChunk),              HT_INVALID   , FILL },
