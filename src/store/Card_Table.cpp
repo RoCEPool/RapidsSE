@@ -4,6 +4,7 @@
 
 #include "Card_Table.hpp"
 
+#include "Card_As.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_Filter.hpp"
@@ -91,9 +92,12 @@ void Card_Table::vComputeProjection(CardIter* pCI)
 //    p_stmCol->vValue(pColumn->szColNm());
 //    p_expr->vAppend(p_stmCol);
 
-    Card_StmColNm* p_stmColNm = new Card_StmColNm();
-    p_stmColNm->vValue(pColumn->szColNm());
-    p_expr->vAppend(p_stmColNm);
+    Card_As* p_as = new Card_As(pColumn->szColNm());
+    p_expr->vAppend(p_as);
+
+    Card_ColNm* p_colNm = new Card_ColNm;
+    p_colNm->vValue(pColumn->szColNm());
+    p_expr->vAppend(p_colNm);
 
     Stz* szType = aCT[pColumn->eColumnType()];
     Card_Type *pCard_Type = new Card_Type(szType);

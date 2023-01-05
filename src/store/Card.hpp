@@ -38,7 +38,7 @@ namespace STORE
   class Card_Cast;
   class Card_CmpPred;
   class Card_Clause;
-  class Card_ColumnRef;
+  class Card_ColNm;
   class Card_Combined;
   class Card_Comment;
   class Card_Constraint;
@@ -481,8 +481,8 @@ namespace STORE
     Card_CalcOp*        pSub_calcOp(void);
     Card_Cast*          pSub_cast(void);
     Card_Clause*        pSub_clause(void);
+    Card_ColNm*         pSub_colNm(void);
     Card_CmpPred*       pSub_cmpPred(void);
-    Card_ColumnRef*     pSub_columnRef(void);
     Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CrossJoin*     pSub_crossJoin(void);
