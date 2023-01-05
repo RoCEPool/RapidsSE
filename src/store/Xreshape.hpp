@@ -15,25 +15,6 @@ namespace STORE
   public:
 
     // utilities
-    void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
-    void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);
-    void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
-    void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
-    void R_vUTE_Correct_having_BaseOn_foldExpr(void);
-    bool R_bUTE_FindAndMarkSubQryCall(void);
-    void R_vUTE_FoldIn_foldExpr(void);
-    void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void);
-    void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
-    void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
-    void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
-    void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
-    void R_vUTE_Push_foldExpr_Into_aggElist(void);
-    void R_vUTE_Push_foldExpr_Into_gbyElist(void);
-    void R_vUTE_RelabelExpressions(void);
-    void R_vUTE_RenumberStmOdn(void);
-    void R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term);
-    Card_Table* R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before);
-    Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
     void R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_BoolCalc* p_boolCalc);
     i8   R_iUTE_Stage_Partitioning(Card* p_main_prior,
                                    Card_Combined* p_combined_prior,

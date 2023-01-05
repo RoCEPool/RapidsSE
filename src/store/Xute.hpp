@@ -38,9 +38,9 @@ namespace STORE
     static void vChoose_index_For_indexScan(CardIter* pCardIter);
     static void vChoose_index_For_keyExists(CardIter* pCardIter);
     static void vChoose_index_For_keyNotExists(CardIter* pCardIter);
-    static void R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
-    static void R_vUTE_Convert_tblColOdn_To_stmOdn(void);
-    static void R_vUTE_Correct_having_BaseOn_foldExpr(void);
+    static void vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
+    static void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
+    static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
 
     static void vDerive_foldElist_From_project_stream(CardIter* pCI);
     static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
@@ -52,33 +52,34 @@ namespace STORE
     static void vDerive_order(CardIter* pCI);
     static void vDerive_foldExpr(CardIter* pCI);
 
-    static void R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(void);
-    static void R_vUTE_Enhance_sq_project_To_Include_Correlation_Column(void);
+    static void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI);
+    static void vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI);
 
-    static bool R_bUTE_FindAndMarkSubQryCall(void);
-    static void R_vUTE_Find_stmCol_Definition_Of_Correlation_Column(void);
-    static void R_vUTE_FoldIn_foldExpr(void);
+    static bool bFindAndMarkSubQryCall(CardIter* pCI);
+    static void vFind_stmCol_Definition_Of_Correlation_Column(CardIter* pCI);
+    static void vFoldIn_foldExpr(CardIter* pCI);
 
-    static void R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(void);
+    static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
     static void vIndividuate_filter(CardIter* pCardIter);
 
-    static void R_vUTE_Move_corrPred_To_mq_table_As_bounds(Card_BoolCalc* p_boolCalc);
+    static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
     static void vMove_on_To_where(CardIter* pCardIter);
-    static void R_vUTE_MoveWhereToTableAsConstraint(Card_Table* p_table, Card_Where* p_where);
-    static void R_vUTE_MoveWhereToTableAsFilter(Card_Table* p_table, Card_Where* p_where);
+    static void vMoveWhereToTableAsConstraint(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
+    static void vMoveWhereToTableAsFilter(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
 
     static bool bOrder_Joins(CardIter* pCardIter);
-    static void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
-    static void R_vUTE_Push_foldExpr_Into_aggElist(void);
-    static void R_vUTE_Push_foldExpr_Into_gbyElist(void);
 
-    static void R_vUTE_RelabelExpressions(void);
-    static void R_vUTE_RenumberStmOdn(void);
+    static void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
+    static void vPush_foldExpr_Into_aggElist(CardIter* pCI);
+    static void vPush_foldExpr_Into_gbyElist(CardIter* pCI);
+
+    static void vRelabelExpressions(CardIter* pCI);
+    static void vRenumberStmOdn(CardIter* pCI);
     static bool bReplaceValueOfSub(CardIter* pCardIter, Card* pCard, eCK eSub,
                                    Stz* szValue, Stz* szWith);
-    static void R_vUTE_Resolve_Param_Ordinal(Card_Term* p_term);
-    static Card_Table* R_pUTE_Resolve_table_By_tblSyn(char cTblSyn, i8 i_Before);
-    static Card_StmColOdn* R_pUTE_Resolve_tblColOdn_Into_stmColOdn(Card_Term* p_term_tblColOdn, i8 i_Before);
+    static void vResolve_Param_Ordinal(CardIter* pCI, Card_Term* p_term);
+    static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
+    static Card_StmColOdn* pResolve_tblColOdn_Into_stmColOdn(CardIter* pCI, Card_Term* p_term_tblColOdn, i8 i_Before);
     static void R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_BoolCalc* p_boolCalc);
 
     static bool R_bUTE_Stage_Partitioning(Card* p_main_prior,
