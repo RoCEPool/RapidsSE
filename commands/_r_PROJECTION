@@ -18,8 +18,9 @@ create index S_idx0  on Supplier (S_SUPPKEY  );
 /transliterated
 /weaved
 /pipelineName = "_r_PROJECTION"
-select *
-  from Customer
+select sum(L_QUANTITY)
+  from Lineitem
+ group by L_SUPPKEY
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
