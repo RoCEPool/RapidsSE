@@ -2419,7 +2419,7 @@ void Xute::vSZ0_T20_Reinstate_stagesV3(CardIter* pCI)
     }
 
     if ((CK_PROJECT == e_main || CK_AGGREG == e_main)
-        && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp) ) {
+        && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
       if (CK_SCAN != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
