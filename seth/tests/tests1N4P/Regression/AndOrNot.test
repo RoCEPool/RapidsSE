@@ -2,7 +2,7 @@
 // Source file: ../queries/AndOrNot/raon6.sql
 // Result file: ../queries/AndOrNot/results/aon6.res
 /*
-// TODO: ENABLE WHEN OPTIMISER (JOINS)
+// TODO: ENABLE WHEN HASHJOINS
 select count(*) from table1 a, table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
 rows:
   (2502)

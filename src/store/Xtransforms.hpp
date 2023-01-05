@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xreshape.hpp"
+#include "Xgearing.hpp"
 #include "eOT.h"
 
 namespace STORE
 {
-  class Xtransforms : public Xreshape
+  class Xtransforms : public Xgearing
   {
   private:
 

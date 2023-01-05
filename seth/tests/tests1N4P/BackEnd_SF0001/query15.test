@@ -7,8 +7,8 @@ create view revenue[STREAM_ID] (supplier_no, total_revenue) as
 select l_suppkey,
        sum(l_extendedprice * (1 - l_discount))
   from lineitem
- where l_shipdate >= date '01-01-1993'
-   and l_shipdate <  date '01-04-1993'
+ where l_shipdate >= date '01-01-1996'
+   and l_shipdate <  date '01-04-1996'
  group by l_suppkey;
 
 
@@ -16,8 +16,8 @@ create table revenue (supplier_no, total_revenue) as
 select l_suppkey,
        sum(l_extendedprice * (1 - l_discount))
   from lineitem
- where l_shipdate >= date '1993-01-01'
-   and l_shipdate <  date '1993-04-01'
+ where l_shipdate >= date '1996-01-01'
+   and l_shipdate <  date '1996-04-01'
  group by l_suppkey;
 
 
@@ -40,8 +40,8 @@ EXPLAIN STAGE TRANSLITERATE
 select l_suppkey,
        sum(l_extendedprice * (1 - l_discount))
   from lineitem
- where l_shipdate >= date '1993-01-01'
-   and l_shipdate <  date '1993-04-01'
+ where l_shipdate >= date '19963-01-01'
+   and l_shipdate <  date '1996-04-01'
  group by l_suppkey;
 
 pipeline unamed
@@ -52,7 +52,7 @@ begin
     | stageMarker4125
   stage stageMarker4125 on all partitions :
     scan rapidsse public LineItem
-    | filter " type BOOLEAN  $11 DATE ''1993-01-01''  >=  $11 DATE ''1993-04-01''  <  and  "
+    | filter " type BOOLEAN  $11 DATE ''1996-01-01''  >=  $11 DATE ''1996-04-01''  <  and  "
     | aggreg " groupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
     | combined 0
     | stageMarker4128
@@ -150,7 +150,7 @@ pipeline Query15
      | next
 
    stage S02 on all partitions :
-     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
      | aggreg " groupBy    type INTEGER as l_suppkey $3
                 aggregates type INTEGER $K1 ,
                            type DECIMAL )  $6 1.00  $7 -  *  sum  "
@@ -167,7 +167,7 @@ pipeline Query15
    stage S04 on origin :
      aggreg " groupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER as supplier_no $K1 ,
-                         type DECIMAL )  $2 sum  "
+                         type DECIMAL as TOTAL_REVENUE ) $2 sum  "
      | combined 0
      | next
 
@@ -178,7 +178,12 @@ pipeline Query15
      | next hashcast
 
    stage S06 on all partitions :
-     indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
+     indexJoin supplier IxS_SUPPKEY "BOUND $I1 supplier_no =="
+     | project "type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type VARCHAR as S_NAME J1_S_NAME ,
+                type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
+                type VARCHAR as S_PHONE J1_S_PHONE ,
+                type DECIMAL TOTAL_REVENUE "
      | combined 0
      | next
 
@@ -189,7 +194,7 @@ pipeline Query15
  end ;
 
  rows:
-  (3,-28367.82,3,'Supplier#000000003','q1:G3Pj6OjIuUYfUoH18BFTKP5aU9bEV3',1,'11-383-516-1199',4192.40,*)
+  (9,'Supplier#000000009','1KhUgZegwM3ua7dsYmekYBsK','20-403-398-8662',-28876.51)
 
 CLEANUP {
   bye;

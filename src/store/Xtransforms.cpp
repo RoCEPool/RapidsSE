@@ -21,7 +21,7 @@ __aFooterFunction(Xtransforms)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xtransforms::Xtransforms(Bench* pBench)
-: Xreshape(CN_TRANSFORMS, pBench)
+: Xgearing(CN_TRANSFORMS, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -807,11 +807,11 @@ void Xtransforms::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc();
+      Xute::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(static_cast<CardIter*>(this));
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc();
+      Xute::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(static_cast<CardIter*>(this));
     }
   }
 
@@ -971,7 +971,7 @@ void Xtransforms::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
         continue;
     }
 
-    vR_S33_T10_Convert_stmColOdn_To_tblColOdn();
+    Xute::vS33_T10_Convert_stmColOdn_To_tblColOdn(static_cast<CardIter*>(this));
   }
 
   G.pDeck->vNoTermsStmColOdn();
@@ -1286,13 +1286,13 @@ void Xtransforms::vS40_T10_Fold_F(void)
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RenumberStmOdn();
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RelabelExpressions();
+  Xute::vRelabelExpressions(static_cast<CardIter*>(this));
 
   m_pBench->vIsFlat(true);
   G.pDeck->vClearMarksRecursive();
@@ -1333,7 +1333,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  if (!R_bUTE_FindAndMarkSubQryCall()) {
+  if (!Xute::bFindAndMarkSubQryCall(static_cast<CardIter*>(this))) {
     vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
     NEVER_REACH
   }
@@ -1384,9 +1384,9 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // f                             //           $d.2  ((m_pTerm_corrPred))
   //                               //             %1
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
-  R_vUTE_Identify_Correlation_Column_In_cmpPred_Of_sq_boolCalc();
+  Xute::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(static_cast<CardIter*>(this));
   RASSERT(m_pTerm_corrPred); // eg $d.2 (L_PARTKEY)
-  R_vUTE_Find_stmCol_Definition_Of_Correlation_Column();
+  Xute::vFind_stmCol_Definition_Of_Correlation_Column(static_cast<CardIter*>(this));
   RASSERT(G.p_stmCol);       // eg L_PARTKEY
 
 
@@ -1395,7 +1395,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // T G G G P F T T T W A A A     // push corrPred <expr> into <gbyElist> and <aggElist>
 
   RASSERT(G_bEachMain(CK_AGGREG));
-  R_vUTE_Enrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column();
+  Xute::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(static_cast<CardIter*>(this));
 
   vPrintBoard(__LINE__);
 
@@ -1405,7 +1405,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
 
   if (G_bIsNextMain(CK_PROJECT)) {
     RASSERT(G_bEachMain(CK_PROJECT));
-    R_vUTE_Enhance_sq_project_To_Include_Correlation_Column();
+    Xute::vEnhance_sq_project_To_Include_Correlation_Column(static_cast<CardIter*>(this));
   }
   else {
 
@@ -1414,14 +1414,14 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   Xute::vDerive_foldElist_From_project_stream(static_cast<CardIter*>(this));
 
   G.pDeck->vRenumberRecursive();
-  R_vUTE_RelabelExpressions();
+  Xute::vRelabelExpressions(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
 
-  R_vUTE_Stream_AdjustLoHi();
-  R_vUTE_RenumberStmOdn();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1462,7 +1462,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   //                               //           $b.1
   //                               // __subquery0002
 
-  R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(G.p_boolCalc);
+  Xute::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(static_cast<CardIter*>(this), G.p_boolCalc);
   vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1480,7 +1480,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
 
   RASSERT(G_bEachMain(CK_FOLD));
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  R_vUTE_Move_corrPred_To_mq_table_As_bounds(G.p_boolCalc);
+  Xute::vMove_corrPred_To_mq_table_As_bounds(static_cast<CardIter*>(this), G.p_boolCalc);
   vPrintBoard(__LINE__);
 
 
@@ -1536,7 +1536,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!R_bUTE_FindAndMarkSubQryCall()) {
+    if (!Xute::bFindAndMarkSubQryCall(static_cast<CardIter*>(this))) {
       vTracer("DID NOT FIND W_A_NC_I SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -1689,13 +1689,13 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   // todo: should this be earlier? As soon as $1 is injected into mq??
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RenumberStmOdn();
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RelabelExpressions();
+  Xute::vRelabelExpressions(static_cast<CardIter*>(this));
 
   m_pBench->vIsFlat(true);
   G.pDeck->vClearMarksRecursive();
@@ -1728,7 +1728,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!R_bUTE_FindAndMarkSubQryCall()) {
+    if (!Xute::bFindAndMarkSubQryCall(static_cast<CardIter*>(this))) {
       vTracer("DID NOT FIND W_A_NC_ro SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -1760,7 +1760,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
     G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
   }
 
-  R_vUTE_RelabelExpressions();
+  Xute::vRelabelExpressions(static_cast<CardIter*>(this));
 
   vPrintBoard(__LINE__);
 
@@ -1883,13 +1883,13 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   vPrintBoard(__LINE__);
 
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RenumberStmOdn();
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RelabelExpressions();
+  Xute::vRelabelExpressions(static_cast<CardIter*>(this));
 
   m_pBench->vIsFlat(true);
   G.pDeck->vClearMarksRecursive();
@@ -1939,7 +1939,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E(void)
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!R_bUTE_FindAndMarkSubQryCall()) {
+    if (!Xute::bFindAndMarkSubQryCall(static_cast<CardIter*>(this))) {
       vTracer("DID NOT FIND W_L_C_E SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2078,7 +2078,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
 
 
   if (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!R_bUTE_FindAndMarkSubQryCall()) {
+    if (!Xute::bFindAndMarkSubQryCall(static_cast<CardIter*>(this))) {
       vTracer("DID NOT FIND W_L_NC_NI SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2104,7 +2104,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   G_vRestart();
   if (G_bEachMain(CK_TABLE)) {
     if (G_bEachMain(CK_WHERE)) {
-      R_vUTE_MoveWhereToTableAsConstraint(G.p_table,G.p_where);
+      Xute::vMoveWhereToTableAsConstraint(static_cast<CardIter*>(this), G.p_table,G.p_where);
     }
   }
   vPrintBoard(__LINE__);
@@ -2139,8 +2139,8 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
   G.pDeck->vRenumberRecursive();
-  R_vUTE_Stream_AdjustLoHi();
-  R_vUTE_RenumberStmOdn();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(m_sSqyArg);
@@ -2249,7 +2249,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
   if (G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
-    if (!R_bUTE_FindAndMarkSubQryCall()) {
+    if (!Xute::bFindAndMarkSubQryCall(static_cast<CardIter*>(this))) {
       vTrace("DID NOT FIND H_A_NC_ro SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2295,10 +2295,10 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
-  R_vUTE_RenumberStmOdn();
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   // H A NC ro
@@ -2324,7 +2324,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
   //                   aeaeae      //
   //                   k1k1k1      //
 
-  R_vUTE_FoldIn_foldExpr();
+  Xute::vFoldIn_foldExpr(static_cast<CardIter*>(this));
   G.pDeck->vRenumberRecursive();
   vPrintBoard(__LINE__);
 
@@ -2339,8 +2339,8 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   G_vRestart();
   if (G_bEachMain(CK_HAVING)) {
-    R_vUTE_Unproject_foldExpr_After_having();
-    R_vUTE_Correct_having_BaseOn_foldExpr();
+    Xute::vUnproject_foldExpr_After_having(static_cast<CardIter*>(this));
+    Xute::vCorrect_having_BaseOn_foldExpr(static_cast<CardIter*>(this));
   }
 
   vPrintBoard(__LINE__);
@@ -2475,8 +2475,8 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  R_vUTE_Stream_AdjustLoHi();
-  R_vUTE_RenumberStmOdn();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
 
   vPrintBoard(__LINE__);
 
@@ -2515,7 +2515,7 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 //           G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());
 
     RASSERT(! G.p_indexJoin);
-    vR_S75_T10_Morph_table_To_EEop_v2();
+    Xute::vS75_T10_Morph_table_To_EEop_v2(static_cast<CardIter*>(this));
 
     G.pDeck->vRenumberRecursive();
 
@@ -2587,7 +2587,7 @@ void Xtransforms::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
-    vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
+    Xute::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(static_cast<CardIter*>(this));
   }
 
   vEndTransform();
@@ -3036,7 +3036,7 @@ void Xtransforms::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
 
   while (G_bEachMain()) {
 
-    R_vUTE_Convert_tblColOdn_To_stmOdn();
+    Xute::vConvert_tblColOdn_To_stmOdn(static_cast<CardIter*>(this));
   }
 
   vEndTransform();
@@ -3064,7 +3064,7 @@ void Xtransforms::vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 
     G.p_constraint = G.p_MainCard->pSub_constraint();
 
-    R_vUTE_Convert_tblColOdn_Of_constraint_To_stmColNm();
+    Xute::vConvert_tblColOdn_Of_constraint_To_stmColNm(static_cast<CardIter*>(this));
   }
 
   vEndTransform();
@@ -3092,7 +3092,7 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
 
   vPrintBoard(__LINE__);
 
-  vR_SZ0_T20_Reinstate_stagesV3();
+  Xute::vSZ0_T20_Reinstate_stagesV3(static_cast<CardIter*>(this));
 
   vEndTransform();
 }
@@ -3124,7 +3124,7 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
         CK_KEYNOTEXISTS == G.e_MainCard ||
         CK_SCAN == G.e_MainCard) {
       if (p_main_prior) {
-        i8 nSkip = R_iUTE_Stage_Partitioning(p_main_prior, p_combined_prior,
+        i8 nSkip = Xute::iStage_Partitioning(static_cast<CardIter*>(this), p_main_prior, p_combined_prior,
                                              p_next_prior, G.p_MainCard);
         while (nSkip--)
           G_vSkipNextMain();

@@ -11,8 +11,8 @@ select
 from
   lineitem
 where
-  l_shipdate >= date '01-01-1993'
-  and l_shipdate <  date '01-04-1993'
+  l_shipdate >= date '01-01-1996'
+  and l_shipdate <  date '01-04-1996'
 group by
   l_suppkey;
 
@@ -63,7 +63,7 @@ pipeline Query15
      | next
 
    stage S02 on all partitions :
-     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
      | aggreg " groupBy    type INTEGER as l_suppkey $3
                 aggregates type INTEGER $K1 ,
                            type DECIMAL )  $6 1.00  $7 -  *  sum  "
