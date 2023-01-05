@@ -80,40 +80,39 @@ namespace STORE
     static void vResolve_Param_Ordinal(CardIter* pCI, Card_Term* p_term);
     static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
     static Card_StmColOdn* pResolve_tblColOdn_Into_stmColOdn(CardIter* pCI, Card_Term* p_term_tblColOdn, i8 i_Before);
-    static void R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(Card_BoolCalc* p_boolCalc);
+    static void vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
-    static bool R_bUTE_Stage_Partitioning(Card* p_main_prior,
-                                   Card_Combined* p_combined_prior,
-                                   Card_Next* p_next_prior,
-                                   Card* p_main_curr);
-    static void R_vUTE_Stream_AdjustLoHi(void);
+    static i8 iStage_Partitioning(CardIter* pCI,
+                                          Card* p_main_prior,
+                                          Card_Combined* p_combined_prior,
+                                          Card_Next* p_next_prior,
+                                          Card* p_main_curr);
+    static void vStream_AdjustLoHi(CardIter* pCI);
 
-    static void R_vUTE_Unproject_foldExpr_After_having(void);
-    static void R_vUTE_Unproject_foldExpr_After_where(void);
-
-    static void R_vUTE_Yank_Correlated_cmpPred_From_sq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED*& rp_PRED);
+    static void vUnproject_foldExpr_After_having(CardIter* pCI);
+    static void vUnproject_foldExpr_After_where(CardIter* pCI);
 
     // vSeries_26_SubQuery_Analysis
-    static void vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc(void);
-    static void vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc(void);
+    static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);
+    static void vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI);
 
     // vSeries_33_To_TblColOdn
-    static void vR_S33_T10_Convert_stmColOdn_To_tblColOdn(void);
+    static void vS33_T10_Convert_stmColOdn_To_tblColOdn(CardIter* pCI);
 
     // vSeries_36_Bound_Analysis
     static void vS36_T30_Delete_Empty_filter(CardIter* pCardIter);
 
     // vSeries_75_EE_operators
-    static void vR_S75_T10_Morph_table_To_EEop_v2(void);
+    static void vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI);
     static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCardIter);
-    static void vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
+    static void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
 
     // vSeries_A0_Make_Weavable
     static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCardIter);
     static void vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCardIter);
 
     // vSeries_Z0_Restate_Pipeline
-    static void vR_SZ0_T20_Reinstate_stagesV3(void);
+    static void vSZ0_T20_Reinstate_stagesV3(CardIter* pCI);
 
 
   public:

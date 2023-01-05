@@ -805,11 +805,11 @@ void Xtransforms::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      vR_S26_T10d_Main_Query_Analysis_Of_where_rpnCalc();
+      Xute::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(static_cast<CardIter*>(this));
     }
     G_vRestart();
     while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      vR_S26_T10e_Main_Query_Analysis_Of_having_rpnCalc();
+      Xute::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(static_cast<CardIter*>(this));
     }
   }
 
@@ -969,7 +969,7 @@ void Xtransforms::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
         continue;
     }
 
-    vR_S33_T10_Convert_stmColOdn_To_tblColOdn();
+    Xute::vS33_T10_Convert_stmColOdn_To_tblColOdn(static_cast<CardIter*>(this));
   }
 
   G.pDeck->vNoTermsStmColOdn();
@@ -1284,7 +1284,7 @@ void Xtransforms::vS40_T10_Fold_F(void)
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -1418,7 +1418,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
@@ -1460,7 +1460,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   //                               //           $b.1
   //                               // __subquery0002
 
-  R_vUTE_Resolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(G.p_boolCalc);
+  Xute::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(static_cast<CardIter*>(this), G.p_boolCalc);
   vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1687,7 +1687,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   // todo: should this be earlier? As soon as $1 is injected into mq??
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -1881,7 +1881,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   vPrintBoard(__LINE__);
 
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -2137,7 +2137,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
   G.pDeck->vRenumberRecursive();
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
@@ -2293,7 +2293,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   vPrintBoard(__LINE__);
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -2337,7 +2337,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   G_vRestart();
   if (G_bEachMain(CK_HAVING)) {
-    R_vUTE_Unproject_foldExpr_After_having();
+    Xute::vUnproject_foldExpr_After_having(static_cast<CardIter*>(this));
     Xute::vCorrect_having_BaseOn_foldExpr(static_cast<CardIter*>(this));
   }
 
@@ -2473,7 +2473,7 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  R_vUTE_Stream_AdjustLoHi();
+  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
 
   vPrintBoard(__LINE__);
@@ -2513,7 +2513,7 @@ void Xtransforms::vS75_T10_Morph_table_To_EEop(void)
 //           G.p_table,G.p_table->iCardNo(),aCK[G.p_table->eCard()],G.p_table->szValue());
 
     RASSERT(! G.p_indexJoin);
-    vR_S75_T10_Morph_table_To_EEop_v2();
+    Xute::vS75_T10_Morph_table_To_EEop_v2(static_cast<CardIter*>(this));
 
     G.pDeck->vRenumberRecursive();
 
@@ -2585,7 +2585,7 @@ void Xtransforms::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
   vAssert_Board_mqA();
 
   while (G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
-    vR_S75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
+    Xute::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(static_cast<CardIter*>(this));
   }
 
   vEndTransform();
@@ -3090,7 +3090,7 @@ void Xtransforms::vSZ0_T20_Reinstate_stagesV3(void)
 
   vPrintBoard(__LINE__);
 
-  vR_SZ0_T20_Reinstate_stagesV3();
+  Xute::vSZ0_T20_Reinstate_stagesV3(static_cast<CardIter*>(this));
 
   vEndTransform();
 }
@@ -3122,7 +3122,7 @@ void Xtransforms::vSZ0_T30_Add_Partitioning(void)
         CK_KEYNOTEXISTS == G.e_MainCard ||
         CK_SCAN == G.e_MainCard) {
       if (p_main_prior) {
-        i8 nSkip = R_iUTE_Stage_Partitioning(p_main_prior, p_combined_prior,
+        i8 nSkip = Xute::iStage_Partitioning(static_cast<CardIter*>(this), p_main_prior, p_combined_prior,
                                              p_next_prior, G.p_MainCard);
         while (nSkip--)
           G_vSkipNextMain();
