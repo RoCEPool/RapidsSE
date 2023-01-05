@@ -743,6 +743,14 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
   pCard_Sort->vAppend(pCard_ObyElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // projection : projection expression list
+
+  Card* p_dup = pCard_ObyElist->pDupCardAndSubCards();
+  p_dup->vCard(CK_KEY);
+  Card_Key* pCard_Key = _pCard_Key(p_dup);
+  pCard_Sort->vAppend(pCard_Key);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   delete pCard_RpnTerms;
 
@@ -919,6 +927,7 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 
   Card_SbyElist* pCard_SbyElist = new Card_SbyElist;
 
+  i8 i_Expr = 1;
   Card_Term* pCard_Term_head = nullptr;
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
         
@@ -930,7 +939,9 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
         
     // TYPE <type> [ AS <as> ] <calcExpr>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-    
+
+    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
+
     pCard_SbyElist->vAppend(pCard_Expr);
   }
 
