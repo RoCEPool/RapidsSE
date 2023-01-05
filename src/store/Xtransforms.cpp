@@ -21,7 +21,7 @@ __aFooterFunction(Xtransforms)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xtransforms::Xtransforms(Bench* pBench)
-: Xreshape(CN_TRANSFORMS, pBench)
+: Xgearing(CN_TRANSFORMS, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
