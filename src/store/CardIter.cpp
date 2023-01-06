@@ -126,7 +126,7 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
 
   G.m_bActive = false;
 
-  // members from Xgearing - - - - - - - - - - - - - - - - - - - - - -
+  // members from CardIter - - - - - - - - - - - - - - - - - - - - - -
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
 
@@ -250,6 +250,16 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
 
   pParent->vAppend(pChild);
   G_vUpdateMember(eChild,pChild,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board                                                                  */
+/*----------------------------------------------------------------------------*/
+Board* CardIter::pBoard(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return G.pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,6 +513,21 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear the general M registers if they match given pointer                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vCopyCard(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! pCard) {
+    m_pCard_copied = nullptr;
+    return;
+  }
+
+  m_pCard_copied = pCard->pDupCardAndSubCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
 eOA CardIter::eCueUser(Stz* szPrompt)
@@ -570,6 +595,58 @@ eOA CardIter::eCueUser(Stz* szPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete member of given kind; clear-if registers; update M member to null   */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vDeleteMember(eCK eMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pMember = G_pGetMember(eMember);
+
+  G_vClearRegistersIf(pMember);
+  G_vUpdateMember(eMember, nullptr, __func__);
+
+  DELETE_CARD(pMember);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete given member; clear-if registers; update M member to null           */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vDeleteMember(Card* pMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  eCK eMember = pMember->eCard();
+
+  G_vClearRegistersIf(pMember);
+  G_vUpdateMember(eMember, nullptr, __func__);
+
+  DELETE_CARD(pMember);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete main when given sub is empty                                        */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  RASSERT(this->bJustRestarted());
+
+  if (! G_bEachMainWithSub(eMain,eSub))
+    return;
+
+  G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+  G.e_SubOfMain = G.p_SubOfMain->eCard();
+
+
+  if (G.p_SubOfMain->nChildCards())
+    return;
+
+  G_vRemoveDeleteMain(eMain);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vDontDescend(void)
@@ -579,6 +656,23 @@ void CardIter::vDontDescend(void)
   G.m_bDontDescend = true;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vDuplicateMember(eCK eMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pMember  = G_pGetMember(eMember);
+
+  m_pCard_dup = pMember->pDupCardAndSubCards();
+
+  if (! bIsTracing())
+    return;
+
+  vTrace("  %s %s from %s\n"_Stz,
+         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1048,6 +1142,47 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end of transformation                                                      */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndTransform(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.pDeck->vRenumberRecursive();
+
+  //m_pCardCtl->vUseXform();
+  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
+
+  vPrintBoard();
+
+  //m_pCardCtl->vUseDefault();
+
+
+  CardIter xCI(G.pDeck);
+  while ((G.p_MainCard = xCI.pEachChild()))
+    G.p_MainCard->Y_vCut(P_Focus);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find sub of member with given property                                     */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! (m_pCard_member = G_pGetMember(eMember))) {
+    m_pCard_found = nullptr;
+    return false;
+  }
+
+  if (! (m_pCard_found = m_pCard_member->pFindPpyRecursive(szPpy)))
+    return false;
+
+  G_vUpdateMember(m_pCard_found->eCard(), m_pCard_found, __func__);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* focus on main                                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vFocusOnMain(void)
@@ -1228,6 +1363,93 @@ Card* CardIter::G_pGetMember(eCK eMember)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is there a card immediately before current main card?                      */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bHasPriorToMain(bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if ((G.p_PriorToMain = this->pPrevChild())) {
+    G.e_PriorToMain = G.p_PriorToMain->eCard();
+    if (bUpdateMember)
+      G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
+    return true;
+  }
+
+  G.e_PriorToMain = CK_NONE;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately before current main which is of given kind?    */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if ((G.p_PriorToMain = this->pPrevChildIf(eOfPriorKind))) {
+    G.e_PriorToMain = G.p_PriorToMain->eCard();
+    if (bUpdateMember)
+      G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
+    return true;
+  }
+
+  G.e_PriorToMain = CK_NONE;
+  if (bUpdateMember)
+    G_vUpdateMember(eOfPriorKind, nullptr, __func__);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main card?                       */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bHasSubsequentToMain(bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if ((G.p_SubsequentToMain = this->pNextChild())) {
+    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
+    if (bUpdateMember)
+      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
+    return true;
+  }
+
+  G.e_SubsequentToMain = CK_NONE;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main which is of given kind?     */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if ((G.p_SubsequentToMain = this->pNextChildIf(eOfSubsequentKind))) {
+    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
+    if (bUpdateMember)
+      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
+    return true;
+  }
+
+  G.e_SubsequentToMain = CK_NONE;
+  if (bUpdateMember)
+    G_vUpdateMember(eOfSubsequentKind, nullptr, __func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vInsertAfter(Card* pCard, Card* pAfter)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.pDeck->vInsertAfter(pCard,pAfter);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
@@ -1289,6 +1511,74 @@ bool CardIter::bLess(void)
 
   if (G.m_i_Child - 1 >= 0)
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given i_After                               */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bLocateCard(eCK eLocate, Stz* szWithValue, i8 i_After)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  i8 nChildren = G.pDeck->nChildCards();
+  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
+    Card *pMain = G.pDeck->pGetChild(i_Main);
+
+    G.p_Located = pMain->pFindValueRecursive(eLocate,szWithValue,G.p_Located);
+    if (!G.p_Located)
+      continue;
+
+    G.e_Located = eLocate;
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given i_After                               */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bLocateCard(eCK eLocate, eCK eSubLocate, Stz* szWithValue, i8 i_After)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  i8 nChildren = G.pDeck->nChildCards();
+  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
+    Card *pMain = G.pDeck->pGetChild(i_Main);
+
+    G.p_Located = pMain->pFindCardRecursive(eLocate);
+    if (! G.p_Located)
+      continue;
+
+    G.e_Located = eLocate;
+
+    G.p_SubLocated = G.p_Located->pFindValueRecursive(eSubLocate,szWithValue,G.p_SubLocatedParent);
+    if (G.p_SubLocated) {
+      G.e_SubLocated = eSubLocate;
+      G.e_SubLocatedParent = G.p_SubLocatedParent ? G.p_SubLocatedParent->eCard() : CK_NONE;
+      return true;
+    }
+
+  }
+
+  G.p_Located = nullptr;
+  G.e_Located = CK_NONE;
+  G.p_SubLocated = nullptr;
+  G.e_SubLocated = CK_NONE;
+  G.p_SubLocatedParent = nullptr;
+  G.e_SubLocatedParent = CK_NONE;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given card                                  */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
 
   return false;
 }
@@ -1449,6 +1739,20 @@ bool CardIter::bMore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are there more main cards?                                                 */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bMoreMain(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (this->bMore())
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* morph card                                                                 */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vMorphCard(Card* pCard, eCK eCard)
@@ -1521,6 +1825,23 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
+void CardIter::G_vNewMemberBefore(eCK eMember, Stz* szValue,
+                                  eCK eBefore, bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G_vNewMember(eMember, bUpdateMember);
+
+  m_pCard_new->vValue(szValue);
+
+  Card* p_before = G_pGetMember(eBefore);
+
+  G.pDeck->vInsertBefore(m_pCard_new,p_before);
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
 void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
                               eCK eOf, bool bUpdateMember)
 {
@@ -1531,6 +1852,75 @@ void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
   m_pCard_new->vValue(szValue);
 
   G_vAppendChild(eOf,eMember);
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for sub of member                                                   */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card* pMember = G_pGetMember(eMember);
+
+  bool b = G_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if ((G.p_SubMember = pMember->pFindSubCard(eSubCard))) {
+    G.e_SubMember = G.p_SubMember->eCard();
+    if (bUpdateMember)
+      G_vUpdateMember(G.e_SubMember, G.p_SubMember, __func__);
+    return true;
+  }
+
+  if (bUpdateMember)
+    G_vUpdateMember(eSubCard, nullptr, __func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card* pMember = G_pGetMember(eMember);
+
+  bool b = G_bPlumbForSubValue(pMember, eSub, szValue, bUpdateMember);
+
+  return b;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if ((G.p_SubMember = pMember->pFindSubCard(eSub))) {
+    if (G.p_SubMember->bSame(szValue)) {
+      G.e_SubMember = G.p_SubMember->eCard();
+      if (bUpdateMember)
+        G_vUpdateMember(G.e_SubMember, G.p_SubMember, __func__);
+      return true;
+    }
+  }
+
+  if (bUpdateMember)
+    G_vUpdateMember(eSub, nullptr, __func__);
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1582,6 +1972,50 @@ Card* CardIter::pPrevChildIf(eCK eCard)
     return nullptr;
 
   return pPrevMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print all boards of bench                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPrintBench(eBK eBoard, i8 i_Board)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! m_pCardCtl->bBenchPrint())
+    return;
+
+  char cPrefix = m_pBench->cPrefix();
+
+  s256 sPrompt;
+
+  i8 nBoards = m_pBench->nItems();
+
+  for (;;) {
+    if (C_UNKNOWN != i_Board) {
+      Board *pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+      pBoard->vPrintBoard(szXhand());
+    }
+    else {
+      for (i8 i_Each = 0; m_pBench->bBoardExists(eBoard, i_Each); i_Each++) {
+        Board *pBoard = m_pBench->pGetBoard(eBoard, i_Each);
+        pBoard->vPrintBoard(szXhand());
+      }
+    }
+
+    if (! m_pCardCtl->bCueUser(szXhand(), C_NA)) {
+      m_pCardCtl->vFormPrompt(sPrompt,
+                              cPrefix, szXhand(), C_NA,
+                              i_Board, nBoards, C_UNKNOWN);
+      printf("%s\n", sPrompt.azChar());
+      break;
+    }
+
+    m_pCardCtl->vFormPrompt(sPrompt,
+                            cPrefix, szXhand(), C_NA,
+                            i_Board, nBoards, C_UNKNOWN);
+    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
+      break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1850,6 +2284,16 @@ void CardIter::G_vRemoveDeleteMain(eCK eCrossCheck)
   G.e_MainCard = CK_NONE;
 
   G_vUpdateMember(eCrossCheck, nullptr, __func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove main card from deck (do not clear M members or registers)           */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vRemoveMain(eCK eCrossCheck)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  this->vRemoveCurr(eCrossCheck);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2196,6 +2640,61 @@ void CardIter::G_vSetBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* skip over next main ; optionally clear M members and registers             */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  pEachChild();
+
+  if (bClearMembers)
+    G_vClearMembers();
+
+  if (bClearRegisters)
+    G_vClearRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main card?                       */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bSubsequentToMain(bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if ((G.p_SubsequentToMain = this->pNextChild())) {
+    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
+    if (bUpdateMember)
+      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
+    return true;
+  }
+
+  G.e_SubsequentToMain = CK_NONE;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main card?                       */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vSubsequentToMain(bool bUpdateMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  bool b = G_bSubsequentToMain(bUpdateMember);
+  UNUSED(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bIsTracing(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return m_pCardCtl->bTracing(szXhand(),szXform());
+}
+
+/*----------------------------------------------------------------------------*/
 /* conditionally trace                                                        */
 /*----------------------------------------------------------------------------*/
 void CardIter::vTracer(Stz* szFormat, ...)
@@ -2216,13 +2715,36 @@ void CardIter::vTracer(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
+/* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bIsTracing(void)
+void CardIter::vTransform(const char* azFunc, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return m_pCardCtl->bTracing(szXhand(),szXform());
+  vXform((Stz*)azFunc);
+  G.pBoard->vXform((Stz*)azFunc);
+  vXdesc(szXdesc);
+
+  m_iXform++;
+  G.pBoard->vXform(m_iXform);
+
+  //m_pCardCtl->vUseXform();
+
+  this->vRestart();
+
+  if (m_pCardCtl->bTracing(szXhand(), szXform())) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::iTransformDepth(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return iSentinalsDepth();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2367,6 +2889,20 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
       NEVER_REACH
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* set up which board to use                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+  G.pDeck  = G.pBoard->pDeck();
+
+  this->vChangeCard(G.pBoard->pDeck());
+}
+
 /*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
@@ -2375,6 +2911,17 @@ Stz* CardIter::szXdesc(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   return m_sXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXdesc(Stz* szDescription)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_sXdesc = szDescription;
+  G.pBoard->vXdesc(szDescription);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2388,6 +2935,16 @@ Stz* CardIter::szXform(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXform(Stz* szTransformation)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_sXform = szTransformation;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* CardIter::szXhand(void)
@@ -2398,7 +2955,19 @@ Stz* CardIter::szXhand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXhand(const char* asXhand)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_sXhand = asXhand;
+
+  G.pBoard->vXhand(asXhand);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

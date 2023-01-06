@@ -22,66 +22,7 @@ namespace STORE
     Xgearing(eCN eClass, Bench* pBench);
    ~Xgearing(void) noexcept(false);
 
-    Board* pBoard(void);
-
-    void vEndTransform(void);
-
-    void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
-
-    void vSetPrintByKind(eCK eCard, bool bPrintByKind);
-    void vSetPrintProperties(eCK eCard, bool bPrintProperties);
-    void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
-
-    void vTransform(const char* azFunc, Stz* szXdesc);
-    i8   iTransformDepth(void);
-
-    void vUsingBoard(eBK eBoard, i8 i_Board);
-
-    Stz* szXdesc(void);
-    void vXdesc(Stz* szDescription);
-    void vXform(Stz* szTransformation);
-    void vXhand(const char* asXhand);
-
   protected:
-    void G_vCopyCard(Card* pCard);
-
-    void G_vDeleteMember(eCK eMember);
-    void G_vDeleteMember(Card* pMember);
-    void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
-    void G_vDuplicateMember(eCK eMember);
-
-    bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
-
-
-    bool G_bHasPriorToMain(bool bUpdateMember = false);
-    bool G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
-    bool G_bHasSubsequentToMain(bool bUpdateMember = false);
-    bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
-
-    void G_vInsertAfter(Card* pCard, Card* pAfter);
-
-    bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
-    bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
-    bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
-
-    bool G_bMoreMain(void);
-
-    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
-
-    bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
-    bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
-    bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
-    bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
-
-    void G_vRemoveMain(eCK eCrossCheck);
-
-    void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
-    bool G_bSubsequentToMain(bool bUpdateMember = false);
-    void G_vSubsequentToMain(bool bUpdateMember = false);
-
-
-
-    Stz* szT(eCK eMember);
 
     Footer* aFooter(void);
   };

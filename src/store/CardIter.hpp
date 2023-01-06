@@ -86,15 +86,22 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
+    Board* pBoard(void);
+
     void  vChangeCard(Card* pCard);
     i8    i_Child(void);
     Card* pChild(void);
     void  G_vClearMembers(void);
     void  G_vClearRegisters(void);
     void  G_vClearRegistersIf(Card* pCard);
+    void G_vCopyCard(Card* pCard);
     eOA   eCueUser(Stz* szPrompt);
 
+    void G_vDeleteMember(eCK eMember);
+    void G_vDeleteMember(Card* pMember);
+    void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
     void vDontDescend(void);
+    void G_vDuplicateMember(eCK eMember);
 
     bool  bEachChild(void);
     Card* pEachChild(void);
@@ -113,36 +120,54 @@ namespace STORE
     bool G_bEachSubOfMain(eCK eSubKind);
     bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
+    void vEndTransform(void);
 
+    bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
     void vFocusOnMain(void);
     void vForward(void);
 
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);
 
+    bool G_bHasPriorToMain(bool bUpdateMember = false);
+    bool G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
+    bool G_bHasSubsequentToMain(bool bUpdateMember = false);
+    bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
+
+    void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoard(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
+    bool bIsTracing(void);
 
     bool bJustRestarted(void);
 
     bool bLess(void);
+    bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
+    bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
+    bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     Stz* szMemberNm(eCK eMember);
     bool bMore(void);
+    bool G_bMoreMain(void);
     void G_vMorphCard(Card* pCard, eCK eCard);
 
     void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void  G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
+    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
 
-
+    bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
+    bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
+    bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
     void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
-    void  vPrintBoard(i8 iLineNo=C_UNKNOWN);
+    void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
+    void vPrintBoard(i8 iLineNo=C_UNKNOWN);
     void G_vPushBoard(Board* pBoard);
     bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
@@ -157,6 +182,7 @@ namespace STORE
     void vRemoveDeleteChild(Card*& rpChild);
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
+    void G_vRemoveMain(eCK eCrossCheck);
     bool G_bResolveCard(eCK eCard, i8 i_Before);
     bool G_bResolveCard(eCK eCard,char cWithValue, i8 i_Before);
     bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
@@ -178,16 +204,23 @@ namespace STORE
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 iChild, Card* pChild);
     void G_vSetBoard(Board* pBoard);
-
-    bool bIsTracing(void);
-
-    void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
-
-    Stz* szXdesc(void);
-    Stz* szXform(void);
-    Stz* szXhand(void);
+    void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
+    bool G_bSubsequentToMain(bool bUpdateMember = false);
+    void G_vSubsequentToMain(bool bUpdateMember = false);
 
     void vTracer(Stz* szFormat, ...);
+    void vTransform(const char* azFunc, Stz* szXdesc);
+    i8   iTransformDepth(void);
+
+    void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
+    void vUsingBoard(eBK eBoard, i8 i_Board);
+
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szDescription);
+    Stz* szXform(void);
+    void vXform(Stz* szTransformation);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
 
   protected:
 
