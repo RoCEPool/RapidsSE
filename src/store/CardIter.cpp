@@ -126,7 +126,7 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
 
   G.m_bActive = false;
 
-  // members from CardIter - - - - - - - - - - - - - - - - - - - - - -
+  // members from Xgearing
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
 

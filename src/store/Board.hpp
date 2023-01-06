@@ -190,7 +190,7 @@ namespace STORE
   class Dissector;
   class Drafter;
   class Optimiser;
-  class Xgearing;
+  class CardIter;
   class Weaver;
 
   class Board : public Object
