@@ -3475,7 +3475,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       pExprStack->vPushStz("_ASSIGN(bFilterResult)"_Stz);
       eDM eColType1 = (eDM) pExprType->iPop();
       RASSERT(eColType1 == DM_BOL);
-      pExprStack->vPushStz("if (bFilterResult) {"_Stz);
+      pExprStack->vPushStz("if (bFilterResult && bFilterResult != C_DATUM_NULL) {"_Stz);
       continue;
     }
 

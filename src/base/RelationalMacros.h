@@ -1192,7 +1192,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                                          \
     }                                                                      \
     else {                                                                 \
       if (strcmp((char*)iArg2, (char*)iArg1) == 0)                         \
@@ -1209,7 +1209,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       if (strcmp((char*)iArg2, (char*)iArg1) >= 0)                         \
@@ -1226,7 +1226,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       if (strcmp((char*)iArg2, (char*)iArg1) > 0)                          \
@@ -1285,7 +1285,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       if (strcmp((char*)iArg2, (char*)iArg1) <= 0)                         \
@@ -1302,7 +1302,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       if (strcmp((char*)iArg2, (char*)iArg1) < 0)                          \
@@ -1361,7 +1361,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       if (strcmp((char*)iArg2, (char*)iArg1) != 0)                         \
