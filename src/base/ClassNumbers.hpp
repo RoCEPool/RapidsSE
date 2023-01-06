@@ -426,7 +426,6 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
-  /* */ CN_XSENTINALS,
   /* */ CN_XSERIES,
 
   /* */ CN__Y__,
@@ -854,7 +853,6 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
-  /* */ "XSENTINALS"_Stz,           // CN_XSENTINALS
   /* */ "XSERIES"_Stz,              // CN_XSERIES
 
   /* */ "_Y__"_Stz,                 // CN__Y__
