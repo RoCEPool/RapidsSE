@@ -40,7 +40,6 @@ namespace STORE
     // main query only from here...
     void vSeries_80_Index_Scan(bool bEnabled);
     void vSeries_90_Stream_Ordering(bool bEnabled);
-    void vSeries_92_Project_Pullup(bool bEnabled);
     void vSeries_A0_Make_Weavable(void);
 
     void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);

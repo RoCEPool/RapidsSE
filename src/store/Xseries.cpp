@@ -88,8 +88,6 @@ bool Xseries::bTransformSeries(eEC* peErrorCode)
 
     m_pTransforms->vOptimiseLoop();
 
-    vSeries_92_Project_Pullup(C_DISABLED);
-
     // ---
     vSeries_A0_Make_Weavable();
 
@@ -233,29 +231,6 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
   //m_pTransforms->vS90_TF0_Remove_sort_IfSameAs_gby();
 
   m_pTransforms->vS90_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_92_Project_Pullup(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  if (! m_pTransforms->bS92_T00_Test(bEnabled)) {
-    m_pTransforms->vS92_T00_Skip();
-    return;
-  }
-
-  m_pTransforms->vS92_T00_Begin();
-
-  m_pTransforms->vS92_T10_Project_Pullup();
-
-  m_pTransforms->vS92_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
