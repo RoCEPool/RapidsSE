@@ -60,6 +60,7 @@ namespace STORE
   class Card_Filter;
   class Card_Fold;
   class Card_FoldElist;
+  class Card_From;
 
   class Card_GbyAgg;
   class Card_GbyElist;
@@ -493,6 +494,7 @@ namespace STORE
     Card_Filter*        pSub_filter(void);
     Card_Fold*          pSub_fold(void);
     Card_FoldElist*     pSub_foldElist(void);
+    Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_Genesis*       pSub_genesis(void);
@@ -526,7 +528,7 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
-    Card_Projection*   pSub_projection(void);
+    Card_Projection*    pSub_projection(void);
     Card_StmCol*        pSub_stmCol(void);
     Card_StmColList*    pSub_stmColList(void);
     Card_StmColNm*      pSub_stmColNm(void);

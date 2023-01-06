@@ -2832,6 +2832,19 @@ Card_FoldElist* Card::pSub_foldElist(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_From.hpp"
+Card_From* Card::pSub_from(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_From* p_from =
+      _pCard_From(pFindSubCard(CK_FROM));
+  return p_from;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_GbyAgg.hpp"
 Card_GbyAgg* Card::pSub_gbyAgg(void)
 {
