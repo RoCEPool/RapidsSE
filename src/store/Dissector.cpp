@@ -266,6 +266,12 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
     Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
     pCard_Aggreg->vAppend(pCard_ByList);
     pCard_Aggreg->vCard(CK_GBYAGG);
+
+    Card* p_dup = pCard_ByList->pDupCardAndSubCards();
+    p_dup->vCard(CK_KEY);
+    Card_Key* pCard_Key = _pCard_Key(p_dup);
+    pCard_Aggreg->vAppend(pCard_Key);
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -830,7 +836,8 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   delete pCard_Term_head;
   pCard_Term_head = nullptr;
 
-  i8 iCardNo = 0;
+  i8 i_CardNo = 0;
+  i8 i_Expr = 1;
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
     // GROUPBY
@@ -846,7 +853,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
         
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-    pCard_Expr->vCardNo(++iCardNo);
+    pCard_Expr->vCardNo(++i_CardNo);
     //vAsEnsure(pCard_Expr);
 
     Card_As* p_as = pCard_Expr->pSub_as();
@@ -857,7 +864,8 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     
     //Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
     //pCard_Expr->vAppend(pCard_Direction);
-    
+
+    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
     pCard_GbyElist->vAppend(pCard_Expr);
   }
 
