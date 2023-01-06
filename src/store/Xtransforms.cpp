@@ -21,7 +21,7 @@ __aFooterFunction(Xtransforms)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xtransforms::Xtransforms(Bench* pBench)
-: Xgearing(CN_TRANSFORMS, pBench)
+: CardIter(CN_TRANSFORMS, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -44,6 +44,7 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  delete m_pPermGen;
 }
 
 

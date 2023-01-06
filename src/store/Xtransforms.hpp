@@ -3,12 +3,18 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xgearing.hpp"
+#include "CardIter.hpp"
+#include "Bench.hpp"
+
+#include "PermGen.hpp"
+
+#include "Table.hpp"
+#include "PtnDef.hpp"
 #include "eOT.h"
 
 namespace STORE
 {
-  class Xtransforms : public Xgearing
+  class Xtransforms : public CardIter
   {
   private:
 

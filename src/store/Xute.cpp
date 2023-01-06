@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Xute.hpp"
-#include "Xgearing.hpp"
 #include "Table.hpp"
 #include "PtnDef.hpp"
 

@@ -368,7 +368,7 @@
     iArg1 = *(--paW);                                                       \
     if (eErrorCode != EC_NONE ||                                            \
         iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       iInCount = *(--paW);                                                  \
@@ -393,7 +393,7 @@
     iArg1 = *(--paW);                                                       \
     if (eErrorCode != EC_NONE ||                                            \
         iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       iInCount = *(--paW);                                                  \
@@ -421,7 +421,7 @@
       while(iInCount-- > 0) {                                               \
         iArg2 = *(--paW);                                                   \
       }                                                                     \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       iInCount = *(--paW);                                                  \
