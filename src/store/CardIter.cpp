@@ -2685,6 +2685,16 @@ void CardIter::G_vSubsequentToMain(bool bUpdateMember)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bIsTracing(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return m_pCardCtl->bTracing(szXhand(),szXform());
+}
+
+/*----------------------------------------------------------------------------*/
 /* conditionally trace                                                        */
 /*----------------------------------------------------------------------------*/
 void CardIter::vTracer(Stz* szFormat, ...)
@@ -2705,13 +2715,36 @@ void CardIter::vTracer(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
+/* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bIsTracing(void)
+void CardIter::vTransform(const char* azFunc, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return m_pCardCtl->bTracing(szXhand(),szXform());
+  vXform((Stz*)azFunc);
+  G.pBoard->vXform((Stz*)azFunc);
+  vXdesc(szXdesc);
+
+  m_iXform++;
+  G.pBoard->vXform(m_iXform);
+
+  //m_pCardCtl->vUseXform();
+
+  this->vRestart();
+
+  if (m_pCardCtl->bTracing(szXhand(), szXform())) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::iTransformDepth(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return iSentinalsDepth();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2856,6 +2889,20 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
       NEVER_REACH
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* set up which board to use                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+  G.pDeck  = G.pBoard->pDeck();
+
+  this->vChangeCard(G.pBoard->pDeck());
+}
+
 /*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
@@ -2864,6 +2911,17 @@ Stz* CardIter::szXdesc(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   return m_sXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXdesc(Stz* szDescription)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_sXdesc = szDescription;
+  G.pBoard->vXdesc(szDescription);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2877,6 +2935,16 @@ Stz* CardIter::szXform(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXform(Stz* szTransformation)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_sXform = szTransformation;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* CardIter::szXhand(void)
@@ -2887,7 +2955,19 @@ Stz* CardIter::szXhand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXhand(const char* asXhand)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_sXhand = asXhand;
+
+  G.pBoard->vXhand(asXhand);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
