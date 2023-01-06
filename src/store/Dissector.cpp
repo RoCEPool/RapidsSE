@@ -937,7 +937,7 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, i8 ri_Expr)
+Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, i8& ri_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
    

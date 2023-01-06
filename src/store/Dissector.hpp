@@ -65,7 +65,7 @@ namespace STORE
     Card_ProjElist* pProjElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pSbyElist    (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms, i8 ri_Expr);
+    Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms, i8& ri_Expr);
     Card_RpnCalc*   pCalc        (Card_RpnTerms* pCard_RpnTerms);
 
     Card_As*        pAs          (Card_RpnTerms* pCard_RpnTerms);
