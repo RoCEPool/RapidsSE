@@ -370,14 +370,21 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // filtElist : filter expression list
 
-  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
+//  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
+//  Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_rpnCalc();
+//  pCard_Expr->vRemoveSubCard(pCard_Calc);
+//  DELETE_CARD(pCard_Expr);
+//  pCard_Filter->vAppend(pCard_Calc);
+
+  i8 i_Expr = 1;
+  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
+  pCard_Filter->vAppend(pCard_Expr);
   Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_rpnCalc();
-  pCard_Expr->vRemoveSubCard(pCard_Calc);
-  DELETE_CARD(pCard_Expr);
-  pCard_Filter->vAppend(pCard_Calc);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // TODO: Hacking the missing $P1 of an exists... chat w Alka
+
 
   if (2 == pCard_Calc->nChildCards() &&
       pCard_Calc->pGetChild(0)->bSame("$1"_Stz) &&
@@ -808,11 +815,9 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calc>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
     pCard_Expr->vCardNo(++iCardNo);
     vAsEnsure(pCard_Expr);
-
-    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
 
     pCard_AggElist->vAppend(pCard_Expr);
   }
@@ -852,7 +857,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> <calcExpr> [ AS <as> ]
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
     pCard_Expr->vCardNo(++i_CardNo);
     //vAsEnsure(pCard_Expr);
 
@@ -865,37 +870,10 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     //Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
     //pCard_Expr->vAppend(pCard_Direction);
 
-    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
     pCard_GbyElist->vAppend(pCard_Expr);
   }
 
   return pCard_GbyElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <projection> terms :                                               */
-/*----------------------------------------------------------------------------*/
-Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_Projection* pCard_Projection = new Card_Projection;
-
-  Card_Term* pCard_Term_head = nullptr;
-  while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
-
-    // SEPARATOR
-    if (pCard_Term_head->bIsCommaSeparator()) {
-      delete pCard_RpnTerms->pPop();
-      continue;
-    }
-
-    // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-    pCard_Projection->vAppend(pCard_Expr);
-  }
-
-  return pCard_Projection;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -918,8 +896,7 @@ Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
     pCard_ProjElist->vAppend(pCard_Expr);
   }
   
@@ -946,9 +923,7 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-
-    pCard_Expr->vValueSprint("$%lld"_Stz,i_Expr++);
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
 
     pCard_SbyElist->vAppend(pCard_Expr);
   }
@@ -962,13 +937,14 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
+Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, i8 ri_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
    
   //pCard_RpnTerms->vDump();
 
   Card_Expr* pCard_Expr = new Card_Expr;
+  pCard_Expr->vValueSprint("$%lld"_Stz,ri_Expr);
 
   L_TYPE:
 
@@ -1040,6 +1016,16 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 //    goto L_TYPE;
 //  }
 
+  // ensure as
+//  Card_As* pCard_As = pCard_Expr->pSub_as();
+//  if (! pCard_As) {
+//    s32 sAs;
+//    sAs.vSprint("__%lld"_Stz,ri_Expr);
+//    pCard_As = new Card_As(sAs);
+//    pCard_Expr->vAppend(pCard_As);
+//  }
+
+  ri_Expr++;
   return pCard_Expr;
 }
 

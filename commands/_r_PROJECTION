@@ -20,6 +20,7 @@ create index S_idx0  on Supplier (S_SUPPKEY  );
 /pipelineName = "_r_PROJECTION"
 select sum(L_QUANTITY)
   from Lineitem
+ where L_ORDERKEY < 100
  group by L_SUPPKEY
  order by sum(L_QUANTITY)
 ;
