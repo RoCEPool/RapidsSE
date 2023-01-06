@@ -1353,6 +1353,7 @@ begin
     | first
 end ;
 
+//ordered rows:
 rows:
  ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
  ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
