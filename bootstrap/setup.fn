@@ -1209,8 +1209,8 @@ function askInstallDir() {
     nodeNames=( "$@" )
   fi
 
-  # Set the devault root disk path for unload/reload as the install dir
-  NODE_CFG_DEFAULT_DISK_PATH="${line}"
+  # Set the default root disk path for unload/reload as the install dir
+  NODE_CFG_DEFAULT_DISK_PATH="${line}/data/"
 
   # Set the value for all relevant nodes
   specificNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}" "${nodeNames[@]}"
@@ -1487,17 +1487,15 @@ function askDiskPaths() {
   local line
   local re="^( |[[:space:]])+"
   declare -a diskroots=()
-  local defValue=0
 
   while true
   do
-    echo -n "Enter a first filesystem path and press return [default: /opt/rapidsse] : "
+    echo -n "Enter a first filesystem path and press return [default: ${NODE_CFG_DEFAULT_DISK_PATH}] : "
     IFS=$'\n' read -r line
 
     if [ -z "${line:-}" ]; then
       # Accepting the default value
-      defValue=1
-      diskroots+=("/opt/rapidsse")
+      diskroots+=("${NODE_CFG_DEFAULT_DISK_PATH}")
       break
     fi
 
@@ -1523,10 +1521,6 @@ function askDiskPaths() {
 
   while true
   do
-    if [ ${defValue} -eq 1 ]; then
-      break
-    fi
-
     echo -n "Enter another disk path, or enter an empty line to finish : "
     IFS=$'\n' read -r line
 

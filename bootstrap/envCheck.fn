@@ -80,7 +80,7 @@ function validateInstallationEnvironment() {
 
   # Check that the storage dirs can be created (if not already) on each node,
   # and that it is writable.
-  validateStorageDirsIsWritable
+  validateStorageDirsAreWritable
 
   # Check that the storage dirs have enough space based on the shared memory size
   # for unload operations.
@@ -242,6 +242,12 @@ function validateNodeAdditionEnvironment() {
   validateInstallDirIsWritable "${nodeNames[@]}"
 
   # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
+
+  # Check that the storage dir paths can be created and are writable.
+  validateStorageDirsIsWritable "${nodeNames[@]}"
+
+  # Check that the storage dir paths have space.
+  validateStorageDirsHaveSpace "${nodeNames[@]}"
 
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
@@ -1092,7 +1098,7 @@ function validateThreads() {
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
-function validateStorageDirsIsWritable() {
+function validateStorageDirsAreWritable() {
 
   local -a nodeNames;
 
@@ -1124,33 +1130,33 @@ function validateStorageDirsIsWritable() {
     do
       remoteCmd="$(cat <<-EOF
 if [ -d "${dirPath}" ]; then
-if [ ! -w "${dirPath}" ]; then
-echo "Storage disk directory exists (${dirPath}) but is not writable.";
-false;
-exit;
-fi
+  if [ ! -w "${dirPath}" ]; then
+    echo "Storage disk directory exists (${dirPath}) but is not writable.";
+    false;
+    exit;
+  fi
 else
-isWritable=0
-dname="${dirPath}"
+  isWritable=0
+  dname="${dirPath}"
 
-while [ "\${dname}" != "/"  ]; do
-if [[ -d "\${dname}" && -w "\${dname}" ]]; then
-isWritable=1
-break
-fi
+  while [ "\${dname}" != "/"  ]; do
+    if [[ -d "\${dname}" && -w "\${dname}" ]]; then
+      isWritable=1
+      break
+    fi
 
-if [ "\$(dirname "\${dname}")" = "/" ]; then
-break;
-fi
+    if [ "\$(dirname "\${dname}")" = "/" ]; then
+      break;
+    fi
 
-dname="\$(dirname "\${dname}")"
-done
+    dname="\$(dirname "\${dname}")"
+  done
 
-if [ "\${isWritable}" -ne 1 ]; then
-echo "Storage disk directory (${dirPath}) cannot be created because the parent directory (\${dname}) is not writable.";
-false;
-exit;
-fi
+  if [ "\${isWritable}" -ne 1 ]; then
+    echo "Storage disk directory (${dirPath}) cannot be created because the parent directory (\${dname}) is not writable.";
+    false;
+    exit;
+  fi
 fi
 true;
 EOF
@@ -1198,7 +1204,10 @@ EOF
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the storage disk directories on each node have space for
-## unload operations. Exits out if not.
+## unload operations. If the directory does not exist, check the space of
+## it's parent directory, and attempt to create the directory.
+## Exits out if space is not available or if there is a problem while
+## creating the directory.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
@@ -1240,27 +1249,27 @@ function validateStorageDirsHaveSpace() {
     do
       remoteCmd="$(cat <<-EOF
 if [ -d "${dirPath}" ]; then
-maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
-if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-echo "Storage disk directory (${dirPath}) does not have enough space.";
-false;
-exit;
-fi
+  maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
+  if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
+    echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+    false;
+    exit;
+  fi
 else
-dname="$(dirname "${dirPath}")"
-if [ -d "\${dname}" ]; then
-mkdir -p "${dirPath}" || errorExit "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
-maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
-if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-echo "Storage disk directory (${dirPath}) does not have enough space.";
-false;
-exit;
-fi
-else
-echo "Storage disk parent directory (\${dname}) does not exist.";
-false;
-exit;
-fi
+  dname="$(dirname "${dirPath}")"
+  if [ -d "\${dname}" ]; then
+    mkdir -p "${dirPath}" || errorExit "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
+    maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
+    if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
+      echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+      false;
+      exit;
+    fi
+  else
+    echo "Storage disk parent directory (\${dname}) does not exist.";
+    false;
+    exit;
+  fi
 fi
 true;
 EOF

@@ -364,18 +364,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
        * we search for or add the dir/saveFile that is used during unload/reload.
        */
 
-      // Below code to handle spaces in dir path
-      Stz* szPath = argv[++i_Arg];
-      m_xSysArgs.m_sDiskRootDir[i_DiskPath].vConcat(szPath);
-      szPath = argv[++i_Arg];
-      while( (i_Arg < argc) &&
-             (! szPath->bContains("--"_Stz))
-        ) {
-        m_xSysArgs.m_sDiskRootDir[i_DiskPath].vConcat(" "_Stz);
-        m_xSysArgs.m_sDiskRootDir[i_DiskPath].vConcat(szPath);
-        szPath = argv[++i_Arg];
-      }
-      --i_Arg;
+      m_xSysArgs.m_sDiskRootDir[i_DiskPath] = (Stz*)argv[++i_Arg];
 
       if( ! Dir::bExists(m_xSysArgs.m_sDiskRootDir[i_DiskPath]))
       {
@@ -804,19 +793,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
        * path given has this directory, which contains the files for reload.
        */
       m_xSysArgs.m_bReload = true;
-
-      // handle spaces in reload dir path
-      Stz* szPath = argv[++i_Arg];
-      m_xSysArgs.m_sReloadDir.vConcat(szPath);
-      szPath = argv[++i_Arg];
-      while( (i_Arg < argc) &&
-             (! szPath->bContains("--"_Stz))
-          ) {
-        m_xSysArgs.m_sReloadDir.vConcat(" "_Stz);
-        m_xSysArgs.m_sReloadDir.vConcat(szPath);
-        szPath = argv[++i_Arg];
-      }
-      --i_Arg;
+      m_xSysArgs.m_sReloadDir = (Stz*)argv[++i_Arg];
 
       if( ! StrLib::bEnds(m_xSysArgs.m_sReloadDir.azChar(), '/'))
       {
