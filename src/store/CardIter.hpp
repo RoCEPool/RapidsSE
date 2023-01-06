@@ -138,6 +138,7 @@ namespace STORE
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoard(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
+    bool bIsTracing(void);
 
     bool bJustRestarted(void);
 
@@ -207,16 +208,19 @@ namespace STORE
     bool G_bSubsequentToMain(bool bUpdateMember = false);
     void G_vSubsequentToMain(bool bUpdateMember = false);
 
-
-    bool bIsTracing(void);
+    void vTracer(Stz* szFormat, ...);
+    void vTransform(const char* azFunc, Stz* szXdesc);
+    i8   iTransformDepth(void);
 
     void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
+    void vUsingBoard(eBK eBoard, i8 i_Board);
 
     Stz* szXdesc(void);
+    void vXdesc(Stz* szDescription);
     Stz* szXform(void);
+    void vXform(Stz* szTransformation);
     Stz* szXhand(void);
-
-    void vTracer(Stz* szFormat, ...);
+    void vXhand(const char* asXhand);
 
   protected:
 
