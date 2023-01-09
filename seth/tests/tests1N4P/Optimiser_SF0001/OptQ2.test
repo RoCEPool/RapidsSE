@@ -4,8 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/pipelineName = "_r_Q2"
 select
   s_acctbal,
   s_name,

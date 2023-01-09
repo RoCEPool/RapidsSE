@@ -4,8 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/pipelineName = "_r_Q16"
 select
   p_brand,
   p_type,

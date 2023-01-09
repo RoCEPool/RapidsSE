@@ -4,9 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/weaved
-/pipelineName = "_r_Q9"
 select
   nation,
   o_year,

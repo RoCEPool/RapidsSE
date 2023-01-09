@@ -1,8 +1,6 @@
 --------------------------------------------------------------------------------
 -- tpch query8 (SF_0001)
 --------------------------------------------------------------------------------
-/optimise
-/pipelineName = "_r_Q8"
 select
   o_year,
   sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share

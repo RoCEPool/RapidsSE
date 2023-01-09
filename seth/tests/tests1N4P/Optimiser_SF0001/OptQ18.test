@@ -4,8 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/pipelineName = "_r_Q18"
 select
   c_name,
   c_custkey,

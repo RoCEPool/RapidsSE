@@ -4,8 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/pipelineName = "_r_Q4"
 select o_orderpriority,
   count(*) as order_count
 from

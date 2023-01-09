@@ -4,8 +4,6 @@
 trackMemory;
 success
 
-/optimise
-/pipelineName = "_r_Q14"
 select
   100.00 * sum(case
     when p_type like 'PROMO%'
