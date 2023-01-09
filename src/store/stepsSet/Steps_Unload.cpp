@@ -37,7 +37,8 @@ void Step::vUnloadToDisk(void)
     vTrace("SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n"_Stz);
     s256 sDir;
     m_pDataStack->vPopStr(sDir, __func__);
-    EXIT();
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+    m_pDataStack->vPushBol(false);
     return;
   }
 
@@ -66,6 +67,8 @@ void Step::vUnloadToDisk(void)
 
   if(iFreeSpace < 0) {
     vTrace("Error getting free space of dir %s. Cannot unload.\n"_Stz, sDirPath.szStz());
+    m_pDataStack->vPushInt(EC_DISK_SPACE_CHECK_FAILED);
+    m_pDataStack->vPushBol(false);
     return;
   }
 
@@ -73,9 +76,11 @@ void Step::vUnloadToDisk(void)
   if(iFreeSpace < iMinSpace)
   {
     vTrace("Warning: Dir %s does not contain enough space for unload.\n"_Stz, sDirPath.szStz());
-    vTrace("Dir has %lld bytes\n"_Stz, iFreeSpace);
-    vTrace("Minimum space required %lld bytes\n"_Stz, iMinSpace);
+    vTrace("Dir has %.2f GB\n"_Stz, (d8)iFreeSpace/(C_1GB));
+    vTrace("Minimum space required %.2f GB\n"_Stz, (d8)iMinSpace/(C_1GB));
     vTrace("Cannot unload\n"_Stz);
+    m_pDataStack->vPushInt(EC_LOW_DISK_SPACE);
+    m_pDataStack->vPushBol(false);
     return;
   }
 
@@ -91,6 +96,7 @@ void Step::vUnloadToDisk(void)
 
   vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
 
+  m_pDataStack->vPushBol(true);
 
   EXIT();
 }

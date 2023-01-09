@@ -9,12 +9,16 @@
 /*----------------------------------------------------------------------------*/
 : unload_DataPulse \handler
 
-  EV_M_DATAPULSE_handler
-
   <dirName> locals| sDirName |
 
-  sDirName unload.toDisk
+  sDirName unload.toDisk not if
+    op__execErr
+    pipein[].delete
+    true
+    exit
+  then
 
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
