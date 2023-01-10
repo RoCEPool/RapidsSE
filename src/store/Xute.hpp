@@ -29,15 +29,15 @@ namespace STORE
     static void vAdd_where(CardIter* pCI, Card* p_after);
     static void vAddPredToTableFilter(CardIter* pCI, Card_Table* p_table, Card_PRED* p_PRED);
 
-    static void vBump_keyOdn_In_rpnCalc_Of_Elist(CardIter* pCardIter, Card_ELIST* p_ELIST);
-    static void vBump_stmOdn_In_rpnCalc_Of_Elist(CardIter* pCardIter, Card_ELIST* p_ELIST);
+    static void vBump_keyOdn_In_rpnCalc_Of_Elist(CardIter* pCI, Card_ELIST* p_ELIST);
+    static void vBump_stmOdn_In_rpnCalc_Of_Elist(CardIter* pCI, Card_ELIST* p_ELIST);
     static void vBump_where_BaseOn_foldExpr(CardIter* pCI);
 
-    static void vChoose_index_For_crossJoin(CardIter* pCardIter);
-    static void vChoose_index_For_indexJoin(CardIter* pCardIter);
-    static void vChoose_index_For_indexScan(CardIter* pCardIter);
-    static void vChoose_index_For_keyExists(CardIter* pCardIter);
-    static void vChoose_index_For_keyNotExists(CardIter* pCardIter);
+    static void vChoose_index_For_crossJoin(CardIter* pCI);
+    static void vChoose_index_For_indexJoin(CardIter* pCI);
+    static void vChoose_index_For_indexScan(CardIter* pCI);
+    static void vChoose_index_For_keyExists(CardIter* pCI);
+    static void vChoose_index_For_keyNotExists(CardIter* pCI);
     static void vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
     static void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
     static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
@@ -48,7 +48,7 @@ namespace STORE
     static void vDerive_stream_order_For_indexJoin(CardIter* pCI);
     static void vDerive_stream_order_For_indexScan(CardIter* pCI);
     static void vDerive_stream_order_For_project(CardIter* pCI);
-    static void vDerive_stream_order_For_sort(CardIter* pCardIter);
+    static void vDerive_stream_order_For_sort(CardIter* pCI);
     static void vDerive_order(CardIter* pCI);
     static void vDerive_foldExpr(CardIter* pCI);
 
@@ -60,14 +60,14 @@ namespace STORE
     static void vFoldIn_foldExpr(CardIter* pCI);
 
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
-    static void vIndividuate_filter(CardIter* pCardIter);
+    static void vIndividuate_filter(CardIter* pCI);
 
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
-    static void vMove_on_To_where(CardIter* pCardIter);
+    static void vMove_on_To_where(CardIter* pCI);
     static void vMoveWhereToTableAsConstraint(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
     static void vMoveWhereToTableAsFilter(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
 
-    static bool bOrder_Joins(CardIter* pCardIter);
+    static bool bOrder_Joins(CardIter* pCI);
 
     static void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
     static void vPush_foldExpr_Into_aggElist(CardIter* pCI);
@@ -75,7 +75,7 @@ namespace STORE
 
     static void vRelabelExpressions(CardIter* pCI);
     static void vRenumberStmOdn(CardIter* pCI);
-    static bool bReplaceValueOfSub(CardIter* pCardIter, Card* pCard, eCK eSub,
+    static bool bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
                                    Stz* szValue, Stz* szWith);
     static void vResolve_Param_Ordinal(CardIter* pCI, Card_Term* p_term);
     static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
@@ -100,16 +100,16 @@ namespace STORE
     static void vS33_T10_Convert_stmColOdn_To_tblColOdn(CardIter* pCI);
 
     // vSeries_36_Bound_Analysis
-    static void vS36_T30_Delete_Empty_filter(CardIter* pCardIter);
+    static void vS36_T30_Delete_Empty_filter(CardIter* pCI);
 
     // vSeries_75_EE_operators
     static void vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI);
-    static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCardIter);
+    static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCI);
     static void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
 
     // vSeries_A0_Make_Weavable
-    static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCardIter);
-    static void vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCardIter);
+    static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCI);
+    static void vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCI);
 
     // vSeries_Z0_Restate_Pipeline
     static void vSZ0_T20_Reinstate_stagesV3(CardIter* pCI);
