@@ -161,14 +161,14 @@ void Xseries::vSeries_10_Make_Runnable(void)
       m_pTransforms->vS34_T_Predicate_Reposition();
     }
 
-    m_pTransforms->vS36_T10_Derive_bounds_From_filter();
   }
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
   m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
 
-
+  m_pTransforms->vS34_T_Predicate_Pullup();
+  m_pTransforms->vS36_T10_Derive_bounds_From_filter();
 
 
   m_pTransforms->vS75_T10_Morph_table_To_EEop();

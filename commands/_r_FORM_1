@@ -4,15 +4,16 @@
 
 trackMemory;
 
-_r_init
+_r_schema
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+create index PS_idx1 on partsupp (PS_SUPPKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimise
-/glean_cue_from = "vS36X_T04_Mark_pmzWhere_In_sqB"
 /glean_interactive
 /transliterated
-/weaved
 /pipelineName = "r_FORM_1"
 select *
   from part, partsupp
