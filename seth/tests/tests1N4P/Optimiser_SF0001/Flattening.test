@@ -1,0 +1,169 @@
+--------------------------------------------------------------------------------
+-- tpch query1 (SF_0001)
+--------------------------------------------------------------------------------
+trackMemory;
+success
+
+/*
+//_r_FORM_1
+ select p_partkey, ps_suppkey
+   from part, partsupp
+  where P_PARTKEY = PS_PARTKEY
+    and PS_SUPPKEY = (select min(ps_suppkey)
+                        from partsupp
+                       where P_PARTKEY = PS_PARTKEY)
+ ;
+rows:
+  (1,1)
+  (1,1)
+  (1,1)
+  (1,1)
+  (2,2)
+  (2,2)
+  (2,2)
+  (2,2)
+  (3,3)
+  (3,3)
+  (3,3)
+  (3,3)
+  (4,4)
+  (4,4)
+  (4,4)
+  (4,4)
+  (5,5)
+  (5,5)
+  (5,5)
+  (5,5)
+  (6,6)
+  (6,6)
+  (6,6)
+  (6,6)
+  (7,7)
+  (7,7)
+  (7,7)
+  (7,7)
+  (8,8)
+  (8,8)
+  (8,8)
+  (8,8)
+  (9,9)
+  (9,9)
+  (9,9)
+  (9,9)
+
+// _r_FORM_2
+select count(*)
+  from orders
+ where exists (select *
+                 from lineitem
+                where L_ORDERKEY = O_ORDERKEY)
+;
+
+rows:
+ (1499)
+
+// _r_FOLD_50_W_L_C_E (Q4)
+select count(*)
+  from orders
+ where exists (select *
+                 from lineitem
+                where L_ORDERKEY = O_ORDERKEY
+                  and l_commitdate < l_receiptdate)
+;
+rows:
+ (1470)
+
+ // _r_FORM_3
+ //_r_FOLD_60_W_L_NC_NI (Q16)
+ select count(*)
+   from partsupp, part
+  where P_PARTKEY = PS_PARTKEY
+    and PS_SUPPKEY not in (select S_SUPPKEY
+                             from supplier
+                            where s_comment like '%Customer%Complaints%')
+ ;
+ rows:
+  (800)
+
+//_r_FORM_4
+select sum(l_extendedprice)
+  from lineitem, part
+ where P_PARTKEY = L_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+rows:
+ (58019519.91)
+
+//_r_FOLD_20_W_A_C_ro (Q2, Q17)
+select count(*)
+  from Lineitem, Part, PartSupp
+ where P_PARTKEY  = L_PARTKEY
+   and PS_PARTKEY = P_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+
+rows:
+ (11984)
+
+
+// _r_FORM_5
+select sum(l_quantity)
+  from customer, orders, lineitem
+ where C_CUSTKEY  = O_CUSTKEY
+   and O_ORDERKEY = L_ORDERKEY
+   and O_ORDERKEY in (select L_ORDERKEY
+                       from lineitem
+                      group by L_ORDERKEY
+                     having sum(l_quantity) > 100)
+;
+rows:
+ (94738.00)
+
+// _r_FOLD_30_W_A_NC_I (Q18)
+select count(*)
+  from orders, lineitem
+ where O_ORDERKEY = L_ORDERKEY
+   and O_ORDERKEY in (select L_ORDERKEY
+                        from lineitem
+                       group by L_ORDERKEY
+                      having sum(l_quantity) > 100)
+;
+rows:
+ (3044)
+
+// _r_FORM_6
+select PS_PARTKEY,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by PS_PARTKEY
+having sum(ps_supplycost * ps_availqty) >
+         (select sum(ps_supplycost * ps_availqty) * 0.0000010000
+            from partsupp, supplier
+           where PS_SUPPKEY = S_SUPPKEY)
+;
+rows:
+ 200
+*/
+// _r_FORM_A / _r_FOLD_10_F (Q7,8,9)
+select count(*)
+  from (select *
+          from orders, lineitem
+         where O_ORDERKEY = L_ORDERKEY)
+;
+rows:
+ (5996)
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+
