@@ -1655,7 +1655,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
   G_vNewMember(CK_TERM,"$1"_Stz);
   G.p_cmpPred->vAppend(G.p_term);
 
-  Xute::vAddPredToTableFilter(static_cast<CardIter*>(this), G.p_table,G.p_cmpPred);
+  G.p_table->vAddPredToTableFilter(static_cast<CardIter*>(this),G.p_cmpPred);
   vPrintBoard(__LINE__);
 
   // W A NC I
@@ -1886,7 +1886,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   G_vNewMember(CK_TERM,"$1"_Stz);
   G.p_cmpPred->vAppend(G.p_term);
 
-  Xute::vAddPredToTableFilter(static_cast<CardIter*>(this),G.p_table,G.p_cmpPred);
+  G.p_table->vAddPredToTableFilter(static_cast<CardIter*>(this), G.p_cmpPred);
   vPrintBoard(__LINE__);
 
 

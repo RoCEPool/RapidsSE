@@ -18,14 +18,13 @@ namespace STORE
     Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
-    void vComputeProjection(CardIter* pCI); // prototype
+    void vAddPredToTableFilter(CardIter* pCI, Card_PRED* p_PRED);
 
     void vBounds_AddPred(Card_Index* p_index,
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
     void vBounds_DeriveFrom_filter(Card_Filter* p_filter,
                                    bool bParamAllowedInBounds);
-
-
+    void vComputeProjection(CardIter* pCI); // prototype
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(char* cTableSyn);

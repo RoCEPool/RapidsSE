@@ -30,101 +30,6 @@ Xute::~Xute(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vAdd_where(CardIter* pCI, Card* p_after)
-{
-  _static_
-
-  pCI->G_vNewMember(CK_WHERE);
-
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_where,p_after);
-
-  pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Xute::vAddPredToTableFilter(CardIter* pCI, Card_Table* p_table, Card_PRED* p_PRED)
-{
-  _static_
-
-  if ((pCI->G.p_filter = p_table->pSub_filter())) {
-    pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(p_PRED);
-  }
-  else {
-    pCI->G_vAppendNewChild(p_table,CK_FILTER);
-    pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,p_PRED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vBump_where_BaseOn_foldExpr(CardIter* pCI)
-{
-  _static_
-
-  pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
-
-  i8 nBumpRight = pCI->G.p_fold->Y_iGet(P_BumpRight);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI,nBumpRight](Card *pCard) {
-
-    if (MARK_AT != pCard->cMark1())
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_roPred = _pCard_RoPred(pCard);
-
-//    m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
-//    m_pTerm_0->vBump_StreamColOrdinal(nBumpRight);
-
-    pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-    pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);
-    DELETE_CARD(pCI->m_pTerm_1);
-
-    pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-    pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);
-    DELETE_CARD(pCI->m_pTerm_1);
-
-    pCI->G_vAppendNewChild(pCI->G.p_roPred, CK_TERM, "$2"_Stz);
-
-    pCI->G_vMorphCard(pCI->G.p_roPred, CK_CMPPRED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
-
-  pCI->G.p_fold->Y_vSet(P_BumpedRight,nBumpRight);
-  pCI->G.p_fold->Y_vCut(P_BumpRight);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vChoose_index_For_crossJoin(CardIter* pCI)
-{
-  _static_
-
-  if (! pCI->G.p_index) {
-    s256 sErrorMsg;
-    sErrorMsg.vSprint("No index for table %s"_Stz,pCI->G.p_table->pSub_tableNm()->szValue());
-    Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
-    throw xError;
-  }
-
-  pCI->G.p_index->vSet_Choose_index();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xute::vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI)
 {
   _static_
@@ -1075,7 +980,7 @@ void Xute::vMove_on_To_where(CardIter* pCI)
     return;
 
   if (! pCI->G.p_where) {
-    Xute::vAdd_where(pCI, pCI->G.p_absJoin);
+    Card_Where::vAdd_where(pCI, pCI->G.p_absJoin);
   }
 
   pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
