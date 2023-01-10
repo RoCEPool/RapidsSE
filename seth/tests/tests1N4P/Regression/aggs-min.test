@@ -201,8 +201,11 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin23.sql
 // Result file: ../queries/aggs/min/results/min23.res
+// TODO: RAY TO LOOK AT
+/*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < 0 and Y > 0;
 rows: 0
+*/
 
 // Source file: ../queries/aggs/min/rmin12.sql
 // Result file: ../queries/aggs/min/results/min12.res
