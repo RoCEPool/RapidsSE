@@ -4,8 +4,8 @@
 trackMemory;
 success
 
-/*
-//_r_FORM_1
+
+//_r_FORM_1 (Q2)
  select p_partkey, ps_suppkey
    from part, partsupp
   where P_PARTKEY = PS_PARTKEY
@@ -50,6 +50,7 @@ rows:
   (9,9)
   (9,9)
   (9,9)
+
 
 // _r_FORM_2
 select count(*)
@@ -148,7 +149,7 @@ having sum(ps_supplycost * ps_availqty) >
 ;
 rows:
  200
-*/
+
 // _r_FORM_A / _r_FOLD_10_F (Q7,8,9)
 select count(*)
   from (select *

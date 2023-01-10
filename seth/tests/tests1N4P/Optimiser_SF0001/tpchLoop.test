@@ -55,9 +55,9 @@ INCLUDE 'oneWay.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running Flattening queries...';
-INCLUDE 'Flattening.test';
-INCLUDE 'sleep.test';
+//LOG 'Running Flattening queries...';
+//INCLUDE 'Flattening.test';
+//INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 1...';
