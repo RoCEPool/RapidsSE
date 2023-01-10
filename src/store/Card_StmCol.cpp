@@ -4,6 +4,7 @@
 
 #include "Card_StmCol.hpp"
 #include "Card_As.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -36,8 +37,25 @@ Card_StmCol::~Card_StmCol(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StmCol::vFind_stmCol_Definition_Of_Correlation_Column(CardIter* pCI)
+{
+  _static_
+
+  // find the <table>/<stream>/<stmColList>/<stmCol>
+  //  corresponding to the correlated predicate
+
+  pCI->m_pCard_found = pCI->G.p_stream->pFindValueRecursive(pCI->m_pTerm_corrPred->szValue(), pCI->m_pCard_parent);
+  pCI->G.p_stmCol = _pCard_StmCol(pCI->m_pCard_parent);
+
+  pCI->G.p_stmCol->vMark1(MARK_AT);
+  pCI->G.p_stmCol->Y_vSet(P_CorrStmCol);
+}
 
 /*============================================================================*/
 /* end                                                                        */

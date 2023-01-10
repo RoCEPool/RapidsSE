@@ -13,6 +13,7 @@
 #include "Card_SubSet.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_OrPred.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -42,6 +43,25 @@ Card_Filter::Card_Filter(void)
 Card_Filter::~Card_Filter(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vIndividuate_filter(CardIter* pCI)
+{
+  _static_
+
+  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
+  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_MainCard);
+
+  if (! pCI->G.p_filter->pSub_level()) {
+    pCI->G.p_filter->vPush(pCI->G.p_MainCard->pSub_level()->pDupCardAndSubCards());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

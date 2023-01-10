@@ -44,15 +44,11 @@ namespace STORE
     static void vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI);
 
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
-    static void vFind_stmCol_Definition_Of_Correlation_Column(CardIter* pCI);
     static void vFoldIn_foldExpr(CardIter* pCI);
 
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
-    static void vIndividuate_filter(CardIter* pCI);
 
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
-    static void vMove_on_To_where(CardIter* pCI);
-    static void vMoveWhereToTableAsConstraint(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
     static void vMoveWhereToTableAsFilter(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
 
     static bool bOrder_Joins(CardIter* pCI);

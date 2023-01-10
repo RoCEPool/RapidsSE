@@ -53,6 +53,60 @@ void Card_Where::vAdd_where(CardIter* pCI, Card* p_after)
   pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vMove_on_To_where(CardIter* pCI)
+{
+  _static_
+
+  Card_RpnCalc* p_rpnCalc_on = pCI->G.p_on->pSub_rpnCalc();
+  if (! p_rpnCalc_on->nChildCards())
+    return;
+  Card_Term* p_term_0 = _pCard_Term(p_rpnCalc_on->pGetChild(0));
+  if (p_term_0->bSame("CROSS"_Stz))
+    return;
+
+  if (! pCI->G.p_where) {
+    vAdd_where(pCI, pCI->G.p_absJoin);
+  }
+
+  pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
+
+  pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
+
+  pCI->G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
+
+  DELETE_CARD(pCI->G.p_on);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move <where> to <table keyExists>/<constraint>                             */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vMoveWhereToTableAsConstraint(CardIter* pCI)
+{
+  _static_
+
+  pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
+  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+  pCI->G.p_PRED->vMark1(MARK_AT);
+
+  pCI->G.p_subSet = pCI->G.p_boolCalc->pDupSubCards();
+  RASSERT(1 == pCI->G.p_subSet->nChildCards());
+  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_subSet->pPop());
+  DELETE_CARD(pCI->G.p_subSet);
+
+  if ((pCI->G.p_constraint = pCI->G.p_table->pSub_constraint())) {
+    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+    pCI->G.p_boolCalc->vPushPred(pCI->G.p_PRED);
+  }
+  else {
+    pCI->G_vAppendNewChild(pCI->G.p_table,CK_CONSTRAINT);
+    pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_BOOLCALC);
+    pCI->G_vAppendChild(CK_BOOLCALC,pCI->G.p_PRED);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

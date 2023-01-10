@@ -446,7 +446,7 @@ void Xtransforms::vS05_T_Move_On(void)
   vRestart();
 
   while (G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
-    Xute::vMove_on_To_where(static_cast<CardIter*>(this));
+    Card_Where::vMove_on_To_where(static_cast<CardIter*>(this));
   }
 
   vEndTransform();
@@ -1419,7 +1419,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   RASSERT(G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
   Xute::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(static_cast<CardIter*>(this));
   RASSERT(m_pTerm_corrPred); // eg $d.2 (L_PARTKEY)
-  Xute::vFind_stmCol_Definition_Of_Correlation_Column(static_cast<CardIter*>(this));
+  Card_StmCol::vFind_stmCol_Definition_Of_Correlation_Column(static_cast<CardIter*>(this));
   RASSERT(G.p_stmCol);       // eg L_PARTKEY
 
 
@@ -2137,7 +2137,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   G_vRestart();
   if (G_bEachMain(CK_TABLE)) {
     if (G_bEachMain(CK_WHERE)) {
-      Xute::vMoveWhereToTableAsConstraint(static_cast<CardIter*>(this), G.p_table,G.p_where);
+      Card_Where::vMoveWhereToTableAsConstraint(static_cast<CardIter*>(this));
     }
   }
   vPrintBoard(__LINE__);
@@ -2947,7 +2947,7 @@ void Xtransforms::vSA0_T20_Individuate_filter(void)
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
-    Xute::vIndividuate_filter(static_cast<CardIter*>(this));
+    Card_Filter::vIndividuate_filter(static_cast<CardIter*>(this));
   }
 
   G_vRestart();

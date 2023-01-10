@@ -18,6 +18,8 @@ namespace STORE
    ~Card_Where(void) noexcept(false);
 
     static void vAdd_where(CardIter* pCI, Card* p_after);
+    static void vMove_on_To_where(CardIter* pCI);
+    static void vMoveWhereToTableAsConstraint(CardIter* pCI);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

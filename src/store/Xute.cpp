@@ -805,23 +805,6 @@ bool Xute::bFindAndMarkSubQryCall(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vFind_stmCol_Definition_Of_Correlation_Column(CardIter* pCI)
-{
-  _static_
-
-  // find the <table>/<stream>/<stmColList>/<stmCol>
-  //  corresponding to the correlated predicate
-
-  pCI->m_pCard_found = pCI->G.p_stream->pFindValueRecursive(pCI->m_pTerm_corrPred->szValue(), pCI->m_pCard_parent);
-  pCI->G.p_stmCol = _pCard_StmCol(pCI->m_pCard_parent);
-
-  pCI->G.p_stmCol->vMark1(MARK_AT);
-  pCI->G.p_stmCol->Y_vSet(P_CorrStmCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* fold in the fold expression                                                */
 /*----------------------------------------------------------------------------*/
 void Xute::vFoldIn_foldExpr(CardIter* pCI)
@@ -839,8 +822,8 @@ void Xute::vFoldIn_foldExpr(CardIter* pCI)
       pCI->G.p_aggElist->vBump_keyOdn_In_rpnCalc(pCI);
       pCI->G.p_aggElist->vBump_stmOdn_In_rpnCalc(pCI);
 
-      vPush_foldExpr_Into_aggElist(pCI);
-      vPush_foldExpr_Into_gbyElist(pCI);
+      Xute::vPush_foldExpr_Into_aggElist(pCI);
+      Xute::vPush_foldExpr_Into_gbyElist(pCI);
     }
 
   }
@@ -898,21 +881,6 @@ void Xute::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vIndividuate_filter(CardIter* pCI)
-{
-  _static_
-
-  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_MainCard);
-
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_MainCard->pSub_level()->pDupCardAndSubCards());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xute::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _static_
@@ -963,63 +931,6 @@ void Xute::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_
   Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
   vMove(p_PRED, p_boolCalc, vMove);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vMove_on_To_where(CardIter* pCI)
-{
-  _static_
-
-  Card_RpnCalc* p_rpnCalc_on = pCI->G.p_on->pSub_rpnCalc();
-  if (! p_rpnCalc_on->nChildCards())
-    return;
-  Card_Term* p_term_0 = _pCard_Term(p_rpnCalc_on->pGetChild(0));
-  if (p_term_0->bSame("CROSS"_Stz))
-    return;
-
-  if (! pCI->G.p_where) {
-    Card_Where::vAdd_where(pCI, pCI->G.p_absJoin);
-  }
-
-  pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
-
-  pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
-
-  pCI->G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
-
-  DELETE_CARD(pCI->G.p_on);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table keyExists>/<constraint>                             */
-/*----------------------------------------------------------------------------*/
-void Xute::vMoveWhereToTableAsConstraint(CardIter* pCI, Card_Table* p_table, Card_Where* p_where)
-{
-  _static_
-
-  pCI->G.p_boolCalc = p_where->pSub_boolCalc();
-  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
-  pCI->G.p_PRED->vMark1(MARK_AT);
-
-  pCI->G.p_subSet = pCI->G.p_boolCalc->pDupSubCards();
-  RASSERT(1 == pCI->G.p_subSet->nChildCards());
-  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_subSet->pPop());
-  DELETE_CARD(pCI->G.p_subSet);
-
-  if ((pCI->G.p_constraint = p_table->pSub_constraint())) {
-    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(pCI->G.p_PRED);
-  }
-  else {
-    pCI->G_vAppendNewChild(p_table,CK_CONSTRAINT);
-    pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,pCI->G.p_PRED);
-  }
-
-
 }
 
 /*----------------------------------------------------------------------------*/
