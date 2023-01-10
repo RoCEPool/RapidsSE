@@ -17,6 +17,7 @@ namespace STORE
    ~Card_Deck(void) noexcept(false);
 
     static void vApply(Card_JoinOrder* p_joinOrder);
+    static bool bOrder_Joins(CardIter* pCI);
   };
 
   Card_Deck* _pCard_Deck(void* aAddr);

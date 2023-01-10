@@ -1485,7 +1485,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
 
   RASSERT(G_bEachMain(CK_FOLD));
   RASSERT(G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  Xute::vPush_Correlated_cmpPred_Onto_mq_boolCalc(G.p_boolCalc, G.p_PRED);
+  G.p_boolCalc->vPush_Correlated_cmpPred_Onto_mq_boolCalc(G.p_PRED);
   vPrintBoard(__LINE__);
 
   //                   v           //  ]filter

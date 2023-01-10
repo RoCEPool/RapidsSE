@@ -216,6 +216,21 @@ void Card_BoolCalc::vMarkWrt_table(Card_Deck* p_deck)
 }
 
 /*----------------------------------------------------------------------------*/
+/* move <where> to <table>/<filter>                                           */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (this->nChildCards()) {
+    this->vPushPred(p_PRED);
+  }
+  else {
+    this->vAppend(p_PRED);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vPushPred(Card_PRED* p_pred_toBeAdded)

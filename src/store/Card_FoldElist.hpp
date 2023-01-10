@@ -15,6 +15,9 @@ namespace STORE
   
     Card_FoldElist(void);
    ~Card_FoldElist(void) noexcept(false);
+
+    static void vPush_foldExpr_Into_aggElist(CardIter* pCI);
+    static void vPush_foldExpr_Into_gbyElist(CardIter* pCI);
   };
 
   Card_FoldElist* _pCard_FoldElist(void* aAddr);

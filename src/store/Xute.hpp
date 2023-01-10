@@ -49,13 +49,6 @@ namespace STORE
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
 
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
-    static void vMoveWhereToTableAsFilter(CardIter* pCI, Card_Table* p_table, Card_Where* p_where);
-
-    static bool bOrder_Joins(CardIter* pCI);
-
-    static void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc* p_boolCalc, Card_PRED* p_PRED);
-    static void vPush_foldExpr_Into_aggElist(CardIter* pCI);
-    static void vPush_foldExpr_Into_gbyElist(CardIter* pCI);
 
     static void vRelabelExpressions(CardIter* pCI);
     static void vRenumberStmOdn(CardIter* pCI);

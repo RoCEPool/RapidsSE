@@ -822,8 +822,8 @@ void Xute::vFoldIn_foldExpr(CardIter* pCI)
       pCI->G.p_aggElist->vBump_keyOdn_In_rpnCalc(pCI);
       pCI->G.p_aggElist->vBump_stmOdn_In_rpnCalc(pCI);
 
-      Xute::vPush_foldExpr_Into_aggElist(pCI);
-      Xute::vPush_foldExpr_Into_gbyElist(pCI);
+      Card_FoldElist::vPush_foldExpr_Into_aggElist(pCI);
+      Card_FoldElist::vPush_foldExpr_Into_gbyElist(pCI);
     }
 
   }
@@ -931,95 +931,6 @@ void Xute::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_
   Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
   vMove(p_PRED, p_boolCalc, vMove);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Xute::vMoveWhereToTableAsFilter(CardIter* pCI, Card_Table* p_table, Card_Where* p_where)
-{
-  _static_
-
-  pCI->G.p_boolCalc = p_where->pSub_boolCalc();
-  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
-  pCI->G.p_PRED->vMark1(MARK_AT);
-
-  pCI->G.p_PRED = reinterpret_cast<Card_PRED*>(pCI->G.p_PRED->pDupSubCards());
-
-  if ((pCI->G.p_filter = p_table->pSub_filter())) {
-    pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(pCI->G.p_PRED);
-  }
-  else {
-    pCI->G_vAppendNewChild(p_table,CK_FILTER);
-    pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_FILTER,pCI->G.p_PRED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xute::bOrder_Joins(CardIter* pCI)
-{
-  _static_
-
-  CardIter xCI(pCI->G.pDeck);
-  if (xCI.pEachChild(CK_TABLE) && xCI.pEachChild(CK_TABLE))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Xute::vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_BoolCalc *p_boolCalc,
-                                                     STORE::Card_PRED *p_PRED)
-{
-  _static_
-
-  if (p_boolCalc->nChildCards()) {
-    p_boolCalc->vPushPred(p_PRED);
-  }
-  else {
-    p_boolCalc->vAppend(p_PRED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vPush_foldExpr_Into_aggElist(CardIter* pCI)
-{
-  _static_
-
-  pCI->G_vNewMember(CK_EXPR);
-
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_type()->pDupCardAndSubCards());
-
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_as()->pDupCardAndSubCards());
-
-  pCI->G_vAppendNewChild(pCI->G.p_expr,CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$K1"_Stz);
-
-  pCI->G.p_aggElist->vPush(pCI->G.p_expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vPush_foldExpr_Into_gbyElist(CardIter* pCI)
-{
-  _static_
-
-  pCI->G_vNewMember(CK_EXPR);
-
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_type()->pDupCardAndSubCards());
-
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_rpnCalc()->pDupCardAndSubCards());
-
-  pCI->G.p_gbyElist->vPush(pCI->G.p_expr);
 }
 
 /*----------------------------------------------------------------------------*/

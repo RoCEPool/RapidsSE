@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Deck.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -33,6 +34,21 @@ Card_Deck::Card_Deck(void)
 Card_Deck::~Card_Deck(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Deck::bOrder_Joins(CardIter* pCI)
+{
+  _static_
+
+  CardIter xCI(pCI->G.pDeck);
+  if (xCI.pEachChild(CK_TABLE) && xCI.pEachChild(CK_TABLE))
+    return true;
+
+  return false;
 }
 
 /*============================================================================*/

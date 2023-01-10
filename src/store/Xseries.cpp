@@ -156,7 +156,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
 
     m_pTransforms->vS34_T_Predicate_Pullup();
 
-    if (Xute::bOrder_Joins(static_cast<CardIter*>(m_pTransforms))) {
+    if (Card_Deck::bOrder_Joins(static_cast<CardIter*>(m_pTransforms))) {
       m_pTransforms->vS50_T00_Join_Ordering_v2();
       m_pTransforms->vS34_T_Predicate_Reposition();
     }
