@@ -40,8 +40,12 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running select...';
+LOG 'Running selectScan...';
 INCLUDE 'selectScan.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectIndexSCan...';
+INCLUDE 'selectIndexScan.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';
