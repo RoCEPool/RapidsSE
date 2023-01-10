@@ -15,6 +15,8 @@ namespace STORE
   
     Card_Fold(void);
    ~Card_Fold(void) noexcept(false);
+
+    static void vBump_where_BaseOn_foldExpr(CardIter* pCI);
   };
 
   Card_Fold* _pCard_Fold(void* aAddr);

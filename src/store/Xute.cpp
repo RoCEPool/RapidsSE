@@ -30,216 +30,6 @@ Xute::~Xute(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vAdd_where(CardIter* pCI, Card* p_after)
-{
-  _static_
-
-  pCI->G_vNewMember(CK_WHERE);
-
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_where,p_after);
-
-  pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Xute::vAddPredToTableFilter(CardIter* pCI, Card_Table* p_table, Card_PRED* p_PRED)
-{
-  _static_
-
-  if ((pCI->G.p_filter = p_table->pSub_filter())) {
-    pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(p_PRED);
-  }
-  else {
-    pCI->G_vAppendNewChild(p_table,CK_FILTER);
-    pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,p_PRED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vBump_keyOdn_In_rpnCalc_Of_Elist(CardIter* pCardIter,
-                                            Card_ELIST* p_ELIST)
-{
-  _static_
-
-  CardIter xCI(p_ELIST);
-  while ((pCardIter->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
-
-    pCardIter->G.p_rpnCalc = pCardIter->G.p_expr->pSub_rpnCalc();
-
-    if (! pCardIter->G.p_rpnCalc)
-      continue;
-
-    CardIter xCI2(pCardIter->G.p_rpnCalc);
-    while ((pCardIter->G.p_term = _pCard_Term(xCI2.pEachChild()))) {
-      Stz *szTerm = pCardIter->G.p_term->szValue();
-
-      if (Card::bIsKeyOrdinal(szTerm)) {
-        pCardIter->G.p_term->vBump_KeyOrdinal();
-        pCardIter->G.p_term->vMark1(MARK_CHANGED);
-        continue;
-      }
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(CardIter* pCardIter,
-                                            Card_ELIST* p_ELIST)
-{
-  _static_
-
-  CardIter xCI(p_ELIST);
-  while ((pCardIter->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
-
-    pCardIter->G.p_rpnCalc =pCardIter->G.p_expr->pSub_rpnCalc();
-
-    if (! pCardIter->G.p_rpnCalc)
-      continue;
-
-    CardIter xCI2(pCardIter->G.p_rpnCalc);
-    while ((pCardIter->G.p_term = _pCard_Term(xCI2.pEachChild()))) {
-      Stz *szTerm = pCardIter->G.p_term->szValue();
-
-      if (Card::bIsStreamColOrdinal(szTerm)) {
-        pCardIter->G.p_term->vBump_StreamColOrdinal();
-        pCardIter->G.p_term->vMark1(MARK_CHANGED);
-        continue;
-      }
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vBump_where_BaseOn_foldExpr(CardIter* pCI)
-{
-  _static_
-
-  pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
-
-  i8 nBumpRight = pCI->G.p_fold->Y_iGet(P_BumpRight);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI,nBumpRight](Card *pCard) {
-
-    if (MARK_AT != pCard->cMark1())
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_roPred = _pCard_RoPred(pCard);
-
-//    m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
-//    m_pTerm_0->vBump_StreamColOrdinal(nBumpRight);
-
-    pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-    pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);
-    DELETE_CARD(pCI->m_pTerm_1);
-
-    pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-    pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);
-    DELETE_CARD(pCI->m_pTerm_1);
-
-    pCI->G_vAppendNewChild(pCI->G.p_roPred, CK_TERM, "$2"_Stz);
-
-    pCI->G_vMorphCard(pCI->G.p_roPred, CK_CMPPRED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
-
-  pCI->G.p_fold->Y_vSet(P_BumpedRight,nBumpRight);
-  pCI->G.p_fold->Y_vCut(P_BumpRight);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vChoose_index_For_crossJoin(CardIter* pCardIter)
-{
-  _static_
-
-  if (! pCardIter->G.p_index) {
-    s256 sErrorMsg;
-    sErrorMsg.vSprint("No index for table %s"_Stz,pCardIter->G.p_table->pSub_tableNm()->szValue());
-    Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
-    throw xError;
-  }
-
-  pCardIter->G.p_index->Y_vSet(P_ChosenIndex);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vChoose_index_For_indexJoin(CardIter* pCardIter)
-{
-  _static_
-
-  CardIter xCI(pCardIter->G.p_indexList);
-
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_eBound()) {
-      p_index->Y_vSet(P_ChosenIndex);
-      break;
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vChoose_index_For_indexScan(CardIter* pCardIter)
-{
-  _static_
-
-  CardIter xCI(pCardIter->G.p_indexList);
-
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_bounds()) {
-      p_index->Y_vSet(P_ChosenIndex);
-      break;
-    }
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vChoose_index_For_keyExists(CardIter* pCardIter)
-{
-  _static_
-
-  pCardIter->G.p_index->Y_vSet(P_ChosenIndex);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vChoose_index_For_keyNotExists(CardIter* pCardIter)
-{
-  _static_
-
-  pCardIter->G.p_index->Y_vSet(P_ChosenIndex);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Xute::vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI)
 {
   _static_
@@ -495,32 +285,32 @@ void Xute::vDerive_stream_order_For_gbyAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vDerive_stream_order_For_indexJoin(CardIter* pCardIter)
+void Xute::vDerive_stream_order_For_indexJoin(CardIter* pCI)
 {
   _static_
 
-  RASSERT(pCardIter->G.p_stmColList);
-  Card_StmColList* p_stmColList_l = pCardIter->G.p_stmColList;
-  RASSERT(pCardIter->G.p_order);
-  Card_Order* p_stmOrdList_l = pCardIter->G.p_order;
+  RASSERT(pCI->G.p_stmColList);
+  Card_StmColList* p_stmColList_l = pCI->G.p_stmColList;
+  RASSERT(pCI->G.p_order);
+  Card_Order* p_stmOrdList_l = pCI->G.p_order;
 
-  RASSERT(pCardIter->G.p_indexList);
-  RASSERT(pCardIter->G.p_stream);
+  RASSERT(pCI->G.p_indexList);
+  RASSERT(pCI->G.p_stream);
 
-  pCardIter->G.p_index = pCardIter->G.p_indexList->pFindChosenIndex();
-  if (! pCardIter->G.p_index)
+  pCI->G.p_index = pCI->G.p_indexList->pFindChosenIndex();
+  if (! pCI->G.p_index)
     return;
 
-  pCardIter->G.p_bounds = pCardIter->G.p_index->pSub_bounds();
-  if (! pCardIter->G.p_bounds)
+  pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
+  if (! pCI->G.p_bounds)
     return;
 
-  pCardIter->G.p_eBound = pCardIter->G.p_bounds->pSub_eBound();
-  if (! pCardIter->G.p_eBound)
+  pCI->G.p_eBound = pCI->G.p_bounds->pSub_eBound();
+  if (! pCI->G.p_eBound)
     return;
 
   // get tblColOdn of eBound
-  Stz* szTblColOdn_r = pCardIter->G.p_eBound->szGet_tblColOdn();
+  Stz* szTblColOdn_r = pCI->G.p_eBound->szGet_tblColOdn();
   if (! szTblColOdn_r)
     return;
   //vTrace("szTblColOdn_r %s\n"_Stz, szTblColOdn_r);
@@ -548,12 +338,12 @@ void Xute::vDerive_stream_order_For_indexJoin(CardIter* pCardIter)
   //                                      -> ../<stmOrdOrdn_l>
 
   Card_Order* p_stmOrdList_ij = new Card_Order;
-  pCardIter->G.p_stream->vAppend(p_stmOrdList_ij);
+  pCI->G.p_stream->vAppend(p_stmOrdList_ij);
 
-  pCardIter->G.p_ordElmOdn =
+  pCI->G.p_ordElmOdn =
       _pCard_OrdElmOdn(p_stmOrdList_ij->pAppendNewCardTail(CK_ORDELMODN,
                                                            p_stmOrdOdn_l->szValue()));
-  pCardIter->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
+  pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -631,28 +421,28 @@ void Xute::vDerive_stream_order_For_project(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vDerive_stream_order_For_sort(CardIter* pCardIter)
+void Xute::vDerive_stream_order_For_sort(CardIter* pCI)
 {
   _static_
 
-  pCardIter->G.p_stream = pCardIter->G.p_sort->pSub_stream();
-  pCardIter->G.p_order = _pCard_Order(pCardIter->G.p_stream->pAppendNewCardTail(CK_ORDER));
+  pCI->G.p_stream = pCI->G.p_sort->pSub_stream();
+  pCI->G.p_order = _pCard_Order(pCI->G.p_stream->pAppendNewCardTail(CK_ORDER));
 
-  CardIter xCI(pCardIter->G.p_sbyElist);
-  while ((pCardIter->G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
-    pCardIter->G.p_rpnCalc = pCardIter->G.p_expr->pSub_rpnCalc();
+  CardIter xCI(pCI->G.p_sbyElist);
+  while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
+    pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc();
 
-    if (! (pCardIter->G.p_term = pCardIter->G.p_rpnCalc->pGetSingle_stmColOdn()))
+    if (! (pCI->G.p_term = pCI->G.p_rpnCalc->pGetSingle_stmColOdn()))
       break;
 
-    Stz* szStmColOdn = pCardIter->G.p_term->szValue();
+    Stz* szStmColOdn = pCI->G.p_term->szValue();
     Stz* szStmOrdOdn = szStmColOdn;
-    pCardIter->G.p_ordElmOdn = _pCard_OrdElmOdn(pCardIter->G.p_order->pAppendNewCardTail(CK_ORDELMODN, szStmOrdOdn));
+    pCI->G.p_ordElmOdn = _pCard_OrdElmOdn(pCI->G.p_order->pAppendNewCardTail(CK_ORDELMODN, szStmOrdOdn));
 
-    if ((pCardIter->G.p_direction = pCardIter->G.p_expr->pSub_direction()))
-      pCardIter->G.p_ordElmOdn->vAppend(pCardIter->G.p_direction->pDupCardAndSubCards());
+    if ((pCI->G.p_direction = pCI->G.p_expr->pSub_direction()))
+      pCI->G.p_ordElmOdn->vAppend(pCI->G.p_direction->pDupCardAndSubCards());
     else
-      pCardIter->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
+      pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
 }
 
@@ -845,7 +635,7 @@ void Xute::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
 
     if (AL_PARTITION != pCI->G.e_Level) {
-      Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(pCI, pCI->G.p_aggElist);
+      pCI->G.p_aggElist->vBump_stmOdn_In_rpnCalc(pCI);
       pCI->G.p_gbyElist->Y_vCut(P_ProjBump);
       pCI->G.p_gbyElist->Y_vSet(P_ProjBumped);
     }
@@ -916,7 +706,7 @@ void Xute::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI)
 
   i8 nBumpBy = pCI->G.p_projElist->Y_iGet(P_ProjBump);
 
-  Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(pCI, pCI->G.p_projElist);// TODO: ,nBumpBy);
+  pCI->G.p_projElist->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
   pCI->G.p_projElist->Y_vSet(P_ProjBumped,(i8)nBumpBy);
   pCI->G.p_projElist->Y_vCut(P_ProjBump);
 }
@@ -1043,11 +833,11 @@ void Xute::vFoldIn_foldExpr(CardIter* pCI)
     if (CK_GBYAGG == pCI->G.e_MainCard) {
 
       pCI->G.p_gbyElist = pCI->G.p_gbyAgg->pSub_gbyElist();
-      Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(pCI, pCI->G.p_gbyElist);
+      pCI->G.p_gbyElist->vBump_stmOdn_In_rpnCalc(pCI);
 
       pCI->G.p_aggElist = pCI->G.p_gbyAgg->pSub_aggElist();
-      Xute::vBump_keyOdn_In_rpnCalc_Of_Elist(pCI, pCI->G.p_aggElist);
-      Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(pCI, pCI->G.p_aggElist);
+      pCI->G.p_aggElist->vBump_keyOdn_In_rpnCalc(pCI);
+      pCI->G.p_aggElist->vBump_stmOdn_In_rpnCalc(pCI);
 
       vPush_foldExpr_Into_aggElist(pCI);
       vPush_foldExpr_Into_gbyElist(pCI);
@@ -1108,15 +898,15 @@ void Xute::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vIndividuate_filter(CardIter* pCardIter)
+void Xute::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  pCardIter->G.p_MainCard->vRemoveChild(pCardIter->G.p_filter);
-  pCardIter->G.pDeck->vInsertAfter(pCardIter->G.p_filter, pCardIter->G.p_MainCard);
+  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
+  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_MainCard);
 
-  if (! pCardIter->G.p_filter->pSub_level()) {
-    pCardIter->G.p_filter->vPush(pCardIter->G.p_MainCard->pSub_level()->pDupCardAndSubCards());
+  if (! pCI->G.p_filter->pSub_level()) {
+    pCI->G.p_filter->vPush(pCI->G.p_MainCard->pSub_level()->pDupCardAndSubCards());
   }
 }
 
@@ -1190,7 +980,7 @@ void Xute::vMove_on_To_where(CardIter* pCI)
     return;
 
   if (! pCI->G.p_where) {
-    Xute::vAdd_where(pCI, pCI->G.p_absJoin);
+    Card_Where::vAdd_where(pCI, pCI->G.p_absJoin);
   }
 
   pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
@@ -1259,11 +1049,11 @@ void Xute::vMoveWhereToTableAsFilter(CardIter* pCI, Card_Table* p_table, Card_Wh
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xute::bOrder_Joins(CardIter* pCardIter)
+bool Xute::bOrder_Joins(CardIter* pCI)
 {
   _static_
 
-  CardIter xCI(pCardIter->G.pDeck);
+  CardIter xCI(pCI->G.pDeck);
   if (xCI.pEachChild(CK_TABLE) && xCI.pEachChild(CK_TABLE))
     return true;
 
@@ -1324,7 +1114,7 @@ void Xute::vPush_foldExpr_Into_gbyElist(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* find sub card with given value and replace                                 */
 /*----------------------------------------------------------------------------*/
-bool Xute::bReplaceValueOfSub(CardIter* pCardIter, Card* pCard, eCK eSub,
+bool Xute::bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
                               Stz* szValue, Stz* szWith)
 {
   _static_
@@ -1333,14 +1123,14 @@ bool Xute::bReplaceValueOfSub(CardIter* pCardIter, Card* pCard, eCK eSub,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCardIter, szValue, szWith, &bReplaced](Card *pCard)
+  auto bLambdaFn = [pCI, szValue, szWith, &bReplaced](Card *pCard)
   {
-    pCardIter->G.p_term = _pCard_Term(pCard);
+    pCI->G.p_term = _pCard_Term(pCard);
 
-    if (! pCardIter->G.p_term->bIsValue(szValue))
+    if (! pCI->G.p_term->bIsValue(szValue))
       return C_CONTINUE_RECURSION;
 
-    pCardIter->G.p_term->vValue(szWith);
+    pCI->G.p_term->vValue(szWith);
     bReplaced = true;
 
     return C_CONTINUE_RECURSION;
@@ -2050,15 +1840,15 @@ void Xute::vS33_T10_Convert_stmColOdn_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vS36_T30_Delete_Empty_filter(CardIter* pCardIter)
+void Xute::vS36_T30_Delete_Empty_filter(CardIter* pCI)
 {
   _static_
 
-  if (! pCardIter->G.p_filter->bIsEmpty())
+  if (! pCI->G.p_filter->bIsEmpty())
     return;
 
-  pCardIter->G.p_MainCard->vRemoveChild(pCardIter->G.p_filter);
-  DELETE_CARD(pCardIter->G.p_filter);
+  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
+  DELETE_CARD(pCI->G.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2095,7 +1885,7 @@ void Xute::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // KEYEXISTS
   else if (pCI->G.p_keyExists) {
-    Xute::vChoose_index_For_keyExists(pCI);
+    pCI->G.p_index->vSet_Choose_index();
 
     pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyExists);
 
@@ -2112,7 +1902,7 @@ void Xute::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // KEYNOTEXISTS
   else if (pCI->G.p_keyNotExists) {
-    Xute::vChoose_index_For_keyNotExists(pCI);
+    pCI->G.p_index->vSet_Choose_index();
 
     pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyNotExists);
 
@@ -2162,7 +1952,7 @@ void Xute::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
       throw xError;
     }
 
-    Xute::vChoose_index_For_indexJoin(pCI);
+    pCI->G.p_indexList->vChoose_index_For_indexJoin();
 
     pCI->G_vNewMember(CK_INDEXJOIN);
 
@@ -2194,11 +1984,11 @@ void Xute::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCardIter)
+void Xute::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCI)
 {
   _static_
 
-  i8 iOrdLo_stream = pCardIter->G.p_stream->iGetOdnLow();
+  i8 iOrdLo_stream = pCI->G.p_stream->iGetOdnLow();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2219,7 +2009,7 @@ void Xute::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCardIter)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCardIter->G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
+  pCI->G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2269,36 +2059,36 @@ void Xute::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI)
 /*                                               vSeries_A0_Make_Weavable */
 /*============================================================================*/
 
-void Xute::vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCardIter)
+void Xute::vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCI)
 {
   _static_
 
   // todo: xt
 
-  pCardIter->G.p_indexJoin->vRemoveChild(pCardIter->G.p_filter);
-  pCardIter->G.pDeck->vInsertAfter(pCardIter->G.p_filter,
-                                   pCardIter->G.p_indexJoin);
+  pCI->G.p_indexJoin->vRemoveChild(pCI->G.p_filter);
+  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter,
+                                   pCI->G.p_indexJoin);
 
-  if (! pCardIter->G.p_filter->pSub_level()) {
-    pCardIter->G.p_filter->vPush(pCardIter->G.p_indexJoin->pSub_level()->pDupCardAndSubCards());
+  if (! pCI->G.p_filter->pSub_level()) {
+    pCI->G.p_filter->vPush(pCI->G.p_indexJoin->pSub_level()->pDupCardAndSubCards());
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xute::vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCardIter)
+void Xute::vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCI)
 {
   _static_
 
   // todo: xt
 
-  pCardIter->G.p_crossJoin->vRemoveChild(pCardIter->G.p_filter);
-  pCardIter->G.pDeck->vInsertAfter(pCardIter->G.p_filter,
-                                   pCardIter->G.p_crossJoin);
+  pCI->G.p_crossJoin->vRemoveChild(pCI->G.p_filter);
+  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter,
+                                   pCI->G.p_crossJoin);
 
-  if (! pCardIter->G.p_filter->pSub_level()) {
-    pCardIter->G.p_filter->vPush(pCardIter->G.p_crossJoin->pSub_level()->pDupCardAndSubCards());
+  if (! pCI->G.p_filter->pSub_level()) {
+    pCI->G.p_filter->vPush(pCI->G.p_crossJoin->pSub_level()->pDupCardAndSubCards());
   }
 }
 

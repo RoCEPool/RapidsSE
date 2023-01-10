@@ -38,6 +38,62 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+
+    pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc();
+
+    if (! pCI->G.p_rpnCalc)
+      continue;
+
+    CardIter xCI2(pCI->G.p_rpnCalc);
+    while ((pCI->G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+      Stz *szTerm = pCI->G.p_term->szValue();
+
+      if (Card::bIsKeyOrdinal(szTerm)) {
+        pCI->G.p_term->vBump_KeyOrdinal();
+        pCI->G.p_term->vMark1(MARK_CHANGED);
+        continue;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+
+    pCI->G.p_rpnCalc =pCI->G.p_expr->pSub_rpnCalc();
+
+    if (! pCI->G.p_rpnCalc)
+      continue;
+
+    CardIter xCI2(pCI->G.p_rpnCalc);
+    while ((pCI->G.p_term = _pCard_Term(xCI2.pEachChild()))) {
+      Stz *szTerm = pCI->G.p_term->szValue();
+
+      if (Card::bIsStreamColOrdinal(szTerm)) {
+        pCI->G.p_term->vBump_StreamColOrdinal();
+        pCI->G.p_term->vMark1(MARK_CHANGED);
+        continue;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Card_ELIST::iRpnCalc_Has_stmOrdOdn(Card_OrdElmOdn* p_stmOrdOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

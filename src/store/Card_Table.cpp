@@ -68,55 +68,22 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
+/* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vComputeProjection(CardIter* pCI)
+void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_PRED* p_PRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_tableNm = pSub_tableNm();
-
-  Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  Card_Projection* p_projection;
-  if (pCI->G.p_projection)
-    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
-  else
-    p_projection = new Card_Projection;
-
-  i8 i_Expr = p_projection->nChildCards() + 1;
-
-  i8 nCols = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
-
-    Card_Expr* p_expr = new Card_Expr;
-    p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
-    p_projection->vAppend(p_expr);
-
-//    Card_StmCol* p_stmCol = new Card_StmCol();
-//    p_stmCol->vValue(pColumn->szColNm());
-//    p_expr->vAppend(p_stmCol);
-
-    Stz* szType = aCT[pColumn->eColumnType()];
-    Card_Type *pCard_Type = new Card_Type(szType);
-    p_expr->vAppend(pCard_Type);
-
-    Card_As* p_as = new Card_As(pColumn->szColNm());
-    p_expr->vAppend(p_as);
-
-    Card_ColNm* p_colNm = new Card_ColNm;
-    p_colNm->vValue(pColumn->szColNm());
-    p_expr->vAppend(p_colNm);
-
+  if ((pCI->G.p_filter = this->pSub_filter())) {
+    pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
+    pCI->G.p_boolCalc->vPushPred(p_PRED);
   }
-
-  vAppend(p_projection);
-
-  pCI->G.p_projection = p_projection;
+  else {
+    pCI->G_vAppendNewChild(this,CK_FILTER);
+    pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
+    pCI->G_vAppendChild(CK_BOOLCALC,p_PRED);
+  }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -205,6 +172,56 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
     bool bIgnore = p_pred_ofFilter_ROOT->bPredRecursive(bLambdaFn);
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply stream                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vComputeProjection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_tableNm = pSub_tableNm();
+
+  Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Card_Projection* p_projection;
+  if (pCI->G.p_projection)
+    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
+  else
+    p_projection = new Card_Projection;
+
+  i8 i_Expr = p_projection->nChildCards() + 1;
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_Expr* p_expr = new Card_Expr;
+    p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
+    p_projection->vAppend(p_expr);
+
+//    Card_StmCol* p_stmCol = new Card_StmCol();
+//    p_stmCol->vValue(pColumn->szColNm());
+//    p_expr->vAppend(p_stmCol);
+
+    Stz* szType = aCT[pColumn->eColumnType()];
+    Card_Type *pCard_Type = new Card_Type(szType);
+    p_expr->vAppend(pCard_Type);
+
+    Card_As* p_as = new Card_As(pColumn->szColNm());
+    p_expr->vAppend(p_as);
+
+    Card_ColNm* p_colNm = new Card_ColNm;
+    p_colNm->vValue(pColumn->szColNm());
+    p_expr->vAppend(p_colNm);
+
+  }
+
+  vAppend(p_projection);
+
+  pCI->G.p_projection = p_projection;
 }
 
 /*----------------------------------------------------------------------------*/

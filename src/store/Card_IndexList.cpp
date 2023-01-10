@@ -116,6 +116,38 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vChoose_index_For_indexJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+    if (p_index->pSub_eBound()) {
+      p_index->vSet_Choose_index();
+      break;
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vChoose_index_For_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+    if (p_index->pSub_bounds()) {
+      p_index->vSet_Choose_index();
+      break;
+    }
+  }
+}
+
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
