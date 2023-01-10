@@ -1,0 +1,38 @@
+--------------------------------------------------------------------------------
+-- tpch query1 (SF_0001)
+--------------------------------------------------------------------------------
+trackMemory;
+success
+
+// scan
+/weaved select * from nation;
+rows: 25
+
+// scan + project
+/weaved select n_name , n_regionkey from nation;
+rows: 25
+
+// scan + filter + project
+/weaved select count(*) from nation where n_name < 'E';
+rows:
+  (5)
+
+// scan + filter + project + sort
+/weaved select min(n_regionkey), max(n_name) from nation;
+rows:
+ (0,'VIETNAM')
+
+// scan + filter + project + sort + limit
+/weaved select min(n_name) , max(n_nationkey) from nation;
+rows:
+ ('ALGERIA',24)
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

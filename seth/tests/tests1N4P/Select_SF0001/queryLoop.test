@@ -44,8 +44,12 @@ LOG 'Running selectScan...';
 INCLUDE 'selectScan.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running selectIndexSCan...';
+LOG 'Running selectIndexScan...';
 INCLUDE 'selectIndexScan.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectAgg...';
+INCLUDE 'selectAgg.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';
