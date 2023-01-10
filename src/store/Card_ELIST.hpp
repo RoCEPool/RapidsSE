@@ -13,6 +13,9 @@ namespace STORE
   public:
     Card_ELIST(eCK eCard);
    ~Card_ELIST(void) noexcept(false);
+
+    void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
+    void vBump_stmOdn_In_rpnCalc(CardIter* pCI);
     i8 iRpnCalc_Has_stmOrdOdn(Card_OrdElmOdn* p_stmOrdOdn);
   };
 

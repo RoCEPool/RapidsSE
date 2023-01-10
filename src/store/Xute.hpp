@@ -29,15 +29,9 @@ namespace STORE
     static void vAdd_where(CardIter* pCI, Card* p_after);
     static void vAddPredToTableFilter(CardIter* pCI, Card_Table* p_table, Card_PRED* p_PRED);
 
-    static void vBump_keyOdn_In_rpnCalc_Of_Elist(CardIter* pCI, Card_ELIST* p_ELIST);
-    static void vBump_stmOdn_In_rpnCalc_Of_Elist(CardIter* pCI, Card_ELIST* p_ELIST);
     static void vBump_where_BaseOn_foldExpr(CardIter* pCI);
 
     static void vChoose_index_For_crossJoin(CardIter* pCI);
-    static void vChoose_index_For_indexJoin(CardIter* pCI);
-    static void vChoose_index_For_indexScan(CardIter* pCI);
-    static void vChoose_index_For_keyExists(CardIter* pCI);
-    static void vChoose_index_For_keyNotExists(CardIter* pCI);
     static void vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
     static void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
     static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);

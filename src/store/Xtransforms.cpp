@@ -1631,7 +1631,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
     i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
-    Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_gbyElist);
+    G.p_gbyElist->vBump_stmOdn_In_rpnCalc(this);
 
     G.p_fold->Y_vCut(P_BumpRight);
     G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
@@ -1867,7 +1867,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
 
   if (G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
     i8 nBumpRight = G.p_fold->Y_iGet(P_BumpRight);
-    Xute::vBump_stmOdn_In_rpnCalc_Of_Elist(static_cast <CardIter*>(this), G.p_gbyElist);
+    G.p_gbyElist->vBump_stmOdn_In_rpnCalc(this);
 
     G.p_fold->Y_vCut(P_BumpRight);
     G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
@@ -2681,7 +2681,7 @@ void Xtransforms::vS80_T30_Morph_scan_To_indexScan(void)
     if (G.p_bounds->pSub_lBound() || G.p_bounds->pSub_uBound()) {
       G.p_scan->vCard(CK_INDEXSCAN);
 
-      Xute::vChoose_index_For_indexScan(static_cast<CardIter*>(this));
+      G.p_indexList->vChoose_index_For_indexScan();
     }
   }
 

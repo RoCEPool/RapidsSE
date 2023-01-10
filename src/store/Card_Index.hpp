@@ -17,6 +17,8 @@ namespace STORE
    ~Card_Index(void) noexcept(false);
 
     static Card_Index* pDerive(Table* pTable);
+
+    void vSet_Choose_index(void);
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
   };
 
