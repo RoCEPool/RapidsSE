@@ -15,6 +15,8 @@ namespace STORE
   
     Card_StmColOdn(void);
    ~Card_StmColOdn(void) noexcept(false);
+
+    static Card_StmColOdn* pResolve_tblColOdn_Into_stmColOdn(CardIter* pCI, Card_Term* p_term_tblColOdn, i8 i_Before);
   };
 
   Card_StmColOdn* _pCard_StmColOdn(void* aAddr);

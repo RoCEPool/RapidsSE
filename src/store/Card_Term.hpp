@@ -18,6 +18,9 @@ namespace STORE
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
 
+    static bool bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
+                                   Stz* szValue, Stz* szWith);
+
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
     ePB  eEvalBound(void);

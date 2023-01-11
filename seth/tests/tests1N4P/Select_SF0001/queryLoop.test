@@ -48,8 +48,36 @@ LOG 'Running selectIndexScan...';
 INCLUDE 'selectIndexScan.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running selectFilter...';
+INCLUDE 'selectFilter.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running selectAgg...';
 INCLUDE 'selectAgg.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectAggGby...';
+INCLUDE 'selectAggGby.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectJoin...';
+INCLUDE 'selectJoin.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running oneWayPtn...';
+INCLUDE 'oneWayPtn.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running twoWayPtn...';
+INCLUDE 'twoWayPtn.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running threeWayPtn...';
+INCLUDE 'threeWayPtn.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running Flattening queries...';
+//INCLUDE 'Flattening.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';

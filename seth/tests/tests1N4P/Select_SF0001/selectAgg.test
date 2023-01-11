@@ -1,31 +1,28 @@
 --------------------------------------------------------------------------------
--- tpch query1 (SF_0001)
+-- selectAgg (SF_0001)
 --------------------------------------------------------------------------------
 trackMemory;
 success
 
-// scan
-/weaved select * from nation;
-rows: 25
-
-// scan + project
-/weaved select n_name , n_regionkey from nation;
-rows: 25
-
-// scan + filter + project
-/weaved select count(*) from nation where n_name < 'E';
-rows:
-  (5)
-
-// scan + filter + project + sort
+// scan + aggeg
 /weaved select min(n_regionkey), max(n_name) from nation;
 rows:
  (0,'VIETNAM')
 
-// scan + filter + project + sort + limit
+// scan + filter + aggreg
 /weaved select min(n_name) , max(n_nationkey) from nation;
 rows:
  ('ALGERIA',24)
+
+// scan + filter + aggreg
+/weaved select count(*) from nation where n_name < 'E';
+rows:
+  (5)
+
+// indexscan + filter + aggreg
+/weaved select count(*) from nation where n_nationkey < 22;
+rows:
+  (22)
 
 MemoryLeaks;
 rows: 0

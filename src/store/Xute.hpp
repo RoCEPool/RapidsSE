@@ -52,11 +52,6 @@ namespace STORE
 
     static void vRelabelExpressions(CardIter* pCI);
     static void vRenumberStmOdn(CardIter* pCI);
-    static bool bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                                   Stz* szValue, Stz* szWith);
-    static void vResolve_Param_Ordinal(CardIter* pCI, Card_Term* p_term);
-    static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
-    static Card_StmColOdn* pResolve_tblColOdn_Into_stmColOdn(CardIter* pCI, Card_Term* p_term_tblColOdn, i8 i_Before);
     static void vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
     static i8 iStage_Partitioning(CardIter* pCI,
@@ -64,10 +59,7 @@ namespace STORE
                                           Card_Combined* p_combined_prior,
                                           Card_Next* p_next_prior,
                                           Card* p_main_curr);
-    static void vStream_AdjustLoHi(CardIter* pCI);
-
     static void vUnproject_foldExpr_After_having(CardIter* pCI);
-    static void vUnproject_foldExpr_After_where(CardIter* pCI);
 
     // vSeries_26_SubQuery_Analysis
     static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);
