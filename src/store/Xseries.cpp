@@ -156,24 +156,34 @@ void Xseries::vSeries_10_Make_Runnable(void)
 
     m_pTransforms->vS34_T_Predicate_Pullup();
 
+#ifndef WITH_OPT_JOINORDER
     if (Card_Deck::bOrder_Joins(static_cast<CardIter*>(m_pTransforms))) {
       m_pTransforms->vS50_T00_Join_Ordering_v2();
       m_pTransforms->vS34_T_Predicate_Reposition();
     }
+#endif
 
   }
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
+#ifndef WITH_OPT_FLATTENING
   m_pTransforms->vS40_T05_Flatten_By_Decision_Tree();
+#endif
 
   m_pTransforms->vS34_T_Predicate_Pullup();
   m_pTransforms->vS36_T10_Derive_bounds_From_filter();
 
 
   m_pTransforms->vS75_T10_Morph_table_To_EEop();
+
+#ifndef WITH_OPT_KEYEXISTS
   m_pTransforms->vS75_T20_Morph_keyExists_filter_To_constraint();
+#endif
+
+#ifndef WITH_OPT_TOCOLNM
   m_pTransforms->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
+#endif
 
   vEndSeries(BK_SUBPIPE);
 }
