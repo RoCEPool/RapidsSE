@@ -1480,7 +1480,8 @@ function askDiskPaths() {
   echo "This will currently be used during system unload and reload operations."
   echo ""
   echo "For best performance, multiple paths can be entered where those paths correspond"
-  echo "to separate mounted disks. All paths that are entered will be applied to all nodes in the cluster."
+  echo "to separate mounted disks. All paths that are entered will be applied to all
+  echo "nodes in the cluster."
   echo ""
 
   # Get the first path
