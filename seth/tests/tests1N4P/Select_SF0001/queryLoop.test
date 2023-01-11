@@ -48,6 +48,10 @@ LOG 'Running selectIndexScan...';
 INCLUDE 'selectIndexScan.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running selectFilter...';
+INCLUDE 'selectFilter.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running selectAgg...';
 INCLUDE 'selectAgg.test';
 

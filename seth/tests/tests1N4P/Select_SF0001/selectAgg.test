@@ -19,6 +19,11 @@ rows:
 rows:
   (5)
 
+// indexscan + filter + aggreg
+/weaved select count(*) from nation where n_nationkey < 22;
+rows:
+  (22)
+
 MemoryLeaks;
 rows: 0
 
