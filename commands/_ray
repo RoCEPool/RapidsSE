@@ -25,10 +25,7 @@ select *
 /optimise
 /glean_interactive
 /weaved
- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-             FROM nation
-             GROUP BY region
-             HAVING region > 1;
+ SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 1;
 
 
 drop table nation;
