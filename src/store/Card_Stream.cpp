@@ -183,6 +183,66 @@ Card_Stream* Card_Stream::pDerive_Of_table(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* visit each stream and adjust it's lo-hi range                              */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vStream_AdjustLoHi(CardIter* pCI)
+{
+  _static_
+
+  i8 iOdn_shift = 0;
+
+  i8 iLoOdn_running = 0;
+  i8 iHiOdn_running = 0;
+
+  // TODO: G_bEachSub(CK_STREAM)
+
+  pCI->G_vRestart();
+  while (pCI->G_bEachMain()) {
+
+//    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
+//      continue;
+
+    pCI->G.p_stream = pCI->G.p_MainCard->pSub_stream();
+    if (! pCI->G.p_stream)
+      continue;
+
+    if (pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
+        pCI->G.p_MainCard->bIsCard(CK_GBYAGG) ||
+        pCI->G.p_MainCard->bIsCard(CK_PROJECT)) {
+      iOdn_shift = 0;
+      iLoOdn_running = 0;
+      iHiOdn_running = 0;
+    }
+
+    pCI->G.p_stmColList = pCI->G.p_stream->pSub_stmColList();
+    i8 nStmCols = pCI->G.p_stmColList->nChildCards();
+
+    i8 iLoOdn_stream = pCI->G.p_stream->iGetOdnLow();
+    if (C_UNKNOWN == iLoOdn_stream) {
+      i8 iLoOdn_adjusted = iHiOdn_running + 1;
+      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+      pCI->G.p_stream->vAdjust_OrdinalRange(iLoOdn_adjusted, iHiOdn_adjusted);
+
+      iOdn_shift = iHiOdn_adjusted;
+      iLoOdn_running = iLoOdn_adjusted;
+      iHiOdn_running = iHiOdn_adjusted;
+
+    }
+    else {
+      i8 iLoOdn_adjusted = iOdn_shift + 1;
+      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
+
+      pCI->G.p_stream->vAdjust_OrdinalRange(iLoOdn_adjusted, iHiOdn_adjusted);
+      iOdn_shift = iHiOdn_adjusted;
+
+      iLoOdn_running = iLoOdn_adjusted;
+      iHiOdn_running = iHiOdn_adjusted;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

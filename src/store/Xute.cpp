@@ -87,7 +87,7 @@ void Xute::vConvert_tblColOdn_To_stmOdn(CardIter* pCI)
     if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_stmColOdn = pResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+    pCI->G.p_stmColOdn = Card_StmColOdn::pResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
 
     p_term->vSetValueMark1(pCI->G.p_stmColOdn->szValue(), MARK_CHANGED);
 
@@ -902,7 +902,7 @@ void Xute::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_
 
       // todo: find table 'd'->'a' and add p_pred as bounds
 
-      Card_Table* p_table = pResolve_table_By_tblSyn(pCI, 'a',pCI->G.i_MainCard);
+      Card_Table* p_table = Card_Table::pResolve_table_By_tblSyn(pCI, 'a',pCI->G.i_MainCard);
 
       Card_Bounds* pBounds = Card_Bounds::pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
 
@@ -931,126 +931,6 @@ void Xute::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_
   Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
   vMove(p_PRED, p_boolCalc, vMove);
-}
-
-/*----------------------------------------------------------------------------*/
-/* find sub card with given value and replace                                 */
-/*----------------------------------------------------------------------------*/
-bool Xute::bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                              Stz* szValue, Stz* szWith)
-{
-  _static_
-
-  bool bReplaced = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI, szValue, szWith, &bReplaced](Card *pCard)
-  {
-    pCI->G.p_term = _pCard_Term(pCard);
-
-    if (! pCI->G.p_term->bIsValue(szValue))
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_term->vValue(szWith);
-    bReplaced = true;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCard->bApplyRecursive(eSub, bLambdaFn);
-
-  return bReplaced;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vResolve_Param_Ordinal(CardIter* pCI, Card_Term* p_term)
-{
-  _static_
-
-  Stz* szParamNm = nullptr;
-  Board* pSubQryBoard = pCI->m_pBench->pGetBoard(1);
-
-  pCI->G_vPushBoard(pSubQryBoard);
-
-  if (pCI->G_bEachMainWithSub(CK_PARAMLIST,CK_PARAM)) {
-    szParamNm = pCI->G.p_param->szValue();
-  }
-
-  pCI->G_vPopIter();
-
-  if (! szParamNm) {
-    p_term->vValue("((no-parm))"_Stz);
-    return;
-  }
-
-  //p_term->vValue(szParamNm);
-
-  if (! pCI->G_bResolveSubCard(CK_STMCOL,CK_STMCOLNM,szParamNm, pCI->G.i_MainCard)) {
-    p_term->vValue("((unresolved))"_Stz);
-    return;
-  }
-
-  RASSERT(pCI->m_pCard_resolved->bIsCard(CK_STMCOL));
-
-  pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
-  if (! pCI->G.p_tblColOdn) {
-    p_term->vValue("((no-tblColOdn))"_Stz);
-    return;
-  }
-
-  p_term->vValue(pCI->G.p_tblColOdn->szValue());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Table* Xute::
-pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
-{
-  _static_
-
-  Card_Table* p_table = nullptr;
-
-  pCI->G_vPushIter();
-
-  if (pCI->G_bResolveCard(CK_TABLE,cTblSyn,i_Before)) {
-    RASSERT(pCI->m_pCard_resolved->bIsCard(CK_TABLE));
-
-    p_table = _pCard_Table(pCI->m_pCard_resolved);
-  }
-
-  pCI->G_vPopIter();
-
-  return p_table;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_StmColOdn* Xute::
-pResolve_tblColOdn_Into_stmColOdn(CardIter* pCI, Card_Term* p_term_tblColOdn, i8 i_Before)
-{
-  _static_
-
-  Card_StmColOdn* p_term_stmColOdn = nullptr;
-
-  pCI->G_vPushIter();
-
-  Stz* szTblColOdn = p_term_tblColOdn->szValue();
-  if (pCI->G_bResolveSubCard(CK_STMCOL,CK_TBLCOLODN,szTblColOdn,i_Before)) {
-    RASSERT(pCI->m_pCard_resolved->bIsCard(CK_STMCOL));
-
-    p_term_stmColOdn = pCI->m_pCard_resolved->pSub_stmColOdn();
-  }
-
-  pCI->G_vPopIter();
-
-  return p_term_stmColOdn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1224,66 +1104,6 @@ i8 Xute::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
 }
 
 /*----------------------------------------------------------------------------*/
-/* visit each stream and adjust it's lo-hi range                              */
-/*----------------------------------------------------------------------------*/
-void Xute::vStream_AdjustLoHi(CardIter* pCI)
-{
-  _static_
-
-  i8 iOdn_shift = 0;
-
-  i8 iLoOdn_running = 0;
-  i8 iHiOdn_running = 0;
-
-  // TODO: G_bEachSub(CK_STREAM)
-
-  pCI->G_vRestart();
-  while (pCI->G_bEachMain()) {
-
-//    if (! (G.p_MainCard->bIsCard(CK_TABLE) || G.p_MainCard->bIsCard(CK_PROJECT)))
-//      continue;
-
-    pCI->G.p_stream = pCI->G.p_MainCard->pSub_stream();
-    if (! pCI->G.p_stream)
-      continue;
-
-    if (pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
-        pCI->G.p_MainCard->bIsCard(CK_GBYAGG) ||
-        pCI->G.p_MainCard->bIsCard(CK_PROJECT)) {
-      iOdn_shift = 0;
-      iLoOdn_running = 0;
-      iHiOdn_running = 0;
-    }
-
-    pCI->G.p_stmColList = pCI->G.p_stream->pSub_stmColList();
-    i8 nStmCols = pCI->G.p_stmColList->nChildCards();
-
-    i8 iLoOdn_stream = pCI->G.p_stream->iGetOdnLow();
-    if (C_UNKNOWN == iLoOdn_stream) {
-      i8 iLoOdn_adjusted = iHiOdn_running + 1;
-      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
-      pCI->G.p_stream->vAdjust_OrdinalRange(iLoOdn_adjusted, iHiOdn_adjusted);
-
-      iOdn_shift = iHiOdn_adjusted;
-      iLoOdn_running = iLoOdn_adjusted;
-      iHiOdn_running = iHiOdn_adjusted;
-
-    }
-    else {
-      i8 iLoOdn_adjusted = iOdn_shift + 1;
-      i8 iHiOdn_adjusted = iLoOdn_adjusted + nStmCols - 1;
-
-      pCI->G.p_stream->vAdjust_OrdinalRange(iLoOdn_adjusted, iHiOdn_adjusted);
-      iOdn_shift = iHiOdn_adjusted;
-
-      iLoOdn_running = iLoOdn_adjusted;
-      iHiOdn_running = iHiOdn_adjusted;
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xute::vUnproject_foldExpr_After_having(CardIter* pCI)
@@ -1329,28 +1149,6 @@ void Xute::vUnproject_foldExpr_After_having(CardIter* pCI)
   pCI->G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
   pCI->G.p_project->vAppend(pCI->G.p_comment);
 
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xute::vUnproject_foldExpr_After_where(CardIter* pCI)
-{
-  _static_
-
-  // todo: remove? It is unused
-
-
-  pCI->G_vNewMember(CK_PROJECT);
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_project, pCI->G.p_where);
-
-  pCI->G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
-  pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
-
-  pCI->G_vNewMemberOf(CK_PROJELIST,""_Stz,CK_PROJECT);
-
-  // TODO : unproject $1
 
 }
 

@@ -1308,7 +1308,7 @@ void Xtransforms::vS40_T10_Fold_F(void)
 
   vPrintBoard(__LINE__);
 
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -1453,7 +1453,7 @@ void Xtransforms::vS40_T20_Fold_W_A_C_ro(void)
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
 
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
@@ -1722,7 +1722,7 @@ void Xtransforms::vS40_T30_Fold_W_A_NC_I(void)
 
   // todo: should this be earlier? As soon as $1 is injected into mq??
 
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -1916,7 +1916,7 @@ void Xtransforms::vS40_T40_Fold_W_A_NC_ro(void)
   vPrintBoard(__LINE__);
 
 
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -2037,7 +2037,7 @@ void Xtransforms::vS40_T50_Fold_W_L_C_E(void)
   //   %1->$t.c      //
   //   ke            //
 
-  Xute::bReplaceValueOfSub(static_cast<CardIter*>(this), m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
+  Card_Term::bReplaceValueOfSub(static_cast<CardIter*>(this), m_pCard_copied,CK_TERM,"%1"_Stz,m_sSqyArg);
   G_vCopyCard(nullptr);
   vPrintBoard(__LINE__);
 
@@ -2172,7 +2172,7 @@ void Xtransforms::vS40_T60_Fold_W_L_NC_NI(void)
   G_vAppendNewChild(m_pCard_copied, CK_KEYNOTEXISTS);
 
   G.pDeck->vRenumberRecursive();
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
@@ -2328,7 +2328,7 @@ void Xtransforms::vS40_T70_Fold_H_A_NC_ro(void)
 
   vPrintBoard(__LINE__);
 
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   vPrintBoard(__LINE__);
 
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
@@ -2508,7 +2508,7 @@ void Xtransforms::vS50_T00_Join_Ordering_v2(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  Xute::vStream_AdjustLoHi(static_cast<CardIter*>(this));
+  Card_Stream::vStream_AdjustLoHi(static_cast<CardIter*>(this));
   Xute::vRenumberStmOdn(static_cast<CardIter*>(this));
 
   vPrintBoard(__LINE__);

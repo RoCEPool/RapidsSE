@@ -5,6 +5,7 @@
 #include "Card_Term.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,6 +52,38 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find sub card with given value and replace                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
+                              Stz* szValue, Stz* szWith)
+{
+  _static_
+
+  bool bReplaced = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI, szValue, szWith, &bReplaced](Card *pCard)
+  {
+    pCI->G.p_term = _pCard_Term(pCard);
+
+    if (! pCI->G.p_term->bIsValue(szValue))
+      return C_CONTINUE_RECURSION;
+
+    pCI->G.p_term->vValue(szWith);
+    bReplaced = true;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCard->bApplyRecursive(eSub, bLambdaFn);
+
+  return bReplaced;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
