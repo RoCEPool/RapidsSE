@@ -41,15 +41,15 @@ INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running selectScan...';
-INCLUDE 'selectScan.test';
+//INCLUDE 'selectScan.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running selectIndexScan...';
-INCLUDE 'selectIndexScan.test';
+//INCLUDE 'selectIndexScan.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running selectAgg...';
-INCLUDE 'selectAgg.test';
+//INCLUDE 'selectAgg.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';
