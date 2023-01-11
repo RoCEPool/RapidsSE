@@ -62,6 +62,32 @@ Card_Table::~Card_Table(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Table* Card_Table::pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
+{
+  _static_
+
+  Card_Table* p_table = nullptr;
+
+  pCI->G_vPushIter();
+
+  if (pCI->G_bResolveCard(CK_TABLE,cTblSyn,i_Before)) {
+    RASSERT(pCI->m_pCard_resolved->bIsCard(CK_TABLE));
+
+    p_table = _pCard_Table(pCI->m_pCard_resolved);
+  }
+
+  pCI->G_vPopIter();
+
+  return p_table;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
