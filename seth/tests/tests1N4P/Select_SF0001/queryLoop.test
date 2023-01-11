@@ -60,6 +60,10 @@ LOG 'Running selectAggGby...';
 INCLUDE 'selectAggGby.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running selectJoin...';
+INCLUDE 'selectJoin.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running oneWayPtn...';
 INCLUDE 'oneWayPtn.test';
 
