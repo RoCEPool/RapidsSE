@@ -52,6 +52,10 @@ LOG 'Running selectAgg...';
 INCLUDE 'selectAgg.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running selectAggGby...';
+INCLUDE 'selectAggGby.test';
+
+//------------------------------------------------------------------------------
 //LOG 'Running oneWay...';
 //INCLUDE 'oneWay.test';
 
