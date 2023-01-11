@@ -52,6 +52,22 @@ LOG 'Running selectAgg...';
 INCLUDE 'selectAgg.test';
 
 //------------------------------------------------------------------------------
+//LOG 'Running oneWay...';
+//INCLUDE 'oneWay.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running twoWay...';
+//INCLUDE 'twoWay.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running threeWay...';
+//INCLUDE 'threeWay.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running Flattening queries...';
+//INCLUDE 'Flattening.test';
+
+//------------------------------------------------------------------------------
 // 'truncating tpch tables...';
 INCLUDE 'truncate.test';
 
