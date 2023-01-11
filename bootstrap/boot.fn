@@ -198,7 +198,6 @@ function startCluster() {
 function startRemoteNode() {
 
   local row="$1"
-  shift
   local host
   local dir
   local remoteCmd
@@ -206,8 +205,11 @@ function startRemoteNode() {
   host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
-  #remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $(printf '"%s" ' "$@")"
-  remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $( [[ $# -gt 0 ]] && printf '"%s" ' "$@" )"
+  if [ "--reload" = "$2" ]; then
+    remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 \"$3\""
+  else
+    remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 $3"
+  fi
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
