@@ -98,6 +98,27 @@ void Xtransforms::vPredicatePullup(void)
 
   vS33_T10_Convert_stmColOdn_To_tblColOdn();
 
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    G.p_boolCalc = G.p_rpnCalc->pToBoolCalc();
+
+    G.p_where->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
+
+    G_vDeleteMember(G.p_rpnCalc);
+  }
+
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+    G.p_boolCalc = G.p_rpnCalc->pToBoolCalc();
+
+    G.p_having->vReplaceSubCard(G.p_rpnCalc,G.p_boolCalc);
+
+    G_vDeleteMember(G.p_rpnCalc);
+  }
+
+
+  vS34_T_Predicate_Pullup();
+
 }
 
 /*----------------------------------------------------------------------------*/
