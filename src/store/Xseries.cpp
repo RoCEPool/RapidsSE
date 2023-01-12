@@ -130,6 +130,8 @@ bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
     m_pCardCtl->vSaveShorter();
     m_pCardCtl->vSaveXhand();
 
+    vSeries_05_Prepare_Pipelines_v1();
+
     vSeries_10_Make_Runnable_v1();
 
     // ---
@@ -153,6 +155,29 @@ bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
 
   return bClean;
 }
+
+/*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void Xseries::vSeries_05_Prepare_Pipelines_v1(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  m_pTransforms->vS10_T00_Begin();
+
+  i8 i_Board = 0;
+
+  m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+
+  m_pTransforms->vInitialAdjustments();
+  m_pTransforms->vCondenseInfo();
+  m_pTransforms->vMetaAnalysis();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
@@ -247,9 +272,6 @@ void Xseries::vSeries_10_Make_Runnable_v1(void)
 
   m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
 
-  m_pTransforms->vInitialAdjustments();
-  m_pTransforms->vCondenseInfo();
-  m_pTransforms->vMetaAnalysis();
   m_pTransforms->vPredicatePullup();
   m_pTransforms->vIndexBounds();
   m_pTransforms->vChooseEEops();

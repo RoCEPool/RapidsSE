@@ -35,6 +35,8 @@ namespace STORE
 
   private:
 
+    void vSeries_05_Prepare_Pipelines_v1(void);
+
     // we start with multiple sub_queries...
     void vSeries_10_Make_Runnable(void);
     void vSeries_10_Make_Runnable_v1(void);
