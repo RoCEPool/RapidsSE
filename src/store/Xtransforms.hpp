@@ -35,6 +35,22 @@ namespace STORE
     Xtransforms(Bench* pBench);
    ~Xtransforms(void) noexcept(false);
 
+    void vInitialAdjustments(void);
+    void vCondenseInfo(void);
+    void vMetaAnalysis(void);
+    void vPredicatePullup(void);
+    void vJoinOrdering(void);
+    void vIndexBounds(void);
+    void vFlattenSubquery(void);
+    void vChooseEEops(void);
+
+    void vCullBounds(void);
+    void vStaging(void);
+    void vPartitioning(void);
+    void vFinalAdjustments(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     // optimization transformations
     void vOptimiseLoop(void);
 

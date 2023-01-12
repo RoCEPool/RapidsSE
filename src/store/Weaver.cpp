@@ -819,7 +819,7 @@ void Weaver::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
   Card* pCard_test = pCard_Having->pSub_boolCalc();
-  if (CK_BOOLCALC == pCard_test->eCard()) {
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
     vBoolCalc(szRpnExpr, pCard_CalcBool);
   }
@@ -1247,7 +1247,7 @@ void Weaver::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
   Card* pCard_test = pCard_Where->pSub_boolCalc();
-  if (CK_BOOLCALC == pCard_test->eCard()) {
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
     vBoolCalc(szRpnExpr, pCard_CalcBool);
   }

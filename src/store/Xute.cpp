@@ -1567,7 +1567,9 @@ void Xute::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
 
     if (! pCI->G.p_bounds) {
       s256 sErrorMsg;
-      sErrorMsg.vSprint("No index for table %s"_Stz,pCI->G.p_table->pSub_tableNm()->szValue());
+      sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
+                        pCI->G.p_table->cValue(),
+                        pCI->G.p_table->pSub_tableNm()->szValue());
       Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
       throw xError;
     }
