@@ -17,6 +17,9 @@ namespace STORE
 
     bool m_bIsFlat;
 
+  public:
+    CardIter*    m_pCI;
+
     // must be last
     Footer m_xFooter;
 

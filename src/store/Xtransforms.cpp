@@ -25,10 +25,7 @@ Xtransforms::Xtransforms(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  for (i8 iIndex = 0; iIndex < OT_ENUMS; iIndex++)
-    m_eOptTranforms[iIndex] = OT_NONE;
-
-  m_pCI = new CardIter(pBench);
+  m_pCI = pBench->m_pCI;
 
   m_iOdnLo      = 1;
   m_iOdnHi      = C_UNKNOWN;
@@ -46,8 +43,6 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-//  delete m_pCI->m_pPermGen;
-  delete m_pCI;
 }
 
 

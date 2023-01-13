@@ -16,9 +16,6 @@ namespace STORE
 {
   class Xtransforms : public Object
   {
-  private:
-
-    eOT m_eOptTranforms[OT_ENUMS];
 
   public:
     CardIter*    m_pCI;

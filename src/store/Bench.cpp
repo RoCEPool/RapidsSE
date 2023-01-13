@@ -28,6 +28,8 @@ Bench::Bench(Optimiser* pOptimiser)
   m_cPrefix = ' ';
 
   m_bIsFlat = false;
+
+  m_pCI = new CardIter(this);
   
   _checkInitialised_(CN_BENCH);
   
@@ -40,7 +42,7 @@ Bench::Bench(Optimiser* pOptimiser)
 Bench::~Bench(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-  
+  delete m_pCI;
   vDeleteAll();
 }
 
