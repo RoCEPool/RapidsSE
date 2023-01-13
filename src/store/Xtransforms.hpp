@@ -19,9 +19,6 @@ namespace STORE
 
   public:
     CardIter*    m_pCI;
-    i8           m_iOdnLo;
-    i8           m_iOdnHi;
-    char         m_cTableSyn;
 
     // must be last
     Footer m_xFooter;
@@ -67,45 +64,6 @@ namespace STORE
     bool bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void);
 
     bool bOT_Seq_Join_Order(void);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // vSeries_10_Make_Runnable
-    void vS10_T00_Begin(void);
-    void vS05_T_Move_On(void);
-    void vS10_T_Condense_Info(void);
-
-    // vSeries_20_Table_Analysis
-    void vS20_T_Table_Analysis(void);
-
-    // vSeries_24_Index_Analysis
-    void vS26_T_Index_Analysis(void);
-
-    // vSeries_22_Stream_Analysis
-    void vS22_T_Stream_Analysis(void);
-    void vS24_T_Projection_Analysis(void);
-
-    // vSeries_26_SubQuery_Analysis
-
-    void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
-    void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
-
-    // vSeries_32_To_BoolCalc
-    void vS32_T_SubQuery_Analysis(void);
-
-    // vSeries_33_To_TblColOdn
-    void vS33_T10_Convert_stmColOdn_To_tblColOdn(void);
-
-    // vSeries_34_Predicate_Pullup
-    void vS34_T_Predicate_Pullup(void);
-    void vS34_T_Predicate_Reposition(void);
-
-    // vSeries_36_Bound_Analysis
-    void vS36_T10_Derive_bounds_From_filter(void);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    void vStreamAnalysisReset(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
