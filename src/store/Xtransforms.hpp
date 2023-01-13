@@ -33,7 +33,6 @@ namespace STORE
     void  operator delete(void*);
   
     Xtransforms(Bench* pBench);
-    Xtransforms(eCN eClass, Bench* pBench);
    ~Xtransforms(void) noexcept(false);
 
     void vInitialAdjustments(void);
