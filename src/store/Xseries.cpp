@@ -168,7 +168,7 @@ void Xseries::vSeries_05_Prepare_Pipelines_v1(void)
 
   i8 i_Board = 0;
 
-  m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+  m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
   m_pTransforms->vInitialAdjustments();
   m_pTransforms->vCondenseInfo();
@@ -198,7 +198,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
        i_Board++) {
 
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+    m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vS05_T_Move_On();
     m_pTransforms->vS10_T_Condense_Info();
@@ -217,7 +217,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
        i_Board++) {
 
-    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+    m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pTransforms->vS32_T_SubQuery_Analysis();
     m_pTransforms->vS33_T10_Convert_stmColOdn_To_tblColOdn();
@@ -225,7 +225,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
     m_pTransforms->vS34_T_Predicate_Pullup();
 
 #ifndef WITH_OPT_JOINORDER
-    if (Card_Deck::bOrder_Joins(static_cast<CardIter*>(m_pTransforms))) {
+    if (Card_Deck::bOrder_Joins(m_pTransforms->m_pCI)) {
       m_pTransforms->vS50_T00_Join_Ordering_v2();
       m_pTransforms->vS34_T_Predicate_Reposition();
     }
@@ -269,7 +269,7 @@ void Xseries::vSeries_10_Make_Runnable_v1(void)
 
   i8 i_Board = 0;
 
-  m_pTransforms->vUsingBoard(BK_SUBPIPE, i_Board);
+  m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
   m_pTransforms->vPredicatePullup();
   m_pTransforms->vIndexBounds();
@@ -395,12 +395,12 @@ void Xseries::vEndSeries(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  RASSERT(0 == m_pTransforms->iTransformDepth());
+  RASSERT(0 == m_pTransforms->m_pCI->iTransformDepth());
 
   //m_pTransforms->vXform(C_NA);
   //m_pCardCtl->vUseXhand();
 
-  m_pTransforms->vPrintBench(eBoard, i_Board);
+  m_pTransforms->m_pCI->vPrintBench(eBoard, i_Board);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,8 +410,8 @@ void Xseries::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  m_pTransforms->vUsingBoard(eBoard, i_Board);
-  m_pTransforms->vXhand(azHand);
+  m_pTransforms->m_pCI->vUsingBoard(eBoard, i_Board);
+  m_pTransforms->m_pCI->vXhand(azHand);
 
   m_pBench->vClearMarks();
 }

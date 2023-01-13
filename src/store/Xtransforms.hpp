@@ -14,13 +14,14 @@
 
 namespace STORE
 {
-  class Xtransforms : public CardIter
+  class Xtransforms : public Object
   {
   private:
 
     eOT m_eOptTranforms[OT_ENUMS];
 
   public:
+    CardIter*    m_pCI;
     i8           m_iOdnLo;
     i8           m_iOdnHi;
     char         m_cTableSyn;

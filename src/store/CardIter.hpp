@@ -79,6 +79,7 @@ namespace STORE
     CardIter(CardIter* pCardIter_src);
     CardIter(eCN eClass, Card* pCard);
     CardIter(eCN eClass, Bench* pBench);
+    CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
