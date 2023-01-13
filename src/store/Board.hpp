@@ -231,6 +231,64 @@ namespace STORE
     Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
+    static void vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
+    static void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
+    static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
+
+    static void vDerive_foldElist_From_project_stream(CardIter* pCI);
+    static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
+    static void vDerive_stream_order_For_gbyAgg(CardIter* pCI);
+    static void vDerive_stream_order_For_indexJoin(CardIter* pCI);
+    static void vDerive_stream_order_For_indexScan(CardIter* pCI);
+    static void vDerive_stream_order_For_project(CardIter* pCI);
+    static void vDerive_stream_order_For_sort(CardIter* pCI);
+    static void vDerive_order(CardIter* pCI);
+    static void vDerive_foldExpr(CardIter* pCI);
+
+    static void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI);
+    static void vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI);
+
+    static bool bFindAndMarkSubQryCall(CardIter* pCI);
+    static void vFoldIn_foldExpr(CardIter* pCI);
+
+    static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
+
+    static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
+
+    static void vRelabelExpressions(CardIter* pCI);
+    static void vRenumberStmOdn(CardIter* pCI);
+    static void vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc* p_boolCalc);
+
+    static i8 iStage_Partitioning(CardIter* pCI,
+                                  Card* p_main_prior,
+                                  Card_Combined* p_combined_prior,
+                                  Card_Next* p_next_prior,
+                                  Card* p_main_curr);
+    static void vUnproject_foldExpr_After_having(CardIter* pCI);
+
+    // vSeries_26_SubQuery_Analysis
+    static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);
+    static void vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI);
+
+    // vSeries_33_To_TblColOdn
+    static void vS33_T10_Convert_stmColOdn_To_tblColOdn(CardIter* pCI);
+
+    // vSeries_36_Bound_Analysis
+    static void vS36_T30_Delete_Empty_filter(CardIter* pCI);
+
+    // vSeries_75_EE_operators
+    static void vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI);
+    static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCI);
+    static void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
+
+    // vSeries_A0_Make_Weavable
+    static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCI);
+    static void vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCI);
+
+    // vSeries_Z0_Restate_Pipeline
+    static void vSZ0_T20_Reinstate_stagesV3(CardIter* pCI);
+
+
     i8  i_Board(void);
     eBC  eBoardCall(void);
     void vBoardCall(eBC eBoardCall);
