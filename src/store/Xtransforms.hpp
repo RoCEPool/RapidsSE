@@ -103,39 +103,6 @@ namespace STORE
     // vSeries_36_Bound_Analysis
     void vS36_T10_Derive_bounds_From_filter(void);
 
-    // vSeries_40_Flatten_Query
-    void vS40_T05_Flatten_By_Decision_Tree(void);
-    void vS40_T10_Fold_F(void);
-    void vS40_T20_Fold_W_A_C_ro(void);
-    void vS40_T30_Fold_W_A_NC_I(void);
-    void vS40_T40_Fold_W_A_NC_ro(void);
-    void vS40_T50_Fold_W_L_C_E(void);
-    void vS40_T60_Fold_W_L_NC_NI(void);
-    void vS40_T70_Fold_H_A_NC_ro(void);
-
-    // vSeries_50_Join_Ordering
-    void vS50_T00_Join_Ordering_v2(void);
-
-
-    // vSeries_75_EE_operators
-    void vS75_T10_Morph_table_To_EEop(void);
-    void vS75_T20_Morph_keyExists_filter_To_constraint(void);
-    void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
-
-    // vSeries_80_Index_Scan
-    bool bS80_T00_Test(bool bEnabled);
-    void vS80_T00_Skip(void);
-    void vS80_T00_Begin(void);
-    void vS80_T30_Morph_scan_To_indexScan(void);
-    void vS80_TZZ_End(void);
-
-    // vSeries_90_Stream_Ordering
-    bool bS90_T00_Test(bool bEnabled);
-    void vS90_T00_Skip(void);
-    void vS90_T00_Begin(void);
-    void vS90_T30_Derive_order(void);
-    void vS90_TZZ_End(void);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vStreamAnalysisReset(void);
