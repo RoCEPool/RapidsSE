@@ -14,6 +14,7 @@
 #include "Card_StmCol.hpp"
 #include "RelOp.hpp"
 #include "Error.hpp"
+#include "CardIter.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 

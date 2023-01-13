@@ -5,8 +5,6 @@
 
 #include "OptimiserTool.hpp"
 
-#include "Xtransforms.hpp"
-
 namespace STORE
 {
   class Xseries : public OptimiserTool
@@ -16,8 +14,6 @@ namespace STORE
     CardCtl*     m_pCardCtl;
     TagSet*      m_pJobTags;
     b8           m_bInteractive;
-
-    Xtransforms*  m_pTransforms;
 
 
     // must be last

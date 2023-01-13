@@ -3,10 +3,9 @@
 /*============================================================================*/
 
 #include "Xseries.hpp"
-#include "Xtransforms.hpp"
 #include "Optimiser.hpp"
 #include "Job.hpp"
-
+#include "CardIter.hpp"
 #include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -34,8 +33,6 @@ Xseries::Xseries(Bench* pBench)
   m_pJobTags     = MY::pJob()->pJobTags();
   m_bInteractive = m_pJobTags->bHasName("<interactive>"_Stz);
 
-  m_pTransforms  = new Xtransforms(m_pBench);
-
   _checkInitialised_(CN_XSERIES);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
@@ -48,7 +45,6 @@ Xseries::~Xseries(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
 
-  delete m_pTransforms;
 }
 
 
@@ -85,7 +81,7 @@ bool Xseries::bTransformSeries(eEC* peErrorCode)
     vSeries_80_Index_Scan(C_ENABLED);
     vSeries_90_Stream_Ordering(C_ENABLED);
 
-    m_pTransforms->vOptimiseLoop();
+    m_pBench->vOptimiseLoop();
 
     // ---
     vSeries_A0_Make_Weavable();
@@ -168,11 +164,11 @@ void Xseries::vSeries_05_Prepare_Pipelines_v1(void)
 
   i8 i_Board = 0;
 
-  m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+  m_pBench->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
-  m_pTransforms->vInitialAdjustments();
-  m_pTransforms->vCondenseInfo();
-  m_pTransforms->vMetaAnalysis();
+  m_pBench->vInitialAdjustments();
+  m_pBench->vCondenseInfo();
+  m_pBench->vMetaAnalysis();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -198,7 +194,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
        i_Board++) {
 
-    m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+    m_pBench->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pBench->vS05_T_Move_On();
     m_pBench->vS10_T_Condense_Info();
@@ -217,7 +213,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
        m_pBench->bBoardExists(BK_SUBPIPE,i_Board);
        i_Board++) {
 
-    m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+    m_pBench->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
     m_pBench->vS32_T_SubQuery_Analysis();
     m_pBench->vS33_T10_Convert_stmColOdn_To_tblColOdn();
@@ -225,9 +221,9 @@ void Xseries::vSeries_10_Make_Runnable(void)
     m_pBench->vS34_T_Predicate_Pullup();
 
 #ifndef WITH_OPT_JOINORDER
-    if (Card_Deck::bOrder_Joins(m_pTransforms->m_pCI)) {
+    if (Card_Deck::bOrder_Joins(m_pBench->m_pCI)) {
       m_pBench->vS50_T00_Join_Ordering_v2();
-      m_pTransforms->vS34_T_Predicate_Reposition();
+      m_pBench->vS34_T_Predicate_Reposition();
     }
 #endif
 
@@ -269,11 +265,11 @@ void Xseries::vSeries_10_Make_Runnable_v1(void)
 
   i8 i_Board = 0;
 
-  m_pTransforms->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+  m_pBench->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
-  m_pTransforms->vPredicatePullup();
-  m_pTransforms->vIndexBounds();
-  m_pTransforms->vChooseEEops();
+  m_pBench->vPredicatePullup();
+  m_pBench->vIndexBounds();
+  m_pBench->vChooseEEops();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -345,20 +341,20 @@ void Xseries::vSeries_A0_Make_Weavable(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  m_pTransforms ->m_pCI->m_pBench->vSA0_T00_Begin();
+  m_pBench->vSA0_T00_Begin();
 
-  m_pTransforms ->m_pCI->m_pBench->vSA0_T05_Cull_Nonused_bounds_of_Chosen_index();
-  m_pTransforms ->m_pCI->m_pBench->vSA0_T10_Eliminate_bounds_From_filter();
-  m_pTransforms ->m_pCI->m_pBench->vSA0_T20_Individuate_filter();
+  m_pBench->vSA0_T05_Cull_Nonused_bounds_of_Chosen_index();
+  m_pBench->vSA0_T10_Eliminate_bounds_From_filter();
+  m_pBench->vSA0_T20_Individuate_filter();
 
-  m_pTransforms ->m_pCI->m_pBench->vSZ0_T20_Reinstate_stagesV3();
-  m_pTransforms ->m_pCI->m_pBench->vSZ0_T30_Add_Partitioning();
+  m_pBench->vSZ0_T20_Reinstate_stagesV3();
+  m_pBench->vSZ0_T30_Add_Partitioning();
 
-  m_pTransforms ->m_pCI->m_pBench->vSE0_T10_Convert_TblColOdn_To_StmOdn();
-  m_pTransforms ->m_pCI->m_pBench->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
+  m_pBench->vSE0_T10_Convert_TblColOdn_To_StmOdn();
+  m_pBench->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
 
 
-  m_pTransforms ->m_pCI->m_pBench->vSA0_TZZ_End();
+  m_pBench->vSA0_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
@@ -372,14 +368,14 @@ void Xseries::vSeries_A0_Make_Weavable_v1(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  m_pTransforms ->m_pCI->m_pBench->vSA0_T00_Begin();
+  m_pBench->vSA0_T00_Begin();
 
-  m_pTransforms->vCullBounds();
-  m_pTransforms->vStaging();
-  m_pTransforms->vPartitioning();
-  m_pTransforms->vFinalAdjustments();
+  m_pBench->vCullBounds();
+  m_pBench->vStaging();
+  m_pBench->vPartitioning();
+  m_pBench->vFinalAdjustments();
 
-  m_pTransforms ->m_pCI->m_pBench->vSA0_TZZ_End();
+  m_pBench->vSA0_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
@@ -395,12 +391,12 @@ void Xseries::vEndSeries(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  RASSERT(0 == m_pTransforms->m_pCI->iTransformDepth());
+  RASSERT(0 == m_pBench->m_pCI->iTransformDepth());
 
   //m_pTransforms->vXform(C_NA);
   //m_pCardCtl->vUseXhand();
 
-  m_pTransforms->m_pCI->vPrintBench(eBoard, i_Board);
+  m_pBench->m_pCI->vPrintBench(eBoard, i_Board);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,8 +406,8 @@ void Xseries::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  m_pTransforms->m_pCI->vUsingBoard(eBoard, i_Board);
-  m_pTransforms->m_pCI->vXhand(azHand);
+  m_pBench->m_pCI->vUsingBoard(eBoard, i_Board);
+  m_pBench->m_pCI->vXhand(azHand);
 
   m_pBench->vClearMarks();
 }

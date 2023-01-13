@@ -5,7 +5,6 @@
 
 #include "OptimiserTool.hpp"
 
-#include "Xtransforms.hpp"
 #include "Xseries.hpp"
 
 namespace STORE
@@ -18,7 +17,6 @@ namespace STORE
     TagSet*      m_pJobTags;
     b8           m_bInteractive;
 
-    Xtransforms*  m_pTransforms;
     Xseries*      m_pXseries;
 
 

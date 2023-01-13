@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Transformer.hpp"
-#include "Xtransforms.hpp"
 #include "Optimiser.hpp"
 #include "Job.hpp"
 
@@ -32,7 +31,6 @@ Transformer::Transformer(Bench* pBench)
   m_pJobTags     = MY::pJob()->pJobTags();
   m_bInteractive = m_pJobTags->bHasName("<interactive>"_Stz);
 
-  m_pTransforms  = new Xtransforms(m_pBench);
   m_pXseries     = new Xseries(m_pBench);
 
   _checkInitialised_(CN_TRANSFORMER);
@@ -47,7 +45,6 @@ Transformer::~Transformer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  delete m_pTransforms;
   delete m_pXseries;
 }
 

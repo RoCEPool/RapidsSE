@@ -4,6 +4,7 @@
 
 #include "Weaver.hpp"
 #include "Optimiser.hpp"
+#include "CardIter.hpp"
 
 
 /*----------------------------------------------------------------------------*/

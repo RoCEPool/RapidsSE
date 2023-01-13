@@ -403,7 +403,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TRACELOCK,
   /* */ CN_TRACEMULTILOCK,
   /* */ CN_TRANSFORMER,
-  /* */ CN_TRANSFORMS,
   /* */ CN_TSPVAL,
   /* */ CN_TUB,
   /* */ CN_TX,
@@ -830,7 +829,6 @@ static Stz* aCN[]
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TRANSFORMER"_Stz,          // CN_TRANSFORMER
-  /* */ "TRANSFORMS"_Stz,           // CN_TRANSFORMS
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
   /* */ "TUB"_Stz,                  // CN_TUB
   /* */ "TX"_Stz,                   // CN_TX

@@ -7,6 +7,7 @@
 #include "OptimiserCatalog.hpp"
 #include "Dynamo.hpp"
 #include "PipelineNotation.hpp"
+#include "CardIter.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
