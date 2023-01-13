@@ -38,6 +38,26 @@ Xtransforms::Xtransforms(Bench* pBench)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Xtransforms::Xtransforms(eCN eClass, Bench* pBench)
+    : CardIter(eClass, pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  for (i8 iIndex = 0; iIndex < OT_ENUMS; iIndex++)
+    m_eOptTranforms[iIndex] = OT_NONE;
+
+  m_iOdnLo      = 1;
+  m_iOdnHi      = C_UNKNOWN;
+  m_cTableSyn   = 'a';
+
+  _checkInitialised_(CN_TRANSFORMS);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Xtransforms::~Xtransforms(void) noexcept(false)
