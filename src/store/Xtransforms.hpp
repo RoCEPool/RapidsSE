@@ -136,22 +136,6 @@ namespace STORE
     void vS90_T30_Derive_order(void);
     void vS90_TZZ_End(void);
 
-
-    // vSeries_A0_Make_Weavable
-    void vSA0_T00_Begin(void);
-    void vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void);
-    void vSA0_T10_Eliminate_bounds_From_filter(void);
-    void vSA0_T20_Individuate_filter(void);
-    void vSA0_TZZ_End(void);
-
-    // vSeries_E0_To_StmOdn
-    void vSE0_T10_Convert_TblColOdn_To_StmOdn(void);
-    void vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
-
-    // vSeries_Z0_Restate_Pipeline
-    void vSZ0_T20_Reinstate_stagesV3(void);
-    void vSZ0_T30_Add_Partitioning(void);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vStreamAnalysisReset(void);
@@ -159,14 +143,6 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   private:
-
-    void vAssert_Board_any(void);
-    void vAssert_Board_mqA(void);
-    void vAssert_Board_sqB(void);
-
-    void vST00_Begin(void);
-    void vSTZZ_End(void);
-
     Footer* aFooter(void);
   };
 

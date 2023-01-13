@@ -345,20 +345,20 @@ void Xseries::vSeries_A0_Make_Weavable(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  m_pTransforms->vSA0_T00_Begin();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_T00_Begin();
 
-  m_pTransforms->vSA0_T05_Cull_Nonused_bounds_of_Chosen_index();
-  m_pTransforms->vSA0_T10_Eliminate_bounds_From_filter();
-  m_pTransforms->vSA0_T20_Individuate_filter();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_T05_Cull_Nonused_bounds_of_Chosen_index();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_T10_Eliminate_bounds_From_filter();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_T20_Individuate_filter();
 
-  m_pTransforms->vSZ0_T20_Reinstate_stagesV3();
-  m_pTransforms->vSZ0_T30_Add_Partitioning();
+  m_pTransforms ->m_pCI->m_pBench->vSZ0_T20_Reinstate_stagesV3();
+  m_pTransforms ->m_pCI->m_pBench->vSZ0_T30_Add_Partitioning();
 
-  m_pTransforms->vSE0_T10_Convert_TblColOdn_To_StmOdn();
-  m_pTransforms->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
+  m_pTransforms ->m_pCI->m_pBench->vSE0_T10_Convert_TblColOdn_To_StmOdn();
+  m_pTransforms ->m_pCI->m_pBench->vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
 
 
-  m_pTransforms->vSA0_TZZ_End();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
@@ -372,14 +372,14 @@ void Xseries::vSeries_A0_Make_Weavable_v1(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  m_pTransforms->vSA0_T00_Begin();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_T00_Begin();
 
   m_pTransforms->vCullBounds();
   m_pTransforms->vStaging();
   m_pTransforms->vPartitioning();
   m_pTransforms->vFinalAdjustments();
 
-  m_pTransforms->vSA0_TZZ_End();
+  m_pTransforms ->m_pCI->m_pBench->vSA0_TZZ_End();
 
   vEndSeries(BK_SUBPIPE, 0);
 }
