@@ -618,7 +618,7 @@ void CardCtl::vReset(void)
 
   vHeatNext(CK_PERMUTATION, true);
 
-  vPrintSubCards(CK_PROJECTION, false);
+  //vPrintSubCards(CK_PROJECTION, false);
 
   vHeatNext(CK_STAGE, true);
   vHorizExclude(CK_STAGE, P_HideHeat);

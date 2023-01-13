@@ -169,6 +169,7 @@ void Xseries::vSeries_05_Prepare_Pipelines_v1(void)
   m_pBench->vInitialAdjustments();
   m_pBench->vCondenseInfo();
   m_pBench->vMetaAnalysis();
+  m_pBench->vS24_T_Projection_Analysis();
 
   vEndSeries(BK_SUBPIPE);
 }

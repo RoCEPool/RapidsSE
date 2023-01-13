@@ -243,6 +243,10 @@ void Card_Table::vComputeProjection(CardIter* pCI)
     p_colNm->vValue(pColumn->szColNm());
     p_expr->vAppend(p_colNm);
 
+    Card_TblColOdn* p_tblColOdn = new Card_TblColOdn;
+    p_tblColOdn->vValueSprint("$%c.%lld"_Stz,cValue(),i_Col+1);
+    p_expr->vAppend(p_tblColOdn);
+
   }
 
   vAppend(p_projection);
