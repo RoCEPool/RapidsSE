@@ -144,9 +144,9 @@ void Board::vConvert_tblColOdn_To_stmOdn(CardIter* pCI)
     if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_stmColOdn = Card_StmColOdn::pResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+    Stz* szStmColOdn = Card_StmColOdn::szResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
 
-    p_term->vSetValueMark1(pCI->G.p_stmColOdn->szValue(), MARK_CHANGED);
+    p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };

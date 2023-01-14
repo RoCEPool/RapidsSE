@@ -8,6 +8,7 @@ _r_schema
 
 create index O_idx0  on Orders   (O_ORDERKEY );
 create index L_idx0  on Lineitem (L_ORDERKEY );
+create index PS_idx0 on PartSupp (PS_PARTKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23,6 +24,18 @@ select count(*)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/optimise
+/glean_cue_from = "vSeries_80_Index_Scan"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_STREAM_ORDER"
+select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
+               from Part,
+                    PartSupp
+              where p_partkey  = ps_partkey
+                and p_brand = 'Brand#44'
+                and p_size < 10;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
