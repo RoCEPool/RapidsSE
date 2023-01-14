@@ -1133,7 +1133,8 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
 
       RASSERT(pCI->G_bResolveSubCard(CK_STMCOL,CK_TBLCOLODN,szTblColOdn, pCI->G.i_MainCard));
 
-      p_hash = Card_Hash::pDerive(pCI->G.p_stmCol);
+      //p_hash = Card_Hash::pDerive(pCI->G.p_stmCol);
+      p_hash = Card_Hash::pDerive(pCI->G.p_expr);
 
 
       if (p_combined_prior) {

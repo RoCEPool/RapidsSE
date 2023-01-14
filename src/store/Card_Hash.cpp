@@ -7,6 +7,7 @@
 #include "Card_StmCol.hpp"
 #include "Card_StmColOdn.hpp"
 #include "Card_Type.hpp"
+#include "Card_Expr.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -42,6 +43,25 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
+{
+  _static_
+
+  Card_Hash* p_hash = new Card_Hash;
+
+  Card_Type* p_type = p_expr->pSub_type();
+  p_hash->vAppend(p_type->pDupCardAndSubCards());
+
+  Card_StmColOdn* p_stmColOdn = new Card_StmColOdn;
+  p_stmColOdn->vValueSprint(p_expr->szValue());
+  p_hash->vAppend(p_stmColOdn);
+
+  return p_hash;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
