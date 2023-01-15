@@ -853,17 +853,19 @@ void Weaver::vRpnGbyAgg(Stz* szRpnExpr, Card_GbyAgg* pCard_GbyAgg)
 
   i8 nSubCards;
 
-  Card_GbyElist* pCard_GbyElist =
-      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_GBYELIST));
+//  Card_GbyElist* pCard_GbyElist =
+//      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_GBYELIST));
+  Card_Key* pCard_Key =
+      _pCard_Key(pCard_GbyAgg->pFindSubCard(CK_KEY));
 
-  if (! pCard_GbyElist)
+  if (! pCard_Key)
     return;
 
   szRpnExpr->vConcat(" groupBy"_Stz);
 
-  nSubCards = pCard_GbyElist->nItems();
+  nSubCards = pCard_Key->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_GbyElist->pGet(i_Child);
+    Card* pCard_SUB = pCard_Key->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
 
@@ -1270,17 +1272,19 @@ void Weaver::vRpnOrdAgg(Stz* szRpnExpr, Card_OrdAgg* pCard_OrdAgg)
 
   i8 nSubCards;
 
-  Card_GbyElist* pCard_GbyElist =
-      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_GBYELIST));
+//  Card_GbyElist* pCard_GbyElist =
+//      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_GBYELIST));
+  Card_Key* pCard_Key =
+      _pCard_Key(pCard_OrdAgg->pFindSubCard(CK_KEY));
 
-  if (! pCard_GbyElist)
+  if (! pCard_Key)
     return;
 
   szRpnExpr->vConcat(" ordGroupBy"_Stz);
 
-  nSubCards = pCard_GbyElist->nItems();
+  nSubCards = pCard_Key->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_GbyElist->pGet(i_Child);
+    Card* pCard_SUB = pCard_Key->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
 
