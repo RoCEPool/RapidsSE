@@ -17,10 +17,12 @@ __vDeleteFunction(Card_Top,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Top::Card_Top(Stz* szRows)
-: Card(CK_TOP,szRows)
+: Card_OP(CK_TOP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
+  vValue(szRows);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

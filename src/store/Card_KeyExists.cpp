@@ -17,7 +17,7 @@ __vDeleteFunction(Card_KeyExists,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyExists::Card_KeyExists(void)
-: Card(CK_KEYEXISTS)
+: Card_OP(CK_KEYEXISTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

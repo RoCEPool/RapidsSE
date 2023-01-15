@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Sort,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(void)
-: Card(CK_SORT)
+: Card_OP(CK_SORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

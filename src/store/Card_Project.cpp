@@ -24,7 +24,7 @@ __vDeleteFunction(Card_Project,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Project::Card_Project(eCK eCard)
-: Card(eCard)
+: Card_OP(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
