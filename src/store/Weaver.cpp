@@ -1160,26 +1160,60 @@ void Weaver::vRpnOrdAgg(Stz* szRpnExpr, Card_OrdAgg* pCard_OrdAgg)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for project op                                              */
 /*----------------------------------------------------------------------------*/
+//void Weaver::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+//
+//  //pCard_Project->vDump();
+//
+//  Card_ProjElist* pCard_ProjElist =
+//    _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJELIST));
+//
+//  i8 nSubCards = pCard_ProjElist->nItems();
+//  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+//
+//    Card* pSubCard = pCard_ProjElist->pGet(i_Child);
+//    eCK eSubCard = pSubCard->eCard();
+//
+//    if (CK_EXPR != eSubCard)
+//      continue;
+//
+//    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
+//
+//    if (i_Child) {
+//      szRpnExpr->vConcat("\n                 "_Stz);
+//      szRpnExpr->vConcat(" ,"_Stz);
+//    }
+//    else if (nSubCards > 1) {
+//      //szRpnExpr->vConcat("\n                 "_Stz);
+//      szRpnExpr->vConcat("  "_Stz);
+//    }
+//
+//    vExpr(szRpnExpr,pCard_Expr);
+//  }
+//
+//}
+/*----------------------------------------------------------------------------*/
 void Weaver::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   //pCard_Project->vDump();
-    
-  Card_ProjElist* pCard_ProjElist =
-    _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJELIST));
 
-  i8 nSubCards = pCard_ProjElist->nItems();
+  Card_Projection* pCard_Projection =
+      _pCard_Projection(pCard_Project->pFindSubCard(CK_PROJECTION));
+
+  i8 nSubCards = pCard_Projection->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    
-    Card* pSubCard = pCard_ProjElist->pGet(i_Child);
+
+    Card* pSubCard = pCard_Projection->pGet(i_Child);
     eCK eSubCard = pSubCard->eCard();
-    
+
     if (CK_EXPR != eSubCard)
       continue;
 
     Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
-  
+
     if (i_Child) {
       szRpnExpr->vConcat("\n                 "_Stz);
       szRpnExpr->vConcat(" ,"_Stz);
@@ -1191,7 +1225,7 @@ void Weaver::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 
     vExpr(szRpnExpr,pCard_Expr);
   }
-  
+
 }
 
 /*----------------------------------------------------------------------------*/

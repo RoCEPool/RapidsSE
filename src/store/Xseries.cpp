@@ -120,8 +120,9 @@ bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
   //m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
 
   try {
-    m_pCardCtl->vPrintSubCards(false, CK_AGGELIST, CK_GBYELIST, CK_PROJELIST,
-                               CK_RPNCALC, CK_STREAM, 0);
+    m_pCardCtl->vPrintSubCards(false, CK_AGGELIST, CK_GBYELIST, //CK_PROJELIST,
+                               //CK_RPNCALC,
+                               CK_STREAM, 0);
     m_pCardCtl->vSaveShorter();
     m_pCardCtl->vSaveXhand();
 
