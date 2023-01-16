@@ -57,7 +57,7 @@ bool Transformer::bTransform(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  bool bClean = m_pBench->bTransformSeries_v1(peErrorCode);
+  bool bClean = m_pBench->bApplySeries(peErrorCode);
 
   return bClean;
 }

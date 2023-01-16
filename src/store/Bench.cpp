@@ -216,7 +216,7 @@ void Bench::vPrefix(char cPrefix)
 /*----------------------------------------------------------------------------*/
 /* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
-bool Bench::bTransformSeries_v1(eEC* peErrorCode)
+bool Bench::bApplySeries(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -235,12 +235,10 @@ bool Bench::bTransformSeries_v1(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vSeries_05_Prepare_Pipelines_v1();
-
-    vSeries_10_Make_Runnable_v1();
-
-    // ---
-    vSeries_A0_Make_Weavable_v1();
+    vSeries_PreparePipelines();
+    vSeries_MakeRunnable();
+    vSeries_OptimiseFlattened();
+    vSeries_MakeWeavable();
 
     bClean = true;
   }
@@ -264,7 +262,7 @@ bool Bench::bTransformSeries_v1(eEC* peErrorCode)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_05_Prepare_Pipelines_v1(void)
+void Bench::vSeries_PreparePipelines(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -276,10 +274,10 @@ void Bench::vSeries_05_Prepare_Pipelines_v1(void)
 
   m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
-  vInitialAdjustments();
-  vCondenseInfo();
-  vMetaAnalysis();
-  vS24_T_Projection_Analysis();
+  vGroup_InitialAdjustments();
+  vGroup_CondenseInfo();
+  vGroup_MetaAnalysis();
+  vGroup_MainConversions();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -287,7 +285,7 @@ void Bench::vSeries_05_Prepare_Pipelines_v1(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_10_Make_Runnable_v1(void)
+void Bench::vSeries_MakeRunnable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -299,9 +297,10 @@ void Bench::vSeries_10_Make_Runnable_v1(void)
 
   m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
 
-  vPredicatePullup();
-  vIndexBounds();
-  vChooseEEops();
+  vGroup_PredicatePullup();
+  vGroup_IndexBounds();
+  //vGroup_JoinOrdering();
+  //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -309,7 +308,28 @@ void Bench::vSeries_10_Make_Runnable_v1(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_A0_Make_Weavable_v1(void)
+void Bench::vSeries_OptimiseFlattened(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  vS10_T00_Begin();
+
+  i8 i_Board = 0;
+
+  m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+
+  vGroup_ChooseEEops();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_MakeWeavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -317,10 +337,10 @@ void Bench::vSeries_A0_Make_Weavable_v1(void)
 
   vSA0_T00_Begin();
 
-  vCullBounds();
-  vStaging();
-  vPartitioning();
-  vFinalAdjustments();
+  vGroup_CullBounds();
+  vGroup_Staging();
+  vGroup_Partitioning();
+  vGroup_FinalAdjustments();
 
   vSA0_TZZ_End();
 
@@ -365,7 +385,7 @@ void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vInitialAdjustments(void)
+void Bench::vGroup_InitialAdjustments(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -375,7 +395,7 @@ void Bench::vInitialAdjustments(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vCondenseInfo(void)
+void Bench::vGroup_CondenseInfo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -386,45 +406,45 @@ void Bench::vCondenseInfo(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vMetaAnalysis(void)
+void Bench::vGroup_MetaAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vS20_T_Table_Analysis();
   vS22_T_Stream_Analysis();
   vS26_T_Index_Analysis();
+  vS24_T_Projection_Analysis();
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vPredicatePullup(void)
+void Bench::vGroup_MainConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vS33_T10_Convert_stmColOdn_To_tblColOdn();
 
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
+  vTransform_RpnCalcToBoolCalc();
 
-    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
+}
 
 
-  vS34_T_Predicate_Pullup();
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_PredicatePullup(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+
+  //vS34_T_Predicate_Pullup();
+  vTransform_MarkCmpPredWrtTable();
+  vTransform_CopyMarkedCmpPred();
+  vTransform_CullMarkedCmpPred();
+  vTransform_DeleteEmptyWhere();
 
 }
 
@@ -441,7 +461,7 @@ void Bench::vJoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vIndexBounds(void)
+void Bench::vGroup_IndexBounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -461,7 +481,7 @@ void Bench::vFlattenSubquery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vChooseEEops(void)
+void Bench::vGroup_ChooseEEops(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -471,7 +491,7 @@ void Bench::vChooseEEops(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vCullBounds(void)
+void Bench::vGroup_CullBounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -483,7 +503,7 @@ void Bench::vCullBounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vStaging(void)
+void Bench::vGroup_Staging(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -494,7 +514,7 @@ void Bench::vStaging(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vPartitioning(void)
+void Bench::vGroup_Partitioning(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -504,7 +524,7 @@ void Bench::vPartitioning(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vFinalAdjustments(void)
+void Bench::vGroup_FinalAdjustments(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -903,15 +923,7 @@ void Bench::vS05_T_Move_On(void)
 
   vAssert_Board_any();
 
-  //if (m_pCI->G_bEachMain(CK_WHERE))
-  //{;}
-
-  //vRestart();
-  //m_pCI->vRestart();
-
-//  while (m_pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
-    Card_Where::vMove_on_To_where(m_pCI);
-//  }
+  Card_Where::vMove_All_on_To_where(m_pCI);
 
   m_pCI->vEndTransform();
 }
@@ -1467,6 +1479,39 @@ void Bench::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
   m_pCI->vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_RpnCalcToBoolCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
+
+  vAssert_Board_any();
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
+
+    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
+
+    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
+
+    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
+
+    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+  }
+
+  m_pCI->vEndTransform();
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1515,6 +1560,101 @@ void Bench::vS34_T_Predicate_Pullup(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete Empty Where
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
+      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+    }
+  }
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_MarkCmpPredWrtTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
+  }
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_CopyMarkedCmpPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
+  }
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_CullMarkedCmpPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+  }
+
+  m_pCI->vPrintBoard();
+
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_DeleteEmptyWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  vAssert_Board_any();
+
 
   m_pCI->G_vRestart();
 

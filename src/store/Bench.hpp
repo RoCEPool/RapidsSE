@@ -48,14 +48,13 @@ namespace STORE
     void vPrefix(char cPrefix);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // Xseries
-    bool bTransformSeries_v1(eEC* peErrorCode);
+    // series
+    bool bApplySeries(eEC* peErrorCode);
 
-    void vSeries_05_Prepare_Pipelines_v1(void);
-
-    void vSeries_10_Make_Runnable_v1(void);
-
-    void vSeries_A0_Make_Weavable_v1(void);
+    void vSeries_PreparePipelines(void);
+    void vSeries_MakeRunnable(void);
+    void vSeries_OptimiseFlattened(void);
+    void vSeries_MakeWeavable(void);
 
 
     void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
@@ -63,21 +62,22 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // Xtransforms
+    // group
 
-    void vInitialAdjustments(void);
-    void vCondenseInfo(void);
-    void vMetaAnalysis(void);
-    void vPredicatePullup(void);
+    void vGroup_InitialAdjustments(void);
+    void vGroup_CondenseInfo(void);
+    void vGroup_MetaAnalysis(void);
+    void vGroup_MainConversions(void);
+    void vGroup_PredicatePullup(void);
     void vJoinOrdering(void);
-    void vIndexBounds(void);
+    void vGroup_IndexBounds(void);
     void vFlattenSubquery(void);
-    void vChooseEEops(void);
+    void vGroup_ChooseEEops(void);
 
-    void vCullBounds(void);
-    void vStaging(void);
-    void vPartitioning(void);
-    void vFinalAdjustments(void);
+    void vGroup_CullBounds(void);
+    void vGroup_Staging(void);
+    void vGroup_Partitioning(void);
+    void vGroup_FinalAdjustments(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -128,8 +128,15 @@ namespace STORE
     // vSeries_33_To_TblColOdn
     void vS33_T10_Convert_stmColOdn_To_tblColOdn(void);
 
+    void vTransform_RpnCalcToBoolCalc(void);
+
     // vSeries_34_Predicate_Pullup
     void vS34_T_Predicate_Pullup(void);
+    void vTransform_MarkCmpPredWrtTable(void);
+    void vTransform_CopyMarkedCmpPred(void);
+    void vTransform_CullMarkedCmpPred(void);
+    void vTransform_DeleteEmptyWhere(void);
+
     void vS34_T_Predicate_Reposition(void);
 
     // vSeries_36_Bound_Analysis

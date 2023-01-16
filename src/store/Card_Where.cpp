@@ -40,23 +40,9 @@ Card_Where::~Card_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vAdd_where(CardIter* pCI, Card* p_after)
-{
-  _static_
-
-  pCI->G_vNewMember(CK_WHERE);
-
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_where,p_after);
-
-  pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
-}
-
-/*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on>/<rpnCalc> to <where>                               */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vMove_on_To_where(CardIter* pCI)
+void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 {
   _static_
 
@@ -74,6 +60,7 @@ void Card_Where::vMove_on_To_where(CardIter* pCI)
   pCI->vRestart();
   while (pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
 
+    // ignore
     Card_RpnCalc *p_rpnCalc_on = pCI->G.p_on->pSub_rpnCalc();
     if (! p_rpnCalc_on->nChildCards())
       continue;
@@ -82,7 +69,7 @@ void Card_Where::vMove_on_To_where(CardIter* pCI)
       continue;
 
     if (! pCI->G.p_where) {
-      // create a new <where> if non exists
+      // create a new <where> if none exists
       pCI->G_vNewMember(CK_WHERE);
       pCI->G.pDeck->vInsertAfter(pCI->G.p_where,pCI->G.p_absJoin);
 
