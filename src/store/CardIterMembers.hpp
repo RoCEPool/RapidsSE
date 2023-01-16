@@ -131,7 +131,6 @@ namespace STORE
     Card_PmzWhere *         p_pmzWhere;
     Card_Project *          p_project;
     Card_Projection *       p_projection;
-    Card_ProjElist *        p_projElist;
     Card_PtnCol *           p_ptnCol;
     Card_PtnColList *       p_ptnColList;
     Card_PtnColNm *         p_ptnColNm;

@@ -974,8 +974,8 @@ void Bench::vS22_T_Stream_Analysis(void)
   m_pCI->G_vRestart();
   vStreamAnalysisReset();
 
-  while (m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJELIST)) {
-    m_pCI->G.p_stream = Card_Stream::pDerive_Of_project(m_pCI->G.p_projElist);
+  while (m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION)) {
+    m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection(m_pCI->G.p_projection);
 
     m_pCI->G.p_project->vAppend(m_pCI->G.p_stream);
   }
@@ -2150,14 +2150,14 @@ void Bench::vS40_T40_Fold_W_A_NC_ro(void)
     }
     else
     if (m_pCI->G_bIsNextMain(CK_AGGREG)) {
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJELIST));
-      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projElist));
+      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJECTION));
+      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projection));
       m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJELIST));
-      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projElist));
+      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJECTION));
+      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projection));
       m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJELIST));
-      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projElist));
+      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJECTION));
+      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projection));
       m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
       break;
     }
@@ -3043,7 +3043,7 @@ void Bench::vS90_T00_Begin(void)
   m_pCI->m_pCardCtl->vPrintSubCards(true,
                                     CK_KEY,
                                     CK_INDEXLIST,
-                                    CK_PROJELIST,
+                                    CK_PROJECTION,
                                     CK_RPNCALC,
                                     CK_STREAM,
                                     0);
@@ -3343,7 +3343,7 @@ void Bench::vSZ0_T20_Reinstate_stagesV3(void)
 
   vAssert_Board_mqA();
 
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJELIST,0);
+  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
   //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
 
   m_pCI->vPrintBoard(__LINE__);

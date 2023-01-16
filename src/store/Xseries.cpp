@@ -64,13 +64,13 @@ bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
   bool bClean = true;
 
   //m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJELIST,0);
+  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJECTION,0);
   //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
   //m_pCardCtl->vPrintSubCards(CK_KEY, true);
 
   try {
     m_pCardCtl->vPrintSubCards(false, //CK_AGGELIST,
-                               //CK_KEY, //CK_PROJELIST,
+                               //CK_KEY, //CK_PROJECTION,
                                //CK_RPNCALC,
                                CK_STREAM, 0);
     m_pCardCtl->vSaveShorter();

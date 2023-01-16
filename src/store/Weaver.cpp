@@ -649,7 +649,7 @@ void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
 //  Card_ProjElist* pCard_ProjElist =
-//    _pCard_ProjElist(pCard_Aggreg->pFindSubCard(CK_PROJELIST));
+//    _pCard_ProjElist(pCard_Aggreg->pFindSubCard(CK_PROJECTION));
 //
 //  if (! pCard_ProjElist)
 //    return;
@@ -1346,7 +1346,7 @@ void Weaver::vRpnOrdAgg(Stz* szRpnExpr, Card_OrdAgg* pCard_OrdAgg)
 //  //pCard_Project->vDump();
 //
 //  Card_ProjElist* pCard_ProjElist =
-//    _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJELIST));
+//    _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJECTION));
 //
 //  i8 nSubCards = pCard_ProjElist->nItems();
 //  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {

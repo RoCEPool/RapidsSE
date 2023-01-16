@@ -106,7 +106,6 @@ enum eCK // card kind
   /* */ CK_PMZWHERE,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
-  /* */ CK_PROJELIST,
   /* */ CK_PTNCOL,
   /* */ CK_PTNCOLLIST,
   /* */ CK_PTNCOLNM,
@@ -280,7 +279,6 @@ static Stz* aCK[]
   /* */ "CK_PMZWHERE"_Stz,     // CK_PMZWHERE
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
-  /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
   /* */ "CK_PTNCOL"_Stz,       // CK_PTNCOL
   /* */ "CK_PTNCOLLIST"_Stz,   // CK_PTNCOLLIST
   /* */ "CK_PTNCOLNM"_Stz,     // CK_PTNCOLNM
@@ -453,7 +451,6 @@ static Stz* aCK_short[]
   /* */ "pmzWhere"_Stz,        // CK_PMZWHERE
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
-  /* */ "projElist"_Stz,       // CK_PROJELIST
   /* */ "ptnCol"_Stz,          // CK_PTNCOL
   /* */ "ptnColList"_Stz,      // CK_PTNCOLLIST
   /* */ "ptnColNm"_Stz,        // CK_PTNCOLNM
@@ -626,7 +623,6 @@ static Stz* aCK_notation[]
     /* */ "pW"_Stz,           // CK_PMZWHERE
     /* */ "pj"_Stz,           // CK_PROJECT
     /* */ "pjtn"_Stz,         // CK_PROJECTION
-    /* */ "pjEL"_Stz,         // CK_PROJELIST
     /* */ "pC"_Stz,           // CK_PTNCOL
     /* */ "pCL"_Stz,          // CK_PTNCOLLIST
     /* */ "pCN"_Stz,          // CK_PTNCOLNM

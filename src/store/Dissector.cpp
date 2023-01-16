@@ -673,10 +673,10 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projection : projection expression list
 
-  Card* p_dup = pCard_Projection->pDupCardAndSubCards();
-  p_dup->vCard(CK_PROJELIST);
-  Card_ProjElist* pCard_ProjElist = _pCard_ProjElist(p_dup);
-  pCard_Project->vAppend(pCard_ProjElist);
+//  Card* p_dup = pCard_Projection->pDupCardAndSubCards();
+//  p_dup->vCard(CK_PROJECTION);
+//  Card_ProjElist* pCard_ProjElist = _pCard_ProjElist(p_dup);
+//  pCard_Project->vAppend(pCard_ProjElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -895,33 +895,6 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
   }
 
   return pCard_Projection;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <project> terms :                                                  */
-/*----------------------------------------------------------------------------*/
-Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_ProjElist* pCard_ProjElist = new Card_ProjElist;
-
-  i8 i_Expr = 1;
-  Card_Term* pCard_Term_head = nullptr;
-  while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
-        
-    // SEPARATOR
-    if (pCard_Term_head->bIsCommaSeparator()) {
-      delete pCard_RpnTerms->pPop();
-      continue;
-    }
-        
-    // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
-    pCard_ProjElist->vAppend(pCard_Expr);
-  }
-  
-  return pCard_ProjElist;
 }
 
 /*----------------------------------------------------------------------------*/

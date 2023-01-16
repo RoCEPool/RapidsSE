@@ -106,7 +106,6 @@ namespace STORE
   class Card_PRED;
   class Card_Project;
   class Card_Projection;
-  class Card_ProjElist;
   class Card_PtndJoin;
   class Card_PmzWhere;
 
@@ -516,7 +515,6 @@ namespace STORE
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
-    Card_ProjElist*     pSub_projElist(void);
     Card_Reason*        pSub_reason(void);
     Card_RoPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);

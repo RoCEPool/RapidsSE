@@ -3157,19 +3157,6 @@ Card_Projection* Card::pSub_projection(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_ProjElist.hpp"
-Card_ProjElist* Card::pSub_projElist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_ProjElist* p_projElist =
-      _pCard_ProjElist(pFindSubCard(CK_PROJELIST));
-  return p_projElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Reason.hpp"
 Card_Reason* Card::pSub_reason(void)
 {
