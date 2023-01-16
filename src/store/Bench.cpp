@@ -893,7 +893,7 @@ void Bench::vS10_T00_Begin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Condense Info                                                              */
+/* bring all <absJoin>/<on> to <where>                                        */
 /*----------------------------------------------------------------------------*/
 void Bench::vS05_T_Move_On(void)
 {
@@ -903,15 +903,15 @@ void Bench::vS05_T_Move_On(void)
 
   vAssert_Board_any();
 
-  if (m_pCI->G_bEachMain(CK_WHERE))
-  {;}
+  //if (m_pCI->G_bEachMain(CK_WHERE))
+  //{;}
 
   //vRestart();
-  m_pCI->vRestart();
+  //m_pCI->vRestart();
 
-  while (m_pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
+//  while (m_pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
     Card_Where::vMove_on_To_where(m_pCI);
-  }
+//  }
 
   m_pCI->vEndTransform();
 }

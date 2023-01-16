@@ -54,30 +54,42 @@ void Card_Where::vAdd_where(CardIter* pCI, Card* p_after)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* bring all <absJoin>/<on>/<rpnCalc> to <where>                              */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vMove_on_To_where(CardIter* pCI)
 {
   _static_
 
-  Card_RpnCalc* p_rpnCalc_on = pCI->G.p_on->pSub_rpnCalc();
-  if (! p_rpnCalc_on->nChildCards())
-    return;
-  Card_Term* p_term_0 = _pCard_Term(p_rpnCalc_on->pGetChild(0));
-  if (p_term_0->bSame("CROSS"_Stz))
-    return;
+  pCI->vRestart();
+  if (pCI->G_bEachMain(CK_WHERE))
+    pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
 
-  if (! pCI->G.p_where) {
-    vAdd_where(pCI, pCI->G.p_absJoin);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->vRestart();
+  while (pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
+
+    Card_RpnCalc *p_rpnCalc_on = pCI->G.p_on->pSub_rpnCalc();
+    if (! p_rpnCalc_on->nChildCards())
+      continue;
+    Card_Term *p_term_0 = _pCard_Term(p_rpnCalc_on->pGetChild(0));
+    if (p_term_0->bSame("CROSS"_Stz))
+      continue;
+
+    if (! pCI->G.p_where) {
+      // create a new <where>
+      pCI->G_vNewMember(CK_WHERE);
+      pCI->G.pDeck->vInsertAfter(pCI->G.p_where,pCI->G.p_absJoin);
+
+      // create an initial empty /<rpnCalc>
+      pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
+    }
+
+    pCI->G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
+
+    pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
+    DELETE_CARD(pCI->G.p_on);
   }
-
-  pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
-
-  pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
-
-  pCI->G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
-
-  DELETE_CARD(pCI->G.p_on);
 }
 
 /*----------------------------------------------------------------------------*/
