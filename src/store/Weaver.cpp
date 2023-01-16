@@ -785,7 +785,7 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 //  i8 nSubCards;
 //
 //  Card_GbyElist* pCard_GbyElist =
-//      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_GBYELIST));
+//      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_KEY));
 //
 //  if (! pCard_GbyElist)
 //    return;
@@ -854,7 +854,7 @@ void Weaver::vRpnGbyAgg(Stz* szRpnExpr, Card_GbyAgg* pCard_GbyAgg)
   i8 nSubCards;
 
 //  Card_GbyElist* pCard_GbyElist =
-//      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_GBYELIST));
+//      _pCard_GbyElist(pCard_GbyAgg->pFindSubCard(CK_KEY));
   Card_Key* pCard_Key =
       _pCard_Key(pCard_GbyAgg->pFindSubCard(CK_KEY));
 
@@ -1204,7 +1204,7 @@ void Weaver::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 //  i8 nSubCards;
 //
 //  Card_GbyElist* pCard_GbyElist =
-//      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_GBYELIST));
+//      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_KEY));
 //
 //  if (! pCard_GbyElist)
 //    return;
@@ -1273,7 +1273,7 @@ void Weaver::vRpnOrdAgg(Stz* szRpnExpr, Card_OrdAgg* pCard_OrdAgg)
   i8 nSubCards;
 
 //  Card_GbyElist* pCard_GbyElist =
-//      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_GBYELIST));
+//      _pCard_GbyElist(pCard_OrdAgg->pFindSubCard(CK_KEY));
   Card_Key* pCard_Key =
       _pCard_Key(pCard_OrdAgg->pFindSubCard(CK_KEY));
 

@@ -397,7 +397,6 @@ void CardIter::G_vClearMembers(void)
   G.p_foldElist        = nullptr;
   G.p_from             = nullptr;
   G.p_gbyAgg           = nullptr;
-  G.p_gbyElist         = nullptr;
   G.p_genesis          = nullptr;
   G.p_group            = nullptr;
   G.p_hash             = nullptr;
@@ -1326,7 +1325,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_FOLDELIST:        return G.p_foldElist;
     case CK_FROM:             return G.p_from;
     case CK_GBYAGG:           return G.p_gbyAgg;
-    case CK_GBYELIST:         return G.p_gbyElist;
     case CK_GENESIS:          return G.p_genesis;
     case CK_GROUP:            return G.p_group;
     case CK_HASH:             return G.p_hash;
@@ -1688,7 +1686,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_FOLDELIST:        return "G.p_foldElist"_Stz;
     case CK_FROM:             return "G.p_from"_Stz;
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
-    case CK_GBYELIST:         return "G.p_gbyElist"_Stz;
     case CK_GENESIS:          return "G.p_genesis"_Stz;
     case CK_GROUP:            return "G.p_group"_Stz;
     case CK_HASH:             return "G.p_hash"_Stz;
@@ -2854,7 +2851,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
     case CK_FROM:             *((Card**)&G.p_from)             = pCard; break;
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
-    case CK_GBYELIST:         *((Card**)&G.p_gbyElist)         = pCard; break;
     case CK_GENESIS:          *((Card**)&G.p_genesis)          = pCard; break;
     case CK_GROUP:            *((Card**)&G.p_group)            = pCard; break;
     case CK_HASH:             *((Card**)&G.p_hash)             = pCard; break;

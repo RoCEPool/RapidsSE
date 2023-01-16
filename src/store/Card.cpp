@@ -2855,20 +2855,7 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
   return p_gbyAgg;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_GbyElist.hpp"
-Card_GbyElist* Card::pSub_gbyElist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_GbyElist* p_gbyElist =
-      _pCard_GbyElist(pFindSubCard(CK_GBYELIST));
-  return p_gbyElist;
-}
-
-/*----------------------------------------------------------------------------*/
+//*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Genesis.hpp"

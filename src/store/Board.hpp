@@ -62,7 +62,6 @@
 #include "Card_From.hpp"
 
 #include "Card_GbyAgg.hpp"
-#include "Card_GbyElist.hpp"
 #include "Card_Genesis.hpp"
 #include "Card_Group.hpp"
 

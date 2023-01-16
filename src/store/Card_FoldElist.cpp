@@ -72,7 +72,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyElist(CardIter* pCI)
 
   pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_rpnCalc()->pDupCardAndSubCards());
 
-  pCI->G.p_gbyElist->vPush(pCI->G.p_expr);
+  pCI->G.p_key->vPush(pCI->G.p_expr);
 }
 
 //*============================================================================*/

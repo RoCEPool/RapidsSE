@@ -93,7 +93,6 @@ namespace STORE
     Card_FoldElist *        p_foldElist;
     Card_From *             p_from;
     Card_GbyAgg *           p_gbyAgg;
-    Card_GbyElist *         p_gbyElist;
     Card_Genesis *          p_genesis;
     Card_Group *            p_group;
     Card_Hash *             p_hash;

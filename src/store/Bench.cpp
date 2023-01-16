@@ -1934,9 +1934,9 @@ void Bench::vS40_T30_Fold_W_A_NC_I(void)
   // T G G G H P F T T W G G G   // bump stmOdn:$n in mq gbyElist by 1
   //                     elelel  // (if G is actually G -- might be A)
 
-  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
+  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
     i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
-    m_pCI->G.p_gbyElist->vBump_stmOdn_In_rpnCalc(m_pCI);
+    m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
 
     m_pCI->G.p_fold->Y_vCut(P_BumpRight);
     m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
@@ -2170,9 +2170,9 @@ void Bench::vS40_T40_Fold_W_A_NC_ro(void)
   Board::vDerive_foldElist_From_project_stream(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_GBYELIST)) {
+  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
     i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
-    m_pCI->G.p_gbyElist->vBump_stmOdn_In_rpnCalc(m_pCI);
+    m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
 
     m_pCI->G.p_fold->Y_vCut(P_BumpRight);
     m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
@@ -3042,7 +3042,7 @@ void Bench::vS90_T00_Begin(void)
 
   m_pCI->m_pCardCtl->vPrintSubCards(true,
                                     CK_AGGELIST,
-                                    CK_GBYELIST,
+                                    CK_KEY,
                                     CK_INDEXLIST,
                                     CK_PROJELIST,
                                     CK_RPNCALC,

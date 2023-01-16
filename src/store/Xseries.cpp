@@ -57,57 +57,6 @@ Xseries::~Xseries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transform 3                                                                */
 /*----------------------------------------------------------------------------*/
-bool Xseries::bTransformSeries(eEC* peErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
-
-  bool bClean = true;
-
-  //m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
-  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  //m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
-
-  try {
-    m_pCardCtl->vPrintSubCards(false, CK_AGGELIST, CK_GBYELIST, CK_PROJELIST,
-                               CK_RPNCALC, CK_STREAM, 0);
-    m_pCardCtl->vSaveShorter();
-    m_pCardCtl->vSaveXhand();
-
-    vSeries_10_Make_Runnable();
-
-    // ---
-
-    vSeries_80_Index_Scan(C_ENABLED);
-    vSeries_90_Stream_Ordering(C_ENABLED);
-
-    m_pBench->vOptimiseLoop();
-
-    // ---
-    vSeries_A0_Make_Weavable();
-
-    bClean = true;
-  }
-
-  catch (Exception xException) {
-    // set peErrorCode
-    bClean = false;
-  }
-
-  catch (Error xError) {
-    *peErrorCode = xError.eErrorCode();
-    // todo: this should read xError.szErrorMsg()
-    //Stz* szError = xError.aErrorMsg();
-
-    bClean = false;
-  }
-
-  return bClean;
-}
-
-/*----------------------------------------------------------------------------*/
-/* transform 3                                                                */
-/*----------------------------------------------------------------------------*/
 bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
@@ -115,13 +64,13 @@ bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
   bool bClean = true;
 
   //m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,CK_PROJELIST,0);
+  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJELIST,0);
   //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  //m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
+  //m_pCardCtl->vPrintSubCards(CK_KEY, true);
 
   try {
     m_pCardCtl->vPrintSubCards(false, //CK_AGGELIST,
-                               //CK_GBYELIST, //CK_PROJELIST,
+                               //CK_KEY, //CK_PROJELIST,
                                //CK_RPNCALC,
                                CK_STREAM, 0);
     m_pCardCtl->vSaveShorter();

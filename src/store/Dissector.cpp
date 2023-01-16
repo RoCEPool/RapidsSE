@@ -279,11 +279,6 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
     pCard_Aggreg->vAppend(pCard_Key);
     pCard_Aggreg->vCard(CK_GBYAGG);
 
-    Card* p_dup = pCard_Key->pDupCardAndSubCards();
-    p_dup->vCard(CK_GBYELIST);
-    Card_GbyElist* pCard_ByList = _pCard_GbyElist(p_dup);
-    pCard_Aggreg->vAppend(pCard_ByList);
-
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -835,57 +830,6 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   }
   
   return pCard_AggElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
-/*----------------------------------------------------------------------------*/
-Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_GbyElist* pCard_GbyElist = new Card_GbyElist;
-  
-  // GROUPBY
-  Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term_head->bIsValue("GROUPBY"_Stz));
-
-  delete pCard_Term_head;
-  pCard_Term_head = nullptr;
-
-  i8 i_CardNo = 0;
-  i8 i_Expr = 1;
-  while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
-
-    // GROUPBY
-    if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
-      break;
-    }
-
-    // SEPARATOR
-    if (pCard_Term_head->bIsCommaSeparator()) {
-      delete pCard_RpnTerms->pPop();
-      continue;
-    }
-        
-    // TYPE <type> <calcExpr> [ AS <as> ]
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
-    pCard_Expr->vCardNo(++i_CardNo);
-    //vAsEnsure(pCard_Expr);
-
-    Card_As* p_as = pCard_Expr->pSub_as();
-    if (p_as) {
-      pCard_Expr->vRemoveChild(p_as);
-      DELETE_CARD(p_as);
-    }
-    
-    //Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
-    //pCard_Expr->vAppend(pCard_Direction);
-
-    pCard_GbyElist->vAppend(pCard_Expr);
-  }
-
-  return pCard_GbyElist;
 }
 
 /*----------------------------------------------------------------------------*/
