@@ -652,8 +652,11 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
-  Card_ProjElist* pCard_ProjElist = pProjElist(pCard_RpnTerms);
-  pCard_Project->vAppend(pCard_ProjElist);
+//  Card_ProjElist* pCard_ProjElist = pProjElist(pCard_RpnTerms);
+//  pCard_Project->vAppend(pCard_ProjElist);
+
+  Card_Projection* pCard_Projection = pProjection(pCard_RpnTerms);
+  pCard_Project->vAppend(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -670,10 +673,10 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projection : projection expression list
 
-  Card* p_dup = pCard_ProjElist->pDupCardAndSubCards();
-  p_dup->vCard(CK_PROJECTION);
-  Card_Projection* pCard_Projection = _pCard_Projection(p_dup);
-  pCard_Project->vAppend(pCard_Projection);
+  Card* p_dup = pCard_Projection->pDupCardAndSubCards();
+  p_dup->vCard(CK_PROJELIST);
+  Card_ProjElist* pCard_ProjElist = _pCard_ProjElist(p_dup);
+  pCard_Project->vAppend(pCard_ProjElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -860,9 +863,12 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
 
   i8 iCardNo = 0;
 
-  Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term_head->bIsValue("AGGREGATES"_Stz));
-  delete pCard_Term_head;
+  Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
+  if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
+    pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
+    delete pCard_Term_head;
+
+  }
 
 
   i8 i_Expr = 1;
