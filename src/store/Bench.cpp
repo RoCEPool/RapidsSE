@@ -6,6 +6,7 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -208,6 +209,160 @@ void Bench::vPrefix(char cPrefix)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Xseries -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* transform 3                                                                */
+/*----------------------------------------------------------------------------*/
+bool Bench::bTransformSeries_v1(eEC* peErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  bool bClean = true;
+
+  //m_pCardCtl->vReset();
+  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJECTION,0);
+  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
+  //m_pCardCtl->vPrintSubCards(CK_KEY, true);
+
+  try {
+    m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
+                                              //CK_KEY, //CK_PROJECTION,
+                                              //CK_RPNCALC,
+                                              CK_STREAM, 0);
+    m_pOptimiser->pCardCtl()->vSaveShorter();
+    m_pOptimiser->pCardCtl()->vSaveXhand();
+
+    vSeries_05_Prepare_Pipelines_v1();
+
+    vSeries_10_Make_Runnable_v1();
+
+    // ---
+    vSeries_A0_Make_Weavable_v1();
+
+    bClean = true;
+  }
+
+  catch (Exception xException) {
+    // set peErrorCode
+    bClean = false;
+  }
+
+  catch (Error xError) {
+    *peErrorCode = xError.eErrorCode();
+    // todo: this should read xError.szErrorMsg()
+    //Stz* szError = xError.aErrorMsg();
+
+    bClean = false;
+  }
+
+  return bClean;
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_05_Prepare_Pipelines_v1(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  vS10_T00_Begin();
+
+  i8 i_Board = 0;
+
+  m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+
+  vInitialAdjustments();
+  vCondenseInfo();
+  vMetaAnalysis();
+  vS24_T_Projection_Analysis();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_10_Make_Runnable_v1(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  vS10_T00_Begin();
+
+  i8 i_Board = 0;
+
+  m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+
+  vPredicatePullup();
+  vIndexBounds();
+  vChooseEEops();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_A0_Make_Weavable_v1(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  vSA0_T00_Begin();
+
+  vCullBounds();
+  vStaging();
+  vPartitioning();
+  vFinalAdjustments();
+
+  vSA0_TZZ_End();
+
+  vEndSeries(BK_SUBPIPE, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vEndSeries(eBK eBoard, i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  RASSERT(0 == m_pCI->iTransformDepth());
+
+  //m_pTransforms->vXform(C_NA);
+  //m_pCardCtl->vUseXhand();
+
+  m_pCI->vPrintBench(eBoard, i_Board);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vUsingBoard(eBoard, i_Board);
+  m_pCI->vXhand(azHand);
+
+  vClearMarks();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Xtransforms -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Bench::vInitialAdjustments(void)
@@ -356,6 +511,10 @@ void Bench::vFinalAdjustments(void)
   vSE0_T10_Convert_TblColOdn_To_StmOdn();
   vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Optimization transforms -------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

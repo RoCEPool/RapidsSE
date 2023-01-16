@@ -53,79 +53,6 @@ Xseries::~Xseries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------*/
-/* transform 3                                                                */
-/*----------------------------------------------------------------------------*/
-bool Xseries::bTransformSeries_v1(eEC* peErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XSERIES,_FOOTER_);
-
-  bool bClean = true;
-
-  //m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJECTION,0);
-  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  //m_pCardCtl->vPrintSubCards(CK_KEY, true);
-
-  try {
-    m_pCardCtl->vPrintSubCards(false, //CK_AGGELIST,
-                               //CK_KEY, //CK_PROJECTION,
-                               //CK_RPNCALC,
-                               CK_STREAM, 0);
-    m_pCardCtl->vSaveShorter();
-    m_pCardCtl->vSaveXhand();
-
-    vSeries_05_Prepare_Pipelines_v1();
-
-    vSeries_10_Make_Runnable_v1();
-
-    // ---
-    vSeries_A0_Make_Weavable_v1();
-
-    bClean = true;
-  }
-
-  catch (Exception xException) {
-    // set peErrorCode
-    bClean = false;
-  }
-
-  catch (Error xError) {
-    *peErrorCode = xError.eErrorCode();
-    // todo: this should read xError.szErrorMsg()
-    //Stz* szError = xError.aErrorMsg();
-
-    bClean = false;
-  }
-
-  return bClean;
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_05_Prepare_Pipelines_v1(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  m_pBench->vS10_T00_Begin();
-
-  i8 i_Board = 0;
-
-  m_pBench->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
-
-  m_pBench->vInitialAdjustments();
-  m_pBench->vCondenseInfo();
-  m_pBench->vMetaAnalysis();
-  m_pBench->vS24_T_Projection_Analysis();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
@@ -133,7 +60,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  m_pBench->vSeries(BK_SUBPIPE, 0, __func__);
 
 //  if (! m_pTransforms->bS10_T00_Test(bEnabled)) {
 //    m_pTransforms->vS10_T00_Skip();
@@ -156,7 +83,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
     m_pBench->vS26_T_Index_Analysis();
   }
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  m_pBench->vSeries(BK_SUBPIPE, 0, __func__);
 
   m_pBench->vS26_T10_SubQuery_Analysis_Of_Main_Query();
   m_pBench->vS26_T20_SubQuery_Analysis_Of_Sub_Query();
@@ -181,7 +108,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
 
   }
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  m_pBench->vSeries(BK_SUBPIPE, 0, __func__);
 
 #ifndef WITH_OPT_FLATTENING
   m_pBench->vS40_T05_Flatten_By_Decision_Tree();
@@ -201,29 +128,7 @@ void Xseries::vSeries_10_Make_Runnable(void)
   m_pBench->vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm();
 #endif
 
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_10_Make_Runnable_v1(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  m_pBench->vS10_T00_Begin();
-
-  i8 i_Board = 0;
-
-  m_pBench->m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
-
-  m_pBench->vPredicatePullup();
-  m_pBench->vIndexBounds();
-  m_pBench->vChooseEEops();
-
-  vEndSeries(BK_SUBPIPE);
+  m_pBench->vEndSeries(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,7 +138,7 @@ void Xseries::vSeries_80_Index_Scan(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  m_pBench->vSeries(BK_SUBPIPE, 0, __func__);
 
   /*
  *
@@ -256,7 +161,7 @@ void Xseries::vSeries_80_Index_Scan(bool bEnabled)
 
   m_pBench->vS80_TZZ_End();
 
-  vEndSeries(BK_SUBPIPE, 0);
+  m_pBench->vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,7 +171,7 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  m_pBench->vSeries(BK_SUBPIPE, 0, __func__);
 
   if (! m_pBench->bS90_T00_Test(bEnabled)) {
     m_pBench->vS90_T00_Skip();
@@ -280,7 +185,7 @@ void Xseries::vSeries_90_Stream_Ordering(bool bEnabled)
 
   m_pBench->vS90_TZZ_End();
 
-  vEndSeries(BK_SUBPIPE, 0);
+  m_pBench->vEndSeries(BK_SUBPIPE, 0);
 }
 
 
@@ -291,7 +196,7 @@ void Xseries::vSeries_A0_Make_Weavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  m_pBench->vSeries(BK_SUBPIPE, 0, __func__);
 
   m_pBench->vSA0_T00_Begin();
 
@@ -308,60 +213,7 @@ void Xseries::vSeries_A0_Make_Weavable(void)
 
   m_pBench->vSA0_TZZ_End();
 
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries_A0_Make_Weavable_v1(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  m_pBench->vSA0_T00_Begin();
-
-  m_pBench->vCullBounds();
-  m_pBench->vStaging();
-  m_pBench->vPartitioning();
-  m_pBench->vFinalAdjustments();
-
-  m_pBench->vSA0_TZZ_End();
-
-  vEndSeries(BK_SUBPIPE, 0);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vEndSeries(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  RASSERT(0 == m_pBench->m_pCI->iTransformDepth());
-
-  //m_pTransforms->vXform(C_NA);
-  //m_pCardCtl->vUseXhand();
-
-  m_pBench->m_pCI->vPrintBench(eBoard, i_Board);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xseries::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XSERIES, _FOOTER_);
-
-  m_pBench->m_pCI->vUsingBoard(eBoard, i_Board);
-  m_pBench->m_pCI->vXhand(azHand);
-
-  m_pBench->vClearMarks();
+  m_pBench->vEndSeries(BK_SUBPIPE, 0);
 }
 
 /*============================================================================*/

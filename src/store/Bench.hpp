@@ -46,6 +46,20 @@ namespace STORE
     Optimiser* pOptimiser(void);
     char cPrefix(void);
     void vPrefix(char cPrefix);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // Xseries
+    bool bTransformSeries_v1(eEC* peErrorCode);
+
+    void vSeries_05_Prepare_Pipelines_v1(void);
+
+    void vSeries_10_Make_Runnable_v1(void);
+
+    void vSeries_A0_Make_Weavable_v1(void);
+
+
+    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
+    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
