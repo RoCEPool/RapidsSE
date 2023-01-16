@@ -284,16 +284,24 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
   
-  Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
-  pCard_Aggreg->vAppend(pCard_AggElist);
+//  Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
+//  pCard_Aggreg->vAppend(pCard_AggElist);
+
+  Card_Projection* pCard_Projection = pProjection(pCard_RpnTerms);
+  pCard_Aggreg->vAppend(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projection : projection expression list
 
-  Card* p_dup = pCard_AggElist->pDupCardAndSubCards();
-  p_dup->vCard(CK_PROJECTION);
-  Card_Projection* pCard_Projection = _pCard_Projection(p_dup);
-  pCard_Aggreg->vAppend(pCard_Projection);
+//  Card* p_dup = pCard_AggElist->pDupCardAndSubCards();
+//  p_dup->vCard(CK_PROJECTION);
+//  Card_Projection* pCard_Projection = _pCard_Projection(p_dup);
+//  pCard_Aggreg->vAppend(pCard_Projection);
+
+  Card* p_dup = pCard_Projection->pDupCardAndSubCards();
+  p_dup->vCard(CK_AGGELIST);
+  Card_AggElist* pCard_AggElist = _pCard_AggElist(p_dup);
+  pCard_Aggreg->vAppend(pCard_AggElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -881,6 +889,48 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms)
   }
 
   return pCard_Key;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <agg> terms :                                                      */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_Projection* pCard_Projection = new Card_Projection;
+
+  i8 iCardNo = 0;
+
+  Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
+  RASSERT(pCard_Term_head->bIsValue("AGGREGATES"_Stz));
+  delete pCard_Term_head;
+
+
+  i8 i_Expr = 1;
+
+  while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
+
+    // GROUPBY
+    if (pCard_Term_head->bIsValue("GROUPBY"_Stz)) {
+      break;
+    }
+
+    // SEPARATOR
+    if (pCard_Term_head->bIsCommaSeparator()) {
+      delete pCard_RpnTerms->pPop();
+      continue;
+    }
+
+    // TYPE <type> [ AS <as> ] <calc>
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
+    pCard_Expr->vCardNo(++iCardNo);
+    vAsEnsure(pCard_Expr);
+
+    pCard_Projection->vAppend(pCard_Expr);
+  }
+
+  return pCard_Projection;
 }
 
 /*----------------------------------------------------------------------------*/

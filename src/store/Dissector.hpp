@@ -60,10 +60,11 @@ namespace STORE
     Card* pOp_Sort     (TagSet* pArgTags);
     Card* pOp_Start    (TagSet* pArgTags);
 
-    Card_AggElist*  pAggElist    (Card_RpnTerms* pCard_RpnTerms);
-    Card_Key*       pKey         (Card_RpnTerms* pCard_RpnTerms);
-    Card_ProjElist* pProjElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_SbyElist*  pSbyElist    (Card_RpnTerms* pCard_RpnTerms);
+    Card_AggElist*   pAggElist   (Card_RpnTerms* pCard_RpnTerms);
+    Card_Key*        pKey        (Card_RpnTerms* pCard_RpnTerms);
+    Card_Projection* pProjection (Card_RpnTerms* pCard_RpnTerms);
+    Card_ProjElist*  pProjElist  (Card_RpnTerms* pCard_RpnTerms);
+    Card_SbyElist*   pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
 
     Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms, i8& ri_Expr);
     Card_RpnCalc*   pCalc        (Card_RpnTerms* pCard_RpnTerms);
