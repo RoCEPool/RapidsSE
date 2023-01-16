@@ -17,9 +17,10 @@ create index PS_idx0 on partsupp (PS_PARTKEY );
 /weaved
 /pipelineName = "_o_s1"
 select *
-  from Part,
-       PartSupp
- where p_partkey  = ps_partkey;
+  from Part
+  join PartSupp
+    on p_partkey  = ps_partkey
+;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
