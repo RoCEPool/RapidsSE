@@ -49,7 +49,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // series
-    bool bApplySeries(eEC* peErrorCode);
+    bool bApplyTransformMatrix(eEC* peErrorCode);
 
     void vSeries_PreparePipelines(void);
     void vSeries_MakeRunnable(void);
@@ -68,13 +68,16 @@ namespace STORE
     void vGroup_CondenseInfo(void);
     void vGroup_MetaAnalysis(void);
     void vGroup_MainConversions(void);
+
     void vGroup_PredicatePullup(void);
-    void vJoinOrdering(void);
     void vGroup_IndexBounds(void);
-    void vFlattenSubquery(void);
+    void vGroup_JoinOrdering(void);
+    void vGroup_FlattenSubquery(void);
+
     void vGroup_ChooseEEops(void);
 
     void vGroup_CullBounds(void);
+    void vGroup_Filters(void);
     void vGroup_Staging(void);
     void vGroup_Partitioning(void);
     void vGroup_FinalAdjustments(void);
@@ -104,18 +107,20 @@ namespace STORE
 
     // vSeries_10_Make_Runnable
     void vS10_T00_Begin(void);
-    void vS05_T_Move_On(void);
-    void vS10_T_Condense_Info(void);
+    void vTransform_Move_On(void);
+    void vTransform_DeleteUnneeded(void);
+    void vTransform_ScanBecomesTable(void);
+    void vTransform_AddLevel(void);
 
     // vSeries_20_Table_Analysis
-    void vS20_T_Table_Analysis(void);
+    void vTransform_TableAnalysis(void);
 
     // vSeries_24_Index_Analysis
-    void vS26_T_Index_Analysis(void);
+    void vTransform_IndexAnalysis(void);
 
     // vSeries_22_Stream_Analysis
-    void vS22_T_Stream_Analysis(void);
-    void vS24_T_Projection_Analysis(void);
+    void vTransform_StreamAnalysis(void);
+    void vTransform_ProjectionAnalysis(void);
 
     // vSeries_26_SubQuery_Analysis
 
@@ -126,7 +131,7 @@ namespace STORE
     void vS32_T_SubQuery_Analysis(void);
 
     // vSeries_33_To_TblColOdn
-    void vS33_T10_Convert_stmColOdn_To_tblColOdn(void);
+    void vTransform_StmColOdnToTblColOdn(void);
 
     void vTransform_RpnCalcToBoolCalc(void);
 
@@ -140,7 +145,7 @@ namespace STORE
     void vS34_T_Predicate_Reposition(void);
 
     // vSeries_36_Bound_Analysis
-    void vS36_T10_Derive_bounds_From_filter(void);
+    void vTransform_DeriveBoundsFromFilter(void);
 
     // vSeries_40_Flatten_Query
     void vS40_T05_Flatten_By_Decision_Tree(void);
@@ -156,7 +161,7 @@ namespace STORE
     void vS50_T00_Join_Ordering_v2(void);
 
     // vSeries_75_EE_operators
-    void vS75_T10_Morph_table_To_EEop(void);
+    void vTransform_MorphTableToEEop(void);
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
     void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
@@ -176,18 +181,18 @@ namespace STORE
 
     // vSeries_A0_Make_Weavable
     void vSA0_T00_Begin(void);
-    void vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void);
-    void vSA0_T10_Eliminate_bounds_From_filter(void);
-    void vSA0_T20_Individuate_filter(void);
+    void vTransform_CullNonusedBounds(void);
+    void vTransform_CullUsedBoundsFromFilter(void);
+    void vTransform_IndividuateFilter(void);
     void vSA0_TZZ_End(void);
 
     // vSeries_E0_To_StmOdn
-    void vSE0_T10_Convert_TblColOdn_To_StmOdn(void);
-    void vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void);
+    void vTransform_TblColOdnToStmOdn(void);
+    void vTransform_StmColToColNmOfKeyExists(void);
 
     // vSeries_Z0_Restate_Pipeline
-    void vSZ0_T20_Reinstate_stagesV3(void);
-    void vSZ0_T30_Add_Partitioning(void);
+    void vTransform_ReinstateStages(void);
+    void vTransform_AddPartitioning(void);
 
     void vAssert_Board_any(void);
     void vAssert_Board_mqA(void);

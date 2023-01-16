@@ -87,7 +87,7 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI)
+void Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI)
 {
   _static_
 

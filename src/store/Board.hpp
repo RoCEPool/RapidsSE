@@ -227,7 +227,7 @@ namespace STORE
     Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    static void vConvert_tblColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
+    static void vConvert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
     static void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
     static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
 

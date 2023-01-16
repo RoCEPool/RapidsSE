@@ -214,9 +214,9 @@ void Bench::vPrefix(char cPrefix)
 
 
 /*----------------------------------------------------------------------------*/
-/* transform 3                                                                */
+/* transform matrix                                                           */
 /*----------------------------------------------------------------------------*/
-bool Bench::bApplySeries(eEC* peErrorCode)
+bool Bench::bApplyTransformMatrix(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -338,6 +338,7 @@ void Bench::vSeries_MakeWeavable(void)
   vSA0_T00_Begin();
 
   vGroup_CullBounds();
+  vGroup_Filters();
   vGroup_Staging();
   vGroup_Partitioning();
   vGroup_FinalAdjustments();
@@ -389,7 +390,7 @@ void Bench::vGroup_InitialAdjustments(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vS05_T_Move_On();
+  vTransform_Move_On();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,8 +400,9 @@ void Bench::vGroup_CondenseInfo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vS10_T_Condense_Info();
-
+  vTransform_DeleteUnneeded();
+  vTransform_ScanBecomesTable();
+  vTransform_AddLevel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,11 +412,10 @@ void Bench::vGroup_MetaAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vS20_T_Table_Analysis();
-  vS22_T_Stream_Analysis();
-  vS26_T_Index_Analysis();
-  vS24_T_Projection_Analysis();
-
+  vTransform_TableAnalysis();
+  vTransform_StreamAnalysis();
+  vTransform_IndexAnalysis();
+  vTransform_ProjectionAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,13 +425,9 @@ void Bench::vGroup_MainConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vS33_T10_Convert_stmColOdn_To_tblColOdn();
-
+  vTransform_StmColOdnToTblColOdn();
   vTransform_RpnCalcToBoolCalc();
-
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -451,7 +448,17 @@ void Bench::vGroup_PredicatePullup(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vJoinOrdering(void)
+void Bench::vGroup_IndexBounds(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_DeriveBoundsFromFilter();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -461,17 +468,7 @@ void Bench::vJoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_IndexBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vS36_T10_Derive_bounds_From_filter();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vFlattenSubquery(void)
+void Bench::vGroup_FlattenSubquery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -485,7 +482,7 @@ void Bench::vGroup_ChooseEEops(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vS75_T10_Morph_table_To_EEop();
+  vTransform_MorphTableToEEop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -495,9 +492,18 @@ void Bench::vGroup_CullBounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSA0_T05_Cull_Nonused_bounds_of_Chosen_index();
-  vSA0_T10_Eliminate_bounds_From_filter();
-  vSA0_T20_Individuate_filter();
+  vTransform_CullNonusedBounds();
+  vTransform_CullUsedBoundsFromFilter();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_Filters(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_IndividuateFilter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,7 +513,7 @@ void Bench::vGroup_Staging(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSZ0_T20_Reinstate_stagesV3();
+  vTransform_ReinstateStages();
 
 }
 
@@ -518,7 +524,7 @@ void Bench::vGroup_Partitioning(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSZ0_T30_Add_Partitioning();
+  vTransform_AddPartitioning();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -528,8 +534,8 @@ void Bench::vGroup_FinalAdjustments(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSE0_T10_Convert_TblColOdn_To_StmOdn();
-  vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm();
+  vTransform_TblColOdnToStmOdn();
+  vTransform_StmColToColNmOfKeyExists();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -915,7 +921,7 @@ void Bench::vS10_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on> to <where>                                         */
 /*----------------------------------------------------------------------------*/
-void Bench::vS05_T_Move_On(void)
+void Bench::vTransform_Move_On(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -931,7 +937,7 @@ void Bench::vS05_T_Move_On(void)
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
-void Bench::vS10_T_Condense_Info(void)
+void Bench::vTransform_DeleteUnneeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -970,6 +976,22 @@ void Bench::vS10_T_Condense_Info(void)
     m_pCI->G_vRemoveDeleteMain(CK_STAGE);
   }
 
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Condense Info                                                              */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_ScanBecomesTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
+
+  vAssert_Board_any();
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Cull Scan Leaving Table
 
@@ -979,8 +1001,20 @@ void Bench::vS10_T_Condense_Info(void)
     DELETE_CARD(m_pCI->G.p_scan);
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Add All Level
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Condense Info                                                              */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_AddLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
+
+  vAssert_Board_any();
 
   m_pCI->G_vRestart();
   m_pCI->G.e_Level = AL_PARTITION;
@@ -1008,7 +1042,7 @@ void Bench::vS10_T_Condense_Info(void)
 /*----------------------------------------------------------------------------*/
 /* Table Analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void Bench::vS20_T_Table_Analysis(void)
+void Bench::vTransform_TableAnalysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1074,7 +1108,7 @@ void Bench::vS20_T_Table_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS26_T_Index_Analysis(void)
+void Bench::vTransform_IndexAnalysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1116,7 +1150,7 @@ void Bench::vS26_T_Index_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /* Stream Analysis                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS22_T_Stream_Analysis(void)
+void Bench::vTransform_StreamAnalysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1232,7 +1266,7 @@ void Bench::vS22_T_Stream_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /* Projection Analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void Bench::vS24_T_Projection_Analysis(void)
+void Bench::vTransform_ProjectionAnalysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1446,7 +1480,7 @@ void Bench::vS32_T_SubQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vS33_T10_Convert_stmColOdn_To_tblColOdn(void)
+void Bench::vTransform_StmColOdnToTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1731,7 +1765,7 @@ void Bench::vS34_T_Predicate_Reposition(void)
 /*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
-void Bench::vS36_T10_Derive_bounds_From_filter(void)
+void Bench::vTransform_DeriveBoundsFromFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3128,7 +3162,7 @@ void Bench::vS50_T00_Join_Ordering_v2(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
-void Bench::vS75_T10_Morph_table_To_EEop(void)
+void Bench::vTransform_MorphTableToEEop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3401,7 +3435,7 @@ void Bench::vSA0_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* inspect filters and remove cmp predicates which are in bounds              */
 /*----------------------------------------------------------------------------*/
-void Bench::vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void)
+void Bench::vTransform_CullNonusedBounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -3466,7 +3500,7 @@ void Bench::vSA0_T05_Cull_Nonused_bounds_of_Chosen_index(void)
 /*----------------------------------------------------------------------------*/
 /* inspect filters and remove cmp predicates which are in bounds              */
 /*----------------------------------------------------------------------------*/
-void Bench::vSA0_T10_Eliminate_bounds_From_filter(void)
+void Bench::vTransform_CullUsedBoundsFromFilter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -3525,7 +3559,7 @@ void Bench::vSA0_T10_Eliminate_bounds_From_filter(void)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vSA0_T20_Individuate_filter(void)
+void Bench::vTransform_IndividuateFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3580,7 +3614,7 @@ void Bench::vSA0_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
+void Bench::vTransform_TblColOdnToStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3601,7 +3635,7 @@ void Bench::vSE0_T10_Convert_TblColOdn_To_StmOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
+void Bench::vTransform_StmColToColNmOfKeyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3620,7 +3654,7 @@ void Bench::vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 
     m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
 
-    Board::vConvert_tblColOdn_Of_constraint_To_stmColNm(m_pCI);
+    Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(m_pCI);
   }
 
   m_pCI->vEndTransform();
@@ -3634,7 +3668,7 @@ void Bench::vSE0_T20_Convert_tblColOdn_Of_constraint_To_stmColNm(void)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vSZ0_T20_Reinstate_stagesV3(void)
+void Bench::vTransform_ReinstateStages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -3655,7 +3689,7 @@ void Bench::vSZ0_T20_Reinstate_stagesV3(void)
 /*----------------------------------------------------------------------------*/
 /* add partitioning                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vSZ0_T30_Add_Partitioning(void)
+void Bench::vTransform_AddPartitioning(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
