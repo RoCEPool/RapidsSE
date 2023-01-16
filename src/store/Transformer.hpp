@@ -5,8 +5,6 @@
 
 #include "OptimiserTool.hpp"
 
-#include "Xseries.hpp"
-
 namespace STORE
 {
   class Transformer : public OptimiserTool
@@ -16,9 +14,6 @@ namespace STORE
     CardCtl*     m_pCardCtl;
     TagSet*      m_pJobTags;
     b8           m_bInteractive;
-
-    Xseries*      m_pXseries;
-
 
     // must be last
     Footer m_xFooter;
