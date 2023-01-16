@@ -770,16 +770,24 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
-  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
-  pCard_Sort->vAppend(pCard_ObyElist);
+//  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
+//  pCard_Sort->vAppend(pCard_ObyElist);
+
+  Card_Key* pCard_Key = pKey(pCard_RpnTerms);
+  pCard_Sort->vAppend(pCard_Key);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projection : projection expression list
 
-  Card* p_dup = pCard_ObyElist->pDupCardAndSubCards();
-  p_dup->vCard(CK_KEY);
-  Card_Key* pCard_Key = _pCard_Key(p_dup);
-  pCard_Sort->vAppend(pCard_Key);
+//  Card* p_dup = pCard_ObyElist->pDupCardAndSubCards();
+//  p_dup->vCard(CK_KEY);
+//  Card_Key* pCard_Key = _pCard_Key(p_dup);
+//  pCard_Sort->vAppend(pCard_Key);
+
+  Card* p_dup = pCard_Key->pDupCardAndSubCards();
+  p_dup->vCard(CK_SBYELIST);
+  Card_SbyElist* pCard_SbyElist = _pCard_SbyElist(p_dup);
+  pCard_Sort->vAppend(pCard_SbyElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -811,11 +819,12 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms)
   Card_Key* pCard_Key = new Card_Key;
 
   // GROUPBY
-  Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term_head->bIsValue("GROUPBY"_Stz));
-
-  delete pCard_Term_head;
-  pCard_Term_head = nullptr;
+  Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
+  if (pCard_Term_head->bIsValue("GROUPBY"_Stz)) {
+    pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
+    delete pCard_Term_head;
+    pCard_Term_head = nullptr;
+  }
 
   i8 i_CardNo = 0;
   i8 i_Expr = 1;
