@@ -124,6 +124,22 @@ Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a term                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (i_Term >= this->nChildCards())
+    return nullptr;
+
+  Card_Term* p_term = _pCard_Term(pGetChild(i_Term));
+
+  return p_term;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsBraced(void)
