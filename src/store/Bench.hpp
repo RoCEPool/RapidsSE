@@ -56,12 +56,10 @@ namespace STORE
     void vSeries_OptimiseFlattened(void);
     void vSeries_MakeWeavable(void);
 
-
     void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     // group
 
     void vGroup_InitialAdjustments(void);
@@ -83,8 +81,55 @@ namespace STORE
     void vGroup_FinalAdjustments(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // transform
 
-    // optimization transformations
+    void vTransform_MoveOn(void);
+    void vTransform_DeleteUnneeded(void);
+    void vTransform_ScanBecomesTable(void);
+    void vTransform_AddLevel(void);
+
+    void vTransform_TableAnalysis(void);
+    void vTransform_StreamAnalysis(void);
+    void vTransform_IndexAnalysis(void);
+    void vTransform_ProjectionAnalysis(void);
+
+    void vTransform_StmColToTblCol(void);
+    void vTransform_RpnCalcToBoolCalc(void);
+
+    void vTransform_MarkCmpPredWrtTable(void);
+    void vTransform_CopyMarkedCmpPred(void);
+    void vTransform_CullMarkedCmpPred(void);
+    void vTransform_DeleteEmptyWhere(void);
+
+    void vTransform_DeriveBoundsFromFilter(void);
+
+    void vTransform_FlattenByDecisionTree(void);
+
+    void vTransform_MorphTableToEEop(void);
+
+    void vTransform_CullNonusedBounds(void);
+    void vTransform_CullUsedBoundsFromFilter(void);
+    void vTransform_IndividuateFilter(void);
+
+    void vTransform_ReinstateStages(void);
+    void vTransform_AddPartitioning(void);
+
+    void vTransform_TblColToStmCol(void);
+    void vTransform_StmColToColNmOfKeyExists(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // fold
+
+    void vFold_10_F(void);
+    void vFold_20_W_A_C_ro(void);
+    void vFold_30_W_A_NC_I(void);
+    void vFold_40_W_A_NC_ro(void);
+    void vFold_50_W_L_C_E(void);
+    void vFold_60_W_L_NC_NI(void);
+    void vFold_70_H_A_NC_ro(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // optimisation
     void vOptimiseLoop(void);
 
     bool bOT_Cut_Sort(void);
@@ -105,63 +150,26 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // vSeries_10_Make_Runnable
     void vS10_T00_Begin(void);
-    void vTransform_Move_On(void);
-    void vTransform_DeleteUnneeded(void);
-    void vTransform_ScanBecomesTable(void);
-    void vTransform_AddLevel(void);
 
-    // vSeries_20_Table_Analysis
-    void vTransform_TableAnalysis(void);
 
-    // vSeries_24_Index_Analysis
-    void vTransform_IndexAnalysis(void);
-
-    // vSeries_22_Stream_Analysis
-    void vTransform_StreamAnalysis(void);
-    void vTransform_ProjectionAnalysis(void);
-
-    // vSeries_26_SubQuery_Analysis
 
     void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
     void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
 
-    // vSeries_32_To_BoolCalc
     void vS32_T_SubQuery_Analysis(void);
 
-    // vSeries_33_To_TblColOdn
-    void vTransform_StmColOdnToTblColOdn(void);
-
-    void vTransform_RpnCalcToBoolCalc(void);
 
     // vSeries_34_Predicate_Pullup
     void vS34_T_Predicate_Pullup(void);
-    void vTransform_MarkCmpPredWrtTable(void);
-    void vTransform_CopyMarkedCmpPred(void);
-    void vTransform_CullMarkedCmpPred(void);
-    void vTransform_DeleteEmptyWhere(void);
 
     void vS34_T_Predicate_Reposition(void);
 
-    // vSeries_36_Bound_Analysis
-    void vTransform_DeriveBoundsFromFilter(void);
 
     // vSeries_40_Flatten_Query
-    void vS40_T05_Flatten_By_Decision_Tree(void);
-    void vS40_T10_Fold_F(void);
-    void vS40_T20_Fold_W_A_C_ro(void);
-    void vS40_T30_Fold_W_A_NC_I(void);
-    void vS40_T40_Fold_W_A_NC_ro(void);
-    void vS40_T50_Fold_W_L_C_E(void);
-    void vS40_T60_Fold_W_L_NC_NI(void);
-    void vS40_T70_Fold_H_A_NC_ro(void);
 
-    // vSeries_50_Join_Ordering
     void vS50_T00_Join_Ordering_v2(void);
 
-    // vSeries_75_EE_operators
-    void vTransform_MorphTableToEEop(void);
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
     void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
 
@@ -181,18 +189,11 @@ namespace STORE
 
     // vSeries_A0_Make_Weavable
     void vSA0_T00_Begin(void);
-    void vTransform_CullNonusedBounds(void);
-    void vTransform_CullUsedBoundsFromFilter(void);
-    void vTransform_IndividuateFilter(void);
     void vSA0_TZZ_End(void);
 
     // vSeries_E0_To_StmOdn
-    void vTransform_TblColOdnToStmOdn(void);
-    void vTransform_StmColToColNmOfKeyExists(void);
 
     // vSeries_Z0_Restate_Pipeline
-    void vTransform_ReinstateStages(void);
-    void vTransform_AddPartitioning(void);
 
     void vAssert_Board_any(void);
     void vAssert_Board_mqA(void);

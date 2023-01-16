@@ -14,7 +14,7 @@ create index S_idx0  on supplier (S_SUPPKEY  );
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vS40_T05_Flatten_By_Decision_Tree"
+/glean_cue_from = "vTransform_FlattenByDecisionTree"
 /glean_interactive
 /transliterated
 /weaved

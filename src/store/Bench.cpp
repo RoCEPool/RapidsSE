@@ -390,7 +390,7 @@ void Bench::vGroup_InitialAdjustments(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_Move_On();
+  vTransform_MoveOn();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,7 +425,7 @@ void Bench::vGroup_MainConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_StmColOdnToTblColOdn();
+  vTransform_StmColToTblCol();
   vTransform_RpnCalcToBoolCalc();
 }
 
@@ -534,7 +534,7 @@ void Bench::vGroup_FinalAdjustments(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_TblColOdnToStmOdn();
+  vTransform_TblColToStmCol();
   vTransform_StmColToColNmOfKeyExists();
 }
 
@@ -921,7 +921,7 @@ void Bench::vS10_T00_Begin(void)
 /*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on> to <where>                                         */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_Move_On(void)
+void Bench::vTransform_MoveOn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1480,7 +1480,7 @@ void Bench::vS32_T_SubQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColOdnToTblColOdn(void)
+void Bench::vTransform_StmColToTblCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1794,7 +1794,7 @@ void Bench::vTransform_DeriveBoundsFromFilter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T05_Flatten_By_Decision_Tree(void)
+void Bench::vTransform_FlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1807,7 +1807,7 @@ void Bench::vS40_T05_Flatten_By_Decision_Tree(void)
 
   m_pCI->G.pSubQuery =  pGetBoard(C_SQ_BOARD)->pSubQuery();
 
-  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_       Q7,8,9 */ vS40_T10_Fold_F();
+  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_       Q7,8,9 */ vFold_10_F();
   else
   if (m_pCI->G.pSubQuery->bViaWhere()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
@@ -1816,17 +1816,17 @@ void Bench::vS40_T05_Flatten_By_Decision_Tree(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                  /* W_A_C_ro   Q2,17 */ vS40_T20_Fold_W_A_C_ro();
+        else                                  /* W_A_C_ro   Q2,17 */ vFold_20_W_A_C_ro();
       } else {
         if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vS40_T30_Fold_W_A_NC_I();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFold_30_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                  /* W_A_NC_ro    Q15 */ vS40_T40_Fold_W_A_NC_ro();
+        else                                  /* W_A_NC_ro    Q15 */ vFold_40_W_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vS40_T50_Fold_W_L_C_E();
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFold_50_W_L_C_E();
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
@@ -1835,7 +1835,7 @@ void Bench::vS40_T05_Flatten_By_Decision_Tree(void)
         if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vS40_T60_Fold_W_L_NC_NI();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFold_60_W_L_NC_NI();
         else                                  /* W_L_NC_ro        */ NEVER_REACH
       }
     }
@@ -1854,7 +1854,7 @@ void Bench::vS40_T05_Flatten_By_Decision_Tree(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                  /* H_A_NC_ro    Q11 */ vS40_T70_Fold_H_A_NC_ro();
+        else                                  /* H_A_NC_ro    Q11 */ vFold_70_H_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
@@ -1881,7 +1881,7 @@ void Bench::vS40_T05_Flatten_By_Decision_Tree(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T10_Fold_F(void)
+void Bench::vFold_10_F(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1978,7 +1978,7 @@ void Bench::vS40_T10_Fold_F(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T20_Fold_W_A_C_ro(void)
+void Bench::vFold_20_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -2173,7 +2173,7 @@ void Bench::vS40_T20_Fold_W_A_C_ro(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T30_Fold_W_A_NC_I(void)
+void Bench::vFold_30_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -2379,7 +2379,7 @@ void Bench::vS40_T30_Fold_W_A_NC_I(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T40_Fold_W_A_NC_ro(void)
+void Bench::vFold_40_W_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -2574,7 +2574,7 @@ void Bench::vS40_T40_Fold_W_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T50_Fold_W_L_C_E(void)
+void Bench::vFold_50_W_L_C_E(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -2712,7 +2712,7 @@ void Bench::vS40_T50_Fold_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T60_Fold_W_L_NC_NI(void)
+void Bench::vFold_60_W_L_NC_NI(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -2883,7 +2883,7 @@ void Bench::vS40_T60_Fold_W_L_NC_NI(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS40_T70_Fold_H_A_NC_ro(void)
+void Bench::vFold_70_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3614,7 +3614,7 @@ void Bench::vSA0_TZZ_End(void)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_TblColOdnToStmOdn(void)
+void Bench::vTransform_TblColToStmCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
