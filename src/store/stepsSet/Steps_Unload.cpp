@@ -34,9 +34,13 @@ void Step::vUnloadToDisk(void)
 
   if(nDiskpaths <= 0)
   {
-    vTrace("SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n"_Stz);
+    s256 eErrMsg( (Stz*) "SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n" );
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
     s256 sDir;
     m_pDataStack->vPopStr(sDir, __func__);
+
+    m_pDataStack->vPushStr(eErrMsg);
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
     m_pDataStack->vPushBol(false);
     return;
@@ -66,7 +70,13 @@ void Step::vUnloadToDisk(void)
   i8 iFreeSpace = Dir::iFreeSpace(sDirPath.szStz());
 
   if(iFreeSpace < 0) {
-    vTrace("Error getting free space of dir %s. Cannot unload.\n"_Stz, sDirPath.szStz());
+    s256 eErrMsg = ""_Stz;
+
+    eErrMsg.vCatSprint("Error getting free space of dir %s. Cannot unload.\n"_Stz,
+                       sDirPath.szStz());
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    m_pDataStack->vPushStr(eErrMsg);
     m_pDataStack->vPushInt(EC_DISK_SPACE_CHECK_FAILED);
     m_pDataStack->vPushBol(false);
     return;
@@ -75,10 +85,18 @@ void Step::vUnloadToDisk(void)
   i8 iMinSpace = iShmSize / nDiskpaths;
   if(iFreeSpace < iMinSpace)
   {
-    vTrace("Warning: Dir %s does not contain enough space for unload.\n"_Stz, sDirPath.szStz());
-    vTrace("Dir has %.2f GB\n"_Stz, (d8)iFreeSpace/(C_1GB));
-    vTrace("Minimum space required %.2f GB\n"_Stz, (d8)iMinSpace/(C_1GB));
-    vTrace("Cannot unload\n"_Stz);
+    s256 eErrMsg = ""_Stz;
+
+    eErrMsg.vCatSprint("Dir %s does not contain enough space for unload.\n"
+                       "Dir has %.2f GB\n"
+                       "Minimum space required %.2f GB\n"
+                       "Cannot unload\n"_Stz,
+                       sDirPath.szStz(),
+                       (d8)iFreeSpace/(C_1GB),
+                       (d8)iMinSpace/(C_1GB));
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    m_pDataStack->vPushStr(eErrMsg);
     m_pDataStack->vPushInt(EC_LOW_DISK_SPACE);
     m_pDataStack->vPushBol(false);
     return;

@@ -35345,7 +35345,7 @@ void Task::vAddMunged(Task* )
     "  <dirName> locals| sDirName |\n"
     "\n"
     "  sDirName unload.toDisk not if\n"
-    "    op__execErr\n"
+    "    op__execErrMsg\n"
     "    pipein[].delete\n"
     "    true\n"
     "    exit\n"
