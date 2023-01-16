@@ -140,7 +140,6 @@ namespace STORE
     Card_RelnOp *           p_relnOp;
     Card_RoPred *           p_roPred;
     Card_RpnCalc *          p_rpnCalc;
-    Card_SbyElist *         p_sbyElist;
     Card_Scan *             p_scan;
     Card_Send *             p_send;
     Card_Size *             p_size;

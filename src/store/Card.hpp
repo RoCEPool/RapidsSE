@@ -114,7 +114,6 @@ namespace STORE
   class Card_RpnCalc;
   class Card_RpnTerms;
 
-  class Card_SbyElist;
   class Card_Scan;
   class Card_Size;
   class Card_Send;
@@ -518,7 +517,6 @@ namespace STORE
     Card_Reason*        pSub_reason(void);
     Card_RoPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
-    Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);

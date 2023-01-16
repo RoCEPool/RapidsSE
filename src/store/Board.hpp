@@ -124,7 +124,6 @@
 #include "Card_RpnCalc.hpp"
 #include "Card_RpnTerms.hpp"
 
-#include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"

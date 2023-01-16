@@ -784,10 +784,10 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
 //  Card_Key* pCard_Key = _pCard_Key(p_dup);
 //  pCard_Sort->vAppend(pCard_Key);
 
-  Card* p_dup = pCard_Key->pDupCardAndSubCards();
-  p_dup->vCard(CK_SBYELIST);
-  Card_SbyElist* pCard_SbyElist = _pCard_SbyElist(p_dup);
-  pCard_Sort->vAppend(pCard_SbyElist);
+//  Card* p_dup = pCard_Key->pDupCardAndSubCards();
+//  p_dup->vCard(CK_SBYELIST);
+//  Card_SbyElist* pCard_SbyElist = _pCard_SbyElist(p_dup);
+//  pCard_Sort->vAppend(pCard_SbyElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -485,7 +485,7 @@ void Board::vDerive_stream_order_For_sort(CardIter* pCI)
   pCI->G.p_stream = pCI->G.p_sort->pSub_stream();
   pCI->G.p_order = _pCard_Order(pCI->G.p_stream->pAppendNewCardTail(CK_ORDER));
 
-  CardIter xCI(pCI->G.p_sbyElist);
+  CardIter xCI(pCI->G.p_key);
   while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild(CK_EXPR)))) {
     pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc();
 
@@ -590,7 +590,7 @@ void Board::vDerive_order(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G_vRestart();
-  while (pCI->G_bEachMainWithSub(CK_SORT,CK_SBYELIST)) {
+  while (pCI->G_bEachMainWithSub(CK_SORT,CK_KEY)) {
     Board::vDerive_stream_order_For_sort(pCI);
   }
 

@@ -1422,13 +1422,13 @@ void Weaver::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_SbyElist* pCard_SbyElist =
-          _pCard_SbyElist(pCard_Sort->pFindSubCard(CK_SBYELIST));
+  Card_Key* pCard_Key =
+          _pCard_Key(pCard_Sort->pFindSubCard(CK_KEY));
 
-  i8 nSubCards = pCard_SbyElist->nItems();
+  i8 nSubCards = pCard_Key->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
 
-    Card* pSubCard = pCard_SbyElist->pGet(i_Child);
+    Card* pSubCard = pCard_Key->pGet(i_Child);
     eCK eSubCard = pSubCard->eCard();
 
     if (CK_EXPR != eSubCard)

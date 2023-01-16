@@ -3196,19 +3196,6 @@ Card_RpnCalc* Card::pSub_rpnCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_SbyElist.hpp"
-Card_SbyElist* Card::pSub_sbyElist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_SbyElist* p_sbyElist =
-      _pCard_SbyElist(pFindSubCard(CK_SBYELIST));
-  return p_sbyElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Scan.hpp"
 Card_Scan* Card::pSub_scan(void)
 {

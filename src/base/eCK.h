@@ -119,7 +119,6 @@ enum eCK // card kind
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
-  /* */ CK_SBYELIST,
   /* */ CK_SCAN,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
@@ -292,7 +291,6 @@ static Stz* aCK[]
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
-  /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
@@ -464,7 +462,6 @@ static Stz* aCK_short[]
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
-  /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
@@ -636,7 +633,6 @@ static Stz* aCK_notation[]
     /* */ "rC"_Stz,           // CK_RPNCALC
     /* */ "rT"_Stz,           // CK_RPNTERMS
 
-    /* */ "sEL"_Stz,          // CK_SBYELIST
     /* */ "s"_Stz,            // CK_SCAN
     /* */ "sSE"_Stz,          // CK_SEND
     /* */ "sK"_Stz,           // CK_SENDKIND
