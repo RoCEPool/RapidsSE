@@ -907,34 +907,6 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <sortBy> terms :                                                   */
-/*----------------------------------------------------------------------------*/
-Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_SbyElist* pCard_SbyElist = new Card_SbyElist;
-
-  i8 i_Expr = 1;
-  Card_Term* pCard_Term_head = nullptr;
-  while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
-        
-    // SEPARATOR
-    if (pCard_Term_head->bIsCommaSeparator()) {
-      delete pCard_RpnTerms->pPop();
-      continue;
-    }
-        
-    // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
-
-    pCard_SbyElist->vAppend(pCard_Expr);
-  }
-
-  return pCard_SbyElist;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
