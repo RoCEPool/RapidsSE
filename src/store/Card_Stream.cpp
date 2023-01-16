@@ -5,8 +5,6 @@
 #include "Card_Stream.hpp"
 
 #include "CardIter.hpp"
-#include "Card_AggElist.hpp"
-//#include "Card_ELIST.hpp"
 #include "Card_ProjElist.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Type.hpp"
@@ -52,7 +50,7 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* produce composite <stream> of <aggreg>                                     */
 /*----------------------------------------------------------------------------*/
-Card_Stream* Card_Stream::pDerive_Of_aggreg(Card_AggElist* p_aggElist)
+Card_Stream* Card_Stream::pDerive_Of_projection(Card_Projection* p_projection)
 {
   _static_
 
@@ -61,7 +59,7 @@ Card_Stream* Card_Stream::pDerive_Of_aggreg(Card_AggElist* p_aggElist)
   p_stream->vAppend(p_stmColList);
 
   i8 i_Expr = 0;
-  CardIter xCI_elist(p_aggElist);
+  CardIter xCI_elist(p_projection);
   while (Card_Expr* p_expr = _pCard_Expr(xCI_elist.pEachChild())) {
     Card_As*   p_expr_as   = nullptr;
     Card_Type* p_expr_type = nullptr;

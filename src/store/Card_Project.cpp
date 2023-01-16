@@ -4,7 +4,6 @@
 
 #include "Card_Project.hpp"
 
-#include "Card_AggElist.hpp"
 #include "Card_As.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_ProjElist.hpp"

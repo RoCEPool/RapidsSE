@@ -17,7 +17,7 @@ namespace STORE
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
 
-    static Card_Stream* pDerive_Of_aggreg(Card_AggElist* p_aggElist);
+    static Card_Stream* pDerive_Of_projection(Card_Projection* p_projection);
     static Card_Stream* pDerive_Of_project(Card_ProjElist* p_projElist);
     static Card_Stream* pDerive_Of_table(Table* pTable);
     static void         vStream_AdjustLoHi(CardIter* pCI);

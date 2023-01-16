@@ -2559,19 +2559,6 @@ Card_Agg* Card::pSub_agg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_AggElist.hpp"
-Card_AggElist* Card::pSub_aggElist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_AggElist* p_aggElist =
-      _pCard_AggElist(pFindSubCard(CK_AGGELIST));
-  return p_aggElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Aggreg.hpp"
 Card_Aggreg* Card::pSub_aggreg(void)
 {

@@ -62,7 +62,6 @@ namespace STORE
 
     Card_AbsJoin *          p_absJoin;
     Card_Agg *              p_agg;
-    Card_AggElist *         p_aggElist;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
     Card_BolPred *          p_bolPred;

@@ -325,8 +325,8 @@ void Board::vDerive_stream_order_For_gbyAgg(CardIter* pCI)
 
   pCI->G_vAppendNewChild(pCI->G.p_stream, CK_ORDER);
 
-  pCI->G.p_aggElist =  pCI->G.p_gbyAgg->pSub_aggElist();
-  CardIter xCI(pCI->G.p_aggElist);
+  pCI->G.p_projection =  pCI->G.p_gbyAgg->pSub_projection();
+  CardIter xCI(pCI->G.p_projection);
   while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
     i8 i_Key = pCI->G.p_expr->iRpnCalc_WhichGbyKey();
     if (C_UNKNOWN == i_Key)
@@ -649,12 +649,12 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
     pCI->G.p_projElist = pCI->G.p_gbyAgg->pSub_projElist();
 
-    pCI->G.p_projElist->vCard(CK_AGGELIST);
-    pCI->G.p_aggElist = _pCard_AggElist(pCI->G.p_projElist);
+    pCI->G.p_projElist->vCard(CK_PROJECTION);
+    pCI->G.p_projection = _pCard_Projection(pCI->G.p_projElist);
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->Y_vSet(P_Injected);
-    pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_aggElist);
+    pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_projection);
 
 
     if (AL_PARTITION == pCI->G.e_Level) {
@@ -688,11 +688,11 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
     }
 
     pCI->G.p_expr->Y_vSet(P_Injected);
-    pCI->G.p_aggElist->vPush(pCI->G.p_expr);
+    pCI->G.p_projection->vPush(pCI->G.p_expr);
 
 
     if (AL_PARTITION != pCI->G.e_Level) {
-      pCI->G.p_aggElist->vBump_stmOdn_In_rpnCalc(pCI);
+      pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
       pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->G.p_key->Y_vSet(P_ProjBumped);
     }
@@ -701,7 +701,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
       pCI->G.p_gbyAgg->vRemoveChild(pCI->G.p_stream);
       DELETE_CARD(pCI->G.p_stream);
     }
-    pCI->G.p_stream = Card_Stream::pDerive_Of_aggreg(pCI->G.p_aggElist);
+    pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
     pCI->G.p_gbyAgg->vAppend(pCI->G.p_stream);
 
     if (pCI->G_bEachMain()) {
@@ -875,9 +875,9 @@ void Board::vFoldIn_foldExpr(CardIter* pCI)
       pCI->G.p_key = pCI->G.p_gbyAgg->pSub_key();
       pCI->G.p_key->vBump_stmOdn_In_rpnCalc(pCI);
 
-      pCI->G.p_aggElist = pCI->G.p_gbyAgg->pSub_aggElist();
-      pCI->G.p_aggElist->vBump_keyOdn_In_rpnCalc(pCI);
-      pCI->G.p_aggElist->vBump_stmOdn_In_rpnCalc(pCI);
+      pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
+      pCI->G.p_projection->vBump_keyOdn_In_rpnCalc(pCI);
+      pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
 
       Card_FoldElist::vPush_foldExpr_Into_aggElist(pCI);
       Card_FoldElist::vPush_foldExpr_Into_gbyElist(pCI);
@@ -1169,7 +1169,7 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
   _static_
 
 
-  if (! pCI->G_bResolveCardWithSub(CK_GBYAGG, CK_AGGELIST, pCI->G.i_MainCard))
+  if (! pCI->G_bResolveCardWithSub(CK_GBYAGG, CK_PROJECTION, pCI->G.i_MainCard))
     return;
 
   pCI->G_vNewMember(CK_PROJECT);
@@ -1181,14 +1181,14 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
   pCI->G_vNewMemberOf(CK_PROJELIST,""_Stz,CK_PROJECT);
 
   i8 i_Col = 0;
-  i8 nChildren_aggElist = pCI->G.p_aggElist->nChildCards();
+  i8 nChildren_aggElist = pCI->G.p_projection->nChildCards();
   for (i8 i_expr_aggElist = 0;
        i_expr_aggElist < nChildren_aggElist;
        i_expr_aggElist++) {
 
     i_Col++;
 
-    pCI->G.p_expr = _pCard_Expr(pCI->G.p_aggElist->pGetChild(i_expr_aggElist));
+    pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_aggElist));
     pCI->G.p_as = pCI->G.p_expr->pSub_as();
 
     if (Card::bIsSqyColOrdinal(pCI->G.p_as->szValue()))

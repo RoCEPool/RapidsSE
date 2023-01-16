@@ -56,7 +56,7 @@ void Card_FoldElist::vPush_foldExpr_Into_aggElist(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_expr,CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$K1"_Stz);
 
-  pCI->G.p_aggElist->vPush(pCI->G.p_expr);
+  pCI->G.p_projection->vPush(pCI->G.p_expr);
 }
 
 /*----------------------------------------------------------------------------*/
