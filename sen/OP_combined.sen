@@ -317,21 +317,35 @@
 
   EC_NONE locals| eError |
 
-  // synthesize the code for the combined OP's
-  Combined[] Stencil[].sketch to eError
-  EC_NONE eError == not if
-    eError op__execErr
-    Pipein[].delete
-    true
-    exit
-  then
+  // Onlt Partition 0 to sketch and compil the tcc code
+  [op].partition@ 0 == [op].partition@ -1 == or if
 
-  // compile the stencil sketched code
-  Stencil[] TinyC[].compileCode not if
-    EC_TINYC_ERROR op__execErr
-    Pipein[].delete
-    true
-    exit
+    // synthesize the code for the combined OP's
+    Combined[] Stencil[].sketch to eError
+    EC_NONE eError == not if
+      eError op__execErr
+      Pipein[].delete
+      true
+      exit
+    then
+
+    // compile the stencil sketched code
+    Stencil[] TinyC[].compileCode not if
+      EC_TINYC_ERROR op__execErr
+      Pipein[].delete
+      true
+      exit
+    then
+
+    [op].propagateTinyC
+
+  else
+
+    //"TADA" .
+
+    // other partitions just setup the combined[]
+    Combined[] Stencil[].setup
+
   then
 
   // pipeout the streamDef

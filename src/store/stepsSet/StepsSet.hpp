@@ -1330,6 +1330,7 @@ void vDdlLockAssertNone(void);
   void vOpJobFetch(void);
   void vOpPipeBackIn(void);
   void vOpPipeOut(void);
+  void vOpPropagateTinyC(void);
   void vOpPtnIdFetch(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);

@@ -58,6 +58,7 @@ namespace STORE
     i8   i_PtnOfNode(void);
 
     void vSetJobTask(Task* pJobTask);
+    void vSetTinyC(Op* pOp);
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(void);

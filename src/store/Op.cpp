@@ -1706,6 +1706,24 @@ void Op::vSetTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set tags for this op                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vSetTinyC(Op* pOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Task* pThisTask = pTask();
+  Task* pThatTask = pOp->pTask();
+
+  pThisTask->pLogicUnit()->m_afFun0 = pThatTask->pLogicUnit()->m_afFun0;
+  pThisTask->pLogicUnit()->m_afFun1 = pThatTask->pLogicUnit()->m_afFun1;
+  pThisTask->pLogicUnit()->m_afFun2 = pThatTask->pLogicUnit()->m_afFun2;
+  pThisTask->pLogicUnit()->m_afFun3 = pThatTask->pLogicUnit()->m_afFun3;
+  pThisTask->pLogicUnit()->m_bTinyCSetup = true;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn task for this operator                                               */
 /*----------------------------------------------------------------------------*/
 void Op::vSpawnTask(void)

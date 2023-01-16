@@ -1036,7 +1036,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
       // there should be no RowBuffer or scan
       RASSERT( !m_xStageOps.m_bScan );
-      RASSERT( !bInflateGenerated );
+      //RASSERT( !bInflateGenerated );
       RASSERT( !m_bRowBuffer );
 
       RASSERT(m_xStageOps.m_bIndexScan);

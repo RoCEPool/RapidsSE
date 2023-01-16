@@ -211,6 +211,7 @@ namespace STORE
 
     bool m_bRcvdChildExit;
     bool m_bRcvdEnd;
+    bool m_bTinyCSetup;
 
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);

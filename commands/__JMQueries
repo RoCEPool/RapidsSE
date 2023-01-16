@@ -85,11 +85,161 @@ success: 48 rows fetched
 select stageNo, sum(responseUS) as total from se__jobOperators
   where opName = 'combined' group by stageNo;
 
+//16P
+row: (1,1847778)
+row: (2,2292840)
+row: (3,1215331)
+row: (4,813663)
+row: (5,48148)
+row: (6,16805)
+row: (7,8132)
 
 select stageNo, sum(responseUS), max(maxQs) as total from se__jobOperators
   where opName = 'combined' group by stageNo;
 
-select stageName, lastTimeUs - firstTimeUs  from se__jobOperands;
+select stageName, opName, operandName, lastTimeUs - firstTimeUs  from se__jobOperands;
+
+select stageNo, responseUS from se__jobOperators where opName = 'combined';
+  select stageNo, responseUS from se__jobOperators where opName = 'project';
+
+  row: (1,153988)
+  row: (1,86322)
+  row: (1,130441)
+  row: (1,69568)
+  row: (1,77556)
+  row: (1,51441)
+  row: (1,287560)
+  row: (1,80924)
+  row: (1,44027)
+  row: (1,201509)
+  row: (1,58833)
+  row: (1,61895)
+  row: (1,235835)
+  row: (1,46526)
+  row: (1,54085)
+  row: (1,207268)
+  row: (2,271434)
+  row: (2,135997)
+  row: (2,242106)
+  row: (2,50628)
+  row: (2,177980)
+  row: (2,280815)
+  row: (2,49929)
+  row: (2,169048)
+  row: (2,67452)
+  row: (2,133848)
+  row: (2,252751)
+  row: (2,80782)
+  row: (2,24365)
+  row: (2,127144)
+  row: (2,27711)
+  row: (2,200850)
+  row: (3,17840)
+  row: (3,43516)
+  row: (3,202183)
+  row: (3,11207)
+  row: (3,15688)
+  row: (3,211499)
+  row: (3,33576)
+  row: (3,139837)
+  row: (3,37080)
+  row: (3,27198)
+  row: (3,148156)
+  row: (3,77943)
+  row: (3,37935)
+  row: (3,157180)
+  row: (3,22455)
+  row: (3,32038)
+  row: (4,87928)
+  row: (4,9972)
+  row: (4,53890)
+  row: (4,132957)
+  row: (4,72220)
+  row: (4,30365)
+  row: (4,85557)
+  row: (4,100679)
+  row: (4,10876)
+  row: (4,29107)
+  row: (4,38450)
+  row: (4,10266)
+  row: (4,57144)
+  row: (4,17910)
+  row: (4,22995)
+  row: (4,53347)
+  row: (5,48148)
+  row: (6,16805)
+  row: (7,8132)
+  success: 67 rows fetched
+
+
+
+  row: (1,9778)
+  row: (2,3626)
+  row: (3,3524)
+  row: (4,3186)
+  row: (5,3287)
+  row: (6,3308)
+  row: (7,3152)
+
+  [NODE1 pid=69730 1N (20 cores 3.600Ghz 20MB L3) 16P 24T 32GB release] se>
+  select stageNo, responseUS from se__jobOperators where opName = 'project';
+  [NODE1 pid=69730 1N (20 cores 3.600Ghz 20MB L3) 16P 24T 32GB release] se>
+  metadata: (stageno INTEGER,responseus INTEGER)
+
+  row: (2,287)
+  row: (2,316)
+  row: (2,332)
+  row: (2,323)
+  row: (2,562)
+  row: (2,253)
+  row: (2,377)
+  row: (2,354)
+  row: (2,328)
+  row: (2,233)
+  row: (2,283)
+  row: (2,317)
+  row: (2,238)
+  row: (2,213)
+  row: (2,200)
+  row: (2,249)
+  row: (3,2772)
+  row: (3,259)
+  row: (3,5849)
+  row: (3,238)
+  row: (3,201)
+  row: (3,183)
+  row: (3,238)
+  row: (3,206)
+  row: (3,212)
+  row: (3,223)
+  row: (3,239)
+  row: (3,191)
+  row: (3,237)
+  row: (3,182)
+  row: (3,211)
+  row: (3,207)
+
+
+  row: (2,189)
+  row: (3,165)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+//1P
+/*
+select stageNo, sum(responseUS) as total from se__jobOperators
+  where opName = 'combined' group by stageNo;
+
+row: (1,363928)
+row: (2,3790)
+row: (3,3604)
+row: (4,3042)
+row: (5,3044)
+row: (6,3073)
+row: (7,2969)
+
+select stageNo, responseUS from se__jobOperators where opName = 'project';
+row: (2,202)
+row: (3,165)
+
+*/

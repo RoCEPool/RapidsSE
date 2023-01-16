@@ -253,6 +253,23 @@ void Vertex::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
+void Vertex::vSetTinyC(Op* pOp, i8 iStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
+
+
+  Stage* pStage = m_pDeck->pGet(iStage);
+
+  for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+    Stream* pStream = pStage->pGet(i_Stream);
+
+    pStream->vSetTinyC(pOp);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
 void Vertex::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);

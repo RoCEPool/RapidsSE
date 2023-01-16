@@ -268,6 +268,45 @@ StageSpec* Stream::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn tasks for all operators for partitions of given node                 */
 /*----------------------------------------------------------------------------*/
+void Stream::vSetTinyC(Op* pOp)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  i8 iThisNodeId = MY::iNodeId();
+
+  i8 iOnNodeId = -1;
+
+  if (m_p_StageSpec->bNodeTopo()) {
+
+    if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
+      if (iThisNodeId != pPipeline()->iOriginNodeId()) {
+        iOnNodeId = m_iNodeId;
+      }
+    }
+    else {
+      iOnNodeId = m_iNodeId;
+    }
+
+  }
+  else {
+    iOnNodeId = AM::pLglPtnMap()->iNodeId(m_tLglPtn);
+  }
+
+  i8 i_Op = pOp->i_Op();
+
+  if (iOnNodeId == iThisNodeId) {
+
+      Op* pStreamOp = pGet(i_Op);
+      if (m_i_PtnOfNode != 0)
+        pStreamOp->vSetTinyC(pOp);
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn tasks for all operators for partitions of given node                 */
+/*----------------------------------------------------------------------------*/
 void Stream::vSpawnOpTasks(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);

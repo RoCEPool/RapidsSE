@@ -49,6 +49,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("[op].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
   vAddStep("[op].pipeout"_Stz,          &Step::vOpPipeOut);
+  vAddStep("[op].propagateTinyC"_Stz,   &Step::vOpPropagateTinyC);
   vAddStep("[op].ptnId@"_Stz,           &Step::vOpPtnIdFetch);
   vAddStep("[op].queueLength@"_Stz,     &Step::vOpQueueLength);
   vAddStep("[op].stageName@"_Stz,       &Step::vOpStageNameFetch);
@@ -381,6 +382,21 @@ void Step::vOpPipeOut(void)
 
   AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].propogateTinyC -- propagacte TinyC from this Op to other Ptns         */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPropagateTinyC(void)
+{
+  ENTRY();
+
+  Stream* pStream = m_pOp->pStream();
+  Pipeline* pPipeline = m_pOp->pPipeline();
+  Vertex* pVertexRoot = pPipeline->pVertexRoot();
+  pVertexRoot->vSetTinyC(m_pOp, pStream->pStage()->i_Stage());
+
   EXIT();
 }
 

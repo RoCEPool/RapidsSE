@@ -43,6 +43,7 @@ namespace STORE
   
     void vSetJobTask(Task* pJobTask);
     void vSetupJob(void);
+    void vSetTinyC(Op* pOp, i8 iStage);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);

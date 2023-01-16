@@ -167,6 +167,7 @@ namespace STORE
     void vSpawnTask(void);
     void vSetJobTask(Task* pJobTask);
     void vSetTags(void);
+    void vSetTinyC(Op* pOp);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);

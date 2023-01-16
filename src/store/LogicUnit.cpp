@@ -223,6 +223,8 @@ LogicUnit::LogicUnit(void)
   m_bRcvdChildExit = false;
   m_bRcvdEnd = false;
 
+  m_bTinyCSetup = false;
+
   m_afFun0 = nullptr;
   m_afFun1 = nullptr;
   m_afFun2 = nullptr;

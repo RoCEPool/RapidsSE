@@ -85,6 +85,9 @@ void Step::vStencilSetup(void)
 
   // get the current stream
   Stream* pStream = _pStream(m_pOp->pStream());
+  while (!m_pLogicUnit->m_bTinyCSetup) {
+    usleep(1);
+  }
 
   pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
   pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;
