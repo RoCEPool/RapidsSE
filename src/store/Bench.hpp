@@ -160,8 +160,6 @@ namespace STORE
 
     void vS32_T_SubQuery_Analysis(void);
 
-    void vS34_T_Predicate_Pullup(void);
-
     void vS34_T_Predicate_Reposition(void);
 
     void vS50_T00_Join_Ordering_v2(void);

@@ -57,159 +57,9 @@ Bench::~Bench(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add a new board                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vAddBoard(Board* pBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  //RASSERT(! pGetBoard(pBoard->eBoardKind()));
-
-  vPush(pBoard);
-}
 
 /*----------------------------------------------------------------------------*/
-/* does given board exist?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (pGetBoard(eBoard,i_SubBoard))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get card registers                                                         */
-/*----------------------------------------------------------------------------*/
-CardCtl* Bench::pCardCtl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  return m_pOptimiser->pCardCtl();
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear marks                                                                */
-/*----------------------------------------------------------------------------*/
-void Bench::vClearMarks(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  i8 nBoards = this->nItems();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    pBoard->vClearMarks();
-  }
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* get board of given kind                                                    */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  i8 nBoards = this->nItems();
-  for (i8 i_each = 0; i_each < nBoards; i_each++) {
-    Board *pBoard = this->pGet(i_each);
-
-    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
-                                       i_Board == pBoard->i_Board()))
-      return pBoard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get board                                                                  */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  Board *pBoard = this->pGet(i_Board);
-
-  return pBoard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get board of given name                                                    */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(Stz* szBoardNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  i8 nBoards = this->nItems();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    if (pBoard->szBoardNm()->bSame(szBoardNm))
-      return pBoard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the bench flat?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Bench::bIsFlat(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return m_bIsFlat;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set is the bench flat?                                                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vIsFlat(bool bIsFlat)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_bIsFlat = bIsFlat;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Optimiser* Bench::pOptimiser(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return m_pOptimiser;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Bench::cPrefix(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return m_cPrefix;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vPrefix(char cPrefix)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_cPrefix = cPrefix;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Xseries -----------------------------------------------------------------*/
+/*-- series ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
@@ -229,9 +79,9 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
 
   try {
     m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
-                                              //CK_KEY, //CK_PROJECTION,
-                                              //CK_RPNCALC,
-                                              CK_STREAM, 0);
+        //CK_KEY, //CK_PROJECTION,
+        //CK_RPNCALC,
+                                             CK_STREAM, 0);
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
@@ -345,38 +195,7 @@ void Bench::vSeries_MakeWeavable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vEndSeries(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  RASSERT(0 == m_pCI->iTransformDepth());
-
-  //m_pTransforms->vXform(C_NA);
-  //m_pCardCtl->vUseXhand();
-
-  m_pCI->vPrintBench(eBoard, i_Board);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vUsingBoard(eBoard, i_Board);
-  m_pCI->vXhand(azHand);
-
-  vClearMarks();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Xtransforms -------------------------------------------------------------*/
+/*-- group -------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +252,6 @@ void Bench::vGroup_PredicatePullup(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
 
-  //vS34_T_Predicate_Pullup();
   vTransform_MarkCmpPredWrtTable();
   vTransform_CopyMarkedCmpPred();
   vTransform_CullMarkedCmpPred();
@@ -510,7 +328,6 @@ void Bench::vGroup_Staging(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vTransform_ReinstateStages();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,385 +351,10 @@ void Bench::vGroup_FinalAdjustments(void)
   vTransform_StmColToColNmOfKeyExists();
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Optimization transforms -------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/*-- transform ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Bench::vOptimiseLoop(void) {
-
-  bool bOpts;
-  i8 iOpts = 0;
-
-  //vTrace("%s\n"_Stz,  pOptimiser()->szWeave());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Discover and perform the optimisation transformations
-
-  do {
-
-    bOpts = false;
-
-    bOpts |= bOptimise_CutSort();
-    bOpts |= bOptimise_DupFilter();
-    bOpts |= bOptimise_ElyFilters();
-    bOpts |= bOptimise_ElyProjections();
-    bOpts |= bOptimise_MinGroupby();
-    bOpts |= bOptimise_OtmCalculations();
-    bOpts |= bOptimise_PpnProjections();
-    // todo: disuss with Alka
-//    bOpts |= bOptimise_RplAggregByOrdAgg();
-    bOpts |= bOptimise_RplAggregBySortOrdAgg();
-    bOpts |= bOptimise_RplMaxByTop();
-    bOpts |= bOptimise_RplScanByIndexScan();
-    bOpts |= bOptimise_RplSortDescLimitByTop();
-    bOpts |= bOptimise_RplSortLimitOnOriginByAllLevels();
-    bOpts |= bOptimise_SeqJoinOrder();
-
-  } while (bOpts);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_CutSort(void) {
-
-  //
-  // Query1, Query4, Query7, Query8, Query12
-  //
-
-  // Notes:
-  // sbyElist matches the gbyElist of an earlier (on all partitions) stage
-  //   including the direction
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_SORT)) {
-    Card_Order* p_order1 = m_pCI->G.p_sort->pSub_stream()->pSub_order();
-    if (! p_order1)
-      return false;
-
-    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
-      Card_Order *p_order2 = m_pCI->G.p_stream->pSub_order();
-      if (! p_order2)
-        return false;
-
-      // are the two order's the same?
-      if (p_order1->bValuesSameRecursive(p_order2)) {
-
-        m_pCI->G_vRemoveDeleteMain(CK_SORT);
-        return true;
-      }
-
-    }
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_DupFilter(void) {
-
-  // Query7, Query19
-
-  // Notes:
-  // If the query has filters with an OR we need to pick all the values for a column
-  // from all the OR filters and copy them close to the table scan/indesxScan/indexJoin
-  // of the concerned table.
-
-  // Also Note: These are filters that are not being moved but extracts being
-  // copied to the tables scan/indesxScan/indexJoin.
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_ElyFilters(void) {
-
-  // Query2, Query3, Query4, Query5, Query7, Query8,
-  //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
-
-  // Notes:
-  // get columns from cmpPred's and find the tables they come from in previous
-  // scan/indexScan/indexJoin cards and move them after the scan/indexJoin/indexJoin
-  // of the tables
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_ElyProjections(void) {
-
-  // Query2, Query3, Query4, Query5, Query7, Query8,
-  //   Query9, Query10, Query11, Query12, Query14,
-  //      Query16, Query17, Query18, Query19
-
-  // Notes:
-  // get all $ columns from all operators -
-  // aggreg, filter, Hash, IndexJoin, keyExists, keyNotExists, OrdAgg, project, Sort, Top
-  // (leaving them as is unless its a project being modified)
-  // and find the tables they come from in previous scan/indexScan/indexJoin
-  // cards and add a project (or add to the project if already there)
-  // after the scan/indexJoin/indexJoin of the tables
-  // (ensuring no duplicate projections)
-
-  // idea being to get all pprojections realted to a table closest to
-  // its scan/indexScan/indexJoin
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_MinGroupby(void) {
-
-  //
-  // Query3, Query10, Query18
-  //
-
-  // Notes:
-  // * need to get the index if the groupby colum is coming from an indexscan
-  // * and check if index is a unique index on that column
-  // * if a match is found , discard all other columns off the gbyElist
-  //   except the match (unique one) and need to rejoin with the same table
-  //   to get the columns if they were being projected
-
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_OtmCalculations(void) {
-
-  // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
-  //   Query19, Query20
-
-  // Notes:
-  // To figure out if their are any literal calculations that can be done upfront.
-  // instead of executing the calculation for every row that is being processed.
-  // So need to decipher any arithmetic OP (+-*/) with 2 literals.
-  // eg 0.06 0.01 -
-  // date '1993-01-01' - interval '1' year
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_PpnProjections(void) {
-
-  // Query2, Query10
-
-  // Notes:
-  // If a query has an aggregate and either :
-  //   the group by columns don't include the columns in the select list
-  //   or due to an optimisation OT_MIN_GROUPBY the columns are reduced from
-  //     the group by list
-  // then we need to rejoin with the particular table/tables and get the required
-  // selected columns
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_RplAggregByOrdAgg(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  // Query13, Query17 : do we change the scan to indexScan ????
-  // Query18
-
-  // Notes:
-  // When we have an aggreg grouped on a column on which their is an index available,
-  // we can change the scan to an indexScan (hence data will come in ascending order
-  // of the group by key)
-  // and then we can change the aggreg to an ordAgm_pCI->G.
-  //
-  // Also Note: when the ordAgg replaces the aggreg at an all partitions level,
-  //  we can delete the aggregates on all nodes and on origin.
-  //  This further aggregation is not required.
-
-  m_pCI->G.pDeck->vRenumberRecursive();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    Card_Order* p_order1 = m_pCI->G.p_gbyAgg->pSub_stream()->pSub_order();
-
-    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
-      Card_Order *p_order2 = m_pCI->G.p_stream->pSub_order();
-      if (! p_order2)
-        return false;
-
-      p_order1->vDump(0,"ORDER1"_Stz);
-      p_order2->vDump(0,"ORDER2"_Stz);
-
-      // are the two order's the same?
-      if (p_order1->bValuesSameRecursive(p_order2)) {
-        m_pCI->G.p_gbyAgg->vCard(CK_ORDAGG);
-
-        m_pCI->vPrintBoard(__LINE__);
-
-        RASSERT(m_pCI->G_bEachMain(CK_GBYAGG));
-        m_pCI->G_vRemoveDeleteMain(CK_GBYAGG);
-
-        m_pCI->vPrintBoard(__LINE__);
-
-        RASSERT(m_pCI->G_bEachMain(CK_GBYAGG));
-        m_pCI->G_vRemoveDeleteMain(CK_GBYAGG);
-
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_RplAggregBySortOrdAgg(void) {
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_RplMaxByTop(void) {
-
-  // Query15
-
-  // Notes:
-  // If a projEList has only one item and it is a max,
-  //  then the projectOP can be replace by a TOP of the max column
-  //  with 1 as the parameter to TOP
-  // e.g
-  //   project " type DECIMAL ) $1 max "
-  // can be replace by :
-  //   top "TOP type DECIMAL $2" 1
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_RplScanByIndexScan(void) {
-
-  // Query6, Query10, Query14 and Query15
-
-  // Notes:
-  //
-  // If there is a Scan followed by a filter and the filter is on a single column
-  // with a lower/upper/lower+upper/equal bound then we can replace
-  // the scan and part / all of the filter with an indexScan
-
-  // Points to note:
-  // ** Some queries (eg Query1) we don't change the scan to an indexscan
-  //    because the selection range of the filter covers almost 95% of the rows.
-  //    In such a case a scan is better.
-  //
-  // ** This optimisation can be applied only after OT_ELY_FILTERS.
-  //    We won't see it till the Filters are moved close to the scans.
-
-//  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
-//    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
-//      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
-//
-//      m_pCI->vPrintBoard(__LINE__);
-//
-//      vS90_T30_Derive_order();
-//
-//      m_pCI->vPrintBoard(__LINE__);
-//
-//      return true;
-//    }
-//  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_RplSortDescLimitByTop(void) {
-
-  // Query10
-
-  // Notes:
-  // sbyElist expressions has a single column and its direction is descending
-  // and it is followed by a limit we can replace the sort+limit by TOP.
-  // TOP will have the EList from sbyEList and the number (top limit) from limit.
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
-
-  // Query3
-
-  // Notes:
-  // If an aggreg is replaced by an OrdAgg, we know that we don't need the
-  // ordAgg at all nodes and origin. It can be only at the partition level.
-  // You don't need to aggregate all nodes etc.
-  // Because we know that the ordered data being aggregated at all partitions
-  // is complete we can replace a sort on origin that follows the aggreg
-  // by a sort and limit on all partitions/ on all nodes and on origin.
-  //
-  // This ways reduced that data to be sorted at each level and reducing the rows
-  // moving around as we have applied the limit as well
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bOptimise_SeqJoinOrder(void) {
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                   vSeries_10_Make_Runnable */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS10_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vST00_Begin();
-
-  vPrefix('r');
-  m_pCI->m_pCardCtl->vUseExpanded();
-  m_pCI->vPrintBench(BK_SUBPIPE);
-  m_pCI->m_pCardCtl->vUseExpanded();
-}
 
 /*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on> to <where>                                         */
@@ -1031,11 +473,6 @@ void Bench::vTransform_AddLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                  vSeries_20_Table_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /* Table Analysis                                                             */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_TableAnalysis(void)
@@ -1097,11 +534,6 @@ void Bench::vTransform_TableAnalysis(void)
 //}
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                  vSeries_24_Index_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_IndexAnalysis(void)
@@ -1137,11 +569,6 @@ void Bench::vTransform_IndexAnalysis(void)
 
   m_pCI->vEndTransform();
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                 vSeries_22_Stream_Analysis */
-/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /* Stream Analysis                                                            */
@@ -1281,199 +708,6 @@ void Bench::vTransform_ProjectionAnalysis(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                               vSeries_26_SubQuery_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((10))"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (m_pCI->G_bEachMain()) {
-    m_pCI->G_vNewMember(CK_GENESIS,"mq"_Stz);
-    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
-      m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
-    else
-      m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_AGGREG)) {
-    // the main-query has an aggreg
-
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vDisposition(QD_AGGREGATION);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vDisposition(QD_AGGREGATION);
-  }
-
-  i8 nBoards =  nItems();
-  if (nBoards > 1) {
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMain(CK_CALL)) {
-      SubQuery* pSubQuery =  pGetBoard((i8)1)->pSubQuery();
-
-      pSubQuery->vCaller(0);
-
-      pSubQuery->vClause(QC_FROM_CLAUSE);
-
-      SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-      pMainQuery->vSubQueries(1);
-    }
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      Board::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(m_pCI);
-    }
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(m_pCI);
-    }
-  }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((20))"_Stz);
-
-  vAssert_Board_mqA();
-
-
-  i8 nBoards =  nItems();
-  if (1 == nBoards) {
-    // there is no sub-query
-
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vSubQueries(0);
-  }
-  else
-  if (2 == nBoards) {
-
-    if (m_pCI->G_bPushBoard(1)) {
-
-      SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-      pSubQuery->vDisposition(QD_LINEAR);
-
-      while (m_pCI->G_bEachMain()) {
-        m_pCI->G_vNewMember(CK_GENESIS,"sq"_Stz);
-        if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
-          m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
-        else
-          m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_PARAMLIST)) {
-        // there is a subQuery and it has a paramList
-
-        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-
-        // TODO: hack the number of params... fix
-        i8 nParams = 1; //m_pCI->G.p_paramList->nChildCards();
-
-        pSubQuery->vCorrCols(nParams);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_AGGREG)) {
-        // there is a subQuery and it has an aggreg
-
-        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-
-        pSubQuery->vDisposition(QD_AGGREGATION);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-        // there is a subQuery and it has an gbyAgg
-        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-        pSubQuery->vDisposition(QD_AGGREGATION);
-      }
-
-      m_pCI->G_vPopIter();
-    }
-  }
-  else
-    NEVER_REACH;
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                     vSeries_32_To_BoolCalc */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* SubQuery Analysis                                                          */
-/*----------------------------------------------------------------------------*/
-void Bench::vS32_T_SubQuery_Analysis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Convert SqyOp Not To NotSqyOp
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
-  }
-
-  m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Convert RpnCalc To Bool Calc
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
-
-  m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                    vSeries_33_To_TblColOdn */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_StmColToTblCol(void)
@@ -1542,65 +776,6 @@ void Bench::vTransform_RpnCalcToBoolCalc(void)
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                vSeries_34_Predicate_Pullup */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* Predicate Pullup                                                           */
-/*----------------------------------------------------------------------------*/
-void Bench::vS34_T_Predicate_Pullup(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  vAssert_Board_any();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // At Mark Where Pred Wrt Table
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Move At Marked Where Pred To Table Filter
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
-  }
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
-
-  m_pCI->vPrintBoard();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete Empty Where
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
-      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
-    }
-  }
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1698,67 +873,6 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Predicate Pullup                                                           */
-/*----------------------------------------------------------------------------*/
-void Bench::vS34_T_Predicate_Reposition(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  vAssert_Board_any();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // At Mark Where Pred Wrt Table
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Move At Marked Where Pred To Table Filter
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
-  }
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
-
-  m_pCI->vPrintBoard();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete Empty Where
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    m_pCI->G.p_table->vRemove_filter_IfEmpty(m_pCI->G.p_filter);
-  }
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                  vSeries_36_Bound_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_DeriveBoundsFromFilter(void)
@@ -1783,11 +897,6 @@ void Bench::vTransform_DeriveBoundsFromFilter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                   vSeries_40_Flatten_Query */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_FlattenByDecisionTree(void)
@@ -1803,36 +912,36 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 
   m_pCI->G.pSubQuery =  pGetBoard(C_SQ_BOARD)->pSubQuery();
 
-  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_       Q7,8,9 */ vFold_10_F();
+  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ vFold_10_F();
   else
   if (m_pCI->G.pSubQuery->bViaWhere()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* W_A_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                  /* W_A_C_ro   Q2,17 */ vFold_20_W_A_C_ro();
+        else                                         /* W_A_C_ro   Q2,17 */ vFold_20_W_A_C_ro();
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFold_30_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                  /* W_A_NC_ro    Q15 */ vFold_40_W_A_NC_ro();
+        else                                         /* W_A_NC_ro    Q15 */ vFold_40_W_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFold_50_W_L_C_E();
+        if (m_pCI->G.pSubQuery->bByExists())         /* W_L_C_E       Q4 */ vFold_50_W_L_C_E();
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
-        else                                  /* W_L_C_ro         */ NEVER_REACH
+        else                                         /* W_L_C_ro         */ NEVER_REACH
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFold_60_W_L_NC_NI();
-        else                                  /* W_L_NC_ro        */ NEVER_REACH
+        else                                         /* W_L_NC_ro        */ NEVER_REACH
       }
     }
   }
@@ -1840,31 +949,31 @@ void Bench::vTransform_FlattenByDecisionTree(void)
   if (m_pCI->G.pSubQuery->bViaHaving()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* H_A_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
-        else                                  /* H_A_C_ro         */ NEVER_REACH
+        else                                         /* H_A_C_ro         */ NEVER_REACH
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* H_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                  /* H_A_NC_ro    Q11 */ vFold_70_H_A_NC_ro();
+        else                                         /* H_A_NC_ro    Q11 */ vFold_70_H_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* H_L_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
-        else                                  /* H_L_C_ro         */ NEVER_REACH
+        else                                         /* H_L_C_ro         */ NEVER_REACH
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+        if (m_pCI->G.pSubQuery->bByExists())         /* H_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
-        else                                  /* H_L_NC_ro        */ NEVER_REACH
+        else                                         /* H_L_NC_ro        */ NEVER_REACH
       }
     }
   }
@@ -1873,6 +982,365 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 
   m_pCI->vEndTransform();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_MorphTableToEEop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
+
+  vAssert_Board_mqA();
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  while (m_pCI->G_bEachMain(CK_TABLE)) {
+
+    m_pCI->G.p_bounds         = m_pCI->G.p_table->pSub_bounds();
+    m_pCI->G.p_index          = m_pCI->G.p_table->pSub_index();
+    m_pCI->G.p_indexJoin      = m_pCI->G.p_table->pSub_indexJoin();
+    m_pCI->G.p_indexList      = m_pCI->G.p_table->pSub_indexList();
+    m_pCI->G.p_keyExists      = m_pCI->G.p_table->pSub_keyExists();
+    m_pCI->G.p_keyNotExists   = m_pCI->G.p_table->pSub_keyNotExists();
+
+//    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
+//           m_pCI->G.p_table,m_pCI->G.p_table->iCardNo(),aCK[m_pCI->G.p_table->eCard()],m_pCI->G.p_table->szValue());
+
+    RASSERT(! m_pCI->G.p_indexJoin);
+    Board::vS75_T10_Morph_table_To_EEop_v2(m_pCI);
+
+    m_pCI->G.pDeck->vRenumberRecursive();
+
+    m_pCI->vPrintBoard(__LINE__);
+
+    vDebugPoint();
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain(CK_SCAN)) {
+    i8 i_Child;
+    m_pCI->G.p_note = _pCard_Note(m_pCI->G.p_scan->pFindChild(CK_NOTE,i_Child));
+
+    if (i_Child == m_pCI->G.p_scan->nChildCards() - 1) {
+      m_pCI->G.p_scan->vRemoveChild(m_pCI->G.p_note);
+      DELETE_CARD(m_pCI->G.p_note);
+    }
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+//  m_pCI->G_vRestart();
+//  while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
+//    vR_S75_T10_Morph_table_To_EEop_c();
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+
+//  m_pCI->G_vRestart();
+//  while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
+//    if (m_pCI->G.p_keyExists) {
+//      i8 i_Child;
+//      m_pCI->G.p_note = _pCard_Note(m_pCI->G.p_keyExists->pFindChild(CK_NOTE, i_Child));
+//      m_pCI->G.p_note->vValue(SEP_DERIVED);
+//    }
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect filters and remove cmp predicates which are in bounds              */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_CullNonusedBounds(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "((desc))"_Stz);
+
+  vAssert_Board_mqA();
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+
+    if (!(m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
+          m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
+      continue;
+    if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
+      continue;
+
+    // have <bounds> & <filter> under <main>
+
+    // find & ignore the first ebound
+    bool bFoundFirst = false;
+
+    CardIter xCI_indexes(m_pCI->G.p_indexList);
+    while ((m_pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
+
+      bool bChosenIndex = m_pCI->G.p_index->Y_bHas(P_ChosenIndex);
+
+      m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds();
+      if (! m_pCI->G.p_bounds)
+        continue;
+
+      CardIter xCI_bounds(m_pCI->G.p_bounds);
+      while (xCI_bounds.bEachChild()) {
+        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
+          bFoundFirst = true;
+          continue;
+        }
+
+        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
+      }
+
+      m_pCI->vPrintBoard(__LINE__);
+      m_pCI->G.p_bounds->vCullBound(MARK_AT);
+
+    }
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* inspect filters and remove cmp predicates which are in bounds              */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_CullUsedBoundsFromFilter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "((desc))"_Stz);
+
+  vAssert_Board_mqA();
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark any cmpPred that are a bound in bounds
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+
+    if (! (m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
+           m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
+      continue;
+    if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
+      continue;
+    if (! (m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+      continue;
+
+    // have <bounds> & <filter> under <main>
+
+    CardIter xCR(m_pCI->G.p_filter);
+    while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
+      if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
+        m_pCI->G.p_cmpPred->vMark1(MARK_AT);
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cull marked cmpPred from filter
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+      m_pCI->G.p_filter->vCullPred(MARK_AT);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete any filter if empty
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+      m_pCI->G.p_MainCard->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
+  }
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_IndividuateFilter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+
+  vAssert_Board_mqA();
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+    m_pCI->G.p_scan->vRemoveChild(m_pCI->G.p_filter);
+    m_pCI->G.pDeck->vInsertAfter(m_pCI->G.p_filter, m_pCI->G.p_scan);
+
+    if (! m_pCI->G.p_filter->pSub_level()) {
+      m_pCI->G.p_filter->vPush(m_pCI->G.p_scan->pSub_level()->pDupCardAndSubCards());
+    }
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
+    Card_Filter::vIndividuate_filter(m_pCI);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
+    Board::vSA0_T10_Individuate_indexJoin_filter_b(m_pCI);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
+    Board::vSA0_T10c_Individuate_crossJoin_filter(m_pCI);
+  }
+
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_TblColToStmCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+
+  vAssert_Board_mqA();
+
+  m_pCI->G.pBoard->vMayHaveStmColOdn(true);
+
+  while (m_pCI->G_bEachMain()) {
+
+    Board::vConvert_tblColOdn_To_stmOdn(m_pCI);
+  }
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_StmColToColNmOfKeyExists(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "((20))))"_Stz);
+
+  vAssert_Board_mqA();
+
+  m_pCI->G.pBoard->vMayHaveStmColOdn(true);
+
+  while (m_pCI->G_bEachMain()) {
+
+    if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
+              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard
+    ))
+      continue;
+
+    m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
+
+    Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(m_pCI);
+  }
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reinstate stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_ReinstateStages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
+
+  vAssert_Board_mqA();
+
+  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
+  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  Board::vSZ0_T20_Reinstate_stagesV3(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add partitioning                                                           */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_AddPartitioning(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "add partitioning"_Stz);
+
+  vAssert_Board_mqA();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Next* p_next_prior = nullptr;
+  Card_Combined* p_combined_prior = nullptr;
+
+  Card* p_main_prior = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  while (m_pCI->G_bEachMain()) {
+    if (CK_INDEXJOIN == m_pCI->G.e_MainCard ||
+        CK_INDEXSCAN == m_pCI->G.e_MainCard ||
+        CK_KEYEXISTS == m_pCI->G.e_MainCard ||
+        CK_KEYNOTEXISTS == m_pCI->G.e_MainCard ||
+        CK_SCAN == m_pCI->G.e_MainCard) {
+      if (p_main_prior) {
+        i8 nSkip = Board::iStage_Partitioning(m_pCI, p_main_prior, p_combined_prior,
+                                              p_next_prior, m_pCI->G.p_MainCard);
+        while (nSkip--)
+          m_pCI->G_vSkipNextMain();
+        m_pCI->vPrintBoard(__LINE__);
+        vDebugPoint();
+      }
+      p_main_prior = m_pCI->G.p_MainCard;
+    }
+    else
+    if (CK_COMBINED == m_pCI->G.e_MainCard) {
+      p_combined_prior = m_pCI->G.p_combined;
+    }
+    else
+    if (CK_NEXT == m_pCI->G.e_MainCard) {
+      p_next_prior = m_pCI->G.p_next;
+    }
+
+  }
+
+  m_pCI->vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- fold --------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -3018,6 +2486,772 @@ void Bench::vFold_70_H_A_NC_ro(void)
   m_pCI->vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Optimise  ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vOptimiseLoop(void) {
+
+  bool bOpts;
+  i8 iOpts = 0;
+
+  //vTrace("%s\n"_Stz,  pOptimiser()->szWeave());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Discover and perform the optimisation transformations
+
+  do {
+
+    bOpts = false;
+
+    bOpts |= bOptimise_CutSort();
+    bOpts |= bOptimise_DupFilter();
+    bOpts |= bOptimise_ElyFilters();
+    bOpts |= bOptimise_ElyProjections();
+    bOpts |= bOptimise_MinGroupby();
+    bOpts |= bOptimise_OtmCalculations();
+    bOpts |= bOptimise_PpnProjections();
+    // todo: disuss with Alka
+//    bOpts |= bOptimise_RplAggregByOrdAgg();
+    bOpts |= bOptimise_RplAggregBySortOrdAgg();
+    bOpts |= bOptimise_RplMaxByTop();
+    bOpts |= bOptimise_RplScanByIndexScan();
+    bOpts |= bOptimise_RplSortDescLimitByTop();
+    bOpts |= bOptimise_RplSortLimitOnOriginByAllLevels();
+    bOpts |= bOptimise_SeqJoinOrder();
+
+  } while (bOpts);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_CutSort(void) {
+
+  //
+  // Query1, Query4, Query7, Query8, Query12
+  //
+
+  // Notes:
+  // sbyElist matches the gbyElist of an earlier (on all partitions) stage
+  //   including the direction
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_SORT)) {
+    Card_Order* p_order1 = m_pCI->G.p_sort->pSub_stream()->pSub_order();
+    if (! p_order1)
+      return false;
+
+    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
+      Card_Order *p_order2 = m_pCI->G.p_stream->pSub_order();
+      if (! p_order2)
+        return false;
+
+      // are the two order's the same?
+      if (p_order1->bValuesSameRecursive(p_order2)) {
+
+        m_pCI->G_vRemoveDeleteMain(CK_SORT);
+        return true;
+      }
+
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_DupFilter(void) {
+
+  // Query7, Query19
+
+  // Notes:
+  // If the query has filters with an OR we need to pick all the values for a column
+  // from all the OR filters and copy them close to the table scan/indesxScan/indexJoin
+  // of the concerned table.
+
+  // Also Note: These are filters that are not being moved but extracts being
+  // copied to the tables scan/indesxScan/indexJoin.
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_ElyFilters(void) {
+
+  // Query2, Query3, Query4, Query5, Query7, Query8,
+  //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
+
+  // Notes:
+  // get columns from cmpPred's and find the tables they come from in previous
+  // scan/indexScan/indexJoin cards and move them after the scan/indexJoin/indexJoin
+  // of the tables
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_ElyProjections(void) {
+
+  // Query2, Query3, Query4, Query5, Query7, Query8,
+  //   Query9, Query10, Query11, Query12, Query14,
+  //      Query16, Query17, Query18, Query19
+
+  // Notes:
+  // get all $ columns from all operators -
+  // aggreg, filter, Hash, IndexJoin, keyExists, keyNotExists, OrdAgg, project, Sort, Top
+  // (leaving them as is unless its a project being modified)
+  // and find the tables they come from in previous scan/indexScan/indexJoin
+  // cards and add a project (or add to the project if already there)
+  // after the scan/indexJoin/indexJoin of the tables
+  // (ensuring no duplicate projections)
+
+  // idea being to get all pprojections realted to a table closest to
+  // its scan/indexScan/indexJoin
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_MinGroupby(void) {
+
+  //
+  // Query3, Query10, Query18
+  //
+
+  // Notes:
+  // * need to get the index if the groupby colum is coming from an indexscan
+  // * and check if index is a unique index on that column
+  // * if a match is found , discard all other columns off the gbyElist
+  //   except the match (unique one) and need to rejoin with the same table
+  //   to get the columns if they were being projected
+
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_OtmCalculations(void) {
+
+  // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
+  //   Query19, Query20
+
+  // Notes:
+  // To figure out if their are any literal calculations that can be done upfront.
+  // instead of executing the calculation for every row that is being processed.
+  // So need to decipher any arithmetic OP (+-*/) with 2 literals.
+  // eg 0.06 0.01 -
+  // date '1993-01-01' - interval '1' year
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_PpnProjections(void) {
+
+  // Query2, Query10
+
+  // Notes:
+  // If a query has an aggregate and either :
+  //   the group by columns don't include the columns in the select list
+  //   or due to an optimisation OT_MIN_GROUPBY the columns are reduced from
+  //     the group by list
+  // then we need to rejoin with the particular table/tables and get the required
+  // selected columns
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_RplAggregByOrdAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  // Query13, Query17 : do we change the scan to indexScan ????
+  // Query18
+
+  // Notes:
+  // When we have an aggreg grouped on a column on which their is an index available,
+  // we can change the scan to an indexScan (hence data will come in ascending order
+  // of the group by key)
+  // and then we can change the aggreg to an ordAgm_pCI->G.
+  //
+  // Also Note: when the ordAgg replaces the aggreg at an all partitions level,
+  //  we can delete the aggregates on all nodes and on origin.
+  //  This further aggregation is not required.
+
+  m_pCI->G.pDeck->vRenumberRecursive();
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_GBYAGG)) {
+    Card_Order* p_order1 = m_pCI->G.p_gbyAgg->pSub_stream()->pSub_order();
+
+    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
+      Card_Order *p_order2 = m_pCI->G.p_stream->pSub_order();
+      if (! p_order2)
+        return false;
+
+      p_order1->vDump(0,"ORDER1"_Stz);
+      p_order2->vDump(0,"ORDER2"_Stz);
+
+      // are the two order's the same?
+      if (p_order1->bValuesSameRecursive(p_order2)) {
+        m_pCI->G.p_gbyAgg->vCard(CK_ORDAGG);
+
+        m_pCI->vPrintBoard(__LINE__);
+
+        RASSERT(m_pCI->G_bEachMain(CK_GBYAGG));
+        m_pCI->G_vRemoveDeleteMain(CK_GBYAGG);
+
+        m_pCI->vPrintBoard(__LINE__);
+
+        RASSERT(m_pCI->G_bEachMain(CK_GBYAGG));
+        m_pCI->G_vRemoveDeleteMain(CK_GBYAGG);
+
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_RplAggregBySortOrdAgg(void) {
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_RplMaxByTop(void) {
+
+  // Query15
+
+  // Notes:
+  // If a projEList has only one item and it is a max,
+  //  then the projectOP can be replace by a TOP of the max column
+  //  with 1 as the parameter to TOP
+  // e.g
+  //   project " type DECIMAL ) $1 max "
+  // can be replace by :
+  //   top "TOP type DECIMAL $2" 1
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_RplScanByIndexScan(void) {
+
+  // Query6, Query10, Query14 and Query15
+
+  // Notes:
+  //
+  // If there is a Scan followed by a filter and the filter is on a single column
+  // with a lower/upper/lower+upper/equal bound then we can replace
+  // the scan and part / all of the filter with an indexScan
+
+  // Points to note:
+  // ** Some queries (eg Query1) we don't change the scan to an indexscan
+  //    because the selection range of the filter covers almost 95% of the rows.
+  //    In such a case a scan is better.
+  //
+  // ** This optimisation can be applied only after OT_ELY_FILTERS.
+  //    We won't see it till the Filters are moved close to the scans.
+
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+//    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
+//      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
+//
+//      m_pCI->vPrintBoard(__LINE__);
+//
+//      vS90_T30_Derive_order();
+//
+//      m_pCI->vPrintBoard(__LINE__);
+//
+//      return true;
+//    }
+//  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_RplSortDescLimitByTop(void) {
+
+  // Query10
+
+  // Notes:
+  // sbyElist expressions has a single column and its direction is descending
+  // and it is followed by a limit we can replace the sort+limit by TOP.
+  // TOP will have the EList from sbyEList and the number (top limit) from limit.
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
+
+  // Query3
+
+  // Notes:
+  // If an aggreg is replaced by an OrdAgg, we know that we don't need the
+  // ordAgg at all nodes and origin. It can be only at the partition level.
+  // You don't need to aggregate all nodes etc.
+  // Because we know that the ordered data being aggregated at all partitions
+  // is complete we can replace a sort on origin that follows the aggreg
+  // by a sort and limit on all partitions/ on all nodes and on origin.
+  //
+  // This ways reduced that data to be sorted at each level and reducing the rows
+  // moving around as we have applied the limit as well
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bOptimise_SeqJoinOrder(void) {
+
+  return false;
+}
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- other -------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* add a new board                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vAddBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  //RASSERT(! pGetBoard(pBoard->eBoardKind()));
+
+  vPush(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given board exist?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (pGetBoard(eBoard,i_SubBoard))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card registers                                                         */
+/*----------------------------------------------------------------------------*/
+CardCtl* Bench::pCardCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_pOptimiser->pCardCtl();
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear marks                                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vClearMarks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    pBoard->vClearMarks();
+  }
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get board of given kind                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_each = 0; i_each < nBoards; i_each++) {
+    Board *pBoard = this->pGet(i_each);
+
+    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
+                                       i_Board == pBoard->i_Board()))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board                                                                  */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pGetBoard(i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  Board *pBoard = this->pGet(i_Board);
+
+  return pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pGetBoard(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->szBoardNm()->bSame(szBoardNm))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the bench flat?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Bench::bIsFlat(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_bIsFlat;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is the bench flat?                                                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vIsFlat(bool bIsFlat)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_bIsFlat = bIsFlat;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Optimiser* Bench::pOptimiser(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_pOptimiser;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Bench::cPrefix(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_cPrefix;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vPrefix(char cPrefix)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_cPrefix = cPrefix;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vEndSeries(eBK eBoard, i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  RASSERT(0 == m_pCI->iTransformDepth());
+
+  //m_pTransforms->vXform(C_NA);
+  //m_pCardCtl->vUseXhand();
+
+  m_pCI->vPrintBench(eBoard, i_Board);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vUsingBoard(eBoard, i_Board);
+  m_pCI->vXhand(azHand);
+
+  vClearMarks();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                   vSeries_10_Make_Runnable */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vS10_T00_Begin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vST00_Begin();
+
+  vPrefix('r');
+  m_pCI->m_pCardCtl->vUseExpanded();
+  m_pCI->vPrintBench(BK_SUBPIPE);
+  m_pCI->m_pCardCtl->vUseExpanded();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                               vSeries_26_SubQuery_Analysis */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "((10))"_Stz);
+
+  vAssert_Board_mqA();
+
+  while (m_pCI->G_bEachMain()) {
+    m_pCI->G_vNewMember(CK_GENESIS,"mq"_Stz);
+    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
+      m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
+    else
+      m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain(CK_AGGREG)) {
+    // the main-query has an aggreg
+
+    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vDisposition(QD_AGGREGATION);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
+    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vDisposition(QD_AGGREGATION);
+  }
+
+  i8 nBoards =  nItems();
+  if (nBoards > 1) {
+    m_pCI->G_vRestart();
+    while (m_pCI->G_bEachMain(CK_CALL)) {
+      SubQuery* pSubQuery =  pGetBoard((i8)1)->pSubQuery();
+
+      pSubQuery->vCaller(0);
+
+      pSubQuery->vClause(QC_FROM_CLAUSE);
+
+      SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+      pMainQuery->vSubQueries(1);
+    }
+    m_pCI->G_vRestart();
+    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+      Board::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(m_pCI);
+    }
+    m_pCI->G_vRestart();
+    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+      Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(m_pCI);
+    }
+  }
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "((20))"_Stz);
+
+  vAssert_Board_mqA();
+
+
+  i8 nBoards =  nItems();
+  if (1 == nBoards) {
+    // there is no sub-query
+
+    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vSubQueries(0);
+  }
+  else
+  if (2 == nBoards) {
+
+    if (m_pCI->G_bPushBoard(1)) {
+
+      SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+      pSubQuery->vDisposition(QD_LINEAR);
+
+      while (m_pCI->G_bEachMain()) {
+        m_pCI->G_vNewMember(CK_GENESIS,"sq"_Stz);
+        if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
+          m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
+        else
+          m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
+      }
+
+      m_pCI->G_vRestart();
+      while (m_pCI->G_bEachMain(CK_PARAMLIST)) {
+        // there is a subQuery and it has a paramList
+
+        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+
+        // TODO: hack the number of params... fix
+        i8 nParams = 1; //m_pCI->G.p_paramList->nChildCards();
+
+        pSubQuery->vCorrCols(nParams);
+      }
+
+      m_pCI->G_vRestart();
+      while (m_pCI->G_bEachMain(CK_AGGREG)) {
+        // there is a subQuery and it has an aggreg
+
+        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+
+        pSubQuery->vDisposition(QD_AGGREGATION);
+      }
+
+      m_pCI->G_vRestart();
+      while (m_pCI->G_bEachMain(CK_GBYAGG)) {
+        // there is a subQuery and it has an gbyAgg
+        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+        pSubQuery->vDisposition(QD_AGGREGATION);
+      }
+
+      m_pCI->G_vPopIter();
+    }
+  }
+  else
+    NEVER_REACH;
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                     vSeries_32_To_BoolCalc */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* SubQuery Analysis                                                          */
+/*----------------------------------------------------------------------------*/
+void Bench::vS32_T_SubQuery_Analysis(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Convert SqyOp Not To NotSqyOp
+
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
+  }
+
+  m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Convert RpnCalc To Bool Calc
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
+
+    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
+
+    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
+
+    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
+
+    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+  }
+
+  m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
+  m_pCI->vEndTransform();
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -3151,77 +3385,66 @@ void Bench::vS50_T00_Join_Ordering_v2(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Predicate Pullup                                                           */
 /*----------------------------------------------------------------------------*/
-/*                                                    vSeries_75_EE_operators */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_MorphTableToEEop(void)
+void Bench::vS34_T_Predicate_Reposition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
-  vAssert_Board_mqA();
+  vAssert_Board_any();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
 
   m_pCI->vPrintBoard(__LINE__);
 
-  while (m_pCI->G_bEachMain(CK_TABLE)) {
-
-    m_pCI->G.p_bounds         = m_pCI->G.p_table->pSub_bounds();
-    m_pCI->G.p_index          = m_pCI->G.p_table->pSub_index();
-    m_pCI->G.p_indexJoin      = m_pCI->G.p_table->pSub_indexJoin();
-    m_pCI->G.p_indexList      = m_pCI->G.p_table->pSub_indexList();
-    m_pCI->G.p_keyExists      = m_pCI->G.p_table->pSub_keyExists();
-    m_pCI->G.p_keyNotExists   = m_pCI->G.p_table->pSub_keyNotExists();
-
-//    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
-//           m_pCI->G.p_table,m_pCI->G.p_table->iCardNo(),aCK[m_pCI->G.p_table->eCard()],m_pCI->G.p_table->szValue());
-
-    RASSERT(! m_pCI->G.p_indexJoin);
-    Board::vS75_T10_Morph_table_To_EEop_v2(m_pCI);
-
-    m_pCI->G.pDeck->vRenumberRecursive();
-
-    m_pCI->vPrintBoard(__LINE__);
-
-    vDebugPoint();
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
   }
 
   m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_SCAN)) {
-    i8 i_Child;
-    m_pCI->G.p_note = _pCard_Note(m_pCI->G.p_scan->pFindChild(CK_NOTE,i_Child));
 
-    if (i_Child == m_pCI->G.p_scan->nChildCards() - 1) {
-      m_pCI->G.p_scan->vRemoveChild(m_pCI->G.p_note);
-      DELETE_CARD(m_pCI->G.p_note);
-    }
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
   }
-  m_pCI->vPrintBoard(__LINE__);
 
-//  m_pCI->G_vRestart();
-//  while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
-//    vR_S75_T10_Morph_table_To_EEop_c();
-//  }
-//  m_pCI->vPrintBoard(__LINE__);
+  m_pCI->vPrintBoard();
 
-//  m_pCI->G_vRestart();
-//  while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
-//    if (m_pCI->G.p_keyExists) {
-//      i8 i_Child;
-//      m_pCI->G.p_note = _pCard_Note(m_pCI->G.p_keyExists->pFindChild(CK_NOTE, i_Child));
-//      m_pCI->G.p_note->vValue(SEP_DERIVED);
-//    }
-//  }
-//  m_pCI->vPrintBoard(__LINE__);
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+  }
+
+  m_pCI->vPrintBoard();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete Empty Where
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    m_pCI->G.p_table->vRemove_filter_IfEmpty(m_pCI->G.p_filter);
+  }
+
+  m_pCI->vPrintBoard();
 
   m_pCI->vEndTransform();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    vSeries_75_EE_operators */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -3407,301 +3630,6 @@ void Bench::vSA0_T00_Begin(void)
   m_pCI->m_pCardCtl->vUseShorter();
 
   vST00_Begin();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect filters and remove cmp predicates which are in bounds              */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_CullNonusedBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  vAssert_Board_mqA();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-
-    if (!(m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
-      continue;
-    if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
-      continue;
-
-    // have <bounds> & <filter> under <main>
-
-    // find & ignore the first ebound
-    bool bFoundFirst = false;
-
-    CardIter xCI_indexes(m_pCI->G.p_indexList);
-    while ((m_pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
-
-      bool bChosenIndex = m_pCI->G.p_index->Y_bHas(P_ChosenIndex);
-
-      m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds();
-      if (! m_pCI->G.p_bounds)
-        continue;
-
-      CardIter xCI_bounds(m_pCI->G.p_bounds);
-      while (xCI_bounds.bEachChild()) {
-        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
-          bFoundFirst = true;
-          continue;
-        }
-
-        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
-      }
-
-      m_pCI->vPrintBoard(__LINE__);
-      m_pCI->G.p_bounds->vCullBound(MARK_AT);
-
-    }
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* inspect filters and remove cmp predicates which are in bounds              */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_CullUsedBoundsFromFilter(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  vAssert_Board_mqA();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark any cmpPred that are a bound in bounds
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-
-    if (! (m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
-      continue;
-    if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
-      continue;
-    if (! (m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      continue;
-
-    // have <bounds> & <filter> under <main>
-
-    CardIter xCR(m_pCI->G.p_filter);
-    while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
-      if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
-        m_pCI->G.p_cmpPred->vMark1(MARK_AT);
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cull marked cmpPred from filter
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      m_pCI->G.p_filter->vCullPred(MARK_AT);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete any filter if empty
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      m_pCI->G.p_MainCard->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
-  }
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_IndividuateFilter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-
-  vAssert_Board_mqA();
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    m_pCI->G.p_scan->vRemoveChild(m_pCI->G.p_filter);
-    m_pCI->G.pDeck->vInsertAfter(m_pCI->G.p_filter, m_pCI->G.p_scan);
-
-    if (! m_pCI->G.p_filter->pSub_level()) {
-      m_pCI->G.p_filter->vPush(m_pCI->G.p_scan->pSub_level()->pDupCardAndSubCards());
-    }
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(m_pCI);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Board::vSA0_T10_Individuate_indexJoin_filter_b(m_pCI);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Board::vSA0_T10c_Individuate_crossJoin_filter(m_pCI);
-  }
-
-
-  m_pCI->vEndTransform();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                       vSeries_E0_To_StmOdn */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_TblColToStmCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-
-  vAssert_Board_mqA();
-
-  m_pCI->G.pBoard->vMayHaveStmColOdn(true);
-
-  while (m_pCI->G_bEachMain()) {
-
-    Board::vConvert_tblColOdn_To_stmOdn(m_pCI);
-  }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColToColNmOfKeyExists(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "((20))))"_Stz);
-
-  vAssert_Board_mqA();
-
-  m_pCI->G.pBoard->vMayHaveStmColOdn(true);
-
-  while (m_pCI->G_bEachMain()) {
-
-    if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
-              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard
-    ))
-      continue;
-
-    m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
-
-    Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(m_pCI);
-  }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                vSeries_Z0_Restate_Pipeline */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* reinstate stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_ReinstateStages(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
-
-  vAssert_Board_mqA();
-
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  Board::vSZ0_T20_Reinstate_stagesV3(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add partitioning                                                           */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_AddPartitioning(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "add partitioning"_Stz);
-
-  vAssert_Board_mqA();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_Next* p_next_prior = nullptr;
-  Card_Combined* p_combined_prior = nullptr;
-
-  Card* p_main_prior = nullptr;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  while (m_pCI->G_bEachMain()) {
-    if (CK_INDEXJOIN == m_pCI->G.e_MainCard ||
-        CK_INDEXSCAN == m_pCI->G.e_MainCard ||
-        CK_KEYEXISTS == m_pCI->G.e_MainCard ||
-        CK_KEYNOTEXISTS == m_pCI->G.e_MainCard ||
-        CK_SCAN == m_pCI->G.e_MainCard) {
-      if (p_main_prior) {
-        i8 nSkip = Board::iStage_Partitioning(m_pCI, p_main_prior, p_combined_prior,
-                                              p_next_prior, m_pCI->G.p_MainCard);
-        while (nSkip--)
-          m_pCI->G_vSkipNextMain();
-        m_pCI->vPrintBoard(__LINE__);
-        vDebugPoint();
-      }
-      p_main_prior = m_pCI->G.p_MainCard;
-    }
-    else
-    if (CK_COMBINED == m_pCI->G.e_MainCard) {
-      p_combined_prior = m_pCI->G.p_combined;
-    }
-    else
-    if (CK_NEXT == m_pCI->G.e_MainCard) {
-      p_next_prior = m_pCI->G.p_next;
-    }
-
-  }
-
-  m_pCI->vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
