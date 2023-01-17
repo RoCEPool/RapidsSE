@@ -150,23 +150,19 @@ namespace STORE
     void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
 
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     void vS10_T00_Begin(void);
-
-
 
     void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
     void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
 
     void vS32_T_SubQuery_Analysis(void);
 
-
-    // vSeries_34_Predicate_Pullup
     void vS34_T_Predicate_Pullup(void);
 
     void vS34_T_Predicate_Reposition(void);
-
-
-    // vSeries_40_Flatten_Query
 
     void vS50_T00_Join_Ordering_v2(void);
 
@@ -178,29 +174,21 @@ namespace STORE
     void vS80_T00_Skip(void);
     void vS80_T00_Begin(void);
     void vS80_T30_Morph_scan_To_indexScan(void);
-    void vS80_TZZ_End(void);
 
     // vSeries_90_Stream_Ordering
     bool bS90_T00_Test(bool bEnabled);
     void vS90_T00_Skip(void);
     void vS90_T00_Begin(void);
     void vS90_T30_Derive_order(void);
-    void vS90_TZZ_End(void);
 
     // vSeries_A0_Make_Weavable
     void vSA0_T00_Begin(void);
-    void vSA0_TZZ_End(void);
-
-    // vSeries_E0_To_StmOdn
-
-    // vSeries_Z0_Restate_Pipeline
 
     void vAssert_Board_any(void);
     void vAssert_Board_mqA(void);
     void vAssert_Board_sqB(void);
 
     void vST00_Begin(void);
-    void vSTZZ_End(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
