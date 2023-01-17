@@ -112,7 +112,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_tblColOdn_To_stmOdn(CardIter* pCI)
+void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
   _static_
 
