@@ -251,7 +251,7 @@ namespace STORE
 
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
 
-    static void vMorphTableToEEop(CardIter* pCI);
+    static void vMorph_Table_To_EEop(CardIter* pCI);
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
     static void vRelabelExpressions(CardIter* pCI);

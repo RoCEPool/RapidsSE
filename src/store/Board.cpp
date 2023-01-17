@@ -951,9 +951,9 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
+/* convert <table> into either <scan>, <indexJoin> or <keyExists>             */
 /*----------------------------------------------------------------------------*/
-void Board::vMorphTableToEEop(CardIter* pCI)
+void Board::vMorph_Table_To_EEop(CardIter* pCI)
 {
   _static_
 
