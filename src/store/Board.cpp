@@ -1718,7 +1718,7 @@ void Board::vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vSZ0_T20_Reinstate_stagesV3(CardIter* pCI)
+void Board::vReinstate_stages(CardIter* pCI)
 {
   _static_
 

@@ -1186,7 +1186,7 @@ void Bench::vTransform_ReinstateStages(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  Board::vSZ0_T20_Reinstate_stagesV3(m_pCI);
+  Board::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform();
 }
