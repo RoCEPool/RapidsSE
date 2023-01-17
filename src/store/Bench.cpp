@@ -759,10 +759,11 @@ void Bench::vTransform_CopyMarkedCmpPred(void)
   // Move At Marked Where Pred To Table Filter
 
   m_pCI->G_vRestart();
+  Card_Where::vMoveWherePredToTableFilter(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
+//  }
 
   m_pCI->vPrintBoard();
 
