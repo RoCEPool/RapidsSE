@@ -807,12 +807,13 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 
 
   m_pCI->G_vRestart();
+  Card_Where::vDeleteEmpyWhere(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
-      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
-    }
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
+//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+//    }
+//  }
 
   m_pCI->vEndTransform();
 }

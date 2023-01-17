@@ -52,6 +52,20 @@ void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete empty where                                                         */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (0 == pCI->G.p_boolCalc->nChildCards()) {
+      pCI->G_vRemoveDeleteMain(CK_WHERE);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark where predicate with respect to table                                 */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
