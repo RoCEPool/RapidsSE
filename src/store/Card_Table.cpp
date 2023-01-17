@@ -69,6 +69,39 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* affix table syntax to all tables                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vAffixTableSyn(CardIter* pCI, char* cTableSyn) {
+
+_static_
+
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
+    pCI->G.p_table->vSet_Syn(cTableSyn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* affix table syntax to all tables                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vProduceTablePtns(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
+
+    pCI->G.p_tablePtn = Card_TablePtn::pDerive(pCI->G.p_table);
+    pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
+
+    Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
+    Table* pTable = AM::pTableFind(p_tableNm->sz());
+
+    pCI->G.p_size = Card_Size::pDerive(pTable);
+    pCI->G.p_table->vAppend(pCI->G.p_size);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Table* Card_Table::pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
@@ -89,7 +122,6 @@ Card_Table* Card_Table::pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8
 
   return p_table;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

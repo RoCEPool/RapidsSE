@@ -453,27 +453,28 @@ void Bench::vTransform_TableAnalysis(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
+  Card_Table::vAffixTableSyn(m_pCI, &m_cTableSyn);
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
+//    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
-
   m_pCI->G_vRestart();
+  Card_Table::vProduceTablePtns(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-
-    m_pCI->G.p_tablePtn = Card_TablePtn::pDerive(m_pCI->G.p_table);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
-
-    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->sz());
-
-    m_pCI->G.p_size = Card_Size::pDerive(pTable);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_size);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
+//
+//    m_pCI->G.p_tablePtn = Card_TablePtn::pDerive(m_pCI->G.p_table);
+//    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
+//
+//    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+//    Table* pTable = AM::pTableFind(p_tableNm->sz());
+//
+//    m_pCI->G.p_size = Card_Size::pDerive(pTable);
+//    m_pCI->G.p_table->vAppend(m_pCI->G.p_size);
+//  }
 
   m_pCI->vEndTransform();
 }

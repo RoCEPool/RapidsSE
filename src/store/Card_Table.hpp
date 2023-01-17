@@ -18,6 +18,8 @@ namespace STORE
     Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
+    static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
+    static void vProduceTablePtns(CardIter* pCI);
     static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
 
     void vAddPredToTableFilter(CardIter* pCI, Card_PRED* p_PRED);
