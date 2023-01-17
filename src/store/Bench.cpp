@@ -515,28 +515,30 @@ void Bench::vTransform_IndexAnalysis(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append Index List Under All Table
+  Card_Table::vAppendIndexList(m_pCI);
 
-  while (m_pCI->G_bEachMain(CK_TABLE)) {
-    m_pCI->G.p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card::pAccess_Table(m_pCI->G.p_tableNm->sz());
-
-    m_pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
-
-    m_pCI->G_vAppendChild(CK_TABLE,CK_INDEXLIST);
-  }
+//  while (m_pCI->G_bEachMain(CK_TABLE)) {
+//    m_pCI->G.p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+//    Table* pTable = Card::pAccess_Table(m_pCI->G.p_tableNm->sz());
+//
+//    m_pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
+//
+//    m_pCI->G_vAppendChild(CK_TABLE,CK_INDEXLIST);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblColOdn To All IdxCol
 
   m_pCI->G_vRestart();
+  Card_Table::vAffixTableColOrd(m_pCI);
 
-  while (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
-    CardIter xCI(m_pCI->G.p_indexList);
-    while ((m_pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
-      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList();
-      m_pCI->G.p_idxColList->vAffix_tblColOdn(m_pCI->G.p_stream);
-    }
-  }
+//  while (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
+//    CardIter xCI(m_pCI->G.p_indexList);
+//    while ((m_pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
+//      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList();
+//      m_pCI->G.p_idxColList->vAffix_tblColOdn(m_pCI->G.p_stream);
+//    }
+//  }
 
   m_pCI->vEndTransform();
 }

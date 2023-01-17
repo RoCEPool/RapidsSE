@@ -69,6 +69,22 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* affix table column ordinals to all idx cols                                */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vAffixTableColOrd(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
+    CardIter xCI(pCI->G.p_indexList);
+    while ((pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
+      pCI->G.p_idxColList = pCI->G.p_index->pSub_idxColList();
+      pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_stream);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vAffixTableSyn(CardIter* pCI, char* cTableSyn) {
@@ -77,6 +93,23 @@ _static_
 
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     pCI->G.p_table->vSet_Syn(cTableSyn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append index list under all tables                                         */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vAppendIndexList(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMain(CK_TABLE)) {
+    pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
+    Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
+
+    pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
+
+    pCI->G_vAppendChild(CK_TABLE,CK_INDEXLIST);
   }
 }
 
