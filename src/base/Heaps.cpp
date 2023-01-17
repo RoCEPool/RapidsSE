@@ -473,7 +473,7 @@ void Heaps::vFindPtn0FilePath(Stz *szFilePath)
 
   for(i8 i = 0; i < nDiskpaths; i++)
   {
-    s256 szTmp = "";
+    s256 szTmp = ""_Stz;
     szTmp.vSprint("%s%ssaveFile_%s_0"_Stz,
                   gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i].szStz(),
                   gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
@@ -663,7 +663,7 @@ void Heaps::vReloadPHeaps(void)
   // Main thread first loads these in, before spawning threads to read
   // the rest of the buffers.
 
-  s256 szNode0Path = "";
+  s256 szNode0Path = ""_Stz;
   vFindPtn0FilePath(szNode0Path);
 
   RASSERT( ! szNode0Path.bIsEmpty());
@@ -789,7 +789,7 @@ void Heaps::vReloadPHeaps(void)
   i8 iPtnNo = (i8) pFuncObj;
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
 
-  s256 szFilePath = "";
+  s256 szFilePath = ""_Stz;
   szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
                      gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo % nDiskpaths].szStz(),
                      gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),

@@ -134,14 +134,20 @@ function startCluster() {
     for row in "${nodeNames[@]}"
     do
       debugPrint "Starting ${row}"
-      startRemoteNode "${row}" "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}" || errorExit "Could not start node ${row} in the cluster."
+      remoteNodeArgArr=("${row}")
+      [ -n "${ARG_EXTRA}" ] && remoteNodeArgArr+=("${ARG_EXTRA}")
+      [ -n "${ARG_EXTRA_VALUE}" ] && remoteNodeArgArr+=("${ARG_EXTRA_VALUE}")
+      startRemoteNode "${remoteNodeArgArr[@]}" || errorExit "Could not start node ${row} in the cluster."
     done
 
   else
     # Start the nodes in parallel. Ignore all output.
     for row in "${nodeNames[@]}"
     do
-      startRemoteNode "${row}" "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}" &>/dev/null &
+      remoteNodeArgArr=("${row}")
+      [ -n "${ARG_EXTRA}" ] && remoteNodeArgArr+=("${ARG_EXTRA}")
+      [ -n "${ARG_EXTRA_VALUE}" ] && remoteNodeArgArr+=("${ARG_EXTRA_VALUE}")
+      startRemoteNode "${remoteNodeArgArr[@]}" &>/dev/null &
     done
 
     # Wait for all parallel jobs to finish.
@@ -198,6 +204,7 @@ function startCluster() {
 function startRemoteNode() {
 
   local row="$1"
+  shift
   local host
   local dir
   local remoteCmd
@@ -205,11 +212,7 @@ function startRemoteNode() {
   host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
-  if [ "--reload" = "$2" ]; then
-    remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 \"$3\""
-  else
-    remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $2 $3"
-  fi
+  remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $(printf '"%s" ' "$@")"
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
