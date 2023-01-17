@@ -85,6 +85,51 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add partitioning                                                           */
+/*----------------------------------------------------------------------------*/
+void Board::vAdd_Partitioning(CardIter* pCI)
+{
+  _static_
+
+
+  Card_Next* p_next_prior = nullptr;
+  Card_Combined* p_combined_prior = nullptr;
+
+  Card* p_main_prior = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  while (pCI->G_bEachMain()) {
+    if (CK_INDEXJOIN == pCI->G.e_MainCard ||
+        CK_INDEXSCAN == pCI->G.e_MainCard ||
+        CK_KEYEXISTS == pCI->G.e_MainCard ||
+        CK_KEYNOTEXISTS == pCI->G.e_MainCard ||
+        CK_SCAN == pCI->G.e_MainCard) {
+      if (p_main_prior) {
+        i8 nSkip = Board::iStage_Partitioning(pCI, p_main_prior, p_combined_prior,
+                                              p_next_prior, pCI->G.p_MainCard);
+        while (nSkip--)
+          pCI->G_vSkipNextMain();
+        pCI->vPrintBoard(__LINE__);
+        vDebugPoint();
+      }
+      p_main_prior = pCI->G.p_MainCard;
+    }
+    else
+    if (CK_COMBINED == pCI->G.e_MainCard) {
+      p_combined_prior = pCI->G.p_combined;
+    }
+    else
+    if (CK_NEXT == pCI->G.e_MainCard) {
+      p_next_prior = pCI->G.p_next;
+    }
+
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI)

@@ -1201,42 +1201,8 @@ void Bench::vTransform_AddPartitioning(void)
   m_pCI->vTransform(__func__, "add partitioning"_Stz);
 
   vAssert_Board_mqA();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_Next* p_next_prior = nullptr;
-  Card_Combined* p_combined_prior = nullptr;
-
-  Card* p_main_prior = nullptr;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  while (m_pCI->G_bEachMain()) {
-    if (CK_INDEXJOIN == m_pCI->G.e_MainCard ||
-        CK_INDEXSCAN == m_pCI->G.e_MainCard ||
-        CK_KEYEXISTS == m_pCI->G.e_MainCard ||
-        CK_KEYNOTEXISTS == m_pCI->G.e_MainCard ||
-        CK_SCAN == m_pCI->G.e_MainCard) {
-      if (p_main_prior) {
-        i8 nSkip = Board::iStage_Partitioning(m_pCI, p_main_prior, p_combined_prior,
-                                              p_next_prior, m_pCI->G.p_MainCard);
-        while (nSkip--)
-          m_pCI->G_vSkipNextMain();
-        m_pCI->vPrintBoard(__LINE__);
-        vDebugPoint();
-      }
-      p_main_prior = m_pCI->G.p_MainCard;
-    }
-    else
-    if (CK_COMBINED == m_pCI->G.e_MainCard) {
-      p_combined_prior = m_pCI->G.p_combined;
-    }
-    else
-    if (CK_NEXT == m_pCI->G.e_MainCard) {
-      p_next_prior = m_pCI->G.p_next;
-    }
-
-  }
+  
+  Board::vAdd_Partitioning(m_pCI);
 
   m_pCI->vEndTransform();
 }
