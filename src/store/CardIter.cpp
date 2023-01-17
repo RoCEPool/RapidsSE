@@ -2323,7 +2323,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove ain card from deck and delete it; clear M member to null            */
+/* remove main card from deck and delete it; clear M member to null           */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vRemoveDeleteMain(eCK eCrossCheck)
 {
