@@ -782,10 +782,11 @@ void Bench::vTransform_CullMarkedCmpPred(void)
   vAssert_Board_any();
 
   m_pCI->G_vRestart();
+  Card_Where::vCullMarkedCmpPred(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//  }
 
   m_pCI->vPrintBoard();
 

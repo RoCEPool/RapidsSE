@@ -40,6 +40,18 @@ Card_Where::~Card_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* cull marked cmp predicate                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    pCI->G.p_boolCalc->vCullPred(MARK_AT);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark where predicate with respect to table                                 */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
