@@ -42,6 +42,47 @@ Card_Index::~Card_Index(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* cull non-used bound                                                        */
+/*----------------------------------------------------------------------------*/
+void Card_Index::vCullNonusedBounds(CardIter* pCI) {
+
+  _static_
+
+  // find & ignore the first ebound
+  bool bFoundFirst = false;
+
+  CardIter xCI_indexes(pCI->G.p_indexList);
+
+  while ((pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
+
+    bool bChosenIndex = pCI->G.p_index->Y_bHas(P_ChosenIndex);
+
+    pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
+    if (! pCI->G.p_bounds)
+      continue;
+
+    CardIter xCI_bounds(pCI->G.p_bounds);
+    while (xCI_bounds.bEachChild()) {
+      if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
+        bFoundFirst = true;
+        continue;
+      }
+
+      xCI_bounds.G.m_pChild->vMark1(MARK_AT);
+    }
+
+    pCI->vPrintBoard(__LINE__);
+    pCI->G.p_bounds->vCullBound(MARK_AT);
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce composite <index> of table                                         */
 /*----------------------------------------------------------------------------*/
 Card_Index* Card_Index::pDerive(Table* pTable)

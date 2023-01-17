@@ -17,6 +17,8 @@ namespace STORE
     Card_Filter(void);
    ~Card_Filter(void) noexcept(false);
 
+    static void vCullUsedBounds(CardIter* pCI);
+    static void vDeleteEmptyFilters(CardIter* pCI);
     static void vIndividuate_filter(CardIter* pCI);
 
     void vAddPred(Card_PRED *p_PRED);

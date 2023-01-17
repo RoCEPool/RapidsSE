@@ -50,6 +50,33 @@ Card_Filter::~Card_Filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* cull non-used bounds                                                        */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vCullUsedBounds(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMain()) {
+    if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
+      pCI->G.p_filter->vCullPred(MARK_AT);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete empty filters                                                       */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMain()) {
+    if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
+      pCI->G.p_MainCard->vDeleteFilterIfEmpty(pCI->G.p_filter);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vIndividuate_filter(CardIter* pCI)

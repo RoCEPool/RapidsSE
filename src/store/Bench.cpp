@@ -985,6 +985,7 @@ void Bench::vTransform_CullNonusedBounds(void)
   //
 
   m_pCI->G_vRestart();
+
   while (m_pCI->G_bEachMain()) {
 
     if (!(m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
@@ -995,32 +996,32 @@ void Bench::vTransform_CullNonusedBounds(void)
 
     // have <bounds> & <filter> under <main>
 
-    // find & ignore the first ebound
-    bool bFoundFirst = false;
 
-    CardIter xCI_indexes(m_pCI->G.p_indexList);
-    while ((m_pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
 
-      bool bChosenIndex = m_pCI->G.p_index->Y_bHas(P_ChosenIndex);
+    Card_Index::vCullNonusedBounds(m_pCI);
 
-      m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds();
-      if (! m_pCI->G.p_bounds)
-        continue;
-
-      CardIter xCI_bounds(m_pCI->G.p_bounds);
-      while (xCI_bounds.bEachChild()) {
-        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
-          bFoundFirst = true;
-          continue;
-        }
-
-        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
-      }
-
-      m_pCI->vPrintBoard(__LINE__);
-      m_pCI->G.p_bounds->vCullBound(MARK_AT);
-
-    }
+//    while ((m_pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
+//
+//      bool bChosenIndex = m_pCI->G.p_index->Y_bHas(P_ChosenIndex);
+//
+//      m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds();
+//      if (! m_pCI->G.p_bounds)
+//        continue;
+//
+//      CardIter xCI_bounds(m_pCI->G.p_bounds);
+//      while (xCI_bounds.bEachChild()) {
+//        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
+//          bFoundFirst = true;
+//          continue;
+//        }
+//
+//        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
+//      }
+//
+//      m_pCI->vPrintBoard(__LINE__);
+//      m_pCI->G.p_bounds->vCullBound(MARK_AT);
+//
+//    }
   }
 
 
@@ -1073,19 +1074,23 @@ void Bench::vTransform_CullUsedBoundsFromFilter(void)
   // cull marked cmpPred from filter
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      m_pCI->G.p_filter->vCullPred(MARK_AT);
-  }
+  Card_Filter::vCullUsedBounds(m_pCI);
+
+//  while (m_pCI->G_bEachMain()) {
+//    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+//      m_pCI->G.p_filter->vCullPred(MARK_AT);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any filter if empty
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      m_pCI->G.p_MainCard->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
-  }
+  Card_Filter::vDeleteEmptyFilters(m_pCI);
+
+//  while (m_pCI->G_bEachMain()) {
+//    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+//      m_pCI->G.p_MainCard->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
+//  }
 
   m_pCI->vPrintBoard();
 
