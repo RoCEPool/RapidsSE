@@ -1180,10 +1180,8 @@ void Bench::vTransform_TblColToStmCol(void)
 
   m_pCI->G.pBoard->vMayHaveStmColOdn(true);
 
-  while (m_pCI->G_bEachMain()) {
-
-    Board::vConvert_tblColOdn_To_stmOdn(m_pCI);
-  }
+  while (m_pCI->G_bEachMain())
+    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmOdn(m_pCI);
 
   m_pCI->vEndTransform();
 }

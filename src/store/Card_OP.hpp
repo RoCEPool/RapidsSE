@@ -16,6 +16,7 @@ namespace STORE
 
    void vAddLevel(void);
    void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
+   void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
   };
 
   Card_OP* _pCard_OP(void* aAddr);

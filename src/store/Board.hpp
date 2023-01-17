@@ -229,7 +229,6 @@ namespace STORE
    ~Board(void) noexcept(false);
 
     static void vConvert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
-    static void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
     static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
 
     static void vDerive_foldElist_From_project_stream(CardIter* pCI);

@@ -95,6 +95,35 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   bApplyRecursive(CK_TERM, bLambdaFn);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vConvert_tblColOdn_To_stmOdn(CardIter* pCI)
+{
+  _static_
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+
+    if (! Card::bIsTableColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szStmColOdn = Card_StmColOdn::szResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+
+    p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bApplyRecursive(CK_TERM, bLambdaFn);
+}
 
 /*============================================================================*/
 /* end                                                                        */
