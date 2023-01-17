@@ -497,7 +497,7 @@ void Bench::vTransform_TableAnalysis(void)
 //  m_pCI->G_vRestart();
 //
 //  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-//    m_pCI->G.p_table->vComputeProjection(this);
+//    m_pCI->G.p_table->vProjectionAnalysis(this);
 //
 //
 //  m_pCI->vEndTransform();
@@ -564,7 +564,7 @@ void Bench::vTransform_StreamAnalysis(void)
   }
 
 //  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-//    m_pCI->G.p_table->vComputeProjection(this);
+//    m_pCI->G.p_table->vProjectionAnalysis(this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Stream Under All Project
@@ -667,12 +667,8 @@ void Bench::vTransform_ProjectionAnalysis(void)
 
   vAssert_Board_any();
 
-
-  while (m_pCI->G_bEachMain()) {
-
-    if (CK_TABLE == m_pCI->G.e_MainCard)
-      m_pCI->G.p_table->vComputeProjection(m_pCI);
-  }
+  while (m_pCI->G_bEachMain(CK_TABLE))
+    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
 
   m_pCI->vEndTransform();
 }

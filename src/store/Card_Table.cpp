@@ -203,9 +203,9 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
 }
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
+/* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vComputeProjection(CardIter* pCI)
+void Card_Table::vProjectionAnalysis(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
