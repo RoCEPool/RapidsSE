@@ -17,6 +17,7 @@ namespace STORE
     Card_Where(void);
    ~Card_Where(void) noexcept(false);
 
+    static void vMarkWherePredWrtTable(CardIter* pCI);
     static void vMove_All_on_To_where(CardIter* pCI);
     static void vMoveWhereToTableAsConstraint(CardIter* pCI);
   };

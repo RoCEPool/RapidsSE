@@ -40,6 +40,18 @@ Card_Where::~Card_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* mark where rredicate with respect to table                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    pCI->G.p_boolCalc->vMarkWrt_table(pCI->G.pDeck);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on>/<rpnCalc> to <where>                               */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vMove_All_on_To_where(CardIter* pCI)

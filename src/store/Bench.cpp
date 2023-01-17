@@ -734,10 +734,11 @@ void Bench::vTransform_MarkCmpPredWrtTable(void)
   // At Mark Where Pred Wrt Table
 
   m_pCI->vPrintBoard(__LINE__);
+  Card_Where::vMarkWherePredWrtTable(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
+//  }
 
   m_pCI->vEndTransform();
 }
