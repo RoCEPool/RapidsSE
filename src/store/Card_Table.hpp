@@ -21,6 +21,7 @@ namespace STORE
     static void vAffixTableColOrd(CardIter* pCI);
     static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
     static void vAppendIndexList(CardIter* pCI);
+    static void vDeriveBoundsFromFilter(CardIter* pCI);
     static void vProduceTablePtns(CardIter* pCI);
     static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
 

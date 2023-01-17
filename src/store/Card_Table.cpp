@@ -114,6 +114,23 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* derive bounds from filter                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
+
+  _static_
+
+  pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
+
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    bool bParamAllowedInBounds = false;
+    if (pCI->G.pSubQuery->bIsCorrelated() && pCI->G.pSubQuery->bByExists())
+      bParamAllowedInBounds = true;
+
+    pCI->G.p_table->vBounds_DeriveFrom_filter(pCI->G.p_filter,bParamAllowedInBounds);
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vProduceTablePtns(CardIter* pCI) {

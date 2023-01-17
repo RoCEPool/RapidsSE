@@ -828,16 +828,17 @@ void Bench::vTransform_DeriveBoundsFromFilter(void)
   m_pCI->vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
   vAssert_Board_any();
+  Card_Table::vDeriveBoundsFromFilter(m_pCI);
 
-  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
-
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-    bool bParamAllowedInBounds = false;
-    if (m_pCI->G.pSubQuery->bIsCorrelated() && m_pCI->G.pSubQuery->bByExists())
-      bParamAllowedInBounds = true;
-
-    m_pCI->G.p_table->vBounds_DeriveFrom_filter(m_pCI->G.p_filter,bParamAllowedInBounds);
-  }
+//  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+//
+//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+//    bool bParamAllowedInBounds = false;
+//    if (m_pCI->G.pSubQuery->bIsCorrelated() && m_pCI->G.pSubQuery->bByExists())
+//      bParamAllowedInBounds = true;
+//
+//    m_pCI->G.p_table->vBounds_DeriveFrom_filter(m_pCI->G.p_filter,bParamAllowedInBounds);
+//  }
 
   m_pCI->vEndTransform();
 }
