@@ -1524,8 +1524,6 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
 {
   _static_
 
-  Card* pMain = nullptr;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SCAN
   if (0 == pCI->G.i_MainCard)  {
@@ -1541,7 +1539,7 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
       DELETE_CARD(pCI->G.p_indexJoin);
     }
 
-    pMain = pCI->G.p_scan;
+    pCI->G.p_MainCard = pCI->G.p_scan;
   }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // KEYEXISTS
@@ -1558,7 +1556,7 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
     pCI->G.p_keyExists->vRemoveSubCard(pCI->G.p_index);
     pCI->G.p_keyExists->vAppend(pCI->G.p_index);
 
-    pMain = pCI->G.p_keyExists;
+    pCI->G.p_MainCard = pCI->G.p_keyExists;
   }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // KEYNOTEXISTS
@@ -1575,7 +1573,7 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
     pCI->G.p_keyNotExists->vRemoveSubCard(pCI->G.p_index);
     pCI->G.p_keyNotExists->vAppend(pCI->G.p_index);
 
-    pMain = pCI->G.p_keyNotExists;
+    pCI->G.p_MainCard = pCI->G.p_keyNotExists;
   }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // CROSSJOIN
@@ -1600,7 +1598,7 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
 //    G_vNewMember(CK_TERM,"$I1"_Stz);
 //    pCI->G.p_xBound->vAppend(pCI->G.p_term);
 //
-//    pMain = pCI->G.p_crossJoin;
+//    CI->G.p_MainCard = pCI->G.p_crossJoin;
 //  }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // INDEXJOIN
@@ -1627,21 +1625,9 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
     //pCI->G.p_indexJoin->vRemoveSubCard(pCI->G.p_index);
     //pCI->G.p_indexJoin->vAppend(pCI->G.p_index);
 
-    pMain = pCI->G.p_indexJoin;
+    pCI->G.p_MainCard = pCI->G.p_indexJoin;
   }
 
-  if ((pCI->G.p_tableNm = pMain->pSub_tableNm())) {
-    pMain->vRemoveSubCard(pCI->G.p_tableNm);
-    pCI->G.p_table->vAppend(pCI->G.p_tableNm);
-  }
-  if ((pCI->G.p_tablePtn = pMain->pSub_tablePtn())) {
-    pMain->vRemoveSubCard(pCI->G.p_tablePtn);
-    pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
-  }
-  if ((pCI->G.p_size = pMain->pSub_size())) {
-    pMain->vRemoveSubCard(pCI->G.p_size);
-    pCI->G.p_table->vAppend(pCI->G.p_size);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

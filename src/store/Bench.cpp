@@ -928,6 +928,19 @@ void Bench::vTransform_MorphTableToEEop(void)
     RASSERT(! m_pCI->G.p_indexJoin);
     Board::vS75_T10_Morph_table_To_EEop_v2(m_pCI);
 
+    if ((m_pCI->G.p_tableNm = m_pCI->G.p_MainCard->pSub_tableNm())) {
+      m_pCI->G.p_MainCard->vRemoveSubCard(m_pCI->G.p_tableNm);
+      m_pCI->G.p_table->vAppend(m_pCI->G.p_tableNm);
+    }
+    if ((m_pCI->G.p_tablePtn = m_pCI->G.p_MainCard->pSub_tablePtn())) {
+      m_pCI->G.p_MainCard->vRemoveSubCard(m_pCI->G.p_tablePtn);
+      m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
+    }
+    if ((m_pCI->G.p_size = m_pCI->G.p_MainCard->pSub_size())) {
+      m_pCI->G.p_MainCard->vRemoveSubCard(m_pCI->G.p_size);
+      m_pCI->G.p_table->vAppend(m_pCI->G.p_size);
+    }
+
     m_pCI->G.pDeck->vRenumberRecursive();
 
     m_pCI->vPrintBoard(__LINE__);
@@ -1201,7 +1214,7 @@ void Bench::vTransform_AddPartitioning(void)
   m_pCI->vTransform(__func__, "add partitioning"_Stz);
 
   vAssert_Board_mqA();
-  
+
   Board::vAdd_Partitioning(m_pCI);
 
   m_pCI->vEndTransform();
