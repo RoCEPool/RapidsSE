@@ -453,27 +453,28 @@ void Bench::vTransform_TableAnalysis(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
+  Card_Table::vAffixTableSyn(m_pCI, &m_cTableSyn);
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
+//    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
-
   m_pCI->G_vRestart();
+  Card_Table::vProduceTablePtns(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-
-    m_pCI->G.p_tablePtn = Card_TablePtn::pDerive(m_pCI->G.p_table);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
-
-    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->sz());
-
-    m_pCI->G.p_size = Card_Size::pDerive(pTable);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_size);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
+//
+//    m_pCI->G.p_tablePtn = Card_TablePtn::pDerive(m_pCI->G.p_table);
+//    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
+//
+//    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+//    Table* pTable = AM::pTableFind(p_tableNm->sz());
+//
+//    m_pCI->G.p_size = Card_Size::pDerive(pTable);
+//    m_pCI->G.p_table->vAppend(m_pCI->G.p_size);
+//  }
 
   m_pCI->vEndTransform();
 }
@@ -514,28 +515,30 @@ void Bench::vTransform_IndexAnalysis(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append Index List Under All Table
+  Card_Table::vAppendIndexList(m_pCI);
 
-  while (m_pCI->G_bEachMain(CK_TABLE)) {
-    m_pCI->G.p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card::pAccess_Table(m_pCI->G.p_tableNm->sz());
-
-    m_pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
-
-    m_pCI->G_vAppendChild(CK_TABLE,CK_INDEXLIST);
-  }
+//  while (m_pCI->G_bEachMain(CK_TABLE)) {
+//    m_pCI->G.p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+//    Table* pTable = Card::pAccess_Table(m_pCI->G.p_tableNm->sz());
+//
+//    m_pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
+//
+//    m_pCI->G_vAppendChild(CK_TABLE,CK_INDEXLIST);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblColOdn To All IdxCol
 
   m_pCI->G_vRestart();
+  Card_Table::vAffixTableColOrd(m_pCI);
 
-  while (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
-    CardIter xCI(m_pCI->G.p_indexList);
-    while ((m_pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
-      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList();
-      m_pCI->G.p_idxColList->vAffix_tblColOdn(m_pCI->G.p_stream);
-    }
-  }
+//  while (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
+//    CardIter xCI(m_pCI->G.p_indexList);
+//    while ((m_pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
+//      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList();
+//      m_pCI->G.p_idxColList->vAffix_tblColOdn(m_pCI->G.p_stream);
+//    }
+//  }
 
   m_pCI->vEndTransform();
 }
@@ -731,10 +734,11 @@ void Bench::vTransform_MarkCmpPredWrtTable(void)
   // At Mark Where Pred Wrt Table
 
   m_pCI->vPrintBoard(__LINE__);
+  Card_Where::vMarkWherePredWrtTable(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
+//  }
 
   m_pCI->vEndTransform();
 }
@@ -755,10 +759,11 @@ void Bench::vTransform_CopyMarkedCmpPred(void)
   // Move At Marked Where Pred To Table Filter
 
   m_pCI->G_vRestart();
+  Card_Where::vMoveWherePredToTableFilter(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
+//  }
 
   m_pCI->vPrintBoard();
 
@@ -777,10 +782,11 @@ void Bench::vTransform_CullMarkedCmpPred(void)
   vAssert_Board_any();
 
   m_pCI->G_vRestart();
+  Card_Where::vCullMarkedCmpPred(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//  }
 
   m_pCI->vPrintBoard();
 
@@ -801,12 +807,13 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 
 
   m_pCI->G_vRestart();
+  Card_Where::vDeleteEmpyWhere(m_pCI);
 
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
-      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
-    }
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
+//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+//    }
+//  }
 
   m_pCI->vEndTransform();
 }

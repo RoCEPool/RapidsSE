@@ -40,6 +40,56 @@ Card_Where::~Card_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* cull marked cmp predicate                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    pCI->G.p_boolCalc->vCullPred(MARK_AT);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete empty where                                                         */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (0 == pCI->G.p_boolCalc->nChildCards()) {
+      pCI->G_vRemoveDeleteMain(CK_WHERE);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark where predicate with respect to table                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    pCI->G.p_boolCalc->vMarkWrt_table(pCI->G.pDeck);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* move where predicate to table filter                                       */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vMoveWherePredToTableFilter(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    pCI->G.p_boolCalc->vCopyMarkedPredToTable(pCI->G.pDeck);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on>/<rpnCalc> to <where>                               */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vMove_All_on_To_where(CardIter* pCI)
