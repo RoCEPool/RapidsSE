@@ -13,6 +13,8 @@ namespace STORE
   public:
     Card_OP(eCK eCard);
    ~Card_OP(void) noexcept(false);
+
+   void vAddLevel(void);
   };
 
   Card_OP* _pCard_OP(void* aAddr);

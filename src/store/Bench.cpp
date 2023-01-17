@@ -447,19 +447,8 @@ void Bench::vTransform_AddLevel(void)
   vAssert_Board_any();
 
   m_pCI->G_vRestart();
-  m_pCI->G.e_Level = AL_PARTITION;
-  while (m_pCI->G_bEachMain()) {
-
-    m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level();
-    if (m_pCI->G.p_level)
-      continue;
-
-    m_pCI->G.p_level = new Card_Level(AL_PARTITION);
-    m_pCI->G.p_MainCard->vPush(m_pCI->G.p_level);
-  }
-
-  //
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  while (m_pCI->G_bEachMain())
+    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
 
   m_pCI->vEndTransform();
 }
