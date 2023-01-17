@@ -926,7 +926,30 @@ void Bench::vTransform_MorphTableToEEop(void)
 //           m_pCI->G.p_table,m_pCI->G.p_table->iCardNo(),aCK[m_pCI->G.p_table->eCard()],m_pCI->G.p_table->szValue());
 
     RASSERT(! m_pCI->G.p_indexJoin);
-    Board::vS75_T10_Morph_table_To_EEop_v2(m_pCI);
+    //Board::vS75_T10_Morph_table_To_EEop_v2(m_pCI);
+
+
+    // SCAN
+    if (0 == m_pCI->G.i_MainCard)  {
+      Card_Scan::vTableMorphsToScan(m_pCI);
+    }
+    // KEYEXISTS
+    else if (m_pCI->G.p_keyExists) {
+      Card_KeyExists::vTableMorphsToKeyExists(m_pCI);
+    }
+    // KEYNOTEXISTS
+    else if (m_pCI->G.p_keyNotExists) {
+      Card_KeyNotExists::vTableMorphsToKeyNotExists(m_pCI);
+    }
+    // CROSSJOIN
+//  else if (! pCI->G.p_bounds) {
+//    Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
+//  }
+    // INDEXJOIN
+    else {
+      Card_IndexJoin::vTableMorphsToIndexJoin(m_pCI);
+    }
+
 
     if ((m_pCI->G.p_tableNm = m_pCI->G.p_MainCard->pSub_tableNm())) {
       m_pCI->G.p_MainCard->vRemoveSubCard(m_pCI->G.p_tableNm);

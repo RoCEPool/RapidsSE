@@ -273,7 +273,6 @@ namespace STORE
     static void vS36_T30_Delete_Empty_filter(CardIter* pCI);
 
     // vSeries_75_EE_operators
-    static void vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI);
     static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCI);
     static void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
 
