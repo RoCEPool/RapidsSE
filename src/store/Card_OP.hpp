@@ -15,6 +15,7 @@ namespace STORE
    ~Card_OP(void) noexcept(false);
 
    void vAddLevel(void);
+   void vConvert_rpnCalc_To_boolCalc(CardIter* pCI);
    void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
    void vConvert_tblColOdn_To_stmOdn(CardIter* pCI);
   };

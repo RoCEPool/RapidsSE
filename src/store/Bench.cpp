@@ -706,27 +706,15 @@ void Bench::vTransform_RpnCalcToBoolCalc(void)
   vAssert_Board_any();
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
+    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
+  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
+    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
 
   m_pCI->vEndTransform();
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
