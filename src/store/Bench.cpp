@@ -684,23 +684,8 @@ void Bench::vTransform_StmColToTblCol(void)
 
   vAssert_Board_any();
 
-  while (m_pCI->G_bEachMain()) {
-
-//    if (! (   CK_AGGREG  == m_pCI->G.e_MainCard
-//           || CK_GBYAGG  == m_pCI->G.e_MainCard
-//           || CK_PROJECT == m_pCI->G.e_MainCard
-//           || CK_WHERE   == m_pCI->G.e_MainCard))
-//      continue;
-//
-//    if (CK_AGGREG == m_pCI->G.e_MainCard || CK_GBYAGG == m_pCI->G.e_MainCard || CK_PROJECT == m_pCI->G.e_MainCard) {
-//      m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level();
-//      if (m_pCI->G.p_level && AL_PARTITION != m_pCI->G.p_level->Y_iGet(P_Level))
-//        continue;
-//    }
-
-    //Board::vConvert_stmColOdn_To_tblColOdn(m_pCI);
+  while (m_pCI->G_bEachMain())
     ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
-  }
 
   m_pCI->G.pDeck->vNoTermsStmColOdn();
 

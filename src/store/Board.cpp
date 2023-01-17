@@ -1479,38 +1479,6 @@ void Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI)
 
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
-{
-  _static_
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    Stz* szStmColOdn = p_term->szValue();
-    if (! pCI->G_bResolveSubCard(CK_STREAM,CK_STMCOLODN,szStmColOdn,pCI->G.i_MainCard))
-      return C_CONTINUE_RECURSION;
-
-    RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
-
-    pCI->G.p_tblColOdn = pCI->m_pCard_parent->pSub_tblColOdn();
-    p_term->vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_MainCard->bApplyRecursive(CK_TERM, bLambdaFn);
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                  vSeries_36_Bound_Analysis */
 /*============================================================================*/
