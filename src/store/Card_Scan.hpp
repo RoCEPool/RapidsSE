@@ -16,6 +16,8 @@ namespace STORE
     Card_Scan(void);
    ~Card_Scan(void) noexcept(false);
 
+    static void vScanBecomesTable(CardIter* pCI);
+
     void vComputeProjection(CardIter* pCI); // prototype
   };
 

@@ -256,7 +256,6 @@ void Bench::vGroup_PredicatePullup(void)
   vTransform_CopyMarkedCmpPred();
   vTransform_CullMarkedCmpPred();
   vTransform_DeleteEmptyWhere();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,16 +428,9 @@ void Bench::vTransform_ScanBecomesTable(void)
 
   vAssert_Board_any();
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Cull Scan Leaving Table
-
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_SCAN)) {
-    m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->G.p_scan);
-    DELETE_CARD(m_pCI->G.p_scan);
-  }
-
+  while (m_pCI->G_bEachMain(CK_SCAN))
+    Card_Scan::vScanBecomesTable(m_pCI);
 
   m_pCI->vEndTransform();
 }
