@@ -951,6 +951,88 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
+/*----------------------------------------------------------------------------*/
+void Board::vMorphTableToEEop(CardIter* pCI)
+{
+  _static_
+
+  pCI->vPrintBoard(__LINE__);
+
+  while (pCI->G_bEachMain(CK_TABLE)) {
+
+    pCI->G.p_bounds         = pCI->G.p_table->pSub_bounds();
+    pCI->G.p_index          = pCI->G.p_table->pSub_index();
+    pCI->G.p_indexJoin      = pCI->G.p_table->pSub_indexJoin();
+    pCI->G.p_indexList      = pCI->G.p_table->pSub_indexList();
+    pCI->G.p_keyExists      = pCI->G.p_table->pSub_keyExists();
+    pCI->G.p_keyNotExists   = pCI->G.p_table->pSub_keyNotExists();
+
+//    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
+//           pCI->G.p_table,pCI->G.p_table->iCardNo(),aCK[pCI->G.p_table->eCard()],pCI->G.p_table->szValue());
+
+    RASSERT(! pCI->G.p_indexJoin);
+
+
+    // SCAN
+    if (0 == pCI->G.i_MainCard)  {
+      Card_Scan::vTableMorphsToScan(pCI);
+    }
+    // KEYEXISTS
+    else if (pCI->G.p_keyExists) {
+      Card_KeyExists::vTableMorphsToKeyExists(pCI);
+    }
+    // KEYNOTEXISTS
+    else if (pCI->G.p_keyNotExists) {
+      Card_KeyNotExists::vTableMorphsToKeyNotExists(pCI);
+    }
+    // CROSSJOIN
+//  else if (! pCI->G.p_bounds) {
+//    Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
+//  }
+    // INDEXJOIN
+    else {
+      Card_IndexJoin::vTableMorphsToIndexJoin(pCI);
+    }
+
+
+    if ((pCI->G.p_tableNm = pCI->G.p_MainCard->pSub_tableNm())) {
+      pCI->G.p_MainCard->vRemoveSubCard(pCI->G.p_tableNm);
+      pCI->G.p_table->vAppend(pCI->G.p_tableNm);
+    }
+    if ((pCI->G.p_tablePtn = pCI->G.p_MainCard->pSub_tablePtn())) {
+      pCI->G.p_MainCard->vRemoveSubCard(pCI->G.p_tablePtn);
+      pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
+    }
+    if ((pCI->G.p_size = pCI->G.p_MainCard->pSub_size())) {
+      pCI->G.p_MainCard->vRemoveSubCard(pCI->G.p_size);
+      pCI->G.p_table->vAppend(pCI->G.p_size);
+    }
+
+    pCI->G.pDeck->vRenumberRecursive();
+
+    pCI->vPrintBoard(__LINE__);
+
+    vDebugPoint();
+  }
+
+  pCI->vPrintBoard(__LINE__);
+
+  pCI->G_vRestart();
+  while (pCI->G_bEachMain(CK_SCAN)) {
+    i8 i_Child;
+    pCI->G.p_note = _pCard_Note(pCI->G.p_scan->pFindChild(CK_NOTE,i_Child));
+
+    if (i_Child == pCI->G.p_scan->nChildCards() - 1) {
+      pCI->G.p_scan->vRemoveChild(pCI->G.p_note);
+      DELETE_CARD(pCI->G.p_note);
+    }
+  }
+  pCI->vPrintBoard(__LINE__);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_boolCalc)

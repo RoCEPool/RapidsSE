@@ -911,6 +911,9 @@ void Bench::vTransform_MorphTableToEEop(void)
 
   vAssert_Board_mqA();
 
+  Board::vMorphTableToEEop(m_pCI);
+
+/*
   m_pCI->vPrintBoard(__LINE__);
 
   while (m_pCI->G_bEachMain(CK_TABLE)) {
@@ -1000,6 +1003,7 @@ void Bench::vTransform_MorphTableToEEop(void)
 //    }
 //  }
 //  m_pCI->vPrintBoard(__LINE__);
+*/
 
   m_pCI->vEndTransform();
 }
