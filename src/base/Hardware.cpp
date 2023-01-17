@@ -445,7 +445,9 @@ void Hardware::vChooseClockType(void)
 #ifdef WITH_APPLE
   // On MacOs we always want to use CLOCK_MONOTONIC_RAW.
   // It's performance is adequate (~30ns/call)
+#ifdef WITH_DEBUG_VERSION
   vTrace("Using clock type CLOCK_MONOTONIC_RAW on MacOS (kernel %s).\n"_Stz, xBuf.release);
+#endif
   S_clockSource = CLOCK_MONOTONIC_RAW;
 
 #endif
@@ -489,13 +491,17 @@ void Hardware::vChooseClockType(void)
   }
 
   if (iMajor >= 5 && iMinor >= 3) {
+#ifdef WITH_DEBUG_VERSION
     vTrace("Using clock type CLOCK_MONOTONIC_RAW on Linux kernel %lld.%lld.\n"_Stz, iMajor, iMinor);
+#endif
     S_clockSource = CLOCK_MONOTONIC_RAW;
     return;
   }
 
   // The default safe case, though this does include slewing (e.g. NTP).
+#ifdef WITH_DEBUG_VERSION
   vTrace("Using clock type CLOCK_MONOTONIC on Linux kernel %lld.%lld.\n"_Stz, iMajor, iMinor);
+#endif
   S_clockSource = CLOCK_MONOTONIC;
 #endif
 }

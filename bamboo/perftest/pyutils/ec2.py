@@ -213,7 +213,7 @@ def start_instances(instance_type: str,
 
     retry_count = 0
     i = -1
-    while i < len(C_SUBNET_ID_PREFERENCE):
+    while i < len(C_SUBNET_ID_PREFERENCE) - 1:
         i += 1
         subnet_id = C_SUBNET_ID_PREFERENCE[i]
         kwargs["SubnetId"] = subnet_id

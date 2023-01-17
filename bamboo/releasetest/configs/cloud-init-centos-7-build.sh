@@ -305,11 +305,11 @@ chmod g+w /opt
 
 if ! which aws; then
   # AWS CLI needs curl and unzip
-  while ! yum install -y curl unzip; do
+  while ! yum install -y curl wget unzip; do
     sleep 1
   done
 
-  while ! curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+  while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
     sleep 1
   done
 
@@ -361,6 +361,19 @@ fi
 yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip python3 perl-Digest-MD5
 yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
+
+# ShellCheck
+echo
+echo "*** Shellcheck ***"
+(
+  cd /usr/local/bin
+  while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" -o "shellcheck-stable.linux.x86_64.tar.xz"; do
+    sleep 1
+  done
+  tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
+  chown root:root shellcheck
+  rm -f shellcheck-stable.linux.x86_64.tar.xz
+)
 
 # Documentation generator
 sudo -H -u "${OS_USER}" python3 -m pip install -U --user sphinx

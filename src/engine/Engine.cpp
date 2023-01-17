@@ -105,7 +105,9 @@ pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 /*----------------------------------------------------------------------------*/
 void Engine::vMainEntry(void)
 {
-  vHeartInit();
+  if (!gxCmdLineArgs.bUserPrompt()) {
+    vHeartInit();
+  }
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
     vTrace("Delayed %lld seconds\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_iDelay);
@@ -483,7 +485,7 @@ void Engine::vChangeDirectory(void)
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
       fprintf(stderr,"RapidsSE Unrecoverable Error\n");
       fprintf(stderr,"  Unable to change to command dir\n");
-      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.szStz());
+      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.azChar());
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
       vThreadCallStackDump();
