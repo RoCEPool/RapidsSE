@@ -867,6 +867,8 @@ void Heaps::vReloadPHeaps(void)
   i8 nAcksWereRemaining;
   gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
   RASSERT(nAcksWereRemaining >= 0);
+
+  return nullptr;
 }
 
 /*============================================================================*/
