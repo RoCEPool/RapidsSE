@@ -1481,7 +1481,7 @@ void Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vS33_T10_Convert_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Board::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _static_
 

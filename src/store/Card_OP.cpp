@@ -5,6 +5,7 @@
 #include "Card_OP.hpp"
 
 #include "Card_Level.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,6 +48,53 @@ void Card_OP::vAddLevel(void)
   p_level = new Card_Level(AL_PARTITION);
   vPush(p_level);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! (   CK_AGGREG  == pCI->G.e_MainCard
+         || CK_GBYAGG  == pCI->G.e_MainCard
+         || CK_PROJECT == pCI->G.e_MainCard
+         || CK_WHERE   == pCI->G.e_MainCard))
+    return;
+
+  if (CK_AGGREG  == pCI->G.e_MainCard ||
+      CK_GBYAGG  == pCI->G.e_MainCard ||
+      CK_PROJECT == pCI->G.e_MainCard) {
+    pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
+    if (pCI->G.p_level && AL_PARTITION != pCI->G.p_level->Y_iGet(P_Level))
+      return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szStmColOdn = p_term->szValue();
+    if (! pCI->G_bResolveSubCard(CK_STREAM,CK_STMCOLODN,szStmColOdn,pCI->G.i_MainCard))
+      return C_CONTINUE_RECURSION;
+
+    RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
+
+    pCI->G.p_tblColOdn = pCI->m_pCard_parent->pSub_tblColOdn();
+    p_term->vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bApplyRecursive(CK_TERM, bLambdaFn);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

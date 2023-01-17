@@ -268,7 +268,7 @@ namespace STORE
     static void vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI);
 
     // vSeries_33_To_TblColOdn
-    static void vS33_T10_Convert_stmColOdn_To_tblColOdn(CardIter* pCI);
+    static void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
 
     // vSeries_36_Bound_Analysis
     static void vS36_T30_Delete_Empty_filter(CardIter* pCI);
