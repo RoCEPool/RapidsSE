@@ -18,6 +18,7 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
 
+    static void vTableMorphsToKeyExists(CardIter* pCI);
   };
 
   Card_KeyExists* _pCard_KeyExists(void* aAddr);

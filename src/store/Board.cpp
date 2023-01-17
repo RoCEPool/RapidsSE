@@ -1527,57 +1527,62 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SCAN
   if (0 == pCI->G.i_MainCard)  {
-    pCI->G.p_scan = new Card_Scan;
-    pCI->G.p_scan->vTransferChildren(pCI->G.p_table);
-
-    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table,pCI->G.p_scan);
-    pCI->G.p_scan->vInsert(pCI->G.p_table);
-
-    if (pCI->G.p_indexJoin) {
-      NEVER_REACH
-      pCI->G.p_scan->vRemoveChild(pCI->G.p_indexJoin);
-      DELETE_CARD(pCI->G.p_indexJoin);
-    }
-
-    pCI->G.p_MainCard = pCI->G.p_scan;
+    Card_Scan::vTableMorphsToScan(pCI);
+//    pCI->G.p_scan = new Card_Scan;
+//    pCI->G.p_scan->vTransferChildren(pCI->G.p_table);
+//
+//    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table,pCI->G.p_scan);
+//    pCI->G.p_scan->vInsert(pCI->G.p_table);
+//
+//    if (pCI->G.p_indexJoin) {
+//      NEVER_REACH
+//      pCI->G.p_scan->vRemoveChild(pCI->G.p_indexJoin);
+//      DELETE_CARD(pCI->G.p_indexJoin);
+//    }
+//
+//    pCI->G.p_MainCard = pCI->G.p_scan;
   }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // KEYEXISTS
   else if (pCI->G.p_keyExists) {
-    pCI->G.p_index->vSet_Choose_index();
-
-    pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyExists);
-
-    pCI->G.p_keyExists->vTransferChildren(pCI->G.p_table);
-
-    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyExists);
-    pCI->G.p_keyExists->vInsert(pCI->G.p_table);
-
-    pCI->G.p_keyExists->vRemoveSubCard(pCI->G.p_index);
-    pCI->G.p_keyExists->vAppend(pCI->G.p_index);
-
-    pCI->G.p_MainCard = pCI->G.p_keyExists;
+    Card_KeyExists::vTableMorphsToKeyExists(pCI);
+//    pCI->G.p_index->vSet_Choose_index();
+//
+//    pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyExists);
+//
+//    pCI->G.p_keyExists->vTransferChildren(pCI->G.p_table);
+//
+//    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyExists);
+//    pCI->G.p_keyExists->vInsert(pCI->G.p_table);
+//
+//    pCI->G.p_keyExists->vRemoveSubCard(pCI->G.p_index);
+//    pCI->G.p_keyExists->vAppend(pCI->G.p_index);
+//
+//    pCI->G.p_MainCard = pCI->G.p_keyExists;
   }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // KEYNOTEXISTS
   else if (pCI->G.p_keyNotExists) {
-    pCI->G.p_index->vSet_Choose_index();
-
-    pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyNotExists);
-
-    pCI->G.p_keyNotExists->vTransferChildren(pCI->G.p_table);
-
-    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyNotExists);
-    pCI->G.p_keyNotExists->vInsert(pCI->G.p_table);
-
-    pCI->G.p_keyNotExists->vRemoveSubCard(pCI->G.p_index);
-    pCI->G.p_keyNotExists->vAppend(pCI->G.p_index);
-
-    pCI->G.p_MainCard = pCI->G.p_keyNotExists;
+    Card_KeyNotExists::vTableMorphsToKeyNotExists(pCI);
+//    pCI->G.p_index->vSet_Choose_index();
+//
+//    pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyNotExists);
+//
+//    pCI->G.p_keyNotExists->vTransferChildren(pCI->G.p_table);
+//
+//    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyNotExists);
+//    pCI->G.p_keyNotExists->vInsert(pCI->G.p_table);
+//
+//    pCI->G.p_keyNotExists->vRemoveSubCard(pCI->G.p_index);
+//    pCI->G.p_keyNotExists->vAppend(pCI->G.p_index);
+//
+//    pCI->G.p_MainCard = pCI->G.p_keyNotExists;
   }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // CROSSJOIN
 //  else if (! pCI->G.p_bounds) {
+//    Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
+
 //    Board::vChoose_index_For_crossJoin(static_cast<CardIter*>(this));
 //
 //    pCI->G.p_crossJoin = new Card_CrossJoin;
@@ -1603,29 +1608,30 @@ void Board::vS75_T10_Morph_table_To_EEop_v2(CardIter* pCI)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // INDEXJOIN
   else {
+    Card_IndexJoin::vTableMorphsToIndexJoin(pCI);
 
-    if (! pCI->G.p_bounds) {
-      s256 sErrorMsg;
-      sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
-                        pCI->G.p_table->cValue(),
-                        pCI->G.p_table->pSub_tableNm()->szValue());
-      Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
-      throw xError;
-    }
-
-    pCI->G.p_indexList->vChoose_index_For_indexJoin();
-
-    pCI->G_vNewMember(CK_INDEXJOIN);
-
-    pCI->G.p_indexJoin->vTransferChildren(pCI->G.p_table);
-
-    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_indexJoin);
-    pCI->G.p_indexJoin->vInsert(pCI->G.p_table);
-
-    //pCI->G.p_indexJoin->vRemoveSubCard(pCI->G.p_index);
-    //pCI->G.p_indexJoin->vAppend(pCI->G.p_index);
-
-    pCI->G.p_MainCard = pCI->G.p_indexJoin;
+//    if (! pCI->G.p_bounds) {
+//      s256 sErrorMsg;
+//      sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
+//                        pCI->G.p_table->cValue(),
+//                        pCI->G.p_table->pSub_tableNm()->szValue());
+//      Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
+//      throw xError;
+//    }
+//
+//    pCI->G.p_indexList->vChoose_index_For_indexJoin();
+//
+//    pCI->G_vNewMember(CK_INDEXJOIN);
+//
+//    pCI->G.p_indexJoin->vTransferChildren(pCI->G.p_table);
+//
+//    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_indexJoin);
+//    pCI->G.p_indexJoin->vInsert(pCI->G.p_table);
+//
+//    //pCI->G.p_indexJoin->vRemoveSubCard(pCI->G.p_index);
+//    //pCI->G.p_indexJoin->vAppend(pCI->G.p_index);
+//
+//    pCI->G.p_MainCard = pCI->G.p_indexJoin;
   }
 
 }

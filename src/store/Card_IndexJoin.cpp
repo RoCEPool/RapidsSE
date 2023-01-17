@@ -5,6 +5,7 @@
 #include "Card_IndexJoin.hpp"
 #include "CardIter.hpp"
 #include "Board.hpp"
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -50,6 +51,38 @@ void Card_IndexJoin::vIndividuateFilter(CardIter* pCI) {
   while (pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
     Board::vSA0_T10_Individuate_indexJoin_filter_b(pCI);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* table morphs to indexJoin                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_IndexJoin::vTableMorphsToIndexJoin(STORE::CardIter *pCI)
+{
+  _static_
+
+  if (! pCI->G.p_bounds) {
+    s256 sErrorMsg;
+    sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
+                      pCI->G.p_table->cValue(),
+                      pCI->G.p_table->pSub_tableNm()->szValue());
+    Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
+    throw xError;
+  }
+
+  pCI->G.p_indexList->vChoose_index_For_indexJoin();
+
+  pCI->G_vNewMember(CK_INDEXJOIN);
+
+  pCI->G.p_indexJoin->vTransferChildren(pCI->G.p_table);
+
+  pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_indexJoin);
+  pCI->G.p_indexJoin->vInsert(pCI->G.p_table);
+
+  //pCI->G.p_indexJoin->vRemoveSubCard(pCI->G.p_index);
+  //pCI->G.p_indexJoin->vAppend(pCI->G.p_index);
+
+  pCI->G.p_MainCard = pCI->G.p_indexJoin;
+
 }
 
 /*----------------------------------------------------------------------------*/

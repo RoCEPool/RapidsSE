@@ -18,6 +18,8 @@ namespace STORE
     Card_IndexJoin(void);
    ~Card_IndexJoin(void) noexcept(false);
 
+    static void vTableMorphsToIndexJoin(CardIter* pCI);
+
     void vComputeProjection(CardIter* pCI); // prototype
   };
 

@@ -18,6 +18,7 @@ namespace STORE
 
    static void vIndividuateFilter(CardIter* pCI);
 
+   static void vTableMorphsToCrossJoin(CardIter* pCI);
   };
 
   Card_CrossJoin* _pCard_CrossJoin(void* aAddr);
