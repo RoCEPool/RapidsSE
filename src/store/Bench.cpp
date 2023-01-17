@@ -736,10 +736,6 @@ void Bench::vTransform_MarkCmpPredWrtTable(void)
   m_pCI->vPrintBoard(__LINE__);
   Card_Where::vMarkWherePredWrtTable(m_pCI);
 
-//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-//    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
-//  }
-
   m_pCI->vEndTransform();
 }
 
@@ -754,16 +750,11 @@ void Bench::vTransform_CopyMarkedCmpPred(void)
 
   vAssert_Board_any();
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Move At Marked Where Pred To Table Filter
 
   m_pCI->G_vRestart();
   Card_Where::vMoveWherePredToTableFilter(m_pCI);
-
-//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-//    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
-//  }
 
   m_pCI->vPrintBoard();
 
@@ -784,12 +775,7 @@ void Bench::vTransform_CullMarkedCmpPred(void)
   m_pCI->G_vRestart();
   Card_Where::vCullMarkedCmpPred(m_pCI);
 
-//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-//  }
-
   m_pCI->vPrintBoard();
-
 
   m_pCI->vEndTransform();
 }
@@ -805,15 +791,8 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 
   vAssert_Board_any();
 
-
   m_pCI->G_vRestart();
   Card_Where::vDeleteEmpyWhere(m_pCI);
-
-//  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-//    if (0 == m_pCI->G.p_boolCalc->nChildCards()) {
-//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
-//    }
-//  }
 
   m_pCI->vEndTransform();
 }
@@ -829,16 +808,6 @@ void Bench::vTransform_DeriveBoundsFromFilter(void)
 
   vAssert_Board_any();
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
-
-//  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
-//
-//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-//    bool bParamAllowedInBounds = false;
-//    if (m_pCI->G.pSubQuery->bIsCorrelated() && m_pCI->G.pSubQuery->bByExists())
-//      bParamAllowedInBounds = true;
-//
-//    m_pCI->G.p_table->vBounds_DeriveFrom_filter(m_pCI->G.p_filter,bParamAllowedInBounds);
-//  }
 
   m_pCI->vEndTransform();
 }

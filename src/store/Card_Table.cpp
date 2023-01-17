@@ -130,6 +130,7 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
     pCI->G.p_table->vBounds_DeriveFrom_filter(pCI->G.p_filter,bParamAllowedInBounds);
   }
 }
+
 /*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
