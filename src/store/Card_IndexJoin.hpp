@@ -12,7 +12,9 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    static void vIndividuateFilter(CardIter* pCI);
+
     Card_IndexJoin(void);
    ~Card_IndexJoin(void) noexcept(false);
 

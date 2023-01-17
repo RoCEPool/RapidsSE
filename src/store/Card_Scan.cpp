@@ -40,6 +40,23 @@ Card_Scan::~Card_Scan(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* individuate filter                                                         */
+/*----------------------------------------------------------------------------*/
+ void Card_Scan::vIndividuateFilter(CardIter* pCI) {
+
+   _static_
+
+   while (pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+     pCI->G.p_scan->vRemoveChild(pCI->G.p_filter);
+     pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_scan);
+
+     if (! pCI->G.p_filter->pSub_level()) {
+       pCI->G.p_filter->vPush(pCI->G.p_scan->pSub_level()->pDupCardAndSubCards());
+     }
+   }
+ }
+
+/*----------------------------------------------------------------------------*/
 /* scan becomes table                                                         */
 /*----------------------------------------------------------------------------*/
 void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)

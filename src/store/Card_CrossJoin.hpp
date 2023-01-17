@@ -15,6 +15,9 @@ namespace STORE
   
     Card_CrossJoin(void);
    ~Card_CrossJoin(void) noexcept(false);
+
+   static void vIndividuateFilter(CardIter* pCI);
+
   };
 
   Card_CrossJoin* _pCard_CrossJoin(void* aAddr);

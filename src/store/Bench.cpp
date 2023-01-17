@@ -1104,30 +1104,37 @@ void Bench::vTransform_IndividuateFilter(void)
   vAssert_Board_mqA();
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    m_pCI->G.p_scan->vRemoveChild(m_pCI->G.p_filter);
-    m_pCI->G.pDeck->vInsertAfter(m_pCI->G.p_filter, m_pCI->G.p_scan);
+  Card_Scan::vIndividuateFilter(m_pCI);
 
-    if (! m_pCI->G.p_filter->pSub_level()) {
-      m_pCI->G.p_filter->vPush(m_pCI->G.p_scan->pSub_level()->pDupCardAndSubCards());
-    }
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(m_pCI);
-  }
+//  while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+//    m_pCI->G.p_scan->vRemoveChild(m_pCI->G.p_filter);
+//    m_pCI->G.pDeck->vInsertAfter(m_pCI->G.p_filter, m_pCI->G.p_scan);
+//
+//    if (! m_pCI->G.p_filter->pSub_level()) {
+//      m_pCI->G.p_filter->vPush(m_pCI->G.p_scan->pSub_level()->pDupCardAndSubCards());
+//    }
+//  }
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Board::vSA0_T10_Individuate_indexJoin_filter_b(m_pCI);
-  }
+  Card_IndexScan::vIndividuateFilter(m_pCI);
+
+//  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
+//    Card_Filter::vIndividuate_filter(m_pCI);
+//  }
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Board::vSA0_T10c_Individuate_crossJoin_filter(m_pCI);
-  }
+  Card_IndexJoin::vIndividuateFilter(m_pCI);
 
+//  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
+//    Board::vSA0_T10_Individuate_indexJoin_filter_b(m_pCI);
+//  }
+
+  m_pCI->G_vRestart();
+  Card_CrossJoin::vIndividuateFilter(m_pCI);
+
+//  while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
+//    Board::vSA0_T10c_Individuate_crossJoin_filter(m_pCI);
+//  }
 
   m_pCI->vEndTransform();
 }
