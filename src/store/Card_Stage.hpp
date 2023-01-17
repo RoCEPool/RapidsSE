@@ -13,6 +13,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
+    static void vDeleteAllStage(CardIter* pCI);
+
     Card_Stage(void);
    ~Card_Stage(void) noexcept(false);
   };

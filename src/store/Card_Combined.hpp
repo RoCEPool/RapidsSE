@@ -12,7 +12,9 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    static void vDeleteAllCombined(CardIter* pCI);
+
     Card_Combined(void);
    ~Card_Combined(void) noexcept(false);
   };

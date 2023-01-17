@@ -6,6 +6,8 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
+#include "Card_AbsJoin.hpp"
+
 #include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -384,35 +386,39 @@ void Bench::vTransform_DeleteUnneeded(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin
+  Card_AbsJoin::vDeleteAllAbsJoin(m_pCI);
 
-  while (m_pCI->G_bEachMain(CK_ABSJOIN)) {
-    m_pCI->G_vRemoveDeleteMain(CK_ABSJOIN);
-  }
+//  while (m_pCI->G_bEachMain(CK_ABSJOIN)) {
+//    m_pCI->G_vRemoveDeleteMain(CK_ABSJOIN);
+//    Card_AbsJoin::vDelete(m_pCI);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Combined
-
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_COMBINED)) {
-    m_pCI->G_vRemoveDeleteMain(CK_COMBINED);
-  }
+  Card_Combined::vDeleteAllCombined(m_pCI);
+
+//  while (m_pCI->G_bEachMain(CK_COMBINED)) {
+//    m_pCI->G_vRemoveDeleteMain(CK_COMBINED);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Send
-
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_SEND)) {
-    m_pCI->G_vRemoveDeleteMain(CK_SEND);
-  }
+  Card_Send::vDeleteAllSend(m_pCI);
+
+//  while (m_pCI->G_bEachMain(CK_SEND)) {
+//    m_pCI->G_vRemoveDeleteMain(CK_SEND);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Stage
-
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_STAGE)) {
-    m_pCI->G_vRemoveDeleteMain(CK_STAGE);
-  }
+  Card_Stage::vDeleteAllStage(m_pCI);
 
+//  while (m_pCI->G_bEachMain(CK_STAGE)) {
+//    m_pCI->G_vRemoveDeleteMain(CK_STAGE);
+//  }
 
   m_pCI->vEndTransform();
 }
