@@ -216,7 +216,7 @@ void Bench::vPrefix(char cPrefix)
 /*----------------------------------------------------------------------------*/
 /* transform matrix                                                           */
 /*----------------------------------------------------------------------------*/
-bool Bench::bApplyTransformMatrix(eEC* peErrorCode)
+bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -559,21 +559,21 @@ void Bench::vOptimiseLoop(void) {
 
     bOpts = false;
 
-    bOpts |= bOT_Cut_Sort();
-    bOpts |= bOT_Dup_Filter();
-    bOpts |= bOT_Ely_Filters();
-    bOpts |= bOT_Ely_Projections();
-    bOpts |= bOT_Min_Groupby();
-    bOpts |= bOT_Otm_Calculations();
-    bOpts |= bOT_Ppn_Projections();
+    bOpts |= bOptimise_CutSort();
+    bOpts |= bOptimise_DupFilter();
+    bOpts |= bOptimise_ElyFilters();
+    bOpts |= bOptimise_ElyProjections();
+    bOpts |= bOptimise_MinGroupby();
+    bOpts |= bOptimise_OtmCalculations();
+    bOpts |= bOptimise_PpnProjections();
     // todo: disuss with Alka
-//    bOpts |= bOT_Rpl_Aggreg_By_OrdAgg();
-    bOpts |= bOT_Rpl_Aggreg_By_Sort_OrdAgg();
-    bOpts |= bOT_Rpl_Max_By_Top();
-    bOpts |= bOT_Rpl_Scan_by_IndexScan();
-    bOpts |= bOT_Rpl_SortDesc_Limit_By_Top();
-    bOpts |= bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels();
-    bOpts |= bOT_Seq_Join_Order();
+//    bOpts |= bOptimise_RplAggregByOrdAgg();
+    bOpts |= bOptimise_RplAggregBySortOrdAgg();
+    bOpts |= bOptimise_RplMaxByTop();
+    bOpts |= bOptimise_RplScanByIndexScan();
+    bOpts |= bOptimise_RplSortDescLimitByTop();
+    bOpts |= bOptimise_RplSortLimitOnOriginByAllLevels();
+    bOpts |= bOptimise_SeqJoinOrder();
 
   } while (bOpts);
 
@@ -582,7 +582,7 @@ void Bench::vOptimiseLoop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Cut_Sort(void) {
+bool Bench::bOptimise_CutSort(void) {
 
   //
   // Query1, Query4, Query7, Query8, Query12
@@ -619,7 +619,7 @@ bool Bench::bOT_Cut_Sort(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Dup_Filter(void) {
+bool Bench::bOptimise_DupFilter(void) {
 
   // Query7, Query19
 
@@ -637,7 +637,7 @@ bool Bench::bOT_Dup_Filter(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Ely_Filters(void) {
+bool Bench::bOptimise_ElyFilters(void) {
 
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
@@ -653,7 +653,7 @@ bool Bench::bOT_Ely_Filters(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Ely_Projections(void) {
+bool Bench::bOptimise_ElyProjections(void) {
 
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query14,
@@ -677,7 +677,7 @@ bool Bench::bOT_Ely_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Min_Groupby(void) {
+bool Bench::bOptimise_MinGroupby(void) {
 
   //
   // Query3, Query10, Query18
@@ -697,7 +697,7 @@ bool Bench::bOT_Min_Groupby(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Otm_Calculations(void) {
+bool Bench::bOptimise_OtmCalculations(void) {
 
   // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
   //   Query19, Query20
@@ -715,7 +715,7 @@ bool Bench::bOT_Otm_Calculations(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Ppn_Projections(void) {
+bool Bench::bOptimise_PpnProjections(void) {
 
   // Query2, Query10
 
@@ -733,7 +733,7 @@ bool Bench::bOT_Ppn_Projections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Rpl_Aggreg_By_OrdAgg(void)
+bool Bench::bOptimise_RplAggregByOrdAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -791,7 +791,7 @@ bool Bench::bOT_Rpl_Aggreg_By_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
+bool Bench::bOptimise_RplAggregBySortOrdAgg(void) {
 
   return false;
 }
@@ -799,7 +799,7 @@ bool Bench::bOT_Rpl_Aggreg_By_Sort_OrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Rpl_Max_By_Top(void) {
+bool Bench::bOptimise_RplMaxByTop(void) {
 
   // Query15
 
@@ -818,7 +818,7 @@ bool Bench::bOT_Rpl_Max_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Rpl_Scan_by_IndexScan(void) {
+bool Bench::bOptimise_RplScanByIndexScan(void) {
 
   // Query6, Query10, Query14 and Query15
 
@@ -857,7 +857,7 @@ bool Bench::bOT_Rpl_Scan_by_IndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Rpl_SortDesc_Limit_By_Top(void) {
+bool Bench::bOptimise_RplSortDescLimitByTop(void) {
 
   // Query10
 
@@ -872,7 +872,7 @@ bool Bench::bOT_Rpl_SortDesc_Limit_By_Top(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void) {
+bool Bench::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 
   // Query3
 
@@ -893,7 +893,7 @@ bool Bench::bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bOT_Seq_Join_Order(void) {
+bool Bench::bOptimise_SeqJoinOrder(void) {
 
   return false;
 }

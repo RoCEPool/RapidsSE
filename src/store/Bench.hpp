@@ -34,30 +34,14 @@ namespace STORE
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
 
-    void vAddBoard(Board* pBoard);
-    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
-    CardCtl* pCardCtl(void);
-    void vClearMarks(void);
-    Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
-    Board* pGetBoard(i8 i_Board);
-    Board* pGetBoard(Stz* szBoardNm);
-    bool bIsFlat(void);
-    void vIsFlat(bool bIsFlat);
-    Optimiser* pOptimiser(void);
-    char cPrefix(void);
-    void vPrefix(char cPrefix);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     // series
-    bool bApplyTransformMatrix(eEC* peErrorCode);
+    bool bApplyTransformationMatrix(eEC* peErrorCode);
 
     void vSeries_PreparePipelines(void);
     void vSeries_MakeRunnable(void);
     void vSeries_OptimiseFlattened(void);
     void vSeries_MakeWeavable(void);
-
-    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // group
@@ -132,23 +116,39 @@ namespace STORE
     // optimisation
     void vOptimiseLoop(void);
 
-    bool bOT_Cut_Sort(void);
-    bool bOT_Dup_Filter(void);
-    bool bOT_Ely_Filters(void);
-    bool bOT_Ely_Projections(void);
-    bool bOT_Min_Groupby(void);
-    bool bOT_Otm_Calculations(void);
-    bool bOT_Ppn_Projections(void);
-    bool bOT_Rpl_Aggreg_By_OrdAgg(void);
-    bool bOT_Rpl_Aggreg_By_Sort_OrdAgg(void);
-    bool bOT_Rpl_Max_By_Top(void);
-    bool bOT_Rpl_Scan_by_IndexScan(void);
-    bool bOT_Rpl_SortDesc_Limit_By_Top(void);
-    bool bOT_Rpl_Sort_Limit_OnOrigin_By_AllLevels(void);
-
-    bool bOT_Seq_Join_Order(void);
+    bool bOptimise_CutSort(void);
+    bool bOptimise_DupFilter(void);
+    bool bOptimise_ElyFilters(void);
+    bool bOptimise_ElyProjections(void);
+    bool bOptimise_MinGroupby(void);
+    bool bOptimise_OtmCalculations(void);
+    bool bOptimise_PpnProjections(void);
+    bool bOptimise_RplAggregByOrdAgg(void);
+    bool bOptimise_RplAggregBySortOrdAgg(void);
+    bool bOptimise_RplMaxByTop(void);
+    bool bOptimise_RplScanByIndexScan(void);
+    bool bOptimise_RplSortDescLimitByTop(void);
+    bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
+    bool bOptimise_SeqJoinOrder(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    void vAddBoard(Board* pBoard);
+    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    CardCtl* pCardCtl(void);
+    void vClearMarks(void);
+    Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
+    Board* pGetBoard(i8 i_Board);
+    Board* pGetBoard(Stz* szBoardNm);
+    bool bIsFlat(void);
+    void vIsFlat(bool bIsFlat);
+    Optimiser* pOptimiser(void);
+    char cPrefix(void);
+    void vPrefix(char cPrefix);
+
+    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
+    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
+
 
     void vS10_T00_Begin(void);
 
