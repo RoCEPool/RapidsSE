@@ -228,11 +228,16 @@ void Bench::vGroup_CondenseInfo(void)
 void Bench::vGroup_MetaAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
+/*
   vTransform_TableAnalysis();
   vTransform_StreamAnalysis();
   vTransform_IndexAnalysis();
   vTransform_ProjectionAnalysis();
+*/
+
+  vTransform_TableAnalysis();
+  vTransform_ProjectionAnalysis();
+  vTransform_IndexAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -72,6 +72,32 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Stream* p_stream)
 }
 
 /*----------------------------------------------------------------------------*/
+/* affix each idxCol with it's $c.n of this table stream                      */
+/*----------------------------------------------------------------------------*/
+void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_ProjectionColNo = C_UNKNOWN;
+
+  CardIter xCI(this);
+  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild(CK_IDXCOL))) {
+    Stz* szColNm = p_idxCol->sz();
+
+    CardIter xCI_p(p_projection);
+    Card_Expr* expr;
+    while (expr = _pCard_Expr(xCI_p.pEachChild())) {
+      if (expr->pSub_colNm()->bSame(szColNm)) {
+        Card_TblColOdn* p_tblColOdn = expr->pSub_tblColOdn();
+        Stz* szTblColOdn = p_tblColOdn->sz();
+
+        p_idxCol->vSetValueMark1(szTblColOdn, MARK_CHANGED);
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_IdxCol* Card_IdxColList::pIdxCol_byIdxColOdn(Stz* szIdxColOdn)

@@ -75,11 +75,11 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
+  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_INDEXLIST)) {
     CardIter xCI(pCI->G.p_indexList);
     while ((pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
       pCI->G.p_idxColList = pCI->G.p_index->pSub_idxColList();
-      pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_stream);
+      pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_projection);
     }
   }
 }
