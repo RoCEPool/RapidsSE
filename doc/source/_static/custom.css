@@ -6,3 +6,7 @@ table#installation-modes tr td:nth-child(2), table#installation-modes tr td:nth-
 table.docutils {
     margin-bottom: 25px;
 }
+
+table.centered tr th, table.centered tr td {
+    text-align: center;
+}
