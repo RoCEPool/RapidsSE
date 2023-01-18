@@ -93,21 +93,18 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Stz* szStmColOdn = p_term->szValue();
-    if (! pCI->G_bResolveSubCard(CK_EXPR,szStmColOdn,pCI->G.i_MainCard))
+    if (! pCI->G_bResolveSubCard(CK_PROJECTION,CK_STMCOLODN,szStmColOdn,pCI->G.i_MainCard))
       return C_CONTINUE_RECURSION;
 
-    //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
+    RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
 
-    pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
+    pCI->G.p_tblColOdn = pCI->m_pCard_parent->pSub_tblColOdn();
     p_term->vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (CK_WHERE == pCI->G.e_MainCard)
-    vDebugPoint();
 
   bApplyRecursive(CK_TERM, bLambdaFn);
 }
