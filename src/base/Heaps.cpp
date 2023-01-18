@@ -759,32 +759,19 @@ void Heaps::vReloadPHeaps(void)
 
   // We are using an atomic counter to figure out when the threads have
   // finished their work.
-//  gxThreadsRemaining.vSetRemaining(iNoPtns);
+  gxThreadsRemaining.vSetRemaining(iNoPtns);
 
   // Spawn the threads.
   vTrace("Number of Partitions: %lld\n"_Stz, iNoPtns);
-  pthread_t pthreadId[iNoPtns];
   for(i8 i = 0; i < iNoPtns; i++)
   {
-    pthreadId[i] = (pthread_t) PsxThd::iSpawnPosixThreadNotDetach(vLoadHeapBuffers, (void*)i);
-
-    if((i8) pthreadId[i] == -1)
-    {
-      vTrace("Error spawning thread.\n"_Stz);
-      THROW("Error spawning thread.\n"_Stz);
-    }
+    PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
   }
 
   vTrace("Main thread waiting...\n"_Stz);
-  for(i8 i = 0; i < iNoPtns; i++)
-  {
-    pthread_join(pthreadId[i], NULL);
-  }
-  vTrace("Main thread done waiting...\n"_Stz);
-//  vTrace("Main thread waiting...\n"_Stz);
-//  do{
-//    sleep(1);
-//  } while(gxThreadsRemaining.bIsSet());
+  do{
+    sleep(1);
+  } while(gxThreadsRemaining.bIsSet());
 
   Persistent.m_pTiny->vDropWriteLock();
   Persistent.m_pSmall->vDropWriteLock();
@@ -798,20 +785,17 @@ void Heaps::vReloadPHeaps(void)
 /*----------------------------------------------------------------------------*/
 /* Threads call this function, to load heap buffers from disk                 */
 /*----------------------------------------------------------------------------*/
-[[noreturn]] void *vLoadHeapBuffers(void *pFuncObj)
+[[noreturn]] void* __attribute__((optimize("O0"))) vLoadHeapBuffers(void *pFuncObj)
 {
   i8 iPtnNo = (i8) pFuncObj;
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
 
-  vThreadCallStackDump();
   s256 szFilePath = ""_Stz;
   szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
                      gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo % nDiskpaths].szStz(),
                      gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                      iPtnNo);
-
-  vThreadCallStackDump();
 
   // Search the other disks for the reload file if we can't find it in the current dir
   if( ! File::bExists(szFilePath)) {
@@ -862,7 +846,6 @@ void Heaps::vReloadPHeaps(void)
     if(pPoolBufferHeader->eGetClassNo() == CN_HEAPBUFFER)
     {
       RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
-      vTrace("PoolBufferAddr: %p %x\n"_Stz, pPoolBufferHeader->m_pThis, pPoolBufferHeader->m_pThis);
       PoolBuffer *pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBufferHeader->m_pThis);
 
       MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
@@ -882,11 +865,9 @@ void Heaps::vReloadPHeaps(void)
   delete pFile;
 
   // Atomic decrement. Last thread to finish causes the main thread to wake up.
-//  i8 nAcksWereRemaining;
-//  gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
-//  RASSERT(nAcksWereRemaining >= 0);
-
-  vThreadCallStackDump();
+  i8 nAcksWereRemaining;
+  gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
+  RASSERT(nAcksWereRemaining >= 0);
 
   return nullptr;
 }

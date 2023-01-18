@@ -39,7 +39,6 @@ namespace BASE
     static bool  bIsSeThread(void);
 
     static pthread_t    iSpawnPosixThread(void* aFun(void*), void* aArg);
-    static pthread_t    iSpawnPosixThreadNotDetach(void* aFun(void*), void* aArg);
 
     static bool  bTlsCreate(pthread_key_t* aTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);

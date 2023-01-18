@@ -260,40 +260,6 @@ pthread_t PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create thread, passing it function to execute                              */
-/*----------------------------------------------------------------------------*/
-pthread_t PsxThd::iSpawnPosixThreadNotDetach(void* aFun(void*), void* aArg)
-{
-  _static_
-
-  pthread_t iThreadId;
-
-  pthread_attr_t tattr;
-
-  size_t size = C_1MB * 5;
-
-  /* initialized with default attributes */
-  i8 rCode = pthread_attr_init(&tattr);
-  RASSERT(! rCode);
-
-  /* setting the size of the stack also */
-  rCode = pthread_attr_setstacksize(&tattr, size);
-  RASSERT(! rCode);
-
-  rCode = pthread_create(&iThreadId, &tattr,aFun,aArg);
-
-  if (rCode) {
-    vTrace("pthread_create() error; rCode=%lld\n"_Stz,rCode);
-    return (pthread_t) -1;
-  }
-
-  // this is important otherwise resources are not released
-//  pthread_detach(iThreadId);
-
-  return iThreadId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a tls slot                                                          */
 /*----------------------------------------------------------------------------*/
 bool PsxThd::bTlsCreate(pthread_key_t* aTlsKey)
