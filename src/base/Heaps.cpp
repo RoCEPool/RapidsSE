@@ -762,7 +762,6 @@ void Heaps::vReloadPHeaps(void)
   gxThreadsRemaining.vSetRemaining(iNoPtns);
 
   // Spawn the threads.
-  vTrace("Number of Partitions: %lld\n"_Stz, iNoPtns);
   for(i8 i = 0; i < iNoPtns; i++)
   {
     PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
