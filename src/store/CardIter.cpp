@@ -2515,6 +2515,28 @@ bool CardIter::G_bResolveSubCard(eCK eCard, eCK eGrandSub, Stz* szWithValue, i8 
 }
 
 /*----------------------------------------------------------------------------*/
+/* resolve card (r-l) with sub given value & has eGranSun before i_Before     */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bResolveSubCard(eCK eSub, Stz* szWithValue, eCK eGrandSub, i8 i_Before)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card* pMain = G.pDeck->pGetChild(i_Main);
+
+    if ( !(m_pCard_resolved = pMain->pFindValueRecursive(eSub,szWithValue,m_pCard_parent)))
+      continue;
+
+    if ( !m_pCard_resolved->pFindSubCard(eGrandSub))
+      continue;
+
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* resolve card (r-l) with grand-sub with given value before given i_Before   */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bResolveSubCard(eCK eCard, i8 i_Before) {
