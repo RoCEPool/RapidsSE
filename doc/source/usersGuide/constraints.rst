@@ -1,0 +1,78 @@
+.. _constraints:
+
+Constraints and Limitations
+===========================
+
+RapidsSE has several system limitations. These are documented below:
+
+1. Data type value ranges
+
+   Each data type can have specific limitations with their range of values.
+   Refer to the section Data Types for more details.
+
+2. ``CHAR`` and ``VARCHAR`` length
+
+   ``CHAR`` and ``VARCHAR`` values are currently limited to 4,000 bytes
+   (not characters) in length. This will be expanded in a future release.
+
+3. Character encoding
+
+   RapidsSE does not currently recognise any character encoding. All strings
+   are treated as ASCII strings. While multi-byte character values can be
+   loaded, these are not interpreted with respect to any specific encoding
+   other than ASCII. As such RapidsSE considers each byte in a string to
+   represent one character. This will affect expression operators that
+   manipulate string values such as ``SUBSTRING``.
+
+4. Maximum of 48 columns per table
+
+   RapidsSE does not support tables having more than 48 columns.
+
+5. Maximum of 16 keys per index
+
+   A composite key index (an index on more than one column) on a table cannot
+   have more than 16 keys.
+
+6. Statement length
+
+   A statement issued to RapidsSE cannot have more than 2048 tokens (words)
+   or be longer than 48,000 bytes.
+
+7. Logging defaults
+
+   RapidsSE currently supports 4 historical log files each with a maximum size
+   of 20MB. RapidsSE currently does not allow the user to alter the logging
+   parameters.
+
+8. Node loss
+
+   RapidsSE currently does not tolerate the loss of a node in the cluster. If
+   a node in the cluster is to go offline then commands being submitted to
+   other nodes in the cluster will return an error message indicating that a
+   node has been lost. The current version of RapidsSE does not support the
+   restarting of the node or adding of a node to the cluster to compensate.
+   This will be addressed in a future version.
+
+9. Low memory
+
+   As an in-memory system, if RapidsSE runs out of space during the execution
+   of a command then an error message will be returned to the user. This can
+   occur due to loading more data into the system than available memory, or
+   through the use of temporary buffers used during the execution of a
+   complex query.
+
+   A future version of RapidsSE will pre-allocate enough memory for an
+   administrator to try to recover some space, e.g. by dropping a table.
+
+10. Large scale factors
+
+    The current version of RapidsSE has not been validated for clusters
+    of more than 10 nodes or scale factors in excess of SF1000. This will
+    be validated and addressed in a future version.
+
+11. Joins
+
+    RapidsSE only supports INNER joins (the default).
+
+    RapidsSE also only supports equi-joins. That is, join predicates that are
+    compared for equality.

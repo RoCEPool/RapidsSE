@@ -7,13 +7,10 @@ User's Guide
    :maxdepth: 1
 
    usingRapidsSE
-   dataTypes
+   dataDefinition
    dataManipulation
-..   operators
-..   indexes
-..   typeConversion
-..   constraints
-..   dataDefinition
-..   queries
-..   expressions
+   queries
+   dataTypes
+   expressions
+   constraints
 
