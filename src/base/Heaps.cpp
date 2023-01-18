@@ -759,19 +759,32 @@ void Heaps::vReloadPHeaps(void)
 
   // We are using an atomic counter to figure out when the threads have
   // finished their work.
-  gxThreadsRemaining.vSetRemaining(iNoPtns);
+//  gxThreadsRemaining.vSetRemaining(iNoPtns);
 
   // Spawn the threads.
   vTrace("Number of Partitions: %lld\n"_Stz, iNoPtns);
+  pthread_t pthreadId[iNoPtns];
   for(i8 i = 0; i < iNoPtns; i++)
   {
-    PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
+    pthreadId[i] = (pthread_t) PsxThd::iSpawnPosixThreadNotDetach(vLoadHeapBuffers, (void*)i);
+
+    if((i8) pthreadId[i] == -1)
+    {
+      vTrace("Error spawning thread.\n"_Stz);
+      THROW("Error spawning thread.\n"_Stz);
+    }
   }
 
   vTrace("Main thread waiting...\n"_Stz);
-  do{
-    sleep(1);
-  } while(gxThreadsRemaining.bIsSet());
+  for(i8 i = 0; i < iNoPtns; i++)
+  {
+    pthread_join(pthreadId[i], NULL);
+  }
+  vTrace("Main thread done waiting...\n"_Stz);
+//  vTrace("Main thread waiting...\n"_Stz);
+//  do{
+//    sleep(1);
+//  } while(gxThreadsRemaining.bIsSet());
 
   Persistent.m_pTiny->vDropWriteLock();
   Persistent.m_pSmall->vDropWriteLock();
@@ -869,9 +882,9 @@ void Heaps::vReloadPHeaps(void)
   delete pFile;
 
   // Atomic decrement. Last thread to finish causes the main thread to wake up.
-  i8 nAcksWereRemaining;
-  gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
-  RASSERT(nAcksWereRemaining >= 0);
+//  i8 nAcksWereRemaining;
+//  gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
+//  RASSERT(nAcksWereRemaining >= 0);
 
   vThreadCallStackDump();
 
