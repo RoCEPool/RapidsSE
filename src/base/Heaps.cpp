@@ -762,6 +762,7 @@ void Heaps::vReloadPHeaps(void)
   gxThreadsRemaining.vSetRemaining(iNoPtns);
 
   // Spawn the threads.
+  vTrace("Number of Partitions: %lld\n"_Stz, iNoPtns);
   for(i8 i = 0; i < iNoPtns; i++)
   {
     PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
@@ -789,12 +790,15 @@ void Heaps::vReloadPHeaps(void)
   i8 iPtnNo = (i8) pFuncObj;
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
 
+  vThreadCallStackDump();
   s256 szFilePath = ""_Stz;
   szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
                      gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnNo % nDiskpaths].szStz(),
                      gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                      iPtnNo);
+
+  vThreadCallStackDump();
 
   // Search the other disks for the reload file if we can't find it in the current dir
   if( ! File::bExists(szFilePath)) {
@@ -845,6 +849,7 @@ void Heaps::vReloadPHeaps(void)
     if(pPoolBufferHeader->eGetClassNo() == CN_HEAPBUFFER)
     {
       RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
+      vTrace("PoolBufferAddr: %p %x\n"_Stz, pPoolBufferHeader->m_pThis, pPoolBufferHeader->m_pThis);
       PoolBuffer *pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBufferHeader->m_pThis);
 
       MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
@@ -867,6 +872,8 @@ void Heaps::vReloadPHeaps(void)
   i8 nAcksWereRemaining;
   gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
   RASSERT(nAcksWereRemaining >= 0);
+
+  vThreadCallStackDump();
 
   return nullptr;
 }

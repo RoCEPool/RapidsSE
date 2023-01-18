@@ -216,6 +216,7 @@ function startRemoteNode() {
     remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node $(printf '"%s" ' "$@")"
   else
     remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node"
+  fi
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"

@@ -236,7 +236,7 @@ i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
   
   pthread_attr_t tattr;
 
-  size_t size = C_512KB;
+  size_t size = C_1MB * 5;
 
   /* initialized with default attributes */
   i8 rCode = pthread_attr_init(&tattr);
