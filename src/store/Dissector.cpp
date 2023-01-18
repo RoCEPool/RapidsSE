@@ -386,31 +386,34 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // filtElist : filter expression list
 
 //  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-//  Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_rpnCalc();
-//  pCard_Expr->vRemoveSubCard(pCard_Calc);
+//  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
+//  pCard_Expr->vRemoveSubCard(pCard_RpnCalc);
 //  DELETE_CARD(pCard_Expr);
-//  pCard_Filter->vAppend(pCard_Calc);
+//  pCard_Filter->vAppend(pCard_RpnCalc);
 
   i8 i_Expr = 1;
   Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
-  pCard_Filter->vAppend(pCard_Expr);
-  Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_rpnCalc();
+  Card_Constraint* pCard_Constraint = new Card_Constraint;
+  pCard_Constraint->vAppend(pCard_Expr);
+
+  pCard_Filter->vAppend(pCard_Constraint);
+  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // TODO: Hacking the missing $P1 of an exists... chat w Alka
 
 
-  if (2 == pCard_Calc->nChildCards() &&
-      pCard_Calc->pGetChild(0)->bSame("$1"_Stz) &&
-      pCard_Calc->pGetChild(1)->bSame("=="_Stz)) {
-    pCard_Calc->vPush(new Card_Term("$P1"_Stz));
+  if (2 == pCard_RpnCalc->nChildCards() &&
+      pCard_RpnCalc->pGetChild(0)->bSame("$1"_Stz) &&
+      pCard_RpnCalc->pGetChild(1)->bSame("=="_Stz)) {
+    pCard_RpnCalc->vPush(new Card_Term("$P1"_Stz));
   }
   else
-  if (6 == pCard_Calc->nChildCards() &&
-      pCard_Calc->pGetChild(0)->bSame("$1"_Stz) &&
-      pCard_Calc->pGetChild(1)->bSame("=="_Stz)) {
-    pCard_Calc->vPush(new Card_Term("$P1"_Stz));
+  if (6 == pCard_RpnCalc->nChildCards() &&
+      pCard_RpnCalc->pGetChild(0)->bSame("$1"_Stz) &&
+      pCard_RpnCalc->pGetChild(1)->bSame("=="_Stz)) {
+    pCard_RpnCalc->vPush(new Card_Term("$P1"_Stz));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -23,6 +23,8 @@ namespace STORE
     static void vMoveWherePredToTableFilter(CardIter* pCI);
     static void vMove_All_on_To_where(CardIter* pCI);
     static void vMoveWhereToTableAsConstraint(CardIter* pCI);
+
+    static Card_Where* pNewWhereConstruct(void);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

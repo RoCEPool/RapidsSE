@@ -120,11 +120,13 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 
     if (! pCI->G.p_where) {
       // create a new <where> if none exists
-      pCI->G_vNewMember(CK_WHERE);
+      //pCI->G_vNewMember(CK_WHERE);
+      pCI->G.p_where = Card_Where::pNewWhereConstruct();
       pCI->G.pDeck->vInsertAfter(pCI->G.p_where,pCI->G.p_absJoin);
 
+      pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
       // create an initial empty /<rpnCalc>
-      pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
+      //pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
     }
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
@@ -161,6 +163,28 @@ void Card_Where::vMoveWhereToTableAsConstraint(CardIter* pCI)
     pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_BOOLCALC);
     pCI->G_vAppendChild(CK_BOOLCALC,pCI->G.p_PRED);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new <where>/<constraint>/<expr $1>/<rpnCalc>                        */
+/*----------------------------------------------------------------------------*/
+Card_Where* Card_Where::pNewWhereConstruct(void)
+{
+  _static_
+
+  Card_Where* p_where = new Card_Where;
+
+  Card_Constraint* p_constraint = new Card_Constraint;
+  p_where->vAppend(p_constraint);
+
+  Card_Expr* p_expr = new Card_Expr;
+  p_expr->vValue("$1"_Stz);
+  p_constraint->vAppend(p_expr);
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  p_expr->vAppend(p_rpnCalc);
+
+  return p_where;
 }
 
 /*============================================================================*/
