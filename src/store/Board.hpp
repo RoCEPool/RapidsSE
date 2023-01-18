@@ -230,7 +230,6 @@ namespace STORE
 
     static void vAdd_Partitioning(CardIter* pCI);
 
-    static void vConvert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
     static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
 
     static void vDerive_foldElist_From_project_stream(CardIter* pCI);

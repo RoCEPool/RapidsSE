@@ -1106,13 +1106,12 @@ void Bench::vTransform_StmColToColNmOfKeyExists(void)
   while (m_pCI->G_bEachMain()) {
 
     if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
-              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard
-    ))
+           || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
       continue;
 
     m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
 
-    Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(m_pCI);
+    m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
   }
 
   m_pCI->vEndTransform();

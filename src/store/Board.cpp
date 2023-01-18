@@ -132,48 +132,6 @@ void Board::vAdd_Partitioning(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vConvert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI)
-{
-  _static_
-
-  i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
-
-  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-  RASSERT(1 == p_boolCalc->nChildCards());
-
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI,i_Main](Card_PRED* p_pred, bool bUpwards)
-  {
-    if (bUpwards)
-      return C_CONTINUE_RECURSION;
-
-    if (! p_pred->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term = _pCard_Term(p_pred);
-    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    pCI->G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, p_term->szValue(), i_Main + 1);
-
-    Card_StmColNm* p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
-
-    p_term->vSetValueMark1(p_stmColNm->szValue(), MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vCorrect_having_BaseOn_foldExpr(CardIter* pCI)
 {
   _static_
