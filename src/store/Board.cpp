@@ -1266,6 +1266,26 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* projection analysis                                                        */
+/*----------------------------------------------------------------------------*/
+void Board::vProjection_Analysis(CardIter* pCI)
+{
+  _static_
+
+  pCI->vRestart();
+  while (pCI->G_bEachMain(CK_TABLE))
+    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
+      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+
+
+  pCI->vRestart();
+  pCI->G.p_projection = nullptr;
+  while (pCI->G_bEachMain(CK_TABLE))
+    pCI->G.p_table->vProjectionAnalysis(pCI);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* relabel expressions                                                        */
 /*----------------------------------------------------------------------------*/
 void Board::vRelabelExpressions(CardIter* pCI)

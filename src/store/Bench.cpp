@@ -675,8 +675,10 @@ void Bench::vTransform_ProjectionAnalysis(void)
 
   vAssert_Board_any();
 
-  while (m_pCI->G_bEachMain(CK_TABLE))
-    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
+//  while (m_pCI->G_bEachMain(CK_TABLE))
+//    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
+
+  Board::vProjection_Analysis(m_pCI);
 
   m_pCI->vEndTransform();
 }
@@ -3210,8 +3212,10 @@ void Bench::vTransform_JoinOrdering(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  Card_Stream::vStream_AdjustLoHi(m_pCI);
-  Board::vRenumberStmOdn(m_pCI);
+  Board::vProjection_Analysis(m_pCI);
+
+  //Card_Stream::vStream_AdjustLoHi(m_pCI);
+  //Board::vRenumberStmOdn(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 

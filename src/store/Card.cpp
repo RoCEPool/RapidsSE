@@ -3150,7 +3150,7 @@ Card_Projection* Card::pSub_projection(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Projection* p_projection =
-      _pCard_Projection(pFindSubCard(CK_STREAM));
+      _pCard_Projection(pFindSubCard(CK_PROJECTION));
   return p_projection;
 }
 
