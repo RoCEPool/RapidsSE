@@ -764,7 +764,7 @@ void Heaps::vReloadPHeaps(void)
   // Spawn the threads.
   for(i8 i = 0; i < iNoPtns; i++)
   {
-    PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
+    PsxThd::iSpawnPosixThread(pLoadHeapBuffers, (void *) i);
   }
 
   vTrace("Main thread waiting...\n"_Stz);
@@ -777,15 +777,18 @@ void Heaps::vReloadPHeaps(void)
   Persistent.m_pMedium->vDropWriteLock();
   Persistent.m_pLarge->vDropWriteLock();
 
+  printf("Before cleanup\n");
+  exit(0);
   // Clean up the free chain
   gpBufferPool->vCleanup(false, true);
 }
-
+//__attribute__((optimize("O0")))
 /*----------------------------------------------------------------------------*/
 /* Threads call this function, to load heap buffers from disk                 */
 /*----------------------------------------------------------------------------*/
-[[noreturn]] void* __attribute__((optimize("O0"))) vLoadHeapBuffers(void *pFuncObj)
+void* pLoadHeapBuffers(void *pFuncObj)
 {
+/*
   i8 iPtnNo = (i8) pFuncObj;
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
 
@@ -800,7 +803,7 @@ void Heaps::vReloadPHeaps(void)
   if( ! File::bExists(szFilePath)) {
     i8 i = 0;
     for (i = 0; i < nDiskpaths; i++) {
-      Stz *sRootDir = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i % nDiskpaths];
+      Stz *sRootDir = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[i];
       szFilePath.vSprint("%s%ssaveFile_%s_%lld"_Stz,
                          sRootDir,
                          gxCmdLineArgs.m_xSysArgs.m_sReloadDir.szStz(),
@@ -830,6 +833,7 @@ void Heaps::vReloadPHeaps(void)
 
   if(iPtnNo == 0)
   {
+    // Comment clarity here
     pFile->vSeek((C_SIZE_POOL_BUFFER * 4));
   }
 
@@ -862,13 +866,13 @@ void Heaps::vReloadPHeaps(void)
   if(pFile->bIsOpen())
     pFile->vClose();
   delete pFile;
-
+*/
   // Atomic decrement. Last thread to finish causes the main thread to wake up.
   i8 nAcksWereRemaining;
   gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
   RASSERT(nAcksWereRemaining >= 0);
 
-  return nullptr;
+  return (void*) 0;
 }
 
 /*============================================================================*/
