@@ -149,7 +149,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
-  vGroup_JoinOrdering();
+  //vGroup_JoinOrdering();
   //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
