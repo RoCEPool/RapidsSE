@@ -149,7 +149,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
-  //vGroup_JoinOrdering();
+  vGroup_JoinOrdering();
   //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -281,6 +281,9 @@ void Bench::vGroup_IndexBounds(void)
 void Bench::vGroup_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Card_Table::nTables(m_pCI) < 2)
+    return;
 
   vTransform_JoinOrdering();
   vTransform_PredicateReposition();
