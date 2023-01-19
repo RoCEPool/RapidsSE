@@ -62,7 +62,15 @@ The ``SELECT`` list is the list of expressions that occurs after
 the ``SELECT`` keyword in a query. It defines the list of column values
 that are to be returned in each row of the query. These expressions can
 include references to table columns, expression operators, expression
-literals, and combinations of all of these.
+literals, and combinations of all of these. They may be simple column
+references or they may contain aggregations.
+
+Below are some simple examples of ``SELECT`` list expressions.
+
+.. code:: sql
+
+  SELECT a, b + 1 FROM t1 ;
+  SELECT SUM(a), SUM(b + 1) FROM t1 ;
 
 Refer to the :ref:`expressions` topic for more details about the types
 of expressions, how they are used and what expression operators are
@@ -83,7 +91,7 @@ Selecting data from a simple table:
 
   SELECT a, b FROM t1 ;
 
-Selecting data from a subquery defined in a ``WITH`` clause:
+Selecting data from a :ref:`subquery <subqueries>` defined in a ``WITH`` clause:
 
 .. code:: sql
 
@@ -101,18 +109,18 @@ JOIN Clause
 ```````````
 The ``JOIN`` clause allows a query to combine rows from multiple tables.
 There are many different ways in which two tables can be joined together,
-including inner and outer joins.
+including *inner* and *outer* joins.
 
 The most basic type of join is the ``CROSS JOIN``, which is a type of inner
 join. Given two tables, ``t1`` and ``t2``, a ``CROSS JOIN`` will return every
 combination of rows from each of the two tables. This can naturally result in
-a very large result set. This can be specified as follows:
+a very large result set. A cross join can be specified as follows:
 
 .. code:: sql
 
   SELECT t1.a, t2.b FROM t1 JOIN t2 ;
 
-It can also be specified in the following alternate syntaxes:
+A cross join can also be specified in the following alternate syntaxes:
 
 .. code:: sql
 
@@ -121,14 +129,14 @@ It can also be specified in the following alternate syntaxes:
 
 Typically a user will wish to only join rows from two tables when a certain
 condition involving both rows is met. This is referred to as a join predicate.
-A join predicate is an :ref:`expression <expressions>` that specifies the
+A join predicate is an :ref:`expression <expressions>` that tests the
 relationship between rows in the two tables. The join predicate is evaluated
 for each combination of rows and if the join predicate evaluates to true then
 the two rows from the tables are combined and emitted for further processing.
 If the join predicate evaluates to false or ``NULL`` then the rows are not
 combined.
 
-A join predicate can be specified in multiple ways:
+In RapidsSE a join predicate can be specified in multiple ways:
 
 1. By using the ``ON`` clause;
 2. By using the ``USING`` clause;
@@ -144,37 +152,295 @@ column ``c`` from ``t2``.
   SELECT t1.a, t2.b FROM t1 JOIN t2 USING c ;
   SELECT t1.a, t2.b FROM t1, t2 WHERE t1.c = t2.c ;
 
+The ``USING`` clause in the above example is a shorthand way to construct the
+join predicate ``t1.c = t2.c``. It is only applicable if the join predicate
+is to compare columns from the two tables that have the same name.
 
-What is the default join type?
+A cross join can also be represent as an inner join with a join predicate
+of ``true``. For example:
 
-inner/outer/cross
+.. code:: sql
 
-join on
-join using
+  SELECT t1.a, t2.b FROM t1 JOIN t2 ON TRUE ;
+
+There are three variants of outer joins - ``LEFT OUTER JOIN``, ``RIGHT OUTER
+JOIN``, and ``FULL OUTER JOIN``. Outer joins produce the same output as inner
+joins when the join predicate evaluates to ``true``. They differ from inner
+joins when the join predicate evaluates to ``false``.
+
+In a ``LEFT OUTER JOIN``, if a row from the first (left) table does not get
+joined with **any** rows from the second (right) table then the row from
+the first (left) table is combined with a row of ``NULL``\s for the second
+(right) table and this is emitted once.
+
+In a ``RIGHT OUTER JOIN``, if a row from the second (right) table does not get
+joined with **any** rows from the first (left) table then the row from
+the second (right) table is combined with a row of ``NULL``\s for the first
+(left) table and this is emitted once.
+
+A ``FULL OUTER JOIN`` is a union of both a ``LEFT OUTER JOIN`` and a
+``RIGHT OUTER JOIN``. Any rows from either table that are not previously
+matched are combined with a row of nulls of the opposite table and then
+emitted.
+
+.. attention::
+
+   RapidsSE does not yet support any outer join.
+
 
 WHERE Clause
 ````````````
+The ``WHERE`` clause is used to filter rows based on an expression predicate.
+The predicate is evaluated for each row and if the predicate evaluates to
+``TRUE`` then the row is emitted. If it evaluates to ``FALSE`` then the row
+is dropped.
 
-HAVING Clause
-`````````````
+The ``WHERE`` clause is applied before any aggregations are done, and
+typically as close to source of data as possible for performance purposes.
+
+An expression in a ``WHERE`` clause may contain multiple logical predicates
+separated by a logic operator such as ``AND`` and ``OR``. The RapidsSE
+optimiser will use this information to help determine the fastest way to
+execute this query. Filtering out as much unnecessary data as possible with
+a ``WHERE`` clause is one of the simplest ways to speed up the execution
+time of a query.
+
+.. code:: sql
+
+  SELECT a, b FROM t1 WHERE a > 10 AND b = 20 ;
+
+The predicate in the WHERE clause can also contain columns that are not being
+returned in the select list. These temporary columns will be read from the
+table but will be removed before the result set is returned to the user.
+
+.. code:: sql
+
+  SELECT a, b FROM t1 WHERE c < 0 ;
+
+Because the ``WHERE`` clause is executed before any aggregations table place,
+it is an error to refer to any computed aggregated values in a ``WHERE``
+clause. Instead, use a ``HAVING`` clause.
+
+
 
 GROUP BY Clause
 ```````````````
+The ``GROUP BY`` clause allows aggregates expressions to be calculated on
+groups of rows that share the same unique value for same ``GROUP BY``
+expression. For example, the query below could be used to to provide a count
+of the number of employees in each department.
+
+.. code:: sql
+
+  SELECT departmentId, COUNT(*)
+  FROM t1
+  GROUP BY departmentId;
+
+The ``GROUP BY`` clause specifies a list of non-aggregate expressions that will
+be used to determine the unique groups for aggregation. This may be one or more
+expressions that can reference columns from the table and joined tables
+specified in the query.
+
+If the ``GROUP BY`` contains multiple terms then grouping is done by evaluating
+and comparing the first grouping expressions in the order that they were
+specified. For example, we can modify the above query to first group on the
+nation that employees reside in, then their department. This will show us the
+count of employees in each department in each country.
+
+.. code:: sql
+
+  SELECT nationId, departmentId, COUNT(*)
+  FROM t1
+  GROUP BY nationId, departmentId;
+
+When a ``GROUP BY`` is used in a query, the query can only potentially return
+the aggregated columns as well as the expressions in the ``GROUP BY`` list.
+It is possible to not include the grouping columns in the select list, however
+then you cannot see the identifiers for each of the aggregated groups.
+
+It is not possible to return a non-aggregated expression that isn't in the
+``GROUP BY`` list.
+
+Without a ``GROUP BY`` in a statement then any aggregates are calculated on all
+rows in the query. These are called grand total aggregates. A query with grand
+total aggregates cannot have non-aggregated columns (other than literals) in
+the select list as there is no ``GROUP BY`` clause to specify how the aggregate
+terms are to be grouped.
+
+For example, this query is disallowed:
+
+.. code:: sql
+
+  SELECT a, SUM(b) FROM t1 ;
+  error: Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause;
+
+
+
+HAVING Clause
+`````````````
+A ``HAVING`` clause is similar to a ``WHERE`` clause. Both clauses are
+used to filter out rows in query where the predicate evaluates to ``FALSE``.
+Where the two clauses differ is in when they are applied. A ``WHERE`` clause
+occurs *before* any aggregations are calculated, whereas a ``HAVING`` clause
+is applied *after* any aggregations are calculated. A ``HAVING`` clause
+is not applicable if the query does not contain any aggregates.
+
+In the example below, the minimum value of column ``a`` is calculated.
+It is then filtered by the ``HAVING`` clause - if this minimum value is
+greater than zero then the row is emitted, otherwise no rows will be returned.
+
+.. code:: sql
+
+  SELECT MIN(a) FROM t1
+  HAVING MIN(a) > 0 ;
+
+The example below first reads columns ``a`` and ``b`` from table ``t1`` and
+calculates the average of column ``b`` for each unique value of column ``a``.
+After this calculation is complete the aggregated rows are then evaluated
+against the ``HAVING`` clause and only those rows where column ``a`` has a
+value between 0 and 10 are returned. All other rows are dropped.
+
+.. code:: sql
+
+  SELECT a, AVG(b) FROM t1
+  GROUP BY a
+  HAVING a > 0 AND a < 10 ;
+
+A ``HAVING`` clause can be combined with a ``WHERE`` clause as well, though
+care must be taken to ensure that their join predicates are correct. In the
+example below columns ``a`` and ``b`` from table ``t1`` are read. The
+``WHERE`` clause then eliminates rows where the value of column ``b`` is
+negative. The remaining rows are then grouped and aggregated before the
+aggregated rows are then filtered according to the predicate in the
+``HAVING`` clause.
+
+.. code:: sql
+
+  SELECT a, AVG(b) FROM t1
+  WHERE b >= 0
+  GROUP BY a
+  HAVING a > 0 AND a < 10 ;
 
 
 Set Operators
 `````````````
-UNION
-EXCEPT
-INTERSECT
+The SQL set operators allow for result sets from multiple queries to be
+combined. These include the set operators ``UNION``, ``EXCEPT`` and
+``INTERSECT``. These set operators can be chained together to combine rows
+from more than two queries.
 
-ALL or DISTINCT
+One constraint with using set operators is that the result set definition
+of each query must be compatible. That is, each query must return rows
+with the same number of columns and each corresponding column from each query
+must have the same data type. The column names need not match between the
+queries.
+
+The keywords ``ALL`` and ``DISTINCT`` can be used to further control the
+nature of the set operation. If the ``ALL`` keyword is not specified then the
+``DISTINCT`` keyword is assumed.
+
+The ``UNION ALL`` operator emits all rows from both the specified queries.
+If the ``ALL`` keyword is left off, or the operation is specified as
+``UNION DISTINCT`` then only one copy of any duplicate rows are returned and
+the rest are filtered out.
+
+The ``INTERCEPT ALL`` operator emits all rows that occur in both the specified
+queries. If the ``ALL`` keyword is left off, or the operation is specified as
+``INTERSECT DISTINCT`` then only one copy of any duplicate rows are returned and
+the rest are filtered out.
+
+The ``EXCEPT ALL`` operator emits all rows that only occur in the first query and
+not in the second. If the ``ALL`` keyword is left off, or the operation is specified as
+``EXCEPT DISTINCT`` then only one copy of any duplicate rows are returned and
+the rest are filtered out.
+
+.. attention::
+
+   RapidsSE currently only supports the ``UNION ALL`` set operator.
+   It does not support the ``INTERSECT`` or ``EXCEPT`` operators. It also does
+   not support any ``DISTINCT`` variants of any of the operators.
+
+.. rubric:: Examples:
+
+The example below reads columns ``a`` and ``b`` from table ``t1`` as well as
+reading columns ``c`` and ``d`` from table ``t2``. All rows from both queries
+are returned. The data type of columns ``t1.a`` and ``t2.c`` must match, and
+so too must the data type of columns ``t1.b`` and ``t2.d``.
+
+.. code:: sql
+
+  SELECT a, b FROM t1
+  UNION ALL
+  SELECT c, d FROM t2 ;
+
+The example below combines the results from three queries
+
+.. code:: sql
+
+  SELECT a, b FROM t1
+  UNION ALL
+  SELECT c, d FROM t2
+  UNION ALL
+  SELECT e, f FROM t3 ;
+
+
+.. rubric:: ``CORRESPONDING`` clause
+
+If two queries contain some common column names then they can be combined in a
+simpler way by using the ``CORRESPONDING`` clause. The ``CORRESPONDING`` clause
+allows the common column names across the two queries to be specified and only
+those columns will be returned. All other columns will be dropped.
+
+For example, if two tables contain columns named ``a`` and ``b`` then the
+following query would be valid:
+
+.. code:: sql
+
+  CREATE TABLE t1 (a INTEGER, b VARCHAR, c DATE);
+  CREATE TABLE t2 (a INTEGER, b VARCHAR, d TIME);
+
+  SELECT * FROM t1
+  UNION ALL CORRESPONDING BY (a, b)
+  SELECT * FROM t2 ;
+
+In this example the ``UNION ALL`` operator would only return the two named
+columns, ``a`` and ``b``, even though each query is initially selecting all
+of its columns.
+
+This can be simplified even further by specifying an empty ``CORRESPONDING``
+clause. RapidsSE will then determine the columns with common names and equal
+data types and only those columns will be returned. For example:
+
+
+.. code:: sql
+
+  CREATE TABLE t1 (a INTEGER, b VARCHAR, c DATE, d BOOLEAN);
+  CREATE TABLE t2 (b VARCHAR, c TIMESTAMP, d BOOLEAN, e VARCHAR);
+
+  SELECT * FROM t1
+  UNION ALL CORRESPONDING
+  SELECT * FROM t2 ;
+
+The above example will return a result set with columns ``b`` (``VARCHAR``) and
+``d`` (``BOOLEAN``). Column ``t1.a`` is unique to table ``t1`` only, so it won't
+be included. Same with column ``t2.e``. Meanwhile column ``c`` is common to both
+tables, but the data type does not match. Only columns ``b`` and ``d`` are
+suitable for the set operation.
+
 
 Ordering
 ````````
+Order and limiting are applied after any set operators.
+i.e., they are applied to the result of the set operations.
+
+Can order by a column that is not in the select list, so long as it
+doesn't break any grouping or aggregate constraints.
+
 
 Limiting
 ````````
+Order and limiting are applied after any set operators.
+
 
 .. _subqueries:
 
