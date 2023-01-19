@@ -129,6 +129,17 @@ Card_Index* Card_Index::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Index::vDeleteBounds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Bounds* p_Bounds = pSub_bounds();
+  vRemoveDeleteChild(p_Bounds);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Index::vSet_Choose_index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

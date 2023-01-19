@@ -149,7 +149,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
-  vGroup_JoinOrdering();
+  //vGroup_JoinOrdering();
   //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -283,6 +283,8 @@ void Bench::vGroup_JoinOrdering(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vTransform_JoinOrdering();
+  vTransform_PredicateReposition();
+  vTransform_DeriveBoundsFromFilter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3225,7 +3227,7 @@ void Bench::vTransform_JoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 /* Predicate Pullup                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vS34_T_Predicate_Reposition(void)
+void Bench::vTransform_PredicateReposition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 

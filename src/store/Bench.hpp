@@ -87,6 +87,9 @@ namespace STORE
 
     void vTransform_DeriveBoundsFromFilter(void);
 
+    void vTransform_JoinOrdering(void);
+    void vTransform_PredicateReposition(void);
+
     void vTransform_FlattenByDecisionTree(void);
 
     void vTransform_MorphTableToEEop(void);
@@ -160,9 +163,7 @@ namespace STORE
 
     void vS32_T_SubQuery_Analysis(void);
 
-    void vS34_T_Predicate_Reposition(void);
 
-    void vTransform_JoinOrdering(void);
 
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
     void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);

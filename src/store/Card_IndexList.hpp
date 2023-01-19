@@ -18,6 +18,8 @@ namespace STORE
 
     static Card_IndexList* pDerive(Table* pTable);
 
+    void vDeleteAllBounds(void);
+
     Card_Index* pFindChosenIndex(void);
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
