@@ -162,7 +162,7 @@ namespace STORE
 
     void vS34_T_Predicate_Reposition(void);
 
-    void vS50_T00_Join_Ordering_v2(void);
+    void vTransform_JoinOrdering(void);
 
     void vS75_T20_Morph_keyExists_filter_To_constraint(void);
     void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);

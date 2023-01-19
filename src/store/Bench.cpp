@@ -149,7 +149,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
-  //vGroup_JoinOrdering();
+  vGroup_JoinOrdering();
   //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -282,7 +282,7 @@ void Bench::vGroup_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  NEVER_REACH
+  vTransform_JoinOrdering();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3085,7 +3085,7 @@ void Bench::vS32_T_SubQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vS50_T00_Join_Ordering_v2(void)
+void Bench::vTransform_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3103,27 +3103,38 @@ void Bench::vS50_T00_Join_Ordering_v2(void)
   m_pCI->G_vPushBoard(pBoard);
 
   m_pCI->G.p_tableList = Card_TableList::pExtract_v2(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.p_coPtnPredList = Card_CoPtnPredList::pExtract(m_pCI->G.p_joinPredList,m_pCI->G.p_tableList);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.p_coPtnJoinList = Card_CoPtnJoinList::pExtract(m_pCI->G.p_coPtnPredList);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnJoinList);
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.p_crossPtnJoinList = Card_CrossPtnJoinList::pExtract(m_pCI->G.p_joinPredList,
                                                                 m_pCI->G.p_coPtnJoinList);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_crossPtnJoinList);
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.p_ptndJoinSet = Card_PtndJoinSet::pExtract(m_pCI->G.p_coPtnJoinList,
                                                       m_pCI->G.p_crossPtnJoinList);
-
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnJoinList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_crossPtnJoinList);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_ptndJoinSet);
-
   m_pCI->vPrintBoard(__LINE__);
+
+//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
+//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
+//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
+//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnJoinList);
+//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_crossPtnJoinList);
+//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_ptndJoinSet);
+//  m_pCI->vPrintBoard(__LINE__);
 
   // copy ptndJoinSet
   m_pCI->G.pDeck->vAppendMain(new Card_Note("PERMUTATIONS"_Stz));

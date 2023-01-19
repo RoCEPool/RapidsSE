@@ -9,7 +9,7 @@ _r_schema
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_cue_from = "vS50_T00_Join_Ordering_v2"
+/glean_cue_from = "vTransform_JoinOrdering"
 /glean_interactive
 /transliterated
 /weaved

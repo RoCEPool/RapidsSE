@@ -13,7 +13,8 @@ create index S_idx0  on Supplier (S_SUPPKEY  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_cue_from = "vTransform_AddPartitioning"
+// /glean_cue_from = "vTransform_AddPartitioning"
+
 /glean_interactive
 /transliterated
 /weaved
