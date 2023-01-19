@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* __o_s10 -- optimiser statement 10                                          */
+/*============================================================================*/
+
+__o_schemaCreate
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+trackMemory;
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_o_s15"
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+   join D on C.C_COL0 = D.D_COL0
+   join E on D.D_COL1 = E.E_COL0  // cross-ptn
+   join F on E.E_COL0 = F.F_COL0
+ ;
+
+MemoryLeaks;
+
+__o_schemaDrop
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+Expected Result:
+  row: (6647)
+  success: 1 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
