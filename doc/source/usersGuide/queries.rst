@@ -122,6 +122,14 @@ clause (and therefore the alias is visible to it):
   GROUP BY a
   HAVING total > 0 ;
 
+The entire ``SELECT`` list can also be prepended with the optional keywords ``ALL``
+or ``DISTINCT``. Use of ``DISTINCT`` will eliminate any duplicate rows that have
+all the same column values as a previous row. The use of ``ALL`` retains all rows,
+and this is the default behaviour when neither keyword is specified.
+
+.. note::
+  RapidsSE does not yet support the use of ``DISTINCT`` in the ``SELECT`` list.
+
 .. note::
 
   Refer to the :ref:`expressions` topic for more details about the types
