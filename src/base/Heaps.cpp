@@ -623,8 +623,7 @@ void Heaps::vReloadPHeaps(void)
     C_SIZE_POOL_BUFFER in size.
 
     We start by opening the file, and reading the header information.
-    The header is of size sizeof(object) + 64 + 64. The last two are
-    pool buffer members.
+    The header is of size sizeof(PoolBuffer).
 
     The object information tells us the Class type, and the pool buffer
     member called m_pThis, tells us the address of the buffer when it was
@@ -632,35 +631,32 @@ void Heaps::vReloadPHeaps(void)
 
     We do a sanity check of this address and directly copy the header info
     into the free chain buffer (since these addresses correspond to an
-    address in the free chain. Next, we read the rest of the info from
+    address in the free chain). Next, we read the rest of the info from
     the file into this buffer. Note, we do not lock the free chain.
 
-    After the main thread loads in the various persisten heaps from disk,
+    After the main thread loads in the various persistent heaps from disk,
     we spawn threads based on the number of partitions. Each thread reads
     it's corresponding file and performs the same task as what the main
     thread did earlier, i.e read header info -> get the address -> check
     the address -> read body into this address.
 
     All threads are directly writing to the buffer addresses it reads
-    from the reload files.
-
-    This drastically speeds up reload times, but leaves the free chain in
-    an unstable/unusable state since different parts of the free chain
-    have been written to.
+    from the reload files. This drastically speeds up reload times, but
+    leaves the free chain in an unstable/unusable state since different
+    parts of the free chain have been written to.
 
     Hence, once all threads are done reloading, the main thread cleans up
-    the free chain, and repairs all the pointers, and other meta data info
+    the free chain, and repairs all the pointers, and other metadata info
     about it, like number of allocs, number of free buffers, etc.
 
   */
-  i8 iPoolBufMemSize = sizeof(i8) + sizeof(PoolBuffer*);
-  i8 nSizeHeader = sizeof(Object) + iPoolBufMemSize; // object size + Pool Buffer members
+  i8 nSizeHeader = sizeof(PoolBuffer);
 
   char caObjectHeader[nSizeHeader];
 
   Header* aHeader = (Header*) & caObjectHeader[0];
 
-  i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
+  i8 nSizeBody = ((i8) C_SIZE_POOL_BUFFER) - nSizeHeader;
 
 
   // Get the name of the first file, which contains the P Heaps.
@@ -827,14 +823,13 @@ void* pLoadHeapBuffers(void *pFuncObj)
   if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Thread got filepath %s\n"_Stz, szFilePath.szStz());
 
-  i8 iPoolBufMemSize = sizeof(i8) + sizeof(PoolBuffer*);
-  i8 nSizeHeader = sizeof(Object) + iPoolBufMemSize; // object size + Pool Buffer members
+  i8 nSizeHeader = sizeof(PoolBuffer);
 
   char caObjectHeader[nSizeHeader];
 
   Header* aHeader = (Header*) & caObjectHeader[0];
 
-  i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
+  i8 nSizeBody = ((i8) C_SIZE_POOL_BUFFER) - nSizeHeader;
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   bool bResult = pFile->bOpenRead(szFilePath);
@@ -842,15 +837,18 @@ void* pLoadHeapBuffers(void *pFuncObj)
 
   if(iPtnNo == 0)
   {
-    // Comment clarity here
-    pFile->vSeek((C_SIZE_POOL_BUFFER * 4));
+    // The saveFile_0 contains the persistent heaps at the start of the file.
+    // The main thread first loads these heaps into memory.
+    // Hence, when this thread is loading the rest of the buffers, it needs
+    // to seek past the first four buffers (PTiny, PSmall, PMedium, PLarge).
+    pFile->vSeek((((i8) C_SIZE_POOL_BUFFER) * 4));
   }
 
   // Read the Header information to get the address of this pool buffer
   i8 nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
   RASSERT(nBytes == nSizeHeader);
 
-  while(nBytes != 0)
+  while(nBytes == nSizeHeader)
   {
     PoolBuffer* pPoolBufferHeader = reinterpret_cast<PoolBuffer*>(aHeader);
     void *aBody;
@@ -858,7 +856,7 @@ void* pLoadHeapBuffers(void *pFuncObj)
     if(pPoolBufferHeader->eGetClassNo() == CN_HEAPBUFFER)
     {
       RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
-      PoolBuffer *pPoolBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
+      PoolBuffer *pPoolBuffer = pPoolBufferHeader->m_pThis;
 
       MemLib::vCopy(pPoolBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
       aBody = aAdd<void *>(pPoolBuffer, nSizeHeader);
