@@ -11,6 +11,8 @@ Queries
 This section describes how to retrieve data from tables within RapidsSE.
 This is known as a query.
 
+.. _formOfASqlQuery:
+
 Form of a SQL Query
 ```````````````````
 
@@ -56,6 +58,9 @@ RapidsSE does not currently support the following SQL clauses:
 * Recursive table subqueries (``WITH`` keyword)
 * Any ``OUTER JOIN`` (e.g. ``LEFT``/``RIGHT``/``FULL OUTER JOIN``)
 
+
+.. _selectlist:
+
 SELECT List
 ```````````
 The ``SELECT`` list is the list of expressions that occurs after
@@ -76,11 +81,57 @@ Below are some simple examples of ``SELECT`` list expressions.
 The ``*`` notation in a ``SELECT`` list means to select all columns from
 the specified table(s).
 
-Refer to the :ref:`expressions` topic for more details about the types
-of expressions, how they are used and what expression operators are
-supported.
+Expressions in the ``SELECT`` list can sometimes be long and complex to write.
+As such, an alias can be given to individual projected expressions so that
+the expression can be referred to in other parts of the query without having
+to rewrite the complex expression. Aliases are specified by using the ``AS``
+clause after each expression in the ``SELECT`` list where an alias is
+desired, or by simply leaving a space between the expression and its alias.
+The query can then make use of the alias in other clauses where it
+is allowed.
 
-FROM clause
+For example, the query below uses the alias ``pct`` in the ``WHERE`` clause:
+
+.. code:: sql
+
+  SELECT a / b * 100.0 AS pct, c
+  FROM t1
+  WHERE pct >= 10.0 AND c > 0 ;
+
+The example below shows an incorrect use of the alias ``total`` in the ``WHERE``
+clause because ``total`` is synonymous with the expression ``SUM(b)`` and
+this aggregated expression cannot appear in the ``WHERE`` clause.
+
+.. code:: sql
+
+  SELECT a, SUM(b) AS total
+  FROM t1
+  WHERE total > 0
+  GROUP BY a ;
+
+  error: No such column: total;
+
+However the above erroneous query could be correctly written with a ``HAVING``
+clause instead because the aggregation is calculated before the ``HAVING``
+clause (and therefore the alias is visible to it):
+
+.. code:: sql
+
+  SELECT a, SUM(b) AS total
+  FROM t1
+  GROUP BY a
+  HAVING total > 0 ;
+
+.. note::
+
+  Refer to the :ref:`expressions` topic for more details about the types
+  of expressions, how they are used and what expression operators are
+  supported.
+
+
+.. _from:
+
+FROM Clause
 ```````````
 The ``FROM`` clause, together with any ``JOIN`` clauses, describes the source
 of the data for the query. Typically the ``FROM`` clause states the name of a
@@ -108,6 +159,22 @@ Selecting data from an inline subquery in the ``FROM`` clause.
 
   SELECT a, b FROM (SELECT ...) ;
 
+A table whose name is long and difficult to type can be given an alias that
+can then be used in other parts of the query. A table alias is specified
+after the table name in the ``FROM`` clause (or ``JOIN`` clauses) separated
+by a space. For example:
+
+.. code:: sql
+
+  SELECT t.a, t.b
+  FROM really_long_table_name t
+  WHERE t.a > 0 ;
+
+In the example above, the table ``really_long_table_name`` is aliased to ``t``
+for simplicity.
+
+
+.. _join:
 
 JOIN Clause
 ```````````
@@ -192,6 +259,8 @@ emitted.
    RapidsSE does not yet support any outer join.
 
 
+.. _where:
+
 WHERE Clause
 ````````````
 The ``WHERE`` clause is used to filter rows based on an expression predicate.
@@ -226,6 +295,7 @@ it is an error to refer to any computed aggregated values in a ``WHERE``
 clause. Instead, use a ``HAVING`` clause.
 
 
+.. _groupby:
 
 GROUP BY Clause
 ```````````````
@@ -279,6 +349,7 @@ For example, this query is disallowed:
   error: Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause;
 
 
+.. _having:
 
 HAVING Clause
 `````````````
@@ -325,6 +396,8 @@ aggregated rows are then filtered according to the predicate in the
   GROUP BY a
   HAVING a > 0 AND a < 10 ;
 
+
+.. _setoperators:
 
 Set Operators
 `````````````
@@ -432,8 +505,10 @@ tables, but the data type does not match. Only columns ``b`` and ``d`` are
 suitable for the set operation.
 
 
-Ordering
-````````
+.. _orderby:
+
+ORDER BY Clause
+```````````````
 The ``ORDER BY`` operator allows the rows in the result set to be ordered by
 one or more expressions. If there is more than one ordering expression specified
 then the result set is ordered according to the order in which the ordering
@@ -510,8 +585,10 @@ the query like this:
   only supports ordering in the ascending direction only.
 
 
-Limiting
-````````
+.. _limit:
+
+LIMIT Clause
+````````````
 The ``LIMIT`` clause reduces the number of rows that appear in the result set
 of a query. The ``LIMIT`` clause requires an integer parameter to specify
 the maximum number of rows to be returned. If the result set would normally
@@ -596,9 +673,66 @@ the query like this:
 
 .. _subqueries:
 
-Subqueries
-``````````
+Subqueries (Common Table Expressions)
+`````````````````````````````````````
+Common Table Expression (CTE) subqueries are a separate query (or queries)
+that execute in the context of another query. A CTE subquery produces results
+that look and behave like tables. Sometimes they can be pre-computed
+beforehand and the results can be used multiple times in a larger outer query.
 
+CTE subqueries can be expressed in a ``WITH`` clause or as another ``SELECT``
+query specified in parentheses in the ``FROM`` clause. Subqueries in the
+``WITH`` clause must be given a name so they can be referred to from the
+parent query. The syntax looks like this:
 
+.. code:: sql
 
-select list aliases
+  [ WITH
+     <subqueryName> AS ( <subquery> )
+     [ , ... ]
+  ] <query> ;
+
+Multiple subqueries can be specified in a ``WITH`` clause by using a comma
+after the closing parenthesis of the subquery.
+
+A subquery given in a ``FROM`` clause looks has syntax like this:
+
+.. code:: sql
+
+  SELECT <selectList>
+  FROM ( <subquery> )
+  ... ;
+
+Here is an example of specifying and using subquery in a ``WITH`` clause.
+This example first calculates the average salary of employees in each
+department. It then uses that to list all of the employees whose salary is
+less than the department average. The subquery is used in the ``JOIN`` clause.
+
+.. code:: sql
+
+  WITH deptSalaryAvg AS (
+    SELECT departmentId, AVG(salary) AS avgSalary
+    FROM employees
+    GROUP BY departmentId
+  )
+  SELECT name, salary
+  FROM employees
+  JOIN average_salary_per_dept
+  USING departmentId
+  WHERE employees.salary < dept_salary_avg.avgSalary ;
+
+The query below shows an example of defining a subquery in a ``FROM`` clause.
+This example uses the subquery to select the top 10 employees with the
+highest salary, however the outer query then reorders them to display them
+in ascending order.
+
+.. code:: sql
+
+  SELECT *
+  FROM (
+    SELECT name, salary
+    FROM employees
+    ORDER BY salary DESC
+    LIMIT 10
+  )
+  ORDER BY salary ASC ;
