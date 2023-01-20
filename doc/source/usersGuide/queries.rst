@@ -71,6 +71,10 @@ Below are some simple examples of ``SELECT`` list expressions.
 
   SELECT a, b + 1 FROM t1 ;
   SELECT SUM(a), SUM(b + 1) FROM t1 ;
+  SELECT * FROM t1 ;
+
+The ``*`` notation in a ``SELECT`` list means to select all columns from
+the specified table(s).
 
 Refer to the :ref:`expressions` topic for more details about the types
 of expressions, how they are used and what expression operators are
@@ -430,16 +434,164 @@ suitable for the set operation.
 
 Ordering
 ````````
-Order and limiting are applied after any set operators.
-i.e., they are applied to the result of the set operations.
+The ``ORDER BY`` operator allows the rows in the result set to be ordered by
+one or more expressions. If there is more than one ordering expression specified
+then the result set is ordered according to the order in which the ordering
+expressions were specified.
 
-Can order by a column that is not in the select list, so long as it
-doesn't break any grouping or aggregate constraints.
+For example, in the query below the result set is ordered first by the value
+of the (column) expression ``a``. If this is not a unique value then it is
+further ordered by the projected expression ``b/2``.
+
+.. code:: sql
+
+  SELECT a, b/2, c FROM t1
+  ORDER BY a, b/2 ;
+
+By default, results are ordered in an ascending direction. This can be altered
+by specifying ``ASC`` for ascending or ``DESC`` for descending after each
+ordering expression. Each ordering column can have a different ordering direction,
+as per the example below where expression ``a`` is ordered ascending (because
+neither ``ASC`` or ``DESC`` was specified, so ascending is the default), and
+column ``b/2`` is ordered in a descending direction.
+
+.. code:: sql
+
+  SELECT a, b/2, c FROM t1
+  ORDER BY a, b/2 DESC ;
+
+The ordering expressions specified need to be a valid expression that could be
+included in the query's select list, but they do not necessarily have to be
+specified in the select list. That is, they can cause the query to temporarily
+project a column for the purposes of ordering, which is then removed prior
+to the results being sent to the user. These temporary ordering expressions
+must comply to the rules and constraints of any SQL operators that come before
+them.
+
+The example below shows this where the expressions ``a`` and ``b/2`` are
+selected, but the result set is ordered by column ``c``. When this query
+executes, columns ``a``, ``b`` and ``c`` are read from table ``t1``. The
+expression ``b/2`` is calculated and the results are then ordered by
+column expression ``c``. This column is then stripped from the results
+before it is sent to the user.
+
+.. code:: sql
+
+  SELECT a, b/2 FROM t1
+  ORDER BY c ;
+
+The ``ORDER BY`` clause always executes after any set operations.
+For example, in the following query the position of the ``ORDER BY``
+clause makes it appear that it applies to the second query reading
+from table ``t2``.
+
+.. code:: sql
+
+  SELECT a, b FROM t1
+  UNION ALL
+  SELECT a, b FROM t2 ORDER BY a ;
+
+However this is not the case as the ``ORDER BY`` clause is applied
+to the result of any set operations. We can more clearly rewrite
+the query like this:
+
+.. code:: sql
+
+  (
+    SELECT a, b FROM t1
+    UNION ALL
+    SELECT a, b FROM t2
+  )
+  ORDER BY a ;
+
+.. attention::
+
+  RapidsSE supports ordering by multiple expressions, however it currently
+  only supports ordering in the ascending direction only.
 
 
 Limiting
 ````````
-Order and limiting are applied after any set operators.
+The ``LIMIT`` clause reduces the number of rows that appear in the result set
+of a query. The ``LIMIT`` clause requires an integer parameter to specify
+the maximum number of rows to be returned. If the result set would normally
+return less rows than the limit specified then the ``LIMIT`` clause has no
+effect.
+
+The ``LIMIT`` clause looks like this:
+
+.. code:: sql
+
+  SELECT a, b FROM t1 LIMIT 10 ;
+
+The above example will only include the first 10 rows in the result set. All
+other rows will be dropped.
+
+Typically the ``LIMIT`` operator is used in conjunction with the ``ORDER
+BY`` operator to select the top or botton *N* number of rows. For example,
+to get the top 10 employees with the highest salary, one could write:
+
+.. code:: sql
+
+  SELECT name, salary
+  FROM employees
+  ORDER BY salary
+  LIMIT 10 ;
+
+When a ``LIMIT`` clause is used without an ``ORDER BY`` clause it is not
+deterministic which rows will be returned as the ``LIMIT`` operator will
+simply count the rows that it reads first.
+
+The ``LIMIT`` clause can also be specified with an ``OFFSET``. The ``OFFSET``
+keyword requires an integer parameter that specifies how many rows to skip
+(and not return in the result set) before counting rows towards the limit.
+
+For example, to expand upon the previous example, let's say we wish to see
+the next 10 employees with the highest salarys. That is, the 11th to 20th
+highest paid employees. We could write this as:
+
+.. code:: sql
+
+    SELECT name, salary
+    FROM employees
+    ORDER BY salary
+    LIMIT 10 OFFSET 10 ;
+
+The ``OFFSET 10`` will skip the first 10 rows in the result set and not
+include them in the result. The next 10 rows received will then be included
+towards the limit, stopping after the 20th row is processed by the ``LIMIT``
+operator. If there were only 15 employees then the query would only return
+5 rows of the employees in 11th to 15th position.
+
+The ``LIMIT`` clause always executes after any set operations.
+For example, in the following query the position of the ``LIMIT``
+clause makes it appear that it applies to the second query reading
+from table ``t2``.
+
+.. code:: sql
+
+  SELECT a, b FROM t1
+  UNION ALL
+  SELECT a, b FROM t2 LIMIT 10 ;
+
+However this is not the case as the ``LIMIT`` clause is applied
+to the result of any set operations. We can more clearly rewrite
+the query like this:
+
+.. code:: sql
+
+  (
+    SELECT a, b FROM t1
+    UNION ALL
+    SELECT a, b FROM t2
+  )
+  LIMIT 10 ;
+
+
+.. attention::
+
+  RapidsSE currently does not support the ``OFFSET`` clause.
+
 
 
 .. _subqueries:
@@ -447,3 +599,6 @@ Order and limiting are applied after any set operators.
 Subqueries
 ``````````
 
+
+
+select list aliases
