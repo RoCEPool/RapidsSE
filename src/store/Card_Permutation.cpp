@@ -65,6 +65,7 @@ void Card_Permutation::vRemoveInvalid(Card_Deck* pDeck)
 
 
     pDeck->vRemoveChild(p_MainCard);
+    delete p_MainCard;
     while (i_Main < pDeck->nChildCards()) {
       p_MainCard = pDeck->pGetChild(i_Main);
       if (CK_PTNDJOIN != p_MainCard->eCard() && CK_NOTE != p_MainCard->eCard())
