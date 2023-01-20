@@ -653,9 +653,13 @@ void Heaps::vReloadPHeaps(void)
     about it, like number of allocs, number of free buffers, etc.
 
   */
-  char caObjectHeader[sizeof(Object) + 128];
+  i8 iPoolBufMemSize = sizeof(i8) + sizeof(PoolBuffer*);
+  i8 nSizeHeader = sizeof(Object) + iPoolBufMemSize; // object size + Pool Buffer members
+
+  char caObjectHeader[nSizeHeader];
+
   Header* aHeader = (Header*) & caObjectHeader[0];
-  i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
+
   i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
 
 
@@ -741,6 +745,9 @@ void Heaps::vReloadPHeaps(void)
         nBytes = 0;
         continue;
       }
+
+      default:
+        THROW("Error: Read invalid object during reload of Persistent Heaps..\n"_Stz);
     }
     nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
   }
@@ -777,8 +784,6 @@ void Heaps::vReloadPHeaps(void)
   Persistent.m_pMedium->vDropWriteLock();
   Persistent.m_pLarge->vDropWriteLock();
 
-  printf("Before cleanup\n");
-  exit(0);
   // Clean up the free chain
   gpBufferPool->vCleanup(false, true);
 }
@@ -788,7 +793,7 @@ void Heaps::vReloadPHeaps(void)
 /*----------------------------------------------------------------------------*/
 void* pLoadHeapBuffers(void *pFuncObj)
 {
-/*
+
   i8 iPtnNo = (i8) pFuncObj;
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
 
@@ -822,9 +827,13 @@ void* pLoadHeapBuffers(void *pFuncObj)
   if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Thread got filepath %s\n"_Stz, szFilePath.szStz());
 
-  char caObjectHeader[sizeof(Object) + 128];
+  i8 iPoolBufMemSize = sizeof(i8) + sizeof(PoolBuffer*);
+  i8 nSizeHeader = sizeof(Object) + iPoolBufMemSize; // object size + Pool Buffer members
+
+  char caObjectHeader[nSizeHeader];
+
   Header* aHeader = (Header*) & caObjectHeader[0];
-  i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
+
   i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
@@ -849,10 +858,10 @@ void* pLoadHeapBuffers(void *pFuncObj)
     if(pPoolBufferHeader->eGetClassNo() == CN_HEAPBUFFER)
     {
       RASSERT(gpBufferPool->bReloadSanityCheckAddr(pPoolBufferHeader->m_pThis) );
-      PoolBuffer *pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBufferHeader->m_pThis);
+      PoolBuffer *pPoolBuffer = reinterpret_cast<PoolBuffer*>(pPoolBufferHeader->m_pThis);
 
-      MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
-      aBody = aAdd<void *>(pHeapBuffer, nSizeHeader);
+      MemLib::vCopy(pPoolBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+      aBody = aAdd<void *>(pPoolBuffer, nSizeHeader);
       nBytes = pFile->nReadBytes(aBody, nSizeBody);
       RASSERT(nBytes == nSizeBody);
     } else {
@@ -866,13 +875,13 @@ void* pLoadHeapBuffers(void *pFuncObj)
   if(pFile->bIsOpen())
     pFile->vClose();
   delete pFile;
-*/
+
   // Atomic decrement. Last thread to finish causes the main thread to wake up.
   i8 nAcksWereRemaining;
   gxThreadsRemaining.bDecAndDecide(nAcksWereRemaining);
   RASSERT(nAcksWereRemaining >= 0);
 
-  return (void*) 0;
+  return nullptr;
 }
 
 /*============================================================================*/
