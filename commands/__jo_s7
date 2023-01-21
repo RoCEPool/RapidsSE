@@ -59,7 +59,7 @@ Join Permutations:
   A->B (HASHCAST)
   B->A (BROADCAST)
 
-Expected join order: (depends on the no of partitions also)
+Expected join order: (depends on the no. of partitions also)
   A->B (HASHCAST)
 
 Expected Result:

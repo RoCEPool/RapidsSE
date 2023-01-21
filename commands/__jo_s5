@@ -61,7 +61,7 @@ Join Permutations:
   B->A (UNICAST)
 
 Expected join order:
-  Either B->A(UNICAST)
+  Either A->B (UNICAST) or B->A(UNICAST)
 
 Expected Result:
   row: (34)
