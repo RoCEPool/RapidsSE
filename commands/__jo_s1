@@ -56,7 +56,12 @@ drop table B;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
 
-Expected join order: Either A->B (UNICAST) or B->A(UNICAST)
+Join Permutations:
+  A->B
+  B->A
+
+Expected join order:
+  Either A->B (UNICAST) or B->A(UNICAST)
 
 Expected Result:
   row: (34)
