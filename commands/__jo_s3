@@ -41,8 +41,8 @@ trackMemory;
 /pipelineName = "_o_s15"
 
 select count(*)
-  from B
-   join A on B.B_COL0 = A.A_COL1
+  from A
+   join B on A.A_COL1 = B.B_COL0
  ;
 
 MemoryLeaks;
