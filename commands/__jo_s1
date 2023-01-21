@@ -57,8 +57,8 @@ drop table B;
 /*
 
 Join Permutations:
-  A->B
-  B->A
+  A->B (UNICAST)
+  B->A (UNICAST)
 
 Expected join order:
   Either A->B (UNICAST) or B->A(UNICAST)
