@@ -285,9 +285,9 @@ void Bench::vGroup_JoinOrdering(void)
   if (Card_Table::nTables(m_pCI) < 2)
     return;
 
-  vTransform_JoinOrdering();
-  vTransform_PredicateReposition();
-  vTransform_DeriveBoundsFromFilter();
+  vTransform_JoinOrdering_v2();
+  //vTransform_PredicateReposition();
+  //vTransform_DeriveBoundsFromFilter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3230,6 +3230,49 @@ void Bench::vTransform_JoinOrdering(void)
   //Board::vRenumberStmOdn(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_JoinOrdering_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  Card_Deck* pPipeline = m_pCI->G.pDeck;
+
+  Board* pBoard = new Board(aBK[BK_PARTITION],
+                            BK_PARTITION,
+                            C_UNKNOWN,
+                            BT_ORIGINAL,
+                            m_pCI->m_pBench);
+  m_pCI->G_vPushBoard(pBoard);
+
+  // 1) Extract tableList from pipeline
+  m_pCI->G.p_tableList = Card_TableList::pExtract_v2(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 2) Extract joinPredList from pipeline
+  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 3) Extract coPtnPredList from joinPredList
+  m_pCI->G.p_coPtnPredList = Card_CoPtnPredList::pExtract(m_pCI->G.p_joinPredList,m_pCI->G.p_tableList);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
+  m_pCI->vPrintBoard(__LINE__);
+
+
+
+  pBoard = m_pCI->G.pBoard;
+  m_pCI->G_vPopIter();
+  vRemove(pBoard);
+  delete pBoard;
 
   m_pCI->vEndTransform();
 }

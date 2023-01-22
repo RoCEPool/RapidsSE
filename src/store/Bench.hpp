@@ -85,10 +85,10 @@ namespace STORE
     void vTransform_CullMarkedCmpPred(void);
     void vTransform_DeleteEmptyWhere(void);
 
-    void vTransform_DeriveBoundsFromFilter(void);
-
     void vTransform_JoinOrdering(void);
+    void vTransform_JoinOrdering_v2(void);
     void vTransform_PredicateReposition(void);
+    void vTransform_DeriveBoundsFromFilter(void);
 
     void vTransform_FlattenByDecisionTree(void);
 
