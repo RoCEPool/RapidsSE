@@ -224,6 +224,19 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bIsEqOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bSame("=="_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Card_CmpPred::vMarkBound(void)
@@ -376,6 +389,24 @@ bool Card_CmpPred::bMaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedI
   }
 
   NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bMaybeJoinPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! bIsEqOp())
+      return false;
+
+  Card_Term* p_term_0 = _pCard_Term(pGetChild(0));
+  Card_Term* p_term_1 = _pCard_Term(pGetChild(1));
+  if ( p_term_0->cValue() == '$' && p_term_1->cValue() == '$')
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
