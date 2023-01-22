@@ -149,7 +149,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
-  //vGroup_JoinOrdering();
+  vGroup_JoinOrdering();
   //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -3109,27 +3109,34 @@ void Bench::vTransform_JoinOrdering(void)
                             m_pCI->m_pBench);
   m_pCI->G_vPushBoard(pBoard);
 
+  // 1) Extract tableList from pipeline
   m_pCI->G.p_tableList = Card_TableList::pExtract_v2(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
   m_pCI->vPrintBoard(__LINE__);
 
+  // 2) Extract joinPredList from pipeline
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
   m_pCI->vPrintBoard(__LINE__);
 
+  // 3) Extract coPtnPredList from joinPredList
   m_pCI->G.p_coPtnPredList = Card_CoPtnPredList::pExtract(m_pCI->G.p_joinPredList,m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
   m_pCI->vPrintBoard(__LINE__);
 
+  // 4) Extract coPtnJoinList from coPtnPredList
   m_pCI->G.p_coPtnJoinList = Card_CoPtnJoinList::pExtract(m_pCI->G.p_coPtnPredList);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnJoinList);
   m_pCI->vPrintBoard(__LINE__);
 
+  // 5) Extract crossPtnJoinList from joinPredList, coPtnJoinList
   m_pCI->G.p_crossPtnJoinList = Card_CrossPtnJoinList::pExtract(m_pCI->G.p_joinPredList,
                                                                 m_pCI->G.p_coPtnJoinList);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_crossPtnJoinList);
   m_pCI->vPrintBoard(__LINE__);
 
+
+  // 6) Extract ptnJoinSet from coPtnJoinList, crossPtnJoinList
   m_pCI->G.p_ptndJoinSet = Card_PtndJoinSet::pExtract(m_pCI->G.p_coPtnJoinList,
                                                       m_pCI->G.p_crossPtnJoinList);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_ptndJoinSet);
