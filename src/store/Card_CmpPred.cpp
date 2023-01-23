@@ -212,6 +212,33 @@ Card_Term* Card_CmpPred::pExtractParamTerm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the first table                                                        */
+/*----------------------------------------------------------------------------*/
+char Card_CmpPred::cGetTable_a(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_this_a = _pCard_Term(pGetChild(0));
+  char cTableSyn_this_a = p_term_this_a->szValue()->azChar()[1];
+
+  return cTableSyn_this_a;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the second table                                                       */
+/*----------------------------------------------------------------------------*/
+char Card_CmpPred::cGetTable_b(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_this_b = _pCard_Term(pGetChild(1));
+  char cTableSyn_this_b = p_term_this_b->szValue()->azChar()[1];
+
+  return cTableSyn_this_b;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
