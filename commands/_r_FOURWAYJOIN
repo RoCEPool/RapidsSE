@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _r_THREEWAYJOINS -- partitioning test                                      */
+/* _r_FOURWAYJOIN -- partitioning test                                        */
 /*============================================================================*/
 
 _r_schema
@@ -19,7 +19,7 @@ create index S_idx0  on Supplier (S_SUPPKEY  );
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_STREAM_ORDER"
+/pipelineName = "_r_FOURWAYJOIN"
 select count(*)
   from Customer,
        Orders,
