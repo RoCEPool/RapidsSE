@@ -58,7 +58,19 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the E_eTerm_Bound of given index                      */
+/* calculate cast kind of this cmpPred given the l & r table partitions       */
+/*----------------------------------------------------------------------------*/
+eXK Card_CmpPred::eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tablePtn_r)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // todo: alka and ray to discuss
+
+  return XK_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
 {

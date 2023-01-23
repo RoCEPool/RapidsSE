@@ -19,6 +19,7 @@ namespace STORE
     Card_CmpPred(Stz* szCmp);
    ~Card_CmpPred(void) noexcept(false);
 
+    eXK eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tablePtn_r);
     Card_CmpPred* pCmpPredFindBound(Index* pIndex, ePB eBound);
     bool bCmpPredHasBounds(Index* pIndex);
     bool bContains_Sqy_Call(void);
