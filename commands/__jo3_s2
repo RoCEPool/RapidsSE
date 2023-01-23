@@ -7,8 +7,8 @@
 //  TEST CASE 2
 //  Partitions = 4
 //  same size
-//  A                 B                C
-//  cola == ptn  ->   colb == ptn      colc != ptn
+//  A            ->  B               B          ->  C
+//  cola == ptn  ->  colb == ptn     colb = ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -63,11 +63,11 @@ drop table C;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
 
-Join Permutations:                                   Cast Total                  , Unicast Total
-  A->B (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))       , 1000
-  B->A (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))       , 1000
-  B->C (HASHCAST)(1000)   ->A (HASHCAST) (1000*1000) Total=(1000 + (1000*1000))  ,0
-  C->B (BROADCAST)(4*1000)->A (HASHCAST) (1000*1000) Total=(4*1000 + (1000*1000)),0
+Join Permutations:                                    Network Total                , Unicast Total
+  A->B (UNICAST)(0)       ->C (BROADCAST) (4*1000)    Total=(0+(1000*1000))        , 1000
+  B->A (UNICAST)(0)       ->C (BROADCAST) (4*1000)    Total=(0+(1000*1000))        , 1000
+  B->C (BROADCAST)(4*1000)->A (HASHCAST)  (1000*1000) Total=(4*1000 + (1000*1000)) , 0
+  C->B (BROADCAST)(4*1000)->A (HASHCAST)  (1000*1000) Total=(4*1000 + (1000*1000)) , 0
 
 Expected join order:
   Either A->B-C or B->A->C

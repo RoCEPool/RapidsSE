@@ -7,8 +7,8 @@
 //  TEST CASE 1
 //  Partitions = 4
 //  same size
-//  A                 B                C
-//  cola == ptn       colb == ptn      colc == ptn
+//  A            ->  B               B           ->  C
+//  cola == ptn  ->  colb == ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -64,7 +64,7 @@ drop table C;
 /*
 
 Join Permutations:
-                                     Cast Total    ,  Unicast Total
+                                     Network Total ,  Unicast Total
   A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+1000
   B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+1000
   B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+1000
