@@ -151,7 +151,7 @@ def start_instances(instance_type: str,
         "KeyName": C_KEYPAIR_NAME,
         "BlockDeviceMappings": [
             {
-                "DeviceName": __get_root_device_name(),
+                "DeviceName": __get_root_device_name(client, image_id),
                 "Ebs": {
                     "DeleteOnTermination": True,
                     "VolumeSize": C_VOLUME_SIZE_GB
