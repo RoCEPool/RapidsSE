@@ -21,6 +21,10 @@ namespace STORE
     static void vEstimateJoinedBuff(Card_Deck* pDeck, Card_TableList* p_tableList);
     static void vEstimateNetwork(Card_Deck* pDeck);
 
+    static Card_JoinOrdering* pPermute(Card_TableList* p_tableList,
+                                       Card_JoinPredList* p_joinPredList);
+
+
     void vConcat(Card_PtndJoin* p_PtndJoin);
     void vReorder(Card_Deck* pDeck);
   };

@@ -155,6 +155,16 @@ void Card_JoinOrdering::vEstimateNetwork(Card_Deck* pDeck)
     p_permutation->Y_vSet(P_Network, nNetwork);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_JoinOrdering* Card_JoinOrdering::pPermute(Card_TableList* p_tableList,
+                                               Card_JoinPredList* p_joinPredList)
+{
+  _static_
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
