@@ -516,7 +516,7 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* does this cmpPred reference given table?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bUsesTable(char cTblSyn)
 {
@@ -533,6 +533,18 @@ bool Card_CmpPred::bUsesTable(char cTblSyn)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* does this cmpPred reference given both tables?                             */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bUsesTables(char cTblSyn_a, char cTblSyn_b)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bUsesTable(cTblSyn_a) && bUsesTable(cTblSyn_b))
+    return true;
+
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */
