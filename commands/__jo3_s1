@@ -65,10 +65,10 @@ drop table C;
 
 Join Permutations:
                                      Network Total ,  Unicast Total
-  A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+1000
-  B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+1000
-  B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+1000
-  C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+1000
+  A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+  B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+  B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+  C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
 
 Expected join order:
   Either A->B-C or B->A->C or B->C->A or C->B->A
