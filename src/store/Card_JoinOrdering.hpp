@@ -23,6 +23,7 @@ namespace STORE
 
     static Card_JoinOrdering* pPick(Card_PtndJoinSet* p_ptndJoinSet);
 
+    static Card_JoinOrdering* pPick(Card_JoinPermSet* p_joinPermSet);
 
     void vConcat(Card_PtndJoin* p_PtndJoin);
     void vReorder(Card_Deck* pDeck);

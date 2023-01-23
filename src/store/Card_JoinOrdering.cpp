@@ -170,6 +170,18 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_PtndJoinSet* p_ptndJoinSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pick optimal join ordering from join permutation set                       */
+/*----------------------------------------------------------------------------*/
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermSet* p_joinPermSet)
+{
+  _static_
+
+  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+
+  return p_joinOrdering;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
