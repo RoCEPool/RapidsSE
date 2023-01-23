@@ -15,6 +15,10 @@ namespace STORE
   
     Card_JoinPermSet(void);
    ~Card_JoinPermSet(void) noexcept(false);
+
+     Card_JoinPermSet* pPermute(Card_TableList* p_tableList,
+                                Card_JoinPredList* p_joinPredList);
+
    };
 
   Card_JoinPermSet* _pCard_JoinPermSet(void* aAddr);
