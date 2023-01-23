@@ -28,6 +28,8 @@ namespace STORE
     Card_Term* pExtractParamTerm(void);
     char cGetTable_a(void);
     char cGetTable_b(void);
+    Card_Term* pGetTerm_0(void);
+    Card_Term* pGetTerm_1(void);
     bool bIsEq(Card_CmpPred* p_cmpPred_arg);
     bool bIsEqOp(void);
     bool bIsJoinPredBetween(char cTblSyn_l, char cTblSyn_r);

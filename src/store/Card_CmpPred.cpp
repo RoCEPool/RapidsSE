@@ -237,6 +237,29 @@ char Card_CmpPred::cGetTable_b(void)
   return cTableSyn_this_b;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the first term                                                         */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_CmpPred::pGetTerm_0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_0 = _pCard_Term( pGetChild(0) );
+
+  return p_term_0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the second term                                                        */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_CmpPred::pGetTerm_1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_1 = _pCard_Term( pGetChild(1) );
+
+  return p_term_1;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
