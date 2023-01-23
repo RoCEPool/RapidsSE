@@ -413,10 +413,12 @@ def __get_root_device_name(client, image_id: str, ctx: str = "") -> str:
     response = client.describe_images(**kwargs)
 
     assert len(response['Images']) == 1
-    assert len(response['Images'][0]['BlockDeviceMappings']) == 1
 
-    root_device = response['Images'][0]['BlockDeviceMappings'][0]['DeviceName']
-    return root_device
+    for mapping in response['Images'][0]['BlockDeviceMappings']:
+        if mapping.get('Ebs') is not None:
+            return mapping['DeviceName']
+
+    assert False, "Could not determine the root EBS device name"
 
 
 def __get_boot_script(path_str: str, ctx: str = "") -> str:
