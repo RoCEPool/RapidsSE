@@ -58,7 +58,6 @@ C_SUBNET_ID_PREFERENCE = [
     C_SUBNET_MAP[C_AVAIL_1E]
 ]
 
-C_ROOT_EBS_DEVICE = "/dev/xvda"
 C_VOLUME_SIZE_GB = 20
 C_SECURITY_GROUP_ID = "sg-0af380e49a6c6b7eb"    # Private security group (all in/outbound traffic allowed)
 C_KEYPAIR_ID = "key-0b5ebe74924256d94"
@@ -152,7 +151,7 @@ def start_instances(instance_type: str,
         "KeyName": C_KEYPAIR_NAME,
         "BlockDeviceMappings": [
             {
-                "DeviceName": C_ROOT_EBS_DEVICE,
+                "DeviceName": __get_root_device_name(),
                 "Ebs": {
                     "DeleteOnTermination": True,
                     "VolumeSize": C_VOLUME_SIZE_GB
@@ -402,6 +401,22 @@ def __check_image_id(client, image_id: str, ctx: str = ""):
     image_desc = response["Images"][0]["Description"]
     LOG.info(f"{ctx}Using AMI: {image_desc} (image-id: {image_id})")
     # pprint.pp(response)
+
+
+def __get_root_device_name(client, image_id: str, ctx: str = "") -> str:
+    """Returns the name of the root device, given an image_id"""
+    kwargs = {
+        "ImageIds": [image_id],
+        "DryRun": False
+    }
+
+    response = client.describe_images(**kwargs)
+
+    assert len(response['Images']) == 1
+    assert len(response['Images'][0]['BlockDeviceMappings']) == 1
+
+    root_device = response['Images'][0]['BlockDeviceMappings'][0]['DeviceName']
+    return root_device
 
 
 def __get_boot_script(path_str: str, ctx: str = "") -> str:
