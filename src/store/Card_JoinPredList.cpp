@@ -113,7 +113,7 @@ Card_CmpPred* Card_JoinPredList::pFindCmpPred(char cTblSyn)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_CMPPRED)) {
     if (xCI.G.p_cmpPred->bUsesTable(cTblSyn))
-      return (xCI.G.p_cmpPred;
+      return xCI.G.p_cmpPred;
   }
 
   return nullptr;
