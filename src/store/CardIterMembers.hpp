@@ -106,6 +106,8 @@ namespace STORE
     Card_IndexScan *        p_indexScan;
     Card_JoinOrder *        p_joinOrder;
     Card_JoinOrdering *     p_joinOrdering;
+    Card_JoinPerm *         p_joinPerm;
+    Card_JoinPermList *     p_joinPermList;
     Card_JoinPredList *     p_joinPredList;
     Card_Key *              p_key;
     Card_KeyExists *        p_keyExists;
