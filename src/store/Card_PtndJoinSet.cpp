@@ -77,42 +77,6 @@ Card_PtndJoinSet* Card_PtndJoinSet::pExtract(Card_CoPtnJoinList* p_coPtnJoinList
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_PtndJoinSet* Card_PtndJoinSet::pPermute(Card_TableList* p_tableList,
-                                             Card_JoinPredList* p_joinPredList)
-{
-  _static_
-
-  Card_PtndJoinSet* p_ptndJoinSet = new Card_PtndJoinSet;
-
-  i8 nTables = p_tableList->nChildCards();
-  PermGen* pPermGen = new PermGen(nTables);
-
-  while (pPermGen->bNextPermutation()) {
-
-    Card_Permutation* p_permutation = new Card_Permutation;
-    p_ptndJoinSet->vAppendMain(p_permutation);
-    p_permutation->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
-
-
-    vTrace("%lld :"_Stz,pPermGen->nPermutations());
-    for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
-      i8 i_Table = pPermGen->iItem(i_Item);
-      Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-      if (i_Item)
-        vTrace(", "_Stz,i_Table);
-      vTrace("%c"_Stz,p_table->cValue());
-    }
-    vTrace("\n"_Stz);
-  }
-
-  delete pPermGen;
-
-  return p_ptndJoinSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
