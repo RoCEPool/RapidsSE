@@ -27,6 +27,7 @@ namespace STORE
     Card_Term* pExtractParamTerm(void);
     bool bIsEq(Card_CmpPred* p_cmpPred_arg);
     bool bIsEqOp(void);
+    bool bIsJoinPredBetween(char cTblSyn_l, char cTblSyn_r);
     void vMarkBound(void);
     bool bMaybeBounds_v2(Card_Table* p_table, Card_Index* p_index, bool bParamAllowedInBounds);
     bool bMaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);

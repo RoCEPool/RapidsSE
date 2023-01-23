@@ -237,6 +237,18 @@ bool Card_CmpPred::bIsEqOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this cmpPred a joinPred between the two given tables?                   */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bIsJoinPredBetween(char cTblSyn_l, char cTblSyn_r)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // todo: alka and ray to discuss
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Card_CmpPred::vMarkBound(void)
