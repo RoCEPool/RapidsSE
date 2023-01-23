@@ -79,6 +79,8 @@ namespace STORE
 
   class Card_JoinOrder;
   class Card_JoinOrdering;
+  class Card_JoinPerm;
+  class Card_JoinPermList;
   class Card_JoinPredList;
 
   class Card_Key;
@@ -500,6 +502,8 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_JoinPerm*      pSub_joinPerm(void);
+    Card_JoinPermList*  pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
