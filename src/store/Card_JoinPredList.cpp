@@ -103,6 +103,22 @@ void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc)
   p_boolCalc->bApplyRecursive(CK_CMPPRED, bConcat);
 }
 
+/*----------------------------------------------------------------------------*/
+/* find the first cmpPred which uses given table                              */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card_JoinPredList::pFindCmpPred(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_CMPPRED)) {
+    if (xCI.G.p_cmpPred->bUsesTable(cTblSyn))
+      return (xCI.G.p_cmpPred;
+  }
+
+  return nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
