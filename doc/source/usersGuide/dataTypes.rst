@@ -19,7 +19,7 @@ associated data types.
 The data types supported by SE and their limitations are captured in the table
 below.
 
-.. table::
+.. table:: Supported Data Types
    :name: data-types-table
    :class: longtable
    :widths: 20, 80
@@ -52,6 +52,8 @@ below.
    =============  ===========================================================================
 
 
+.. _typeConversion:
+
 Type Conversion
 ---------------
 In the RapidsSE SQL compiler, an expression is represented as a tree of
@@ -82,6 +84,8 @@ RapidsSE supports expression type conversion in two ways:
 This is described in the sections below.
 
 
+.. _implicitTypeCoercion:
+
 Implicit type coercion
 ``````````````````````
 Implicit type coercion is where the SQL compiler tries to automatically
@@ -110,7 +114,7 @@ choose. This will result in an error to the user who should then either rewrite
 the query or use an CAST on the appropriate expression to make it clearer to
 the compiler how the expression is to be executed.
 
-.. csv-table::
+.. csv-table:: Implicit Type Coercions Supported
    :header: "Source Expression Type", "Can Be Converted To", "Comments / Limitations"
    :widths: 25, 15, 60
 
@@ -136,6 +140,9 @@ In the case of coercing literals, it is possible that the coercion from the
 source to the target type may exceed the supported range of the target type.
 In that case an error is returned to the user.
 
+
+.. _explicitTypeCasting:
+
 Explicit type casting
 `````````````````````
 Where the SQL compiler is unable to coerce operands to produce a valid
@@ -143,7 +150,7 @@ expression, the user may be able to resolve the ambiguity by explicitly
 converting operands in an expression. This can be done by using the ``CAST``
 operator. The supported explicit type conversions are listed below.
 
-.. table::
+.. table:: Explicit Type Casting Supported
    :name: explicit-type-casting-table
    :class: longtable centered
 
