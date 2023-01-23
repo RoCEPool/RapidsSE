@@ -107,6 +107,7 @@ namespace STORE
   class Card_Project;
   class Card_Projection;
   class Card_PtndJoin;
+  class Card_PtndJoinSet;
   class Card_PmzWhere;
 
   class Card_RBound;

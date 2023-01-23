@@ -10,6 +10,7 @@
 #include "Card_JoinOrder.hpp"
 #include "Card_Permutation.hpp"
 #include "Card_PtndJoin.hpp"
+#include "Card_PtndJoinSet.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
@@ -155,15 +156,17 @@ void Card_JoinOrdering::vEstimateNetwork(Card_Deck* pDeck)
     p_permutation->Y_vSet(P_Network, nNetwork);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPermute(Card_TableList* p_tableList,
-                                               Card_JoinPredList* p_joinPredList)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_PtndJoinSet* p_ptndJoinSet)
 {
   _static_
 
-  return nullptr;
+  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+
+  return p_joinOrdering;
 }
 
 /*----------------------------------------------------------------------------*/
