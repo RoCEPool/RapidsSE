@@ -6,6 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
+#include "Card_TableList.hpp"
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
 
@@ -44,6 +45,30 @@ Card_JoinPermList::~Card_JoinPermList(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/* compute one join permutation                                               */
+/*----------------------------------------------------------------------------*/
+void Card_JoinPermList::vOnePermutedJoin(Card_TableList*    p_tableList,
+                                         Card_JoinPredList* p_joinPredList,
+                                         Card_JoinPermSet*  p_joinPermSet,
+                                         PermGen*           pPermGen)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nTables = p_tableList->nChildCards();
+
+  vTrace("%lld :"_Stz,pPermGen->nPermutations());
+  for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
+    i8 i_Table = pPermGen->iItem(i_Item);
+    Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
+    if (i_Item)
+      vTrace(", "_Stz,i_Table);
+    vTrace("%c"_Stz,p_table->cValue());
+  }
+  vTrace("\n"_Stz);
+
+}
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

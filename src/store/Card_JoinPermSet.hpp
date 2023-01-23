@@ -16,8 +16,8 @@ namespace STORE
     Card_JoinPermSet(void);
    ~Card_JoinPermSet(void) noexcept(false);
 
-    static Card_JoinPermSet* pPermute(Card_TableList* p_tableList,
-                                      Card_JoinPredList* p_joinPredList);
+    static Card_JoinPermSet* pAllPermutedJoins(Card_TableList* p_tableList,
+                                               Card_JoinPredList* p_joinPredList);
 
    };
 

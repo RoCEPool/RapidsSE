@@ -5,6 +5,8 @@
 
 #include "Card.hpp"
 
+#include "PermGen.hpp"
+
 namespace STORE
 {
    class Card_JoinPermList : public Card
@@ -15,6 +17,12 @@ namespace STORE
   
     Card_JoinPermList(void);
    ~Card_JoinPermList(void) noexcept(false);
+
+   void vOnePermutedJoin(Card_TableList*   p_tableList,
+                        Card_JoinPredList* p_joinPredList,
+                        Card_JoinPermSet*  p_joinPermSet,
+                        PermGen*           pPermGen);
+
    };
 
   Card_JoinPermList* _pCard_JoinPermList(void* aAddr);
