@@ -12,9 +12,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-create table A(A_COL0 integer, A_COL1 integer,  A_COL2 integer) tablesize 1000;
-create table B(B_COL0 integer, B_COL1 integer,  B_COL2 integer) tablesize 1000;
-create table C(C_COL0 integer, C_COL1 integer, CB_COL2 integer) tablesize 1000;
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
