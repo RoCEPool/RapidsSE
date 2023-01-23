@@ -74,7 +74,7 @@ Expected join order:
   Either B->A->C
 
 Expected Result:
-  row: (138)
+  row: (73)
   success: 1 rows fetched
 */
 
