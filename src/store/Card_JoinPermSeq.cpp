@@ -52,7 +52,7 @@ Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compute the load of this join permutation                                   */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermSeq::vCalculateLoad(Card_TableList*    p_tableList)
+void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -64,6 +64,11 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList*    p_tableList)
       Card_Cast*        p_cast        = new Card_Cast;
       Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
       Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
+
+      p_loadJoin->vValue((i8)0);
+      p_cast->vValue(aXK[XK_NONE]);
+      p_loadNetwork->vValue((i8)0);
+      p_loadUnicast->vValue((i8)0);
 
       p_loadJoin->vAppend(p_cast);
       p_loadJoin->vAppend(p_loadNetwork);

@@ -2110,6 +2110,18 @@ char Card::cValue(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
+i8 Card::iValue(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i = m_sValue.iToI8();
+
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card value                                                             */
+/*----------------------------------------------------------------------------*/
 Stz* Card::szValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -2125,6 +2137,16 @@ void Card::vValue(char cValue)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vValueSprint("%c"_Stz,cValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card value                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vValue(i8 iValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("%lld"_Stz,iValue);
 }
 
 /*----------------------------------------------------------------------------*/

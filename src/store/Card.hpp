@@ -438,8 +438,10 @@ namespace STORE
 
     Stz* sz(void);
     char cValue(void);
+    i8   iValue(void);
     Stz* szValue(void);
     void vValue(char cValue);
+    void vValue(i8 iValue);
     void vValue(Stz* szValue);
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
