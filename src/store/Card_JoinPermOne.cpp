@@ -76,11 +76,16 @@ void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
     // get the join pred for this table
     Card_CmpPred* p_cmpPred_join = p_joinPredList->pFindCmpPred(cTblSyn);
 
+    Card_CmpPred* p_cmpPred_perm = _pCard_CmpPred(p_cmpPred_join->pDupCardAndSubCards());
+
     char cTblSyn_prior = p_cmpPred_join->cOtherTable(cTblSyn);
-    if (! bSupportedJoin(cTblSyn_prior))
-      continue;
+    if (! bSupportedJoin(cTblSyn_prior)) {
+      vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+      Y_vSet(P_Invalid);
+      break;
+    }
 
-
+    vAppend(p_cmpPred_perm);
   }
 
   vTrace("\n"_Stz);
