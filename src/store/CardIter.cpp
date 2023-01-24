@@ -412,7 +412,7 @@ void CardIter::G_vClearMembers(void)
   G.p_joinOrdering     = nullptr;
   G.p_joinPerm         = nullptr;
   G.p_joinPermAll      = nullptr;
-  G.p_joinPermList     = nullptr;
+  G.p_joinPermOne     = nullptr;
   G.p_joinPredList     = nullptr;
   G.p_key              = nullptr;
   G.p_keyExists        = nullptr;
@@ -1340,7 +1340,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPERM:         return G.p_joinPerm;
     case CK_JOINPERMALL:      return G.p_joinPermAll;
-    case CK_JOINPERMLIST:     return G.p_joinPermList;
+    case CK_JOINPERMONE:      return G.p_joinPermOne;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEY:              return G.p_key;
     case CK_KEYEXISTS:        return G.p_keyExists;
@@ -1700,7 +1700,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
     case CK_JOINPERM:         return "G.p_joinPerm"_Stz;
     case CK_JOINPERMALL:      return "G.p_joinPermAll"_Stz;
-    case CK_JOINPERMLIST:     return "G.p_joinPermList"_Stz;
+    case CK_JOINPERMONE:      return "G.p_joinPermOne"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEY:              return "G.p_key"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
@@ -2908,7 +2908,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
     case CK_JOINPERM:         *((Card**)&G.p_joinPerm)         = pCard; break;
     case CK_JOINPERMALL:      *((Card**)&G.p_joinPermAll)      = pCard; break;
-    case CK_JOINPERMLIST:     *((Card**)&G.p_joinPermList)     = pCard; break;
+    case CK_JOINPERMONE:      *((Card**)&G.p_joinPermOne)      = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;

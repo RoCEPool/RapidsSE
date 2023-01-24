@@ -108,7 +108,7 @@ namespace STORE
     Card_JoinOrdering *     p_joinOrdering;
     Card_JoinPerm *         p_joinPerm;
     Card_JoinPermAll *      p_joinPermAll;
-    Card_JoinPermList *     p_joinPermList;
+    Card_JoinPermOne *      p_joinPermOne;
     Card_JoinPredList *     p_joinPredList;
     Card_Key *              p_key;
     Card_KeyExists *        p_keyExists;

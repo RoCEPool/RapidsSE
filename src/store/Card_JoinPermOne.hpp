@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinPermList.hpp -- Join Permutation List                             */
+/* Card_JoinPermOne.hpp -- Join Permutation List                             */
 /*============================================================================*/
 #pragma once
 
@@ -9,23 +9,25 @@
 
 namespace STORE
 {
-   class Card_JoinPermList : public Card
+   class Card_JoinPermOne : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinPermList(void);
-   ~Card_JoinPermList(void) noexcept(false);
+    Card_JoinPermOne(void);
+   ~Card_JoinPermOne(void) noexcept(false);
 
    void vOnePermutedJoin(Card_TableList*   p_tableList,
                          Card_JoinPredList* p_joinPredList,
                          Card_JoinPermAll*  p_joinPermAll,
                          PermGen*           pPermGen);
 
+     bool bSupportedJoin(char cTblSyn_prior);
+
    };
 
-  Card_JoinPermList* _pCard_JoinPermList(void* aAddr);
+  Card_JoinPermOne* _pCard_JoinPermOne(void* aAddr);
 }
 
 /*============================================================================*/

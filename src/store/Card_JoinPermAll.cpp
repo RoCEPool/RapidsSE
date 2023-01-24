@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_JoinPerm.hpp"
-#include "Card_JoinPermList.hpp"
+#include "Card_JoinPermOne.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
@@ -63,7 +63,7 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 
   while (pPermGen->bNextPermutation()) {
 
-    Card_JoinPermList* p_joinPermList = new Card_JoinPermList;
+    Card_JoinPermOne* p_joinPermList = new Card_JoinPermOne;
     p_joinPermAll->vAppendMain(p_joinPermList);
     p_joinPermList->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
 
@@ -72,15 +72,6 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
                                      p_joinPermAll,
                                      pPermGen);
 
-//    vTrace("%lld :"_Stz,pPermGen->nPermutations());
-//    for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
-//      i8 i_Table = pPermGen->iItem(i_Item);
-//      Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-//      if (i_Item)
-//        vTrace(", "_Stz,i_Table);
-//      vTrace("%c"_Stz,p_table->cValue());
-//    }
-//    vTrace("\n"_Stz);
   }
 
   delete pPermGen;
