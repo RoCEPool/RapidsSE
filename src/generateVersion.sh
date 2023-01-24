@@ -135,7 +135,7 @@ function writeBashOutput() {
     echo "PATCH_VERSION=${SE_PATCH_VER}"
     echo "VERSION_NUMBER=$(printf "0x%02x%02x%02x" "${SE_MAJOR_VER}" "${SE_MINOR_VER}" "${SE_PATCH_VER}")"
     echo "VERSION_LABEL=\"${SE_VER_LABEL}\""
-  } >> "${BASH_VERSION_FILE}"
+  } > "${BASH_VERSION_FILE}"
 }
 
 if [[ $# -eq 1 && $1 == "--bash" ]]; then
