@@ -19,6 +19,7 @@ namespace STORE
     static Card_JoinPermAll* pAllPermutedJoins(Card_TableList* p_tableList,
                                                Card_JoinPredList* p_joinPredList);
 
+    void vCalculateLoad(Card_TableList* p_tableList);
     void vRemoveInvalid(void);
 
    };

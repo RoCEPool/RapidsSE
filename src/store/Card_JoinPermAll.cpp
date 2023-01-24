@@ -83,6 +83,18 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compute the load of all permutations                                       */
+/*----------------------------------------------------------------------------*/
+void Card_JoinPermAll::vCalculateLoad(Card_TableList* p_tableList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain())
+    xCI.G.p_joinPermSeq->vCalculateLoad(p_tableList);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the set of join permutations                                       */
 /*----------------------------------------------------------------------------*/
 void Card_JoinPermAll::vRemoveInvalid(void)

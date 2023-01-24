@@ -18,12 +18,12 @@ namespace STORE
     Card_JoinPermSeq(void);
    ~Card_JoinPermSeq(void) noexcept(false);
 
-    void vOnePermutedJoin(Card_TableList*    p_tableList,
-                          Card_JoinPredList* p_joinPredList,
-                          PermGen*           pPermGen);
+     void vCalculateLoad(Card_TableList*    p_tableList);
+     void vOnePermutedJoin(Card_TableList*    p_tableList,
+                           Card_JoinPredList* p_joinPredList,
+                           PermGen*           pPermGen);
 
      bool bHasKnownJoin(char cTblSyn);
-
    };
 
   Card_JoinPermSeq* _pCard_JoinPermSeq(void* aAddr);
