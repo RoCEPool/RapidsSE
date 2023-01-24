@@ -19,9 +19,9 @@ namespace STORE
    ~Card_JoinPermList(void) noexcept(false);
 
    void vOnePermutedJoin(Card_TableList*   p_tableList,
-                        Card_JoinPredList* p_joinPredList,
-                        Card_JoinPermSet*  p_joinPermSet,
-                        PermGen*           pPermGen);
+                         Card_JoinPredList* p_joinPredList,
+                         Card_JoinPermAll*  p_joinPermAll,
+                         PermGen*           pPermGen);
 
    };
 

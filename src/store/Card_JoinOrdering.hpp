@@ -21,7 +21,7 @@ namespace STORE
     static void vEstimateJoinedBuff(Card_Deck* pDeck, Card_TableList* p_tableList);
     static void vEstimateNetwork(Card_Deck* pDeck);
 
-    static Card_JoinOrdering* pPick(Card_JoinPermSet* p_joinPermSet);
+    static Card_JoinOrdering* pPick(Card_JoinPermAll* p_joinPermAll);
 
     void vConcat(Card_PtndJoin* p_PtndJoin);
     void vReorder(Card_Deck* pDeck);

@@ -73,8 +73,8 @@ enum eCK // card kind
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPERM,
+  /* */ CK_JOINPERMALL,
   /* */ CK_JOINPERMLIST,
-  /* */ CK_JOINPERMSET,
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEY,
@@ -248,8 +248,8 @@ static Stz* aCK[]
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPERM"_Stz,     // CK_JOINPERM
+  /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
   /* */ "CK_JOINPERMLIST"_Stz, // CK_JOINPERMLIST
-  /* */ "CK_JOINPERMSET"_Stz,  // CK_JOINPERMSET
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEY"_Stz,          // CK_KEY
@@ -422,8 +422,8 @@ static Stz* aCK_short[]
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPerm"_Stz,        // CK_JOINPERM
+  /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
   /* */ "joinPermList"_Stz,    // CK_JOINPERMLIST
-  /* */ "joinPermSet"_Stz,     // CK_JOINPERMSET
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "key"_Stz,             // CK_KEY
@@ -596,8 +596,8 @@ static Stz* aCK_notation[]
     /* */ "jO"_Stz,           // CK_JOINORDER
     /* */ "jOG"_Stz,          // CK_JOINORDERING
     /* */ "jP"_Stz,           // CK_JOINPERM
+    /* */ "jPA"_Stz,          // CK_JOINPERMALL
     /* */ "jPL"_Stz,          // CK_JOINPERMLIST
-    /* */ "jPS"_Stz,          // CK_JOINPERMSET
     /* */ "jPeL"_Stz,         // CK_JOINPREDLIST
 
     /* */ "key"_Stz,          // CK_KEY

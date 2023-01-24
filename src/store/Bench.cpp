@@ -3263,13 +3263,13 @@ void Bench::vTransform_JoinOrdering_v2(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // 3) Compute all possible join permutations
-  Card_JoinPermSet* p_joinPermSet =
-      Card_JoinPermSet::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
+  Card_JoinPermAll* p_joinPermAll =
+      Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
   Card_JoinOrdering* p_joinOrdering =
-      Card_JoinOrdering::pPick(p_joinPermSet);
+      Card_JoinOrdering::pPick(p_joinPermAll);
 
-  DELETE_CARD(p_joinPermSet);
+  DELETE_CARD(p_joinPermAll);
   DELETE_CARD(p_joinOrdering);
 
 

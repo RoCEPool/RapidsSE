@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinPermSet.cpp -- Join Permutation Set (of lists)                    */
+/* Card_JoinPermAll.cpp -- Join Permutation Set (of lists)                    */
 /*============================================================================*/
 
-#include "Card_JoinPermSet.hpp"
+#include "Card_JoinPermAll.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -18,16 +18,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_JoinPermSet,CK_JOINPERMSET)
-__aNewFunction(Card_JoinPermSet,CN_CARD)
-__vDeleteFunction(Card_JoinPermSet,CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinPermAll, CK_JOINPERMALL)
+__aNewFunction(Card_JoinPermAll, CN_CARD)
+__vDeleteFunction(Card_JoinPermAll, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSet::Card_JoinPermSet(void)
-: Card(CK_JOINPERMSET)
+Card_JoinPermAll::Card_JoinPermAll(void)
+: Card(CK_JOINPERMALL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -39,7 +39,7 @@ Card_JoinPermSet::Card_JoinPermSet(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSet::~Card_JoinPermSet(void) noexcept(false)
+Card_JoinPermAll::~Card_JoinPermAll(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -51,12 +51,12 @@ Card_JoinPermSet::~Card_JoinPermSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compute the set of join permutations                                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSet* Card_JoinPermSet::pAllPermutedJoins(Card_TableList* p_tableList,
+Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableList,
                                                       Card_JoinPredList* p_joinPredList)
 {
   _static_
 
-  Card_JoinPermSet* p_joinPermSet = new Card_JoinPermSet;
+  Card_JoinPermAll* p_joinPermAll = new Card_JoinPermAll;
 
   i8 nTables = p_tableList->nChildCards();
   PermGen* pPermGen = new PermGen(nTables);
@@ -64,12 +64,12 @@ Card_JoinPermSet* Card_JoinPermSet::pAllPermutedJoins(Card_TableList* p_tableLis
   while (pPermGen->bNextPermutation()) {
 
     Card_JoinPermList* p_joinPermList = new Card_JoinPermList;
-    p_joinPermSet->vAppendMain(p_joinPermList);
+    p_joinPermAll->vAppendMain(p_joinPermList);
     p_joinPermList->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
 
     p_joinPermList->vOnePermutedJoin(p_tableList,
                                      p_joinPredList,
-                                     p_joinPermSet,
+                                     p_joinPermAll,
                                      pPermGen);
 
 //    vTrace("%lld :"_Stz,pPermGen->nPermutations());
@@ -85,7 +85,7 @@ Card_JoinPermSet* Card_JoinPermSet::pAllPermutedJoins(Card_TableList* p_tableLis
 
   delete pPermGen;
 
-  return p_joinPermSet;
+  return p_joinPermAll;
 }
 
 /*============================================================================*/

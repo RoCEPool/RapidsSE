@@ -79,8 +79,8 @@
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrdering.hpp"
 #include "Card_JoinPerm.hpp"
+#include "Card_JoinPermAll.hpp"
 #include "Card_JoinPermList.hpp"
-#include "Card_JoinPermSet.hpp"
 #include "Card_JoinPredList.hpp"
 
 #include "Card_Key.hpp"

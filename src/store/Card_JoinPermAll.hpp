@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinPermSet.hpp -- Join Permutation Set (of lists)                    */
+/* Card_JoinPermAll.hpp -- All Join Permutations                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,21 +7,21 @@
 
 namespace STORE
 {
-   class Card_JoinPermSet : public Card
+   class Card_JoinPermAll : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinPermSet(void);
-   ~Card_JoinPermSet(void) noexcept(false);
+    Card_JoinPermAll(void);
+   ~Card_JoinPermAll(void) noexcept(false);
 
-    static Card_JoinPermSet* pAllPermutedJoins(Card_TableList* p_tableList,
+    static Card_JoinPermAll* pAllPermutedJoins(Card_TableList* p_tableList,
                                                Card_JoinPredList* p_joinPredList);
 
    };
 
-  Card_JoinPermSet* _pCard_JoinPermSet(void* aAddr);
+  Card_JoinPermAll* _pCard_JoinPermAll(void* aAddr);
 }
 
 /*============================================================================*/
