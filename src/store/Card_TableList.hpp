@@ -21,6 +21,8 @@ namespace STORE
 
     Card_Table* pFind(char cTblSyn);
 
+    Card_TablePtn* pGetTablePtn(char cTblSyn);
+
     bool bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred);
   };
 

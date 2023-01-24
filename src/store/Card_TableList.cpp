@@ -153,6 +153,21 @@ bool Card_TableList::bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_TablePtn* Card_TableList::pGetTablePtn(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_TABLEPTN)) {
+    if (xCI.G.p_table->bIsValue(cTblSyn))
+      return xCI.G.p_tablePtn;
+  }
+
+  return nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */

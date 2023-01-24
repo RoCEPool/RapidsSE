@@ -56,25 +56,37 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  char cTblSyn_l = ' ';
+
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
-      Card_LoadJoin*    p_loadJoin    = new Card_LoadJoin;
-      Card_Cast*        p_cast        = new Card_Cast;
-      Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
-      Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
-
-      p_loadJoin->vValue((i8)0);
-      p_cast->vValue(aXK[XK_NONE]);
-      p_loadNetwork->vValue((i8)0);
-      p_loadUnicast->vValue((i8)0);
-
-      p_loadJoin->vAppend(p_cast);
-      p_loadJoin->vAppend(p_loadNetwork);
-      p_loadJoin->vAppend(p_loadUnicast);
-      xCI.G.p_MainCard->vAppend(p_loadJoin);
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
+      cTblSyn_l = xCI.G.p_joinHead->cValue();
+      continue;
     }
+
+    if (! xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+      continue;
+
+    char cTblSyn_r = xCI.G.p_joinNext->cValue();
+
+    Card_LoadJoin*    p_loadJoin    = new Card_LoadJoin;
+    Card_Cast*        p_cast        = new Card_Cast;
+    Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
+    Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
+
+    p_loadJoin->vValue((i8)0);
+    p_cast->vValue(aXK[XK_NONE]);
+    p_loadNetwork->vValue((i8)0);
+    p_loadUnicast->vValue((i8)0);
+
+    p_loadJoin->vAppend(p_cast);
+    p_loadJoin->vAppend(p_loadNetwork);
+    p_loadJoin->vAppend(p_loadUnicast);
+    xCI.G.p_MainCard->vAppend(p_loadJoin);
+
+    cTblSyn_l = cTblSyn_r;
   }
 }
 
