@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinPermOne.cpp -- Join Permutation List                             */
+/* Card_JoinPermSeq.cpp -- Join Permutation Sequence                          */
 /*============================================================================*/
 
-#include "Card_JoinPermOne.hpp"
+#include "Card_JoinPermSeq.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -19,16 +19,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_JoinPermOne, CK_JOINPERMONE)
-__aNewFunction(Card_JoinPermOne, CN_CARD)
-__vDeleteFunction(Card_JoinPermOne, CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinPermSeq, CK_JOINPERMSEQ)
+__aNewFunction(Card_JoinPermSeq, CN_CARD)
+__vDeleteFunction(Card_JoinPermSeq, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermOne::Card_JoinPermOne(void)
-: Card(CK_JOINPERMONE)
+Card_JoinPermSeq::Card_JoinPermSeq(void)
+: Card(CK_JOINPERMSEQ)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -40,7 +40,7 @@ Card_JoinPermOne::Card_JoinPermOne(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermOne::~Card_JoinPermOne(void) noexcept(false)
+Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -50,9 +50,9 @@ Card_JoinPermOne::~Card_JoinPermOne(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compute one join permutation                                               */
+/* compute one permuted join sequence                                         */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
+void Card_JoinPermSeq::vOnePermutedJoin(Card_TableList*    p_tableList,
                                         Card_JoinPredList* p_joinPredList,
                                         PermGen*           pPermGen)
 {
@@ -72,21 +72,23 @@ void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
       vTrace(", "_Stz,i_Table);
     vTrace("%c"_Stz,cTblSyn);
 
-    Card_JoinHead* p_joinPerm = new Card_JoinHead;
-    p_joinPerm->vValue(cTblSyn);
-    vAppend(p_joinPerm);
-    if (1 == nChildCards())
+    if (0 == nChildCards()) {
+      Card_JoinHead *p_joinHead = new Card_JoinHead;
+      p_joinHead->vValue(cTblSyn);
+      vAppend(p_joinHead);
       continue;
+    }
 
+    Card_JoinNext *p_joinNext = new Card_JoinNext;
 
     // get the join pred for this table
     Card_CmpPred* p_cmpPred_join = p_joinPredList->pFindCmpPred(cTblSyn);
     Card_CmpPred* p_cmpPred_perm = _pCard_CmpPred(p_cmpPred_join->pDupCardAndSubCards());
-    p_joinPerm->vAppend(p_cmpPred_perm);
+    p_joinNext->vAppend(p_cmpPred_perm);
 
     char cTblSyn_prior = p_cmpPred_join->cOtherTable(cTblSyn);
     if (! bSupportedJoin(cTblSyn_prior)) {
-      p_joinPerm->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+      p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
       Y_vSet(P_Invalid);
       break;
     }
@@ -99,7 +101,7 @@ void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
 /*----------------------------------------------------------------------------*/
 /* does this permutation support join to given table at this point?           */
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermOne::bSupportedJoin(char cTblSyn_prior)
+bool Card_JoinPermSeq::bSupportedJoin(char cTblSyn_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

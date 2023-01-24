@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_JoinHead.hpp"
-#include "Card_JoinPermOne.hpp"
+#include "Card_JoinPermSeq.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
@@ -64,11 +64,11 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 
   while (pPermGen->bNextPermutation()) {
 
-    Card_JoinPermOne* p_joinPermOne = new Card_JoinPermOne;
-    p_joinPermOne->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
-    p_joinPermAll->vAppendMain(p_joinPermOne);
+    Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
+    p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
+    p_joinPermAll->vAppendMain(p_joinPermSeq);
 
-    p_joinPermOne->vOnePermutedJoin(p_tableList,
+    p_joinPermSeq->vOnePermutedJoin(p_tableList,
                                     p_joinPredList,
                                     pPermGen);
   }
@@ -91,8 +91,8 @@ void Card_JoinPermAll::vRemoveInvalid(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (xCI.G.p_joinPermOne->Y_bHas(P_Invalid))
-      xCI.G_vRemoveDeleteMain(CK_JOINPERMONE);
+    if (xCI.G.p_joinPermSeq->Y_bHas(P_Invalid))
+      xCI.G_vRemoveDeleteMain(CK_JOINPERMSEQ);
   }
 }
 
