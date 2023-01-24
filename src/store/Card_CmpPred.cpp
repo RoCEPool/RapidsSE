@@ -238,6 +238,17 @@ char Card_CmpPred::cGetTable_b(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get both tables                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_CmpPred::vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  rcTblSyn_a = cGetTable_a();
+  rcTblSyn_b = cGetTable_b();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the first term                                                         */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_CmpPred::pGetTerm_0(void)

@@ -23,6 +23,7 @@ namespace STORE
                           PermGen*           pPermGen);
 
      bool bSupportedJoin(char cTblSyn_prior);
+     bool bSupportedJoin_v2(char cTblSyn_a, char cTblSyn_b);
 
    };
 

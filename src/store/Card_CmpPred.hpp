@@ -28,6 +28,7 @@ namespace STORE
     Card_Term* pExtractParamTerm(void);
     char cGetTable_a(void);
     char cGetTable_b(void);
+    void vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b);
     Card_Term* pGetTerm_0(void);
     Card_Term* pGetTerm_1(void);
     bool bIsEq(Card_CmpPred* p_cmpPred_arg);

@@ -117,6 +117,26 @@ bool Card_JoinPermSeq::bSupportedJoin(char cTblSyn_prior)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* does this permutation support join to given table at this point?           */
+/*----------------------------------------------------------------------------*/
+bool Card_JoinPermSeq::bSupportedJoin_v2(char cTblSyn_a, char cTblSyn_b)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+//  if (! nChildCards())
+//    return true;
+//
+//  CardIter xCI(this);
+//  while (xCI.G_bEachMain(CK_JOINHEAD)) {
+//    if (xCI.G.p_joinHead->cValue() == cTblSyn_prior)
+//      return true;
+//  }
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
