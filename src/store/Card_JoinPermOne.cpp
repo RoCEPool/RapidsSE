@@ -97,6 +97,9 @@ bool Card_JoinPermOne::bSupportedJoin(char cTblSyn_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (! nChildCards())
+    return true;
+
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_CMPPRED)) {
     if (xCI.G.p_cmpPred->bUsesTable(cTblSyn_prior))
