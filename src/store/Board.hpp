@@ -92,6 +92,9 @@
 #include "Card_Level.hpp"
 #include "Card_Limit.hpp"
 #include "Card_LinksTo.hpp"
+#include "Card_LoadJoin.hpp"
+#include "Card_LoadNetwork.hpp"
+#include "Card_LoadUnicast.hpp"
 
 #include "Card_Manner.hpp"
 

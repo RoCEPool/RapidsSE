@@ -86,6 +86,9 @@ enum eCK // card kind
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
   /* */ CK_LINKSTO,
+  /* */ CK_LOADJOIN,
+  /* */ CK_LOADNETWORK,
+  /* */ CK_LOADUNICAST,
 
   /* */ CK_MANNER,
 
@@ -262,6 +265,9 @@ static Stz* aCK[]
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
+  /* */ "CK_LOADJOIN"_Stz,     // CK_LOADJOIN
+  /* */ "CK_LOADNETWORK"_Stz,  // CK_LOADNETWORK
+  /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
 
   /* */ "CK_MANNER"_Stz,       // CK_MANNER
 
@@ -437,6 +443,9 @@ static Stz* aCK_short[]
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
+  /* */ "loadJoin"_Stz,        // CK_LOADJOIN
+  /* */ "loadNetwork"_Stz,     // CK_LOADNETWORK
+  /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST
 
   /* */ "manner"_Stz,          // CK_MANNER
 
@@ -612,6 +621,9 @@ static Stz* aCK_notation[]
     /* */ "lvl"_Stz,          // CK_LEVEL
     /* */ "lmt"_Stz,          // CK_LIMIT
     /* */ "lT"_Stz,           // CK_LINKSTO
+    /* */ "ldJ"_Stz,          // CK_LOADJOIN
+    /* */ "ldN"_Stz,          // CK_LOADNETWORK
+    /* */ "ldU"_Stz,          // CK_LOADUNICAST
 
     /* */ "mIJ"_Stz,          // CK_MAYBEINDEXJOIN
     /* */ "mnr"_Stz,          // CK_MANNER

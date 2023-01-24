@@ -421,6 +421,9 @@ void CardIter::G_vClearMembers(void)
   G.p_lBound           = nullptr;
   G.p_level            = nullptr;
   G.p_limit            = nullptr;
+  G.p_loadJoin         = nullptr;
+  G.p_loadNetwork      = nullptr;
+  G.p_loadUnicast      = nullptr;
   G.p_manner           = nullptr;
   G.p_nCorrCols        = nullptr;
   G.p_next             = nullptr;
@@ -1350,6 +1353,9 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LBOUND:           return G.p_lBound;
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
+    case CK_LOADJOIN:         return G.p_loadJoin;
+    case CK_LOADNETWORK:      return G.p_loadNetwork;
+    case CK_LOADUNICAST:      return G.p_loadUnicast;
     case CK_MANNER:           return G.p_manner;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEXT:             return G.p_next;
@@ -1711,6 +1717,9 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_LBOUND:           return "G.p_lBound"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_LIMIT:            return "G.p_limit"_Stz;
+    case CK_LOADJOIN:         return "G.p_loadJoin"_Stz;
+    case CK_LOADNETWORK:      return "G.p_loadNetwork"_Stz;
+    case CK_LOADUNICAST:      return "G.p_loadUnicast"_Stz;
     case CK_MANNER:           return "G.p_manner"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
@@ -2912,7 +2921,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
     case CK_JOINPERMALL:      *((Card**)&G.p_joinPermAll)      = pCard; break;
-    case CK_JOINPERMSEQ: *((Card**)&G.p_joinPermSeq)      = pCard; break;
+    case CK_JOINPERMSEQ:      *((Card**)&G.p_joinPermSeq)      = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
@@ -2920,6 +2929,9 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard; break;
+    case CK_LOADJOIN:         *((Card**)&G.p_loadJoin)         = pCard; break;
+    case CK_LOADNETWORK:      *((Card**)&G.p_loadNetwork)      = pCard; break;
+    case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
     case CK_MANNER:           *((Card**)&G.p_manner)           = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
