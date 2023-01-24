@@ -67,7 +67,7 @@ by the resulting :ref:`data type <dataTypes>`. An expression can also return a
 ``NULL`` value too. A ``NULL`` value is a special value that effectively
 means "unknown".
 
-A ``NULL`` **value** is not to be confused with an expression's data type. In fact,
+A ``NULL`` *value* is not to be confused with an expression's *data type*. In fact,
 a ``NULL`` value can be evaluated from an expression with any data type.
 
 In many cases, an expression that involves a ``NULL`` operand will often result
@@ -83,8 +83,11 @@ will always be ``NULL`` regardless of the value of ``columnB``.
 Similarly, logical expression operators are also affected by ``NULL`` values
 too, as shown by the truth table below:
 
+.. _truthTableNulls:
+
 .. table:: Truth table for logical operators with ``NULL``\s
    :name: logical-and-truth-table
+   :class: centered
 
    ======= ======= ========= ======== ========= =======
       A       B     A AND B   A OR B   A XOR B   NOT A
@@ -133,7 +136,7 @@ The ``CHAR`` and ``VARCHAR`` string types are enclosed in single quotes like
 this: ``'This is a string'``. If the string requires a single quote inside it
 then it must be escaped by repeating the same character.
 
-For example, the string ``Craig's cat`` would be represented as a literal with:
+For example, the string ``Craig's cat`` would be represented in a literal as:
 ``'Craig''s cat'``.
 
 
@@ -249,8 +252,178 @@ so that RapidsSE does not interpret the value as a string.
 
 Supported Expression Operators
 ``````````````````````````````
+RapidsSE supports a variety of expression operators, with more operators being
+added regularly. These are described in the following sub-categories.
 
-select expressions
+The syntax descriptions use angle brackets (``<`` ``>``) to represent data
+types and separate them from the expression operators. The syntax ``-->``
+is used to indicate the resulting data type that will be returned from the
+operator.
+
+Logical Operators
+:::::::::::::::::
+RapidsSE supports the following logical operators:
+
+* ``AND``
+* ``OR``
+* ``XOR``
+* ``NOT``
+
+``AND``, ``OR`` and ``NOT`` are the basic logical operators.
+
+``XOR`` is a logical exclusive-OR operator. Refer to
+:ref:`this truth table <truthTableNulls>` for details.
+
+The syntax for these operators are as follows:
+
+.. code:: sql
+
+  <boolean> AND <boolean> --> <boolean>
+   <boolean> OR <boolean> --> <boolean>
+  <boolean> XOR <boolean> --> <boolean>
+            NOT <boolean> --> <boolean>
+
+RapidsSE uses :ref:`three-valued logic <nulls>` when it comes to evaluating
+logical expressions that can contain ``NULL``\s. Refer to this
+:ref:`truth table <truthTableNulls>` for details.
+
+
+Mathematical Operators
+::::::::::::::::::::::
+RapidsSE supports the following mathematical operators:
+
+* ``+`` (addition)
+* ``-`` (subtraction)
+* ``*`` (multiplication)
+* ``/`` (division)
+* ``%`` (modulus)
+* ``+`` (unary plus)
+* ``-`` (unary negation)
+
+Apart from the modulus operator, ``%``, all other mathematical operators
+accept any of the numeric types for their operands: ``INTEGER``, ``DECIMAL``
+and ``FLOAT``. Where the operands have differing numeric types, the output type
+is determined by the RapidsSE compiler
+:ref:`type coercion <implicitTypeCoercion>` rules.
+
+If necessary, the compiler will automatically convert the data type of an
+operand so that all operands are of the same type. An ``INTEGER`` may be
+promoted to a ``DECIMAL``, which may be promoted to a ``FLOAT``.
+
+The modulus operator only accepts ``INTEGER`` operands.
+
+The syntax for these operators are as follows:
+
+.. code:: sql
+
+  <numeric_type> + <numeric_type> --> <numeric_type>    (addition)
+  <numeric_type> - <numeric_type> --> <numeric_type>    (subtraction)
+  <numeric_type> * <numeric_type> --> <numeric_type>    (multiplication)
+  <numeric_type> / <numeric_type> --> <numeric_type>    (division)
+       <integer> % <integer>      --> <integer>         (modulus)
+                 + <numeric_type> --> <numeric_type>    (unary plus)
+                 - <numeric_type> --> <numeric_type>    (unary negation)
+
+
+Comparison Operators
+::::::::::::::::::::
+RapidsSE supports the following comparison operators:
+
+* ``=``
+* ``!=``
+* ``<>``
+* ``<``
+* ``<=``
+* ``>``
+* ``>=``
+* ``IS NULL``
+* ``IS NOT NULL``
+* ``BETWEEN``
+
+The ``=`` and ``!=`` operators are equality and inequality operators. The
+``<>`` operator is synonymous with the ``!=`` operator.
+
+The ``<``, ``<=``, ``>`` and ``>=`` are the less-than, less-than-or-equal-to,
+greater-than and greater-than-or-equal-to.
+
+The ``BETWEEN`` operator is semantically equivalent to using the ``>=`` and
+``<=`` operators directly. For example, the following two expressions are
+equivalent:
+
+.. code:: sql
+
+  columnA >= 1 AND columnA <= 10
+  columnA BETWEEN 1 AND 10
+
+
+``IS NULL`` and ``IS NOT NULL`` return a ``BOOLEAN`` true/false value depending
+whether the operand has a ``NULL`` value or not.
+
+The syntax for these operators are as follows:
+
+.. code:: sql
+
+      <datatype> =  <datatype>  --> <boolean>
+      <datatype> != <datatype>  --> <boolean>
+      <datatype> <> <datatype>  --> <boolean>
+      <datatype> <  <datatype>  --> <boolean>
+      <datatype> <= <datatype>  --> <boolean>
+      <datatype> >  <datatype>  --> <boolean>
+      <datatype> >= <datatype>  --> <boolean>
+             <boolean> IS NULL  --> <boolean>
+         <boolean> IS NOT NULL  --> <boolean>
+   <datatype> BETWEEN <datatype> AND <datatype> --> <boolean>
+
+Conditional Operators
+:::::::::::::::::::::
+
+* ``CASE``
+
+
+String Operators
+::::::::::::::::
+
+* ``LIKE``
+* ``SUBSTR``
+
+Date and Time Operators
+:::::::::::::::::::::::
+
+* ``EXTRACT``
+*
+
+Aggregate Operators
+:::::::::::::::::::
+
+* ``COUNT``
+* ``COUNT(*)``
+* ``MIN``
+* ``MAX``
+* ``SUM``
+* ``AVG``
+
+Data Type Casting Operators
+:::::::::::::::::::::::::::
+
+* ``CAST``
+
+Subquery Operators
+::::::::::::::::::
+
+* ``EXISTS``
+* ``IN``
+
+The syntax for these operators are as follows:
+
+.. code:: sql
+
+              EXISTS <subquery> --> <boolean>
+   <datatype> IN     <subquery> --> <boolean>
+
+Keywords
+````````
+RapidsSE does not currently support expression keywords such as ``NOW()``,
+``CURRENT_TIMESTAMP`` or ``CURRENT_USER``.
 
 
 Order of Precedence
@@ -286,28 +459,3 @@ order of precedence, if required.
    ``OR``	                                  Logical OR
    ======================================== ==================================
 
-Logical Operators
-`````````````````
-
-Mathematical Operators
-``````````````````````
-
-Comparison Operators
-````````````````````
-
-Conditional Operators
-`````````````````````
-
-String Operators
-````````````````
-
-Aggregate Operators
-```````````````````
-
-Data Type Casting Operators
-```````````````````````````
-
-Keywords
-````````
-RapidsSE does not currently support expression keywords such as ``NOW()``,
-``CURRENT_TIMESTAMP`` or ``CURRENT_USER``.
