@@ -42,6 +42,7 @@ select * from dummy;
 
 trackMemory;
 
+/joinOrder
 /optimise
 /glean_interactive
 /transliterated

@@ -242,7 +242,7 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
 
   if (bJoinOrder) {
     s256 sJoinOrder;
-    sJoinOrder = "A UNICAST B HASHCAST C, 1000000,100"_Stz;
+    sJoinOrder = "A UNICAST B HASHCAST C, 1000000, 1000"_Stz;
     RASSERT(pInfoSet);
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     sJoinOrder.szStz(),

@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* it_joinOrder.sen -- Define __joinOrder table                               */
+/*============================================================================*/
+
+" it_joinOrder.sen" .verbose
+
+: start::it_joinOrder
+
+  // C_TDEF_JOINORDER
+
+  STD_BOOTFORK_TAG
+  "
+    define table __joinOrder (
+      joinOrder   VARCHAR NOT NULL
+    ) < infoSet > = 1 ;
+  "
+  api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

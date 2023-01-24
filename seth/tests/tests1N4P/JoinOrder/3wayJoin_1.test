@@ -1,0 +1,342 @@
+--------------------------------------------------------------------------------
+-- 3wayJoin_1.test : 3 tables A,B,C where size(A) = size(B) = size(C)
+--------------------------------------------------------------------------------
+trackMemory;
+success
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+success
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+success
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+success
+create index A_COL1  on A (A_COL1  );
+success
+create index A_COL2  on A (A_COL2  );
+success
+
+create index B_COL0  on B (B_COL0  );
+success
+create index B_COL1  on B (B_COL1  );
+success
+create index B_COL2  on B (B_COL2  );
+success
+
+create index B_COL0  on C (C_COL0  );
+success
+create index B_COL1  on C (C_COL1  );
+success
+create index B_COL2  on C (C_COL2  );
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+success
+load B "../DATA/Select/select.csv";
+success
+load C "../DATA/Select/select.csv";
+success
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 1
+//  Partitions = 4
+//  same size
+//  A            ->  B               B           ->  C
+//  cola == ptn  ->  colb == ptn     colb == ptn ->  colc == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:
+                                     Network Total ,  Unicast Total
+  A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+  B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+  B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+  C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
+
+Expected join order:
+  Either A->B-C or B->A->C or B->C->A or C->B->A
+********************************************************************************/
+
+/joinOrder
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A UNICAST B UNICAST C, 0, 1001000')
+
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: (138)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 2
+//  Partitions = 4
+//  same size
+//  A            ->  B               B          ->  C
+//  cola == ptn  ->  colb == ptn     colb = ptn ->  colc != ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:                                    Network Total                , Unicast Total
+  A->B (UNICAST)(0)       ->C (BROADCAST) (4*1000)    Total=(0+(1000*1000))        , 1000
+  B->A (UNICAST)(0)       ->C (BROADCAST) (4*1000)    Total=(0+(1000*1000))        , 1000
+  B->C (BROADCAST)(4*1000)->A (HASHCAST)  (1000*1000) Total=(4*1000 + (1000*1000)) , 0
+  C->B (BROADCAST)(4*1000)->A (HASHCAST)  (1000*1000) Total=(4*1000 + (1000*1000)) , 0
+
+Expected join order:
+  Either A->B-C or B->A->C
+
+********************************************************************************/
+
+/joinOrder
+select count(*)
+  from A
+  join B on A.A_COL0 = B.B_COL0
+  join C on B.B_COL0 = C.C_COL1
+;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A UNICAST B UNICAST C, 1000000, 1000')
+
+select count(*)
+ from A
+  join B on A.A_COL0 = B.B_COL0
+  join C on B.B_COL0 = C.C_COL1
+;
+rows: (61)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 3
+//  Partitions = 4
+//  same size
+//  A            ->  B               B           ->  C
+//  cola == ptn  ->  colb == ptn     colb != ptn ->  colc == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:                                   Network Total               , Unicast Total
+  A->B (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))       , 1000
+  B->A (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))       , 1000
+  B->C (HASHCAST)(1000)   ->A (HASHCAST) (1000*1000) Total=(1000 + (1000*1000))  ,0
+  C->B (BROADCAST)(4*1000)->A (HASHCAST) (1000*1000) Total=(4*1000 + (1000*1000)),0
+
+Expected join order:
+  Either A->B-C or B->A->C
+
+********************************************************************************/
+/weaved select * from A;
+rows: 12
+
+/weaved
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL0
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL0
+ ;
+rows: (73)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 4
+//  Partitions = 4
+//  same size
+//  A            ->  B               B           ->  C
+//  cola == ptn  ->  colb == ptn     colb != ptn ->  colc != ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:
+                                         Network Total                           , Unicast Total
+  A->B (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))       , 1000
+  B->A (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))       , 1000
+  B->C (HASHCAST)(1000)   ->A (HASHCAST) (1000*1000) Total=(1000 + (1000*1000))  ,0
+  C->B (BROADCAST)(4*1000)->A (HASHCAST) (1000*1000) Total=(4*1000 + (1000*1000)),0
+
+********************************************************************************/
+
+/joinOrder
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL1
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+
+select count(*)
+ from A
+  join B on A.A_COL0 = B.B_COL0
+  join C on B.B_COL1 = C.C_COL1
+;
+rows: (65)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 5
+//  Partitions = 4
+//  same size
+//  A            ->  B               B           ->  C
+//  cola == ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:
+                                              Network Total ,    Unicast Total
+    A->B (BROADCAST)(4*1000) ->C (UNICAST)(0) Total=((4*1000)+0) ,  1000*1000
+    B->A (HASHCAST)(1000)    ->C (UNICAST)(0) Total=(1000+0)     ,  1000*1000
+    B->C (UNICAST)(0)        ->A (UNICAST)(0) Total=(0+0)        ,  1000+(1000*1000)
+    C->B (UNICAST)(0)        ->A (UNICAST)(0) Total=(0+0)        ,  1000+(1000*1000)
+
+********************************************************************************/
+/joinOrder
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('B UNICAST C UNICAST A, 0, 1001000')
+
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: (73)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 6
+//  Partitions = 4
+//  same size
+//  A            ->  B               B          ->  C
+//  cola != ptn  ->  colb == ptn     colb = ptn ->  colc == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:                                    Network Total                , Unicast Total
+  A->B (HASHCAST) (1000)  ->C (UNICAST)  (0)          Total=(1000+0)               , 1000*1000
+  B->A (BROADCAST)(4*1000)->C (UNICAST)  (0)          Total=((4*1000)+0)           , 1000*1000
+  B->C (UNICAST)(0)       ->A (BROADCAST)(1000*1000)  Total=(0 + (1000*1000))      , 1000
+  C->B (UNICAST)(0)       ->A (BROADCAST)(1000*1000)  Total=(0 + (1000*1000))      , 1000
+
+********************************************************************************/
+/joinOrder
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A HASHCAST B UNICAST C, 1000, 1000000')
+
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: (61)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 7
+//  Partitions = 4
+//  same size
+//  A            ->  B               B           ->  C
+//  cola != ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:                                   Network Total                 , Unicast Total
+  A->B (BROADCAST)(4*1000)     ->C (UNICAST)  (4*1000) Total=((4*1000)+0)          , 1000*1000
+  B->A (BROADCAST)(4*1000)     ->C (UNICAST)  (4*1000) Total=((4*1000)+0)          , 1000*1000
+  B->C (UNICAST)(0)            ->A (HASHCAST) (1000*1000) Total=(0 + (1000*1000))  , 1000
+  C->B (UNICAST)(0)            ->A (HASHCAST) (1000*1000) Total=(0 + (1000*1000))  , 1000
+********************************************************************************/
+/joinOrder
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A BROADCAST B UNICAST C, 4000, 1000000')
+
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows: (65)
+
+/********************************************************************************
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 8
+//  Partitions = 4
+//  same size
+//  A            ->  B               B           ->  C
+//  cola != ptn  ->  colb != ptn     colb != ptn ->  colc != ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Join Permutations:                                       Network Total                   , Unicast Total
+  A->B (BROADCAST)(4*1000) ->C (BROADCAST) (4*1000*1000) Total=(4*1000 + (4*1000*1000))  , 0
+  B->A (BROADCAST)(4*1000) ->C (BROADCAST) (4*1000*1000) Total=(4*1000 + (4*1000*1000))  , 0
+  B->C (BROADCAST)(4*1000) ->A (BROADCAST) (4*1000*1000) Total=(4*1000 + (4*1000*1000))  , 0
+  C->B (BROADCAST)(4*1000) ->A (BROADCAST) (4*1000*1000) Total=(4*1000 + (4*1000*1000))  , 0
+
+********************************************************************************/
+
+/joinOrder
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL1 = C.C_COL1
+ ;
+rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
+//rows: ('A BROADCAST B UNICAST C, 4004000, 0')
+
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL1 = C.C_COL1
+ ;
+rows: (42)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop table A;
+drop table B;
+drop table C;
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table A;
+  mute
+
+  drop table B;
+  mute
+
+  drop table C;
+  mute
+
+  bye;
+  mute
+}
+
+
