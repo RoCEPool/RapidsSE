@@ -97,6 +97,25 @@
 
   Optimiser[].new
 
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinOrder
+
+  "<joinOrder>" [job].tagSet@ tagSet.hasName if
+
+     // find the <streamDef> table (--joinOrder)
+     <streamDef> op__tableDef_streamSet assert
+
+     // create a new streamDef
+     streamSetTable[] StreamDefLft[].new
+
+     // pipeout the streamDef
+     StreamDefLft[].pipeOut
+
+     // create an infoSet operand where joinOrder will be added
+     streamSetTable[] StreamSet[].new
+
+  then
+
   PipeSpec[] Optimiser[].dissect
 
   Optimiser[].transform if
@@ -181,6 +200,23 @@
   then
 
   //Text[] .
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinOrder
+
+  "<joinOrder>" [job].tagSet@ tagSet.hasName if
+
+    // pipeout join order information (which should be in the StreamSet[]
+    StreamSet[].isNull not assert
+    StreamSet[].pipeout
+
+    // exit as no need to execute the statement
+    Marker[].newLeaveMarker
+    Marker[].pipeout
+    true
+    exit
+  then
 
   [Op] [job].responseOp!
   STD_NORMALFORK_TAG Text[] api::forkChild not if
@@ -279,6 +315,7 @@ cmdSyntax: transliterate :: transliterate ;
 : transliterate_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
+    <streamDef> = __joinOrder
     <opEntry> = "transliterate_op"
   }
 ;

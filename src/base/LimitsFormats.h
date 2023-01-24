@@ -121,6 +121,7 @@ static Stz* C_TDEF_JOBNETDISSECT    = "SE__jobNetDissect"_Stz;
 static Stz* C_TDEF_JOBNETWORK       = "SE__jobNetwork"_Stz;
 static Stz* C_TDEF_JOBOPERANDS      = "SE__jobOperands"_Stz;
 static Stz* C_TDEF_JOBOPERATORS     = "SE__jobOperators"_Stz;
+static Stz* C_TDEF_JOINORDER        = "__joinOrder"_Stz;
 static Stz* C_TDEF_LISTCOLUMNS      = "__listColumns"_Stz;
 static Stz* C_TDEF_LISTCONTENTS     = "__listContents"_Stz;
 static Stz* C_TDEF_LISTFOLDER       = "__listFolder"_Stz;

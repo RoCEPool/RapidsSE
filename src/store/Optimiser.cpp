@@ -9,6 +9,7 @@
 
 #include "SP_PipeSpec.hpp"
 #include "Job.hpp"
+#include "InfoSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -226,22 +227,35 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bTransform(eEC* peErrorCode)
+bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
-  bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+
+  bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
 
   Board* pBoard = m_pBench->pHead();
 
   bool bClean = m_pTransformer->bTransform(peErrorCode);
 
-   if (bClean && bInteractive) {
-    m_pWeaver->vWeaveOptStmt(pBoard);
-    vTrace("%s\n"_Stz,m_pWeaver->szOptStmt());
-    Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
+  if (bJoinOrder) {
+    s256 sJoinOrder;
+    sJoinOrder = "A UNICAST B HASHCAST C, 1000000,100"_Stz;
+    RASSERT(pInfoSet);
+    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    sJoinOrder.szStz(),
+                                    C_VARGS_END);
+  }
+  else {
+
+    bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+    if (bClean && bInteractive) {
+      m_pWeaver->vWeaveOptStmt(pBoard);
+      vTrace("%s\n"_Stz, m_pWeaver->szOptStmt());
+      Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
+    }
   }
 
    return bClean;

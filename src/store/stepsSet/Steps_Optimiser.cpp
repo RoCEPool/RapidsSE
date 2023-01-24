@@ -104,13 +104,26 @@ void Step::vOptimiserTransform(void) {
   ENTRY();
 
   eEC eErrorCode;
-  b8 bResult = m_pLogicUnit->m_xpOptimiser->bTransform(&eErrorCode);
+  b8 bResult;
+  InfoSet *pInfoSet = nullptr;
+
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+  bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
+
+  if (bJoinOrder) {
+    // get the streamSet for joinOrder
+    pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
+  }
+
+  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(&eErrorCode, pInfoSet);
 
   // push error code
   if (!bResult)
     m_pDataStack->vPushInt((i8)eErrorCode);
 
-    m_pDataStack->vPushBol(bResult);
+  m_pDataStack->vPushBol(bResult);
+
   EXIT();
 }
 
