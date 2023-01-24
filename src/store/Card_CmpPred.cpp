@@ -212,6 +212,56 @@ Card_Term* Card_CmpPred::pExtractParamTerm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the first table                                                        */
+/*----------------------------------------------------------------------------*/
+char Card_CmpPred::cGetTable_a(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_this_a = _pCard_Term(pGetChild(0));
+  char cTableSyn_this_a = p_term_this_a->szValue()->azChar()[1];
+
+  return cTableSyn_this_a;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the second table                                                       */
+/*----------------------------------------------------------------------------*/
+char Card_CmpPred::cGetTable_b(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_this_b = _pCard_Term(pGetChild(1));
+  char cTableSyn_this_b = p_term_this_b->szValue()->azChar()[1];
+
+  return cTableSyn_this_b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the first term                                                         */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_CmpPred::pGetTerm_0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_0 = _pCard_Term( pGetChild(0) );
+
+  return p_term_0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the second term                                                        */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_CmpPred::pGetTerm_1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_1 = _pCard_Term( pGetChild(1) );
+
+  return p_term_1;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
@@ -434,6 +484,24 @@ bool Card_CmpPred::bMaybeJoinPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the other table referenced by this join/cmpPred given a first table    */
+/*----------------------------------------------------------------------------*/
+char Card_CmpPred::cOtherTable(char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
+  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
+  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+
+  if (cTableSyn_this_0 == cTblSyn)
+    return cTableSyn_this_1 == cTblSyn;
+  else
+    return cTableSyn_this_0 == cTblSyn;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
@@ -498,9 +566,9 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* does this cmpPred reference given table?                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bUsesTable(char cTableSyn)
+bool Card_CmpPred::bUsesTable(char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -509,12 +577,24 @@ bool Card_CmpPred::bUsesTable(char cTableSyn)
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
   char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
 
-  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
+  if (cTableSyn_this_0 == cTblSyn || cTableSyn_this_1 == cTblSyn)
     return true;
 
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* does this cmpPred reference given both tables?                             */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bUsesTables(char cTblSyn_a, char cTblSyn_b)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bUsesTable(cTblSyn_a) && bUsesTable(cTblSyn_b))
+    return true;
+
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */

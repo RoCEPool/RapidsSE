@@ -156,11 +156,10 @@ void Card_JoinOrdering::vEstimateNetwork(Card_Deck* pDeck)
     p_permutation->Y_vSet(P_Network, nNetwork);
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPick(Card_PtndJoinSet* p_ptndJoinSet)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll)
 {
   _static_
 

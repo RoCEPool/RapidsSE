@@ -20,6 +20,8 @@ namespace STORE
 
     void vConcat(Card_BoolCalc* p_boolCalc);
 
+    Card_CmpPred* pFindCmpPred(char cTblSyn);
+
   };
 
   Card_JoinPredList* _pCard_JoinPredList(void* aAddr);

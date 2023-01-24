@@ -26,6 +26,10 @@ namespace STORE
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
     Card_Term* pExtractArgTerm(void);
     Card_Term* pExtractParamTerm(void);
+    char cGetTable_a(void);
+    char cGetTable_b(void);
+    Card_Term* pGetTerm_0(void);
+    Card_Term* pGetTerm_1(void);
     bool bIsEq(Card_CmpPred* p_cmpPred_arg);
     bool bIsEqOp(void);
     bool bIsJoinPredBetween(char cTblSyn_l, char cTblSyn_r);
@@ -33,9 +37,11 @@ namespace STORE
     bool bMaybeBounds_v2(Card_Table* p_table, Card_Index* p_index, bool bParamAllowedInBounds);
     bool bMaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
     bool bMaybeJoinPred(void);
+    char cOtherTable(char cTblSyn);
     bool bOverlapsWith(Card_CmpPred* p_cmpPred_arg);
     bool bSubsetOf_bounds(Card_Bounds* p_bounds);
-    bool bUsesTable(char cTableSyn);
+    bool bUsesTable(char cTblSyn);
+    bool bUsesTables(char cTblSyn_a, char cTblSyn_b);
 
   };
 

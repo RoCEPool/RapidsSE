@@ -19,9 +19,6 @@ namespace STORE
     static Card_PtndJoinSet* pExtract(Card_CoPtnJoinList* p_coPtnJoinList,
                                       Card_CrossPtnJoinList* p_crossPtnJoinList);
 
-    static Card_PtndJoinSet* pPermute(Card_TableList* p_tableList,
-                                       Card_JoinPredList* p_joinPredList);
-
     void vPermute(Card_Deck* pDeck);
   };
 

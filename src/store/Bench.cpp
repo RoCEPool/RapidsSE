@@ -3262,19 +3262,17 @@ void Bench::vTransform_JoinOrdering_v2(void)
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
   m_pCI->vPrintBoard(__LINE__);
 
-  // 3) Extract coPtnPredList from joinPredList
-//  m_pCI->G.p_coPtnPredList = Card_CoPtnPredList::pExtract(m_pCI->G.p_joinPredList,m_pCI->G.p_tableList);
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
-//  m_pCI->vPrintBoard(__LINE__);
+  // 3) Compute all possible join permutations
+  Card_JoinPermAll* p_joinPermAll =
+      Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
-  Card_PtndJoinSet* p_ptndJoinSet =
-      Card_PtndJoinSet::pPermute(m_pCI->G.p_tableList,m_pCI->G.p_joinPredList);
-
+  // 4) Pick final join ordering
   Card_JoinOrdering* p_joinOrdering =
-      Card_JoinOrdering::pPick(p_ptndJoinSet);
+      Card_JoinOrdering::pPick(p_joinPermAll);
 
-  DELETE_CARD(p_ptndJoinSet);
+  DELETE_CARD(p_joinPermAll);
   DELETE_CARD(p_joinOrdering);
+
 
   pBoard = m_pCI->G.pBoard;
   m_pCI->G_vPopIter();
