@@ -76,8 +76,14 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
     Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
     Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
 
+    Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
+    Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
+    Card_CmpPred*  p_cmpPred    = xCI.G.p_joinNext->pSub_cmpPred();
+
+    eXK eCast = p_cmpPred->eCastKind(p_tablePtn_l,p_tablePtn_r);
+    p_cast->vValue(aXK[eCast]);
+
     p_loadJoin->vValue((i8)0);
-    p_cast->vValue(aXK[XK_NONE]);
     p_loadNetwork->vValue((i8)0);
     p_loadUnicast->vValue((i8)0);
 
