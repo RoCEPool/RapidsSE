@@ -76,9 +76,10 @@
 #include "Card_IndexNm.hpp"
 #include "Card_IndexScan.hpp"
 
+#include "Card_JoinHead.hpp"
+#include "Card_JoinNext.hpp"
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrdering.hpp"
-#include "Card_JoinHead.hpp"
 #include "Card_JoinPermAll.hpp"
 #include "Card_JoinPermOne.hpp"
 #include "Card_JoinPredList.hpp"

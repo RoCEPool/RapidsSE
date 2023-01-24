@@ -71,6 +71,7 @@ enum eCK // card kind
   /* */ CK_INDEXSCAN,
 
   /* */ CK_JOINHEAD,
+  /* */ CK_JOINNEXT,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPERMALL,
@@ -246,6 +247,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
   /* */ "CK_JOINHEAD"_Stz,     // CK_JOINHEAD
+  /* */ "CK_JOINNEXT"_Stz,     // CK_JOINNEXT
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
@@ -420,6 +422,7 @@ static Stz* aCK_short[]
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
   /* */ "joinHead"_Stz,        // CK_JOINHEAD
+  /* */ "joinNext"_Stz,        // CK_JOINNEXT
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
@@ -594,6 +597,7 @@ static Stz* aCK_notation[]
     /* */ "iS"_Stz,           // CK_INDEXSCAN
 
     /* */ "jH"_Stz,           // CK_JOINHEAD
+    /* */ "jN"_Stz,           // CK_JOINNEXT
     /* */ "jO"_Stz,           // CK_JOINORDER
     /* */ "jOG"_Stz,          // CK_JOINORDERING
     /* */ "jPA"_Stz,          // CK_JOINPERMALL
