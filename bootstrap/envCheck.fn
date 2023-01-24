@@ -78,6 +78,14 @@ function validateInstallationEnvironment() {
   # and that it is writable.
   validateInstallDirIsWritable
 
+  # Check that the storage dirs can be created (if not already) on each node,
+  # and that it is writable.
+  validateStorageDirsAreWritable
+
+  # Check that the storage dirs have enough space based on the shared memory size
+  # for unload operations.
+  validateStorageDirsHaveSpace
+
   # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
 
   # Check that node names don't contain spaces or special characters and are unique.
@@ -235,6 +243,12 @@ function validateNodeAdditionEnvironment() {
 
   # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
 
+  # Check that the storage dir paths can be created and are writable.
+  validateStorageDirsIsWritable "${nodeNames[@]}"
+
+  # Check that the storage dir paths have space.
+  validateStorageDirsHaveSpace "${nodeNames[@]}"
+
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
 
@@ -276,7 +290,7 @@ function validateHostsAreResolvable() {
 
     # Check if the hostname is an IP address
     local re="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-  
+
     if [[ "${host}" =~ ${re} ]]; then
       # We've got an IPv4 address
       # Check the quads
@@ -301,8 +315,8 @@ function validateHostsAreResolvable() {
       # This is a valid IPv6 address
       continue
     fi
- 
-   
+
+
     # We must have a hostname to resolve. There are a few different tools that
     # can be used to resolve it, depending on what is installed.
 
@@ -313,7 +327,7 @@ function validateHostsAreResolvable() {
       if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
       fi
-  
+
       # Host was resolved.
       continue
 
@@ -332,7 +346,7 @@ function validateHostsAreResolvable() {
 
     # No dig, then try nslookup
     elif command -v nslookup &>/dev/null; then
-      
+
       output="$(nslookup "${host}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
       if [ -z "${output:-}" ]; then
         errorExit "Hostname \"${host}\" is not resolvable."
@@ -589,7 +603,7 @@ function validateHostsReachableBySsh() {
   fi
 
   local nodeName
-  local host 
+  local host
 
   declare -a sshArgs=()
   declare -a jobArray=()
@@ -608,7 +622,7 @@ function validateHostsReachableBySsh() {
         >&2 echo "${output}"
         errorExit "Node ${nodeName} [host: ${host}] cannot be reached by password-less SSH."
       fi
-  
+
       true
     ) &
 
@@ -805,7 +819,7 @@ function validateInternalPortNotInUse() {
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
     local errMsg="The internal port specified for RapidsSE is already in use on the following nodes:"
-    
+
     for nodeName in "${failedNodes[@]}"
     do
       host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
@@ -861,7 +875,7 @@ function validateClientPortNotInUse() {
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
     local errMsg="The client port specified for RapidsSE is already in use on the following nodes:"
-    
+
     for nodeName in "${failedNodes[@]}"
     do
       host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
@@ -873,7 +887,7 @@ function validateClientPortNotInUse() {
   fi
 }
 
-  
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the shared memory segment does not exceed the size of shared
 ## memory on any node.
@@ -936,7 +950,7 @@ function validateShmAgainstRAM() {
     ram="${NODE_TOTAL_MEM[${nodeName}]}"
 
     if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ] &&
-       [ "$(echo "${nodeShm} > (${ram} - 10)" | bc -l)" -eq 1 ]; then  
+       [ "$(echo "${nodeShm} > (${ram} - 10)" | bc -l)" -eq 1 ]; then
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
     fi
   done
@@ -1079,7 +1093,231 @@ function validateThreads() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validates that the installation directory on each node can be created 
+## Validates that the storage disk directories on each node can be created
+## and is writable. Exits out if not.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateStorageDirsAreWritable() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local diskPaths
+  local remoteCmd
+  local response
+
+  declare -a sshCmd=()
+  declare -A errors
+
+  for nodeName in "${nodeNames[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    diskPaths="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DISK_KEY}")"
+
+    # diskPaths above is a string. Let's turn it into an array based on : delimiter
+    IFS=: read -r -d '' -a diskpathsArray < <(printf '%s:\0' "$diskPaths")
+
+    for dirPath in "${diskpathsArray[@]}"
+    do
+      remoteCmd="$(cat <<-EOF
+if [ -d "${dirPath}" ]; then
+  if [ ! -w "${dirPath}" ]; then
+    echo "Storage disk directory exists (${dirPath}) but is not writable.";
+    false;
+    exit;
+  fi
+else
+  isWritable=0
+  dname="${dirPath}"
+
+  while [ "\${dname}" != "/"  ]; do
+    if [[ -d "\${dname}" && -w "\${dname}" ]]; then
+      isWritable=1
+      break
+    fi
+
+    if [ "\$(dirname "\${dname}")" = "/" ]; then
+      break;
+    fi
+
+    dname="\$(dirname "\${dname}")"
+  done
+
+  if [ "\${isWritable}" -ne 1 ]; then
+    echo "Storage disk directory (${dirPath}) cannot be created because the parent directory (\${dname}) is not writable.";
+    false;
+    exit;
+  fi
+fi
+true;
+EOF
+      )"
+      sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'" )
+
+      debugPrint "About to validate the storage disk directory on node ${nodeName} with the command: ${sshCmd[*]}"
+
+      if ! response="$("${sshCmd[@]}")"; then
+        debugPrint "Storage disk directory validation failed: ${response}"
+
+        if [ -z "${response:-}" ]; then
+          response="<no error returned>"
+        fi
+
+        # Save the response and the node name
+        errors["${nodeName}"]="${response}"
+      fi
+    done
+  done
+
+  ## Be careful with checking associative arrays. They may be declared but
+  ## can be unset. And with set -b (unbound variables) this can cause issues.
+  ## Reference here:
+  ## https://stackoverflow.com/questions/26925905/in-bash-test-if-associative-array-is-declared
+  ## Also note that the "-v" operator seems to work differently on CentOS 7 compared
+  ## to Ubuntu 20 when applied to arrays. So we are using the parameter substitution
+  ## when the variable is null trick below to avoid unbound variable problems with arrays.
+
+  if [ "${errors[*]:-x}" != "x" ] && [ "${#errors[@]}" -gt 0 ]; then
+    local errMsg="Validation of the storage disk directory failed:"
+
+    for nodeName in "${!errors[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
+    done
+
+    echo ""
+    errorExit "${errMsg}"
+  fi
+
+  debugPrint "Successfully validated that the storage disk directories are writable."
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the storage disk directories on each node have space for
+## unload operations. If the directory does not exist, check the space of
+## it's parent directory, and attempt to create the directory.
+## Exits out if space is not available or if there is a problem while
+## creating the directory.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateStorageDirsHaveSpace() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local diskPaths
+  local remoteCmd
+  local response
+  local mem
+
+  declare -a sshCmd=()
+  declare -A errors
+
+  for nodeName in "${nodeNames[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    diskPaths="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DISK_KEY}")"
+    mem="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
+
+    # diskPaths above is a string. Let's turn it into an array based on : delimiter
+    IFS=: read -r -d '' -a diskpathsArray < <(printf '%s:\0' "$diskPaths")
+
+    numDisks=${#diskpathsArray[@]}
+
+    minSpacePerDisk=$((mem*1024/numDisks))
+
+    for dirPath in "${diskpathsArray[@]}"
+    do
+      remoteCmd="$(cat <<-EOF
+if [ -d "${dirPath}" ]; then
+  maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
+  if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
+    echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+    false;
+    exit;
+  fi
+else
+  dname="$(dirname "${dirPath}")"
+  if [ -d "\${dname}" ]; then
+    mkdir -p "${dirPath}" || errorExit "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
+    maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
+    if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
+      echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+      false;
+      exit;
+    fi
+  else
+    echo "Storage disk parent directory (\${dname}) does not exist.";
+    false;
+    exit;
+  fi
+fi
+true;
+EOF
+      )"
+      # test ssh command locally, issue could be single quotes in sshCmd
+      sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'" )
+
+      debugPrint "About to validate the storage disk directory space on node ${nodeName} with the command: ${sshCmd[*]}"
+
+      if ! response="$("${sshCmd[@]}")"; then
+        debugPrint "Storage disk directory space validation failed: ${response}"
+
+        if [ -z "${response:-}" ]; then
+          response="<no error returned>"
+        fi
+
+        # Save the response and the node name
+        errors["${nodeName}"]="${response}"
+      fi
+    done
+  done
+
+  ## Be careful with checking associative arrays. They may be declared but
+  ## can be unset. And with set -b (unbound variables) this can cause issues.
+  ## Reference here:
+  ## https://stackoverflow.com/questions/26925905/in-bash-test-if-associative-array-is-declared
+  ## Also note that the "-v" operator seems to work differently on CentOS 7 compared
+  ## to Ubuntu 20 when applied to arrays. So we are using the parameter substitution
+  ## when the variable is null trick below to avoid unbound variable problems with arrays.
+
+  if [ "${errors[*]:-x}" != "x" ] && [ "${#errors[@]}" -gt 0 ]; then
+    local errMsg="Validation of the storage disk directory space failed:"
+
+    for nodeName in "${!errors[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
+    done
+
+    echo ""
+    errorExit "${errMsg}"
+  fi
+
+  debugPrint "Successfully validated that the storage disk directories have enough space for unload operations."
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the installation directory on each node can be created
 ## and is writable. Exits out if not.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
@@ -1094,12 +1332,12 @@ function validateInstallDirIsWritable() {
     nodeNames=( "$@" )
   fi
 
-  local nodeName 
+  local nodeName
   local host
   local dir
   local remoteCmd
   local response
-  
+
   declare -a sshCmd=()
   declare -A errors
 
@@ -1110,7 +1348,7 @@ function validateInstallDirIsWritable() {
     dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     remoteCmd="$(cat <<-EOF
-			if [ -d "${dir}" ]; then 
+			if [ -d "${dir}" ]; then
 				if [ ! -w "${dir}" ]; then
 					echo "Installation directory exists (${dir}) but is not writable.";
 					false;
@@ -1172,7 +1410,7 @@ function validateInstallDirIsWritable() {
 
     for nodeName in "${!errors[@]}"
     do
-      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")" 
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
       errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
     done
 
@@ -1202,7 +1440,7 @@ function validateNodeNames() {
   # Test for uniqueness of node names.
   declare -a dups=()
   readarray -t dups < <(printf "%s\n" "${NODE_LIST[@]}" | sort | uniq -d | uniq -u)
-  
+
   if [ "${#dups[@]}" -gt 0 ]; then
     errorExit "Cannot have duplicate node names: ${dups[*]}"
   fi
@@ -1825,7 +2063,7 @@ function validateFirewallSequential() {
     exit 1
   fi
 
-  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then 
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then
     echo -e "\nInstallation can continue with the above warnings, but they may prevent RapidsSE from starting correctly."
   fi
 
@@ -1951,7 +2189,7 @@ function validateFirewallParallel() {
   if [ -z "${sequentialServers[*]:-}" ]; then
     sequentialServers=()
   fi
-  
+
   # Launch all of the unique server name UDP tests
   for nodeName in "${nodeNames[@]}"; do
 

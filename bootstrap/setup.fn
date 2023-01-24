@@ -1209,8 +1209,8 @@ function askInstallDir() {
     nodeNames=( "$@" )
   fi
 
-  # Set the devault root disk path for unload/reload as the install dir
-  NODE_CFG_DEFAULT_DISK_PATH="${line}"
+  # Set the default root disk path for unload/reload as the install dir
+  NODE_CFG_DEFAULT_DISK_PATH="${line}/data/"
 
   # Set the value for all relevant nodes
   specificNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}" "${nodeNames[@]}"
@@ -1473,102 +1473,88 @@ function askDiskPaths() {
   fi
 
   echo ""
-  echo "Hard Disk Paths"
+  echo "Storage Paths"
   echo "--------------------"
   echo ""
-  echo "RapidsSE requires the paths to the various hard disks mounted on each node"
-  echo "that will be used for unload and reload operations."
+  echo "RapidsSE needs to know where in the filesystem it can read and write data."
+  echo "This will currently be used during system unload and reload operations."
   echo ""
-  echo "If no paths are given, unload and reload will not be available."
+  echo "For best performance, multiple paths can be entered where those paths correspond"
+  echo "to separate mounted disks. All paths that are entered will be applied to all"
+  echo "nodes in the cluster."
   echo ""
+
+  # Get the first path
+  local line
+  local re="^( |[[:space:]])+"
+  declare -a diskroots=()
+
+  while true
+  do
+    echo -n "Enter a first filesystem path and press return [default: ${NODE_CFG_DEFAULT_DISK_PATH}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line:-}" ]; then
+      # Accepting the default value
+      diskroots+=("${NODE_CFG_DEFAULT_DISK_PATH}")
+      break
+    fi
+
+    if [[ ${line} =~ ${re} ]]; then
+        echo "Invalid input: Path cannot start with whitespace."
+      continue
+    fi
+
+    if [[ "${line:0:1}" != "/" ]]; then
+      echo "Invalid input: Path cannot be a relative path."
+      continue
+    fi
+
+    # Paths cannot contain quotes - it's just too difficult for all involved
+    if [[ "${line}" =~ [\'\"] ]]; then
+      echo "Invalid input: Path cannot contain single or double quotes."
+      continue
+    fi
+
+    diskroots+=("${line}")
+    break
+  done
+
+  while true
+  do
+    echo -n "Enter another disk path, or enter an empty line to finish : "
+    IFS=$'\n' read -r line
+
+    if [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: Path cannot start with whitespace."
+      continue
+    fi
+
+    if [ -z "${line:-}" ]; then
+      break
+    fi
+
+    if [[ "${line:0:1}" != "/" ]]; then
+      echo "Invalid input: Path cannot be a relative path."
+      continue
+    fi
+
+    # Paths cannot contain quotes - it's just too difficult for all involved
+    if [[ "${line}" =~ [\'\"] ]]; then
+      echo "Invalid input: Path cannot contain single or double quotes."
+      continue
+    fi
+
+    diskroots+=("${line}")
+  done
+
+  if [ ${DEBUG} -eq 1 ]; then
+    debugPrint "\nGot the following disk paths:"
+    printIndentArray 2 "${diskroots[@]}"
+  fi
 
   for nodeName in "${nodeNames[@]}"
   do
-    # Get the first path
-    local line
-    local re="^( |[[:space:]])+"
-    declare -a diskroots=()
-    local defValue=0
-
-    while true
-    do
-      echo -n "Enter a disk path for ${nodeName} and press return [default: ${NODE_CFG_DEFAULT_DISK_PATH}] : "
-      IFS=$'\n' read -r line
-
-      if [ -z "${line:-}" ]; then
-        # Accepting the default value
-        defValue=1
-        diskroots+=("${NODE_CFG_DEFAULT_DISK_PATH}")
-        break
-      fi
-
-      if [[ ${line} =~ ${re} ]]; then
-        echo "Invalid input: Path cannot start with whitespace."
-        continue
-      fi
-
-      if [[ "${line:0:1}" != "/" ]]; then
-        echo "Invalid input: Path cannot be a relative path."
-        continue
-      fi
-
-      # Paths cannot contain quotes - it's just too difficult for all involved
-      if [[ "${line}" =~ [\'\"] ]]; then
-        echo "Invalid input: Path cannot contain single or double quotes."
-        continue
-      fi
-
-      # Warn against whitespace in directory path
-      if [[ "${line}" = *[[:space:]]* ]]; then
-        echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
-      fi
-
-      diskroots+=("${line}")
-      break
-    done
-
-    while true
-    do
-      if [ ${defValue} -eq 1 ]; then
-        break
-      fi
-
-      echo -n "Enter another disk path for ${nodeName}, or enter an empty line to finish : "
-      IFS=$'\n' read -r line
-
-      if [[ ${line} =~ ${re} ]]; then
-        echo "Invalid input: Path cannot start with whitespace."
-        continue
-      fi
-
-      if [ -z "${line:-}" ]; then
-        break
-      fi
-
-      if [[ "${line:0:1}" != "/" ]]; then
-        echo "Invalid input: Path cannot be a relative path."
-        continue
-      fi
-
-      # Paths cannot contain quotes - it's just too difficult for all involved
-      if [[ "${line}" =~ [\'\"] ]]; then
-        echo "Invalid input: Path cannot contain single or double quotes."
-        continue
-      fi
-
-      # Warn against whitespace in directory path
-      if [[ "${line}" = *[[:space:]]* ]]; then
-        echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
-      fi
-
-      diskroots+=("${line}")
-    done
-
-    if [ ${DEBUG} -eq 1 ]; then
-      debugPrint "\nGot the following disk paths for ${nodeName}:"
-      printIndentArray 2 "${diskroots[@]}"
-    fi
-
     singleNodeCfgsSetValues "${NODE_CFG_DISK_KEY}" "${nodeName}" "${diskroots[@]}"
   done
 }
@@ -2129,7 +2115,7 @@ function doNodeInstall() {
   local installDir
   local hostname
   local cmd
-  local -a diskPaths
+  local diskPaths
 
   installDir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
   hostname="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
@@ -2185,20 +2171,44 @@ function doNodeInstall() {
     mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   fi
 
-  # diskPaths above is a string. Let's turn it into an array based on spaces.
-  declare -a diskpathsArray=()
-  IFS=' ' read -r -a diskpathsArray <<< "${diskPaths}"
+  # diskPaths above is a string. Let's turn it into an array based on : delimiter
+  IFS=: read -r -d '' -a diskpathsArray < <(printf '%s:\0' "$diskPaths")
 
   # If the disk paths are given, check if they exist and are writable.
   if [ ${#diskpathsArray[@]} -ne 0 ]; then
     for path in "${diskpathsArray[@]}"
     do
-      if [ ! -d "${path}" ]; then
-        errorExit "Disk root path (${path}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] does not exist."
-      fi
+      if [ -d "${path}" ]; then
+        if [ ! -w "${path}" ]; then
+          errorExit "The storage disk directory (${path}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+        fi
+      else
 
-      if [ ! -w "${path}" ]; then
-        errorExit "The disk root directory (${path}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+        # If the storage disk directory does not exist then ensure that the parent
+        # directory is writable. May need to recurse back for this.
+        # Then create the storage disk directory.
+
+        local isWritable
+        isWritable=0
+
+        dname="${path}"
+
+        while [ "${dname}" != "/"  ]; do
+          if [[ -d "${dname}" && -w "${dname}" ]]; then
+            isWritable=1
+            break
+          fi
+
+          dname="$(dirname "${dname}")"
+        done
+
+        if [ "${isWritable}" -ne 1 ]; then
+          errorExit "Parent path of the storage disk directory (${dname}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+        fi
+
+        debugPrint "About to create the storage disk directory: ${hostname}:${path}"
+
+        mkdir -p "${path}" || errorExit "Could not create the storage disk directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${path}"
       fi
     done
   fi
