@@ -54,7 +54,6 @@ Card_JoinPermOne::~Card_JoinPermOne(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
                                         Card_JoinPredList* p_joinPredList,
-                                        Card_JoinPermAll*  p_joinPermAll,
                                         PermGen*           pPermGen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

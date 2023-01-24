@@ -63,15 +63,13 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 
   while (pPermGen->bNextPermutation()) {
 
-    Card_JoinPermOne* p_joinPermList = new Card_JoinPermOne;
-    p_joinPermAll->vAppendMain(p_joinPermList);
-    p_joinPermList->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
+    Card_JoinPermOne* p_joinPermOne = new Card_JoinPermOne;
+    p_joinPermOne->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
+    p_joinPermAll->vAppendMain(p_joinPermOne);
 
-    p_joinPermList->vOnePermutedJoin(p_tableList,
-                                     p_joinPredList,
-                                     p_joinPermAll,
-                                     pPermGen);
-
+    p_joinPermOne->vOnePermutedJoin(p_tableList,
+                                    p_joinPredList,
+                                    pPermGen);
   }
 
   delete pPermGen;

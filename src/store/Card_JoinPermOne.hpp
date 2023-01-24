@@ -20,7 +20,6 @@ namespace STORE
 
    void vOnePermutedJoin(Card_TableList*   p_tableList,
                          Card_JoinPredList* p_joinPredList,
-                         Card_JoinPermAll*  p_joinPermAll,
                          PermGen*           pPermGen);
 
      bool bSupportedJoin(char cTblSyn_prior);
