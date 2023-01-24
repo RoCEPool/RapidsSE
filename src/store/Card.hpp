@@ -381,6 +381,7 @@ namespace STORE
     bool bIsCommaSeparator(void);
     bool bIsConjunction(void);
     bool bIsPRED(void);
+    bool bIsValue(char cValue);
     bool bIsValue(Stz* szValue);
 
     Card* pLastPrintParent(void);

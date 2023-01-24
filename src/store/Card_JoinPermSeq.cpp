@@ -66,76 +66,81 @@ void Card_JoinPermSeq::vOnePermutedJoin(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iItem(i_Item);
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn = p_table->cValue();
+    char cTblSyn_ith = p_table->cValue();
 
     if (i_Item)
       vTrace(", "_Stz,i_Table);
-    vTrace("%c"_Stz,cTblSyn);
+    vTrace("%c"_Stz, cTblSyn_ith);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (0 == nChildCards()) {
+      //+ table is head/first of join sequence
       Card_JoinHead *p_joinHead = new Card_JoinHead;
-      p_joinHead->vValue(cTblSyn);
+      p_joinHead->vValue(cTblSyn_ith);
       vAppend(p_joinHead);
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // table is next/subsequent of join sequence
+
     Card_JoinNext *p_joinNext = new Card_JoinNext;
+    p_joinNext->vValue(cTblSyn_ith);
+    vAppend(p_joinNext);
 
-    // get the join pred for this table
-    Card_CmpPred* p_cmpPred_join = p_joinPredList->pFindCmpPred(cTblSyn);
-    Card_CmpPred* p_cmpPred_perm = _pCard_CmpPred(p_cmpPred_join->pDupCardAndSubCards());
-    p_joinNext->vAppend(p_cmpPred_perm);
 
-    char cTblSyn_prior = p_cmpPred_join->cOtherTable(cTblSyn);
-    if (! bSupportedJoin(cTblSyn_prior)) {
-      p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
-      Y_vSet(P_Invalid);
-      break;
+    bool bSupported = false;
+
+    // test each join predicate which uses the ith table to see if a join
+    // can be supported at this point in the sequence
+    CardIter xCI(p_joinPredList);
+    while (xCI.G_bEachMain(CK_CMPPRED)) {
+      if (! xCI.G.p_cmpPred->bUsesTable(cTblSyn_ith))
+        continue;
+
+      // have a join cmpPred which uses the ith table
+
+      // get the other table in the cmpPred
+      char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
+
+
+      if (bHasKnownJoin(cTblSyn_other)) {
+        bSupported = true;
+        p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardAndSubCards());
+        break;
+      }
     }
 
+    if (bSupported)
+      //+ join of ith table is possible at this point
+      continue;
+
+    // join of ith table is not possible at this point
+    p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+    Y_vSet(P_Invalid);
+    break;
   }
 
   vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this permutation support join to given table at this point?           */
+/* does this join sequence already have a join with given table at this point?*/
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bSupportedJoin(char cTblSyn_prior)
+bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! nChildCards())
-    return true;
-
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_JOINHEAD)) {
-    if (xCI.G.p_joinHead->cValue() == cTblSyn_prior)
+  while (xCI.G_bEachMain()) {
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    if (xCI.G.p_MainCard->bIsValue(cTblSyn))
       return true;
   }
 
   return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* does this permutation support join to given table at this point?           */
-/*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bSupportedJoin_v2(char cTblSyn_a, char cTblSyn_b)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-//  if (! nChildCards())
-//    return true;
-//
-//  CardIter xCI(this);
-//  while (xCI.G_bEachMain(CK_JOINHEAD)) {
-//    if (xCI.G.p_joinHead->cValue() == cTblSyn_prior)
-//      return true;
-//  }
-
-  return false;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

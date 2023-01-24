@@ -1308,6 +1308,19 @@ bool Card::bIsPRED(void)
 /*----------------------------------------------------------------------------*/
 /* does this card have same value as argument?                                */
 /*----------------------------------------------------------------------------*/
+bool Card::bIsValue(char cValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (this->cValue() == cValue)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this card have same value as argument?                                */
+/*----------------------------------------------------------------------------*/
 bool Card::bIsValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

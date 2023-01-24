@@ -426,7 +426,7 @@ static Stz* aCK_short[]
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
-  /* */ "joinPermOne"_Stz,     // CK_JOINPERMSEQ
+  /* */ "joinPermSeq"_Stz,     // CK_JOINPERMSEQ
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "key"_Stz,             // CK_KEY
