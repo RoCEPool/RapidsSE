@@ -496,9 +496,9 @@ char Card_CmpPred::cOtherTable(char cTblSyn)
   char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
 
   if (cTableSyn_this_0 == cTblSyn)
-    return cTableSyn_this_1 == cTblSyn;
+    return cTableSyn_this_1;
   else
-    return cTableSyn_this_0 == cTblSyn;
+    return cTableSyn_this_0;
 }
 
 /*----------------------------------------------------------------------------*/

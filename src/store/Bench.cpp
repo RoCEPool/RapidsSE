@@ -3266,6 +3266,17 @@ void Bench::vTransform_JoinOrdering_v2(void)
   Card_JoinPermAll* p_joinPermAll =
       Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
+  CardIter xCI(p_joinPermAll);
+  while (xCI.G_bEachMain())
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermOne->pDupCardAndSubCards());
+  m_pCI->vPrintBoard(__LINE__);
+
+  p_joinPermAll->vRemoveInvalid();
+  xCI.vRestart();
+  while (xCI.G_bEachMain())
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermOne->pDupCardAndSubCards());
+  m_pCI->vPrintBoard(__LINE__);
+
   // 4) Pick final join ordering
   Card_JoinOrdering* p_joinOrdering =
       Card_JoinOrdering::pPick(p_joinPermAll);
