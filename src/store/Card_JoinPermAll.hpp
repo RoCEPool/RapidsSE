@@ -19,6 +19,8 @@ namespace STORE
     static Card_JoinPermAll* pAllPermutedJoins(Card_TableList* p_tableList,
                                                Card_JoinPredList* p_joinPredList);
 
+    void vRemoveInvalid(void);
+
    };
 
   Card_JoinPermAll* _pCard_JoinPermAll(void* aAddr);

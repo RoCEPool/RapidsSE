@@ -434,6 +434,7 @@ namespace STORE
     Stz* sz(void);
     char cValue(void);
     Stz* szValue(void);
+    void vValue(char cValue);
     void vValue(Stz* szValue);
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);

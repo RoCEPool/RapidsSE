@@ -72,19 +72,25 @@ void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
       vTrace(", "_Stz,i_Table);
     vTrace("%c"_Stz,cTblSyn);
 
+    Card_JoinPerm* p_joinPerm = new Card_JoinPerm;
+    p_joinPerm->vValue(cTblSyn);
+    vAppend(p_joinPerm);
+    if (1 == nChildCards())
+      continue;
+
+
     // get the join pred for this table
     Card_CmpPred* p_cmpPred_join = p_joinPredList->pFindCmpPred(cTblSyn);
-
     Card_CmpPred* p_cmpPred_perm = _pCard_CmpPred(p_cmpPred_join->pDupCardAndSubCards());
+    p_joinPerm->vAppend(p_cmpPred_perm);
 
     char cTblSyn_prior = p_cmpPred_join->cOtherTable(cTblSyn);
     if (! bSupportedJoin(cTblSyn_prior)) {
-      vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+      p_joinPerm->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
       Y_vSet(P_Invalid);
       break;
     }
 
-    vAppend(p_cmpPred_perm);
   }
 
   vTrace("\n"_Stz);
@@ -101,8 +107,8 @@ bool Card_JoinPermOne::bSupportedJoin(char cTblSyn_prior)
     return true;
 
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_CMPPRED)) {
-    if (xCI.G.p_cmpPred->bUsesTable(cTblSyn_prior))
+  while (xCI.G_bEachMain(CK_JOINPERM)) {
+    if (xCI.G.p_joinPerm->cValue() == cTblSyn_prior)
       return true;
   }
 

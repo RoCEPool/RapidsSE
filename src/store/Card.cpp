@@ -2107,6 +2107,16 @@ Stz* Card::szValue(void)
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
+void Card::vValue(char cValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("%c"_Stz,cValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card value                                                             */
+/*----------------------------------------------------------------------------*/
 void Card::vValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
