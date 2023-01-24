@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinPerm.hpp -- Join Permutation                                      */
+/* Card_JoinHead.hpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-   class Card_JoinPerm : public Card
+   class Card_JoinHead : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinPerm(void);
-   ~Card_JoinPerm(void) noexcept(false);
+    Card_JoinHead(void);
+   ~Card_JoinHead(void) noexcept(false);
    };
 
-  Card_JoinPerm* _pCard_JoinPerm(void* aAddr);
+  Card_JoinHead* _pCard_JoinHead(void* aAddr);
 }
 
 /*============================================================================*/

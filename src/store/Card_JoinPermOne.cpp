@@ -72,7 +72,7 @@ void Card_JoinPermOne::vOnePermutedJoin(Card_TableList*    p_tableList,
       vTrace(", "_Stz,i_Table);
     vTrace("%c"_Stz,cTblSyn);
 
-    Card_JoinPerm* p_joinPerm = new Card_JoinPerm;
+    Card_JoinHead* p_joinPerm = new Card_JoinHead;
     p_joinPerm->vValue(cTblSyn);
     vAppend(p_joinPerm);
     if (1 == nChildCards())
@@ -107,8 +107,8 @@ bool Card_JoinPermOne::bSupportedJoin(char cTblSyn_prior)
     return true;
 
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_JOINPERM)) {
-    if (xCI.G.p_joinPerm->cValue() == cTblSyn_prior)
+  while (xCI.G_bEachMain(CK_JOINHEAD)) {
+    if (xCI.G.p_joinHead->cValue() == cTblSyn_prior)
       return true;
   }
 

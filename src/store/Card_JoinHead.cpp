@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinPerm.cpp -- Join Permutation                                      */
+/* Card_JoinHead.cpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 
-#include "Card_JoinPerm.hpp"
+#include "Card_JoinHead.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -14,16 +14,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_JoinPerm,CK_JOINPERM)
-__aNewFunction(Card_JoinPerm,CN_CARD)
-__vDeleteFunction(Card_JoinPerm,CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinHead, CK_JOINHEAD)
+__aNewFunction(Card_JoinHead, CN_CARD)
+__vDeleteFunction(Card_JoinHead, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinPerm::Card_JoinPerm(void)
-: Card(CK_JOINPERM)
+Card_JoinHead::Card_JoinHead(void)
+: Card(CK_JOINHEAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -35,7 +35,7 @@ Card_JoinPerm::Card_JoinPerm(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinPerm::~Card_JoinPerm(void) noexcept(false)
+Card_JoinHead::~Card_JoinHead(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

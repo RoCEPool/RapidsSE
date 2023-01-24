@@ -408,9 +408,9 @@ void CardIter::G_vClearMembers(void)
   G.p_indexList        = nullptr;
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
+  G.p_joinHead         = nullptr;
   G.p_joinOrder        = nullptr;
   G.p_joinOrdering     = nullptr;
-  G.p_joinPerm         = nullptr;
   G.p_joinPermAll      = nullptr;
   G.p_joinPermOne     = nullptr;
   G.p_joinPredList     = nullptr;
@@ -1336,9 +1336,9 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXLIST:        return G.p_indexList;
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
+    case CK_JOINHEAD:         return G.p_joinHead;
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
-    case CK_JOINPERM:         return G.p_joinPerm;
     case CK_JOINPERMALL:      return G.p_joinPermAll;
     case CK_JOINPERMONE:      return G.p_joinPermOne;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
@@ -1696,9 +1696,9 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_INDEXLIST:        return "G.p_indexList"_Stz;
     case CK_INDEXNM:          return "G.p_indexNm"_Stz;
     case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
+    case CK_JOINHEAD:         return "G.p_joinHead"_Stz;
     case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
     case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
-    case CK_JOINPERM:         return "G.p_joinPerm"_Stz;
     case CK_JOINPERMALL:      return "G.p_joinPermAll"_Stz;
     case CK_JOINPERMONE:      return "G.p_joinPermOne"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
@@ -2904,9 +2904,9 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard; break;
+    case CK_JOINHEAD:         *((Card**)&G.p_joinHead)         = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
-    case CK_JOINPERM:         *((Card**)&G.p_joinPerm)         = pCard; break;
     case CK_JOINPERMALL:      *((Card**)&G.p_joinPermAll)      = pCard; break;
     case CK_JOINPERMONE:      *((Card**)&G.p_joinPermOne)      = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;

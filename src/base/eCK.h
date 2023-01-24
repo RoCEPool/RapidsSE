@@ -70,9 +70,9 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
+  /* */ CK_JOINHEAD,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
-  /* */ CK_JOINPERM,
   /* */ CK_JOINPERMALL,
   /* */ CK_JOINPERMONE,
   /* */ CK_JOINPREDLIST,
@@ -245,9 +245,9 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
+  /* */ "CK_JOINHEAD"_Stz,     // CK_JOINHEAD
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
-  /* */ "CK_JOINPERM"_Stz,     // CK_JOINPERM
   /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
   /* */ "CK_JOINPERMONE"_Stz,  // CK_JOINPERMONE
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
@@ -419,9 +419,9 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
+  /* */ "joinHead"_Stz,        // CK_JOINHEAD
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
-  /* */ "joinPerm"_Stz,        // CK_JOINPERM
   /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
   /* */ "joinPermOne"_Stz,     // CK_JOINPERMONE
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
@@ -593,9 +593,9 @@ static Stz* aCK_notation[]
     /* */ "iN"_Stz,           // CK_INDEXNM
     /* */ "iS"_Stz,           // CK_INDEXSCAN
 
+    /* */ "jH"_Stz,           // CK_JOINHEAD
     /* */ "jO"_Stz,           // CK_JOINORDER
     /* */ "jOG"_Stz,          // CK_JOINORDERING
-    /* */ "jP"_Stz,           // CK_JOINPERM
     /* */ "jPA"_Stz,          // CK_JOINPERMALL
     /* */ "jPO"_Stz,          // CK_JOINPERMONE
     /* */ "jPeL"_Stz,         // CK_JOINPREDLIST

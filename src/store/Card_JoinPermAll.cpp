@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_JoinPerm.hpp"
+#include "Card_JoinHead.hpp"
 #include "Card_JoinPermOne.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
