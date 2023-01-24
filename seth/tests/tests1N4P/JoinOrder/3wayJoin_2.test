@@ -134,8 +134,6 @@ Expected join order:
   Either A->B-C or B->A->C
 
 ********************************************************************************/
-/weaved select * from A;
-rows: 12
 
 /joinOrder
 select count(*)
@@ -231,7 +229,7 @@ rows: (73)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 6
 //  Partitions = 4
-//  same size
+//  size(A) = size(B) , size(B) < size(C)
 //  A            ->  B               B          ->  C
 //  cola != ptn  ->  colb == ptn     colb = ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -300,7 +298,7 @@ rows: (65)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 8
 //  Partitions = 4
-//  same size
+//  size(A) = size(B) , size(B) < size(C)
 //  A            ->  B               B           ->  C
 //  cola != ptn  ->  colb != ptn     colb != ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

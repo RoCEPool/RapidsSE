@@ -134,10 +134,8 @@ Expected join order:
   Either A->B-C or B->A->C
 
 ********************************************************************************/
-/weaved select * from A;
-rows: 12
 
-/weaved
+/joinOrder
 select count(*)
   from A
    join B on A.A_COL0 = B.B_COL0
