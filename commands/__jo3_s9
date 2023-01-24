@@ -71,7 +71,7 @@ Join Permutations:
   C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  10000+(1000*1000)
 
 Expected join order:
-  Either C->B->A
+  C->B->A
 
 Expected Result:
   row: (138)
