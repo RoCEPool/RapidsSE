@@ -6,7 +6,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 1
 //  Partitions = 4
-//  size(A) = size(B) , size(B) > size(C)
+//  size(A) < size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

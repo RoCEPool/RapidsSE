@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* __jo3_s2 -- optimiser join ordering 3-way join statement 2                 */
+/* __jo3_s18 -- optimiser join ordering 3-way join statement 18               */
 /*============================================================================*/
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 2
 //  Partitions = 4
-//  size(A) = size(B) , size(B) > size(C)
+//  size(A) < size(B) , size(B) > size(C)
 //  A            ->  B               B          ->  C
 //  cola == ptn  ->  colb == ptn     colb = ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
