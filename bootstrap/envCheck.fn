@@ -1205,9 +1205,10 @@ EOF
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the storage disk directories on each node have space for
 ## unload operations. If the directory does not exist, check the space of
-## it's parent directory, and attempt to create the directory.
-## Exits out if space is not available or if there is a problem while
-## creating the directory.
+## it's parent directory. If the storage path is the same as the installation
+## path, keep checking the parent dirs until we find one that exists, and
+## check its space.
+## Exits out if space is not available.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
@@ -1223,6 +1224,7 @@ function validateStorageDirsHaveSpace() {
 
   local nodeName
   local host
+  local installDir
   local diskPaths
   local remoteCmd
   local response
@@ -1235,6 +1237,7 @@ function validateStorageDirsHaveSpace() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
     diskPaths="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DISK_KEY}")"
     mem="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
 
@@ -1249,19 +1252,39 @@ function validateStorageDirsHaveSpace() {
     do
       remoteCmd="$(cat <<-EOF
 if [ -d "${dirPath}" ]; then
+  # Check storage path space if it exists
   maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
   if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
     echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
     false;
     exit;
   fi
+elif [[ "${dirPath}" = "${installDir}"/* ]]; then
+    # Storage path does not exist. Check if it is
+    # under the install directory.
+    # Find the oldest parent dir that exists and
+    # check its space
+    dname="$(dirname "${dirPath}")"
+    while [ ! -d "\${dname}" ]; do
+      dname="\$(dirname "\${dname}")"
+    done
+    maxDirSpace=\$(df -m "\${dname}" | awk '"'"'/\/dev\//{print \$2}'"'"')
+    if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
+      echo "Storage disk directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+      false;
+      exit;
+    fi
 else
+  # Storage path is not under the installation path
+  # Only check immediate parent dir space
+  # This is because we do not want to accidentally check
+  # the wrong mount disk space, so we only check the
+  # immediate parent dir.
   dname="$(dirname "${dirPath}")"
   if [ -d "\${dname}" ]; then
-    mkdir -p "${dirPath}" || errorExit "Could not create the storage disk directory on node ${nodeName} : ${dirPath}"
-    maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
+    maxDirSpace=\$(df -m "\${dname}" | awk '"'"'/\/dev\//{print \$2}'"'"')
     if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-      echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+      echo "Storage disk parent directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
       false;
       exit;
     fi
