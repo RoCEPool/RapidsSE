@@ -81,6 +81,16 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
     cTblSyn_l = cTblSyn_r;
   }
+
+  Card_LoadPermSeq* p_loadPermSeq = new Card_LoadPermSeq;
+
+  Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
+  Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
+
+  p_loadPermSeq->vAppend(p_loadNetwork);
+  p_loadPermSeq->vAppend(p_loadUnicast);
+
+  vInsert(p_loadPermSeq);
 }
 
 /*----------------------------------------------------------------------------*/
