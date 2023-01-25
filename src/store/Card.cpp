@@ -1477,6 +1477,19 @@ bool Card::bMerge(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* morph all children of eFrom to be eTo                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vMorphChildrenTo(eCK eFrom, eCK eTo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card* pChildCard = xCI.pEachChild())
+    if (pChildCard->bIsCard(eFrom))
+      pChildCard->vCard(eTo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* move given to child to be last child                                       */
 /*----------------------------------------------------------------------------*/
 void Card::vMoveToLastChild(Card* pChildCard)
