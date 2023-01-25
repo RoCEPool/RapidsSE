@@ -257,7 +257,7 @@ void Card_JoinOrdering::vConcat(Card_PtndJoin* p_PtndJoin)
 /*----------------------------------------------------------------------------*/
 /* derive the join order string                                               */
 /*----------------------------------------------------------------------------*/
-void Card_JoinOrdering::vJoinOrderString(String* pString)
+void Card_JoinOrdering::vJoinOrderString(String* pString, Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -266,17 +266,20 @@ void Card_JoinOrdering::vJoinOrderString(String* pString)
 
   CardIter xCI(this);
   if (xCI.G_bEachMain(CK_JOINORDER)) {
-    s256 sHeadTable = xCI.G.p_joinOrder->szValue();
+    char cHeadTable = xCI.G.p_joinOrder->cValue();
+    s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
+
     pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }
 
   while (xCI.G_bEachMain(CK_JOINORDER)) {
-    s256 sNextTable  = xCI.G.p_joinOrder->szValue();
+    char cNextTable = xCI.G.p_joinOrder->cValue();
+    s256 sNextTable = p_tableList->szToTableNm(cNextTable);
     xCI.G.p_loadJoin = xCI.G.p_joinOrder->pSub_loadJoin();
-    xCI.G.p_cast     = xCI.G.p_loadJoin->pSub_cast();
-
+    xCI.G.p_cast= xCI.G.p_loadJoin->pSub_cast();
     s32 sCast = xCI.G.p_cast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);
+
     pString->vCatSprint(" %s %s"_Stz,sCast.szStz(), sNextTable.szStz());
   }
 

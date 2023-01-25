@@ -185,6 +185,23 @@ Card_Size* Card_TableList::pGetTableSize(char cTblSyn)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card_TableList::szToTableNm(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
+    if (xCI.G.p_table->bIsValue(cTblSyn))
+      return xCI.G.p_tableNm->szValue();
+  }
+
+  return nullptr;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

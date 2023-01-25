@@ -3297,7 +3297,7 @@ void Bench::vTransform_JoinOrdering_v2(void)
   m_pCI->vPrintBoard(__LINE__);
 
   s4K sJoinOrder;
-  p_joinOrdering->vJoinOrderString(sJoinOrder);
+  p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
   vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
 
   DELETE_CARD(p_joinPermAll);
