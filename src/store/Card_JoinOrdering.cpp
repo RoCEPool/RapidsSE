@@ -255,6 +255,40 @@ void Card_JoinOrdering::vConcat(Card_PtndJoin* p_PtndJoin)
 }
 
 /*----------------------------------------------------------------------------*/
+/* derive the join order string                                               */
+/*----------------------------------------------------------------------------*/
+void Card_JoinOrdering::vJoinOrderString(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // the join sequence
+  pString->vCopy("<join sequence>"_Stz);
+
+  CardIter xCI(this);
+  if (xCI.G_bEachMain(CK_JOINORDER)) {
+    s256 sHeadTable = xCI.G.p_joinOrder->szValue();
+    pString->vSprint("%s"_Stz,sHeadTable.szStz());
+  }
+
+  while (xCI.G_bEachMain(CK_JOINORDER)) {
+    s256 sNextTable  = xCI.G.p_joinOrder->szValue();
+    xCI.G.p_loadJoin = xCI.G.p_joinOrder->pSub_loadJoin();
+    xCI.G.p_cast     = xCI.G.p_loadJoin->pSub_cast();
+
+    s32 sCast = xCI.G.p_cast->szValue();
+    StrLib::vShuffleLeft(sCast.azChar(),3);
+    pString->vCatSprint(" %s %s"_Stz,sCast.szStz(), sNextTable.szStz());
+  }
+
+  // the load
+  Card_LoadPermSeq* p_loadPermSeq = pSub_loadPermSeq();
+  Card_LoadNetwork* p_loadNetwork = p_loadPermSeq->pSub_loadNetwork();
+  Card_LoadUnicast* p_loadUnicast = p_loadPermSeq->pSub_loadUnicast();
+
+  pString->vCatSprint(", %lld, %lld"_Stz,p_loadNetwork->iValue(),p_loadUnicast->iValue());
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
