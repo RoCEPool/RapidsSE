@@ -65,18 +65,17 @@ i8 Card_JoinNext::nCalulateLoad(eXK eCast,
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
 
-  Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
-  Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
-  Card_CmpPred*  p_cmpPred    = pSub_cmpPred();
+//  Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
+//  Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
+//  Card_CmpPred*  p_cmpPred    = pSub_cmpPred();
 
   p_cast->vValue(aXK[eCast]);
+
+  p_loadNetwork->vCalculateLoad();
+  p_loadUnicast->vCalculateLoad();
+  i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
+
   p_loadJoin->vAppend(p_cast);
-
-  p_loadNetwork->vValue((i8)0);
-  p_loadUnicast->vValue((i8)0);
-  i8 iLoadJoin = p_loadNetwork->iValue() + p_loadUnicast->iValue();
-  p_loadJoin->vValue((i8)iLoadJoin);
-
   p_loadJoin->vAppend(p_loadNetwork);
   p_loadJoin->vAppend(p_loadUnicast);
   vAppend(p_loadJoin);

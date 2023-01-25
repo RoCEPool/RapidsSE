@@ -15,6 +15,8 @@ namespace STORE
   
     Card_LoadUnicast(void);
    ~Card_LoadUnicast(void) noexcept(false);
+
+    void vCalculateLoad(void);
   };
 
   Card_LoadUnicast* _pCard_LoadUnicast(void* aAddr);
