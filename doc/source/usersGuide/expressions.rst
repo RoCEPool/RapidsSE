@@ -255,10 +255,16 @@ Supported Expression Operators
 RapidsSE supports a variety of expression operators, with more operators being
 added regularly. These are described in the following sub-categories.
 
-The syntax descriptions use angle brackets (``<`` ``>``) to represent data
-types and separate them from the expression operators. The syntax ``-->``
-is used to indicate the resulting data type that will be returned from the
-operator.
+In the following subsections the syntax descriptions use angle brackets 
+(``<`` ``>``) to represent expressions of specific or arbitrary data
+types. 
+
+For example, ``<expr>`` is used to represent an expression of any data type,
+whereas ``<booleanExpr>`` is used to represent an expression that evaluates
+to a boolean value.
+
+The syntax ``-->`` is used to indicate the resulting data type that will be 
+returned from the operator.
 
 Logical Operators
 :::::::::::::::::
@@ -278,10 +284,10 @@ The syntax for these operators are as follows:
 
 .. code:: sql
 
-  <boolean> AND <boolean> --> <boolean>
-   <boolean> OR <boolean> --> <boolean>
-  <boolean> XOR <boolean> --> <boolean>
-            NOT <boolean> --> <boolean>
+  <booleanExpr> AND <booleanExpr>   --> <booleanValue>
+  <booleanExpr> OR  <booleanExpr>   --> <booleanValue>
+  <booleanExpr> XOR <booleanExpr>   --> <booleanValue>
+                NOT <booleanExpr>   --> <booleanValue>
 
 RapidsSE uses :ref:`three-valued logic <nulls>` when it comes to evaluating
 logical expressions that can contain ``NULL``\s. Refer to this
@@ -316,13 +322,13 @@ The syntax for these operators are as follows:
 
 .. code:: sql
 
-  <numeric_type> + <numeric_type> --> <numeric_type>    (addition)
-  <numeric_type> - <numeric_type> --> <numeric_type>    (subtraction)
-  <numeric_type> * <numeric_type> --> <numeric_type>    (multiplication)
-  <numeric_type> / <numeric_type> --> <numeric_type>    (division)
-       <integer> % <integer>      --> <integer>         (modulus)
-                 + <numeric_type> --> <numeric_type>    (unary plus)
-                 - <numeric_type> --> <numeric_type>    (unary negation)
+  <numericExpr> + <numericExpr>    --> <numericValue>    (addition)
+  <numericExpr> - <numericExpr>    --> <numericValue>    (subtraction)
+  <numericExpr> * <numericExpr>    --> <numericValue>    (multiplication)
+  <numericExpr> / <numericExpr>    --> <numericValue>    (division)
+  <integerExpr> % <integerExpr>    --> <integerValue>    (modulus)
+                + <numericExpr>    --> <numericValue>    (unary plus)
+                - <numericExpr>    --> <numericValue>    (unary negation)
 
 
 Comparison Operators
@@ -363,34 +369,219 @@ The syntax for these operators are as follows:
 
 .. code:: sql
 
-      <datatype> =  <datatype>  --> <boolean>
-      <datatype> != <datatype>  --> <boolean>
-      <datatype> <> <datatype>  --> <boolean>
-      <datatype> <  <datatype>  --> <boolean>
-      <datatype> <= <datatype>  --> <boolean>
-      <datatype> >  <datatype>  --> <boolean>
-      <datatype> >= <datatype>  --> <boolean>
-             <boolean> IS NULL  --> <boolean>
-         <boolean> IS NOT NULL  --> <boolean>
-   <datatype> BETWEEN <datatype> AND <datatype> --> <boolean>
+   <expr> =  <expr>                   --> <booleanValue>
+   <expr> != <expr>                   --> <booleanValue>
+   <expr> <> <expr>                   --> <booleanValue>
+   <expr> <  <expr>                   --> <booleanValue>
+   <expr> <= <expr>                   --> <booleanValue>
+   <expr> >  <expr>                   --> <booleanValue>
+   <expr> >= <expr>                   --> <booleanValue>
+   <booleanExpr> IS NULL              --> <booleanValue>
+   <booleanExpr> IS NOT NULL          --> <booleanValue>
+   <expr> BETWEEN <expr> AND <expr>   --> <booleanValue>
 
 Conditional Operators
 :::::::::::::::::::::
+RapidsSE supports the following conditional operators:
 
 * ``CASE``
 
 
+``CASE`` Operator
+'''''''''''''''''
+
+The ``CASE`` operator is similar to a programming ``if...then...else``
+construct using ``WHEN``, ``THEN`` and ``ELSE`` keywords instead.
+It evaluates expressions in ``WHEN`` clauses and if they evaluate to
+``true`` then the value in the corresponding ``THEN`` clause is returned.
+If none of the ``WHEN`` conditions are met then the value in the ``ELSE``
+clause is returned if one is specified. Otherwise ``NULL`` is returned.
+
+There are two syntactic ways to write ``CASE`` statement. The first one has
+an expression after the ``CASE`` keyword and before the first ``WHEN`` keyword.
+This expression is evaluated and compared against the expressions in each of
+the ``WHEN`` statements.
+
+.. code:: sql
+
+  CASE <expr>
+    WHEN <expr> THEN <expr>
+    [ WHEN ... ]
+    [ ELSE <expr> ]
+  END
+
+The second variant of the ``CASE`` operator does not have an expression
+immediately after the ``CASE`` keyword. Instead a boolean expression is
+specified after each ``WHEN`` keyword. Multiple ``WHEN`` expressions need not
+be related in any way, other than the fact that they must evaluate to a
+boolean value.
+
+.. code:: sql
+
+  CASE
+    WHEN <booleanExpr> THEN <expr>
+    [ WHEN ... ]
+    [ ELSE <expr> ]
+  END
+
+The following two examples illustrate the two different ways a ``CASE``
+operator can be written. The two examples are equivalent.
+
+.. code:: sql
+
+  CASE n_nation
+    WHEN 'Australia' THEN 'G''day'
+    WHEN 'China'     THEN 'Ni hao'
+    WHEN 'India'     THEN 'Namaste'
+    ELSE 'Hello'
+  END
+
+.. code:: sql
+
+  CASE
+    WHEN n_nation = 'Australia' THEN 'G''day'
+    WHEN n_nation = 'China'     THEN 'Ni hao'
+    WHEN n_nation = 'India'     THEN 'Namaste'
+    ELSE 'Hello'
+  END
+
+The ``ELSE`` clause is optional in a ``CASE`` statement. If it is left off and
+none of the ``WHEN`` conditions are matched then the ``CASE`` statement will
+return a ``NULL`` value.
+
+The ``CASE`` statement must be consistent with the data types of values that
+can be returned. The data type of all ``THEN`` and ``ELSE`` expressions must
+be the same or :ref:`implicitly coercible <implicitTypeCoercion>`.
+
+
 String Operators
 ::::::::::::::::
+RapidsSE supports the following string operators:
 
 * ``LIKE``
-* ``SUBSTR``
+* ``SUBSTRING``
+
+LIKE Operator
+'''''''''''''
+The ``LIKE`` operator allows a string expression to be compared against
+another string or pattern. It always returns a boolean data type (including the
+``NULL`` value).
+
+The syntax for the ``LIKE`` operators is as follows:
+
+.. code:: sql
+
+  <stringExpr> [NOT] LIKE <stringPatternExpr> [ ESCAPE <stringEscapeExpr> ]
+
+The ``<stringExpr>`` is compared against the pattern in ``<stringPatternExpr>``
+with an optional escape character in ``<stringEscapeExpr>``.
+
+If the value in ``<stringPatternExpr>`` contains any underscore (``_``) or
+percent (``%``) characters, these are interpreted to mean the following:
+
+  ``_``   matches any single character
+
+  ``%``   matches a sequence of zero or more characters
+
+If the value in ``<stringPatternExpr>`` does not contain any underscore or
+percent characters then it is compared against ``<stringExpr>`` as if the
+equality operator (``=``) was being used.
+
+Here are some examples:
+
+.. code:: sql
+
+  'abcd' LIKE 'abcd'        (returns true)
+  'abcd' LIKE 'abc'         (returns false)
+  'abcd' LIKE 'abcde'       (returns false)
+  'abcd' LIKE 'a_cd'        (returns true)
+  'abcd' LIKE 'a_c'         (returns false)
+  'abcd' LIKE 'a__d'        (returns true)
+  'abcd' LIKE 'a%'          (returns true)
+  'abcd' LIKE 'a%d'         (returns true)
+  'abcd' LIKE 'a_%d'        (returns true)
+  'abcd' LIKE '_%d'         (returns true)
+  'abcd' LIKE '%b%'         (returns true)
+  'abcd' LIKE '%x%'         (returns false)
+
+If you wish to include a literal underscore or percent character in the pattern
+and do not want the character being interpreted then the character needs to be
+escaped. This is done by specifying the character in the ``ESCAPE`` clause and
+then using that character in the pattern immediately before the ``_`` or ``%``
+character that is to be interpreted literally. The expression in the ``ESCAPE``
+clause must evaluate to a single character string.
+
+If no ``ESCAPE`` clause is specified then the special interpretations of ``_``
+and ``%`` will apply.
+
+To match the ``ESCAPE`` character in the pattern, simply repeat the ``ESCAPE``
+character.
+
+Here are some examples using ``ESCAPE`` characters:
+
+.. code:: sql
+
+  'ab%d' LIKE 'ab_d'                  (returns true. Using the pattern)
+  'ab%d' LIKE 'ab#_d'  ESCAPE '#'     (returns false)
+  'ab_d' LIKE 'ab#_d'  ESCAPE '#'     (returns true)
+  'ab%d' LIKE 'ab#%d'  ESCAPE '#'     (returns true)
+  'ab%'  LIKE 'ab#%%'  ESCAPE '#'     (returns true. Only first '%' is escaped.)
+  'ab#%' LIKE 'ab###%' ESCAPE '#'     (returns true)
+
+
+SUBSTRING Operator
+''''''''''''''''''
+The ``SUBSTRING`` operator returns a portion of a string value starting at a
+given index. It always returns a value of a string data type (``CHAR`` or
+``VARCHAR``).
+
+The keyword ``SUBSTR`` can be used interchangably with the keyword ``SUBSTRING``.
+
+The syntax for the ``SUBSTRING`` operators is as follows:
+
+.. code:: sql
+
+  SUBSTRING '(' <stringExpr> FROM <integerExpr> [ FOR <integerExpr> ] ')'
+  SUBSTRING '(' <stringExpr>, <integerExpr> [ , <integerExpr> ] ')'
+
+The first parameter of the ``SUBSTRING`` function is the the string expression
+from which a substring will be extracted. The second parameter is the 1-based
+index of the first character to extract. This parameter must be an integer.
+The optional third parameter, also an integer, is the number of characters to
+be extracted. If this third parameter is left off then all characters until
+the end of the string will be returned.
+
 
 Date and Time Operators
 :::::::::::::::::::::::
+RapidsSE supports the following string operators:
 
 * ``EXTRACT``
-*
+
+``EXTRACT`` Operator
+''''''''''''''''''''
+The ``EXTRACT`` operator returns an integer value corresponding to one of the
+fields from a ``DATE``, ``TIME`` or ``TIMESTAMP`` expression.
+
+The syntax for the ``EXTRACT`` operator is as follows:
+
+.. code:: sql
+
+  EXTRACT '(' (SECOND | MINUTE | HOUR | DAY | MONTH | YEAR) FROM <expr> ')'
+
+The field to be extracted must be compatible with the type of the expression.
+For example, you cannot try to extract a ``SECOND`` field from a ``DATE``
+expression. This operator is only applicable to ``DATE``, ``TIME`` or
+``TIMESTAMP`` expressions.
+
+Examples:
+
+.. code:: sql
+
+  EXTRACT (HOUR FROM time '14:23:54')                   (returns 14)
+  EXTRACT (DAY FROM timestamp '2023-01-20 14:23:54')    (returns 20)
+  EXTRACT (YEAR FROM timestamp '2023-01-20 14:23:54')   (returns 2023)
+
 
 Aggregate Operators
 :::::::::::::::::::
