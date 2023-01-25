@@ -53,7 +53,7 @@ Card_JoinNext::~Card_JoinNext(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate join load                                                        */
 /*----------------------------------------------------------------------------*/
-void Card_JoinNext::vCalulateLoad(eXK eCast,
+i8 Card_JoinNext::nCalulateLoad(eXK eCast,
                                   i8 nBuffersIn,
                                   Card_TableList* p_tableList,
                                   char cTblSyn_l,
@@ -80,6 +80,8 @@ void Card_JoinNext::vCalulateLoad(eXK eCast,
   p_loadJoin->vAppend(p_loadNetwork);
   p_loadJoin->vAppend(p_loadUnicast);
   vAppend(p_loadJoin);
+
+  return nBuffersIn + iLoadJoin;
 }
 
 //*============================================================================*/

@@ -16,7 +16,7 @@ namespace STORE
     Card_JoinNext(void);
    ~Card_JoinNext(void) noexcept(false);
 
-    void vCalulateLoad(eXK eCast, i8 nBuffersIn, Card_TableList* p_tableList,
+    i8 nCalulateLoad(eXK eCast, i8 nBuffersIn, Card_TableList* p_tableList,
                        char cTblSyn_l, char cTblSyn_r);
 
   };
