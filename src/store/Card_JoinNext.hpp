@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-   class Card_JoinNext : public Card
+  class Card_JoinNext : public Card
   {
   public:
     void* operator new(size_t);
@@ -15,7 +15,11 @@ namespace STORE
   
     Card_JoinNext(void);
    ~Card_JoinNext(void) noexcept(false);
-   };
+
+    void vCalulateLoad(eXK eCast, i8 nBuffersIn, Card_TableList* p_tableList,
+                       char cTblSyn_l, char cTblSyn_r);
+
+  };
 
   Card_JoinNext* _pCard_JoinNext(void* aAddr);
 }
