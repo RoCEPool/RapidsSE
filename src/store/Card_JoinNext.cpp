@@ -71,8 +71,8 @@ i8 Card_JoinNext::nCalulateLoad(eXK eCast,
 
   p_cast->vValue(aXK[eCast]);
 
-  p_loadNetwork->vCalculateLoad();
-  p_loadUnicast->vCalculateLoad();
+  p_loadNetwork->vCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
+  p_loadUnicast->vCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
   i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
 
   p_loadJoin->vAppend(p_cast);

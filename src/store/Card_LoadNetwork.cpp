@@ -6,7 +6,9 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
+#include "Card_Size.hpp"
 #include "Card_Table.hpp"
+#include "Card_TableList.hpp"
 #include "Card_Term.hpp"
 
 
@@ -47,13 +49,31 @@ Card_LoadNetwork::~Card_LoadNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate network load                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_LoadNetwork::vCalculateLoad(void)
+void Card_LoadNetwork::vCalculateLoad(eXK eCast,
+                                      i8 nBuffersIn,
+                                      Card_TableList* p_tableList,
+                                      char cTblSyn_l,
+                                      char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // todo: complete...
 
-  vValue((i8)0);
+  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
+
+  i8 iSize_l = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
+  i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
+
+  i8 iLoad = 0;
+  switch (eCast) {
+    case XK_UNICAST:   break;
+    case XK_HASHCAST:  iLoad = nBuffersIn + iSize_r; break;
+    case XK_BROADCAST: iLoad = (nBuffersIn + iSize_r) * nPtnsPerNode; break;
+    default:
+      NEVER_REACH
+  }
+
+  vValue((i8)iLoad);
 }
 
 //*============================================================================*/
