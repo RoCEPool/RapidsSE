@@ -3840,7 +3840,10 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   s16KB sTrimmed;
   sTrimmed = szRaw;
 
-  while (' ' == *sTrimmed.azChar())
+  while (' '  == *sTrimmed.azChar() ||
+         '\r' == *sTrimmed.azChar() ||
+         '\n' == *sTrimmed.azChar() ||
+         '\t' == *sTrimmed.azChar())
     StrLib::vShuffleLeft(sTrimmed.azChar(),1);
 
   while ('/' == *sTrimmed.azChar()) {
@@ -3857,7 +3860,7 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   //s16KB sStatement;
   s16KB sSqlCompiler;
   sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sTrimmed.azChar());
-
+  
   //pInpTknVec->vInsertToken(0,"sqlCompiler"_Stz,TN_NAME);
 
   //pInpTknVec->vVecToString(sStatement,0, true);
