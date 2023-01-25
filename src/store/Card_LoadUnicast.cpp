@@ -62,7 +62,9 @@ void Card_LoadUnicast::vCalculateLoad(eXK eCast,
 
   i8 iLoad = 0;
   switch (eCast) {
-    case XK_UNICAST:   iLoad = nBuffersIn + iSize_r; break;
+    case XK_UNICAST:
+      iLoad = (i8)(1.0 * (nBuffersIn * iSize_r));
+      break;
     case XK_HASHCAST:  break;
     case XK_BROADCAST: break;
     default:

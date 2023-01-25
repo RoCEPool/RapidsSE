@@ -72,7 +72,6 @@ Join Permutations:                                    Network Total             
 
 Expected join order:
   Either A->B->C or B->A->C
-  row: ("A UNICAST B HASHCAST C, 1000000,100")
 
 Expected Result:
   row: (73)

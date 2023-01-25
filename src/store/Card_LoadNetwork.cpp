@@ -67,8 +67,8 @@ void Card_LoadNetwork::vCalculateLoad(eXK eCast,
   i8 iLoad = 0;
   switch (eCast) {
     case XK_UNICAST:   break;
-    case XK_HASHCAST:  iLoad = nBuffersIn + iSize_r; break;
-    case XK_BROADCAST: iLoad = (nBuffersIn + iSize_r) * nPtnsPerNode; break;
+    case XK_HASHCAST:  iLoad = (i8)(1.0 * (nBuffersIn * iSize_r)); break;
+    case XK_BROADCAST: iLoad = (i8)(1.0 * (nBuffersIn * iSize_r)) * nPtnsPerNode; break;
     default:
       NEVER_REACH
   }

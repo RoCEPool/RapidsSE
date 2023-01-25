@@ -65,6 +65,8 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
   while (xCI.G_bEachMain()) {
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
+      char cTblSyn_l = xCI.G.p_joinHead->cValue();
+      nBuffersIn = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
       continue;
     }
 

@@ -80,7 +80,7 @@ i8 Card_JoinNext::nCalulateLoad(eXK eCast,
   p_loadJoin->vAppend(p_loadUnicast);
   vAppend(p_loadJoin);
 
-  return nBuffersIn + iLoadJoin;
+  return iLoadJoin;
 }
 
 /*============================================================================*/
