@@ -60,13 +60,11 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
   i8 nSumLoadUnicast = 0;
 
   i8 nBuffersIn = 0;
-  char cTblSyn_l = ' ';
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
-      cTblSyn_l = xCI.G.p_joinHead->cValue();
       continue;
     }
 
@@ -74,7 +72,9 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
       continue;
 
     char cTblSyn_r = xCI.G.p_joinNext->cValue();
-    Card_CmpPred*  p_cmpPred    = xCI.G.p_joinNext->pSub_cmpPred();
+    Card_CmpPred* p_cmpPred = xCI.G.p_joinNext->pSub_cmpPred();
+    char cTblSyn_l = p_cmpPred->cOtherTable(cTblSyn_r);
+
     Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
     Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
     eXK eCast = p_cmpPred->eCastKind(p_tablePtn_l,p_tablePtn_r);

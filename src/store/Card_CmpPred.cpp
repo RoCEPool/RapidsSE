@@ -69,13 +69,11 @@ eXK Card_CmpPred::eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tableP
   Card_Term* p_term_0 = pGetTerm_0();
   Card_Term* p_term_1 = pGetTerm_1();
 
-  if (p_tablePtn_r->bSameValue(p_term_0))
-    if (p_tablePtn_l->bSameValue(p_term_1))
+  if ( (p_tablePtn_r->bSameValue(p_term_0) && p_tablePtn_l->bSameValue(p_term_1)) ||
+       (p_tablePtn_r->bSameValue(p_term_1) && p_tablePtn_l->bSameValue(p_term_0)))
       return XK_UNICAST;
-    else
-      return XK_HASHCAST;
   else
-  if (p_tablePtn_r->bSameValue(p_term_1))
+  if (p_tablePtn_r->bSameValue(p_term_0) || p_tablePtn_r->bSameValue(p_term_1))
     return XK_HASHCAST;
   else
     return XK_BROADCAST;
