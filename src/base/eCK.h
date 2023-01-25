@@ -88,6 +88,7 @@ enum eCK // card kind
   /* */ CK_LINKSTO,
   /* */ CK_LOADJOIN,
   /* */ CK_LOADNETWORK,
+  /* */ CK_LOADPERMSEQ,
   /* */ CK_LOADUNICAST,
 
   /* */ CK_MANNER,
@@ -267,6 +268,7 @@ static Stz* aCK[]
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
   /* */ "CK_LOADJOIN"_Stz,     // CK_LOADJOIN
   /* */ "CK_LOADNETWORK"_Stz,  // CK_LOADNETWORK
+  /* */ "CK_LOADPERMSEQ"_Stz,  // CK_LOADPERMSEQ
   /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
 
   /* */ "CK_MANNER"_Stz,       // CK_MANNER
@@ -445,6 +447,7 @@ static Stz* aCK_short[]
   /* */ "linksTo"_Stz,         // CK_LINKSTO
   /* */ "loadJoin"_Stz,        // CK_LOADJOIN
   /* */ "loadNetwork"_Stz,     // CK_LOADNETWORK
+  /* */ "loadPermSeq"_Stz,     // CK_LOADPERMSEQ
   /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST
 
   /* */ "manner"_Stz,          // CK_MANNER
@@ -623,6 +626,7 @@ static Stz* aCK_notation[]
     /* */ "lT"_Stz,           // CK_LINKSTO
     /* */ "ldJ"_Stz,          // CK_LOADJOIN
     /* */ "ldN"_Stz,          // CK_LOADNETWORK
+    /* */ "ldP"_Stz,          // CK_LOADPERMSEQ
     /* */ "ldU"_Stz,          // CK_LOADUNICAST
 
     /* */ "mIJ"_Stz,          // CK_MAYBEINDEXJOIN

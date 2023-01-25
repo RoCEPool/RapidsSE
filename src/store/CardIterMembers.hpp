@@ -119,6 +119,7 @@ namespace STORE
     Card_Limit *            p_limit;
     Card_LoadJoin *         p_loadJoin;
     Card_LoadNetwork *      p_loadNetwork;
+    Card_LoadPermSeq *      p_loadPermSeq;
     Card_LoadUnicast *      p_loadUnicast;
     Card_Manner *           p_manner;
     Card_NCorrCols *        p_nCorrCols;

@@ -94,6 +94,7 @@ namespace STORE
   class Card_Limit;
   class Card_LoadJoin;
   class Card_LoadNetwork;
+  class Card_LoadPermSeq;
   class Card_LoadUnicast;
 
   class Card_Manner;
@@ -522,6 +523,7 @@ namespace STORE
     Card_Level*         pSub_level(void);
     Card_LoadJoin*      pSub_loadJoin(void);
     Card_LoadNetwork*   pSub_loadNetwork(void);
+    Card_LoadPermSeq*   pSub_loadPermSeq(void);
     Card_LoadUnicast*   pSub_loadUnicast(void);
     Card_Manner*        pSub_manner(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
