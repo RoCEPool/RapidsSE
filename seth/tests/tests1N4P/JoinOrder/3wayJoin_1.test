@@ -52,6 +52,12 @@ success
 //  cola == ptn  ->  colb == ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
 Join Permutations:
                                      Network Total    Unicast Total
   A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*1000)
@@ -88,6 +94,12 @@ rows: (138)
 //  cola == ptn  ->  colb == ptn     colb = ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select count(*)
+  from A
+  join B on A.A_COL0 = B.B_COL0
+  join C on B.B_COL0 = C.C_COL1
+;
+
 Join Permutations:                                       Network Total                Unicast Total
   A->B (UNICAST)(0)        ->C (BROADCAST) (4*1000*1000) Total=(0+(4*1000*1000))    , 1000
   B->A (UNICAST)(0)        ->C (BROADCAST) (4*1000*1000) Total=(0+(4*1000*1000))    , 1000
@@ -95,7 +107,7 @@ Join Permutations:                                       Network Total          
   C->B (HASHCAST)(1000)    ->A (HASHCAST)  (1000*1000)   Total=(1000+(1000*1000))   , 0
 
 Expected join order:
-  Either C->B->A
+  C->B->A
 
 ********************************************************************************/
 
@@ -123,6 +135,12 @@ rows: (61)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb != ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL0
+ ;
 
 Join Permutations:                                   Network Total                Unicast Total
   A->B (UNICAST)(0)       ->C (HASHCAST) (1000*1000) Total=(0+(1000*1000))      , 1000
@@ -159,6 +177,12 @@ rows: (73)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb != ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL1
+ ;
 
 Join Permutations:
                                          Network Total                           , Unicast Total
@@ -197,6 +221,12 @@ rows: (65)
 //  cola == ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
 Join Permutations:
                                               Network Total ,    Unicast Total
     A->B (BROADCAST)(4*1000) ->C (UNICAST)(0) Total=((4*1000)+0) ,  1000*1000
@@ -233,6 +263,12 @@ rows: (73)
 //  cola != ptn  ->  colb == ptn     colb = ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
 Join Permutations:                                    Network Total                , Unicast Total
   A->B (HASHCAST) (1000)  ->C (UNICAST)  (0)          Total=(1000+0)               , 1000*1000
   B->A (BROADCAST)(4*1000)->C (UNICAST)  (0)          Total=((4*1000)+0)           , 1000*1000
@@ -268,6 +304,12 @@ rows: (61)
 //  cola != ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
 Join Permutations:                                        Network Total           Unicast Total
   A->B (BROADCAST)(4*1000)     ->C (UNICAST)  (4*1000)    Total=((4*1000)+0)    , 1000*1000
   B->A (BROADCAST)(4*1000)     ->C (UNICAST)  (4*1000)    Total=((4*1000)+0)    , 1000*1000
@@ -302,6 +344,12 @@ rows: (65)
 //  A            ->  B               B           ->  C
 //  cola != ptn  ->  colb != ptn     colb != ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL1 = C.C_COL1
+ ;
 
 Join Permutations:                                       Network Total                   , Unicast Total
   A->B (BROADCAST)(4*1000) ->C (BROADCAST) (4*1000*1000) Total=(4*1000 + (4*1000*1000))  , 0
