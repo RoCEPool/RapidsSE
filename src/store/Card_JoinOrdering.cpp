@@ -94,26 +94,45 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
 
   s32 sTableSyn;
 
-  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+  Card_JoinPermSeq* p_joinPermSeq_dup =
+      _pCard_JoinPermSeq(p_joinPermSeq->pDupCardAndSubCards());
 
-  p_joinOrdering->Y_vSet(P_Permutation,p_joinPermSeq->Y_iGet(P_Permutation));
+  p_joinPermSeq_dup->vCard(CK_JOINORDERING);
 
-  CardIter xCI(p_joinPermSeq);
-  while (xCI.G_bEachMain()) {
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD))
-      sTableSyn.vSprint("%c"_Stz, xCI.G.p_joinHead->cValue());
-    else
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
-      sTableSyn.vSprint("%c"_Stz, xCI.G.p_joinNext->cValue());
-    else
-      continue;
+  Card_JoinOrdering* p_joinOrdering = _pCard_JoinOrdering(p_joinPermSeq_dup);
 
-    Card_JoinOrder* p_joinOrder = new Card_JoinOrder(sTableSyn);
-    p_joinOrdering->vAppend(p_joinOrder);
-  }
+  p_joinOrdering->vMorphChildrenTo(CK_JOINHEAD,CK_JOINORDER);
+  p_joinOrdering->vMorphChildrenTo(CK_JOINNEXT,CK_JOINORDER);
 
   return p_joinOrdering;
 }
+/*----------------------------------------------------------------------------*/
+//Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
+//{
+//  _static_
+//
+//  s32 sTableSyn;
+//
+//  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+//
+//  p_joinOrdering->Y_vSet(P_Permutation,p_joinPermSeq->Y_iGet(P_Permutation));
+//
+//  CardIter xCI(p_joinPermSeq);
+//  while (xCI.G_bEachMain()) {
+//    if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD))
+//      sTableSyn.vSprint("%c"_Stz, xCI.G.p_joinHead->cValue());
+//    else
+//    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+//      sTableSyn.vSprint("%c"_Stz, xCI.G.p_joinNext->cValue());
+//    else
+//      continue;
+//
+//    Card_JoinOrder* p_joinOrder = new Card_JoinOrder(sTableSyn);
+//    p_joinOrdering->vAppend(p_joinOrder);
+//  }
+//
+//  return p_joinOrdering;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
