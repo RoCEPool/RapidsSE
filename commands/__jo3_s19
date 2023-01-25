@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* __jo3_s3 -- optimiser join ordering 3-way join statement 3                 */
+/* __jo3_s19 -- optimiser join ordering 3-way join statement 19               */
 /*============================================================================*/
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 3
 //  Partitions = 4
-//  size(A) = size(B) , size(B) > size(C)
+//  size(A) < size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb != ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -47,7 +47,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_o_s15"
+/pipelineName = "_jo3_s19"
 select count(*)
   from A
    join B on A.A_COL0 = B.B_COL0
@@ -66,12 +66,12 @@ drop table C;
 
 Join Permutations:                                    Network Total                 , Unicast Total
   A->B (UNICAST)(0)       ->C (HASHCAST) (1000*10000)  Total=(0+(1000*10000))        , 1000
-  B->A (UNICAST)(0)       ->C (HASHCAST) (10000*1000)  Total=(0+(10000*1000))        , 1000
+  B->A (UNICAST)(0)       ->C (HASHCAST) (10000*1000)  Total=(0+(10000*1000))        , 10000
   B->C (HASHCAST)(10000)  ->A (HASHCAST) (10000*1000)  Total=(10000 + (10000*1000))  , 0
   C->B (BROADCAST)(4*1000)->A (HASHCAST) (1000*10000)  Total=(4*1000 + (1000*10000)) , 0
 
 Expected join order:
-  Either A->B->C or B->A->C
+  A->B->C
 
 Expected Result:
   row: (73)

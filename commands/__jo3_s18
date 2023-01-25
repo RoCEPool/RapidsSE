@@ -46,7 +46,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_o_s15"
+/pipelineName = "_jo3_s18"
 select count(*)
   from A
    join B on A.A_COL0 = B.B_COL0
@@ -67,7 +67,7 @@ Join Permutations:                                        Network Total         
   A->B (UNICAST)(0)        ->C (BROADCAST) (4*1000*10000) Total=(0+(4*1000*10000))       , 1000
   B->A (UNICAST)(0)        ->C (BROADCAST) (4*10000*1000) Total=(0+(4*10000*1000))       , 10000
   B->C (BROADCAST)(4*10000)->A (HASHCAST)  (10000*1000)   Total=(4*10000 + (10000*1000)) , 0
-  C->B (BROADCAST)(4*1000) ->A (HASHCAST)  (10000*1000)   Total=(4*1000 + (10000*1000))  , 0
+  C->B (BROADCAST)(4*1000) ->A (HASHCAST)  (1000*10000)   Total=(4*1000 + (1000*10000))  , 0
 
 Expected join order:
   Either B->A->C

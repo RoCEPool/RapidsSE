@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* __jo3_s7 -- optimiser join ordering 3-way join statement 7                 */
+/* __jo3_s23 -- optimiser join ordering 3-way join statement 23               */
 /*============================================================================*/
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 7
 //  Partitions = 4
-//  size(A) = size(B) , size(B) > size(C)
+//  size(A) < size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola != ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,7 +46,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_o_s15"
+/pipelineName = "_jo3_s23"
 select count(*)
   from A
    join B on A.A_COL1 = B.B_COL1
