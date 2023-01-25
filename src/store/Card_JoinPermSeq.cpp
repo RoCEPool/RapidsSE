@@ -56,6 +56,9 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  i8 nSumLoadNetwork = 0;
+  i8 nSumLoadUnicast = 0;
+
   i8 nBuffersIn = 0;
   char cTblSyn_l = ' ';
 
@@ -80,12 +83,21 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
                                                  cTblSyn_l,cTblSyn_r);
 
     cTblSyn_l = cTblSyn_r;
+
+    Card_LoadJoin* p_loadNext = xCI.G.p_joinNext->pSub_loadJoin();
+
+    Card_LoadNetwork* p_loadNetwork = p_loadNext->pSub_loadNetwork();
+    nSumLoadNetwork += p_loadNetwork->iValue();
+    Card_LoadUnicast* p_loadUnicast = p_loadNext->pSub_loadUnicast();
+    nSumLoadUnicast += p_loadUnicast->iValue();
   }
 
   Card_LoadPermSeq* p_loadPermSeq = new Card_LoadPermSeq;
 
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
+  p_loadNetwork->vValue(nSumLoadNetwork);
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
+  p_loadUnicast->vValue(nSumLoadUnicast);
 
   p_loadPermSeq->vAppend(p_loadNetwork);
   p_loadPermSeq->vAppend(p_loadUnicast);
