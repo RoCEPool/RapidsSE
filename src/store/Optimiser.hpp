@@ -28,6 +28,8 @@ namespace STORE
     Transformer* m_pTransformer;
     Weaver*      m_pWeaver;
 
+    s256         m_sJoinOrder; // join order string
+
     // must be last
     Footer m_xFooter;
 
@@ -48,6 +50,9 @@ namespace STORE
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);
 
     TagSet* pJobTags(void);
+
+    Stz* szJoinOrder(void);
+    void vJoinOrder(Stz* szJoinOrder);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);

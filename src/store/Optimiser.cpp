@@ -38,6 +38,8 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_pTransformer = new Transformer(m_pBench);
   m_pWeaver      = new Weaver(m_pBench);
 
+  m_sJoinOrder   = "(none)"_Stz;
+
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -134,7 +136,28 @@ TagSet* Optimiser::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set m_pUnOptPipeSpec                                                   */
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Optimiser::szJoinOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_sJoinOrder;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set join order string                                                      */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vJoinOrder(Stz* szJoinOrder)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_sJoinOrder = szJoinOrder;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set m_pUnOptPipeSpec                                                       */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vPipeSpec(VertexSpec* pm_pUnOptPipeSpec)
 {
