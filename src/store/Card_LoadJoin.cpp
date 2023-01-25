@@ -56,7 +56,7 @@ i8 Card_LoadJoin::nCalculateLoad(Card_LoadNetwork* p_loadNetwork,
 
 
   i8 iLoadJoin = p_loadNetwork->iValue() + p_loadUnicast->iValue();
-  vValue((i8)iLoadJoin);
+  //vValue((i8)iLoadJoin);
 
   return iLoadJoin;
 }

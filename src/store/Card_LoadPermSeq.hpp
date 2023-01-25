@@ -16,6 +16,7 @@ namespace STORE
     Card_LoadPermSeq(void);
    ~Card_LoadPermSeq(void) noexcept(false);
 
+    bool bIsLessLoad(Card_LoadPermSeq* p_loadPermSeq_arg);
   };
 
   Card_LoadPermSeq* _pCard_LoadPermSeq(void* aAddr);

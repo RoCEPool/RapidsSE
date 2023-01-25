@@ -24,6 +24,8 @@ namespace STORE
                            PermGen*           pPermGen);
 
      bool bHasKnownJoin(char cTblSyn);
+
+     bool bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg);
    };
 
   Card_JoinPermSeq* _pCard_JoinPermSeq(void* aAddr);

@@ -198,6 +198,22 @@ bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is load of this permutation sequence less than given arg?                  */
+/*----------------------------------------------------------------------------*/
+bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_LoadPermSeq* p_loadPermSeq_this = pSub_loadPermSeq();
+  Card_LoadPermSeq* p_loadPermSeq_arg  = p_joinPermSeq_arg->pSub_loadPermSeq();
+
+  if (p_loadPermSeq_this->bIsLessLoad(p_loadPermSeq_arg))
+    return true;
+  else
+    return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

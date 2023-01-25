@@ -46,7 +46,28 @@ Card_LoadPermSeq::~Card_LoadPermSeq(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* is this permutation sequence load less than given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Card_LoadPermSeq::bIsLessLoad(Card_LoadPermSeq* p_loadPermSeq_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-//*============================================================================*/
+  Card_LoadNetwork* p_loadNetwork_this = pSub_loadNetwork();
+  Card_LoadNetwork* p_loadNetwork_arg  = p_loadPermSeq_arg->pSub_loadNetwork();
+
+  if (p_loadNetwork_this->iValue() < p_loadPermSeq_arg->iValue())
+    return true;
+
+  Card_LoadUnicast* p_loadUnicast_this = pSub_loadUnicast();
+  Card_LoadUnicast* p_loadUnicast_arg  = p_loadPermSeq_arg->pSub_loadUnicast();
+
+  if (p_loadUnicast_this->iValue() < p_loadUnicast_arg->iValue())
+    return true;
+
+  return false;
+}
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
