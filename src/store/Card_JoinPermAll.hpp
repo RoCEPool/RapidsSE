@@ -20,8 +20,8 @@ namespace STORE
                                                Card_JoinPredList* p_joinPredList);
 
     void vCalculateLoad(Card_TableList* p_tableList);
+    Card_JoinPermSeq* pLowestLoad(void);
     void vRemoveInvalid(void);
-
    };
 
   Card_JoinPermAll* _pCard_JoinPermAll(void* aAddr);

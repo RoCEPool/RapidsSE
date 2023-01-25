@@ -95,6 +95,27 @@ void Card_JoinPermAll::vCalculateLoad(Card_TableList* p_tableList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pick join permseq with lowest load                                         */
+/*----------------------------------------------------------------------------*/
+Card_JoinPermSeq* Card_JoinPermAll::pLowestLoad(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_JoinPermSeq* pLowest = nullptr;
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+    if (! pLowest)
+      pLowest = xCI.G.p_joinPermSeq;
+    else
+    if (xCI.G.p_joinPermSeq->bIsLessLoad(pLowest))
+      pLowest = xCI.G.p_joinPermSeq;
+  }
+
+  return pLowest;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the set of join permutations                                       */
 /*----------------------------------------------------------------------------*/
 void Card_JoinPermAll::vRemoveInvalid(void)

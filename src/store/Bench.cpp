@@ -3292,10 +3292,12 @@ void Bench::vTransform_JoinOrdering_v2(void)
   // 5) Pick final join ordering
   Card_JoinOrdering* p_joinOrdering =
       Card_JoinOrdering::pPick(p_joinPermAll);
+  m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardAndSubCards());
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
 
   DELETE_CARD(p_joinPermAll);
   DELETE_CARD(p_joinOrdering);
-
 
   pBoard = m_pCI->G.pBoard;
   m_pCI->G_vPopIter();

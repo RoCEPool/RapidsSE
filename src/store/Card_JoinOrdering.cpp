@@ -88,6 +88,36 @@ Card_JoinOrdering* Card_JoinOrdering::pCompute(Card_Deck* pDeck)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
+{
+  _static_
+
+  s32 sTableSyn;
+
+  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+
+  p_joinOrdering->Y_vSet(P_Permutation,p_joinPermSeq->Y_iGet(P_Permutation));
+
+  CardIter xCI(p_joinPermSeq);
+  while (xCI.G_bEachMain()) {
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD))
+      sTableSyn.vSprint("%c"_Stz, xCI.G.p_joinHead->cValue());
+    else
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+      sTableSyn.vSprint("%c"_Stz, xCI.G.p_joinNext->cValue());
+    else
+      continue;
+
+    Card_JoinOrder* p_joinOrder = new Card_JoinOrder(sTableSyn);
+    p_joinOrdering->vAppend(p_joinOrder);
+  }
+
+  return p_joinOrdering;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_JoinOrdering::vEstimateJoinedBuff(Card_Deck* pDeck,
                                          Card_TableList* p_tableList)
 {
@@ -163,7 +193,9 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll)
 {
   _static_
 
-  Card_JoinOrdering* p_joinOrdering = new Card_JoinOrdering;
+  Card_JoinPermSeq* p_joinPermSeq_lowest = p_joinPermAll->pLowestLoad();
+
+  Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_lowest);
 
   return p_joinOrdering;
 }
