@@ -46,7 +46,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_o_s15"
+/pipelineName = "_jo3_s6"
 select count(*)
   from A
    join B on A.A_COL1 = B.B_COL0
