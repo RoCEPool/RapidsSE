@@ -3059,6 +3059,58 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_LoadJoin.hpp"
+Card_LoadJoin* Card::pSub_loadJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LoadJoin* p_loadJoin =
+      _pCard_LoadJoin(pFindSubCard(CK_LOADJOIN));
+  return p_loadJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_LoadNetwork.hpp"
+Card_LoadNetwork* Card::pSub_loadNetwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LoadNetwork* p_loadNetwork =
+      _pCard_LoadNetwork(pFindSubCard(CK_LOADNETWORK));
+  return p_loadNetwork;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_LoadPermSeq.hpp"
+Card_LoadPermSeq* Card::pSub_loadPermSeq(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LoadPermSeq* p_loadPermSeq =
+      _pCard_LoadPermSeq(pFindSubCard(CK_LOADPERMSEQ));
+  return p_loadPermSeq;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_LoadUnicast.hpp"
+Card_LoadUnicast* Card::pSub_loadUnicast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LoadUnicast* p_loadUnicast =
+      _pCard_LoadUnicast(pFindSubCard(CK_LOADUNICAST));
+  return p_loadUnicast;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Manner.hpp"
 Card_Manner* Card::pSub_manner(void)
 {
