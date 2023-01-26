@@ -28,7 +28,7 @@ namespace STORE
     Transformer* m_pTransformer;
     Weaver*      m_pWeaver;
 
-    s256         m_sJoinOrder; // join order string
+    s4K          m_sJoinOrder; // join order string
 
     // must be last
     Footer m_xFooter;
