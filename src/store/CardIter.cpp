@@ -1225,10 +1225,6 @@ void CardIter::vEndTransform(void)
 
   //m_pCardCtl->vUseDefault();
 
-
-  CardIter xCI(G.pDeck);
-  while ((G.p_MainCard = xCI.pEachChild()))
-    G.p_MainCard->Y_vCut(P_Focus);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1259,8 +1255,6 @@ void CardIter::vFocusOnMain(void)
 
   G.e_MainCard = G.p_MainCard->eCard();
   G.i_MainCard = this->i_Child();
-
-  G.p_MainCard->Y_vSet(P_Focus);
 }
 
 /*----------------------------------------------------------------------------*/

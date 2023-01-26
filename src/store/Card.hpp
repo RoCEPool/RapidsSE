@@ -185,7 +185,6 @@ static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 static Stz* P_CorrPred     = "bCorrPred"_Stz;
 static Stz* P_CorrStmCol   = "bCorrStmCol"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
-static Stz* P_Focus        = "szFocus"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Inject       = "bInject"_Stz;
 static Stz* P_Injected     = "bInjected"_Stz;
