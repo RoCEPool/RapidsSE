@@ -1,7 +1,7 @@
 .. _sizingGuide:
 
 Sizing Guide
-------------
+============
 Because RapidsSE is an in-memory system, it is important to determine how much
 memory is required on each node and how many nodes are required to fit a given
 data set.

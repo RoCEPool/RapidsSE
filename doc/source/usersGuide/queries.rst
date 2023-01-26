@@ -14,7 +14,7 @@ This is known as a query.
 .. _formOfASqlQuery:
 
 Form of a SQL Query
-```````````````````
+-------------------
 
 A ``SELECT`` query in RapidsSE is constructed from SQL clauses with the
 following general form:
@@ -36,7 +36,7 @@ These clauses are described in more detail in the sections below. Expressions
 are described :ref:`here <expressions>`.
 
 Supported Query Clauses
-```````````````````````
+-----------------------
 RapidsSE supports the following syntactic SQL clauses in a
 ``SELECT`` query:
 
@@ -62,7 +62,7 @@ RapidsSE does not currently support the following SQL clauses:
 .. _selectlist:
 
 SELECT List
-```````````
+-----------
 The ``SELECT`` list is the list of expressions that occurs after
 the ``SELECT`` keyword in a query. It defines the list of column values
 that are to be returned in each row of the query. These expressions can

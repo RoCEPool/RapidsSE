@@ -13,7 +13,7 @@ it has been installed and started by an administrator. Further details on
 each of the components below can be found in the :ref:`interfaces` section.
 
 SE Prompt
-`````````
+---------
 SE Prompt is the original mechanism for submitting commands and queries to
 RapidsSE and getting back responses. It was never intended to be a complete
 shell-like experience. Instead it is intended to be deprecated and replaced
@@ -57,7 +57,7 @@ be produced:
    ERROR: Cannot start SE Prompt - RapidsSE is not running on this node.
 
 SE Shell
-````````
+--------
 SE Shell is the future replacement for `SE Prompt`_. It will appear in a near
 future version of RapidsSE. SE Shell will offer a more user-friendly
 command line interface (CLI) experience by supporting:
@@ -75,7 +75,7 @@ SE Shell will be documented further once it is released.
 
 
 JDBC Driver
-```````````
+-----------
 The RapidsSE JDBC Driver is a feature that will appear with `SE Shell`_ in
 the near future. It allows for easy programmatic access to RapidsSE from
 Java applications for submitting commands and getting results. The RapidsSE

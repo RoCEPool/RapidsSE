@@ -80,7 +80,22 @@ directives:
 Headings and subheadings in reStructuredText are underlined. Headings of different
 levels are underlined with different characters. This documentation should follow
 the docutils recommendation for characters used for underlining headings:
-```= - ` : ' " ~ ^ _ * + # < >```
+```= - \` : ' " ~ ^ _ * + # < >```
+
+    Heading 1:     =========
+    Heading 2:     ---------
+    Heading 3:     ````````` 
+    Heading 4:     :::::::::
+    Heading 5:     '''''''''
+    Heading 6:     """""""""
+    Heading 7:     ~~~~~~~~~
+    Heading 8:     ^^^^^^^^^
+    Heading 9:     _________
+    Heading 10:    *********
+    Heading 11:    +++++++++
+    Heading 12:    #########
+    Heading 13:    <<<<<<<<<
+    Heading 14:    >>>>>>>>>
 
 ## Other Notes
 
