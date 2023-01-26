@@ -89,14 +89,14 @@ namespace STORE
 
     Board* pBoard(void);
 
-    void  vChangeCard(Card* pCard);
-    i8    i_Child(void);
+    void vChangeCard(Card* pCard);
+    i8   i_Child(void);
     Card* pChild(void);
-    void  G_vClearMembers(void);
-    void  G_vClearRegisters(void);
-    void  G_vClearRegistersIf(Card* pCard);
+    void G_vClearMembers(void);
+    void G_vClearRegisters(void);
+    void G_vClearRegistersIf(Card* pCard);
     void G_vCopyCard(Card* pCard);
-    eOA   eCueUser(Stz* szPrompt);
+    eOA  eCueUser(Stz* szPrompt);
 
     void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);

@@ -3319,6 +3319,19 @@ Card_Scan* Card::pSub_scan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Section.hpp"
+Card_Section* Card::pSub_section(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Section* p_section =
+      _pCard_Section(pFindSubCard(CK_SECTION));
+  return p_section;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Size.hpp"
 Card_Size* Card::pSub_size(void)
 {

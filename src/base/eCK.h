@@ -128,6 +128,7 @@ enum eCK // card kind
   /* */ CK_RPNTERMS,
 
   /* */ CK_SCAN,
+  /* */ CK_SECTION,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
   /* */ CK_SIZE,
@@ -308,6 +309,7 @@ static Stz* aCK[]
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
+  /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
@@ -487,6 +489,7 @@ static Stz* aCK_short[]
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
   /* */ "scan"_Stz,            // CK_SCAN
+  /* */ "section"_Stz,         // CK_SECTION
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "size"_Stz,            // CK_SIZE
@@ -666,6 +669,7 @@ static Stz* aCK_notation[]
     /* */ "rT"_Stz,           // CK_RPNTERMS
 
     /* */ "s"_Stz,            // CK_SCAN
+    /* */ "sect"_Stz,         // CK_ECTION
     /* */ "sSE"_Stz,          // CK_SEND
     /* */ "sK"_Stz,           // CK_SENDKIND
     /* */ "sz"_Stz,           // CK_SIZE

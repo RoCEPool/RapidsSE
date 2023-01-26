@@ -124,8 +124,9 @@ namespace STORE
   class Card_RpnTerms;
 
   class Card_Scan;
-  class Card_Size;
+  class Card_Section;
   class Card_Send;
+  class Card_Size;
   class Card_Sort;
   class Card_RoPred;
   class Card_Stage;
@@ -540,6 +541,7 @@ namespace STORE
     Card_RoPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
+    Card_Section*       pSub_section(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
     Card_Projection*    pSub_projection(void);

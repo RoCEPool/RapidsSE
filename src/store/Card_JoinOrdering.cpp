@@ -262,8 +262,6 @@ void Card_JoinOrdering::vJoinOrderString(String* pString, Card_TableList* p_tabl
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   // the join sequence
-  pString->vCopy("<join sequence>"_Stz);
-
   CardIter xCI(this);
   if (xCI.G_bEachMain(CK_JOINORDER)) {
     char cHeadTable = xCI.G.p_joinOrder->cValue();

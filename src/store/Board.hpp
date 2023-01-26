@@ -134,6 +134,7 @@
 #include "Card_RpnTerms.hpp"
 
 #include "Card_Scan.hpp"
+#include "Card_Section.hpp"
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"

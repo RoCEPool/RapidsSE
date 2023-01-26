@@ -620,6 +620,8 @@ void CardCtl::vReset(void)
 
   //vPrintSubCards(CK_PROJECTION, false);
 
+  vHeatNext(CK_SECTION, true);
+
   vHeatNext(CK_STAGE, true);
   vHorizExclude(CK_STAGE, P_HideHeat);
 

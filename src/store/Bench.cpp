@@ -3268,6 +3268,7 @@ void Bench::vTransform_JoinOrdering_v2(void)
   Card_JoinPermAll* p_joinPermAll =
       Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
+  m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
   CardIter xCI(p_joinPermAll);
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
@@ -3275,6 +3276,8 @@ void Bench::vTransform_JoinOrdering_v2(void)
   m_pCI->vPrintBoard(__LINE__);
 
   p_joinPermAll->vRemoveInvalid();
+  m_pCI->G.pDeck->vAppend(new Card_Section("Valid Permutations"_Stz));
+
   xCI.vRestart();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
@@ -3283,6 +3286,7 @@ void Bench::vTransform_JoinOrdering_v2(void)
 
   // 4) Calculate join load
   p_joinPermAll->vCalculateLoad(m_pCI->G.p_tableList);
+  m_pCI->G.pDeck->vAppend(new Card_Section("Join Loads"_Stz));
   xCI.vRestart();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
@@ -3292,6 +3296,7 @@ void Bench::vTransform_JoinOrdering_v2(void)
   // 5) Pick final join ordering
   Card_JoinOrdering* p_joinOrdering =
       Card_JoinOrdering::pPick(p_joinPermAll);
+  m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardAndSubCards());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);

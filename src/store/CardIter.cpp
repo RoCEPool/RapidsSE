@@ -452,6 +452,7 @@ void CardIter::G_vClearMembers(void)
   G.p_relnOp           = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_scan             = nullptr;
+  G.p_section          = nullptr;
   G.p_send             = nullptr;
   G.p_size             = nullptr;
   G.p_sort             = nullptr;
@@ -1384,6 +1385,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_RELNOP:           return G.p_relnOp;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SCAN:             return G.p_scan;
+    case CK_SECTION:          return G.p_section;
     case CK_SEND:             return G.p_send;
     case CK_SIZE:             return G.p_size;
     case CK_SORT:             return G.p_sort;
@@ -1749,6 +1751,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_RELNOP:           return "G.p_relnOp"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SCAN:             return "G.p_scan"_Stz;
+    case CK_SECTION:          return "G.p_section"_Stz;
     case CK_SEND:             return "G.p_send"_Stz;
     case CK_SIZE:             return "G.p_size"_Stz;
     case CK_SORT:             return "G.p_sort"_Stz;
@@ -2962,6 +2965,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_RELNOP:           *((Card**)&G.p_relnOp)           = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard; break;
+    case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
     case CK_SEND:             *((Card**)&G.p_send)             = pCard; break;
     case CK_SIZE:             *((Card**)&G.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&G.p_sort)             = pCard; break;
