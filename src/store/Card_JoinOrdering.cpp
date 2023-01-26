@@ -297,9 +297,11 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card* pAfter = nullptr;
-  while (Card_JoinOrder* p_joinOrder = _pCard_JoinOrder(pPop())) {
 
-    Stz* szTableSyn = p_joinOrder->szValue();
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_JOINORDER)) {
+
+    Stz* szTableSyn = xCI.G.p_joinOrder->szValue();
 
     i8 i_Table = C_UNKNOWN;
     Card_Table* p_table =
@@ -313,11 +315,37 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
       pDeck->vPush(p_table);
 
     pAfter = p_table;
-
-    DELETE_CARD(p_joinOrder);
   }
 
 }
+/*----------------------------------------------------------------------------*/
+//void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  Card* pAfter = nullptr;
+//  while (Card_JoinOrder* p_joinOrder = _pCard_JoinOrder(pPop())) {
+//
+//    Stz* szTableSyn = p_joinOrder->szValue();
+//
+//    i8 i_Table = C_UNKNOWN;
+//    Card_Table* p_table =
+//        _pCard_Table(pDeck->pFindChild(CK_TABLE,szTableSyn,i_Table));
+//
+//    pDeck->vRemoveChild(p_table);
+//
+//    if (pAfter)
+//      pDeck->vInsertAfter(p_table,pAfter);
+//    else
+//      pDeck->vPush(p_table);
+//
+//    pAfter = p_table;
+//
+//    DELETE_CARD(p_joinOrder);
+//  }
+//
+//}
+
 
 //*===========================================================================*/
 /* end                                                                        */
