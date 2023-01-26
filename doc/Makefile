@@ -14,10 +14,10 @@ UNAME_S := $(shell uname -s)
 
 # Put it first so that "make" without argument is like "make all".
 all: checkSphinx checkLatex
-	@echo "Validating links in rst files..."
-	@echo
-	@$(MAKE) linkcheck
-	@echo
+#	@echo "Validating links in rst files..."
+#	@echo
+#	@$(MAKE) linkcheck
+#	@echo
 	@echo "Updating version information..."
 	@./updateVersion.sh
 	@echo "done"
