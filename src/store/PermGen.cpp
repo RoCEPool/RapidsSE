@@ -75,7 +75,9 @@ i8 PermGen::iItem(i8 i_Position)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  return m_iaItem[i_Position];
+  i8 i_Item = m_nItems - 1 - i_Position;
+
+  return m_iaItem[i_Item];
 }
 
 /*----------------------------------------------------------------------------*/
