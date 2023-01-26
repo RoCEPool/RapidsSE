@@ -167,6 +167,8 @@ Selecting data from an inline subquery in the ``FROM`` clause.
 
   SELECT a, b FROM (SELECT ...) ;
 
+.. _tableAlias:
+
 A table whose name is long and difficult to type can be given an alias that
 can then be used in other parts of the query. A table alias is specified
 after the table name in the ``FROM`` clause (or ``JOIN`` clauses) separated

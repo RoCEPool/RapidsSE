@@ -10,7 +10,7 @@ Expressions
 ===========
 
 Overview
-````````
+--------
 An expression is a symbolic representation of a calculation. Expressions are
 used extensively in ``SELECT`` queries, both to specify the :ref:`data to be
 returned <selectlist>` but also how to :ref:`filter <where>` and
@@ -61,7 +61,7 @@ particular operator.
 .. _nulls:
 
 Nulls
-`````
+-----
 When an expression is evaluated, it can return a range of values as described
 by the resulting :ref:`data type <dataTypes>`. An expression can also return a
 ``NULL`` value too. A ``NULL`` value is a special value that effectively
@@ -112,7 +112,7 @@ as an integer data type to match the other integer operand ``1``.
 .. _literals:
 
 Literals
-````````
+--------
 SQL literals are written in a particular way to convey their value as well as
 their type. As RapidsSE supports three main numeric types (``INTEGER``,
 ``DECIMAL`` and ``FLOAT``), care must be taken with how literal values are
@@ -249,9 +249,108 @@ The ``TIMESTAMP`` keyword and a space must appear before the first single quote
 so that RapidsSE does not interpret the value as a string.
 
 
+Named References
+----------------
+An expression can contain a reference by name to a value. This is often
+represented by a column reference or an alias reference.
+
+Column References
+`````````````````
+A column reference is an expression that refers to a column in a table. When
+the expression is evaluated, the expression is replaced by the value of that
+column for the current row. A column reference is expressed simply by the name
+of the column, or by the qualified name of the column if the column name may
+be ambiguous.
+
+For example, below are four ways of referencing a column, ``columnA``, with
+differing levels of qualification.
+
+.. code:: sql
+
+  columnA
+  mytable.columnA
+  mySchema.myTable.columnA
+  myCatalog.mySchema.myTable.columnA
+
+If an unqualified column reference is provided and that unqualified column name
+is ambiguous (for example, the same column name appears in two tables in the
+query), then RapidsSE will issue an error that the column name is ambiguous.
+
+If a query makes use of a :ref:`table alias <tableAlias>` to simplify a table
+name, and the query wishes to qualify an associated column reference, then the
+column reference *must* use the table's alias and not the original table name.
+
+For example, this query is incorrect because the column reference is qualified
+against the original table name when that table name has been aliased.
+
+.. code:: sql
+
+  SELECT nation.n_name FROM nation n ;        (INCORRECT!)
+
+This is the above query re-written correctly:
+
+.. code:: sql
+
+  SELECT n.n_name FROM nation n ;             (CORRECT!)
+
+
+Expression Alias References
+```````````````````````````
+A complicated expression in a :ref:`select list <selectlist>` can be given an
+alias by which it is known, and this alias can be used in other expressions to
+avoid re-typing the complex original expression. This is specified in the
+select list by using the ``AS`` clause, as shown below:
+
+.. code:: sql
+
+  SELECT a, SUM(b) AS total
+  FROM t1
+  GROUP BY a ;
+
+This alias can then be used in other expressions, however it can only be used
+in expressions that are executed after the point where the aliased expression
+is projected. Based on the above example, the following example is incorrect
+and would give an error message indicating that the aliased name is unknown.
+
+.. code:: sql
+
+  SELECT a, SUM(b) AS total
+  FROM t1
+  WHERE total > 0
+  GROUP BY a ;
+
+The reason the above example is incorrect is because the alias ``total`` is
+defined at the point where the aggregation ``SUM(b)`` occurs, and this happens
+*after* the execution of the ``WHERE`` clause. At the point of the ``WHERE``
+clause there are no columns or aliased expressions known as ``total``.
+
+The following is a correctly written example of this query:
+
+.. code:: sql
+
+  SELECT a, SUM(b) AS total
+  FROM t1
+  GROUP BY a
+  HAVING total > 0 ;
+
+This query is valid because the ``HAVING`` clause executes *after* the
+aggregation and alias is defined, therefore the ``HAVING`` operator receives
+rows where one of the projected columns is known as ``total``. The aliased
+name can be successfully resolved.
+
+Typically expression aliases can be referenced in expressions in the
+``GROUP BY``, ``HAVING`` and ``ORDER BY`` clauses. Expression aliases are
+typically not resolvable in a ``WHERE`` clause.
+
+
+Keywords
+--------
+RapidsSE does not currently support expression keywords such as ``NOW()``,
+``CURRENT_TIMESTAMP`` or ``CURRENT_USER``.
+
 
 Supported Expression Operators
-``````````````````````````````
+------------------------------
 RapidsSE supports a variety of expression operators, with more operators being
 added regularly. These are described in the following sub-categories.
 
@@ -267,7 +366,7 @@ The syntax ``-->`` is used to indicate the resulting data type that will be
 returned from the operator.
 
 Logical Operators
-:::::::::::::::::
+`````````````````
 RapidsSE supports the following logical operators:
 
 * ``AND``
@@ -295,7 +394,7 @@ logical expressions that can contain ``NULL``\s. Refer to this
 
 
 Mathematical Operators
-::::::::::::::::::::::
+``````````````````````
 RapidsSE supports the following mathematical operators:
 
 * ``+`` (addition)
@@ -332,7 +431,7 @@ The syntax for these operators are as follows:
 
 
 Comparison Operators
-::::::::::::::::::::
+````````````````````
 RapidsSE supports the following comparison operators:
 
 * ``=``
@@ -380,15 +479,16 @@ The syntax for these operators are as follows:
    <booleanExpr> IS NOT NULL          --> <booleanValue>
    <expr> BETWEEN <expr> AND <expr>   --> <booleanValue>
 
+
 Conditional Operators
-:::::::::::::::::::::
+`````````````````````
 RapidsSE supports the following conditional operators:
 
 * ``CASE``
 
 
 ``CASE`` Operator
-'''''''''''''''''
+:::::::::::::::::
 
 The ``CASE`` operator is similar to a programming ``if...then...else``
 construct using ``WHEN``, ``THEN`` and ``ELSE`` keywords instead.
@@ -455,14 +555,14 @@ be the same or :ref:`implicitly coercible <implicitTypeCoercion>`.
 
 
 String Operators
-::::::::::::::::
+````````````````
 RapidsSE supports the following string operators:
 
 * ``LIKE``
 * ``SUBSTRING``
 
 LIKE Operator
-'''''''''''''
+:::::::::::::
 The ``LIKE`` operator allows a string expression to be compared against
 another string or pattern. It always returns a boolean data type (including the
 ``NULL`` value).
@@ -530,7 +630,7 @@ Here are some examples using ``ESCAPE`` characters:
 
 
 SUBSTRING Operator
-''''''''''''''''''
+::::::::::::::::::
 The ``SUBSTRING`` operator returns a portion of a string value starting at a
 given index. It always returns a value of a string data type (``CHAR`` or
 ``VARCHAR``).
@@ -553,13 +653,13 @@ the end of the string will be returned.
 
 
 Date and Time Operators
-:::::::::::::::::::::::
+```````````````````````
 RapidsSE supports the following string operators:
 
 * ``EXTRACT``
 
 ``EXTRACT`` Operator
-''''''''''''''''''''
+::::::::::::::::::::
 The ``EXTRACT`` operator returns an integer value corresponding to one of the
 fields from a ``DATE``, ``TIME`` or ``TIMESTAMP`` expression.
 
@@ -584,7 +684,7 @@ Examples:
 
 
 Aggregate Operators
-:::::::::::::::::::
+```````````````````
 
 * ``COUNT``
 * ``COUNT(*)``
@@ -594,12 +694,12 @@ Aggregate Operators
 * ``AVG``
 
 Data Type Casting Operators
-:::::::::::::::::::::::::::
+```````````````````````````
 
 * ``CAST``
 
 Subquery Operators
-::::::::::::::::::
+``````````````````
 
 * ``EXISTS``
 * ``IN``
@@ -610,11 +710,6 @@ The syntax for these operators are as follows:
 
               EXISTS <subquery> --> <boolean>
    <datatype> IN     <subquery> --> <boolean>
-
-Keywords
-````````
-RapidsSE does not currently support expression keywords such as ``NOW()``,
-``CURRENT_TIMESTAMP`` or ``CURRENT_USER``.
 
 
 Order of Precedence
