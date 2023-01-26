@@ -685,36 +685,215 @@ Examples:
 
 Aggregate Operators
 ```````````````````
+An aggregate operator receives a stream of rows and at the end of this stream
+it emits one or more rows with computed aggregations across all of its input
+rows.
+
+RapidsSE supports the following aggregation expression operators:
 
 * ``COUNT``
-* ``COUNT(*)``
 * ``MIN``
 * ``MAX``
 * ``SUM``
 * ``AVG``
 
+Without the presence of a ``GROUP BY`` :ref:`clause <groupby>`, each
+aggregate expression will emit one row for all input rows it receives
+(a grand total aggregate). However, if the query was specified with a
+``GROUP BY`` clause then the aggregates will emit a single row for each unique
+grouping value. Refer to the ``GROUP BY`` :ref:`clause <groupby>` for
+more details.
+
+The syntax for these aggregate operators is as follows:
+
+.. code:: sql
+
+  COUNT(*)              --> <integerExpr>
+  COUNT(<expr>)         --> <integerExpr>
+  MIN(<expr>)           --> <expr>
+  MAX(<expr>)           --> <expr>
+  SUM(<numericExpr>)    --> <numericExpr>
+  AVG(<integerExpr>)    --> <decimalExpr>
+  AVG(<decimalExpr>)    --> <decimalExpr>
+  AVG(<floatExpr>)      --> <floatExpr>
+
+The ``COUNT(*)`` aggregation will return a count of the number of rows it
+receives. The ``COUNT(<expr>)`` form will only count the number of rows where
+``<expr>`` is not ``NULL``.
+
+The ``MIN`` and ``MAX`` aggregates work on a variety of data types, including
+numerics (``INTEGER``, ``DECIMAL`` and ``FLOAT``), datetimes (``DATE``, ``TIME``,
+``TIMESTAMP`` and intervals when supported) and string types (``CHAR`` and
+``VARCHAR``).
+
+The ``SUM`` aggregate works on numeric data types and the returned data type
+is the same as the input data type. For example a ``SUM`` of a decimal
+expression will return a decimal expression.
+
+The ``AVG`` aggregate only works on numeric data types. The returned data type
+always contains fractional precision but it depends on whether the input data
+type is an exact numeric or an approximate numeric type. If the input data
+type is an ``INTEGER`` or ``DECIMAL`` (both are exact numerics) the the output
+data type will be a ``DECIMAL``. However if the input data type is a ``FLOAT``
+(an approximate numeric type) then the output data type will also be a
+``FLOAT``.
+
+.. note::
+
+   RapidsSE does not currently support the ``COUNT`` function with the
+   ``DISTINCT`` keyword. That is, expressions of the form
+   ``COUNT(DISTINCT <expr>)``
+
+
 Data Type Casting Operators
 ```````````````````````````
+RapidsSE supports the ability to explicitly convert the data type of an
+expression to an alternate type. This can be done with the use of the
+``CAST`` expression operator.
 
-* ``CAST``
+The syntax supported for casting is as follows:
+
+.. code:: sql
+
+  CAST '(' <expr> AS <datatype> ')'         --> <datatype>
+  '(' <datatype> ')' <expr>                 --> <datatype>
+
+In the above syntax, ``<datatype>`` is a valid RapidsSE
+:ref:`data type <dataTypes>`.
+
+.. note:
+  Not all data types can be converted to others. Please refer to
+  :ref:`this table <explicit-type-casting-table>` for details on supported type
+  conversions.
+
+Examples:
+
+.. code:: sql
+
+  (1)   CAST(col1 + 2 AS VARCHAR)
+  (2)   (VARCHAR) col1 + 2
+  (3)   (VARCHAR) (col1 + 2)
+
+In example (1) above, the expression ``col1 + 2`` is evaluated and then
+converted to a ``VARCHAR`` representation.
+
+Example (2) is similar, but slightly different. In this case only ``col1``
+is cast to a ``VARCHAR`` before ``2`` is attempted to be added to it. This
+will result in an error as we are trying to add a string and an integer
+type together.
+
+Example (3) shows a correction to example (2) where the entire ``col1 + 2``
+expression is converted to a ``VARCHAR``. This is the same as example (1).
+
 
 Subquery Operators
 ``````````````````
+RapidsSE supports the following subquery expression operators:
 
 * ``EXISTS``
 * ``IN``
 
-The syntax for these operators are as follows:
+These subquery operators are described in the following sub-sections.
+
+EXISTS Operator
+:::::::::::::::
+The ``EXISTS`` operator executes a subquery and returns a boolean value.
+The value ``true`` is returned if the subquery would return any rows, and
+``false`` if the subquery returns an empty result set. None of the returned
+rows are used in the parent query or the ``EXISTS`` clause, simply the presence
+of rows from the subquery.
+
+The syntax for the ``EXISTS`` operator is as follows:
 
 .. code:: sql
 
-              EXISTS <subquery> --> <boolean>
-   <datatype> IN     <subquery> --> <boolean>
+  EXISTS '(' <subquery> ')'     --> <booleanExpr>
+
+The subquery being executed may also refer to variables from the parent query
+(the one containing the ``EXISTS`` operator). This is called a correlated
+subquery. A correlated subquery places constraints on the subquery being executed.
+It also means that in a pure logical or naive implementation the subquery needs to
+be executed for each row being processed by the parent query.
+
+A subquery that does not refer to any variables from the parent query is an
+uncorrelated subquery. Uncorrelated subqueries can be executed once and their
+result set reused as many times as is needed for the query.
+
+Since it is not important what data the subquery returns, it is common practice
+to write ``EXISTS`` subqueries in this form:
+
+.. code:: sql
+
+  EXISTS ( SELECT 1 FROM ... WHERE ... )
+
+Below is a contrived example that shows the use of an ``EXISTS`` clause:
+
+.. code:: sql
+
+  SELECT e1.name
+  FROM employees e1
+  WHERE EXISTS (
+    SELECT 1
+    FROM employees e2
+    WHERE e2.id = e1.managerId AND e2.managerId IS NULL
+  ) ;
+
+This example returns a list of employee names who are first reports. That is,
+they have a manager, but their manager does not have manager. It is a
+correlated subquery because the subquery refers to variables from the parent
+subquery (``e1.managerId``). So this subquery cannot be calculated ahead of
+time.
 
 
-Order of Precedence
-```````````````````
+IN Operator
+:::::::::::
+The ``IN`` operator executes a subquery and returns a boolean value.
 
+The syntax for the ``IN`` operator is as follows:
+
+.. code:: sql
+
+  <expr> IN '(' <subquery> ')'     --> <booleanExpr>
+
+The ``IN`` operator returns true if the current value of ``<expr>`` matches
+the value of any of the rows returned by ``<subquery>``. The subquery must
+return a result set with a single column only. It can return zero or more rows
+in the result set. The ``IN`` operator returns false if the value of ``<expr>``
+does not match *any* the value of any of the rows returned by the subquery.
+
+The subquery being executed may also refer to variables from the parent query
+(the one containing the ``IN`` operator). This is called a correlated
+subquery. A correlated subquery places constraints on the subquery being executed.
+It also means that in a pure logical or naive implementation the subquery needs to
+be executed for each row being processed by the parent query.
+
+A subquery that does not refer to any variables from the parent query is an
+uncorrelated subquery. Uncorrelated subqueries can be executed once and their
+result set reused as many times as is needed for the query.
+
+Below is a contrived example that demonstrates the use of the ``IN`` operator:
+
+.. code:: sql
+
+  SELECT e.name
+  FROM employees e
+  WHERE e.departmentId IN (
+    SELECT id
+    FROM departments d
+    WHERE d.name = 'SALES' OR d.name = 'ENGINEERING'
+  ) ;
+
+This example returns the name of all employees who are part of the sales or
+engineering departments. The subquery returns the ``id`` of the sales and
+engineering departments as two rows with a single column value each. The parent
+query then compares the ``employees.departmentId`` column value against the
+results of the subquery and returns the employee name if the ``WHERE``
+predicate evaluates true. Note that this subquery is also an example of an
+uncorrelated subquery. It can be calculated once and the result can be reused.
+
+
+Operator Order of Precedence
+----------------------------
 RapidsSE interprets SQL expressions according to its inbuilt order of
 precedence. This ordering is show in the table below, from highest precedence
 to lowest. Brackets can be used to group expressions to form a different
