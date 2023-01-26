@@ -55,7 +55,7 @@ select count(*)
  ;
 
 MemoryLeaks;
-s
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 drop table A;
 drop table B;

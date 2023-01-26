@@ -18,7 +18,11 @@ namespace STORE
     Card_JoinPermSeq(void);
    ~Card_JoinPermSeq(void) noexcept(false);
 
-     void vCalculateLoad(Card_TableList*    p_tableList);
+     void vCalculateLoad(Card_TableList* p_tableList);
+
+     eXK eCastKind(Card_TableList* p_tableList,
+                   Card_JoinNext*  p_joinNext);
+
      void vOnePermutedJoin(Card_TableList*    p_tableList,
                            Card_JoinPredList* p_joinPredList,
                            PermGen*           pPermGen);
@@ -26,6 +30,8 @@ namespace STORE
      bool bHasKnownJoin(char cTblSyn);
 
      bool bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg);
+
+     bool bUnicastSeqFollows(char cTblSyn);
    };
 
   Card_JoinPermSeq* _pCard_JoinPermSeq(void* aAddr);

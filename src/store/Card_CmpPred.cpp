@@ -60,7 +60,8 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate cast kind of this cmpPred given the l & r table partitions       */
 /*----------------------------------------------------------------------------*/
-eXK Card_CmpPred::eCastKind(Card_TablePtn* p_tablePtn_l, Card_TablePtn* p_tablePtn_r)
+eXK Card_CmpPred::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
+                            char cTblSyn_r, Card_TablePtn* p_tablePtn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

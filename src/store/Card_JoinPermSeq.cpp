@@ -79,12 +79,13 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
     Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
     Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
-    eXK eCast = p_cmpPred->eCastKind(p_tablePtn_l,p_tablePtn_r);
+    //eXK eCast = p_cmpPred->eCastKind(cTblSyn_l,p_tablePtn_l,cTblSyn_r,p_tablePtn_r);
+    eXK eCast = eCastKind(p_tableList, xCI.G.p_joinNext);
 
     nBuffersIn = xCI.G.p_joinNext->nCalulateLoad(eCast,nBuffersIn,p_tableList,
                                                  cTblSyn_l,cTblSyn_r);
 
-    cTblSyn_l = cTblSyn_r;
+    //cTblSyn_l = cTblSyn_r;
 
     Card_LoadJoin* p_loadNext = xCI.G.p_joinNext->pSub_loadJoin();
 
@@ -105,6 +106,44 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
   p_loadPermSeq->vAppend(p_loadUnicast);
 
   vInsert(p_loadPermSeq);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the cast of given join                                             */
+/*----------------------------------------------------------------------------*/
+eXK Card_JoinPermSeq::eCastKind(Card_TableList* p_tableList,
+                                Card_JoinNext*  p_joinNext)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CmpPred* p_cmpPred = p_joinNext->pSub_cmpPred();
+  Card_Term* p_term_0 = p_cmpPred->pGetTerm_0();
+  Card_Term* p_term_1 = p_cmpPred->pGetTerm_1();
+
+  char cTblSyn_r = p_joinNext->cValue();
+  char cTblSyn_l = p_cmpPred->cOtherTable(cTblSyn_r);
+
+  Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
+  Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
+
+  // l_ptn == t:$x.1 && r_ptn == t:$y.1
+//  if ( (p_tablePtn_l->bSameValue(p_term_0) && p_tablePtn_r->bSameValue(p_term_1)) ||
+//       (p_tablePtn_l->bSameValue(p_term_1) && p_tablePtn_r->bSameValue(p_term_0)) )
+
+  // t:$x.1 == l_ptn && t:$y.1 == r_ptn
+  if ( ( (p_term_0->bSameValue(p_tablePtn_l) && p_term_1->bSameValue(p_tablePtn_r)) ||
+         (p_term_0->bSameValue(p_tablePtn_r) && p_term_1->bSameValue(p_tablePtn_l)) )
+      && bUnicastSeqFollows(cTblSyn_l))
+    return XK_UNICAST;
+
+  // r_ptn == t:$x.1
+//  if (p_tablePtn_r->bSameValue(p_term_0) || p_tablePtn_r->bSameValue(p_term_1))
+
+  // t:$x.1 == r_ptn
+  if (p_term_0->bSameValue(p_tablePtn_r) || p_term_1->bSameValue(p_tablePtn_r))
+    return XK_HASHCAST;
+
+  return XK_BROADCAST;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +253,41 @@ bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does a possible unicast sequence follow after given table?                 */
+/*----------------------------------------------------------------------------*/
+bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain()) {
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+
+    if (xCI.G.p_MainCard->cValue() == cTblSyn)
+      break;
+
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
+
+      xCI.G.p_cast = xCI.G.p_joinNext->pSub_cast();
+      if (xCI.G.p_cast && ! xCI.G.p_cast->bSame("XK_UNICAST"_Stz))
+        return false;
+    }
+  }
+
+  while (xCI.G_bEachMain()) {
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
+      xCI.G.p_cast = xCI.G.p_joinNext->pSub_cast();
+      if (xCI.G.p_cast && ! xCI.G.p_cast->bSame("XK_UNICAST"_Stz))
+        return false;
+    }
+  }
+
+  return true;
 }
 
 /*============================================================================*/
