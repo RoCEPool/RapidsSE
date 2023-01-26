@@ -286,8 +286,8 @@ void Bench::vGroup_JoinOrdering(void)
     return;
 
   vTransform_JoinOrdering_v2();
-  //vTransform_PredicateReposition();
-  //vTransform_DeriveBoundsFromFilter();
+  vTransform_PredicateReposition();
+  vTransform_DeriveBoundsFromFilter();
 }
 
 /*----------------------------------------------------------------------------*/
