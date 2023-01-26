@@ -56,13 +56,23 @@ bool Card_LoadPermSeq::bIsLessLoad(Card_LoadPermSeq* p_loadPermSeq_arg)
   Card_LoadNetwork* p_loadNetwork_this = pSub_loadNetwork();
   Card_LoadNetwork* p_loadNetwork_arg  = p_loadPermSeq_arg->pSub_loadNetwork();
 
-  if (p_loadNetwork_this->iValue() < p_loadNetwork_arg->iValue())
+  i8 iloadNetwork_this = p_loadNetwork_this->iValue();
+  i8 iloadNetwork_arg  = p_loadNetwork_arg->iValue();
+
+  if (iloadNetwork_this < iloadNetwork_arg)
     return true;
+
+  if (iloadNetwork_this > iloadNetwork_arg)
+    return false;
+
 
   Card_LoadUnicast* p_loadUnicast_this = pSub_loadUnicast();
   Card_LoadUnicast* p_loadUnicast_arg  = p_loadPermSeq_arg->pSub_loadUnicast();
 
-  if (p_loadUnicast_this->iValue() < p_loadUnicast_arg->iValue())
+  i8 iloadUnicast_this = p_loadUnicast_this->iValue();
+  i8 iloadUnicast_arg  = p_loadUnicast_arg->iValue();
+
+  if (iloadUnicast_this < iloadUnicast_arg)
     return true;
 
   return false;
