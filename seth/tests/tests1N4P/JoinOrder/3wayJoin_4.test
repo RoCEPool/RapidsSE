@@ -75,8 +75,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('C UNICAST B UNICAST A, 0, 10001000')
+rows: ('C UNICAST B UNICAST A, 0, 10001000')
 
 select count(*)
   from A
@@ -117,8 +116,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL0 = C.C_COL1
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('B UNICAST A BROADCAST C, 40000000, 0')
+rows: ('B UNICAST A BROADCAST C, 40000000, 0')
 
 select count(*)
   from A
@@ -161,8 +159,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL1 = C.C_COL0
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('A UNICAST B HASHCAST C, 10000000, 1000')
+rows: ('A UNICAST B HASHCAST C, 10000000, 1000')
 
 select count(*)
   from A
@@ -203,8 +200,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL1 = C.C_COL1
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('A BROADCAST B HASHCAST C, 10004000, 0')
+rows: ('A BROADCAST B HASHCAST C, 10004000, 0')
 
 select count(*)
   from A
@@ -246,8 +242,7 @@ select count(*)
    join C on B.B_COL0 = C.C_COL0
  ;
 
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('C UNICAST B UNICAST A, 0, 10001000')
+rows: ('C UNICAST B UNICAST A, 0, 10001000')
 
 select count(*)
   from A
@@ -287,8 +282,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL0
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('A HASHCAST B UNICAST C, 10000, 100000000')
+rows: ('A HASHCAST B UNICAST C, 10000, 100000000')
 
 select count(*)
   from A
@@ -328,8 +322,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL1
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('A BROADCAST B UNICAST C, 40000, 100000000')
+rows: ('A BROADCAST B UNICAST C, 40000, 100000000')
 
 select count(*)
   from A
@@ -369,8 +362,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL1
    join C on B.B_COL1 = C.C_COL1
  ;
-rows: ('A UNICAST B HASHCAST C, 1000000, 1000')
-//rows: ('A BROADCAST B BROADCAST C, 40004000, 0')
+rows: ('A BROADCAST B BROADCAST C, 40004000, 0')
 
 select count(*)
   from A
