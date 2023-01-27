@@ -26,9 +26,9 @@ create index B_COL0  on B (B_COL0  );
 create index B_COL1  on B (B_COL1  );
 create index B_COL2  on B (B_COL2  );
 
-create index B_COL0  on C (C_COL0  );
-create index B_COL1  on C (C_COL1  );
-create index B_COL2  on C (C_COL2  );
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -64,14 +64,14 @@ drop table C;
 /*
 
 Join Permutations:
-                                     Network Total ,  Unicast Total
+                                     Network Total    Unicast Total
   A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*10000)
   B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  10000+(10000*1000)
   B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  10000+(10000*1000)
   C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+(1000*10000)
 
 Expected join order:
-  Either A->B-C or C->B->A
+  Either A->B->C or C->B->A
 
 Expected Result:
   row: (138)

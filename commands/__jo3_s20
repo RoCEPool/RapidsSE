@@ -26,9 +26,9 @@ create index B_COL0  on B (B_COL0  );
 create index B_COL1  on B (B_COL1  );
 create index B_COL2  on B (B_COL2  );
 
-create index B_COL0  on C (C_COL0  );
-create index B_COL1  on C (C_COL1  );
-create index B_COL2  on C (C_COL2  );
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -63,14 +63,14 @@ drop table C;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
 
-Join Permutations:                                   Network Total                   , Unicast Total
-  A->B (UNICAST)(0)        ->C (HASHCAST) (1000*10000) Total=(0+(1000*1000))         , 1000
-  B->A (UNICAST)(0)        ->C (HASHCAST) (10000*1000) Total=(0+(10000*1000))        , 10000
-  B->C (HASHCAST)(10000)   ->A (HASHCAST) (10000*1000) Total=(10000 + (10000*1000))  , 0
-  C->B (BROADCAST)(4*10000)->A (UNICAST)  (0)          Total=(4*10000 + (0))         , 10000*1000
+Join Permutations:                                         Network Total                  Unicast Total
+  A->B (UNICAST)(0)        ->C (HASHCAST) (1000*10000) Total=(0+(1000*10000))      , 1000
+  B->A (UNICAST)(0)        ->C (HASHCAST) (10000*1000) Total=(0+(10000*1000))      , 10000
+  B->C (HASHCAST)(10000)   ->A (HASHCAST) (10000*1000) Total=(10000+(10000*1000))  , 0
+  C->B (BROADCAST)(4*1000) ->A (UNICAST)  (0)          Total=(4*1000)              , 1000*10000
 
 Expected join order:
-  Either C->B->A
+  C->B->A
 
 Expected Result:
   row: (65)

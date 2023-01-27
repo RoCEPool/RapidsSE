@@ -1,10 +1,10 @@
 --------------------------------------------------------------------------------
--- 3wayJoin_5.test : 3 tables A,B,C where size(A) < size(B) , size(B) > size(C)
+-- 3wayJoin_3.test : 3 tables A,B,C where size(A) = size(B) , size(B) > size(C)
 --------------------------------------------------------------------------------
 trackMemory;
 success
 
-create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 10000;
 success
 create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 10000;
 success
@@ -47,7 +47,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 1
 //  Partitions = 4
-//  size(A) < size(B) , size(B) < size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,13 +60,13 @@ select count(*)
 
 Join Permutations:
                                      Network Total  Unicast Total
-  A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)  , 1000+(1000*10000)
-  B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)  , 10000+(10000*1000)
+  A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)  , 10000+(10000*10000)
+  B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)  , 10000+(10000*10000)
   B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)  , 10000+(10000*1000)
-  C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)  , 1000+(1000*10000)
+  C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)  , 1000+(10000*1000)
 
 Expected join order:
-  Either A->B->C or C->B->A
+  Either C->B->A
   ********************************************************************************/
 
 /joinOrder
@@ -88,7 +88,7 @@ rows: (138)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 2
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B          ->  C
 //  cola == ptn  ->  colb == ptn     colb = ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,14 +99,14 @@ select count(*)
    join C on B.B_COL0 = C.C_COL1
  ;
 
-Join Permutations:                                        Network Total                  Unicast Total
-  A->B (UNICAST)(0)        ->C (BROADCAST) (4*1000*10000) Total=(0+(4*1000*10000))     , 1000
-  B->A (UNICAST)(0)        ->C (BROADCAST) (4*10000*1000) Total=(0+(4*10000*1000))     , 10000
-  B->C (BROADCAST)(4*10000)->A (HASHCAST)  (10000*1000)   Total=(4*10000+(10000*1000)) , 0
-  C->B (BROADCAST)(4*1000) ->A (HASHCAST)  (1000*10000)   Total=(4*1000+(1000*10000))  , 0
+Join Permutations:                                         Network Total                  Unicast Total
+  A->B (UNICAST)(0)        ->C (BROADCAST) (4*10000*10000) Total=(0+(4*10000*10000))    , 10000
+  B->A (UNICAST)(0)        ->C (BROADCAST) (4*10000*10000) Total=(0+(4*10000*10000))    , 10000
+  B->C (BROADCAST)(4*10000)->A (HASHCAST)  (10000*1000)    Total=(4*10000+(10000*1000)) , 0
+  C->B (HASHCAST)(1000)    ->A (UNICAST)   (0)             Total=(4*1000+(1000*10000))  , 1000*10000
 
 Expected join order:
-  Either B->A->C
+  Either C->B-A
 
 ********************************************************************************/
 
@@ -116,7 +116,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL0 = C.C_COL1
  ;
-rows: ('B UNICAST A BROADCAST C, 40000000, 0')
+rows: ('C BROADCAST B HASHCAST A, 10004000, 0')
 
 select count(*)
   from A
@@ -129,7 +129,7 @@ rows: (61)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 3
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb != ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,13 +141,13 @@ select count(*)
  ;
 
 Join Permutations:                                     Network Total                 Unicast Total
-  A->B (UNICAST)(0)       ->C (HASHCAST) (1000*10000) Total=(0+(1000*10000))       , 1000
-  B->A (UNICAST)(0)       ->C (HASHCAST) (10000*1000) Total=(0+(10000*1000))       , 10000
+  A->B (UNICAST)(0)       ->C (HASHCAST) (10000*10000) Total=(0+(10000*10000))     , 10000
+  B->A (UNICAST)(0)       ->C (HASHCAST) (10000*10000) Total=(0+(10000*10000))     , 1000
   B->C (HASHCAST)(10000)  ->A (HASHCAST) (10000*1000)  Total=(10000+(10000*1000))  , 0
-  C->B (BROADCAST)(4*1000)->A (HASHCAST) (1000*10000)  Total=(4*1000+(1000*10000)) , 0
+  C->B (BROADCAST)(4*1000)->A (UNICAST)  (0)           Total=((4*1000)+0)          , 1000*10000
 
 Expected join order:
-  Either A->B->C
+  Either C->B->A
 
 ********************************************************************************/
 /weaved select * from A;
@@ -159,7 +159,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL1 = C.C_COL0
  ;
-rows: ('A UNICAST B HASHCAST C, 10000000, 1000')
+rows: ('C BROADCAST B UNICAST A, 4000, 10000000')
 
 select count(*)
   from A
@@ -172,7 +172,7 @@ rows: (73)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 4
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb == ptn     colb != ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -183,14 +183,14 @@ select count(*)
    join C on B.B_COL1 = C.C_COL1
  ;
 
-Join Permutations:                                     Network Total                 Unicast Total
-  A->B (UNICAST)(0)        ->C (HASHCAST) (1000*10000) Total=(0+(1000*10000))      , 1000
-  B->A (UNICAST)(0)        ->C (HASHCAST) (10000*1000) Total=(0+(10000*1000))      , 10000
-  B->C (HASHCAST)(10000)   ->A (HASHCAST) (10000*1000) Total=(10000+(10000*1000))  , 0
-  C->B (BROADCAST)(4*1000) ->A (HASHCAST) (1000*10000) Total=(4*1000+(1000*10000)) , 0
+Join Permutations:                                      Network Total                 Unicast Total
+  A->B (UNICAST)(0)        ->C (BROADCAST) (4*1000*1000) Total=(0+(4*1000*1000))        , 1000
+  B->A (UNICAST)(0)        ->C (BROADCAST) (4*1000*1000) Total=(0+(4*1000*1000))        , 1000
+  B->C (BROADCAST)(4*1000) ->A (HASHCAST)  (1000*1000)   Total=((4*1000)+(1000*1000))   , 0
+  C->B (BROADCAST)(4*1000) ->A (UNICAST)   (0)           Total=(4*1000)                 , 1000*1000
 
 Expected join order:
-  Either A->B-C
+  Either C->B->A
 
 ********************************************************************************/
 
@@ -200,7 +200,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL1 = C.C_COL1
  ;
-rows: ('A BROADCAST B HASHCAST C, 10004000, 0')
+rows: ('C BROADCAST B UNICAST A, 4000, 1000000')
 
 select count(*)
   from A
@@ -213,7 +213,7 @@ rows: (65)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 5
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola == ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -225,11 +225,11 @@ select count(*)
  ;
 
 Join Permutations:
-                                             Network Total ,       Unicast Total
-  A->B (BROADCAST)(4*1000) ->C (UNICAST)(0) Total=((4*10000)+0) , 1000*10000
-  B->A (HASHCAST)(10000)   ->C (UNICAST)(0) Total=(10000+0)     , 10000*1000
-  B->C (UNICAST)(0)        ->A (UNICAST)(0) Total=(0+0)         , 10000+(10000*1000)
-  C->B (UNICAST)(0)        ->A (UNICAST)(0) Total=(0+0)         , 1000+(1000*10000)
+                                                      Network Total             Unicast Total
+  A->B (BROADCAST)(4*10000) ->C (UNICAST)(0)          Total=((4*10000)+0)     , 10000*10000
+  B->A (HASHCAST)(10000)    ->C (UNICAST)(0)          Total=(10000+0)         , 10000*10000
+  B->C (UNICAST)(0)         ->A (HASHCAST)(1000*1000) Total=(0+(1000*1000))   , 10000+(10000*1000)
+  C->B (UNICAST)(0)         ->A (HASHCAST)(1000*10000) Total=(0+(1000*10000)) , 1000
 
 Expected join order:
   C->B->A
@@ -256,7 +256,7 @@ rows: (73)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 6
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B          ->  C
 //  cola != ptn  ->  colb == ptn     colb = ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -268,8 +268,8 @@ select count(*)
  ;
 
 Join Permutations:                                        Network Total                Unicast Total
-  A->B (HASHCAST) (1000)    ->C (UNICAST)  (0)            Total=(1000+0)             , 1000*10000
-  B->A (BROADCAST)(4*10000) ->C (UNICAST)  (0)            Total=((4*10000)+0)        , 10000*1000
+  A->B (HASHCAST) (10000)   ->C (UNICAST)  (0)            Total=(10000+0)            , 10000*10000
+  B->A (BROADCAST)(4*10000) ->C (UNICAST)  (0)            Total=((4*10000)+0)        , 10000*10000
   B->C (UNICAST)(0)         ->A (BROADCAST)(4*10000*1000) Total=(0 + (4*10000*1000)) , 10000
   C->B (UNICAST)(0)         ->A (BROADCAST)(4*1000*10000) Total=(0 + (4*1000*10000)) , 1000
 
@@ -295,7 +295,7 @@ rows: (61)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 7
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola != ptn  ->  colb != ptn     colb == ptn ->  colc == ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -307,13 +307,13 @@ select count(*)
  ;
 
 Join Permutations:                                      Network Total             , Unicast Total
-  A->B (BROADCAST)(4*1000)  ->C (UNICAST)  (0)          Total=((4*1000)+0)        , 1000*10000
-  B->A (BROADCAST)(4*10000) ->C (UNICAST)  (0)          Total=((4*10000)+0)       , 10000*1000
+  A->B (BROADCAST)(4*10000) ->C (UNICAST)  (0)          Total=((4*10000)+0)       , 10000*10000
+  B->A (BROADCAST)(4*10000) ->C (UNICAST)  (0)          Total=((4*10000)+0)       , 10000*10000
   B->C (UNICAST)(0)         ->A (HASHCAST) (10000*1000) Total=(0 + (10000*1000))  , 10000
   C->B (UNICAST)(0)         ->A (HASHCAST) (1000*10000) Total=(0 + (1000*10000))  , 1000
 
 Expected join order:
-  Either A->B->C
+  Either A->B->C or B->A->C
 
 ********************************************************************************/
 /joinOrder
@@ -335,7 +335,7 @@ rows: (65)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TEST CASE 8
 //  Partitions = 4
-//  size(A) < size(B) , size(B) > size(C)
+//  size(A) = size(B) , size(B) > size(C)
 //  A            ->  B               B           ->  C
 //  cola != ptn  ->  colb != ptn     colb != ptn ->  colc != ptn
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -346,14 +346,14 @@ select count(*)
    join C on B.B_COL1 = C.C_COL1
  ;
 
-Join Permutations:                                         Network Total                    Unicast Total
-  A->B (BROADCAST)(4*1000)  ->C (BROADCAST) (4*1000*10000) Total=(4*1000+(4*1000*10000))  , 0
-  B->A (BROADCAST)(4*10000) ->C (BROADCAST) (4*10000*1000) Total=(4*10000+(4*10000*1000)) , 0
-  B->C (BROADCAST)(4*10000) ->A (BROADCAST) (4*10000*1000) Total=(4*10000+(4*10000*1000)) , 0
-  C->B (BROADCAST)(4*1000)  ->A (BROADCAST) (4*1000*10000) Total=(4*1000+(4*1000*10000))  , 0
+Join Permutations:                                          Network Total                     Unicast Total
+  A->B (BROADCAST)(4*10000) ->C (BROADCAST) (4*10000*10000) Total=(4*10000+(4*10000*10000)) , 0
+  B->A (BROADCAST)(4*10000) ->C (BROADCAST) (4*10000*10000) Total=(4*10000+(4*10000*10000)) , 0
+  B->C (BROADCAST)(4*10000) ->A (BROADCAST) (4*10000*1000)  Total=(4*10000+(4*10000*1000))  , 0
+  C->B (BROADCAST)(4*1000)  ->A (BROADCAST) (4*1000*10000)  Total=(4*1000+(4*1000*10000))   , 0
 
 Expected join order:
-  Either A->B->C or C->B->A
+  Either C->B->A
 ********************************************************************************/
 
 /joinOrder
@@ -362,7 +362,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL1
    join C on B.B_COL1 = C.C_COL1
  ;
-rows: ('A BROADCAST B BROADCAST C, 40004000, 0')
+rows: ('C BROADCAST B BROADCAST A, 40004000, 0')
 
 select count(*)
   from A

@@ -22,6 +22,7 @@
 ../../../seth/tests/tests1N4P/Ddl/testList
 //../../../seth/tests/tests1N4P/Examples/testList
 ../../../seth/tests/tests1N4P/Insert/testList
+../../../seth/tests/tests1N4P/JoinOrder/testList
 ../../../seth/tests/tests1N4P/Load/testList
 ../../../seth/tests/tests1N4P/LocalFunctions/testList
 ../../../seth/tests/tests1N4P/Operators/testList
