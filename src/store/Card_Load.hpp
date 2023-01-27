@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_LoadJoin.hpp -- Load of Join                                          */
+/* Card_Load.hpp -- Load (of join)                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,21 +7,21 @@
 
 namespace STORE
 {
-  class Card_LoadJoin : public Card
+  class Card_Load : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_LoadJoin(void);
-   ~Card_LoadJoin(void) noexcept(false);
+    Card_Load(void);
+   ~Card_Load(void) noexcept(false);
 
     i8 nCalculateLoad(Card_LoadNetwork* p_loadNetwork,
                       Card_LoadUnicast* p_loadUnicast);
 
   };
 
-  Card_LoadJoin* _pCard_LoadJoin(void* aAddr);
+  Card_Load* _pCard_Load(void* aAddr);
 }
 
 /*============================================================================*/

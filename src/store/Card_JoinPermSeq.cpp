@@ -79,11 +79,11 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
     nBuffersIn = xCI.G.p_joinNext->nCalculateLoad(eCast, nBuffersIn, p_tableList, cTblSyn_r);
 
-    Card_LoadJoin* p_loadNext = xCI.G.p_joinNext->pSub_loadJoin();
+    Card_Load* p_load_next = xCI.G.p_joinNext->pSub_load();
 
-    Card_LoadNetwork* p_loadNetwork = p_loadNext->pSub_loadNetwork();
+    Card_LoadNetwork* p_loadNetwork = p_load_next->pSub_loadNetwork();
     nSumLoadNetwork += p_loadNetwork->iValue();
-    Card_LoadUnicast* p_loadUnicast = p_loadNext->pSub_loadUnicast();
+    Card_LoadUnicast* p_loadUnicast = p_load_next->pSub_loadUnicast();
     nSumLoadUnicast += p_loadUnicast->iValue();
   }
 

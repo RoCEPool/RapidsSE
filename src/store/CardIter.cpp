@@ -421,7 +421,7 @@ void CardIter::G_vClearMembers(void)
   G.p_lBound           = nullptr;
   G.p_level            = nullptr;
   G.p_limit            = nullptr;
-  G.p_loadJoin         = nullptr;
+  G.p_load         = nullptr;
   G.p_loadJoined       = nullptr;
   G.p_loadNetwork      = nullptr;
   G.p_loadPermSeq      = nullptr;
@@ -1350,7 +1350,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LBOUND:           return G.p_lBound;
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
-    case CK_LOADJOIN:         return G.p_loadJoin;
+    case CK_LOAD:         return G.p_load;
     case CK_LOADJOINED:       return G.p_loadJoined;
     case CK_LOADNETWORK:      return G.p_loadNetwork;
     case CK_LOADPERMSEQ:      return G.p_loadPermSeq;
@@ -1717,7 +1717,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_LBOUND:           return "G.p_lBound"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_LIMIT:            return "G.p_limit"_Stz;
-    case CK_LOADJOIN:         return "G.p_loadJoin"_Stz;
+    case CK_LOAD:         return "G.p_load"_Stz;
     case CK_LOADJOINED:       return "G.p_loadJoined"_Stz;
     case CK_LOADNETWORK:      return "G.p_loadNetwork"_Stz;
     case CK_LOADPERMSEQ:      return "G.p_loadPermSeq"_Stz;
@@ -2932,7 +2932,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard; break;
-    case CK_LOADJOIN:         *((Card**)&G.p_loadJoin)         = pCard; break;
+    case CK_LOAD: *((Card**)&G.p_load)         = pCard; break;
     case CK_LOADJOINED:       *((Card**)&G.p_loadJoined)       = pCard; break;
     case CK_LOADNETWORK:      *((Card**)&G.p_loadNetwork)      = pCard; break;
     case CK_LOADPERMSEQ:      *((Card**)&G.p_loadPermSeq)      = pCard; break;

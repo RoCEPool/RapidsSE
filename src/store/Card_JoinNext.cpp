@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_Cast.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_LoadJoin.hpp"
+#include "Card_Load.hpp"
 #include "Card_LoadJoined.hpp"
 #include "Card_LoadNetwork.hpp"
 #include "Card_LoadUnicast.hpp"
@@ -60,7 +60,7 @@ i8 Card_JoinNext::nCalculateLoad(eXK eCast,
                                  char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  Card_LoadJoin*    p_loadJoin    = new Card_LoadJoin;
+  Card_Load*    p_loadJoin    = new Card_Load;
   Card_Cast*        p_cast        = new Card_Cast;
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
