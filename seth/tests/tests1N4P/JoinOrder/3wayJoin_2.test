@@ -223,11 +223,11 @@ select count(*)
  ;
 
 Join Permutations:
-                                            Network Total ,    Unicast Total
-  A->B (BROADCAST)(4*1000) ->C (UNICAST)(0) Total=((4*1000)+0) ,  1000*1000
-  B->A (HASHCAST)(1000)    ->C (UNICAST)(0) Total=(1000+0)     ,  1000*1000
-  B->C (UNICAST)(0)        ->A (UNICAST)(0) Total=(0+0)        ,  1000+(1000*10000)
-  C->B (UNICAST)(0)        ->A (UNICAST)(0) Total=(0+0)        ,  10000+(10000*1000)
+                                                     Network Total ,            Unicast Total
+  A->B (BROADCAST)(4*1000) ->C (UNICAST)(0)          Total=((4*1000)+0)       , 1000*1000
+  B->A (HASHCAST)(1000)    ->C (HASHCAST)(1000*1000) Total=(1000+(1000*1000)) , 1000*1000
+  B->C (UNICAST)(0)        ->A (UNICAST)(0)          Total=(0+0)              , 1000+(1000*10000)
+  C->B (UNICAST)(0)        ->A (UNICAST)(0)          Total=(0+0)              , 10000+(10000*1000)
 
 Expected join order:
   B->C->A
