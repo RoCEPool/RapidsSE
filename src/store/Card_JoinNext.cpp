@@ -8,6 +8,7 @@
 #include "Card_Cast.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_LoadJoin.hpp"
+#include "Card_LoadJoined.hpp"
 #include "Card_LoadNetwork.hpp"
 #include "Card_LoadUnicast.hpp"
 #include "Card_Table.hpp"
@@ -53,39 +54,38 @@ Card_JoinNext::~Card_JoinNext(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate join load                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinNext::nCalulateLoad(eXK eCast,
-                                  i8 nBuffersIn,
-                                  Card_TableList* p_tableList,
-                                  char cTblSyn_l,
-                                  char cTblSyn_r)
+i8 Card_JoinNext::nCalculateLoad(eXK eCast,
+                                 i8 nBuffersIn,
+                                 Card_TableList* p_tableList,
+                                 char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card_LoadJoin*    p_loadJoin    = new Card_LoadJoin;
   Card_Cast*        p_cast        = new Card_Cast;
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
-
-//  Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
-//  Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
-//  Card_CmpPred*  p_cmpPred    = pSub_cmpPred();
+  Card_LoadJoined*  p_loadJoined  = new Card_LoadJoined;
 
   p_cast->vValue(aXK[eCast]);
 
-  i8 nBuffersNetwork = 0;
-  i8 nBuffersUnicast = 0;
-  nBuffersNetwork = p_loadNetwork->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
-  nBuffersUnicast = p_loadUnicast->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
+  i8 nBuffersNetwork = p_loadNetwork->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersUnicast = p_loadUnicast->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersJoined  = p_loadJoined->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_r);
+
   i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
 
   p_loadJoin->vAppend(p_cast);
   p_loadJoin->vAppend(p_loadNetwork);
   p_loadJoin->vAppend(p_loadUnicast);
+  p_loadJoin->vAppend(p_loadJoined);
   vAppend(p_loadJoin);
 
-  if (nBuffersNetwork)
-    return nBuffersNetwork;
-  else
-    return nBuffersUnicast;
+//  if (nBuffersNetwork)
+//    return nBuffersNetwork;
+//  else
+//    return nBuffersUnicast;
+
+  return nBuffersJoined;
 }
 
 /*============================================================================*/

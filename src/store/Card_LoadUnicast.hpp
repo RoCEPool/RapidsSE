@@ -16,8 +16,10 @@ namespace STORE
     Card_LoadUnicast(void);
    ~Card_LoadUnicast(void) noexcept(false);
 
-    i8 nCalculateLoad(eXK eCast, i8 nBuffersIn, Card_TableList* p_tableList,
-                        char cTblSyn_l, char cTblSyn_r);
+    i8 nCalculateLoad(eXK eCast,
+                      i8 nBuffersIn,
+                      Card_TableList* p_tableList,
+                      char cTblSyn_r);
   };
 
   Card_LoadUnicast* _pCard_LoadUnicast(void* aAddr);
