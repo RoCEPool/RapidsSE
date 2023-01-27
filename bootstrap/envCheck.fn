@@ -1208,7 +1208,7 @@ EOF
 ## it's parent directory. If the storage path is the same as the installation
 ## path, keep checking the parent dirs until we find one that exists, and
 ## check its space.
-## Exits out if space is not available.
+## Displays warning if space is not available.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
@@ -1255,9 +1255,7 @@ if [ -d "${dirPath}" ]; then
   # Check storage path space if it exists
   maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
   if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-    echo "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
-    false;
-    exit;
+    printWarning "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
   fi
 elif [[ "${dirPath}" = "${installDir}"/* ]]; then
     # Storage path does not exist. Check if it is
@@ -1270,9 +1268,7 @@ elif [[ "${dirPath}" = "${installDir}"/* ]]; then
     done
     maxDirSpace=\$(df -m "\${dname}" | awk '"'"'/\/dev\//{print \$2}'"'"')
     if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-      echo "Storage disk directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
-      false;
-      exit;
+      printWarning "Storage disk directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
     fi
 else
   # Storage path is not under the installation path
@@ -1284,9 +1280,7 @@ else
   if [ -d "\${dname}" ]; then
     maxDirSpace=\$(df -m "\${dname}" | awk '"'"'/\/dev\//{print \$2}'"'"')
     if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-      echo "Storage disk parent directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
-      false;
-      exit;
+      printWarning "Storage disk parent directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
     fi
   else
     echo "Storage disk parent directory (\${dname}) does not exist.";
