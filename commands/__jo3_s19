@@ -68,10 +68,10 @@ Join Permutations:                                    Network Total             
   A->B (UNICAST)(0)       ->C (HASHCAST) (1000*10000)  Total=(0+(1000*10000))        , 1000
   B->A (UNICAST)(0)       ->C (HASHCAST) (10000*1000)  Total=(0+(10000*1000))        , 10000
   B->C (HASHCAST)(10000)  ->A (HASHCAST) (10000*1000)  Total=(10000 + (10000*1000))  , 0
-  C->B (BROADCAST)(4*1000)->A (HASHCAST) (1000*10000)  Total=(4*1000 + (1000*10000)) , 0
+  C->B (BROADCAST)(4*1000)->A (UNICAST)  (0)           Total=(4*1000 + 0)            , 1000*10000
 
 Expected join order:
-  A->B->C
+  C->B->A
 
 Expected Result:
   row: (73)
