@@ -76,3 +76,8 @@ RapidsSE has several system limitations. These are documented below:
 
     RapidsSE also only supports equi-joins. That is, join predicates that are
     compared for equality.
+
+12. Unique indexes
+
+    RapidsSE does not yet support unique indexes or primary keys, only
+    non-unique indexes.

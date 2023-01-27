@@ -254,6 +254,8 @@ Named References
 An expression can contain a reference by name to a value. This is often
 represented by a column reference or an alias reference.
 
+.. _columnReference:
+
 Column References
 `````````````````
 A column reference is an expression that refers to a column in a table. When
@@ -293,6 +295,8 @@ This is the above query re-written correctly:
 
   SELECT n.n_name FROM nation n ;             (CORRECT!)
 
+
+.. _expressionAliases:
 
 Expression Alias References
 ```````````````````````````
@@ -343,11 +347,15 @@ Typically expression aliases can be referenced in expressions in the
 typically not resolvable in a ``WHERE`` clause.
 
 
+.. _exprKeywords:
+
 Keywords
 --------
 RapidsSE does not currently support expression keywords such as ``NOW()``,
 ``CURRENT_TIMESTAMP`` or ``CURRENT_USER``.
 
+
+.. _exprOperators:
 
 Supported Expression Operators
 ------------------------------
@@ -682,6 +690,8 @@ Examples:
   EXTRACT (DAY FROM timestamp '2023-01-20 14:23:54')    (returns 20)
   EXTRACT (YEAR FROM timestamp '2023-01-20 14:23:54')   (returns 2023)
 
+
+.. _aggregateOperators:
 
 Aggregate Operators
 ```````````````````

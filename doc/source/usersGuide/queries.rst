@@ -59,16 +59,23 @@ RapidsSE does not currently support the following SQL clauses:
 * Any ``OUTER JOIN`` (e.g. ``LEFT``/``RIGHT``/``FULL OUTER JOIN``)
 
 
+Query Clauses
+-------------
+
 .. _selectlist:
 
 SELECT List
------------
-The ``SELECT`` list is the list of expressions that occurs after
-the ``SELECT`` keyword in a query. It defines the list of column values
+```````````
+The ``SELECT`` list is the list of :ref:`expressions <expressions>` that occurs
+after the ``SELECT`` keyword in a query. It defines the list of column values
 that are to be returned in each row of the query. These expressions can
-include references to table columns, expression operators, expression
-literals, and combinations of all of these. They may be simple column
-references or they may contain aggregations.
+include references to
+:ref:`table columns <columnReference>`,
+:ref:`expression operators <exprOperators>`,
+:ref:`expression literals <literals>`,
+:ref:`expression keywords <exprKeywords>` and combinations of all of these.
+They may be simple scalar values or they may contain
+:ref:`aggregations <aggregateOperators>`.
 
 Below are some simple examples of ``SELECT`` list expressions.
 
