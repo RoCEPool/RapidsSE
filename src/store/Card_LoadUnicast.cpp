@@ -49,7 +49,7 @@ Card_LoadUnicast::~Card_LoadUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate unicast load                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_LoadUnicast::vCalculateLoad(eXK eCast,
+i8 Card_LoadUnicast::nCalculateLoad(eXK eCast,
                                       i8 nBuffersIn,
                                       Card_TableList* p_tableList,
                                       char cTblSyn_l,
@@ -61,17 +61,23 @@ void Card_LoadUnicast::vCalculateLoad(eXK eCast,
   i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
   i8 iLoad = 0;
+  i8 nBuffersOut = 0;
   switch (eCast) {
     case XK_UNICAST:
-      iLoad = (i8)(1.0 * (nBuffersIn * iSize_r));
+      iLoad = (i8)(1.0 * (nBuffersIn));
+      nBuffersOut = (i8)(1.0 * (nBuffersIn * iSize_r));
       break;
-    case XK_HASHCAST:  break;
-    case XK_BROADCAST: break;
+    case XK_HASHCAST:
+      break;
+    case XK_BROADCAST:
+      break;
     default:
       NEVER_REACH
   }
 
   vValue((i8)iLoad);
+
+  return nBuffersOut;
 }
 
 /*============================================================================*/

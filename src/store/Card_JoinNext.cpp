@@ -71,8 +71,10 @@ i8 Card_JoinNext::nCalulateLoad(eXK eCast,
 
   p_cast->vValue(aXK[eCast]);
 
-  p_loadNetwork->vCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
-  p_loadUnicast->vCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
+  i8 nBuffersNetwork = 0;
+  i8 nBuffersUnicast = 0;
+  nBuffersNetwork = p_loadNetwork->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
+  nBuffersUnicast = p_loadUnicast->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_l,cTblSyn_r);
   i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
 
   p_loadJoin->vAppend(p_cast);
@@ -80,7 +82,10 @@ i8 Card_JoinNext::nCalulateLoad(eXK eCast,
   p_loadJoin->vAppend(p_loadUnicast);
   vAppend(p_loadJoin);
 
-  return iLoadJoin;
+  if (nBuffersNetwork)
+    return nBuffersNetwork;
+  else
+    return nBuffersUnicast;
 }
 
 /*============================================================================*/

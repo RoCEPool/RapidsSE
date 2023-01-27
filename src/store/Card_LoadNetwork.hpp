@@ -16,8 +16,8 @@ namespace STORE
     Card_LoadNetwork(void);
    ~Card_LoadNetwork(void) noexcept(false);
 
-    void vCalculateLoad(eXK eCast, i8 nBuffersIn, Card_TableList* p_tableList,
-                        char cTblSyn_l, char cTblSyn_r);
+    i8 nCalculateLoad(eXK eCast, i8 nBuffersIn, Card_TableList* p_tableList,
+                      char cTblSyn_l, char cTblSyn_r);
   };
 
   Card_LoadNetwork* _pCard_LoadNetwork(void* aAddr);

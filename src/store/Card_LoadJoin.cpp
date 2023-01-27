@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_LoadJoin.cpp -- Join Head (head of join sequence)                     */
+/* Card_LoadJoin.cpp -- Load of Join                                         */
 /*============================================================================*/
 
 #include "Card_LoadJoin.hpp"

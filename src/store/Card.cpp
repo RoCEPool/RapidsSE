@@ -3082,6 +3082,20 @@ Card_LoadJoin* Card::pSub_loadJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_LoadJoined.hpp"
+Card_LoadJoined* Card::pSub_loadJoined(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LoadJoined* p_loadJoined =
+      _pCard_LoadJoined(pFindSubCard(CK_LOADJOINED));
+  return p_loadJoined;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_LoadNetwork.hpp"
 Card_LoadNetwork* Card::pSub_loadNetwork(void)
 {
