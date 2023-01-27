@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_LoadJoin.cpp -- Join Head (head of join sequence)                     */
+/* Card_Load.cpp -- Load of Join                                         */
 /*============================================================================*/
 
-#include "Card_LoadJoin.hpp"
+#include "Card_Load.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -16,16 +16,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_LoadJoin, CK_LOADJOIN)
-__aNewFunction(Card_LoadJoin, CN_CARD)
-__vDeleteFunction(Card_LoadJoin, CN_CARD)
+__pCastFunction_Card(STORE, Card_Load, CK_LOAD)
+__aNewFunction(Card_Load, CN_CARD)
+__vDeleteFunction(Card_Load, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_LoadJoin::Card_LoadJoin(void)
-: Card(CK_LOADJOIN)
+Card_Load::Card_Load(void)
+: Card(CK_LOAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -37,7 +37,7 @@ Card_LoadJoin::Card_LoadJoin(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_LoadJoin::~Card_LoadJoin(void) noexcept(false)
+Card_Load::~Card_Load(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -49,8 +49,8 @@ Card_LoadJoin::~Card_LoadJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate join load                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadJoin::nCalculateLoad(Card_LoadNetwork* p_loadNetwork,
-                                 Card_LoadUnicast* p_loadUnicast)
+i8 Card_Load::nCalculateLoad(Card_LoadNetwork* p_loadNetwork,
+                             Card_LoadUnicast* p_loadUnicast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -74,24 +74,16 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
       continue;
 
     char cTblSyn_r = xCI.G.p_joinNext->cValue();
-    Card_CmpPred* p_cmpPred = xCI.G.p_joinNext->pSub_cmpPred();
-    char cTblSyn_l = p_cmpPred->cOtherTable(cTblSyn_r);
 
-    Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
-    Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
-    //eXK eCast = p_cmpPred->eCastKind(cTblSyn_l,p_tablePtn_l,cTblSyn_r,p_tablePtn_r);
     eXK eCast = eCastKind(p_tableList, xCI.G.p_joinNext);
 
-    nBuffersIn = xCI.G.p_joinNext->nCalulateLoad(eCast,nBuffersIn,p_tableList,
-                                                 cTblSyn_l,cTblSyn_r);
+    nBuffersIn = xCI.G.p_joinNext->nCalculateLoad(eCast, nBuffersIn, p_tableList, cTblSyn_r);
 
-    //cTblSyn_l = cTblSyn_r;
+    Card_Load* p_load_next = xCI.G.p_joinNext->pSub_load();
 
-    Card_LoadJoin* p_loadNext = xCI.G.p_joinNext->pSub_loadJoin();
-
-    Card_LoadNetwork* p_loadNetwork = p_loadNext->pSub_loadNetwork();
+    Card_LoadNetwork* p_loadNetwork = p_load_next->pSub_loadNetwork();
     nSumLoadNetwork += p_loadNetwork->iValue();
-    Card_LoadUnicast* p_loadUnicast = p_loadNext->pSub_loadUnicast();
+    Card_LoadUnicast* p_loadUnicast = p_load_next->pSub_loadUnicast();
     nSumLoadUnicast += p_loadUnicast->iValue();
   }
 

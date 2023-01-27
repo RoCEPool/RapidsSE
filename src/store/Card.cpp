@@ -3069,15 +3069,29 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_LoadJoin.hpp"
-Card_LoadJoin* Card::pSub_loadJoin(void)
+#include "Card_Load.hpp"
+Card_Load* Card::pSub_load(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LoadJoin* p_loadJoin =
-      _pCard_LoadJoin(pFindSubCard(CK_LOADJOIN));
-  return p_loadJoin;
+  Card_Load* p_load =
+      _pCard_Load(pFindSubCard(CK_LOAD));
+  return p_load;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_LoadJoined.hpp"
+Card_LoadJoined* Card::pSub_loadJoined(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LoadJoined* p_loadJoined =
+      _pCard_LoadJoined(pFindSubCard(CK_LOADJOINED));
+  return p_loadJoined;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

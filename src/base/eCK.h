@@ -86,7 +86,8 @@ enum eCK // card kind
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
   /* */ CK_LINKSTO,
-  /* */ CK_LOADJOIN,
+  /* */ CK_LOAD,
+  /* */ CK_LOADJOINED,
   /* */ CK_LOADNETWORK,
   /* */ CK_LOADPERMSEQ,
   /* */ CK_LOADUNICAST,
@@ -267,7 +268,8 @@ static Stz* aCK[]
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
-  /* */ "CK_LOADJOIN"_Stz,     // CK_LOADJOIN
+  /* */ "CK_LOAD"_Stz,         // CK_LOAD
+  /* */ "CK_LOADJOINED"_Stz,   // CK_LOADJOINED
   /* */ "CK_LOADNETWORK"_Stz,  // CK_LOADNETWORK
   /* */ "CK_LOADPERMSEQ"_Stz,  // CK_LOADPERMSEQ
   /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
@@ -447,7 +449,8 @@ static Stz* aCK_short[]
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
-  /* */ "loadJoin"_Stz,        // CK_LOADJOIN
+  /* */ "load"_Stz,            // CK_LOAD
+  /* */ "loadJoined"_Stz,      // CK_LOADJOINED
   /* */ "loadNetwork"_Stz,     // CK_LOADNETWORK
   /* */ "loadPermSeq"_Stz,     // CK_LOADPERMSEQ
   /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST
@@ -627,7 +630,8 @@ static Stz* aCK_notation[]
     /* */ "lvl"_Stz,          // CK_LEVEL
     /* */ "lmt"_Stz,          // CK_LIMIT
     /* */ "lT"_Stz,           // CK_LINKSTO
-    /* */ "ldJ"_Stz,          // CK_LOADJOIN
+    /* */ "ld"_Stz ,          // CK_LOAD
+    /* */ "ldJd"_Stz,         // CK_LOADJOINED
     /* */ "ldN"_Stz,          // CK_LOADNETWORK
     /* */ "ldP"_Stz,          // CK_LOADPERMSEQ
     /* */ "ldU"_Stz,          // CK_LOADUNICAST
