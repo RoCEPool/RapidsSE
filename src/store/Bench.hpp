@@ -91,6 +91,7 @@ namespace STORE
     void vTransform_DeriveBoundsFromFilter(void);
 
     void vTransform_FlattenByDecisionTree(void);
+    void vTransform_SubQueryAnalysisMainQuery(void);
 
     void vTransform_MorphTableToEEop(void);
 

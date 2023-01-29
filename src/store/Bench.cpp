@@ -150,7 +150,7 @@ void Bench::vSeries_MakeRunnable(void)
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
   vGroup_JoinOrdering();
-  //vGroup_FlattenSubquery();
+  vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -297,7 +297,7 @@ void Bench::vGroup_FlattenSubquery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  NEVER_REACH
+  vTransform_SubQueryAnalysisMainQuery();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -911,6 +911,32 @@ void Bench::vTransform_FlattenByDecisionTree(void)
   m_pCI->vEndTransform();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Analyse main query for sub-queries                                         */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_SubQueryAnalysisMainQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  SubQuery *pMainQuery = pGetBoard((i8) 0)->pSubQuery();
+  pMainQuery->vDisposition(QD_LINEAR);
+
+    m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain(CK_AGGREG)) {
+    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+
+    // the main-query has an aggreg
+    pMainQuery->vDisposition(QD_AGGREGATION);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
+    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+
+    // the main-query has an gbyagg
+    pMainQuery->vDisposition(QD_AGGREGATION);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
