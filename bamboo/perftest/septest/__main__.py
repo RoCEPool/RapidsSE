@@ -7,7 +7,9 @@ import argparse
 import subprocess
 
 import pyutils.errors as errors
+import septest.runners.jobrunner
 from septest.runners.jobrunner import JobRunner
+from septest.runners.jobrunner import terminate_instances_from_file
 
 C_PROG_RUN = "pipenv run python -m septest"
 C_REL_REPO_ROOT = "../../"
@@ -24,13 +26,18 @@ def main() -> int:
     """Run with pipenv run python -m septest"""
     """from the outer septest directory."""
 
-    LOG.debug(f"cwd = {os.getcwd()}")
-    LOG.debug(f"repo root = {C_REPO_ROOT}")
+    LOG.info(f"cwd = {os.getcwd()}")
+    LOG.info(f"repo root = {C_REPO_ROOT}")
 
     # Validate the path
     if not os.getcwd().endswith(C_CWD_SUFFIX):
         LOG.error(f"This file must be executed from the following subdirectory of the project root: {C_CWD_SUFFIX}")
         return 1
+
+    # First check for the cleanup directive
+    if len(sys.argv) == 2 and sys.argv[1].lower() == "--cleanup":
+        terminate_instances_from_file()
+        return 0
 
     # Extract the command line arguments
     arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the SE Performance Test")
@@ -56,7 +63,7 @@ def main() -> int:
                             help="If present, do not compile RapidsSE and build the installer.")
 
     args = arg_parser.parse_args()
-    LOG.debug("Got the following arguments:  %s", args)
+    LOG.info("Got the following arguments:  %s", args)
 
     if not os.path.exists(args.job):
         LOG.error("Job file does not exist: %s", args.job)
@@ -147,7 +154,7 @@ def get_git_hash_from_system() -> str:
 
     completion_status.check_returncode()
     git_hash = completion_status.stdout.strip()
-    LOG.debug(f"Got git hash from system: {git_hash}")
+    LOG.info(f"Got git hash from system: {git_hash}")
     return git_hash
 
 

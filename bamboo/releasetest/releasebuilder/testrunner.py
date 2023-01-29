@@ -1,5 +1,6 @@
 """"Runs the test jobs"""
 import logging
+import os
 import pathlib
 import threading
 import datetime
@@ -24,7 +25,6 @@ C_INSTANCE_START_TIMEOUT = 600.0
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_EC2_BOOT_TIMEOUT_SEC = 300
 C_SE_TEST_TIMEOUT_SEC = 1200
 C_SE_INSTALL_TIMEOUT_SEC = 120
 C_TEST_MONITORING_SLEEP_IVL = 10
@@ -49,6 +49,10 @@ C_COLLECT_RESULTS_TIMEOUT_SEC = 90
 
 C_CLOUD_INIT_LOG_PATH: pathlib.Path = pathlib.Path("/cloud-init-output.log")
 
+# The file that contains the list of running instance IDs
+C_EC2_INSTANCE_FILE_BASE:str = "runningInstances"
+C_EC2_INSTANCE_FILE_EXT:str = "txt"
+C_EC2_INSTANCE_FILE_GLOB:str = f"{C_EC2_INSTANCE_FILE_BASE}*.{C_EC2_INSTANCE_FILE_EXT}"
 
 class TestRunner:
 
@@ -191,6 +195,12 @@ class InstanceRunner:
 
         self.op_ctx = f"{self.test_name}: "
 
+        self.runningInstancesPath: pathlib.Path = pathlib.Path(C_EC2_INSTANCE_FILE_BASE + \
+                                                               '_' + \
+                                                               self.test_name.replace(' ', '_') + \
+                                                               '.' + \
+                                                               C_EC2_INSTANCE_FILE_EXT)
+
     def run(self) -> TestResult:
         """"""
         self.test_result.set_test_started()
@@ -315,6 +325,10 @@ class InstanceRunner:
                                                      ctx=self.op_ctx,
                                                      cloudinit_src=C_CLOUD_INIT_LOG_PATH,
                                                      cloudinit_dest=cloudinit_dest)
+
+        # Record the started instances to file so that they can always be terminated by
+        # a cleanup script
+        ec2.record_started_instances(instance_ids, self.runningInstancesPath)
 
         assert len(instance_ids) == num_instances
         assert len(ip_addrs) == num_instances
@@ -647,6 +661,10 @@ class InstanceRunner:
         if self.terminate is False:
             LOG.info(f"Test {self.test_name}: Not stopping instances because of the 'terminate' "
                      f"setting in the test configuration")
+
+            # Remove the file that contains the list of instances that were started
+            if os.path.exists(self.runningInstancesPath):
+                os.remove(self.runningInstancesPath)
             return
 
         if self.instance_ids is None:
@@ -656,6 +674,11 @@ class InstanceRunner:
         ids = ", ".join(self.instance_ids)
         LOG.info(f"Test {self.test_name}: About to stop EC2 instance(s) with IDs: {ids}")
         ec2.terminate_instances(self.instance_ids, ctx=self.op_ctx)
+
+        # Remove the file that contains the list of instances that were started
+        if os.path.exists(self.runningInstancesPath):
+            LOG.info(f"Test {self.test_name}: Removing running instance file {str(self.runningInstancesPath)}")
+            os.remove(self.runningInstancesPath)
 
     def force_stop(self) -> None:
         """Forcible terminates an EC2 instance and collects logs if possible"""
@@ -701,3 +724,21 @@ class InstanceRunner:
 
         except (Exception,):
             LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCES {ids} ({ips}). ***")
+
+def terminate_instances_from_file():
+    """If an instance file exists, then terminate the instances running in it."""
+
+    files = pathlib.Path('.').glob(C_EC2_INSTANCE_FILE_GLOB)
+
+    count = 0
+
+    for file in files:
+        try:
+            count += 1
+            ec2.terminate_instances_from_file(file)
+
+        finally:
+            if os.path.exists(file):
+                os.remove(file)
+
+    LOG.info(f"Found {count} files with running instances to be terminated.")

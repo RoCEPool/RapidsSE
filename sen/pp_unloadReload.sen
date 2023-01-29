@@ -21,7 +21,7 @@
   STD_PATH_TAG
   "
   procedure unload
-
+    parameters $Folder
   begin
 
   stage stageA on origin :
@@ -30,9 +30,8 @@
     | next
 
   stage stageB on all partitions :
-      eachPathTag
-    | unload
-    | next
+        unload $Folder
+      | next
 
   stage stageC on origin :
       output

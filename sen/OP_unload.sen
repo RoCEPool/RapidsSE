@@ -9,12 +9,16 @@
 /*----------------------------------------------------------------------------*/
 : unload_DataPulse \handler
 
+  <dirName> locals| sDirName |
+
+  sDirName unload.toDisk not if
+    op__execErrMsg
+    pipein[].delete
+    true
+    exit
+  then
+
   EV_M_DATAPULSE_handler
-
-  <filePath> locals| sFilePath |
-
-  sFilePath unload.toFile
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +56,8 @@
 
   op__topology
 
-  find: unload_Path  EV_I_PATH  [op].handler!
+  find: unload_DataPulse  EV_M_DATAPULSE  [op].handler!
+  //find: unload_Path  EV_I_PATH  [op].handler!
 
   op__loop
 
@@ -66,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: unload :: unload ;
+cmdSyntax: unload :: unload <dirName> ;
 
 : unload_cmdTags _cmdTags tagCopy: op_tags
   tags{

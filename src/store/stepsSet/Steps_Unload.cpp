@@ -29,42 +29,92 @@ void Step::vUnloadToDisk(void)
 {
   ENTRY();
 
-  s256 sDiskPath;
-  i8 iPathOf, iPathNo;
+  i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
+  i8 iShmSize = gxCmdLineArgs.m_xSysArgs.m_iRegionSize;
 
-  m_pDataStack->vPopStr(sDiskPath, __func__);
-  iPathNo = m_pDataStack->iPopInt(__func__ );
-  iPathOf = m_pDataStack->iPopInt(__func__ );
+  if(nDiskpaths <= 0)
+  {
+    s256 eErrMsg( (Stz*) "SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n" );
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    s256 sDir;
+    m_pDataStack->vPopStr(sDir, __func__);
+
+    m_pDataStack->vPushStr(eErrMsg);
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+    m_pDataStack->vPushBol(false);
+    return;
+  }
 
   i8 iPtnOfNode = -1;
   if(MY::pOp()) {
     iPtnOfNode = MY::pOp()->pStream()->i_PtnOfNode();
   }
 
-  if(iPtnOfNode == iPathNo) {
-    if(iPathOf != gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode) {
-      vTrace("Please give %lld directory paths to unload to, %lld given\n"_Stz,
-             gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode,
-             iPathOf);
-      EXIT();
-      return;
-    }
+  s256 sDirPath = ""_Stz;
+  Stz* sRootDir = gxCmdLineArgs.m_xSysArgs.m_sDiskRootDir[iPtnOfNode % nDiskpaths];
+  ASSERT( ! sRootDir->bIsEmpty());
 
-    if( ! Dir::bExists(sDiskPath.szStz()))
-      Dir::bMake(sDiskPath.szStz());
+  s256 sDir;
+  m_pDataStack->vPopStr(sDir, __func__);
 
-    s256 sFilePath = ""_Stz;
+  sDirPath.vCatSprint("%s%s/"_Stz,
+                      sRootDir,
+                      sDir.szStz());
 
-    sFilePath.vCatSprint("%ssaveFile_%s_%lld"_Stz,
-                         sDiskPath.szStz(),
-                         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                         iPtnOfNode);
+  if( ! Dir::bExists(sDirPath.szStz()))
+    Dir::bMake(sDirPath.szStz());
 
-    PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
+  // Check disk space before unload
+
+  i8 iFreeSpace = Dir::iFreeSpace(sDirPath.szStz());
+
+  if(iFreeSpace < 0) {
+    s256 eErrMsg = ""_Stz;
+
+    eErrMsg.vCatSprint("Error getting free space of dir %s. Cannot unload.\n"_Stz,
+                       sDirPath.szStz());
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    m_pDataStack->vPushStr(eErrMsg);
+    m_pDataStack->vPushInt(EC_DISK_SPACE_CHECK_FAILED);
+    m_pDataStack->vPushBol(false);
+    return;
+  }
+
+  i8 iMinSpace = iShmSize / nDiskpaths;
+  if(iFreeSpace < iMinSpace)
+  {
+    s256 eErrMsg = ""_Stz;
+
+    eErrMsg.vCatSprint("Dir %s does not contain enough space for unload.\n"
+                       "Dir has %.2f GB\n"
+                       "Minimum space required %.2f GB\n"
+                       "Cannot unload\n"_Stz,
+                       sDirPath.szStz(),
+                       (d8)iFreeSpace/(C_1GB),
+                       (d8)iMinSpace/(C_1GB));
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    m_pDataStack->vPushStr(eErrMsg);
+    m_pDataStack->vPushInt(EC_LOW_DISK_SPACE);
+    m_pDataStack->vPushBol(false);
+    return;
+  }
+
+  s256 sFilePath = ""_Stz;
+
+  sFilePath.vCatSprint("%ssaveFile_%s_%lld"_Stz,
+                       sDirPath.szStz(),
+                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                       iPtnOfNode);
+
+  PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
 //    PersistenceHelper::vWriteDiskTest(sFilePath.szStz(), 4);
 
-    vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
-  }
+  vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
+
+  m_pDataStack->vPushBol(true);
 
   EXIT();
 }

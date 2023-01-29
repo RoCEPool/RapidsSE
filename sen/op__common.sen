@@ -28,7 +28,7 @@
 
   timer[] timer.update
 
-  timer[] timer.ticks aggTimer[] aggTimer.add
+  timer[] timer.nanosecs aggTimer[] aggTimer.add
 ;
 
 /*----------------------------------------------------------------------------*/

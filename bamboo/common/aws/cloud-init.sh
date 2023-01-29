@@ -6,6 +6,7 @@
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
+TEXLIVE_OUTPUT="/cloud-init-texlive.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
 
 {
@@ -17,6 +18,9 @@ TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
   fi
 } > "${CLOUD_INIT_OUTPUT}"
 chmod a+r "${CLOUD_INIT_OUTPUT}"
+
+touch "${TEXLIVE_OUTPUT}"
+chmod a+r "${TEXLIVE_OUTPUT}"
 
 {
   echo
@@ -231,10 +235,10 @@ fi
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
-  # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
+  # Get the name of any device (sans "/dev/") that is mounted under /
+  # including the root filesystem, as we don't want to format this device.
   # e.g. /dev/nvme0n1 --> nvme0n1
-  # We don't want to partition/format this disk!
-  root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
+  ignore_devices=($(df -h | grep -E "^/dev/" | awk '{if($6 ~ "^/") print $1;}' | cut -c 6-))
 
   # Get the list of block devices in the system.
   ssds=($(lsblk -d -n -o NAME))
@@ -242,13 +246,17 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
   for device in "${ssds[@]}"
   do
-    # ignore block devices that are a subset of the device the root filesystem is mounted on.
-    if [[ "${root_device}" =~ ^"${device}".* ]]
-    then
-      # ignore this device
-      echo "Ignoring root device ${device}"
-      continue
-    fi
+    # Ignore devices that are already mounted and devices that are a subset of
+    # the device the root filesystem is mounted on.
+    ignore_device=0
+    for ignore_device_name in ${ignore_devices[@]}; do
+      if [[ "${ignore_device_name}" =~ ^"${device}".* ]]; then
+        ignore_device=1
+        break
+      fi
+    done
+
+    [ "${ignore_device}" -eq 1 ] && echo "Ignoring device ${device}" && continue
 
     # ignore non-nvme devices
     if ! [[ "${device}" =~ ^nvme.* ]]
@@ -272,7 +280,7 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
       echo "w"  # write the changes and exit
     ) | fdisk "${device}" || exit
 
-    sleep 1
+    sleep 2
 
     # Get the partition name
     partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
@@ -355,6 +363,58 @@ EOF
   chown root:wheel /opt
   chmod g+w /opt
 
+
+  # ----------------------------------------------------------------------------------------
+  # Installing AWS CLI
+  # Note that we retry any network operations as these can fail or timeout for
+  # various reasons. A timeout means that we ultimately cannot connect to this
+  # machine.
+  echo
+  echo "*** Installing AWS CLI ***"
+  echo
+  if ! which aws; then
+    # AWS CLI needs curl and unzip
+    while ! yum install -y curl wget unzip; do
+      sleep 1
+    done
+
+    while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+      sleep 1
+    done
+
+    unzip awscliv2.zip
+    ./aws/install
+  fi
+
+  # ----------------------------------------------------------------------------------------
+  # Install Tex Live in parallel in the background to /usr/local/texlive.
+  # This is for generating PDF documentation.
+  (
+    echo
+    echo "*** Installing TexLive ***"
+    echo
+    cd /usr/local
+    aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
+    chown -R root:root /usr/local/texlive
+    chmod -R g-w /usr/local/texlive
+
+    echo
+    echo "Setting up TexLive environment variables"
+    {
+      echo
+      echo 'TEXLIVEDIR="/usr/local/texlive"'
+      echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+      echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+      echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
+      echo
+      echo 'export PATH MANPATH INFOPATH'
+      echo
+    } >>/etc/profile.d/sh.local
+
+    echo
+    echo "TexLive installation complete"
+  ) > "${TEXLIVE_OUTPUT}" &
+
   # ----------------------------------------------------------------------------------------
   # Apply any package updates
   echo
@@ -362,16 +422,32 @@ EOF
   echo
   amazon-linux-extras install -y epel
   yum update -y
-  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses
+  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses parallel python3 perl-Digest-MD5
   yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
   if [ "${OS_DIST}" = "${CENTOS7}" ]; then
     yum install -y epel-release
-    yum install -y java vim mysql python3 jq
+    yum install -y java vim mysql jq
   fi
+
+  # ShellCheck
+  echo
+  echo "*** Shellcheck ***"
+  (
+    cd /usr/local/bin
+    while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" -o "shellcheck-stable.linux.x86_64.tar.xz"; do
+      sleep 1
+    done
+    tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
+    chown root:root shellcheck
+    rm -f shellcheck-stable.linux.x86_64.tar.xz
+  )
 
   # ----------------------------------------------------------------------------------------
   # Install JMeter to /opt/jmeter
+  echo
+  echo "*** Installing jmeter ***"
+  echo
   pushd "$(pwd)"
   cd /opt
   JMETER_VER="5.4.3"
@@ -396,12 +472,11 @@ EOF
   } >>"${bash_profile}"
 
   # ----------------------------------------------------------------------------------------
-  # Installing AWS CLI
-  if ! which aws; then
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    ./aws/install
-  fi
+  # Installing Sphinx for documentation generation
+  echo
+  echo "*** Installing Sphinx ***"
+  echo
+  sudo -H -u "${OS_USER}" python3 -m pip install --user -U sphinx
 
   # ----------------------------------------------------------------------------------------
   # Setting JAVA_HOME
@@ -519,14 +594,28 @@ EOF
   echo
 
   bash_profile="${OS_HOME_DIR}/.bash_profile"
-  echo "" >>"${bash_profile}"
-  echo '#export PS1="[\u@\h \W]\$ ' >>"${bash_profile}"
-  echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "' >>"${bash_profile}"
-  echo "" >>"${bash_profile}"
+  {
+    echo "";
+    echo '#export PS1="[\u@\h \W]\$ ';
+    echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "';
+    echo "";
+  } >> "${bash_profile}"
 
   # ----------------------------------------------------------------------------------------
   # Git setup
+  echo
+  echo "*** Git LFS initialisation ***"
+  echo
   sudo -H -u "${OS_USER}" git lfs install
+
+  # ----------------------------------------------------------------------------------------
+  # Remove annoying GNU Parallel citation message
+  echo
+  echo "*** GNU Parallel citation ***"
+  echo
+  if which parallel &>/dev/null; then
+    echo -e "will cite\n" | parallel --citation
+  fi
 
   # ----------------------------------------------------------------------------------------
   # Indicate cloud-init has completed by dropping a file in /tmp

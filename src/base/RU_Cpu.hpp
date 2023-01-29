@@ -11,7 +11,7 @@ namespace BASE
   
     i8    m_nBuffers;
     i8    m_nRows;
-    i8    m_nTicks;
+    i8    m_iNanos;
     
     Timer m_oTimer;
   

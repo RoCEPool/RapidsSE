@@ -494,8 +494,9 @@ void Op::vEventCountInc(eEV eEvent)
   m_pEvMgr->m_eCurEvent = eEvent;
 
   m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]++;
-  
-  i8 iTscp = BASE::iRdtscp();
+
+  u4 uProcId;
+  i8 iTscp = Hardware::iReadTsc(&uProcId);
   m_pEvMgr->m_pOperandWatch->vSaw(m_pEvMgr->m_eCurEvent,iTscp);
 }
 
