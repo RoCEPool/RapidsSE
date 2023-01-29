@@ -140,6 +140,7 @@ namespace STORE
 
     void vAddBoard(Board* pBoard);
     bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    i8   nBoards(void);
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
     Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);

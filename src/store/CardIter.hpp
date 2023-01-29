@@ -104,6 +104,10 @@ namespace STORE
     void vDontDescend(void);
     void G_vDuplicateMember(eCK eMember);
 
+    bool  bEachBoard(void);
+    Board* pEachBoard(void);
+    Board* pEachBoard(i8& ri_Board);
+
     bool  bEachChild(void);
     Card* pEachChild(void);
     Card* pEachChild(i8& ri_Child);

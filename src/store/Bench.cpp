@@ -124,12 +124,16 @@ void Bench::vSeries_PreparePipelines(void)
 
   i8 i_Board = 0;
 
-  m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+  m_pCI->G.nBoards = nBoards();
+  while (m_pCI->bEachBoard()) {
 
-  vGroup_InitialAdjustments();
-  vGroup_CondenseInfo();
-  vGroup_MetaAnalysis();
-  vGroup_MainConversions();
+    m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+
+    vGroup_InitialAdjustments();
+    vGroup_CondenseInfo();
+    vGroup_MetaAnalysis();
+    vGroup_MainConversions();
+  }
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -150,6 +154,7 @@ void Bench::vSeries_MakeRunnable(void)
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
   vGroup_JoinOrdering();
+
   vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -297,10 +302,10 @@ void Bench::vGroup_FlattenSubquery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-//  vTransform_SubQueryAnalysisMainQuery();
-//  vTransform_SubQueryAnalysisSubQuery();
-//
-//  vTransform_FlattenByDecisionTree();
+  vTransform_SubQueryAnalysisMainQuery();
+  vTransform_SubQueryAnalysisSubQuery();
+
+  vTransform_FlattenByDecisionTree();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2390,11 +2395,11 @@ void Bench::vFold_70_H_A_NC_ro(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  Card_Stream::vStream_AdjustLoHi(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
+//  Card_Stream::vStream_AdjustLoHi(m_pCI);
+//  m_pCI->vPrintBoard(__LINE__);
 
-  Board::vRenumberStmOdn(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
+//  Board::vRenumberStmOdn(m_pCI);
+//  m_pCI->vPrintBoard(__LINE__);
 
   // H A NC ro
   //                               //
@@ -2846,6 +2851,18 @@ bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of board                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Bench::nBoards(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = nItems();
+
+  return nBoards;
 }
 
 /*----------------------------------------------------------------------------*/

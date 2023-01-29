@@ -746,6 +746,65 @@ void CardIter::G_vDuplicateMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool CardIter::bEachBoard(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.m_bActive);
+
+  if (pEachBoard())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Board* CardIter::pEachBoard(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.m_bActive);
+
+  i8 i_Board;
+
+  G.pBoard = pEachBoard(i_Board);
+
+  return G.pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Board* CardIter::pEachBoard(i8& ri_Board)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.m_bActive);
+
+  if (C_UNKNOWN == G.i_Board)
+    G.i_Board = 0;
+  else
+    G.i_Board++;
+
+  if (G.i_Board >= m_pBench->nBoards()) {
+    G.pBoard = nullptr;
+    ri_Board  = C_UNKNOWN;
+    G.i_Board = 0;
+
+    return nullptr;
+  }
+
+  G.pBoard = m_pBench->pGetBoard(G.i_Board);
+  ri_Board = G.i_Board;
+
+  return G.pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bEachChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
