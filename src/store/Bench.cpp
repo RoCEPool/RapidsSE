@@ -918,12 +918,12 @@ void Bench::vTransform_SubQueryAnalysisMainQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  SubQuery *pMainQuery = pGetBoard((i8) 0)->pSubQuery();
+  SubQuery *pMainQuery = pGetBoard((i8)0)->pSubQuery();
   pMainQuery->vDisposition(QD_LINEAR);
 
-    m_pCI->G_vRestart();
+  m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain(CK_AGGREG)) {
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+    //SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
 
     // the main-query has an aggreg
     pMainQuery->vDisposition(QD_AGGREGATION);
@@ -931,10 +931,34 @@ void Bench::vTransform_SubQueryAnalysisMainQuery(void)
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+    //SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
 
     // the main-query has an gbyagg
     pMainQuery->vDisposition(QD_AGGREGATION);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nBoards =  nItems();
+  if (nBoards > 1) {
+    m_pCI->G_vRestart();
+    while (m_pCI->G_bEachMain(CK_CALL)) {
+      SubQuery* pSubQuery =  pGetBoard((i8)1)->pSubQuery();
+
+      pSubQuery->vCaller(0);
+      pSubQuery->vClause(QC_FROM_CLAUSE);
+
+      //SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+      pMainQuery->vSubQueries(1);
+    }
+//    m_pCI->G_vRestart();
+//    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+//      Board::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(m_pCI);
+//    }
+//    m_pCI->G_vRestart();
+//    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+//      Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(m_pCI);
+//    }
   }
 }
 
