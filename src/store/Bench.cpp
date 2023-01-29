@@ -297,10 +297,10 @@ void Bench::vGroup_FlattenSubquery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_SubQueryAnalysisMainQuery();
-  vTransform_SubQueryAnalysisSubQuery();
-
-  vTransform_FlattenByDecisionTree();
+//  vTransform_SubQueryAnalysisMainQuery();
+//  vTransform_SubQueryAnalysisSubQuery();
+//
+//  vTransform_FlattenByDecisionTree();
 }
 
 /*----------------------------------------------------------------------------*/
