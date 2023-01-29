@@ -1548,6 +1548,48 @@ void Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vMain_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
+{
+  _static_
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
+  SubQuery* pSubQuery = pCI->m_pBench->pGetBoard((i8)1)->pSubQuery();
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI,pSubQuery](Card_PRED *p_pred, bool bUpwards) {
+
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (p_pred->bIsCard(CK_TERM)) {
+      return C_CONTINUE_RECURSION;
+      pCI->G.p_term = _pCard_Term(p_pred);
+    }
+
+    Stz* szValue_term = p_pred->szValue();
+    eRO eRelnOp = RelOp::eDecode(szValue_term);
+    if (RO_NONE != eRelnOp) {
+      pSubQuery->vCaller(0);
+      pSubQuery->vClause(QC_HAVING_CLAUSE);
+      pSubQuery->vCalcOp(QO_COMPARE_OP);
+      pSubQuery->vRelnOp(eRelnOp);
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                    vSeries_33_To_TblColOdn */
 /*============================================================================*/

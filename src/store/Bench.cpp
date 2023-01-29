@@ -955,10 +955,10 @@ void Bench::vTransform_SubQueryAnalysisMainQuery(void)
 //    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
 //      Board::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(m_pCI);
 //    }
-//    m_pCI->G_vRestart();
-//    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-//      Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(m_pCI);
-//    }
+    m_pCI->G_vRestart();
+    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+      Board::vMain_Query_Analysis_Of_having_boolCalc(m_pCI);
+    }
   }
 }
 
