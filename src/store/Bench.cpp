@@ -298,6 +298,9 @@ void Bench::vGroup_FlattenSubquery(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vTransform_SubQueryAnalysisMainQuery();
+  vTransform_SubQueryAnalysisSubQuery();
+
+  vTransform_FlattenByDecisionTree();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -918,6 +921,9 @@ void Bench::vTransform_SubQueryAnalysisMainQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
+  m_pCI->vTransform(__func__, "Analyse main query for sub-queries"_Stz);
+
+
   SubQuery *pMainQuery = pGetBoard((i8)0)->pSubQuery();
   pMainQuery->vDisposition(QD_LINEAR);
 
@@ -960,6 +966,80 @@ void Bench::vTransform_SubQueryAnalysisMainQuery(void)
       Board::vMain_Query_Analysis_Of_having_boolCalc(m_pCI);
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_SubQueryAnalysisSubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "Analyse sub-queries"_Stz);
+
+  vAssert_Board_mqA();
+
+
+  i8 nBoards =  nItems();
+  if (1 == nBoards) {
+    // there is no sub-query
+
+    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
+
+    pMainQuery->vSubQueries(0);
+  }
+  else
+  if (2 == nBoards) {
+
+    if (m_pCI->G_bPushBoard(1)) {
+
+      SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+      pSubQuery->vDisposition(QD_LINEAR);
+
+//      while (m_pCI->G_bEachMain()) {
+//        m_pCI->G_vNewMember(CK_GENESIS,"sq"_Stz);
+//        if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
+//          m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
+//        else
+//          m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
+//      }
+
+      m_pCI->G_vRestart();
+      while (m_pCI->G_bEachMain(CK_PARAMLIST)) {
+        // there is a subQuery and it has a paramList
+
+        //SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+
+        // TODO: hack the number of params... fix
+        i8 nParams = 1; //m_pCI->G.p_paramList->nChildCards();
+
+        pSubQuery->vCorrCols(nParams);
+      }
+
+      m_pCI->G_vRestart();
+      while (m_pCI->G_bEachMain(CK_AGGREG)) {
+        // there is a subQuery and it has an aggreg
+
+        //SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+
+        pSubQuery->vDisposition(QD_AGGREGATION);
+      }
+
+      m_pCI->G_vRestart();
+      while (m_pCI->G_bEachMain(CK_GBYAGG)) {
+        // there is a subQuery and it has an gbyAgg
+        //SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
+        pSubQuery->vDisposition(QD_AGGREGATION);
+      }
+
+      m_pCI->G_vPopIter();
+    }
+  }
+  else
+    NEVER_REACH;
+
+  m_pCI->vEndTransform();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2249,7 +2329,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, "((20))"_Stz);
+  m_pCI->vTransform(__func__, "((vFold_70_H_A_NC_ro))"_Stz);
 
   vAssert_Board_mqA();
 
