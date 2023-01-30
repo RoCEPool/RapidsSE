@@ -155,7 +155,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   m_pCI->vUsingBoard(BK_SUBPIPE, 0);
 
-  //vGroup_FlattenSubquery();
+  vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -2347,7 +2347,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   //              $2  //
   //           __sq2  //
 
-  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>
   if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
     if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
       vTrace("DID NOT FIND H_A_NC_ro SubQuery call\n"_Stz);
