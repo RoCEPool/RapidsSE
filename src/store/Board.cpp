@@ -584,8 +584,10 @@ void Board::vDerive_foldExpr(CardIter* pCI)
 
   pCI->G.p_type = pCI->m_pCard_resolved->pSub_type();
 
-  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
-  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
+//  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
+//  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
+
+  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
   if (pCI->G.p_type) {
     pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
@@ -841,6 +843,13 @@ void Board::vFoldIn_foldExpr_Into_gbyAgg(CardIter* pCI)
 {
   _static_
 
+  Card_Expr* p_expr_fold = nullptr;
+
+  pCI->vRestart();
+
+  if (pCI->G_bEachMain(CK_FOLD))
+    p_expr_fold = pCI->G.p_fold->pSub_expr();
+
   while (pCI->G_bEachMain()) {
 
     if (CK_GBYAGG == pCI->G.e_MainCard) {
@@ -852,8 +861,8 @@ void Board::vFoldIn_foldExpr_Into_gbyAgg(CardIter* pCI)
       pCI->G.p_projection->vBump_keyOdn_In_rpnCalc(pCI);
       pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
 
-      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI);
-      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI);
+      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI,p_expr_fold);
+      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI,p_expr_fold);
     }
 
   }

@@ -43,15 +43,15 @@ Card_FoldElist::~Card_FoldElist(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI)
+void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 
   pCI->G_vNewMember(CK_EXPR);
 
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_type()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
 
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_rpnCalc()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(p_expr_fold->pSub_rpnCalc()->pDupCardAndSubCards());
 
   pCI->G.p_key->vPush(pCI->G.p_expr);
 }
@@ -59,20 +59,26 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI)
+void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 
-  pCI->G_vNewMember(CK_EXPR);
+  //pCI->G_vNewMember(CK_EXPR);
 
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_type()->pDupCardAndSubCards());
+  Card_Expr* p_expr_new = new Card_Expr;
 
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_as()->pDupCardAndSubCards());
+  p_expr_new->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
 
-  pCI->G_vAppendNewChild(pCI->G.p_expr,CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$K1"_Stz);
+  p_expr_new->vAppend(p_expr_fold->pSub_as()->pDupCardAndSubCards());
 
-  pCI->G.p_projection->vPush(pCI->G.p_expr);
+  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+  p_expr_new->vAppend(p_rpnCalc_new);
+
+  Card_Term* p_term_new = new Card_Term("$K1"_Stz);
+
+  p_rpnCalc_new->vAppend(p_term_new);
+
+  pCI->G.p_projection->vPush(p_expr_new);
 }
 
 //*============================================================================*/

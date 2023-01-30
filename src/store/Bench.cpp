@@ -2424,7 +2424,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   //                   aeaeae      //
   //                   k1k1k1      //
 
-  Board::vFoldIn_foldExpr(m_pCI);
+  Board::vFoldIn_foldExpr_Into_gbyAgg(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
