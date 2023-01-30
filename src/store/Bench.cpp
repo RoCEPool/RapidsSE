@@ -1381,7 +1381,7 @@ void Bench::vFold_10_F(void)
 //  Board::vRenumberStmOdn(m_pCI);
 //  m_pCI->vPrintBoard(__LINE__);
 
-  Board::vRelabelExpressions(m_pCI);
+  //Board::vRelabelExpressions(m_pCI);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
