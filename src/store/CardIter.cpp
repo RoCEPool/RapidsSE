@@ -326,6 +326,17 @@ Board* CardIter::pBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* setup board iteration                                                      */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBoardIteration(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  G.i_Board = C_UNKNOWN;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vChangeCard(Card* pCard)
@@ -750,7 +761,7 @@ bool CardIter::bEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  //RASSERT(G.m_bActive);
 
   if (pEachBoard())
     return true;
@@ -765,7 +776,7 @@ Board* CardIter::pEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  //RASSERT(G.m_bActive);
 
   i8 i_Board;
 
@@ -781,7 +792,7 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  //RASSERT(G.m_bActive);
 
   if (C_UNKNOWN == G.i_Board)
     G.i_Board = 0;

@@ -122,12 +122,9 @@ void Bench::vSeries_PreparePipelines(void)
 
   vS10_T00_Begin();
 
-  i8 i_Board = 0;
-
-  m_pCI->G.nBoards = nBoards();
+  m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-
-    m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
 
     vGroup_InitialAdjustments();
     vGroup_CondenseInfo();
@@ -147,15 +144,18 @@ void Bench::vSeries_MakeRunnable(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  i8 i_Board = 0;
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
 
-  m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+    vGroup_PredicatePullup();
+    vGroup_IndexBounds();
+    vGroup_JoinOrdering();
+  }
 
-  vGroup_PredicatePullup();
-  vGroup_IndexBounds();
-  vGroup_JoinOrdering();
+  m_pCI->vUsingBoard(BK_SUBPIPE, 0);
 
-  vGroup_FlattenSubquery();
+  //vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -839,7 +839,7 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  if (1 ==  nItems())
+  if (1 ==  nBoards())
     return;
 
   m_pCI->vTransform(__func__, "((10))"_Stz);
@@ -950,7 +950,7 @@ void Bench::vTransform_SubQueryAnalysisMainQuery(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 nBoards =  nItems();
+  i8 nBoards = this->nBoards();
   if (nBoards > 1) {
     m_pCI->G_vRestart();
     while (m_pCI->G_bEachMain(CK_CALL)) {
@@ -985,7 +985,7 @@ void Bench::vTransform_SubQueryAnalysisSubQuery(void)
   vAssert_Board_mqA();
 
 
-  i8 nBoards =  nItems();
+  i8 nBoards = this->nBoards();
   if (1 == nBoards) {
     // there is no sub-query
 
@@ -2882,7 +2882,7 @@ void Bench::vClearMarks(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  i8 nBoards = this->nItems();
+  i8 nBoards = this->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
@@ -2899,7 +2899,7 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  i8 nBoards = this->nItems();
+  i8 nBoards = this->nBoards();
   for (i8 i_each = 0; i_each < nBoards; i_each++) {
     Board *pBoard = this->pGet(i_each);
 
@@ -2930,7 +2930,7 @@ Board* Bench::pGetBoard(Stz* szBoardNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  i8 nBoards = this->nItems();
+  i8 nBoards = this->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
@@ -3082,7 +3082,7 @@ void Bench::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
     pMainQuery->vDisposition(QD_AGGREGATION);
   }
 
-  i8 nBoards =  nItems();
+  i8 nBoards = this->nBoards();
   if (nBoards > 1) {
     m_pCI->G_vRestart();
     while (m_pCI->G_bEachMain(CK_CALL)) {
@@ -3120,7 +3120,7 @@ void Bench::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
   vAssert_Board_mqA();
 
 
-  i8 nBoards =  nItems();
+  i8 nBoards = this->nBoards();
   if (1 == nBoards) {
     // there is no sub-query
 

@@ -22,7 +22,6 @@ namespace STORE
 
     // - - - - - - - - - - - - -
 
-    i8          nBoards;
     i8          i_Board;
     Board*      pBoard;
     Card_Deck*  pDeck;

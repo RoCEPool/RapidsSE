@@ -88,6 +88,7 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
     Board* pBoard(void);
+    void vBoardIteration(void);
 
     void vChangeCard(Card* pCard);
     i8   i_Child(void);
