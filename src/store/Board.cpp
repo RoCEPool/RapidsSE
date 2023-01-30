@@ -917,6 +917,10 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 
   pCI->vPrintBoard(__LINE__);
 
+  i8 i_Fold = C_UNKNOWN;
+  bool bFold = pCI->G_bLocateCard(CK_FOLD,C_UNKNOWN,i_Fold);
+
+  pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE)) {
 
     pCI->G.p_bounds         = pCI->G.p_table->pSub_bounds();
@@ -945,9 +949,9 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
       Card_KeyNotExists::vTableMorphsToKeyNotExists(pCI);
     }
     // CROSSJOIN
-//  else if (! pCI->G.p_bounds) {
-//    Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
-//  }
+    else if (! pCI->G.p_bounds && bFold && pCI->G.i_MainCard == i_Fold+1) {
+      Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
+    }
     // INDEXJOIN
     else {
       Card_IndexJoin::vTableMorphsToIndexJoin(pCI);

@@ -149,6 +149,7 @@ namespace STORE
     bool bJustRestarted(void);
 
     bool bLess(void);
+    bool G_bLocateCard(eCK eCard,  i8 i_After, i8& ri_Located);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
     bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
