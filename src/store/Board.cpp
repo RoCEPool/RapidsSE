@@ -837,7 +837,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* fold in the fold expression                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vFoldIn_foldExpr(CardIter* pCI)
+void Board::vFoldIn_foldExpr_Into_gbyAgg(CardIter* pCI)
 {
   _static_
 
@@ -852,8 +852,8 @@ void Board::vFoldIn_foldExpr(CardIter* pCI)
       pCI->G.p_projection->vBump_keyOdn_In_rpnCalc(pCI);
       pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
 
-      Card_FoldElist::vPush_foldExpr_Into_aggElist(pCI);
-      Card_FoldElist::vPush_foldExpr_Into_gbyElist(pCI);
+      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI);
+      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI);
     }
 
   }
@@ -1221,7 +1221,7 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add a project op after the having op which removes the foldExpr            */
 /*----------------------------------------------------------------------------*/
 void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 {
@@ -1237,8 +1237,6 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 
   pCI->G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
   pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
-
-  //pCI->G_vNewMemberOf(CK_PROJECTION,""_Stz,CK_PROJECT);
 
   Card_Projection* p_projection_unproject = new Card_Projection;
   pCI->G.p_project->vAppend(p_projection_unproject);
@@ -1261,15 +1259,6 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 
     p_projection_unproject->vAppend(p_expr_simple);
   }
-
-
-//  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-//
-//  pCI->G.p_project->vAppend(pCI->G.p_stream);
-//
-//  pCI->G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
-//  pCI->G.p_project->vAppend(pCI->G.p_comment);
-
 
 }
 

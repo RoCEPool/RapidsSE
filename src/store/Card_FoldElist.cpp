@@ -43,7 +43,23 @@ Card_FoldElist::~Card_FoldElist(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_FoldElist::vPush_foldExpr_Into_aggElist(CardIter* pCI)
+void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI)
+{
+  _static_
+
+  pCI->G_vNewMember(CK_EXPR);
+
+  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_type()->pDupCardAndSubCards());
+
+  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_rpnCalc()->pDupCardAndSubCards());
+
+  pCI->G.p_key->vPush(pCI->G.p_expr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI)
 {
   _static_
 
@@ -57,22 +73,6 @@ void Card_FoldElist::vPush_foldExpr_Into_aggElist(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$K1"_Stz);
 
   pCI->G.p_projection->vPush(pCI->G.p_expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_FoldElist::vPush_foldExpr_Into_gbyElist(CardIter* pCI)
-{
-  _static_
-
-  pCI->G_vNewMember(CK_EXPR);
-
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_type()->pDupCardAndSubCards());
-
-  pCI->G.p_expr->vAppend(pCI->G.p_foldElist->pSub_rpnCalc()->pDupCardAndSubCards());
-
-  pCI->G.p_key->vPush(pCI->G.p_expr);
 }
 
 //*============================================================================*/
