@@ -75,6 +75,9 @@
 
   // "_Call_Optimiser" .
 
+  0 locals| bJoinOrder |
+  0 locals| bJoinPermutations |
+
   "<CallingOptimiser>" 1 [job].tagSet@ tagSet.appendInt
 
   //Text[] .
@@ -97,10 +100,27 @@
 
   Optimiser[].new
 
-  // - - - - - - - - - - - - - - - - - - - - - - -
-  // JoinOrder
-
   "<joinOrder>" [job].tagSet@ tagSet.hasName if
+    1 to bJoinOrder
+  then
+
+  "<joinPermutations>" [job].tagSet@ tagSet.hasName if
+    1 to bJoinPermutations
+  then
+
+  // invalid to execute with both /joinOrder and /joinPermutations
+  bJoinOrder bJoinPermutations and if
+    EC_INVALID_COMMAND op__execErr
+    Optimiser[].delete
+    PipeSpec[].delete
+    false
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinOrder or JoinPermutations
+
+  bJoinOrder bJoinPermutations or if
 
      // find the <streamDef> table (--joinOrder)
      <streamDef> op__tableDef_streamSet assert
@@ -208,6 +228,22 @@
   "<joinOrder>" [job].tagSet@ tagSet.hasName if
 
     // pipeout join order information (which should be in the StreamSet[]
+    StreamSet[].isNull not assert
+    StreamSet[].pipeout
+
+    // exit as no need to execute the statement
+    Marker[].newLeaveMarker
+    Marker[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinPermutations
+
+  "<joinPermutations>" [job].tagSet@ tagSet.hasName if
+
+    // pipeout join permutations information (which should be in the StreamSet[]
     StreamSet[].isNull not assert
     StreamSet[].pipeout
 

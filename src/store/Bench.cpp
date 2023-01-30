@@ -3450,12 +3450,13 @@ void Bench::vTransform_JoinOrdering_v2(void)
     Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
     s256 sJoinOrder;
     p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
-    vTrace("JoinOrder:%s\n"_Stz, sJoinOrder.szStz());
-    m_pOptimiser->vJoinPermutation(xCI.G.p_joinPermSeq->iCardNo(), sJoinOrder);
+    //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
+    m_pOptimiser->vJoinPermutation(iJoinPermutations, sJoinOrder);
     iJoinPermutations++;
     DELETE_CARD(p_joinOrdering);
   }
   m_pOptimiser->vJoinPermutations(iJoinPermutations);
+
 
   // 6) Pick final join ordering
   Card_JoinOrdering* p_joinOrdering =

@@ -304,6 +304,7 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
   TagSet* pJobTags = pJob->pJobTags();
 
   bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
+  bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
 
   Board* pBoard = m_pBench->pHead();
 
@@ -314,6 +315,13 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     m_sJoinOrder.szStz(),
                                     C_VARGS_END);
+  }
+  else if (bJoinPermutations) {
+    RASSERT(pInfoSet);
+    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++)
+      Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                      m_sJoinPermutation[iIndex].szStz(),
+                                      C_VARGS_END);
   }
   else {
 
