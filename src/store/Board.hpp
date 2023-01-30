@@ -240,7 +240,7 @@ namespace STORE
 
     static void vAdd_Partitioning(CardIter* pCI);
 
-    static void vCorrect_having_BaseOn_foldExpr(CardIter* pCI);
+    static void vCorrect_having_After_Inject(CardIter* pCI);
 
     static void vDerive_foldElist_From_project_stream(CardIter* pCI);
     static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
@@ -256,7 +256,7 @@ namespace STORE
     static void vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI);
 
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
-    static void vFoldIn_foldExpr_Into_gbyAgg(CardIter* pCI);
+    static void vInject_sqResult_Into_gbyAgg(CardIter* pCI);
 
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
 
@@ -275,7 +275,7 @@ namespace STORE
                                   Card_Combined* p_combined_prior,
                                   Card_Next* p_next_prior,
                                   Card* p_main_curr);
-    static void vUnproject_foldExpr_After_having(CardIter* pCI);
+    static void vUnproject_injected_sqResult(CardIter* pCI);
 
     // vSeries_26_SubQuery_Analysis
     static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);

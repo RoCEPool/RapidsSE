@@ -132,7 +132,7 @@ void Board::vAdd_Partitioning(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCorrect_having_BaseOn_foldExpr(CardIter* pCI)
+void Board::vCorrect_having_After_Inject(CardIter* pCI)
 {
   _static_
 
@@ -839,7 +839,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* fold in the fold expression                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vFoldIn_foldExpr_Into_gbyAgg(CardIter* pCI)
+void Board::vInject_sqResult_Into_gbyAgg(CardIter* pCI)
 {
   _static_
 
@@ -1232,7 +1232,7 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
 /*----------------------------------------------------------------------------*/
 /* add a project op after the having op which removes the foldExpr            */
 /*----------------------------------------------------------------------------*/
-void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
+void Board::vUnproject_injected_sqResult(CardIter* pCI)
 {
   _static_
 
