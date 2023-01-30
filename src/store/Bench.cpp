@@ -2337,16 +2337,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
 
   vAssert_Board_mqA();
 
-  // H A NC ro
-  //                  //
-  //                  //
-  // T T G G G H      //
-  //           bc     //
-  //          @ro     //
-  //              $2  //
-  //           __sq2  //
-
-  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
     if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
       vTrace("DID NOT FIND H_A_NC_ro SubQuery call\n"_Stz);
@@ -2355,8 +2346,6 @@ void Bench::vFold_70_H_A_NC_ro(void)
   }
   vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
   m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 2) push to sq
   if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
@@ -2368,45 +2357,20 @@ void Bench::vFold_70_H_A_NC_ro(void)
   // 3) get copy of sq
   m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // 4) pop back to mq
   m_pCI->G_vPopIter();
   vAssert_Board_mqA();
 
-  // 5) add <fold>
+  // 5) add <fold> (before MQ)
   m_pCI->G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
   m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
-//  m_pCI->G_vAppendNewChild(m_pCI->G.p_fold,CK_FOLDELIST);
-//  m_pCI->G_vAppendNewChild(m_pCI->G.p_foldElist,CK_TYPE,"((type))"_Stz);
-//  m_pCI->G_vAppendNewChild(m_pCI->G.p_foldElist,CK_AS,"__SQ1RESULT"_Stz);
-//  m_pCI->G_vAppendNewChild(m_pCI->G.p_foldElist,CK_RPNCALC);
-//  m_pCI->G_vAppendNewChild(m_pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
-  // H A NC ro
-  //                               //
-  //               --mq--------    //
-  // T T A A A P F T T G G G H     //
-  // --sq--------                  //
-
-  // 6) copy up sq
+  // 6) copy up sq (add before fold)
   m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
   m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
   DELETE_CARD(m_pCI->m_pCard_yanked);
 
   m_pCI->vPrintBoard(__LINE__);
-
-//  Card_Stream::vStream_AdjustLoHi(m_pCI);
-//  m_pCI->vPrintBoard(__LINE__);
-
-//  Board::vRenumberStmOdn(m_pCI);
-//  m_pCI->vPrintBoard(__LINE__);
-
-  // H A NC ro
-  //                               //
-  //                               //
-  // T T A A A P F T T G G G H     //
-  //             fe                //
 
   // 7) derive the fold (SQ result) expr
   m_pCI->G_vRestart();
@@ -2416,29 +2380,10 @@ void Bench::vFold_70_H_A_NC_ro(void)
   }
   m_pCI->vPrintBoard(__LINE__);
 
-
-  // H A NC ro
-  //                               //
-  //                               //
-  // T T A A A P F T T G G G H     //
-  //                   gegege      //
-  //                   $1$1$1      //
-  //                   aeaeae      //
-  //                   k1k1k1      //
-
   // 8) inject SQ result into MQ GbyAgg
   Board::vFoldIn_foldExpr_Into_gbyAgg(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
-
-  // H A NC ro
-  //                               //
-  //                               //
-  // T T A A A P F T T G G G H P   //
-  //                         bc    //
-  //                        @ro    //
-  //                         $3    //
-  //                         $1    //
 
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_HAVING)) {
