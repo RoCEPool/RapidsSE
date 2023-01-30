@@ -1657,6 +1657,31 @@ bool CardIter::bLess(void)
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given i_After                               */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bLocateCard(eCK eLocate, i8 i_After, i8& ri_Located)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  i8 nChildren = G.pDeck->nChildCards();
+  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
+    Card *pMain = G.pDeck->pGetChild(i_Main);
+
+    if (pMain->bIsCard(eLocate)) {
+      G.p_Located = pMain;
+      G.e_Located = eLocate;
+      ri_Located = i_Main;
+      return true;
+    }
+  }
+
+  G.p_Located = nullptr;
+  G.e_Located = CK_NONE;
+  ri_Located = C_UNKNOWN;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given i_After                               */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bLocateCard(eCK eLocate, Stz* szWithValue, i8 i_After)
 {
   _precondition_(_MAGIC_, _FOOTER_);

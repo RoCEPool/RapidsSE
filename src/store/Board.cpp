@@ -584,8 +584,10 @@ void Board::vDerive_foldExpr(CardIter* pCI)
 
   pCI->G.p_type = pCI->m_pCard_resolved->pSub_type();
 
-  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
-  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
+//  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
+//  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
+
+  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
   if (pCI->G.p_type) {
     pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
@@ -837,9 +839,16 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* fold in the fold expression                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vFoldIn_foldExpr(CardIter* pCI)
+void Board::vFoldIn_foldExpr_Into_gbyAgg(CardIter* pCI)
 {
   _static_
+
+  Card_Expr* p_expr_fold = nullptr;
+
+  pCI->vRestart();
+
+  if (pCI->G_bEachMain(CK_FOLD))
+    p_expr_fold = pCI->G.p_fold->pSub_expr();
 
   while (pCI->G_bEachMain()) {
 
@@ -852,8 +861,8 @@ void Board::vFoldIn_foldExpr(CardIter* pCI)
       pCI->G.p_projection->vBump_keyOdn_In_rpnCalc(pCI);
       pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
 
-      Card_FoldElist::vPush_foldExpr_Into_aggElist(pCI);
-      Card_FoldElist::vPush_foldExpr_Into_gbyElist(pCI);
+      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI,p_expr_fold);
+      Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI,p_expr_fold);
     }
 
   }
@@ -917,6 +926,10 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 
   pCI->vPrintBoard(__LINE__);
 
+  i8 i_Fold = C_UNKNOWN;
+  bool bFold = pCI->G_bLocateCard(CK_FOLD,C_UNKNOWN,i_Fold);
+
+  pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE)) {
 
     pCI->G.p_bounds         = pCI->G.p_table->pSub_bounds();
@@ -945,9 +958,9 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
       Card_KeyNotExists::vTableMorphsToKeyNotExists(pCI);
     }
     // CROSSJOIN
-//  else if (! pCI->G.p_bounds) {
-//    Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
-//  }
+    else if (! pCI->G.p_bounds && bFold && pCI->G.i_MainCard == i_Fold+1) {
+      Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
+    }
     // INDEXJOIN
     else {
       Card_IndexJoin::vTableMorphsToIndexJoin(pCI);
@@ -1217,13 +1230,14 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add a project op after the having op which removes the foldExpr            */
 /*----------------------------------------------------------------------------*/
 void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 {
   _static_
 
 
+  // resolve (r to l) the projection of the gbyAgg on origin
   if (! pCI->G_bResolveCardWithSub(CK_GBYAGG, CK_PROJECTION, pCI->G.i_MainCard))
     return;
 
@@ -1233,17 +1247,18 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
   pCI->G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
   pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
-  pCI->G_vNewMemberOf(CK_PROJECTION,""_Stz,CK_PROJECT);
+  Card_Projection* p_projection_unproject = new Card_Projection;
+  pCI->G.p_project->vAppend(p_projection_unproject);
 
   i8 i_Col = 0;
-  i8 nChildren_aggElist = pCI->G.p_projection->nChildCards();
-  for (i8 i_expr_aggElist = 0;
-       i_expr_aggElist < nChildren_aggElist;
-       i_expr_aggElist++) {
+  i8 nChildren_projection = pCI->G.p_projection->nChildCards();
+  for (i8 i_expr_projection = 0;
+       i_expr_projection < nChildren_projection;
+       i_expr_projection++) {
 
     i_Col++;
 
-    pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_aggElist));
+    pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_projection));
     pCI->G.p_as = pCI->G.p_expr->pSub_as();
 
     if (Card::bIsSqyColOrdinal(pCI->G.p_as->szValue()))
@@ -1251,17 +1266,8 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
-    pCI->G_vAppendChild(CK_PROJECTION,p_expr_simple);
+    p_projection_unproject->vAppend(p_expr_simple);
   }
-
-
-  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-
-  pCI->G.p_project->vAppend(pCI->G.p_stream);
-
-  pCI->G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
-  pCI->G.p_project->vAppend(pCI->G.p_comment);
-
 
 }
 
@@ -1284,6 +1290,40 @@ void Board::vProjection_Analysis(CardIter* pCI)
     pCI->G.p_table->vProjectionAnalysis(pCI);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* projection analysis (post fold)                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vProjection_Analysis_postFold(CardIter* pCI)
+{
+  _static_
+
+  pCI->vRestart();
+  while (pCI->G_bEachMain(CK_TABLE))
+    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
+      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+
+  bool bPostFold = false;
+
+  pCI->vRestart();
+  pCI->G.p_projection = nullptr;
+  while (pCI->G_bEachMain()) {
+    if (CK_FOLD == pCI->G.e_MainCard) {
+      bPostFold = true;
+      continue;
+    }
+
+    if (CK_TABLE == pCI->G.e_MainCard) {
+      pCI->G.p_table->vProjectionAnalysis(pCI);
+      continue;
+    }
+
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
+      pCI->G.p_projection->vNumberExpr();
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* relabel expressions                                                        */

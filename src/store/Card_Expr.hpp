@@ -23,6 +23,8 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     i8 iRpnCalc_WhichGbyKey(void);
+
+    void vNumberValue(i8 i_Expr);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);
