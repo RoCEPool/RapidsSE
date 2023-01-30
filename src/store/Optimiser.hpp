@@ -9,6 +9,7 @@
 #include "CardCtl.hpp"
 #include "Transformer.hpp"
 #include "Weaver.hpp"
+#include "PermGen.hpp"
 
 namespace STORE
 {
@@ -28,7 +29,10 @@ namespace STORE
     Transformer* m_pTransformer;
     Weaver*      m_pWeaver;
 
-    s4K          m_sJoinOrder; // join order string
+    i8           m_nJoinPermutations;
+    s256         m_sJoinPermutation[PermGen::C_PERMGEN_ITEMS]; // join permutation string
+
+    s256         m_sJoinOrder; // join order string
 
     // must be last
     Footer m_xFooter;
@@ -53,6 +57,11 @@ namespace STORE
 
     Stz* szJoinOrder(void);
     void vJoinOrder(Stz* szJoinOrder);
+
+    Stz* szJoinPermutation(i8 iJoinPermutation);
+    void vJoinPermutation(i8 iJoinPermutation, Stz* szJoinOrder);
+    i8 nJoinPermutations(void);
+    void vJoinPermutations(i8 iJoinPermutations);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);

@@ -40,6 +40,13 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_sJoinOrder   = "(none)"_Stz;
 
+  m_nJoinPermutations = 0;
+
+  for (i8 iIndex = 0; iIndex < PermGen::C_PERMGEN_ITEMS; iIndex++) {
+    m_sJoinPermutation[iIndex] = "(none)"_Stz;
+  }
+
+
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -138,6 +145,46 @@ TagSet* Optimiser::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* get join order string                                                      */
 /*----------------------------------------------------------------------------*/
+i8 Optimiser::nJoinPermutations(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_nJoinPermutations;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vJoinPermutations(i8 iJoinPermutations)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_nJoinPermutations = iJoinPermutations;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Optimiser::szJoinPermutation(i8 iJoinPermutation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_sJoinPermutation[iJoinPermutation];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set join order string                                                      */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vJoinPermutation(i8 iJoinPermutation, Stz* szJoinPermutation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_sJoinPermutation[iJoinPermutation] = szJoinPermutation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
 Stz* Optimiser::szJoinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -154,7 +201,6 @@ void Optimiser::vJoinOrder(Stz* szJoinOrder)
 
   m_sJoinOrder = szJoinOrder;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set m_pUnOptPipeSpec                                                       */
