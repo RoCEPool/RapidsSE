@@ -16,6 +16,8 @@ namespace STORE
     Card_Projection(void);
    ~Card_Projection(void) noexcept(false);
 
+    void vNumberExpr(void);
+
     Card_Projection* pReProjection(void);
   };
 

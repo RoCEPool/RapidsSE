@@ -2440,6 +2440,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_HAVING)) {
     Board::vUnproject_foldExpr_After_having(m_pCI);
+    Board::vProjection_Analysis_postFold(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     Board::vCorrect_having_BaseOn_foldExpr(m_pCI);
   }

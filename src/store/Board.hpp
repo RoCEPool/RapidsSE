@@ -264,6 +264,7 @@ namespace STORE
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
     static void vProjection_Analysis(CardIter* pCI);
+    static void vProjection_Analysis_postFold(CardIter* pCI);
 
     static void vRelabelExpressions(CardIter* pCI);
     static void vRenumberStmOdn(CardIter* pCI);

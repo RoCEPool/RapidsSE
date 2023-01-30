@@ -1294,6 +1294,40 @@ void Board::vProjection_Analysis(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* projection analysis (post fold)                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vProjection_Analysis_postFold(CardIter* pCI)
+{
+  _static_
+
+  pCI->vRestart();
+  while (pCI->G_bEachMain(CK_TABLE))
+    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
+      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+
+  bool bPostFold = false;
+
+  pCI->vRestart();
+  pCI->G.p_projection = nullptr;
+  while (pCI->G_bEachMain()) {
+    if (CK_FOLD == pCI->G.e_MainCard) {
+      bPostFold = true;
+      continue;
+    }
+
+    if (CK_TABLE == pCI->G.e_MainCard) {
+      pCI->G.p_table->vProjectionAnalysis(pCI);
+      continue;
+    }
+
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
+      pCI->G.p_projection->vNumberExpr();
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* relabel expressions                                                        */
 /*----------------------------------------------------------------------------*/
 void Board::vRelabelExpressions(CardIter* pCI)
