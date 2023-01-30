@@ -1375,11 +1375,11 @@ void Bench::vFold_10_F(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  Card_Stream::vStream_AdjustLoHi(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
-  Board::vRenumberStmOdn(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
+//  Card_Stream::vStream_AdjustLoHi(m_pCI);
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  Board::vRenumberStmOdn(m_pCI);
+//  m_pCI->vPrintBoard(__LINE__);
 
   Board::vRelabelExpressions(m_pCI);
 
