@@ -9,8 +9,10 @@ namespace STORE
 {
   class PermGen : public Object
   {
-  private:
+  public:
     static const i8 C_PERMGEN_ITEMS = 16;
+
+  private:
 
     i8 m_nItems; // number of items
     i8 m_nPermutations; // number of permutations so far

@@ -3443,6 +3443,21 @@ void Bench::vTransform_JoinOrdering_v2(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  // get the join permutations strings
+  xCI.vRestart();
+  i8 iJoinPermutations = 0;
+  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
+    s256 sJoinOrder;
+    p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
+    //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
+    m_pOptimiser->vJoinPermutation(iJoinPermutations, sJoinOrder);
+    iJoinPermutations++;
+    DELETE_CARD(p_joinOrdering);
+  }
+  m_pOptimiser->vJoinPermutations(iJoinPermutations);
+
+
   // 6) Pick final join ordering
   Card_JoinOrdering* p_joinOrdering =
       Card_JoinOrdering::pPick(p_joinPermAll);
@@ -3451,13 +3466,13 @@ void Bench::vTransform_JoinOrdering_v2(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
-  s4K sJoinOrder;
+  // get the final join ordering string
+  s256 sJoinOrder;
   p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
   vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
   m_pOptimiser->vJoinOrder(sJoinOrder);
 
   DELETE_CARD(p_joinPermAll);
-
 
   pBoard = m_pCI->G.pBoard;
   m_pCI->G_vPopIter();

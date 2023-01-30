@@ -110,8 +110,9 @@ void Step::vOptimiserTransform(void) {
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
+  bool bJoinPermutations = pJobTags->bHasName("<joinPermutations>"_Stz);
 
-  if (bJoinOrder) {
+  if (bJoinOrder || bJoinPermutations) {
     // get the streamSet for joinOrder
     pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
   }
