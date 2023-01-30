@@ -1224,6 +1224,7 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
   _static_
 
 
+  // resolve (r to l) the projection of the gbyAgg on origin
   if (! pCI->G_bResolveCardWithSub(CK_GBYAGG, CK_PROJECTION, pCI->G.i_MainCard))
     return;
 
@@ -1233,17 +1234,20 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
   pCI->G_vNewMemberOf(CK_LEVEL,""_Stz,CK_PROJECT);
   pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
-  pCI->G_vNewMemberOf(CK_PROJECTION,""_Stz,CK_PROJECT);
+  //pCI->G_vNewMemberOf(CK_PROJECTION,""_Stz,CK_PROJECT);
+
+  Card_Projection* p_projection_unproject = new Card_Projection;
+  pCI->G.p_project->vAppend(p_projection_unproject);
 
   i8 i_Col = 0;
-  i8 nChildren_aggElist = pCI->G.p_projection->nChildCards();
-  for (i8 i_expr_aggElist = 0;
-       i_expr_aggElist < nChildren_aggElist;
-       i_expr_aggElist++) {
+  i8 nChildren_projection = pCI->G.p_projection->nChildCards();
+  for (i8 i_expr_projection = 0;
+       i_expr_projection < nChildren_projection;
+       i_expr_projection++) {
 
     i_Col++;
 
-    pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_aggElist));
+    pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_projection));
     pCI->G.p_as = pCI->G.p_expr->pSub_as();
 
     if (Card::bIsSqyColOrdinal(pCI->G.p_as->szValue()))
@@ -1251,16 +1255,16 @@ void Board::vUnproject_foldExpr_After_having(CardIter* pCI)
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
-    pCI->G_vAppendChild(CK_PROJECTION,p_expr_simple);
+    p_projection_unproject->vAppend(p_expr_simple);
   }
 
 
-  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-
-  pCI->G.p_project->vAppend(pCI->G.p_stream);
-
-  pCI->G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
-  pCI->G.p_project->vAppend(pCI->G.p_comment);
+//  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
+//
+//  pCI->G.p_project->vAppend(pCI->G.p_stream);
+//
+//  pCI->G_vNewMember(CK_COMMENT,"unproject of Sq1"_Stz);
+//  pCI->G.p_project->vAppend(pCI->G.p_comment);
 
 
 }
