@@ -2310,29 +2310,28 @@ void Bench::vFold_60_W_L_NC_NI(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* Folding a non-correlated aggregate subquery (via having clause)            */
 /*----------------------------------------------------------------------------*/
 void Bench::vFold_70_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  // H A NC ro
-  // push a (single-value aggregate non-correlated ro) sub query before main queryy
-  // as am aggregation-fan
-  // further: the aggregation-value is injected/factored into the main-query
-  // (refer: Q11)
+  // H A NC ro (refer: Q11)
+  // 1) the subquery produces a single result, such as avg(col)
+  // 2) that SQ result needs to be in every MQ row so the Having clause
+  //    can use it to filter rows, so:
+  //   a) cross join SQ result with every row of first table of MQ
+  //   b) inject SQ result into key & projection of MQ GbyAgg
+  //   c) correct the Having op to cater for SQ result
+  //   d) Un-project the SQ result from final rows
 
-  /* ARCHETYPE :
-      select ps_partkey,
-             sum(ps_supplycost * ps_availqty) as value
-        from partsupp, supplier
-       where PS_SUPPKEY = S_SUPPKEY
-       group by ps_partkey
-      having sum(ps_supplycost * ps_availqty) > (select avg(ps_supplycost * ps_availqty)
-                                                   from partsupp, supplier
-                                                  where PS_SUPPKEY = S_SUPPKEY)
-      ;
- */
+  /* ARCHETYPE _r_a_b_HAVING:
+      select l_orderkey, sum(l_quantity)
+        from lineitem
+       group by l_orderkey
+      having sum(l_quantity) > (select avg(l_quantity)
+                                  from lineitem);
+  */
 
   m_pCI->vTransform(__func__, "((vFold_70_H_A_NC_ro))"_Stz);
 
@@ -2366,6 +2365,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   }
   vAssert_Board_sqB();
 
+  // 3) get copy of sq
   m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2374,6 +2374,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   m_pCI->G_vPopIter();
   vAssert_Board_mqA();
 
+  // 5) add <fold>
   m_pCI->G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
   m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
 //  m_pCI->G_vAppendNewChild(m_pCI->G.p_fold,CK_FOLDELIST);
@@ -2388,7 +2389,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   // T T A A A P F T T G G G H     //
   // --sq--------                  //
 
-
+  // 6) copy up sq
   m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
   m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
   DELETE_CARD(m_pCI->m_pCard_yanked);
@@ -2407,6 +2408,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   // T T A A A P F T T G G G H     //
   //             fe                //
 
+  // 7) derive the fold (SQ result) expr
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
@@ -2424,6 +2426,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   //                   aeaeae      //
   //                   k1k1k1      //
 
+  // 8) inject SQ result into MQ GbyAgg
   Board::vFoldIn_foldExpr_Into_gbyAgg(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
@@ -2439,10 +2442,14 @@ void Bench::vFold_70_H_A_NC_ro(void)
 
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_HAVING)) {
+
+    // 9) correct MQ Having after inject
+    Board::vCorrect_having_BaseOn_foldExpr(m_pCI);
+    m_pCI->vPrintBoard(__LINE__);
+
+    // 10) un-project injected SQ result
     Board::vUnproject_foldExpr_After_having(m_pCI);
     Board::vProjection_Analysis_postFold(m_pCI);
-    m_pCI->vPrintBoard(__LINE__);
-    Board::vCorrect_having_BaseOn_foldExpr(m_pCI);
   }
 
   m_pCI->vPrintBoard(__LINE__);
