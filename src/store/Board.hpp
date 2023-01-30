@@ -250,7 +250,7 @@ namespace STORE
     static void vDerive_stream_order_For_project(CardIter* pCI);
     static void vDerive_stream_order_For_sort(CardIter* pCI);
     static void vDerive_order(CardIter* pCI);
-    static void vDerive_foldExpr(CardIter* pCI);
+    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
 
     static void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI);
     static void vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI);

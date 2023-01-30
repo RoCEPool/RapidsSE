@@ -575,7 +575,7 @@ void Board::vDerive_order(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vDerive_foldExpr(CardIter* pCI)
+void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 {
   _static_
 

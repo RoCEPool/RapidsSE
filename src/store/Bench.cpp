@@ -2376,7 +2376,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
-    Board::vDerive_foldExpr(m_pCI);
+    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
   }
   m_pCI->vPrintBoard(__LINE__);
 
