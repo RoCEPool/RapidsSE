@@ -67,7 +67,20 @@ Join Permutations:
 
 Expected join order:
   Either A->B->C or C->B->A
-  ********************************************************************************/
+********************************************************************************/
+
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows:
+  ('A UNICAST B UNICAST C, 0, 10001000')
+  ('B UNICAST A UNICAST C, 0, 10010000')
+  ('B UNICAST C UNICAST A, 0, 10010000')
+  ('C UNICAST B UNICAST A, 0, 10001000')
+
 
 /joinOrder
 select count(*)
@@ -110,6 +123,19 @@ Expected join order:
 
 ********************************************************************************/
 
+/joinPermutations
+select count(*)
+  from A
+  join B on A.A_COL0 = B.B_COL0
+  join C on B.B_COL0 = C.C_COL1
+;
+rows:
+  ('A UNICAST B BROADCAST C, 40000000, 1000')
+  ('B UNICAST A BROADCAST C, 40000000, 10000')
+  ('B BROADCAST C HASHCAST A, 10040000, 0')
+  ('C HASHCAST B UNICAST A, 1000, 10000000')
+
+
 /joinOrder
 select count(*)
   from A
@@ -150,8 +176,19 @@ Expected join order:
   Either A->B->C
 
 ********************************************************************************/
-/weaved select * from A;
-rows: 12
+
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL0
+ ;
+rows:
+  ('A UNICAST B HASHCAST C, 10000000, 1000')
+  ('B UNICAST A HASHCAST C, 10000000, 10000')
+  ('B HASHCAST C HASHCAST A, 10010000, 0')
+  ('C BROADCAST B UNICAST A, 4000, 10000000')
+
 
 /joinOrder
 select count(*)
@@ -183,16 +220,29 @@ select count(*)
    join C on B.B_COL1 = C.C_COL1
  ;
 
-Join Permutations:                                     Network Total                 Unicast Total
-  A->B (UNICAST)(0)        ->C (HASHCAST) (1000*10000) Total=(0+(1000*10000))      , 1000
-  B->A (UNICAST)(0)        ->C (HASHCAST) (10000*1000) Total=(0+(10000*1000))      , 10000
-  B->C (HASHCAST)(10000)   ->A (HASHCAST) (10000*1000) Total=(10000+(10000*1000))  , 0
-  C->B (BROADCAST)(4*1000) ->A (UNICAST)  (0)          Total=(4*1000)              , 1000*10000
+Join Permutations:                                        Network Total                 Unicast Total
+  A->B (UNICAST)(0)        ->C (BROADCAST) (4*1000*10000) Total=(0+(4*1000*10000))      , 1000
+  B->A (UNICAST)(0)        ->C (BROADCAST) (4*10000*1000) Total=(0+(4*10000*1000))      , 10000
+  B->C (HASHCAST)(10000)   ->A (HASHCAST) (10000*1000)    Total=(10000+(10000*1000))  , 0
+  C->B (BROADCAST)(4*1000) ->A (UNICAST)  (0)             Total=(4*1000)              , 1000*10000
 
 Expected join order:
   C->B->A
 
 ********************************************************************************/
+
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL1 = C.C_COL1
+ ;
+rows:
+  ('A UNICAST B BROADCAST C, 40000000, 1000')
+  ('B UNICAST A BROADCAST C, 40000000, 10000')
+  ('B BROADCAST C HASHCAST A, 10040000, 0')
+  ('C BROADCAST B UNICAST A, 4000, 10000000')
+
 
 /joinOrder
 select count(*)
@@ -235,6 +285,19 @@ Expected join order:
   A->B->C
 
 ********************************************************************************/
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows:
+  ('A BROADCAST B UNICAST C, 4000, 10000000')
+  ('B HASHCAST A HASHCAST C, 10010000, 0')
+  ('B UNICAST C HASHCAST A, 10000000, 10000')
+  ('C UNICAST B HASHCAST A, 10000000, 1000')
+
+
 /joinOrder
 select count(*)
   from A
@@ -276,6 +339,19 @@ Join Permutations:                                       Network Total          
 Expected join order:
   A->B->C
 ********************************************************************************/
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows:
+  ('A HASHCAST B UNICAST C, 1000, 10000000')
+  ('B BROADCAST A HASHCAST C, 10040000, 0')
+  ('B UNICAST C BROADCAST A, 40000000, 10000')
+  ('C UNICAST B BROADCAST A, 40000000, 1000')
+
+
 /joinOrder
 select count(*)
   from A
@@ -316,6 +392,20 @@ Expected join order:
   Either A->B->C
 
 ********************************************************************************/
+
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL0 = C.C_COL0
+ ;
+rows:
+  ('A BROADCAST B UNICAST C, 4000, 10000000')
+  ('B BROADCAST A HASHCAST C, 10040000, 0')
+  ('B UNICAST C BROADCAST A, 40000000, 10000')
+  ('C UNICAST B BROADCAST A, 40000000, 1000')
+
+
 /joinOrder
 select count(*)
   from A
@@ -355,6 +445,19 @@ Join Permutations:                          Network Total                       
 Expected join order:
   Either A->B->C or C->B->A
 ********************************************************************************/
+
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL1 = C.C_COL1
+ ;
+rows:
+  ('A BROADCAST B BROADCAST C, 40004000, 0')
+  ('B BROADCAST A BROADCAST C, 40040000, 0')
+  ('B BROADCAST C BROADCAST A, 40040000, 0')
+  ('C BROADCAST B BROADCAST A, 40004000, 0')
+
 
 /joinOrder
 select count(*)
