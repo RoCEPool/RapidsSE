@@ -3421,7 +3421,7 @@ void Bench::vTransform_JoinOrdering_v2(void)
   // get the final join ordering string
   s256 sJoinOrder;
   p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
-  vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
+  //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
   m_pOptimiser->vJoinOrder(sJoinOrder);
 
   DELETE_CARD(p_joinPermAll);
