@@ -115,16 +115,30 @@ void Bench::vApplyOriginalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PreparePipelines();
-  vSeries_MakeRunnable();
+  vSeries_PreparePipelines_original();
+  vSeries_MakeRunnable_original();
   vSeries_OptimiseFlattened();
   vSeries_MakeWeavable();
 }
 
 /*----------------------------------------------------------------------------*/
+/* apply the recursive transformation matrix                                  */
+/*----------------------------------------------------------------------------*/
+void Bench::vApplyRecursiveModel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries_PreparePipelines_recursive();
+  vSeries_MakeRunnable_recursive();
+  vSeries_OptimiseFlattened();
+  vSeries_MakeWeavable();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines(void)
+void Bench::vSeries_PreparePipelines_original(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -148,7 +162,56 @@ void Bench::vSeries_PreparePipelines(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable(void)
+void Bench::vSeries_PreparePipelines_recursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  vS10_T00_Begin();
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
+
+    vGroup_InitialAdjustments();
+    vGroup_CondenseInfo();
+    vGroup_MetaAnalysis();
+    vGroup_MainConversions();
+  }
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_MakeRunnable_original(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries(BK_SUBPIPE, 0, __func__);
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
+
+    vGroup_PredicatePullup();
+    vGroup_IndexBounds();
+    vGroup_JoinOrdering();
+  }
+
+  m_pCI->vUsingBoard(BK_SUBPIPE, 0);
+
+  vGroup_FlattenSubquery();
+
+  vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_MakeRunnable_recursive(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
