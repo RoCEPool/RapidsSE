@@ -995,7 +995,7 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 /*----------------------------------------------------------------------------*/
 /* Analyse all sub-queries                                                    */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_SubQueryAnalysis(void)
+void Bench::vTransform_OuterQueryAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -1003,8 +1003,8 @@ void Bench::vTransform_SubQueryAnalysis(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    SubQuery *pSubQuery = m_pCI->G.pBoard->pSubQuery();
-    pSubQuery->vDisposition(QD_LINEAR);
+    SubQuery *pOuterQuery = m_pCI->G.pBoard->pSubQuery();
+    pOuterQuery->vDisposition(QD_LINEAR);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1012,12 +1012,42 @@ void Bench::vTransform_SubQueryAnalysis(void)
     while (m_pCI->G_bEachMain(CK_AGGREG)) {
       if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
           m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
-        pSubQuery->vDisposition(QD_AGGREGATION);
+        pOuterQuery->vDisposition(QD_AGGREGATION);
         break;
       }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // search for from calls to sub-queries
+
+    m_pCI->vRestart();
+    while (m_pCI->G_bEachMain(CK_CALL)) {
+
+//      Stz* szBoardNm = m_pCI->G.p_call->szValue();
+//      Board* pBoard = pGetBoard(szBoardNm);
+//      SubQuery *pSubQuery = pBoard->pSubQuery();
+//      pSubQuery->vCaller(m_pCI->G.i_Board);
+//      pSubQuery->vClause(QC_FROM_CLAUSE);
+
+      Board::vOuter_Query_Analysis_Of_from_call(m_pCI);
+      pOuterQuery->vSubQueries(pOuterQuery->nSubQueries() + 1);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // search for where calls to sub-queries
+
+    m_pCI->vRestart();
+    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+      Board::vOuter_Query_Analysis_Of_where_boolCalc(m_pCI);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // search for having calls to sub-queries
+
+    m_pCI->vRestart();
+    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+      Board::vOuter_Query_Analysis_Of_having_boolCalc(m_pCI);
+    }
 
   }
 

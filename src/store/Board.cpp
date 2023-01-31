@@ -1651,6 +1651,124 @@ void Board::vMain_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vOuter_Query_Analysis_Of_from_call(CardIter* pCI)
+{
+  _static_
+
+  Stz* szBoardNm = pCI->G.p_call->szValue();
+  Board* pBoard = pCI->m_pBench->pGetBoard(szBoardNm);
+  SubQuery *pSubQuery = pBoard->pSubQuery();
+  pSubQuery->vCaller(pCI->G.i_Board);
+  pSubQuery->vClause(QC_FROM_CLAUSE);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
+{
+  _static_
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
+
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (p_pred->bIsCard(CK_TERM)) {
+      return C_CONTINUE_RECURSION;
+      pCI->G.p_term = _pCard_Term(p_pred);
+    }
+
+    Stz* szValue_term = p_pred->szValue();
+    eRO eRelnOp = RelOp::eDecode(szValue_term);
+
+    if (! pCI->G_bIsBoard(szValue_term))
+      return C_CONTINUE_RECURSION;
+
+    if (RO_NONE != eRelnOp) {
+
+      Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+      Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+      SubQuery* pSubQuery = pSubBoard->pSubQuery();
+
+
+      pSubQuery->vCaller(pCI->G.i_Board);
+      pSubQuery->vClause(QC_HAVING_CLAUSE);
+      pSubQuery->vCalcOp(QO_COMPARE_OP);
+      pSubQuery->vRelnOp(eRelnOp);
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
+{
+  _static_
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
+
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (p_pred->bIsCard(CK_TERM)) {
+      return C_CONTINUE_RECURSION;
+      pCI->G.p_term = _pCard_Term(p_pred);
+    }
+
+    Stz* szValue_term = p_pred->szValue();
+    eRO eRelnOp = RelOp::eDecode(szValue_term);
+
+    if (! pCI->G_bIsBoard(szValue_term))
+      return C_CONTINUE_RECURSION;
+
+    if (RO_NONE != eRelnOp) {
+
+      Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+      Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+      SubQuery* pSubQuery = pSubBoard->pSubQuery();
+
+
+      pSubQuery->vCaller(pCI->G.i_Board);
+      pSubQuery->vClause(QC_WHERE_CLAUSE);
+      pSubQuery->vCalcOp(QO_COMPARE_OP);
+      pSubQuery->vRelnOp(eRelnOp);
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                    vSeries_33_To_TblColOdn */
 /*============================================================================*/

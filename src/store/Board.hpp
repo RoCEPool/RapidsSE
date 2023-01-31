@@ -282,6 +282,9 @@ namespace STORE
     static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);
     static void vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI);
     static void vMain_Query_Analysis_Of_having_boolCalc(CardIter* pCI);
+    static void vOuter_Query_Analysis_Of_from_call(CardIter* pCI);
+    static void vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI);
+    static void vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI);
 
 
     // vSeries_36_Bound_Analysis
