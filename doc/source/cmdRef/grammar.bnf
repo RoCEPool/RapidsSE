@@ -32,8 +32,11 @@
 
 statement         ::= statementChoice ';'
 statementChoice   ::= (
-                        selectQuery
+                        countStmt
+                      | createIndexStmt
+                      | createTableStmt
                       | explainStatement
+                      | selectQuery
                       ) ';'
 
 explainStatement  ::= 'EXPLAIN' explainOptions* selectQuery
@@ -209,26 +212,28 @@ sql92TimeIntervalLiteral
 */
 
 
+countStmt         ::= 'COUNT' tableName
+createIndexStmt   ::= 'CREATE' 'UNIQUE'? 'INDEX' indexName 'ON' tableName  '(' identifierList ')'
+createTableStmt   ::= 'CREATE' 'TABLE' tableName
+                      '(' columnDefinition ( ',' columnDefinition )* ')'
+                      ( 'PARTITION' 'BY' '(' identifierList ')' )?
+columnDefinition  ::= columnName dataType ('NOT' 'NULL')?
 
-createTableQuery  ::= 'CREATE' 'TABLE' tableReference ( tableDefinition | ( tableDefinition | columnNameList )? 'AS'? selectQuery ( 'WITH' 'NO'? 'DATA' )? )
-createIndexQuery  ::= 'CREATE' 'UNIQUE'? ( 'INDEX' | 'KEY' ) ( 'IF NOT EXISTS' )? indexName 'ON' tableReference  '(' expr ( ',' expr )* ')'
+
 dropTableQuery    ::= 'DROP' 'TABLE' tableReference
 dropIndexQuery    ::= 'DROP' 'INDEX' tableReference indexName
 truncateQuery     ::= 'TRUNCATE' 'TABLE'? tableReference
 
-tableDefinition   ::= '(' ( columnDefinition | tableConstraint | indexDefinition ) ( ',' ( columnDefinition | tableConstraint | indexDefinition ) )* ')' 'REFERENCE'? tablePartitioning?
-tablePartitioning ::= 'PARTITION' 'BY'? ( 'HASH' | 'VALUE' )? 'ON'? '(' expr ( ',' expr )* ')'
-columnDefinition  ::= columnName dataType ( 'NOT'? 'NULL' | 'PRIMARY KEY' | 'UNIQUE' 'MONOTONIC'? 'KEY'? )*
 columnNameList    ::= '(' columnName ( ',' columnName )* ')'
-tableConstraint   ::= ( 'PRIMARY' | 'UNIQUE'? 'MONOTONIC' ) 'KEY' ( expr | '(' expr ( ',' expr )* ')' )
+/* tableConstraint   ::= ( 'PRIMARY' | 'UNIQUE'? 'MONOTONIC' ) 'KEY' ( expr | '(' expr ( ',' expr )* ')' ) */
 indexDefinition   ::= 'UNIQUE'? ( 'INDEX' | 'KEY' ) indexName? 'ON'? ( expr | '(' expr ( ',' expr )* ')' )
 
 
 
 dataType          ::= sqlDataType
 sqlDataType       ::= 'BOOLEAN'
-                    | ( 'INTEGER' | 'FLOAT' ) /*( '(' precision ( 'BITS' | 'BYTES' | 'digitS' )? ')' )? */
-                    | 'DECIMAL' ( '(' precision 'digitS'? ( ',' scale 'digitS'? )? ')' )?
+                    | ( 'INTEGER' | 'FLOAT' ) /*( '(' precision ( 'BITS' | 'BYTES' | 'DIGITS' )? ')' )? */
+                    | 'DECIMAL' ( '(' precision ( ',' scale )? ')' )?
                     | 'DATE'
                     | 'TIME'
                     | 'TIMESTAMP'
@@ -247,7 +252,7 @@ nonReservedWord   ::=
                     | 'BIT' | 'BITS' | 'BLOCK' | 'BLOOM' | 'BOTH' | 'BTREE' | 'BY' | 'BYTE' | 'BYTES'
                     | 'CATALOG' | 'CHARS' | 'COALESCE' | 'CONCAT' | 'CORRESPONDING' | 'COUNT' | 'CREATE'
                     | 'CURRENT_CATALOG' | 'CURRENT_SCHEMA' | 'CURRENT_TIMESTAMP' | 'CURRENT_USER'
-                    | 'DATA' | 'DATE' | 'DAY' | 'DAYS' | 'DECODE' | 'DELETE' | 'DESC' | 'DETAIL' | 'digitS' | 'DROP'
+                    | 'DATA' | 'DATE' | 'DAY' | 'DAYS' | 'DECODE' | 'DELETE' | 'DESC' | 'DETAIL' | 'DIGITS' | 'DROP'
                     | 'ESCAPE' | 'EXCEPT' | 'EXPLAIN' | 'EXTRACT'
                     | 'FEDERATION' | 'FORMAT'
                     | 'HASH' | 'HASHKEY' | 'HOUR' | 'HOURS'
