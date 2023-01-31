@@ -7,6 +7,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Subquery in having clause
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 select l_orderkey, sum(l_quantity)
   from lineitem
   group by l_orderkey
@@ -103,6 +104,19 @@ having sum(ps_supplycost * ps_availqty) <=
            where PS_SUPPKEY = S_SUPPKEY)
 ;
 rows : 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Subquery in from clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// _r_FORM_A / _r_FOLD_10_F (Q7,8,9)
+select count(*)
+  from (select *
+          from orders, lineitem
+         where O_ORDERKEY = L_ORDERKEY)
+;
+rows:
+ (5996)
 
 /*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -267,17 +281,6 @@ select count(*)
 rows:
  (3044)
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// _r_FORM_A / _r_FOLD_10_F (Q7,8,9)
-select count(*)
-  from (select *
-          from orders, lineitem
-         where O_ORDERKEY = L_ORDERKEY)
-;
-rows:
- (5996)
 */
 
 MemoryLeaks;
