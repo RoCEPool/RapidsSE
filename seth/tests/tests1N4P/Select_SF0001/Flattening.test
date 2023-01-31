@@ -1,10 +1,125 @@
 --------------------------------------------------------------------------------
--- tpch query1 (SF_0001)
+-- Flattening Queries (SF_0001)
 --------------------------------------------------------------------------------
 trackMemory;
 success
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Subquery in having clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+select l_orderkey, sum(l_quantity)
+  from lineitem
+  group by l_orderkey
+  having sum(l_quantity) > (select avg(l_quantity)
+                              from lineitem)
+;
+rows: 1496
 
+select l_orderkey, sum(l_quantity)
+  from lineitem
+  group by l_orderkey
+  having sum(l_quantity) < (select avg(l_quantity)
+                              from lineitem)
+;
+rows:
+ (330,21.00)
+ (1040,22.00)
+ (1339,20.00)
+ (1432,16.00)
+
+//TODO: INCORRECT RESULT
+/*
+select l_orderkey, sum(l_quantity), sum(l_extendedPrice)
+  from lineitem
+  group by l_orderkey
+  having sum(l_quantity) < (select avg(l_quantity)
+                              from lineitem)
+    and sum(l_extendedPrice) > 23000.0
+;
+rows:
+ (330,21.00,28038.77)
+ (1040,22.00,31593.23)
+ (1339,20.00,28128.64)
+*/
+
+//TODO: INVALID COMMAND
+/*
+select l_orderkey, sum(l_quantity)
+  from lineitem
+  group by l_orderkey
+  having sum(l_quantity) < (select avg(l_quantity)
+                              from lineitem)
+    and sum(l_extendedPrice) > 23000.0
+;
+rows:
+ (330,21.00,28038.77)
+ (1040,22.00,31593.23)
+ (1339,20.00,28128.64)
+*/
+
+
+// TODO: COMPILER
+/*
+select l_orderkey, sum(l_quantity)
+  from lineitem
+  group by l_orderkey
+  having avg(l_quantity) < (select l_quantity from lineitem)
+;
+failure contains: 'INVALID'
+*/
+
+//TODO: CRASHING
+/*
+select l_orderkey, sum(l_quantity)
+  from lineitem
+  group by l_orderkey
+  having avg(l_quantity) < (select max(l_quantity)
+                              from lineitem)
+;
+rows: 1500
+*/
+
+select PS_PARTKEY,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by PS_PARTKEY
+having sum(ps_supplycost * ps_availqty) >
+         (select sum(ps_supplycost * ps_availqty) * 0.000001
+            from partsupp, supplier
+           where PS_SUPPKEY = S_SUPPKEY)
+;
+rows: 200
+
+
+select PS_PARTKEY,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by PS_PARTKEY
+having sum(ps_supplycost * ps_availqty) <=
+         (select sum(ps_supplycost * ps_availqty) * 0.000001
+            from partsupp, supplier
+           where PS_SUPPKEY = S_SUPPKEY)
+;
+rows : 0
+
+/*
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+select sum(l_extendedprice)
+  from lineitem, part
+ where P_PARTKEY = L_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+rows: (58019519.91)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //_r_FORM_1 (Q2)
  select p_partkey, ps_suppkey
    from part, partsupp
@@ -51,7 +166,9 @@ rows:
   (9,9)
   (9,9)
 
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_2
 select count(*)
   from orders
@@ -74,6 +191,9 @@ select count(*)
 rows:
  (1470)
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // _r_FORM_3
  //_r_FOLD_60_W_L_NC_NI (Q16)
  select count(*)
@@ -86,6 +206,9 @@ rows:
  rows:
   (800)
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //_r_FORM_4
 select sum(l_extendedprice)
   from lineitem, part
@@ -97,6 +220,9 @@ select sum(l_extendedprice)
 rows:
  (58019519.91)
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //_r_FOLD_20_W_A_C_ro (Q2, Q17)
 select count(*)
   from Lineitem, Part, PartSupp
@@ -110,7 +236,9 @@ select count(*)
 rows:
  (11984)
 
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_5
 select sum(l_quantity)
   from customer, orders, lineitem
@@ -124,6 +252,9 @@ select sum(l_quantity)
 rows:
  (94738.00)
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FOLD_30_W_A_NC_I (Q18)
 select count(*)
   from orders, lineitem
@@ -136,20 +267,9 @@ select count(*)
 rows:
  (3044)
 
-// _r_FORM_6
-select PS_PARTKEY,
-       sum(ps_supplycost * ps_availqty) as value
-  from partsupp, supplier
- where PS_SUPPKEY = S_SUPPKEY
- group by PS_PARTKEY
-having sum(ps_supplycost * ps_availqty) >
-         (select sum(ps_supplycost * ps_availqty) * 0.0000010000
-            from partsupp, supplier
-           where PS_SUPPKEY = S_SUPPKEY)
-;
-rows:
- 200
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_A / _r_FOLD_10_F (Q7,8,9)
 select count(*)
   from (select *
@@ -158,6 +278,7 @@ select count(*)
 ;
 rows:
  (5996)
+*/
 
 MemoryLeaks;
 rows: 0

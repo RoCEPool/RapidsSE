@@ -382,7 +382,7 @@ select count(*)
    join C on B.B_COL0 = C.C_COL0
  ;
 
-Join Permutations:                                      Network Total             , Unicast Total
+Join Permutations:                                         Network Total             , Unicast Total
   A->B (BROADCAST)(4*1000)  ->C (UNICAST)   (1000)         Total=((4*1000)+0)             , 1000*10000
   B->A (BROADCAST)(4*10000) ->C (HASHCAST)  (10000*1000)   Total=((4*10000)+(10000*1000)) , 0
   B->C (UNICAST)(0)         ->A (BROADCAST) (4*10000*1000) Total=(0+(4*10000*1000))       , 10000
