@@ -177,7 +177,6 @@ void Bench::vSeries_PreparePipelines_recursive(void)
     vGroup_InitialAdjustments();
     vGroup_CondenseInfo();
     vGroup_MetaAnalysis();
-    vGroup_MainConversions();
   }
 
   vEndSeries(BK_SUBPIPE);
@@ -221,6 +220,7 @@ void Bench::vSeries_MakeRunnable_recursive(void)
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
 
+    vGroup_MainConversions();
     vGroup_PredicatePullup();
     vGroup_IndexBounds();
     vGroup_JoinOrdering();
@@ -988,6 +988,38 @@ void Bench::vTransform_FlattenByDecisionTree(void)
   }
   else
     NEVER_REACH;
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Analyse all sub-queries                                                    */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_SubQueryAnalysis(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "Analyse all sub-queries"_Stz);
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    SubQuery *pSubQuery = m_pCI->G.pBoard->pSubQuery();
+    pSubQuery->vDisposition(QD_LINEAR);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    m_pCI->vRestart();
+    while (m_pCI->G_bEachMain(CK_AGGREG)) {
+      if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
+          m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
+        pSubQuery->vDisposition(QD_AGGREGATION);
+        break;
+      }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  }
 
   m_pCI->vEndTransform();
 }
