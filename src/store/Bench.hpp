@@ -40,10 +40,10 @@ namespace STORE
     void vApplyOriginalMatrix(void);
     void vApplyRecursiveMatrix(void);
 
-    void vSeries_PreparePipelines_original(void);
-    void vSeries_PreparePipelines_recursive(void);
-    void vSeries_MakeRunnable_original(void);
-    void vSeries_MakeRunnable_recursive(void);
+    void vSeries_PreparePipelines_originalMatrix(void);
+    void vSeries_PreparePipelines_recursiveMatrix(void);
+    void vSeries_MakeRunnable_originalMatrix(void);
+    void vSeries_MakeRunnable_recursiveMatrix(void);
     void vSeries_MakeRunnable_recurse(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
@@ -60,6 +60,7 @@ namespace STORE
     void vGroup_IndexBounds(void);
     void vGroup_JoinOrdering(void);
     void vGroup_FlattenSubquery(void);
+    void vGroup_FlattenSubquery_recursiveMatrix(void);
 
     void vGroup_ChooseEEops(void);
 
@@ -99,6 +100,7 @@ namespace STORE
     void vTransform_SubQueryAnalysisMainQuery(void);
     void vTransform_SubQueryAnalysisSubQuery(void);
     void vTransform_FlattenByDecisionTree(void);
+    void vTransform_FlattenByDecisionTree_recursiveMatrix(void);
 
     void vTransform_MorphTableToEEop(void);
 

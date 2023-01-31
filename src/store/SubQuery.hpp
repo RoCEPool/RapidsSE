@@ -13,11 +13,15 @@
 
 namespace STORE
 {
+  class Board;
+
   class SubQuery : public Object
   {
   protected:
 
     i8 m_i_SubQuery;     // which subquery is this subquery?
+
+    Board* m_pBoard;     // which board
     i8 m_i_Caller;       // which subquery calls this subquery
 
     eQD m_eDisposition;  // linear/simple or aggregation
@@ -39,10 +43,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SubQuery(void);
+    SubQuery(Board* pBoard);
    ~SubQuery(void) noexcept(false);
 
     bool bAreYou_Mq_W_Sq_1Ck_in(void);
+
+    Board* pBoard(void);
 
     bool bByCmpOp(void);
     bool bByExists(void);

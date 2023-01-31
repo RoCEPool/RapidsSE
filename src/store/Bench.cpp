@@ -115,8 +115,8 @@ void Bench::vApplyOriginalMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PreparePipelines_original();
-  vSeries_MakeRunnable_original();
+  vSeries_PreparePipelines_originalMatrix();
+  vSeries_MakeRunnable_originalMatrix();
   vSeries_Optimisations();
   vSeries_MakeWeavable();
 }
@@ -128,8 +128,8 @@ void Bench::vApplyRecursiveMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PreparePipelines_recursive();
-  vSeries_MakeRunnable_recursive();
+  vSeries_PreparePipelines_recursiveMatrix();
+  vSeries_MakeRunnable_recursiveMatrix();
 
   vSeries_Optimisations();
   vSeries_MakeWeavable();
@@ -139,7 +139,7 @@ void Bench::vApplyRecursiveMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines_original(void)
+void Bench::vSeries_PreparePipelines_originalMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -163,7 +163,7 @@ void Bench::vSeries_PreparePipelines_original(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines_recursive(void)
+void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -186,7 +186,7 @@ void Bench::vSeries_PreparePipelines_recursive(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_original(void)
+void Bench::vSeries_MakeRunnable_originalMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -211,7 +211,7 @@ void Bench::vSeries_MakeRunnable_original(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_recursive(void)
+void Bench::vSeries_MakeRunnable_recursiveMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -235,15 +235,36 @@ void Bench::vSeries_MakeRunnable_recursive(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
+/* apply the xyz set of transformations to all subPipe boards                 */
 /*----------------------------------------------------------------------------*/
 void Bench::vSeries_MakeRunnable_recurse(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  // get each sub-query
+  // things before sub-queries
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pCI->vSubQueryIteration();
+  while (m_pCI->bEachSubQuery()) {
+
+    if (m_pCI->G.pSubQuery->i_Caller() != m_pCI->G.i_Board)
+      continue;
+
+    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
+    vSeries_MakeRunnable_recurse();
+    m_pCI->G_vPopIter();
+
+    vGroup_FlattenSubquery_recursiveMatrix();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // things after sub-queries
+
+  vGroup_MainConversions();
+  vGroup_PredicatePullup();
+  vGroup_IndexBounds();
+  vGroup_JoinOrdering();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,6 +414,17 @@ void Bench::vGroup_FlattenSubquery(void)
 
   vTransform_FlattenByDecisionTree();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_FlattenSubquery_recursiveMatrix(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_FlattenByDecisionTree();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -992,6 +1024,86 @@ void Bench::vTransform_FlattenByDecisionTree(void)
         else                                         /* H_L_C_ro         */ NEVER_REACH
       } else {
              if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
+        else                                         /* H_L_NC_ro        */ NEVER_REACH
+      }
+    }
+  }
+  else
+    NEVER_REACH;
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_FlattenByDecisionTree_recursiveMatrix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
+
+  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ vFold_10_F();
+  else
+  if (m_pCI->G.pSubQuery->bViaWhere()) {
+    if (m_pCI->G.pSubQuery->bIsAggregation()) {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
+        else                                         /* W_A_C_ro   Q2,17 */ vFold_20_W_A_C_ro();
+      } else {
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFold_30_W_A_NC_I();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
+        else                                         /* W_A_NC_ro    Q15 */ vFold_40_W_A_NC_ro();
+      }
+    } else {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFold_50_W_L_C_E();
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
+        else                                         /* W_L_C_ro         */ NEVER_REACH
+      } else {
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFold_60_W_L_NC_NI();
+        else                                         /* W_L_NC_ro        */ NEVER_REACH
+      }
+    }
+  }
+  else
+  if (m_pCI->G.pSubQuery->bViaHaving()) {
+    if (m_pCI->G.pSubQuery->bIsAggregation()) {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
+        else                                         /* H_A_C_ro         */ NEVER_REACH
+      } else {
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
+        else                                         /* H_A_NC_ro    Q11 */ vFold_70_H_A_NC_ro();
+      }
+    } else {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
+        else                                         /* H_L_C_ro         */ NEVER_REACH
+      } else {
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH

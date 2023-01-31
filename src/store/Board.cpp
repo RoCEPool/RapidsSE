@@ -55,7 +55,7 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
 
   m_bMayHaveStmColOdn = true;
 
-  m_pSubQuery = new SubQuery;
+  m_pSubQuery = new SubQuery(this);
 
   _checkInitialised_(CN_BOARD);
 
