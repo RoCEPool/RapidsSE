@@ -1417,7 +1417,8 @@ void Board::vRenumberStmOdn(CardIter* pCI)
   pCI->G_vRestart();
   while (pCI->G_bEachMain()) {
 
-    if (! (pCI->G.p_MainCard->bIsCard(CK_TABLE) || pCI->G.p_MainCard->bIsCard(CK_PROJECT)))
+    if (! (pCI->G.p_MainCard->bIsCard(CK_TABLE) ||
+           pCI->G.p_MainCard->bIsCard(CK_PROJECT)))
       continue;
 
     pCI->G.p_stream = pCI->G.p_MainCard->pSub_stream();
@@ -1623,10 +1624,17 @@ void Board::vMain_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
     if (p_pred->bIsCard(CK_TERM)) {
       return C_CONTINUE_RECURSION;
       pCI->G.p_term = _pCard_Term(p_pred);
+
+
     }
 
     Stz* szValue_term = p_pred->szValue();
     eRO eRelnOp = RelOp::eDecode(szValue_term);
+
+    // todo: this is missing
+    //if (!pCI->G_bIsBoard(szValue_term))
+    //  continue;
+
     if (RO_NONE != eRelnOp) {
       pSubQuery->vCaller(0);
       pSubQuery->vClause(QC_HAVING_CLAUSE);

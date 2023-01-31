@@ -154,6 +154,26 @@ bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to get board name from one of the terms of this predicate          */
+/*----------------------------------------------------------------------------*/
+Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card* pChildCard = xCI.pEachChild()) {
+    if (!pChildCard->bIsCard(CK_TERM))
+      continue;
+
+    Stz* szValue_term = pChildCard->szValue();
+    if (pCI->G_bIsBoard(szValue_term))
+      return szValue_term;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_PRED::pPredFindBound(Index* pIndex, ePB eBound)
