@@ -87,10 +87,7 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vSeries_PreparePipelines();
-    vSeries_MakeRunnable();
-    vSeries_OptimiseFlattened();
-    vSeries_MakeWeavable();
+    vApplyOriginalModel();
 
     bClean = true;
   }
@@ -109,6 +106,19 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
   }
 
   return bClean;
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the original transformation matrix                                   */
+/*----------------------------------------------------------------------------*/
+void Bench::vApplyOriginalModel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vSeries_PreparePipelines();
+  vSeries_MakeRunnable();
+  vSeries_OptimiseFlattened();
+  vSeries_MakeWeavable();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,6 +37,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // series
     bool bApplyTransformationMatrix(eEC* peErrorCode);
+    void vApplyOriginalModel(void);
 
     void vSeries_PreparePipelines(void);
     void vSeries_MakeRunnable(void);
