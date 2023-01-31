@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _opt_debug -- (join)                                                       */
+/* _flat_debug1 -- (flattening)                                               */
 /*============================================================================*/
 
 __TPCH_SCHEMA
@@ -83,7 +83,7 @@ begin
       project   "   type INTEGER as l_orderkey $1
                   , type DECIMAL as COL_2 $2
                   , type DECIMAL as COL_3 $2 $3 casttype DECIMAL CAST / "
-    | filter    " type BOOLEAN $4 $1 < "
+    | filter    " type BOOLEAN $4 $1 < "             // $3 $2 <
     | combined  0
     | next
 
