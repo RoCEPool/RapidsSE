@@ -37,14 +37,14 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // series
     bool bApplyTransformationMatrix(eEC* peErrorCode);
-    void vApplyOriginalModel(void);
-    void vApplyRecursiveModel(void);
+    void vApplyOriginalMatrix(void);
+    void vApplyRecursiveMatrix(void);
 
     void vSeries_PreparePipelines_original(void);
     void vSeries_PreparePipelines_recursive(void);
     void vSeries_MakeRunnable_original(void);
     void vSeries_MakeRunnable_recursive(void);
-    void vSeries_OptimiseFlattened(void);
+    void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

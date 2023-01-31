@@ -87,7 +87,7 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vApplyOriginalModel();
+    vApplyOriginalMatrix();
 
     bClean = true;
   }
@@ -111,26 +111,26 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
 /*----------------------------------------------------------------------------*/
 /* apply the original transformation matrix                                   */
 /*----------------------------------------------------------------------------*/
-void Bench::vApplyOriginalModel(void)
+void Bench::vApplyOriginalMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vSeries_PreparePipelines_original();
   vSeries_MakeRunnable_original();
-  vSeries_OptimiseFlattened();
+  vSeries_Optimisations();
   vSeries_MakeWeavable();
 }
 
 /*----------------------------------------------------------------------------*/
 /* apply the recursive transformation matrix                                  */
 /*----------------------------------------------------------------------------*/
-void Bench::vApplyRecursiveModel(void)
+void Bench::vApplyRecursiveMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vSeries_PreparePipelines_recursive();
   vSeries_MakeRunnable_recursive();
-  vSeries_OptimiseFlattened();
+  vSeries_Optimisations();
   vSeries_MakeWeavable();
 }
 
@@ -236,7 +236,7 @@ void Bench::vSeries_MakeRunnable_recursive(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_OptimiseFlattened(void)
+void Bench::vSeries_Optimisations(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
