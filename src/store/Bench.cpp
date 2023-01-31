@@ -130,6 +130,7 @@ void Bench::vApplyRecursiveMatrix(void)
 
   vSeries_PreparePipelines_recursive();
   vSeries_MakeRunnable_recursive();
+
   vSeries_Optimisations();
   vSeries_MakeWeavable();
 }
@@ -231,6 +232,18 @@ void Bench::vSeries_MakeRunnable_recursive(void)
   vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_MakeRunnable_recurse(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  // get each sub-query
+
+
 }
 
 /*----------------------------------------------------------------------------*/

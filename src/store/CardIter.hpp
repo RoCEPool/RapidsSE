@@ -105,7 +105,7 @@ namespace STORE
     void vDontDescend(void);
     void G_vDuplicateMember(eCK eMember);
 
-    bool  bEachBoard(void);
+    bool bEachBoard(void);
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
@@ -126,6 +126,11 @@ namespace STORE
     bool G_bEachSubOfMain(eCK eSubKind);
     bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
+
+    bool bEachSubQuery(void);
+    SubQuery* pEachSubQuery(void);
+    SubQuery* pEachSubQuery(i8& ri_SubQuery);
+
     void vEndTransform(void);
 
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
@@ -214,6 +219,7 @@ namespace STORE
     void vSet(i8 iChild, Card* pChild);
     void G_vSetBoard(Board* pBoard);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
+    void vSubQueryIteration(void);
     bool G_bSubsequentToMain(bool bUpdateMember = false);
     void G_vSubsequentToMain(bool bUpdateMember = false);
 

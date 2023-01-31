@@ -44,6 +44,7 @@ namespace STORE
     void vSeries_PreparePipelines_recursive(void);
     void vSeries_MakeRunnable_original(void);
     void vSeries_MakeRunnable_recursive(void);
+    void vSeries_MakeRunnable_recurse(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
 

@@ -1281,6 +1281,66 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bEachSubQuery(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  //RASSERT(G.m_bActive);
+
+  if (pEachSubQuery())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SubQuery* CardIter::pEachSubQuery(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  //RASSERT(G.m_bActive);
+
+  i8 i_SubQuery;
+
+  G.pSubQuery = pEachSubQuery(i_SubQuery);
+
+  return G.pSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SubQuery* CardIter::pEachSubQuery(i8& ri_SubQuery)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  //RASSERT(G.m_bActive);
+
+  if (C_UNKNOWN == G.i_SubQuery)
+    G.i_SubQuery = 0;
+  else
+    G.i_SubQuery++;
+
+  if (G.i_SubQuery >= m_pBench->nBoards()) {
+    G.pSubQuery = nullptr;
+    ri_SubQuery  = C_UNKNOWN;
+    G.i_SubQuery = 0;
+
+    return nullptr;
+  }
+
+  Board* pSubBoard = m_pBench->pGetBoard(G.i_SubQuery);
+  G.pSubQuery = pSubBoard->pSubQuery();
+  ri_SubQuery = G.i_SubQuery;
+
+  return G.pSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndTransform(void)
@@ -2866,6 +2926,17 @@ void CardIter::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
   if (bClearRegisters)
     G_vClearRegisters();
 }
+
+/*----------------------------------------------------------------------------*/
+/* setup sub-query iteration                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSubQueryIteration(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  G.i_SubQuery = C_UNKNOWN;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
