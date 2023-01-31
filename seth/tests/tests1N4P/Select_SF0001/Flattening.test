@@ -27,6 +27,21 @@ rows:
  (1339,20.00)
  (1432,16.00)
 
+//TODO: INCORRECT RESULT
+/*
+select l_orderkey, sum(l_quantity), sum(l_extendedPrice)
+  from lineitem
+  group by l_orderkey
+  having sum(l_quantity) < (select avg(l_quantity)
+                              from lineitem)
+    and sum(l_extendedPrice) > 23000.0
+;
+rows:
+ (330,21.00,28038.77)
+ (1040,22.00,31593.23)
+ (1339,20.00,28128.64)
+*/
+
 // TODO: COMPILER
 /*
 select l_orderkey, sum(l_quantity)
