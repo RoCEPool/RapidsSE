@@ -1344,6 +1344,7 @@ void Bench::vFold_10_F(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get copy of sq and push before mq
 
@@ -1373,6 +1374,14 @@ void Bench::vFold_10_F(void)
 
   m_pCI->G.pDeck->vRenumberRecursive();
 
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 7) derive the fold (SQ result) expr
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldProjection_F(m_pCI);
+  }
   m_pCI->vPrintBoard(__LINE__);
 
 //  Card_Stream::vStream_AdjustLoHi(m_pCI);

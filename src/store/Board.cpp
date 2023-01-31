@@ -603,6 +603,19 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vDerive_foldProjection_F(CardIter* pCI)
+{
+  _static_
+
+  if (! pCI->G_bResolveSubCard(CK_PROJECTION,pCI->G.i_FoldCard))
+    return;
+
+  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardAndSubCards());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 {
   _static_
