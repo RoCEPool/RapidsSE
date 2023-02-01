@@ -272,7 +272,7 @@ void Bench::vSeries_MakeRunnable_recurse(void)
 
   vGroup_PredicatePullup_recursiveModel();
   vGroup_IndexBounds_recursiveModel();
-  vGroup_JoinOrdering_recursiveModel();
+  //vGroup_JoinOrdering_recursiveModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,8 +462,6 @@ void Bench::vGroup_JoinOrdering_originalModel(void)
 void Bench::vGroup_JoinOrdering_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return;
 
   if (Card_Table::nTables(m_pCI) < 2)
     return;
