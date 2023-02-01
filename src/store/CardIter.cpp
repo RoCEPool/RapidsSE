@@ -989,6 +989,39 @@ Card* CardIter::pEachChild_reverse(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pEachChild_reverse_foldBreak(eCK eCard)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (C_UNKNOWN == G.m_i_Child)
+    G.m_i_Child = G.m_pCard->nChildCards() - 1;
+  else
+    G.m_i_Child--;
+
+  for (;;) {
+
+    if (G.m_i_Child < 0) {
+      G.m_pChild = nullptr;
+      return nullptr;
+    }
+
+    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
+    eCK eCardMain = G.m_pChild->eCard();
+    if (eCardMain == eCard) {
+      return G.m_pChild;
+    }
+
+    G.m_i_Child--;
+  }
+
+  NEVER_REACH
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* step main register next main and update M member                           */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain(void)
@@ -1078,6 +1111,35 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
   G_vUpdateMember(eAndSubKind, nullptr, __func__);
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  while ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vUpdateMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vUpdateMember(eAndSubKind, nullptr, __func__);
+  return false;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
