@@ -1009,7 +1009,14 @@ Card* CardIter::pEachChild_reverse_foldBreak(eCK eCard)
 
     G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
 
-    eCK eCardMain = G.m_pChild->eCard();
+    if (G.m_pChild->bIsCard(CK_FOLD)) {
+      G.m_pChild = nullptr;
+      G.m_i_Child = C_UNKNOWN;
+      return nullptr;
+    }
+
+
+      eCK eCardMain = G.m_pChild->eCard();
     if (eCardMain == eCard) {
       return G.m_pChild;
     }
@@ -1085,7 +1092,7 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main which has sub and update M   */
+/* conditionally step main register to next main which has sub and update G   */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
@@ -1113,13 +1120,13 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main which has sub and update M   */
+/* conditionally step main register to next main which has sub and update G   */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
+  while ((G.p_MainCard = this->pEachChild_reverse_foldBreak(eOfMainKind))) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -1131,6 +1138,7 @@ bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSub
     return true;
   }
 
+  // did not find card
   G.p_MainCard  = nullptr;
   G.e_MainCard  = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
@@ -1139,8 +1147,6 @@ bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSub
   G_vUpdateMember(eAndSubKind, nullptr, __func__);
   return false;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
