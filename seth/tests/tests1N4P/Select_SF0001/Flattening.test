@@ -118,10 +118,22 @@ select count(*)
 rows:
  (5996)
 
+select O_ORDERKEY, O_CUSTKEY
+    from ( select O_ORDERKEY, O_CUSTKEY
+             from orders
+             join lineitem on O_ORDERKEY = L_ORDERKEY) as table1,
+         Customer
+   where table1.O_CUSTKEY = Customer.C_CUSTKEY
+   and Customer.C_CUSTKEY < 4
+;
+
 /*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+// W_A_C_ro (sqy via where , aggregation , correclated and relational)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//_r_FOLD_20_W_A_C_ro (Q2,Q17)
 select sum(l_extendedprice)
   from lineitem, part
  where P_PARTKEY = L_PARTKEY
@@ -131,9 +143,6 @@ select sum(l_extendedprice)
 ;
 rows: (58019519.91)
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //_r_FORM_1 (Q2)
  select p_partkey, ps_suppkey
    from part, partsupp
@@ -180,8 +189,31 @@ rows:
   (9,9)
   (9,9)
 
+//_r_FORM_4
+select sum(l_extendedprice)
+  from lineitem, part
+ where P_PARTKEY = L_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+rows:
+ (58019519.91)
+
+select count(*)
+ from Lineitem, Part, PartSupp
+where P_PARTKEY  = L_PARTKEY
+  and PS_PARTKEY = P_PARTKEY
+  and l_quantity < (select avg(l_quantity)
+                      from lineitem
+                     where L_PARTKEY = P_PARTKEY)
+;
+
+rows:
+(11984)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+// W_A_C_E (sqy via where , aggregation , correclated and exists)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_2
 select count(*)
@@ -194,6 +226,9 @@ select count(*)
 rows:
  (1499)
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// W_L_C_E (sqy via where , linear , correclated and exists)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FOLD_50_W_L_C_E (Q4)
 select count(*)
   from orders
@@ -206,7 +241,7 @@ rows:
  (1470)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+// W_L_NC_NI (sqy via where , linear , not correclated and not in)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // _r_FORM_3
  //_r_FOLD_60_W_L_NC_NI (Q16)
@@ -221,37 +256,7 @@ rows:
   (800)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//_r_FORM_4
-select sum(l_extendedprice)
-  from lineitem, part
- where P_PARTKEY = L_PARTKEY
-   and l_quantity < (select avg(l_quantity)
-                       from lineitem
-                      where L_PARTKEY = P_PARTKEY)
-;
-rows:
- (58019519.91)
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//_r_FOLD_20_W_A_C_ro (Q2, Q17)
-select count(*)
-  from Lineitem, Part, PartSupp
- where P_PARTKEY  = L_PARTKEY
-   and PS_PARTKEY = P_PARTKEY
-   and l_quantity < (select avg(l_quantity)
-                       from lineitem
-                      where L_PARTKEY = P_PARTKEY)
-;
-
-rows:
- (11984)
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+/ W_A_NC_I (sqy via where , aggregate , not correclated and in)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_5
 select sum(l_quantity)
@@ -266,9 +271,6 @@ select sum(l_quantity)
 rows:
  (94738.00)
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FOLD_30_W_A_NC_I (Q18)
 select count(*)
   from orders, lineitem
@@ -280,6 +282,24 @@ select count(*)
 ;
 rows:
  (3044)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/ H_A_NC_ro (sqy via having , aggregate , not correclated and relational)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// _r_FORM_6
+//_r_FOLD_70_H_A_NC_ro (Q11)
+
+select PS_PARTKEY,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by PS_PARTKEY
+having sum(ps_supplycost * ps_availqty) >
+         (select sum(ps_supplycost * ps_availqty) * 0.000001
+            from partsupp, supplier
+           where PS_SUPPKEY = S_SUPPKEY)
+;
+rows: 200
 
 */
 
