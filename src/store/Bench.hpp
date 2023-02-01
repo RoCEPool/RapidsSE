@@ -82,6 +82,7 @@ namespace STORE
     void vTransform_DeleteUnneeded(void);
     void vTransform_ScanBecomesTable(void);
     void vTransform_AddLevel(void);
+    void vTransform_NotOps(void);
 
     void vTransform_TableAnalysis(void);
     void vTransform_StreamAnalysis(void);

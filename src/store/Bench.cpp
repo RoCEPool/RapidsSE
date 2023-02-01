@@ -630,7 +630,7 @@ void Bench::vTransform_ScanBecomesTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Condense Info                                                              */
+/* Add Levels                                                                 */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_AddLevel(void)
 {
@@ -645,6 +645,18 @@ void Bench::vTransform_AddLevel(void)
     ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
 
   m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Not Ops                                                                    */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_NotOps(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
+    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
 }
 
 /*----------------------------------------------------------------------------*/
