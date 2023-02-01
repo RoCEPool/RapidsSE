@@ -31,6 +31,7 @@ nitpicky = True
 html_theme = 'alabaster'
 html_static_path = ['_static',
                     '_static/custom.css']
+html_extra_path = []
 html_copy_source = False
 
 html_theme_options = {

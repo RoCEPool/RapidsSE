@@ -1,14 +1,15 @@
 # Makefile for Sphinx documentation
 
-SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = source
-BUILDDIR      = build
+SPHINXOPTS     ?=
+SPHINXBUILD    ?= sphinx-build
+SOURCEDIR      = source
+BUILDDIR       = build
 
-RR_GRAMMAR    = source/cmdRef/grammar.bnf
-RR_OUTPUT_DIR = source/_static/rr
-RR_INDEX_HTML = source/_static/rr/index.html
-RR_ZIPFILE    = $(RR_OUTPUT_DIR)/rr.zip
+RR_GRAMMAR     = source/cmdRef/grammar.bnf
+RR_OUTPUT_DIR  = source/rr
+RR_INDEX_HTML  = $(RR_OUTPUT_DIR)/index.html
+RR_INDEX_XHTML = source/_static/rr.xhtml
+RR_ZIPFILE     = $(RR_OUTPUT_DIR)/rr.zip
 
 SPHINX_INSTALLED := $(shell command -v $(SPHINXBUILD) 2> /dev/null)
 LATEX_INSTALLED  := $(shell command -v latex 2> /dev/null)
@@ -70,9 +71,12 @@ rr: railroad ;
 railroad:
 	@echo "Building Command Reference railroad diagrams"
 	@mkdir -p "$(RR_OUTPUT_DIR)"
+	@# First build the one with png files so the documentation can include them
 	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -png -out:$(RR_ZIPFILE) "$(RR_GRAMMAR)"
 	@unzip -o -d "$(RR_OUTPUT_DIR)" "$(RR_ZIPFILE)" > /dev/null
 	@rm -f "$(RR_ZIPFILE)"
+	@# Now build the version with svg images so we can just include the xhtml file
+	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -out:$(RR_INDEX_XHTML) "$(RR_GRAMMAR)"
 	@echo "Command Reference railroad diagrams created at: $(RR_OUTPUT_DIR)"
 
 
