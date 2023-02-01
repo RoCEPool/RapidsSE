@@ -226,12 +226,12 @@ def start_instances(instance_type: str,
 
         except botocore.exceptions.CapacityNotAvailableError as e:
             # Save the exception and try the next subnet, just in case
-            last_error = e
+            last_error = errors.Ec2InsufficientCapacity(getattr(e, 'message', repr(e)))
 
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "InsufficientInstanceCapacity":
                 # Save the exception and try the next subnet
-                last_error = e
+                last_error = errors.Ec2InsufficientCapacity(getattr(e, 'message', repr(e)))
                 LOG.warning(f"{ctx}Got error response InsufficientInstanceCapacity in region "
                             f"{C_SUBNET_RMAP[subnet_id]}.")
                 
@@ -261,7 +261,8 @@ def start_instances(instance_type: str,
                 if (i + 1) < len(C_SUBNET_ID_PREFERENCE):
                     LOG.info("Trying another region.")
                 else:
-                    last_error = e  # Only because we have to.
+                    # Only because we have to.
+                    last_error = errors.Ec2InsufficientCapacity(getattr(e, 'message', repr(e)))
                     LOG.error("No more regions left to try.")
                 continue
 
