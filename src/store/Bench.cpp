@@ -207,7 +207,6 @@ void Bench::vSeries_MakeRunnable_originalMatrix(void)
 
   m_pCI->vUsingBoard(BK_SUBPIPE, 0);
 
-  vGroup_FinalConversions_recursiveMatrix();
   vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -223,6 +222,8 @@ void Bench::vSeries_MakeRunnable_recursiveMatrix(void)
   vSeries(BK_SUBPIPE, 0, __func__);
 
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+
+  vGroup_FinalConversions_recursiveMatrix();
 
   vSeries_MakeRunnable_recurse();
 
