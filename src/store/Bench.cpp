@@ -116,8 +116,8 @@ void Bench::vApplyOriginalMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PreparePipelines_originalMatrix();
-  vSeries_MakeRunnable_originalMatrix();
+  vSeries_PreparePipelines_originalModel();
+  vSeries_MakeRunnable_originalModel();
   vSeries_Optimisations();
   vSeries_MakeWeavable();
 }
@@ -129,8 +129,8 @@ void Bench::vApplyRecursiveMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PreparePipelines_recursiveMatrix();
-  vSeries_MakeRunnable_recursiveMatrix();
+  vSeries_PreparePipelines_recursiveModel();
+  vSeries_MakeRunnable_recursiveModel();
 
   vSeries_Optimisations();
   vSeries_MakeWeavable();
@@ -140,7 +140,7 @@ void Bench::vApplyRecursiveMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines_originalMatrix(void)
+void Bench::vSeries_PreparePipelines_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -164,7 +164,7 @@ void Bench::vSeries_PreparePipelines_originalMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
+void Bench::vSeries_PreparePipelines_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -179,7 +179,7 @@ void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
     vGroup_InitialAdjustments();
     vGroup_CondenseInfo();
     vGroup_MetaAnalysis();
-    vGroup_PreliminaryConversions_recursiveMatrix();
+    vGroup_PreliminaryConversions_recursiveModel();
   }
 
   vTransform_OuterQueryAnalysis();
@@ -190,7 +190,7 @@ void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_originalMatrix(void)
+void Bench::vSeries_MakeRunnable_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -200,9 +200,9 @@ void Bench::vSeries_MakeRunnable_originalMatrix(void)
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
 
-    vGroup_PredicatePullup();
-    vGroup_IndexBounds();
-    vGroup_JoinOrdering();
+    vGroup_PredicatePullup_originalModel();
+    vGroup_IndexBounds_originalModel();
+    vGroup_JoinOrdering_originalModel();
   }
 
   m_pCI->vUsingBoard(BK_SUBPIPE, 0);
@@ -215,7 +215,7 @@ void Bench::vSeries_MakeRunnable_originalMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_recursiveMatrix(void)
+void Bench::vSeries_MakeRunnable_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -264,16 +264,16 @@ void Bench::vSeries_MakeRunnable_recurse(void)
     vSeries_MakeRunnable_recurse();
     m_pCI->G_vPopIter();
 
-    vGroup_FlattenSubquery_recursiveMatrix();
+    vGroup_FlattenSubquery_recursiveModel();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things after sub-queries
-  vGroup_FinalConversions_recursiveMatrix();
+  vGroup_FinalConversions_recursiveModel();
 
-  vGroup_PredicatePullup();
-  vGroup_IndexBounds();
-  //vGroup_JoinOrdering();
+  vGroup_PredicatePullup_originalModel();
+  vGroup_IndexBounds_originalModel();
+  //vGroup_JoinOrdering_originalModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +375,7 @@ void Bench::vGroup_MainConversions(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_PreliminaryConversions_recursiveMatrix(void)
+void Bench::vGroup_PreliminaryConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -386,7 +386,7 @@ void Bench::vGroup_PreliminaryConversions_recursiveMatrix(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_FinalConversions_recursiveMatrix(void)
+void Bench::vGroup_FinalConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -398,7 +398,7 @@ void Bench::vGroup_FinalConversions_recursiveMatrix(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_PredicatePullup(void)
+void Bench::vGroup_PredicatePullup_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -412,7 +412,7 @@ void Bench::vGroup_PredicatePullup(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_IndexBounds(void)
+void Bench::vGroup_IndexBounds_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -422,7 +422,7 @@ void Bench::vGroup_IndexBounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_JoinOrdering(void)
+void Bench::vGroup_JoinOrdering_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -444,17 +444,17 @@ void Bench::vGroup_FlattenSubquery(void)
   vTransform_SubQueryAnalysisMainQuery();
   vTransform_SubQueryAnalysisSubQuery();
 
-  vTransform_FlattenByDecisionTree();
+  vTransform_FlattenByDecisionTree_originalModel();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_FlattenSubquery_recursiveMatrix(void)
+void Bench::vGroup_FlattenSubquery_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_FlattenByDecisionTree();
+  vTransform_FlattenByDecisionTree_recursiveModel();
 }
 
 
@@ -985,7 +985,7 @@ void Bench::vTransform_DeriveBoundsFromFilter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_FlattenByDecisionTree(void)
+void Bench::vTransform_FlattenByDecisionTree_originalModel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1072,7 +1072,7 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_FlattenByDecisionTree_recursiveMatrix(void)
+void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 

@@ -40,10 +40,10 @@ namespace STORE
     void vApplyOriginalMatrix(void);
     void vApplyRecursiveMatrix(void);
 
-    void vSeries_PreparePipelines_originalMatrix(void);
-    void vSeries_PreparePipelines_recursiveMatrix(void);
-    void vSeries_MakeRunnable_originalMatrix(void);
-    void vSeries_MakeRunnable_recursiveMatrix(void);
+    void vSeries_PreparePipelines_originalModel(void);
+    void vSeries_PreparePipelines_recursiveModel(void);
+    void vSeries_MakeRunnable_originalModel(void);
+    void vSeries_MakeRunnable_recursiveModel(void);
     void vSeries_MakeRunnable_recurse(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
@@ -55,14 +55,14 @@ namespace STORE
     void vGroup_CondenseInfo(void);
     void vGroup_MetaAnalysis(void);
     void vGroup_MainConversions(void);
-    void vGroup_PreliminaryConversions_recursiveMatrix(void);
-    void vGroup_FinalConversions_recursiveMatrix(void);
+    void vGroup_PreliminaryConversions_recursiveModel(void);
+    void vGroup_FinalConversions_recursiveModel(void);
 
-    void vGroup_PredicatePullup(void);
-    void vGroup_IndexBounds(void);
-    void vGroup_JoinOrdering(void);
+    void vGroup_PredicatePullup_originalModel(void);
+    void vGroup_IndexBounds_originalModel(void);
+    void vGroup_JoinOrdering_originalModel(void);
     void vGroup_FlattenSubquery(void);
-    void vGroup_FlattenSubquery_recursiveMatrix(void);
+    void vGroup_FlattenSubquery_recursiveModel(void);
 
     void vGroup_ChooseEEops(void);
 
@@ -101,8 +101,8 @@ namespace STORE
     void vTransform_OuterQueryAnalysis(void);
     void vTransform_SubQueryAnalysisMainQuery(void);
     void vTransform_SubQueryAnalysisSubQuery(void);
-    void vTransform_FlattenByDecisionTree(void);
-    void vTransform_FlattenByDecisionTree_recursiveMatrix(void);
+    void vTransform_FlattenByDecisionTree_originalModel(void);
+    void vTransform_FlattenByDecisionTree_recursiveModel(void);
 
     void vTransform_MorphTableToEEop(void);
 
