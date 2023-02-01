@@ -23,6 +23,12 @@
     The tradeoff is that we need to maintain this grammar file for documentation
     purposes as well as the main ANTLR grammar file for runtime purposes.
 
+    NOTE:
+      This file is processed to produce a series of *.png files, one for each rule.
+      If you change the name of a rule then the output filename will also change,
+      and this needs to be updated in the Command Reference section where it
+      references this static image filename.
+
     This file was originally converted on from ANTLR format to EBNF on
     Mon Jan 30, 2023, 11:43 (UTC+11) by antlr_4-to-w3c v0.62 which is
     Copyright (c) 2011-2022 by Gunther Rademacher <grd@gmx.net>
@@ -35,11 +41,30 @@ statementChoice   ::= (
                         countStmt
                       | createIndexStmt
                       | createTableStmt
-                      | explainStatement
+                      | dloadStmt
+                      | dropIndexStmt
+                      | dropTableStmt
+                      | explainStmt
+                      | loadStmt
+                      | lsColStmt
+                      | lsIdxStmt
+                      | lsIdxColStmt
+                      | lsTblStmt
+                      | printStmt
                       | selectQuery
-                      ) ';'
+                      | sleepStmt
+                      | spaceStmt
+                      | statusStmt
+                      | szIdxStmt
+                      | szTblStmt
+                      | truncateStmt
+                      | unloadStmt
+                      )
 
-explainStatement  ::= 'EXPLAIN' explainOptions* selectQuery
+/*---------------------------------------------------------------------------*/
+/* EXPLAIN STATEMENT                                                         */
+/*---------------------------------------------------------------------------*/
+explainStmt       ::= 'EXPLAIN' explainOptions* selectQuery
 explainOptions    ::= explainStageList
                     | 'WITH_NAMES'
                     | 'WITH_TYPES'
@@ -50,8 +75,9 @@ explainRangeChoice::= '*'
                     | integerLiteral
                     | identifier
 
-
-
+/*---------------------------------------------------------------------------*/
+/* SELECT STATEMENT                                                          */
+/*---------------------------------------------------------------------------*/
 selectQuery       ::= queryHint*
                       ( 'WITH' withQuery ( ',' withQuery )* )?
                       setExpr
@@ -211,24 +237,62 @@ sql92TimeIntervalLiteral
                       | 'SECOND' ( '(' precision ( ',' scale )? ')' )? )
 */
 
+/*---------------------------------------------------------------------------*/
+/* Other Statements                                                          */
+/*---------------------------------------------------------------------------*/
 
 countStmt         ::= 'COUNT' tableName
+
 createIndexStmt   ::= 'CREATE' 'UNIQUE'? 'INDEX' indexName 'ON' tableName  '(' identifierList ')'
+
 createTableStmt   ::= 'CREATE' 'TABLE' tableName
                       '(' columnDefinition ( ',' columnDefinition )* ')'
                       ( 'PARTITION' 'BY' '(' identifierList ')' )?
 columnDefinition  ::= columnName dataType ('NOT' 'NULL')?
 
+dloadStmt         ::= 'DLOAD' tableName
+                      'PATHS' ( '"' filePath '"' )+
+                      ( dloadOption '=' '"' dloadValue '"' )*
+dloadOption       ::= plainIdentifier
+dloadValue        ::= plainIdentifier
 
-dropTableQuery    ::= 'DROP' 'TABLE' tableReference
-dropIndexQuery    ::= 'DROP' 'INDEX' tableReference indexName
-truncateQuery     ::= 'TRUNCATE' 'TABLE'? tableReference
+dropIndexStmt     ::= 'DROP' 'INDEX' tableName indexName
 
-columnNameList    ::= '(' columnName ( ',' columnName )* ')'
-/* tableConstraint   ::= ( 'PRIMARY' | 'UNIQUE'? 'MONOTONIC' ) 'KEY' ( expr | '(' expr ( ',' expr )* ')' ) */
-indexDefinition   ::= 'UNIQUE'? ( 'INDEX' | 'KEY' ) indexName? 'ON'? ( expr | '(' expr ( ',' expr )* ')' )
+dropTableStmt     ::= 'DROP' 'TABLE' tableName
+
+loadStmt          ::= 'LOAD' tableName '"' filePath '"'
+                       ( loadOption '=' '"' loadValue '"' )*
+loadOption        ::= plainIdentifier
+loadValue         ::= plainIdentifier
+
+lsColStmt         ::= 'LSCOL' tableName
+
+lsIdxStmt         ::= 'LSIDX' tableName
+
+lsIdxColStmt      ::= 'LSIDXCOL' tableName indexName
+
+lsTblStmt         ::= 'LSTBL'
+
+printStmt         ::= 'PRINT' '"' dblQuotedStrContents '"'
+
+sleepStmt         ::= 'SLEEP' integerLiteral
+
+spaceStmt         ::= 'SPACE'
+
+statusStmt        ::= 'STATUS'
+
+szIdxStmt         ::= 'SZIDX' tableName indexName
+
+szTblStmt         ::= 'SZTBL' tableName
+
+truncateStmt      ::= 'TRUNCATE' tableName
+
+unloadStmt        ::= 'UNLOAD' '"' filename '"'
 
 
+/*---------------------------------------------------------------------------*/
+/* Basic elements (types, definitions, etc)                                  */
+/*---------------------------------------------------------------------------*/
 
 dataType          ::= sqlDataType
 sqlDataType       ::= 'BOOLEAN'
@@ -247,34 +311,6 @@ fixedLenChar      ::= ( 'CHAR' | 'CHARACTER' ) '(' size /*( 'BYTE' | 'BYTES' | '
 varyingLenChar    ::= ( ( /*( 'CHAR' | 'CHARACTER' ) 'VARYING'? |*/ 'VARCHAR' ) ( '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' )? ) /*( 'COLLATE' collationName )?*/
 
 
-nonReservedWord   ::=
-                      'ANTLR' | 'ASC'
-                    | 'BIT' | 'BITS' | 'BLOCK' | 'BLOOM' | 'BOTH' | 'BTREE' | 'BY' | 'BYTE' | 'BYTES'
-                    | 'CATALOG' | 'CHARS' | 'COALESCE' | 'CONCAT' | 'CORRESPONDING' | 'COUNT' | 'CREATE'
-                    | 'CURRENT_CATALOG' | 'CURRENT_SCHEMA' | 'CURRENT_TIMESTAMP' | 'CURRENT_USER'
-                    | 'DATA' | 'DATE' | 'DAY' | 'DAYS' | 'DECODE' | 'DELETE' | 'DESC' | 'DETAIL' | 'DIGITS' | 'DROP'
-                    | 'ESCAPE' | 'EXCEPT' | 'EXPLAIN' | 'EXTRACT'
-                    | 'FEDERATION' | 'FORMAT'
-                    | 'HASH' | 'HASHKEY' | 'HOUR' | 'HOURS'
-                    | 'IFNULL' | 'INDEX' | 'INSERT' | 'INTO' | 'IS'
-                    | 'JOIN'
-                    | 'KEY'
-                    | 'LEFT' | 'LOOP'
-                    | 'MINUTE' | 'MINUTES' | 'MONOTONIC' | 'MONTH' | 'MONTHS'
-                    | 'NO' | 'NODE' | 'NULLIF'
-                    | 'OFFSET' | 'OUTER' | 'OVERLAY'
-                    | 'PARTITION' | 'POSITION' | 'PRETTY'
-                    | 'QUARTER'| 'QUARTERS'
-                    | 'REFERENCE' | 'RIGHT'
-                    | 'SCHEMA' | 'SECOND' | 'SECONDS' | 'SET' | 'SKIPLIST' | 'STAGE' | 'STATS'
-                    | 'STATISTICS' |'SUBSTR' | 'SUBSTRING'
-                    | 'TABLE' | 'TIME' | 'TREE' | 'TYPE'
-                    | 'UNION' | 'UNIQUE' | 'UPDATE' | 'USING'
-                    | 'VALUE' | 'VALUES' | 'VARYING'
-                    | 'WEEK' | 'WEEKS' | 'WITH_NAMES'
-                    | 'YEAR' | 'YEARS'
-                    | 'INTEGER' | 'DECIMAL' | 'FLOAT' | 'TIMESTAMP' | 'CHARACTER' | 'CHAR'
-                    | 'BOOLEAN' | 'BINARY' | 'VARBINARY'
 
 
 letter   ::= [a-zA-Z]  /* See also https://www.w3.org/TR/xml/#d0e804 */
@@ -283,7 +319,6 @@ identifier
          ::= plainIdentifier
            | backtickIdentifier
            | dblQuotedidentifier
-           | nonReservedWord
 plainIdentifier
          ::= letter ( letter | digit | '_' )*
 backtickIdentifier
@@ -291,7 +326,17 @@ backtickIdentifier
 dblQuotedidentifier
          ::= '"' ( '""' | [^"] )+ '"'
 
+/* Any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+/* Ref: https://www.w3.org/TR/xml/#char32 */
+filePath ::= ( [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] )+
+
+/* Filenames cannot have a forward slash */
+filename ::= ( [#x20-#x2E] |[#x30-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] )+
+
 singleQuotedString
          ::= "'" ( "''" | [^'] )* "'"
 doubleQuotedString
          ::= '"' ( '""' | [^"] )* '"'
+
+dblQuotedStrContents
+                  ::= ( '""' | [^"] )*
