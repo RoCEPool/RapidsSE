@@ -19,8 +19,6 @@ namespace STORE
   {
   protected:
 
-    i8 m_i_SubQuery;     // which subquery is this subquery?
-
     Board* m_pBoard;     // which board
     i8 m_i_Caller;       // which subquery calls this subquery
 
@@ -83,9 +81,6 @@ namespace STORE
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);
-
-    i8   i_SubQuery(void);
-    void vSubQuery(i8 i_SubQuery);
 
     bool bViaFrom(void);
     bool bViaHaving(void);

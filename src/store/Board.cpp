@@ -2410,7 +2410,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
                      m_pSubQuery->nCorrCols(),
                      aQD[m_pSubQuery->eDisposition()],
 
-                     m_pSubQuery->i_SubQuery(),
+                     m_pSubQuery->pBoard()->i_Board(),
                      aQC[m_pSubQuery->eClause()],
                      aQO[m_pSubQuery->eCalcOp()],
                      aRO[m_pSubQuery->eRelnOp()]

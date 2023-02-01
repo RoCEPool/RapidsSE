@@ -88,6 +88,7 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
     vApplyOriginalMatrix();
+    //vApplyRecursiveMatrix();
 
     bClean = true;
   }
@@ -171,6 +172,8 @@ void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
 
   vS10_T00_Begin();
 
+  vTransform_OuterQueryAnalysis();
+
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
@@ -217,19 +220,9 @@ void Bench::vSeries_MakeRunnable_recursiveMatrix(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
+  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
-    vGroup_MainConversions();
-    vGroup_PredicatePullup();
-    vGroup_IndexBounds();
-    vGroup_JoinOrdering();
-  }
-
-  m_pCI->vUsingBoard(BK_SUBPIPE, 0);
-
-  vGroup_FlattenSubquery();
+  vSeries_MakeRunnable_recurse();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -243,13 +236,25 @@ void Bench::vSeries_MakeRunnable_recurse(void)
 
   // things before sub-queries
 
+  SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->vSubQueryIteration();
   while (m_pCI->bEachSubQuery()) {
 
-    if (m_pCI->G.pSubQuery->i_Caller() != m_pCI->G.i_Board)
+    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+           pOuterQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->i_Caller()
+           );
+
+    if (m_pCI->G.pSubQuery->i_Caller() != pOuterQuery->pBoard()->i_Board())
       continue;
+
+//    vTrace("Orientation: OuterQuery %lld calls SubQuery %lld\n"_Stz,
+//           pOuterQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->pBoard()->i_Board());
 
     m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
     vSeries_MakeRunnable_recurse();
@@ -1124,7 +1129,7 @@ void Bench::vTransform_OuterQueryAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "Analyse all sub-queries"_Stz);
+  //m_pCI->vTransform(__func__, "Analyse all sub-queries"_Stz);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
@@ -1176,7 +1181,7 @@ void Bench::vTransform_OuterQueryAnalysis(void)
 
   }
 
-  m_pCI->vEndTransform();
+  //m_pCI->vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/

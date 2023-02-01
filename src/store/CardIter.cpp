@@ -810,6 +810,8 @@ Board* CardIter::pEachBoard(i8& ri_Board)
   G.pBoard = m_pBench->pGetBoard(G.i_Board);
   ri_Board = G.i_Board;
 
+  vChangeCard(G.pBoard->pDeck());
+
   return G.pBoard;
 }
 

@@ -22,9 +22,8 @@ SubQuery::SubQuery(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_i_SubQuery = 0;
   m_pBoard = pBoard;
-  m_i_Caller   = 0;
+  m_i_Caller = C_UNKNOWN;
 
   m_eDisposition = QD_NONE;
   m_nCorrCols    = 0;
@@ -328,26 +327,6 @@ void SubQuery::vSubQueries(i8 nSubQueries)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_nSubQueries = nSubQueries;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get i_SubQuery                                                             */
-/*----------------------------------------------------------------------------*/
-i8 SubQuery::i_SubQuery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  return m_i_SubQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set i_SubQuery                                                             */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vSubQuery(i8 i_SubQuery)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  m_i_SubQuery = i_SubQuery;
 }
 
 /*----------------------------------------------------------------------------*/
