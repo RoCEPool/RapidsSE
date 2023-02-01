@@ -1692,12 +1692,13 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
     Stz* szValue_term = p_pred->szValue();
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
-    if (! pCI->G_bIsBoard(szValue_term))
-      return C_CONTINUE_RECURSION;
 
     if (RO_NONE != eRelnOp) {
 
       Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+      if (! pCI->G_bIsBoard(szSubBoardNm))
+        return C_CONTINUE_RECURSION;
+
       Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
       SubQuery* pSubQuery = pSubBoard->pSubQuery();
 

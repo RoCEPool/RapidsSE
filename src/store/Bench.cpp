@@ -172,8 +172,6 @@ void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
 
   vS10_T00_Begin();
 
-  vTransform_OuterQueryAnalysis();
-
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
@@ -181,7 +179,10 @@ void Bench::vSeries_PreparePipelines_recursiveMatrix(void)
     vGroup_InitialAdjustments();
     vGroup_CondenseInfo();
     vGroup_MetaAnalysis();
+    vGroup_PreliminaryConversions_recursiveMatrix();
   }
+
+  vTransform_OuterQueryAnalysis();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -206,6 +207,7 @@ void Bench::vSeries_MakeRunnable_originalMatrix(void)
 
   m_pCI->vUsingBoard(BK_SUBPIPE, 0);
 
+  vGroup_FinalConversions_recursiveMatrix();
   vGroup_FlattenSubquery();
 
   vEndSeries(BK_SUBPIPE);
@@ -243,18 +245,20 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   m_pCI->vSubQueryIteration();
   while (m_pCI->bEachSubQuery()) {
 
-    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
-           pOuterQuery->pBoard()->i_Board(),
-           m_pCI->G.pSubQuery->pBoard()->i_Board(),
-           m_pCI->G.pSubQuery->i_Caller()
-           );
+//    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+//           pOuterQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->i_Caller()
+//           );
 
     if (m_pCI->G.pSubQuery->i_Caller() != pOuterQuery->pBoard()->i_Board())
       continue;
 
-//    vTrace("Orientation: OuterQuery %lld calls SubQuery %lld\n"_Stz,
-//           pOuterQuery->pBoard()->i_Board(),
-//           m_pCI->G.pSubQuery->pBoard()->i_Board());
+    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+           pOuterQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->i_Caller()
+    );
 
     m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
     vSeries_MakeRunnable_recurse();
@@ -269,7 +273,7 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   vGroup_MainConversions();
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
-  vGroup_JoinOrdering();
+  //vGroup_JoinOrdering();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,6 +371,29 @@ void Bench::vGroup_MainConversions(void)
   vTransform_StmColToTblCol();
   vTransform_RpnCalcToBoolCalc();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_PreliminaryConversions_recursiveMatrix(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  //vTransform_StmColToTblCol();
+  vTransform_RpnCalcToBoolCalc();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_FinalConversions_recursiveMatrix(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_StmColToTblCol();
+  //vTransform_RpnCalcToBoolCalc();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

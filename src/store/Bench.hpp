@@ -55,6 +55,8 @@ namespace STORE
     void vGroup_CondenseInfo(void);
     void vGroup_MetaAnalysis(void);
     void vGroup_MainConversions(void);
+    void vGroup_PreliminaryConversions_recursiveMatrix(void);
+    void vGroup_FinalConversions_recursiveMatrix(void);
 
     void vGroup_PredicatePullup(void);
     void vGroup_IndexBounds(void);
