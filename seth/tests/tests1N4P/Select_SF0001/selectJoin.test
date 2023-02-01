@@ -6,6 +6,34 @@ trackMemory;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cross Join
+select o_orderkey, avg(l_extendedprice)
+  from Orders, Lineitem
+ where
+       O_ORDERKEY = L_ORDERKEY
+   and o_orderkey < 100
+   and o_orderkey > 3
+   and o_totalPrice > 0.0
+   and o_orderStatus = 'F'
+ group by O_ORDERKEY
+ order by O_ORDERKEY
+;
+rows: 56
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// 4-way Join
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem,
+       Supplier
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY
+;
+rows: (5996)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + Project + Filter
 select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
   from Part,
