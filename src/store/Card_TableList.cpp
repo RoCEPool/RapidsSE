@@ -58,9 +58,7 @@ Card_TableList* Card_TableList::pExtract_v2(Card_Deck* p_deck)
   Card_TableList* p_tableList = new Card_TableList;
 
   CardIter xCI(p_deck);
-  while (xCI.pEachChild_reverse_foldBreak(CK_TABLE)) {
-
-    Card_Table* p_table = xCI.G.p_table;
+  while (Card_Table* p_table = _pCard_Table(xCI.pEachChild_reverse_foldBreak(CK_TABLE))) {
 
     Card* p_table_dup = _pCard_Table(p_table->pDup());
     p_tableList->vAppend(p_table_dup);

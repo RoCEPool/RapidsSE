@@ -25,6 +25,7 @@ namespace STORE
     static void vProduceTablePtns(CardIter* pCI);
     static Card_Table* pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
     static i8 nTables(CardIter* pCI);
+    static i8 nTables_reverse_foldBreak(CardIter* pCI);
 
     void vAddPredToTableFilter(CardIter* pCI, Card_PRED* p_PRED);
 

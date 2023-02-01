@@ -52,7 +52,7 @@ void Card_Projection::vNumberExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Expr = 0;
+  i8 i_Expr = 1;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
     xCI.G.p_expr->vNumberValue(i_Expr++);

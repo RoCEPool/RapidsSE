@@ -272,7 +272,7 @@ void Bench::vSeries_MakeRunnable_recurse(void)
 
   vGroup_PredicatePullup_recursiveModel();
   vGroup_IndexBounds_recursiveModel();
-  //vGroup_JoinOrdering_recursiveModel();
+  vGroup_JoinOrdering_recursiveModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,7 +463,7 @@ void Bench::vGroup_JoinOrdering_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Card_Table::nTables(m_pCI) < 2)
+  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
 
   vTransform_JoinOrdering_originalModel();
@@ -1702,7 +1702,6 @@ void Bench::vFold_10_F(void)
   DELETE_CARD(m_pCI->G.p_call);
 
   m_pCI->G.pDeck->vRenumberRecursive();
-
   m_pCI->vPrintBoard(__LINE__);
 
   // 7) derive the fold (SQ result) expr
@@ -1720,6 +1719,10 @@ void Bench::vFold_10_F(void)
 //  m_pCI->vPrintBoard(__LINE__);
 
   //Board::vRelabelExpressions(m_pCI);
+
+  Board::vProjection_Analysis_postFold(m_pCI);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
