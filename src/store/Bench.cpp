@@ -223,7 +223,6 @@ void Bench::vSeries_MakeRunnable_recursiveMatrix(void)
 
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
-  vGroup_FinalConversions_recursiveMatrix();
 
   vSeries_MakeRunnable_recurse();
 
@@ -270,8 +269,8 @@ void Bench::vSeries_MakeRunnable_recurse(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things after sub-queries
+  vGroup_FinalConversions_recursiveMatrix();
 
-  vGroup_MainConversions();
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
   //vGroup_JoinOrdering();
