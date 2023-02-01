@@ -1731,17 +1731,30 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
   auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
 
-
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
     if (p_pred->bIsCard(CK_TERM)) {
-      pCI->G.p_term = _pCard_Term(p_pred);
-      return C_CONTINUE_RECURSION;
+      Stz* szValue_term = p_pred->szValue();
+
+      eQO eCallOp = QO_NONE;
+           if (szValue_term->bSame("exists"_Stz))    eCallOp = QO_EXISTS_OP;
+      else if (szValue_term->bSame("notExists"_Stz)) eCallOp = QO_NOT_EXISTS_OP;
+      else if (szValue_term->bSame("in"_Stz))        eCallOp = QO_IN_OP;
+      else if (szValue_term->bSame("notIn"_Stz))     eCallOp = QO_NOT_IN_OP;
+      else return C_CONTINUE_RECURSION;
+
+      SubQuery* pSubQuery;
+      pSubQuery->vCaller(pCI->G.i_Board);
+      pSubQuery->vClause(QC_WHERE_CLAUSE);
+      pSubQuery->vCalcOp(QO_COMPARE_OP);
+
     }
 
-    Stz* szValue_term = p_pred->szValue();
-    eRO eRelnOp = RelOp::eDecode(szValue_term);
+    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+
+    Stz* szValue_pred = p_pred->szValue();
+    eRO eRelnOp = RelOp::eDecode(szValue_pred);
 
     if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
@@ -1752,7 +1765,6 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
-
 
     pSubQuery->vCaller(pCI->G.i_Board);
     pSubQuery->vClause(QC_WHERE_CLAUSE);

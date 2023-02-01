@@ -153,7 +153,7 @@ void Bench::vSeries_PreparePipelines_originalModel(void)
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
 
     vGroup_InitialAdjustments();
-    vGroup_CondenseInfo();
+    vGroup_CondenseInfo_originalModel();
     vGroup_MetaAnalysis();
     vGroup_MainConversions();
   }
@@ -177,7 +177,7 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
 
     vGroup_InitialAdjustments();
-    vGroup_CondenseInfo();
+    vGroup_CondenseInfo_recursiveModel();
     vGroup_MetaAnalysis();
     vGroup_PreliminaryConversions_recursiveModel();
   }
@@ -207,7 +207,7 @@ void Bench::vSeries_MakeRunnable_originalModel(void)
 
   m_pCI->vUsingBoard(BK_SUBPIPE, 0);
 
-  vGroup_FlattenSubquery();
+  vGroup_FlattenSubquery_originalModel();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -333,13 +333,26 @@ void Bench::vGroup_InitialAdjustments(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_CondenseInfo(void)
+void Bench::vGroup_CondenseInfo_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vTransform_DeleteUnneeded();
   vTransform_ScanBecomesTable();
   vTransform_AddLevel();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_CondenseInfo_recursiveModel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_DeleteUnneeded();
+  vTransform_ScanBecomesTable();
+  vTransform_AddLevel();
+  vTransform_NotOps();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +487,7 @@ void Bench::vGroup_JoinOrdering_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_FlattenSubquery(void)
+void Bench::vGroup_FlattenSubquery_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 

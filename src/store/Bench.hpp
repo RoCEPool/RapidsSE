@@ -52,7 +52,8 @@ namespace STORE
     // group
 
     void vGroup_InitialAdjustments(void);
-    void vGroup_CondenseInfo(void);
+    void vGroup_CondenseInfo_originalModel(void);
+    void vGroup_CondenseInfo_recursiveModel(void);
     void vGroup_MetaAnalysis(void);
     void vGroup_MainConversions(void);
     void vGroup_PreliminaryConversions_recursiveModel(void);
@@ -64,7 +65,7 @@ namespace STORE
     void vGroup_IndexBounds_recursiveModel(void);
     void vGroup_JoinOrdering_originalModel(void);
     void vGroup_JoinOrdering_recursiveModel(void);
-    void vGroup_FlattenSubquery(void);
+    void vGroup_FlattenSubquery_originalModel(void);
     void vGroup_FlattenSubquery_recursiveModel(void);
 
     void vGroup_ChooseEEops(void);
