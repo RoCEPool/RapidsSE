@@ -1686,28 +1686,26 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
 
     if (p_pred->bIsCard(CK_TERM)) {
       return C_CONTINUE_RECURSION;
-      pCI->G.p_term = _pCard_Term(p_pred);
     }
 
     Stz* szValue_term = p_pred->szValue();
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
+    if (RO_NONE == eRelnOp)
+      return C_CONTINUE_RECURSION;
 
-    if (RO_NONE != eRelnOp) {
+    Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+    if (! pCI->G_bIsBoard(szSubBoardNm))
+      return C_CONTINUE_RECURSION;
 
-      Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-      if (! pCI->G_bIsBoard(szSubBoardNm))
-        return C_CONTINUE_RECURSION;
-
-      Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
-      SubQuery* pSubQuery = pSubBoard->pSubQuery();
+    Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+    SubQuery* pSubQuery = pSubBoard->pSubQuery();
 
 
-      pSubQuery->vCaller(pCI->G.i_Board);
-      pSubQuery->vClause(QC_HAVING_CLAUSE);
-      pSubQuery->vCalcOp(QO_COMPARE_OP);
-      pSubQuery->vRelnOp(eRelnOp);
-    }
+    pSubQuery->vCaller(pCI->G.i_Board);
+    pSubQuery->vClause(QC_HAVING_CLAUSE);
+    pSubQuery->vCalcOp(QO_COMPARE_OP);
+    pSubQuery->vRelnOp(eRelnOp);
 
     return C_CONTINUE_RECURSION;
   };
@@ -1733,32 +1731,33 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
   auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
 
+
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
     if (p_pred->bIsCard(CK_TERM)) {
-      return C_CONTINUE_RECURSION;
       pCI->G.p_term = _pCard_Term(p_pred);
+      return C_CONTINUE_RECURSION;
     }
 
     Stz* szValue_term = p_pred->szValue();
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
-    if (! pCI->G_bIsBoard(szValue_term))
+    if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
 
-    if (RO_NONE != eRelnOp) {
+    Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+    if (! pCI->G_bIsBoard(szSubBoardNm))
+      return C_CONTINUE_RECURSION;
 
-      Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-      Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
-      SubQuery* pSubQuery = pSubBoard->pSubQuery();
+    Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+    SubQuery* pSubQuery = pSubBoard->pSubQuery();
 
 
-      pSubQuery->vCaller(pCI->G.i_Board);
-      pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCalcOp(QO_COMPARE_OP);
-      pSubQuery->vRelnOp(eRelnOp);
-    }
+    pSubQuery->vCaller(pCI->G.i_Board);
+    pSubQuery->vClause(QC_WHERE_CLAUSE);
+    pSubQuery->vCalcOp(QO_COMPARE_OP);
+    pSubQuery->vRelnOp(eRelnOp);
 
     return C_CONTINUE_RECURSION;
   };

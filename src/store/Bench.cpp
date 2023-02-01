@@ -87,8 +87,8 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vApplyTransformationMatrix_originalModel();
-    //vApplyTransformationMatrix_recursiveModel();
+    //vApplyTransformationMatrix_originalModel();
+    vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
   }
@@ -1120,13 +1120,13 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
   if (m_pCI->G.pSubQuery->bViaWhere()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
         else                                         /* W_A_C_ro   Q2,17 */ vFold_20_W_A_C_ro();
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFold_30_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
@@ -1134,13 +1134,13 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFold_50_W_L_C_E();
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFold_50_W_L_C_E();
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
         else                                         /* W_L_C_ro         */ NEVER_REACH
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFold_60_W_L_NC_NI();
@@ -1152,13 +1152,13 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
   if (m_pCI->G.pSubQuery->bViaHaving()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
         else                                         /* H_A_C_ro         */ NEVER_REACH
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
@@ -1166,13 +1166,13 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
         else                                         /* H_L_C_ro         */ NEVER_REACH
       } else {
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
@@ -2501,10 +2501,10 @@ void Bench::vFold_60_W_L_NC_NI(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, "((20))"_Stz);
+  m_pCI->vTransform(__func__, "((vFold_60_W_L_NC_NI))"_Stz);
 
   // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
-  vAssert_Board_mqA();
+  //vAssert_Board_mqA();
 
   // W L NC NI
   //               //
