@@ -51,23 +51,6 @@ Card_TableList::~Card_TableList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
-{
-  _static_
-
-  Card_TableList* p_tableList = new Card_TableList;
-
-  CardIter xCI(p_deck);
-  while (Card* pMainCard = xCI.pEachChild())
-    if (Card_Table* p_table = pMainCard->pSub_table())
-      p_tableList->vAppend(p_table->pDupCardAndSubCards());
-
-  return p_tableList;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_TableList* Card_TableList::pExtract_v2(Card_Deck* p_deck)
 {
   _static_

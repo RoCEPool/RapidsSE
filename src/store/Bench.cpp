@@ -223,7 +223,6 @@ void Bench::vSeries_MakeRunnable_recursiveModel(void)
 
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
-
   vSeries_MakeRunnable_recurse();
 
   vEndSeries(BK_SUBPIPE);
@@ -415,7 +414,6 @@ void Bench::vGroup_PredicatePullup_originalModel(void)
 void Bench::vGroup_PredicatePullup_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
 
   vTransform_MarkCmpPredWrtTable();
   vTransform_CopyMarkedCmpPred();
