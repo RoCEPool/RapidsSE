@@ -51,14 +51,18 @@ Card_TableList::~Card_TableList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_TableList* Card_TableList::pExtract_v2(Card_Deck* p_deck)
+Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
 {
   _static_
 
   Card_TableList* p_tableList = new Card_TableList;
 
   CardIter xCI(p_deck);
-  while (Card_Table* p_table = _pCard_Table(xCI.pEachChild_reverse_foldBreak(CK_TABLE))) {
+
+  if (! xCI.pEachChild(CK_FOLD))
+    xCI.vRestart();
+
+  while (Card_Table* p_table = _pCard_Table(xCI.pEachChild(CK_TABLE))) {
 
     Card* p_table_dup = _pCard_Table(p_table->pDup());
     p_tableList->vAppend(p_table_dup);

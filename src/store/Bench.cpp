@@ -87,8 +87,8 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    //vApplyTransformationMatrix_originalModel();
-    vApplyTransformationMatrix_recursiveModel();
+    vApplyTransformationMatrix_originalModel();
+    //vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
   }
@@ -3550,7 +3550,7 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
   m_pCI->G_vPushBoard(pBoard);
 
   // 1) Extract tableList from pipeline
-  m_pCI->G.p_tableList = Card_TableList::pExtract_v2(pPipeline);
+  m_pCI->G.p_tableList = Card_TableList::pExtract(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
