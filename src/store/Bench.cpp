@@ -87,8 +87,8 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vApplyOriginalMatrix();
-    //vApplyRecursiveMatrix();
+    vApplyTransformationMatrix_originalModel();
+    //vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
   }
@@ -112,7 +112,7 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
 /*----------------------------------------------------------------------------*/
 /* apply the original transformation matrix                                   */
 /*----------------------------------------------------------------------------*/
-void Bench::vApplyOriginalMatrix(void)
+void Bench::vApplyTransformationMatrix_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -125,7 +125,7 @@ void Bench::vApplyOriginalMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the recursive transformation matrix                                  */
 /*----------------------------------------------------------------------------*/
-void Bench::vApplyRecursiveMatrix(void)
+void Bench::vApplyTransformationMatrix_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -271,9 +271,9 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   // things after sub-queries
   vGroup_FinalConversions_recursiveModel();
 
-  vGroup_PredicatePullup_originalModel();
-  vGroup_IndexBounds_originalModel();
-  //vGroup_JoinOrdering_originalModel();
+  vGroup_PredicatePullup_recursiveModel();
+  vGroup_IndexBounds_recursiveModel();
+  vGroup_JoinOrdering_recursiveModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,11 +412,35 @@ void Bench::vGroup_PredicatePullup_originalModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Bench::vGroup_PredicatePullup_recursiveModel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+
+  vTransform_MarkCmpPredWrtTable();
+  vTransform_CopyMarkedCmpPred();
+  vTransform_CullMarkedCmpPred();
+  vTransform_DeleteEmptyWhere();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Bench::vGroup_IndexBounds_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_DeriveBoundsFromFilter();
+  vTransform_DeriveBoundsFromFilter_originalModel();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_IndexBounds_recursiveModel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_DeriveBoundsFromFilter_originalModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,9 +453,26 @@ void Bench::vGroup_JoinOrdering_originalModel(void)
   if (Card_Table::nTables(m_pCI) < 2)
     return;
 
-  vTransform_JoinOrdering_v2();
-  vTransform_PredicateReposition();
-  vTransform_DeriveBoundsFromFilter();
+  vTransform_JoinOrdering_originalModel();
+  vTransform_PredicateReposition_originalModel();
+  vTransform_DeriveBoundsFromFilter_originalModel();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_JoinOrdering_recursiveModel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return;
+
+  if (Card_Table::nTables(m_pCI) < 2)
+    return;
+
+  vTransform_JoinOrdering_originalModel();
+  vTransform_PredicateReposition_originalModel();
+  vTransform_DeriveBoundsFromFilter_originalModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -970,7 +1011,7 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 /*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_DeriveBoundsFromFilter(void)
+void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3494,152 +3535,7 @@ void Bench::vS32_T_SubQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_JoinOrdering(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
-
-  // vAssert_Board_mqA();
-
-  Card_Deck* pPipeline = m_pCI->G.pDeck;
-
-  Board* pBoard = new Board(aBK[BK_PARTITION],
-                            BK_PARTITION,
-                            C_UNKNOWN,
-                            BT_ORIGINAL,
-                            m_pCI->m_pBench);
-  m_pCI->G_vPushBoard(pBoard);
-
-  // 1) Extract tableList from pipeline
-  m_pCI->G.p_tableList = Card_TableList::pExtract_v2(pPipeline);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
-  m_pCI->vPrintBoard(__LINE__);
-
-  // 2) Extract joinPredList from pipeline
-  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
-  m_pCI->vPrintBoard(__LINE__);
-
-  // 3) Extract coPtnPredList from joinPredList
-  m_pCI->G.p_coPtnPredList = Card_CoPtnPredList::pExtract(m_pCI->G.p_joinPredList,m_pCI->G.p_tableList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
-  m_pCI->vPrintBoard(__LINE__);
-
-  // 4) Extract coPtnJoinList from coPtnPredList
-  m_pCI->G.p_coPtnJoinList = Card_CoPtnJoinList::pExtract(m_pCI->G.p_coPtnPredList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnJoinList);
-  m_pCI->vPrintBoard(__LINE__);
-
-  // 5) Extract crossPtnJoinList from joinPredList, coPtnJoinList
-  m_pCI->G.p_crossPtnJoinList = Card_CrossPtnJoinList::pExtract(m_pCI->G.p_joinPredList,
-                                                                m_pCI->G.p_coPtnJoinList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_crossPtnJoinList);
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  // 6) Extract ptnJoinSet from coPtnJoinList, crossPtnJoinList
-  m_pCI->G.p_ptndJoinSet = Card_PtndJoinSet::pExtract(m_pCI->G.p_coPtnJoinList,
-                                                      m_pCI->G.p_crossPtnJoinList);
-  m_pCI->G.pDeck->vAppend(m_pCI->G.p_ptndJoinSet);
-  m_pCI->vPrintBoard(__LINE__);
-
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnPredList);
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_coPtnJoinList);
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_crossPtnJoinList);
-//  m_pCI->G.pDeck->vAppend(m_pCI->G.p_ptndJoinSet);
-//  m_pCI->vPrintBoard(__LINE__);
-
-  // copy ptndJoinSet
-  m_pCI->G.pDeck->vAppendMain(new Card_Note("PERMUTATIONS"_Stz));
-  m_pCI->G.p_subSet = m_pCI->G.p_ptndJoinSet->pDupSubCards();
-  while ((m_pCI->m_pCard_popped = m_pCI->G.p_subSet->pPop())) {
-    m_pCI->G.pDeck->vAppendMain(m_pCI->m_pCard_popped);
-  }
-  DELETE_CARD(m_pCI->G.p_subSet);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G.p_ptndJoinSet->vPermute(m_pCI->G.pDeck);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_Permutation::vRemoveInvalid(m_pCI->G.pDeck);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  i8 i_Permutation = m_pCI->G.pDeck->iFindChild(CK_PERMUTATION);
-  m_pCI->G.p_subSet = m_pCI->G.pDeck->pDupSubCards(i_Permutation);
-
-
-  pBoard = new Board(aBK[BK_COSTEST],
-                     BK_COSTEST,
-                     C_UNKNOWN,
-                     BT_ORIGINAL,
-                     m_pCI->m_pBench);
-
-  m_pCI->G_vPushBoard(pBoard);
-
-  m_pCI->G.pDeck->vTransferChildren(m_pCI->G.p_subSet);
-
-  DELETE_CARD(m_pCI->G.p_subSet);
-
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  Card_JoinOrdering::vEstimateJoinedBuff(m_pCI->G.pDeck, m_pCI->G.p_tableList);
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_JoinOrdering::vEstimateNetwork(m_pCI->G.pDeck);
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pCompute(m_pCI->G.pDeck);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G.pDeck->vRemoveChild(p_joinOrdering);
-
-
-  pBoard = m_pCI->G.pBoard;
-  m_pCI->G_vPopIter();
-  vRemove(pBoard);
-  delete pBoard;
-
-  //m_pCI->G.p_joinOrder = Card_JoinOrder::pExtract(m_pCI->G.pDeck);
-  //m_pCI->G.pDeck->vApply(m_pCI->G.p_joinOrder);
-
-
-
-  pBoard = m_pCI->G.pBoard;
-  m_pCI->G_vPopIter();
-
-  vRemove(pBoard);
-
-  delete pBoard;
-
-  p_joinOrdering->vReorder(m_pCI->G.pDeck);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  DELETE_CARD(p_joinOrdering);
-
-  Board::vProjection_Analysis(m_pCI);
-
-  //Card_Stream::vStream_AdjustLoHi(m_pCI);
-  //Board::vRenumberStmOdn(m_pCI);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_JoinOrdering_v2(void)
+void Bench::vTransform_JoinOrdering_originalModel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -3747,7 +3643,7 @@ void Bench::vTransform_JoinOrdering_v2(void)
 /*----------------------------------------------------------------------------*/
 /* Predicate Pullup                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_PredicateReposition(void)
+void Bench::vTransform_PredicateReposition_originalModel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 

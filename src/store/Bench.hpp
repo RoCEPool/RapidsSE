@@ -37,8 +37,8 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // series
     bool bApplyTransformationMatrix(eEC* peErrorCode);
-    void vApplyOriginalMatrix(void);
-    void vApplyRecursiveMatrix(void);
+    void vApplyTransformationMatrix_originalModel(void);
+    void vApplyTransformationMatrix_recursiveModel(void);
 
     void vSeries_PreparePipelines_originalModel(void);
     void vSeries_PreparePipelines_recursiveModel(void);
@@ -59,8 +59,11 @@ namespace STORE
     void vGroup_FinalConversions_recursiveModel(void);
 
     void vGroup_PredicatePullup_originalModel(void);
+    void vGroup_PredicatePullup_recursiveModel(void);
     void vGroup_IndexBounds_originalModel(void);
+    void vGroup_IndexBounds_recursiveModel(void);
     void vGroup_JoinOrdering_originalModel(void);
+    void vGroup_JoinOrdering_recursiveModel(void);
     void vGroup_FlattenSubquery(void);
     void vGroup_FlattenSubquery_recursiveModel(void);
 
@@ -93,10 +96,9 @@ namespace STORE
     void vTransform_CullMarkedCmpPred(void);
     void vTransform_DeleteEmptyWhere(void);
 
-    void vTransform_JoinOrdering(void);
-    void vTransform_JoinOrdering_v2(void);
-    void vTransform_PredicateReposition(void);
-    void vTransform_DeriveBoundsFromFilter(void);
+    void vTransform_JoinOrdering_originalModel(void);
+    void vTransform_PredicateReposition_originalModel(void);
+    void vTransform_DeriveBoundsFromFilter_originalModel(void);
 
     void vTransform_OuterQueryAnalysis(void);
     void vTransform_SubQueryAnalysisMainQuery(void);
