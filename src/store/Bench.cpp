@@ -2645,12 +2645,15 @@ void Bench::vFold_60_W_L_NC_NI(void)
   //     --sq          //
   //     kne           //
 
+  m_pCI->G.p_table = _pCard_Table(m_pCI->m_pCard_copied);
+
   m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
   m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYNOTEXISTS);
 
+  Board::vProjection_Analysis_postFold(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
-  Card_Stream::vStream_AdjustLoHi(m_pCI);
-  Board::vRenumberStmOdn(m_pCI);
+//  Card_Stream::vStream_AdjustLoHi(m_pCI);
+//  Board::vRenumberStmOdn(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(m_pCI->m_sSqyArg);
