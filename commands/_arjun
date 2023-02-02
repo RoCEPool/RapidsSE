@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* _arjun                                                                     */
 /*============================================================================*/
-
+/*
 create table uniqueTable (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -40,7 +40,7 @@ begin
     | sink
     | stageStart
 end ;
-
+*/
 //select * from datums;
 /*
 pipeline __pageout
@@ -121,7 +121,7 @@ unload paths
 ;
 */
 /*
-tag default <tpch_dir> = "../TPCH/SF50" ;
+tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 
 _lineitem
@@ -136,3 +136,31 @@ dload lineitem paths
   "/mnt/disk2/data1/tpch/sf10/lineitem/lineitem.tbl"
 ;
 */
+
+tag default <tpch_dir> = "../TPCH/SF1" ;
+tag default <suffix>   = "tbl";
+_nation;
+load Nation   "<tpch_dir>/nation.<suffix>"   ;
+pipeline __pageout
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+      scan nation
+      | project " type INTEGER as intCol0 $1 "
+      | combined 0
+      | next
+
+    stage stageB on all nodes :
+      pageout
+      | pageIn
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;

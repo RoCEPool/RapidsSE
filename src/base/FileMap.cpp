@@ -75,16 +75,13 @@ NEVER_REACH;
 /*----------------------------------------------------------------------------*/
 /* Find where on disk the buffer is written, and get it                       */
 /*----------------------------------------------------------------------------*/
-RowBuffer* FileMap::pFromDisk(Operand* pOperand)
+RowBuffer* FileMap::pFromDisk(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
   //---------------------------------------------------------------------------
   // Operand should be a buffer id. Check flag bit.
 #ifdef WITH_PAGEFILE
-  BufferId oBufferId;// TODO Arjun: Code readability
-  oBufferId.m_pvAsAddress = (void*) pOperand;
-
   ASSERT(0 == BufferId::bIsAddress(oBufferId));
 
   //---------------------------------------------------------------------------
@@ -143,6 +140,7 @@ BufferId FileMap::oGetNewBufferId(i8 iPoolBufferNo)
 {
   //---------------------------------------------------------------------------
   // Figure out which PageFile has space for a new RowBuffer
+/*
 #ifdef WITH_PAGEFILE
   BufferId oFreeBuffId = m_pPageFile->oNextFreeBufferId();
 
@@ -152,8 +150,9 @@ BufferId FileMap::oGetNewBufferId(i8 iPoolBufferNo)
 
   return oFreeBuffId;
 #else
+*/
   return BufferId::vBufferIdFromNo(iPoolBufferNo);
-#endif
+//#endif
 }
 #endif
 

@@ -35,7 +35,9 @@ void Step::vPageOutPoolBuffer(void) {
   // Let the FileMap decide where it should be written to.
   AM::pFileMap()->vToDisk(pOperand);
 
-  AM::vDeleteOperand(pOperand,nullptr);
+  m_pDataStack->vPushPtr(pOperand);
+
+//  AM::vDeleteOperand(pOperand,nullptr);
   EXIT();
 }
 

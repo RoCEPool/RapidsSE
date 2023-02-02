@@ -20,9 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : pageIn_RowBuffer \handler
 
-  PipeIn[].delete
-
-  pageIn::PageInPoolBuffer
+  PipeIn[]\clear pageIn::PageInPoolBuffer
 
   RowBuffer[].pipeOut
 

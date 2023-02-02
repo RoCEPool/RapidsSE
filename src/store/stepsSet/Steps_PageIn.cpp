@@ -32,9 +32,20 @@ void Step::vPageInPoolBuffer(void) {
   // Pop an operand address off the stack. It is actually a Buffer Id
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
+  //---------------------------------------------------------------------------
+  // Temporary for testing
+  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+
+  BufferId oBufferId = pRowBuffer->oGetBufferId();
+//  oBufferId.m_iAsI8=0;
+  AM::vDeleteOperand(pOperand,nullptr);
+
+  RASSERT(pOperand->eGetClassNo() == BASE::CN_FREECHUNK);
+  //---------------------------------------------------------------------------
+
 
   // Ask the FileMap to get the buffer from disk.
-  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pFromDisk(pOperand);
+  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pFromDisk(oBufferId);
 
   vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pRowBufferFromDisk);
 

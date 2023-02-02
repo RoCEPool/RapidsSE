@@ -4,7 +4,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "CmdLineArgs.hpp"
+
 extern AttachMap* gpAttachMap;
+extern CmdLineArgs  gxCmdLineArgs;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -52,7 +56,8 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_uPFIndex = uIndex;
   m_szPFilePath = sPath;
   m_pFile = new File(this);
-  m_uPFSize = C_SIZE_PAGE_FILE;
+//  m_uPFSize = C_SIZE_PAGE_FILE;
+  m_uPFSize = (u8) gxCmdLineArgs.m_xSysArgs.m_iRegionSize;
   m_uFirstUsableByte = sizeof(C_MAGIC);
   m_uWilderness = 0;
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
@@ -151,7 +156,7 @@ void PageFile::vInitialise(void)
 
   vInitMagic();
 
-  vInitFooter();
+//  vInitFooter();
 
   m_pFile->vFlush();
 
@@ -263,6 +268,7 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   }
 
   RowBuffer* pRowBuffer = new RowBuffer;
+  // Should use a free pool buffer instead of new rowbuffer
 
 //lock
   m_pFile->vSeek(iSeekOffset);
@@ -272,6 +278,7 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   bool bResult = m_pFile->nReadBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
 // BufferNo and other members of RowBuffer are overwritten
 // Need to update those values
+// Update hashMap(bufferId) -> new address
 
   ASSERT(bResult);
   oTimer.vUpdate();

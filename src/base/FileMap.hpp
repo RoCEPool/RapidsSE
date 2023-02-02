@@ -30,7 +30,7 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
-    RowBuffer* pFromDisk(Operand* pOperand);
+    RowBuffer* pFromDisk(BufferId oBufferId);
 #ifdef WITH_BUFFER_ID
     BufferId oGetNewBufferId(i8 iPoolBufferNo);
 #endif
