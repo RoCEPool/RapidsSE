@@ -1695,7 +1695,7 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if (! pCI->G_bIsBoard(szSubBoardNm))
+    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
@@ -1760,7 +1760,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if (! pCI->G_bIsBoard(szSubBoardNm))
+    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
