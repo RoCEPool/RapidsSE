@@ -116,6 +116,8 @@ void Bench::vApplyTransformationMatrix_originalModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
+  m_pCI->m_bRecursiveModel = false;
+
   vSeries_PreparePipelines_originalModel();
   vSeries_MakeRunnable_originalModel();
   vSeries_Optimisations();
@@ -128,6 +130,8 @@ void Bench::vApplyTransformationMatrix_originalModel(void)
 void Bench::vApplyTransformationMatrix_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_pCI->m_bRecursiveModel = true;
 
   vSeries_PreparePipelines_recursiveModel();
   vSeries_MakeRunnable_recursiveModel();
@@ -1799,9 +1803,17 @@ void Bench::vFold_20_W_A_C_ro(void)
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
   RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
-    vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-    NEVER_REACH
+  if (m_pCI->m_bRecursiveModel) {
+    if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  else {
+    if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
   }
   vTrace(">>>>>>>>> Found W_A_C_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
   m_pCI->vPrintBoard(__LINE__);
@@ -2002,7 +2014,7 @@ void Bench::vFold_30_W_A_NC_I(void)
 
   vAssert_Board_mqA();
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
+    if (!Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
       m_pCI->vTracer("DID NOT FIND W_A_NC_I SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2194,7 +2206,7 @@ void Bench::vFold_40_W_A_NC_ro(void)
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
+    if (!Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
       m_pCI->vTracer("DID NOT FIND W_A_NC_ro SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2405,7 +2417,7 @@ void Bench::vFold_50_W_L_C_E(void)
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
+    if (!Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
       m_pCI->vTracer("DID NOT FIND W_L_C_E SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2544,7 +2556,7 @@ void Bench::vFold_60_W_L_NC_NI(void)
 
 
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
+    if (!Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
       m_pCI->vTracer("DID NOT FIND W_L_NC_NI SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -2705,7 +2717,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
-    if (!Board::bFindAndMarkSubQryCall(m_pCI)) {
+    if (!Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
       vTrace("DID NOT FIND H_A_NC_ro SubQuery call\n"_Stz);
       NEVER_REACH
     }

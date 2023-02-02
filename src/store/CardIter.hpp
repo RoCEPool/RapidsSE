@@ -18,6 +18,8 @@ namespace STORE
 
     CardIterMembers G;
 
+    b8          m_bRecursiveModel;
+
     // Xgearing
     Bench*      m_pBench;
 

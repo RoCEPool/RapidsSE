@@ -757,9 +757,9 @@ void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and mark call to the subquery referenced in pCI->G.p_boolCalc              */
+/* find and mark call to the subquery referenced in pCI->G.p_boolCalc         */
 /*----------------------------------------------------------------------------*/
-bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
+bool Board::bFindAndMarkSubQryCall_originalModel(CardIter* pCI)
 {
   _static_
 
@@ -800,12 +800,105 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     }
 
     // TODO: needs to be a list
-    if (   pCI->G.p_roPred->bIsValue("<"_Stz)
+    if (      pCI->G.p_roPred->bIsValue("<"_Stz)
            || pCI->G.p_roPred->bIsValue("<="_Stz)
            || pCI->G.p_roPred->bIsValue("=="_Stz)
            || pCI->G.p_roPred->bIsValue("!="_Stz)
            || pCI->G.p_roPred->bIsValue(">="_Stz)
            || pCI->G.p_roPred->bIsValue(">"_Stz)
+        ) {
+
+      if (3 == pCI->G.p_roPred->nChildCards()) {
+        pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+        // TODO: this doesnt seem right
+        pCI->m_sSqyRO = pCI->m_pTerm_0->szValue();
+
+        pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
+        pCI->m_sSqyArg = pCI->m_pTerm_1->szValue();
+
+        pCI->m_pTerm_2 = _pCard_Term(pCI->G.p_roPred->pGet(2));
+        pCI->m_sSqyNm = pCI->m_pTerm_2->szValue();
+      }
+      else {
+        pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+        pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
+
+        pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
+        pCI->m_sSqyNm = pCI->m_pTerm_1->szValue();
+      }
+
+      bFoundCall = true;
+
+      pCI->G.p_roPred->vMark1(MARK_AT);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+    NEVER_REACH
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_roPred);
+  if (bFoundCall)
+    return true;
+
+  return bFoundCall;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find and mark call to the subquery referenced in pCI->G.p_boolCalc         */
+/*----------------------------------------------------------------------------*/
+bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
+{
+  _static_
+
+  bool bFoundCall = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn_roPred = [pCI,&bFoundCall](Card* pCard)
+  {
+    pCI->G.p_roPred = _pCard_RoPred(pCard);
+
+    if (pCI->G.p_roPred->bIsValue("exists"_Stz) || pCI->G.p_roPred->bIsValue("notExists"_Stz)) {
+      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+      pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
+      pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
+      pCI->m_sSqyNm = pCI->m_pTerm_1->szValue();
+
+      bFoundCall = true;
+
+      pCI->G.p_roPred->vMark1(MARK_AT);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (pCI->G.p_roPred->bIsValue("in"_Stz) || pCI->G.p_roPred->bIsValue("notIn"_Stz)) {
+      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+      pCI->m_sSqyNm = pCI->m_pTerm_0->szValue();
+      pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
+      pCI->m_sSqyRsl = pCI->m_pTerm_1->szValue();
+      pCI->m_pTerm_2 = _pCard_Term(pCI->G.p_roPred->pGet(2));
+      pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
+
+      bFoundCall = true;
+
+      pCI->G.p_roPred->vMark1(MARK_AT);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+    // TODO: needs to be a list
+    if (      pCI->G.p_roPred->bIsValue("<"_Stz)
+              || pCI->G.p_roPred->bIsValue("<="_Stz)
+              || pCI->G.p_roPred->bIsValue("=="_Stz)
+              || pCI->G.p_roPred->bIsValue("!="_Stz)
+              || pCI->G.p_roPred->bIsValue(">="_Stz)
+              || pCI->G.p_roPred->bIsValue(">"_Stz)
         ) {
 
       if (3 == pCI->G.p_roPred->nChildCards()) {
@@ -1722,9 +1815,6 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 {
   _static_
 
-  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
-
-
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1735,41 +1825,52 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     if (p_pred->bIsCard(CK_TERM)) {
-      Stz* szValue_term = p_pred->szValue();
+      return C_CONTINUE_RECURSION;
+    }
 
-      eQO eCallOp = QO_NONE;
-           if (szValue_term->bSame("exists"_Stz))    eCallOp = QO_EXISTS_OP;
-      else if (szValue_term->bSame("notExists"_Stz)) eCallOp = QO_NOT_EXISTS_OP;
-      else if (szValue_term->bSame("in"_Stz))        eCallOp = QO_IN_OP;
-      else if (szValue_term->bSame("notIn"_Stz))     eCallOp = QO_NOT_IN_OP;
+    Stz *szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+    if (! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
+      return C_CONTINUE_RECURSION;
+
+    // todo: pCI->pGetBoard(szSubBoardNm); pCI->pGetSubQuery(szSubBoardNm);
+    Board *pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+    SubQuery *pSubQuery = pSubBoard->pSubQuery();
+
+    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+
+    if (p_pred->bIsCard(CK_BOLPRED)) {
+      Stz* szValue_pred = p_pred->szValue();
+
+      eQO eCalcOp = QO_NONE;
+      if (szValue_pred->bSame("exists"_Stz))         eCalcOp = QO_EXISTS_OP;
+      else if (szValue_pred->bSame("notExists"_Stz)) eCalcOp = QO_NOT_EXISTS_OP;
+      else if (szValue_pred->bSame("in"_Stz))        eCalcOp = QO_IN_OP;
+      else if (szValue_pred->bSame("notIn"_Stz))     eCalcOp = QO_NOT_IN_OP;
       else return C_CONTINUE_RECURSION;
 
-      SubQuery* pSubQuery;
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCalcOp(QO_COMPARE_OP);
-
+      pSubQuery->vCalcOp(eCalcOp);
+      return C_CONTINUE_RECURSION;
     }
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    Stz* szValue_pred = p_pred->szValue();
-    eRO eRelnOp = RelOp::eDecode(szValue_pred);
+    if (p_pred->bIsCard(CK_ROPRED)) {
+      Stz *szValue_pred = p_pred->szValue();
 
-    if (RO_NONE == eRelnOp)
+      eRO eRelnOp = RelOp::eDecode(szValue_pred);
+      if (RO_NONE == eRelnOp)
+        return C_CONTINUE_RECURSION;
+
+      pSubQuery->vCaller(pCI->G.i_Board);
+      pSubQuery->vClause(QC_WHERE_CLAUSE);
+      pSubQuery->vCalcOp(QO_COMPARE_OP);
+      pSubQuery->vRelnOp(eRelnOp);
       return C_CONTINUE_RECURSION;
+    }
 
-    Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
-      return C_CONTINUE_RECURSION;
-
-    Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
-    SubQuery* pSubQuery = pSubBoard->pSubQuery();
-
-    pSubQuery->vCaller(pCI->G.i_Board);
-    pSubQuery->vClause(QC_WHERE_CLAUSE);
-    pSubQuery->vCalcOp(QO_COMPARE_OP);
-    pSubQuery->vRelnOp(eRelnOp);
+    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
     return C_CONTINUE_RECURSION;
   };
@@ -1778,6 +1879,67 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 }
+/*----------------------------------------------------------------------------*/
+//void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
+//{
+//  _static_
+//
+//  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+//
+//
+//  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
+//
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//
+//    if (p_pred->bIsCard(CK_TERM)) {
+//      Stz* szValue_term = p_pred->szValue();
+//
+//      eQO eCallOp = QO_NONE;
+//      if (szValue_term->bSame("exists"_Stz))    eCallOp = QO_EXISTS_OP;
+//      else if (szValue_term->bSame("notExists"_Stz)) eCallOp = QO_NOT_EXISTS_OP;
+//      else if (szValue_term->bSame("in"_Stz))        eCallOp = QO_IN_OP;
+//      else if (szValue_term->bSame("notIn"_Stz))     eCallOp = QO_NOT_IN_OP;
+//      else return C_CONTINUE_RECURSION;
+//
+//      SubQuery* pSubQuery;
+//      pSubQuery->vCaller(pCI->G.i_Board);
+//      pSubQuery->vClause(QC_WHERE_CLAUSE);
+//      pSubQuery->vCalcOp(QO_COMPARE_OP);
+//
+//    }
+//
+//    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+//
+//    Stz* szValue_pred = p_pred->szValue();
+//    eRO eRelnOp = RelOp::eDecode(szValue_pred);
+//
+//    if (RO_NONE == eRelnOp)
+//      return C_CONTINUE_RECURSION;
+//
+//    Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+//    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
+//      return C_CONTINUE_RECURSION;
+//
+//    Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+//    SubQuery* pSubQuery = pSubBoard->pSubQuery();
+//
+//    pSubQuery->vCaller(pCI->G.i_Board);
+//    pSubQuery->vClause(QC_WHERE_CLAUSE);
+//    pSubQuery->vCalcOp(QO_COMPARE_OP);
+//    pSubQuery->vRelnOp(eRelnOp);
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//}
 
 
 /*----------------------------------------------------------------------------*/
