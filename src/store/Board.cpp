@@ -1666,11 +1666,14 @@ void Board::vOuter_Query_Analysis_Of_from_call(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse current board for any calls to sub-queries via <having>/<boolCalc> */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
 {
   _static_
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
 
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
 
@@ -1692,7 +1695,7 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if (! pCI->G_bIsBoard(szSubBoardNm))
+    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
@@ -1713,11 +1716,14 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse current board for any calls to sub-queries via <where>/<boolCalc>  */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 {
   _static_
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
 
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
 
@@ -1729,52 +1735,41 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     if (p_pred->bIsCard(CK_TERM)) {
-      return C_CONTINUE_RECURSION;
-    }
-
-    Stz *szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if (!pCI->G_bIsBoard(szSubBoardNm))
-      return C_CONTINUE_RECURSION;
-
-    // todo: pCI->pGetBoard(szSubBoardNm); pCI->pGetSubQuery(szSubBoardNm);
-    Board *pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
-    SubQuery *pSubQuery = pSubBoard->pSubQuery();
-
-    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
-
-    if (p_pred->bIsCard(CK_BOLPRED)) {
-      Stz* szValue_pred = p_pred->szValue();
+      Stz* szValue_term = p_pred->szValue();
 
       eQO eCallOp = QO_NONE;
-           if (szValue_pred->bSame("exists"_Stz))    eCallOp = QO_EXISTS_OP;
-      else if (szValue_pred->bSame("notExists"_Stz)) eCallOp = QO_NOT_EXISTS_OP;
-      else if (szValue_pred->bSame("in"_Stz))        eCallOp = QO_IN_OP;
-      else if (szValue_pred->bSame("notIn"_Stz))     eCallOp = QO_NOT_IN_OP;
+           if (szValue_term->bSame("exists"_Stz))    eCallOp = QO_EXISTS_OP;
+      else if (szValue_term->bSame("notExists"_Stz)) eCallOp = QO_NOT_EXISTS_OP;
+      else if (szValue_term->bSame("in"_Stz))        eCallOp = QO_IN_OP;
+      else if (szValue_term->bSame("notIn"_Stz))     eCallOp = QO_NOT_IN_OP;
       else return C_CONTINUE_RECURSION;
 
+      SubQuery* pSubQuery;
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
       pSubQuery->vCalcOp(QO_COMPARE_OP);
-      return C_CONTINUE_RECURSION;
+
     }
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_ROPRED)) {
-      Stz *szValue_pred = p_pred->szValue();
+    Stz* szValue_pred = p_pred->szValue();
+    eRO eRelnOp = RelOp::eDecode(szValue_pred);
 
-      eRO eRelnOp = RelOp::eDecode(szValue_pred);
-      if (RO_NONE == eRelnOp)
-        return C_CONTINUE_RECURSION;
-
-      pSubQuery->vCaller(pCI->G.i_Board);
-      pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCalcOp(QO_COMPARE_OP);
-      pSubQuery->vRelnOp(eRelnOp);
+    if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
-    }
 
-    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+    Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
+    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
+      return C_CONTINUE_RECURSION;
+
+    Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
+    SubQuery* pSubQuery = pSubBoard->pSubQuery();
+
+    pSubQuery->vCaller(pCI->G.i_Board);
+    pSubQuery->vClause(QC_WHERE_CLAUSE);
+    pSubQuery->vCalcOp(QO_COMPARE_OP);
+    pSubQuery->vRelnOp(eRelnOp);
 
     return C_CONTINUE_RECURSION;
   };
