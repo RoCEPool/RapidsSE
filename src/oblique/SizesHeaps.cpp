@@ -469,6 +469,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__P__,                     'P' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
+  { CN_PAGEINBUFFER,             sizeof(PageFile),           HT_T_LARGE   ,FILL },
   { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },

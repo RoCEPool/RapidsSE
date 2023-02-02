@@ -221,13 +221,9 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Timer oTimer;
-
   BufferId oBufferId = pRowBuffer->oGetBufferId();
 
-  // Temporary till BufferId subset has correct values
-//  i8 iSeekOffset = m_uFirstUsableByte + (AM::pFileMap()->m_uPageFileSubset * C_SIZE_POOL_BUFFER);
-   i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {
@@ -237,14 +233,11 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 //lock
   m_pFile->vSeek(iSeekOffset);
 
-  oTimer.vStart();
-
   bool bResult = m_pFile->bWriteBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
   ASSERT(bResult);
-  oTimer.vUpdate();
-//unlock
-  vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
 
+//unlock
+  vTrace("Successfully wrote data buffer %p\n"_Stz, pRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,11 +247,6 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Timer oTimer;
-
-  // Temporary till BufferId subset has correct values
-//  i8 iSeekOffset = m_uFirstUsableByte + (0 * C_SIZE_POOL_BUFFER);
-
   i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);//TODO Arjun: Check i8 and u8 overflows
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
@@ -267,23 +255,30 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
     return nullptr;
   }
 
-  RowBuffer* pRowBuffer = new RowBuffer;
+//  RowBuffer* pRowBuffer = new RowBuffer;
   // Should use a free pool buffer instead of new rowbuffer
+
+  void* pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER);
 
 //lock
   m_pFile->vSeek(iSeekOffset);
 
-  oTimer.vStart();
-
-  bool bResult = m_pFile->nReadBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
-// BufferNo and other members of RowBuffer are overwritten
-// Need to update those values
-// Update hashMap(bufferId) -> new address
+  bool bResult = m_pFile->nReadBytes((void*)pPageInBuffer,C_SIZE_POOL_BUFFER);
 
   ASSERT(bResult);
-  oTimer.vUpdate();
+
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pPageInBuffer);
+  RASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
+
+  // Update hashmap with new address with this bufferId
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vInsertKeyValue(
+      (void *) pRowBuffer->oGetBufferId().m_pvAsAddress,
+      (Object *) pRowBuffer);
+#endif
+
 //unlock
-  vTrace("Reading data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
+  vTrace("Successfully read data buffer %p\n"_Stz, pRowBuffer);
 
   return pRowBuffer;
 
