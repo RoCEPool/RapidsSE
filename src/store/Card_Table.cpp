@@ -129,7 +129,8 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
 
   pCI->vRestart();
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
+  //while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     bool bParamAllowedInBounds = false;
     if (pCI->G.pSubQuery->bIsCorrelated() && pCI->G.pSubQuery->bByExists())
       bParamAllowedInBounds = true;
