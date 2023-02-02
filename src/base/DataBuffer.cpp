@@ -40,7 +40,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_iBufferNo  = iBufferNo();
 #ifdef WITH_BUFFER_ID
-  m_oBufferId = AM::pFileMap()->oGetNewBufferId(m_iBufferNo);
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
   AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 #endif

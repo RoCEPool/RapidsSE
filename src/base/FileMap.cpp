@@ -108,7 +108,7 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
-#ifdef WITH_PAGEFILE
+
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
@@ -129,30 +129,36 @@ void FileMap::vToDisk(Operand* pOperand)
   RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 
   m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
-#endif
 }
 
 #ifdef WITH_BUFFER_ID
 /*----------------------------------------------------------------------------*/
 /* Find a free chunk in a page file and return that address                   */
 /*----------------------------------------------------------------------------*/
-BufferId FileMap::oGetNewBufferId(i8 iPoolBufferNo)
+BufferId FileMap::oGetNewBufferId(void)
 {
   //---------------------------------------------------------------------------
   // Figure out which PageFile has space for a new RowBuffer
-/*
-#ifdef WITH_PAGEFILE
-  BufferId oFreeBuffId = m_pPageFile->oNextFreeBufferId();
 
-//  while(oFreeBuffId.m_iAsI8 == C_DATUM_NULL) {
-//    // This page file is full. Try the next one..
-//  }
+  // Single PageFile for now
 
-  return oFreeBuffId;
-#else
-*/
-  return BufferId::vBufferIdFromNo(iPoolBufferNo);
-//#endif
+  //---------------------------------------------------------------------------
+  // Calculate the BufferId
+
+  BufferId oFreeBufferId;
+
+  u8 uFreeSubset = m_pPageFile->uNextFreeSubset();
+  if(uFreeSubset == C_DATUM_NULL) {
+    oFreeBufferId.m_iAsI8 = 0;
+    return oFreeBufferId;
+  }
+
+  oFreeBufferId.m_uBuffSubscript = uFreeSubset;
+  oFreeBufferId.m_uPageFile = m_pPageFile->m_uPFIndex;
+  oFreeBufferId.m_bIdFlag = 1;
+  return oFreeBufferId;
+
+//  return BufferId::vBufferIdFromNo(iPoolBufferNo);
 }
 #endif
 

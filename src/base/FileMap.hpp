@@ -32,7 +32,7 @@ namespace BASE
 
     RowBuffer* pFromDisk(BufferId oBufferId);
 #ifdef WITH_BUFFER_ID
-    BufferId oGetNewBufferId(i8 iPoolBufferNo);
+    BufferId oGetNewBufferId(void);
 #endif
     void vToDisk(Operand* pOperand);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);

@@ -10,7 +10,7 @@ namespace BASE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class PageFile : public Object
   {
-  private:
+  public:
     File*  m_pFile;               // Page File file pointer
     Stz*   m_szPFilePath;         // Page File path
     u8     m_uPFIndex;            // Index of Page File

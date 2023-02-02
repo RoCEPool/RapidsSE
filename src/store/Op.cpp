@@ -1466,9 +1466,6 @@ Operand* Op::pPopOoOLeft(void)
   if(1 == oBufferId.m_bIdFlag)
   {
     pOperand = (Operand*)BufferId::vAddressFromId(oBufferId);
-#ifdef WITH_HASHMAP
-    ASSERT(pOperand == (Operand*)AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress));
-#endif
   }
 #endif
 

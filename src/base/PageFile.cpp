@@ -195,7 +195,7 @@ BufferId PageFile::oNextFreeBufferId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the next free subset in this page file                                 */
+/* get the next free subset in this page file and increment the index         */
 /*----------------------------------------------------------------------------*/
 u8 PageFile::uNextFreeSubset(void)
 {
@@ -212,7 +212,7 @@ u8 PageFile::uNextFreeSubset(void)
     return C_DATUM_NULL; // TODO Arjun: this is i8, what u8 value can we send?
   }
 
-  return m_uWilderness;
+  return m_uWilderness++;
 }
 /*----------------------------------------------------------------------------*/
 /* write data buffer to disk                                                  */

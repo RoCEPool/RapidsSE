@@ -46,6 +46,7 @@ void Step::vPageInPoolBuffer(void) {
 
   // Ask the FileMap to get the buffer from disk.
   RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pFromDisk(oBufferId);
+  RASSERT(pRowBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER);
 
   vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pRowBufferFromDisk);
 

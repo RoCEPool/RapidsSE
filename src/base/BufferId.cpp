@@ -15,7 +15,7 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
   _static_
 
   ASSERT(oBufferId.m_bIdFlag == 1);
-
+/*
   oBufferId.m_bIdFlag = 0;
 
   // Convert BufferId to BufferNo to BufferAddress
@@ -29,7 +29,8 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
       reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
 
   return (void*) pDataBuffer;
-
+*/
+  return AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress);
 }
 
 /*----------------------------------------------------------------------------*/
