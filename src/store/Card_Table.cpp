@@ -121,9 +121,13 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vRestart();
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_INDEXLIST))
+  //while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_INDEXLIST)) {
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_INDEXLIST)) {
+    if (pCI->G.p_MainCard->pSub_keyExists() ||
+       pCI->G.p_MainCard->pSub_keyNotExists())
+      continue;
     pCI->G.p_indexList->vDeleteAllBounds();
-
+  }
 
   // todo: ugh!
   pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
@@ -131,6 +135,10 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   pCI->vRestart();
   //while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    if (pCI->G.p_MainCard->pSub_keyExists() ||
+        pCI->G.p_MainCard->pSub_keyNotExists())
+      continue;
+
     bool bParamAllowedInBounds = false;
     if (pCI->G.pSubQuery->bIsCorrelated() && pCI->G.pSubQuery->bByExists())
       bParamAllowedInBounds = true;
@@ -333,12 +341,20 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_Projection* p_projection;
+
+  if (pSub_keyExists() || pSub_keyNotExists()) {
+    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
+    vAppend(p_projection);
+    pCI->G.p_projection = p_projection;
+    return;
+  }
+
   pCI->G.p_tableNm = pSub_tableNm();
 
   Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  Card_Projection* p_projection;
   if (pCI->G.p_projection)
     p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
   else
