@@ -8,8 +8,10 @@ BUILDDIR       = build
 RR_GRAMMAR     = source/cmdRef/grammar.bnf
 RR_OUTPUT_DIR  = source/rr
 RR_INDEX_HTML  = $(RR_OUTPUT_DIR)/index.html
-RR_INDEX_XHTML = source/_static/rr.xhtml
+RR_INDEX_XHTML = $(RR_OUTPUT_DIR)/rr.xhtml
 RR_ZIPFILE     = $(RR_OUTPUT_DIR)/rr.zip
+RR_HTML_FRAG   = source/cmdRef/rr.html.fragment
+RR_FRAG_GEN	   = source/cmdRef/rrFragGen.sh
 
 SPHINX_INSTALLED := $(shell command -v $(SPHINXBUILD) 2> /dev/null)
 LATEX_INSTALLED  := $(shell command -v latex 2> /dev/null)
@@ -68,22 +70,31 @@ endif # LATEXMK_INSTALLED
 # synonym target
 rr: railroad ;
 
-railroad:
-	@echo "Building Command Reference railroad diagrams"
+# Convenience target to build all railroad diagrams
+railroad: $(RR_INDEX_HTML) $(RR_HTML_FRAG)
+
+# railroad HTML fragments to be included in the command reference
+$(RR_HTML_FRAG) : $(RR_INDEX_XHTML)
+	@echo "Extracting railroad SVG diagrams into a HTML fragment"
+	@$(RR_FRAG_GEN) $(RR_INDEX_XHTML) $(RR_HTML_FRAG)
+
+# Rule to generate the SVG railroad diagrams
+$(RR_INDEX_XHTML): $(RR_GRAMMAR)
+	@# Now build the version with svg images so we can just include the xhtml file
+	@echo "Building Command Reference railroad diagrams (SVG)"
+	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -out:$(RR_INDEX_XHTML) "$(RR_GRAMMAR)"
+	@echo "Command Reference railroad diagrams (SVG) created at: $(RR_OUTPUT_DIR)"
+
+# Rule to generate the PDF railroad diagrams
+$(RR_INDEX_HTML): $(RR_GRAMMAR)
+	@echo "Building Command Reference railroad diagrams (PNG)"
 	@mkdir -p "$(RR_OUTPUT_DIR)"
 	@# First build the one with png files so the documentation can include them
 	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -png -out:$(RR_ZIPFILE) "$(RR_GRAMMAR)"
 	@unzip -o -d "$(RR_OUTPUT_DIR)" "$(RR_ZIPFILE)" > /dev/null
 	@rm -f "$(RR_ZIPFILE)"
-	@# Now build the version with svg images so we can just include the xhtml file
-	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -out:$(RR_INDEX_XHTML) "$(RR_GRAMMAR)"
-	@echo "Command Reference railroad diagrams created at: $(RR_OUTPUT_DIR)"
-
-
-#$(RR_GRAMMAR): ;
-
-$(RR_INDEX_HTML): $(RR_GRAMMAR)
-	@$(MAKE) railroad
+	@echo "Command Reference railroad diagrams (PNG) created at: $(RR_OUTPUT_DIR)"
+#	@$(MAKE) railroad
 
 linkcheck: checkSphinx
 	@echo "Validating links in rst files..."
@@ -97,7 +108,7 @@ version:
 	@echo "done"
 	@echo
 
-html: checkSphinx version $(RR_INDEX_HTML)
+html: checkSphinx version $(RR_INDEX_HTML) $(RR_HTML_FRAG)
 	@echo "Building HTML documentation..."
 	@echo
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
@@ -112,6 +123,8 @@ pdf: checkLatex html
 clean:
 	@rm -rf "$(BUILDDIR)"
 	@rm -rf "$(RR_OUTPUT_DIR)"
+	@rm -rf "$(RR_OUTPUT_DIR)"
+	@rm -rf "$(RR_HTML_FRAG)"
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

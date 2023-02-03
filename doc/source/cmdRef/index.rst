@@ -4,6 +4,12 @@ Command Reference
 .. toctree::
    :maxdepth: 1
 
+   syntax-tree
+
+.. contents:: Contents of this section:
+   :depth: 1
+   :backlinks: none
+
 RapidsSE has a number of internal commands that can be used to inspect and
 modify the system. These commands and their syntax are detailed below in
 alphabetical order.
@@ -15,3 +21,7 @@ All RapidsSE commands are terminated with a semicolon, like this:
    :align: center
 
 In this command reference
+
+Also refer to the :ref:`complete syntax tree <syntaxTree>` for all syntactic
+definitions.
+
