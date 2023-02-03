@@ -794,7 +794,7 @@ void Bench::vTransform_StreamAnalysis(void)
   vStreamAnalysisReset();
 
   while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    m_pCI->m_pTable = Card::pAccess_Table(m_pCI->G.p_tableNm->sz());
+    m_pCI->m_pTable = Card_Table::pAccess_Table(m_pCI->G.p_tableNm->sz());
     m_pCI->G.p_stream = Card_Stream::pDerive_Of_table(m_pCI->m_pTable);
 
     m_pCI->G.p_table->vAppend(m_pCI->G.p_stream);
@@ -1226,13 +1226,14 @@ void Bench::vTransform_OuterQueryAnalysis(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    SubQuery *pOuterQuery = m_pCI->G.pBoard->pSubQuery();
+
+    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
     pOuterQuery->vDisposition(QD_LINEAR);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     m_pCI->vRestart();
-    while (m_pCI->G_bEachMain(CK_AGGREG)) {
+    while (m_pCI->G_bEachMain()) {
       if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
           m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
         pOuterQuery->vDisposition(QD_AGGREGATION);
@@ -1271,6 +1272,8 @@ void Bench::vTransform_OuterQueryAnalysis(void)
     while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
       Board::vOuter_Query_Analysis_Of_having_boolCalc(m_pCI);
     }
+
+    pOuterQuery->vDump();
 
   }
 
@@ -2000,7 +2003,7 @@ void Bench::vFold_30_W_A_NC_I(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, "((30))"_Stz);
+  m_pCI->vTransform(__func__, "((vFold_30_W_A_NC_I))"_Stz);
 
   vAssert_Board_mqA();
 

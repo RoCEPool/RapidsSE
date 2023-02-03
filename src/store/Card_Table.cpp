@@ -69,6 +69,19 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* access table                                                               */
+/*----------------------------------------------------------------------------*/
+Table* Card_Table::pAccess_Table(Stz* szTableNm)
+{
+  _static_
+
+  Table* pTable = AM::pTableFind(szTableNm);
+
+  return pTable;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* affix table column ordinals to all idx cols                                */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vAffixTableColOrd(CardIter* pCI) {
@@ -105,7 +118,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 
   while (pCI->G_bEachMain(CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
+    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -343,7 +356,7 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card::pAccess_Table(p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -372,7 +385,7 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
 
   pCI->G.p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card::pAccess_Table(pCI->G.p_tableNm->sz());
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->G.p_projection)
@@ -472,7 +485,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 
   Card_TableNm* p_tableNm = this->pSub_tableNm();
 
-  Table* pTable = Card::pAccess_Table(p_tableNm->sz());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->sz());
 
   this->vMark1(MARK_CHANGED);
 

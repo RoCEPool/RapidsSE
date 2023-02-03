@@ -69,6 +69,8 @@ namespace STORE
     eQD  eDisposition(void);
     void vDisposition(eQD eDisposition);
 
+    void vDump(void);
+
     eFF  eFold(void);
     void vFold(eFF eFold);
 

@@ -298,8 +298,6 @@ namespace STORE
 
    ~Card(void) noexcept(false);
 
-    static Table* pAccess_Table(Stz* szTableNm);
-
     static Stz* szBound(Stz* szRelnOp);
 
     static void vCardLeaks(void);

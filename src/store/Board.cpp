@@ -1859,7 +1859,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
       Stz* szValue_pred = p_pred->szValue();
 
       eQO eCalcOp = QO_NONE;
-      if (szValue_pred->bSame("exists"_Stz))         eCalcOp = QO_EXISTS_OP;
+           if (szValue_pred->bSame("exists"_Stz))    eCalcOp = QO_EXISTS_OP;
       else if (szValue_pred->bSame("notExists"_Stz)) eCalcOp = QO_NOT_EXISTS_OP;
       else if (szValue_pred->bSame("in"_Stz))        eCalcOp = QO_IN_OP;
       else if (szValue_pred->bSame("notIn"_Stz))     eCalcOp = QO_NOT_IN_OP;

@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "SubQuery.hpp"
+
+#include "Board.hpp"
 #include "Card.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -228,6 +230,26 @@ void SubQuery::vDisposition(eQD eDisposition)
 
   m_eDisposition = eDisposition;
 }
+
+/*----------------------------------------------------------------------------*/
+/* dump this subquery                                                         */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vDump(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  vTrace("Subquery %p Board %lld %s ; Caller %lld %s %s %s (%lld nCorrCols)\n"_Stz,
+         this,
+         m_pBoard->i_Board(),
+         aQD[m_eDisposition],
+         m_i_Caller,
+         aQC[m_eClause],
+         aQO[m_eCalcOp],
+         aRO[m_eRelnOp],
+         m_nCorrCols
+         );
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get fold                                                                   */

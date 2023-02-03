@@ -18,6 +18,8 @@ namespace STORE
     Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
+    static Table* pAccess_Table(Stz* szTableNm);
+
     static void vAffixTableColOrd(CardIter* pCI);
     static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
     static void vAppendIndexList(CardIter* pCI);
