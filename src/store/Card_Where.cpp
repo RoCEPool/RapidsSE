@@ -163,6 +163,10 @@ void Card_Where::vMoveWhereToTableAsConstraint(CardIter* pCI)
     pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_BOOLCALC);
     pCI->G_vAppendChild(CK_BOOLCALC,pCI->G.p_PRED);
   }
+
+  pCI->G.p_filter = new Card_Filter;
+  pCI->G.p_table->vAppend(pCI->G.p_filter);
+  pCI->G.p_filter->vAppend(pCI->G.p_boolCalc->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/

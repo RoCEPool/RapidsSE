@@ -56,8 +56,8 @@ void Card_KeyNotExists::vTableMorphsToKeyNotExists(STORE::CardIter *pCI)
   pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyNotExists);
   pCI->G.p_keyNotExists->vInsert(pCI->G.p_table);
 
-  pCI->G.p_keyNotExists->vRemoveSubCard(pCI->G.p_index);
-  pCI->G.p_keyNotExists->vAppend(pCI->G.p_index);
+//  pCI->G.p_keyNotExists->vRemoveSubCard(pCI->G.p_index);
+//  pCI->G.p_keyNotExists->vAppend(pCI->G.p_index);
 
   pCI->G.p_MainCard = pCI->G.p_keyNotExists;
 }

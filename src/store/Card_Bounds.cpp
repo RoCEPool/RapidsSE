@@ -92,15 +92,19 @@ Card_Bounds* Card_Bounds::pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
 
   Card_Bounds* p_bounds = new Card_Bounds;
 
+  Card_EBound* p_eBound = new Card_EBound;
+  p_bounds->vAppend(p_eBound);
+
   Card_Term* p_term = new Card_Term("BOUND"_Stz);
-  p_bounds->vAppend(p_term);
+  p_eBound->vAppend(p_term);
+
 
   p_term = new Card_Term("$I1"_Stz);
-  p_bounds->vAppend(p_term);
+  p_eBound->vAppend(p_term);
   p_term = new Card_Term(szTblColOdn);
-  p_bounds->vAppend(p_term);
+  p_eBound->vAppend(p_term);
   p_term = new Card_Term("=="_Stz);
-  p_bounds->vAppend(p_term);
+  p_eBound->vAppend(p_term);
 
   return p_bounds;
 }
