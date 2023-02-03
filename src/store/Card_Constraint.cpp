@@ -79,9 +79,27 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Stz* szStmColOdn = p_term->szValue();
     pCI->G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, szStmColOdn, i_Main + 1);
 
-    Card_StmColNm* p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
+    Stz* szColNm;
+    if (pCI->G.p_stmCol) {
+      Card_StmColNm* p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
+      szColNm = p_stmColNm->szValue();
+    }
+    else {
 
-    p_term->vSetValueMark1(p_stmColNm->szValue(), MARK_CHANGED);
+      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      i8 nExprs = pCI->G.p_projection->nChildCards();
+      i8 i_Odn = p_term->iGetOdnNo();
+      i8 i_Col_base0 = i_Odn - nExprs - 1;
+
+      szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+      
+      vDebugPoint();
+
+    }
+
+
+    p_term->vSetValueMark1(szColNm, MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };

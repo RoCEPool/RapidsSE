@@ -337,6 +337,26 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
 /*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
+Stz* Card_Table::szColNm(i8 i_Col_base0)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TableNm* p_tableNm = pSub_tableNm();
+
+  Table* pTable = Card::pAccess_Table(p_tableNm->szValue());
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Column* pColumn = pStreamDef->pGetColumn(i_Col_base0);
+
+  Stz* szColNm = pColumn->szColNm();
+
+  return szColNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* table projection analysis                                                  */
+/*----------------------------------------------------------------------------*/
 void Card_Table::vProjectionAnalysis(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

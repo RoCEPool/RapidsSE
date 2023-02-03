@@ -33,6 +33,7 @@ namespace STORE
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
     void vBounds_DeriveFrom_filter(Card_Filter* p_filter,
                                    bool bParamAllowedInBounds);
+    Stz* szColNm(i8 i_Col_base0);
     void vProjectionAnalysis(CardIter* pCI); // prototype
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
