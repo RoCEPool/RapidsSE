@@ -50,8 +50,8 @@
   static const i8 C_8B = 8;
 
   static const i8 C_ERA_0 =  0; // 1900
-  static const i8 C_ERA_1 = 92; // 1992
-  static const i8 C_ERA_2 = 99; // 1999
+  static const i8 C_ERA_1 = 93; // 1993
+  static const i8 C_ERA_2 = 101; // 2001
 
 /*============================================================================*/
 /* end                                                                        */
