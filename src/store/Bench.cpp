@@ -2656,7 +2656,14 @@ void Bench::vFold_60_W_L_NC_NI(void)
 //  Board::vRenumberStmOdn(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(m_pCI->m_sSqyArg);
+  Stz* szSqyArg = m_pCI->m_sSqyArg;
+
+  i8 i_Table = m_pCI->G.pDeck->iFindChild(m_pCI->G.p_table);
+  bool b = m_pCI->G_bResolveSubCard(CK_EXPR,szSqyArg,CK_TBLCOLODN,i_Table);
+  RASSERT(b);
+
+  Stz* szTblColOdn = m_pCI->m_pCard_resolved->pSub_tblColOdn()->szValue();
+  m_pCI->G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(szTblColOdn);
   //m_pCI->m_pCard_copied->vAppend(m_pCI->G.p_bounds);
 
   m_pCI->G.p_indexList = m_pCI->G.p_table->pSub_indexList();
