@@ -76,7 +76,8 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     if (! Card::bIsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    pCI->G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, p_term->szValue(), i_Main + 1);
+    Stz* szStmColOdn = p_term->szValue();
+    pCI->G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, szStmColOdn, i_Main + 1);
 
     Card_StmColNm* p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
 
