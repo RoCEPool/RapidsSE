@@ -122,12 +122,33 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
     if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    Stz* szStmColOdn = Card_StmColOdn::szResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+    //Stz* szStmColOdn = Card_StmColOdn::szResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+
+    Stz* szStmColOdn;
+    s32 sColOfThisTable;
+    Stz* szTblColOdn = p_term->szValue();
+    if (! pCI->G_bResolveSubCard(CK_TBLCOLODN,szTblColOdn,pCI->G.i_MainCard)) {
+
+      if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
+        return C_CONTINUE_RECURSION;
+
+      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      i8 nExpr_prior = pCI->G.p_projection->nChildCards();
+      i8 i_Col = p_term->iGetOdnNo();
+      sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
+
+      szStmColOdn = sColOfThisTable.szStz();
+    }
+    else {
+      //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
+
+      szStmColOdn = pCI->m_pCard_parent->szValue();
+    }
 
     p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
 
