@@ -49,8 +49,16 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_TERM)) {
+
+    if (Card::bIsStreamColOrdinal(xCI.G.p_term->szValue())) {
+      xCI.G.p_term->vBump_StreamColOrdinal(nBumpBy);
+      xCI.G.p_term->vMark1(MARK_CHANGED);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

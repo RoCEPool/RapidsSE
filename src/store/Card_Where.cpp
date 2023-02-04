@@ -202,6 +202,8 @@ void Card_Where::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (Card_Constraint* p_constraint = pSub_constraint())
+    p_constraint->vBump_Rightwards(nBumpBy);
 }
 
 /*============================================================================*/

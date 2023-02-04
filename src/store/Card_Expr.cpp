@@ -140,6 +140,33 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Expr::vBump_Rightwards(i8 nBumpBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vBump_Rightwards(nBumpBy);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vBump_Rightwards(nBumpBy);
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vNumberValue(BASE::i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$%lld"_Stz,i_Expr);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -160,16 +187,6 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
   }
 
   return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vNumberValue(BASE::i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vValueSprint("$%lld"_Stz,i_Expr);
 }
 
 /*============================================================================*/

@@ -98,13 +98,17 @@ void Card_Fold::vBump_Rightwards(CardIter* pCI, i8 nBumpBy)
 
   while (pCI->G_bEachMain()) {
 
+    if (pCI->G.p_MainCard->bIsCard(CK_TABLE)) {
+      continue;
+    }
+
     if (pCI->G.p_MainCard->bIsCard(CK_WHERE)) {
-      //pCI->G.p_where->vBump_Rightwards(i8 nBumpBy);
+      pCI->G.p_where->vBump_Rightwards(nBumpBy);
       continue;
     }
 
     if (pCI->G.p_MainCard->bIsCard(CK_AGGREG)) {
-      //pCI->G.p_aggreg->vBump_Rightwards(i8 nBumpBy);
+      pCI->G.p_aggreg->vBump_Rightwards(nBumpBy);
       break;
     }
   }

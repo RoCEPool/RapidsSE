@@ -57,6 +57,30 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this,nBumpBy](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (Card::bIsStreamColOrdinal(p_term->szValue())) {
+      p_term->vBump_StreamColOrdinal(nBumpBy);
+      p_term->vMark1(MARK_CHANGED);
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2092,19 +2092,26 @@ void Bench::vFold_30_W_A_NC_I(void)
   // T G G G H P F T T W G G G   // bump stmOdn:$n in mq gbyElist by 1
   //                     elelel  // (if G is actually G -- might be A)
 
-  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
-    m_pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
-    i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
-    m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
-
-    m_pCI->G.p_fold->Y_vCut(P_BumpRight);
-    m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
-    m_pCI->vPrintBoard(__LINE__);
-  }
+//  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
+//    m_pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
+//    i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
+//    m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
+//
+//    m_pCI->G.p_fold->Y_vCut(P_BumpRight);
+//    m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
+//    m_pCI->vPrintBoard(__LINE__);
+//  }
 
   Card_Projection::vProjection_Analysis_postFold(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.p_fold->vBump_Rightwards(m_pCI, 1);
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
 
   // W A NC I
   //       I-sqr-> $1            // The mq IN transforms to arg == $1 (the corr pred)

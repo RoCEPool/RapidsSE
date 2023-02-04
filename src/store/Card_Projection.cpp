@@ -154,6 +154,9 @@ void Card_Projection::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_EXPR))
+    xCI.G.p_expr->vBump_Rightwards(nBumpBy);
 }
 
 
