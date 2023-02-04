@@ -62,6 +62,17 @@ bool BufferId::bIsAddress(BufferId oBufferId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Check if the given BufferId is an address or an Id by checking the flag bit*/
+/*----------------------------------------------------------------------------*/
+bool BufferId::bIsBufferId(BufferId oBufferId)
+{
+  _static_
+
+  return oBufferId.m_bIdFlag == 1;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Set the Buffer Subscript                                                   */
 /*----------------------------------------------------------------------------*/
 //TODO Arjun: Check overflow before setting below members

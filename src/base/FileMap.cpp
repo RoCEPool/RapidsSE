@@ -80,9 +80,9 @@ RowBuffer* FileMap::pFromDisk(BufferId oBufferId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
   //---------------------------------------------------------------------------
-  // Operand should be a buffer id. Check flag bit.
+  // Ensure id flag bit is set
 
-  ASSERT(0 == BufferId::bIsAddress(oBufferId));
+  ASSERT(1 == BufferId::bIsBufferId(oBufferId));
 
   //---------------------------------------------------------------------------
   // Look at page no bits in buffer id and get to corresponding PageFile pointer
@@ -109,7 +109,7 @@ void FileMap::vToDisk(Operand* pOperand)
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
-  if(0 == BufferId::bIsAddress(oBufferId)) {
+  if(1 == BufferId::bIsBufferId(oBufferId)) {
     pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);//hashmap
   }
 
