@@ -91,9 +91,7 @@ void Card_Projection::vProjection_Analysis_postFold(CardIter* pCI)
     if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
       pCI->G.p_projection->vNumberExpr();
   }
-
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* relabel expressions                                                        */
@@ -148,6 +146,18 @@ void Card_Projection::vRelabelExpressions(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of expr in this projection                                      */
+/*----------------------------------------------------------------------------*/
+i8 Card_Projection::nExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nExpr = nItems();
+
+  return nExpr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* number all expr                                                            */

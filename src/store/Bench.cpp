@@ -2102,6 +2102,10 @@ void Bench::vFold_30_W_A_NC_I(void)
     m_pCI->vPrintBoard(__LINE__);
   }
 
+  Card_Projection::vProjection_Analysis_postFold(m_pCI);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
   // W A NC I
   //       I-sqr-> $1            // The mq IN transforms to arg == $1 (the corr pred)
   //                             //

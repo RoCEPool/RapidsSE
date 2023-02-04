@@ -383,6 +383,8 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pCI->G.p_tableNm = pSub_tableNm();
 
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
