@@ -907,7 +907,7 @@ void Bench::vTransform_ProjectionAnalysis(void)
 //  while (m_pCI->G_bEachMain(CK_TABLE))
 //    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
 
-  Board::vProjection_Analysis(m_pCI);
+  Card_Projection::vProjection_Analysis(m_pCI);
 
   m_pCI->vEndTransform();
 }
@@ -1752,7 +1752,7 @@ void Bench::vFold_10_F(void)
 
   //Board::vRelabelExpressions(m_pCI);
 
-  Board::vProjection_Analysis_postFold(m_pCI);
+  Card_Projection::vProjection_Analysis_postFold(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1895,7 +1895,7 @@ void Bench::vFold_20_W_A_C_ro(void)
   Board::vDerive_foldElist_From_project_stream(m_pCI);
 
   m_pCI->G.pDeck->vRenumberRecursive();
-  Board::vRelabelExpressions(m_pCI);
+  Card_Projection::vRelabelExpressions(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   // T G G G P F T T T W A A A      //
@@ -2066,17 +2066,24 @@ void Bench::vFold_30_W_A_NC_I(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G_vRestart();
-
   // W A NC I
   //       I-sqr-> $1            // Put an expr describing sqr into Fold
   //           v v               //
   // T G G G H P F T T W A A A   // derive foldElist from sq Project
   //           s el              //
 
-  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
-  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
-  Board::vDerive_foldElist_From_project_stream(m_pCI);
+//  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_STREAM));
+//  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+//  Board::vDerive_foldElist_From_project_stream(m_pCI);
+  // 7) derive the fold (SQ result) expr
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldProjection_F(m_pCI);
+    //m_pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
+
+  }
+
   m_pCI->vPrintBoard(__LINE__);
 
   // W A NC I
@@ -2086,11 +2093,13 @@ void Bench::vFold_30_W_A_NC_I(void)
   //                     elelel  // (if G is actually G -- might be A)
 
   if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
+    m_pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
     i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
     m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
 
     m_pCI->G.p_fold->Y_vCut(P_BumpRight);
     m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   // W A NC I
@@ -2184,7 +2193,7 @@ void Bench::vFold_30_W_A_NC_I(void)
   Board::vRenumberStmOdn(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  Board::vRelabelExpressions(m_pCI);
+  Card_Projection::vRelabelExpressions(m_pCI);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
@@ -2386,7 +2395,7 @@ void Bench::vFold_40_W_A_NC_ro(void)
   Board::vRenumberStmOdn(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  Board::vRelabelExpressions(m_pCI);
+  Card_Projection::vRelabelExpressions(m_pCI);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
@@ -2653,7 +2662,7 @@ void Bench::vFold_60_W_L_NC_NI(void)
   m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
   m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYNOTEXISTS);
 
-  Board::vProjection_Analysis_postFold(m_pCI);
+  Card_Projection::vProjection_Analysis_postFold(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
 //  Card_Stream::vStream_AdjustLoHi(m_pCI);
 //  Board::vRenumberStmOdn(m_pCI);
@@ -2825,7 +2834,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
 
     // 10) un-project injected SQ result
     Board::vUnproject_injected_sqResult(m_pCI);
-    Board::vProjection_Analysis_postFold(m_pCI);
+    Card_Projection::vProjection_Analysis_postFold(m_pCI);
   }
 
   m_pCI->vPrintBoard(__LINE__);
@@ -3722,7 +3731,7 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  Board::vProjection_Analysis(m_pCI);
+  Card_Projection::vProjection_Analysis(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 

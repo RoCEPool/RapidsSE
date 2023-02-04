@@ -16,6 +16,10 @@ namespace STORE
     Card_Projection(void);
    ~Card_Projection(void) noexcept(false);
 
+    static void vProjection_Analysis(CardIter* pCI);
+    static void vProjection_Analysis_postFold(CardIter* pCI);
+    static void vRelabelExpressions(CardIter* pCI);
+
     void vNumberExpr(void);
 
     Card_Projection* pReProjection(void);
