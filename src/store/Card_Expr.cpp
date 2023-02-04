@@ -152,6 +152,15 @@ void Card_Expr::vBump_Rightwards(i8 nBumpBy)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card::vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
