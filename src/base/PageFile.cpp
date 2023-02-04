@@ -223,7 +223,7 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 
   BufferId oBufferId = pRowBuffer->oGetBufferId();
 
-  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uSeekOffset * C_SIZE_POOL_BUFFER);
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {
@@ -247,7 +247,7 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);//TODO Arjun: Check i8 and u8 overflows
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uSeekOffset * C_SIZE_POOL_BUFFER);//TODO Arjun: Check i8 and u8 overflows
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {
@@ -255,9 +255,8 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
     return nullptr;
   }
 
-//  RowBuffer* pRowBuffer = new RowBuffer;
-  // Should use a free pool buffer instead of new rowbuffer
-
+  // Allocation metrics will get dirty due to this
+  // When freeing, we will be freeing a CN_ROWBUFFER instead of CN_PAGEINBUFFER
   void* pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER);
 
 //lock

@@ -153,7 +153,7 @@ BufferId FileMap::oGetNewBufferId(void)
     return oFreeBufferId;
   }
 
-  oFreeBufferId.m_uBuffSubscript = uFreeSubset;
+  oFreeBufferId.m_uSeekOffset = uFreeSubset;
   oFreeBufferId.m_uPageFile = m_pPageFile->m_uPFIndex;
   oFreeBufferId.m_bIdFlag = 1;
   return oFreeBufferId;

@@ -67,7 +67,7 @@ bool BufferId::bIsAddress(BufferId oBufferId)
 //TODO Arjun: Check overflow before setting below members
 void BufferId::vSetBuffSubscript(u8 uBuffSubscript)
 {
-  m_uBuffSubscript = uBuffSubscript;
+  m_uSeekOffset = uBuffSubscript;
 }
 
 /*----------------------------------------------------------------------------*/

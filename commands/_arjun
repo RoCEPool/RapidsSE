@@ -74,7 +74,7 @@ select c, cast(c,time) from cast_time;
 select c, cast(c, date) from cast_time;
 */
 /*
-tag default <tpch_dir> = "../TPCH/SF10" ;
+tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 
 _customer
