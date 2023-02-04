@@ -14,7 +14,6 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 {
   _static_
 
-  ASSERT(oBufferId.m_bIdFlag == 1);
 /*
   oBufferId.m_bIdFlag = 0;
 
@@ -30,6 +29,11 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 
   return (void*) pDataBuffer;
 */
+  if(oBufferId.m_iAsI8 == 0)
+    return nullptr;
+
+  RASSERT(oBufferId.m_bIdFlag == 1);
+
   return AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress);
 }
 

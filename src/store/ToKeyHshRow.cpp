@@ -48,7 +48,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* p
   m_i_Rec   = -1;
   m_bFirst  = true;
   
-  m_pRowBuffer   = nullptr;
+  m_oRowBufferId.m_iAsI8 = 0;
 
   //--
   
@@ -90,7 +90,7 @@ ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
-  delete m_pRowBuffer;
+  delete pRowBufferFromId();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,7 +106,7 @@ void ToKeyHshRow::vRepairList(Object* pObject)
 
   ToKeyHshRow* pToRow = _pToKeyHshRow(pObject);
 
-  RowBuffer* pRowBuffer = pToRow->m_pRowBuffer;
+  RowBuffer* pRowBuffer = pToRow->pRowBufferFromId();
   RowBuffer* pNextRowBuffer;
 
   while (pRowBuffer) {
@@ -115,7 +115,7 @@ void ToKeyHshRow::vRepairList(Object* pObject)
     pRowBuffer = pNextRowBuffer;
   }
 
-  pToRow->m_pRowBuffer = nullptr;
+  pToRow->m_oRowBufferId.m_iAsI8 = 0;
 
   // delete the toRow
   delete pToRow;
@@ -132,9 +132,9 @@ RowBuffer* ToKeyHshRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = m_pRowBuffer;
+  RowBuffer* pRowBuffer = pRowBufferFromId();
   
-  m_pRowBuffer = nullptr;
+  m_oRowBufferId.m_iAsI8 = 0;
   
   return pRowBuffer;
 }
@@ -148,8 +148,8 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 
   RowBuffer* pFullRiwBuffer = nullptr;
   
-  RowBuffer* pRowBuffer = m_pRowBuffer ?
-                            _pRowBuffer(m_pRowBuffer->pNextLinkedBuffer()) : nullptr;
+  RowBuffer* pRowBuffer = pRowBufferFromId() ?
+                            _pRowBuffer(pRowBufferFromId()->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
     pFullRiwBuffer = pRowBuffer;
     pRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
@@ -166,11 +166,11 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling rowBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToKeyHshRow::pRowBuffer(void)
+RowBuffer* ToKeyHshRow::pRowBufferFromId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
     
-  return m_pRowBuffer;
+  return (RowBuffer*) BufferId::vAddressFromId(m_oRowBufferId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,13 +218,13 @@ void ToKeyHshRow::vNewRowBuffer(void)
   RowBuffer* pRowBuffer = new RowBuffer;
   
   // link the new to old
-  pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
-  if (m_pRowBuffer)
-    m_pRowBuffer->vPrevLinkedBuffer(pRowBuffer);
-  m_pRowBuffer = pRowBuffer;
+  pRowBuffer->vNextLinkedBuffer(pRowBufferFromId());
+  if (pRowBufferFromId())
+    pRowBufferFromId()->vPrevLinkedBuffer(pRowBuffer);
+  m_oRowBufferId = pRowBuffer->oGetBufferId();
   
   // initialise the row slab inside the new row buffer
-  m_pRowBuffer->vInitPix(m_pStreamDef,true);
+  pRowBufferFromId()->vInitPix(m_pStreamDef,true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -639,7 +639,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
 
 #define vDEPOSIT_VALUE(_colVal) \
   \
-  m_pRowBuffer->vDepositColVal(_colVal); \
+  pRowBufferFromId()->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
     tKeyHsh.vRunningHash(_colVal);
@@ -649,7 +649,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
   if (! bPixNullable) \
     vFIELD_ERROR(_errorCode); \
   \
-  m_pRowBuffer->vDepositColVal(C_DATUM_NULL); \
+  pRowBufferFromId()->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
     tKeyHsh.vRunningHash(C_DATUM_NULL);
@@ -680,7 +680,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   UNUSED(azCsvChunk);
   UNUSED(pCsvMeta);
 
-  m_pRowBuffer->nFreeBytes();
+  pRowBufferFromId()->nFreeBytes();
 
   // change this to some no longer strib function
   ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
@@ -823,7 +823,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
-  ColPix* aColPix = m_pRowBuffer->axaColPix();
+  ColPix* aColPix = pRowBufferFromId()->axaColPix();
   i8 nCols = m_pStreamDef->nColumns();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -888,8 +888,8 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // 1) advance to next record in csv chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_AdvanceNextRecord:
-    
-  m_pRowBuffer->nFreeBytes();
+
+  pRowBufferFromId()->nFreeBytes();
   
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_AdvanceNextRecord: >>%s<<\n"_Stz,
@@ -956,17 +956,17 @@ L_AdvanceNextRecord:
   // reset field cursor
   i_Fld = -1;
 
-  m_pRowBuffer->nFreeBytes();
+  pRowBufferFromId()->nFreeBytes();
 
   // allot a new row (new another rowBuffer if necessary)
-  if (! m_pRowBuffer->pAllotRow()) {    // ? inline ?
+  if (! pRowBufferFromId()->pAllotRow()) {    // ? inline ?
     vNewRowBuffer();
-    Row* aNewRow = m_pRowBuffer->pAllotRow();
+    Row* aNewRow = pRowBufferFromId()->pAllotRow();
     ASSERT(aNewRow);
     UNUSED(aNewRow);
   }
- 
-  m_pRowBuffer->nFreeBytes();
+
+  pRowBufferFromId()->nFreeBytes();
 
   //                                                      end of testMoreRecords
 
@@ -975,8 +975,8 @@ L_AdvanceNextRecord:
   // 2) while more fields of current record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_NextFieldInRecord:
-  
-  m_pRowBuffer->nFreeBytes();
+
+  pRowBufferFromId()->nFreeBytes();
   
   ASSERT(EC_NONE == eError);
 
@@ -1471,8 +1471,8 @@ L_Float:
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                              deposit float
-  
-  m_pRowBuffer->vDepositColVal(dColVal_float);
+
+  pRowBufferFromId()->vDepositColVal(dColVal_float);
   
   goto L_FieldEnd;
 
@@ -1952,7 +1952,7 @@ L_Timestamp_noTimeComponents:
 
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                          deposit timestamp
-    
+
   vDEPOSIT_VALUE(wxColVal_timestamp);
 
 
@@ -2090,7 +2090,7 @@ L_Varchar_unquoted:
     vTrace("L_Varchar_unquoted:\n"_Stz);
   
   // allocate string space in slab
-  azColVal_varchar = m_pRowBuffer->azDepositString_begin();
+  azColVal_varchar = this->pRowBufferFromId()->azDepositString_begin();
   acVchDst  = azColVal_varchar;
   
   while (! bIS_NULL()) {
@@ -2150,7 +2150,7 @@ L_Varchar_singleQuoted:
     vTrace("L_Varchar_singleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azColVal_varchar = m_pRowBuffer->azDepositString_begin();
+  azColVal_varchar = this->pRowBufferFromId()->azDepositString_begin();
   acVchDst  = azColVal_varchar;
   
   // >> *'...
@@ -2266,7 +2266,7 @@ L_Varchar_doubleQuoted:
     vTrace("L_Varchar_doubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azColVal_varchar = m_pRowBuffer->azDepositString_begin();
+  azColVal_varchar = this->pRowBufferFromId()->azDepositString_begin();
   acVchDst  = azColVal_varchar;
   
   // >> *"...
@@ -2381,7 +2381,7 @@ L_Varchar_userEnclosed:
     vTrace("L_Varchar_userEnclosed:\n"_Stz);
   
   // allocate string space in slab
-  azColVal_varchar = m_pRowBuffer->azDepositString_begin();
+  azColVal_varchar = this->pRowBufferFromId()->azDepositString_begin();
   acVchDst  = azColVal_varchar;
   
   // >> *{.*
@@ -2449,7 +2449,7 @@ L_Varchar_userEnclosed:
   
 L_Varchar_depositValue:
 
-  m_pRowBuffer->vDepositString_end(nVchChars+1);
+  this->pRowBufferFromId()->vDepositString_end(nVchChars + 1);
   
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar_depositValue: %s\n"_Stz,azColVal_varchar);
@@ -2467,8 +2467,8 @@ L_Varchar_setNull:
   // 4) processing at end of field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_FieldEnd:
-    
-  m_pRowBuffer->nFreeBytes();
+
+  this->pRowBufferFromId()->nFreeBytes();
 
   if (iTraceBits & C_BIT_PostField)
     vTrace("L_FieldEnd: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
@@ -2589,7 +2589,7 @@ L_FieldError:
   vSKIP_LINE_END();
   
   // discard partial row in row slab
-  m_pRowBuffer->vDiscardInvalidRow();
+  this->pRowBufferFromId()->vDiscardInvalidRow();
 
   goto L_AdvanceNextRecord;                                   // end of fieldError
   
@@ -2625,8 +2625,8 @@ L_RecordEndLineEnd:
   vSKIP_RECORD_LINE_END();
   
   // deposit key hash
-          
-  m_pRowBuffer->vDepositColVal(tKeyHsh);
+
+  this->pRowBufferFromId()->vDepositColVal(tKeyHsh);
     
   tKeyHsh = 0;
 
@@ -2634,7 +2634,7 @@ L_RecordEndLineEnd:
     HV_Record hvRecord(m_pStreamDef->pRowPix());
     vTrace("[%lld] %s\n"_Stz,
            m_i_Rec,
-           hvRecord->sz(m_pRowBuffer->pRowCurrent()));
+           hvRecord->sz(this->pRowBufferFromId()->pRowCurrent()));
   }
 
   // increment records processed
