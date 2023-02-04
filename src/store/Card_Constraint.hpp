@@ -17,8 +17,8 @@ namespace STORE
     Card_Constraint(void);
    ~Card_Constraint(void) noexcept(false);
 
+    void vBump_Rightwards(i8 nBumpBy);
     void vConvert_stmColOdn_To_stmColNm(CardIter* pCI);
-
   };
 
   Card_Constraint* _pCard_Constraint(void* aAddr);

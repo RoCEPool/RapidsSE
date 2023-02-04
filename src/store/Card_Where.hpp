@@ -25,6 +25,8 @@ namespace STORE
     static void vMoveWhereToTableAsConstraint(CardIter* pCI);
 
     static Card_Where* pNewWhereConstruct(void);
+
+    void vBump_Rightwards(i8 nBumpBy);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

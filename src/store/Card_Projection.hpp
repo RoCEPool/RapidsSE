@@ -20,6 +20,8 @@ namespace STORE
     static void vProjection_Analysis_postFold(CardIter* pCI);
     static void vRelabelExpressions(CardIter* pCI);
 
+    void vBump_Rightwards(i8 nBumpBy);
+
     i8 nExpr(void);
     void vNumberExpr(void);
 

@@ -17,6 +17,8 @@ namespace STORE
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
 
+    void vBump_Rightwards(i8 nBumpBy);
+
     void vCopyMarkedPredToTable(Card_Deck* p_deck);
     void vCullPred(char cWithMark);
     bool bCullPred(Card_PRED* p_pred, char cWithMark);

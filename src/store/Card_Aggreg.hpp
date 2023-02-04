@@ -16,6 +16,9 @@ namespace STORE
     Card_Aggreg(void);
    ~Card_Aggreg(void) noexcept(false);
 
+
+    void vBump_Rightwards(i8 nBumpBy);
+
     void vComputeProjection(CardIter* pCI); // prototype
 
   };

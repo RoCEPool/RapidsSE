@@ -22,9 +22,10 @@ namespace STORE
     static Card_Expr* pProj_expr_From_stmCol(Card_StmCol* p_stmCol);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
-    i8 iRpnCalc_WhichGbyKey(void);
+    void vBump_Rightwards(i8 nBumpBy);
 
     void vNumberValue(i8 i_Expr);
+    i8 iRpnCalc_WhichGbyKey(void);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);
