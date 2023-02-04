@@ -52,9 +52,9 @@ FileMap::FileMap(void)
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
 //  vInitialise();
-#ifdef WITH_PAGEFILE
+
   m_pPageFile = new PageFile(m_szFilePath, 0);
-#endif
+
   _checkInitialised_(CN_FILEMAP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,7 +81,7 @@ RowBuffer* FileMap::pFromDisk(BufferId oBufferId)
 
   //---------------------------------------------------------------------------
   // Operand should be a buffer id. Check flag bit.
-#ifdef WITH_PAGEFILE
+
   ASSERT(0 == BufferId::bIsAddress(oBufferId));
 
   //---------------------------------------------------------------------------
@@ -94,9 +94,6 @@ RowBuffer* FileMap::pFromDisk(BufferId oBufferId)
   // Read from page file
 
   return m_pPageFile->pReadDataBufferFromPFile(oBufferId);
-#else
-  return nullptr;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

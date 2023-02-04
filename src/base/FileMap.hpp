@@ -12,12 +12,11 @@ namespace BASE
   class FileMap : public PoolBuffer
   {
   public:
-    Stz* m_szFilePath;
-    i8 m_iFileSize;
-    i8 m_iCreated;
-#ifdef WITH_PAGEFILE
-    PageFile* m_pPageFile; // TODO Arjun: Update to list
-#endif
+    Stz*       m_szFilePath;
+    i8         m_iFileSize;
+    i8         m_iCreated;
+    PageFile*  m_pPageFile; // TODO Arjun: Update to list
+
     // Store start and end address of pageable area?
 
     // must be last
