@@ -131,7 +131,7 @@ void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    xCI.G.p_term->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    xCI.G.p_term->vConvert_stmColOdn_To_tblColOdn(pCI);
   }
 }
 

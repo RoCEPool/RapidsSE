@@ -23,7 +23,7 @@ namespace STORE
 
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);

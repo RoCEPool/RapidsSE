@@ -132,7 +132,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -155,12 +155,19 @@ void Card_Term::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Stz* szStmColOdn = szValue();
-  if (! pCI->G_bResolveSubCard(CK_EXPR,szStmColOdn,CK_TBLCOLODN,pCI->G.i_MainCard))
+  Card_Projection* p_projection_prior = Card_Projection::pResolvePriorProjection(pCI);
+  if (! p_projection_prior)
     return;
 
-  pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
-  vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
+  Card_Expr* p_expr= p_projection_prior->pGetExpr(this);
+  if (! p_expr)
+    return;
+
+  Card_TblColOdn* p_tblColOdn = p_expr->pTblColOdn();
+  if (! p_tblColOdn)
+    return;
+
+   vSetValueMark1(p_tblColOdn->szValue(), MARK_CHANGED);
 }
 
 /*----------------------------------------------------------------------------*/
