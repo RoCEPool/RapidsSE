@@ -47,23 +47,6 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM)) {
-
-    if (Card::bIsStreamColOrdinal(xCI.G.p_term->szValue())) {
-      xCI.G.p_term->vBump_StreamColOrdinal(nBumpBy);
-      xCI.G.p_term->vMark1(MARK_CHANGED);
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -77,6 +60,23 @@ void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
   if (bAddAnd) {
     Card_Term *p_term_and = new Card_Term("and"_Stz);
     vAppend(p_term_and);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_TERM)) {
+
+    if (Card::bIsStreamColOrdinal(xCI.G.p_term->szValue())) {
+      xCI.G.p_term->vBump_StreamColOrdinal(nBumpBy);
+      xCI.G.p_term->vMark1(MARK_CHANGED);
+    }
   }
 }
 
@@ -120,6 +120,19 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
 
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_TERM)) {
+    xCI.G.p_term->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -159,6 +159,17 @@ void Card_Projection::vBump_Rightwards(i8 nBumpBy)
     xCI.G.p_expr->vBump_Rightwards(nBumpBy);
 }
 
+/*----------------------------------------------------------------------------*/
+/* apply stream                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_EXPR))
+    xCI.G.p_expr->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get number of expr in this projection                                      */

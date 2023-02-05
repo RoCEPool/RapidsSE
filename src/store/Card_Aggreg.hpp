@@ -20,6 +20,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
   };
 

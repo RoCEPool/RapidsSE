@@ -130,6 +130,17 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card::bIsStreamColOrdinal(szValue()))
+    Card::vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
 ePB Card_Term::eEvalBound(void)
@@ -157,18 +168,6 @@ ePB Card_Term::eEvalBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ordinal number                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Card_Term::iGetOdnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Ord = StrLib::iGleanInt(this->szValue()->azChar());
-
-  return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
 eRO Card_Term::eEvalRelOp(void)
@@ -189,6 +188,18 @@ eRO Card_Term::eEvalRelOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ordinal number                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Card_Term::iGetOdnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Ord = StrLib::iGleanInt(this->szValue()->azChar());
+
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $$c.n)                                           */
 /*----------------------------------------------------------------------------*/
 char Card_Term::cGetTableSyn(void)
@@ -200,6 +211,30 @@ char Card_Term::cGetTableSyn(void)
   char cSyn = szTerm->azChar()[2];
 
   return cSyn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a stream-column                                               */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsStmColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card::bIsStreamColOrdinal(this->szValue());
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a table-column                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsTblColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card::bIsTableColOrdinal(this->szValue());
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

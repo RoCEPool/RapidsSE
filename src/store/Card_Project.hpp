@@ -17,6 +17,7 @@ namespace STORE
    ~Card_Project(void) noexcept(false);
 
     void vComputeProjection(CardIter* pCI); // prototype
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
   };
 

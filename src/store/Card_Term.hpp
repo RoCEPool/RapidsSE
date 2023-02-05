@@ -23,10 +23,14 @@ namespace STORE
 
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     i8   iGetOdnNo(void);
-    eRO  eEvalRelOp(void);
     char cGetTableSyn(void);
+    eRO  eEvalRelOp(void);
+    bool bIsStmColOdn(void); // $n
+    bool bIsTblColOdn(void); // $n
+
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);
     eTE  eTermEval(void);
   };

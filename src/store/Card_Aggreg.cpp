@@ -5,6 +5,7 @@
 #include "Card_Aggreg.hpp"
 
 #include "Card_Projection.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -57,6 +58,17 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 void Card_Aggreg::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert terms which are stmCol to tblCol                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ((pCI->G.p_projection = pSub_projection()))
+    pCI->G.p_projection->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
 
 /*============================================================================*/

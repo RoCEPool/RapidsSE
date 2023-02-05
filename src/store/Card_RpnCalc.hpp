@@ -19,6 +19,7 @@ namespace STORE
     void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
     void vBump_Rightwards(i8 nBumpBy);
     void vConvert_sqyOp_not_To_notSqyOp(void);
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     Card_Term* pGetSingle_stmColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsBraced(void);

@@ -84,7 +84,14 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
       return;
   }
 
-  vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  if (CK_WHERE   == pCI->G.e_MainCard)
+    vDebugPoint();
+
+       if (CK_AGGREG  == pCI->G.e_MainCard) pCI->G.p_aggreg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  else if (CK_GBYAGG  == pCI->G.e_MainCard) pCI->G.p_gbyAgg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  else if (CK_PROJECT == pCI->G.e_MainCard) pCI->G.p_project->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  else if (CK_WHERE   == pCI->G.e_MainCard) pCI->G.p_project->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  else NEVER_REACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

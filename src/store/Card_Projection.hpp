@@ -21,7 +21,7 @@ namespace STORE
     static void vRelabelExpressions(CardIter* pCI);
 
     void vBump_Rightwards(i8 nBumpBy);
-
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     i8 nExpr(void);
     void vNumberExpr(void);
 

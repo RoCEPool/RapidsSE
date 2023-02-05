@@ -159,7 +159,11 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card::vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
