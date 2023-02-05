@@ -130,14 +130,37 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card::bIsStreamColOrdinal(szValue()))
-    Card::vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  ASSERT (   pCI->G.p_MainCard->bIsCard(CK_AGGREG)
+          || pCI->G.p_MainCard->bIsCard(CK_FILTER)
+          || pCI->G.p_MainCard->bIsCard(CK_GBYAGG)
+          || pCI->G.p_MainCard->bIsCard(CK_PROJECT)
+          || pCI->G.p_MainCard->bIsCard(CK_WHERE));
+
+  if (CK_AGGREG  == pCI->G.e_MainCard ||
+      CK_FILTER  == pCI->G.e_MainCard ||
+      CK_GBYAGG  == pCI->G.e_MainCard ||
+      CK_PROJECT == pCI->G.e_MainCard) {
+    pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
+    ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->Y_iGet(P_Level));
+  }
+
+  if (! Card::bIsStreamColOrdinal(szValue()))
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Stz* szStmColOdn = szValue();
+  if (! pCI->G_bResolveSubCard(CK_EXPR,szStmColOdn,CK_TBLCOLODN,pCI->G.i_MainCard))
+    return;
+
+  pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
+  vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -973,6 +973,65 @@ Card* CardIter::pEachChild(i8& ri_Main, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool CardIter::bEachChild_reverse(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.m_bActive);
+
+  if (pEachChild_reverse())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pEachChild_reverse(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.m_bActive);
+
+  i8 i_Main;
+
+  G.m_pChild = pEachChild(i_Main);
+
+  return G.m_pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pEachChild_reverse(i8& ri_Main)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (C_UNKNOWN == G.m_i_Child)
+    G.m_i_Child = G.m_pCard->nChildCards() - 1;
+  else
+    G.m_i_Child--;
+
+  for (;;) {
+
+    if (G.m_i_Child < 0) {
+      G.m_pChild = nullptr;
+      return nullptr;
+    }
+
+    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
+    G.m_i_Child--;
+  }
+
+  NEVER_REACH
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild_reverse(eCK eCard)
 {
   _precondition_( _MAGIC_, _FOOTER_);

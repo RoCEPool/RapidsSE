@@ -18,6 +18,7 @@ namespace STORE
    ~Card_Constraint(void) noexcept(false);
 
     void vBump_Rightwards(i8 nBumpBy);
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vConvert_stmColOdn_To_stmColNm(CardIter* pCI);
   };
 

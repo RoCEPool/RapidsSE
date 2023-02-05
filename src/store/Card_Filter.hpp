@@ -24,6 +24,7 @@ namespace STORE
     void vAddPred(Card_PRED *p_PRED);
 
     void vComputeProjection(CardIter* pCI); // prototype
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vCullPred(char cWithMark);
     bool bIsEmpty(void);

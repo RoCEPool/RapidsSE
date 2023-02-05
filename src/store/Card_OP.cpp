@@ -71,12 +71,14 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! (   CK_AGGREG  == pCI->G.e_MainCard
+         || CK_FILTER  == pCI->G.e_MainCard
          || CK_GBYAGG  == pCI->G.e_MainCard
          || CK_PROJECT == pCI->G.e_MainCard
          || CK_WHERE   == pCI->G.e_MainCard))
     return;
 
   if (CK_AGGREG  == pCI->G.e_MainCard ||
+      CK_FILTER  == pCI->G.e_MainCard ||
       CK_GBYAGG  == pCI->G.e_MainCard ||
       CK_PROJECT == pCI->G.e_MainCard) {
     pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
@@ -88,6 +90,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
     vDebugPoint();
 
        if (CK_AGGREG  == pCI->G.e_MainCard) pCI->G.p_aggreg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  else if (CK_FILTER  == pCI->G.e_MainCard) pCI->G.p_filter->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_GBYAGG  == pCI->G.e_MainCard) pCI->G.p_gbyAgg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_PROJECT == pCI->G.e_MainCard) pCI->G.p_project->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_WHERE   == pCI->G.e_MainCard) pCI->G.p_project->vConvert_stmColOdn_terms_To_tblColOdn(pCI);

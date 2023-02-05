@@ -144,6 +144,24 @@ void Card_Projection::vRelabelExpressions(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* resolve (right-left) projection prior to main card                         */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
+{
+  _static_
+
+  CardIter xCI(pCI);
+  xCI.vSet(pCI->G.i_MainCard,pCI->G.p_MainCard);
+
+  while (Card* p_card = xCI.pEachChild_reverse()) {
+    if (Card_Projection* p_projection = p_card->pSub_projection())
+      return p_projection;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
