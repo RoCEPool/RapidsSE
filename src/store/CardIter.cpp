@@ -996,7 +996,7 @@ Card* CardIter::pEachChild_reverse(void)
 
   i8 i_Main;
 
-  G.m_pChild = pEachChild(i_Main);
+  G.m_pChild = pEachChild_reverse(i_Main);
 
   return G.m_pChild;
 }
@@ -1013,19 +1013,16 @@ Card* CardIter::pEachChild_reverse(i8& ri_Main)
   else
     G.m_i_Child--;
 
-  for (;;) {
-
-    if (G.m_i_Child < 0) {
-      G.m_pChild = nullptr;
-      return nullptr;
-    }
-
-    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
-
-    G.m_i_Child--;
+  if (G.m_i_Child < 0) {
+    G.m_pChild = nullptr;
+    return nullptr;
   }
 
-  NEVER_REACH
+  G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
+  ri_Main = G.m_i_Child;
+
+  return G.m_pChild;
 }
 
 
