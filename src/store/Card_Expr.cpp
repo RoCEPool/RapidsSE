@@ -202,6 +202,18 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
   return C_UNKNOWN;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_TblColOdn* Card_Expr::pTblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TblColOdn* pTblColOdn = pSub_tblColOdn();
+
+  return pTblColOdn;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

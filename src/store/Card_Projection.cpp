@@ -202,6 +202,32 @@ i8 Card_Projection::nExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a particular expr                                                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pGetExpr(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Expr));
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get expr relating to term                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pGetExpr(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Expr  = p_term->iGetOdnNo();
+
+  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Expr));
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* number all expr                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vNumberExpr(void)
