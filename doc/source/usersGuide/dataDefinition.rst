@@ -27,6 +27,7 @@ and schema, and can be qualified with these names.
 For example, a table ``t1`` can be fully qualified and referenced as
 ``rapids.public.t1``.
 
+.. _tables:
 
 Tables
 ------
@@ -45,6 +46,7 @@ partition into an order based on values in particular columns. This allows
 queries to more quickly find particular rows it is interested in without having
 to scan all of the data.
 
+.. _tablePartitioning:
 
 Table Partitioning
 ``````````````````
@@ -92,6 +94,7 @@ automatically chosen as the partitioning column. For example:
 It is not possible to change the columns that a table is partitioned on without
 dropping and recreating the table.
 
+.. _creatingTables:
 
 Creating Tables
 ```````````````
@@ -139,6 +142,8 @@ and precision, etc.
   system does not currently obey these constraints that are specified.
 
 
+.. _droppingTables:
+
 Dropping Tables
 ```````````````
 A table in RapidsSE can be removed with the ``DROP TABLE`` command. This
@@ -146,11 +151,15 @@ command removes the definition of the table as well as all data and indexes
 associated with that table.
 
 
+.. _alteringTables:
+
 Altering Tables
 ```````````````
 RapidsSE does not support altering existing tables to add or remove columns,
 or alter column constraints.
 
+
+.. _indexes:
 
 Indexes
 -------
@@ -196,6 +205,8 @@ Indexes are created with the ``CREATE INDEX`` command and dropped with the
 Dropping an index does not delete the data in the table, just that indexes
 way of ordering the data.
 
+
+.. _privileges:
 
 Privileges
 ----------

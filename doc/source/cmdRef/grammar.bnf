@@ -252,9 +252,7 @@ columnDefinition  ::= columnName dataType ('NOT' 'NULL')?
 
 dloadStmt         ::= 'DLOAD' tableName
                       'PATHS' ( '"' filePath '"' )+
-                      ( dloadOption '=' '"' dloadValue '"' )*
-dloadOption       ::= plainIdentifier
-dloadValue        ::= plainIdentifier
+                      ( loadOption '=' '"' loadValue '"' )*
 
 dropIndexStmt     ::= 'DROP' 'INDEX' tableName indexName
 
@@ -294,21 +292,17 @@ unloadStmt        ::= 'UNLOAD' '"' filename '"'
 /* Basic elements (types, definitions, etc)                                  */
 /*---------------------------------------------------------------------------*/
 
-dataType          ::= sqlDataType
-sqlDataType       ::= 'BOOLEAN'
+dataType          ::= 'BOOLEAN'
                     | ( 'INTEGER' | 'FLOAT' ) /*( '(' precision ( 'BITS' | 'BYTES' | 'DIGITS' )? ')' )? */
                     | 'DECIMAL' ( '(' precision ( ',' scale )? ')' )?
                     | 'DATE'
                     | 'TIME'
                     | 'TIMESTAMP'
-                    | fixedLenChar
-                    | varyingLenChar
+                    | ( 'CHAR' | 'CHARACTER' ) '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' /*( 'COLLATE' collationName )?*/
+                    | ( ( /*( 'CHAR' | 'CHARACTER' ) 'VARYING'? |*/ 'VARCHAR' ) ( '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' )? ) /*( 'COLLATE' collationName )?*/
 /*                  | 'BINARY' '(' size ( 'BYTE' | 'BYTES' )? ')'   */
 /*                  | 'VARBINARY' ( '(' size ( 'BYTE' | 'BYTES' )? ')' )?  */
 /*                  | 'BLOB' */
-
-fixedLenChar      ::= ( 'CHAR' | 'CHARACTER' ) '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' /*( 'COLLATE' collationName )?*/
-varyingLenChar    ::= ( ( /*( 'CHAR' | 'CHARACTER' ) 'VARYING'? |*/ 'VARCHAR' ) ( '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' )? ) /*( 'COLLATE' collationName )?*/
 
 
 

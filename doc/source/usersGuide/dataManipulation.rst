@@ -98,6 +98,8 @@ extensions are desired, the --norename parameter can be given to the
 ``generateData.sh`` script file to skip this file renaming.
 
 
+.. _loadingData:
+
 Loading Data
 ------------
 RapidsSE supports loading data in two forms – 1) loading from a single node
@@ -110,6 +112,8 @@ node.
 
 RapidsSE currently supports pipe-delimited or comma-delimited file formats
 such as that produced by the ``dbgen`` utility.
+
+.. _singleNodeLoad:
 
 Single Node Load
 ````````````````
@@ -129,6 +133,8 @@ The format for a single node load is as follows:
         [ <option> = "<value>" ... ];
 
 Refer to the ``load`` command in the section, RapidsSE Commands.
+
+.. _distributedLoad:
 
 Distributed Load
 ````````````````
@@ -159,16 +165,21 @@ This will cause RapidsSE to load ``<file1>``, ``<file2>``, ``<file3>`` and
 Refer to the ``dload`` command in the section, RapidsSE Commands.
 
 
+.. _insertingData:
 
 Inserting Data
 --------------
 RapidsSE does not currently support any form of INSERT command.
 
 
+.. _updatingData:
+
 Updating Data
 -------------
 RapidsSE does not currently support any form of UPDATE command.
 
+
+.. _deletingData:
 
 Deleting Data
 -------------
