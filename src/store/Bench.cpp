@@ -87,8 +87,8 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vApplyTransformationMatrix_originalModel();
-    //vApplyTransformationMatrix_recursiveModel();
+    //vApplyTransformationMatrix_originalModel();
+    vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
   }
@@ -2111,6 +2111,11 @@ void Bench::vFold_30_W_A_NC_I(void)
     m_pCI->G.p_fold->vBump_Rightwards(m_pCI, 1);
     m_pCI->vPrintBoard(__LINE__);
   }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain())
+    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
 
 
   // W A NC I
