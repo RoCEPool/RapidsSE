@@ -365,3 +365,523 @@ Prints a string to stdout on the SE Prompt.
    :align: center
    :target: syntax-tree.html#printStmt
 
+
+
+
+.. _selectCmd:
+
+``SELECT``
+----------
+Reads data from a table and returns a result set.
+
+This is broken down into the :ref:`command <selectCmdRef>` and the
+:ref:`expression <selectExprRef>` reference as well as a summary of
+:ref:`supported operators <supportedSelectOperators>` and
+:ref:`supported expressions <supportedSelectExprs>`.
+
+.. seealso::
+
+  :ref:`queries`
+
+  :ref:`expressions`
+
+
+.. _selectCmdRef:
+
+``SELECT`` Command
+``````````````````
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/selectQuery.png
+   :alt: ``SELECT`` statement syntax
+   :align: center
+   :target: syntax-tree.html#selectQuery
+
+
+.. rubric:: *setExpr* definition:
+
+.. image:: /rr/diagram/setExpr.png
+   :alt: *setExpr* statement syntax
+   :align: center
+   :target: syntax-tree.html#setExpr
+
+
+.. rubric:: *selectExpr* definition:
+
+.. image:: /rr/diagram/selectExpr.png
+   :alt: *selectExpr* statement syntax
+   :align: center
+   :target: syntax-tree.html#selectExpr
+
+
+.. rubric:: *queryHint* definition:
+
+.. image:: /rr/diagram/queryHint.png
+   :alt: *queryHint* statement syntax
+   :align: center
+   :target: syntax-tree.html#queryHint
+
+
+.. rubric:: *hint* definition:
+
+.. image:: /rr/diagram/hint.png
+   :alt: *hint* statement syntax
+   :align: center
+   :target: syntax-tree.html#hint
+
+
+.. rubric:: *corrClause* definition:
+
+.. image:: /rr/diagram/corrClause.png
+   :alt: *corrClause* statement syntax
+   :align: center
+   :target: syntax-tree.html#corrClause
+
+
+.. rubric:: *withQuery* definition:
+
+.. image:: /rr/diagram/withQuery.png
+   :alt: *withQuery* statement syntax
+   :align: center
+   :target: syntax-tree.html#withQuery
+
+
+.. rubric:: *tableExpr* definition:
+
+.. image:: /rr/diagram/tableExpr.png
+   :alt: *tableExpr* statement syntax
+   :align: center
+   :target: syntax-tree.html#tableExpr
+
+
+.. rubric:: *tableReference* definition:
+
+.. image:: /rr/diagram/tableReference.png
+   :alt: *tableReference* statement syntax
+   :align: center
+   :target: syntax-tree.html#tableReference
+
+
+.. rubric:: *joinType* definition:
+
+.. image:: /rr/diagram/joinType.png
+   :alt: *joinType* statement syntax
+   :align: center
+   :target: syntax-tree.html#joinType
+
+
+.. rubric:: *selectList* definition:
+
+.. image:: /rr/diagram/selectList.png
+   :alt: *selectList* statement syntax
+   :align: center
+   :target: syntax-tree.html#selectList
+
+
+.. rubric:: *selectListItem* definition:
+
+.. image:: /rr/diagram/selectListItem.png
+   :alt: *selectListItem* statement syntax
+   :align: center
+   :target: syntax-tree.html#selectListItem
+
+
+.. rubric:: *exprList* definition:
+
+.. image:: /rr/diagram/exprList.png
+   :alt: *exprList* statement syntax
+   :align: center
+   :target: syntax-tree.html#exprList
+
+
+.. rubric:: *identifierList* definition:
+
+.. image:: /rr/diagram/identifierList.png
+   :alt: *identifierList* statement syntax
+   :align: center
+   :target: syntax-tree.html#identifierList
+
+
+.. rubric:: *orderByList* definition:
+
+.. image:: /rr/diagram/orderByList.png
+   :alt: *orderByList* statement syntax
+   :align: center
+   :target: syntax-tree.html#orderByList
+
+
+.. rubric:: *orderByListItem* definition:
+
+.. image:: /rr/diagram/orderByListItem.png
+   :alt: *orderByListItem* statement syntax
+   :align: center
+   :target: syntax-tree.html#orderByListItem
+
+
+.. rubric:: *colAliases* definition:
+
+.. image:: /rr/diagram/colAliases.png
+   :alt: *colAliases* statement syntax
+   :align: center
+   :target: syntax-tree.html#colAliases
+
+
+.. _selectExprRef:
+
+Expression Reference
+````````````````````
+
+.. rubric:: *expr* definition:
+
+.. image:: /rr/diagram/expr.png
+   :alt: *expr* statement syntax
+   :align: center
+   :target: syntax-tree.html#expr
+
+
+.. rubric:: *columnRef* definition:
+
+.. image:: /rr/diagram/columnRef.png
+   :alt: *columnRef* statement syntax
+   :align: center
+   :target: syntax-tree.html#columnRef
+
+
+.. rubric:: *columnWildcard* definition:
+
+.. image:: /rr/diagram/columnWildcard.png
+   :alt: *columnWildcard* statement syntax
+   :align: center
+   :target: syntax-tree.html#columnWildcard
+   
+Refer to the :ref:`complete syntax tree <syntaxTree>` for further definitions 
+of any rules.
+
+
+.. _supportedSelectOperators:
+
+Supported SELECT Operators
+``````````````````````````
+Note: In release v1.1, only limited ``SELECT`` statement functionality have
+been enabled. This is described in the table below. Additional ``SELECT``
+functionality will be enabled in subsequent releases.
+
+.. list-table:: SQL Operator Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - Table scans
+     - Enabled
+   * - Index scans
+     - Enabled
+   * - Subqueries
+     - **DISABLED**
+   * - Joins
+     - **DISABLED**
+   * - Projections
+     - Enabled, but with expression limitations documented
+       :ref:`below <supportedSelectExprs>`
+   * - Aggregations
+     - Enabled
+   * - Limits
+     - **DISABLED**
+   * - Order By
+     - **DISABLED**
+   * - Filters (``WHERE``, ``HAVING``)
+     - Enabled, but with expression limitations documented
+       :ref:`below <supportedSelectExprs>`
+   * - Unions
+     - **DISABLED**
+   * - Explain
+     - Enabled
+
+
+.. _supportedSelectExprs:
+
+Supported Expressions
+`````````````````````
+Note: In release v1.1, only limited ``SELECT`` expressions have been enabled.
+This is described in the table below. Additional expression operators will be
+enabled in subsequent releases.
+
+.. list-table:: Supported :ref:`Literal Expression <literals>` Operator Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``BOOLEAN``
+     - Enabled
+   * - ``DATE``
+     - Enabled
+   * - ``DECIMAL``
+     - Enabled
+   * - ``FLOAT``
+     - Enabled
+   * - ``INTEGER``
+     - Enabled
+   * - ``NULL``
+     - Enabled
+   * - ``CHAR``/``VARCHAR``
+     - Enabled
+   * - ``TIME``
+     - Enabled
+   * - ``TIMESTAMP``
+     - Enabled
+   * - ``INTERVAL``
+     - **DISABLED**, interval types are not yet supported.
+
+
+.. list-table:: Supported :ref:`Logical Expression <logicalOperators>` Operator Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``AND``
+     - Enabled
+   * - ``OR``
+     - Enabled
+   * - ``XOR``
+     - Enabled
+   * - ``NOT``
+     - Enabled
+
+
+.. list-table:: Supported :ref:`Mathematical Expression <mathematicalOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - Addition (``+``)
+     - Enabled
+   * - Subtraction (``-``)
+     - Enabled
+   * - Multiplication (``*``)
+     - Enabled
+   * - Division (``/``)
+     - Enabled
+   * - Modulus (``%``)
+     - Enabled
+   * - Unary Plus (``+``)
+     - Enabled
+   * - Unary Negation (``-``)
+     - Enabled
+
+.. list-table:: Supported :ref:`Comparison Expression <comparisonOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - Equality (``=``)
+     - Enabled
+   * - Inequality (``!=``, ``<>``)
+     - Enabled
+   * - Less-than (``<``)
+     - Enabled
+   * - Less-than-or-equal-to (``<=``)
+     - Enabled
+   * - Greater-than (``>``)
+     - Enabled
+   * - Greater-than-or-equal-to (``>=``)
+     - Enabled
+   * - ``IS NULL`` / ``IS NOT NULL``
+     - **DISABLED**, not yet implemented
+   * - ``BETWEEN``
+     - Enabled
+
+.. list-table:: Supported :ref:`Conditional Expression <conditionalOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``CASE``
+     - Enabled
+
+.. list-table:: Supported :ref:`String Expression <stringOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``LIKE``
+     - Enabled
+   * - ``SUBSTRING``
+     - Enabled
+
+.. list-table:: Supported :ref:`Date and Time Expression <datetimeOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``EXTRACT``
+     - Enabled
+
+.. list-table:: Supported :ref:`Aggregate Expression <aggregateOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``COUNT``
+     - Enabled
+   * - ``MIN``
+     - Enabled
+   * - ``MAX``
+     - Enabled
+   * - ``SUM``
+     - Enabled
+   * - ``AVG``
+     - Enabled
+
+.. list-table:: Supported :ref:`Type Casting Expression <typeCastingOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``CAST``
+     - Enabled
+
+.. list-table:: Supported :ref:`Subquery Expression <subqueryOperators>` Operators Summary
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Operator
+     - Comment
+   * - ``EXISTS``
+     - **DISABLED**
+   * - ``IN``
+     - **DISABLED**
+
+
+
+
+
+.. _sleepCmd:
+
+``SLEEP``
+---------
+Causes the SE Prompt to sleep and not accept input for a given number of seconds.
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/sleepStmt.png
+   :alt: ``SLEEP`` statement syntax
+   :align: center
+   :target: syntax-tree.html#sleepStmt
+   
+
+
+.. _spaceCmd:
+
+``SPACE``
+---------
+Shows the amount of memory that is free and being used by each node in the
+cluster.
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/spaceStmt.png
+   :alt: ``SPACE`` statement syntax
+   :align: center
+   :target: syntax-tree.html#spaceStmt
+
+
+
+.. _statusCmd:
+
+``STATUS``
+----------
+Returns a row for each node in the cluster indicating it’s health and whether
+it is connected to the current node.
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/statusStmt.png
+   :alt: ``STATUS`` statement syntax
+   :align: center
+   :target: syntax-tree.html#statusStmt
+
+
+
+.. _szidxCmd:
+
+``SZIDX``
+----------
+Shows how much memory is being used to store the indexes for a given table 
+against each node in the cluster. 
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/szidxStmt.png
+   :alt: ``SZIDX`` statement syntax
+   :align: center
+   :target: syntax-tree.html#szidxStmt
+   
+
+
+.. _sztblCmd:
+
+``SZTBL``
+----------
+Shows how much memory is being used to store the data for a given table 
+against each node in the cluster.
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/sztblStmt.png
+   :alt: ``SZTBL`` statement syntax
+   :align: center
+   :target: syntax-tree.html#sztblStmt
+   
+   
+
+.. _truncateCmd:
+
+``TRUNCATE``
+------------
+Removes all data from a table without dropping the table or its indexes.
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/truncateStmt.png
+   :alt: ``TRUNCATE`` statement syntax
+   :align: center
+   :target: syntax-tree.html#truncateStmt
+   
+
+
+
+.. _unloadCmd:
+
+``UNLOAD``
+----------
+Writes a snapshot of the data in RapidsSE (tables, index, row data, etc) to
+files on each node. The cluster must be quiesced (no other user activity)
+while this operation occurs. A name must be given to the snapshot to separate
+it from any other snapshots.
+
+.. seealso::
+
+  :ref:`unloadReload`
+
+  :ref:`unload`
+
+  :ref:`reload`
+
+
+.. rubric:: Syntax:
+
+.. image:: /rr/diagram/unloadStmt.png
+   :alt: ``UNLOAD`` statement syntax
+   :align: center
+   :target: syntax-tree.html#unloadStmt
+   

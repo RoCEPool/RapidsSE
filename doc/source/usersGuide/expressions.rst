@@ -373,6 +373,9 @@ to a boolean value.
 The syntax ``-->`` is used to indicate the resulting data type that will be 
 returned from the operator.
 
+
+.. _logicalOperators:
+
 Logical Operators
 `````````````````
 RapidsSE supports the following logical operators:
@@ -400,6 +403,7 @@ RapidsSE uses :ref:`three-valued logic <nulls>` when it comes to evaluating
 logical expressions that can contain ``NULL``\s. Refer to this
 :ref:`truth table <truthTableNulls>` for details.
 
+.. _mathematicalOperators:
 
 Mathematical Operators
 ``````````````````````
@@ -437,6 +441,8 @@ The syntax for these operators are as follows:
                 + <numericExpr>    --> <numericValue>    (unary plus)
                 - <numericExpr>    --> <numericValue>    (unary negation)
 
+
+.. _comparisonOperators:
 
 Comparison Operators
 ````````````````````
@@ -487,6 +493,8 @@ The syntax for these operators are as follows:
    <booleanExpr> IS NOT NULL          --> <booleanValue>
    <expr> BETWEEN <expr> AND <expr>   --> <booleanValue>
 
+
+.. _conditionalOperators:
 
 Conditional Operators
 `````````````````````
@@ -561,6 +569,8 @@ The ``CASE`` statement must be consistent with the data types of values that
 can be returned. The data type of all ``THEN`` and ``ELSE`` expressions must
 be the same or :ref:`implicitly coercible <implicitTypeCoercion>`.
 
+
+.. _stringOperators:
 
 String Operators
 ````````````````
@@ -660,6 +670,8 @@ be extracted. If this third parameter is left off then all characters until
 the end of the string will be returned.
 
 
+.. _datetimeOperators:
+
 Date and Time Operators
 ```````````````````````
 RapidsSE supports the following string operators:
@@ -755,6 +767,8 @@ data type will be a ``DECIMAL``. However if the input data type is a ``FLOAT``
    ``COUNT(DISTINCT <expr>)``
 
 
+.. _typeCastingOperators:
+
 Data Type Casting Operators
 ```````````````````````````
 RapidsSE supports the ability to explicitly convert the data type of an
@@ -795,6 +809,8 @@ type together.
 Example (3) shows a correction to example (2) where the entire ``col1 + 2``
 expression is converted to a ``VARCHAR``. This is the same as example (1).
 
+
+.. _subqueryOperators:
 
 Subquery Operators
 ``````````````````

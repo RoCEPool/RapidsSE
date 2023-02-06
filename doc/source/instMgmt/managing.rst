@@ -9,6 +9,8 @@
 Managing RapidsSE
 =================
 
+.. _installationDir:
+
 Installation Directory Contents
 -------------------------------
 RapidsSE is typically installed into the directory ``/opt/rapidsse``.
@@ -62,6 +64,7 @@ below.
    ================== ===========================================================
 
 
+.. _clusterStatus:
 
 Checking The Cluster Status
 ---------------------------
@@ -97,6 +100,8 @@ An example of a stopped cluster looks like this:
    0 nodes out of 2 are running. 2 nodes are stopped.
 
 
+.. _clusterConfig:
+
 Cluster Config
 --------------
 When RapidsSE is first installed, the installer prompts the user to enter
@@ -128,6 +133,9 @@ command line arguments. Each node is started independently this way.
 
 The ``cluster.config`` file can be saved and reused to automate the
 re-installation of the cluster without user interaction.
+
+
+.. _logfiles:
 
 Logfiles
 --------
@@ -172,6 +180,8 @@ well. This information should be collected and provided when requesting help wit
 a problem as it will aid in diagnosing the issue.
 
 
+.. _unloadreload:
+
 Memory Unload & Reload
 ----------------------
 
@@ -180,6 +190,9 @@ disk feature. This allows an administrator to take a memory snapshot of the
 RapidsSE cluster at a point in time and later reload that snapshot in a timely
 manner. This can be significantly faster than starting a cluster and reloading
 all the schema and data as there is no parsing and statement execution involved.
+
+
+.. _unload:
 
 Unload
 ``````
@@ -225,6 +238,8 @@ filesystem paths that were specified during installation.
 Obsolete snapshots can simply be deleted from disk on each node in the cluster
 when they are no longer required.
 
+
+.. _reload:
 
 Reload
 ``````
@@ -339,11 +354,15 @@ The tables, indexes and data that were present at the time of the unload should
 now exist within RapidsSE.
 
 
+.. _security:
+
 Security
 --------
 RapidsSE does not currently have any authentication or authorization
 capabilities, though this is an important feature for a future release.
 
+
+.. _monitoringMemoryUsage:
 
 Monitoring Memory Usage
 -----------------------
