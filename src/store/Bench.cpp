@@ -2874,6 +2874,10 @@ void Bench::vFold_70_H_A_NC_ro(void)
   }
   m_pCI->vPrintBoard(__LINE__);
 
+  if (m_pCI->G_bEachMain(CK_WHERE)) {
+    m_pCI->G.p_where->vBump_Rightwards(1);
+  }
+
   // 8) inject SQ result into MQ <gbyAgg>
   Board::vInject_sqResult_Into_gbyAgg(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();

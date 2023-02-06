@@ -395,7 +395,9 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
   else
     p_projection = new Card_Projection;
 
-  i8 i_Expr = p_projection->nChildCards() + 1;
+  //  --  --  --  --  --  --  --  --  --  --  --  --  --
+
+  i8 i_Expr = p_projection->nExpr() + 1;
 
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
