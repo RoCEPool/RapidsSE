@@ -16,8 +16,6 @@ namespace STORE
     Card_Key(void);
    ~Card_Key(void) noexcept(false);
 
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-
   };
 
   Card_Key* _pCard_Key(void* aAddr);

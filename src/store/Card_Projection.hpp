@@ -21,14 +21,6 @@ namespace STORE
     static void vRelabelExpressions(CardIter* pCI);
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
-    void vBump_Rightwards(i8 nBumpBy);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    i8 nExpr(void);
-    Card_Expr* pGetExpr(i8 i_Expr);
-    Card_Expr* pGetExpr(Card_Term* p_term);
-
-    void vNumberExpr(void);
-
     Card_Projection* pReProjection(void);
   };
 

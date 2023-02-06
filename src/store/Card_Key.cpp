@@ -34,17 +34,6 @@ Card_Key::~Card_Key(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert terms which are stmCol to tblCol                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDebugPoint();
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
