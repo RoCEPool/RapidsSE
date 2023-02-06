@@ -117,7 +117,7 @@ html: checkSphinx version $(RR_INDEX_HTML) $(RR_HTML_FRAG)
 pdf: checkLatex html
 	@echo "Building PDF documentation..."
 	@echo
-	@$(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) LATEXMKOPTS="-interaction=nonstopmode"
+	@LATEXMKOPTS="-interaction=nonstopmode" $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
 clean:
