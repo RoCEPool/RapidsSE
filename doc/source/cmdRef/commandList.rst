@@ -116,12 +116,12 @@ table.
    :align: center
    :target: syntax-tree.html#columnDefinition
 
-.. rubric:: *datatype* definition:
+.. rubric:: *dataType* definition:
 
-.. image:: /rr/diagram/datatype.png
-   :alt: *datatype* definition
+.. image:: ../rr/diagram/dataType.png
+   :alt: *dataType* definition
    :align: center
-   :target: syntax-tree.html#datatype
+   :target: syntax-tree.html#dataType
 
 .. rubric:: *identifierList* definition:
 
@@ -299,10 +299,10 @@ List and describe all of the columns that exist for a given table.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lscolStmt.png
+.. image:: /rr/diagram/lsColStmt.png
    :alt: ``LSCOL`` statement syntax
    :align: center
-   :target: syntax-tree.html#lscolStmt
+   :target: syntax-tree.html#lsColStmt
 
 
 
@@ -314,10 +314,10 @@ Lists all of the indexes that have been created on a given table.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lsidxStmt.png
+.. image:: /rr/diagram/lsIdxStmt.png
    :alt: ``LSIDX`` statement syntax
    :align: center
-   :target: syntax-tree.html#lsidxStmt
+   :target: syntax-tree.html#lsIdxStmt
 
 
 
@@ -329,10 +329,10 @@ Lists the columns of a given index on a particular table.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lsidxcolStmt.png
+.. image:: /rr/diagram/lsIdxColStmt.png
    :alt: ``LSIDXCOL`` statement syntax
    :align: center
-   :target: syntax-tree.html#lsidxcolStmt
+   :target: syntax-tree.html#lsIdxColStmt
 
 
 
@@ -344,10 +344,10 @@ Lists all of the tables in the default catalog and schema.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lstblStmt.png
+.. image:: /rr/diagram/lsTblStmt.png
    :alt: ``LSTBL`` statement syntax
    :align: center
-   :target: syntax-tree.html#lstblStmt
+   :target: syntax-tree.html#lsTblStmt
 
 
 
@@ -821,10 +821,10 @@ against each node in the cluster.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/szidxStmt.png
+.. image:: /rr/diagram/szIdxStmt.png
    :alt: ``SZIDX`` statement syntax
    :align: center
-   :target: syntax-tree.html#szidxStmt
+   :target: syntax-tree.html#szIdxStmt
    
 
 
@@ -837,10 +837,10 @@ against each node in the cluster.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/sztblStmt.png
+.. image:: /rr/diagram/szTblStmt.png
    :alt: ``SZTBL`` statement syntax
    :align: center
-   :target: syntax-tree.html#sztblStmt
+   :target: syntax-tree.html#szTblStmt
    
    
 
