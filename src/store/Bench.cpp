@@ -3785,7 +3785,7 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  Card_Projection::vProjection_Analysis(m_pCI);
+  Card_Projection::vProjection_Analysis_postFold(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 
