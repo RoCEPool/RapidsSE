@@ -87,8 +87,8 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    //vApplyTransformationMatrix_originalModel();
-    vApplyTransformationMatrix_recursiveModel();
+    vApplyTransformationMatrix_originalModel();
+    //vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
   }

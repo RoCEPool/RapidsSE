@@ -169,14 +169,14 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vNumberValue(BASE::i8 i_Expr, bool bIsKeyExpr)
+void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bIsKeyExpr)
-    vValueSprint("$%lld"_Stz,i_Expr);
-  else
     vValueSprint("$K%lld"_Stz,i_Expr);
+  else
+    vValueSprint("$%lld"_Stz,i_Expr);
 }
 
 

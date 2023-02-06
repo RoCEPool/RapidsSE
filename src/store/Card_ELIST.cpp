@@ -196,7 +196,7 @@ void Card_ELIST::vRenumberAllExpr(void)
   i8 i_Expr = 1;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vNumberValue(i_Expr++,bIsKeyExpr);
+    xCI.G.p_expr->vRenumber(i_Expr++, bIsKeyExpr);
 }
 
 /*============================================================================*/
