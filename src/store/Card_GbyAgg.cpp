@@ -57,6 +57,9 @@ void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 
   if ((pCI->G.p_projection = pSub_projection()))
     pCI->G.p_projection->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+
+  if ((pCI->G.p_key = pSub_key()))
+    pCI->G.p_key->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
 
 

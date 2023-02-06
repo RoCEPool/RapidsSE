@@ -120,6 +120,86 @@ i8 Card_ELIST::iRpnCalc_Has_stmOrdOdn(Card_OrdElmOdn* p_stmOrdOdn)
   return C_UNKNOWN;
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_EXPR))
+    xCI.G.p_expr->vBump_Rightwards(nBumpBy);
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply stream                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_ELIST::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_EXPR))
+    xCI.G.p_expr->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of expr in this projection                                      */
+/*----------------------------------------------------------------------------*/
+i8 Card_ELIST::nExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nExpr = nItems();
+
+  return nExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a particular expr                                                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Expr));
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get expr relating to term                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pGetExpr(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Expr  = p_term->iGetOdnNo() - 1;
+
+  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Expr));
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* number all expr                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_ELIST::vNumberExpr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Expr = 1;
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_EXPR))
+    xCI.G.p_expr->vNumberValue(i_Expr++);
+}
+
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
