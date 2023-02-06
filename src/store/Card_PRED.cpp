@@ -160,14 +160,39 @@ Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+//  CardIter xCI(this);
+//  while (Card* pChildCard = xCI.pEachChild()) {
+//    if (!pChildCard->bIsCard(CK_TERM))
+//      continue;
+//
+//    Stz* szValue_term = pChildCard->szValue();
+//    if (pCI->G_bIsBoard(szValue_term))
+//      return szValue_term;
+//  }
+
+  if (Card_Term* p_term = pGetTerm_boardNm(pCI))
+    return p_term->szValue();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to get term which is a board name from this predicate              */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
   CardIter xCI(this);
   while (Card* pChildCard = xCI.pEachChild()) {
-    if (!pChildCard->bIsCard(CK_TERM))
+    if (! pChildCard->bIsCard(CK_TERM))
       continue;
 
-    Stz* szValue_term = pChildCard->szValue();
+    Card_Term* p_term = _pCard_Term(pChildCard);
+
+    Stz* szValue_term = p_term->szValue();
     if (pCI->G_bIsBoard(szValue_term))
-      return szValue_term;
+      return p_term;
   }
 
   return nullptr;

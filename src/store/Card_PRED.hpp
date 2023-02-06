@@ -18,6 +18,7 @@ namespace STORE
     Card_PRED* pContaining_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
     bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
+    Card_Term* pGetTerm_boardNm(CardIter* pCI);
     Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
     bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
