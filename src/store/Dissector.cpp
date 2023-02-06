@@ -392,7 +392,7 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
 //  pCard_Filter->vAppend(pCard_RpnCalc);
 
   i8 i_Expr = 1;
-  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
+  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
   Card_Constraint* pCard_Constraint = new Card_Constraint;
   pCard_Constraint->vAppend(pCard_Expr);
 
@@ -845,7 +845,7 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms)
     }
 
     // TYPE <type> <calcExpr> [ AS <as> ]
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,true,i_Expr);
     pCard_Expr->vCardNo(++i_CardNo);
     //vAsEnsure(pCard_Expr);
 
@@ -899,7 +899,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
     }
 
     // TYPE <type> [ AS <as> ] <calc>
-    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,i_Expr);
+    Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
     pCard_Expr->vCardNo(++iCardNo);
     vAsEnsure(pCard_Expr);
 
@@ -915,14 +915,18 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, i8& ri_Expr)
+Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
    
   //pCard_RpnTerms->vDump();
 
   Card_Expr* pCard_Expr = new Card_Expr;
-  pCard_Expr->vValueSprint("$%lld"_Stz,ri_Expr);
+
+  if (bIsKeyExpr)
+    pCard_Expr->vValueSprint("$K%lld"_Stz,ri_Expr);
+  else
+    pCard_Expr->vValueSprint("$%lld"_Stz,ri_Expr);
 
   L_TYPE:
 

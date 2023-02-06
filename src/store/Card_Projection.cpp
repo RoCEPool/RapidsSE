@@ -89,7 +89,7 @@ void Card_Projection::vProjection_Analysis_postFold(CardIter* pCI)
     }
 
     if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
-      pCI->G.p_projection->vNumberExpr();
+      pCI->G.p_projection->vRenumberAllExpr();
   }
 }
 

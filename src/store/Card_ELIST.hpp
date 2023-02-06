@@ -25,7 +25,7 @@ namespace STORE
     Card_Expr* pGetExpr(i8 i_Expr);
     Card_Expr* pGetExpr(Card_Term* p_term);
 
-    void vNumberExpr(void);
+    void vRenumberAllExpr(void);
 
   };
 

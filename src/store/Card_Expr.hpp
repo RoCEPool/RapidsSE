@@ -24,7 +24,7 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vNumberValue(i8 i_Expr);
+    void vNumberValue(i8 i_Expr, bool bIsKeyExpr=false);
     i8 iRpnCalc_WhichGbyKey(void);
     Card_TblColOdn* pTblColOdn(void);
   };

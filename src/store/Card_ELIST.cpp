@@ -185,20 +185,19 @@ Card_Expr* Card_ELIST::pGetExpr(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* number all expr                                                            */
+/* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vNumberExpr(void)
+void Card_ELIST::vRenumberAllExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bIsKeyExpr = (bIsCard(CK_KEY));
 
   i8 i_Expr = 1;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vNumberValue(i_Expr++);
+    xCI.G.p_expr->vNumberValue(i_Expr++,bIsKeyExpr);
 }
-
-
-
 
 /*============================================================================*/
 /* end                                                                        */
