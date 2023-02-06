@@ -90,7 +90,8 @@ namespace STORE
     void vTransform_IndexAnalysis(void);
     void vTransform_ProjectionAnalysis(void);
 
-    void vTransform_StmColToTblCol_original(void);
+    void vTransform_StmColToTblCol_originalModel(void);
+    void vTransform_StmColToTblCol_recursiveModel(void);
     void vTransform_RpnCalcToBoolCalc(void);
 
     void vTransform_MarkCmpPredWrtTable(void);

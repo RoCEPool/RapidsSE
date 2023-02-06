@@ -384,7 +384,7 @@ void Bench::vGroup_MainConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_StmColToTblCol_original();
+  vTransform_StmColToTblCol_originalModel();
   vTransform_RpnCalcToBoolCalc();
 }
 
@@ -395,7 +395,7 @@ void Bench::vGroup_PreliminaryConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //vTransform_StmColToTblCol_original();
+  //vTransform_StmColToTblCol_originalModel();
   vTransform_RpnCalcToBoolCalc();
 }
 
@@ -406,7 +406,7 @@ void Bench::vGroup_FinalConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_StmColToTblCol_original();
+  vTransform_StmColToTblCol_recursiveModel();
   //vTransform_RpnCalcToBoolCalc();
 }
 
@@ -915,7 +915,7 @@ void Bench::vTransform_ProjectionAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColToTblCol_original(void)
+void Bench::vTransform_StmColToTblCol_originalModel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -932,6 +932,28 @@ void Bench::vTransform_StmColToTblCol_original(void)
 
   m_pCI->vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert all <stmColOdn> to <tblColOdn>                                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_StmColToTblCol_recursiveModel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
+
+  vAssert_Board_any();
+
+  while (m_pCI->G_bEachMain())
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
+
+  m_pCI->G.pDeck->vNoTermsStmColOdn();
+
+  m_pCI->G.pBoard->vMayHaveStmColOdn(false);
+
+  m_pCI->vEndTransform();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1580,13 +1602,13 @@ void Bench::vTransform_IndividuateFilter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_TblColToStmCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+  m_pCI->vTransform(__func__, "vTransform_TblColToStmCol"_Stz);
 
   vAssert_Board_mqA();
 
@@ -2126,6 +2148,21 @@ void Bench::vFold_30_W_A_NC_I(void)
   //               bc            // add cmpPred to table
   //               cp  @ro       //
 
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_WHERE)) {
+
+    m_pCI->G.p_bolPred = m_pCI->G.p_where->pSub_bolPred();
+    m_pCI->G.p_bolPred->vMorph_To_cmpPred(m_pCI);
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
+
+
+
+
+/*
+
   char cTblSyn = Card::cTableColSyn(m_pCI->m_sSqyArg);
   m_pCI->G.p_table = m_pCI->G.pDeck->pFindTableCard(cTblSyn, m_pCI->G.p_MainCard);
 
@@ -2210,6 +2247,7 @@ void Bench::vFold_30_W_A_NC_I(void)
   m_pCI->vPrintBoard(__LINE__);
 
   Card_Projection::vRelabelExpressions(m_pCI);
+*/
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();

@@ -283,6 +283,9 @@ eXK Card_Bounds::eCastKind_v2(Card_Index* p_index_r,
   Card_Term* pTblColOdn_inBounds = p_ebound->pGet_tblColOdn();
   rp_left_column_to_be_hashed = pTblColOdn_inBounds;
 
+  if (! pTblColOdn_inBounds)
+    return XK_BROADCAST;
+
   if (p_idxCol_inBounds->bSameValue(p_tablePtn_r))
     if (pTblColOdn_inBounds->bSameValue(p_tablePtn_l))
       return XK_UNICAST;

@@ -296,9 +296,14 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+
   Card* pAfter = nullptr;
 
-  CardIter xCI(this);
+  CardIter xCI(pDeck);
+  if (xCI.G_bEachMain(CK_FOLD))
+    pAfter = xCI.G.p_fold;
+
+  xCI.vRestart();
   while (xCI.G_bEachMain(CK_JOINORDER)) {
 
     Stz* szTableSyn = xCI.G.p_joinOrder->szValue();
