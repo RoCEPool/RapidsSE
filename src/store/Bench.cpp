@@ -907,7 +907,7 @@ void Bench::vTransform_ProjectionAnalysis(void)
 //  while (m_pCI->G_bEachMain(CK_TABLE))
 //    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
 
-  Card_Projection::vProjection_Analysis(m_pCI);
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
 
   m_pCI->vEndTransform();
 }
@@ -1774,7 +1774,7 @@ void Bench::vFold_10_F(void)
 
   //Board::vRelabelExpressions(m_pCI);
 
-  Card_Projection::vProjection_Analysis_postFold(m_pCI);
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -2124,7 +2124,7 @@ void Bench::vFold_30_W_A_NC_I(void)
 //    m_pCI->vPrintBoard(__LINE__);
 //  }
 
-  Card_Projection::vProjection_Analysis_postFold(m_pCI);
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -2716,7 +2716,7 @@ void Bench::vFold_60_W_L_NC_NI(void)
   m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
   m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYNOTEXISTS);
 
-  Card_Projection::vProjection_Analysis_postFold(m_pCI);
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
 //  Card_Stream::vStream_AdjustLoHi(m_pCI);
 //  Board::vRenumberStmOdn(m_pCI);
@@ -2888,7 +2888,7 @@ void Bench::vFold_70_H_A_NC_ro(void)
 
     // 10) un-project injected SQ result
     Board::vUnproject_injected_sqResult(m_pCI);
-    Card_Projection::vProjection_Analysis_postFold(m_pCI);
+    Card_Projection::vProjection_Analysis_v2(m_pCI);
   }
 
   m_pCI->vPrintBoard(__LINE__);
@@ -3785,7 +3785,7 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
 
   DELETE_CARD(p_joinOrdering);
 
-  Card_Projection::vProjection_Analysis_postFold(m_pCI);
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 

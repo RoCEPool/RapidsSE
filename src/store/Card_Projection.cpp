@@ -44,27 +44,27 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vProjection_Analysis(CardIter* pCI)
-{
-  _static_
-
-  pCI->vRestart();
-  while (pCI->G_bEachMain(CK_TABLE))
-    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
-
-
-  pCI->vRestart();
-  pCI->G.p_projection = nullptr;
-  while (pCI->G_bEachMain(CK_TABLE))
-    pCI->G.p_table->vProjectionAnalysis(pCI);
-
-}
+//void Card_Projection::vProjection_Analysis(CardIter* pCI)
+//{
+//  _static_
+//
+//  pCI->vRestart();
+//  while (pCI->G_bEachMain(CK_TABLE))
+//    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
+//      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+//
+//
+//  pCI->vRestart();
+//  pCI->G.p_projection = nullptr;
+//  while (pCI->G_bEachMain(CK_TABLE))
+//    pCI->G.p_table->vProjectionAnalysis(pCI);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* projection analysis (post fold)                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vProjection_Analysis_postFold(CardIter* pCI)
+void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
 {
   _static_
 
