@@ -767,7 +767,7 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 /* convert terms which are stmCol to tblCol                                   */
 /*----------------------------------------------------------------------------*/
-//void Card::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+//void Card::vConvert_stmColOdn_To_tblColOdn_original(CardIter* pCI)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //

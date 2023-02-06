@@ -15,6 +15,8 @@ namespace STORE
   
     Card_BolPred(void);
    ~Card_BolPred(void) noexcept(false);
+
+    void vMorph_To_cmpPred(CardIter* pCI);
   };
 
   Card_BolPred* _pCard_BolPred(void* aAddr);

@@ -87,8 +87,8 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    //vApplyTransformationMatrix_originalModel();
-    vApplyTransformationMatrix_recursiveModel();
+    vApplyTransformationMatrix_originalModel();
+    //vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
   }
@@ -384,7 +384,7 @@ void Bench::vGroup_MainConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_StmColToTblCol();
+  vTransform_StmColToTblCol_original();
   vTransform_RpnCalcToBoolCalc();
 }
 
@@ -395,7 +395,7 @@ void Bench::vGroup_PreliminaryConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //vTransform_StmColToTblCol();
+  //vTransform_StmColToTblCol_original();
   vTransform_RpnCalcToBoolCalc();
 }
 
@@ -406,7 +406,7 @@ void Bench::vGroup_FinalConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_StmColToTblCol();
+  vTransform_StmColToTblCol_original();
   //vTransform_RpnCalcToBoolCalc();
 }
 
@@ -915,7 +915,7 @@ void Bench::vTransform_ProjectionAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColToTblCol(void)
+void Bench::vTransform_StmColToTblCol_original(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -924,7 +924,7 @@ void Bench::vTransform_StmColToTblCol(void)
   vAssert_Board_any();
 
   while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_original(m_pCI);
 
   m_pCI->G.pDeck->vNoTermsStmColOdn();
 
@@ -2114,7 +2114,7 @@ void Bench::vFold_30_W_A_NC_I(void)
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
 

@@ -355,7 +355,7 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     void vClearMarksRecursive(void);
-    //void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
+    //void vConvert_stmColOdn_To_tblColOdn_original(CardIter* pCI);
     void vCopyProperties(Card* pFrom);
 
     void vDeleteFilterIfEmpty(Card_Filter* p_filter);

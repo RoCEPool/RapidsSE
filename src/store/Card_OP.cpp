@@ -66,15 +66,47 @@ void Card_OP::vConvert_rpnCalc_To_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_OP::vConvert_stmColOdn_To_tblColOdn_original(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szStmColOdn = p_term->szValue();
+    if (! pCI->G_bResolveSubCard(CK_EXPR,szStmColOdn,CK_TBLCOLODN,pCI->G.i_MainCard))
+      return C_CONTINUE_RECURSION;
+
+    //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
+
+    pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
+    p_term->vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bApplyRecursive(CK_TERM, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vConvert_stmColOdn_To_tblColOdn_recursive(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! (   CK_AGGREG  == pCI->G.e_MainCard
-         || CK_FILTER  == pCI->G.e_MainCard
-         || CK_GBYAGG  == pCI->G.e_MainCard
-         || CK_PROJECT == pCI->G.e_MainCard
-         || CK_WHERE   == pCI->G.e_MainCard))
+            || CK_FILTER  == pCI->G.e_MainCard
+            || CK_GBYAGG  == pCI->G.e_MainCard
+            || CK_PROJECT == pCI->G.e_MainCard
+            || CK_WHERE   == pCI->G.e_MainCard))
     return;
 
   if (CK_AGGREG  == pCI->G.e_MainCard ||
@@ -89,37 +121,15 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if (CK_WHERE   == pCI->G.e_MainCard)
     vDebugPoint();
 
-       if (CK_AGGREG  == pCI->G.e_MainCard) pCI->G.p_aggreg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  if (CK_AGGREG  == pCI->G.e_MainCard) pCI->G.p_aggreg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_FILTER  == pCI->G.e_MainCard) pCI->G.p_filter->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_GBYAGG  == pCI->G.e_MainCard) pCI->G.p_gbyAgg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_PROJECT == pCI->G.e_MainCard) pCI->G.p_project->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_WHERE   == pCI->G.e_MainCard) pCI->G.p_where->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else NEVER_REACH
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  auto bLambdaFn = [pCI](Card* pCard)
-//  {
-//    Card_Term* p_term = _pCard_Term(pCard);
-//    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
-//      return C_CONTINUE_RECURSION;
-//
-//    Stz* szStmColOdn = p_term->szValue();
-//    if (! pCI->G_bResolveSubCard(CK_EXPR,szStmColOdn,CK_TBLCOLODN,pCI->G.i_MainCard))
-//      return C_CONTINUE_RECURSION;
-//
-//    //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
-//
-//    pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
-//    p_term->vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
-//
-//    return C_CONTINUE_RECURSION;
-//  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  bApplyRecursive(CK_TERM, bLambdaFn);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
