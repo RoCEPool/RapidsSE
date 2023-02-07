@@ -60,6 +60,8 @@ latex_elements = {
   'extraclassoptions': 'openany,oneside'  # remove blank pages after title and TOC
 }
 
+latex_show_pagerefs = True
+
 # -- Options for extensions --------------------------------------------------
 
 # Display todos by setting to True

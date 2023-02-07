@@ -1,31 +1,44 @@
 # Makefile for Sphinx documentation
 
-SPHINXOPTS     ?=
-SPHINXBUILD    ?= sphinx-build
-SOURCEDIR      = source
-BUILDDIR       = build
+SPHINXOPTS  ?=
+SPHINXBUILD ?= sphinx-build
+SOURCEDIR   = source
+BUILDDIR    = build
 
-RR_GRAMMAR     = source/cmdRef/grammar.bnf
-RR_OUTPUT_DIR  = source/rr
-RR_INDEX_HTML  = $(RR_OUTPUT_DIR)/index.html
-RR_INDEX_XHTML = $(RR_OUTPUT_DIR)/rr.xhtml
-RR_ZIPFILE     = $(RR_OUTPUT_DIR)/rr.zip
-RR_HTML_FRAG   = source/cmdRef/rr.html.fragment
-RR_FRAG_GEN	   = source/cmdRef/rrFragGen.sh
+RR_GRAMMAR       = source/cmdRef/grammar.bnf
+RR_OUTPUT_DIR    = source/rr
+RR_INDEX_HTML    = $(RR_OUTPUT_DIR)/index.html
+RR_INDEX_XHTML   = $(RR_OUTPUT_DIR)/rr.xhtml
+RR_ZIPFILE       = $(RR_OUTPUT_DIR)/rr.zip
 
-SPHINX_INSTALLED := $(shell command -v $(SPHINXBUILD) 2> /dev/null)
-LATEX_INSTALLED  := $(shell command -v latex 2> /dev/null)
-LATEXMK_INSTALLED:= $(shell command -v latexmk 2> /dev/null)
+# Syntax tree generation and file fragments
+RR_HTML_FRAG     = source/cmdRef/rr.html.fragment
+RR_HTML_FRAG_GEN = source/cmdRef/rrHtmlFragGen.sh
+RR_PDF_FRAG      = source/cmdRef/rr.rst.fragment
+RR_PDF_FRAG_GEN  = source/cmdRef/rrPdfFragGen.sh
 
 # Let's work out what OS we are on
 UNAME_S := $(shell uname -s)
 
+SPHINX_INSTALLED    := $(shell command -v $(SPHINXBUILD) 2> /dev/null)
+LATEX_INSTALLED     := $(shell command -v latex 2> /dev/null)
+LATEXMK_INSTALLED   := $(shell command -v latexmk 2> /dev/null)
+
+PDFTEX_PATH := $(shell command -v pdftex)
+PDFTEX_PATH := $(shell realpath $(PDFTEX_PATH))
+PDFTEX_PATH := $(shell dirname $(PDFTEX_PATH))
+
+export PATH := $(PATH):$(PDFTEX_PATH)
+
+RST_FILES := $(shell find $(SOURCEDIR) -name "*.rst")
+
+
+###############################################################################
+### 								RULES									###
+###############################################################################
+
 # Put it first so that "make" without argument is like "make all".
-all: pdf
-#	@echo "Validating links in rst files..."
-#	@echo
-#	@$(MAKE) linkcheck
-#	@echo
+all: html pdf
 
 checkSphinx:
 ifndef SPHINX_INSTALLED
@@ -67,16 +80,21 @@ else ifeq ($(UNAME_S),Darwin)
 endif # UNAME_S
 endif # LATEXMK_INSTALLED
 
+
 # synonym target
 rr: railroad ;
 
 # Convenience target to build all railroad diagrams
-railroad: $(RR_INDEX_HTML) $(RR_HTML_FRAG)
+railroad: $(RR_INDEX_HTML) $(RR_HTML_FRAG) $(RR_PDF_FRAG)
 
 # railroad HTML fragments to be included in the command reference
-$(RR_HTML_FRAG) : $(RR_INDEX_XHTML)
+$(RR_HTML_FRAG) : $(RR_INDEX_XHTML) $(RR_HTML_FRAG_GEN)
 	@echo "Extracting railroad SVG diagrams into a HTML fragment"
-	@$(RR_FRAG_GEN) $(RR_INDEX_XHTML) $(RR_HTML_FRAG)
+	@$(RR_HTML_FRAG_GEN) $(RR_INDEX_XHTML) $(RR_HTML_FRAG)
+
+$(RR_PDF_FRAG) : $(RR_INDEX_HTML) $(RR_PDF_FRAG_GEN)
+	@echo "Extracting railroad PNG diagrams into a rST fragment"
+	@$(RR_PDF_FRAG_GEN) $(RR_GRAMMAR) $(RR_PDF_FRAG)
 
 # Rule to generate the SVG railroad diagrams
 $(RR_INDEX_XHTML): $(RR_GRAMMAR)
@@ -108,13 +126,13 @@ version:
 	@echo "done"
 	@echo
 
-html: checkSphinx version $(RR_INDEX_HTML) $(RR_HTML_FRAG)
+html: checkSphinx version $(RR_INDEX_HTML) $(RR_HTML_FRAG) $(RST_FILES)
 	@echo "Building HTML documentation..."
 	@echo
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
-pdf: checkLatex html
+pdf: checkSphinx checkLatex $(RR_PDF_FRAG) $(RST_FILES)
 	@echo "Building PDF documentation..."
 	@echo
 	@LATEXMKOPTS="-interaction=nonstopmode" $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
@@ -125,6 +143,7 @@ clean:
 	@rm -rf "$(RR_OUTPUT_DIR)"
 	@rm -rf "$(RR_OUTPUT_DIR)"
 	@rm -rf "$(RR_HTML_FRAG)"
+	@rm -rf "$(RR_PDF_FRAG)"
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

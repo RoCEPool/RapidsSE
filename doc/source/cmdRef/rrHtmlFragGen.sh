@@ -1,8 +1,12 @@
 #!/bin/bash
+# This file produces a HTML fragment file (a partial HTML file that can be
+# #included into another file) of the syntax tree SVG railroad diagrams.
+# It takes the xhtml SVG file and turns it into a regular html file and
+# strips out any unnecessary stuff.
 
 DIR="$(dirname "$0")"
 
-EX_SCRIPT="${DIR}/rrFragGen.ex"
+EX_SCRIPT="${DIR}/rrHtmlFragGen.ex"
 
 # Check for ex
 which ex &>/dev/null || { echo "This tool requires 'ex' to be installed."; exit 1; }

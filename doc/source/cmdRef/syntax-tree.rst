@@ -3,14 +3,16 @@
 Syntax Tree
 ===========
 
+The diagrams below represent the syntax accepted by RapidsSE commands.
+
 .. only:: html
 
   .. include:: rr.html.fragment
 
 
 
-.. only:: pdflatex
+.. only:: latex
 
-   The complete syntax definitions are not yet available in the PDF
-   documentation. Please refer to the HTML documentation for this feature.
+  .. include:: rr.rst.fragment
+
 
