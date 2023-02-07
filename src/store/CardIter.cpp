@@ -235,12 +235,15 @@ CardIter::CardIter(Bench* pBench)
   m_pCard_temp     = nullptr;
   m_pCard_yanked   = nullptr;
 
+  m_pExpr_fold = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
   G.pSubQuery = nullptr;
+
+
   G_vClearMembers();
   G_vClearRegisters();
 

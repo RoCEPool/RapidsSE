@@ -3002,7 +3002,6 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   // fold of subQuery
 
   vFold_subQuery("H_A_NC_ro"_Stz);
-  Card_Expr* p_expr_fold = m_pCI->G.p_expr;
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -3036,7 +3035,7 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
     //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,m_pCI->m_pExpr_fold);
     m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
@@ -3046,7 +3045,7 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
     //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,m_pCI->m_pExpr_fold);
     m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
@@ -3056,7 +3055,7 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
     //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,m_pCI->m_pExpr_fold);
     m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
@@ -3085,15 +3084,15 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
   if (bSawProject) {
-    m_pCI->G.p_project->vInject_foldExpr(m_pCI,p_expr_fold);
-    m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI,p_expr_fold);
+    m_pCI->G.p_project->vInject_foldExpr(m_pCI,m_pCI->m_pExpr_fold);
+    m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI,m_pCI->m_pExpr_fold);
     m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
-    Card_Project::vUnproject_foldExpr(m_pCI,p_expr_fold);
+    Card_Project::vUnproject_foldExpr(m_pCI,m_pCI->m_pExpr_fold);
     m_pCI->vPrintBoard(__LINE__);
   }
   else {
     m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
-    Card_Project::vUnproject_foldExpr(m_pCI,p_expr_fold);
+    Card_Project::vUnproject_foldExpr(m_pCI,m_pCI->m_pExpr_fold);
     //Board::vUnproject_injected_sqResult(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
@@ -3184,12 +3183,12 @@ void Bench::vFold_subQuery(Stz* szFold)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 7) derive the fold (SQ result) expr
-  Card_Expr* p_expr_fold = nullptr;
+  m_pCI->m_pExpr_fold = nullptr;
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
-    p_expr_fold = m_pCI->G.p_expr;
+    m_pCI->m_pExpr_fold = m_pCI->G.p_expr;
   }
   m_pCI->vPrintBoard(__LINE__);
 

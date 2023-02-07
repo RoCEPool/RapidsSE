@@ -45,7 +45,7 @@ namespace STORE
     StreamDef*  m_pStreamDef;
     Table*      m_pTable;
 
-    CardCtl*     m_pCardCtl;
+    CardCtl*    m_pCardCtl;
 
     Card* m_pCard_child;
     Card* m_pCard_copied;
@@ -59,6 +59,8 @@ namespace STORE
     Card* m_pCard_resolved;
     Card* m_pCard_temp;
     Card* m_pCard_yanked;
+
+    Card_Expr* m_pExpr_fold;
 
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
