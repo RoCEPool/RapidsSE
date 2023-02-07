@@ -12,8 +12,10 @@ from releasebuilder.releaseconfig import ReleaseConfig
 from releasebuilder.buildrunner import BuildRunner
 from releasebuilder.buildrunner import C_INSTALLER_FILESPEC
 from releasebuilder.testrunner import TestRunner
+from releasebuilder.testrunner import terminate_instances_from_file
 import releasebuilder.repo as repo
 import releasebuilder.results as results
+
 
 C_PROG_RUN = "pipenv run python -m releasebuilder"
 C_CWD_SUFFIX = "releasetest"
@@ -44,6 +46,11 @@ def main() -> int:
     if not os.getcwd().endswith(C_CWD_SUFFIX):
         LOG.error(f"This file must be executed from the following subdirectory of the project root: {C_CWD_SUFFIX}")
         return 1
+
+    # First check for the cleanup directive
+    if len(sys.argv) == 2 and sys.argv[1].lower() == "--cleanup":
+        terminate_instances_from_file()
+        return 0
 
     # Validate the Python arguments
     (result_path, artifact_path, repo_path, config_path, skip_build, skip_test) = validate_arguments()

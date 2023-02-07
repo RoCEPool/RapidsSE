@@ -63,8 +63,6 @@ extern d8 C_D8_MID;
 
 #include "PadWord.hpp"
 
-#include "Asm.h"
-
 #include "Stz.hpp"
 #include "StrLib.hpp"
 

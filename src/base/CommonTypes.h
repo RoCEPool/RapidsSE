@@ -43,6 +43,8 @@ static const u8 C_IVL_USEC_SHIFT = 1000000;
 static const u8 C_TSP_USEC_MIN = 0;
 static const u8 C_TSP_USEC_MAX = 999999;
 
+static const u8 C_VCH_SIZE_MAX = 4000;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal
 class Bcd

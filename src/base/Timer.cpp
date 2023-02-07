@@ -78,16 +78,6 @@ void Timer::operator =(Timer xTimer)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get time of day in nanoseconds                                             */
-/*----------------------------------------------------------------------------*/
-i8 Timer::iGetTimeOfDay(void)
-{
-  _static_
-
-  return Hardware::iReadClock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* repair the timer                                                           */
 /*----------------------------------------------------------------------------*/
 void Timer::vRepair(Object* pObject)
@@ -123,7 +113,7 @@ void Timer::vStart(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  m_iStart  = TickingDevice::iGetTick();
+  m_iStart  = Hardware::iReadClock();
   m_iUpdate = 0;
 }
 
@@ -146,7 +136,7 @@ void Timer::vUpdate(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   ASSERT(m_iStart);
-  m_iUpdate = TickingDevice::iGetTick();
+  m_iUpdate = Hardware::iReadClock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,13 +173,9 @@ i8 Timer::iMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  i8 iTicks = this->iTickDelta();
+  i8 iMicros = iNanoseconds() / C_1K;
 
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  i8 iMicro = (iTicks * C_1M) / iTicksPerSec;
-  
-  return iMicro;
+  return iMicros;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,14 +184,10 @@ i8 Timer::iMicroseconds(void)
 i8 Timer::iMilliseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  i8 iTicks = this->iTickDelta();
 
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  i8 iMilli = (iTicks * C_1K) / iTicksPerSec;
-  
-  return iMilli;
+  i8 iMillis = iNanoseconds() / C_1M;
+
+  return iMillis;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,16 +196,8 @@ i8 Timer::iMilliseconds(void)
 i8 Timer::iNanoseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  i8 iTicks = this->iTickDelta();
 
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  //i8 iNano = (iTicks * C_1G) / iTicksPerSec;
-  
-  i16 iNano = ((i16)iTicks * (i16)C_1G) / (i16)iTicksPerSec;
-  
-  return (i8)iNano;
+  return iDelta();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,26 +206,20 @@ i8 Timer::iNanoseconds(void)
 i8 Timer::iSeconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  i8 iTicks = this->iTickDelta();
 
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  i8 iSeconds = iTicks / iTicksPerSec;
-  
+  i8 iSeconds = iNanoseconds() / C_1B;
+
   return iSeconds;
 }
 
 /*----------------------------------------------------------------------------*/
-/* number of ticks                                                            */
+/* difference between update and start time in nanoseconds                    */
 /*----------------------------------------------------------------------------*/
-i8 Timer::iTickDelta(void)
+i8 Timer::iDelta(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  i8 iTicks = (m_iUpdate - m_iStart);
-  
-  return iTicks;
+
+  return (m_iUpdate - m_iStart);
 }
 
 /*----------------------------------------------------------------------------*/

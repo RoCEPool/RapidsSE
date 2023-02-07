@@ -1647,7 +1647,8 @@ void AM::METRICS::vDerefMetrics(i8 iObjectNo, eCN eClassNo, eDR eAction)
 
   ThreadScratch* pThreadScratch = pThread->pThreadScratch();
 
-  i8 iTsc = Hardware::iReadTsc();
+  u4 uProcId;
+  i8 iTsc = Hardware::iReadTsc(&uProcId);
 
   pThreadScratch->vAddDerefMetrics(iObjectNo,eClassNo,iTsc,eAction);
 }

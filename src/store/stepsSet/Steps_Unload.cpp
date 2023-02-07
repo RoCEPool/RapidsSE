@@ -30,13 +30,19 @@ void Step::vUnloadToDisk(void)
   ENTRY();
 
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
+  i8 iShmSize = gxCmdLineArgs.m_xSysArgs.m_iRegionSize;
 
   if(nDiskpaths <= 0)
   {
-    vTrace("SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n"_Stz);
+    s256 eErrMsg( (Stz*) "SE was not started with the '--disk <path-to-disk-root>' option. Cannot unload.\n" );
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
     s256 sDir;
     m_pDataStack->vPopStr(sDir, __func__);
-    EXIT();
+
+    m_pDataStack->vPushStr(eErrMsg);
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+    m_pDataStack->vPushBol(false);
     return;
   }
 
@@ -59,6 +65,43 @@ void Step::vUnloadToDisk(void)
   if( ! Dir::bExists(sDirPath.szStz()))
     Dir::bMake(sDirPath.szStz());
 
+  // Check disk space before unload
+
+  i8 iFreeSpace = Dir::iFreeSpace(sDirPath.szStz());
+
+  if(iFreeSpace < 0) {
+    s256 eErrMsg = ""_Stz;
+
+    eErrMsg.vCatSprint("Error getting free space of dir %s. Cannot unload.\n"_Stz,
+                       sDirPath.szStz());
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    m_pDataStack->vPushStr(eErrMsg);
+    m_pDataStack->vPushInt(EC_DISK_SPACE_CHECK_FAILED);
+    m_pDataStack->vPushBol(false);
+    return;
+  }
+
+  i8 iMinSpace = iShmSize / nDiskpaths;
+  if(iFreeSpace < iMinSpace)
+  {
+    s256 eErrMsg = ""_Stz;
+
+    eErrMsg.vCatSprint("Dir %s does not contain enough space for unload.\n"
+                       "Dir has %.2f GB\n"
+                       "Minimum space required %.2f GB\n"
+                       "Cannot unload\n"_Stz,
+                       sDirPath.szStz(),
+                       (d8)iFreeSpace/(C_1GB),
+                       (d8)iMinSpace/(C_1GB));
+    vTrace("%s"_Stz, eErrMsg.szStz());
+
+    m_pDataStack->vPushStr(eErrMsg);
+    m_pDataStack->vPushInt(EC_LOW_DISK_SPACE);
+    m_pDataStack->vPushBol(false);
+    return;
+  }
+
   s256 sFilePath = ""_Stz;
 
   sFilePath.vCatSprint("%ssaveFile_%s_%lld"_Stz,
@@ -71,6 +114,7 @@ void Step::vUnloadToDisk(void)
 
   vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
 
+  m_pDataStack->vPushBol(true);
 
   EXIT();
 }

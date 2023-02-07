@@ -124,17 +124,18 @@ Op::~Op(void) noexcept(false)
 
   bool bAssert = false;
   if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
-    //vTrace("Operand Queue not empty\n"_Stz);
+    //vTrace("Operand Queue not empty\n"_Stz)
+
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
       if (pOperand->bIsMarker()) {
         if ((_pMarker(pOperand))->eOpMarker() == EV_X_CHILDEXIT)
           AM::vDeleteOperand(pOperand, nullptr);
-      }
-      else {
-        bAssert = true;
-        vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-      }
+        }
+        else {
+          bAssert = true;
+          vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+        }
 
       pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     }
@@ -521,8 +522,9 @@ void Op::vEventCountInc(eEV eEvent)
   m_pEvMgr->m_eCurEvent = eEvent;
 
   m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]++;
-  
-  i8 iTscp = BASE::iRdtscp();
+
+  u4 uProcId;
+  i8 iTscp = Hardware::iReadTsc(&uProcId);
   m_pEvMgr->m_pOperandWatch->vSaw(m_pEvMgr->m_eCurEvent,iTscp);
 }
 

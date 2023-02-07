@@ -102,7 +102,7 @@ if ! which pipenv &>/dev/null; then
 fi
 
 if [ "${PWD}" != "${DIR}" ]; then
-  cd "${DIR}"
+  cd "${DIR}" || { echo "Could not change to the directory: ${DIR}"; exit 1; }
 fi
 
 if ! [ -f "Pipfile" ]; then

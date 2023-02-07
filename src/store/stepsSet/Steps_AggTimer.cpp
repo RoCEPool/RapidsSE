@@ -26,8 +26,7 @@ void Step::vAddSteps_AggTimer(void)
   vAddStep("aggTimer.reportStr"_Stz, &Step::vAggTimerReportStr);
   vAddStep("aggTimer.reset"_Stz,     &Step::vAggTimerReset);
   vAddStep("aggTimer.secs"_Stz,      &Step::vAggTimerSecs);
-  vAddStep("aggTimer.ticks"_Stz,     &Step::vAggTimerTicks);
-  
+
   
   vAddStep("aggTimer[]"_Stz,        &Step::vAggTimerGet);
   vAddStep("aggTimer[].get"_Stz,    &Step::vAggTimerGet);
@@ -69,13 +68,13 @@ void Step::vAggTimerAdd(void)
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
 
-  i8 iTicks = m_pDataStack->iPopInt(__func__);
+  i8 iNanos = m_pDataStack->iPopInt(__func__);
   
-  i8 iAggTicks = pAggTimer->iTicks();
+  i8 iAggNanos = pAggTimer->iNanoseconds();
   
-  i8 iAdjTicks = iAggTicks + iTicks;
+  i8 iAdjNanos = iAggNanos + iNanos;
   
-  pAggTimer->vSet(iAdjTicks);
+  pAggTimer->vSet(iAdjNanos);
 
   EXIT();
 }
@@ -198,22 +197,6 @@ void Step::vAggTimerSecs(void)
   i8 iSeconds = pAggTimer->iSeconds();
   
   m_pDataStack->vPushInt(iSeconds);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* aggTimer.ticks -- get elapsed ticks                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vAggTimerTicks(void)
-{
-  ENTRY();
-  
-  AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iTicks = pAggTimer->iTicks();
-  
-  m_pDataStack->vPushInt(iTicks);
   
   EXIT();
 }
