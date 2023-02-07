@@ -2971,6 +2971,116 @@ void Bench::vFold_70_H_A_NC_ro(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Folding a non-correlated aggregate subquery (via having clause)            */
+/*----------------------------------------------------------------------------*/
+void Bench::vFold_70_H_A_NC_ro_smoothing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  // H A NC ro (refer: Q11)
+  // 1) the subquery produces a single result, such as avg(col)
+  // 2) that SQ result needs to be in every MQ row so the Having clause
+  //    can use it to filter rows, so:
+  //   a) cross join SQ result with every row of first table of MQ
+  //   b) inject SQ result into key & projection of MQ GbyAgg
+  //   c) correct the Having op to cater for SQ result
+  //   d) Un-project the SQ result from final rows
+
+  /* ARCHETYPE _r_a_b_HAVING:
+      select l_orderkey, sum(l_quantity)
+        from lineitem
+       group by l_orderkey
+      having sum(l_quantity) > (select avg(l_quantity)
+                                  from lineitem);
+  */
+
+  m_pCI->vTransform(__func__, "((vFold_70_H_A_NC_ro))"_Stz);
+
+  vAssert_Board_mqA();
+
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+    if (m_pCI->m_bRecursiveModel) {
+      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+    else {
+      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+  }
+  vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
+    m_pCI->vTracer("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  // 3) get copy of sq
+  m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
+
+  // 4) pop back to mq
+  m_pCI->G_vPopIter();
+  vAssert_Board_mqA();
+
+  // 5) add <fold> (before MQ)
+  m_pCI->G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
+  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
+
+  // 6) copy up sq (add before fold)
+  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
+  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
+  DELETE_CARD(m_pCI->m_pCard_yanked);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 7) derive the fold (SQ result) expr
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+  if (m_pCI->G_bEachMain(CK_WHERE)) {
+    m_pCI->G.p_where->vBump_Rightwards(1);
+  }
+
+  // 8) inject SQ result into MQ <gbyAgg>
+  Board::vInject_sqResult_Into_gbyAgg(m_pCI);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_HAVING)) {
+
+    // 9) correct MQ <having> after inject
+    Board::vCorrect_having_After_Inject(m_pCI);
+    m_pCI->vPrintBoard(__LINE__);
+
+    // 10) un-project injected SQ result
+    Board::vUnproject_injected_sqResult(m_pCI);
+    Card_Projection::vProjection_Analysis_v2(m_pCI);
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  vIsFlat(true);
+  m_pCI->G.pDeck->vClearMarksRecursive();
+
+  m_pCI->vEndTransform();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Optimise  ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

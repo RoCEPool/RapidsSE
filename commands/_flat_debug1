@@ -2,6 +2,8 @@
 /* _flat_debug1 -- (flattening)                                               */
 /*============================================================================*/
 
+// --initial _flat_debug1
+
 __TPCH_SCHEMA
 
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"

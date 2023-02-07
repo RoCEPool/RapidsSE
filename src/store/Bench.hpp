@@ -131,6 +131,7 @@ namespace STORE
     void vFold_50_W_L_C_E(void);
     void vFold_60_W_L_NC_NI(void);
     void vFold_70_H_A_NC_ro(void);
+    void vFold_70_H_A_NC_ro_smoothing(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // optimisation
