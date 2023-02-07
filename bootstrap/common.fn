@@ -904,7 +904,9 @@ function singleNodeCfgsSetValues() {
   shift
   local -a value=("$@")
 
-  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${value[@]}\""
+  arr=$( IFS=:; printf '%s' "${value[*]}" )
+
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]='${arr[@]}'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

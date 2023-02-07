@@ -228,7 +228,7 @@ void PsxThd::vMarkNonSeThread(void)
 /*----------------------------------------------------------------------------*/
 /* create thread, passing it function to execute                              */
 /*----------------------------------------------------------------------------*/
-i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
+pthread_t PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
 {
   _static_
     
@@ -236,7 +236,7 @@ i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
   
   pthread_attr_t tattr;
 
-  size_t size = C_512KB;
+  size_t size = C_1MB * 5;
 
   /* initialized with default attributes */
   i8 rCode = pthread_attr_init(&tattr);
@@ -250,13 +250,13 @@ i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
   
   if (rCode) {
     vTrace("pthread_create() error; rCode=%lld\n"_Stz,rCode);
-    return -1;
+    return (pthread_t) -1;
   }
   
   // this is important otherwise resources are not released
   pthread_detach(iThreadId);
   
-  return (i8)iThreadId;
+  return iThreadId;
 }
 
 /*----------------------------------------------------------------------------*/
