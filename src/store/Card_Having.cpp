@@ -44,13 +44,13 @@ Card_Having::~Card_Having(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* acclimate for injected fold expr                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
+void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_constraint = pSub_constraint();
 
-  pCI->G.p_constraint->vAcclimate_foldExpr(pCI,p_expr_fold);
+  pCI->G.p_constraint->vAcclimate_foldExpr(pCI,pCI->m_pExpr_fold);
 }
 
 /*============================================================================*/

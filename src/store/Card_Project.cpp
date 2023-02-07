@@ -49,7 +49,7 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vUnproject_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
+void Card_Project::vUnproject_foldExpr(CardIter* pCI)
 {
   _static_
 
@@ -129,7 +129,7 @@ void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inject fold expr into this project                                         */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vInject_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
+void Card_Project::vInject_foldExpr(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -137,9 +137,9 @@ void Card_Project::vInject_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
 
   pCI->G.p_expr->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(pCI->m_pExpr_fold->pSub_type()->pDupCardAndSubCards());
 
-  pCI->G.p_expr->vAppend(p_expr_fold->pSub_as()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(pCI->m_pExpr_fold->pSub_as()->pDupCardAndSubCards());
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
