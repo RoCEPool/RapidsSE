@@ -2999,72 +2999,11 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   vAssert_Board_mqA();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // flattening
+  // fold of subQuery
 
-  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
-  if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
-    if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-    else {
-      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-  }
-  vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
-  m_pCI->vPrintBoard(__LINE__);
+  vFold_subQuery("H_A_NC_ro"_Stz);
+  Card_Expr* p_expr_fold = m_pCI->G.p_expr;
 
-  // 2) push to sq
-  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
-    m_pCI->vTracer("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
-    NEVER_REACH
-  }
-  vAssert_Board_sqB();
-
-  // 3) get copy of sq
-  m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
-
-  // 4) pop back to mq
-  m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
-
-  // 5) add <fold> (before MQ)
-  m_pCI->G_vNewMember(CK_FOLD,"H_A_NC_ro"_Stz);
-  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
-
-  // 6) copy up sq (add before fold)
-  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
-  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
-  DELETE_CARD(m_pCI->m_pCard_yanked);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-
-    if (m_pCI->G.p_MainCard->pSub_projection())
-      m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection();
-
-    if (m_pCI->G_bIsNextMain(CK_FOLD))
-      break;
-  }
-
-
-  // 7) derive the fold (SQ result) expr
-  Card_Expr* p_expr_fold = nullptr;
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_FOLD)) {
-    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
-    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
-    p_expr_fold = m_pCI->G.p_expr;
-  }
   m_pCI->vPrintBoard(__LINE__);
 
 
@@ -3072,7 +3011,6 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
   // smoothing
 
   // Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
-
 
   // Table*
   i8 nTables = 0;
@@ -3170,9 +3108,95 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/*-- Folding -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- Optimise  ---------------------------------------------------------------*/
+/* Fold a (not) exists                                                        */
+/*----------------------------------------------------------------------------*/
+void Bench::vFold_exists(Stz* szFold)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fold a sub-query                                                           */
+/*----------------------------------------------------------------------------*/
+void Bench::vFold_subQuery(Stz* szFold)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+    if (m_pCI->m_bRecursiveModel) {
+      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+    else {
+      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+  }
+  vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
+    m_pCI->vTracer("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  // 3) get copy of sq
+  m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
+
+  // 4) pop back to mq
+  m_pCI->G_vPopIter();
+  vAssert_Board_mqA();
+
+  // 5) add <fold> (before MQ)
+  m_pCI->G_vNewMember(CK_FOLD,szFold);
+  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
+
+  // 6) copy up sq (add before fold)
+  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
+  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
+  DELETE_CARD(m_pCI->m_pCard_yanked);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+
+    if (m_pCI->G.p_MainCard->pSub_projection())
+      m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection();
+
+    if (m_pCI->G_bIsNextMain(CK_FOLD))
+      break;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 7) derive the fold (SQ result) expr
+  Card_Expr* p_expr_fold = nullptr;
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
+    p_expr_fold = m_pCI->G.p_expr;
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Optimisations  ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

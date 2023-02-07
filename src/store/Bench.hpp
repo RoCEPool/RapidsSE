@@ -122,7 +122,7 @@ namespace STORE
     void vTransform_StmColToColNmOfKeyExists(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // fold
+    // flattening
 
     void vFlatten_10_F(void);
     void vFlatten_20_W_A_C_ro(void);
@@ -133,8 +133,13 @@ namespace STORE
     void vFlatten_70_H_A_NC_ro(void);
     void vFlatten_70_H_A_NC_ro_smoothing(void);
 
+    // folding
+    void vFold_exists(Stz* szFold);
+    void vFold_subQuery(Stz* szFold);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // optimisation
+    // optimisations
+
     void vOptimiseLoop(void);
 
     bool bOptimise_CutSort(void);
