@@ -872,81 +872,14 @@ bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_BOLPRED)) {
-      pCI->G.p_bolPred = _pCard_BolPred(p_pred);
-      Stz* szValue_pred = pCI->G.p_bolPred->szValue();
-
-      if (szValue_pred->bSame("exists"_Stz) || szValue_pred->bSame("notExists"_Stz)) {
-        pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_bolPred->pGet(0));
-        pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
-        pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_bolPred->pGet(1));
-        pCI->m_sSqyNm  = pCI->m_pTerm_1->szValue();
-
-        bFoundCall = true;
-
-        pCI->G.p_bolPred->vMark1(MARK_AT);
-
-        return C_CONTINUE_RECURSION;
-      }
-
-      if (szValue_pred->bSame("in"_Stz) || szValue_pred->bSame("notIn"_Stz)) {
-        pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_bolPred->pGet(0));
-        pCI->m_sSqyNm  = pCI->m_pTerm_0->szValue();
-        pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_bolPred->pGet(1));
-        pCI->m_sSqyRsl = pCI->m_pTerm_1->szValue();
-        pCI->m_pTerm_2 = _pCard_Term(pCI->G.p_bolPred->pGet(2));
-        pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
-
-        bFoundCall = true;
-
-        pCI->G.p_bolPred->vMark1(MARK_AT);
-
-        return C_CONTINUE_RECURSION;
-      }
-
-      return C_CONTINUE_RECURSION;
-    }
-
-    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
-
-    pCI->G.p_roPred = _pCard_RoPred(p_pred);
-
-    if (! (   pCI->G.p_roPred->bIsValue("<"_Stz)
-           || pCI->G.p_roPred->bIsValue("<="_Stz)
-           || pCI->G.p_roPred->bIsValue("=="_Stz)
-           || pCI->G.p_roPred->bIsValue("!="_Stz)
-           || pCI->G.p_roPred->bIsValue(">="_Stz)
-           || pCI->G.p_roPred->bIsValue(">"_Stz)
-        ))
+    if (! (pCI->m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
       return C_CONTINUE_RECURSION;
 
-    if (3 == pCI->G.p_roPred->nChildCards()) {
-      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
-      // TODO: this doesnt seem right
-      pCI->m_sSqyRO  = pCI->m_pTerm_0->szValue();
-
-      pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-      pCI->m_sSqyArg = pCI->m_pTerm_1->szValue();
-
-      pCI->m_pTerm_2 = _pCard_Term(pCI->G.p_roPred->pGet(2));
-      pCI->m_sSqyNm  = pCI->m_pTerm_2->szValue();
-    }
-    else {
-      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
-      pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
-
-      pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-      pCI->m_sSqyNm  = pCI->m_pTerm_1->szValue();
-    }
-
+    pCI->m_sSqyNm  = pCI->m_pTerm_sqCall->szValue();
+    p_pred->vMark1(MARK_AT);
     bFoundCall = true;
 
-    pCI->G.p_roPred->vMark1(MARK_AT);
-
     return C_CONTINUE_RECURSION;
-
-    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
-
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -958,6 +891,113 @@ bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
 
   return bFoundCall;
 }
+/*----------------------------------------------------------------------------*/
+//bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
+//{
+//  _static_
+//
+//  bool bFoundCall = false;
+//
+//  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [pCI,&bFoundCall](Card_PRED* p_pred, bool bUpwards)
+//  {
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//
+//    if (! (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_ROPRED)))
+//      return C_CONTINUE_RECURSION;
+//
+//    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+//
+//    if (p_pred->bIsCard(CK_BOLPRED)) {
+//      pCI->G.p_bolPred = _pCard_BolPred(p_pred);
+//      Stz* szValue_pred = pCI->G.p_bolPred->szValue();
+//
+//      if (szValue_pred->bSame("exists"_Stz) || szValue_pred->bSame("notExists"_Stz)) {
+//        pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_bolPred->pGet(0));
+//        pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
+//        pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_bolPred->pGet(1));
+//        pCI->m_sSqyNm  = pCI->m_pTerm_1->szValue();
+//
+//        bFoundCall = true;
+//
+//        pCI->G.p_bolPred->vMark1(MARK_AT);
+//
+//        return C_CONTINUE_RECURSION;
+//      }
+//
+//      if (szValue_pred->bSame("in"_Stz) || szValue_pred->bSame("notIn"_Stz)) {
+//        pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_bolPred->pGet(0));
+//        pCI->m_sSqyNm  = pCI->m_pTerm_0->szValue();
+//        pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_bolPred->pGet(1));
+//        pCI->m_sSqyRsl = pCI->m_pTerm_1->szValue();
+//        pCI->m_pTerm_2 = _pCard_Term(pCI->G.p_bolPred->pGet(2));
+//        pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
+//
+//        bFoundCall = true;
+//
+//        pCI->G.p_bolPred->vMark1(MARK_AT);
+//
+//        return C_CONTINUE_RECURSION;
+//      }
+//
+//      return C_CONTINUE_RECURSION;
+//    }
+//
+//    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+//
+//    pCI->G.p_roPred = _pCard_RoPred(p_pred);
+//
+//    if (! (   pCI->G.p_roPred->bIsValue("<"_Stz)
+//              || pCI->G.p_roPred->bIsValue("<="_Stz)
+//              || pCI->G.p_roPred->bIsValue("=="_Stz)
+//              || pCI->G.p_roPred->bIsValue("!="_Stz)
+//              || pCI->G.p_roPred->bIsValue(">="_Stz)
+//              || pCI->G.p_roPred->bIsValue(">"_Stz)
+//    ))
+//      return C_CONTINUE_RECURSION;
+//
+//    if (3 == pCI->G.p_roPred->nChildCards()) {
+//      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+//      // TODO: this doesnt seem right
+//      pCI->m_sSqyRO  = pCI->m_pTerm_0->szValue();
+//
+//      pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
+//      pCI->m_sSqyArg = pCI->m_pTerm_1->szValue();
+//
+//      pCI->m_pTerm_2 = _pCard_Term(pCI->G.p_roPred->pGet(2));
+//      pCI->m_sSqyNm  = pCI->m_pTerm_2->szValue();
+//    }
+//    else {
+//      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+//      pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
+//
+//      pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
+//      pCI->m_sSqyNm  = pCI->m_pTerm_1->szValue();
+//    }
+//
+//    bFoundCall = true;
+//
+//    pCI->G.p_roPred->vMark1(MARK_AT);
+//
+//    return C_CONTINUE_RECURSION;
+//
+//    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+//
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//
+//  if (bFoundCall)
+//    return true;
+//
+//  return bFoundCall;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* fold in the fold expression                                                */

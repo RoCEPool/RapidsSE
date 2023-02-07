@@ -64,6 +64,7 @@ namespace STORE
     Card_Term* m_pTerm_1;
     Card_Term* m_pTerm_2;
     Card_Term* m_pTerm_corrPred;
+    Card_Term* m_pTerm_sqCall;
 
     s256 m_sT;
 

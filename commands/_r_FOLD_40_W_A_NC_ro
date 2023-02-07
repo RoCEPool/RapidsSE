@@ -2,6 +2,8 @@
 /* _r_FOLD_40_W_A_NC_ro -- sub-query flattening test : refer Q15              */
 /*============================================================================*/
 
+// --initial _r_FOLD_40_W_A_NC_ro
+
 trackMemory;
 
 _r_schema
@@ -12,6 +14,7 @@ create index PS_idx1 on partsupp (PS_SUPPKEY );
 create index S_idx0  on supplier (S_SUPPKEY  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 /optimise
 /glean_cue_from = "vTransform_FlattenByDecisionTree_originalModel"
@@ -28,6 +31,7 @@ select ps_partkey,
                                           where PS_SUPPKEY = S_SUPPKEY)
  group by ps_partkey
 ;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

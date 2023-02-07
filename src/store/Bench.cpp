@@ -2276,6 +2276,7 @@ void Bench::vFold_40_W_A_NC_ro(void)
 
   vAssert_Board_mqA();
 
+  Card_Term* p_term_sqCall = nullptr;
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
@@ -2285,6 +2286,7 @@ void Bench::vFold_40_W_A_NC_ro(void)
         vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
         NEVER_REACH
       }
+      p_term_sqCall = m_pCI->m_pTerm_sqCall;
     }
     else {
       if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
@@ -2295,7 +2297,7 @@ void Bench::vFold_40_W_A_NC_ro(void)
   }
   vTrace("Found W_A_NC_ro call to %s()->%s\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyRsl.szStz());
 
-  m_pCI->G_vNewMember(CK_FOLD,"W_A_NC_I"_Stz);
+  m_pCI->G_vNewMember(CK_FOLD,"W_A_NC_ro"_Stz);
   m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
 
   /*
@@ -2357,7 +2359,70 @@ void Bench::vFold_40_W_A_NC_ro(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
+  // 7) derive the fold (SQ result) expr
   m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  if (m_pCI->G_bEachMain(CK_WHERE)) {
+    m_pCI->G.p_where->vBump_Rightwards(1);
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+  if (m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+
+
+
+  // 8) inject SQ result into MQ <gbyAgg>
+//  Board::vInject_sqResult_Into_gbyAgg(m_pCI);
+//  m_pCI->G.pDeck->vRenumberRecursive();
+//  m_pCI->vPrintBoard(__LINE__);
+
+
+  m_pCI->G_vRestart();
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_WHERE)) {
+
+    m_pCI->G.p_roPred = m_pCI->G.p_where->pSub_roPred();
+    m_pCI->G.p_roPred->vMorph_To_bolPred(m_pCI);
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  p_term_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
+  m_pCI->vPrintBoard(__LINE__);
+  vDebugPoint();
+
+
+  vIsFlat(true);
+  m_pCI->G.pDeck->vClearMarksRecursive();
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->vEndTransform();
+
+
+
+
+
+
+
+
+
+  /*
 
   while (! m_pCI->G_bIsNextMain(CK_FOLD)) {
 
@@ -2458,6 +2523,8 @@ void Bench::vFold_40_W_A_NC_ro(void)
 
 
   m_pCI->vEndTransform();
+  */
+
 }
 
 /*----------------------------------------------------------------------------*/

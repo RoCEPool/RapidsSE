@@ -289,6 +289,15 @@ void Card_Term::vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList)
   this->vMark2(i_IdxCol);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValue(szStmColOdn);
+}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
@@ -299,7 +308,7 @@ eTE Card_Term::eTermEval(void)
 
   Stz* szTerm = this->sz();
 
-  if (szTerm->bSame("and"_Stz))        return TE_AND;
+       if (szTerm->bSame("and"_Stz))        return TE_AND;
   else if (szTerm->bSame("or"_Stz))         return TE_OR;
   else if (szTerm->bSame("not"_Stz))        return TE_NOT;
 

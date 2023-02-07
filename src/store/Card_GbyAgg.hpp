@@ -16,6 +16,8 @@ namespace STORE
     Card_GbyAgg(void);
    ~Card_GbyAgg(void) noexcept(false);
 
+    void vBump_Rightwards(i8 nBumpBy);
+
     void vComputeProjection(CardIter* pCI); // prototype
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
