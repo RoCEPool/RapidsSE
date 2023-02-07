@@ -652,7 +652,8 @@ namespace OBLIQUE
     public:
       static DicStack* pDicStack(void);
       static void vRetire(Task* pTask);
-      static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
+      static void vTriggerBidingOperand(Task* pTaskBiding, Task* pTriggeringTask);
+      static void vTriggerBidingPageIn(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
     class THREAD

@@ -2332,7 +2332,8 @@ void AM::SE::vWhereAmI(void)
   }
 
 
-  AM::pSchedule()->vDumpBidingSet();
+  AM::pSchedule()->vDumpBidingOperandSet();
+  AM::pSchedule()->vDumpBidingPageInSet();
   AM::pSchedule()->vDumpExecutingSet();
   AM::pSchedule()->vDumpReadyQueue();
   AM::pSchedule()->vDumpSleepingQueue();
@@ -3084,15 +3085,24 @@ void AM::TASK::vRetire(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trigger biding task                                                        */
+/* trigger biding operand task                                                */
 /*----------------------------------------------------------------------------*/
-void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
+void AM::TASK::vTriggerBidingOperand(Task* pTaskBiding, Task* pTriggeringTask)
 {
   _static_
-  
-  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
+
+  Scheduler::vTaskCross_TriggerBidingOperand(pTaskBiding, pTriggeringTask);
 }
 
+/*----------------------------------------------------------------------------*/
+/* trigger biding page in task                                                */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vTriggerBidingPageIn(Task* pTaskBiding, Task* pTriggeringTask)
+{
+  _static_
+  // Page in Demon triggers this after page in
+  Scheduler::vTaskCross_TriggerBidingPageIn(pTaskBiding, pTriggeringTask);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   THREAD                                   */

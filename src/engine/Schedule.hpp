@@ -33,7 +33,8 @@ namespace ENGINE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task sets
   
-    TaskList*  m_pBidingSet;       // set of op tasks biding to be triggered
+    TaskList*  m_pBidingOperandSet;// set of op tasks biding to be triggered
+    TaskList*  m_pBidingPageInSet; // set of op tasks biding for operand to be pagedin
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
     TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled
     TaskList*  m_pRetiredSet;      // set of retired tasks waiting to be deleted
@@ -59,7 +60,8 @@ namespace ENGINE
   // - - - - - - - - - - - - - - - - - - - - - - -
   // task
   private:
-    void vAddBidingSet(Task* pTask);
+    void vAddBidingOperandSet(Task* pTask);
+    void vAddBidingPageInSet(Task* pTask);
     void vAddExecutingSet(Task* pTask);
     void vAddRetiredSet(Task* pTask);
     void vAddSleepingQueue(Task* pTask);
@@ -72,7 +74,8 @@ namespace ENGINE
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);
   
-    void vRemoveBidingSet(Task* pTask);
+    void vRemoveBidingOperandSet(Task* pTask);
+    void vRemoveBidingPageInSet(Task* pTask);
     void vRemoveExecutingSet(Task* pTask);
     void vRemoveRetiredSet(Task* pTask);
     void vRemoveWaitingSet(Task* pTask);
@@ -96,7 +99,8 @@ namespace ENGINE
   // misc
   public:
     void vDropThreadIdleQueue(void);
-    void vDumpBidingSet(void);
+    void vDumpBidingOperandSet(void);
+    void vDumpBidingPageInSet(void);
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
@@ -104,7 +108,8 @@ namespace ENGINE
     void vDumpWaitingSet(void);
     void vGrabThreadIdleQueue(void);
     
-    i8   nTasksBiding(void);
+    i8   nTasksBidingOperand(void);
+    i8   nTasksBidingPageIn(void);
     i8   nTasksExecuting(void);
     i8   nTasksReady(void);
     i8   nTasksReadyLP(void);

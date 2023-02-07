@@ -10,25 +10,10 @@
 // We will update this to use the HashMap, and page in from disk
 // What happens if page out receives a buffer not in memory?
 // Potentially page it in, just to page it back out.
-void* BufferId::vAddressFromId(BufferId oBufferId)
+void* BufferId::aAddressFromId(BufferId oBufferId)
 {
   _static_
 
-/*
-  oBufferId.m_bIdFlag = 0;
-
-  // Convert BufferId to BufferNo to BufferAddress
-  PoolBuffer* pPoolBuffer =
-      FileMap::pToPoolBuffer(oBufferId.m_iAsI8);
-
-  HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(pPoolBuffer);
-
-  DataBuffer* pDataBuffer =
-      reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
-
-  return (void*) pDataBuffer;
-*/
   if(oBufferId.m_iAsI8 == 0)
     return nullptr;
 

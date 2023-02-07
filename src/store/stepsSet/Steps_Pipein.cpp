@@ -51,10 +51,10 @@ void Step::vPipeinBide(void)
   Op* pOp = *m_pOp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  bool bPageIn = false;
   if (m_pThread->eDedicated()) {
         
-    while ( ! (pOperand = pOp->pPopOoOLeft()) ) {
+    while ( ! (pOperand = pOp->pPopOoOLeft(&bPageIn)) ) {
       vDropTaskLock((Stz*)__func__);
       m_pThread->pPsxThd()->vSleepMsec(10,CN_TASK);
 
@@ -67,13 +67,15 @@ void Step::vPipeinBide(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   else {
-    
-    pOperand = pOp->pPopOoOLeft();
+    pOperand = pOp->pPopOoOLeft(&bPageIn);
     m_pLogicUnit->vSetPipein(pOperand);
     
     if (m_pLogicUnit->m_xpPipein.bIsNull()) {
       RASSERT(bIsLocked());
-      vScheduleBide();
+      if(bPageIn)
+        vScheduleBidePageIn();
+      else
+        vScheduleBideForOperand();
     }
     
   }
@@ -94,12 +96,16 @@ void Step::vPipeinBideNext(void)
     Op* pOp = *m_pOp;
 
   if (m_pLogicUnit->m_xpPipein.bIsNull()) {
-    
-    if ( (pOperand = pOp->pPopOoOLeft()) ) {
+    bool bPageIn = false;
+    if ( (pOperand = pOp->pPopOoOLeft(&bPageIn)) ) {
       m_pLogicUnit->vSetPipein(pOperand);
     }
     else {
-      NEVER_REACH;
+      if(bPageIn) {
+        vScheduleBidePageIn();
+      }
+      else
+        NEVER_REACH;
     }
     
   }
@@ -236,9 +242,10 @@ void Step::vPipeinNext(void)
   RASSERT(m_pLogicUnit->m_xpPipein.bIsNull());
       
   // revised job/op model
-    Op* pOp = *m_pOp;
+  Op* pOp = *m_pOp;
 
-  Operand* pOperand = pOp->pPopOoOLeft();
+  bool bPageIn = false;
+  Operand* pOperand = pOp->pPopOoOLeft(&bPageIn);
   
   m_pLogicUnit->vSetPipein(pOperand);
   

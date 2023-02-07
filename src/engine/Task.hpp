@@ -175,7 +175,8 @@ namespace ENGINE
     void vRetire(void);
 
     DicStack* pSaveDicStack(void);
-    void vScheduleBide(void);
+    void vScheduleBideForOperand(void);
+    void vScheduleBidePageIn(void);
     void vScheduleHibernate(void);
     void vScheduleRetire(void);
     void vScheduleSleep(void);

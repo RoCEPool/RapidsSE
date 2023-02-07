@@ -170,7 +170,7 @@ RowBuffer* ToKeyHshRow::pRowBufferFromId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
     
-  return (RowBuffer*) BufferId::vAddressFromId(m_oRowBufferId);
+  return (RowBuffer*) BufferId::aAddressFromId(m_oRowBufferId);
 }
 
 /*----------------------------------------------------------------------------*/

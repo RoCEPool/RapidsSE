@@ -21,7 +21,7 @@ namespace BASE
       i8     m_iAsI8;
     };
 
-    static void* vAddressFromId(BufferId oBuffId);
+    static void* aAddressFromId(BufferId oBufferId);
     static BufferId vBufferIdFromNo(i8 iPoolBufferNo);
     static bool bIsAddress(BufferId oBufferId);
     static bool bIsBufferId(BufferId oBufferId);

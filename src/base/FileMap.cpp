@@ -110,7 +110,7 @@ void FileMap::vToDisk(Operand* pOperand)
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
   if(1 == BufferId::bIsBufferId(oBufferId)) {
-    pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);//hashmap
+    pOperand = (Operand*) BufferId::aAddressFromId(oBufferId);//hashmap
   }
 
   //---------------------------------------------------------------------------

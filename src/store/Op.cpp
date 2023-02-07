@@ -287,8 +287,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   // test for biding op/task
   
   eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
-  if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
+  if (TS_BIDING_OPERAND == eTaskState) {
+    AM::TASK::vTriggerBidingOperand(m_pTask, pTriggeringTask);
     return;
   }
   else {
@@ -328,8 +328,8 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   // test for biding op/task
   
   eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
-  if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
+  if (TS_BIDING_OPERAND == eTaskState) {
+    AM::TASK::vTriggerBidingOperand(m_pTask, pTriggeringTask);
     return;
   }
   else {
@@ -1432,7 +1432,7 @@ Operand* Op::pPopOoO(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand first off OoO queue, if null then Left queue                   */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOoOLeft(void)
+Operand* Op::pPopOoOLeft(bool* pbPageIn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1440,6 +1440,8 @@ Operand* Op::pPopOoOLeft(void)
   RASSERT(bIsLocked());
   
   //Operand* pOperand = m_pQueueLeft->pPopQueue();
+
+  *pbPageIn = false;
   
   bool bLeft = false;
 
@@ -1465,7 +1467,13 @@ Operand* Op::pPopOoOLeft(void)
   oBufferId.m_pvAsAddress = (void*)pOperand;
   if(1 == oBufferId.m_bIdFlag)
   {
-    pOperand = (Operand*)BufferId::vAddressFromId(oBufferId);
+    pOperand = (Operand*) BufferId::aAddressFromId(oBufferId); // this, BufferId
+    if(pOperand == nullptr)
+    {
+      // Queue request -> PageIn Demon(BufferId + m_pTask)
+      *pbPageIn = true;
+      return nullptr;
+    }
   }
 #endif
 
