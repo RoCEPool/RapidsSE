@@ -2,6 +2,8 @@
 /* _r_FROM_COL3                                                               */
 /*============================================================================*/
 
+// --initial _r_FROM_COL3
+
 create table TABLE1 (
   pcol1   INTEGER NOT NULL,
   tcol1   INTEGER NOT NULL,

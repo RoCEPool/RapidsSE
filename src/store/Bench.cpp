@@ -1710,11 +1710,14 @@ void Bench::vFlatten_10_F(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, "((20))"_Stz);
+  m_pCI->vTransform(__func__, "((vFlatten_10_F))"_Stz);
 
   vAssert_Board_mqA();
   m_pCI->vPrintBoard(__LINE__);
 
+  vFold_from("From"_Stz);
+
+  /*
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
   RASSERT(m_pCI->G_bEachMain(CK_CALL));
@@ -1764,6 +1767,9 @@ void Bench::vFlatten_10_F(void)
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(m_pCI);
   }
+
+  */
+
   m_pCI->vPrintBoard(__LINE__);
 
 //  Card_Stream::vStream_AdjustLoHi(m_pCI);
@@ -3110,12 +3116,71 @@ void Bench::vFlatten_70_H_A_NC_ro_smoothing(void)
 /*-- Folding -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /* Fold a (not) exists                                                        */
 /*----------------------------------------------------------------------------*/
 void Bench::vFold_exists(Stz* szFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fold a from                                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vFold_from(Stz* szFold)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
+  vAssert_Board_mqA();
+  RASSERT(m_pCI->G_bEachMain(CK_CALL));
+  vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz,m_pCI->G.p_call->szValue());
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  m_pCI->G_vNewMember(CK_FOLD,"FROM"_Stz);
+  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get copy of sq and push before mq
+
+  // x) push to sq
+  if (! m_pCI->G_bPushBoard(m_pCI->G.p_call->szValue())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->G.p_call->szValue());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(0);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
+
+  // x) pop back to mq
+  m_pCI->G_vPopIter();
+  vAssert_Board_mqA();
+
+  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_copied);
+  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_copied);
+  DELETE_CARD(m_pCI->m_pCard_copied);
+
+  m_pCI->G.pDeck->vRemoveChild(m_pCI->G.p_call);
+  DELETE_CARD(m_pCI->G.p_call);
+
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 7) derive the fold (SQ result) expr
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldProjection_F(m_pCI);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
