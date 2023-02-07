@@ -37,6 +37,7 @@ namespace STORE
                                    bool bParamAllowedInBounds);
     Stz* szColNm(i8 i_Col_base0);
     void vProjectionAnalysis(CardIter* pCI); // prototype
+    void vReProjection(CardIter* pCI); // prototype
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(char* cTableSyn);

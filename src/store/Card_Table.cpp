@@ -434,6 +434,68 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* table projection analysis                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vReProjection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_Projection* p_projection = pSub_projection())
+    vRemoveDeleteChild(p_projection);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  pCI->G.p_tableNm = pSub_tableNm();
+
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Card_Projection* p_projection;
+  if (pCI->G.p_projection)
+    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
+  else
+    p_projection = new Card_Projection;
+
+  //  --  --  --  --  --  --  --  --  --  --  --  --  --
+
+  i8 i_Expr = p_projection->nExpr() + 1;
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_Expr* p_expr = new Card_Expr;
+    p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
+    p_projection->vAppend(p_expr);
+
+//    Card_StmCol* p_stmCol = new Card_StmCol();
+//    p_stmCol->vValue(pColumn->szColNm());
+//    p_expr->vAppend(p_stmCol);
+
+    Stz* szType = aCT[pColumn->eColumnType()];
+    Card_Type *pCard_Type = new Card_Type(szType);
+    p_expr->vAppend(pCard_Type);
+
+    Card_As* p_as = new Card_As(pColumn->szColNm());
+    p_expr->vAppend(p_as);
+
+    Card_ColNm* p_colNm = new Card_ColNm;
+    p_colNm->vValue(pColumn->szColNm());
+    p_expr->vAppend(p_colNm);
+
+    Card_TblColOdn* p_tblColOdn = new Card_TblColOdn;
+    p_tblColOdn->vValueSprint("$%c.%lld"_Stz,cValue(),i_Col+1);
+    p_expr->vAppend(p_tblColOdn);
+
+  }
+
+  vAppend(p_projection);
+
+  pCI->G.p_projection = p_projection;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Table::bScopeContains_Pred(Card_PRED* p_pred,

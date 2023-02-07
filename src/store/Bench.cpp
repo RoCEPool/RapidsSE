@@ -3049,6 +3049,49 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
   }
   m_pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // Table* [Where] GbyAgg_PNO [Project (avg)] Having
+
+  m_pCI->G.p_projection = nullptr;
+
+
+  // Table*
+  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+    m_pCI->G.p_table->vReProjection(m_pCI);
+  }
+
+  // [Where]
+  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
+    m_pCI->G.p_where->vBump_Rightwards(1);
+  }
+
+  // GbyAgg_partition
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+  }
+
+  // GbyAgg_node
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+  }
+
+  // GbyAgg_origin
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+  }
+
+  // [project (avg)]
+  if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
+  }
+
+  // Having
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+  }
+
+
+
+
+
+
+
   if (m_pCI->G_bEachMain(CK_WHERE)) {
     m_pCI->G.p_where->vBump_Rightwards(1);
   }
@@ -3069,8 +3112,12 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
     Board::vUnproject_injected_sqResult(m_pCI);
     Card_Projection::vProjection_Analysis_v2(m_pCI);
   }
-
   m_pCI->vPrintBoard(__LINE__);
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();

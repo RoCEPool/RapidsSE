@@ -21,6 +21,8 @@ namespace STORE
     void vComputeProjection(CardIter* pCI); // prototype
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
+    void vInject_sqResult(CardIter* pCI);
+
   };
 
   Card_GbyAgg* _pCard_GbyAgg(void* aAddr);
