@@ -140,15 +140,15 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_Rightwards(i8 nBumpBy)
+void Card_Expr::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vBump_Rightwards(nBumpBy);
+    p_boolCalc->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_Rightwards(nBumpBy);
+    p_rpnCalc->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
 
 }
 

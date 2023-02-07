@@ -17,7 +17,7 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
-    void vBump_Rightwards(i8 nBumpBy);
+    void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     Card_Term* pGetSingle_stmColOdn(void);

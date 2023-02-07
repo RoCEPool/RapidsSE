@@ -28,6 +28,7 @@ namespace STORE
     eRO  eEvalRelOp(void);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
+    bool bIsFoldExpr(void);
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);

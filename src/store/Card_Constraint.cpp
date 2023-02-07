@@ -52,14 +52,24 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* acclimate for injected fold expr                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Constraint::vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vBump_Rightwards(1,true);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vBump_Rightwards(i8 nBumpBy)
+void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_Rightwards(nBumpBy);
+    p_expr->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
 
 }
 

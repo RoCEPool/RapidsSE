@@ -132,7 +132,7 @@ void Board::vAdd_Partitioning(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCorrect_having_After_Inject(CardIter* pCI)
+void Board::vCorrect_having_After_Inject(CardIter* pCI, bool bBump)
 {
   _static_
 
@@ -140,15 +140,17 @@ void Board::vCorrect_having_After_Inject(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card *pCard) {
+  auto bLambdaFn = [pCI,bBump](Card *pCard) {
 
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
     pCI->G.p_roPred = _pCard_RoPred(pCard);
 
-    pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
-    pCI->m_pTerm_0->vBump_StreamColOrdinal();
+    if (bBump) {
+      pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
+      pCI->m_pTerm_0->vBump_StreamColOrdinal();
+    }
 
     pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
     pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);

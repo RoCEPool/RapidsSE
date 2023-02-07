@@ -15,6 +15,8 @@ namespace STORE
   
     Card_Having(void);
    ~Card_Having(void) noexcept(false);
+
+    void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
   };
 
   Card_Having* _pCard_Having(void* aAddr);

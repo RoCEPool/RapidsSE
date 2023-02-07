@@ -205,8 +205,10 @@ static Stz* P_Restream     = "bRestream"_Stz;
 static Stz* P_Restreamed   = "bRestreamed"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
+static Stz* P_Smoothed     = "bSmoothed"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
+static Stz* P_Unproject    = "bUnproject"_Stz;
 
 static Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
 static Stz* C_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;

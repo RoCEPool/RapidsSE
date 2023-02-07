@@ -627,7 +627,7 @@ void CardCtl::vReset(void)
 
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);
-  vPrintProperties(CK_TABLE, false);
+  //vPrintProperties(CK_TABLE, false);
 
   vPrintName(CK_TERM,false);
   vPrintNo(CK_TERM,false);

@@ -93,6 +93,9 @@ void Card_GbyAgg::vInject_sqResult(CardIter* pCI, Card_Expr* p_expr_fold)
 
   Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI,p_expr_fold);
   Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI,p_expr_fold);
+
+  pCI->G.p_key->vRenumberAllExpr();
+  pCI->G.p_projection->vRenumberAllExpr();
 }
 
 /*============================================================================*/

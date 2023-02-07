@@ -1213,7 +1213,7 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                         /* H_A_NC_ro    Q11 */ vFold_70_H_A_NC_ro();
+        else                                         /* H_A_NC_ro    Q11 */ vFold_70_H_A_NC_ro_smoothing();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
@@ -2998,6 +2998,9 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
 
   vAssert_Board_mqA();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // flattening
+
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
     if (m_pCI->m_bRecursiveModel) {
@@ -3064,98 +3067,101 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
   }
   m_pCI->vPrintBoard(__LINE__);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // Table* [Where] GbyAgg_PNO [Project (avg)] Having
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing
+
+  // Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
 
   // Table*
+  i8 nTables = 0;
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+    nTables++;
+    m_pCI->G.p_table->Y_vSet(P_Smoothed);
     m_pCI->G.p_table->vReProjection(m_pCI);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
   }
 
   // [Where]
+  bool bSawWhere = false;
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
+    bSawWhere = true;
     m_pCI->G.p_where->vBump_Rightwards(1);
+    m_pCI->G.p_where->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+    //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
     m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+    //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
     m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+    //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
     m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   // [project (avg)]
+  bool bSawProject = false;
   if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
+    bSawProject = true;
+    m_pCI->G.p_project->vBump_Rightwards(1);
+    m_pCI->G.p_project->Y_vSet(P_Smoothed);
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   // Having
   if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
-    Board::vCorrect_having_After_Inject(m_pCI);
+    Board::vCorrect_having_After_Inject(m_pCI, !bSawProject);
+    m_pCI->G.p_having->Y_vSet(P_Smoothed);
     m_pCI->G.pDeck->vRenumberRecursive();
     m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
 
-    Board::vUnproject_injected_sqResult(m_pCI);
+  //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+
+  if (bSawProject) {
+    m_pCI->G.p_project->vInject_foldExpr(m_pCI,p_expr_fold);
+    m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI,p_expr_fold);
+    m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
+    Card_Project::vUnproject_foldExpr(m_pCI,p_expr_fold);
     m_pCI->vPrintBoard(__LINE__);
-
   }
-
-
-
-
-
-
-/*
-  if (m_pCI->G_bEachMain(CK_WHERE)) {
-    m_pCI->G.p_where->vBump_Rightwards(1);
-  }
-
-  // 8) inject SQ result into MQ <gbyAgg>
-  Board::vInject_sqResult_Into_gbyAgg(m_pCI);
-  m_pCI->G.pDeck->vRenumberRecursive();
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_HAVING)) {
-
-    // 9) correct MQ <having> after inject
-    Board::vCorrect_having_After_Inject(m_pCI);
+  else {
+    m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
+    Card_Project::vUnproject_foldExpr(m_pCI,p_expr_fold);
+    //Board::vUnproject_injected_sqResult(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
-
-    // 10) un-project injected SQ result
-    Board::vUnproject_injected_sqResult(m_pCI);
-    Card_Projection::vProjection_Analysis_v2(m_pCI);
+    vDebugPoint();
   }
-  m_pCI->vPrintBoard(__LINE__);
-
-*/
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();

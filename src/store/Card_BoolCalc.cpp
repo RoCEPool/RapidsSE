@@ -53,7 +53,7 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy)
+void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -61,7 +61,7 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this,nBumpBy](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [this,nBumpBy,bSkipFoldExpr](Card_PRED* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -70,6 +70,9 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
+    if (bSkipFoldExpr && p_term->bIsFoldExpr())
+      return C_CONTINUE_RECURSION;
+
     if (Card::bIsStreamColOrdinal(p_term->szValue())) {
       p_term->vBump_StreamColOrdinal(nBumpBy);
       p_term->vMark1(MARK_CHANGED);

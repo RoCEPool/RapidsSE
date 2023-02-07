@@ -244,7 +244,20 @@ char Card_Term::cGetTableSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a stream-column                                               */
+/* is this term the fold expr?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsFoldExpr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsValue("$1"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a stream-column?                                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsStmColOdn(void)
 {
@@ -256,7 +269,7 @@ bool Card_Term::bIsStmColOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a table-column                                                */
+/* is this term a table-column?                                               */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsTblColOdn(void)
 {

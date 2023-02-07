@@ -47,7 +47,9 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_
 {
   _static_
 
-  pCI->G_vNewMember(CK_EXPR);
+  pCI->G.p_expr = new Card_Expr;
+
+  pCI->G.p_expr->Y_vSet(P_Injected);
 
   pCI->G.p_expr->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
 
@@ -66,6 +68,8 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
   //pCI->G_vNewMember(CK_EXPR);
 
   Card_Expr* p_expr_new = new Card_Expr;
+
+  p_expr_new->Y_vSet(P_Injected);
 
   p_expr_new->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
 
