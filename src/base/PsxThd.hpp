@@ -38,7 +38,7 @@ namespace BASE
     static void  vMarkNonSeThread(void);
     static bool  bIsSeThread(void);
 
-    static i8    iSpawnPosixThread(void* aFun(void*), void* aArg);
+    static pthread_t    iSpawnPosixThread(void* aFun(void*), void* aArg);
 
     static bool  bTlsCreate(pthread_key_t* aTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);

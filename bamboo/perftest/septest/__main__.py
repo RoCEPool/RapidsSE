@@ -7,7 +7,9 @@ import argparse
 import subprocess
 
 import pyutils.errors as errors
+import septest.runners.jobrunner
 from septest.runners.jobrunner import JobRunner
+from septest.runners.jobrunner import terminate_instances_from_file
 
 C_PROG_RUN = "pipenv run python -m septest"
 C_REL_REPO_ROOT = "../../"
@@ -31,6 +33,11 @@ def main() -> int:
     if not os.getcwd().endswith(C_CWD_SUFFIX):
         LOG.error(f"This file must be executed from the following subdirectory of the project root: {C_CWD_SUFFIX}")
         return 1
+
+    # First check for the cleanup directive
+    if len(sys.argv) == 2 and sys.argv[1].lower() == "--cleanup":
+        terminate_instances_from_file()
+        return 0
 
     # Extract the command line arguments
     arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the SE Performance Test")
@@ -93,7 +100,11 @@ def main() -> int:
                           result_path,
                           tags,
                           not no_build)
-    jobrunner.run_job()
+    try:
+        jobrunner.run_job()
+    except errors.Ec2InsufficientCapacity:
+        return 1
+
     return 0
 
 
