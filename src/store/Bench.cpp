@@ -3041,11 +3041,26 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
+
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+
+    if (m_pCI->G.p_MainCard->pSub_projection())
+      m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection();
+
+    if (m_pCI->G_bIsNextMain(CK_FOLD))
+      break;
+  }
+
+
   // 7) derive the fold (SQ result) expr
+  Card_Expr* p_expr_fold = nullptr;
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
+    p_expr_fold = m_pCI->G.p_expr;
   }
   m_pCI->vPrintBoard(__LINE__);
 
@@ -3053,29 +3068,43 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
 
   // Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
-  m_pCI->G.p_projection = nullptr;
-
 
   // Table*
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
     m_pCI->G.p_table->vReProjection(m_pCI);
+    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   // [Where]
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
     m_pCI->G.p_where->vBump_Rightwards(1);
+    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
+    m_pCI->G.p_gbyAgg->vInject_sqResult(m_pCI,p_expr_fold);
+    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   // [project (avg)]
@@ -3083,7 +3112,14 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
   }
 
   // Having
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+  if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
+    Board::vCorrect_having_After_Inject(m_pCI);
+    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->vPrintBoard(__LINE__);
+
+    Board::vUnproject_injected_sqResult(m_pCI);
+    m_pCI->vPrintBoard(__LINE__);
+
   }
 
 
@@ -3091,7 +3127,7 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
 
 
 
-
+/*
   if (m_pCI->G_bEachMain(CK_WHERE)) {
     m_pCI->G.p_where->vBump_Rightwards(1);
   }
@@ -3113,6 +3149,8 @@ void Bench::vFold_70_H_A_NC_ro_smoothing(void)
     Card_Projection::vProjection_Analysis_v2(m_pCI);
   }
   m_pCI->vPrintBoard(__LINE__);
+
+*/
 
 
 

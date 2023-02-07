@@ -80,11 +80,9 @@ void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vInject_sqResult(CardIter* pCI)
+void Card_GbyAgg::vInject_sqResult(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr* p_expr_fold = nullptr;
 
   pCI->G.p_key = pCI->G.p_gbyAgg->pSub_key();
   pCI->G.p_key->vBump_stmOdn_In_rpnCalc(pCI);
@@ -95,7 +93,6 @@ void Card_GbyAgg::vInject_sqResult(CardIter* pCI)
 
   Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI,p_expr_fold);
   Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI,p_expr_fold);
-
 }
 
 /*============================================================================*/
