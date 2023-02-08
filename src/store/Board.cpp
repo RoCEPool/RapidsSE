@@ -881,6 +881,11 @@ bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
     p_pred->vMark1(MARK_AT);
     bFoundCall = true;
 
+    if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
+      pCI->m_pTerm_2 = _pCard_Term(p_pred->pGet(2));
+      pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
+    }
+
     return C_CONTINUE_RECURSION;
   };
 

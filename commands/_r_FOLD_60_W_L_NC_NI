@@ -2,6 +2,8 @@
 /* _r_FOLD_60_W_L_NC_NI -- sub-query flattening test : refer Q16              */
 /*============================================================================*/
 
+// --initial _r_FOLD_60_W_L_NC_NI
+
 trackMemory;
 
 _r_init
