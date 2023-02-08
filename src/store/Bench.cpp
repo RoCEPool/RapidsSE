@@ -1179,7 +1179,7 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
       } else {
              if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I_smooth();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
         else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro();
       }
@@ -2060,8 +2060,52 @@ void Bench::vFlatten_30_W_A_NC_I_smooth(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-  // | Fold | Table* | aggreg_PNO
+  // | Fold | Table* | [Where] Aggreg_PNO
 
+  RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
+
+
+  // Table*
+  i8 nTables = 0;
+  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+    nTables++;
+
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
+  // [Where]
+  bool bSawWhere = false;
+  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
+    bSawWhere = true;
+
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  // Aggreg_partition
+  if (m_pCI->G_bIsNextMain(CK_AGGREG) && m_pCI->G_bEachMain(CK_AGGREG)) {
+
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  // Aggreg_node
+  if (m_pCI->G_bIsNextMain(CK_AGGREG) && m_pCI->G_bEachMain(CK_AGGREG)) {
+
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  // Aggreg_origin
+  if (m_pCI->G_bIsNextMain(CK_AGGREG) && m_pCI->G_bEachMain(CK_AGGREG)) {
+
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+
+
+/*
   Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
@@ -2086,6 +2130,7 @@ void Bench::vFlatten_30_W_A_NC_I_smooth(void)
   }
 
   m_pCI->vPrintBoard(__LINE__);
+  */
 
 
   vIsFlat(true);
@@ -2400,6 +2445,8 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
   // smoothing
 
   // subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+
+  RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
 
   // Table*
   i8 nTables = 0;
