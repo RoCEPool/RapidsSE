@@ -7,4 +7,5 @@ Overview of RapidsSE
    :maxdepth: 1
 
    aboutSE
+   architecture
    features
