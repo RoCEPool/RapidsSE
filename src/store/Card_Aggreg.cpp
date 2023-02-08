@@ -77,6 +77,8 @@ void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 void Card_Aggreg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_aggreg->Y_vSet(P_Smoothed);
 }
 
 /*============================================================================*/

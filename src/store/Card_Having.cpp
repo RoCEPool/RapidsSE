@@ -62,7 +62,9 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
 
   pCI->G.p_having->Y_vSet(P_Smoothed);
 
-  Board::vCorrect_having_After_Inject(pCI,(! bSawProject));
+  bool bBump = ! bSawProject;
+
+  Board::vCorrect_having_After_Inject(pCI,bBump);
   pCI->G.pDeck->vRenumberRecursive();
 }
 
