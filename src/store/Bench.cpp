@@ -1181,7 +1181,7 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro_smooth();
+        else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
@@ -1718,6 +1718,55 @@ void Bench::vFlatten_40_W_A_NC_ro_smooth(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
+  // Fold | Table* Where GbyAgg_PNO
+
+  // Table*
+  i8 nTables = 0;
+  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+    nTables++;
+    m_pCI->G.p_table->vSmooth(m_pCI);
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
+  // [Where]
+  bool bSawWhere = false;
+  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
+    bSawWhere = true;
+    m_pCI->G.p_where->vSmooth(m_pCI,false);
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  // GbyAgg_partition
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,false,1);
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  // GbyAgg_node
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,false,1);
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  // GbyAgg_origin
+  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,false,1);
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+
+
+
+
+
+
+
+/*
+
   if (m_pCI->G_bEachMain(CK_WHERE)) {
     m_pCI->G.p_where->vBump_Rightwards(1);
   }
@@ -1744,9 +1793,13 @@ void Bench::vFlatten_40_W_A_NC_ro_smooth(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
-  m_pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
   m_pCI->vPrintBoard(__LINE__);
   vDebugPoint();
+*/
+
+  m_pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
   vIsFlat(true);
@@ -2017,21 +2070,21 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
 
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI);
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,true,0);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI);
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,true,0);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI);
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,true,0);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
