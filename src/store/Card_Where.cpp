@@ -220,13 +220,14 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vSmooth(CardIter* pCI, bool bMorph_bolPred_To_cmpPred)
+void Card_Where::vSmooth(CardIter* pCI, bool bMorph_bolPred_To_cmpPred, i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_where->Y_vSet(P_Smoothed);
 
-  pCI->G.p_where->vBump_Rightwards(1);
+  if (nBumpBy)
+    pCI->G.p_where->vBump_Rightwards(nBumpBy);
 
   if (bMorph_bolPred_To_cmpPred) {
     pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();
