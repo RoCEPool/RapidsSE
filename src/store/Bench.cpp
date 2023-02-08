@@ -1181,7 +1181,7 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro_smooth();
+        else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {
@@ -1630,71 +1630,6 @@ void Bench::vFlatten_30_W_A_NC_I(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Bench::vFlatten_40_W_A_NC_ro(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  // W A NC ro
-  // push a (single-value aggregate non-correlated in) sub-query before the main-query
-  // as an aggregation-fan (projecting a single aggregated value)
-  // (refer: Q15)
-
-  /*
-   */
-
-  m_pCI->vTransform(__func__, "((30))"_Stz);
-
-  vAssert_Board_mqA();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fold of subQuery
-
-  vFold_subQuery("W_A_NC_ro"_Stz,CK_WHERE);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing
-
-  if (m_pCI->G_bEachMain(CK_WHERE)) {
-    m_pCI->G.p_where->vBump_Rightwards(1);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-
-  if (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->G_vRestart();
-  Card_Projection::vProjection_Analysis_v2(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_WHERE)) {
-
-    m_pCI->G.p_roPred = m_pCI->G.p_where->pSub_roPred();
-    m_pCI->G.p_roPred->vMorph_To_bolPred(m_pCI);
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
-  m_pCI->vPrintBoard(__LINE__);
-  vDebugPoint();
-
-
-  vIsFlat(true);
-  m_pCI->G.pDeck->vClearMarksRecursive();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->vEndTransform();
-}
-/*----------------------------------------------------------------------------*/
-void Bench::vFlatten_40_W_A_NC_ro_smooth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
