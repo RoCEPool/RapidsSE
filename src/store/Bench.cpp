@@ -2295,36 +2295,13 @@ void Bench::vFlatten_60_W_L_NC_NI(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-  // W L NC NI
-  //                 // Cull @ro notIn
-  //                 //
-  // T T T W A A A   //
-  //       f         //
-  //       bc        //
-  //      @ro notIn  //
-  //          __sq2  //
-  //             #1  //
-  //           $a.2  //
-
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    m_pCI->G.p_where->Y_vSet(P_Smoothed);
     m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+    if (0 == m_pCI->G.p_boolCalc->nChildCards())
+      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
   }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  // W L NC NI
-  //               // Delete potentially empty where
-  //               //
-  // T T T A A A   //
-  //               //
-  //               //
-
-  // delete potentially empty where
-  m_pCI->G_vRestart();
-  m_pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-
   m_pCI->vPrintBoard(__LINE__);
 
   vIsFlat(true);
