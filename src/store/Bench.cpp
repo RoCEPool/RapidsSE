@@ -2227,6 +2227,9 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
 
   vAssert_Board_mqA();
 
+  vFold_subQuery("W_A_NC_ro"_Stz,CK_WHERE);
+
+  /*
   Card_Term* p_term_sqCall = nullptr;
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
@@ -2251,39 +2254,6 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
   m_pCI->G_vNewMember(CK_FOLD,"W_A_NC_ro"_Stz);
   m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
 
-  /*
-  // find table for sqyarg
-  char cTblSyn = Card::cTableColSyn(m_pCI->m_sSqyArg);
-  m_pCI->G.p_table = m_pCI->G.pDeck->pFindTableCard(cTblSyn, m_pCI->G.p_MainCard);
-
-  // TODO: derive cmpPred from marked tstPred and add to corresponding table
-
-  m_pCI->G_vNewMember(CK_CMPPRED,"=="_Stz);
-  m_pCI->G_vNewMember(CK_TERM,m_pCI->m_sSqyArg.szStz());
-  m_pCI->G.p_cmpPred->vAppend(m_pCI->G.p_term);
-  //m_pCI->G_vNewMember(CK_TERM,m_pCI->m_sSqyRsl.szStz());
-  m_pCI->G_vNewMember(CK_TERM,"$1"_Stz);
-  m_pCI->G.p_cmpPred->vAppend(m_pCI->G.p_term);
-
-  R_vUTE_AddPredToTableFilter(m_pCI->G.p_table,m_pCI->G.p_cmpPred);
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vBoolCalc_CullPred(MARK_AT);
-  }
-
-  Board::vRelabelExpressions(m_pCI);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // delete potentially empty where
-  m_pCI->G_vRestart();
-  m_pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-*/
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2317,7 +2287,7 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
     Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
   }
   m_pCI->vPrintBoard(__LINE__);
-
+*/
 
   if (m_pCI->G_bEachMain(CK_WHERE)) {
     m_pCI->G.p_where->vBump_Rightwards(1);
@@ -2353,7 +2323,7 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
-  p_term_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
+  m_pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
   m_pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 
@@ -2728,7 +2698,7 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  vFold_subQuery("H_A_NC_ro"_Stz);
+  vFold_subQuery("H_A_NC_ro"_Stz,CK_HAVING);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -3032,12 +3002,12 @@ void Bench::vFold_from(Stz* szFold)
 /*----------------------------------------------------------------------------*/
 /* Fold a sub-query                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vFold_subQuery(Stz* szFold)
+void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
-  if (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+  if (m_pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
     if (m_pCI->m_bRecursiveModel) {
       if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
         vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
@@ -3056,7 +3026,7 @@ void Bench::vFold_subQuery(Stz* szFold)
 
   // 2) push to sq
   if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
-    m_pCI->vTracer("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
     NEVER_REACH
   }
   vAssert_Board_sqB();

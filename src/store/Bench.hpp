@@ -135,7 +135,7 @@ namespace STORE
     // folding
     void vFold_exists(Stz* szFold);
     void vFold_from(Stz* szFold);
-    void vFold_subQuery(Stz* szFold);
+    void vFold_subQuery(Stz* szFold, eCK eCardWithSQ);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // optimisations

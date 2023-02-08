@@ -242,6 +242,7 @@ CardIter::CardIter(Bench* pBench)
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
   G.pSubQuery = nullptr;
+  m_pTerm_sqCall       = nullptr;
 
 
   G_vClearMembers();
@@ -561,7 +562,6 @@ void CardIter::G_vClearRegisters(void)
   m_pTerm_1            = nullptr;
   m_pTerm_2            = nullptr;
   m_pTerm_corrPred     = nullptr;
-  m_pTerm_sqCall       = nullptr;
 
   G.sz_SubQueryNm      = nullptr;
 

@@ -885,6 +885,9 @@ bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
       pCI->m_pTerm_2 = _pCard_Term(p_pred->pGet(2));
       pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
     }
+//    else
+//    if (p_pred->bIsCard(CK_ROPRED)) {
+//    }
 
     return C_CONTINUE_RECURSION;
   };
