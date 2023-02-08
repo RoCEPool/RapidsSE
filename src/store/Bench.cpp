@@ -1980,7 +1980,8 @@ void Bench::vFlatten_30_W_A_NC_I(void)
 
   vAssert_Board_mqA();
 
-
+  vFold_subQuery("W_A_NC_I"_Stz,CK_WHERE);
+  /*
   // W A NC I
   //               //
   // T T W A A A   // find W_L_NC_I subquery call in mq:<where>/<boolCalc>
@@ -2052,10 +2053,11 @@ void Bench::vFlatten_30_W_A_NC_I(void)
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
-    Board::vDerive_foldProjection_F(m_pCI);
+    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
     //m_pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
 
   }
+  */
 
   m_pCI->vPrintBoard(__LINE__);
 
