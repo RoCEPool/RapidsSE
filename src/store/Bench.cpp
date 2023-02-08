@@ -2227,67 +2227,15 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
 
   vAssert_Board_mqA();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of subQuery
+
   vFold_subQuery("W_A_NC_ro"_Stz,CK_WHERE);
 
-  /*
-  Card_Term* p_term_sqCall = nullptr;
-
-  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
-  vAssert_Board_mqA();
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-      p_term_sqCall = m_pCI->m_pTerm_sqCall;
-    }
-    else {
-      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-  }
-  vTrace("Found W_A_NC_ro call to %s()->%s\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyRsl.szStz());
-
-  m_pCI->G_vNewMember(CK_FOLD,"W_A_NC_ro"_Stz);
-  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // x) push to sq
-  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
-    NEVER_REACH
-  }
-  vAssert_Board_sqB();
-
-  m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
-
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // x) pop back to mq
-  m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
-
-  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
-  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
-  DELETE_CARD(m_pCI->m_pCard_yanked);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // 7) derive the fold (SQ result) expr
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_FOLD)) {
-    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
-    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-*/
+  // smoothing
 
   if (m_pCI->G_bEachMain(CK_WHERE)) {
     m_pCI->G.p_where->vBump_Rightwards(1);
@@ -2298,14 +2246,6 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
     m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
   }
   m_pCI->vPrintBoard(__LINE__);
-
-
-
-
-  // 8) inject SQ result into MQ <gbyAgg>
-//  Board::vInject_sqResult_Into_gbyAgg(m_pCI);
-//  m_pCI->G.pDeck->vRenumberRecursive();
-//  m_pCI->vPrintBoard(__LINE__);
 
 
   m_pCI->G_vRestart();
@@ -2334,118 +2274,6 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
-
-
-
-
-
-
-
-
-
-  /*
-
-  while (! m_pCI->G_bIsNextMain(CK_FOLD)) {
-
-    if (m_pCI->G_bIsNextMain(CK_TABLE)) {
-      RASSERT(m_pCI->G_bEachMain());
-      continue;
-    }
-    else
-    if (m_pCI->G_bIsNextMain(CK_PROJECT)) {
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT, CK_STREAM));
-      break;
-    }
-    else
-    if (m_pCI->G_bIsNextMain(CK_AGGREG)) {
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJECTION));
-      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projection));
-      m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJECTION));
-      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projection));
-      m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
-      RASSERT(m_pCI->G_bEachMainWithSub(CK_AGGREG, CK_PROJECTION));
-      m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection((Card_Projection *) (m_pCI->G.p_projection));
-      m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
-      break;
-    }
-    else {
-
-    }
-  }
-
-  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
-  Board::vDerive_foldElist_From_project_stream(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
-  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
-    i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
-    m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
-
-    m_pCI->G.p_fold->Y_vCut(P_BumpRight);
-    m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
-  }
-
-  // find table for sqyarg
-  char cTblSyn = Card::cTableColSyn(m_pCI->m_sSqyArg);
-  m_pCI->G.p_table = m_pCI->G.pDeck->pFindTableCard(cTblSyn, m_pCI->G.p_MainCard);
-
-  // TODO: derive cmpPred from marked tstPred and add to corresponding table
-
-  m_pCI->G_vNewMember(CK_CMPPRED,"=="_Stz);
-  m_pCI->G_vNewMember(CK_TERM,m_pCI->m_sSqyArg.szStz());
-  m_pCI->G.p_cmpPred->vAppend(m_pCI->G.p_term);
-  //m_pCI->G_vNewMember(CK_TERM,m_pCI->m_sSqyRsl.szStz());
-  m_pCI->G_vNewMember(CK_TERM,"$1"_Stz);
-  m_pCI->G.p_cmpPred->vAppend(m_pCI->G.p_term);
-
-  m_pCI->G.p_table->vAddPredToTableFilter(m_pCI, m_pCI->G.p_cmpPred);
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  // filter into bounds
-
-  m_pCI->G.p_table->vBounds_DeriveFrom_filter(m_pCI->G.p_filter,false);
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G.p_boolCalc = m_pCI->G.p_filter->pSub_boolCalc();
-  m_pCI->G.p_boolCalc->vCullPred(MARK_UP);
-  m_pCI->vPrintBoard(__LINE__);
-
-  Board::vS36_T30_Delete_Empty_filter(m_pCI);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
-
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // delete potentially empty where
-  m_pCI->G_vRestart();
-  m_pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  Card_Stream::vStream_AdjustLoHi(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
-  Board::vRenumberStmOdn(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_Projection::vRelabelExpressions(m_pCI);
-
-  vIsFlat(true);
-  m_pCI->G.pDeck->vClearMarksRecursive();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->vEndTransform();
-  */
-
 }
 
 /*----------------------------------------------------------------------------*/
