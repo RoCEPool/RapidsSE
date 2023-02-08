@@ -2452,9 +2452,7 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
   i8 nTables = 0;
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
     nTables++;
-    m_pCI->G.p_table->Y_vSet(P_Smoothed);
-    m_pCI->G.p_table->vReProjection(m_pCI);
-    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->G.p_table->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
   }
 
@@ -2462,39 +2460,28 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
   bool bSawWhere = false;
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
     bSawWhere = true;
-    m_pCI->G.p_where->vBump_Rightwards(1);
-    m_pCI->G.p_where->Y_vSet(P_Smoothed);
-    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->G.p_where->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-    m_pCI->G.p_gbyAgg->vInject_foldExpr(m_pCI);
-    m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
-    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-    m_pCI->G.p_gbyAgg->vInject_foldExpr(m_pCI);
-    m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
-    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    //m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-    m_pCI->G.p_gbyAgg->vInject_foldExpr(m_pCI);
-    m_pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
-    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -2503,17 +2490,14 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
   bool bSawProject = false;
   if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
     bSawProject = true;
-    m_pCI->G.p_project->vBump_Rightwards(1);
-    m_pCI->G.p_project->Y_vSet(P_Smoothed);
+    m_pCI->G.p_project->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // Having
   if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
-    Board::vCorrect_having_After_Inject(m_pCI, !bSawProject);
-    m_pCI->G.p_having->Y_vSet(P_Smoothed);
-    m_pCI->G.pDeck->vRenumberRecursive();
+    m_pCI->G.p_having->vSmooth(m_pCI,bSawProject);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }

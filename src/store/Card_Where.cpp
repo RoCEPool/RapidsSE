@@ -217,6 +217,18 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
     p_constraint->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vSmooth(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_where->vBump_Rightwards(1);
+  pCI->G.p_where->Y_vSet(P_Smoothed);
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -161,6 +161,10 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 void Card_Project::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_project->Y_vSet(P_Smoothed);
+
+  pCI->G.p_project->vBump_Rightwards(1);
 }
 
 

@@ -17,7 +17,7 @@ namespace STORE
    ~Card_Having(void) noexcept(false);
 
     void vAcclimate_foldExpr(CardIter* pCI);
-    void vSmooth(CardIter* pCI);
+    void vSmooth(CardIter* pCI, bool bSawProject);
   };
 
   Card_Having* _pCard_Having(void* aAddr);

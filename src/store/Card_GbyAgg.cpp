@@ -104,6 +104,11 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
 void Card_GbyAgg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
+
+  pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
+  pCI->G.pDeck->vRenumberRecursive();
 }
 
 /*============================================================================*/
