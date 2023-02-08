@@ -127,6 +127,7 @@ namespace STORE
     void vFlatten_10_F(void);
     void vFlatten_20_W_A_C_ro(void);
     void vFlatten_30_W_A_NC_I(void);
+    void vFlatten_30_W_A_NC_I_smooth(void);
     void vFlatten_40_W_A_NC_ro(void);
     void vFlatten_50_W_L_C_E(void);
     void vFlatten_60_W_L_NC_NI(void);

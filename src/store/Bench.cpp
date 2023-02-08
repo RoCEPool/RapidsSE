@@ -1980,25 +1980,17 @@ void Bench::vFlatten_30_W_A_NC_I(void)
 
   vAssert_Board_mqA();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of subQuery
+
   vFold_subQuery("W_A_NC_I"_Stz,CK_WHERE);
 
   m_pCI->vPrintBoard(__LINE__);
 
-  // W A NC I
-  //       I-sqr-> $1            // Injection of sqr into mq adds new $1
-  //                     v v v   //
-  // T G G G H P F T T W G G G   // bump stmOdn:$n in mq gbyElist by 1
-  //                     elelel  // (if G is actually G -- might be A)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing
 
-//  if (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_KEY)) {
-//    m_pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
-//    i8 nBumpRight = m_pCI->G.p_fold->Y_iGet(P_BumpRight);
-//    m_pCI->G.p_key->vBump_stmOdn_In_rpnCalc(m_pCI);
-//
-//    m_pCI->G.p_fold->Y_vCut(P_BumpRight);
-//    m_pCI->G.p_fold->Y_vSet(P_BumpedRight,(nBumpRight));
-//    m_pCI->vPrintBoard(__LINE__);
-//  }
+  // | Fold | Table* | aggreg_PNO
 
   Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
@@ -2016,15 +2008,6 @@ void Bench::vFlatten_30_W_A_NC_I(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
-  // W A NC I
-  //       I-sqr-> $1            // The mq IN transforms to arg == $1 (the corr pred)
-  //                             //
-  // T G G G H P F T T W G G G   // find table for sqy arg (will be an mq table)
-  //               f             // derive cmpPred from sqy arg
-  //               bc            // add cmpPred to table
-  //               cp  @ro       //
-
-
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_WHERE)) {
 
@@ -2035,7 +2018,74 @@ void Bench::vFlatten_30_W_A_NC_I(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
+  vIsFlat(true);
+  m_pCI->G.pDeck->vClearMarksRecursive();
 
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->vEndTransform();
+}
+/*----------------------------------------------------------------------------*/
+void Bench::vFlatten_30_W_A_NC_I_smooth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  // W A NC I
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q18)
+
+  /* ARCHETYPE :
+      select count(*)
+        from orders, lineitem
+       where O_ORDERKEY = L_ORDERKEY
+         and O_ORDERKEY in (select L_ORDERKEY
+                              from lineitem
+                             group by L_ORDERKEY
+                            having sum(l_quantity) > 100)
+      ;
+   */
+
+  m_pCI->vTransform(__func__, "((vFlatten_30_W_A_NC_I))"_Stz);
+
+  vAssert_Board_mqA();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of subQuery
+
+  vFold_subQuery("W_A_NC_I"_Stz,CK_WHERE);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing
+
+  // | Fold | Table* | aggreg_PNO
+
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.p_fold->vBump_Rightwards(m_pCI, 1);
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain())
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_WHERE)) {
+
+    m_pCI->G.p_bolPred = m_pCI->G.p_where->pSub_bolPred();
+    m_pCI->G.p_bolPred->vMorph_To_cmpPred(m_pCI);
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
 
 
   vIsFlat(true);
