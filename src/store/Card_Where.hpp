@@ -28,6 +28,7 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vSmooth(CardIter* pCI);\
   };
 
   Card_Where* _pCard_Where(void* aAddr);

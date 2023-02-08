@@ -1179,7 +1179,7 @@ void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
       } else {
              if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I_smooth();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
         else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro();
       }

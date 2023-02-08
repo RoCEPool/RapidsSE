@@ -71,6 +71,14 @@ void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
     pCI->G.p_projection->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Aggreg::vSmooth(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

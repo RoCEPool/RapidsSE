@@ -22,7 +22,7 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
-
+    void vSmooth(CardIter* pCI);
   };
 
   Card_GbyAgg* _pCard_GbyAgg(void* aAddr);
