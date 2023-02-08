@@ -1561,6 +1561,7 @@ void Bench::vFlatten_30_W_A_NC_I(void)
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
     bSawWhere = true;
     m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/true,
+                                    /*bReplace_sqCall_With_result*/false,
                                     /*nBumpBy*/1);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
@@ -1705,7 +1706,7 @@ void Bench::vFlatten_40_W_A_NC_ro_smooth(void)
   /*
    */
 
-  m_pCI->vTransform(__func__, "((30))"_Stz);
+  m_pCI->vTransform(__func__, "((40_W_A_NC_ro))"_Stz);
 
   vAssert_Board_mqA();
 
@@ -1734,6 +1735,7 @@ void Bench::vFlatten_40_W_A_NC_ro_smooth(void)
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
     bSawWhere = true;
     m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
+                                    /*bReplace_sqCall_With_result*/true,
                                     /*nBumpBy*/1);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
@@ -1763,49 +1765,7 @@ void Bench::vFlatten_40_W_A_NC_ro_smooth(void)
     vDebugPoint();
   }
 
-
-
-
-
-
-
-
-/*
-
-  if (m_pCI->G_bEachMain(CK_WHERE)) {
-    m_pCI->G.p_where->vBump_Rightwards(1);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-
-  if (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vBump_Rightwards(1);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->G_vRestart();
-  Card_Projection::vProjection_Analysis_v2(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_WHERE)) {
-
-    m_pCI->G.p_roPred = m_pCI->G.p_where->pSub_roPred();
-    m_pCI->G.p_roPred->vMorph_To_bolPred(m_pCI);
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  m_pCI->vPrintBoard(__LINE__);
-  vDebugPoint();
-*/
-
-  m_pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
@@ -2069,6 +2029,7 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
     bSawWhere = true;
     m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
+                                    /*bReplace_sqCall_With_result*/false,
                                     /*nBumpBy*/1);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
