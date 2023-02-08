@@ -2648,6 +2648,9 @@ void Bench::vFlatten_60_W_L_NC_NI(void)
 
   m_pCI->vTransform(__func__, "((vFlatten_60_W_L_NC_NI))"_Stz);
 
+  vFold_exists("W_L_NC_NI"_Stz);
+
+  /*
   // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
   //vAssert_Board_mqA();
 
@@ -2769,10 +2772,12 @@ void Bench::vFlatten_60_W_L_NC_NI(void)
   m_pCI->G.p_indexList = m_pCI->G.p_table->pSub_indexList();
   m_pCI->G.p_index = m_pCI->G.p_table->pSub_index();
   m_pCI->G.p_index->vAppend(m_pCI->G.p_constraint);
+  m_pCI->G_vCopyCard(nullptr);
+
+  */
 
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G_vCopyCard(nullptr);
 
 
   // W L NC NI
@@ -2960,6 +2965,131 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
 void Bench::vFold_exists(Stz* szFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //vAssert_Board_mqA();
+
+  // W L NC NI
+  //               //
+  //               //
+  // T T W A A A   // find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //     f         //
+  //     bc        //
+  //    @ro notIn  //
+  //        __sq2  // sub-query
+  //           #1  // result
+  //         $a.2  // argument
+
+
+  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (m_pCI->m_bRecursiveModel) {
+      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+    else {
+      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+  }
+  vTrace(">>>>>>>>> Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRsl.szStz());
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 2) push to sq
+  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
+    m_pCI->vTracer("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+  vAssert_Board_sqB();
+
+  // x) pull <where> into <table>/<filter>
+
+
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_TABLE)) {
+    if (m_pCI->G_bEachMain(CK_WHERE)) {
+      Card_Where::vMoveWhereToTableAsConstraint(m_pCI);
+    }
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 3) get copy of sq:<table>/* into cc:<table>
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_TABLE)) {
+    m_pCI->G_vCopyCard(m_pCI->G.p_table);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 4) pop back to mq
+  m_pCI->G_vPopIter();
+  vAssert_Board_mqA();
+
+  // 5) fold
+  //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
+  // put cc:<table>/* before mq:<where>
+
+  m_pCI->G_vNewMember(CK_FOLD,szFold);
+  m_pCI->G_vInsertBefore(m_pCI->G.p_fold,m_pCI->G.p_where);
+
+  // W L NC NI
+  //                   //
+  // ------  --mq----  //
+  // T T T F W A A A   // find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //     --sq          //
+  //     kne           //
+
+  m_pCI->G.p_table = _pCard_Table(m_pCI->m_pCard_copied);
+
+  m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
+  m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYNOTEXISTS);
+
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
+  m_pCI->G.pDeck->vRenumberRecursive();
+//  Card_Stream::vStream_AdjustLoHi(m_pCI);
+//  Board::vRenumberStmOdn(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
+
+  Stz* szSqyArg = m_pCI->m_sSqyArg;
+
+  i8 i_Table = m_pCI->G.pDeck->iFindChild(m_pCI->G.p_table);
+  bool b = m_pCI->G_bResolveSubCard(CK_EXPR,szSqyArg,CK_TBLCOLODN,i_Table);
+  RASSERT(b);
+
+  Stz* szTblColOdn = m_pCI->m_pCard_resolved->pSub_tblColOdn()->szValue();
+  m_pCI->G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(szTblColOdn);
+  //m_pCI->m_pCard_copied->vAppend(m_pCI->G.p_bounds);
+
+  m_pCI->G.p_indexList = m_pCI->G.p_table->pSub_indexList();
+  m_pCI->G.p_index = m_pCI->G.p_table->pSub_index();
+  m_pCI->G.p_index->vAppend(m_pCI->G.p_bounds);
+
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // W L NC NI
+  //                   //
+  // T T T F W A A A   //
+  //     b             //
+  //     kne           //
+
+  m_pCI->G_vRestart();
+  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_KEYNOTEXISTS,CK_CONSTRAINT));
+  m_pCI->G.p_table->vRemoveChild(m_pCI->G.p_constraint);
+  m_pCI->G.p_indexList = m_pCI->G.p_table->pSub_indexList();
+  m_pCI->G.p_index = m_pCI->G.p_table->pSub_index();
+  m_pCI->G.p_index->vAppend(m_pCI->G.p_constraint);
+  m_pCI->G_vCopyCard(nullptr);
+
+
 }
 
 /*----------------------------------------------------------------------------*/
