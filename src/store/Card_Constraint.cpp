@@ -147,7 +147,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
       i8 i_Odn = p_term->iGetOdnNo();
       i8 i_Col_base0 = i_Odn - nExprs - 1;
 
-      if (i_Col_base0 >= 0 && i_Col_base0 < nExprs)
+      if (i_Col_base0 >= 0)
         szColNm = pCI->G.p_table->szColNm(i_Col_base0);
       
       vDebugPoint();
