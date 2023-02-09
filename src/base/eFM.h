@@ -26,6 +26,7 @@ enum eFM : u2 // function macros
   /*  */ FM_ADD_BCDBCD,           // bcd + bcd
   /*  */ FM_ADD_FLTFLT,           // flt + flt
   /*  */ FM_ADD_INTINT,           // int + int
+  /*  */ FM_ADD_IVLIVL,           // ivl + ivl
   /*  */ FM_ADD_UNKANY,           // unk + any
 
   // divide
@@ -357,6 +358,7 @@ static Stz* aFM[]
   /*  */ "_ADD_BCDBCD"_Stz,
   /*  */ "_ADD_FLTFLT"_Stz,
   /*  */ "_ADD_INTINT"_Stz,
+  /*  */ "_ADD_IVLIVL"_Stz,
   /*  */ "_ADD_UNKANY"_Stz,
 
   // divide

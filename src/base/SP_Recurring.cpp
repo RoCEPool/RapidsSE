@@ -12,7 +12,7 @@
 
 #include "SP_Thread.hpp"
 #include "SP_Task.hpp"
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
 #include "SP_Job.hpp"
 #include "SP_Op.hpp"
 

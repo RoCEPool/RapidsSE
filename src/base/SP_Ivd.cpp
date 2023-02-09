@@ -1,21 +1,18 @@
 /*============================================================================*/
-/* SP_Ivl.cpp - Ivl sprint helper                                             */
+/* SP_Ivd.cpp - Ivd sprint helper                                             */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
 #include "eIV.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Ivl::SP_Ivl(void)
+SP_Ivd::SP_Ivd(void)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
-  
-  // set default Ivl format
-  vFormat(F_IVL);
   
   _checkInitialised_(CN_SPSMALL);
   
@@ -25,7 +22,7 @@ SP_Ivl::SP_Ivl(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Ivl::~SP_Ivl(void) noexcept(false)
+SP_Ivd::~SP_Ivd(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
@@ -35,19 +32,19 @@ SP_Ivl::~SP_Ivl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint Ivl and return Stz* to result                                       */
+/* sprint Ivd and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::sz(i8 iIvl)
+Stz* SP_Ivd::sz(i8 iIvd)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return sz(iIvl,0);
+  return sz(iIvd,0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* sprint Ivl and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
+Stz* SP_Ivd::sz(i8 iIvl, i8 iScale)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   UNUSED(iScale);
@@ -56,7 +53,7 @@ Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
   wIvl = iIvl;
 
   StrLib::vSprint(m_caResult,
-                  (Stz*)m_caFormat,
+                  (Stz*)"%lld.%06lld",
                   wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M,
                   wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M);
 
@@ -71,7 +68,7 @@ Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* max                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::szMax(void)
+Stz* SP_Ivd::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -81,7 +78,7 @@ Stz* SP_Ivl::szMax(void)
 /*----------------------------------------------------------------------------*/
 /* mid                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::szMid(void)
+Stz* SP_Ivd::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -91,7 +88,7 @@ Stz* SP_Ivl::szMid(void)
 /*----------------------------------------------------------------------------*/
 /* min                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::szMin(void)
+Stz* SP_Ivd::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -106,7 +103,7 @@ Stz* SP_Ivl::szMin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SP_Ivl::aFooter(void)
+Footer* SP_Ivd::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPSMALL);
   

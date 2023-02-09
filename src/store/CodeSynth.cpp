@@ -2597,7 +2597,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
           iInitValue = Int::iMaxValue();
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVL:
+        case DM_IVD:
           iInitValue = Ivl::iMaxValue(IV_SECOND); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
@@ -2643,7 +2643,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
         case DM_INT: iInitValue = Int::iMinValue();
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVL: iInitValue = Ivl::iMinValue(IV_SECOND); // TODO: which interval subtype?
+        case DM_IVD: iInitValue = Ivl::iMinValue(IV_SECOND); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
         case DM_IVY: iInitValue = Ivl::iMinValue(IV_MONTH); // TODO: which interval subtype?
@@ -2683,7 +2683,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
           break;
         case DM_BOL:
         case DM_DTE:
-        case DM_IVL:
+        case DM_IVD:
         case DM_IVY:
         case DM_TME:
         case DM_TSP:
@@ -3832,6 +3832,18 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get second operand type
     eDM eColType2 = (eDM) pExprType->iPop();
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check the result type on thes stack for interval integer valuse
+    if (pExprType->iPeek(0) == DM_IVD) {
+      eColType1 = DM_IVD;
+      eColType2 = DM_IVD;
+    }
+
+    if (pExprType->iPeek(0) == DM_IVY) {
+      eColType1 = DM_IVY;
+      eColType2 = DM_IVY;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the arithmetic operator
