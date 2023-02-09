@@ -694,6 +694,9 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 //    pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
 //    pCI->G.p_gbyAgg->vAppend(pCI->G.p_stream);
 
+    pCI->G.p_key->vRenumberAllExpr();
+    pCI->G.p_projection->vRenumberAllExpr();
+
     if (pCI->G_bEachMain()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_AGGREG)) {
         bool b = pCI->G_bRewindMain();
