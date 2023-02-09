@@ -177,6 +177,7 @@ void Board::vDerive_foldElist_From_project_stream(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <fold> W_A_C_ro
 
+  pCI->G.p_projection->vDump();
 
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
 
@@ -241,6 +242,18 @@ void Board::vDerive_foldElist_From_project_stream(CardIter* pCI)
   pCI->G_vPushNewChild(pCI->G.p_foldElist, CK_EXPR);
 
   */
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vDerive_fold_projection_From_projection(CardIter* pCI)
+{
+  _static_
+
+  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,44 +734,46 @@ void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI)
 
   pCI->G.p_projection = pCI->G.p_project->pSub_projection();
 
-  pCI->G.p_projection->Y_vSet(P_ProjBump,(i8)1);
-  pCI->G.p_projection->Y_vSet(P_Restream);
+//  pCI->G.p_projection->Y_vSet(P_ProjBump,(i8)1);
+//  pCI->G.p_projection->Y_vSet(P_Restream);
 
   pCI->G.p_type = pCI->G.p_key->pGetChild(0)->pSub_type();
 
   // push <project>/__SQ1IGBKY1
   pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
   pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,pCI->G.p_stmCol->szValue());
+  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,pCI->m_pExpr_corr->szValue());
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added
 
-  pCI->G.p_stream = pCI->G.p_project->pSub_stream();
+//  pCI->G.p_stream = pCI->G.p_project->pSub_stream();
+//
+//  pCI->G.p_project->vRemoveChild(pCI->G.p_stream);
+//  DELETE_CARD(pCI->G.p_stream);
+//
+//  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
+//  pCI->G.p_project->vAppend(pCI->G.p_stream);
 
-  pCI->G.p_project->vRemoveChild(pCI->G.p_stream);
-  DELETE_CARD(pCI->G.p_stream);
+//  pCI->G.p_projection->Y_vCut(P_Restream);
+//  pCI->G.p_projection->Y_vSet(P_Restreamed);
 
-  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-  pCI->G.p_project->vAppend(pCI->G.p_stream);
-
-  pCI->G.p_projection->Y_vCut(P_Restream);
-  pCI->G.p_projection->Y_vSet(P_Restreamed);
-
-  i8 nStmCol = pCI->G.p_stream->pSub_stmColList()->nChildCards();
-  pCI->G.p_stream->Y_vSet(P_OdnLo,(i8)1);
-  pCI->G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
+//  i8 nStmCol = pCI->G.p_stream->pSub_stmColList()->nChildCards();
+//  pCI->G.p_stream->Y_vSet(P_OdnLo,(i8)1);
+//  pCI->G.p_stream->Y_vSet(P_OdnHi,(i8)nStmCol);
 
   // bump all $n in <project>/<projElist>/<expr>/<rpnCalc>
   //   now that __SQ1IGBKY1 has been added
 
-  i8 nBumpBy = pCI->G.p_projection->Y_iGet(P_ProjBump);
+  //i8 nBumpBy = pCI->G.p_projection->Y_iGet(P_ProjBump);
 
   pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
-  pCI->G.p_projection->Y_vSet(P_ProjBumped,(i8)nBumpBy);
-  pCI->G.p_projection->Y_vCut(P_ProjBump);
+//  pCI->G.p_projection->Y_vSet(P_ProjBumped,(i8)nBumpBy);
+//  pCI->G.p_projection->Y_vCut(P_ProjBump);
+
+  pCI->G.p_projection->vRenumberAllExpr();
 }
 
 /*----------------------------------------------------------------------------*/

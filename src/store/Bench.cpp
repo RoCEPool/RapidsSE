@@ -1418,19 +1418,22 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   else {
 
   }
+  m_pCI->vPrintBoard(__LINE__);
+
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
-  Board::vDerive_foldElist_From_project_stream(m_pCI);
+  //Board::vDerive_foldElist_From_project_stream(m_pCI);
+  Board::vDerive_fold_projection_From_projection(m_pCI);
 
   m_pCI->G.pDeck->vRenumberRecursive();
-  Card_Projection::vRelabelExpressions(m_pCI);
+  //Card_Projection::vRelabelExpressions(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
 
-  Card_Stream::vStream_AdjustLoHi(m_pCI);
-  Board::vRenumberStmOdn(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
+//  Card_Stream::vStream_AdjustLoHi(m_pCI);
+//  Board::vRenumberStmOdn(m_pCI);
+//  m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert the mq to join to the gby correlation column streamed from sq

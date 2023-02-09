@@ -243,6 +243,7 @@ namespace STORE
     static void vCorrect_having_After_Inject(CardIter* pCI, bool bBump=true);
 
     static void vDerive_foldElist_From_project_stream(CardIter* pCI);
+    static void vDerive_fold_projection_From_projection(CardIter* pCI);
     static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
     static void vDerive_stream_order_For_gbyAgg(CardIter* pCI);
     static void vDerive_stream_order_For_indexJoin(CardIter* pCI);
