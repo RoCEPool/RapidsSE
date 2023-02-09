@@ -43,18 +43,18 @@ Card_StmCol::~Card_StmCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_StmCol::vFind_stmCol_Definition_Of_Correlation_Column(CardIter* pCI)
+void Card_StmCol::vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI)
 {
   _static_
 
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->m_pCard_found = pCI->G.p_stream->pFindValueRecursive(pCI->m_pTerm_corrPred->szValue(), pCI->m_pCard_parent);
-  pCI->G.p_stmCol = _pCard_StmCol(pCI->m_pCard_parent);
+  pCI->m_pCard_found = pCI->G.p_projection->pFindValueRecursive(pCI->m_pTerm_corrCol->szValue(), pCI->m_pCard_parent);
+  pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
 
-  pCI->G.p_stmCol->vMark1(MARK_AT);
-  pCI->G.p_stmCol->Y_vSet(P_CorrStmCol);
+  pCI->m_pExpr_corr->vMark1(MARK_AT);
+  pCI->m_pExpr_corr->Y_vSet(P_CorrExpr);
 }
 
 /*============================================================================*/

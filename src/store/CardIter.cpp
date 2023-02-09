@@ -236,6 +236,7 @@ CardIter::CardIter(Bench* pBench)
   m_pCard_yanked   = nullptr;
 
   m_pExpr_fold = nullptr;
+  m_pExpr_corr = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
@@ -561,7 +562,7 @@ void CardIter::G_vClearRegisters(void)
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
   m_pTerm_2            = nullptr;
-  m_pTerm_corrPred     = nullptr;
+  m_pTerm_corrCol     = nullptr;
 
   G.sz_SubQueryNm      = nullptr;
 

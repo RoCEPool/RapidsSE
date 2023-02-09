@@ -1075,12 +1075,12 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
 //      // TODO: hack... %1 $n may not be in this order
 //      if (Card::bIsParamOrdinal(pCI->G.p_term->szValue())) {
 //        bIsCorrPred = true;
-//        m_pTerm_corrPred = _pCard_Term(xCI.pPrevChild());
+//        m_pTerm_corrCol = _pCard_Term(xCI.pPrevChild());
 //        break;
 //      }
 //    }
 
-    if ((pCI->m_pTerm_corrPred = static_cast<Card_CmpPred*>(p_pred)->pExtractArgTerm())) {
+    if ((pCI->m_pTerm_corrCol = static_cast<Card_CmpPred*>(p_pred)->pExtractArgTerm())) {
       bIsCorrPred = true;
     }
 

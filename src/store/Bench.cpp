@@ -1382,18 +1382,18 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   // convert the parameterised aggreg-sq into a gbyAgg-sq gby correlation column
   // such that the result of the sq is a stream { __SQ1IGBKY , __SQ1RESULT }
 
-  m_pCI->G_vRestart();
 
   // v                             //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
   // s                             //  ..]cmpPred ==
-  // f                             //           $d.2  ((m_pCI->m_pTerm_corrPred))
+  // f                             //           $d.2  ((m_pCI->m_pTerm_corrCol))
   //                               //             %1
-  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_FILTER));
+  m_pCI->G_vRestart();
+  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER));
   Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(m_pCI);
-  RASSERT(m_pCI->m_pTerm_corrPred); // eg $d.2 (L_PARTKEY)
-  Card_StmCol::vFind_stmCol_Definition_Of_Correlation_Column(m_pCI);
-  RASSERT(m_pCI->G.p_stmCol);       // eg L_PARTKEY
+  RASSERT(m_pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
+  Card_StmCol::vFind_Correlation_Expr_Of_Correlation_Column(m_pCI);
+  RASSERT(m_pCI->G.p_stmCol);      // eg L_PARTKEY
 
 
   // T A A A P F T T T W A A A     //
@@ -1438,7 +1438,7 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   // v                             //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
   // s                             //  ..]cmpPred ==
-  // f                             //           $d.2  ((m_pCI->m_pTerm_corrPred))
+  // f                             //           $d.2  ((m_pCI->m_pTerm_corrCol))
   //                               //             %1
 
   RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
@@ -1453,7 +1453,7 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
   // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((m_pCI->m_pTerm_corrPred))
+  // f                 bc          //           $d.2  ((m_pCI->m_pTerm_corrCol))
   //                               //             %1
 
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
@@ -1481,7 +1481,7 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
   // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((m_pCI->m_pTerm_corrPred))
+  // f                 bc          //           $d.2  ((m_pCI->m_pTerm_corrCol))
   //             b <-  cp          //             %1
 
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
@@ -1950,7 +1950,7 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing
+  // smoothing H_A_NC_ro
 
   // subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 

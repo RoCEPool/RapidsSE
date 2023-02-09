@@ -183,6 +183,7 @@ static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_BumpRight    = "nBumpRight"_Stz;
 static Stz* P_BumpedRight  = "nBumpedRight"_Stz;
 static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
+static Stz* P_CorrExpr     = "bCorrExpr"_Stz;
 static Stz* P_CorrPred     = "bCorrPred"_Stz;
 static Stz* P_CorrStmCol   = "bCorrStmCol"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;

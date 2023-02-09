@@ -16,7 +16,7 @@ namespace STORE
     Card_StmCol(void);
    ~Card_StmCol(void) noexcept(false);
 
-    static void vFind_stmCol_Definition_Of_Correlation_Column(CardIter* pCI);
+    static void vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI);
   };
 
   Card_StmCol* _pCard_StmCol(void* aAddr);
