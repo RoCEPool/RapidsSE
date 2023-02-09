@@ -48,6 +48,24 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* cull non-used bounds                                                        */
+/*----------------------------------------------------------------------------*/
+void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMain()) {
+    if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
+      pCI->G.p_constraint->vCullPred(MARK_AT);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -116,7 +134,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Stz* szStmColOdn = p_term->szValue();
     pCI->G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, szStmColOdn, i_Main + 1);
 
-    Stz* szColNm;
+    Stz* szColNm = nullptr;
     if (pCI->G.p_stmCol) {
       Card_StmColNm* p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
       szColNm = p_stmColNm->szValue();
@@ -129,14 +147,15 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
       i8 i_Odn = p_term->iGetOdnNo();
       i8 i_Col_base0 = i_Odn - nExprs - 1;
 
-      szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+      if (i_Col_base0 >= 0 && i_Col_base0 < nExprs)
+        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
       
       vDebugPoint();
 
     }
 
-
-    p_term->vSetValueMark1(szColNm, MARK_CHANGED);
+    if (szColNm)
+      p_term->vSetValueMark1(szColNm, MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };
@@ -146,6 +165,28 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Constraint::vCullPred(char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = this->pGetChild(i_Child);
+
+    eCK eCard = pChildCard->eCard();
+    if (eCard != CK_BOOLCALC)
+      continue;
+
+    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
+
+    p_boolCalc->vCullPred(cWithMark);
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

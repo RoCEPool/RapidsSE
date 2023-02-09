@@ -1737,7 +1737,7 @@ void Bench::vFlatten_50_W_L_C_E(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, "((20))"_Stz);
+  m_pCI->vTransform(__func__, "((vFlatten_50_W_L_C_E))"_Stz);
   vAssert_Board_mqA();
 
   // W L C E
@@ -1785,6 +1785,7 @@ void Bench::vFlatten_50_W_L_C_E(void)
   if (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_INDEX,CK_CONSTRAINT)) {
     m_pCI->G.p_table->vRemoveChild(m_pCI->G.p_constraint);
     m_pCI->G.p_index->vAppend(m_pCI->G.p_constraint);
+    m_pCI->G.p_index->Y_vSet(P_ChosenIndex);
   }
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1813,6 +1814,9 @@ void Bench::vFlatten_50_W_L_C_E(void)
 
   m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
   m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYEXISTS);
+
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
+
   m_pCI->vPrintBoard(__LINE__);
 
   // W L C E
@@ -1825,6 +1829,8 @@ void Bench::vFlatten_50_W_L_C_E(void)
 
   Card_Term::bReplaceValueOfSub(m_pCI, m_pCI->m_pCard_copied,CK_TERM,"%1"_Stz,m_pCI->m_sSqyArg);
   m_pCI->G_vCopyCard(nullptr);
+  m_pCI->G.pDeck->vRenumberRecursive();
+
   m_pCI->vPrintBoard(__LINE__);
 
   // W L C E
@@ -2361,8 +2367,16 @@ void Bench::vTransform_OuterQueryAnalysis(void)
       Board::vOuter_Query_Analysis_Of_having_boolCalc(m_pCI);
     }
 
-    pOuterQuery->vDump();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // search for parameters
 
+    m_pCI->G_vRestart();
+    i8 nParams = 0;
+    while (m_pCI->G_bEachMain(CK_PARAMLIST))
+       nParams++;
+    pOuterQuery->vCorrCols(nParams);
+
+    pOuterQuery->vDump();
   }
 
   //m_pCI->vEndTransform();
@@ -2598,16 +2612,19 @@ void Bench::vTransform_CullUsedBoundsFromFilter(void)
   while (m_pCI->G_bEachMain()) {
 
     if (! (m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
+           m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN) ||
+           m_pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
+           m_pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)
+           ))
       continue;
     if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
       continue;
-    if (! (m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+    if (! (m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
       continue;
 
     // have <bounds> & <filter> under <main>
 
-    CardIter xCR(m_pCI->G.p_filter);
+    CardIter xCR(m_pCI->G.p_constraint);
     while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
       if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
         m_pCI->G.p_cmpPred->vMark1(MARK_AT);
@@ -2618,7 +2635,7 @@ void Bench::vTransform_CullUsedBoundsFromFilter(void)
   // cull marked cmpPred from filter
 
   m_pCI->G_vRestart();
-  Card_Filter::vCullUsedBounds(m_pCI);
+  Card_Constraint::vCullUsedBounds(m_pCI);
 
 //  while (m_pCI->G_bEachMain()) {
 //    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))

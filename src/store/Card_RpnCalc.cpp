@@ -317,11 +317,11 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(void)
       case TE_EXISTS:
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
-        p_roPred = new Card_RoPred;
-        p_roPred->vValue(p_term_next->sz());
-        p_roPred->vTransferChildren(p_TermSeries);
-        p_boolCalc->vAppend(p_roPred);
-        p_roPred = nullptr;
+        p_bolPred = new Card_BolPred;
+        p_bolPred->vValue(p_term_next->sz());
+        p_bolPred->vTransferChildren(p_TermSeries);
+        p_boolCalc->vAppend(p_bolPred);
+        p_bolPred = nullptr;
         DELETE_CARD(p_term_next);
         //p_boolCalc->vDump(0,"EXISTS"_Stz);
         break;

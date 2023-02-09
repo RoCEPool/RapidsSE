@@ -177,6 +177,22 @@ Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a term                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_PRED::pGetTerm(i8 i_Term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (i_Term >= this->nChildCards())
+    return nullptr;
+
+  Card_Term* p_term = _pCard_Term(pGetChild(i_Term));
+
+  return p_term;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* attempt to get term which is a board name from this predicate              */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)

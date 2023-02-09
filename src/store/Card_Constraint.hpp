@@ -17,8 +17,11 @@ namespace STORE
     Card_Constraint(void);
    ~Card_Constraint(void) noexcept(false);
 
+    static void vCullUsedBounds(CardIter* pCI);
+
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vCullPred(char cWithMark);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vConvert_stmColOdn_To_stmColNm(CardIter* pCI);
   };

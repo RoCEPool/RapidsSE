@@ -881,9 +881,18 @@ bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
     p_pred->vMark1(MARK_AT);
     bFoundCall = true;
 
+    if (p_pred->bIsValue("exists"_Stz) || p_pred->bIsValue("notExists"_Stz)) {
+      pCI->m_pTerm_0 = p_pred->pGetTerm(0);
+      pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
+      pCI->m_pTerm_1 = p_pred->pGetTerm(1);
+      pCI->m_sSqyNm  = pCI->m_pTerm_1->szValue();
+      return C_CONTINUE_RECURSION;
+    }
+
     if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
       pCI->m_pTerm_2 = _pCard_Term(p_pred->pGet(2));
       pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
+      return C_CONTINUE_RECURSION;
     }
 //    else
 //    if (p_pred->bIsCard(CK_ROPRED)) {
@@ -1347,6 +1356,9 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
 
   Card_Table*      p_table_curr     = p_main_curr->pSub_table();
   Card_IndexList*  p_indexList_curr = p_main_curr->pSub_indexList();
+
+  p_indexList_curr->vDump();
+
   Card_Index*      p_index_curr     = p_indexList_curr->pFindChosenIndex();
   Card_Bounds*     p_bounds_curr    = p_main_curr->pSub_bounds();
 

@@ -2,6 +2,8 @@
 /* _r_FOLD_50_W_L_C_E -- sub-query flattening test : refer Q4                 */
 /*============================================================================*/
 
+// --initial _r_FOLD_50_W_L_C_E
+
 trackMemory;
 
 _r_init
@@ -21,6 +23,7 @@ select count(*)
                 where L_ORDERKEY = O_ORDERKEY
                   and l_commitdate < l_receiptdate)
 ;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
