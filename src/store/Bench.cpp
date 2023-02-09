@@ -1435,6 +1435,21 @@ void Bench::vFlatten_20_W_A_C_ro(void)
 //  Board::vRenumberStmOdn(m_pCI);
 //  m_pCI->vPrintBoard(__LINE__);
 
+
+  m_pCI->G_vRestart();
+  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+
+  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+
+  // Table*
+  i8 nTables = 0;
+  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+    nTables++;
+    m_pCI->G.p_table->vSmooth(m_pCI);
+    m_pCI->vPrintBoard(__LINE__);
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert the mq to join to the gby correlation column streamed from sq
 
@@ -1463,6 +1478,8 @@ void Bench::vFlatten_20_W_A_C_ro(void)
 
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
   RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  m_pCI->G.p_boolCalc->vBump_Rightwards(2);
+
   m_pCI->G.p_boolCalc->vPush_Correlated_cmpPred_Onto_mq_boolCalc(m_pCI->G.p_PRED);
   m_pCI->vPrintBoard(__LINE__);
 
