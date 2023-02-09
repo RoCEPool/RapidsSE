@@ -159,50 +159,116 @@ system searches for and cleans up memory.
 
 The Job Model
 -------------
-.. ::
+This section describes how work is performed within RapidsSE. Internally,
+RapidsSE is built upon a series of recursive patterns that are used not only
+to execute user queries but to also execute one-off and recurring internal
+tasks as well. This helps reduce complexity through having a minimum of
+idiosyncratic code.
 
-  - Is built on a series of recursive patterns
-    + that not only execute queries, but execute the core system itself.
-    + reduces idiosyncratic code for fewer bugs and lower complexity through
-    a parsimony of concepts.
+Workloads within RapidsSE are defined in isolated units called *jobs*. A job can
+execute across any or all nodes in the cluster. Jobs are uniquely
+identifiable.
 
-  - Workload in the system (e.g. a user query) is defined in isolated units called jobs.
+The work that a job will do is defined by a *pipeline*. A pipeline may have been
+created dynamically (for example, to fulfill an external user's query), or it
+may be executing a previously defined pipeline (for example, reading and
+processing messages from other nodes in the cluster).
 
-  - The work that a job does is defined by a pipeline.
-    + A pipeline may be created dynamically, e.g. to represent a SQL query being executed,
-    or a pipeline may be predefined and executed repeatedly (e.g. to read messages from
-    a client and send back responses).
+A pipeline consists of a series of *tasks* connected together in a topology
+across the cluster. A pipeline that connects two tasks serves as a communication
+channel between those tasks, irrespective of where they exist in the cluster.
+Tasks can send data and/or control messages downstream through the pipeline to
+other tasks in response to its own activity.
 
-  - A pipeline consists of a series of tasks connected together in a topology across the cluster.
-    + A pipeline serves as a communication channel between tasks. Tasks can send data
-    and/or control messages to other parts of the pipeline in response to its own activity.
-    + A pipeline could run purely on the local node, a remote node, or any or all of the
-    nodes in the cluster.
-    + A pipeline is not necessarily linear. It can fan out across all partitions on a node,
-    or fan out across across selected/all nodes in the cluster (like a broadcast).
-    Similarly, a pipeline can fan in across nodes and partitions to collate or aggregate
-    results.
+So a pipeline defines what tasks are run, where in the cluster they are run
+and in what order they are run. A pipeline could run purely on the local node,
+a remote node, or any or all of the nodes in the cluster depending on the
+nature of the work and the location of the data. A pipeline is not necessarily
+a linear sequence. It can fan out to multiple tasks (like a broadcast), fan in
+from multiple tasks to a single task (for example, when aggregating a value),
+and invoke other pipelines. Fanning out is useful for parallelising an operation
+across all data partitions on a node or across all nodes in a cluster. At some
+point, pipelines that have a fan out will fan in to collect or aggregate the
+results before they are sent back to the user.
 
-  - Each of the tasks in a job can be allocated to different threads in the system
-    - Tasks can execute in parallel if they have work to do, or they can be scheduled
-    as work arrives for them.
-    - Threads execute tasks in their queue in a round-robin fashion
 
-      + This gives a fair execution model
-      + Control of this scheduling and execution also gives RapidsSE the power to prioritise
-      certain internal tasks where it is required, so that user tasks spend the most time
-      in an executable state. This would not be possible to the same degree in a thread-centric
-      model where scheduling is purely controlled by the kernel.
+.. figure:: pipelineExample.png
+   :align: left
+   :figwidth: 926px
 
-    - minimises thread context switching overheads compared to a model where each job has its own threads
+   Logical view of a pipeline.
 
-  - The work to be done by each task is broken down into a series of small, discrete chunks called steps
-    + A thread may execute one or more steps from a particular task before putting it to
-    the end of its run queue. The thread would then execute steps from the next task at
-    the top of its run queue.
-    + In this way steps from multiple tasks can be interleaved so they all make forward progress
-    + steps are designed to not block or sleep so they do not hold up a thread from being able
-    to execute other tasks
+   This fictitious pipeline example shows that there are 3 tasks that first
+   execute on the originating node (the node that first received the query).
+   Each of these tasks is fed with data from the previous task.
+
+   After the 3rd task the data is distributed to 1 task on each partition on
+   each node in the cluster, parallelising that particular operation.
+
+   The tasks on each partition are then fanned-in to a single task on each
+   node in the cluster (this example is a cluster of 2 nodes with 4
+   partitions on each node). These tasks might be aggregating results in
+   parallel on each node.
+
+   The results of this then get sent back to a single task on the originating
+   node for further consolidation. A final task on this node may limit the
+   results, for example.
+
+
+When a pipeline is being executed, all tasks in that pipeline execute
+concurrently, so long as they have work to do. Some tasks require data from a
+previous task in the pipeline before they can do anything. Other tasks are
+independently capable of generating output data for downstream tasks on their
+own.
+
+On each node in the cluster, each task can be executed by a different *thread*.
+This allows multiple parts of the pipeline to be executed in parallel, maximising
+the CPU usage on the node and shortening the query execution time.
+
+.. figure:: jobModel.png
+   :align: left
+   :figwidth: 1036px
+
+   Physical representation of jobs, tasks and threads.
+
+   This figure represents two jobs being executed in the system (for example
+   two user queries). Jobs can run across all nodes in the cluster. Tasks for
+   each job can be spread amongst threads on the nodes they are assigned to.
+   The pipeline forms an independent logical connection between the tasks.
+
+A given thread may have multiple tasks ready to be executed. Generally each task
+is executed in a fair and round-robin nature. However control of the task
+scheduling and execution gives RapidsSE the power to prioritise any important
+internal tasks where it is required. This could favour certain admin actions,
+or internal operations such that user queries are not impeded.
+
+Compared to a thread-centric model where each unit of work was parallelised by
+its own thread, scheduling of threads occurs in the operating system's kernel.
+This not only means that fine grained scheduling is not possible by the
+application, but a thread-centric approach also incurs more context switching
+overheads too.
+
+But if a RapidsSE thread has a queue of tasks to run, how does it ensure that
+all the tasks run fairly? After all, one long-running task could easily prevent
+other tasks in the thread's queue from being executed.
+
+RapidsSE solves this by breaking tasks down into a series of smaller executable
+sequences called *steps*. All tasks in RapidsSE are designed this way. While
+the instructions within a step cannot be interrupted, after a step completes a
+thread may choose to begin executing steps from the next task in its queue.
+Alternatively a task may indicate that it is no longer runnable, for example
+because it has no more data to work with. A thread may execute a number of
+steps from a task before switching execution to the next task in the queue.
+In this way, a single thread can be time-shared across many independent
+executable tasks. This allows every task in the system the fair ability to
+make forward progress.
+
+This is important when we consider concurrent workloads. Without a proper
+concurrency strategy a single very long running query could prevent subsequent
+short-lived queries from running to completion. The interleaving of steps in
+RapidsSE tasks allows both long and short-running queries to be treated fairly.
+
+
 
 .. _sqlArchitecture:
 
