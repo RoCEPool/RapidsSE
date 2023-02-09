@@ -1326,7 +1326,7 @@ void Bench::vFlatten_20_W_A_C_ro(void)
     ;
  */
 
-  m_pCI->vTransform(__func__, "((20))"_Stz);
+  m_pCI->vTransform(__func__, "((vFlatten_20_W_A_C_ro))"_Stz);
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   vAssert_Board_mqA();
@@ -1413,7 +1413,7 @@ void Bench::vFlatten_20_W_A_C_ro(void)
 
   if (m_pCI->G_bIsNextMain(CK_PROJECT)) {
     RASSERT(m_pCI->G_bEachMain(CK_PROJECT));
-    Board::vEnhance_sq_project_To_Include_Correlation_Column(m_pCI);
+    Board::vEnhance_sq_project_To_Include_Correlation_Column(m_pCI,"__SQCRLKEY"_Stz);
   }
   else {
 

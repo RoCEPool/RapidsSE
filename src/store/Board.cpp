@@ -635,12 +635,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 {
   _static_
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pre-fold promote sq <aggreg> seq to <gbyAgg> seq
+  // promote sq <aggreg> seq to <gbyAgg> seq
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
@@ -651,9 +646,6 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
     pCI->G.e_Level = (eAL) pCI->G.p_level->Y_iGet(P_Level);
 
     pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
-
-//    pCI->G.p_projection->vCard(CK_PROJECTION);
-//    pCI->G.p_projection = _pCard_Projection(pCI->G.p_projection);
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->Y_vSet(P_Injected);
@@ -677,7 +669,8 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
     pCI->G.p_expr->vCardNo(0);
 
     if (AL_PARTITION == pCI->G.e_Level) {
-      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,pCI->m_pExpr_corr->szValue());
+      //pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,pCI->m_pExpr_corr->szValue());
+      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,"__SQCRLKEY"_Stz);
     }
     else {
       pCI->G.p_key->Y_vSet(P_ProjBump, (i8)1);
@@ -685,7 +678,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
-      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,pCI->m_pExpr_corr->szValue());
+      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
     }
@@ -696,7 +689,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
     if (AL_PARTITION != pCI->G.e_Level) {
       pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
-      pCI->G.p_key->Y_vCut(P_ProjBump);
+      //pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->G.p_key->Y_vSet(P_ProjBumped);
     }
 
@@ -723,7 +716,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI)
+void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI, Stz* szAs)
 {
   _static_
 
@@ -732,17 +725,18 @@ void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI)
 
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
 
-  pCI->G.p_projection = pCI->G.p_project->pSub_projection();
-
-//  pCI->G.p_projection->Y_vSet(P_ProjBump,(i8)1);
-//  pCI->G.p_projection->Y_vSet(P_Restream);
-
   pCI->G.p_type = pCI->G.p_key->pGetChild(0)->pSub_type();
 
-  // push <project>/__SQ1IGBKY1
+  pCI->G.p_projection = pCI->G.p_project->pSub_projection();
+
+  pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+
+
+
+  // push <project>/__SQCRLKEY
   pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
   pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,pCI->m_pExpr_corr->szValue());
+  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,szAs);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
@@ -769,7 +763,6 @@ void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI)
 
   //i8 nBumpBy = pCI->G.p_projection->Y_iGet(P_ProjBump);
 
-  pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 //  pCI->G.p_projection->Y_vSet(P_ProjBumped,(i8)nBumpBy);
 //  pCI->G.p_projection->Y_vCut(P_ProjBump);
 
