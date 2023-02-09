@@ -47,6 +47,25 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
+{
+  _static_
+
+  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue());
+
+  p_expr->vAppend(p_type);
+  p_expr->vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pGby_expr_From_stmCol(Card_StmCol* p_stmCol)
 {
   _static_

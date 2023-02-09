@@ -261,6 +261,7 @@ namespace STORE
     static void vInject_sqResult_Into_gbyAgg(CardIter* pCI);
 
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
+    static void vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI);
 
     static void vMorph_Table_To_EEop(CardIter* pCI);
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);

@@ -629,7 +629,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold promote sq <aggreg> seq to <gbyAgg> seq
 
-  for (i8 i_Series = 0; i_Series < 3; i_Series++) {
+  for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
     pCI->G.p_MainCard->vCard(CK_GBYAGG);
     pCI->G.p_gbyAgg = _pCard_GbyAgg(pCI->G.p_MainCard);
@@ -639,8 +639,8 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
     pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
 
-    pCI->G.p_projection->vCard(CK_PROJECTION);
-    pCI->G.p_projection = _pCard_Projection(pCI->G.p_projection);
+//    pCI->G.p_projection->vCard(CK_PROJECTION);
+//    pCI->G.p_projection = _pCard_Projection(pCI->G.p_projection);
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->Y_vSet(P_Injected);
@@ -648,11 +648,11 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
 
     if (AL_PARTITION == pCI->G.e_Level) {
-      pCI->G.p_expr = Card_Expr::pGby_expr_From_stmCol(pCI->G.p_stmCol);
+      pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->m_pExpr_corr);
       pCI->G.p_key->vAppend(pCI->G.p_expr);
     }
     else {
-      pCI->G.p_type = pCI->G.p_stmCol->pSub_type();
+      pCI->G.p_type = pCI->m_pExpr_corr->pSub_type();
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
@@ -664,7 +664,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
     pCI->G.p_expr->vCardNo(0);
 
     if (AL_PARTITION == pCI->G.e_Level) {
-      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,pCI->G.p_stmCol->szValue());
+      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,pCI->m_pExpr_corr->szValue());
     }
     else {
       pCI->G.p_key->Y_vSet(P_ProjBump, (i8)1);
@@ -672,7 +672,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
-      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,pCI->G.p_stmCol->szValue());
+      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,pCI->m_pExpr_corr->szValue());
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
     }
@@ -687,12 +687,12 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
       pCI->G.p_key->Y_vSet(P_ProjBumped);
     }
 
-    if (pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream()) {
-      pCI->G.p_gbyAgg->vRemoveChild(pCI->G.p_stream);
-      DELETE_CARD(pCI->G.p_stream);
-    }
-    pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-    pCI->G.p_gbyAgg->vAppend(pCI->G.p_stream);
+//    if (pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream()) {
+//      pCI->G.p_gbyAgg->vRemoveChild(pCI->G.p_stream);
+//      DELETE_CARD(pCI->G.p_stream);
+//    }
+//    pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
+//    pCI->G.p_gbyAgg->vAppend(pCI->G.p_stream);
 
     if (pCI->G_bEachMain()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_AGGREG)) {
@@ -1098,6 +1098,24 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
   pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
   bool bIgnore = pCI->G.p_PRED->bPredRecursive(bMarkCorrPred);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI)
+{
+  _static_
+
+  // find the <table>/<stream>/<stmColList>/<stmCol>
+  //  corresponding to the correlated predicate
+
+  pCI->m_pCard_found = pCI->G.p_projection->pFindValueRecursive(pCI->m_pTerm_corrCol->szValue(), pCI->m_pCard_parent);
+  pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
+
+  pCI->m_pExpr_corr->vMark1(MARK_AT);
+  pCI->m_pExpr_corr->Y_vSet(P_CorrExpr);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* convert <table> into either <scan>, <indexJoin> or <keyExists>             */
