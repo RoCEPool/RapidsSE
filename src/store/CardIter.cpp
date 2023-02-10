@@ -492,7 +492,6 @@ void CardIter::G_vClearMembers(void)
   G.p_stmColList       = nullptr;
   G.p_stmColNm         = nullptr;
   G.p_stmColOdn        = nullptr;
-  G.p_stream           = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
@@ -1665,7 +1664,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STMCOLLIST:       return G.p_stmColList;
     case CK_STMCOLNM:         return G.p_stmColNm;
     case CK_STMCOLODN:        return G.p_stmColOdn;
-    case CK_STREAM:           return G.p_stream;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
@@ -3283,7 +3281,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOLLIST:       *((Card**)&G.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
     case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
-    case CK_STREAM:           *((Card**)&G.p_stream)           = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
