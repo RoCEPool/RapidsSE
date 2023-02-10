@@ -39,7 +39,6 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
   m_sBoardNm   = szBoardNm;
   m_eBoardKind = eBoardKind;
   m_eBoardType = eBoardType;
-  m_eBoardForm = BF_NONE;
 
   m_pBench     = pBench;
 
@@ -1584,28 +1583,6 @@ void Board::vReinstate_stages(CardIter* pCI)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
-/*----------------------------------------------------------------------------*/
-/* get board form                                                             */
-/*----------------------------------------------------------------------------*/
-eBF Board::eBoardForm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_eBoardForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set board form                                                             */
-/*----------------------------------------------------------------------------*/
-void Board::vBoardForm(eBF eBoardForm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_eBoardForm = eBoardForm;
-}
-
 /*----------------------------------------------------------------------------*/
 /* get board kind                                                             */
 /*----------------------------------------------------------------------------*/
@@ -1802,11 +1779,10 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprint("Transform: %02lld Board %s Query %s :: %s "_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
                    m_iXform,
                    m_sBoardNm.szStz(),
-                   m_pOptimiser->szQueryNm(),
-                   aBF[m_eBoardForm]
+                   m_pOptimiser->szQueryNm()
                    );
 
   // line 2

@@ -7,7 +7,6 @@
 
 #include "eBK.h"
 #include "eBT.h"
-#include "eBF.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -201,7 +200,6 @@ namespace STORE
     s32         m_sBoardNm;
     eBK         m_eBoardKind;  // costEst, partition, permute, subpipe
     eBT         m_eBoardType;  // original, view
-    eBF         m_eBoardForm;  // fanin, linear
 
     Card_Deck*  m_pCard_Deck;
 
@@ -277,8 +275,6 @@ namespace STORE
 
 
     i8  i_Board(void);
-    eBF  eBoardForm(void);
-    void vBoardForm(eBF eBoardForm);
     eBK eBoardKind(void);
     Stz* szBoardNm(void);
     void vBoardNm(Stz* szBoardNm);
