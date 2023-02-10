@@ -170,19 +170,10 @@ namespace STORE
 
 
     // vSeries_80_Index_Scan
-    bool bS80_T00_Test(bool bEnabled);
-    void vS80_T00_Skip(void);
-    void vS80_T00_Begin(void);
-    void vS80_T30_Morph_scan_To_indexScan(void);
+   void vS80_T30_Morph_scan_To_indexScan(void);
 
     // vSeries_90_Stream_Ordering
-    bool bS90_T00_Test(bool bEnabled);
-    void vS90_T00_Skip(void);
-    void vS90_T00_Begin(void);
     void vS90_T30_Derive_order(void);
-
-    // vSeries_A0_Make_Weavable
-    void vSA0_T00_Begin(void);
 
     void vAssert_Board_any(void);
     void vAssert_Board_mqA(void);

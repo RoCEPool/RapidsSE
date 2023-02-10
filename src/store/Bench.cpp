@@ -241,8 +241,6 @@ void Bench::vSeries_MakeWeavable(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  vSA0_T00_Begin();
-
   vGroup_CullBounds();
   vGroup_Filters();
   vGroup_Staging();
@@ -3025,39 +3023,6 @@ void Bench::vTransform_PredicateReposition_originalModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bS80_T00_Test(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (! bEnabled)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS80_T00_Skip(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS80_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->m_pCardCtl->vUseShorter();
-
-  vST00_Begin();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Bench::vS80_T30_Morph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
@@ -3089,52 +3054,6 @@ void Bench::vS80_T30_Morph_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bS90_T00_Test(bool bEnabled)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (! bEnabled)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS90_T00_Skip(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS90_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  //m_pCI->m_pCardCtl->vUseShorter();
-
-  m_pCI->m_pCardCtl->vPrintSubCards(true,
-                                    CK_KEY,
-                                    CK_INDEXLIST,
-                                    CK_PROJECTION,
-                                    CK_RPNCALC,
-                                    CK_STREAM,
-                                    0);
-  m_pCI->m_pCardCtl->vPrintSubCards(false,
-                                    CK_STMCOLLIST,
-                                    0);
-
-  m_pCI->m_pCardCtl->vPrintBelow(CK_PROJECT,true);
-
-  vST00_Begin();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Bench::vS90_T30_Derive_order(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
@@ -3148,23 +3067,6 @@ void Bench::vS90_T30_Derive_order(void)
   m_pCI->vEndTransform();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                               vSeries_A0_Make_Weavable */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vSA0_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->m_pCardCtl->vUseShorter();
-
-  vST00_Begin();
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
