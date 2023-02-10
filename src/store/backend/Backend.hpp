@@ -72,6 +72,8 @@ namespace STORE
                                                     s2K& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s2K& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorSubQuery(PlanNode* pNode,
+                                                         s2K& sPath, i8 iDepth, void* pvArg);
 
     //
     // pipeline stages

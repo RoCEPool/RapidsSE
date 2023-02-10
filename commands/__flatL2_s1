@@ -31,6 +31,15 @@ load C "../DATA/Select/select.csv";
 
 select * from dummy;
 
+explain stage aggregateSplit
+select sum(Y)
+  from (
+   select X*2 as Y from (
+      select A.A_COL2 as X from A,B
+        where A.A_COL0 = B.B_COL0) as T1
+   ) as T2
+ ;
+
 trackMemory;
 
 /optimise
