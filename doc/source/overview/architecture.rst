@@ -274,66 +274,61 @@ RapidsSE tasks allows both long and short-running queries to be treated fairly.
 
 The SQL Query Model
 -------------------
-.. ::
+Given that the above sections have described how a RapidsSE cluster operates,
+how a node operates and how work is done within a node, let's now apply this
+to what happens when a SQL query is received by RapidsSE and executed.
 
-  - When a SQL query is submitted to RapidsSE an instance of a job is created to execute
-  a pipeline that logically does the following:
-    - Parsing
-    - Compilation
-    - Transliteration into a pipeline
-    - Optimising
-    - Code synthesis
-    - Job execution
+When RapidsSE receives a SQL query from a user a job is created to understand
+it and execute it. This involves multiple stages and numerous child jobs may
+be created in order to break the problem down and solve a part of it.
 
-  - Parsing turns the text-based SQL query into a basic plan graph (tree) of SQL operators
-  that represents the SQL text. Any syntactic errors in the query are picked up at this stage.
+A SQL query undergoes these transformations from plain query text to a
+result set:
 
-  - Compilation is taking the initial plan graph and validating the semantics of the statement.
-  This involves checking for the existence of tables/columns, validating that compatible types
-  are involved in expressions, and simplifying the graph where possible. At this point the
-  plan graph still represents *what* the user has requested, not *how* it is going to be executed.
+.. figure:: sqlModel.png
+   :align: center
 
-  - Transliteration is the process of converting the plan graph into a pipeline definition that details
-  how it is going to be executed across the cluster. The pipeline could now be executed, however
-  it is not optimised.
+   The transformations of a SQL query to user results.
 
-  - Optimising is the process of taking the above transliterated pipeline and making it much more
-  efficient. The output is another pipeline definition that should execute far more quickly
-  because it minimises data movement and copying. Common SQL optimisations such as join ordering
-  or subquery flattening are added at this stage.
+Each of these stages are described further below.
 
-  - Code synthesis is the process of dynamically writing C/C++ code to implement the expression
-  projections and predicates in the query. This dynamic code is compiled to machine code via
-  a C/C++ compiler and loaded into the RapidsSE process space, where it is executed by tasks
-  in the pipeline. This is much faster and efficient than an interpreted or bytecode approach.
-  It also allows the dynamic code to directly call and make use of primitives and structures
-  in RapidsSE, such as indexes, lists, sets, etc.
+**Parsing** is the first stage of the process. It turns the text-based SQL query
+into a basic plan graph (tree) representation of SQL operators that represents
+the SQL text. This makes it much easier for RapidsSE to work with. This stage
+will also pick up any syntactic errors that may exist in the query text.
 
-  - Job execution is the execution of the final optimised pipeline with tasks executing custom
-  compiled expression logic as machine code. This job may return rows back to the user or an
-  appropriate error message.
+The **Compilation** stage involves taking the initial plan graph that was produced
+during the Parsing stage and validating the semantics (meaning) of the statement.
+This involves things like checking that the referenced tables or columns
+actually exist, validating that expressions involve compatible data types, and
+simplifying the plan graph where possible. At this point the plan graph still
+represents *what* the user has requested, not *how* it is going to be executed.
 
+**Pipeline Transliteration** is the process of converting the logical plan graph
+into a concrete form that starts to describe *how* the query will be
+executed. This is represented as a pipeline definition that details the tasks
+that need to be run, where the tasks are run and how they are interconnected.
+At this point in time the pipeline could now be executed, however it is not
+an optimised pipeline so the query would not be very efficient.
 
-.. _architectureSummary:
+The **Optimisation** stage is the process of taking the pipeline definition
+generated above and making it much more efficient. This is done by making
+logical changes to the pipeline that change how it runs without affecting
+the overall result that the pipeline would generate. The less data that the
+plan needs to read or copy around the cluster, the faster the query will
+complete. Parts of the pipeline plan may be combined or reordered to achieve
+this.
 
-Summary
--------
-.. ::
+**Code Synthesis** is the process of dynamically writing C/C++ code to implement
+the expression operations in the query. This dynamic code is compiled to
+native machine code via a C/C++ compiler which is then loaded into the RapidsSE
+process space. At that point the customised code can be directly executed by
+tasks in the pipeline. This is a much faster and more efficient approach than
+executing expression operations via an interpreted or bytecode method. It also
+allows the dynamic code to directly call back into RapidsSE and make use of
+code primitives and structures in RapidsSE, such as indexes, lists, sets, etc.
 
-  Goals:
-  - stable
-  - high performance
-  - efficient use of hardware computing resources
-  - ...leads to lower TCO
-  - optimised for large SF
-
-  How?
-  - Instructions are moved to the location of the data
-  - Both SE and queries are executed in natively compiled code.
-  (not bytecode or interpreted)
-  - Rigorous and self-describing memory model to catch typical memory problems early
-  (under/over flow, leaks, etc)
-  - Custom memory allocator gives deterministic memory usage
-  - Task based threading model allows large query concurrency with fair execution
-  (one long running query won't hold short running queries back)
-  - Compressed in-memory data format
+**Job Execution** is the final stage in the sequence. In this stage a job is
+created that executes the customised pipeline definition and native expression
+operations that were created across all of the previous stages. This job may
+return rows back to the user or an appropriate error message may be generated.
