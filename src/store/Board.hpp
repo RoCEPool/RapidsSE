@@ -199,9 +199,7 @@ namespace STORE
     s32         m_sBoardNm;
     eBK         m_eBoardKind;  // joinOrdering, subquery
 
-    Optimiser*  m_pOptimiser;
     Bench*      m_pBench;
-
     SubQuery*   m_pSubQuery;
     Card_Deck*  m_pCard_Deck;
 

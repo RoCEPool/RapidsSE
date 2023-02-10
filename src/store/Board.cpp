@@ -41,8 +41,6 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pBench     = pBench;
 
-  m_pOptimiser = m_pBench->pOptimiser();
-
   m_pCard_Deck = new Card_Deck;
 
   m_iXform = C_UNKNOWN;
@@ -1681,7 +1679,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  CardCtl* pCardCtl = m_pOptimiser->pCardCtl();
+  CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
 
   if (! m_pCard_Deck->nItems())
     return;
@@ -1768,8 +1766,6 @@ void Board::vPinTitle(Ribbon* pRibbon,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  CardCtl* pCardCtl = m_pOptimiser->pCardCtl();
-
   if (! m_pCard_Deck->nItems())
     return;
 
@@ -1779,7 +1775,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
   pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
                    m_iXform,
                    m_sBoardNm.szStz(),
-                   m_pOptimiser->szQueryNm()
+                   m_pBench->pOptimiser()->szQueryNm()
                    );
 
   // line 2
@@ -1814,7 +1810,7 @@ void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this);
+  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
 
   vPinTitle(pRibbon, m_iXform, szDescription);
 
