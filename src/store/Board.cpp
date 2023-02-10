@@ -39,7 +39,6 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
   m_sBoardNm   = szBoardNm;
   m_eBoardKind = eBoardKind;
   m_eBoardType = eBoardType;
-  m_eBoardRole = BR_NONE;
   m_eBoardForm = BF_NONE;
 
   m_pBench     = pBench;
@@ -1638,26 +1637,6 @@ void Board::vBoardNm(Stz* szBoardNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get board role                                                             */
-/*----------------------------------------------------------------------------*/
-eBR Board::eBoardRole(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_eBoardRole;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set board role                                                             */
-/*----------------------------------------------------------------------------*/
-void Board::vBoardRole(eBR eBoardRole)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_eBoardRole = eBoardRole;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card registers                                                         */
 /*----------------------------------------------------------------------------*/
 CardCtl* Board::pCardCtl(void)
@@ -1823,11 +1802,10 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprint("Transform: %02lld Board %s Query %s :: %s %s"_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %s Query %s :: %s "_Stz,
                    m_iXform,
                    m_sBoardNm.szStz(),
                    m_pOptimiser->szQueryNm(),
-                   aBR[m_eBoardRole],
                    aBF[m_eBoardForm]
                    );
 
