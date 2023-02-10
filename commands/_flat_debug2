@@ -2,6 +2,10 @@
 /* _flat_debug2 -- (flattening)                                               */
 /*============================================================================*/
 
+tag default <tpch_dir> = "../tpch/sf_0001";
+
+tag default <suffix> = "csv";
+
 __TPCH_SCHEMA
 
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
