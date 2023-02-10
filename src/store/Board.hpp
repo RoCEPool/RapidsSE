@@ -223,7 +223,6 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
-    bool        m_bMayHaveStmColOdn;
 
     SubQuery*   m_pSubQuery;
 
@@ -303,8 +302,6 @@ namespace STORE
 
     Card_Deck* pDeck(void);
 
-    bool bMayHaveStmColOdn(void);
-    void vMayHaveStmColOdn(bool bMayHaveStmColOdn);
 
     void vPinBanners(Ribbon* pRibbon);
     void vPinCards(Ribbon* pRibbon);

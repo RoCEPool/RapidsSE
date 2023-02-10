@@ -647,8 +647,6 @@ void Bench::vTransform_StmColToTblCol_recursiveModel(void)
 
   m_pCI->G.pDeck->vNoTermsStmColOdn();
 
-  m_pCI->G.pBoard->vMayHaveStmColOdn(false);
-
   m_pCI->vEndTransform();
 }
 
@@ -2200,8 +2198,6 @@ void Bench::vTransform_TblColToStmCol(void)
 
   vAssert_Board_mqA();
 
-  m_pCI->G.pBoard->vMayHaveStmColOdn(true);
-
   while (m_pCI->G_bEachMain())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
@@ -2218,8 +2214,6 @@ void Bench::vTransform_StmColToColNmOfKeyExists(void)
   m_pCI->vTransform(__func__, "((20))))"_Stz);
 
   vAssert_Board_mqA();
-
-  m_pCI->G.pBoard->vMayHaveStmColOdn(true);
 
   while (m_pCI->G_bEachMain()) {
 

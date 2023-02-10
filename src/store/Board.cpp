@@ -53,8 +53,6 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
 
   m_iXform = C_UNKNOWN;
 
-  m_bMayHaveStmColOdn = true;
-
   m_pSubQuery = new SubQuery(this);
 
   _checkInitialised_(CN_BOARD);
@@ -1692,25 +1690,6 @@ Card_Deck* Board::pDeck(void)
   return m_pCard_Deck;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get may have stmColOdn                                                     */
-/*----------------------------------------------------------------------------*/
-bool Board::bMayHaveStmColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_bMayHaveStmColOdn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set may have stmColOdn                                                     */
-/*----------------------------------------------------------------------------*/
-void Board::vMayHaveStmColOdn(bool bMayHaveStmColOdn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_bMayHaveStmColOdn = bMayHaveStmColOdn;
-}
 
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
@@ -1721,10 +1700,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
 
   pRibbon->vDrawH('-',true);
 
-  if (m_bMayHaveStmColOdn)
-    pRibbon->vDrawH('|');
-  else
-    pRibbon->vDrawH('=');
+  pRibbon->vDrawH('=');
 
   //pRibbon->vPutTextRight(szXhand(),1);
   //pRibbon->vPutTextRight(szXform(),2);
