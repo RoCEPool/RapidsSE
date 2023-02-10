@@ -256,7 +256,6 @@ namespace STORE
 
     static bool bFindAndMarkSubQryCall_originalModel(CardIter* pCI);
     static bool bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI);
-    static void vInject_sqResult_Into_gbyAgg(CardIter* pCI);
 
     static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
     static void vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI);
@@ -271,19 +270,14 @@ namespace STORE
                                   Card_Combined* p_combined_prior,
                                   Card_Next* p_next_prior,
                                   Card* p_main_curr);
-    static void vUnproject_injected_sqResult(CardIter* pCI);
 
     // vSeries_26_SubQuery_Analysis
-    static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);
-    static void vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI);
     static void vOuter_Query_Analysis_Of_from_call(CardIter* pCI);
     static void vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI);
     static void vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI);
 
 
 
-    // vSeries_75_EE_operators
-    static void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
 
     // vSeries_A0_Make_Weavable
     static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCI);
