@@ -42,26 +42,6 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* projection analysis                                                        */
-/*----------------------------------------------------------------------------*/
-//void Card_Projection::vProjection_Analysis(CardIter* pCI)
-//{
-//  _static_
-//
-//  pCI->vRestart();
-//  while (pCI->G_bEachMain(CK_TABLE))
-//    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-//      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
-//
-//
-//  pCI->vRestart();
-//  pCI->G.p_projection = nullptr;
-//  while (pCI->G_bEachMain(CK_TABLE))
-//    pCI->G.p_table->vProjectionAnalysis(pCI);
-//
-//}
-
-/*----------------------------------------------------------------------------*/
 /* projection analysis (post fold)                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
@@ -91,56 +71,6 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
     if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
       pCI->G.p_projection->vRenumberAllExpr();
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* relabel expressions                                                        */
-/*----------------------------------------------------------------------------*/
-void Card_Projection::vRelabelExpressions(CardIter* pCI)
-{
-  _static_
-
-  i8 i_Expr;
-  s32 sLabel;
-
-  pCI->G_vRestart();
-  while (pCI->G_bEachMainWith2Sub(CK_GBYAGG, CK_KEY, CK_PROJECTION)) {
-
-    i_Expr = 0;
-    CardIter xCI_g(pCI->G.p_key);
-    while ((pCI->G.p_expr = _pCard_Expr(xCI_g.pEachChild()))) {
-      sLabel.vSprint("$K%lld"_Stz,++i_Expr);
-      pCI->G.p_expr->vValue(sLabel.szStz());
-    }
-
-    i_Expr = 0;
-    CardIter xCI_p(pCI->G.p_projection);
-    while ((pCI->G.p_expr = _pCard_Expr(xCI_p.pEachChild()))) {
-      sLabel.vSprint("$%lld"_Stz,++i_Expr);
-      pCI->G.p_expr->vValue(sLabel.szStz());
-    }
-
-  }
-
-  i8 i_StmCol;
-
-  pCI->G_vRestart();
-  while (pCI->G_bEachMain()) {
-    if (! (pCI->G.p_stream = pCI->G.p_MainCard->pSub_stream()))
-      continue;
-
-    i_StmCol = pCI->G.p_stream->Y_iGet(P_OdnLo);
-
-    pCI->G.p_stmColList = pCI->G.p_stream->pSub_stmColList();
-
-    CardIter xCI_s(pCI->G.p_stmColList);
-    while ((pCI->G.p_stmCol = _pCard_StmCol(xCI_s.pEachChild()))) {
-      sLabel.vSprint("$%lld"_Stz,i_StmCol++);
-      pCI->G.p_stmCol->vValue(sLabel.szStz());
-    }
-
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/

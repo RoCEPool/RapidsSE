@@ -16,9 +16,7 @@ namespace STORE
     Card_Projection(void);
    ~Card_Projection(void) noexcept(false);
 
-    //static void vProjection_Analysis(CardIter* pCI);
     static void vProjection_Analysis_v2(CardIter* pCI);
-    static void vRelabelExpressions(CardIter* pCI);
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
     Card_Projection* pReProjection(void);
