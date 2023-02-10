@@ -37,12 +37,9 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // series
     bool bApplyTransformationMatrix(eEC* peErrorCode);
-    void vApplyTransformationMatrix_originalModel(void);
     void vApplyTransformationMatrix_recursiveModel(void);
 
-    void vSeries_PreparePipelines_originalModel(void);
     void vSeries_PreparePipelines_recursiveModel(void);
-    void vSeries_MakeRunnable_originalModel(void);
     void vSeries_MakeRunnable_recursiveModel(void);
     void vSeries_MakeRunnable_recurse(void);
     void vSeries_Optimisations(void);
@@ -52,20 +49,14 @@ namespace STORE
     // group
 
     void vGroup_InitialAdjustments(void);
-    void vGroup_CondenseInfo_originalModel(void);
     void vGroup_CondenseInfo_recursiveModel(void);
     void vGroup_MetaAnalysis(void);
-    void vGroup_MainConversions(void);
     void vGroup_PreliminaryConversions_recursiveModel(void);
     void vGroup_FinalConversions_recursiveModel(void);
 
-    void vGroup_PredicatePullup_originalModel(void);
     void vGroup_PredicatePullup_recursiveModel(void);
-    void vGroup_IndexBounds_originalModel(void);
     void vGroup_IndexBounds_recursiveModel(void);
-    void vGroup_JoinOrdering_originalModel(void);
     void vGroup_JoinOrdering_recursiveModel(void);
-    void vGroup_FlattenSubquery_originalModel(void);
     void vGroup_FlattenSubquery_recursiveModel(void);
 
     void vGroup_ChooseEEops(void);
@@ -86,11 +77,9 @@ namespace STORE
     void vTransform_NotOps(void);
 
     void vTransform_TableAnalysis(void);
-    void vTransform_StreamAnalysis(void);
     void vTransform_IndexAnalysis(void);
     void vTransform_ProjectionAnalysis(void);
 
-    void vTransform_StmColToTblCol_originalModel(void);
     void vTransform_StmColToTblCol_recursiveModel(void);
     void vTransform_RpnCalcToBoolCalc(void);
 
@@ -104,9 +93,6 @@ namespace STORE
     void vTransform_DeriveBoundsFromFilter_originalModel(void);
 
     void vTransform_OuterQueryAnalysis(void);
-    void vTransform_SubQueryAnalysisMainQuery(void);
-    void vTransform_SubQueryAnalysisSubQuery(void);
-    void vTransform_FlattenByDecisionTree_originalModel(void);
     void vTransform_FlattenByDecisionTree_recursiveModel(void);
 
     void vTransform_MorphTableToEEop(void);

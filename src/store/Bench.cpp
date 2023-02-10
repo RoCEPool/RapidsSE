@@ -110,21 +110,6 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apply the original transformation matrix                                   */
-/*----------------------------------------------------------------------------*/
-void Bench::vApplyTransformationMatrix_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->m_bRecursiveModel = false;
-
-  vSeries_PreparePipelines_originalModel();
-  vSeries_MakeRunnable_originalModel();
-  vSeries_Optimisations();
-  vSeries_MakeWeavable();
-}
-
-/*----------------------------------------------------------------------------*/
 /* apply the recursive transformation matrix                                  */
 /*----------------------------------------------------------------------------*/
 void Bench::vApplyTransformationMatrix_recursiveModel(void)
@@ -140,30 +125,6 @@ void Bench::vApplyTransformationMatrix_recursiveModel(void)
   vSeries_MakeWeavable();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  vS10_T00_Begin();
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
-
-    vGroup_InitialAdjustments();
-    vGroup_CondenseInfo_originalModel();
-    vGroup_MetaAnalysis();
-    vGroup_MainConversions();
-  }
-
-  vEndSeries(BK_SUBPIPE);
-}
 
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
@@ -187,31 +148,6 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
   }
 
   vTransform_OuterQueryAnalysis();
-
-  vEndSeries(BK_SUBPIPE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vSeries(BK_SUBPIPE, 0, __func__);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
-
-    vGroup_PredicatePullup_originalModel();
-    vGroup_IndexBounds_originalModel();
-    vGroup_JoinOrdering_originalModel();
-  }
-
-  m_pCI->vUsingBoard(BK_SUBPIPE, 0);
-
-  vGroup_FlattenSubquery_originalModel();
 
   vEndSeries(BK_SUBPIPE);
 }
@@ -337,18 +273,6 @@ void Bench::vGroup_InitialAdjustments(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_CondenseInfo_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_DeleteUnneeded();
-  vTransform_ScanBecomesTable();
-  vTransform_AddLevel();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Bench::vGroup_CondenseInfo_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
@@ -380,17 +304,6 @@ void Bench::vGroup_MetaAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_MainConversions(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_StmColToTblCol_originalModel();
-  vTransform_RpnCalcToBoolCalc();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Bench::vGroup_PreliminaryConversions_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
@@ -414,20 +327,6 @@ void Bench::vGroup_FinalConversions_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_PredicatePullup_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-
-  vTransform_MarkCmpPredWrtTable();
-  vTransform_CopyMarkedCmpPred();
-  vTransform_CullMarkedCmpPred();
-  vTransform_DeleteEmptyWhere();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Bench::vGroup_PredicatePullup_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
@@ -441,35 +340,10 @@ void Bench::vGroup_PredicatePullup_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_IndexBounds_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_DeriveBoundsFromFilter_originalModel();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Bench::vGroup_IndexBounds_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_DeriveBoundsFromFilter_originalModel();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_JoinOrdering_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (Card_Table::nTables(m_pCI) < 2)
-    return;
-
-  vTransform_JoinOrdering_originalModel();
-  vTransform_PredicateReposition_originalModel();
   vTransform_DeriveBoundsFromFilter_originalModel();
 }
 
@@ -486,19 +360,6 @@ void Bench::vGroup_JoinOrdering_recursiveModel(void)
   vTransform_JoinOrdering_originalModel();
   vTransform_PredicateReposition_originalModel();
   vTransform_DeriveBoundsFromFilter_originalModel();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_FlattenSubquery_originalModel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_SubQueryAnalysisMainQuery();
-  vTransform_SubQueryAnalysisSubQuery();
-
-  vTransform_FlattenByDecisionTree_originalModel();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,122 +639,6 @@ void Bench::vTransform_IndexAnalysis(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stream Analysis                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_StreamAnalysis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "add a <stream> under every <table>"_Stz);
-
-  vAssert_Board_any();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Stream Under All Table
-
-  vStreamAnalysisReset();
-
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    m_pCI->m_pTable = Card_Table::pAccess_Table(m_pCI->G.p_tableNm->sz());
-    m_pCI->G.p_stream = Card_Stream::pDerive_Of_table(m_pCI->m_pTable);
-
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_stream);
-  }
-
-//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-//    m_pCI->G.p_table->vProjectionAnalysis(this);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Stream Under All Project
-
-  m_pCI->G_vRestart();
-  vStreamAnalysisReset();
-
-  while (m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION)) {
-    m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection(m_pCI->G.p_projection);
-
-    m_pCI->G.p_project->vAppend(m_pCI->G.p_stream);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Stream Under All Agg Reg
-
-  m_pCI->G_vRestart();
-  vStreamAnalysisReset();
-
-  while (m_pCI->G_bEachMainWithSub(CK_AGGREG,CK_PROJECTION)) {
-    m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection(m_pCI->G.p_projection);
-
-    m_pCI->G.p_aggreg->vAppend(m_pCI->G.p_stream);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Stream Under All GbyAgg
-
-  m_pCI->G_vRestart();
-  vStreamAnalysisReset();
-
-  while (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_PROJECTION)) {
-    m_pCI->G.p_stream = Card_Stream::pDerive_Of_projection(m_pCI->G.p_projection);
-
-    m_pCI->G.p_gbyAgg->vAppend(m_pCI->G.p_stream);
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Stream Under All Sort
-
-  m_pCI->G_vRestart();
-  vStreamAnalysisReset();
-
-  while (m_pCI->G_bEachMain(CK_SORT)) {
-
-    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
-      m_pCI->G.p_stream = _pCard_Stream(m_pCI->G.p_stream->pDupCardAndSubCards());
-      m_pCI->G.p_sort->vAppend(m_pCI->G.p_stream);
-    }
-  }
-
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Derive Ordinal Range For All Table Stream
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_STREAM)) {
-    m_pCI->G.p_stream->vDerive_OrdinalRange_table(m_pCI->G.p_table->cValue(), &m_iOdnHi, &m_iOdnLo);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Derive Ordinal Range For All Project Stream
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_STREAM)) {
-    m_pCI->G.p_stream->vDerive_OrdinalRange_project();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Derive Ordinal Range For All Agg Reg Stream
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_AGGREG,CK_STREAM)) {
-    m_pCI->G.p_stream->vDerive_OrdinalRange_aggreg();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Derive Ordinal Range For All GbyAgg Stream
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_STREAM)) {
-    m_pCI->G.p_stream->vDerive_OrdinalRange_aggreg();
-  }
-
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Projection Analysis                                                        */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_ProjectionAnalysis(void)
@@ -908,27 +653,6 @@ void Bench::vTransform_ProjectionAnalysis(void)
 //    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
 
   Card_Projection::vProjection_Analysis_v2(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert all <stmColOdn> to <tblColOdn>                                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColToTblCol_originalModel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
-
-  vAssert_Board_any();
-
-  while (m_pCI->G_bEachMain())
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_original(m_pCI);
-
-  m_pCI->G.pDeck->vNoTermsStmColOdn();
-
-  m_pCI->G.pBoard->vMayHaveStmColOdn(false);
 
   m_pCI->vEndTransform();
 }
@@ -1066,93 +790,6 @@ void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
 
   vAssert_Board_any();
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_FlattenByDecisionTree_originalModel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  if (1 ==  nBoards())
-    return;
-
-  m_pCI->vTransform(__func__, "((10))"_Stz);
-
-  vAssert_Board_mqA();
-
-  m_pCI->G.pSubQuery =  pGetBoard(C_SQ_BOARD)->pSubQuery();
-
-  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ vFlatten_10_F();
-  else
-  if (m_pCI->G.pSubQuery->bViaWhere()) {
-    if (m_pCI->G.pSubQuery->bIsAggregation()) {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                         /* W_A_C_ro   Q2,17 */ vFlatten_20_W_A_C_ro();
-      } else {
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_30_W_A_NC_I();
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                         /* W_A_NC_ro    Q15 */ vFlatten_40_W_A_NC_ro();
-      }
-    } else {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFlatten_50_W_L_C_E();
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
-        else                                         /* W_L_C_ro         */ NEVER_REACH
-      } else {
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_60_W_L_NC_NI();
-        else                                         /* W_L_NC_ro        */ NEVER_REACH
-      }
-    }
-  }
-  else
-  if (m_pCI->G.pSubQuery->bViaHaving()) {
-    if (m_pCI->G.pSubQuery->bIsAggregation()) {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
-        else                                         /* H_A_C_ro         */ NEVER_REACH
-      } else {
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                         /* H_A_NC_ro    Q11 */ vFlatten_70_H_A_NC_ro();
-      }
-    } else {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
-        else                                         /* H_L_C_ro         */ NEVER_REACH
-      } else {
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
-        else                                         /* H_L_NC_ro        */ NEVER_REACH
-      }
-    }
-  }
-  else
-    NEVER_REACH;
 
   m_pCI->vEndTransform();
 }
@@ -2402,134 +2039,6 @@ void Bench::vTransform_OuterQueryAnalysis(void)
   }
 
   //m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Analyse main query for sub-queries                                         */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_SubQueryAnalysisMainQuery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "Analyse main query for sub-queries"_Stz);
-
-
-  SubQuery *pMainQuery = pGetBoard((i8)0)->pSubQuery();
-  pMainQuery->vDisposition(QD_LINEAR);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_AGGREG)) {
-    //SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    // the main-query has an aggreg
-    pMainQuery->vDisposition(QD_AGGREGATION);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    //SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    // the main-query has an gbyagg
-    pMainQuery->vDisposition(QD_AGGREGATION);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 nBoards = this->nBoards();
-  if (nBoards > 1) {
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMain(CK_CALL)) {
-      SubQuery* pSubQuery =  pGetBoard((i8)1)->pSubQuery();
-
-      pSubQuery->vCaller(0);
-      pSubQuery->vClause(QC_FROM_CLAUSE);
-
-      //SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-      pMainQuery->vSubQueries(1);
-    }
-//    m_pCI->G_vRestart();
-//    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-//      Board::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(m_pCI);
-//    }
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
-      Board::vMain_Query_Analysis_Of_having_boolCalc(m_pCI);
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_SubQueryAnalysisSubQuery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "Analyse sub-queries"_Stz);
-
-  vAssert_Board_mqA();
-
-
-  i8 nBoards = this->nBoards();
-  if (1 == nBoards) {
-    // there is no sub-query
-
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vSubQueries(0);
-  }
-  else
-  if (2 == nBoards) {
-
-    if (m_pCI->G_bPushBoard(1)) {
-
-      SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-      pSubQuery->vDisposition(QD_LINEAR);
-
-//      while (m_pCI->G_bEachMain()) {
-//        m_pCI->G_vNewMember(CK_GENESIS,"sq"_Stz);
-//        if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
-//          m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
-//        else
-//          m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
-//      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_PARAMLIST)) {
-        // there is a subQuery and it has a paramList
-
-        //SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-
-        // TODO: hack the number of params... fix
-        i8 nParams = 1; //m_pCI->G.p_paramList->nChildCards();
-
-        pSubQuery->vCorrCols(nParams);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_AGGREG)) {
-        // there is a subQuery and it has an aggreg
-
-        //SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-
-        pSubQuery->vDisposition(QD_AGGREGATION);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-        // there is a subQuery and it has an gbyAgg
-        //SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-        pSubQuery->vDisposition(QD_AGGREGATION);
-      }
-
-      m_pCI->G_vPopIter();
-    }
-  }
-  else
-    NEVER_REACH;
-
-  m_pCI->vEndTransform();
-
 }
 
 /*----------------------------------------------------------------------------*/
