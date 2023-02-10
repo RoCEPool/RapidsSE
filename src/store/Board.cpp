@@ -30,7 +30,7 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* pBench)
+Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -38,7 +38,6 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* 
   m_i_Board    = i_Board;
   m_sBoardNm   = szBoardNm;
   m_eBoardKind = eBoardKind;
-  m_eBoardType = eBoardType;
 
   m_pBench     = pBench;
 
@@ -64,9 +63,7 @@ Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  if (BT_VIEW == m_eBoardType) {
-    m_pCard_Deck->vRemoveAll();
-  }
+  m_pCard_Deck->vRemoveAll();
 
   delete m_pCard_Deck;
 

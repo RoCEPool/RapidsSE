@@ -2866,7 +2866,6 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
   Board* pBoard = new Board(aBK[BK_PARTITION],
                             BK_PARTITION,
                             C_UNKNOWN,
-                            BT_ORIGINAL,
                             m_pCI->m_pBench);
   m_pCI->G_vPushBoard(pBoard);
 

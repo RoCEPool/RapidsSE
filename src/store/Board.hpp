@@ -6,7 +6,6 @@
 #include "BASE.h"
 
 #include "eBK.h"
-#include "eBT.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -199,7 +198,6 @@ namespace STORE
     i8          m_i_Board;
     s32         m_sBoardNm;
     eBK         m_eBoardKind;  // costEst, partition, permute, subpipe
-    eBT         m_eBoardType;  // original, view
 
     Card_Deck*  m_pCard_Deck;
 
@@ -222,7 +220,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, eBT eBoardType, Bench* pBench);
+    Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench);
    ~Board(void) noexcept(false);
 
     static void vAdd_Partitioning(CardIter* pCI);
