@@ -11,8 +11,6 @@
 #include "eBF.h"
 #include "eBC.h"
 
-#include "eQS.h"
-
 #include "Card.hpp"
 #include "CardCtl.hpp"
 
@@ -210,8 +208,6 @@ namespace STORE
     eBF         m_eBoardForm;  // fanin, linear
     eBC         m_eBoardCall;  // exists, from, in
 
-    eQS         m_eSubQuery;
-
     Card_Deck*  m_pCard_Deck;
 
     Optimiser*  m_pOptimiser;
@@ -278,8 +274,8 @@ namespace STORE
 
 
     // vSeries_A0_Make_Weavable
-    static void vSA0_T10_Individuate_indexJoin_filter_b(CardIter* pCI);
-    static void vSA0_T10c_Individuate_crossJoin_filter(CardIter* pCI);
+    static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
+    static void vIndividuate_crossJoin_filter(CardIter* pCI);
 
     // vSeries_Z0_Restate_Pipeline
     static void vReinstate_stages(CardIter* pCI);
@@ -308,9 +304,6 @@ namespace STORE
                    i8 iTransformNo,
                    Stz* szExplain=nullptr);
     void vPrintBoard(Stz* szDescription=nullptr);
-
-    eQS  eSubQuery(void);
-    void vSubQuery(eQS  eSubQuery);
 
     SubQuery* pSubQuery(void);
 

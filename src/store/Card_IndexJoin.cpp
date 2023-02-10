@@ -49,7 +49,7 @@ void Card_IndexJoin::vIndividuateFilter(CardIter* pCI) {
   _static_
 
   while (pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Board::vSA0_T10_Individuate_indexJoin_filter_b(pCI);
+    Board::vIndividuate_indexJoin_filter_b(pCI);
   }
 }
 

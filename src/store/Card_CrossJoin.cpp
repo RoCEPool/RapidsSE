@@ -48,7 +48,7 @@ void Card_CrossJoin::vIndividuateFilter(CardIter* pCI) {
   _static_
 
   while (pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Board::vSA0_T10c_Individuate_crossJoin_filter(pCI);
+    Board::vIndividuate_crossJoin_filter(pCI);
   }
 }
 
