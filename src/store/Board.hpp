@@ -9,7 +9,6 @@
 #include "eBT.h"
 #include "eBR.h"
 #include "eBF.h"
-#include "eBC.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -192,7 +191,6 @@ namespace STORE
 {
   class Bench;
   class Dissector;
-  class Drafter;
   class Optimiser;
   class CardIter;
   class Weaver;
@@ -206,7 +204,6 @@ namespace STORE
     eBT         m_eBoardType;  // original, view
     eBR         m_eBoardRole;  // driver, follower
     eBF         m_eBoardForm;  // fanin, linear
-    eBC         m_eBoardCall;  // exists, from, in
 
     Card_Deck*  m_pCard_Deck;
 
@@ -282,8 +279,6 @@ namespace STORE
 
 
     i8  i_Board(void);
-    eBC  eBoardCall(void);
-    void vBoardCall(eBC eBoardCall);
     eBF  eBoardForm(void);
     void vBoardForm(eBF eBoardForm);
     eBK eBoardKind(void);
