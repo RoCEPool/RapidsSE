@@ -100,6 +100,7 @@ namespace STORE
     JobId         m_tMetricsDemonJobId;
     JobId         m_tMonDemonJobId;
     JobId         m_tNodeMonDemonJobId;
+    JobId         m_tPageInDemonJobId;
     JobId         m_tPageOutDemonJobId;
     JobId         m_tReaperDemonJobId;
     JobId         m_tRecurDemonJobId;

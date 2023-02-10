@@ -116,25 +116,23 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     void operator = (COMPONENT* pComponent)
     {
-      if (pComponent && ! AM::bInBufferPool(pComponent)) {
-        vTrace("%20s: %p \n"_Stz,aLR[m_eLogicUnitReg],m_pComponent);
-        THROW("REG::operator =(pComponent) : invalid pComponent address"_Stz);
-      }
-    
-      if (pComponent && CN_NONE != m_eClassNo) {
-        
-        eCN eClassNo = pComponent->eGetClassNo();
-        
-        if (eClassNo != m_eClassNo)
-          vTrace("Attempting to assign %p %lld:%s into REG<%lld:%s>::%s\n"_Stz
-                 ,pComponent
-                 ,eClassNo
-                 ,aCN[eClassNo]
-                 ,CLASSNO
-                 ,aCN[CLASSNO]
-                 ,aLR[m_eLogicUnitReg]
-                 );
-        RASSERT(eClassNo == m_eClassNo);
+      // TODO: Arjun remove tmp BufferId check...
+      if( ! BufferId::bIsBufferId(pComponent) ) {
+        if (pComponent && !AM::bInBufferPool(pComponent)) {
+          vTrace("%20s: %p \n"_Stz, aLR[m_eLogicUnitReg], m_pComponent);
+          THROW("REG::operator =(pComponent) : invalid pComponent address"_Stz);
+        }
+
+        if (pComponent && CN_NONE != m_eClassNo) {
+
+          eCN eClassNo = pComponent->eGetClassNo();
+
+          if (eClassNo != m_eClassNo)
+            vTrace("Attempting to assign %p %lld:%s into REG<%lld:%s>::%s\n"_Stz, pComponent, eClassNo, aCN[eClassNo],
+                   CLASSNO, aCN[CLASSNO], aLR[m_eLogicUnitReg]
+            );
+          RASSERT(eClassNo == m_eClassNo);
+        }
       }
     
       m_pComponent = pComponent;

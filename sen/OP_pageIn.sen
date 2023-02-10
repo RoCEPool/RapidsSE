@@ -5,14 +5,30 @@
 " OP_pageIn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* put the pageIn periodic activity here                                     */
+/* handler for EV_I_PAGEINREQUEST ...                                         */
 /*----------------------------------------------------------------------------*/
-: pageIn::activity
+: pageIn::testFunc \handler
 
-  //"Page In Activity" .
+  //PipeIn[] to InfoSet[]
+  //nullptr to PipeIn[]
 
-  // update node status based on heartbeat related info
-  pageIn::testPrint
+  //pageIn::testPrint
+
+  PipeIn[]\clear to InfoSet[]
+
+  C_TDEF_PAGEINREQUEST infoSetRow:getFirstRow
+
+  // extract the values
+  0 InfoSet[].colVal@ locals| pTaskPtr   |
+  1 InfoSet[].colVal@ locals| oBufferId  |
+
+  // unload to disk
+  pTaskPtr oBufferId pageIn::testPrint
+
+  InfoSet[].delete
+  nullptr to InfoSetRow[]
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +44,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for pageIn req                            (on node where spawned) */
+/* execute for pageIn req                            (on node where spawned)  */
 /*----------------------------------------------------------------------------*/
 : pageIn_op \operator
 
@@ -40,7 +56,8 @@
 
   op__topology
 
-  find: pageIn_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  //find: pageIn_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: pageIn::testFunc     EV_I_PAGEINREQUEST   [op].handler!
 
   op__loop
 

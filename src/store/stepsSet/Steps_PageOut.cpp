@@ -31,13 +31,16 @@ void Step::vPageOutPoolBuffer(void) {
   // Pop an operand address off the stack. It may or may not be a BufferId.
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   vTrace("PageOut Demon: Received operand: %p\n"_Stz, pOperand);
+  RASSERT(pOperand->eGetClassNo() == BASE::CN_ROWBUFFER);
+
+  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 
   // Let the FileMap decide where it should be written to.
-  AM::pFileMap()->vToDisk(pOperand);
+  AM::pFileMap()->vToDisk((Operand*) pRowBuffer->oGetBufferId().m_pvAsAddress);
 
-  m_pDataStack->vPushPtr(pOperand);
-
-//  AM::vDeleteOperand(pOperand,nullptr);
+//  m_pDataStack->vPushInt(pRowBuffer->oGetBufferId().m_iAsI8);
+  m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
+  AM::vDeleteOperand(pOperand,nullptr);
   EXIT();
 }
 

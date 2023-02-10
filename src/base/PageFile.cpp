@@ -237,7 +237,7 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   ASSERT(bResult);
 
 //unlock
-  vTrace("Successfully wrote data buffer %p\n"_Stz, pRowBuffer);
+  vTrace("Successfully wrote data buffer %p with BufferId %p\n"_Stz, pRowBuffer, oBufferId.m_pvAsAddress);
 }
 
 /*----------------------------------------------------------------------------*/

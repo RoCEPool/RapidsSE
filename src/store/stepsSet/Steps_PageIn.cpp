@@ -58,13 +58,18 @@ void Step::vPageInPoolBuffer(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* PageIn::testPrint -- test print for page out demon                        */
+/* PageIn::testPrint -- test print for page in demon                          */
 /*----------------------------------------------------------------------------*/
 void Step::vPageInTestPrint(void) {
   ENTRY();
-  RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBuffer;
-  vTrace("Page In got address %p\n"_Stz, pRowBuffer);
-  m_pLogicUnit->m_xpRowBuffer = nullptr;
+
+  BufferId oBufferId;
+  oBufferId.m_iAsI8 = m_pDataStack->iPopAsInt(__func__ );
+
+  Task* pTask = _pTask(m_pDataStack->iPopAsInt(__func__));
+
+  vTrace("Page In got TaskPtr %p and BufferId %p\n"_Stz, pTask, oBufferId.m_pvAsAddress);
+
   EXIT();
 }
 

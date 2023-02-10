@@ -197,12 +197,13 @@ EndDefine
   CLASSNM* SPACENM::_p##CLASSNM(void* aAddr) \
   { \
     CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
-    RASSERT_TYPE(pObject,CN); \
+    if( ! BufferId::bIsBufferId(aAddr) ) \
+      RASSERT_TYPE(pObject,CN); \
     \
     return pObject; \
   } \
 EndDefine
-
+// TODO: Arjun Remove tmp bufferId check...
 /*----------------------------------------------------------------------------*/
 /* macro for test is class                                                    */
 /*----------------------------------------------------------------------------*/

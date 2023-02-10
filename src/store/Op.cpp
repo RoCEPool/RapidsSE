@@ -254,21 +254,24 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  if (AM::OPERAND::bIsOoO(pOperand)) {
-    vAppendOoO(pOperand,pTriggeringTask);
-    return;
-  }
-  
-  AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
+  // TODO: Arjun remove tmp BufferId check...
+  if( ! BufferId::bIsBufferId(pOperand)) {
+    if (AM::OPERAND::bIsOoO(pOperand)) {
+      vAppendOoO(pOperand, pTriggeringTask);
+      return;
+    }
 
-#ifdef WITH_BUFFER_ID
-  if(1 == DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
-    // Replace RowBuffer address with BufferId and append to queue
-    DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-    BufferId oBufferId = pDataBuffer->oGetBufferId();
-    pOperand = (Operand*) oBufferId.m_pvAsAddress;
+    AM::METRICS::vDerefMetrics((i8) pOperand, pOperand->eGetClassNo(), DR_ENQUEUE);
+
+//#ifdef WITH_BUFFER_ID
+//    if (1 == DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+//      // Replace RowBuffer address with BufferId and append to queue
+//      DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+//      BufferId oBufferId = pDataBuffer->oGetBufferId();
+//      pOperand = (Operand *) oBufferId.m_pvAsAddress;
+//    }
+//#endif
   }
-#endif
 
   vGrabTaskLock();
   RASSERT(bIsLocked());
@@ -1295,10 +1298,13 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   vOpTrace(pOperand,(Stz*)__func__);
-  
-  if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = this->pOpLogicUnit();
-    pLogicUnit->m_xpStats->m_nBuffOut++;
+
+  // TODO: Arjun remove tmp BufferId check...
+  if( ! BufferId::bIsBufferId(pOperand) ) {
+    if (pOperand->bIsBuffer()) {
+      LogicUnit *pLogicUnit = this->pOpLogicUnit();
+      pLogicUnit->m_xpStats->m_nBuffOut++;
+    }
   }
 
   Op* pDstOp = pPipeDstOp();
@@ -1315,38 +1321,26 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 
   vOpTrace(pOperand,(Stz*)__func__);
 
-  eCN eClassNo = pOperand->eGetClassNo();
-  if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pCrwBuffer->nRows()
-           ,this->pStage()->szStageNm()
-           ,this->szOpNm()
-           );
-  }
-  else
-  if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
-    CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-    UNUSED(pCsvBuffer);
-    vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,this->pStage()->szStageNm()
-           ,this->szOpNm()
-           );
-  }
-  else
-  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pRowBuffer->nRows()
-           ,this->pStage()->szStageNm()
-           ,this->szOpNm()
-           );
+  // TODO: Arjun remove tmp BufferId check...
+  if( ! BufferId::bIsBufferId(pOperand)) {
+    eCN eClassNo = pOperand->eGetClassNo();
+    if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
+      CrwBuffer *pCrwBuffer = _pCrwBuffer(pOperand);
+      vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pCrwBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+      );
+    } else if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
+      CsvBuffer *pCsvBuffer = _pCsvBuffer(pOperand);
+      UNUSED(pCsvBuffer);
+      vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             this->pStage()->szStageNm(), this->szOpNm()
+      );
+    } else if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+      RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pRowBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+      );
+    }
   }
 
   vAppendLeft(pOperand,pTriggeringTask);
@@ -1445,11 +1439,52 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
   
   bool bLeft = false;
 
-
   Operand* pOperand = m_pPipeIn->pQueueOoO()->pPopOoO();
   if (! pOperand) {
-    pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
-    bLeft = true;
+    // Peek at the Operand on the queue
+    // If it is a bufferId that is not in memory,
+    // do a page in request and return.
+    // Do NOT pop the operand off the queue.
+    // We want this operator to re-run this function
+    // once the operand is in memory.
+    Operand* pPeekOperand = m_pPipeIn->pQueueLeft()->pPeekQueue();
+    if (pPeekOperand)
+    {
+      // Operand is not null
+      // Check if it is a BufferId
+#ifdef WITH_BUFFER_ID
+      BufferId oBufferId;
+      oBufferId.m_pvAsAddress = (void*)pPeekOperand;
+      if(1 == oBufferId.m_bIdFlag)
+      {
+        // Operand is a BufferId
+        // Attempt to get its address
+        pPeekOperand = (Operand*) BufferId::aAddressFromId(oBufferId);
+        if(pPeekOperand == nullptr)
+        {
+          // Operand is not in memory.
+          // Queue a request to the PageIn Demon and return (Will perform pagein bide)
+          // Queue request -> PageIn Demon(BufferId + m_pTask)
+          InfoSet* pInfoSet = AM::PAGING::pToPageIn(m_pTask, oBufferId);
+          vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
+
+          Operand* pRequestOperand = _pOperand(pInfoSet);
+          eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
+          //Handle error case
+          RASSERT(eError == EC_NONE);
+          *pbPageIn = true;
+          return nullptr;
+        }
+        // Operand is present in memory, so proceed as normal
+      }
+#endif
+      // Assign pOperand the peeked operand. It may or may not have been converted from a BufferId
+      pOperand = pPeekOperand;
+
+      // Pop and discard the operand from the queue, as we are sure it is in memory.
+      Operand* pPopOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
+      bLeft=true;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1461,21 +1496,6 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
   
   vDropTaskLock();
   AM::vOperandsDec();
-
-#ifdef WITH_BUFFER_ID
-  BufferId oBufferId;
-  oBufferId.m_pvAsAddress = (void*)pOperand;
-  if(1 == oBufferId.m_bIdFlag)
-  {
-    pOperand = (Operand*) BufferId::aAddressFromId(oBufferId); // this, BufferId
-    if(pOperand == nullptr)
-    {
-      // Queue request -> PageIn Demon(BufferId + m_pTask)
-      *pbPageIn = true;
-      return nullptr;
-    }
-  }
-#endif
 
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 

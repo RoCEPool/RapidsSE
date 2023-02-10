@@ -77,6 +77,8 @@ public:
   void vAM_MonDemonJobIdStore(void);
   void vAM_NodeMonDemonJobIdStore(void);
   void vAM_NodeMonDemonJobIdFetch(void);
+  void vAM_PageInDemonJobIdFetch(void);
+  void vAM_PageInDemonJobIdStore(void);
   void vAM_PageOutDemonJobIdFetch(void);
   void vAM_PageOutDemonJobIdStore(void);
   void vAM_ReaperDemonJobIdFetch(void);

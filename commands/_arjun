@@ -141,6 +141,7 @@ tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 _nation;
 load Nation   "<tpch_dir>/nation.<suffix>"   ;
+
 pipeline __pageout
   begin
     stage stageStart on origin :
@@ -156,7 +157,6 @@ pipeline __pageout
 
     stage stageB on all nodes :
       pageout
-      | pageIn
       | next
 
     stage stageLast on origin :
@@ -164,3 +164,5 @@ pipeline __pageout
       | sink
       | first
   end ;
+
+//select * from nation;

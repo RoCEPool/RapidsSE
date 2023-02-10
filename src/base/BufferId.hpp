@@ -21,10 +21,15 @@ namespace BASE
       i8     m_iAsI8;
     };
 
+    BufferId(void);
+    BufferId(void* pAddr);
+    BufferId(i8 iVal);
+
     static void* aAddressFromId(BufferId oBufferId);
     static BufferId vBufferIdFromNo(i8 iPoolBufferNo);
     static bool bIsAddress(BufferId oBufferId);
     static bool bIsBufferId(BufferId oBufferId);
+    static bool bIsBufferId(void* aAddr);
     void vSetBuffSubscript(u8 uBuffSubscript);
     void vSetPageFile(u8 uPageFile);
     void vSetIdFlag(bool bFlag);

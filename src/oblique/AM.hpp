@@ -7,6 +7,7 @@
 #include <list>
 #include <iterator>
 
+#include "BufferId.hpp"
 #include "Heartbeat.hpp"
 #include "eAA.h"
 #include "eDA.h"
@@ -301,6 +302,9 @@ namespace OBLIQUE
       static void  vNodeMonDemonJobId(JobId tJobId);
       static JobId tNodeMonDemonJobId(void);
 
+      static void  vPageInDemonJobId(JobId tJobId);
+      static JobId tPageInDemonJobId(void);
+
       static void  vPageOutDemonJobId(JobId tJobId);
       static JobId tPageOutDemonJobId(void);
 
@@ -499,7 +503,12 @@ namespace OBLIQUE
     public:
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
     };
-  
+
+    class PAGING
+    {
+    public:
+      static InfoSet* pToPageIn(Task* pTask, BufferId oBufferId);
+    };
     class PARCEL
     {
     public:

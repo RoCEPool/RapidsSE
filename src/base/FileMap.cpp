@@ -106,10 +106,10 @@ void FileMap::vToDisk(Operand* pOperand)
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
 
-  BufferId oBufferId;// TODO Arjun: Code readability
-  oBufferId.m_pvAsAddress = (void*) pOperand;
+  BufferId oBufferId((void*)pOperand);
 
   if(1 == BufferId::bIsBufferId(oBufferId)) {
+    vTrace("Writing BufferId %p to disk\n"_Stz, oBufferId.m_pvAsAddress);
     pOperand = (Operand*) BufferId::aAddressFromId(oBufferId);//hashmap
   }
 
