@@ -166,12 +166,6 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    void vS10_T00_Begin(void);
-
-    void vS26_T10_SubQuery_Analysis_Of_Main_Query(void);
-    void vS26_T20_SubQuery_Analysis_Of_Sub_Query(void);
-
-    void vS32_T_SubQuery_Analysis(void);
 
 
 

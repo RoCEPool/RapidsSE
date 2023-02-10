@@ -132,86 +132,6 @@ void Board::vAdd_Partitioning(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vDerive_foldElist_From_project_stream(CardIter* pCI)
-{
-  _static_
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // <fold> W_A_C_ro
-
-  pCI->G.p_projection->vDump();
-
-  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
-
-  pCI->G.p_stmColList = pCI->G.p_stream->pSub_stmColList();
-
-  if (pCI->G.p_stmColList->nChildCards() > 1) {
-
-    pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_NOTE, "// sq gbykey"_Stz);
-    pCI->G.p_stmCol = _pCard_StmCol(pCI->G.p_stmColList->pGetChild(0));
-    pCI->G.p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
-    pCI->G.p_type = pCI->G.p_stmCol->pSub_type();
-    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, pCI->G.p_stmColNm->szValue());
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-    pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
-
-    pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_NOTE, "// sq result"_Stz);
-    pCI->G.p_stmCol = _pCard_StmCol(pCI->G.p_stmColList->pGetChild(1));
-    pCI->G.p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
-    pCI->G.p_type = pCI->G.p_stmCol->pSub_type();
-    pCI->G.p_as = pCI->G.p_stmCol->pSub_as();
-    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, pCI->G.p_stmColNm->szValue());
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-    pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$2"_Stz);
-
-    pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)2);
-  }
-  else {
-
-    pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_NOTE, "// sq result"_Stz);
-    pCI->G.p_stmCol = _pCard_StmCol(pCI->G.p_stmColList->pGetChild(0));
-    pCI->G.p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
-    pCI->G.p_type = pCI->G.p_stmCol->pSub_type();
-    pCI->G.p_as = pCI->G.p_stmCol->pSub_as();
-    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, pCI->G.p_stmColNm->szValue());
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-    pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz);
-
-    pCI->G.p_fold->Y_vSet(P_BumpRight,(i8)1);
-  }
-
-
-/*
-  if (pCI->G.p_type) {
-    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
-  }
-  else {
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_TYPE, "((type missing))"_Stz);
-  }
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz);
-
-
-  pCI->G.p_foldElist = pCI->G.p_fold->pSub_foldElist();
-
-  pCI->G_vPushNewChild(pCI->G.p_foldElist, CK_EXPR);
-
-  */
-
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vDerive_fold_projection_From_projection(CardIter* pCI)
 {
   _static_
@@ -1343,8 +1263,6 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
   _static_
 
   Card_Table*      p_table_prior      = p_main_prior->pSub_table();
-  //Card_Stream*     p_stream_prior     = p_main_prior->pSub_stream();
-  //Card_StmColList* p_stmColList_prior = p_stream_prior->pSub_stmColList();
 
   Card_Table*      p_table_curr     = p_main_curr->pSub_table();
   Card_IndexList*  p_indexList_curr = p_main_curr->pSub_indexList();
@@ -1448,48 +1366,6 @@ void Board::vUnproject_injected_sqResult(CardIter* pCI)
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* visit each stream and adjust it's lo-hi range                              */
-/*----------------------------------------------------------------------------*/
-void Board::vRenumberStmOdn(CardIter* pCI)
-{
-  _static_
-
-  // TODO: G_bEachSub(CK_STREAM)
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI](Card *pCard) {
-
-    pCI->G.p_stmCol    = _pCard_StmCol(pCard);
-    pCI->G.p_stmColOdn = pCI->G.p_stmCol->pSub_stmColOdn();
-
-    if (! pCI->G.p_stmColOdn)
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_stmColOdn->vSetStreamColOrdinal(pCI->G.i_stmColOdn++);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G_vRestart();
-  while (pCI->G_bEachMain()) {
-
-    if (! (pCI->G.p_MainCard->bIsCard(CK_TABLE) ||
-           pCI->G.p_MainCard->bIsCard(CK_PROJECT)))
-      continue;
-
-    pCI->G.p_stream = pCI->G.p_MainCard->pSub_stream();
-
-    pCI->G.i_stmColOdn = pCI->G.p_stream->Y_iGet(P_OdnLo);
-
-    pCI->G.p_stmColList = pCI->G.p_stream->pSub_stmColList();
-
-    pCI->G.p_stmColList->bApplyRecursive(CK_STMCOL,bLambdaFn);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1659,55 +1535,6 @@ void Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI)
 
   SubQuery* pMainQuery = pCI->m_pBench->pGetBoard((i8)0)->pSubQuery();
   pMainQuery->vSubQueries(1);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vMain_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
-{
-  _static_
-
-  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
-
-  SubQuery* pSubQuery = pCI->m_pBench->pGetBoard((i8)1)->pSubQuery();
-
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI,pSubQuery](Card_PRED *p_pred, bool bUpwards) {
-
-    if (bUpwards)
-      return C_CONTINUE_RECURSION;
-
-    if (p_pred->bIsCard(CK_TERM)) {
-      return C_CONTINUE_RECURSION;
-      pCI->G.p_term = _pCard_Term(p_pred);
-
-
-    }
-
-    Stz* szValue_term = p_pred->szValue();
-    eRO eRelnOp = RelOp::eDecode(szValue_term);
-
-    // todo: this is missing
-    //if (!pCI->G_bIsBoard(szValue_term))
-    //  continue;
-
-    if (RO_NONE != eRelnOp) {
-      pSubQuery->vCaller(0);
-      pSubQuery->vClause(QC_HAVING_CLAUSE);
-      pSubQuery->vCalcOp(QO_COMPARE_OP);
-      pSubQuery->vRelnOp(eRelnOp);
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1909,66 +1736,11 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 //}
 
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                    vSeries_33_To_TblColOdn */
-/*============================================================================*/
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                  vSeries_36_Bound_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vS36_T30_Delete_Empty_filter(CardIter* pCI)
-{
-  _static_
-
-  if (! pCI->G.p_filter->bIsEmpty())
-    return;
-
-  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
-  DELETE_CARD(pCI->G.p_filter);
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                    vSeries_75_EE_operators */
 /*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCI)
-{
-  _static_
-
-  i8 iOrdLo_stream = pCI->G.p_stream->iGetOdnLow();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [iOrdLo_stream](Card* pCard)
-  {
-    Card_StmColOdn* p_stmColOrd = _pCard_StmColOdn(pCard);
-    if (! Card::bIsStreamColOrdinal(p_stmColOrd->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    i8 iStmColOdn = Card::iGetColOdn(p_stmColOrd->szValue());
-    i8 iStmColOdn_corrected = iOrdLo_stream + iStmColOdn - 1;
-    p_stmColOrd->vSetStreamColOrdinal(iStmColOdn_corrected);
-
-    p_stmColOrd->vMark1(MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_stream->bApplyRecursive(CK_STMCOLODN, bLambdaFn);
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

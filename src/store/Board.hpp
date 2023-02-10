@@ -240,7 +240,6 @@ namespace STORE
 
     static void vAdd_Partitioning(CardIter* pCI);
 
-    static void vDerive_foldElist_From_project_stream(CardIter* pCI);
     static void vDerive_fold_projection_From_projection(CardIter* pCI);
     static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
     static void vDerive_stream_order_For_gbyAgg(CardIter* pCI);
@@ -265,7 +264,6 @@ namespace STORE
     static void vMorph_Table_To_EEop(CardIter* pCI);
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
-    static void vRenumberStmOdn(CardIter* pCI);
     static void vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
     static i8 iStage_Partitioning(CardIter* pCI,
@@ -278,17 +276,13 @@ namespace STORE
     // vSeries_26_SubQuery_Analysis
     static void vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(CardIter* pCI);
     static void vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(CardIter* pCI);
-    static void vMain_Query_Analysis_Of_having_boolCalc(CardIter* pCI);
     static void vOuter_Query_Analysis_Of_from_call(CardIter* pCI);
     static void vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI);
     static void vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI);
 
 
-    // vSeries_36_Bound_Analysis
-    static void vS36_T30_Delete_Empty_filter(CardIter* pCI);
 
     // vSeries_75_EE_operators
-    static void vS75_T30_Correct_stmColOdn_Of_keyExists_stream(CardIter* pCI);
     static void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(CardIter* pCI);
 
     // vSeries_A0_Make_Weavable

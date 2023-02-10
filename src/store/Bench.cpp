@@ -135,8 +135,6 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
 
   vSeries(BK_SUBPIPE, 0, __func__);
 
-  vS10_T00_Begin();
-
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
@@ -223,8 +221,6 @@ void Bench::vSeries_Optimisations(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vSeries(BK_SUBPIPE, 0, __func__);
-
-  vS10_T00_Begin();
 
   i8 i_Board = 0;
 
@@ -612,28 +608,11 @@ void Bench::vTransform_IndexAnalysis(void)
   // Append Index List Under All Table
   Card_Table::vAppendIndexList(m_pCI);
 
-//  while (m_pCI->G_bEachMain(CK_TABLE)) {
-//    m_pCI->G.p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-//    Table* pTable = Card::pAccess_Table(m_pCI->G.p_tableNm->sz());
-//
-//    m_pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
-//
-//    m_pCI->G_vAppendChild(CK_TABLE,CK_INDEXLIST);
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblColOdn To All IdxCol
 
   m_pCI->G_vRestart();
   Card_Table::vAffixTableColOrd(m_pCI);
-
-//  while (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_STREAM,CK_INDEXLIST)) {
-//    CardIter xCI(m_pCI->G.p_indexList);
-//    while ((m_pCI->G.p_index = _pCard_Index(xCI.pEachChild()))) {
-//      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList();
-//      m_pCI->G.p_idxColList->vAffix_tblColOdn(m_pCI->G.p_stream);
-//    }
-//  }
 
   m_pCI->vEndTransform();
 }
@@ -648,9 +627,6 @@ void Bench::vTransform_ProjectionAnalysis(void)
   m_pCI->vTransform(__func__, "((desc))"_Stz);
 
   vAssert_Board_any();
-
-//  while (m_pCI->G_bEachMain(CK_TABLE))
-//    m_pCI->G.p_table->vProjectionAnalysis(m_pCI);
 
   Card_Projection::vProjection_Analysis_v2(m_pCI);
 
@@ -2870,213 +2846,6 @@ void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
   vClearMarks();
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                   vSeries_10_Make_Runnable */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS10_T00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vST00_Begin();
-
-  vPrefix('r');
-  m_pCI->m_pCardCtl->vUseExpanded();
-  m_pCI->vPrintBench(BK_SUBPIPE);
-  m_pCI->m_pCardCtl->vUseExpanded();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                               vSeries_26_SubQuery_Analysis */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS26_T10_SubQuery_Analysis_Of_Main_Query(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((10))"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (m_pCI->G_bEachMain()) {
-    m_pCI->G_vNewMember(CK_GENESIS,"mq"_Stz);
-    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
-      m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
-    else
-      m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_AGGREG)) {
-    // the main-query has an aggreg
-
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vDisposition(QD_AGGREGATION);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vDisposition(QD_AGGREGATION);
-  }
-
-  i8 nBoards = this->nBoards();
-  if (nBoards > 1) {
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMain(CK_CALL)) {
-      SubQuery* pSubQuery =  pGetBoard((i8)1)->pSubQuery();
-
-      pSubQuery->vCaller(0);
-
-      pSubQuery->vClause(QC_FROM_CLAUSE);
-
-      SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-      pMainQuery->vSubQueries(1);
-    }
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-      Board::vS26_T10d_Main_Query_Analysis_Of_where_rpnCalc(m_pCI);
-    }
-    m_pCI->G_vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-      Board::vS26_T10e_Main_Query_Analysis_Of_having_rpnCalc(m_pCI);
-    }
-  }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS26_T20_SubQuery_Analysis_Of_Sub_Query(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((20))"_Stz);
-
-  vAssert_Board_mqA();
-
-
-  i8 nBoards = this->nBoards();
-  if (1 == nBoards) {
-    // there is no sub-query
-
-    SubQuery* pMainQuery =  pGetBoard((i8)0)->pSubQuery();
-
-    pMainQuery->vSubQueries(0);
-  }
-  else
-  if (2 == nBoards) {
-
-    if (m_pCI->G_bPushBoard(1)) {
-
-      SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-      pSubQuery->vDisposition(QD_LINEAR);
-
-      while (m_pCI->G_bEachMain()) {
-        m_pCI->G_vNewMember(CK_GENESIS,"sq"_Stz);
-        if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level()))
-          m_pCI->G.p_MainCard->vInsertAfter(m_pCI->G.p_genesis,m_pCI->G.p_level);
-        else
-          m_pCI->G.p_MainCard->vPush(m_pCI->G.p_genesis);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_PARAMLIST)) {
-        // there is a subQuery and it has a paramList
-
-        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-
-        // TODO: hack the number of params... fix
-        i8 nParams = 1; //m_pCI->G.p_paramList->nChildCards();
-
-        pSubQuery->vCorrCols(nParams);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_AGGREG)) {
-        // there is a subQuery and it has an aggreg
-
-        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-
-        pSubQuery->vDisposition(QD_AGGREGATION);
-      }
-
-      m_pCI->G_vRestart();
-      while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-        // there is a subQuery and it has an gbyAgg
-        SubQuery* pSubQuery =  pGetBoard(1)->pSubQuery();
-        pSubQuery->vDisposition(QD_AGGREGATION);
-      }
-
-      m_pCI->G_vPopIter();
-    }
-  }
-  else
-    NEVER_REACH;
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                     vSeries_32_To_BoolCalc */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* SubQuery Analysis                                                          */
-/*----------------------------------------------------------------------------*/
-void Bench::vS32_T_SubQuery_Analysis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "rpcCalc of where becomes boolCalc "_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Convert SqyOp Not To NotSqyOp
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
-  }
-
-  m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Convert RpnCalc To Bool Calc
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
-    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc();
-
-    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
-
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
-  }
-
-  m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
