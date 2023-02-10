@@ -1661,10 +1661,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
-    case CK_STREAM:
-      _pCard_Stream(this)->vStream_PrintStream(_pCard_Stream(this), pRibbon, iDepth);
-      break;
-
     case CK_TABLE:
       _pCard_Table(this)->vTable_PrintTable(_pCard_Table(this),pRibbon, iDepth);
       break;
@@ -2572,24 +2568,6 @@ Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/* get number of stream columns                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s32 sName;
-  sName.vSprint("%s%s"_Stz, szCardNm(), Y_nPpy() ? " +" : "");
-
-  if (Y_bHas(P_OdnLo))
-    sName.vCatSprint(" $%lld,%lld"_Stz,
-                     Y_iGet(P_OdnLo), Y_iGet(P_OdnHi));
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -3374,19 +3352,6 @@ Card_Size* Card::pSub_size(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Stream.hpp"
-Card_Stream* Card::pSub_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Stream* p_stream =
-      _pCard_Stream(pFindSubCard(CK_STREAM));
-  return p_stream;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_StmCol.hpp"
 Card_StmCol* Card::pSub_stmCol(void)
 {
@@ -3395,19 +3360,6 @@ Card_StmCol* Card::pSub_stmCol(void)
   Card_StmCol* p_streamCol =
       _pCard_StmCol(pFindSubCard(CK_STMCOL));
   return p_streamCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_StmColList.hpp"
-Card_StmColList* Card::pSub_stmColList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StmColList* p_streamColList =
-      _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
-  return p_streamColList;
 }
 
 /*----------------------------------------------------------------------------*/

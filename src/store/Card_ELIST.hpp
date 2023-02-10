@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Card.hpp"
-#include "Card_StmColList.hpp"
 
 namespace STORE
 {
