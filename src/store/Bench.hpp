@@ -169,9 +169,6 @@ namespace STORE
 
 
 
-    void vS75_T20_Morph_keyExists_filter_To_constraint(void);
-    void vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void);
-
     // vSeries_80_Index_Scan
     bool bS80_T00_Test(bool bEnabled);
     void vS80_T00_Skip(void);
@@ -194,8 +191,6 @@ namespace STORE
     void vST00_Begin(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    void vStreamAnalysisReset(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

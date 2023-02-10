@@ -3017,49 +3017,6 @@ void Bench::vTransform_PredicateReposition_originalModel(void)
   m_pCI->vEndTransform();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                    vSeries_75_EE_operators */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS75_T20_Morph_keyExists_filter_To_constraint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (m_pCI->G_bEachMainWithSub(CK_KEYEXISTS,CK_FILTER)) {
-    m_pCI->G.p_filter->vCard(CK_CONSTRAINT);
-  }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
-
-  vAssert_Board_mqA();
-
-  while (m_pCI->G_bEachMainWithSub(CK_KEYEXISTS,CK_CONSTRAINT)) {
-    Board::vS75_T40_Convert_stmColOdn_Of_constraint_To_stmColNm(m_pCI);
-  }
-
-  m_pCI->vEndTransform();
-}
-
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                      vSeries_80_Index_Scan */
@@ -3267,18 +3224,6 @@ void Bench::vST00_Begin(void)
   m_pCI->vXform(""_Stz);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vStreamAnalysisReset(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_iOdnLo      = 1;
-  m_iOdnHi      = C_UNKNOWN;
-  //m_cTableSyn   = 'a';
-}
 
 /*============================================================================*/
 /* end                                                                        */
