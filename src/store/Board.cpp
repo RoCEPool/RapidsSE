@@ -181,7 +181,9 @@ void Board::vDerive_group_order_For_gbyAgg(CardIter* pCI)
 void Board::vDerive_stream_order_For_gbyAgg(CardIter* pCI)
 {
   _static_
+  NEVER_REACH
 
+/*
   pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream();
   if (! pCI->G.p_stream) {
     pCI->G_vAppendNewChild(pCI->G.p_gbyAgg,CK_STREAM);
@@ -206,6 +208,7 @@ void Board::vDerive_stream_order_For_gbyAgg(CardIter* pCI)
     pCI->G.p_ordElmOdn->vValueSprint("$%lld"_Stz, xCI.i_Child() + 1);
     pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +217,8 @@ void Board::vDerive_stream_order_For_gbyAgg(CardIter* pCI)
 void Board::vDerive_stream_order_For_indexJoin(CardIter* pCI)
 {
   _static_
-
+  NEVER_REACH
+/*
   RASSERT(pCI->G.p_stmColList);
   Card_StmColList* p_stmColList_l = pCI->G.p_stmColList;
   RASSERT(pCI->G.p_order);
@@ -270,6 +274,7 @@ void Board::vDerive_stream_order_For_indexJoin(CardIter* pCI)
       _pCard_OrdElmOdn(p_stmOrdList_ij->pAppendNewCardTail(CK_ORDELMODN,
                                                            p_stmOrdOdn_l->szValue()));
   pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +283,9 @@ void Board::vDerive_stream_order_For_indexJoin(CardIter* pCI)
 void Board::vDerive_stream_order_For_indexScan(CardIter* pCI)
 {
   _static_
+  NEVER_REACH
 
+/*
   pCI->G.p_stream = pCI->G.p_indexScan->pSub_stream();
   if (! pCI->G.p_stream)
     return;
@@ -306,6 +313,8 @@ void Board::vDerive_stream_order_For_indexScan(CardIter* pCI)
     pCI->G.p_ordElmOdn->vValueSprint("$%lld"_Stz, i_StmCol + 1);
     pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
+
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -314,7 +323,9 @@ void Board::vDerive_stream_order_For_indexScan(CardIter* pCI)
 void Board::vDerive_stream_order_For_project(CardIter* pCI)
 {
   _static_
+  NEVER_REACH
 
+/*
   pCI->G.p_projection = pCI->G.p_project->pSub_projection();
   pCI->G.p_stream = pCI->G.p_project->pSub_stream();
   pCI->G.p_stmColList = pCI->G.p_stream->pSub_stmColList();
@@ -342,6 +353,8 @@ void Board::vDerive_stream_order_For_project(CardIter* pCI)
     if (pCI->G.p_direction)
       pCI->G.p_ordElmOdn->vAppend(pCI->G.p_direction->pDupCardAndSubCards());
   }
+
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +363,9 @@ void Board::vDerive_stream_order_For_project(CardIter* pCI)
 void Board::vDerive_stream_order_For_sort(CardIter* pCI)
 {
   _static_
+  NEVER_REACH
 
+/*
   pCI->G.p_stream = pCI->G.p_sort->pSub_stream();
   pCI->G.p_order = _pCard_Order(pCI->G.p_stream->pAppendNewCardTail(CK_ORDER));
 
@@ -370,6 +385,7 @@ void Board::vDerive_stream_order_For_sort(CardIter* pCI)
     else
       pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +394,9 @@ void Board::vDerive_stream_order_For_sort(CardIter* pCI)
 void Board::vDerive_order(CardIter* pCI)
 {
   _static_
+  NEVER_REACH
 
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create stream order for index scan
 
@@ -466,6 +484,7 @@ void Board::vDerive_order(CardIter* pCI)
   pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard();
 
+*/
 }
 
 /*----------------------------------------------------------------------------*/

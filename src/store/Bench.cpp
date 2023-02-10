@@ -2313,6 +2313,10 @@ void Bench::vOptimiseLoop(void) {
 /*----------------------------------------------------------------------------*/
 bool Bench::bOptimise_CutSort(void) {
 
+  NEVER_REACH
+
+
+  /*
   //
   // Query1, Query4, Query7, Query8, Query12
   //
@@ -2341,6 +2345,7 @@ bool Bench::bOptimise_CutSort(void) {
 
     }
   }
+*/
 
   return false;
 }
@@ -2466,6 +2471,9 @@ bool Bench::bOptimise_RplAggregByOrdAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
+  NEVER_REACH
+
+/*
   // Query13, Query17 : do we change the scan to indexScan ????
   // Query18
 
@@ -2513,6 +2521,7 @@ bool Bench::bOptimise_RplAggregByOrdAgg(void)
       }
     }
   }
+*/
 
   return false;
 }
