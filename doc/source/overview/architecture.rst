@@ -153,7 +153,6 @@ memory model. This means that the execution of work within RapidsSE occurs in
 a highly deterministic way because there are no indeterminate pauses while the
 system searches for and cleans up memory.
 
-### Partitioning ###
 
 .. _jobArchitecture:
 
