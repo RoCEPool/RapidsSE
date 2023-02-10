@@ -1544,30 +1544,6 @@ bool Card::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify there are no stream column ordinals                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vNoTermsStmColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI(this);
-  while (Card* p_child = xCI.pEachChild()) {
-    if (p_child->bIsCard(CK_STREAM))
-      continue;
-
-    if (p_child->bIsCard(CK_TERM)) {
-      if (Card::bIsStreamColOrdinal(this->szValue()))
-        vDebugPoint();
-
-      RASSERT(! Card::bIsStreamColOrdinal(this->szValue()));
-      continue;
-    }
-
-    p_child->vNoTermsStmColOdn();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,

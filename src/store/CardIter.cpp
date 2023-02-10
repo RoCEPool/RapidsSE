@@ -2050,10 +2050,8 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_SORT:             return "G.p_sort"_Stz;
     case CK_STAGE:            return "G.p_stage"_Stz;
     case CK_STMCOL:           return "G.p_stmCol"_Stz;
-    case CK_STMCOLLIST:       return "G.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
     case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
-    case CK_STREAM:           return "G.p_stream"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
     case CK_TABLELIST:        return "G.p_tableList"_Stz;

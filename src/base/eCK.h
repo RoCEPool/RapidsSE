@@ -136,10 +136,8 @@ enum eCK // card kind
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STMCOL,
-  /* */ CK_STMCOLLIST,
   /* */ CK_STMCOLNM,
   /* */ CK_STMCOLODN,
-  /* */ CK_STREAM,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -318,10 +316,8 @@ static Stz* aCK[]
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
-  /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
-  /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -499,10 +495,8 @@ static Stz* aCK_short[]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stmCol"_Stz,          // CK_STMCOL
-  /* */ "stmColList"_Stz,      // CK_STMCOLLIST
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
-  /* */ "stream"_Stz,          // CK_STREAM
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
@@ -680,10 +674,8 @@ static Stz* aCK_notation[]
     /* */ "sort"_Stz,         // CK_SORT
     /* */ "st"_Stz,           // CK_STAGE
     /* */ "sC"_Stz,           // CK_STMCOL
-    /* */ "sCL"_Stz,          // CK_STMCOLLIST
     /* */ "sCN"_Stz,          // CK_STMCOLNM
     /* */ "sCO"_Stz,          // CK_STMCOLODN
-    /* */ "strm"_Stz,         // CK_STREAM
     /* */ "sS"_Stz,           // CK_SUBSET
 
     /* */ "t"_Stz,           // CK_TABLE

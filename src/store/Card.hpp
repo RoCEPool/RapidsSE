@@ -406,7 +406,6 @@ namespace STORE
     void vMoveToLastChild(Card* pChildCard);
 
     bool bNeedsBrace(void);
-    void vNoTermsStmColOdn(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,

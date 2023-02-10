@@ -80,10 +80,10 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
   //m_pCardCtl->vPrintSubCards(CK_KEY, true);
 
   try {
-    m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
+    //m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
         //CK_KEY, //CK_PROJECTION,
         //CK_RPNCALC,
-                                             CK_STREAM, 0);
+    //                                          0);
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
@@ -644,8 +644,6 @@ void Bench::vTransform_StmColToTblCol_recursiveModel(void)
 
   while (m_pCI->G_bEachMain())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
-
-  m_pCI->G.pDeck->vNoTermsStmColOdn();
 
   m_pCI->vEndTransform();
 }
