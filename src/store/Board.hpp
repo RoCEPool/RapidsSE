@@ -197,20 +197,18 @@ namespace STORE
   protected:
     i8          m_i_Board;
     s32         m_sBoardNm;
-    eBK         m_eBoardKind;  // costEst, partition, permute, subpipe
-
-    Card_Deck*  m_pCard_Deck;
+    eBK         m_eBoardKind;  // joinOrdering, subquery
 
     Optimiser*  m_pOptimiser;
     Bench*      m_pBench;
+
+    SubQuery*   m_pSubQuery;
+    Card_Deck*  m_pCard_Deck;
 
     s32         m_sXhand;
     s256        m_sXform;
     i8          m_iXform;
     s256        m_sXdesc;
-
-
-    SubQuery*   m_pSubQuery;
 
   private:
     // must be last

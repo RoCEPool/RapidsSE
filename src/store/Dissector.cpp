@@ -107,7 +107,7 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
     sBoardNm = m_pPipeSpec->szVertexNm();
   }
   m_pBoard = new Board(sBoardNm,
-                       BK_SUBPIPE, i_SubPipeSpec + 1,
+                       BK_SUBQUERY, i_SubPipeSpec + 1,
                        m_pBench);
 
   Stz* szQueryNm;

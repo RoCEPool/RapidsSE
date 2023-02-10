@@ -133,11 +133,11 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBQUERY, 0, __func__);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBPIPE, m_pCI->G.i_Board);
+    m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
 
     vGroup_InitialAdjustments();
     vGroup_CondenseInfo_recursiveModel();
@@ -147,7 +147,7 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
 
   vTransform_OuterQueryAnalysis();
 
-  vEndSeries(BK_SUBPIPE);
+  vEndSeries(BK_SUBQUERY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,13 +157,13 @@ void Bench::vSeries_MakeRunnable_recursiveModel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBQUERY, 0, __func__);
 
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
   vSeries_MakeRunnable_recurse();
 
-  vEndSeries(BK_SUBPIPE);
+  vEndSeries(BK_SUBQUERY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,15 +220,15 @@ void Bench::vSeries_Optimisations(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBQUERY, 0, __func__);
 
   i8 i_Board = 0;
 
-  m_pCI->vUsingBoard(BK_SUBPIPE, i_Board);
+  m_pCI->vUsingBoard(BK_SUBQUERY, i_Board);
 
   vGroup_ChooseEEops();
 
-  vEndSeries(BK_SUBPIPE);
+  vEndSeries(BK_SUBQUERY);
 }
 
 
@@ -239,7 +239,7 @@ void Bench::vSeries_MakeWeavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries(BK_SUBPIPE, 0, __func__);
+  vSeries(BK_SUBQUERY, 0, __func__);
 
   vGroup_CullBounds();
   vGroup_Filters();
@@ -247,7 +247,7 @@ void Bench::vSeries_MakeWeavable(void)
   vGroup_Partitioning();
   vGroup_FinalAdjustments();
 
-  vEndSeries(BK_SUBPIPE, 0);
+  vEndSeries(BK_SUBQUERY, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2863,8 +2863,8 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
 
   Card_Deck* pPipeline = m_pCI->G.pDeck;
 
-  Board* pBoard = new Board(aBK[BK_PARTITION],
-                            BK_PARTITION,
+  Board* pBoard = new Board(aBK[BK_JOINORDERING],
+                            BK_JOINORDERING,
                             C_UNKNOWN,
                             m_pCI->m_pBench);
   m_pCI->G_vPushBoard(pBoard);

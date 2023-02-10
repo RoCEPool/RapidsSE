@@ -281,7 +281,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard_query = m_pBench->pGetBoard(BK_SUBPIPE);
+  Board* pBoard_query = m_pBench->pGetBoard(BK_SUBQUERY);
   m_pWeaver->vWeaveOptStmt(pBoard_query);
 
   Stz* szPipeline = m_pWeaver->szOptStmt();

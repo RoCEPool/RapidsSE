@@ -7,10 +7,8 @@ enum eBK // board kind
 {
   /*  0 */ BK_NONE=0,
 
-  /*    */ BK_COSTEST,
-  /*    */ BK_PARTITION,
-  /*    */ BK_PERMUTE,
-  /*    */ BK_SUBPIPE,
+  /*    */ BK_JOINORDERING,
+  /*    */ BK_SUBQUERY,
 
   /*    */ BK_ENUMS,
 };
@@ -19,10 +17,8 @@ static Stz* aBK[]
 {
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "BK_COSTEST"_Stz,
-  /*    */ "BK_PARTITION"_Stz,
-  /*    */ "BK_PERMUTE"_Stz,
-  /*    */ "BK_SUBPIPE"_Stz,
+  /*    */ "BK_JOINORDERING"_Stz,
+  /*    */ "BK_SUBQUERY"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
