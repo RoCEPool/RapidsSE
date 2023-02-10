@@ -16,21 +16,6 @@ namespace STORE
   
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
-
-    static Card_Stream* pDerive_Of_projection(Card_Projection* p_projection);
-    static Card_Stream* pDerive_Of_table(Table* pTable);
-    static void         vStream_AdjustLoHi(CardIter* pCI);
-
-    void vAdjust_OrdinalRange(i8 iLo, i8 iHi);
-
-    i8 iGetOdnLow(void);
-    i8 iGetOdnHigh(void);
-
-    void vDerive_OrdinalRange_aggreg(void);
-    void vDerive_OrdinalRange_project(void);
-    void vDerive_OrdinalRange_table(char cTblSyn, i8* iOdnHi, i8* iOdnLo);
-
-
   };
 
   Card_Stream* _pCard_Stream(void* aAddr);
