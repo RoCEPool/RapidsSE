@@ -81,10 +81,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI,bBump](Card *pCard) {
-
-    if (MARK_AT != pCard->cMark1())
-      return C_CONTINUE_RECURSION;
+  auto bLambdaFn_ro = [pCI,bBump](Card *pCard) {
 
     pCI->G.p_roPred = _pCard_RoPred(pCard);
 
@@ -92,6 +89,10 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
       pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
       pCI->m_pTerm_0->vBump_StreamColOrdinal();
     }
+
+    if (MARK_AT != pCard->cMark1())
+      return C_CONTINUE_RECURSION;
+
 
     pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
     pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);
@@ -103,7 +104,31 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_ro);
+
+
+  if (! bBump)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn_cmp = [pCI](Card *pCard) {
+
+    pCI->G.p_cmpPred = _pCard_CmpPred(pCard);
+
+    CardIter xCI(pCI->G.p_cmpPred);
+    while (xCI.G_bEachMain(CK_TERM)) {
+      if (xCI.G.p_term->bIsStmColOdn())
+        xCI.G.p_term->vBump_StreamColOrdinal();
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_cmp);
+
 
 }
 

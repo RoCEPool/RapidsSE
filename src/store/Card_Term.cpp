@@ -263,9 +263,9 @@ bool Card_Term::bIsStmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card::bIsStreamColOrdinal(this->szValue());
+  bool b = Card::bIsStreamColOrdinal(this->szValue());
 
-  return true;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,9 +275,9 @@ bool Card_Term::bIsTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card::bIsTableColOrdinal(this->szValue());
+  bool b = Card::bIsTableColOrdinal(this->szValue());
 
-  return true;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
