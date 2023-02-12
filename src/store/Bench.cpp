@@ -778,8 +778,8 @@ void Bench::vTransform_FlattenByDecisionTree(void)
       } else {
              if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_60_W_L_NC_NI();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_63_W_L_NC_I();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_64_W_L_NC_NI();
         else                                         /* W_L_NC_ro        */ NEVER_REACH
       }
     }
@@ -1462,7 +1462,17 @@ void Bench::vFlatten_50_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vFlatten_60_W_L_NC_NI(void)
+void Bench::vFlatten_63_W_L_NC_I(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vFlatten_64_W_L_NC_NI();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vFlatten_64_W_L_NC_NI(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -1481,7 +1491,7 @@ void Bench::vFlatten_60_W_L_NC_NI(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, "((vFlatten_60_W_L_NC_NI))"_Stz);
+  m_pCI->vTransform(__func__, "((vFlatten_64_W_L_NC_NI))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
@@ -1725,7 +1735,17 @@ void Bench::vFold_exists(Stz* szFold)
   m_pCI->G.p_table = _pCard_Table(m_pCI->m_pCard_copied);
 
   m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
-  m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYNOTEXISTS);
+
+  eCK eCard_Exists = CK_NONE;
+  if (m_pCI->G.pSubQuery->bByIn())
+    eCard_Exists = CK_KEYEXISTS;
+  else
+  if (m_pCI->G.pSubQuery->bByIn())
+    eCard_Exists = CK_KEYNOTEXISTS;
+  else
+    NEVER_REACH;
+
+  m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, eCard_Exists);
 
   Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
@@ -1757,7 +1777,7 @@ void Bench::vFold_exists(Stz* szFold)
   //     kne           //
 
   m_pCI->G_vRestart();
-  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_KEYNOTEXISTS,CK_CONSTRAINT));
+  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,eCard_Exists,CK_CONSTRAINT));
   m_pCI->G.p_table->vRemoveChild(m_pCI->G.p_constraint);
   m_pCI->G.p_indexList = m_pCI->G.p_table->pSub_indexList();
   m_pCI->G.p_index = m_pCI->G.p_table->pSub_index();

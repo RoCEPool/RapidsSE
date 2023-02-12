@@ -115,7 +115,8 @@ namespace STORE
     void vFlatten_30_W_A_NC_I(void);
     void vFlatten_40_W_A_NC_ro(void);
     void vFlatten_50_W_L_C_E(void);
-    void vFlatten_60_W_L_NC_NI(void);
+    void vFlatten_63_W_L_NC_I(void);
+    void vFlatten_64_W_L_NC_NI(void);
     void vFlatten_70_H_A_NC_ro(void);
 
     // folding
