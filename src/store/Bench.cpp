@@ -87,7 +87,7 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    vApplyTransformationMatrix_recursiveModel();
+    vApplyTransformationMatrix();
 
     bClean = true;
   }
@@ -111,14 +111,14 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
 /*----------------------------------------------------------------------------*/
 /* apply the recursive transformation matrix                                  */
 /*----------------------------------------------------------------------------*/
-void Bench::vApplyTransformationMatrix_recursiveModel(void)
+void Bench::vApplyTransformationMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   m_pCI->m_bRecursiveModel = true;
 
-  vSeries_PreparePipelines_recursiveModel();
-  vSeries_MakeRunnable_recursiveModel();
+  vSeries_PreparePipelines();
+  vSeries_MakeRunnable();
 
   vSeries_Optimisations();
   vSeries_MakeWeavable();
@@ -128,7 +128,7 @@ void Bench::vApplyTransformationMatrix_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines_recursiveModel(void)
+void Bench::vSeries_PreparePipelines(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -139,9 +139,9 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
     m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
 
     vGroup_InitialAdjustments();
-    vGroup_CondenseInfo_recursiveModel();
+    vGroup_CondenseInfo();
     vGroup_MetaAnalysis();
-    vGroup_PreliminaryConversions_recursiveModel();
+    vGroup_PreliminaryConversions();
   }
 
   vTransform_OuterQueryAnalysis();
@@ -152,7 +152,7 @@ void Bench::vSeries_PreparePipelines_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_recursiveModel(void)
+void Bench::vSeries_MakeRunnable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -200,16 +200,16 @@ void Bench::vSeries_MakeRunnable_recurse(void)
     vSeries_MakeRunnable_recurse();
     m_pCI->G_vPopIter();
 
-    vGroup_FlattenSubquery_recursiveModel();
+    vGroup_FlattenSubquery();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things after sub-queries
-  vGroup_FinalConversions_recursiveModel();
+  vGroup_FinalConversions();
 
-  vGroup_PredicatePullup_recursiveModel();
-  vGroup_IndexBounds_recursiveModel();
-  vGroup_JoinOrdering_recursiveModel();
+  vGroup_PredicatePullup();
+  vGroup_IndexBounds();
+  vGroup_JoinOrdering();
 
   vDebugPoint();
 }
@@ -268,7 +268,7 @@ void Bench::vGroup_InitialAdjustments(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_CondenseInfo_recursiveModel(void)
+void Bench::vGroup_CondenseInfo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -299,7 +299,7 @@ void Bench::vGroup_MetaAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_PreliminaryConversions_recursiveModel(void)
+void Bench::vGroup_PreliminaryConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -310,11 +310,11 @@ void Bench::vGroup_PreliminaryConversions_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_FinalConversions_recursiveModel(void)
+void Bench::vGroup_FinalConversions(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_StmColToTblCol_recursiveModel();
+  vTransform_StmColToTblCol();
   //vTransform_RpnCalcToBoolCalc();
 }
 
@@ -322,7 +322,7 @@ void Bench::vGroup_FinalConversions_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_PredicatePullup_recursiveModel(void)
+void Bench::vGroup_PredicatePullup(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -335,7 +335,7 @@ void Bench::vGroup_PredicatePullup_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_IndexBounds_recursiveModel(void)
+void Bench::vGroup_IndexBounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -345,7 +345,7 @@ void Bench::vGroup_IndexBounds_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_JoinOrdering_recursiveModel(void)
+void Bench::vGroup_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -360,11 +360,11 @@ void Bench::vGroup_JoinOrdering_recursiveModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vGroup_FlattenSubquery_recursiveModel(void)
+void Bench::vGroup_FlattenSubquery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTransform_FlattenByDecisionTree_recursiveModel();
+  vTransform_FlattenByDecisionTree();
 }
 
 
@@ -625,7 +625,7 @@ void Bench::vTransform_ProjectionAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColToTblCol_recursiveModel(void)
+void Bench::vTransform_StmColToTblCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -745,7 +745,7 @@ void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform_FlattenByDecisionTree_recursiveModel(void)
+void Bench::vTransform_FlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -915,7 +915,7 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   if (m_pCI->m_bRecursiveModel) {
-    if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
       vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
       NEVER_REACH
     }
@@ -1349,7 +1349,7 @@ void Bench::vFlatten_50_W_L_C_E(void)
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
         vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
         NEVER_REACH
       }
@@ -1660,7 +1660,7 @@ void Bench::vFold_exists(Stz* szFold)
 
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
         vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
         NEVER_REACH
       }
@@ -1833,7 +1833,7 @@ void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (m_pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
     if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
+      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
         vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
         NEVER_REACH
       }

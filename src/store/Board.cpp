@@ -755,7 +755,7 @@ bool Board::bFindAndMarkSubQryCall_originalModel(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* find and mark call to the subquery referenced in pCI->G.p_boolCalc         */
 /*----------------------------------------------------------------------------*/
-bool Board::bFindAndMarkSubQryCall_recursiveModel(CardIter* pCI)
+bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 {
   _static_
 

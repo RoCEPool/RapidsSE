@@ -37,10 +37,10 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // series
     bool bApplyTransformationMatrix(eEC* peErrorCode);
-    void vApplyTransformationMatrix_recursiveModel(void);
+    void vApplyTransformationMatrix(void);
 
-    void vSeries_PreparePipelines_recursiveModel(void);
-    void vSeries_MakeRunnable_recursiveModel(void);
+    void vSeries_PreparePipelines(void);
+    void vSeries_MakeRunnable(void);
     void vSeries_MakeRunnable_recurse(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
@@ -49,15 +49,15 @@ namespace STORE
     // group
 
     void vGroup_InitialAdjustments(void);
-    void vGroup_CondenseInfo_recursiveModel(void);
+    void vGroup_CondenseInfo(void);
     void vGroup_MetaAnalysis(void);
-    void vGroup_PreliminaryConversions_recursiveModel(void);
-    void vGroup_FinalConversions_recursiveModel(void);
+    void vGroup_PreliminaryConversions(void);
+    void vGroup_FinalConversions(void);
 
-    void vGroup_PredicatePullup_recursiveModel(void);
-    void vGroup_IndexBounds_recursiveModel(void);
-    void vGroup_JoinOrdering_recursiveModel(void);
-    void vGroup_FlattenSubquery_recursiveModel(void);
+    void vGroup_PredicatePullup(void);
+    void vGroup_IndexBounds(void);
+    void vGroup_JoinOrdering(void);
+    void vGroup_FlattenSubquery(void);
 
     void vGroup_ChooseEEops(void);
 
@@ -80,7 +80,7 @@ namespace STORE
     void vTransform_IndexAnalysis(void);
     void vTransform_ProjectionAnalysis(void);
 
-    void vTransform_StmColToTblCol_recursiveModel(void);
+    void vTransform_StmColToTblCol(void);
     void vTransform_RpnCalcToBoolCalc(void);
 
     void vTransform_MarkCmpPredWrtTable(void);
@@ -93,7 +93,7 @@ namespace STORE
     void vTransform_DeriveBoundsFromFilter_originalModel(void);
 
     void vTransform_OuterQueryAnalysis(void);
-    void vTransform_FlattenByDecisionTree_recursiveModel(void);
+    void vTransform_FlattenByDecisionTree(void);
 
     void vTransform_MorphTableToEEop(void);
 
