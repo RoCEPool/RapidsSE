@@ -87,7 +87,6 @@ bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
     m_pOptimiser->pCardCtl()->vSaveShorter();
     m_pOptimiser->pCardCtl()->vSaveXhand();
 
-    //vApplyTransformationMatrix_originalModel();
     vApplyTransformationMatrix_recursiveModel();
 
     bClean = true;
@@ -211,6 +210,8 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   vGroup_PredicatePullup_recursiveModel();
   vGroup_IndexBounds_recursiveModel();
   vGroup_JoinOrdering_recursiveModel();
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2005,10 +2006,15 @@ void Bench::vTransform_OuterQueryAnalysis(void)
        nParams++;
     pOuterQuery->vCorrCols(nParams);
 
+  }
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
     pOuterQuery->vDump();
   }
 
-  //m_pCI->vEndTransform();
+    //m_pCI->vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2722,17 +2728,41 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  i8 nBoards = this->nBoards();
-  for (i8 i_each = 0; i_each < nBoards; i_each++) {
-    Board *pBoard = this->pGet(i_each);
+  if (i_Board >= nBoards())
+    return nullptr;
 
-    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
-                                       i_Board == pBoard->i_Board()))
-      return pBoard;
-  }
+  Board *pBoard = this->pGet(i_Board);
+  ASSERT(pBoard->i_Board() == i_Board);
+  return pBoard;
 
-  return nullptr;
+//  i8 nBoards = this->nBoards();
+//  for (i8 i_each = 0; i_each < nBoards; i_each++) {
+//    Board *pBoard = this->pGet(i_each);
+//
+//    if (eBoard == pBoard->eBoardKind() &&
+//        i_Board == pBoard->i_Board())
+//      return pBoard;
+//  }
+//
+//  return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+//Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+//
+//  i8 nBoards = this->nBoards();
+//  for (i8 i_each = 0; i_each < nBoards; i_each++) {
+//    Board *pBoard = this->pGet(i_each);
+//
+//    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
+//                                           i_Board == pBoard->i_Board()))
+//      return pBoard;
+//  }
+//
+//  return nullptr;
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */

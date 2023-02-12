@@ -75,8 +75,15 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
   m_pPipeSpec = pPipeSpec;
   m_pDeckSpec = m_pPipeSpec->pDeckSpec();
   vSubPipe(-1);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Board = 0; i_Board < m_pBench->nBoards(); i_Board++) {
+    m_pBoard = m_pBench->pGetBoard(i_Board);
+    m_pBoard->vBoardNo(i_Board);
+
+    vDebugPoint();
+  }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pDeckSpec  = nullptr;
   m_pStageSpec = nullptr;

@@ -269,6 +269,7 @@ namespace STORE
 
 
     i8  i_Board(void);
+    void vBoardNo(i8 i_Board);
     eBK eBoardKind(void);
     Stz* szBoardNm(void);
     void vBoardNm(Stz* szBoardNm);

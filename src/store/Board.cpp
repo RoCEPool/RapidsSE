@@ -1772,8 +1772,9 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprint("Transform: %02lld Board %s Query %s"_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %lld %s Query %s"_Stz,
                    m_iXform,
+                   m_i_Board,
                    m_sBoardNm.szStz(),
                    m_pBench->pOptimiser()->szQueryNm()
                    );
@@ -1831,6 +1832,16 @@ i8 Board::i_Board(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   return m_i_Board;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardNo(i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  m_i_Board = i_Board;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -150,7 +150,7 @@ namespace STORE
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
-    Board* pGetBoard(eBK eBoard, i8 i_Board = C_UNKNOWN);
+    Board* pGetBoard(eBK eBoard, i8 i_Board);
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     bool bIsFlat(void);
