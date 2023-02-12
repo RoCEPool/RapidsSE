@@ -175,10 +175,6 @@ namespace STORE
     // vSeries_90_Stream_Ordering
     void vS90_T30_Derive_order(void);
 
-    void vAssert_Board_any(void);
-    void vAssert_Board_mqA(void);
-    void vAssert_Board_sqB(void);
-
     void vST00_Begin(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

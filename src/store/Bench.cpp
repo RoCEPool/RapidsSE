@@ -444,8 +444,6 @@ void Bench::vTransform_MoveOn(void)
 
   m_pCI->vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
 
-  vAssert_Board_any();
-
   Card_Where::vMove_All_on_To_where(m_pCI);
 
   m_pCI->vEndTransform();
@@ -459,8 +457,6 @@ void Bench::vTransform_DeleteUnneeded(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  vAssert_Board_any();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin
@@ -493,8 +489,6 @@ void Bench::vTransform_ScanBecomesTable(void)
 
   m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
-  vAssert_Board_any();
-
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain(CK_SCAN))
     Card_Scan::vScanBecomesTable(m_pCI);
@@ -510,8 +504,6 @@ void Bench::vTransform_AddLevel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  vAssert_Board_any();
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain())
@@ -625,8 +617,6 @@ void Bench::vTransform_ProjectionAnalysis(void)
 
   m_pCI->vTransform(__func__, "((desc))"_Stz);
 
-  vAssert_Board_any();
-
   Card_Projection::vProjection_Analysis_v2(m_pCI);
 
   m_pCI->vEndTransform();
@@ -640,8 +630,6 @@ void Bench::vTransform_StmColToTblCol_recursiveModel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
-
-  vAssert_Board_any();
 
   while (m_pCI->G_bEachMain())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
@@ -658,8 +646,6 @@ void Bench::vTransform_RpnCalcToBoolCalc(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
-
-  vAssert_Board_any();
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
@@ -681,8 +667,6 @@ void Bench::vTransform_MarkCmpPredWrtTable(void)
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
-  vAssert_Board_any();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table
 
@@ -700,8 +684,6 @@ void Bench::vTransform_CopyMarkedCmpPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  vAssert_Board_any();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Move At Marked Where Pred To Table Filter
@@ -723,8 +705,6 @@ void Bench::vTransform_CullMarkedCmpPred(void)
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
-  vAssert_Board_any();
-
   m_pCI->G_vRestart();
   Card_Where::vCullMarkedCmpPred(m_pCI);
 
@@ -742,8 +722,6 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
-  vAssert_Board_any();
-
   m_pCI->G_vRestart();
   Card_Where::vDeleteEmpyWhere(m_pCI);
 
@@ -759,7 +737,6 @@ void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
 
   m_pCI->vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
-  vAssert_Board_any();
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
 
   m_pCI->vEndTransform();
@@ -872,7 +849,6 @@ void Bench::vFlatten_10_F(void)
 
   m_pCI->vTransform(__func__, "((vFlatten_10_F))"_Stz);
 
-  vAssert_Board_mqA();
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -937,7 +913,6 @@ void Bench::vFlatten_20_W_A_C_ro(void)
   m_pCI->vTransform(__func__, "((vFlatten_20_W_A_C_ro))"_Stz);
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
-  vAssert_Board_mqA();
   RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   if (m_pCI->m_bRecursiveModel) {
     if (! Board::bFindAndMarkSubQryCall_recursiveModel(m_pCI)) {
@@ -966,7 +941,6 @@ void Bench::vFlatten_20_W_A_C_ro(void)
     vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
     NEVER_REACH
   }
-  vAssert_Board_sqB();
 
   m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(1);
 
@@ -976,7 +950,6 @@ void Bench::vFlatten_20_W_A_C_ro(void)
 
   // x) pop back to mq
   m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
 
   m_pCI->G.pDeck->vPush(m_pCI->m_pCard_copied);
   m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_copied);
@@ -1160,8 +1133,6 @@ void Bench::vFlatten_30_W_A_NC_I(void)
 
   m_pCI->vTransform(__func__, "((vFlatten_30_W_A_NC_I))"_Stz);
 
-  vAssert_Board_mqA();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
@@ -1273,8 +1244,6 @@ void Bench::vFlatten_40_W_A_NC_ro(void)
 
   m_pCI->vTransform(__func__, "((40_W_A_NC_ro))"_Stz);
 
-  vAssert_Board_mqA();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
@@ -1368,7 +1337,6 @@ void Bench::vFlatten_50_W_L_C_E(void)
    */
 
   m_pCI->vTransform(__func__, "((vFlatten_50_W_L_C_E))"_Stz);
-  vAssert_Board_mqA();
 
   // W L C E
   //             //
@@ -1403,7 +1371,6 @@ void Bench::vFlatten_50_W_L_C_E(void)
     vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
     NEVER_REACH
   }
-  vAssert_Board_sqB();
 
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
@@ -1429,7 +1396,6 @@ void Bench::vFlatten_50_W_L_C_E(void)
 
   // 4) pop back to mq
   m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
 
   m_pCI->G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
   m_pCI->G_vInsertBefore(m_pCI->G.p_fold,m_pCI->G.p_where);
@@ -1569,8 +1535,6 @@ void Bench::vFlatten_70_H_A_NC_ro(void)
 
   m_pCI->vTransform(__func__, "((vFlatten_70_H_A_NC_ro))"_Stz);
 
-  vAssert_Board_mqA();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
@@ -1681,7 +1645,6 @@ void Bench::vFold_exists(Stz* szFold)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
-  //vAssert_Board_mqA();
 
   // W L NC NI
   //               //
@@ -1719,7 +1682,6 @@ void Bench::vFold_exists(Stz* szFold)
     m_pCI->vTracer("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
     NEVER_REACH
   }
-  vAssert_Board_sqB();
 
   // x) pull <where> into <table>/<filter>
 
@@ -1745,7 +1707,6 @@ void Bench::vFold_exists(Stz* szFold)
 
   // 4) pop back to mq
   m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
 
   // 5) fold
   //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
@@ -1814,7 +1775,7 @@ void Bench::vFold_from(Stz* szFold)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
-  vAssert_Board_mqA();
+
   RASSERT(m_pCI->G_bEachMain(CK_CALL));
   vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz,m_pCI->G.p_call->szValue());
   m_pCI->vPrintBoard(__LINE__);
@@ -1834,7 +1795,6 @@ void Bench::vFold_from(Stz* szFold)
     vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->G.p_call->szValue());
     NEVER_REACH
   }
-  vAssert_Board_sqB();
 
   m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(0);
 
@@ -1844,7 +1804,6 @@ void Bench::vFold_from(Stz* szFold)
 
   // x) pop back to mq
   m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
 
   m_pCI->G.pDeck->vPush(m_pCI->m_pCard_copied);
   m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_copied);
@@ -1894,14 +1853,12 @@ void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
     vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
     NEVER_REACH
   }
-  vAssert_Board_sqB();
 
   // 3) get copy of sq
   m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
 
   // 4) pop back to mq
   m_pCI->G_vPopIter();
-  vAssert_Board_mqA();
 
   // 5) add <fold> (before MQ)
   m_pCI->G_vNewMember(CK_FOLD,szFold);
@@ -2026,8 +1983,6 @@ void Bench::vTransform_MorphTableToEEop(void)
 
   m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
-  vAssert_Board_mqA();
-
   Board::vMorph_Table_To_EEop(m_pCI);
 
   m_pCI->vEndTransform();
@@ -2041,8 +1996,6 @@ void Bench::vTransform_CullNonusedBounds(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  vAssert_Board_mqA();
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -2108,8 +2061,6 @@ void Bench::vTransform_CullUsedBoundsFromFilter(void)
 
   m_pCI->vTransform(__func__, "((desc))"_Stz);
 
-  vAssert_Board_mqA();
-
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2174,8 +2125,6 @@ void Bench::vTransform_IndividuateFilter(void)
 
   m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
-  vAssert_Board_mqA();
-
   m_pCI->G_vRestart();
   Card_Scan::vIndividuateFilter(m_pCI);
 
@@ -2200,8 +2149,6 @@ void Bench::vTransform_TblColToStmCol(void)
 
   m_pCI->vTransform(__func__, "vTransform_TblColToStmCol"_Stz);
 
-  vAssert_Board_mqA();
-
   while (m_pCI->G_bEachMain())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
@@ -2216,8 +2163,6 @@ void Bench::vTransform_StmColToColNmOfKeyExists(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "((20))))"_Stz);
-
-  vAssert_Board_mqA();
 
   while (m_pCI->G_bEachMain()) {
 
@@ -2242,8 +2187,6 @@ void Bench::vTransform_ReinstateStages(void)
 
   m_pCI->vTransform(__func__, "reinstate stages"_Stz);
 
-  vAssert_Board_mqA();
-
   //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
   //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
 
@@ -2262,8 +2205,6 @@ void Bench::vTransform_AddPartitioning(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   m_pCI->vTransform(__func__, "add partitioning"_Stz);
-
-  vAssert_Board_mqA();
 
   Board::vAdd_Partitioning(m_pCI);
 
@@ -2998,8 +2939,6 @@ void Bench::vTransform_PredicateReposition_originalModel(void)
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
-  vAssert_Board_any();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table
 
@@ -3059,8 +2998,6 @@ void Bench::vS80_T30_Morph_scan_To_indexScan(void)
 
   m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
 
-  vAssert_Board_mqA();
-
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
     if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
@@ -3090,8 +3027,7 @@ void Bench::vS90_T30_Derive_order(void)
 
   m_pCI->vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
 
-  vAssert_Board_mqA();
-
+  
   Board::vDerive_order(m_pCI);
 
   m_pCI->vEndTransform();
@@ -3101,36 +3037,6 @@ void Bench::vS90_T30_Derive_order(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vAssert_Board_any(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  // nothing to do?
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vAssert_Board_mqA(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  RASSERT(0 == m_pCI->G.pBoard->i_Board());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vAssert_Board_sqB(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  RASSERT(1 == m_pCI->G.pBoard->i_Board());
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
