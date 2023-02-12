@@ -61,7 +61,7 @@ Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_pCard_Deck->vRemoveAll();
+  //m_pCard_Deck->vRemoveAll();
 
   delete m_pCard_Deck;
 
