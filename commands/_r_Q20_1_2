@@ -2,6 +2,8 @@
 /* _r_Q20_1_2 -- TCPH query 20 (part _1_2) test                                */
 /*============================================================================*/
 
+// --initial _r_Q20_1_2
+
 _r_schema
 
 
@@ -11,7 +13,6 @@ _r_schema
 /transliterated
 /weaved
 /pipelineName = "_r_Q20_1_2"
-
 select 0.5 * sum(l_quantity)
   from LineItem
  where
