@@ -2449,6 +2449,9 @@ L_Varchar_userEnclosed:
   
 L_Varchar_depositValue:
 
+  if ((u8)(nVchChars) > C_VCH_SIZE_MAX)
+    goto L_FieldError;
+
   m_pRowBuffer->vDepositString_end(nVchChars+1);
   
   if (iTraceBits & C_BIT_Varchar)

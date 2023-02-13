@@ -92,6 +92,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
+    i8 m_iSysTimeStart;
+    i8 m_iSysTimeEnd;
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     // TO BE MOVED
@@ -157,6 +160,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     SkipNode* pGenericSkipNode(void);
     void vGetTimerFromChild(Job* pChildJob);
+    i8   iGetSysTimerStart(void);
+    i8   iGetSysTimerEnd(void);
     void vGrabLock(void);
 
     bool bHasTag(Stz* szTagNm);

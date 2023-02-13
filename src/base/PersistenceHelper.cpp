@@ -78,7 +78,7 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
     azBuffer[i] = RndLib::iInteger(0,100);
 
   i8 start;
-  start = Timer::iGetTimeOfDay();
+  start = Hardware::iReadClock();
 
   Timer oTimer;
   oTimer.vStart();
@@ -114,7 +114,7 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
 
   vTrace("New Timer: Partition %lld took %lld ms to write to disk\n"_Stz,
          iPtnOfNode,
-         (Timer::iGetTimeOfDay() - start)/1000000);
+         (Hardware::iReadClock() - start)/1000000);
 
 }
 
@@ -176,8 +176,6 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   }
 
   ASSERT(iPtnOfNode >= 0);
-  i8 start;
-  start =Timer::iGetTimeOfDay();
 
   Timer oTimer;
   oTimer.vStart();
@@ -211,13 +209,9 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   delete pFile;
 
   oTimer.vUpdate();
-  vTrace("Rdtscp: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
+  vTrace("Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
          iPtnOfNode,
          oTimer.iMilliseconds());
-
-  vTrace("GetTimeOfDay: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
-         iPtnOfNode,
-         (Timer::iGetTimeOfDay() - start)/1000000);
 }
 
 /*============================================================================*/

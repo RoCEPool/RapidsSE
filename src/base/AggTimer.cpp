@@ -47,8 +47,8 @@ AggTimer::AggTimer(void)
 : Object(CN_AGGTIMER)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  m_iTicks  = 0;
+
+  m_iNanos  = 0;
 
   m_nTimes  = 0;
 
@@ -92,8 +92,8 @@ void AggTimer::vRepair(Object* pObject)
 void AggTimer::vAdd(i8 iTicks)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  m_iTicks += iTicks;
+
+  m_iNanos += iTicks;
   
   m_nTimes++;
 }
@@ -104,8 +104,8 @@ void AggTimer::vAdd(i8 iTicks)
 void AggTimer::vAdd(Timer* pTimer)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  m_iTicks += pTimer->iTickDelta();
+
+  m_iNanos += pTimer->iNanoseconds();
 
   m_nTimes++;
 }
@@ -116,8 +116,8 @@ void AggTimer::vAdd(Timer* pTimer)
 void AggTimer::vReset(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  m_iTicks = 0;
+
+  m_iNanos = 0;
   
   m_nTimes = 0;
 }
@@ -128,8 +128,8 @@ void AggTimer::vReset(void)
 void AggTimer::vSet(i8 iTicks)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  m_iTicks = iTicks;
+
+  m_iNanos = iTicks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,24 +138,8 @@ void AggTimer::vSet(i8 iTicks)
 i8 AggTimer::iNanoseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  i8 iNano;
-  
-  i8 iTicks = this->iTicks();
-  
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  if (iTicks > iTicksPerSec) {
-    i8 iSecs = iTicks / iTicksPerSec;
-    i8 iRemTicks  = iTicks % iTicksPerSec;
-    
-    iNano = iSecs * C_1G +
-            (iRemTicks * C_1G) / iTicksPerSec;
-  }
-  else
-    iNano = (iTicks * C_1G) / iTicksPerSec;
-  
-  return iNano;
+
+  return m_iNanos;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,14 +148,8 @@ i8 AggTimer::iNanoseconds(void)
 i8 AggTimer::iMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  i8 iTicks = this->iTicks();
-  
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  i8 iMicro = (iTicks * C_1M) / iTicksPerSec;
-  
-  return iMicro;
+
+  return m_iNanos / C_1K;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,14 +158,8 @@ i8 AggTimer::iMicroseconds(void)
 i8 AggTimer::iMilliseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  i8 iTicks = this->iTicks();
-  
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  i8 iMilli = (iTicks * C_1K) / iTicksPerSec;
-  
-  return iMilli;
+
+  return m_iNanos / C_1M;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,24 +168,8 @@ i8 AggTimer::iMilliseconds(void)
 i8 AggTimer::iSeconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  i8 iTicks = this->iTicks();
-  
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  
-  i8 iSeconds = iTicks / iTicksPerSec;
-  
-  return iSeconds;
-}
 
-/*----------------------------------------------------------------------------*/
-/* number of ticks                                                            */
-/*----------------------------------------------------------------------------*/
-i8 AggTimer::iTicks(void)
-{
-  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-    
-  return m_iTicks;
+  return m_iNanos / C_1B;
 }
 
 /*----------------------------------------------------------------------------*/

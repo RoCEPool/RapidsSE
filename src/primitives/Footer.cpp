@@ -13,7 +13,8 @@
 /*----------------------------------------------------------------------------*/
 Footer::Footer(void)
 {
-  m_iWhenAllocated = Hardware::iReadTsc();
+  u4 uProcId;
+  m_iWhenAllocated = Hardware::iReadTsc(&uProcId);
   m_uFooter = C_FOOTER;
 }
 
@@ -53,7 +54,8 @@ eEC Footer::eValidFooter(void)
 /*----------------------------------------------------------------------------*/
 void Footer::vSetFooter(void)
 {
-  m_iWhenAllocated = Hardware::iReadTsc();
+  u4 uProcId;
+  m_iWhenAllocated = Hardware::iReadTsc(&uProcId);
   m_uFooter = C_FOOTER;
 }
 

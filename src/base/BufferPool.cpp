@@ -591,6 +591,31 @@ void BufferPool::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Sanity check address during reload before overwriting buffer               */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bReloadSanityCheckAddr(void* aAddress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  RASSERT(m_okLock.bIsLocked() == 0);
+
+  if (aAddress)
+    if( ! bValidAddress(aAddress)) {
+      vTrace("BufferPool::bReloadSanityCheckAddr: Got invalid address!\n"_Stz);
+      return false;
+    }
+
+  FreePoolBuffer* pFreePoolBuffer = reinterpret_cast<FreePoolBuffer*>(aAddress);
+
+  if ( ! (pFreePoolBuffer->eGetClassNo() == CN_FREEPOOLBUFFER) ) {
+    vTrace("BufferPool::bReloadSanityCheckAddr: Heap Buffer address in Buffer Pool free chain was not free\n"_Stz);
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Use a specific buffer by address from free chain for alloc                 */
 /*----------------------------------------------------------------------------*/
 PoolBuffer* BufferPool::pReAllocHeapBuffer(void *aAddress)
@@ -622,6 +647,73 @@ PoolBuffer* BufferPool::pReAllocOtherBuffer(void *aAddress)
   ++m_ixOtherBuffers;
 
   return _pPoolBuffer(pHeapBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* After reload, clean up the free chain, and it's pointers                   */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vCleanup(bool bTouch, bool bProgress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  UNUSED(bTouch);
+
+  m_okLock.vGrabWrite();
+
+  i8 iFreeCount = 0;
+  i8 iAllocCount = 0;
+  m_iFreeHead   = 0;
+
+  i8 iBufferMod;
+  FreePoolBuffer* pPrevPoolBuffer = nullptr;
+  i8 i_PoolBuffer = iBufferFirst();
+
+  // Walk the memory in 1MB chunks
+  // Find all buffers that are free
+  // Relink the free buffers to form a chain
+  while (C_NIL != i_PoolBuffer) {
+
+    if (bProgress) {
+      iBufferMod = i_PoolBuffer % 1000;
+      if (! iBufferMod) {
+        fflush(stdout);
+      }
+    }
+
+    FreePoolBuffer* pFreePoolBuffer = pToFreePoolBuffer(i_PoolBuffer);
+    if(pFreePoolBuffer->eGetClassNo() != CN_FREEPOOLBUFFER) {
+      i_PoolBuffer = iBufferNext(i_PoolBuffer);
+      iAllocCount++;
+      ++m_ixHeapBuffers;
+      continue;
+    }
+
+    if(m_iFreeHead == 0)
+      m_iFreeHead = i_PoolBuffer;
+
+    if(pPrevPoolBuffer != nullptr) {
+      pPrevPoolBuffer->vNextFree(i_PoolBuffer);
+    }
+
+    pPrevPoolBuffer = pFreePoolBuffer;
+
+    i_PoolBuffer = iBufferNext(i_PoolBuffer);
+
+    iFreeCount++;
+  }
+
+  pPrevPoolBuffer->vNextFree(C_NIL);
+
+  // Ensure we got the correct number of allocated buffers
+  // and free buffers
+  RASSERT((iAllocCount + iFreeCount + 1) == m_nBuffers);
+
+  // Update the members of BufferPool
+  m_nAllocCount = iAllocCount;
+  m_nFreeCount = iFreeCount;
+
+  m_okLock.vDropWrite();
+  //vDump();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -97,8 +97,9 @@ i8 Balloon::iCurrentSize(void)
 void Balloon::vCurrentSize(i8 iSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BALLOON,_FOOTER_);
-  
-  i8 iTsc = Hardware::iReadTsc();
+
+  u4 uProcId;
+  i8 iTsc = Hardware::iReadTsc(&uProcId);
     
   m_iCurrentSize = iSize;
     

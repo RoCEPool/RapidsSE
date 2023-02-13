@@ -39,6 +39,8 @@ static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 static const u8 C_TSP_USEC_MIN = 0;
 static const u8 C_TSP_USEC_MAX = 999999;
 
+static const u8 C_VCH_SIZE_MAX = 4000;
+
 // Intervals
 static const u8 C_IVL_USEC_MAX_IN_1_SEC   = 999999;
 static const u8 C_IVL_USEC_SHIFT = 1000000;

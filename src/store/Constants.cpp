@@ -337,6 +337,7 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
 
   /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz, EC_DECIMAL_NOT_SUPPORTED);
+  /*  6 */ vAddConstant("EC_DISK_SPACE_CHECK_FAILED"_Stz, EC_DISK_SPACE_CHECK_FAILED);
   /*  6 */ vAddConstant("EC_DIVIDE_BY_ZERO"_Stz,     EC_DIVIDE_BY_ZERO);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
   /*  8 */ vAddConstant("EC_DUPLICATE_KEY"_Stz,      EC_DUPLICATE_KEY);
@@ -362,7 +363,8 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("EC_INVALID_SIZE"_Stz,       EC_INVALID_SIZE);
   /* 21 */ vAddConstant("EC_INVALID_SYNTAX"_Stz,     EC_INVALID_SYNTAX);
   /* 22 */ vAddConstant("EC_INVALID_VALUE"_Stz,      EC_INVALID_VALUE);
-                        
+
+  /* 23 */ vAddConstant("EC_LOW_DISK_SPACE"_Stz,     EC_LOW_DISK_SPACE);
   /* 23 */ vAddConstant("EC_LOW_MEMORY"_Stz,         EC_LOW_MEMORY);
 
   /*    */ vAddConstant("EC_MAX_INDEX_NAME_LENGTH"_Stz,EC_MAX_INDEX_NAME_LENGTH);

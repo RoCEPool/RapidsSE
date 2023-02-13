@@ -124,6 +124,12 @@ class Ec2InstanceTimeoutError(Ec2Error):
         return SshError, (self.args[0], self.instance_ids)
 
 
+class Ec2InsufficientCapacity(Ec2Error):
+    """Errors that come up from no capacity to provision EC2 instances"""
+    def __init__(self, msg: str):
+        super(Ec2InsufficientCapacity, self).__init__(msg)
+
+
 class NotImplementedYet(TracebackError):
     """Errors that come up from unhandled situations"""
     def __init__(self, msg: str):
