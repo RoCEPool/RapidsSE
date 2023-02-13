@@ -271,6 +271,21 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert child values to an stz list                                        */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vOntoStzList(StzList* pStzList)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  i8 nSubCards = nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card* p_child = pGetChild(i_Sub);
+    if (p_child->szValue())
+      pStzList->vAppend(p_child->szValue());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPopChild(void)
@@ -424,12 +439,14 @@ StzList* ChildCards::pToStzList(void)
 
   StzList* pStzList = new StzList;
 
-  i8 nSubCards = nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* p_child = pGetChild(i_Sub);
-    if (p_child->szValue())
-      pStzList->vAppend(p_child->szValue());
-  }
+//  i8 nSubCards = nChildCards();
+//  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+//    Card* p_child = pGetChild(i_Sub);
+//    if (p_child->szValue())
+//      pStzList->vAppend(p_child->szValue());
+//  }
+
+  vOntoStzList(pStzList);
 
   return pStzList;
 }

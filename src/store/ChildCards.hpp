@@ -34,6 +34,8 @@ namespace STORE
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reCard);
 
+    void vOntoStzList(StzList* pStzList);
+
     Card* pPopChild(void);
     Card* pPlopChild(void);
 
