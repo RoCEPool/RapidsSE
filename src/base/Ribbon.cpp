@@ -270,13 +270,32 @@ void Ribbon::vSprintList(StzList* pStzList, i8 nWidth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
+  s256 sPiece;
+
   StzIter* pStzIter = pStzList->pNewIter();
 
   while (pStzIter->bHasNext()) {
+
     Stz *szText = pStzIter->pNext();
 
-    vPutText(m_i_Line++,m_i_Char,szText);
+    if (0 == sPiece.nLength()) {
+      sPiece = szText;
+      continue;
+    }
+    else if (sPiece.nLength() + 1 + szText->nLength() > nWidth) {
+      vPutText(m_i_Line++, m_i_Char, sPiece.szStz());
+      sPiece = szText;
+      continue;
+    }
+    else
+      sPiece.vCatSprint(" %s"_Stz,szText);
   }
+
+  if (sPiece.nLength()) {
+    vPutText(m_i_Line++, m_i_Char, sPiece.szStz());
+    sPiece = "";
+  }
+
 
   delete pStzIter;
 }

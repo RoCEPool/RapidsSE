@@ -102,12 +102,12 @@ void Card_Projection::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  CardIter xCI(this);
-//  while (xCI.G_bEachMain(CK_EXPR)) {
-//    StzList* pStzList = xCI.G.p_expr->pToStzList();
-//    pStzList->vPush(xCI.G.p_expr->szValue());
-//    pRibbon->vSprintList(pStzList,18);
-//  }
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_EXPR)) {
+    StzList* pStzList = xCI.G.p_expr->pToStzList();
+    pStzList->vPush(xCI.G.p_expr->szValue());
+    pRibbon->vSprintList(pStzList,18);
+  }
 
   vPrintCard_bySettings(pRibbon, iDepth);
 }
