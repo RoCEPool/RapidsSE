@@ -109,18 +109,38 @@ void Card_Projection::vPrint(Ribbon* pRibbon, i8 iDepth)
 
     pStzList->vAppend(xCI.G.p_expr->szValue());
 
+    bool bPrintAs = true;
+    bool bPrintColNm = true;
+
     CardIter xCI_expr(xCI.G.p_expr);
     while (xCI_expr.G_bEachMain()) {
 
-      if (xCI_expr.G.p_MainCard->bIsCard(CK_TYPE))
+      if (xCI_expr.G.p_MainCard->bIsCard(CK_TYPE)) {
         pStzList->vAppend(xCI_expr.G.p_type->szTypeShort());
+      }
       else
+      if (xCI_expr.G.p_MainCard->bIsCard(CK_AS)) {
+        if (bPrintAs)
+          pStzList->vAppend(xCI_expr.G.p_as->szValue());
+        bPrintColNm = false;
+      }
+      else
+      if (xCI_expr.G.p_MainCard->bIsCard(CK_COLNM)) {
+        if (bPrintColNm)
+        pStzList->vAppend(xCI_expr.G.p_colNm->szValue());
+        bPrintAs = false;
+      }
+      else {
         pStzList->vAppend(xCI_expr.G.p_MainCard->szValue());
+      }
     }
 
-    pRibbon->vSprintList(pStzList, 18);
+    pRibbon->vSprintList(pStzList, 20);
     delete pStzList;
   }
+
+
+
 
   vPrintCard_bySettings(pRibbon, iDepth);
 }
