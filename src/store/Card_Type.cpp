@@ -41,16 +41,16 @@ Card_Type::~Card_Type(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return typeShort                                                           */
 /*----------------------------------------------------------------------------*/
-char Card_Type::cTypeShort(void)
+Stz* Card_Type::szTypeShort(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
     if (bIsValue(aCT[i_CT]))
-      return cCT_char[i_CT];
+      return szCT_char[i_CT];
   }
 
-  return cCT_char[CT_ENUMS];
+  return szCT_char[CT_ENUMS];
 }
 
 /*----------------------------------------------------------------------------*/

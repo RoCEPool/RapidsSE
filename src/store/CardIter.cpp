@@ -407,6 +407,7 @@ void CardIter::G_vClearMembers(void)
   G.p_cast             = nullptr;
   G.p_clause           = nullptr;
   G.p_cmpPred          = nullptr;
+  G.p_colNm            = nullptr;
   G.p_combined         = nullptr;
   G.p_comment          = nullptr;
   G.p_constraint       = nullptr;
@@ -1579,8 +1580,9 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_CAST:             return G.p_cast;
     case CK_CLAUSE:           return G.p_clause;
     case CK_CMPPRED:          return G.p_cmpPred;
-    case CK_COMBINED:         return G.p_combined;
     case CK_COMMENT:          return G.p_comment;
+    case CK_COLNM:            return G.p_colNm;
+    case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
     case CK_COPTNJOIN:        return G.p_coPtnJoin;
     case CK_COPTNJOINLIST:    return G.p_coPtnJoinList;
@@ -1970,6 +1972,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_CAST:             return "G.p_cast"_Stz;
     case CK_CLAUSE:           return "G.p_clause"_Stz;
     case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
+    case CK_COLNM:            return "G.p_colNm"_Stz;
     case CK_COMBINED:         return "G.p_combined"_Stz;
     case CK_COMMENT:          return "G.p_comment"_Stz;
     case CK_CONSTRAINT:       return "G.p_constraint"_Stz;
@@ -3193,6 +3196,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
     case CK_CLAUSE:           *((Card**)&G.p_clause)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;
+    case CK_COLNM:            *((Card**)&G.p_colNm)            = pCard; break;
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&G.p_comment)          = pCard; break;
     case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;

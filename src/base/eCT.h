@@ -78,22 +78,22 @@ static Stz* aCT_short[]
   /* 13 */ "ENUMS"_Stz
 };
 
-static char cCT_char[]
+static Stz* szCT_char[]
 {
-  /*  0 */ '!',
-  /*  1 */ 'b', // boolean
-  /*  2 */ 'c', // char
-  /*  3 */ 'd', // date
-  /*  4 */ 'm', // decimal
-  /*  5 */ 'f', // float
-  /*  6 */ 'i', // integer
-  /*  7 */ 'l', // interval day to second
-  /*  8 */ 'y', // interval year to month
-  /*  9 */ 't', // time
-  /* 10 */ 's', // timestamp
-  /* 11 */ 'v', // varchar
-  /* 12 */ 'x', // unknown
-  /* 13 */ '?'
+  /*  0 */ "!"_Stz,
+  /*  1 */ "b"_Stz, // boolean
+  /*  2 */ "c"_Stz, // char
+  /*  3 */ "d"_Stz, // date
+  /*  4 */ "m"_Stz, // decimal
+  /*  5 */ "f"_Stz, // float
+  /*  6 */ "i"_Stz, // integer
+  /*  7 */ "l"_Stz, // interval day to second
+  /*  8 */ "y"_Stz, // interval year to month
+  /*  9 */ "t"_Stz, // time
+  /* 10 */ "s"_Stz, // timestamp
+  /* 11 */ "v"_Stz, // varchar
+  /* 12 */ "x"_Stz, // unknown
+  /* 13 */ "?"_Stz
 };
 
 /*============================================================================*/
