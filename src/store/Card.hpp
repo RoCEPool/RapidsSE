@@ -331,8 +331,6 @@ namespace STORE
 
     static eCK  eTo_eCK(Stz* szCardNm);
 
-    static char cTypeShort(Stz* szType);
-
     static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

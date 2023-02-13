@@ -471,21 +471,6 @@ eCK Card::eTo_eCK(Stz* szCardNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return typeShort                                                           */
-/*----------------------------------------------------------------------------*/
-char Card::cTypeShort(Stz* szType)
-{
-  _static_
-
-  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
-    if (szType->bSame(aCT[i_CT]))
-      return cCT_char[i_CT];
-  }
-
-  return cCT_char[CT_ENUMS];
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert eYG to eAL                                                         */
 /*----------------------------------------------------------------------------*/
 eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
