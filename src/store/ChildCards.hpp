@@ -6,6 +6,7 @@
 #include "ListExo2_t.hpp"
 
 #include "eCK.h"
+#include "StzList.hpp"
 
 namespace STORE
 {
@@ -46,6 +47,8 @@ namespace STORE
     void vReplaceChildWithItsSubs(Card* pChildCard);
     void vReplaceChild(Card* pChildCard, Card* pWithCard);
     void vRotateChild(Card* pChildCard);
+
+    StzList* pToStzList(void);
 
     void vTransferChildren(Card* pFromCard);
     void vTransferFrom(Card* pCards, Card* pFrom,

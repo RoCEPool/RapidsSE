@@ -370,7 +370,7 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vPrint(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
+void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

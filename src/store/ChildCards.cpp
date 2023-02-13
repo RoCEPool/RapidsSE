@@ -416,6 +416,25 @@ void ChildCards::vRotateChild(Card* pChildCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert child values to an stz list                                        */
+/*----------------------------------------------------------------------------*/
+StzList* ChildCards::pToStzList(void)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  StzList* pStzList = new StzList;
+
+  i8 nSubCards = nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card* p_child = pGetChild(i_Sub);
+    if (p_child->szValue())
+      pStzList->vAppend(p_child->szValue());
+  }
+
+  return pStzList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vTransferChildren(Card* pFromCard)

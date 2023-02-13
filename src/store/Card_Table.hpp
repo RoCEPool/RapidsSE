@@ -36,7 +36,7 @@ namespace STORE
     void vBounds_DeriveFrom_filter(Card_Filter* p_filter,
                                    bool bParamAllowedInBounds);
     Stz* szColNm(i8 i_Col_base0);
-    void vPrint(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vProjectionAnalysis(CardIter* pCI);
     void vReProjection(CardIter* pCI);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);

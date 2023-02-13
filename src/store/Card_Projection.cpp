@@ -96,6 +96,30 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  StzList* pStzList = pToStzList();
+
+  StzIter* pStzIter = pStzList->pNewIter();
+
+//  while (pStzIter->bHasNext()) {
+//    Stz *szVal = pStzIter->pNext();
+//    vTrace(" %s"_Stz,szVal);
+//  }
+//  vTrace("\n"_Stz);
+
+  delete pStzIter;
+  delete pStzList;
+
+  vPrintCard_bySettings(pRibbon, iDepth);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* re-projection                                                              */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pReProjection(void)
@@ -104,7 +128,6 @@ Card_Projection* Card_Projection::pReProjection(void)
 
   return nullptr;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
