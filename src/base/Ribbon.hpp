@@ -6,6 +6,7 @@
 #include "Object.hpp"
 
 #include "RibbonLine.hpp"
+#include "StzList.hpp"
 
 namespace BASE
 {
@@ -64,6 +65,7 @@ namespace BASE
     void vPutTextRight(Stz* szText, i8 i_Line, i8 i_Char=C_UNKNOWN);
 
     void vSprint(Stz* szFormat, ...);
+    void vSprintList(StzList* pStzList, i8 nWidth);
     void vSprintRight(Stz* szFormat, ...);
     Object* pSurface(void);
 

@@ -266,6 +266,24 @@ void Ribbon::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* sprint at current coord                                                    */
 /*----------------------------------------------------------------------------*/
+void Ribbon::vSprintList(StzList* pStzList, i8 nWidth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  StzIter* pStzIter = pStzList->pNewIter();
+
+  while (pStzIter->bHasNext()) {
+    Stz *szText = pStzIter->pNext();
+
+    vPutText(m_i_Line++,m_i_Char,szText);
+  }
+
+  delete pStzIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint at current coord                                                    */
+/*----------------------------------------------------------------------------*/
 void Ribbon::vSprintRight(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
@@ -283,6 +301,7 @@ void Ribbon::vSprintRight(Stz* szFormat, ...)
 
   vPutText(m_i_Line++,m_i_Char,(Stz*)zRightText);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get surface                                                                */
