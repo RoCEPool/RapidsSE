@@ -23,7 +23,7 @@ namespace STORE
     i8 nExpr(void);
     Card_Expr* pGetExpr(i8 i_Expr);
     Card_Expr* pGetExpr(Card_Term* p_term);
-
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vRenumberAllExpr(void);
 
   };

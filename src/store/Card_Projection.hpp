@@ -19,8 +19,6 @@ namespace STORE
     static void vProjection_Analysis_v2(CardIter* pCI);
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
-
     Card_Projection* pReProjection(void);
   };
 

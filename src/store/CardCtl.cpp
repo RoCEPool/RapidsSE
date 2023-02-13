@@ -618,8 +618,8 @@ void CardCtl::vReset(void)
 
   vHeatNext(CK_PERMUTATION, true);
 
-  vPrintByKind(CK_PROJECTION,true);
-  vPrintSubCards(CK_PROJECTION, false);
+//  vPrintByKind(CK_PROJECTION,true);
+//  vPrintSubCards(CK_PROJECTION, false);
 
   vHeatNext(CK_SECTION, true);
 
