@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __flat2_s1 -- flattening with 2 levels of subqueries                        */
+/* __flatL2_s1 -- flattening with 2 levels of subqueries                       */
 /*============================================================================*/
 
 
@@ -31,7 +31,7 @@ load C "../DATA/Select/select.csv";
 
 select * from dummy;
 
-explain stage aggregateSplit
+explain with_names stage aggregateSplit
 select sum(Y)
   from (
    select X*2 as Y from (
