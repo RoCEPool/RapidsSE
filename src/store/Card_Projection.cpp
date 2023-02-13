@@ -105,9 +105,9 @@ void Card_Projection::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR)) {
-    StzList* pStzList_expr = new StzList;
+    StzList* pStzList = new StzList;
 
-    pStzList_expr->vAppend(xCI.G.p_expr->szValue());
+    pStzList->vAppend(xCI.G.p_expr->szValue());
 
     CardIter xCI_expr(xCI.G.p_expr);
     xCI_expr.G.p_as        = nullptr;
@@ -132,32 +132,38 @@ void Card_Projection::vPrint(Ribbon* pRibbon, i8 iDepth)
     }
 
     if (xCI_expr.G.p_as) {
-      pStzList_expr->vAppend(xCI_expr.G.p_as->szValue());
+      pStzList->vAppend(xCI_expr.G.p_as->szValue());
     }
     if (xCI_expr.G.p_colNm) {
       if (! xCI_expr.G.p_as)
-        pStzList_expr->vAppend(xCI_expr.G.p_colNm->szValue());
+        pStzList->vAppend(xCI_expr.G.p_colNm->szValue());
     }
-    pRibbon->vSprintList(pStzList_expr, 20);
-    pStzList_expr->vRemoveAll();
-
-    pStzList_expr->vAppend(" "_Stz);
+//    pRibbon->vSprintList(pStzList, 20);
+//    pStzList->vRemoveAll();
+//
+//    pStzList->vAppend(" "_Stz);
     if (xCI_expr.G.p_tblColOdn) {
-      pStzList_expr->vAppend(xCI_expr.G.p_tblColOdn->szValue());
+      pStzList->vAppend(xCI_expr.G.p_tblColOdn->szValue());
     }
     if (xCI_expr.G.p_type) {
-      pStzList_expr->vAppend(xCI_expr.G.p_type->szValue());
+      pStzList->vAppend(xCI_expr.G.p_type->szValue());
     }
-    pRibbon->vSprintList(pStzList_expr, 20);
-    pStzList_expr->vRemoveAll();
+    pRibbon->vSprintList(pStzList, 20);
+    pStzList->vRemoveAll();
 
-    delete pStzList_expr;
+    if (xCI_expr.G.p_rpnCalc) {
+      xCI_expr.G.p_rpnCalc->vOntoStzList(pStzList);
+      pRibbon->vSprintList(pStzList, 20);
+      pStzList->vRemoveAll();
+    }
+
+    delete pStzList;
   }
 
 
 
 
-  vPrintCard_bySettings(pRibbon, iDepth);
+  //vPrintCard_bySettings(pRibbon, iDepth);
 }
 
 

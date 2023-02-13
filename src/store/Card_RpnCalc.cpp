@@ -202,6 +202,18 @@ bool Card_RpnCalc::bHasWhen(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vOntoStzList(StzList* pStzList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pStzList->vAppend(":"_Stz);
+
+  ChildCards::vOntoStzList(pStzList);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
 Card_BoolCalc* Card_RpnCalc::pToBoolCalc(void)

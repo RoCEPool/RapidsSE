@@ -24,7 +24,8 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsBraced(void);
     bool bHasWhen(void);
-    Card_BoolCalc*   pToBoolCalc(void);
+    void vOntoStzList(StzList* pStzList);
+    Card_BoolCalc* pToBoolCalc(void);
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);
