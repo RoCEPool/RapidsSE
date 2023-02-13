@@ -43,6 +43,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     bool   m_bNodeLoss;     // node loss detected
     bool   m_bUpdateParent; // update parent
+    bool   m_bPersistentTx; // persistent job transaction flag
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // originating job
@@ -91,6 +92,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
+    i8 m_iSysTimeStart;
+    i8 m_iSysTimeEnd;
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     // TO BE MOVED
@@ -138,6 +142,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDropLock(void);
 
     void vEnableObjectTracker(void);
+    void vEnablePersistence(void);
     Job* pEndJob(void);
     void vEndJob(Job* pEndJob);
     Job* pEndedJob(void);
@@ -155,6 +160,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     SkipNode* pGenericSkipNode(void);
     void vGetTimerFromChild(Job* pChildJob);
+    i8   iGetSysTimerStart(void);
+    i8   iGetSysTimerEnd(void);
     void vGrabLock(void);
 
     bool bHasTag(Stz* szTagNm);
@@ -215,6 +222,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tParentId(void);
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
+    bool bPersistent(void);
     Pipeline* pPipeline(void);
     void vPipeoutResponse(Operand* pOperand);
     void vPrintJobContents(void);

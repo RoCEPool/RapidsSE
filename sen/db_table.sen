@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* the table category                                                         */
 /*----------------------------------------------------------------------------*/
-: \table \\category ;
+: \table \\category WC_TABLE ;
 
 /*----------------------------------------------------------------------------*/
 /* test if word is a table (is of \table category)                            */
 /*----------------------------------------------------------------------------*/
 : word.isaTable params| pwTable | ( t | f )
 
-  pwTable word.category@ find: \table equal
+  pwTable word.category@ WC_TABLE equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@
 
   pwTable not if EC_NO_SUCH_TABLE false exit then
 
-  pwTable word.category@ find: \table equal if true exit then
+  pwTable word.category@ WC_TABLE equal if true exit then
 
   EC_NOT_A_TABLE false
 ;
@@ -170,11 +170,9 @@
 /*----------------------------------------------------------------------------*/
 : table::addToFolder params| pTable |
 
-  find: \table locals| pwTableCatg |
-
   pTable to Table[] Table[].name@ word::new locals| pwTable |
 
-  pwTableCatg pTable pwTable word.cppObject!
+  WC_TABLE pTable pwTable word.cppObject!
 ;
 
 /*----------------------------------------------------------------------------*/

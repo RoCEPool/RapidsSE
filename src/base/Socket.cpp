@@ -360,7 +360,7 @@ Object* Socket::pObjectRecv(eCN eClass)
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
   //vTrace("class:%s\n"_Stz, aCN[eClass]);
-  pReceivedObject = Heaps::pAllocate(eClass);
+  pReceivedObject = Heaps::pAllocate(eClass, m_pObject->bGetPersistent());
   MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
 
   void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));

@@ -757,6 +757,38 @@ bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_dictTree.cpp -- Prints Dict Tree                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_dicTree (
+    PF_DICTREE,           // prompt function
+    "Prompt_dicTree"_Stz, // name of the prompt function
+    "comment"_Stz,         // comment about the function
+    "dicTree"_Stz,        // the prompt command
+    nullptr,               // the second word
+    bPrompt_dicTree,      // prompt function
+    true,                  // enabled
+
+    false,                 // visible
+    "ascii"_Stz,           // help
+    ""_Stz                 // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_dicTree(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Dic::vTree(pDicRoot, 0);
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_dlist.cpp -- demon list report                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

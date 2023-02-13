@@ -31,17 +31,19 @@ Then from the Source directory run the following command to build rapidsse:
   $(error $(ERR))
 endif
 
+LINUX_WARNINGS :=
+
 LINUX_CPPFLAGS := -D__LINUX__
 LINUX_CPPFLAGS_DEBUG := -D__LINUX__
 
-LINUX_LDFLAGS :=
-LINUX_LDFLAGS_DEBUG :=
+LINUX_LDFLAGS := -rdynamic
+LINUX_LDFLAGS_DEBUG := -rdynamic
 
 # The name of the extension on a dynamic library / shared object
 LINUX_LIBRARY_EXT := so
 
 # Any additional linux-specific libraries to link in?
-LINUX_LIBS := -lrt -latomic
+LINUX_LIBS := -lrt -latomic -ldl
 
 # Any linux-specific library search paths to include?
 LINUX_LIB_DIRS := 

@@ -18,6 +18,8 @@ namespace STORE
     s256  m_sCommandsDir;  // commands dir
     i8    m_iConnectCode;  // connect code (not yet used)
     i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
+    s256  m_sDiskRootDir[C_MAX_PTNSPERNODE]; // path to root SE directory on each disk
+    i8    m_nDiskPaths;    // number of disk paths given
     s32   m_sGridName;     // name of the grid
     s256  m_sLogFile;      // name and path to log file for SE Prompt
     s32   m_sNodeName;     // this node name
@@ -27,6 +29,7 @@ namespace STORE
     s32   m_sRegionName;   // name of shared memory region
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
+    s256  m_sReloadDir;    // Name of reload directory
     s256  m_sSenDir;       // sen dir
  
     // nodes defined on the command line

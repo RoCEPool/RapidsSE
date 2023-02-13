@@ -9,6 +9,7 @@ import botocore.exceptions
 import boto3
 
 import pyutils.errors as errors
+import pyutils.ssh as ssh
 
 # ---------- AWS Constants -------------
 C_REGION = "us-east-1"
@@ -57,7 +58,6 @@ C_SUBNET_ID_PREFERENCE = [
     C_SUBNET_MAP[C_AVAIL_1E]
 ]
 
-C_ROOT_EBS_DEVICE = "/dev/xvda"
 C_VOLUME_SIZE_GB = 20
 C_SECURITY_GROUP_ID = "sg-0af380e49a6c6b7eb"    # Private security group (all in/outbound traffic allowed)
 C_KEYPAIR_ID = "key-0b5ebe74924256d94"
@@ -120,7 +120,9 @@ def start_instances(instance_type: str,
                     timeout_sec: float,
                     use_spot_instances: bool,
                     tags: {} = None,
-                    ctx: str = "") -> ([str], [str]):
+                    ctx: str = "",
+                    cloudinit_src: pathlib.Path = None,
+                    cloudinit_dest: pathlib.Path = None) -> ([str], [str]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -149,7 +151,7 @@ def start_instances(instance_type: str,
         "KeyName": C_KEYPAIR_NAME,
         "BlockDeviceMappings": [
             {
-                "DeviceName": C_ROOT_EBS_DEVICE,
+                "DeviceName": __get_root_device_name(client, image_id),
                 "Ebs": {
                     "DeleteOnTermination": True,
                     "VolumeSize": C_VOLUME_SIZE_GB
@@ -200,7 +202,7 @@ def start_instances(instance_type: str,
 
     retry_count = 0
     i = -1
-    while i < len(C_SUBNET_ID_PREFERENCE):
+    while i < len(C_SUBNET_ID_PREFERENCE) - 1:
         i += 1
         subnet_id = C_SUBNET_ID_PREFERENCE[i]
         kwargs["SubnetId"] = subnet_id
@@ -224,12 +226,12 @@ def start_instances(instance_type: str,
 
         except botocore.exceptions.CapacityNotAvailableError as e:
             # Save the exception and try the next subnet, just in case
-            last_error = e
+            last_error = errors.Ec2InsufficientCapacity(getattr(e, 'message', repr(e)))
 
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "InsufficientInstanceCapacity":
-                # Save the exception and try the next subnet, just in case
-                last_error = e
+                # Save the exception and try the next subnet
+                last_error = errors.Ec2InsufficientCapacity(getattr(e, 'message', repr(e)))
                 LOG.warning(f"{ctx}Got error response InsufficientInstanceCapacity in region "
                             f"{C_SUBNET_RMAP[subnet_id]}.")
                 
@@ -250,8 +252,31 @@ def start_instances(instance_type: str,
                             f"instance(s). Sleeping for {C_RETRY_INTERVAL} seconds before trying again")
                 time.sleep(C_RETRY_INTERVAL)
                 continue
+
+            elif e.response["Error"]["Code"] == "Unsupported":
+                # Ignore this exception and try the next subnet
+                LOG.warning(f"{ctx}Got error response {e.response['Error']['Code']} for instance "
+                            f"type {instance_type} in region {C_SUBNET_RMAP[subnet_id]}.")
+
+                if (i + 1) < len(C_SUBNET_ID_PREFERENCE):
+                    LOG.info("Trying another region.")
+                else:
+                    # Only because we have to.
+                    last_error = errors.Ec2InsufficientCapacity(getattr(e, 'message', repr(e)))
+                    LOG.error("No more regions left to try.")
+                continue
+
             else:
-                raise
+                # Save the exception and try the next subnet
+                last_error = e
+                LOG.warning(f"{ctx}Got error response {e.response['Error']['Code']} in region "
+                            f"{C_SUBNET_RMAP[subnet_id]}. Full error message:\n{str(e)}")
+
+                if (i + 1) < len(C_SUBNET_ID_PREFERENCE):
+                    LOG.info("Trying another region.")
+                else:
+                    LOG.error("No more regions left to try.")
+                continue
 
     if last_error is not None:
         raise last_error
@@ -261,9 +286,10 @@ def start_instances(instance_type: str,
 
     # Wait for all of the instances to be usable
     try:
-        __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client, ctx)
+        __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client, ctx,
+                                         cloudinit_src, cloudinit_dest)
 
-    except (Exception,):
+    except (Exception,) as e:
         # Clean up, but try to ignore any errors in the process
         try:
             terminate_instances(instance_ids, ctx)
@@ -271,6 +297,8 @@ def start_instances(instance_type: str,
             pass
         except AssertionError:
             pass
+
+        raise e
 
     return instance_ids, ip_addresses
 
@@ -376,6 +404,24 @@ def __check_image_id(client, image_id: str, ctx: str = ""):
     # pprint.pp(response)
 
 
+def __get_root_device_name(client, image_id: str, ctx: str = "") -> str:
+    """Returns the name of the root device, given an image_id"""
+    kwargs = {
+        "ImageIds": [image_id],
+        "DryRun": False
+    }
+
+    response = client.describe_images(**kwargs)
+
+    assert len(response['Images']) == 1
+
+    for mapping in response['Images'][0]['BlockDeviceMappings']:
+        if mapping.get('Ebs') is not None:
+            return mapping['DeviceName']
+
+    assert False, "Could not determine the root EBS device name"
+
+
 def __get_boot_script(path_str: str, ctx: str = "") -> str:
     """
     Returns contents of a script to run when the machine is first created.
@@ -383,9 +429,9 @@ def __get_boot_script(path_str: str, ctx: str = "") -> str:
     cloud_init_path = pathlib.Path(path_str)
     assert cloud_init_path.exists()
 
-    LOG.debug(f"{ctx}Reading cloud-init script from path: {path_str}")
+    LOG.info(f"{ctx}Reading cloud-init script from path: {path_str}")
     txt = cloud_init_path.read_text()
-    LOG.debug(f"{ctx}Cloud-init script is {len(txt)} bytes long")
+    LOG.info(f"{ctx}Cloud-init script is {len(txt)} bytes long")
 
     assert len(txt) > 0
     assert len(txt) < 16384     # 16 KB AWS limit
@@ -415,7 +461,8 @@ def __set_instance_names(instance_ids: [str], name_prefix: str, client, ctx: str
 
 
 def __wait_for_instances_to_be_ready(instance_ids: [str], ip_addresses: [str], timeout_sec: float,
-                                     name_prefix: str = None, client=None, ctx: str = ""):
+                                     name_prefix: str = None, client=None, ctx: str = "",
+                                     cloudinit_src: pathlib.Path = None, cloudinit_dest: pathlib.Path = None):
     """
     Waits for the set of instances to be runnable, SSH-able, and finished booting.
     If name_prefix and client are set then these instances are named when they are ready.
@@ -450,7 +497,8 @@ def __wait_for_instances_to_be_ready(instance_ids: [str], ip_addresses: [str], t
     # Now we need to wait for the machines to have completed the cloud-init script.
     time_left = end_time - current_time
     op_start = current_time
-    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec, ctx)
+    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec, ctx,
+                                           cloudinit_src, cloudinit_dest)
     current_time = time.time()
     time_left = end_time - current_time
     LOG.info(f"{ctx}All EC2 instances have completed running their cloud-init script in %.1f seconds",
@@ -579,7 +627,7 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
 
             except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
-                    LOG.debug(f"{ctx}Instance at {ip_addr} not yet accepting SSH connections: "
+                    LOG.info(f"{ctx}Instance at {ip_addr} not yet accepting SSH connections: "
                               f"Exit code = {e.returncode}, stdout = \"{e.stdout}\", stderr = \"{e.stderr}\"")
                 last_error = e.stderr
                 time.sleep(1.0)
@@ -609,9 +657,12 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
 
 
 def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [str], time_left: float,
-                                           total_time: float, ctx: str = ""):
+                                           total_time: float, ctx: str = "",
+                                           cloudinit_src: pathlib.Path = None, cloudinit_dest: pathlib.Path = None):
     """
     Waits for the newly started instances to complete their boot-up cloud-init script.
+    If cloudinit_src and cloudinit_dest are set then the cloud-init log file is copied
+    if the startup times out.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
     """
 
@@ -639,7 +690,7 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
             attempts += 1
 
             if attempts % C_MSG_PERIOD == 0:
-                LOG.debug(f"{ctx}Time remaining (cloud-init): %.1f seconds", end_time - current_time)
+                LOG.info(f"{ctx}Time remaining (cloud-init): %.1f seconds", end_time - current_time)
 
             try:
                 result = subprocess.run(cmd,
@@ -653,7 +704,7 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
 
             except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
-                    LOG.debug(f"{ctx}Instance at {ip_addr} has not yet completed its cloud-init script")
+                    LOG.info(f"{ctx}Instance at {ip_addr} has not yet completed its cloud-init script")
                 last_error = e.stderr
                 time.sleep(1.0)
                 current_time = time.time()
@@ -665,6 +716,9 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
                   f"Total time waited = {str(total_time)} seconds. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
+
+            if cloudinit_src is not None and cloudinit_dest is not None:
+                __copy_cloudinit_logs(ip_addresses, cloudinit_src, cloudinit_dest, ctx)
 
             # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
             try:
@@ -679,3 +733,94 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
         # Go on to the next host
 
     # All hosts are reachable over SSH!
+
+
+def __copy_cloudinit_logs(ip_addresses: [str], cloudinit_src: pathlib.Path, cloudinit_dest: pathlib.Path,
+                          ctx: str = ""):
+
+    LOG.info(f"{ctx} Trying to copy cloud-init scripts from the failed instances at {ip_addresses}")
+
+    for ip in ip_addresses:
+        # Add "-<ip_address>" into the filename so it doesn't conflict
+        suffix = cloudinit_dest.suffix
+        dest_filename = f"{cloudinit_dest.name.removesuffix(suffix)}" \
+                        f"-{ip}{suffix}"
+
+        src = f"{ip}:{str(cloudinit_src)}"
+        dest = str(cloudinit_dest.parent / dest_filename)
+
+        LOG.debug(f"About to collect cloud-init logs from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, 30, ctx=ctx)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"{ctx}: Collecting of cloud-init logs from the machine at {ip} " \
+                  f"timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            LOG.error(msg)
+            # Keep trying other instances in this test
+
+        except errors.SshError as e:
+            LOG.error(e)
+            # Keep trying other instances in this test
+
+def record_started_instances(instance_ids: [str], instance_file: pathlib.Path):
+    """
+    Records the list of running instances to file.
+    :param instance_ids: list of the instances IDs that were started
+    :param instance_file: path of the file to write to
+    :return: None
+    """
+
+    if instance_ids is None or len(instance_ids) == 0:
+        LOG.info("No running instance IDs to record to file for later cleanup.")
+        return
+
+    with open(instance_file, 'w') as f:
+        for instance_id in instance_ids:
+            f.write(instance_id)
+            f.write('\n')
+
+    LOG.info(f"Recorded {len(instance_ids)} instance IDs to file for later cleanup: {str(instance_file)}")
+
+def terminate_instances_from_file(instance_file: pathlib.Path):
+    """
+    Terminates the instance IDs found in the file
+    :param instance_file: the path of the file containing the instance IDs
+    :return: None
+    """
+    if not instance_file.exists():
+        LOG.info(f"No running instance file exists. No instances to stop: {str(instance_file)}")
+        return
+
+    instance_ids: [str] = []
+
+    with open(instance_file, 'r') as f:
+        lines = f.readlines()
+
+        for line in lines:
+            line = line.strip()
+
+            if len(line) == 0:
+                continue
+
+            if line.startswith('#'):
+                continue
+
+            instance_ids.append(line)
+
+    if len(instance_ids) == 0:
+        LOG.info(f"There were no instance IDs to be terminated in the file: {str(instance_file)}")
+        return
+
+    LOG.info(f"Found {len(instance_ids)} instance(s) to be terminated in file: {str(instance_file)}")
+    try:
+        terminate_instances(instance_ids)
+
+    except (Exception,):
+        LOG.error(f"Error encountered while terminating the following instance IDs: {', '.join(instance_ids)}")
+        raise
+
+    LOG.info(f"{len(instance_ids)} instances terminated.")

@@ -256,9 +256,9 @@ c5ad.8xlarge</stringProp>
   L_TAX           DECIMAL(15,2) NOT NULL,
   L_RETURNFLAG    CHAR(1)       NOT NULL,
   L_LINESTATUS    CHAR(1)       NOT NULL,
-  L_SHIPDATE      TIMESTAMP     NOT NULL,
-  L_COMMITDATE    TIMESTAMP     NOT NULL,
-  L_RECEIPTDATE   TIMESTAMP     NOT NULL,
+  L_SHIPDATE      DATE          NOT NULL,
+  L_COMMITDATE    DATE          NOT NULL,
+  L_RECEIPTDATE   DATE          NOT NULL,
   L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
   L_SHIPMODE      CHAR(10)      NOT NULL,
   L_COMMENT       VARCHAR(44)   NOT NULL
@@ -280,7 +280,7 @@ c5ad.8xlarge</stringProp>
    O_CUSTKEY         INTEGER       NOT NULL,
    O_ORDERSTATUS     CHAR(1)       NOT NULL,
    O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-   O_ORDERDATE       TIMESTAMP     NOT NULL,
+   O_ORDERDATE       DATE          NOT NULL,
    O_ORDERPRIORITY   CHAR(15)      NOT NULL,
    O_CLERK           CHAR(15)      NOT NULL,
    O_SHIPPRIORITY    INTEGER       NOT NULL,
@@ -684,10 +684,10 @@ group by
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="prepareData" enabled="true"/>
           <hashTree>
-            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="downloadData" enabled="true">
+            <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="generateData" enabled="true">
               <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
               <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
-              <stringProp name="SystemSampler.command">./prepareTpchData.sh</stringProp>
+              <stringProp name="SystemSampler.command">/opt/rapidsse/dbgen/generateData.sh</stringProp>
               <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="Argument">
@@ -702,12 +702,42 @@ group by
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">--partitionsPerDisk</stringProp>
+                    <stringProp name="Argument.value">--dir</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">2</stringProp>
+                    <stringProp name="Argument.value">/mnt/disk1/data1</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">--dir</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">/mnt/disk1/data2</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">--dir</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">/mnt/disk2/data1</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">--dir</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">/mnt/disk2/data2</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -715,26 +745,20 @@ group by
               <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
-              <stringProp name="SystemSampler.directory">supportFiles</stringProp>
-              <stringProp name="TestPlan.comments">Downloads the TPC-H data from S3 and arranges it on each SSD drive of each node in the cluster, in preparation for a distributed load (dload).
-
-For machines with mounted SSD drives, data is written to /mnt/disk&lt;1..n&gt;/data/tpch/sf&lt;?&gt;.
-For machines with no SSD drives, data is written to &lt;installDir&gt;/data/tpch/sf&lt;?&gt;.
-
-The data for each table is in its own directory as a single file &lt;table&gt;.tbl.
-e.g. /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl
-
-If the --partitionsPerDisk option is given then there are multiple files per disk. If there are two disks and two partitionsPerDisk then this data will look like this:
-  /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl
-  /mnt/disk1/data2/tpch/sf1/lineitem/lineitem.tbl
-  /mnt/disk2/data1/tpch/sf1/lineitem/lineitem.tbl
-  /mnt/disk2/data2/tpch/sf1/lineitem/lineitem.tbl</stringProp>
-              <stringProp name="SystemSampler.stdout">prepareTpchData.out</stringProp>
-              <stringProp name="SystemSampler.stderr">prepareTpchData.err</stringProp>
+              <stringProp name="SystemSampler.directory"></stringProp>
+              <stringProp name="TestPlan.comments">Generates the data on each node in the cluster.
+Writes data to the output paths specified. 
+e.g.
+  /mnt/disk1/data1/lineitem.tbl
+  /mnt/disk1/data1/customer.tbl
+  ...
+  /mnt/disk1/data2/lineitem.tbl</stringProp>
+              <stringProp name="SystemSampler.stdout">generateData.out</stringProp>
+              <stringProp name="SystemSampler.stderr">generateData.err</stringProp>
             </SystemSampler>
             <hashTree>
               <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-                <boolProp name="ResultCollector.error_logging">true</boolProp>
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
                 <objProp>
                   <name>saveConfig</name>
                   <value class="SampleSaveConfiguration">
@@ -763,7 +787,7 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
                   </value>
                 </objProp>
                 <stringProp name="TestPlan.comments">We have a listener here purely for error conditions so that the performance test script can detect the error condition</stringProp>
-                <stringProp name="filename">prepareData.csv</stringProp>
+                <stringProp name="filename">generateData.csv</stringProp>
               </ResultCollector>
               <hashTree/>
             </hashTree>
@@ -776,10 +800,10 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadLineitem" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload lineitem paths
-  &quot;/mnt/disk1/data1/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data1/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data2/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data1/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data2/lineitem.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -792,10 +816,10 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
               <stringProp name="TestPlan.comments">For a multi-node setup with 2 local SSDs and 2 data partitions per disk the command would look like this:
 
 dload lineitem paths
-  &quot;/mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/lineitem.tbl&quot;
+  &quot;/mnt/disk1/lineitem.tbl&quot;
+  &quot;/mnt/disk2/lineitem.tbl&quot;
+  &quot;/mnt/disk2/lineitem.tbl&quot;
 ;</stringProp>
             </JDBCSampler>
             <hashTree/>
@@ -828,10 +852,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadOrders" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload orders paths
-  &quot;/mnt/disk1/data1/tpch/sf${SF}/orders/orders.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf${SF}/orders/orders.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf${SF}/orders/orders.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk1/data1/orders.tbl&quot;
+  &quot;/mnt/disk1/data2/orders.tbl&quot;
+  &quot;/mnt/disk2/data1/orders.tbl&quot;
+  &quot;/mnt/disk2/data2/orders.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -872,10 +896,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPartsupp" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload partsupp paths
-  &quot;/mnt/disk1/data1/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk1/data1/partsupp.tbl&quot;
+  &quot;/mnt/disk1/data2/partsupp.tbl&quot;
+  &quot;/mnt/disk2/data1/partsupp.tbl&quot;
+  &quot;/mnt/disk2/data2/partsupp.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -916,10 +940,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPart" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload part paths
-  &quot;/mnt/disk1/data1/tpch/sf${SF}/part/part.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf${SF}/part/part.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf${SF}/part/part.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk1/data1/part.tbl&quot;
+  &quot;/mnt/disk1/data2/part.tbl&quot;
+  &quot;/mnt/disk2/data1/part.tbl&quot;
+  &quot;/mnt/disk2/data2/part.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -947,10 +971,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadCustomer" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload customer paths
-  &quot;/mnt/disk1/data1/tpch/sf${SF}/customer/customer.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf${SF}/customer/customer.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf${SF}/customer/customer.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk1/data1/customer.tbl&quot;
+  &quot;/mnt/disk1/data2/customer.tbl&quot;
+  &quot;/mnt/disk2/data1/customer.tbl&quot;
+  &quot;/mnt/disk2/data2/customer.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -991,10 +1015,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadSupplier" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload supplier paths
-  &quot;/mnt/disk1/data1/tpch/sf${SF}/supplier/supplier.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/sf${SF}/supplier/supplier.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/sf${SF}/supplier/supplier.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/sf${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk1/data1/supplier.tbl&quot;
+  &quot;/mnt/disk1/data2/supplier.tbl&quot;
+  &quot;/mnt/disk2/data1/supplier.tbl&quot;
+  &quot;/mnt/disk2/data2/supplier.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1034,7 +1058,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">load nation &quot;/mnt/disk1/data1/tpch/sf${SF}/nation/nation.tbl&quot; ;</stringProp>
+              <stringProp name="query">load nation &quot;/mnt/disk1/data1/nation.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1061,7 +1085,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">load region &quot;/mnt/disk1/data1/tpch/sf${SF}/region/region.tbl&quot; ;</stringProp>
+              <stringProp name="query">load region &quot;/mnt/disk1/data1/region.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>

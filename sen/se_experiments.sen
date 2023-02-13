@@ -112,7 +112,7 @@
 
   // - - - - - - -
 
-  find: _cmdTags arrange::wordsOfCatg to pArrange
+  WC_CMDTAGS arrange::wordsOfCatg to pArrange
   pArrange arrange.print
   pArrange arrange.delete
 ;

@@ -8,7 +8,10 @@
 #include "Resources.hpp" //?
 
 #include <sys/stat.h>
-#include <sys/types.h>
+#include <sys/mount.h>
+#ifdef WITH_LINUX
+#include <sys/vfs.h>
+#endif
 
 #include "MY.hpp"
 
@@ -119,6 +122,28 @@ bool Dir::bChangeCurrent(Stz* szDirPath)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the free space of given dir in bytes                                   */
+/*----------------------------------------------------------------------------*/
+i8 Dir::iFreeSpace(Stz *szDirPath)
+{
+  _static_
+
+  struct statfs vfs;
+
+  char* aPath = szDirPath->azChar();
+
+  if (statfs(aPath, & vfs) != 0) {
+    vTrace("Dir::uFreeSpace: statfs() error; errno=%d"_Stz,errno);
+    return -1;
+  }
+
+  long long free_space = vfs.f_bfree;
+  free_space *= vfs.f_bsize; // vfs.f_frsize;
+
+  return free_space;
+
+}
 /*----------------------------------------------------------------------------*/
 /* get current working directory                                              */
 /*----------------------------------------------------------------------------*/

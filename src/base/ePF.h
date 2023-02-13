@@ -30,6 +30,7 @@ enum ePF // prompt function
   /*    */ PF_DELTA,
   /*    */ PF_DELTARESET,
   /*    */ PF_DESCRIBE,
+  /*    */ PF_DICTREE,
   /*    */ PF_DSV,
   /*    */ PF_DUMPTOKENS,
 
@@ -152,7 +153,7 @@ enum ePF // prompt function
   /*    */ PF_TOOLS,
   /*    */ PF_TPCH,
   /*    */ PF_TRACKMEMORY,
-  
+
   /*    */ PF_UPTIME,
   /*    */ PF_UT_SKIPLIST,
 
@@ -194,6 +195,7 @@ static Stz* aPF[]
   /*    */ "PF_DELTA"_Stz,
   /*    */ "PF_DELTARESET"_Stz,
   /*    */ "PF_DESCRIBE"_Stz,
+  /*    */ "PF_DICTTREE"_Stz,
   /*    */ "PF_DSV"_Stz,
   /*    */ "PF_DUMPTOKENS"_Stz,
 
@@ -316,7 +318,7 @@ static Stz* aPF[]
   /*    */ "PF_TOOLS"_Stz,
   /*    */ "PF_TPCH"_Stz,
   /*    */ "PF_TRACKMEMORY"_Stz,
-  
+
   /*    */ "PF_UPTIME"_Stz,
   /*    */ "PF_UT_SKIPLIST"_Stz,
 

@@ -13,8 +13,8 @@
   define table __compileErrors (
     nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
-    line           INTEGER NOT NULL ,
-    column         INTEGER NOT NULL ,
+    lineNum        INTEGER NOT NULL ,
+    columnNum      INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "

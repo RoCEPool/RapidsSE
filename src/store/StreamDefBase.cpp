@@ -7,6 +7,7 @@
 #include "StreamDefBase.hpp"
 
 #include "eCX.h"
+#include "ReservedWords.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -829,6 +830,12 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   eEC eError = EC_NONE;
   
   Token* pTkn = pTknVec->pCurrToken(); dPT();
+
+  // Check if the column name is a reserved word
+  if (ReservedWords::bIsAReservedWord(pTkn->szChars())) {
+    return EC_RESERVED_WORD;
+  }
+
   // -- -- -- --
   
   // create column
@@ -1456,6 +1463,11 @@ eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
       m_sStreamDefNm.bContains("^"_Stz) ||
       m_sStreamDefNm.bContains("~"_Stz)) {
     return EC_SYNTAX_ERROR;
+  }
+
+  // Check if the table name is a reserved word
+  if (ReservedWords::bIsAReservedWord(m_sStreamDefNm)) {
+    return EC_RESERVED_WORD;
   }
 
   return EC_NONE;

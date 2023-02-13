@@ -100,9 +100,11 @@ AttachMap::AttachMap(bool bNoFree)
   
   Step::vAddStep("\\word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("\\word"_Stz));
+  AM::pWordRoot()->vCategoryEnum(WC_WORD);
 
   Step::vAddStep("rootConstant"_Stz,nullptr);
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
+  AM::pConstantRoot()->vCategoryEnum(WC_ROOTCONSTANT);
   
 
   _checkInitialised_(CN_ATTACHMAP);

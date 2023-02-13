@@ -530,7 +530,9 @@ void Step::vJobEnableAllocate(void)
 {
   ENTRY();
 
-  m_pJob->vSetAllocate(true);
+  Job* pJob = pOuterJobOfTask();
+
+  pJob->vSetAllocate(true);
 
   EXIT();
 }
@@ -542,7 +544,9 @@ void Step::vJobEnableObjectTracker(void)
 {
   ENTRY();
 
-  m_pJob->vEnableObjectTracker();
+  Job* pJob = pOuterJobOfTask();
+
+  pJob->vEnableObjectTracker();
 
   EXIT();
 }
@@ -1314,7 +1318,8 @@ void Step::vJobTscBeginning(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscBeginning(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscBeginning(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1329,7 +1334,8 @@ void Step::vJobTscBegun(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscBegun(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscBegun(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1344,7 +1350,8 @@ void Step::vJobTscExecuting(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscExecuting(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscExecuting(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1359,7 +1366,8 @@ void Step::vJobTscExecuted(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscExecuted(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscExecuted(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1374,7 +1382,8 @@ void Step::vJobTscEnding(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscEnding(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscEnding(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1389,7 +1398,8 @@ void Step::vJobTscEnded(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscEnded(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscEnded(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1404,7 +1414,8 @@ void Step::vJobTscCanceling(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscCanceling(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscCanceling(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1419,7 +1430,8 @@ void Step::vJobTscCanceled(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscCanceled(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscCanceled(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1434,7 +1446,8 @@ void Step::vJobTscParticipant(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
 
-  pJob->vTscParticipant(Hardware::iReadTsc());
+  u4 uProcId;
+  pJob->vTscParticipant(Hardware::iReadTsc(&uProcId));
   
   EXIT();
 }
@@ -1458,7 +1471,7 @@ void Step::vJobUpdateParent(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of this job
-  //pJob->vResponseTimerUpdate();
+  pJob->vResponseTimerUpdate();
 
   eErrorCode = AM::JLIST::eUpdateParent(pJob);
 

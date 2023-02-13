@@ -105,7 +105,9 @@ pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 /*----------------------------------------------------------------------------*/
 void Engine::vMainEntry(void)
 {
-  vHeartInit();
+  if (!gxCmdLineArgs.bUserPrompt()) {
+    vHeartInit();
+  }
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
     vTrace("Delayed %lld seconds\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_iDelay);
@@ -483,7 +485,7 @@ void Engine::vChangeDirectory(void)
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
       fprintf(stderr,"RapidsSE Unrecoverable Error\n");
       fprintf(stderr,"  Unable to change to command dir\n");
-      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.szStz());
+      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.azChar());
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
       vThreadCallStackDump();
@@ -875,6 +877,101 @@ void Engine::vKillPrev(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* connect the table words and dic to the root dic from persistent heaps      */
+/* if we are in reload mode                                                   */
+/*----------------------------------------------------------------------------*/
+void Engine::vLoadTables(void)
+{
+  Timer oTimer;
+  oTimer.vStart();
+
+  Dic* pRootDic = AM::DIC::pRoot();
+
+  Word *pSearchWord = new(nullptr) Word("tenants"_Stz);
+  Word* pWord = pRootDic->pFindWord(pSearchWord, "tenants"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  Dic* pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("boray"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "boray"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("catalogs"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "catalogs"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("rapidsse"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "rapidsse"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("schemas"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "schemas"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("public"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "public"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("tables"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "tables"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+
+  AM::pHeaps()->Persistent.m_pTiny->vGrabWriteLock();
+  HeapBuffer* pHeapBuffer = AM::pHeaps()->Persistent.m_pTiny->pFirstBuffer();
+  i8 nBytes = AM::pHeaps()->Persistent.m_pTiny->nObjectSize();
+
+  while (pHeapBuffer) {
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,nBytes))
+    {
+      eCN eClass = aChunk->eGetClassNo();
+
+      if(CN_WORD == eClass)
+      {
+        Word* pWordTable = _pWord(aChunk);
+
+        // Check if this word points to a dictionary.
+        // If it does, we need to update its compare function pointer.
+        if(pWordTable->pObject() && pWordTable->pObject()->eGetClassNo() == CN_DIC)
+        {
+          Dic* pTmpDic = _pDic(pWordTable->pObject());
+          Dic::vDicCompareFp(pTmpDic);
+        }
+
+        // If this word's dictionary is part of the tables dictionary
+        // It needs to be added to the root dictionary
+        // Since it already has a SkipNode allocated, we can reuse it
+        if(pWordTable->bTableBit())
+        {
+          pDic->vAddSkipNode(pWordTable->pSkipNode());
+          pWordTable->vDic(pDic);
+        }
+      }
+    }
+    pHeapBuffer = pHeapBuffer->pNextBuffer();
+  }
+
+  AM::pHeaps()->Persistent.m_pTiny->vDropWriteLock();
+
+  oTimer.vUpdate();
+  vTrace("Loading Tables duration: %lldms\n"_Stz,oTimer.iMilliseconds());
+}
 /*----------------------------------------------------------------------------*/
 /* set low-memory receive discards                                            */
 /*----------------------------------------------------------------------------*/
@@ -1450,7 +1547,7 @@ void Engine::vPrintWelcome(void)
   vGetCopyright(sCopyright);
 
   if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
-    vTrace("%s\n"_Stz,sWelcome.szStz());
+    vTrace("\n%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
   }
 }
@@ -1740,6 +1837,11 @@ void Engine::vStartSystem(void)
 
   while (! AM::SYSTEM::bReady())
     sleep(1);
+
+  // If we are reloading from disk, walk the persistent tiny heap
+  // and add the tables to the root dic
+  if(gxCmdLineArgs.m_xSysArgs.m_bReload)
+    vLoadTables();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("\n++\n++ System Started\n++\n"_Stz);

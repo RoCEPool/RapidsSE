@@ -174,6 +174,10 @@ namespace Parser
     static i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
     static i8    iCleanInt(antlr4::Token* pToken);
     static i8    iCleanInt(std::string& sStr);
+    static u8    uCleanInt(sqlParser::SignedIntegerLiteralContext* pCtx);
+    static u8    uCleanInt(sqlParser::IntegerLiteralContext* pCtx);
+    static u8    uCleanInt(antlr4::Token* pToken);
+    static u8    uCleanInt(std::string& sStr);
     static d8    dCleanFloat(sqlParser::SignedFloatLiteralContext* pCtx);
     static d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
     static Bcd   xCleanDecimal(sqlParser::DecimalLiteralContext* pCtx);

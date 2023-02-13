@@ -170,6 +170,10 @@ int main(int argc, char* argv[])
   FltLib::vInitGlobals();
 
   Engine::vEnvFlags();
+
+  // Set the default clock type for Hardware::iReadClock().
+  // This needs to be done after IntLib::vInitGlobals() above.
+  Hardware::vChooseClockType();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -77,6 +77,9 @@ void CmdLineArgs::vInit(void)
 #endif
   
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
+  for(i8 i=0; i<C_MAX_PTNSPERNODE; i++)
+    m_xSysArgs.m_sDiskRootDir[i] = ""_Stz;
+  m_xSysArgs.m_nDiskPaths    = 0;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
   m_xSysArgs.m_sLogFile      = ""_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
@@ -86,6 +89,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_sRegionName   = ""_Stz;
   m_xSysArgs.m_sRegionPrefix = "/SE"_Stz;
   m_xSysArgs.m_iRegionSize   = (4 * 1_GB);
+  m_xSysArgs.m_sReloadDir    = "";
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
@@ -240,6 +244,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   i8 i_BootNode = 0;
   i8 i_HeartbeatNode = 0;
+  i8 i_DiskPath = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
@@ -350,6 +355,28 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--disk"_Stz)) {
+      /* Note: This is the path to a disk root directory. Under this directory,
+       * we search for or add the dir/saveFile that is used during unload/reload.
+       */
+
+      m_xSysArgs.m_sDiskRootDir[i_DiskPath] = (Stz*)argv[++i_Arg];
+
+      if( ! Dir::bExists(m_xSysArgs.m_sDiskRootDir[i_DiskPath]))
+      {
+        vTrace("Disk directory %s does not exist!!\n"_Stz,
+               m_xSysArgs.m_sDiskRootDir[i_DiskPath].szStz());
+        return false;
+      }
+      if( ! StrLib::bEnds(m_xSysArgs.m_sDiskRootDir[i_DiskPath].azChar(), '/'))
+      {
+        m_xSysArgs.m_sDiskRootDir[i_DiskPath].vAppend('/');
+      }
+      i_DiskPath++;
       continue;
     }
 
@@ -761,7 +788,17 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--reload"_Stz)) {
+      /* Note:  We take the name of the reload directory path, relative to the
+       * disk paths given in --disk argument. This assumes that each disk
+       * path given has this directory, which contains the files for reload.
+       */
       m_xSysArgs.m_bReload = true;
+      m_xSysArgs.m_sReloadDir = (Stz*)argv[++i_Arg];
+
+      if( ! StrLib::bEnds(m_xSysArgs.m_sReloadDir.azChar(), '/'))
+      {
+        m_xSysArgs.m_sReloadDir.vAppend('/');
+      }
       continue;
     }
 
@@ -1042,6 +1079,19 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     vPrintErrorMarker(argv, i_Arg);
     vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Save the number of disk paths given (used for unload/reload).
+  m_xSysArgs.m_nDiskPaths = i_DiskPath;
+  if(m_xSysArgs.m_bReload)
+  {
+    if(m_xSysArgs.m_nDiskPaths == 0)
+    {
+      vTrace("Incorrect argument: --reload was given without the --disk option\n"_Stz);
+      vTrace("Please provide disk root paths\n"_Stz);
+      return false;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1407,72 +1457,73 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
   }
 
-
-  vTrace("\n"_Stz);
-  vTrace("Args:\n"_Stz);
-  
-#ifdef WITH_DEBUG_VERSION
-  if (m_xSysArgs.m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);
-  if (m_xSysArgs.m_bCommand)     vTrace("  --command\n"_Stz);
-  if (m_xSysArgs.m_bHelp)        vTrace("  --help\n"_Stz);
-  if (m_xSysArgs.m_bProgress)    vTrace("  --progress\n"_Stz);
-  if (m_xSysArgs.m_bPrompt)      vTrace("  --seprompt\n"_Stz);
-  if (m_xSysArgs.m_bSethScript)  vTrace("  --script\n"_Stz);
-  if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
-  if (m_xSysArgs.m_bStatus)      vTrace("  --status\n"_Stz);
-  if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
-  if (m_xSysArgs.m_bVerbose)     vTrace("  --verbose\n"_Stz);
-#endif
-
-  vTrace("  --name %s\n"_Stz,m_xSysArgs.m_sNodeName.azChar());
-  vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
-  
-#ifdef WITH_DEBUG_VERSION
-  vTrace("  --address %p\n"_Stz,m_xSysArgs.m_aRegionAddr);
-#endif
-  
-  s32 sSizeMag;
-  MagLib::vByteMag(m_xSysArgs.m_iRegionSize,sSizeMag);
-  vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
-
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
-    vTrace("  --node %s %s %lld\n"_Stz,
-      m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
-      m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
-      m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo);
-  }
-
-  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {
-    vTrace("  --heartbeat %s %lld\n"_Stz,
-           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
-           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
-  }
-
-  vTrace("  --cid %lld\n"_Stz,m_xSysArgs.m_iClusterID);
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerNode);
-  vTrace("  --threads %lld\n"_Stz,m_xSysArgs.m_nThreads);
-
-  if (m_xSysArgs.m_nDummyThreads) {
-    vTrace("  --dummyThreads %lld\n"_Stz,m_xSysArgs.m_nDummyThreads);
-    vTrace("  --dummySleep %lld\n"_Stz,m_xSysArgs.m_nDummySleep);
-    vTrace("  --dummyLoop %lld\n"_Stz,m_xSysArgs.m_nDummyLoop);
-    vTrace("  --periodicSleep %lld\n"_Stz,m_xSysArgs.m_nPeriodicSleep);
-  }
-  
-  if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
-  if (m_xSysArgs.m_bKillPrev) vTrace("  --killPrev\n"_Stz);
-  if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
-  if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
+  if (!gxCmdLineArgs.bUserPrompt()) {
+    vTrace("\n"_Stz);
+    vTrace("Args:\n"_Stz);
 
 #ifdef WITH_DEBUG_VERSION
-  vTrace("  --commands %s\n"_Stz,m_xSysArgs.m_sCommandsDir.azChar());
-  vTrace("  --sen %s\n"_Stz,m_xSysArgs.m_sSenDir.azChar());
-  if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
+    if (m_xSysArgs.m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);
+    if (m_xSysArgs.m_bCommand)     vTrace("  --command\n"_Stz);
+    if (m_xSysArgs.m_bHelp)        vTrace("  --help\n"_Stz);
+    if (m_xSysArgs.m_bProgress)    vTrace("  --progress\n"_Stz);
+    if (m_xSysArgs.m_bPrompt)      vTrace("  --seprompt\n"_Stz);
+    if (m_xSysArgs.m_bSethScript)  vTrace("  --script\n"_Stz);
+    if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
+    if (m_xSysArgs.m_bStatus)      vTrace("  --status\n"_Stz);
+    if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
+    if (m_xSysArgs.m_bVerbose)     vTrace("  --verbose\n"_Stz);
 #endif
-  
-  if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
-  
-  BASE::vTraceWith();
+
+    vTrace("  --name %s\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
+    vTrace("  --region %s\n"_Stz, m_xSysArgs.m_sRegionName.azChar());
+
+#ifdef WITH_DEBUG_VERSION
+    vTrace("  --address %p\n"_Stz,m_xSysArgs.m_aRegionAddr);
+#endif
+
+    s32 sSizeMag;
+    MagLib::vByteMag(m_xSysArgs.m_iRegionSize, sSizeMag);
+    vTrace("  --size %s\n"_Stz, sSizeMag.azChar());
+
+    for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
+      vTrace("  --node %s %s %lld\n"_Stz,
+             m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
+             m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
+             m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo);
+    }
+
+    for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {
+      vTrace("  --heartbeat %s %lld\n"_Stz,
+             m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
+             m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
+    }
+
+    vTrace("  --cid %lld\n"_Stz, m_xSysArgs.m_iClusterID);
+    vTrace("  --partitionsPerNode %lld\n"_Stz, m_xSysArgs.m_nPtnsPerNode);
+    vTrace("  --threads %lld\n"_Stz, m_xSysArgs.m_nThreads);
+
+    if (m_xSysArgs.m_nDummyThreads) {
+      vTrace("  --dummyThreads %lld\n"_Stz, m_xSysArgs.m_nDummyThreads);
+      vTrace("  --dummySleep %lld\n"_Stz, m_xSysArgs.m_nDummySleep);
+      vTrace("  --dummyLoop %lld\n"_Stz, m_xSysArgs.m_nDummyLoop);
+      vTrace("  --periodicSleep %lld\n"_Stz, m_xSysArgs.m_nPeriodicSleep);
+    }
+
+    if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
+    if (m_xSysArgs.m_bKillPrev) vTrace("  --killPrev\n"_Stz);
+    if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
+    if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
+
+#ifdef WITH_DEBUG_VERSION
+    vTrace("  --commands %s\n"_Stz,m_xSysArgs.m_sCommandsDir.azChar());
+    vTrace("  --sen %s\n"_Stz,m_xSysArgs.m_sSenDir.azChar());
+    if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
+#endif
+
+    if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
+
+    BASE::vTraceWith();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

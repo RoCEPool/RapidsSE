@@ -395,8 +395,9 @@ void SeDeputy::vReportTime(void)
   if (! m_pRootJob->bHasTag(C_TAG_TIME))
     return;
 
-  vTrace("time %lldms\n\n"_Stz,m_pRootJob->iResponseTimerMsec());
-  
+  //vTrace("time %lldms\n\n"_Stz,m_pRootJob->iResponseTimerMsec());
+  vTrace("time %lldms\n\n"_Stz,(m_pRootJob->iGetSysTimerEnd() - m_pRootJob->iGetSysTimerStart()) / 1000000);
+
   Timer oTimer;
 
   oTimer.vSet(m_pRootJob->iResponseTimerStart(),

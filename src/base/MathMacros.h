@@ -644,6 +644,20 @@
     }                                                                      \
   }
 
+#define _MOD_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _MOD_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
 
 #define _MUL_INTINT(eErrorCode)                                            \
   {                                                                        \
@@ -793,7 +807,7 @@
     if (eErrorCode != EC_NONE) {                                           \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    *paW++ = iArg2;                                                      \
+    *paW++ = iArg2;                                                        \
   }
 
 /*============================================================================*/

@@ -15,12 +15,11 @@ LOG = logging.getLogger(__name__)
 
 C_TEST_NAME = "Build Release"
 C_INSTANCE_NAME_PREFIX = "ReleaseBuild"
-C_INSTANCE_START_TIMEOUT = 600.0
+C_INSTANCE_START_TIMEOUT = 900.0
 C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_EC2_BOOT_TIMEOUT_SEC = 300
 C_SE_BUILD_TIMEOUT_SEC = 1200
 
 OP_CTX = f"{C_TEST_NAME}: "
