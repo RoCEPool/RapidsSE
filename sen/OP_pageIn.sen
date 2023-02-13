@@ -23,7 +23,7 @@
   1 InfoSet[].colVal@ locals| oBufferId  |
 
   // unload to disk
-  pTaskPtr oBufferId pageIn::testPrint
+  pTaskPtr oBufferId pageIn::popRequest
 
   InfoSet[].delete
   nullptr to InfoSetRow[]

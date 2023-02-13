@@ -41035,7 +41035,7 @@ void Task::vAddMunged(Task* )
     "  1 InfoSet[].colVal@ locals| oBufferId  |\n"
     "\n"
     "  // unload to disk\n"
-    "  pTaskPtr oBufferId pageIn::testPrint\n"
+    "  pTaskPtr oBufferId pageIn::popRequest\n"
     "\n"
     "  InfoSet[].delete\n"
     "  nullptr to InfoSetRow[]\n"

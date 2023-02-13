@@ -102,6 +102,9 @@ void Step::vPipeinBideNext(void)
     }
     else {
       if(bPageIn) {
+        // Bide while Operand is brought into memory
+        // Re-run this step after
+        m_aInxPtr--;
         vScheduleBidePageIn();
       }
       else

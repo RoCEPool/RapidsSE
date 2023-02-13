@@ -1683,6 +1683,8 @@ void Task::vScheduleBidePageIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
+  vTrace("Schedule Bide Page In\n"_Stz);
+
   RASSERT(bIsLocked());
   m_eTransition = TR_BIDE_FOR_PAGEIN;
 }

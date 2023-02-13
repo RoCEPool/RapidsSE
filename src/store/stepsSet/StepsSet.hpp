@@ -1368,7 +1368,7 @@ void vDdlLockAssertNone(void);
 
   // page in
   void vPageInPoolBuffer(void);
-  void vPageInTestPrint(void);
+  void vPageInPopRequest(void);
 
   // page out
   void vPageOutPoolBuffer(void);
