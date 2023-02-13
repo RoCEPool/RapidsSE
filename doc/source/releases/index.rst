@@ -47,8 +47,8 @@ RapidsSE v1.0.0 was released on 28th September 2022.
 
 .. rubric:: Purpose:
 
-This was the first major release of RapidsSE and the associated SE Prompt.
-The aim of this release was to get initial feedback and testing of the core
+This is the first major release of RapidsSE and the associated SE Prompt.
+The aim of this release is to get initial feedback and testing of the core
 RapidsSE features.
 
 
