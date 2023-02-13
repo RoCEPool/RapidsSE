@@ -10,7 +10,7 @@
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
 
-Card* gapCard[C_10K];
+//Card* gapCard[C_10K];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -116,7 +116,7 @@ void Card::vInit(eCK eCard)
   m_pLastPrintParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;
-  gapCard[md__SeqNo] = this;
+  //gapCard[md__SeqNo] = this;
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
@@ -150,7 +150,7 @@ Card::~Card(void) noexcept(false)
 //    vDebugPoint();
 //  }
 
-  gapCard[md__SeqNo] = nullptr;
+  //gapCard[md__SeqNo] = nullptr;
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -185,14 +185,14 @@ void Card::vCardLeaks(void)
 {
   _static_
 
-  for (i8 i_Card = 0; i_Card < C_10K; i_Card++) {
-    if (gapCard[i_Card]) {
-      Card *pLeaked = gapCard[i_Card];
-      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->sz());
-      vDebugPoint();
-    }
-  }
+//  for (i8 i_Card = 0; i_Card < C_10K; i_Card++) {
+//    if (gapCard[i_Card]) {
+//      Card *pLeaked = gapCard[i_Card];
+//      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->sz());
+//      vDebugPoint();
+//    }
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
