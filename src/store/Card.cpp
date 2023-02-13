@@ -1622,6 +1622,10 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
+    case CK_KEY:
+      _pCard_Key(this)->vPrint(pRibbon, iDepth);
+      break;
+
     case CK_PROJECTION:
       _pCard_Projection(this)->vPrint(pRibbon, iDepth);
       break;

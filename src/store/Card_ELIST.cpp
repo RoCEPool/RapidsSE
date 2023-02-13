@@ -235,7 +235,7 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
       pStzList->vAppend(xCI_expr.G.p_tblColOdn->szValue());
     }
     if (xCI_expr.G.p_type) {
-      pStzList->vAppend(xCI_expr.G.p_type->szValue());
+      pStzList->vAppend(xCI_expr.G.p_type->szTypeShort()); //szValue());
     }
     pRibbon->vSprintList(pStzList, 20);
     pStzList->vRemoveAll();
