@@ -105,38 +105,53 @@ void Card_Projection::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR)) {
-    StzList* pStzList = new StzList;
+    StzList* pStzList_expr = new StzList;
 
-    pStzList->vAppend(xCI.G.p_expr->szValue());
-
-    bool bPrintAs = true;
-    bool bPrintColNm = true;
+    pStzList_expr->vAppend(xCI.G.p_expr->szValue());
 
     CardIter xCI_expr(xCI.G.p_expr);
+    xCI_expr.G.p_as        = nullptr;
+    xCI_expr.G.p_boolCalc  = nullptr;
+    xCI_expr.G.p_colNm     = nullptr;
+    xCI_expr.G.p_rpnCalc   = nullptr;
+    xCI_expr.G.p_tblColOdn = nullptr;
+    xCI_expr.G.p_type      = nullptr;
+
     while (xCI_expr.G_bEachMain()) {
 
-      if (xCI_expr.G.p_MainCard->bIsCard(CK_TYPE)) {
-        pStzList->vAppend(xCI_expr.G.p_type->szTypeShort());
-      }
-      else
-      if (xCI_expr.G.p_MainCard->bIsCard(CK_AS)) {
-        if (bPrintAs)
-          pStzList->vAppend(xCI_expr.G.p_as->szValue());
-        bPrintColNm = false;
-      }
-      else
-      if (xCI_expr.G.p_MainCard->bIsCard(CK_COLNM)) {
-        if (bPrintColNm)
-        pStzList->vAppend(xCI_expr.G.p_colNm->szValue());
-        bPrintAs = false;
-      }
-      else {
-        pStzList->vAppend(xCI_expr.G.p_MainCard->szValue());
+      if ( ! (
+          xCI_expr.G.p_MainCard->bIsCard(CK_AS)        ||
+          xCI_expr.G.p_MainCard->bIsCard(CK_BOOLCALC)  ||
+          xCI_expr.G.p_MainCard->bIsCard(CK_COLNM)     ||
+          xCI_expr.G.p_MainCard->bIsCard(CK_RPNCALC)   ||
+          xCI_expr.G.p_MainCard->bIsCard(CK_TBLCOLODN) ||
+          xCI_expr.G.p_MainCard->bIsCard(CK_TYPE))) {
+        vTrace("Unexpected %s"_Stz,xCI_expr.G.p_MainCard->szCardNm());
+        NEVER_REACH
       }
     }
 
-    pRibbon->vSprintList(pStzList, 20);
-    delete pStzList;
+    if (xCI_expr.G.p_as) {
+      pStzList_expr->vAppend(xCI_expr.G.p_as->szValue());
+    }
+    if (xCI_expr.G.p_colNm) {
+      if (! xCI_expr.G.p_as)
+        pStzList_expr->vAppend(xCI_expr.G.p_colNm->szValue());
+    }
+    pRibbon->vSprintList(pStzList_expr, 20);
+    pStzList_expr->vRemoveAll();
+
+    pStzList_expr->vAppend(" "_Stz);
+    if (xCI_expr.G.p_tblColOdn) {
+      pStzList_expr->vAppend(xCI_expr.G.p_tblColOdn->szValue());
+    }
+    if (xCI_expr.G.p_type) {
+      pStzList_expr->vAppend(xCI_expr.G.p_type->szValue());
+    }
+    pRibbon->vSprintList(pStzList_expr, 20);
+    pStzList_expr->vRemoveAll();
+
+    delete pStzList_expr;
   }
 
 
