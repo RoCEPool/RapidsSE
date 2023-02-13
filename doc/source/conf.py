@@ -8,7 +8,7 @@ from datetime import date
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'RapidsSE'
-copyright = '2022, Boray Data Technology Limited'
+copyright = '2023, Boray Data Technology Limited'
 author = 'Boray Data Technology Limited'
 version = '1.1'
 release = '1.1.0-dev0'
@@ -33,6 +33,7 @@ html_static_path = ['_static',
                     '_static/custom.css']
 html_extra_path = []
 html_copy_source = False
+html_favicon = '_static/favicon.ico'
 
 html_theme_options = {
   'show_powered_by' : 'False',
