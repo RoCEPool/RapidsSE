@@ -476,8 +476,6 @@ namespace STORE
 
     Card_SubSet* pYankSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
 
-    void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
-
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_Agg*           pSub_agg(void);

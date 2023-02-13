@@ -368,6 +368,25 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vPrint(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+  sName = aCK_short[m_eCard];
+  if (0 == iDepth)
+    sName.vToUpper();
+
+  if (bHasValue())
+    sName.vCatSprint(" %c"_Stz, cValue());
+
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vProjectionAnalysis(CardIter* pCI)

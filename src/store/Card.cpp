@@ -1638,7 +1638,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
   switch (m_eCard) {
 
     case CK_TABLE:
-      _pCard_Table(this)->vTable_PrintTable(_pCard_Table(this),pRibbon, iDepth);
+      _pCard_Table(this)->vPrint(_pCard_Table(this),pRibbon, iDepth);
       break;
 
     default:
@@ -2542,26 +2542,6 @@ Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
 
   return p_subSet;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s32 sName;
-  sName = aCK_short[m_eCard];
-  if (0 == iDepth)
-    sName.vToUpper();
-
-  if (bHasValue())
-    sName.vCatSprint(" %c"_Stz, cValue());
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
 
 
 /*----------------------------------------------------------------------------*/
