@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __flat1_s1 -- flattening with 1 level of subquery                          */
+/* __flatL1_s1 -- flattening with 1 level of subquery                         */
 /*============================================================================*/
 
 
@@ -32,6 +32,14 @@ load C "../DATA/Select/select.csv";
 select * from dummy;
 
 trackMemory;
+
+explain stage aggregateSplit
+select count(*)
+  from (
+   select * from A,B
+   where A.A_COL0 = B.B_COL0) as T1
+ ;
+
 
 /optimise
 /glean_interactive
