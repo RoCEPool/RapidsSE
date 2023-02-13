@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _r_FOLD_30_W_A_NC_I -- sub-query flattening test : refer Q18               */
+/* _r_FOLD_52_W_L_NC_I -- sub-query flattening test : refer Q20_1_1           */
 /*============================================================================*/
 
-// --initial _r_FOLD_30_W_A_NC_I
+// --initial _r_FOLD_52_W_L_NC_I
 
 trackMemory;
 
@@ -10,19 +10,18 @@ _r_init
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimise
-/glean_cue_from = "vSeries_36_Bound_Analysis"
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_30_W_A_NC_I"
-select count(*)
-  from orders, lineitem
- where O_ORDERKEY = L_ORDERKEY
-   and O_ORDERKEY in (select L_ORDERKEY
-                        from lineitem
-                       group by L_ORDERKEY
-                      having sum(l_quantity) > 100)
+/pipelineName = "_r_FOLD_52_W_L_NC_I"
+select ps_suppkey
+  from PartSupp
+ where
+       ps_partkey in ( /* Q20_1_1 */
+                       select p_partkey
+                         from Part
+                        where p_name like 'forest%'
+                     )
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

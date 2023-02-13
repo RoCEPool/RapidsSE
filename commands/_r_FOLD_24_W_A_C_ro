@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _r_FOLD_63_W_L_NC_I -- sub-query flattening test : refer Q20_1_1           */
+/* _r_FOLD_24_W_A_C_ro -- sub-query flattening test : refer Q2,17             */
 /*============================================================================*/
 
-// --initial _r_FOLD_63_W_L_NC_I
+// --initial _r_FOLD_24_W_A_C_ro
 
 trackMemory;
 
@@ -13,15 +13,14 @@ _r_init
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_63_W_L_NC_I"
-select ps_suppkey
-  from PartSupp
- where
-       ps_partkey in ( /* Q20_1_1 */
-                       select p_partkey
-                         from Part
-                        where p_name like 'forest%'
-                     )
+/pipelineName = "_r_FOLD_24_W_A_C_ro"
+select count(*)
+  from Lineitem, Part, PartSupp
+ where P_PARTKEY  = L_PARTKEY
+   and PS_PARTKEY = P_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

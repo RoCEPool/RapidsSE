@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _r_FOLD_50_W_L_C_E -- sub-query flattening test : refer Q4                 */
+/* _r_FOLD_53_W_L_NC_NI -- sub-query flattening test : refer Q16              */
 /*============================================================================*/
 
-// --initial _r_FOLD_50_W_L_C_E
+// --initial _r_FOLD_53_W_L_NC_NI
 
 trackMemory;
 
@@ -10,20 +10,17 @@ _r_init
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimise
-/glean_cue_from = "vSeries_36_Bound_Analysis"
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_50_W_L_C_E"
+/pipelineName = "_r_FOLD_53_W_L_NC_NI"
 select count(*)
-  from orders
- where exists (select *
-                 from lineitem
-                where L_ORDERKEY = O_ORDERKEY
-                  and l_commitdate < l_receiptdate)
+  from partsupp, part
+ where PS_PARTKEY = P_PARTKEY
+   and PS_SUPPKEY not in (select S_SUPPKEY
+                            from supplier
+                           where s_comment like '%Customer%Complaints%')
 ;
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

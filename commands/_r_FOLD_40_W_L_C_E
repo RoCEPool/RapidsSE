@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _r_FOLD_20_W_A_C_ro -- sub-query flattening test : refer Q2,17             */
+/* _r_FOLD_40_W_L_C_E -- sub-query flattening test : refer Q4                 */
 /*============================================================================*/
 
-// --initial _r_FOLD_20_W_A_C_ro
+// --initial _r_FOLD_40_W_L_C_E
 
 trackMemory;
 
@@ -10,20 +10,18 @@ _r_init
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimise
-/glean_cue_from = "vSeries_36_Bound_Analysis"
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_20_W_A_C_ro"
+/pipelineName = "_r_FOLD_40_W_L_C_E"
 select count(*)
-  from Lineitem, Part, PartSupp
- where P_PARTKEY  = L_PARTKEY
-   and PS_PARTKEY = P_PARTKEY
-   and l_quantity < (select avg(l_quantity)
-                       from lineitem
-                      where L_PARTKEY = P_PARTKEY)
+  from orders
+ where exists (select *
+                 from lineitem
+                where L_ORDERKEY = O_ORDERKEY
+                  and l_commitdate < l_receiptdate)
 ;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

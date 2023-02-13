@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _r_FOLD_70_H_A_NC_ro -- sub-query flattening test : refer Q11              */
+/* _r_FOLD_74_H_A_NC_ro -- sub-query flattening test : refer Q11              */
 /*============================================================================*/
 
-// --initial _r_FOLD_70_H_A_NC_ro
+// --initial _r_FOLD_74_H_A_NC_ro
 
 trackMemory;
 
@@ -15,12 +15,10 @@ create index S_idx0  on supplier (S_SUPPKEY  );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimise
-/glean_cue_from = "vTransform_FlattenByDecisionTree_originalModel"
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_FOLD_70_H_L_NC_ro"
+/pipelineName = "_r_FOLD_74_H_L_NC_ro"
 select ps_partkey,
        sum(ps_supplycost * ps_availqty) as value
   from partsupp, supplier
