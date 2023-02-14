@@ -214,7 +214,7 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   vGroup_IndexBounds();
   vGroup_JoinOrdering();
 
-  //Card_Fold::vMorph_to_flat(m_pCI);
+  Card_Fold::vMorph_to_flat(m_pCI);
 
   vDebugPoint();
 }
