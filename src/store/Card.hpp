@@ -112,6 +112,7 @@ namespace STORE
   class Card_OrPred;
   class Card_ObyElist;
 
+  class Card_Param;
   class Card_ParamList;
   class Card_PRED;
   class Card_Project;
@@ -532,6 +533,7 @@ namespace STORE
     Card_On*            pSub_on(void);
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
+    Card_Param*         pSub_param(void);
     Card_ParamList*     pSub_paramList(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_Reason*        pSub_reason(void);

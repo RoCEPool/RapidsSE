@@ -1031,8 +1031,8 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vResolve = [p_boolCalc](Card_PRED* p_pred,
-                               auto&& vResolve /*oddity permits recursive lambda*/)
+  auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
+                                    auto&& vResolve /*oddity permits recursive lambda*/)
   {
     if (! p_pred->bIsPRED())
       return; /* this effectively declares resolve as void */
@@ -1055,9 +1055,27 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
           p_child->vValue("$1"_Stz);  // TODO: hack!!
         }
         else {
-          char cTblSyn = Card::cTableColSyn(p_child->szValue());
-          cTblSyn = 'a'; // TODO: hack!!
-          p_child->vSetTableColSyn(cTblSyn);
+          Card_Param* p_param = pCI->m_pParamList->pSub_param();
+          Stz* szColNm = p_param->szValue();
+          if (pCI->G_bResolveSubCard(CK_EXPR,CK_COLNM,szColNm,pCI->G.i_MainCard)) {
+
+            if (pCI->m_pCard_resolved->bIsCard(CK_EXPR)) {
+              pCI->G.p_tblColOdn = pCI->G.p_expr->pSub_tblColOdn();
+              vDebugPoint();
+
+              p_child->vValue(pCI->G.p_tblColOdn->szValue());
+
+            }
+          }
+
+
+
+
+//          char cTblSyn = Card::cTableColSyn(p_child->szValue());
+//          cTblSyn = 'a'; // TODO: hack!!
+//          p_child->vSetTableColSyn(cTblSyn);
+
+
         }
       }
       return;
