@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for EV_I_PAGEINREQUEST ...                                         */
 /*----------------------------------------------------------------------------*/
-: pageIn::testFunc \handler
+: pageIn::request \handler
 
   //PipeIn[] to InfoSet[]
   //nullptr to PipeIn[]
@@ -57,7 +57,7 @@
   op__topology
 
   //find: pageIn_RowBuffer   EV_D_ROWBUFFER   [op].handler!
-  find: pageIn::testFunc     EV_I_PAGEINREQUEST   [op].handler!
+  find: pageIn::request     EV_I_PAGEINREQUEST   [op].handler!
 
   op__loop
 

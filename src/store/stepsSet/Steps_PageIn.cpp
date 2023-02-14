@@ -45,7 +45,7 @@ void Step::vPageInPoolBuffer(void) {
 
 
   // Ask the FileMap to get the buffer from disk.
-  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pFromDisk(oBufferId);
+  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pRowBufferFromDisk(oBufferId);
   RASSERT(pRowBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER);
 
   vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pRowBufferFromDisk);
@@ -72,16 +72,13 @@ void Step::vPageInPopRequest(void) {
   vTrace("Page In got TaskPtr %p and BufferId %p\n"_Stz, pTask, oBufferId.m_pvAsAddress);
 
   // Ask the FileMap to get the buffer from disk.
-  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pFromDisk(oBufferId);
+  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pRowBufferFromDisk(oBufferId);
+  RASSERT(pRowBufferFromDisk != nullptr);
   RASSERT(pRowBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER);
 
   vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pRowBufferFromDisk->oGetBufferId().m_pvAsAddress);
 
-  ASSERT(pRowBufferFromDisk != nullptr);
-
-//  m_pLogicUnit->m_xpRowBuffer = pRowBufferFromDisk;
-
-//  wake up task
+  // Wake up task
   AM::vGrabTaskLock(pTask,(Stz*)__func__);
   AM::TASK::vTriggerBidingPageIn(pTask, this);
 

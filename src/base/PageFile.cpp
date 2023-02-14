@@ -217,11 +217,11 @@ u8 PageFile::uNextFreeSubset(void)
 /*----------------------------------------------------------------------------*/
 /* write data buffer to disk                                                  */
 /*----------------------------------------------------------------------------*/
-void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
+void PageFile::vWriteDataBufferToPFile(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  BufferId oBufferId = pRowBuffer->oGetBufferId();
+  BufferId oBufferId = pDataBuffer->oGetBufferId();
 
   i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uSeekOffset * C_SIZE_POOL_BUFFER);
 
@@ -233,17 +233,17 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 //lock
   m_pFile->vSeek(iSeekOffset);
 
-  bool bResult = m_pFile->bWriteBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
-  ASSERT(bResult);
+  bool bResult = m_pFile->bWriteBytes((void*)pDataBuffer,C_SIZE_POOL_BUFFER);
+  RASSERT(bResult);
 
 //unlock
-  vTrace("Successfully wrote data buffer %p with BufferId %p\n"_Stz, pRowBuffer, oBufferId.m_pvAsAddress);
+  vTrace("Successfully wrote data buffer %p with BufferId %p\n"_Stz, pDataBuffer, oBufferId.m_pvAsAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* read data buffer from disk                                                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
+DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -266,20 +266,21 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 
   ASSERT(bResult);
 
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pPageInBuffer);
-  RASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
+  DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(pPageInBuffer);
+  RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER || pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
+
 
   // Update hashmap with new address with this bufferId
 #ifdef WITH_HASHMAP
   AM::pHashMap()->vInsertKeyValue(
-      (void *) pRowBuffer->oGetBufferId().m_pvAsAddress,
-      (Object *) pRowBuffer);
+      (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+      (Object *) pDataBuffer);
 #endif
 
 //unlock
-  vTrace("Successfully read data buffer %p\n"_Stz, pRowBuffer);
+  vTrace("Successfully read data buffer %p\n"_Stz, pDataBuffer);
 
-  return pRowBuffer;
+  return pDataBuffer;
 
 }
 #endif

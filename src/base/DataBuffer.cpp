@@ -279,6 +279,16 @@ i8 DataBuffer::iBufferHeight(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vDropRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vDropWrite(void)
@@ -286,6 +296,16 @@ void DataBuffer::vDropWrite(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vGrabRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_okLock.vGrabRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,6 +361,16 @@ i8 DataBuffer::iBufferNo(void)
   i8 i_PoolBuffer = pPoolBuffer->iBufferNo();
 
   return i_PoolBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this buffer locked ?                                                    */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/

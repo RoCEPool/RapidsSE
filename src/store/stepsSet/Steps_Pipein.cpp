@@ -122,7 +122,9 @@ void Step::vPipeinBideNext(void)
 void Step::vPipeinDelete(void)
 {
   ENTRY();
-  
+
+  // TODO: Arjun - We need to free the slot in the page file here
+
   AM::vDeleteOperand(*m_pLogicUnit->m_xpPipein,pOuterJobOfTask());
   
   m_pLogicUnit->m_xpPipein = nullptr;
@@ -249,6 +251,7 @@ void Step::vPipeinNext(void)
 
   bool bPageIn = false;
   Operand* pOperand = pOp->pPopOoOLeft(&bPageIn);
+  // TODO: Arjun - Check page in scenario
   
   m_pLogicUnit->vSetPipein(pOperand);
   

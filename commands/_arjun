@@ -142,6 +142,8 @@ tag default <suffix>   = "tbl";
 _nation;
 load Nation   "<tpch_dir>/nation.<suffix>"   ;
 
+// Pipeline to page out row buffers
+/*
 pipeline __pageout
   begin
     stage stageStart on origin :
@@ -164,5 +166,28 @@ pipeline __pageout
       | sink
       | first
   end ;
-
+*/
 //select * from nation;
+
+// pipeline to page out crw buffers
+pipeline __pageout
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+      scan nation
+      | next
+
+    stage stageB on all nodes :
+      pageout
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
+

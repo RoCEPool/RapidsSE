@@ -71,7 +71,11 @@ namespace BASE
 
     void vBufferHeight(i8 iBufferHeight);
 
+    void vDropRead(void);
+
     void vDropWrite(void);
+
+    void vGrabRead(void);
 
     void vGrabWrite(void);
 
@@ -83,6 +87,8 @@ namespace BASE
 
     Birth &oWhenNewed(void);
     // - - - - - - - - - - - - - -
+    bool bIsLocked(void);
+
     bool bIsPermanent(void);
 
     void vIsPermanent(bool bIsPermanent);

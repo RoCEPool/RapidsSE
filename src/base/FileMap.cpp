@@ -73,9 +73,9 @@ NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Find where on disk the buffer is written, and get it                       */
+/* Find where on disk the row buffer is written, and get it                   */
 /*----------------------------------------------------------------------------*/
-RowBuffer* FileMap::pFromDisk(BufferId oBufferId)
+RowBuffer* FileMap::pRowBufferFromDisk(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
@@ -93,7 +93,31 @@ RowBuffer* FileMap::pFromDisk(BufferId oBufferId)
   //---------------------------------------------------------------------------
   // Read from page file
 
-  return m_pPageFile->pReadDataBufferFromPFile(oBufferId);
+  return reinterpret_cast<RowBuffer*>(m_pPageFile->pReadDataBufferFromPFile(oBufferId));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Find where on disk the row buffer is written, and get it                   */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* FileMap::pCrwBufferFromDisk(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  //---------------------------------------------------------------------------
+  // Ensure id flag bit is set
+
+  ASSERT(1 == BufferId::bIsBufferId(oBufferId));
+
+  //---------------------------------------------------------------------------
+  // Look at page no bits in buffer id and get to corresponding PageFile pointer
+
+  // To do once we have multiple page files...
+  // m_pPageFile[oBufferId.m_uPageFile];
+
+  //---------------------------------------------------------------------------
+  // Read from page file
+
+  return reinterpret_cast<CrwBuffer*>(m_pPageFile->pReadDataBufferFromPFile(oBufferId));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,11 +145,12 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Write to page file
-  ASSERT(CN_ROWBUFFER == pOperand->eGetClassNo());
+  RASSERT(CN_ROWBUFFER == pOperand->eGetClassNo() ||
+          CN_CRWBUFFER == pOperand->eGetClassNo());
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+  DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
 
-  m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
+  m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
 }
 
 #ifdef WITH_BUFFER_ID

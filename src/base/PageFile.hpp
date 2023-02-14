@@ -36,8 +36,8 @@ namespace BASE
 #ifdef WITH_BUFFER_ID
     BufferId oNextFreeBufferId(void);
     u8 uNextFreeSubset(void);
-    void vWriteDataBufferToPFile(RowBuffer* pRowBuffer);
-    RowBuffer* pReadDataBufferFromPFile(BufferId oBufferId);
+    void vWriteDataBufferToPFile(DataBuffer* pDataBuffer);
+    DataBuffer* pReadDataBufferFromPFile(BufferId oBufferId);
 #endif
 
   private:
