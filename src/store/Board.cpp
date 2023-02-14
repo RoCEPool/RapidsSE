@@ -1028,7 +1028,15 @@ void Board::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc *p_boolC
 {
   _static_
 
+  Card_PRED* p_pred_corr = p_boolCalc->pFindRemove_CorrPred();
+  if (! p_pred_corr)
+    return;
 
+  p_pred_corr->vDump();
+
+  Card_Table* p_table = Card_Table::pResolve_table_By_tblSyn(pCI, 'a',pCI->G.i_MainCard);
+
+  p_table->vAdd_Pred_Under_filter(p_pred_corr);
 }
 
 /*----------------------------------------------------------------------------*/
