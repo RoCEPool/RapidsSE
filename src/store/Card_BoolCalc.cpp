@@ -231,6 +231,24 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
 /*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <pred> which could be moved               */
 /*----------------------------------------------------------------------------*/
+Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_PRED* p_pred_corr =
+      static_cast<Card_PRED*>(pFindPpyRecursive(P_CorrPred,CK_CMPPRED));
+
+  if (! p_pred_corr)
+    return nullptr;
+
+  vRemovePred(p_pred_corr);
+
+  return p_pred_corr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect <boolCalc>> and mark any <pred> which could be moved               */
+/*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vMarkWrt_table(Card_Deck* p_deck)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

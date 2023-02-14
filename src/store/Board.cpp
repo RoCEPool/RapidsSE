@@ -1024,6 +1024,16 @@ void Board::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+{
+  _static_
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _static_
