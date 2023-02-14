@@ -6,7 +6,7 @@ Releases
 .. only:: html
 
   .. contents:: Contents of this section:
-     :depth: 1
+     :depth: 2
      :backlinks: none
 
 .. _releaseSummary:
