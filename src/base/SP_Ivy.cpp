@@ -55,51 +55,46 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
   u8 uYears = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
   u8 uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
 
-  if ( wIvy.T.m_xIvl.m_bIsNeg) {
-    if (uMonths) {
-      if (uYears) {
+  switch(wIvy.T.m_xIvl.m_eType) {
+    case IV_YEAR:
+      if (wIvy.bIsNeg() && uYears)
         StrLib::vSprint(m_caResult,
-                        (Stz*)"'-%lld-%lld' YEAR TO MONTH",
+                        (Stz *) "INTERVAL -'%lld' %s",
                         uYears,
-                        uMonths);
-      }
-      else {
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      else
         StrLib::vSprint(m_caResult,
-                        (Stz*)"'-%lld' MONTH",
-                        uMonths);
-      }
-
-    }
-    else {
-      StrLib::vSprint(m_caResult,
-                      (Stz*)"'-%lld' YEAR",
-                      uYears);
-    }
-
-  }
-  else {
-    if (uMonths) {
-      if (uYears) {
-        StrLib::vSprint(m_caResult,
-                        (Stz*)"'%lld-%lld' YEAR TO MONTH",
+                        (Stz *) "INTERVAL '%lld' %s",
                         uYears,
-                        uMonths);
-      }
-      else {
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      break;
+    case IV_MONTH:
+      if (wIvy.bIsNeg() && uMonths)
         StrLib::vSprint(m_caResult,
-                        (Stz*)"'-%lld' MONTH",
-                        uMonths);
-      }
-
-    }
-    else {
-      StrLib::vSprint(m_caResult,
-                      (Stz*)"-%lld' YEAR",
-                      uYears);
-    }
-
+                        (Stz *) "INTERVAL -'%lld' %s",
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      else
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL '%lld' %s",
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+    case IV_YEAR_TO_MONTH:
+      if (wIvy.bIsNeg() && uMonths)
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL '%lld-%lld' YEAR TO MONTH",
+                        uYears,
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      else
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL '%lld-%lld' YEAR TO MONTH",
+                        uYears,
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+    default:
+      NEVER_REACH;
   }
-
 
   return (Stz*) &m_caResult[0];
 }

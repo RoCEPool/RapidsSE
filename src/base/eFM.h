@@ -22,11 +22,12 @@ enum eFM : u2 // function macros
   // arithmetic operators
 
   // add
+
   /*  */ FM_ADD_ANYUNK,           // any + unk
   /*  */ FM_ADD_BCDBCD,           // bcd + bcd
   /*  */ FM_ADD_FLTFLT,           // flt + flt
   /*  */ FM_ADD_INTINT,           // int + int
-  /*  */ FM_ADD_IVLIVL,           // ivl + ivl
+  /*  */ FM_ADD_IVLIVL,           // ivd + ivd
   /*  */ FM_ADD_UNKANY,           // unk + any
 
   // divide
@@ -110,8 +111,8 @@ enum eFM : u2 // function macros
   /*  */ FM_INT_TOUNK,          // int to unk
   /*  */ FM_INT_TOVCH,          // int to vch
 
-  /*  */ FM_IVL_TOUNK,          // ivl to unk
-  /*  */ FM_IVL_TOVCH,          // ivl to vch
+  /*  */ FM_IVD_TOUNK,          // ivd to unk
+  /*  */ FM_IVD_TOVCH,          // ivd to vch
 
   /*  */ FM_IVY_TOUNK,          // ivy to unk
   /*  */ FM_IVY_TOVCH,          // ivy to vch
@@ -131,7 +132,7 @@ enum eFM : u2 // function macros
   /*  */ FM_VCH_TODTE,          // vch to dte
   /*  */ FM_VCH_TOFLT,          // vch to flt
   /*  */ FM_VCH_TOINT,          // vch to int
-  /*  */ FM_VCH_TOIVL,          // vch to ivl
+  /*  */ FM_VCH_TOIVD,          // vch to ivd
   /*  */ FM_VCH_TOIVY,          // vch to ivy
   /*  */ FM_VCH_TOTME,          // vch to tme
   /*  */ FM_VCH_TOTSP,          // vch to tsp
@@ -145,7 +146,7 @@ enum eFM : u2 // function macros
   /*  */ FM_DUP_DTE,             // dup dte
   /*  */ FM_DUP_FLT,             // dup flt
   /*  */ FM_DUP_INT,             // dup int
-  /*  */ FM_DUP_IVL,             // dup ivl
+  /*  */ FM_DUP_IVD,             // dup ivd
   /*  */ FM_DUP_IVY,             // dup ivy
   /*  */ FM_DUP_TME,             // dup tme
   /*  */ FM_DUP_TSP,             // dup tsp
@@ -177,7 +178,7 @@ enum eFM : u2 // function macros
   /*  */ FM_INX_DTEDTE,           // dte in dte,...
   /*  */ FM_INX_FLTFLT,           // flt in flt,...
   /*  */ FM_INX_INTINT,           // int in int,...
-  /*  */ FM_INX_IVLIVL,           // ivl in ivl,...
+  /*  */ FM_INX_IVDIVD,           // ivd in ivd,...
   /*  */ FM_INX_IVYIVY,           // ivy in ivy,...
   /*  */ FM_INX_TMETME,           // tme in tme,...
   /*  */ FM_INX_TSPTSP,           // tsp in tsp,...
@@ -205,7 +206,7 @@ enum eFM : u2 // function macros
   /*  */ FM_PSH_DTE,             // push dte
   /*  */ FM_PSH_FLT,             // push flt
   /*  */ FM_PSH_INT,             // push int
-  /*  */ FM_PSH_IVL,             // push ivl
+  /*  */ FM_PSH_IVD,             // push ivd
   /*  */ FM_PSH_IVY,             // push ivy
   /*  */ FM_PSH_TME,             // push tme
   /*  */ FM_PSH_TSP,             // push tsp
@@ -222,7 +223,7 @@ enum eFM : u2 // function macros
   /*  */ FM_EQ_DTEDTE,        // dte == bcd
   /*  */ FM_EQ_FLTFLT,        // flt == flt
   /*  */ FM_EQ_INTINT,        // int == int
-  /*  */ FM_EQ_IVLIVL,        // ivl == ivl
+  /*  */ FM_EQ_IVDIVD,        // ivd == ivd
   /*  */ FM_EQ_IVYIVY,        // ivy == ivy
   /*  */ FM_EQ_TMETME,        // tme == tme
   /*  */ FM_EQ_TSPTSP,        // tsp == tsp
@@ -236,7 +237,7 @@ enum eFM : u2 // function macros
   /*  */ FM_GE_DTEDTE,        // dte >= bcd
   /*  */ FM_GE_FLTFLT,        // flt >= flt
   /*  */ FM_GE_INTINT,        // int >= int
-  /*  */ FM_GE_IVLIVL,        // ivl >= ivl
+  /*  */ FM_GE_IVDIVD,        // ivd >= ivd
   /*  */ FM_GE_IVYIVY,        // ivy == ivy
   /*  */ FM_GE_TMETME,        // tme >= tme
   /*  */ FM_GE_TSPTSP,        // tsp >= tsp
@@ -250,7 +251,7 @@ enum eFM : u2 // function macros
   /*  */ FM_GT_DTEDTE,        // dte > bcd
   /*  */ FM_GT_FLTFLT,        // flt > flt
   /*  */ FM_GT_INTINT,        // int > int
-  /*  */ FM_GT_IVLIVL,        // ivl > ivl
+  /*  */ FM_GT_IVDIVD,        // ivd > ivd
   /*  */ FM_GT_IVYIVY,        // ivy > ivy
   /*  */ FM_GT_TMETME,        // tme > tme
   /*  */ FM_GT_TSPTSP,        // tsp > tsp
@@ -264,7 +265,7 @@ enum eFM : u2 // function macros
   /*  */ FM_GTA_DTEDTE,        // dte > bcd
   /*  */ FM_GTA_FLTFLT,        // flt > flt
   /*  */ FM_GTA_INTINT,        // int > int
-  /*  */ FM_GTA_IVLIVL,        // ivl > ivl
+  /*  */ FM_GTA_IVDIVD,        // ivd > ivd
   /*  */ FM_GTA_IVYIVY,        // ivy > ivy
   /*  */ FM_GTA_TMETME,        // tme > tme
   /*  */ FM_GTA_TSPTSP,        // tsp > tsp
@@ -278,7 +279,7 @@ enum eFM : u2 // function macros
   /*  */ FM_LE_DTEDTE,        // dte <= bcd
   /*  */ FM_LE_FLTFLT,        // flt <= flt
   /*  */ FM_LE_INTINT,        // int <= int
-  /*  */ FM_LE_IVLIVL,        // ivl <= ivl
+  /*  */ FM_LE_IVDIVD,        // ivd <= ivd
   /*  */ FM_LE_IVYIVY,        // ivy <= ivy
   /*  */ FM_LE_TMETME,        // tme <= tme
   /*  */ FM_LE_TSPTSP,        // tsp <= tsp
@@ -292,7 +293,7 @@ enum eFM : u2 // function macros
   /*  */ FM_LT_DTEDTE,        // dte < bcd
   /*  */ FM_LT_FLTFLT,        // flt < flt
   /*  */ FM_LT_INTINT,        // int < int
-  /*  */ FM_LT_IVLIVL,        // ivl < ivl
+  /*  */ FM_LT_IVDIVD,        // ivd < ivd
   /*  */ FM_LT_IVYIVY,        // ivy < ivy
   /*  */ FM_LT_TMETME,        // tme < tme
   /*  */ FM_LT_TSPTSP,        // tsp < tsp
@@ -306,7 +307,7 @@ enum eFM : u2 // function macros
   /*  */ FM_LTA_DTEDTE,        // dte < bcd
   /*  */ FM_LTA_FLTFLT,        // flt < flt
   /*  */ FM_LTA_INTINT,        // int < int
-  /*  */ FM_LTA_IVLIVL,        // ivl < ivl
+  /*  */ FM_LTA_IVDIVD,        // ivd < ivd
   /*  */ FM_LTA_IVYIVY,        // ivy < ivy
   /*  */ FM_LTA_TMETME,        // tme < tme
   /*  */ FM_LTA_TSPTSP,        // tsp < tsp
@@ -320,7 +321,7 @@ enum eFM : u2 // function macros
   /*  */ FM_NE_DTEDTE,        // dte != bcd
   /*  */ FM_NE_FLTFLT,        // flt != flt
   /*  */ FM_NE_INTINT,        // int != int
-  /*  */ FM_NE_IVLIVL,        // ivl != ivl
+  /*  */ FM_NE_IVDIVD,        // ivd != ivd
   /*  */ FM_NE_IVYIVY,        // ivy != ivy
   /*  */ FM_NE_TMETME,        // tme != tme
   /*  */ FM_NE_TSPTSP,        // tsp != tsp
@@ -445,8 +446,8 @@ static Stz* aFM[]
   /*  */ "_INT_TOUNK"_Stz,
   /*  */ "_INT_TOVCH"_Stz,
 
-  /*  */ "_IVL_TOUNK"_Stz,
-  /*  */ "_IVL_TOVCH"_Stz,
+  /*  */ "_IVD_TOUNK"_Stz,
+  /*  */ "_IVD_TOVCH"_Stz,
 
   /*  */ "_IVY_TOUNK"_Stz,
   /*  */ "_IVY_TOVCH"_Stz,
@@ -466,7 +467,7 @@ static Stz* aFM[]
   /*  */ "_VCH_TODTE"_Stz,
   /*  */ "_VCH_TOFLT"_Stz,
   /*  */ "_VCH_TOINT"_Stz,
-  /*  */ "_VCH_TOIVL"_Stz,
+  /*  */ "_VCH_TOIVD"_Stz,
   /*  */ "_VCH_TOIVY"_Stz,
   /*  */ "_VCH_TOTME"_Stz,
   /*  */ "_VCH_TOTSP"_Stz,
@@ -479,7 +480,7 @@ static Stz* aFM[]
   /*  */ "_DUP_DTE"_Stz,
   /*  */ "_DUP_FLT"_Stz,
   /*  */ "_DUP_INT"_Stz,
-  /*  */ "_DUP_IVL"_Stz,
+  /*  */ "_DUP_IVD"_Stz,
   /*  */ "_DUP_IVY"_Stz,
   /*  */ "_DUP_TME"_Stz,
   /*  */ "_DUP_TSP"_Stz,
@@ -511,7 +512,7 @@ static Stz* aFM[]
   /*  */ "_INX_DTEDTE"_Stz,
   /*  */ "_INX_FLTFLT"_Stz,
   /*  */ "_INX_INTINT"_Stz,
-  /*  */ "_INX_IVLIVL"_Stz,
+  /*  */ "_INX_IVDIVD"_Stz,
   /*  */ "_INX_IVYIVY"_Stz,
   /*  */ "_INX_TMETME"_Stz,
   /*  */ "_INX_TSPTSP"_Stz,
@@ -538,7 +539,7 @@ static Stz* aFM[]
   /*  */ "_PSH_DTE"_Stz,
   /*  */ "_PSH_FLT"_Stz,
   /*  */ "_PSH_INT"_Stz,
-  /*  */ "_PSH_IVL"_Stz,
+  /*  */ "_PSH_IVD"_Stz,
   /*  */ "_PSH_IVY"_Stz,
   /*  */ "_PSH_TME"_Stz,
   /*  */ "_PSH_TSP"_Stz,
@@ -555,7 +556,7 @@ static Stz* aFM[]
   /*  */ "_EQ_DTEDTE"_Stz,
   /*  */ "_EQ_FLTFLT"_Stz,
   /*  */ "_EQ_INTINT"_Stz,
-  /*  */ "_EQ_IVLIVL"_Stz,
+  /*  */ "_EQ_IVDIVD"_Stz,
   /*  */ "_EQ_IVYIVY"_Stz,
   /*  */ "_EQ_TMETME"_Stz,
   /*  */ "_EQ_TSPTSP"_Stz,
@@ -569,7 +570,7 @@ static Stz* aFM[]
   /*  */ "_GE_DTEDTE"_Stz,
   /*  */ "_GE_FLTFLT"_Stz,
   /*  */ "_GE_INTINT"_Stz,
-  /*  */ "_GE_IVLIVL"_Stz,
+  /*  */ "_GE_IVDIVD"_Stz,
   /*  */ "_GE_IVYIVY"_Stz,
   /*  */ "_GE_TMETME"_Stz,
   /*  */ "_GE_TSPTSP"_Stz,
@@ -583,7 +584,7 @@ static Stz* aFM[]
   /*  */ "_GT_DTEDTE"_Stz,
   /*  */ "_GT_FLTFLT"_Stz,
   /*  */ "_GT_INTINT"_Stz,
-  /*  */ "_GT_IVLIVL"_Stz,
+  /*  */ "_GT_IVDIVD"_Stz,
   /*  */ "_GT_IVYIVY"_Stz,
   /*  */ "_GT_TMETME"_Stz,
   /*  */ "_GT_TSPTSP"_Stz,
@@ -597,7 +598,7 @@ static Stz* aFM[]
   /*  */ "_GTA_DTEDTE"_Stz,
   /*  */ "_GTA_FLTFLT"_Stz,
   /*  */ "_GTA_INTINT"_Stz,
-  /*  */ "_GTA_IVLIVL"_Stz,
+  /*  */ "_GTA_IVDIVD"_Stz,
   /*  */ "_GTA_IVYIVY"_Stz,
   /*  */ "_GTA_TMETME"_Stz,
   /*  */ "_GTA_TSPTSP"_Stz,
@@ -611,7 +612,7 @@ static Stz* aFM[]
   /*  */ "_LE_DTEDTE"_Stz,
   /*  */ "_LE_FLTFLT"_Stz,
   /*  */ "_LE_INTINT"_Stz,
-  /*  */ "_LE_IVLIVL"_Stz,
+  /*  */ "_LE_IVDIVD"_Stz,
   /*  */ "_LE_IVYIVY"_Stz,
   /*  */ "_LE_TMETME"_Stz,
   /*  */ "_LE_TSPTSP"_Stz,
@@ -625,7 +626,7 @@ static Stz* aFM[]
   /*  */ "_LT_DTEDTE"_Stz,
   /*  */ "_LT_FLTFLT"_Stz,
   /*  */ "_LT_INTINT"_Stz,
-  /*  */ "_LT_IVLIVL"_Stz,
+  /*  */ "_LT_IVDIVD"_Stz,
   /*  */ "_LT_IVYIVY"_Stz,
   /*  */ "_LT_TMETME"_Stz,
   /*  */ "_LT_TSPTSP"_Stz,
@@ -639,7 +640,7 @@ static Stz* aFM[]
   /*  */ "_LTA_DTEDTE"_Stz,
   /*  */ "_LTA_FLTFLT"_Stz,
   /*  */ "_LTA_INTINT"_Stz,
-  /*  */ "_LTA_IVLIVL"_Stz,
+  /*  */ "_LTA_IVDIVD"_Stz,
   /*  */ "_LTA_IVYIVY"_Stz,
   /*  */ "_LTA_TMETME"_Stz,
   /*  */ "_LTA_TSPTSP"_Stz,
@@ -653,7 +654,7 @@ static Stz* aFM[]
   /*  */ "_NE_DTEDTE"_Stz,
   /*  */ "_NE_FLTFLT"_Stz,
   /*  */ "_NE_INTINT"_Stz,
-  /*  */ "_NE_IVLIVL"_Stz,
+  /*  */ "_NE_IVDIVD"_Stz,
   /*  */ "_NE_IVYIVY"_Stz,
   /*  */ "_NE_TMETME"_Stz,
   /*  */ "_NE_TSPTSP"_Stz,
