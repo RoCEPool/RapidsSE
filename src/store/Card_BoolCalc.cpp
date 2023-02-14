@@ -343,6 +343,18 @@ void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_PRED* Card_BoolCalc::pRootPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_PRED* p_PRED = static_cast<Card_PRED*>(pGetChild(0));
+
+  return p_PRED;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bIsBraced(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

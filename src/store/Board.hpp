@@ -244,6 +244,7 @@ namespace STORE
 
     static void vMorph_Table_To_EEop(CardIter* pCI);
     static void vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc* p_boolCalc);
+    static void vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
     static void vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc* p_boolCalc);
 
