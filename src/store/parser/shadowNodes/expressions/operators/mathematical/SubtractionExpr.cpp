@@ -11,6 +11,10 @@
 #include "SubqueryRefExpr.hpp"
 #include "TypeSystem.hpp"
 #include "TypeMap2D.hpp"
+#include "SqlException.hpp"
+#include "AttachMap.hpp"
+
+extern AttachMap*  gpAttachMap;
 
 using namespace Parser;
 
@@ -40,7 +44,7 @@ static TypeMap2D* S_pTypeMap = (new TypeMap2D())
     // A date can only be subtracted by dates or intervals that contain year, month or day fields only.
     // Having extra fields (hours, mins, secs) is an error.
     ->pAddMapping(TypeId::xIdOf(CT_DATE),           TypeId::xIdOf(CT_DATE),               TypeId::xIdOf(IV_DAY))
-    ->pAddMapping(TypeId::xIdOf(CT_DATE),         TM_ALL_YM_INTERVALS,                       TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(CT_DATE),           TM_ALL_YM_INTERVALS,                  TypeId::xIdOf(CT_DATE))
     ->pAddMapping(TypeId::xIdOf(CT_DATE),           TypeId::xIdOf(IV_DAY),                TypeId::xIdOf(CT_DATE))
     ->pAddMapping(TypeId::xIdOf(CT_DATE),           TypeId::xIdOf(CT_UNKNOWN),            TypeId::xIdOf(CT_UNKNOWN))
 
@@ -352,6 +356,13 @@ TypeId SubtractionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // Lookup the type of the result
   TypeId xResult = S_pTypeMap->xLookup(xType1, xType2);
+
+  // The subtraction operator can result in intervals being generated.
+  // These are temporarily disabled in releases until the feature is complete.
+  if (gpAttachMap->bDisablePromptCommands() && xResult.eIVVal() != IV_NONE) {
+    SemanticException::vThrow(EC_DISABLED_STATEMENT, ": INTERVAL type"_Stz);
+  }
+
   return xResult;
 }
 
