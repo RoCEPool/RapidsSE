@@ -29,8 +29,7 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
-    RowBuffer* pRowBufferFromDisk(BufferId oBufferId);
-    CrwBuffer* pCrwBufferFromDisk(BufferId oBufferId);
+    DataBuffer* pDataBufferFromDisk(BufferId oBufferId);
 #ifdef WITH_BUFFER_ID
     BufferId oGetNewBufferId(void);
 #endif

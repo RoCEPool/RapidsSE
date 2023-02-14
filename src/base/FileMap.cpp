@@ -73,9 +73,9 @@ NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Find where on disk the row buffer is written, and get it                   */
+/* Find where on disk the data buffer is written, and get it                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* FileMap::pRowBufferFromDisk(BufferId oBufferId)
+DataBuffer* FileMap::pDataBufferFromDisk(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
@@ -93,31 +93,7 @@ RowBuffer* FileMap::pRowBufferFromDisk(BufferId oBufferId)
   //---------------------------------------------------------------------------
   // Read from page file
 
-  return reinterpret_cast<RowBuffer*>(m_pPageFile->pReadDataBufferFromPFile(oBufferId));
-}
-
-/*----------------------------------------------------------------------------*/
-/* Find where on disk the row buffer is written, and get it                   */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* FileMap::pCrwBufferFromDisk(BufferId oBufferId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
-
-  //---------------------------------------------------------------------------
-  // Ensure id flag bit is set
-
-  ASSERT(1 == BufferId::bIsBufferId(oBufferId));
-
-  //---------------------------------------------------------------------------
-  // Look at page no bits in buffer id and get to corresponding PageFile pointer
-
-  // To do once we have multiple page files...
-  // m_pPageFile[oBufferId.m_uPageFile];
-
-  //---------------------------------------------------------------------------
-  // Read from page file
-
-  return reinterpret_cast<CrwBuffer*>(m_pPageFile->pReadDataBufferFromPFile(oBufferId));
+  return m_pPageFile->pReadDataBufferFromPFile(oBufferId);
 }
 
 /*----------------------------------------------------------------------------*/

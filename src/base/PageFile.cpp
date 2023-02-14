@@ -267,7 +267,8 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   ASSERT(bResult);
 
   DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(pPageInBuffer);
-  RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER || pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
+  RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
+          pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
 
 
   // Update hashmap with new address with this bufferId
