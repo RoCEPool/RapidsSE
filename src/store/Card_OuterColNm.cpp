@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_Param.cpp -- Parameter                                                */
+/* Card_OuterColNm.cpp -- Outer Column Name                                   */
 /*============================================================================*/
 
-#include "Card_Param.hpp"
+#include "Card_OuterColNm.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Param, CK_PARAM)
-__aNewFunction(Card_Param, CN_CARD)
-__vDeleteFunction(Card_Param, CN_CARD)
+__pCastFunction_Card(STORE, Card_OuterColNm, CK_OUTERCOLNM)
+__aNewFunction(Card_OuterColNm, CN_CARD)
+__vDeleteFunction(Card_OuterColNm, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Param::Card_Param(void)
-: Card(CK_PARAM)
+Card_OuterColNm::Card_OuterColNm(void)
+: Card(CK_OUTERCOLNM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -29,7 +29,7 @@ Card_Param::Card_Param(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Param::~Card_Param(void) noexcept(false)
+Card_OuterColNm::~Card_OuterColNm(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

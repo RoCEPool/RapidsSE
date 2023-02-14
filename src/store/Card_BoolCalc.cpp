@@ -10,7 +10,7 @@
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 #include "Card_AndPred.hpp"
-#include "Card_Param.hpp"
+#include "Card_OuterColNm.hpp"
 #include "Card_TblColOdn.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Table.hpp"
@@ -383,13 +383,13 @@ void Card_BoolCalc::vSubstitute_Parameters(Card_ParamList* p_paramList)
     if (! Card::bIsParamOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    Card_Param* p_param = _pCard_Param(p_paramList->pFindPpyRecursive(P_ParamOdn));
-    if (! p_param)
+    Card_OuterColNm* p_outerColNm = _pCard_OuterColNm(p_paramList->pFindPpyRecursive(P_ParamOdn));
+    if (! p_outerColNm)
       return false;
 
-    //Card_StmColOdn* p_stmColOrd = p_param->pSub_stmColOdn();
+    //Card_StmColOdn* p_stmColOrd = p_outerColNm->pSub_stmColOdn();
     //M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
-    Card_TblColOdn* p_tblColOrd = p_param->pSub_tblColOdn();
+    Card_TblColOdn* p_tblColOrd = p_outerColNm->pSub_tblColOdn();
     p_term->vSetValueMark1(p_tblColOrd->szValue(), MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;

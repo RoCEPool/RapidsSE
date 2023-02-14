@@ -3197,14 +3197,14 @@ Card_Order* Card::pSub_order(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Param.hpp"
-Card_Param* Card::pSub_param(void)
+#include "Card_OuterColNm.hpp"
+Card_OuterColNm* Card::pSub_outerColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Param* p_param =
-      _pCard_Param(pFindSubCard(CK_PARAM));
-  return p_param;
+  Card_OuterColNm* p_outerColNm =
+      _pCard_OuterColNm(pFindSubCard(CK_OUTERCOLNM));
+  return p_outerColNm;
 }
 
 /*----------------------------------------------------------------------------*/

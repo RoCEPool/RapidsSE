@@ -163,10 +163,10 @@ void Dissector::vStage(i8 i_StageSpec)
     if (pParamsSpec) {
       Card_ParamList* p_paramList = new Card_ParamList;
       m_pBoard->pDeck()->vAppend(p_paramList);
-      Card_Param* p_param = new Card_Param;
+      Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
       p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
-      p_param->Y_vSet(P_ParamOdn, "$P1"_Stz);
+      p_param->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
     }
   }

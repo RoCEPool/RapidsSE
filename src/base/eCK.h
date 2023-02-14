@@ -107,8 +107,8 @@ enum eCK // card kind
   /* */ CK_ORDELMODN,
   /* */ CK_ORDER,
   /* */ CK_ORPRED,
+  /* */ CK_OUTERCOLNM,
 
-  /* */ CK_PARAM,
   /* */ CK_PARAMLIST,
   /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
@@ -287,8 +287,8 @@ static Stz* aCK[]
   /* */ "CK_ORDELMODN"_Stz,    // CK_ORDELMODN
   /* */ "CK_ORDER"_Stz,        // CK_ORDER
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
+  /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
 
-  /* */ "CK_PARAM"_Stz,        // CK_PARAM
   /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
   /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
@@ -466,8 +466,8 @@ static Stz* aCK_short[]
   /* */ "ordElmOdn"_Stz,       // CK_ORDELMODN
   /* */ "order"_Stz,           // CK_ORDER
   /* */ "orPred"_Stz,          // CK_ORPRED
+  /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
 
-  /* */ "param"_Stz,           // CK_PARAM
   /* */ "paramList"_Stz,       // CK_PARAMLIST
   /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
@@ -645,8 +645,8 @@ static Stz* aCK_notation[]
     /* */ "sOO"_Stz,          // CK_ORDELMODN
     /* */ "sOL"_Stz,          // CK_ORDER
     /* */ "oP"_Stz,           // CK_ORPRED
+    /* */ "outCol"_Stz,       // CK_OUTERCOLNM
 
-    /* */ "p"_Stz,            // CK_PARAM
     /* */ "pL"_Stz,           // CK_PARAMLIST
     /* */ "prt"_Stz,          // CK_PARTITION
     /* */ "pmut"_Stz,         // CK_PERMUTATION

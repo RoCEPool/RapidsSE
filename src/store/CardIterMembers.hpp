@@ -135,7 +135,7 @@ namespace STORE
     Card_OrdAgg *           p_ordAgg;
     Card_OrdElmOdn *        p_ordElmOdn;
     Card_Order *            p_order;
-    Card_Param *            p_param;
+    Card_OuterColNm *            p_param;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;

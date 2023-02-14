@@ -1055,9 +1055,9 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
           p_child->vValue("$1"_Stz);  // TODO: hack!!
         }
         else {
-          Card_Param* p_param = pCI->m_pParamList->pSub_param();
-          Stz* szColNm = p_param->szValue();
-          if (pCI->G_bResolveSubCard(CK_EXPR,CK_COLNM,szColNm,pCI->G.i_MainCard)) {
+          Card_OuterColNm* p_outerColNm = pCI->m_pParamList->pSub_outerColNm();
+          Stz* szOuterColNm = p_outerColNm->szValue();
+          if (pCI->G_bResolveSubCard(CK_EXPR, CK_COLNM, szOuterColNm, pCI->G.i_MainCard)) {
 
             if (pCI->m_pCard_resolved->bIsCard(CK_EXPR)) {
               pCI->G.p_tblColOdn = pCI->G.p_expr->pSub_tblColOdn();
