@@ -6,6 +6,7 @@
 
 _r_schema
 
+create index N_idx0  on Nation   (N_NATIONKEY);
 create index P_idx0  on Part     (P_PARTKEY);
 create index PS_idx0 on PartSupp (PS_PARTKEY);
 

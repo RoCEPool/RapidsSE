@@ -238,7 +238,7 @@ char Card_Term::cGetTableSyn(void)
 
   Stz* szTerm = this->sz();
 
-  char cSyn = szTerm->azChar()[2];
+  char cSyn = szTerm->azChar()[1];
 
   return cSyn;
 }
