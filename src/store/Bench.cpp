@@ -214,6 +214,9 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   vGroup_IndexBounds();
   vGroup_JoinOrdering();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sub-query has been flattened
+
   Card_Fold::vMorph_to_flat(m_pCI);
 
   vDebugPoint();
