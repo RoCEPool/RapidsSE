@@ -1095,7 +1095,8 @@ void Bench::vFlatten_24_W_A_C_ro(void)
 
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
   RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  Board::vMove_corrPred_To_mq_table_As_bounds(m_pCI, m_pCI->G.p_boolCalc);
+  //Board::vMove_corrPred_To_mq_table_As_bounds(m_pCI, m_pCI->G.p_boolCalc);
+  Board::vMove_corrPred_To_table_filter(m_pCI, m_pCI->G.p_boolCalc);
   m_pCI->vPrintBoard(__LINE__);
 
 
