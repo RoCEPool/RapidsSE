@@ -138,6 +138,10 @@ pdf: checkSphinx checkLatex $(RR_PDF_FRAG) $(RST_FILES)
 	@LATEXMKOPTS="-interaction=nonstopmode" $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
+# This target builds the html documentation with some internal information such as the compilation guide.
+internal_html: export SPHINXOPTS = -t internal
+internal_html: html
+
 clean:
 	@rm -rf "$(BUILDDIR)"
 	@rm -rf "$(RR_OUTPUT_DIR)"
@@ -148,7 +152,7 @@ clean:
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: all checkSphinx checkLatex clean help html linkcheck pdf railroad rr version
+.PHONY: all checkSphinx checkLatex clean help html internal_html linkcheck pdf railroad rr version
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

@@ -21,6 +21,7 @@ Table of Contents
    cmdRef/index
    interfaces/index
    releases/index
+   compilation/index
    appendices/index
 
 * :ref:`genindex`

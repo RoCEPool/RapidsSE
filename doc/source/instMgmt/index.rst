@@ -1,3 +1,5 @@
+.. _instMgmt:
+
 Installation and Management
 ===========================
 

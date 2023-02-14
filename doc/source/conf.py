@@ -20,7 +20,11 @@ root_doc = 'index'
 extensions = ['sphinx.ext.todo']
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['compilation/**']
+if tags.has('internal'):
+  exclude_patterns = []
+
+suppress_warnings = ['toc.excluded']
 
 nitpicky = True
 
