@@ -52,6 +52,22 @@ void Card_OP::vAddLevel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_OP::vAdd_Pred_Under_filter(Card_PRED *p_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Filter* p_filter = this->pSub_filter();
+  if (! p_filter) {
+    p_filter = _pCard_Filter(this->pAppendNewCardTail(CK_FILTER));
+    p_filter->vAppendNewCardTail(CK_BOOLCALC);
+  }
+
+  p_filter->vAddPred(p_PRED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_rpnCalc_To_boolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
