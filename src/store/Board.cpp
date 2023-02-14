@@ -842,7 +842,8 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
 //      }
 //    }
 
-    if ((pCI->m_pTerm_corrCol = static_cast<Card_CmpPred*>(p_pred)->pExtractArgTerm())) {
+    if (Card_Term* pTerm_corrCol = static_cast<Card_CmpPred*>(p_pred)->pExtractArgTerm()) {
+      pCI->m_pTerm_corrCol = pTerm_corrCol;
       bIsCorrPred = true;
     }
 
@@ -1054,7 +1055,6 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
           p_child->vValue("$1"_Stz);  // TODO: hack!!
         }
         else {
-          //p_child->vValue("$1"_Stz);
           char cTblSyn = Card::cTableColSyn(p_child->szValue());
           cTblSyn = 'a'; // TODO: hack!!
           p_child->vSetTableColSyn(cTblSyn);
@@ -1441,7 +1441,7 @@ void Board::vReinstate_stages(CardIter* pCI)
   };
 
   pCI->G_vRestart();
-  if (pCI->G_bEachMain(CK_FOLD))
+  while (pCI->G_bEachMain(CK_FOLD))
     pCI->G_vRemoveDeleteMain(CK_FOLD);
 
   Card* p_prev = nullptr;

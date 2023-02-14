@@ -201,6 +201,8 @@ void Bench::vSeries_MakeRunnable_recurse(void)
     m_pCI->G_vPopIter();
 
     vGroup_FlattenSubquery();
+
+    vDebugPoint();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -942,6 +944,7 @@ void Bench::vFlatten_24_W_A_C_ro(void)
     NEVER_REACH
   }
 
+  m_pCI->m_pParamList = m_pCI->G.pDeck->pSub_paramList();
   m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(1);
 
   m_pCI->vPrintBoard(__LINE__);

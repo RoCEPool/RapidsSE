@@ -69,6 +69,8 @@ namespace STORE
     Card_Term* m_pTerm_corrCol;
     Card_Term* m_pTerm_sqCall;
 
+    Card_ParamList* m_pParamList;
+
     s256 m_sT;
 
   protected:

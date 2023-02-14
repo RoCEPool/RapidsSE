@@ -3197,6 +3197,19 @@ Card_Order* Card::pSub_order(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_ParamList.hpp"
+Card_ParamList* Card::pSub_paramList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_ParamList* p_paramList =
+      _pCard_ParamList(pFindSubCard(CK_PARAMLIST));
+  return p_paramList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_PmzWhere.hpp"
 Card_PmzWhere* Card::pSub_pmzWhere(void)
 {
