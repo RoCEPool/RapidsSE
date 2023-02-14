@@ -79,10 +79,11 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
                         (Stz *) "INTERVAL '%lld' %s",
                         uMonths,
                         aIV_field[wIvy.T.m_xIvl.m_eType]);
+      break;
     case IV_YEAR_TO_MONTH:
-      if (wIvy.bIsNeg() && uMonths)
+      if (wIvy.bIsNeg() && (uYears || uMonths))
         StrLib::vSprint(m_caResult,
-                        (Stz *) "INTERVAL '%lld-%lld' YEAR TO MONTH",
+                        (Stz *) "INTERVAL -'%lld-%lld' YEAR TO MONTH",
                         uYears,
                         uMonths,
                         aIV_field[wIvy.T.m_xIvl.m_eType]);
@@ -92,6 +93,7 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
                         uYears,
                         uMonths,
                         aIV_field[wIvy.T.m_xIvl.m_eType]);
+      break;
     default:
       NEVER_REACH;
   }

@@ -6,6 +6,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Utilities
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Overflow detection bcd
@@ -537,11 +538,15 @@
     }                                                                      \
   }
 
+/*
+ INTERVALS
+*/
+
 #define _ADD_IVLIVL(eErrorCode)                                            \
   {                                                                        \
     ivlArg2.m_iAsI8 = *(--paW);                                            \
     ivlArg1.m_iAsI8 = *(--paW);                                            \
-    printf("type : %lld %lld\n", ivlArg1.m_xIvl.m_eType, ivlArg2.m_xIvl.m_eType);                                        \
+                                                                           \
     if (eErrorCode != EC_NONE ||                                           \
         ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
@@ -558,18 +563,19 @@
         iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
                                                                            \
       iArg3 = iArg1 + iArg2;                                               \
-                                                                           \
-      if (iArg3 < 0)      {                                                \
-          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1 * iArg3;             \
-          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+      if (iArg3 < 0) {                                                     \
+        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                    \
+         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                   \
       }                                                                    \
-    wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                    \
+      wIvlResult.m_xIvl.m_eType =                                          \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
     }                                                                      \
     *paW++ = wIvlResult.m_iAsI8;                                           \
   }
+
 
 // ignore NULLS
 //

@@ -3,6 +3,52 @@
 /*============================================================================*/
 #pragma once
 
+// NOTE: THis should match eIV enums in eIV.H
+typedef enum eIVL // Interval Type
+{
+  /* 0  */ IVL_NONE=0,
+  /* 1  */ IVL_YM_START,
+  /* 2  */ IVL_YEAR,
+  /* 3  */ IVL_MONTH,
+  /* 4  */ IVL_YM,
+  /* 5  */ IVL_YM_END,
+  /* 6  */ IVL_DT_START,
+  /* 7  */ IVL_DAY,
+  /* 8  */ IVL_HOUR,
+  /* 9  */ IVL_MINUTE,
+  /* 10 */ IVL_SECOND,
+  /* 11 */ IVL_DH,
+  /* 12 */ IVL_DM,
+  /* 13 */ IVL_DS,
+  /* 14 */ IVL_HM,
+  /* 15 */ IVL_HS,
+  /* 16 */ IVL_MS,
+  /* 17 */ IVL_DT_END,
+  /* 18 */ IVL_ENUMS
+} eIVL;
+
+static eIVL eMacro_AddSubResultIVL[IVL_ENUMS][IVL_ENUMS] = {
+                   // IVL_NONE  IVL_YM_START IVL_YEAR  IVL_MONTH   IVL_YM    IVL_YM_END  IVL_DT_START IVL_DAY   IVL_HOUR    IVL_MINUTE  IVL_SECOND   IVL_DH      IVL_DM    IVL_DS      IVL_HM    IVL_HS    IVL_MS    IVL_DT_END
+/* IVL_NONE     */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM_START */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YEAR     */  { IVL_NONE, IVL_NONE,    IVL_YEAR, IVL_YM,     IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_MONTH    */  { IVL_NONE, IVL_NONE,    IVL_YM,   IVL_MONTH,  IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM       */  { IVL_NONE, IVL_NONE,    IVL_YM,   IVL_YM,     IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM_END   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_DT_START */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_DAY      */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DAY,  IVL_DH,     IVL_DM,     IVL_DS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_DM,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_HOUR     */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DH,   IVL_HOUR,   IVL_HM,     IVL_HS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_MINUTE   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_HM,     IVL_MINUTE, IVL_MS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_SECOND   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_MS,     IVL_SECOND,  IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_DH       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DH,   IVL_DH,     IVL_DM,     IVL_DS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_DS,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_DM       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_DM,     IVL_DM,     IVL_DS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_DM,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_DS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_DS,     IVL_DS,     IVL_DS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_DS,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_HM       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_HM,     IVL_HM,     IVL_HS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_HS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_HS,     IVL_HS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_MS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_MS,     IVL_MS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_DT_END   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    }
+};
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BCD
 union Bcd_T

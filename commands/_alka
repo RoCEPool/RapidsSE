@@ -159,6 +159,6 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 //select l_returnflag, l_linestatus from lineitem where l_shipdate <= '1998-12-01 00:00:00' - interval '3' day;
 
-SELECT INTERVAL '-1' YEAR + INTERVAL '-12' MONTH FROM nation where n_nationkey = 2;
-SELECT INTERVAL '-1-2' YEAR TO MONTH + INTERVAL '-24' MONTH FROM nation where n_nationkey = 2;
-SELECT INTERVAL '1' HOUR + INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
+SELECT INTERVAL -'1' YEAR + INTERVAL '11' MONTH FROM nation where n_nationkey = 2;
+//SELECT INTERVAL '-1-2' YEAR TO MONTH + INTERVAL '-24' MONTH FROM nation where n_nationkey = 2;
+//SELECT INTERVAL '1' HOUR + INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
