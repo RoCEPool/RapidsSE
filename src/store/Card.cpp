@@ -2793,6 +2793,19 @@ Card_Filter* Card::pSub_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Flat.hpp"
+Card_Flat* Card::pSub_flat(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Flat* p_flat =
+      _pCard_Flat(pFindSubCard(CK_FOLD));
+  return p_flat;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Fold.hpp"
 Card_Fold* Card::pSub_fold(void)
 {

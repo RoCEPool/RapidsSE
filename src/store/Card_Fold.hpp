@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Fold.hpp -- Fold (delineates the two halves of the flattening)        */
+/* Card_Fold.hpp -- Fold (delineates the two halves during flattening)        */
 /*============================================================================*/
 #pragma once
 
@@ -17,6 +17,7 @@ namespace STORE
    ~Card_Fold(void) noexcept(false);
 
     static void vBump_where_BaseOn_foldExpr(CardIter* pCI);
+    static void vMorph_to_flat(CardIter* pCI);
 
     void vBump_Rightwards(CardIter* pCI, i8 nBumpBy);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Fold.cpp -- old (delineates the two halves of the flattening)         */
+/* Card_Fold.cpp -- old (delineates the two halves during flattening)         */
 /*============================================================================*/
 
 #include "Card_Fold.hpp"
@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Fold,CK_FOLD)
+__pCastFunction_Card(STORE,Card_Fold,CK_FLAT)
 __aNewFunction(Card_Fold,CN_CARD)
 __vDeleteFunction(Card_Fold,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Fold,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Fold::Card_Fold(void)
-: Card(CK_FOLD)
+: Card(CK_FLAT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -83,6 +83,18 @@ void Card_Fold::vBump_where_BaseOn_foldExpr(CardIter* pCI)
 
   pCI->G.p_fold->Y_vSet(P_BumpedRight,nBumpRight);
   pCI->G.p_fold->Y_vCut(P_BumpRight);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Fold::vMorph_to_flat(CardIter* pCI)
+{
+  _static_
+
+  pCI->vRestart();
+  while (pCI->G_bEachMain(CK_FOLD))
+    pCI->G.p_fold->vCard(CK_FLAT);
 }
 
 /*----------------------------------------------------------------------------*/

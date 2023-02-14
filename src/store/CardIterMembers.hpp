@@ -91,6 +91,7 @@ namespace STORE
     Card_Expr *             p_expr;
     Card_ExprList *         p_exprList;
     Card_Filter *           p_filter;
+    Card_Flat *             p_flat;
     Card_Fold *             p_fold;
     Card_FoldElist *        p_foldElist;
     Card_From *             p_from;
@@ -135,7 +136,7 @@ namespace STORE
     Card_OrdAgg *           p_ordAgg;
     Card_OrdElmOdn *        p_ordElmOdn;
     Card_Order *            p_order;
-    Card_OuterColNm *            p_param;
+    Card_OuterColNm *       p_outerColNm;
     Card_ParamList *        p_paramList;
     Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;
@@ -159,7 +160,7 @@ namespace STORE
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
     Card_StmCol *           p_stmCol;
-     Card_StmColNm *         p_stmColNm;
+    Card_StmColNm *         p_stmColNm;
     Card_StmColOdn *        p_stmColOdn;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;

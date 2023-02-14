@@ -57,6 +57,7 @@ namespace STORE
   class Card_ExprList;
 
   class Card_Filter;
+  class Card_Flat;
   class Card_Fold;
   class Card_FoldElist;
   class Card_From;
@@ -498,6 +499,7 @@ namespace STORE
     Card_Expr*          pSub_expr(void);
     Card_ExprList*      pSub_exprList(void);
     Card_Filter*        pSub_filter(void);
+    Card_Flat*          pSub_flat(void);
     Card_Fold*          pSub_fold(void);
     Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);

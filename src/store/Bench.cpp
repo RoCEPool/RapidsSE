@@ -206,12 +206,15 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // things after sub-queries
+  // things after flattening the sub-queries of this outer query
+
   vGroup_FinalConversions();
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
   vGroup_JoinOrdering();
+
+  //Card_Fold::vMorph_to_flat(m_pCI);
 
   vDebugPoint();
 }

@@ -425,6 +425,7 @@ void CardIter::G_vClearMembers(void)
   G.p_expr             = nullptr;
   G.p_exprList         = nullptr;
   G.p_filter           = nullptr;
+  G.p_flat             = nullptr;
   G.p_fold             = nullptr;
   G.p_foldElist        = nullptr;
   G.p_from             = nullptr;
@@ -469,7 +470,7 @@ void CardIter::G_vClearMembers(void)
   G.p_ordAgg           = nullptr;
   G.p_ordElmOdn        = nullptr;
   G.p_order            = nullptr;
-  G.p_param            = nullptr;
+  G.p_outerColNm            = nullptr;
   G.p_paramList        = nullptr;
   G.p_partition        = nullptr;
   G.p_permutation      = nullptr;
@@ -1598,6 +1599,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_EXPR:             return G.p_expr;
     case CK_EXPRLIST:         return G.p_exprList;
     case CK_FILTER:           return G.p_filter;
+    case CK_FLAT:             return G.p_flat;
     case CK_FOLD:             return G.p_fold;
     case CK_FOLDELIST:        return G.p_foldElist;
     case CK_FROM:             return G.p_from;
@@ -1642,7 +1644,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_ORDAGG:           return G.p_ordAgg;
     case CK_ORDELMODN:        return G.p_ordElmOdn;
     case CK_ORDER:            return G.p_order;
-    case CK_OUTERCOLNM:            return G.p_param;
+    case CK_OUTERCOLNM:            return G.p_outerColNm;
     case CK_PARAMLIST:        return G.p_paramList;
     case CK_PARTITION:        return G.p_partition;
     case CK_PERMUTATION:      return G.p_permutation;
@@ -1990,6 +1992,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_EXPRLIST:         return "G.p_exprList"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
+    case CK_FLAT:             return "G.p_flat"_Stz;
     case CK_FOLD:             return "G.p_fold"_Stz;
     case CK_FOLDELIST:        return "G.p_foldElist"_Stz;
     case CK_FROM:             return "G.p_from"_Stz;
@@ -2033,7 +2036,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
     case CK_ORDELMODN:        return "G.p_ordElmOdn"_Stz;
     case CK_ORDER:            return "G.p_order"_Stz;
-    case CK_OUTERCOLNM:            return "G.p_param"_Stz;
+    case CK_OUTERCOLNM:            return "G.p_outerColNm"_Stz;
     case CK_PARAMLIST:        return "G.p_paramList"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
@@ -3214,6 +3217,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_EXPRLIST:         *((Card**)&G.p_exprList)         = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
     case CK_FROM:             *((Card**)&G.p_from)             = pCard; break;
@@ -3258,7 +3262,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard; break;
     case CK_ORDELMODN:        *((Card**)&G.p_ordElmOdn)        = pCard; break;
     case CK_ORDER:            *((Card**)&G.p_order)            = pCard; break;
-    case CK_OUTERCOLNM: *((Card**)&G.p_param)            = pCard; break;
+    case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
     case CK_PARAMLIST:        *((Card**)&G.p_paramList)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
