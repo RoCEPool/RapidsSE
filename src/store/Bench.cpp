@@ -6,7 +6,7 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
-#include "Card_AbsJoin.hpp"
+#include "Smoother.hpp"
 
 #include "Error.hpp"
 

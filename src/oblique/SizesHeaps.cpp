@@ -248,6 +248,7 @@
 #include "PpySet.hpp"
 #include "Scope.hpp"
 #include "Fold_W_A_C_ro.hpp"
+#include "Smoother.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -579,6 +580,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SMALLPERSISTENT, sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
   { CN_SMALLTRANSIENT,  sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
   { CN_SMALLVIRTUAL,    sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
+  { CN_SMOOTHER,        sizeof(Smoother),           HT_T_TINY    , FILL },
   { CN_SNBCD,           sizeof(SN_Bcd),             HT_INVALID   , FILL },
   { CN_SNBOL,           sizeof(SN_Bol),             HT_INVALID   , FILL },
   { CN_SNDTE,                    sizeof(SN_Dte),             HT_INVALID   ,FILL },
