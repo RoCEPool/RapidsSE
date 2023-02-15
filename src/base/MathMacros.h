@@ -576,6 +576,39 @@
     *paW++ = wIvlResult.m_iAsI8;                                           \
   }
 
+#define _SUB_IVLIVL(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+                                                                           \
+      iArg3 = iArg1 - iArg2;                                               \
+      if (iArg3 < 0) {                                                     \
+        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
+      }                                                                    \
+      else {                                                               \
+         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                   \
+      }                                                                    \
+      wIvlResult.m_xIvl.m_eType =                                          \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+    }                                                                      \
+    *paW++ = wIvlResult.m_iAsI8;                                           \
+  }
 
 // ignore NULLS
 //

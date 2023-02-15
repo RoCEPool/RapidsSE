@@ -63,6 +63,7 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_BCDBCD,           // bcd - bcd
   /*  */ FM_SUB_FLTFLT,           // flt - flt
   /*  */ FM_SUB_INTINT,           // int - int
+  /*  */ FM_SUB_IVLIVL,           // ivl - ivl
   /*  */ FM_SUB_UNKANY,           // unk + any
 
   // sum
@@ -397,6 +398,7 @@ static Stz* aFM[]
   /*  */ "_SUB_BCDBCD"_Stz,
   /*  */ "_SUB_FLTFLT"_Stz,
   /*  */ "_SUB_INTINT"_Stz,
+  /*  */ "_SUB_IVLIVL"_Stz,
   /*  */ "_SUB_UNKANY"_Stz,
 
   // sum
