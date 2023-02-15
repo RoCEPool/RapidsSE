@@ -52,11 +52,13 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
   Ivl wIvy{IV_YEAR};
   wIvy = iIvy;
 
-  u8 uYears = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
-  u8 uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
+  u8 uYears;
+  u8 uMonths;
 
   switch(wIvy.T.m_xIvl.m_eType) {
     case IV_YEAR:
+      uYears = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
+
       if (wIvy.bIsNeg() && uYears)
         StrLib::vSprint(m_caResult,
                         (Stz *) "INTERVAL -'%lld' %s",
@@ -68,7 +70,10 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
                         uYears,
                         aIV_field[wIvy.T.m_xIvl.m_eType]);
       break;
+
     case IV_MONTH:
+      uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
+
       if (wIvy.bIsNeg() && uMonths)
         StrLib::vSprint(m_caResult,
                         (Stz *) "INTERVAL -'%lld' %s",
@@ -80,7 +85,11 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
                         uMonths,
                         aIV_field[wIvy.T.m_xIvl.m_eType]);
       break;
+
     case IV_YEAR_TO_MONTH:
+      uYears = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
+      uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
+
       if (wIvy.bIsNeg() && (uYears || uMonths))
         StrLib::vSprint(m_caResult,
                         (Stz *) "INTERVAL -'%lld-%lld' YEAR TO MONTH",
@@ -94,6 +103,7 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
                         uMonths,
                         aIV_field[wIvy.T.m_xIvl.m_eType]);
       break;
+
     default:
       NEVER_REACH;
   }
