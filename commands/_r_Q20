@@ -20,11 +20,11 @@ select s_name, // board[0]
        s_address
   from Supplier, // tblSyn a
        Nation    // tblSyn b
- where s_suppkey in ( /* Q20_1 -- W_L_NC_I board[1] */
+ where s_suppkey in ( /* Q20_1 -- 52_W_L_NC_I board[1] */
                       select ps_suppkey // tblSyn c
                         from PartSupp
                        where
-                             ps_partkey in ( /* Q20_1_1 -- 32_W_L_NC_I board[3] */
+                             ps_partkey in ( /* Q20_1_1 -- 52_W_L_NC_I board[3] */
                                              select p_partkey // tblSyn e
                                                from Part
                                               where p_name like 'forest%'

@@ -229,9 +229,9 @@ static Stz* aCK[]
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
   /* */ "CK_EXPRLIST"_Stz,     // CK_EXPRLIST
 
-  /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
+  /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
   /* */ "CK_FOLDELIST"_Stz,    // CK_FOLDELIST
   /* */ "CK_FROM"_Stz,         // CK_FROM

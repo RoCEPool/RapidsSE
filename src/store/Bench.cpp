@@ -842,6 +842,8 @@ void Bench::vFlatten_10_F(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // F
   // push a (from) sub-query before the main-query
   // as an op-sequence
@@ -900,6 +902,8 @@ void Bench::vFlatten_10_F(void)
 void Bench::vFlatten_24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // W A C ro
   // push a (single-value aggregate correlated ro) sub-query before the main-query
@@ -1125,6 +1129,8 @@ void Bench::vFlatten_32_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // W A NC I
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
   // as an aggregation-fan (projecting a single aggregated value)
@@ -1244,6 +1250,8 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // W A NC ro
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
   // as an aggregation-fan (projecting a single aggregated value)
@@ -1326,6 +1334,8 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 void Bench::vFlatten_40_W_L_C_E(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // W L C E
   // push a (linear correlated exists) sub-query before the main-query
@@ -1486,6 +1496,8 @@ void Bench::vFlatten_53_W_L_NC_NI(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // W L NC NI
   // push a (linear non-correlated not in) sub-query before the main-query
   // as a keyExists
@@ -1535,6 +1547,8 @@ void Bench::vFlatten_53_W_L_NC_NI(void)
 void Bench::vFlatten_74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // H A NC ro (refer: Q11)
   // 1) the subquery produces a single result, such as avg(col)
