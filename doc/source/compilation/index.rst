@@ -69,7 +69,7 @@ Install the necessary tools for generating the documentation:
 
 .. code:: bash
 
-	 sudo yum install python3
+	 sudo yum install python3 java-11-openjdk
 	 python3 -m pip install --user -U sphinx
 
 **Optional:** install the necessary libraries for generating documentation in
@@ -103,7 +103,7 @@ Install the necessary tools for generating the documentation:
 
 .. code:: bash
 
-   sudo yum install python3
+   sudo yum install python3 java-11-openjdk
    python3 -m pip install --user -U sphinx
 
 **Optional:** install the necessary libraries for generating documentation in
@@ -138,7 +138,7 @@ Install the necessary tools for generating the documentation:
 
 .. code:: bash
 
-   sudo yum install python3
+   sudo yum install python3 openjdk-11-jdk-headless
    python3 -m pip install --user -U sphinx
 
 **Optional:** install the necessary libraries for generating documentation in
