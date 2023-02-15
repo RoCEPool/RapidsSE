@@ -238,13 +238,13 @@ void SubQuery::vDump(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("Subquery %p Board %lld (%s) %s ; Caller %lld %s %s %s (%lld nCorrCols)\n"_Stz,
+  vTrace("SubQuery %p Board %lld (%s) Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          this,
          m_pBoard->i_Board(),
          m_pBoard->szBoardNm(),
-         aQD[m_eDisposition],
          m_i_Caller,
          aQC[m_eClause],
+         aQD[m_eDisposition],
          aQO[m_eCalcOp],
          aRO[m_eRelnOp],
          m_nCorrCols

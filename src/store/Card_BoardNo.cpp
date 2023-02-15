@@ -1,35 +1,35 @@
 /*============================================================================*/
-/* Card_ParamList.cpp -- Parameter List                                       */
+/* Card_BoardNo.cpp -- Board Number                                           */
 /*============================================================================*/
 
-#include "Card_ParamList.hpp"
+#include "Card_BoardNo.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_ParamList, CK_PARAMLIST)
-__aNewFunction(Card_ParamList, CN_CARD)
-__vDeleteFunction(Card_ParamList, CN_CARD)
+__pCastFunction_Card(STORE,Card_BoardNo,CK_BOARDNO)
+__aNewFunction(Card_BoardNo,CN_CARD)
+__vDeleteFunction(Card_BoardNo,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ParamList::Card_ParamList(void)
-: Card(CK_PARAMLIST)
+Card_BoardNo::Card_BoardNo(void)
+: Card(CK_BOARDNO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ParamList::~Card_ParamList(void) noexcept(false)
+Card_BoardNo::~Card_BoardNo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

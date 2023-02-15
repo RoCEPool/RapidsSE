@@ -66,6 +66,7 @@ namespace STORE
     Card_Agg *              p_agg;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
+    Card_BoardNo *          p_boardNo;
     Card_BolPred *          p_bolPred;
     Card_BoolCalc *         p_boolCalc;
     Card_Bound *            p_bound;
@@ -137,7 +138,7 @@ namespace STORE
     Card_OrdElmOdn *        p_ordElmOdn;
     Card_Order *            p_order;
     Card_OuterColNm *       p_outerColNm;
-    Card_ParamList *        p_paramList;
+    Card_Correlation *        p_paramList;
     Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;
     Card_Permutation *      p_permutation_low;

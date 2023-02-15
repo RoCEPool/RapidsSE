@@ -179,6 +179,21 @@ Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
+Card_Term* Card_PRED::pGetFirstTerm_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_TERM))
+    if (xCI.G.p_term->bIsTblColOdn())
+      return xCI.G.p_term;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a term                                                                 */
+/*----------------------------------------------------------------------------*/
 Card_Term* Card_PRED::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

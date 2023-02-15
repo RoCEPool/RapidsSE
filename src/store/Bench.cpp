@@ -6,7 +6,7 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
-#include "Card_AbsJoin.hpp"
+#include "Smoother.hpp"
 
 #include "Error.hpp"
 
@@ -214,7 +214,10 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   vGroup_IndexBounds();
   vGroup_JoinOrdering();
 
-  //Card_Fold::vMorph_to_flat(m_pCI);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sub-query has been flattened
+
+  Card_Fold::vMorph_to_flat(m_pCI);
 
   vDebugPoint();
 }
@@ -783,8 +786,8 @@ void Bench::vTransform_FlattenByDecisionTree(void)
       } else {                                                                  /* 50*/
              if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I();
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_join();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_join();
         else                                         /* W_L_NC_ro        */ NEVER_REACH
       }
     }
@@ -838,6 +841,8 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 void Bench::vFlatten_10_F(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // F
   // push a (from) sub-query before the main-query
@@ -898,6 +903,8 @@ void Bench::vFlatten_24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // W A C ro
   // push a (single-value aggregate correlated ro) sub-query before the main-query
   // as an aggregation-fan (projecting key-of-correlation and aggregated value)
@@ -938,6 +945,7 @@ void Bench::vFlatten_24_W_A_C_ro(void)
   m_pCI->G_vNewMember(CK_FOLD,"W_A_C_ro"_Stz);
   m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get copy of sq and push before mq
 
@@ -946,6 +954,8 @@ void Bench::vFlatten_24_W_A_C_ro(void)
     vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
     NEVER_REACH
   }
+
+  i8 i_SqBoardNo = m_pCI->G.pBoard->i_Board();
 
   m_pCI->m_pParamList = m_pCI->G.pDeck->pSub_paramList();
   m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(1);
@@ -956,6 +966,9 @@ void Bench::vFlatten_24_W_A_C_ro(void)
 
   // x) pop back to mq
   m_pCI->G_vPopIter();
+
+  m_pCI->G_vAppendNewChild(m_pCI->G.p_fold,CK_BOARDNO);
+  m_pCI->G.p_boardNo->vValue(i_SqBoardNo);
 
   m_pCI->G.pDeck->vPush(m_pCI->m_pCard_copied);
   m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_copied);
@@ -1122,6 +1135,8 @@ void Bench::vFlatten_32_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // W A NC I
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
   // as an aggregation-fan (projecting a single aggregated value)
@@ -1241,6 +1256,8 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // W A NC ro
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
   // as an aggregation-fan (projecting a single aggregated value)
@@ -1323,6 +1340,8 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 void Bench::vFlatten_40_W_L_C_E(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // W L C E
   // push a (linear correlated exists) sub-query before the main-query
@@ -1469,19 +1488,31 @@ void Bench::vFlatten_40_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vFlatten_52_W_L_NC_I(void)
+void Bench::vFlatten_52_W_L_NC_I_exists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vFlatten_53_W_L_NC_NI();
+  vFlatten_53_W_L_NC_NI_exists();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vFlatten_53_W_L_NC_NI(void)
+void Bench::vFlatten_52_W_L_NC_I_join(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vFlatten_53_W_L_NC_NI_join();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vFlatten_53_W_L_NC_NI_exists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // W L NC NI
   // push a (linear non-correlated not in) sub-query before the main-query
@@ -1498,7 +1529,7 @@ void Bench::vFlatten_53_W_L_NC_NI(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, "((vFlatten_53_W_L_NC_NI))"_Stz);
+  m_pCI->vTransform(__func__, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
@@ -1527,11 +1558,128 @@ void Bench::vFlatten_53_W_L_NC_NI(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vFlatten_53_W_L_NC_NI_join(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // W L NC NI
+  // push a (linear non-correlated not in) sub-query before the main-query
+  // as a keyExists
+  // (refer: Q16)
+
+  /* ARCHETYPE :
+      select count(*)
+        from partsupp, part
+       where PS_PARTKEY = P_PARTKEY
+         and PS_SUPPKEY not in (select S_SUPPKEY
+                                  from supplier
+                                 where s_comment like '%Customer%Complaints%')
+      ;
+ */
+
+  m_pCI->vTransform(__func__, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of exists subQuery
+
+  vFold_in_as_join("W_L_NC_NI"_Stz);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing
+
+  m_pCI->G_vRestart();
+  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+
+  Card_Projection* p_projection_project = nullptr;
+
+  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_PROJECTION)) {
+
+    p_projection_project = _pCard_Projection(m_pCI->G.p_projection->pDupCardAndSubCards());
+
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+    if (CK_FOLD == m_pCI->G.e_MainCard)
+      break;
+    if (Card_Projection* p_projection_carry = m_pCI->G.p_MainCard->pSub_projection())
+      m_pCI->G.p_projection = p_projection_carry;
+  }
+
+  RASSERT(m_pCI->G_bEachMain(CK_TABLE));
+
+  m_pCI->G.p_table->vDump();
+
+  m_pCI->G.p_table->vSmooth(m_pCI);
+
+  m_pCI->G.p_project = new Card_Project(CK_PROJECT);
+
+  m_pCI->G.p_level = new Card_Level(AL_PARTITION);
+  m_pCI->G.p_project->vAppend(m_pCI->G.p_level);
+  m_pCI->G.p_project->vAppend(p_projection_project);
+
+  m_pCI->G_vInsertAfter(m_pCI->G.p_project,m_pCI->G.p_table);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  Card_Table* p_table_joining = m_pCI->G.p_table;
+
+  Card_PRED* p_pred_joining = nullptr;
+
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    m_pCI->G.p_where->vDump();
+
+    if (p_pred_joining = m_pCI->G.p_boolCalc->pFindMarkedPred(MARK_AT)) {
+      m_pCI->G.p_boolCalc->vRemovePred(p_pred_joining);
+
+      p_table_joining->vAddPredToTableFilter(m_pCI,p_pred_joining);
+
+      // todo: HACK!
+      p_pred_joining->vDeleteAll();
+
+      p_pred_joining->vCard(CK_CMPPRED);
+      p_pred_joining->vValue("=="_Stz);
+      p_pred_joining->vAppend(new Card_Term("a.1"_Stz));
+      p_pred_joining->vAppend(new Card_Term("$1"_Stz));
+
+      break;
+    }
+  }
+
+
+  m_pCI->vPrintBoard(__LINE__);
+
+
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+//    m_pCI->G.p_where->Y_vSet(P_Smoothed);
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//    if (0 == m_pCI->G.p_boolCalc->nChildCards())
+//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+
+  vIsFlat(true);
+  m_pCI->G.pDeck->vClearMarksRecursive();
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Folding a non-correlated aggregate subquery (via having clause)            */
 /*----------------------------------------------------------------------------*/
 void Bench::vFlatten_74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // H A NC ro (refer: Q11)
   // 1) the subquery produces a single result, such as avg(col)
@@ -1700,6 +1848,8 @@ void Bench::vFold_exists(Stz* szFold)
     NEVER_REACH
   }
 
+  i8 i_SqBoardNo = m_pCI->G.pBoard->i_Board();
+
   // x) pull <where> into <table>/<filter>
 
 
@@ -1731,6 +1881,10 @@ void Bench::vFold_exists(Stz* szFold)
 
   m_pCI->G_vNewMember(CK_FOLD,szFold);
   m_pCI->G_vInsertBefore(m_pCI->G.p_fold,m_pCI->G.p_where);
+
+  m_pCI->G_vAppendNewChild(m_pCI->G.p_fold,CK_BOARDNO);
+  m_pCI->G.p_boardNo->vValue(i_SqBoardNo);
+
 
   // W L NC NI
   //                   //
@@ -1848,6 +2002,78 @@ void Bench::vFold_from(Stz* szFold)
     m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(m_pCI);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fold a sub-query                                                           */
+/*----------------------------------------------------------------------------*/
+void Bench::vFold_in_as_join(Stz* szFold)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (m_pCI->m_bRecursiveModel) {
+      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+    else {
+      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
+        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+        NEVER_REACH
+      }
+    }
+  }
+  vTrace(">>>>>>>>> Found vFold_in_as_join call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+
+  // 3) get copy of sq
+  m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
+
+  // 4) pop back to mq
+  m_pCI->G_vPopIter();
+
+  // 5) add <fold> (before MQ)
+  m_pCI->G_vNewMember(CK_FOLD,szFold);
+  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
+
+  // 6) copy up sq (add before fold)
+  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
+  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_yanked);
+  DELETE_CARD(m_pCI->m_pCard_yanked);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+
+    if (m_pCI->G.p_MainCard->pSub_projection())
+      m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection();
+
+    if (m_pCI->G_bIsNextMain(CK_FOLD))
+      break;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 7) derive the fold (SQ result) expr
+  m_pCI->m_pExpr_fold = nullptr;
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMain(CK_FOLD)) {
+    m_pCI->G.i_FoldCard = m_pCI->G.i_MainCard;
+    Board::vDerive_foldExpr_H_A_NC_ro(m_pCI);
+    m_pCI->m_pExpr_fold = m_pCI->G.p_expr;
+  }
+  m_pCI->vPrintBoard(__LINE__);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1986,7 +2212,7 @@ void Bench::vTransform_OuterQueryAnalysis(void)
 
     m_pCI->G_vRestart();
     i8 nParams = 0;
-    while (m_pCI->G_bEachMain(CK_PARAMLIST))
+    while (m_pCI->G_bEachMain(CK_CORRELATION))
        nParams++;
     pOuterQuery->vCorrCols(nParams);
 

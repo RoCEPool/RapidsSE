@@ -27,6 +27,7 @@ namespace STORE
   class Card_AndPred;
   class Card_As;
 
+  class Card_BoardNo;
   class Card_BolPred;
   class Card_BoolCalc;
   class Card_Bound;
@@ -114,7 +115,7 @@ namespace STORE
   class Card_ObyElist;
 
   class Card_OuterColNm;
-  class Card_ParamList;
+  class Card_Correlation;
   class Card_PRED;
   class Card_Project;
   class Card_Projection;
@@ -482,6 +483,7 @@ namespace STORE
     Card_Agg*           pSub_agg(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
+    Card_BoardNo*       pSub_boardNo(void);
     Card_BolPred*       pSub_bolPred(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
@@ -536,7 +538,7 @@ namespace STORE
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_OuterColNm*    pSub_outerColNm(void);
-    Card_ParamList*     pSub_paramList(void);
+    Card_Correlation*     pSub_paramList(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_Reason*        pSub_reason(void);
     Card_RoPred*        pSub_roPred(void);

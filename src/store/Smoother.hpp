@@ -1,23 +1,32 @@
 /*============================================================================*/
-/* Card_ParamList.hpp -- Parameter List                                       */
+/* Smoother.hpp -- Smoother                                                   */
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "BASE.h"
 
 namespace STORE
 {
-  class Card_ParamList : public Card
+  class Smoother : public Object
   {
+  private:
+
+    // must be last
+    Footer m_xFooter;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Card_ParamList(void);
-   ~Card_ParamList(void) noexcept(false);
+    
+    Smoother(void);
+   ~Smoother(void) noexcept(false);
+
+  private:
+    Footer* aFooter(void);
   };
 
-  Card_ParamList* _pCard_ParamList(void* aAddr);
+  Smoother* _pSmoother(void* aAddr);
+
 }
 
 /*============================================================================*/

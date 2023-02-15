@@ -2585,6 +2585,19 @@ Card_As* Card::pSub_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_BoardNo.hpp"
+Card_BoardNo* Card::pSub_boardNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_BoardNo* p_boardNo =
+      _pCard_BoardNo(pFindSubCard(CK_BOARDNO));
+  return p_boardNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_BolPred.hpp"
 Card_BolPred* Card::pSub_bolPred(void)
 {
@@ -3223,13 +3236,13 @@ Card_OuterColNm* Card::pSub_outerColNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_ParamList.hpp"
-Card_ParamList* Card::pSub_paramList(void)
+#include "Card_Correlation.hpp"
+Card_Correlation* Card::pSub_paramList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_ParamList* p_paramList =
-      _pCard_ParamList(pFindSubCard(CK_PARAMLIST));
+  Card_Correlation* p_paramList =
+      _pCard_Correlation(pFindSubCard(CK_CORRELATION));
   return p_paramList;
 }
 

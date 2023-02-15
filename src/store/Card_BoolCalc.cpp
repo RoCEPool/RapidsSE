@@ -229,6 +229,22 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find predicate with given mark                                             */
+/*----------------------------------------------------------------------------*/
+Card_PRED* Card_BoolCalc::pFindMarkedPred(char cWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCR(this);
+  while (Card_PRED *p_pred = (Card_PRED *) xCR.pRecurseEach()) {
+    if (cWithMark == p_pred->cMark1())
+      return p_pred;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <pred> which could be moved               */
 /*----------------------------------------------------------------------------*/
 Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
@@ -396,7 +412,7 @@ bool Card_BoolCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* resolve the parameters terms in given boolCalc                             */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vSubstitute_Parameters(Card_ParamList* p_paramList)
+void Card_BoolCalc::vSubstitute_Parameters(Card_Correlation* p_paramList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

@@ -14,6 +14,7 @@ enum eCK // card kind
   /* */ CK_ANDPRED,
   /* */ CK_AS,
 
+  /* */ CK_BOARDNO,
   /* */ CK_BOLPRED,
   /* */ CK_BOOLCALC,
   /* */ CK_BOUND,
@@ -33,6 +34,7 @@ enum eCK // card kind
   /* */ CK_COPTNJOINLIST,
   /* */ CK_COPTNPRED,
   /* */ CK_COPTNPREDLIST,
+  /* */ CK_CORRELATION,
   /* */ CK_CROSSJOIN,
   /* */ CK_CROSSPTNJOIN,
   /* */ CK_CROSSPTNJOINLIST,
@@ -110,7 +112,6 @@ enum eCK // card kind
   /* */ CK_ORPRED,
   /* */ CK_OUTERCOLNM,
 
-  /* */ CK_PARAMLIST,
   /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
   /* */ CK_PMZWHERE,
@@ -195,6 +196,7 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
+  /* */ "CK_BOARDNO"_Stz,      // CK_BOARDNO
   /* */ "CK_BOLPRED"_Stz,      // CK_BOLPRED
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
@@ -214,6 +216,7 @@ static Stz* aCK[]
   /* */ "CK_COPTNJOINLIST"_Stz,// CK_COPTNJOINLIST
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
   /* */ "CK_COPTNPREDLIST"_Stz,// CK_COPTNPREDLIST
+  /* */ "CK_CORRELATION"_Stz,    // CK_CORRELATION
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
   /* */ "CK_CROSSPTNJOIN"_Stz,     // CK_CROSSPTNJOIN
   /* */ "CK_CROSSPTNJOINLIST"_Stz, // CK_CROSSPTNJOINLIST
@@ -229,9 +232,9 @@ static Stz* aCK[]
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
   /* */ "CK_EXPRLIST"_Stz,     // CK_EXPRLIST
 
-  /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
+  /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
   /* */ "CK_FOLDELIST"_Stz,    // CK_FOLDELIST
   /* */ "CK_FROM"_Stz,         // CK_FROM
@@ -291,7 +294,6 @@ static Stz* aCK[]
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
 
-  /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
   /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PMZWHERE"_Stz,     // CK_PMZWHERE
@@ -375,6 +377,7 @@ static Stz* aCK_short[]
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
 
+  /* */ "boardNo"_Stz,         // CK_BOARDNO
   /* */ "bolPred"_Stz,         // CK_BOLPRED
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
   /* */ "bound"_Stz,           // CK_BOUND
@@ -394,6 +397,7 @@ static Stz* aCK_short[]
   /* */ "coPtnJoinList"_Stz,   // CK_COPTNJOINLIST
   /* */ "coPtnPred"_Stz,       // CK_COPTNPRED
   /* */ "coPtnPredList"_Stz,   // CK_COPTNPREDLIST
+  /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
   /* */ "crossPtnJoin"_Stz,    // CK_CROSSPTNJOIN
   /* */ "crossPtnJoinList"_Stz,// CK_CROSSPTNJOINLIST
@@ -471,7 +475,6 @@ static Stz* aCK_short[]
   /* */ "orPred"_Stz,          // CK_ORPRED
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
 
-  /* */ "paramList"_Stz,       // CK_PARAMLIST
   /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "pmzWhere"_Stz,        // CK_PMZWHERE
@@ -556,6 +559,7 @@ static Stz* aCK_notation[]
     /* */ "aP"_Stz,           // CK_ANDPRED
     /* */ "as"_Stz,           // CK_AS
 
+    /* */ "bdNo"_Stz,         // CK_BOARDNO
     /* */ "bP"_Stz,           // CK_BOLPRED
     /* */ "bC"_Stz,           // CK_BOOLCALC
     /* */ "b"_Stz,            // CK_BOUNDS
@@ -574,6 +578,7 @@ static Stz* aCK_notation[]
     /* */ "cPJL"_Stz,         // CK_COPTNJOINLIST
     /* */ "cPP"_Stz,          // CK_COPTNPRED
     /* */ "cPPL"_Stz,         // CK_COPTNPREDLIST
+    /* */ "corL"_Stz,         // CK_CORRELATION
     /* */ "cJ"_Stz,           // CK_CROSSJOIN
     /* */ "crPJ"_Stz,         // CK_CROSSPTNJOIN
     /* */ "crPJL"_Stz,        // CK_CROSSPTNJOINLIST
@@ -651,7 +656,6 @@ static Stz* aCK_notation[]
     /* */ "oP"_Stz,           // CK_ORPRED
     /* */ "outCol"_Stz,       // CK_OUTERCOLNM
 
-    /* */ "pL"_Stz,           // CK_PARAMLIST
     /* */ "prt"_Stz,          // CK_PARTITION
     /* */ "pmut"_Stz,         // CK_PERMUTATION
     /* */ "pW"_Stz,           // CK_PMZWHERE

@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card_PRED.hpp"
-#include "Card_ParamList.hpp"
+#include "Card_Correlation.hpp"
 
 namespace STORE
 {
@@ -22,13 +22,14 @@ namespace STORE
     void vCopyMarkedPredToTable(Card_Deck* p_deck);
     void vCullPred(char cWithMark);
     bool bCullPred(Card_PRED* p_pred, char cWithMark);
+    Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
     void vMarkWrt_table(Card_Deck* p_deck);
     void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_PRED* p_PRED);
     void vPushPred(Card_PRED* p_pred_toBeAdded);
     void vRemovePred(Card_PRED* p_pred);
     Card_PRED* pRootPred(void);
-    void vSubstitute_Parameters(Card_ParamList* p_paramList);
+    void vSubstitute_Parameters(Card_Correlation* p_paramList);
     bool bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked);
     bool bYank_PRED(char cWithMark, Card* p_test, Card_PRED*& p_pred_yanked);
 
