@@ -1,0 +1,245 @@
+/*----------------------------------------------------------------------------*/
+/* Arithmetic tests                                                           */
+/* (mostly for difficult types)                                               */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+trackmemory;
+success
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+load nation "../DATA/TPCH/nation.tbl" ;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval + Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// YM interval arithmetic /1 (same type)
+SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '3' YEAR)
+
+// YM interval arithmetic /2 (same type, with negative)
+SELECT INTERVAL '1' YEAR + INTERVAL -'2' YEAR FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'1' YEAR)
+         
+// YM interval arithmetic /3 (mixed types)
+SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '1-2' YEAR TO MONTH)
+
+// DT interval arithmetic of same type /1
+SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '3' MINUTE)
+
+// DT interval arithmetic of same type /2
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '5:7:9' HOUR TO SECOND)
+
+// DT interval arithmetic of mixed types /1
+SELECT INTERVAL '1' MINUTE + INTERVAL '2' SECOND FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '1:2' MINUTE TO SECOND)
+         
+// DT interval arithmetic of mixed types /2
+SELECT INTERVAL '1 2' DAY TO HOUR + INTERVAL '3' SECOND FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '1 2:0:3' DAY TO SECOND)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval - Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// YM interval arithmetic /1 (same type)
+SELECT INTERVAL '1' YEAR - INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'1' YEAR)
+
+// YM interval arithmetic /2 (same type, with negative)
+SELECT INTERVAL '1' YEAR - INTERVAL -'2' YEAR FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '3' YEAR)
+
+// YM interval arithmetic /3 (mixed types)
+SELECT INTERVAL '1' YEAR - INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '0-10' YEAR TO MONTH)
+
+// DT interval arithmetic of same type /1
+SELECT INTERVAL '1' MINUTE - INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'1' MINUTE)
+
+// DT interval arithmetic of same type /2
+SELECT INTERVAL '1:2:3' HOUR TO SECOND - INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'3:3:3' HOUR TO SECOND)
+
+// DT interval arithmetic of mixed types /1
+SELECT INTERVAL '1' MINUTE - INTERVAL '2' SECOND FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '0:58' MINUTE TO SECOND)
+
+// DT interval arithmetic of mixed types /2
+SELECT INTERVAL '1 2' DAY TO HOUR - INTERVAL '3' SECOND FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '1 1:59:57' DAY TO SECOND)
+
+
+
+
+
+
+/*******************************************************************
+IN PROGRESS
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval * Integer
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval multiplication /1 (integer)
+SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation where n_nationkey = 2;
+rows:
+
+// Interval multiplication /4 (integer first)
+SELECT 2 * INTERVAL '1' YEAR FROM nation where n_nationkey = 2;
+rows:
+
+
+// Interval division /1 (integer)
+SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM nation where n_nationkey = 2;
+rows:
+
+
+// Date subtraction gives an interval days
+SELECT DATE '2000-03-31' - DATE '2000-02-28' FROM nation where n_nationkey = 2;
+rows:
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Time - Time
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Time subtraction
+SELECT TIME '14:30:55' - TIME '04:30:56' FROM nation where n_nationkey = 2;
+rows:
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Timestamp - Timestamp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Timestamp subtraction
+SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+rows:
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Date - Timestamp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Subtract dates and timestamp
+SELECT DATE '2000-03-31' - TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+rows:
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval + Date
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval YM + date
+SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM nation where n_nationkey = 2;
+rows:
+
+// Date + Interval YM
+SELECT DATE '2000-02-28' + INTERVAL '1-2' YEAR TO MONTH FROM nation where n_nationkey = 2;
+rows:
+         
+// Interval DT + date
+SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM nation where n_nationkey = 2;
+rows:
+
+// Date + Interval DT
+SELECT DATE '2000-02-28' + INTERVAL '1' DAY FROM nation where n_nationkey = 2;
+rows:
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval + time
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval HMS + time
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation where n_nationkey = 2;
+rows:
+         
+// Time + Interval HMS
+SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM nation where n_nationkey = 2;
+rows:
+         
+// Time + Interval HMS (with fractional seconds)
+SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM nation where n_nationkey = 2;
+rows:
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval + Timestamp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval YM + timestamp
+SELECT INTERVAL '1-2' YEAR TO MONTH + TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+rows:
+
+// Timestamp + Interval YM
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM nation where n_nationkey = 2;
+rows:
+
+// Interval DT + timestamp
+SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+rows:
+
+// Timestamp + Interval DT
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval negation
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval negation /1
+SELECT -INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+
+// Interval negation /2
+SELECT -INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM nation;
+rows:
+
+*/
+
+drop table nation;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}
