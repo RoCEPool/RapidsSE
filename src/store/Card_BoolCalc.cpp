@@ -396,7 +396,7 @@ bool Card_BoolCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* resolve the parameters terms in given boolCalc                             */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vSubstitute_Parameters(Card_ParamList* p_paramList)
+void Card_BoolCalc::vSubstitute_Parameters(Card_Correlation* p_paramList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

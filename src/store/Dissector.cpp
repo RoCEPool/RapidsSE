@@ -161,7 +161,7 @@ void Dissector::vStage(i8 i_StageSpec)
   if (1 == i_StageSpec) {
     ParamsSpec* pParamsSpec = m_pDeckSpec->pParamsSpec();
     if (pParamsSpec) {
-      Card_ParamList* p_paramList = new Card_ParamList;
+      Card_Correlation* p_paramList = new Card_Correlation;
       m_pBoard->pDeck()->vAppend(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');

@@ -114,7 +114,7 @@ namespace STORE
   class Card_ObyElist;
 
   class Card_OuterColNm;
-  class Card_ParamList;
+  class Card_Correlation;
   class Card_PRED;
   class Card_Project;
   class Card_Projection;
@@ -536,7 +536,7 @@ namespace STORE
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_OuterColNm*    pSub_outerColNm(void);
-    Card_ParamList*     pSub_paramList(void);
+    Card_Correlation*     pSub_paramList(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_Reason*        pSub_reason(void);
     Card_RoPred*        pSub_roPred(void);

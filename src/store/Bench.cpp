@@ -2003,7 +2003,7 @@ void Bench::vTransform_OuterQueryAnalysis(void)
 
     m_pCI->G_vRestart();
     i8 nParams = 0;
-    while (m_pCI->G_bEachMain(CK_PARAMLIST))
+    while (m_pCI->G_bEachMain(CK_CORRELATION))
        nParams++;
     pOuterQuery->vCorrCols(nParams);
 

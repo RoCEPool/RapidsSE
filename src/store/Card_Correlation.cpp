@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_ParamList.cpp -- Parameter List                                       */
+/* Card_Correlation.cpp -- Correlation information                            */
 /*============================================================================*/
 
-#include "Card_ParamList.hpp"
+#include "Card_Correlation.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_ParamList, CK_PARAMLIST)
-__aNewFunction(Card_ParamList, CN_CARD)
-__vDeleteFunction(Card_ParamList, CN_CARD)
+__pCastFunction_Card(STORE, Card_Correlation, CK_CORRELATION)
+__aNewFunction(Card_Correlation, CN_CARD)
+__vDeleteFunction(Card_Correlation, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ParamList::Card_ParamList(void)
-: Card(CK_PARAMLIST)
+Card_Correlation::Card_Correlation(void)
+: Card(CK_CORRELATION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -29,7 +29,7 @@ Card_ParamList::Card_ParamList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ParamList::~Card_ParamList(void) noexcept(false)
+Card_Correlation::~Card_Correlation(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -33,6 +33,7 @@ enum eCK // card kind
   /* */ CK_COPTNJOINLIST,
   /* */ CK_COPTNPRED,
   /* */ CK_COPTNPREDLIST,
+  /* */ CK_CORRELATION,
   /* */ CK_CROSSJOIN,
   /* */ CK_CROSSPTNJOIN,
   /* */ CK_CROSSPTNJOINLIST,
@@ -110,7 +111,6 @@ enum eCK // card kind
   /* */ CK_ORPRED,
   /* */ CK_OUTERCOLNM,
 
-  /* */ CK_PARAMLIST,
   /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
   /* */ CK_PMZWHERE,
@@ -214,6 +214,7 @@ static Stz* aCK[]
   /* */ "CK_COPTNJOINLIST"_Stz,// CK_COPTNJOINLIST
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
   /* */ "CK_COPTNPREDLIST"_Stz,// CK_COPTNPREDLIST
+  /* */ "CK_CORRELATION"_Stz,    // CK_CORRELATION
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
   /* */ "CK_CROSSPTNJOIN"_Stz,     // CK_CROSSPTNJOIN
   /* */ "CK_CROSSPTNJOINLIST"_Stz, // CK_CROSSPTNJOINLIST
@@ -291,7 +292,6 @@ static Stz* aCK[]
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
 
-  /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
   /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PMZWHERE"_Stz,     // CK_PMZWHERE
@@ -394,6 +394,7 @@ static Stz* aCK_short[]
   /* */ "coPtnJoinList"_Stz,   // CK_COPTNJOINLIST
   /* */ "coPtnPred"_Stz,       // CK_COPTNPRED
   /* */ "coPtnPredList"_Stz,   // CK_COPTNPREDLIST
+  /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
   /* */ "crossPtnJoin"_Stz,    // CK_CROSSPTNJOIN
   /* */ "crossPtnJoinList"_Stz,// CK_CROSSPTNJOINLIST
@@ -471,7 +472,6 @@ static Stz* aCK_short[]
   /* */ "orPred"_Stz,          // CK_ORPRED
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
 
-  /* */ "paramList"_Stz,       // CK_PARAMLIST
   /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "pmzWhere"_Stz,        // CK_PMZWHERE
@@ -574,6 +574,7 @@ static Stz* aCK_notation[]
     /* */ "cPJL"_Stz,         // CK_COPTNJOINLIST
     /* */ "cPP"_Stz,          // CK_COPTNPRED
     /* */ "cPPL"_Stz,         // CK_COPTNPREDLIST
+    /* */ "corL"_Stz,         // CK_CORRELATION
     /* */ "cJ"_Stz,           // CK_CROSSJOIN
     /* */ "crPJ"_Stz,         // CK_CROSSPTNJOIN
     /* */ "crPJL"_Stz,        // CK_CROSSPTNJOINLIST
@@ -651,7 +652,6 @@ static Stz* aCK_notation[]
     /* */ "oP"_Stz,           // CK_ORPRED
     /* */ "outCol"_Stz,       // CK_OUTERCOLNM
 
-    /* */ "pL"_Stz,           // CK_PARAMLIST
     /* */ "prt"_Stz,          // CK_PARTITION
     /* */ "pmut"_Stz,         // CK_PERMUTATION
     /* */ "pW"_Stz,           // CK_PMZWHERE

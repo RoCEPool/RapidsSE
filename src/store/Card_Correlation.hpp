@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_ParamList.hpp -- Parameter List                                       */
+/* Card_Correlation.hpp -- Correlation information                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_ParamList : public Card
+  class Card_Correlation : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ParamList(void);
-   ~Card_ParamList(void) noexcept(false);
+    Card_Correlation(void);
+   ~Card_Correlation(void) noexcept(false);
   };
 
-  Card_ParamList* _pCard_ParamList(void* aAddr);
+  Card_Correlation* _pCard_Correlation(void* aAddr);
 }
 
 /*============================================================================*/
