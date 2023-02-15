@@ -25,8 +25,12 @@ enum eFM : u2 // function macros
 
   /*  */ FM_ADD_ANYUNK,           // any + unk
   /*  */ FM_ADD_BCDBCD,           // bcd + bcd
+  /*  */ FM_ADD_DTEIVD,           // dte + ivd
+  /*  */ FM_ADD_DTEIVY,           // dte + ivy
   /*  */ FM_ADD_FLTFLT,           // flt + flt
   /*  */ FM_ADD_INTINT,           // int + int
+  /*  */ FM_ADD_IVDDTE,           // ivd + dte
+  /*  */ FM_ADD_IVYDTE,           // ivy + dte
   /*  */ FM_ADD_IVLIVL,           // ivd + ivd
   /*  */ FM_ADD_UNKANY,           // unk + any
 
@@ -360,8 +364,12 @@ static Stz* aFM[]
   // add
   /*  */ "_ADD_ANYUNK"_Stz,
   /*  */ "_ADD_BCDBCD"_Stz,
+  /*  */ "_ADD_DTEIVD"_Stz,
+  /*  */ "_ADD_DTEIVY"_Stz,
   /*  */ "_ADD_FLTFLT"_Stz,
   /*  */ "_ADD_INTINT"_Stz,
+  /*  */ "_ADD_IVDDTE"_Stz,
+  /*  */ "_ADD_IVYDTE"_Stz,
   /*  */ "_ADD_IVLIVL"_Stz,
   /*  */ "_ADD_UNKANY"_Stz,
 

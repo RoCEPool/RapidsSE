@@ -3203,6 +3203,20 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
+    if (pTkn->bSame("INTERVAL_DT"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_IVD);
+      continue;
+    }
+
+    if (pTkn->bSame("INTERVAL_YM"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_IVY);
+      continue;
+    }
+
     if (pTkn->bSame("TIME"_Stz)) {
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
@@ -3834,18 +3848,6 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
     eDM eColType2 = (eDM) pExprType->iPop();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // check the result type on thes stack for interval integer valuse
-    if (pExprType->iPeek(0) == DM_IVD) {
-      eColType1 = DM_IVD;
-      eColType2 = DM_IVD;
-    }
-
-    if (pExprType->iPeek(0) == DM_IVY) {
-      eColType1 = DM_IVY;
-      eColType2 = DM_IVY;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the arithmetic operator
     if (pTkn->bSame("+"_Stz)) {
       sOperation = aFM[eMacro_Add[eColType1][eColType2]];
@@ -4015,6 +4017,14 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_IVD:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_IVY:
       sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
       break;

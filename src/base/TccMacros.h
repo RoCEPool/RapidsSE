@@ -27,7 +27,7 @@
 #define _PSH_INT(iArg) \
   *paW++ = iArg;
 
-#define _PSH_IVL(iArg)  \
+#define _PSH_IVD(iArg)  \
   *paW++ = iArg;
 
 #define _PSH_IVY(iArg)  \
