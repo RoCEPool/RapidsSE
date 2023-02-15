@@ -786,8 +786,8 @@ void Bench::vTransform_FlattenByDecisionTree(void)
       } else {                                                                  /* 50*/
              if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_exists();
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_exists();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_join();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_join();
         else                                         /* W_L_NC_ro        */ NEVER_REACH
       }
     }
@@ -1593,6 +1593,43 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
+
+  m_pCI->G_vRestart();
+  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+
+  Card_Projection* p_projection_project = nullptr;
+
+  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_PROJECTION)) {
+
+    p_projection_project = _pCard_Projection(m_pCI->G.p_projection->pDupCardAndSubCards());
+
+  }
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+    if (CK_FOLD == m_pCI->G.e_MainCard)
+      break;
+    if (Card_Projection* p_projection_carry = m_pCI->G.p_MainCard->pSub_projection())
+      m_pCI->G.p_projection = p_projection_carry;
+  }
+
+  RASSERT(m_pCI->G_bEachMain(CK_TABLE));
+
+  m_pCI->G.p_table->vDump();
+
+  m_pCI->G.p_table->vSmooth(m_pCI);
+
+  m_pCI->G.p_project = new Card_Project(CK_PROJECT);
+
+  m_pCI->G.p_level = new Card_Level(AL_PARTITION);
+  m_pCI->G.p_project->vAppend(m_pCI->G.p_level);
+  m_pCI->G.p_project->vAppend(p_projection_project);
+
+  m_pCI->G_vInsertAfter(m_pCI->G.p_project,m_pCI->G.p_table);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+
 
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
