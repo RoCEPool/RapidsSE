@@ -95,12 +95,12 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       if (wIvd.bIsNeg() && uMins)
         StrLib::vSprint(m_caResult,
                         (Stz *) "INTERVAL -'%lld' %s",
-                        uHours,
+                        uMins,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
                         (Stz *) "INTERVAL '%lld' %s",
-                        uHours,
+                        uMins,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       break;
 
