@@ -1586,7 +1586,7 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
 
-  vFold_exists("W_L_NC_NI"_Stz);
+  vFold_in_as_join("W_L_NC_NI"_Stz);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1944,12 +1944,11 @@ void Bench::vFold_from(Stz* szFold)
 /*----------------------------------------------------------------------------*/
 /* Fold a sub-query                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vFold_in_as_join(Stz* szFold, eCK eCardWithSQ)
+void Bench::vFold_in_as_join(Stz* szFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
-  if (m_pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
+  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     if (m_pCI->m_bRecursiveModel) {
       if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
         vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
@@ -1963,7 +1962,7 @@ void Bench::vFold_in_as_join(Stz* szFold, eCK eCardWithSQ)
       }
     }
   }
-  vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
+  vTrace(">>>>>>>>> Found vFold_in_as_join call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
   m_pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
