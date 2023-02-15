@@ -22,6 +22,7 @@ namespace STORE
     void vCopyMarkedPredToTable(Card_Deck* p_deck);
     void vCullPred(char cWithMark);
     bool bCullPred(Card_PRED* p_pred, char cWithMark);
+    Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
     void vMarkWrt_table(Card_Deck* p_deck);
     void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_PRED* p_PRED);

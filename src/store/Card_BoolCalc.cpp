@@ -229,6 +229,22 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find predicate with given mark                                             */
+/*----------------------------------------------------------------------------*/
+Card_PRED* Card_BoolCalc::pFindMarkedPred(char cWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCR(this);
+  while (Card_PRED *p_pred = (Card_PRED *) xCR.pRecurseEach()) {
+    if (cWithMark == p_pred->cMark1())
+      return p_pred;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <pred> which could be moved               */
 /*----------------------------------------------------------------------------*/
 Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
