@@ -1629,16 +1629,42 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
+  Card_Table* p_table_joining = m_pCI->G.p_table;
 
+  Card_PRED* p_pred_joining = nullptr;
 
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    m_pCI->G.p_where->Y_vSet(P_Smoothed);
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-    if (0 == m_pCI->G.p_boolCalc->nChildCards())
-      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    m_pCI->G.p_where->vDump();
+
+    if (p_pred_joining = m_pCI->G.p_boolCalc->pFindMarkedPred(MARK_AT)) {
+      m_pCI->G.p_boolCalc->vRemovePred(p_pred_joining);
+
+      p_table_joining->vAddPredToTableFilter(m_pCI,p_pred_joining);
+
+      // todo: HACK!
+      p_pred_joining->vDeleteAll();
+
+      p_pred_joining->vCard(CK_CMPPRED);
+      p_pred_joining->vValue("=="_Stz);
+      p_pred_joining->vAppend(new Card_Term("a.1"_Stz));
+      p_pred_joining->vAppend(new Card_Term("$1"_Stz));
+
+      break;
+    }
   }
+
+
   m_pCI->vPrintBoard(__LINE__);
+
+
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+//    m_pCI->G.p_where->Y_vSet(P_Smoothed);
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//    if (0 == m_pCI->G.p_boolCalc->nChildCards())
+//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
