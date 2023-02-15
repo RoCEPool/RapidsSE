@@ -115,13 +115,16 @@ namespace STORE
     void vFlatten_32_W_A_NC_I(void);
     void vFlatten_34_W_A_NC_ro(void);
     void vFlatten_40_W_L_C_E(void);
-    void vFlatten_52_W_L_NC_I(void);
-    void vFlatten_53_W_L_NC_NI(void);
+    void vFlatten_52_W_L_NC_I_exists(void);
+    void vFlatten_52_W_L_NC_I_join(void);
+    void vFlatten_53_W_L_NC_NI_exists(void);
+    void vFlatten_53_W_L_NC_NI_join(void);
     void vFlatten_74_H_A_NC_ro(void);
 
     // folding
     void vFold_exists(Stz* szFold);
     void vFold_from(Stz* szFold);
+    void vFold_in_as_join(Stz* szFold, eCK eCardWithSQ);
     void vFold_subQuery(Stz* szFold, eCK eCardWithSQ);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

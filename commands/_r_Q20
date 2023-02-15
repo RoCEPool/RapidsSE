@@ -18,7 +18,8 @@ create index PS_idx0 on PartSupp (PS_PARTKEY);
 /pipelineName = "_r_Q20"
 select s_name, // board[0]
        s_address
-  from Supplier, // tblSyn a
+  from SQ,
+       Supplier, // tblSyn a
        Nation    // tblSyn b
  where s_suppkey in ( /* Q20_1 -- 52_W_L_NC_I board[1] */
                       select ps_suppkey // tblSyn c
