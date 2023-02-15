@@ -400,6 +400,7 @@ void CardIter::G_vClearMembers(void)
   G.p_agg              = nullptr;
   G.p_aggreg           = nullptr;
   G.p_as               = nullptr;
+  G.p_boardNo          = nullptr;
   G.p_bolPred          = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bound            = nullptr;
@@ -1574,6 +1575,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_AGG:              return G.p_agg;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_AS:               return G.p_as;
+    case CK_BOARDNO:          return G.p_boardNo;
     case CK_BOLPRED:          return G.p_bolPred;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUND:            return G.p_bound;
@@ -1967,6 +1969,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_AGG:              return "G.p_agg"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_AS:               return "G.p_as"_Stz;
+    case CK_BOARDNO:          return "G.p_boardNo"_Stz;
     case CK_BOLPRED:          return "G.p_bolPred"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUND:            return "G.p_bound"_Stz;
@@ -3192,6 +3195,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGG:              *((Card**)&G.p_agg)              = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
+    case CK_BOARDNO:          *((Card**)&G.p_boardNo)          = pCard; break;
     case CK_BOLPRED:          *((Card**)&G.p_bolPred)          = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;

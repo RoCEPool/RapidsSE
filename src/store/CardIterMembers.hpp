@@ -66,6 +66,7 @@ namespace STORE
     Card_Agg *              p_agg;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
+    Card_BoardNo *          p_boardNo;
     Card_BolPred *          p_bolPred;
     Card_BoolCalc *         p_boolCalc;
     Card_Bound *            p_bound;
