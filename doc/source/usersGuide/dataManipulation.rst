@@ -132,7 +132,8 @@ The format for a single node load is as follows:
    load <tablename> "<path_of_file>"
         [ <option> = "<value>" ... ];
 
-Refer to the ``load`` command in the section, RapidsSE Commands.
+Refer to the :ref:`load <loadCmd>` command in the :ref:`Command Reference <commandList>`.
+
 
 .. _distributedLoad:
 
@@ -162,7 +163,7 @@ This will cause RapidsSE to load ``<file1>``, ``<file2>``, ``<file3>`` and
 ``<file4>`` on every node in the cluster and insert them into the
 ``<tablename>`` table. The command will return once all data has been loaded and inserted.
 
-Refer to the ``dload`` command in the section, RapidsSE Commands.
+Refer to the :ref:`dload <dloadCmd>` command in the :ref:`Command Reference <commandList>`.
 
 
 .. _insertingData:
@@ -184,6 +185,6 @@ RapidsSE does not currently support any form of UPDATE command.
 Deleting Data
 -------------
 RapidsSE does not currently support any form of DELETE command, however
-it does support the ``truncate`` command to remove all rows from a table
+it does support the :ref:`truncate <truncateCmd>` command to remove all rows from a table
 in one go. Refer to the Command Reference for more details.
 

@@ -56,7 +56,7 @@ below.
 
 Type Conversion
 ---------------
-In the RapidsSE SQL compiler, an expression is represented as a tree of
+In the RapidsSE SQL compiler, an :ref:`expression <expressions>` is represented as a tree of
 operators and operands. This tree allows for the compiler to make any necessary
 changes to the expression without affecting the order of precedence.
 

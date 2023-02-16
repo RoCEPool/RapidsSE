@@ -7,14 +7,14 @@ Current Features
 ----------------
 RapidsSE currently sports the following features:
 
-* Native-compiled binary;
+* Native-compiled C++ binary;
 * Peer-to-peer, multi-node cluster model;
 * SQL-based command model;
-* Natively compiled and executed queries;
+* Natively compiled and executed dynamic query engine;
 * Query and join optimiser;
 * Deterministic & efficient non-garbage collected memory model;
-* Table partitioning across nodes (on multiple columns);
-* Table indexes (on multiple columns);
+* Table partitioning across nodes;
+* Table indexes;
 * CLI (SE Shell) and (soon) programmatic (JDBC) interfaces;
 * Data unload and reload;
 * Low-memory job management
@@ -22,16 +22,16 @@ RapidsSE currently sports the following features:
 In broad terms, RapidsSE supports the following command features. Refer to the
 :ref:`usersGuide` for more details.
 
-* Table create, truncate, drop;
-* Index create, drop;
-* SELECT queries, including:
+* Table :ref:`create <createTableCmd>`, :ref:`truncate <truncateCmd>`, :ref:`drop <dropTableCmd>`;
+* Index :ref:`create <createIndexCmd>`, :ref:`drop <dropIndexCmd>`;
+* :ref:`SELECT <selectCmdRef>` queries, including:
 
   * correlated and non-correlated subqueries;
   * joins (inner only), via index joins;
   * arbitrary expression evaluation;
   * aggregates;
 
-* Distributed and single-origin data loading;
+* Distributed and single-origin :ref:`data loading <loadingData>`;
 
 Future Roadmap Features
 -----------------------

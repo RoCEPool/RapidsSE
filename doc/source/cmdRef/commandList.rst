@@ -1,3 +1,5 @@
+.. _commandList:
+
 Alphabetical Command List
 =========================
 

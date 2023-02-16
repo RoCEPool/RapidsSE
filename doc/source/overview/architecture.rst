@@ -56,7 +56,7 @@ A query could bounce data to and from nodes in the cluster if it determined
 that it was the most efficient way to execute the user's query.
 
 Because of this peer-to-peer nature, each node has a TCP/IP connection to
-every other node in the cluster. This is used for both data transfer but also
+every other node in the cluster. This is used for data transfer but also
 for information and control purposes. Because these channels can send significant
 amounts of data, it is recommended that all nodes in the cluster be
 geo-located and connected together with a high speed networking fabric (10Gbps

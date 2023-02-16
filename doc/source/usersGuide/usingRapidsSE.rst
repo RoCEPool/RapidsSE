@@ -56,6 +56,8 @@ be produced:
    craig@hubble:rapidsse$ ./prompt.sh
    ERROR: Cannot start SE Prompt - RapidsSE is not running on this node.
 
+
+
 SE Shell
 --------
 SE Shell is the future replacement for `SE Prompt`_. It will appear in a near
@@ -73,6 +75,8 @@ submitting commands and extracting results.
 
 SE Shell will be documented further once it is released.
 
+Further information on interfacing to RapidsSE with SE Shell can be found
+:ref:`here <seShellInterface>`.
 
 JDBC Driver
 -----------
@@ -80,8 +84,8 @@ The RapidsSE JDBC Driver is a feature that will appear with `SE Shell`_ in
 the near future. It allows for easy programmatic access to RapidsSE from
 Java applications for submitting commands and getting results. The RapidsSE
 JDBC Driver communicates with RapidsSE over a socket connection, and it
-transmits and receives messages in accordance with the RapidsSE wireline
-protocol.
+transmits and receives messages in accordance with the :ref:`RapidsSE wireline
+protocol <wirelineProtocolInterface>`.
 
 To use the JDBC driver, Java applications must first include the driver's
 jar file in the Java application's classpath. Then the Java application
@@ -90,4 +94,5 @@ driver to be used as well as the connection parameters (host, port, etc).
 
 The base of the RapidsSE JDBC URL is ``jdbc::se://``.
 
-The JDBC Driver will be documented further once it is released.
+Further information on interfacing to RapidsSE with SE Shell can be found
+:ref:`here <seShellInterface>`.

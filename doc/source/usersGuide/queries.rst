@@ -16,7 +16,7 @@ This is known as a query.
 Form of a SQL Query
 -------------------
 
-A ``SELECT`` query in RapidsSE is constructed from SQL clauses with the
+A :ref:`SELECT <selectCmd>` query in RapidsSE is constructed from SQL clauses with the
 following general form:
 
 .. code:: sql
@@ -33,7 +33,8 @@ following general form:
   [ LIMIT <expr> ]
 
 These clauses are described in more detail in the sections below. Expressions
-are described :ref:`here <expressions>`.
+are described :ref:`here <expressions>`. Detailed syntax of ``SELECT`` queries
+can be found in the :ref:`Command Reference <selectCmd>`.
 
 Supported Query Clauses
 -----------------------

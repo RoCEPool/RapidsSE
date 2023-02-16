@@ -10,23 +10,23 @@ Interfaces
      :backlinks: none
 
 
-.. _seShell:
+.. _seShellInterface:
 
 SE Shell
 --------
-Information on this will be coming soon.
+Detailed information on this will be coming soon.
 
 
-.. _jdbcDriver:
+.. _jdbcDriverInterface:
 
 JDBC Driver
 -----------
-Information on this will be coming soon.
+The JDBC Driver will be documented further once it is released.
 
 
-.. _wirelineProtocol:
+.. _wirelineProtocolInterface:
 
 Wireline Protocol
 -----------------
-Information on this will be coming soon.
+Detailed information on this will be coming soon.
 
