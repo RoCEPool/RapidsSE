@@ -41,23 +41,12 @@ TexLive (or MacTex) can be left off if PDF documentation is not required.
 ### MacOS Installation
 1. Install Python3 if it is not already installed (try `which python3`): `brew install python3`
 2. Install Sphinx: `python3 -m pip install -U sphinx`
-3. Install MacTex for building PDF documentation (approx 4 GB): `brew install mactex-no-gui` 
-4. Install Java if it is not already installed (try `which java`): `brew install java`
-5. Install awk if it is not already installed (try `which awk`): `brew install gawk`
-6. Install vim if it is not already installed (try `which vim`): `brew install vim`
-7. Restart your terminal
-
-If you get an error like this for sphinx:
-
-`Makefile:45: *** ERROR: Not building the documentation because sphinx-build is not installed ***.  Stop.`
-
-Then try the following steps:
-1. `brew install sphinx-doc`
-2. After running the above, it will ask you to add sphinx to your PATH. (this may be
-   different than what is shown here)
-
-   `echo 'export PATH="/opt/homebrew/opt/sphinx-doc/bin:$PATH"' >> ~/.zshrc`
-3. Restart your terminal.
+3. Test the Sphinx is resolvable: `which sphinx-build`
+4. Install MacTex for building PDF documentation (approx 4 GB): `brew install mactex-no-gui` 
+5. Install Java if it is not already installed (try `which java`): `brew install java`
+6. Install awk if it is not already installed (try `which awk`): `brew install gawk`
+7. Install vim if it is not already installed (try `which vim`): `brew install vim`
+8. Restart your terminal
 
 ### Linux Installation
 Note: We use the PIP version of Sphinx to ensure that it is a recent version.
