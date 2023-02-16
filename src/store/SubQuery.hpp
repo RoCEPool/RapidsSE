@@ -80,6 +80,8 @@ namespace STORE
     eFF  eFold(void);
     void vFold(eFF eFold);
 
+    Card_SubQuery* pGet_Card_SubQuery(void);
+
     bool bIsAggregation(void);
     bool bIsCorrelated(void);
     bool bIsLinear(void);

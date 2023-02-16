@@ -302,6 +302,16 @@ void SubQuery::vFold(eFF eFold)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get m_pCard_SubQuery                                                       */
+/*----------------------------------------------------------------------------*/
+Card_SubQuery* SubQuery::pGet_Card_SubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return m_pCard_SubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this sub-query an aggegation?                                           */
 /*----------------------------------------------------------------------------*/
 bool SubQuery::bIsAggregation(void)
