@@ -14,6 +14,9 @@
 namespace STORE
 {
   class Board;
+  class Card;
+  class Card_SubQuery;
+  class Card_SubSet;
 
   class SubQuery : public Object
   {
@@ -33,6 +36,8 @@ namespace STORE
 
     i8 m_nSubQueries;    // how many sub-queries under this one
 
+    Card_SubQuery* m_pCard_SubQuery; // subset of cards which are this folded subquery
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -44,7 +49,8 @@ namespace STORE
     SubQuery(Board* pBoard);
    ~SubQuery(void) noexcept(false);
 
-    bool bAreYou_Mq_W_Sq_1Ck_in(void);
+    void vAddCard(Card* pCard);
+    void vAddSubSet(Card_SubSet* pCard_SubSet);
 
     Board* pBoard(void);
 

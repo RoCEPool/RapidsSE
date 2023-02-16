@@ -33,7 +33,7 @@ Card_SubQuery::~Card_SubQuery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  ASSERT(! nChildCards());
+  vRemoveAll();
 }
 
 /*============================================================================*/

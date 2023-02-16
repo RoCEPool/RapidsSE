@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SubQuery.cpp -- SubQuery analysis                                                */
+/* SubQuery.cpp -- SubQuery analysis                                          */
 /*============================================================================*/
 
 #include "SubQuery.hpp"
 
 #include "Board.hpp"
-#include "Card.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -38,6 +38,8 @@ SubQuery::SubQuery(Board* pBoard)
 
   m_nSubQueries = 0;
 
+  m_pCard_SubQuery = nullptr;
+
   _checkInitialised_(CN_SUBQUERY);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
@@ -49,12 +51,39 @@ SubQuery::SubQuery(Board* pBoard)
 SubQuery::~SubQuery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  delete m_pCard_SubQuery;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add card                                                                   */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vAddCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (! m_pCard_SubQuery)
+    m_pCard_SubQuery = new Card_SubQuery;
+
+  m_pCard_SubQuery->vAppend(pCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add subset of cards                                                        */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vAddSubSet(Card_SubSet* pCard_SubSet)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  CardIter xCI(pCard_SubSet);
+  while (xCI.G_bEachMain())
+    vAddCard(xCI.G.p_MainCard);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
