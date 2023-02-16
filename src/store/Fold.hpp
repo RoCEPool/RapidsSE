@@ -3,13 +3,17 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "Bench.hpp"
+
 
 namespace STORE
 {
   class Fold : public Object
   {
   private:
+
+    SubQuery* m_pSubQuery;
+    SubQuery* m_pOuterQuery;
 
   protected:
     // must be last
@@ -21,6 +25,12 @@ namespace STORE
     
     Fold(void);
    ~Fold(void) noexcept(false);
+
+    SubQuery* pOuterQuery(void);
+    void vOuterQuery(SubQuery* pOuterQuery);
+
+    SubQuery* pSubQuery(void);
+    void vSubQuery(SubQuery* pSubQuery);
 
   protected:
     Footer* aFooter(void);

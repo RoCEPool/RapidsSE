@@ -20,7 +20,10 @@ Fold::Fold(void)
 : Object(CN_FOLD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
-  
+
+  m_pSubQuery    = nullptr;
+  m_pOuterQuery  = nullptr;
+
   _postcondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 }
 
@@ -36,6 +39,46 @@ Fold::~Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                             */
+/*----------------------------------------------------------------------------*/
+SubQuery* Fold::pOuterQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_pOuterQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                             */
+/*----------------------------------------------------------------------------*/
+void Fold::vOuterQuery(SubQuery* pOuterQuery)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_pOuterQuery = pOuterQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                             */
+/*----------------------------------------------------------------------------*/
+SubQuery* Fold::pSubQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_pSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                             */
+/*----------------------------------------------------------------------------*/
+void Fold::vSubQuery(SubQuery* pSubQuery)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_pSubQuery = pSubQuery;
+}
 
 
 
