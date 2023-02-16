@@ -140,6 +140,7 @@ enum eCK // card kind
   /* */ CK_STMCOL,
   /* */ CK_STMCOLNM,
   /* */ CK_STMCOLODN,
+  /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -322,6 +323,7 @@ static Stz* aCK[]
   /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
+  /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -503,6 +505,7 @@ static Stz* aCK_short[]
   /* */ "stmCol"_Stz,          // CK_STMCOL
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
+  /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
@@ -684,6 +687,7 @@ static Stz* aCK_notation[]
     /* */ "sC"_Stz,           // CK_STMCOL
     /* */ "sCN"_Stz,          // CK_STMCOLNM
     /* */ "sCO"_Stz,          // CK_STMCOLODN
+    /* */ "sQ"_Stz,           // CK_SUBQUERY
     /* */ "sS"_Stz,           // CK_SUBSET
 
     /* */ "t"_Stz,           // CK_TABLE

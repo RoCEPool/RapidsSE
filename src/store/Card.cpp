@@ -3237,7 +3237,7 @@ Card_OuterColNm* Card::pSub_outerColNm(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Correlation.hpp"
-Card_Correlation* Card::pSub_paramList(void)
+Card_Correlation* Card::pSub_correlation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3387,6 +3387,19 @@ Card_StmColOdn* Card::pSub_stmColOdn(void)
   Card_StmColOdn* p_streamColOrd =
       _pCard_StmColOdn(pFindSubCard(CK_STMCOLODN));
   return p_streamColOrd;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_SubQuery.hpp"
+Card_SubQuery* Card::pSub_subQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SubQuery* p_subQuery =
+      _pCard_SubQuery(pFindSubCard(CK_TABLE));
+  return p_subQuery;
 }
 
 /*----------------------------------------------------------------------------*/

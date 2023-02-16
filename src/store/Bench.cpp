@@ -957,7 +957,7 @@ void Bench::vFlatten_24_W_A_C_ro(void)
 
   i8 i_SqBoardNo = m_pCI->G.pBoard->i_Board();
 
-  m_pCI->m_pParamList = m_pCI->G.pDeck->pSub_paramList();
+  m_pCI->m_pParamList = m_pCI->G.pDeck->pSub_correlation();
   m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(1);
 
   m_pCI->vPrintBoard(__LINE__);

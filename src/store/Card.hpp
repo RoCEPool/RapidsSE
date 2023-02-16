@@ -139,6 +139,7 @@ namespace STORE
   class Card_StmColNm;
   class Card_StmColOdn;
   class Card_OrdElmOdn;
+  class Card_SubQuery;
   class Card_SubSet;
 
   class Card_TableList;
@@ -495,6 +496,7 @@ namespace STORE
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
+    Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Direction*     pSub_direction(void);
     Card_EBound*        pSub_eBound(void);
@@ -538,18 +540,18 @@ namespace STORE
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_OuterColNm*    pSub_outerColNm(void);
-    Card_Correlation*     pSub_paramList(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
+    Card_Projection*    pSub_projection(void);
     Card_Reason*        pSub_reason(void);
     Card_RoPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
     Card_Size*          pSub_size(void);
-    Card_Projection*    pSub_projection(void);
     Card_StmCol*        pSub_stmCol(void);
     Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
+    Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
