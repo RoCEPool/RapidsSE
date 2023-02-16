@@ -100,6 +100,8 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  typedef long                    __darwin_time_t;"
       "\n  typedef __darwin_time_t         time_t;"
       "\n"
+      "\n  time_t mktime(struct tm *timeptr);"
+      "\n"
       "\n  struct tm {"
       "\n  int tm_sec; /* seconds after the minute [0-60] */"
       "\n  int tm_min; /* minutes after the hour [0-59] */"
@@ -342,7 +344,10 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
+      "\n    void* aCrwJ;"
+      "\n    time_t iSecondsSincePosixEpoch;"
+      "\n    struct tm* aLocalDateTime;"
+      "\n    struct tm xDateTime = {0};";
   "\n"
   "";
 

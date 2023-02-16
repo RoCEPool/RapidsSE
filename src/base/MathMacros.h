@@ -288,6 +288,148 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _ADD_DTEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    xDateTime.tm_year = xDte1.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
+    xDateTime.tm_mday = xDte1.m_uDay;                                      \
+    xDateTime.tm_hour = 0;                                                 \
+    xDateTime.tm_min  = 0;                                                 \
+    xDateTime.tm_sec  = 0;                                                 \
+                                                                           \
+   time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                    \
+                                                                           \
+   iSecondsSincePosixEpoch += iArg2/1000000;                               \
+                                                                           \
+   aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+     xDte2.m_uYearDelta = aLocalDateTime->tm_year;                         \
+     xDte2.m_uMonth     = aLocalDateTime->tm_mon + 1;                      \
+     xDte2.m_uDay       = aLocalDateTime->tm_mday;                         \
+     xDte2.m_uSpare       = 0;                                             \
+    *paW++ = xDte2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _ADD_DTEIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+   aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+     xDte2.m_uYearDelta = xDte1.m_uYearDelta;                              \
+     xDte2.m_uMonth     = xDte1.m_uMonth;                                  \
+     xDte2.m_uDay       = xDte1.m_uDay;                                    \
+     xDte2.m_uSpare       = 0;                                             \
+                                                                           \
+    iArg1 = xDte2.m_uMonth + iArg2;                                        \
+    if (iArg1 > 12) {                                                      \
+      xDte2.m_uYearDelta +=  iArg1/12;                                     \
+      xDte2.m_uMonth = iArg1%12;                                           \
+    }                                                                      \
+    *paW++ = xDte2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _ADD_IVDDTE(eErrorCode)                                            \
+  {                                                                        \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    xDateTime.tm_year = xDte2.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xDte2.m_uMonth - 1;                                \
+    xDateTime.tm_mday = xDte2.m_uDay;                                      \
+    xDateTime.tm_hour = 0;                                                 \
+    xDateTime.tm_min  = 0;                                                 \
+    xDateTime.tm_sec  = 0;                                                 \
+                                                                           \
+   time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                    \
+                                                                           \
+   iSecondsSincePosixEpoch += iArg1/1000000;                               \
+                                                                           \
+   aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+     xDte1.m_uYearDelta = aLocalDateTime->tm_year;                         \
+     xDte1.m_uMonth     = aLocalDateTime->tm_mon + 1;                      \
+     xDte1.m_uDay       = aLocalDateTime->tm_mday;                         \
+     xDte1.m_uSpare       = 0;                                             \
+    *paW++ = xDte1.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _ADD_IVYDTE(eErrorCode)                                            \
+  {                                                                        \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+   aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+     xDte1.m_uYearDelta = xDte2.m_uYearDelta;                              \
+     xDte1.m_uMonth     = xDte2.m_uMonth;                                  \
+     xDte1.m_uDay       = xDte2.m_uDay;                                    \
+     xDte1.m_uSpare       = 0;                                             \
+                                                                           \
+    iArg1 = xDte1.m_uMonth + iArg2;                                        \
+    if (iArg1 > 12) {                                                      \
+      xDte1.m_uYearDelta +=  iArg1/12;                                     \
+      xDte1.m_uMonth = iArg1%12;                                           \
+    }                                                                      \
+    *paW++ = xDte1.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
