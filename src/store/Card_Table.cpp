@@ -222,6 +222,26 @@ i8 Card_Table::nTables(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+i8 Card_Table::nTables_foldBreak(CardIter* pCI)
+{
+  _static_
+
+  i8 nTables = 0;
+
+  pCI->vRestart();
+  while (pCI->pEachChild()) {
+    if (pCI->G.m_pChild->bIsCard(CK_FOLD))
+      break;
+    if (pCI->G.m_pChild->bIsCard(CK_TABLE))
+    nTables++;
+  }
+
+  return nTables;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 {
   _static_
