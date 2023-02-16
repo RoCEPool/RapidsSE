@@ -66,11 +66,13 @@ namespace STORE
     Card_Agg *              p_agg;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
+
     Card_BoardNo *          p_boardNo;
     Card_BolPred *          p_bolPred;
     Card_BoolCalc *         p_boolCalc;
     Card_Bound *            p_bound;
     Card_Bounds *           p_bounds;
+
     Card_CalcOp *           p_calcOp;
     Card_Call *             p_call;
     Card_Cast *             p_cast;
@@ -84,23 +86,30 @@ namespace STORE
     Card_CoPtnJoinList *    p_coPtnJoinList;
     Card_CoPtnPred *        p_coPtnPred;
     Card_CoPtnPredList *    p_coPtnPredList;
+    Card_Correlation *      p_correlation;
     Card_CrossJoin *        p_crossJoin;
     Card_CrossPtnJoin *     p_crossPtnJoin;
     Card_CrossPtnJoinList * p_crossPtnJoinList;
+
     Card_Direction *        p_direction;
+
     Card_EBound *           p_eBound;
     Card_Expr *             p_expr;
     Card_ExprList *         p_exprList;
+
     Card_Filter *           p_filter;
     Card_Flat *             p_flat;
     Card_Fold *             p_fold;
     Card_FoldElist *        p_foldElist;
     Card_From *             p_from;
+
     Card_GbyAgg *           p_gbyAgg;
     Card_Genesis *          p_genesis;
     Card_Group *            p_group;
+
     Card_Hash *             p_hash;
     Card_Having *           p_having;
+
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
     Card_IdxColNm *         p_idxColNm;
@@ -108,6 +117,7 @@ namespace STORE
     Card_IndexJoin *        p_indexJoin;
     Card_IndexList *        p_indexList;
     Card_IndexNm *          p_indexNm;
+
     Card_IndexScan *        p_indexScan;
     Card_JoinHead *         p_joinHead;
     Card_JoinNext *         p_joinNext;
@@ -116,9 +126,11 @@ namespace STORE
     Card_JoinPermAll *      p_joinPermAll;
     Card_JoinPermSeq *      p_joinPermSeq;
     Card_JoinPredList *     p_joinPredList;
+
     Card_Key *              p_key;
     Card_KeyExists *        p_keyExists;
     Card_KeyNotExists *     p_keyNotExists;
+
     Card_LBound *           p_lBound;
     Card_Level *            p_level;
     Card_Limit *            p_limit;
@@ -127,18 +139,21 @@ namespace STORE
     Card_LoadNetwork *      p_loadNetwork;
     Card_LoadPermSeq *      p_loadPermSeq;
     Card_LoadUnicast *      p_loadUnicast;
+
     Card_Manner *           p_manner;
+
     Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;
     Card_NotPred *          p_notPred;
     Card_NParmCols *        p_nParmCols;
+
     Card_On *               p_on;
     Card_OrdAgg *           p_ordAgg;
     Card_OrdElmOdn *        p_ordElmOdn;
     Card_Order *            p_order;
     Card_OuterColNm *       p_outerColNm;
-    Card_Correlation *        p_paramList;
+
     Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;
     Card_Permutation *      p_permutation_low;
@@ -150,10 +165,12 @@ namespace STORE
     Card_PtnColNm *         p_ptnColNm;
     Card_PtndJoin *         p_ptndJoin;
     Card_PtndJoinSet *      p_ptndJoinSet;
+
     Card_Reason *           p_reason;
     Card_RelnOp *           p_relnOp;
     Card_RoPred *           p_roPred;
     Card_RpnCalc *          p_rpnCalc;
+
     Card_Scan *             p_scan;
     Card_Section *          p_section;
     Card_Send *             p_send;
@@ -163,7 +180,9 @@ namespace STORE
     Card_StmCol *           p_stmCol;
     Card_StmColNm *         p_stmColNm;
     Card_StmColOdn *        p_stmColOdn;
+    Card_SubQuery *         p_subQuery;
     Card_SubSet *           p_subSet;
+
     Card_Table *            p_table;
     Card_TableList *        p_tableList;
     Card_TableNm *          p_tableNm;
@@ -174,9 +193,12 @@ namespace STORE
     Card_Topology *         p_topology;
     Card_Twist *            p_twist;
     Card_Type *             p_type;
+
     Card_UBound *           p_uBound;
     Card_Unique *           p_unique;
+
     Card_Where *            p_where;
+
     Card_XBound *           p_xBound;
 
     // - - - - - - - - - - - - - - - - - -

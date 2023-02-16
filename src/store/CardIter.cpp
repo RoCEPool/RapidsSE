@@ -472,7 +472,7 @@ void CardIter::G_vClearMembers(void)
   G.p_ordElmOdn        = nullptr;
   G.p_order            = nullptr;
   G.p_outerColNm            = nullptr;
-  G.p_paramList        = nullptr;
+  G.p_correlation        = nullptr;
   G.p_partition        = nullptr;
   G.p_permutation      = nullptr;
   G.p_permutation_low  = nullptr;
@@ -496,6 +496,7 @@ void CardIter::G_vClearMembers(void)
   G.p_stmCol           = nullptr;
   G.p_stmColNm         = nullptr;
   G.p_stmColOdn        = nullptr;
+  G.p_subQuery         = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
@@ -1647,7 +1648,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_ORDELMODN:        return G.p_ordElmOdn;
     case CK_ORDER:            return G.p_order;
     case CK_OUTERCOLNM:            return G.p_outerColNm;
-    case CK_CORRELATION:        return G.p_paramList;
+    case CK_CORRELATION:        return G.p_correlation;
     case CK_PARTITION:        return G.p_partition;
     case CK_PERMUTATION:      return G.p_permutation;
     case CK_PMZWHERE:         return G.p_pmzWhere;
@@ -1670,6 +1671,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STMCOL:           return G.p_stmCol;
     case CK_STMCOLNM:         return G.p_stmColNm;
     case CK_STMCOLODN:        return G.p_stmColOdn;
+    case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
@@ -2040,7 +2042,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_ORDELMODN:        return "G.p_ordElmOdn"_Stz;
     case CK_ORDER:            return "G.p_order"_Stz;
     case CK_OUTERCOLNM:            return "G.p_outerColNm"_Stz;
-    case CK_CORRELATION:        return "G.p_paramList"_Stz;
+    case CK_CORRELATION:        return "G.p_correlation"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PMZWHERE:         return "G.p_pmzWhere"_Stz;
@@ -2063,6 +2065,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_STMCOL:           return "G.p_stmCol"_Stz;
     case CK_STMCOLNM:         return "G.p_stmColNm"_Stz;
     case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
+    case CK_SUBQUERY:         return "G.p_subQuery"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
@@ -3267,7 +3270,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ORDELMODN:        *((Card**)&G.p_ordElmOdn)        = pCard; break;
     case CK_ORDER:            *((Card**)&G.p_order)            = pCard; break;
     case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
-    case CK_CORRELATION: *((Card**)&G.p_paramList)        = pCard; break;
+    case CK_CORRELATION: *((Card**)&G.p_correlation)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PMZWHERE:         *((Card**)&G.p_pmzWhere)         = pCard; break;
@@ -3290,6 +3293,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STMCOL:           *((Card**)&G.p_stmCol)           = pCard; break;
     case CK_STMCOLNM:         *((Card**)&G.p_stmColNm)         = pCard; break;
     case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
+    case CK_SUBQUERY:         *((Card**)&G.p_subQuery)         = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
