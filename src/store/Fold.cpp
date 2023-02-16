@@ -8,32 +8,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Fold::operator new(size_t)
-{
-  Fold* pFold = nullptr;
-  
-  return pFold;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Fold::operator delete(void*)
-{
-}
+__pCastFunction(STORE, Fold, CN_FOLD)
+__aNewFunction(Fold, CN_FOLD)
+__vDeleteFunction(Fold, CN_FOLD)
+__aFooterFunction(Fold)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fold::Fold(eCN eClassNo)
-: Object(eClassNo)
+Fold::Fold(void)
+: Object(CN_FOLD)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +29,7 @@ Fold::Fold(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Fold::~Fold(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 }
 
 

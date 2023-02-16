@@ -26,8 +26,6 @@ CardIter::CardIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  m_bRecursiveModel = false;
-
   G.m_pCard   = nullptr;
   G.m_i_Child = C_UNKNOWN;
   G.m_pChild  = nullptr;
@@ -48,8 +46,6 @@ CardIter::CardIter(eCN eClass)
     : Object(eClass)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-
-  m_bRecursiveModel = false;
 
   G.m_pCard   = nullptr;
   G.m_i_Child = C_UNKNOWN;
@@ -73,8 +69,6 @@ CardIter::CardIter(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  m_bRecursiveModel = false;
-
   G.m_pCard   = pCard;
   G.m_i_Child = C_UNKNOWN;
   G.m_pChild  = nullptr;
@@ -94,8 +88,6 @@ CardIter::CardIter(CardIter* pCardIter_src)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  m_bRecursiveModel = false;
-
   vSet(pCardIter_src);
 }
 
@@ -106,8 +98,6 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
     : Object(eClass)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-
-  m_bRecursiveModel = false;
 
   G.m_pCard   = pCard;
   G.m_i_Child = C_UNKNOWN;
@@ -127,8 +117,6 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
     : Object(eClass)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-
-  m_bRecursiveModel = false;
 
   G.m_pCard   = nullptr;
   G.m_i_Child = C_UNKNOWN;
@@ -192,8 +180,6 @@ CardIter::CardIter(Bench* pBench)
     : Object(CN_CARDITER)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-
-  m_bRecursiveModel = false;
 
   G.m_pCard   = nullptr;
   G.m_i_Child = C_UNKNOWN;

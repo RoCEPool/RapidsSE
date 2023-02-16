@@ -36,7 +36,7 @@ namespace STORE
 
     i8 m_nSubQueries;    // how many sub-queries under this one
 
-    Card_SubQuery* m_pCard_SubQuery; // subset of cards which are this folded subquery
+    Card_SubQuery* m_pSubQueryCards; // subset of cards which are this folded subquery
 
   protected:
     // must be last
@@ -50,7 +50,7 @@ namespace STORE
    ~SubQuery(void) noexcept(false);
 
     void vAddCard(Card* pCard);
-    void vAddSubSet(Card_SubSet* pCard_SubSet);
+    void vAddChildren(Card* pCard);
 
     Board* pBoard(void);
 
@@ -80,7 +80,6 @@ namespace STORE
     eFF  eFold(void);
     void vFold(eFF eFold);
 
-    Card_SubQuery* pGet_Card_SubQuery(void);
 
     bool bIsAggregation(void);
     bool bIsCorrelated(void);
@@ -88,6 +87,8 @@ namespace STORE
 
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
+
+    Card_SubQuery* pSubQueryCards(void);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);

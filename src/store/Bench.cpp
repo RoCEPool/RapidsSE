@@ -115,15 +115,12 @@ void Bench::vApplyTransformationMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  m_pCI->m_bRecursiveModel = true;
-
   vSeries_PreparePipelines();
   vSeries_MakeRunnable();
 
   vSeries_Optimisations();
   vSeries_MakeWeavable();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
@@ -919,24 +916,16 @@ void Bench::vFlatten_24_W_A_C_ro(void)
        and l_quantity < (select avg(l_quantity)
                            from lineitem
                           where L_PARTKEY = P_PARTKEY)
-    ;
+    ;Ï
  */
 
   m_pCI->vTransform(__func__, "((vFlatten_24_W_A_C_ro))"_Stz);
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
   RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  if (m_pCI->m_bRecursiveModel) {
-    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-      NEVER_REACH
-    }
-  }
-  else {
-    if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-      NEVER_REACH
-    }
+  if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+    vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+    NEVER_REACH
   }
   vTrace(">>>>>>>>> Found W_A_C_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
   m_pCI->vPrintBoard(__LINE__);
@@ -1374,17 +1363,9 @@ void Bench::vFlatten_40_W_L_C_E(void)
 
   // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-    else {
-      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
+    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
     }
   }
   vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyArg.szStz());
@@ -1824,17 +1805,9 @@ void Bench::vFold_exists(Stz* szFold)
 
 
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-    else {
-      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
+    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
     }
   }
   vTrace(">>>>>>>>> Found W_L_NC_NI call to %s(%s)->%s\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRsl.szStz());
@@ -2012,17 +1985,9 @@ void Bench::vFold_in_as_join(Stz* szFold)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-    else {
-      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
+    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
     }
   }
   vTrace(">>>>>>>>> Found vFold_in_as_join call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
@@ -2085,17 +2050,9 @@ void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (m_pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
-    if (m_pCI->m_bRecursiveModel) {
-      if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
-    }
-    else {
-      if (! Board::bFindAndMarkSubQryCall_originalModel(m_pCI)) {
-        vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-        NEVER_REACH
-      }
+    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
     }
   }
   vTrace(">>>>>>>>> Found H_A_NC_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());

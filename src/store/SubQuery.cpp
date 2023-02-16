@@ -38,7 +38,7 @@ SubQuery::SubQuery(Board* pBoard)
 
   m_nSubQueries = 0;
 
-  m_pCard_SubQuery = nullptr;
+  m_pSubQueryCards = nullptr;
 
   _checkInitialised_(CN_SUBQUERY);
 
@@ -52,7 +52,7 @@ SubQuery::~SubQuery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  delete m_pCard_SubQuery;
+  delete m_pSubQueryCards;
 }
 
 
@@ -61,26 +61,26 @@ SubQuery::~SubQuery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add card                                                                   */
+/* add given card to sub-query cards                                          */
 /*----------------------------------------------------------------------------*/
 void SubQuery::vAddCard(Card* pCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  if (! m_pCard_SubQuery)
-    m_pCard_SubQuery = new Card_SubQuery;
+  if (! m_pSubQueryCards)
+    m_pSubQueryCards = new Card_SubQuery;
 
-  m_pCard_SubQuery->vAppend(pCard);
+  m_pSubQueryCards->vAppend(pCard);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add subset of cards                                                        */
+/* add children of given card to sub-query cards                              */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vAddSubSet(Card_SubSet* pCard_SubSet)
+void SubQuery::vAddChildren(Card* pCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  CardIter xCI(pCard_SubSet);
+  CardIter xCI(pCard);
   while (xCI.G_bEachMain())
     vAddCard(xCI.G.p_MainCard);
 }
@@ -302,13 +302,13 @@ void SubQuery::vFold(eFF eFold)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_pCard_SubQuery                                                       */
+/* get m_pSubQueryCards                                                       */
 /*----------------------------------------------------------------------------*/
-Card_SubQuery* SubQuery::pGet_Card_SubQuery(void)
+Card_SubQuery* SubQuery::pSubQueryCards(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  return m_pCard_SubQuery;
+  return m_pSubQueryCards;
 }
 
 /*----------------------------------------------------------------------------*/
