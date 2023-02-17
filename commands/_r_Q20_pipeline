@@ -22,7 +22,7 @@ select s_name,
                       select ps_suppkey
                         from PartSupp
                        where
-                             ps_partkey NOT in (
+                             ps_partkey in (
                                                  select p_partkey
                                                    from Part
                                                   where p_name like 'forest%'
@@ -81,7 +81,7 @@ begin
 
     stage S01 on all partitions :
       scan rapidsse public Part
-      | filter " type BOOLEAN  }  $2 'forest%'  7 matchLeading not "
+      | filter " type BOOLEAN  }  $2 'forest%'  7 matchLeading "
       | project " type INTEGER as p_partkey $1 "
       | combined 0
       | next
@@ -125,7 +125,13 @@ begin
    stage S06 on all partitions :
      indexJoin partSupp PS_idx0 "BOUND $I1 L_SUPPKEY =="
      | filter " type BOOLEAN P_PARTKEY J1_PS_PARTKEY == J1_PS_AVAILQTY casttype DECIMAL CAST sqyResult  > and "
-     | project " type INTEGER as PS_SUPPKEY $2 , type integer as PS_AVAILQTY J1_PS_AVAILQTY"
+     | project " type INTEGER as PS_SUPPKEY $2"
+     | combined 0
+     | next
+
+   stage S06a on all partitions :
+     aggreg " groupBy type integer PS_SUPPKEY
+                        aggregates type integer as PS_SUPPKEY $K1"
      | combined 0
      | next
 
@@ -137,7 +143,7 @@ begin
 
   stage S08 on all partitions :
     indexJoin Nation N_idx0 "BOUND $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ' ==  "
+    | filter " type BOOLEAN J1_N_NAME 'CANADA' ==  "
     | project " type VARCHAR as N_NAME J1_N_NAME , type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
     | sort " type VARCHAR S_NAME ASC  "
     | combined 0
