@@ -5,8 +5,11 @@
 
 #include "Board.hpp"
 
+
 namespace STORE
 {
+  class Fold;
+
   class Bench : public Object
               , public ListExo2_t<Board>
   {
@@ -122,10 +125,10 @@ namespace STORE
     void vFlatten_74_H_A_NC_ro(void);
 
     // folding
-    void vFold_exists(Stz* szFold);
-    void vFold_from(Stz* szFold);
-    void vFold_in_as_join(Stz* szFold);
-    void vFold_subQuery(Stz* szFold, eCK eCardWithSQ);
+    void vFold_exists(Stz* szFold, Fold* pFold=nullptr);
+    void vFold_from(Stz* szFold, Fold* pFold=nullptr);
+    void vFold_in_as_join(Stz* szFold, Fold* pFold=nullptr);
+    void vFold_subQuery(Stz* szFold, eCK eCardWithSQ, Fold* pFold=nullptr);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // optimisations

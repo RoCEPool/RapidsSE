@@ -16,12 +16,34 @@ __aFooterFunction(Fold)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fold::Fold(void)
+Fold::Fold(i8 i_depth)
 : Object(CN_FOLD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 
+  m_i_depth      = i_depth;
+  m_p_deck       = nullptr;
+
   m_pSubQuery    = nullptr;
+  m_p_fold       = nullptr;
+  m_pOuterQuery  = nullptr;
+
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Fold::Fold(i8 i_depth, Card_Deck* p_deck)
+: Object(CN_FOLD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+
+  m_i_depth      = i_depth;
+  m_p_deck       = p_deck;
+
+  m_pSubQuery    = nullptr;
+  m_p_fold       = nullptr;
   m_pOuterQuery  = nullptr;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
@@ -41,46 +63,94 @@ Fold::~Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                             */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Deck* Fold::p_deck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  return m_p_deck;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Fold::v_deck(Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  m_p_deck = p_deck;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Fold::i_depth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  return m_i_depth;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Fold* Fold::p_fold(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  return m_p_fold;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Fold::v_fold(Card_Fold* p_fold)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  m_p_fold = p_fold;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 SubQuery* Fold::pOuterQuery(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
 
   return m_pOuterQuery;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Fold::vOuterQuery(SubQuery* pOuterQuery)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
 
   m_pOuterQuery = pOuterQuery;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 SubQuery* Fold::pSubQuery(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
 
   return m_pSubQuery;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Fold::vSubQuery(SubQuery* pSubQuery)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
 
   m_pSubQuery = pSubQuery;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

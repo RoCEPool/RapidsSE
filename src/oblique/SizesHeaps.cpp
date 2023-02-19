@@ -366,7 +366,7 @@ SizeHeap gxaSizeHeap[]
   {CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
   {CN_FLATTEN,                  sizeof(Flatten), /*yes*/        HT_T_TINY    , FILL },
   {CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
-  {CN_FOLD,                     sizeof(CN_FOLD),                HT_T_TINY    , FILL },
+  {CN_FOLD,                     sizeof(Fold),                   HT_T_TINY    , FILL },
   {CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
   {CN_FREEPOOLBUFFER,           sizeof(PoolBuffer),/*yes*/      HT_INVALID   , FILL },
   {CN_FREECHUNK,                sizeof(FreeChunk),              HT_INVALID   , FILL },

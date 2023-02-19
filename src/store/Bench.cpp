@@ -7,6 +7,7 @@
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
 #include "Smoother.hpp"
+#include "Fold.hpp"
 
 #include "Error.hpp"
 
@@ -1684,7 +1685,9 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  vFold_subQuery("H_A_NC_ro"_Stz,CK_HAVING);
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+
+  vFold_subQuery("H_A_NC_ro"_Stz,CK_HAVING,pFold);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1774,6 +1777,8 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
 
+  delete pFold;
+
   m_pCI->vEndTransform();
 }
 
@@ -1786,7 +1791,7 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /* Fold a (not) exists                                                        */
 /*----------------------------------------------------------------------------*/
-void Bench::vFold_exists(Stz* szFold)
+void Bench::vFold_exists(Stz* szFold, Fold* pFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -1924,7 +1929,7 @@ void Bench::vFold_exists(Stz* szFold)
 /*----------------------------------------------------------------------------*/
 /* Fold a from                                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vFold_from(Stz* szFold)
+void Bench::vFold_from(Stz* szFold, Fold* pFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -1980,7 +1985,7 @@ void Bench::vFold_from(Stz* szFold)
 /*----------------------------------------------------------------------------*/
 /* Fold a sub-query                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vFold_in_as_join(Stz* szFold)
+void Bench::vFold_in_as_join(Stz* szFold, Fold* pFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -2044,9 +2049,12 @@ void Bench::vFold_in_as_join(Stz* szFold)
 /*----------------------------------------------------------------------------*/
 /* Fold a sub-query                                                           */
 /*----------------------------------------------------------------------------*/
-void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
+void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ, Fold* pFold)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (pFold)
+    pFold->vOuterQuery(m_pCI->pBoard()->pSubQuery());
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (m_pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
@@ -2064,6 +2072,10 @@ void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
     NEVER_REACH
   }
 
+
+  if (pFold)
+    pFold->vSubQuery(m_pCI->pBoard()->pSubQuery());
+
   // 3) get copy of sq
   m_pCI->m_pCard_yanked = m_pCI->G.pDeck->pDupSubCards(0);
 
@@ -2073,6 +2085,11 @@ void Bench::vFold_subQuery(Stz* szFold, eCK eCardWithSQ)
   // 5) add <fold> (before MQ)
   m_pCI->G_vNewMember(CK_FOLD,szFold);
   m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
+
+
+  if (pFold)
+    pFold->v_fold(m_pCI->G.p_fold);
+
 
   // 6) copy up sq (add before fold)
   m_pCI->G.pDeck->vPush(m_pCI->m_pCard_yanked);
