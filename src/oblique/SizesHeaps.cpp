@@ -249,6 +249,7 @@
 #include "Scope.hpp"
 #include "Fold.hpp"
 #include "Smoother.hpp"
+#include "JoinOrdering.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -408,6 +409,7 @@ SizeHeap gxaSizeHeap[]
   { CN_JOBMETRICS,               sizeof(JobMetrics),         HT_T_LARGE   ,FILL },
   { CN_JOBREPORT,                sizeof(JobReport),          HT_T_TINY    ,FILL },
   { CN_JOBS,                     sizeof(Jobs),               HT_T_TINY    ,FILL },
+  { CN_JOINORDERING,             sizeof(JoinOrdering),       HT_T_TINY    ,FILL },
 
   { CN__K__,                     'K' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_KEY,                      sizeof(Key),                HT_INVALID   ,FILL },
