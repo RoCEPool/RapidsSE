@@ -606,7 +606,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vSmooth(CardIter* pCI)
+void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

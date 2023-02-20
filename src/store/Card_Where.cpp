@@ -223,7 +223,8 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 void Card_Where::vSmooth(CardIter* pCI,
                          bool bMorph_bolPred_To_cmpPred,
                          bool bReplace_sqCall_With_result,
-                         i8 nBumpBy)
+                         i8 nBumpBy,
+                         CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

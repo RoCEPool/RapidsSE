@@ -1,8 +1,11 @@
 /*============================================================================*/
-/* Fold.cpp -- Fold                                                       */
+/* Fold.cpp -- Fold                                                           */
 /*============================================================================*/
 
 #include "Fold.hpp"
+
+#include "CardIter.hpp"
+#include "CarryForward.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -24,6 +27,8 @@ Fold::Fold(i8 i_depth)
   m_i_depth      = i_depth;
   m_p_deck       = nullptr;
 
+  m_p_correlation = nullptr;
+
   m_pSubQuery    = nullptr;
   m_p_fold       = nullptr;
   m_pOuterQuery  = nullptr;
@@ -41,6 +46,8 @@ Fold::Fold(i8 i_depth, Card_Deck* p_deck)
 
   m_i_depth      = i_depth;
   m_p_deck       = p_deck;
+
+  m_p_correlation = nullptr;
 
   m_pSubQuery    = nullptr;
   m_p_fold       = nullptr;
@@ -65,11 +72,21 @@ Fold::~Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Deck* Fold::p_deck(void)
+Card_Correlation* Fold::p_correlation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
 
-  return m_p_deck;
+  return m_p_correlation;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Fold::v_correlation(Card_Correlation* p_correlation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  m_p_correlation = p_correlation;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,6 +167,106 @@ void Fold::vSubQuery(SubQuery* pSubQuery)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
 
   m_pSubQuery = pSubQuery;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+CarryForward* Fold::pFlatten_74_H_A_NC_ro(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+
+  CarryForward* pCarryForward = new CarryForward;
+
+  return pCarryForward;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Fold a non-correlated sub-query (before outer-query)                       */
+/*----------------------------------------------------------------------------*/
+CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+
+  CarryForward* pCarryForward = new CarryForward;
+
+  vOuterQuery(pCI->pBoard()->pSubQuery());
+
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
+    if (! Board::bFindAndMarkSubQryCall(pCI)) {
+      vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
+      NEVER_REACH
+    }
+  }
+  vTrace(">>>>>>>>> Found %s call:  %s %s %s\n"_Stz, szFold,
+         pCI->m_sSqyArg.szStz(), pCI->m_sSqyRO.szStz(), pCI->m_sSqyNm.szStz());
+  pCI->vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! pCI->G_bPushBoard(pCI->m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+
+
+  vSubQuery(pCI->pBoard()->pSubQuery());
+
+  // 3) get copy of sq
+  pCI->m_pCard_yanked = pCI->G.pDeck->pDupSubCards(0);
+
+  // 4) pop back to mq
+  pCI->G_vPopIter();
+
+  // 5) add <fold> (before MQ)
+  pCI->G_vNewMember(CK_FOLD, szFold);
+  pCI->G.pDeck->vPush(pCI->G.p_fold);
+
+
+  v_fold(pCI->G.p_fold);
+
+
+  // 6) copy up sq (add before fold)
+  pCI->G.pDeck->vPush(pCI->m_pCard_yanked);
+  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->m_pCard_yanked);
+  DELETE_CARD(pCI->m_pCard_yanked);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G_vRestart();
+  while (pCI->G_bEachMain()) {
+
+    if (pCI->G.p_MainCard->pSub_projection())
+      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+
+    if (pCI->G_bIsNextMain(CK_FOLD))
+      break;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 7) derive the fold (SQ result) expr
+  pCI->m_pExpr_fold = nullptr;
+  pCI->G_vRestart();
+  if (pCI->G_bEachMain(CK_FOLD)) {
+    pCI->G.i_FoldCard = pCI->G.i_MainCard;
+    Board::vDerive_foldExpr_H_A_NC_ro(pCI);
+    pCI->m_pExpr_fold = pCI->G.p_expr;
+  }
+  pCI->vPrintBoard(__LINE__);
+
+  return pCarryForward;
 }
 
 /*============================================================================*/

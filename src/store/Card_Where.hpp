@@ -5,9 +5,12 @@
 
 #include "Card.hpp"
 #include "Card_PRED.hpp"
+#include "CarryForward.hpp"
 
 namespace STORE
 {
+  class CarryForward;
+
   class Card_Where : public Card
   {
   public:
@@ -31,7 +34,8 @@ namespace STORE
     void vSmooth(CardIter* pCI,
                  bool bMorph_bolPred_To_cmpPred,
                  bool bReplace_sqCall_With_result,
-                 i8 nBumpBy);
+                 i8 nBumpBy,
+                 CarryForward* pCarryForward);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

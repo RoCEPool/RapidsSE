@@ -7,6 +7,8 @@
 
 namespace STORE
 {
+  class CarryForward;
+
   class Card_Project : public Card_OP
   {  
   public:
@@ -23,7 +25,8 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
-    void vSmooth(CardIter* pCI);
+    void vSmooth(CardIter* pCI,
+                 CarryForward* pCarryForward);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

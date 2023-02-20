@@ -5,7 +5,6 @@
 
 #include "Card.hpp"
 
-
 namespace STORE
 {
   class Card_OP : public Card

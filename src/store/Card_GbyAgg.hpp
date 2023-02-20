@@ -7,6 +7,8 @@
 
 namespace STORE
 {
+  class CarryForward;
+
   class Card_GbyAgg : public Card_Project
   {  
   public:
@@ -22,7 +24,8 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
-    void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy);
+    void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy,
+                 CarryForward* pCarryForward);
   };
 
   Card_GbyAgg* _pCard_GbyAgg(void* aAddr);

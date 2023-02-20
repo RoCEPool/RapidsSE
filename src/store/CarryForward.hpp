@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "Bench.hpp"
+#include "BASE.h"
+#include "Board.hpp"
 
 
 namespace STORE
@@ -19,6 +20,30 @@ namespace STORE
 
   public:
     CardIter*  m_pCF;
+
+    struct {
+      bool m_bReproject;
+    } Table;
+
+    struct {
+      bool m_bReproject;
+    } Where_preAgg;
+
+    struct {
+      bool m_bReproject;
+    } Aggreg;
+
+    struct {
+      bool m_bReproject;
+    } GbyAgg;
+
+    struct {
+      bool m_bReproject;
+    } Project_postAgg;
+
+    struct {
+      bool m_bReproject;
+    } Having;
 
   protected:
     // must be last
@@ -37,7 +62,7 @@ namespace STORE
     bool bIsCorrelated(void);
 
     bool bResultActive(void);
-    void vResultActibe(bool bResultActive);
+    void vResultActive(bool bResultActive);
 
     Card_Expr* p_sqCrlKey(void);
     void v_sqCrlKey(Card_Expr* p_sqCrlKey);

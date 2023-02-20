@@ -6,8 +6,11 @@
 #include "Card_OP.hpp"
 #include "Scope.hpp"
 
+
 namespace STORE
 {
+  class CarryForward;
+
   class Card_Table : public Card_OP
   {
   public:
@@ -43,7 +46,7 @@ namespace STORE
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(char* cTableSyn);
-    void vSmooth(CardIter* pCI);
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

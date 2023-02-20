@@ -4,6 +4,8 @@
 
 #include "CarryForward.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -28,6 +30,8 @@ CarryForward::CarryForward(void)
   m_bResultActive = false;
 
   m_pCF = nullptr;
+
+  Table.m_bReproject = false;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 }
@@ -90,7 +94,7 @@ bool CarryForward::bResultActive(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CarryForward::vResultActibe(bool bResultActive)
+void CarryForward::vResultActive(bool bResultActive)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 
@@ -150,7 +154,6 @@ bool CarryForward::bWorkToDo(void)
 
   return false;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

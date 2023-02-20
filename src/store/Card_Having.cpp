@@ -56,7 +56,8 @@ void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
+void Card_Having::vSmooth(CardIter* pCI, bool bSawProject,
+                          CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
