@@ -8,21 +8,21 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Equivalence, CN_CARRYFORWARD)
-__aNewFunction(Equivalence, CN_CARRYFORWARD)
-__vDeleteFunction(Equivalence, CN_CARRYFORWARD)
+__pCastFunction(STORE, Equivalence, CN_EQUIVALENCE)
+__aNewFunction(Equivalence, CN_EQUIVALENCE)
+__vDeleteFunction(Equivalence, CN_EQUIVALENCE)
 __aFooterFunction(Equivalence)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Equivalence::Equivalence(void)
-: Object(CN_CARRYFORWARD)
+: Object(CN_EQUIVALENCE)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EQUIVALENCE, _FOOTER_);
 
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_EQUIVALENCE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ Equivalence::Equivalence(void)
 /*----------------------------------------------------------------------------*/
 Equivalence::~Equivalence(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EQUIVALENCE, _FOOTER_);
 }
 
 
