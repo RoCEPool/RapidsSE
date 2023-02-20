@@ -251,6 +251,7 @@
 #include "Smoother.hpp"
 #include "JoinOrdering.hpp"
 #include "CarryForward.hpp"
+#include "Equivalence.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -355,30 +356,31 @@ SizeHeap gxaSizeHeap[]
   { CN_ENT,                      sizeof(Ent),                    HT_INVALID   , FILL },
   { CN_ENTBUFFER,                sizeof(EntBuffer),              HT_T_LARGE   , FILL },
   { CN_ENTBUFSORTER,             sizeof(EntBufSorter),           HT_T_LARGE   , FILL },
-  { CN_ENTWRK,                   sizeof(EntWrk),                 HT_INVALID   ,FILL },
+  { CN_ENTWRK,                   sizeof(EntWrk),                 HT_INVALID   , FILL },
   { CN_ENUMFLAGS,                sizeof(ClassFlags),             HT_T_TINY    , FILL },
+  { CN_EQUIVALENCE,              sizeof(Equivalence),            HT_T_TINY    , FILL },
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),          HT_T_TINY    , FILL },
   { CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
-  {CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
-  {CN_EXITOPERAND,              sizeof(ExitOperand),            HT_T_TINY    , FILL },
+  { CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
+  { CN_EXITOPERAND,              sizeof(ExitOperand),            HT_T_TINY    , FILL },
 
-  {CN__F__,                     'F' - ('A' - 1),                HT_INVALID   , FILL },
-  {CN_FIFO,                     sizeof(Fifo),                   HT_T_TINY    , FILL },
-  {CN_FILE,                     sizeof(File),                   HT_T_TINY    , FILL },
-  {CN_FILEMAP,                  sizeof(FileMap),                HT_INVALID   , FILL },
-  {CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
-  {CN_FLATTEN,                  sizeof(Flatten), /*yes*/        HT_T_TINY    , FILL },
-  {CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
-  {CN_FOLD,                     sizeof(Fold),                   HT_T_TINY    , FILL },
-  {CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
-  {CN_FREEPOOLBUFFER,           sizeof(PoolBuffer),/*yes*/      HT_INVALID   , FILL },
-  {CN_FREECHUNK,                sizeof(FreeChunk),              HT_INVALID   , FILL },
-  {CN_FREEDNOT,                 sizeof(FreedNot),               HT_INVALID   , FILL },
-  {CN_FREEITEM,                 0,                              HT_INVALID   , FILL },
-  {CN_FREQDIST,                 sizeof(FreqDist),               HT_T_SMALL   , FILL },
+  { CN__F__,                     'F' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_FIFO,                     sizeof(Fifo),                   HT_T_TINY    , FILL },
+  { CN_FILE,                     sizeof(File),                   HT_T_TINY    , FILL },
+  { CN_FILEMAP,                  sizeof(FileMap),                HT_INVALID   , FILL },
+  { CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
+  { CN_FLATTEN,                  sizeof(Flatten), /*yes*/        HT_T_TINY    , FILL },
+  { CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
+  { CN_FOLD,                     sizeof(Fold),                   HT_T_TINY    , FILL },
+  { CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
+  { CN_FREEPOOLBUFFER,           sizeof(PoolBuffer),/*yes*/      HT_INVALID   , FILL },
+  { CN_FREECHUNK,                sizeof(FreeChunk),              HT_INVALID   , FILL },
+  { CN_FREEDNOT,                 sizeof(FreedNot),               HT_INVALID   , FILL },
+  { CN_FREEITEM,                 0,                              HT_INVALID   , FILL },
+  { CN_FREQDIST,                 sizeof(FreqDist),               HT_T_SMALL   , FILL },
 
-  {CN__G__,                     'G' - ('A' - 1),                HT_INVALID   , FILL },
-  {CN_GRID,                     sizeof(Grid),                   HT_T_TINY    , FILL },
+  { CN__G__,                     'G' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_GRID,                     sizeof(Grid),                   HT_T_TINY    , FILL },
 
   { CN__H__,                     'H' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_HASHMAP,                  sizeof(HashMap),            HT_T_SMALL   ,FILL },
