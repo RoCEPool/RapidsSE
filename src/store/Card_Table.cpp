@@ -611,6 +611,8 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_table->Y_vSet(P_Smoothed);
+
+  if (pCarryForward) RASSERT(pCarryForward->Table.m_bReproject);
   pCI->G.p_table->vReProjection(pCI);
   pCI->G.pDeck->vRenumberRecursive();
 }

@@ -33,6 +33,11 @@ CarryForward::CarryForward(void)
 
   Table.m_bReproject = false;
 
+  Where_preAgg.m_nBumpBy = 0;
+  Where_preAgg.m_bMorph_bolPred_To_cmpPred = false;
+  Where_preAgg.bReplace_sqCall_With_result = false;
+
+
   _postcondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 }
 

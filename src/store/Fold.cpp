@@ -266,6 +266,12 @@ CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pC
   }
   pCI->vPrintBoard(__LINE__);
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCarryForward->Table.m_bReproject = true;
+  pCarryForward->Where_preAgg.m_nBumpBy = 1;
+
   return pCarryForward;
 }
 

@@ -26,7 +26,9 @@ namespace STORE
     } Table;
 
     struct {
-      bool m_bReproject;
+      i8   m_nBumpBy;
+      bool m_bMorph_bolPred_To_cmpPred;
+      bool bReplace_sqCall_With_result;
     } Where_preAgg;
 
     struct {
