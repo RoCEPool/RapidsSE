@@ -31,12 +31,33 @@ CarryForward::CarryForward(void)
 
   m_pCF = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Table.m_bSeen      = false;
+  Table.m_nTables    = 0;
   Table.m_bReproject = false;
 
+  Where_preAgg.m_bSeen  = false;
   Where_preAgg.m_nBumpBy = 0;
   Where_preAgg.m_bMorph_bolPred_To_cmpPred = false;
   Where_preAgg.bReplace_sqCall_With_result = false;
 
+  Aggreg.m_bSeen   = false;
+  Aggreg.m_nBumpBy = 0;
+  Aggreg.m_bMorph_To_gbyAgg = false;
+
+  GbyAgg.m_bSeen   = false;
+  GbyAgg.m_nBumpBy = 0;
+  GbyAgg.m_bInject_foldExpr = false;
+
+  Project_postAgg.m_bSeen   = false;
+  Project_postAgg.m_nBumpBy = 0;
+
+  Having.m_bSeen                 = false;
+  Having.m_bCorrect_After_Inject = false;
+
+  Unproject.m_bSeen               = false;
+  Unproject.m_bUnproject_foldExpr = false;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 }
@@ -158,6 +179,53 @@ bool CarryForward::bWorkToDo(void)
     return true;
 
   return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CarryForward::vSetSeen(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+
+  pCI->vRestart();
+
+  // Table*
+  while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
+    Table.m_bSeen = true;
+    Table.m_nTables++;
+  }
+
+  // [Where]
+  if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
+    Where_preAgg.m_bSeen = true;
+  }
+
+  // Aggreg
+  while (pCI->G_bIsNextMain(CK_AGGREG) && pCI->G_bEachMain(CK_AGGREG)) {
+    GbyAgg.m_bSeen = true;
+  }
+  // GbyAgg
+  while (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
+    GbyAgg.m_bSeen = true;
+  }
+
+  // [project]
+  bool bSawProject_postAgg = false;
+  if (pCI->G_bIsNextMain(CK_PROJECT) && pCI->G_bEachMain(CK_PROJECT)) {
+    Project_postAgg.m_bSeen = true;
+  }
+
+  // Having
+  if (pCI->G_bIsNextMain(CK_HAVING) && pCI->G_bEachMain(CK_HAVING)) {
+    Having.m_bSeen = true;
+  }
+
 }
 
 /*============================================================================*/

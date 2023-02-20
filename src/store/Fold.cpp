@@ -269,8 +269,13 @@ CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pC
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCarryForward->Table.m_bReproject = true;
-  pCarryForward->Where_preAgg.m_nBumpBy = 1;
+  pCarryForward->vSetSeen(pCI);
+
+  pCarryForward->Table.m_bReproject        = true;
+  pCarryForward->Where_preAgg.m_nBumpBy    = 1;
+  pCarryForward->GbyAgg.m_bInject_foldExpr = true;
+  pCarryForward->Having.m_bCorrect_After_Inject  = true;
+  pCarryForward->Unproject.m_bUnproject_foldExpr = true;
 
   return pCarryForward;
 }

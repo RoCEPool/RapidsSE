@@ -49,11 +49,14 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vUnproject_foldExpr(CardIter* pCI)
+void Card_Project::vUnproject_foldExpr(CardIter* pCI,
+                                       CarryForward* pCarryForward)
 {
   _static_
 
   //pCI->G.p_projection = pCI->G.p_project->pSub_projection();
+
+  RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_PROJECT);
   pCI->G.pDeck->vAppend(p_project_unproject);
@@ -158,13 +161,16 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_project->Y_vSet(P_Smoothed);
 
-  pCI->G.p_project->vBump_Rightwards(1);
+  if (nBumpBy) {
+    if (pCarryForward) RASSERT(pCarryForward->Project_postAgg.m_nBumpBy == nBumpBy);
+    pCI->G.p_project->vBump_Rightwards(nBumpBy);
+  }
 }
 
 

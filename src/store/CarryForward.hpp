@@ -22,30 +22,44 @@ namespace STORE
     CardIter*  m_pCF;
 
     struct {
+      bool m_bSeen;
+      i8   m_nTables;
       bool m_bReproject;
     } Table;
 
     struct {
+      bool m_bSeen;
       i8   m_nBumpBy;
       bool m_bMorph_bolPred_To_cmpPred;
       bool bReplace_sqCall_With_result;
     } Where_preAgg;
 
     struct {
-      bool m_bReproject;
+      bool m_bSeen;
+      i8   m_nBumpBy;
+      bool m_bMorph_To_gbyAgg;
     } Aggreg;
 
     struct {
-      bool m_bReproject;
+      bool m_bSeen;
+      i8   m_nBumpBy;
+      bool m_bInject_foldExpr;
     } GbyAgg;
 
     struct {
-      bool m_bReproject;
+      bool m_bSeen;
+      i8   m_nBumpBy;
     } Project_postAgg;
 
     struct {
-      bool m_bReproject;
+      bool m_bSeen;
+      bool m_bCorrect_After_Inject;
     } Having;
+
+    struct {
+      bool m_bSeen;
+      bool m_bUnproject_foldExpr;
+    } Unproject;
 
   protected:
     // must be last
@@ -73,6 +87,11 @@ namespace STORE
     void v_sqResult(Card_Expr* p_sqResult);
 
     bool bWorkToDo(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    void vSetSeen(CardIter* pCI);
+
 
   protected:
     Footer* aFooter(void);

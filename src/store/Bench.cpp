@@ -1702,6 +1702,8 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   // subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
+  m_pCI->vRestart();
+  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
   RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
   RASSERT(m_pCI->m_pExpr_fold);
 
@@ -1746,33 +1748,33 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   }
 
   // [project (avg)]
-  bool bSawProject = false;
+  bool bSawProject_postAgg = false;
   if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
-    bSawProject = true;
-    m_pCI->G.p_project->vSmooth(m_pCI,pCarryForward);
+    bSawProject_postAgg = true;
+    m_pCI->G.p_project->vSmooth_postAgg(m_pCI, 1, pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // Having
   if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
-    m_pCI->G.p_having->vSmooth(m_pCI,bSawProject,pCarryForward);
+    m_pCI->G.p_having->vSmooth(m_pCI, bSawProject_postAgg, pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  if (bSawProject) {
+  if (bSawProject_postAgg) {
     m_pCI->G.p_project->vInject_foldExpr(m_pCI);
     m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI);
     m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
-    Card_Project::vUnproject_foldExpr(m_pCI);
+    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
   }
   else {
     m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
-    Card_Project::vUnproject_foldExpr(m_pCI);
+    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
