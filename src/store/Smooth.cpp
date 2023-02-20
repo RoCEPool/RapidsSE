@@ -1,35 +1,35 @@
 /*============================================================================*/
-/* Smoother.cpp -- Smoother                                                   */
+/* Smooth.cpp -- Smooth                                                       */
 /*============================================================================*/
 
-#include "Smoother.hpp"
+#include "Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Smoother,CN_SMOOTHER)
-__aNewFunction(Smoother,CN_SMOOTHER)
-__vDeleteFunction(Smoother,CN_SMOOTHER)
-__aFooterFunction(Smoother)
+__pCastFunction(STORE, Smooth, CN_SMOOTH)
+__aNewFunction(Smooth, CN_SMOOTH)
+__vDeleteFunction(Smooth, CN_SMOOTH)
+__aFooterFunction(Smooth)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Smoother::Smoother(void)
-: Object(CN_SMOOTHER)
+Smooth::Smooth(void)
+: Object(CN_SMOOTH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SMOOTHER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SMOOTHER,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Smoother::~Smoother(void) noexcept(false)
+Smooth::~Smooth(void) noexcept(false)
 {
-_precondition_(_ADDRESS_,_MAGIC_,CN_SMOOTHER,_FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 }
 
 

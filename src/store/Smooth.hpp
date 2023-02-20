@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Smoother.hpp -- Smoother                                                   */
+/* Smooth.hpp -- Smooth                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Smoother : public Object
+  class Smooth : public Object
   {
   private:
 
@@ -18,14 +18,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Smoother(void);
-   ~Smoother(void) noexcept(false);
+    Smooth(void);
+   ~Smooth(void) noexcept(false);
 
   private:
     Footer* aFooter(void);
   };
 
-  Smoother* _pSmoother(void* aAddr);
+  Smooth* _pSmooth(void* aAddr);
 
 }
 

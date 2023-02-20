@@ -323,7 +323,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SMALLPERSISTENT,
   /* */ CN_SMALLTRANSIENT,
   /* */ CN_SMALLVIRTUAL,
-  /* */ CN_SMOOTHER,
+  /* */ CN_SMOOTH,
   /* */ CN_SNBCD,
   /* */ CN_SNBOL,
   /* */ CN_SNDTE,
@@ -752,7 +752,7 @@ static Stz* aCN[]
   /* */ "SMALLPERSISTENT"_Stz,      // CN_SMALLPERSISTENT
   /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
   /* */ "SMALLVIRTUAL"_Stz,         // CN_SMALLVIRTUAL
-  /* */ "SMOOTHER"_Stz,             // CN_SMOOTHER
+  /* */ "SMOOTH"_Stz,               // CN_SMOOTH
   /* */ "SNBCD"_Stz,                // CN_SNBCD
   /* */ "SNBOL"_Stz,                // CN_SNBOL
   /* */ "SNDTE"_Stz,                // CN_SNDTE
