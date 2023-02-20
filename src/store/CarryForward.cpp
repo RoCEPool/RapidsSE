@@ -22,9 +22,10 @@ CarryForward::CarryForward(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 
   m_p_sqCrlKey = nullptr;
-  m_bCorrelationResolved = false;
+  m_bCorrelationActive = false;
 
   m_p_sqResult = nullptr;
+  m_bResultActive = false;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 }
@@ -45,21 +46,21 @@ CarryForward::~CarryForward(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CarryForward::bCorrelationResolved(void)
+bool CarryForward::bCorrelationActive(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 
-  return m_bCorrelationResolved;
+  return m_bCorrelationActive;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CarryForward::vCorrelationResolved(bool bCorrelationResolved)
+void CarryForward::vCorrelationActive(bool bCorrelationActive)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 
-  m_bCorrelationResolved = bCorrelationResolved;
+  m_bCorrelationActive = bCorrelationActive;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +72,27 @@ bool CarryForward::bIsCorrelated(void)
 
   return (m_p_sqCrlKey ? true : false);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CarryForward::bResultActive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+
+  return m_bResultActive;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CarryForward::vResultActibe(bool bResultActive)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+
+  m_bResultActive = bResultActive;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -111,6 +133,20 @@ void CarryForward::v_sqResult(Card_Expr* p_sqResult)
 
   m_p_sqResult = p_sqResult;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CarryForward::bWorkToDo(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
+
+  if (m_bResultActive || m_bResultActive)
+    return true;
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
