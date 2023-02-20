@@ -12,10 +12,13 @@ namespace STORE
   {
   private:
     Card_Expr* m_p_sqCrlKey;
-    bool       m_bCorrelationActive;
+    bool       m_bCrlKeyActive;
 
     Card_Expr* m_p_sqResult;
     bool       m_bResultActive;
+
+  public:
+    CardIter*  m_pCF;
 
   protected:
     // must be last
@@ -28,8 +31,8 @@ namespace STORE
     CarryForward(void);
    ~CarryForward(void) noexcept(false);
 
-    bool bCorrelationActive(void);
-    void vCorrelationActive(bool bCorrelationActive);
+    bool bCrlKeyActive(void);
+    void vCrlKeyActive(bool bCrlKeyActive);
 
     bool bIsCorrelated(void);
 
