@@ -111,7 +111,7 @@ namespace STORE {
     void vSynthLabel(Stz* szOpNm, Stz *sLabel, Stz* sNextLabel);
 
     void vSynthKeyExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ, Stz *sFilterExpr,
-                         Stz *sKeyExpr, Stz *sLabel, u8 uSelectColumns, bool bExists);
+                         Stz *sKeyExpr, Stz *sLabel, Stz* sLabelEnd, Stz* sLabelNext, u8 uSelectColumns, bool bExists);
 
     void vSynthKeyNotExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sFilterExpr, Stz *sKeyExpr, Stz *sLabel, u8 uSelectColumns);

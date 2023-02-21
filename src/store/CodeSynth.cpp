@@ -1150,8 +1150,8 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                                 Stz* sFilterExpr, Stz* sKeyExpr,
-                                Stz* sLabel, u8 uSelectColumns,
-                                bool bExists)
+                                Stz* sLabel, Stz* sLabelEnd, Stz* sLabelNext,
+                                u8 uSelectColumns, bool bExists)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1202,7 +1202,8 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntJ ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelEnd);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -1215,13 +1216,17 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntUpperJ = aIndexTree_positionLE(aCombinedT->m_aIndexTreeJ, aCombinedT->m_aEntKeyJ);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n L_KeyExistsDeref:");
+  if (bExists)
+    StrLib::vAppendString(&m_azCodeCrs, "\n L_KeyExistsDeref:");
+  else
+    StrLib::vAppendString(&m_azCodeCrs, "\n L_KeyNotExistsDeref:");
 
   // check reached upper bound
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelEnd);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -1259,10 +1264,65 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate filter
-  if (bExists)
-    vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
-  else
-    vGenerateKeyNotExistsFilter(pStreamDefRht, sFilterExpr);
+ vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
+
+  if (bExists) {
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    sCopy.vSprint("\n  %s:"_Stz, sLabelEnd);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n     if ( ! aCombinedT->m_iProcessRow ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       if ( ! aCombinedT->m_aEntIntJ ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n         goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       if (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       }");
+    // go to next entry
+    StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
+    StrLib::vAppendString(&m_azCodeCrs,
+                          "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  }
+  else {
+    /*
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    sCopy.vSprint("\n  %s:"_Stz, sLabelEnd);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iProcessRow ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+     */
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    sCopy.vSprint("\n  %s:"_Stz, sLabelEnd);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iProcessRow ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       if ( ! aCombinedT->m_aEntIntJ  || (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ)) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          aCombinedT->m_iProcessRow = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       }");
+    // go to next entry
+    StrLib::vAppendString(&m_azCodeCrs, "\n       else {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n         // move to next entry");
+    StrLib::vAppendString(&m_azCodeCrs,
+                          "\n         aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n         goto L_KeyNotExistsDeref;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  }
 
   // cleanup
   m_pExprStack->vReset();
@@ -5277,16 +5337,9 @@ void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult && bFilterResult != C_DATUM_NULL) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_iProcessRow = 0;");
-  // go to next entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
-  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 }
 
@@ -5310,10 +5363,12 @@ void CodeSynth::vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz* sFilterE
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! bFilterResult && bFilterResult != C_DATUM_NULL) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"KEY NOT EXISTS\\n\");");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
   StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_iProcessRow = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"KEY EXISTS\\n\");");
   // go to next entry
   StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
   StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");

@@ -1054,6 +1054,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the keyNotExistsOP
+    if (pOp->szOpNm()->bSame("keyNotExists"_Stz)) {
+      vSetupKeyExists(pCombined, pStream, pOp);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the sortOP
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
@@ -2133,6 +2139,7 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
+  s4K sLabelEnd;
   s4K sLabelNext;
   s4K sLabelPrev;
   s4K sLabelLoop;
@@ -2171,10 +2178,11 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   pShape->vStructSynthA(pCodeSynth);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  sLabelEnd.vSprint("L_%s_END_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndex->pIndexDef(), pPreExpStack, SR_IJ, ePrevStencil);
-  pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, uSelectColumns, bExists);
+  pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, sLabelEnd, sLabelNext, uSelectColumns, bExists);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
