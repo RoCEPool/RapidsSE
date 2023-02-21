@@ -396,7 +396,8 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
-CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pCI)
+CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
+                                      eCK eCardWithSQ, eQO eWhatOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 
@@ -482,8 +483,16 @@ CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pC
   }
   else {
     pCarryForward->Table.m_bReproject = true;
-    pCarryForward->Where_preAgg.m_bMorph_bolPred_To_cmpPred = true;
     pCarryForward->Where_preAgg.m_nBumpBy = 1;
+    if (QO_IN_OP == eWhatOp)
+      pCarryForward->Where_preAgg.m_bMorph_bolPred_To_cmpPred = true;
+    else
+    if (QO_RELN_OP == eWhatOp)
+      pCarryForward->Where_preAgg.bReplace_sqCall_With_result = true;
+
+    if (pCarryForward->GbyAgg.m_bSeen)
+      pCarryForward->GbyAgg.m_nBumpBy = 1;
+
   }
 
   pCI->vPrintBoard(__LINE__);

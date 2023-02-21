@@ -133,6 +133,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   if (pCarryForward->GbyAgg.m_nBumpBy) {
     pCI->G.p_gbyAgg->vBump_Rightwards(pCarryForward->GbyAgg.m_nBumpBy);
+    pCarryForward->GbyAgg.m_nBumpBy = 0;
   }
 
   pCI->G.pDeck->vRenumberRecursive();

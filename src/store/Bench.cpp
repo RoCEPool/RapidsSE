@@ -1161,7 +1161,7 @@ void Bench::vFlatten_32_W_A_NC_I(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery("W_A_NC_I"_Stz, CK_WHERE, m_pCI);
+      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_WHERE, QO_IN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
@@ -1194,12 +1194,14 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   /*
    */
 
-  m_pCI->vTransform(__func__, "((40_W_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__func__, "((vFlatten_34_W_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  vFold_subQuery("W_A_NC_ro"_Stz,CK_WHERE);
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward =
+      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_WHERE, QO_RELN_OP);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1212,48 +1214,51 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
+
   // Table*
-  i8 nTables = 0;
-  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
-    nTables++;
-    m_pCI->G.p_table->vSmooth(m_pCI);
-    m_pCI->vPrintBoard(__LINE__);
-  }
+//  i8 nTables = 0;
+//  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+//    nTables++;
+//    m_pCI->G.p_table->vSmooth(m_pCI);
+//    m_pCI->vPrintBoard(__LINE__);
+//  }
 
   // Where
-  bool bSawWhere = false;
-  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
-    bSawWhere = true;
-    m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
-                                    /*bReplace_sqCall_With_result*/true,
-                                    /*nBumpBy*/1);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
+//  bool bSawWhere = false;
+//  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
+//    bSawWhere = true;
+//    m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
+//                                    /*bReplace_sqCall_With_result*/true,
+//                                    /*nBumpBy*/1);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
 
   // GbyAgg_partition
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-                                     /*nBumpBy*/1);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // GbyAgg_node
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-                                     /*nBumpBy*/0);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // GbyAgg_origin
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-                                     /*nBumpBy*/0);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
+//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
+//                                     /*nBumpBy*/1);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // GbyAgg_node
+//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
+//                                     /*nBumpBy*/0);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // GbyAgg_origin
+//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
+//                                     /*nBumpBy*/0);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1263,6 +1268,10 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
+
+  delete pSmooth;
+  delete pCarryForward;
+  delete pFold;
 }
 
 
@@ -1630,7 +1639,7 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery("H_A_NC_ro"_Stz, CK_HAVING, m_pCI);
+      pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_HAVING, QO_RELN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having

@@ -29,7 +29,7 @@ namespace STORE
     i8 m_nCorrCols;      // number of correlated columns
 
     eQC m_eClause;       // called via clause: from|where|having
-    eQO m_eCalcOp;       // connecting operator: cmpOp|(not)exists|(not)in
+    eQO m_eCallOp;       // connecting operator: (not)exists|(not)in|relnOp
     eRO m_eRelnOp;       // NONE|<|<=|==|!=|>=|> (if connecting/post call is cmpOp)
 
     eFF m_eFold;         // which fold
@@ -54,17 +54,17 @@ namespace STORE
 
     Board* pBoard(void);
 
-    bool bByCmpOp(void);
     bool bByExists(void);
     bool bByIn(void);
     bool bByNotExists(void);
     bool bByNotIn(void);
+    bool bByRelnOp(void);
 
     i8   i_Caller(void);
     void vCaller(i8 i_Caller);
 
-    eQO  eCalcOp(void);
-    void vCalcOp(eQO eCalcOp);
+    eQO  eCallOp(void);
+    void vCallOp(eQO eCalcOp);
 
     eQC  eClause(void);
     void vClause(eQC eClause);

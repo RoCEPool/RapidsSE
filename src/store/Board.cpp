@@ -1290,7 +1290,7 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
 
     pSubQuery->vCaller(pCI->G.i_Board);
     pSubQuery->vClause(QC_HAVING_CLAUSE);
-    pSubQuery->vCalcOp(QO_COMPARE_OP);
+    pSubQuery->vCallOp(QO_RELN_OP);
     pSubQuery->vRelnOp(eRelnOp);
 
     return C_CONTINUE_RECURSION;
@@ -1343,7 +1343,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCalcOp(eCalcOp);
+      pSubQuery->vCallOp(eCalcOp);
       return C_CONTINUE_RECURSION;
     }
 
@@ -1358,7 +1358,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCalcOp(QO_COMPARE_OP);
+      pSubQuery->vCallOp(QO_RELN_OP);
       pSubQuery->vRelnOp(eRelnOp);
       return C_CONTINUE_RECURSION;
     }
@@ -1836,7 +1836,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
                      m_pSubQuery->pBoard()->i_Board(),
                      aQC[m_pSubQuery->eClause()],
-                     aQO[m_pSubQuery->eCalcOp()],
+                     aQO[m_pSubQuery->eCallOp()],
                      aRO[m_pSubQuery->eRelnOp()]
                      );
 

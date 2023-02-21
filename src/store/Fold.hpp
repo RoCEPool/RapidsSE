@@ -62,7 +62,8 @@ namespace STORE
 
     CarryForward* pFold_from(Stz* szFold, CardIter* pCI);
 
-    CarryForward* pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pCI);
+    CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
+                                    eCK eCardWithSQ, eQO eWhatOp);
 
   protected:
     Footer* aFooter(void);

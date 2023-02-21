@@ -31,7 +31,7 @@ SubQuery::SubQuery(Board* pBoard)
   m_nCorrCols    = 0;
 
   m_eClause  = QC_NONE;
-  m_eCalcOp  = QO_NONE;
+  m_eCallOp  = QO_NONE;
   m_eRelnOp  = RO_NONE;
 
   m_eFold    = FF_NONE;
@@ -96,26 +96,13 @@ Board* SubQuery::pBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* called by/wrt cmpOp                                                        */
-/*----------------------------------------------------------------------------*/
-bool SubQuery::bByCmpOp(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  if (QO_COMPARE_OP == m_eCalcOp)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* called by/wrt exists                                                       */
 /*----------------------------------------------------------------------------*/
 bool SubQuery::bByExists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  if (QO_EXISTS_OP == m_eCalcOp)
+  if (QO_EXISTS_OP == m_eCallOp)
     return true;
 
   return false;
@@ -128,7 +115,7 @@ bool SubQuery::bByIn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  if (QO_IN_OP == m_eCalcOp)
+  if (QO_IN_OP == m_eCallOp)
     return true;
 
   return false;
@@ -141,7 +128,7 @@ bool SubQuery::bByNotExists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  if (QO_NOT_EXISTS_OP == m_eCalcOp)
+  if (QO_NOT_EXISTS_OP == m_eCallOp)
     return true;
 
   return false;
@@ -154,7 +141,20 @@ bool SubQuery::bByNotIn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  if (QO_NOT_IN_OP == m_eCalcOp)
+  if (QO_NOT_IN_OP == m_eCallOp)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* called by/wrt relnOp                                                       */
+/*----------------------------------------------------------------------------*/
+bool SubQuery::bByRelnOp(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  if (QO_RELN_OP == m_eCallOp)
     return true;
 
   return false;
@@ -203,21 +203,21 @@ void SubQuery::vClause(eQC eClause)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-eQO SubQuery::eCalcOp(void)
+eQO SubQuery::eCallOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  return m_eCalcOp;
+  return m_eCallOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set operator                                                               */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vCalcOp(eQO eCalcOp)
+void SubQuery::vCallOp(eQO eCalcOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  m_eCalcOp = eCalcOp;
+  m_eCallOp = eCalcOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +274,7 @@ void SubQuery::vDump(void)
          m_i_Caller,
          aQC[m_eClause],
          aQD[m_eDisposition],
-         aQO[m_eCalcOp],
+         aQO[m_eCallOp],
          aRO[m_eRelnOp],
          m_nCorrCols
          );

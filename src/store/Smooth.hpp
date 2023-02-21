@@ -24,7 +24,7 @@ namespace STORE
     Smooth(void);
    ~Smooth(void) noexcept(false);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
 
   private:
     Footer* aFooter(void);

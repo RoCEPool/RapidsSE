@@ -43,9 +43,14 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
+
+  // todo: REMOVE
+  if (bEarlyExit)
+    return;
+
 
   pCI->vRestart();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
@@ -60,6 +65,8 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     }
   }
 
+
+
   // [Where]
   if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
@@ -67,6 +74,7 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
       pCI->vPrintBoard(__LINE__);
     }
   }
+
 
   // GbyAgg_partition
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
