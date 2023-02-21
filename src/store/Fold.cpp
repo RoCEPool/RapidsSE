@@ -192,6 +192,67 @@ CarryForward* Fold::pFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Fold a from                                                                */
+/*----------------------------------------------------------------------------*/
+CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+
+  CarryForward* pCarryForward = new CarryForward;
+
+  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
+
+  RASSERT(pCI->G_bEachMain(CK_CALL));
+  vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szValue());
+  pCI->vPrintBoard(__LINE__);
+
+
+  pCI->G_vNewMember(CK_FOLD, szFold);
+  pCI->G.pDeck->vPush(pCI->G.p_fold);
+
+  pCI->vPrintBoard(__LINE__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get copy of sq and push before mq
+
+  // x) push to sq
+  if (! pCI->G_bPushBoard(pCI->G.p_call->szValue())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szValue());
+    NEVER_REACH
+  }
+
+  pCI->m_pCard_copied = pCI->G.pDeck->pDupSubCards(0);
+
+  pCI->vPrintBoard(__LINE__);
+
+  // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
+
+  // x) pop back to mq
+  pCI->G_vPopIter();
+
+  pCI->G.pDeck->vPush(pCI->m_pCard_copied);
+  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->m_pCard_copied);
+  DELETE_CARD(pCI->m_pCard_copied);
+
+  pCI->G.pDeck->vRemoveChild(pCI->G.p_call);
+  DELETE_CARD(pCI->G.p_call);
+
+  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vPrintBoard(__LINE__);
+
+  // 7) derive the fold (SQ result) expr
+  pCI->G_vRestart();
+  if (pCI->G_bEachMain(CK_FOLD)) {
+    pCI->G.i_FoldCard = pCI->G.i_MainCard;
+    Board::vDerive_foldProjection_F(pCI);
+  }
+
+  return pCarryForward;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
 CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pCI)

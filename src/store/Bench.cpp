@@ -863,12 +863,16 @@ void Bench::vFlatten_10_F(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
 
-  vFold_from("From"_Stz);
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
+
+  Smooth* pSmooth = new Smooth;
+
 
   Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
@@ -892,6 +896,10 @@ void Bench::vFlatten_10_F(void)
   }
 
   m_pCI->vEndTransform();
+
+  delete pSmooth;
+  delete pCarryForward;
+  delete pFold;
 }
 
 
