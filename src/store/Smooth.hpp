@@ -7,6 +7,9 @@
 
 namespace STORE
 {
+  class CardIter;
+  class CarryForward;
+
   class Smooth : public Object
   {
   private:
@@ -20,6 +23,8 @@ namespace STORE
     
     Smooth(void);
    ~Smooth(void) noexcept(false);
+
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
   private:
     Footer* aFooter(void);

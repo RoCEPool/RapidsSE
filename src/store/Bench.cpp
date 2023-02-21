@@ -1688,11 +1688,8 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
 
-  //vFold_nc_subQuery("H_A_NC_ro"_Stz,CK_HAVING,pFold);
-
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery("H_A_NC_ro"_Stz, CK_HAVING, m_pCI);
-
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1702,82 +1699,85 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   // subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
-  m_pCI->vRestart();
-  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
-  RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
-  RASSERT(m_pCI->m_pExpr_fold);
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  // Table*
-  i8 nTables = 0;
-  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
-    nTables++;
-    m_pCI->G.p_table->vSmooth(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-  }
-
-  // [Where]
-  bool bSawWhere = false;
-  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
-    bSawWhere = true;
-    m_pCI->G.p_where->vSmooth(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // GbyAgg_partition
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // GbyAgg_node
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // GbyAgg_origin
-  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // [project (avg)]
-  bool bSawProject_postAgg = false;
-  if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
-    bSawProject_postAgg = true;
-    m_pCI->G.p_project->vSmooth_postAgg(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // Having
-  if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
-    m_pCI->G.p_having->vSmooth(m_pCI, bSawProject_postAgg, pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-
-  if (pCarryForward->Project_postAgg.m_bSeen) {
-    m_pCI->G.p_project->vInject_foldExpr(m_pCI);
-    m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI);
-    m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
-    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-  }
-  else {
-    m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
-    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
-    m_pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  m_pCI->vRestart();
+//  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+//  RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
+//  RASSERT(m_pCI->m_pExpr_fold);
+//
+//  // Table*
+//  i8 nTables = 0;
+//  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
+//    nTables++;
+//    m_pCI->G.p_table->vSmooth(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//  }
+//
+//  // [Where]
+//  bool bSawWhere = false;
+//  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
+//    bSawWhere = true;
+//    m_pCI->G.p_where->vSmooth(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // GbyAgg_partition
+//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // GbyAgg_node
+//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // GbyAgg_origin
+//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
+//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // [project (avg)]
+//  bool bSawProject_postAgg = false;
+//  if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
+//    bSawProject_postAgg = true;
+//    m_pCI->G.p_project->vSmooth_postAgg(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // Having
+//  if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
+//    m_pCI->G.p_having->vSmooth(m_pCI, bSawProject_postAgg, pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+//
+//  if (pCarryForward->Project_postAgg.m_bSeen) {
+//    m_pCI->G.p_project->vInject_foldExpr(m_pCI);
+//    m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI);
+//    m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
+//    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//  }
+//  else {
+//    m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
+//    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
+//    m_pCI->vPrintBoard(__LINE__);
+//    vDebugPoint();
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
@@ -1785,6 +1785,7 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   delete pFold;
 
   delete pCarryForward;
+  delete pSmooth;
 
   m_pCI->vEndTransform();
 }
