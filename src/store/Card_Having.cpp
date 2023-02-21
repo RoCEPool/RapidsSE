@@ -71,22 +71,18 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vSmooth(CardIter* pCI, bool bSawProject,
-                          CarryForward* pCarryForward)
+void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_having->Y_vSet(P_Smoothed);
 
-  RASSERT(bSawProject == pCarryForward->Project_postAgg.m_bSeen)
-  bool bBump = ! bSawProject;
+  bool bBump = ! pCarryForward->Project_postAgg.m_bSeen;
 
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
   pCI->G.pDeck->vRenumberRecursive();
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -147,10 +143,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_cmp);
 
-
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

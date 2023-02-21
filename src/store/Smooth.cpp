@@ -53,57 +53,59 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   RASSERT(pCI->m_pExpr_fold);
 
   // Table*
-  i8 nTables = 0;
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
-    nTables++;
-    pCI->G.p_table->vSmooth(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
+    if (pCarryForward->Table.m_bSeen) {
+      pCI->G.p_table->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   // [Where]
-  bool bSawWhere = false;
   if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
-    bSawWhere = true;
-    pCI->G.p_where->vSmooth(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    if (pCarryForward->Where_preAgg.m_bSeen) {
+      pCI->G.p_where->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   // GbyAgg_partition
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
-    pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    if (pCarryForward->GbyAgg.m_bSeen) {
+      pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   // GbyAgg_node
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
-    pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    if (pCarryForward->GbyAgg.m_bSeen) {
+      pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   // GbyAgg_origin
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
-    pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    if (pCarryForward->GbyAgg.m_bSeen) {
+      pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   // [project (avg)]
-  bool bSawProject_postAgg = false;
   if (pCI->G_bIsNextMain(CK_PROJECT) && pCI->G_bEachMain(CK_PROJECT)) {
-    bSawProject_postAgg = true;
-    pCI->G.p_project->vSmooth_postAgg(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    if (pCarryForward->Project_postAgg.m_bSeen) {
+      pCI->G.p_project->vSmooth_postAgg(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   // Having
   if (pCI->G_bIsNextMain(CK_HAVING) && pCI->G_bEachMain(CK_HAVING)) {
-    pCI->G.p_having->vSmooth(pCI, bSawProject_postAgg, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    if (pCarryForward->Having.m_bSeen) {
+      pCI->G.p_having->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
@@ -122,6 +124,8 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     vDebugPoint();
   }
 
+  pCI->vPrintBoard(__LINE__);
+  pCI->G.pDeck->vRenumberRecursive();
 }
 
 /*============================================================================*/

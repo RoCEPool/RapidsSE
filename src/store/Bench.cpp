@@ -1665,9 +1665,9 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // H A NC ro (refer: Q11)
-  // - the subquery produces a single nc result, such as avg(col)
+  // - the nc subquery produces a single nc result, such as avg(col)
   // - that SQ result needs to be in every OQ row so the Having clause
-  //     can use it to filter rows, so
+  //     can use it to filter rows
 
   /* ARCHETYPE _r_a_b_HAVING:
       select l_orderkey, sum(l_quantity)
@@ -1683,15 +1683,11 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   // fold of subQuery
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
-
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery("H_A_NC_ro"_Stz, CK_HAVING, m_pCI);
 
-  m_pCI->vPrintBoard(__LINE__);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing of H_A_NC_ro
-  // subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
