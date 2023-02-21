@@ -1036,7 +1036,7 @@ void Bench::vFlatten_24_W_A_C_ro(void)
   i8 nTables = 0;
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
     nTables++;
-    m_pCI->G.p_table->vSmooth(m_pCI,nullptr);
+    m_pCI->G.p_table->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
   }
   m_pCI->vPrintBoard(__LINE__);
@@ -1166,7 +1166,7 @@ void Bench::vFlatten_32_W_A_NC_I(void)
   i8 nTables = 0;
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
     nTables++;
-    m_pCI->G.p_table->vSmooth(m_pCI, nullptr);
+    m_pCI->G.p_table->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
   }
 
@@ -1176,7 +1176,7 @@ void Bench::vFlatten_32_W_A_NC_I(void)
     bSawWhere = true;
     m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/true,
                                     /*bReplace_sqCall_With_result*/false,
-                                    /*nBumpBy*/1,nullptr);
+                                    /*nBumpBy*/1);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1275,7 +1275,7 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   i8 nTables = 0;
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
     nTables++;
-    m_pCI->G.p_table->vSmooth(m_pCI,nullptr);
+    m_pCI->G.p_table->vSmooth(m_pCI);
     m_pCI->vPrintBoard(__LINE__);
   }
 
@@ -1285,7 +1285,7 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
     bSawWhere = true;
     m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
                                     /*bReplace_sqCall_With_result*/true,
-                                    /*nBumpBy*/1,nullptr);
+                                    /*nBumpBy*/1);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1293,7 +1293,7 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
     m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-                                     /*nBumpBy*/1,nullptr);
+                                     /*nBumpBy*/1);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1301,7 +1301,7 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
     m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-                                     /*nBumpBy*/0,nullptr);
+                                     /*nBumpBy*/0);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1309,7 +1309,7 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
     m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-                                     /*nBumpBy*/0,nullptr);
+                                     /*nBumpBy*/0);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1600,7 +1600,7 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
 
   m_pCI->G.p_table->vDump();
 
-  m_pCI->G.p_table->vSmooth(m_pCI,nullptr);
+  m_pCI->G.p_table->vSmooth(m_pCI);
 
   m_pCI->G.p_project = new Card_Project(CK_PROJECT);
 

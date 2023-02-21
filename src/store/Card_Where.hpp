@@ -34,6 +34,10 @@ namespace STORE
     void vSmooth(CardIter* pCI,
                  bool bMorph_bolPred_To_cmpPred,
                  bool bReplace_sqCall_With_result,
+                 i8 nBumpBy);
+    void vSmooth(CardIter* pCI,
+                 bool bMorph_bolPred_To_cmpPred,
+                 bool bReplace_sqCall_With_result,
                  i8 nBumpBy,
                  CarryForward* pCarryForward);
   };

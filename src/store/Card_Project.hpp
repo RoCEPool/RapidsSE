@@ -18,14 +18,16 @@ namespace STORE
     Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
 
-   static void vUnproject_foldExpr(CardIter* pCI,
-                                   CarryForward* pCarryForward);
+   static void vUnproject_foldExpr(CardIter* pCI);
+    static void vUnproject_foldExpr(CardIter* pCI,
+                                    CarryForward* pCarryForward);
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
+    void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);
     void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy,
                          CarryForward* pCarryForward);
   };

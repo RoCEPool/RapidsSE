@@ -223,6 +223,34 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 void Card_Where::vSmooth(CardIter* pCI,
                          bool bMorph_bolPred_To_cmpPred,
                          bool bReplace_sqCall_With_result,
+                         i8 nBumpBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_where->Y_vSet(P_Smoothed);
+
+  if (nBumpBy) {
+    pCI->G.p_where->vBump_Rightwards(nBumpBy);
+  }
+
+  if (bMorph_bolPred_To_cmpPred) {
+    pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();
+    pCI->G.p_bolPred->vMorph_To_cmpPred(pCI);
+  }
+
+  if (bReplace_sqCall_With_result) {
+    pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
+  }
+
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vSmooth(CardIter* pCI,
+                         bool bMorph_bolPred_To_cmpPred,
+                         bool bReplace_sqCall_With_result,
                          i8 nBumpBy,
                          CarryForward* pCarryForward)
 {

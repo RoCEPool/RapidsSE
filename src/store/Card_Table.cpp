@@ -606,6 +606,19 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
+void Card_Table::vSmooth(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_table->Y_vSet(P_Smoothed);
+
+  pCI->G.p_table->vReProjection(pCI);
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
 void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

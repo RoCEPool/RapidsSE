@@ -22,7 +22,7 @@ namespace STORE
 
     void vCorrect_After_Inject(CardIter* pCI, bool bBump);
 
-
+    void vSmooth(CardIter* pCI, bool bSawProject);
     void vSmooth(CardIter* pCI, bool bSawProject,
                  CarryForward* pCarryForward);
   };

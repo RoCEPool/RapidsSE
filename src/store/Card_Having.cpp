@@ -56,6 +56,21 @@ void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
+void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_having->Y_vSet(P_Smoothed);
+
+  bool bBump = ! bSawProject;
+
+  vCorrect_After_Inject(pCI, bBump);
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
 void Card_Having::vSmooth(CardIter* pCI, bool bSawProject,
                           CarryForward* pCarryForward)
 {

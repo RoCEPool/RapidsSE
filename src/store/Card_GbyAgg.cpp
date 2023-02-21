@@ -101,6 +101,26 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
+
+  if (bInject_foldExpr) {
+    pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
+  }
+
+  if (nBumpBy) {
+    pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
+  }
+
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy,
                           CarryForward* pCarryForward)
 {
