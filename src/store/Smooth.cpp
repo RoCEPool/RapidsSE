@@ -117,7 +117,8 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
     pCI->vPrintBoard(__LINE__);
   }
-  else {
+  else
+  if (pCarryForward->Unproject.m_bUnproject_foldExpr) {
     pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
     pCI->vPrintBoard(__LINE__);

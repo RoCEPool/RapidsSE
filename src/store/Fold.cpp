@@ -481,7 +481,9 @@ CarryForward* Fold::pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pC
     pCarryForward->Unproject.m_bUnproject_foldExpr = true;
   }
   else {
-    NEVER_REACH
+    pCarryForward->Table.m_bReproject = true;
+    pCarryForward->Where_preAgg.m_bMorph_bolPred_To_cmpPred = true;
+    pCarryForward->Where_preAgg.m_nBumpBy = 1;
   }
 
   pCI->vPrintBoard(__LINE__);
