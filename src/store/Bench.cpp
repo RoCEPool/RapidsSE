@@ -1169,66 +1169,6 @@ void Bench::vFlatten_32_W_A_NC_I(void)
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fold of subQuery
-
-  //vFold_subQuery("W_A_NC_I"_Stz,CK_WHERE);
-
-  //m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing
-
-  // | Fold | Table* [Where] Aggreg_PNO
-
-//  RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
-//  RASSERT(m_pCI->m_pExpr_fold);
-//
-//
-//  // Table*
-//  i8 nTables = 0;
-//  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
-//    nTables++;
-//    m_pCI->G.p_table->vSmooth(m_pCI);
-//    m_pCI->vPrintBoard(__LINE__);
-//  }
-//
-//  // [Where]
-//  bool bSawWhere = false;
-//  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
-//    bSawWhere = true;
-//    m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/true,
-//                                    /*bReplace_sqCall_With_result*/false,
-//                                    /*nBumpBy*/1);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // Aggreg_partition
-//  if (m_pCI->G_bIsNextMain(CK_AGGREG) && m_pCI->G_bEachMain(CK_AGGREG)) {
-//    m_pCI->G.p_aggreg->vSmooth(m_pCI);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // Aggreg_node
-//  if (m_pCI->G_bIsNextMain(CK_AGGREG) && m_pCI->G_bEachMain(CK_AGGREG)) {
-//    m_pCI->G.p_aggreg->vSmooth(m_pCI);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // Aggreg_origin
-//  if (m_pCI->G_bIsNextMain(CK_AGGREG) && m_pCI->G_bEachMain(CK_AGGREG)) {
-//    m_pCI->G.p_aggreg->vSmooth(m_pCI);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-
-
-
-
-
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
 
