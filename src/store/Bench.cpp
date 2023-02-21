@@ -1665,13 +1665,9 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // H A NC ro (refer: Q11)
-  // 1) the subquery produces a single result, such as avg(col)
-  // 2) that SQ result needs to be in every MQ row so the Having clause
-  //    can use it to filter rows, so:
-  //   a) cross join SQ result with every row of first table of MQ
-  //   b) inject SQ result into key & projection of MQ GbyAgg
-  //   c) correct the Having op to cater for SQ result
-  //   d) Un-project the SQ result from final rows
+  // - the subquery produces a single nc result, such as avg(col)
+  // - that SQ result needs to be in every OQ row so the Having clause
+  //     can use it to filter rows, so
 
   /* ARCHETYPE _r_a_b_HAVING:
       select l_orderkey, sum(l_quantity)
@@ -1693,103 +1689,24 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing H_A_NC_ro
-
+  // smoothing of H_A_NC_ro
   // subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-//  m_pCI->vRestart();
-//  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
-//  RASSERT(m_pCI->G.p_MainCard->bIsCard(CK_FOLD));
-//  RASSERT(m_pCI->m_pExpr_fold);
-//
-//  // Table*
-//  i8 nTables = 0;
-//  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
-//    nTables++;
-//    m_pCI->G.p_table->vSmooth(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//  }
-//
-//  // [Where]
-//  bool bSawWhere = false;
-//  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
-//    bSawWhere = true;
-//    m_pCI->G.p_where->vSmooth(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // GbyAgg_partition
-//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // GbyAgg_node
-//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // GbyAgg_origin
-//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // [project (avg)]
-//  bool bSawProject_postAgg = false;
-//  if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
-//    bSawProject_postAgg = true;
-//    m_pCI->G.p_project->vSmooth_postAgg(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // Having
-//  if (m_pCI->G_bIsNextMain(CK_HAVING) && m_pCI->G_bEachMain(CK_HAVING)) {
-//    m_pCI->G.p_having->vSmooth(m_pCI, bSawProject_postAgg, pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-//
-//  if (pCarryForward->Project_postAgg.m_bSeen) {
-//    m_pCI->G.p_project->vInject_foldExpr(m_pCI);
-//    m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI);
-//    m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
-//    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//  }
-//  else {
-//    m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
-//    Card_Project::vUnproject_foldExpr(m_pCI,pCarryForward);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
 
   delete pFold;
-
   delete pCarryForward;
   delete pSmooth;
 
   m_pCI->vEndTransform();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Folding -----------------------------------------------------------------*/
