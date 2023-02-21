@@ -58,6 +58,8 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    CarryForward* pFold_exists(Stz* szFold, CardIter* pCI);
+
     CarryForward* pFold_from(Stz* szFold, CardIter* pCI);
 
     CarryForward* pFold_nc_subQuery(Stz* szFold, eCK eCardWithSQ, CardIter* pCI);

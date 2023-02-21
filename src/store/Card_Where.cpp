@@ -58,6 +58,7 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   _static_
 
+  pCI->vRestart();
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
     if (0 == pCI->G.p_boolCalc->nChildCards()) {
       pCI->G_vRemoveDeleteMain(CK_WHERE);

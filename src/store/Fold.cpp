@@ -192,6 +192,147 @@ CarryForward* Fold::pFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Fold a (not) exists                                                        */
+/*----------------------------------------------------------------------------*/
+CarryForward* Fold::pFold_exists(Stz* szFold, CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  CarryForward* pCarryForward = new CarryForward;
+
+  // 1) find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+
+  // W L NC NI
+  //               //
+  //               //
+  // T T W A A A   // find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //     f         //
+  //     bc        //
+  //    @ro notIn  //
+  //        __sq2  // sub-query
+  //           #1  // result
+  //         $a.2  // argument
+
+
+  if (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    if (! Board::bFindAndMarkSubQryCall(pCI)) {
+      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+      NEVER_REACH
+    }
+  }
+  vTrace(">>>>>>>>> Found W_L_NC_NI call to %s(%s)->%s\n"_Stz, pCI->m_sSqyNm.szStz(), pCI->m_sSqyArg.szStz(), pCI->m_sSqyRsl.szStz());
+  pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 2) push to sq
+  if (! pCI->G_bPushBoard(pCI->m_sSqyNm)) {
+    pCI->vTracer("DID NOT FIND Board %s\n"_Stz, pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+
+  i8 i_SqBoardNo = pCI->G.pBoard->i_Board();
+
+  // x) pull <where> into <table>/<filter>
+
+
+
+  pCI->vPrintBoard(__LINE__);
+
+  pCI->G_vRestart();
+  if (pCI->G_bEachMain(CK_TABLE)) {
+    if (pCI->G_bEachMain(CK_WHERE)) {
+      Card_Where::vMoveWhereToTableAsConstraint(pCI);
+    }
+  }
+  pCI->vPrintBoard(__LINE__);
+
+  // 3) get copy of sq:<table>/* into cc:<table>
+  pCI->G_vRestart();
+  if (pCI->G_bEachMain(CK_TABLE)) {
+    pCI->G_vCopyCard(pCI->G.p_table);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // 4) pop back to mq
+  pCI->G_vPopIter();
+
+  // 5) fold
+  //vR_S40_T50a_Fold_W_L_C_E_Before_Mq_As_keyExists();
+  // put cc:<table>/* before mq:<where>
+
+  pCI->G_vNewMember(CK_FOLD, szFold);
+  pCI->G_vInsertBefore(pCI->G.p_fold, pCI->G.p_where);
+
+  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_BOARDNO);
+  pCI->G.p_boardNo->vValue(i_SqBoardNo);
+
+
+  // W L NC NI
+  //                   //
+  // ------  --mq----  //
+  // T T T F W A A A   // find W_L_NC_NI subquery call in mq:<where>/<boolCalc>
+  //     --sq          //
+  //     kne           //
+
+  pCI->G.p_table = _pCard_Table(pCI->m_pCard_copied);
+
+  pCI->G_vInsertBefore(pCI->m_pCard_copied, pCI->G.p_fold);
+
+  eCK eCard_Exists = CK_NONE;
+  if (pCI->G.pSubQuery->bByIn())
+    eCard_Exists = CK_KEYEXISTS;
+  else
+  if (pCI->G.pSubQuery->bByIn())
+    eCard_Exists = CK_KEYNOTEXISTS;
+  else
+    NEVER_REACH;
+
+  pCI->G_vAppendNewChild(pCI->m_pCard_copied, eCard_Exists);
+
+  Card_Projection::vProjection_Analysis_v2(pCI);
+  pCI->G.pDeck->vRenumberRecursive();
+//  Card_Stream::vStream_AdjustLoHi(pCI);
+//  Board::vRenumberStmOdn(pCI);
+  pCI->vPrintBoard(__LINE__);
+
+  Stz* szSqyArg = pCI->m_sSqyArg;
+
+  i8 i_Table = pCI->G.pDeck->iFindChild(pCI->G.p_table);
+  bool b = pCI->G_bResolveSubCard(CK_EXPR, szSqyArg, CK_TBLCOLODN, i_Table);
+  RASSERT(b);
+
+  Stz* szTblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn()->szValue();
+  pCI->G.p_bounds = Card_Bounds::pBounds_Create_Eq_ForGivenCol(szTblColOdn);
+  //pCI->m_pCard_copied->vAppend(pCI->G.p_bounds);
+
+  pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
+  pCI->G.p_index = pCI->G.p_table->pSub_index();
+  pCI->G.p_index->vAppend(pCI->G.p_bounds);
+
+
+  pCI->vPrintBoard(__LINE__);
+
+  // W L NC NI
+  //                   //
+  // T T T F W A A A   //
+  //     b             //
+  //     kne           //
+
+  pCI->G_vRestart();
+  RASSERT(pCI->G_bEachMainWith2Sub(CK_TABLE, eCard_Exists, CK_CONSTRAINT));
+  pCI->G.p_table->vRemoveChild(pCI->G.p_constraint);
+  pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
+  pCI->G.p_index = pCI->G.p_table->pSub_index();
+  pCI->G.p_index->vAppend(pCI->G.p_constraint);
+  pCI->G_vCopyCard(nullptr);
+
+  return pCarryForward;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Fold a from                                                                */
 /*----------------------------------------------------------------------------*/
 CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)

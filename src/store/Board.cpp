@@ -1537,7 +1537,7 @@ void Board::vReinstate_stages(CardIter* pCI)
 
     if ((CK_PROJECT == e_main || CK_AGGREG == e_main)
         && (bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
-      if (CK_SCAN != e_prev)
+      if (CK_SCAN != e_prev && CK_PROJECT != e_prev)
         vAddCombined(p_main, i_Main);
       vAddNext(p_main, i_Main,""_Stz);
       vAddStage(p_main, i_Main, e_level_running,nStages);
@@ -1610,7 +1610,7 @@ void Board::vReinstate_stages(CardIter* pCI)
   e_prev = e_main;
 
   i8 i_End = C_UNKNOWN;
-  if (CK_SCAN != e_prev)
+  if (CK_SCAN != e_prev && CK_PROJECT != e_prev)
     vAddCombined(p_main, i_End);
   vAddNext(p_main, i_End,""_Stz);
 }

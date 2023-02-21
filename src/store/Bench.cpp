@@ -356,7 +356,9 @@ void Bench::vGroup_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
+//  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
+//    return;
+  if (Card_Table::nTables_foldBreak(m_pCI) < 2)
     return;
 
   vTransform_JoinOrdering_originalModel();
@@ -1525,7 +1527,8 @@ void Bench::vFlatten_53_W_L_NC_NI_exists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
 
-  vFold_exists("W_L_NC_NI"_Stz);
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward = pFold->pFold_exists("W_L_NC_NI"_Stz,m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1546,6 +1549,9 @@ void Bench::vFlatten_53_W_L_NC_NI_exists(void)
   m_pCI->G.pDeck->vClearMarksRecursive();
 
   m_pCI->vEndTransform();
+
+  delete pCarryForward;
+  delete pFold;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1637,12 +1643,13 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
 
       p_pred_joining->vCard(CK_CMPPRED);
       p_pred_joining->vValue("=="_Stz);
-      p_pred_joining->vAppend(new Card_Term("a.1"_Stz));
+      p_pred_joining->vAppend(new Card_Term("$a.1"_Stz));
       p_pred_joining->vAppend(new Card_Term("$1"_Stz));
 
       break;
     }
   }
+  Card_Where::vDeleteEmpyWhere(m_pCI);
 
 
   m_pCI->vPrintBoard(__LINE__);
@@ -2305,6 +2312,7 @@ void Bench::vTransform_TblColToStmCol(void)
 
   m_pCI->vTransform(__func__, "vTransform_TblColToStmCol"_Stz);
 
+  m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
