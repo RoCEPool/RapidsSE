@@ -1501,7 +1501,7 @@ void Board::vReinstate_stages(CardIter* pCI)
 
     // change of level
     if (e_level_main != e_level_running) {
-      if (CK_SCAN != e_prev && CK_PROJECT != e_prev)
+      if (CK_SCAN != e_prev)// && CK_PROJECT != e_prev)
         vAddCombined(p_main, i_Main);
       if (e_level_running == AL_ORIGIN &&
           e_level_main == AL_PARTITION)
