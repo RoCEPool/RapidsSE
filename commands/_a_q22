@@ -14,8 +14,9 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
                where c_acctbal > 0.00
                      and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
                      and not exists (
-                                      select * from orders where o_custkey = c_custkey )
-                                    ) as custsale
+                                      select * from orders where o_custkey = c_custkey
+                                    )
+     ) as custsale
      group by cntrycode
      order by cntrycode;
 
@@ -33,9 +34,6 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
 //
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-////// NOT WORKING FULLY YET !!!!
-////// NOT EXISTS NOT YET INCORPORATED
 
 pipeline Query22
 begin
@@ -71,33 +69,33 @@ begin
     indexJoin Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  J1_C_PHONE 1  2  substring3  in
               J1_C_ACCTBAL acctbal  >  and "
-    | project " type VARCHAR as cntrycode J1_C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL "
+    | project " type INTEGER as C_CUSTKEY J1_C_CUSTKEY , type VARCHAR as cntrycode J1_C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL "
     | combined 0
     | next
-/*
+
   stage S07 on all partitions :
     keyNotExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
-                   "type BOOLEAN true"
-    //| project " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+                   "type BOOLEAN O_CUSTKEY 0 >"
+    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
     | combined 0
     | next
-*/
+
  stage S08 on all partitions :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage S09 on all nodes :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
     | combined 0
     | next
 
-  stage S10 on origin :
+  stage S11 on origin :
     sort " type VARCHAR as cntrycode $1 ASC  "
     | combined 0
     | next
@@ -114,4 +112,3 @@ end ;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
