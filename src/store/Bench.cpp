@@ -1208,6 +1208,10 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 
   // Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
+  m_pCI->vRestart();
+  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+
   // Table*
   i8 nTables = 0;
   while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
