@@ -248,11 +248,7 @@ void Card_Where::vSmooth(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vSmooth(CardIter* pCI,
-                         bool bMorph_bolPred_To_cmpPred,
-                         bool bReplace_sqCall_With_result,
-                         i8 nBumpBy,
-                         CarryForward* pCarryForward)
+void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -1719,30 +1719,28 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   bool bSawWhere = false;
   if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
     bSawWhere = true;
-    m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
-                                    /*bReplace_sqCall_With_result*/false,
-                                    /*nBumpBy*/1,pCarryForward);
+    m_pCI->G.p_where->vSmooth(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_partition
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,true,0,pCarryForward);
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_node
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,true,0,pCarryForward);
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   // GbyAgg_origin
   if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,true,0,pCarryForward);
+    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1751,7 +1749,7 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   bool bSawProject_postAgg = false;
   if (m_pCI->G_bIsNextMain(CK_PROJECT) && m_pCI->G_bEachMain(CK_PROJECT)) {
     bSawProject_postAgg = true;
-    m_pCI->G.p_project->vSmooth_postAgg(m_pCI, 1, pCarryForward);
+    m_pCI->G.p_project->vSmooth_postAgg(m_pCI,pCarryForward);
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
@@ -1765,7 +1763,7 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  if (bSawProject_postAgg) {
+  if (pCarryForward->Project_postAgg.m_bSeen) {
     m_pCI->G.p_project->vInject_foldExpr(m_pCI);
     m_pCI->G.p_having->vAcclimate_foldExpr(m_pCI);
     m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();

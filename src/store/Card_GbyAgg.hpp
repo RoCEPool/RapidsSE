@@ -25,8 +25,7 @@ namespace STORE
 
     void vInject_foldExpr(CardIter* pCI);
     void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy);
-    void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy,
-                 CarryForward* pCarryForward);
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
   };
 
   Card_GbyAgg* _pCard_GbyAgg(void* aAddr);

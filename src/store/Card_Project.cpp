@@ -98,10 +98,6 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 {
   _static_
 
-  if (pCarryForward) RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
-
-  //pCI->G.p_projection = pCI->G.p_project->pSub_projection();
-
   RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_PROJECT);
@@ -222,7 +218,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy, CarryForward* pCarryForward)
+void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
