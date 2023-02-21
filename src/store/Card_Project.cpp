@@ -228,9 +228,8 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy, CarryForward* pCar
 
   pCI->G.p_project->Y_vSet(P_Smoothed);
 
-  if (nBumpBy) {
-    if (pCarryForward) RASSERT(pCarryForward->Project_postAgg.m_nBumpBy == nBumpBy);
-    pCI->G.p_project->vBump_Rightwards(nBumpBy);
+  if (pCarryForward->Project_postAgg.m_nBumpBy) {
+    pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
 }
 

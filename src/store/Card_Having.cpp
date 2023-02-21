@@ -78,10 +78,11 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject,
 
   pCI->G.p_having->Y_vSet(P_Smoothed);
 
+  RASSERT(bSawProject == pCarryForward->Project_postAgg.m_bSeen)
   bool bBump = ! bSawProject;
 
-  if (pCarryForward) RASSERT(pCarryForward->Having.m_bCorrect_After_Inject);
-  vCorrect_After_Inject(pCI, bBump);
+  if (pCarryForward->Having.m_bCorrect_After_Inject)
+    vCorrect_After_Inject(pCI, bBump);
   pCI->G.pDeck->vRenumberRecursive();
 }
 

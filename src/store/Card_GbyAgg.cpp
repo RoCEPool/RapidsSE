@@ -128,14 +128,12 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy,
 
   pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
 
-  if (bInject_foldExpr) {
-    if (pCarryForward) RASSERT(pCarryForward->GbyAgg.m_bInject_foldExpr);
+  if (pCarryForward->GbyAgg.m_bInject_foldExpr) {
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
   }
 
-  if (nBumpBy) {
-    if (pCarryForward) RASSERT(pCarryForward->GbyAgg.m_nBumpBy == nBumpBy);
-    pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
+  if (pCarryForward->GbyAgg.m_nBumpBy) {
+    pCI->G.p_gbyAgg->vBump_Rightwards(pCarryForward->GbyAgg.m_nBumpBy);
   }
 
   pCI->G.pDeck->vRenumberRecursive();
