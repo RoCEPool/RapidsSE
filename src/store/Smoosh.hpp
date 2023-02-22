@@ -27,7 +27,7 @@ namespace STORE
 
     void vSmoosh(CardIter* pCI, eSM eSmoosh);
 
-    void vNOT_IN_into_KEYNOTEXISTS(CardIter* pCI);
+    void vNOT_IN_into_KEYnotEXISTS(CardIter* pCI);
 
   private:
     Footer* aFooter(void);

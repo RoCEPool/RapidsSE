@@ -52,7 +52,7 @@ void Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smoosh::vNOT_IN_into_KEYNOTEXISTS(CardIter* pCI)
+void Smoosh::vNOT_IN_into_KEYnotEXISTS(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 
@@ -68,7 +68,6 @@ void Smoosh::vNOT_IN_into_KEYNOTEXISTS(CardIter* pCI)
   pCI->G.p_table->vAppend(pCI->G.p_constraint);
 
   pCI->G.pDeck->vRemove(pCI->G.p_table);
-  pCI->G.p_table->vAppend(new Card_KeyNotExists);
 
   pCI->G.p_term = pCI->G.p_project->pSub_term();
   pCI->G.p_project->vRemoveSubCard(pCI->G.p_term);
@@ -79,12 +78,21 @@ void Smoosh::vNOT_IN_into_KEYNOTEXISTS(CardIter* pCI)
   pCI->G.pDeck->vRemoveDeleteChild(pCI->G.p_where);
   pCI->G.pDeck->vRemoveDeleteChild(pCI->G.p_project);
 
+  pCI->pBoard()->vPrintBoard();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  pCI->vRestart();
   RASSERT(pCI->G_bEachMain(CK_WHERE));
   pCI->G.pDeck->vInsertBefore(pCI->G.p_table,pCI->G.p_where);
 
   pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();
+
+  if (pCI->G.p_bolPred->bIsValue("in"_Stz))
+    pCI->G.p_table->vAppend(new Card_KeyExists);
+  else
+    pCI->G.p_table->vAppend(new Card_KeyNotExists);
+
   pCI->G.p_bolPred->vMorph_To_cmpPred(pCI,pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);

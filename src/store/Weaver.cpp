@@ -1103,8 +1103,11 @@ void Weaver::vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyE
   }
 
   Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
-  if (! pCard_constraint)
-    return;
+  if (! pCard_constraint) {
+    pCard_constraint = pCard_KeyExists->pSub_constraint();
+    if (!pCard_constraint)
+      return;
+  }
 
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 

@@ -1502,7 +1502,7 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
 
   Smoosh* pSmoosh = new Smoosh();
 
-  pSmoosh->vNOT_IN_into_KEYNOTEXISTS(m_pCI);
+  pSmoosh->vNOT_IN_into_KEYnotEXISTS(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
