@@ -297,7 +297,7 @@
     xDte1.m_iAsI8 = *(--paW);                                              \
                                                                            \
     if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
@@ -334,7 +334,7 @@
     xDte1.m_iAsI8 = *(--paW);                                              \
                                                                            \
     if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
@@ -704,12 +704,14 @@
         iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
                                                                            \
       iArg3 = iArg1 + iArg2;                                               \
+                                                                           \
       if (iArg3 < 0) {                                                     \
         wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
       }                                                                    \
       else {                                                               \
-         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                   \
+        wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                    \
       }                                                                    \
       wIvlResult.m_xIvl.m_eType =                                          \
         eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
@@ -743,6 +745,7 @@
         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
       }                                                                    \
       else {                                                               \
+         wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                   \
       }                                                                    \
       wIvlResult.m_xIvl.m_eType =                                          \
@@ -904,6 +907,80 @@
     }                                                                      \
   }
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TIME
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _MICROS_TO_TIME                                                    \
+  {                                                                        \
+                                                                           \
+    xTme2.m_uHour   = (iMicros / (_C_SECS_PER_HR  * _C_1M)) % _C_HOURS_PER_DAY;  \
+    xTme2.m_uMinute = (iMicros % (_C_SECS_PER_HR  * _C_1M)) / (_C_SECS_PER_MIN * _C_1M);   \
+    xTme2.m_uSecond = (iMicros % (_C_SECS_PER_MIN * _C_1M)) / _C_1M;       \
+    xTme2.m_uMicro  = iMicros % _C_1M;                                     \
+    xTme2.m_uSpare = 0;                                                    \
+                                                                           \
+    *paW++ = xTme2.m_iAsI8;                                                \
+  }                                                                        \
+
+#define _ADD_TMEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme1.m_uSecond*_C_1M) +                                    \
+              xTme1.m_uMicro;                                              \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+     iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                    \
+     i8 iMicros = iArg1 + iArg2;                                           \
+                                                                           \
+    _MICROS_TO_TIME;                                                       \
+  }                                                                        \
+}
+
+#define _ADD_IVDTME(eErrorCode)                                            \
+  {                                                                        \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme2.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg2 = ((xTme2.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme2.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme2.m_uSecond*_C_1M) +                                    \
+              xTme2.m_uMicro;                                              \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+     iArg1 %= _C_SECS_PER_DAY  * _C_1M;                                    \
+     i8 iMicros = iArg1 + iArg2;                                           \
+                                                                           \
+    _MICROS_TO_TIME;                                                       \
+  }                                                                        \
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNKNOWN and ANY

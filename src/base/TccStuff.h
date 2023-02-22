@@ -310,6 +310,12 @@ enum eMC // meta code
   /* 16 */ MC_ENUMS,
 };
 
+static const i8 _C_1M = 1000000;
+static const i8 _C_SECS_PER_MIN = 60;
+static const i8 _C_SECS_PER_HR  = 3600;
+static const i8 _C_SECS_PER_DAY = 3600*24;
+static const i8 _C_HOURS_PER_DAY = 24;
+
 static const i8 C_HEADLINE_OFS_WORDS = 0;
 static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
 static const i8 C_HEADLINE_DELETED = 127;
