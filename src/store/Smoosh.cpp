@@ -43,11 +43,11 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smoosh::vSmoosh(CardIter* pCI, eTM Smoosh)
+void Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 
- }
+}
 
 /*============================================================================*/
 /* end                                                                        */

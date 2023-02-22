@@ -1162,7 +1162,7 @@ void Bench::vFlatten_32_W_A_NC_I(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz,
-                               CK_WHERE, QO_IN_OP, TM_NONE);
+                               CK_WHERE, QO_IN_OP, SM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
@@ -1203,7 +1203,7 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz,
-                               CK_WHERE, QO_RELN_OP, TM_NONE);
+                               CK_WHERE, QO_RELN_OP, SM_NONE);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1487,7 +1487,7 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_join"_Stz,
-                               CK_WHERE, QO_NOT_IN_OP, TM_NOT_IN_into_JOIN);
+                               CK_WHERE, QO_NOT_IN_OP, SM_NOT_IN_into_JOIN);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1612,7 +1612,7 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz,
-                               CK_HAVING, QO_RELN_OP, TM_NONE);
+                               CK_HAVING, QO_RELN_OP, SM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having

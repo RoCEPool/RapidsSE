@@ -4,7 +4,7 @@
 #pragma once
 
 #include "BASE.h"
-#include "eTM.h"
+#include "eSM.h"
 
 namespace STORE
 {
@@ -25,7 +25,7 @@ namespace STORE
     Smoosh(void);
    ~Smoosh(void) noexcept(false);
 
-    void vSmoosh(CardIter* pCI, eTM eSmoosh);
+    void vSmoosh(CardIter* pCI, eSM eSmoosh);
 
   private:
     Footer* aFooter(void);

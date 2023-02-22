@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* eTM.h -- Transmute                                                         */
+/* eSM.h -- Smoosh                                                         */
 /*============================================================================*/
 #pragma once
 
-enum eTM // atom evaluation
+enum eSM // smoosh
 {
-  /* */ TM_NONE=0,
+  /* */ SM_NONE=0,
 
-  /* */ TM_NOT_IN_into_JOIN,
+  /* */ SM_NOT_IN_into_JOIN,
 
-  /* */ TM_ENUMS
+  /* */ SM_ENUMS
 };
 
 static Stz* aTM[]
 {
-  /*  */ "TM_NONE"_Stz,
+  /*  */ "SM_NONE"_Stz,
 
-  /*  */ "TM_NOT_IN_into_JOIN"_Stz,
+  /*  */ "SM_NOT_IN_into_JOIN"_Stz,
 
-  /*  */ "TM_ENUMS"_Stz
+  /*  */ "SM_ENUMS"_Stz
 };
 
 /*============================================================================*/

@@ -397,7 +397,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 /* Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
 CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
-                                      eCK eCardWithSQ, eQO eWhatOp, eTM eTransmute)
+                                      eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 

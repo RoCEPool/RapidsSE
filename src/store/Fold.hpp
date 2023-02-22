@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Bench.hpp"
-#include "eTM.h"
+#include "eSM.h"
 
 
 namespace STORE
@@ -64,7 +64,7 @@ namespace STORE
     CarryForward* pFold_from(Stz* szFold, CardIter* pCI);
 
     CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
-                                    eCK eCardWithSQ, eQO eWhatOp, eTM eTransmute);
+                                    eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh);
 
   protected:
     Footer* aFooter(void);
