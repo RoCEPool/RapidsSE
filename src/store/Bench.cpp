@@ -208,9 +208,9 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // things after flattening the sub-queries of this outer query
+  // things to do to this outer query after flattening it's sub-queries
 
-  vGroup_FinalConversions();
+  //vGroup_FinalConversions();
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
@@ -353,16 +353,16 @@ void Bench::vGroup_IndexBounds(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* join ordering of outer query                                               */
 /*----------------------------------------------------------------------------*/
 void Bench::vGroup_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-//  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
-//    return;
-  if (Card_Table::nTables_foldBreak(m_pCI) < 2)
+  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
+//  if (Card_Table::nTables_foldBreak(m_pCI) < 2)
+//    return;
 
   vTransform_JoinOrdering_originalModel();
   vTransform_PredicateReposition_originalModel();
@@ -876,10 +876,11 @@ void Bench::vFlatten_10_F(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
+  pCarryForward->Table.m_bReproject = true;
   Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
 
-
-  Card_Projection::vProjection_Analysis_v2(m_pCI);
+  //Card_Projection::vProjection_Analysis_v2(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -889,7 +890,7 @@ void Bench::vFlatten_10_F(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
-  // discuss with Alka
+  // todo: discuss with Alka
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     if (m_pCI->G_bEachMain(CK_WHERE)) {

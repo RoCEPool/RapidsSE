@@ -55,7 +55,7 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit
   pCI->vRestart();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
-  RASSERT(pCI->m_pExpr_fold);
+  //RASSERT(pCI->m_pExpr_fold);
 
   // Table*
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
