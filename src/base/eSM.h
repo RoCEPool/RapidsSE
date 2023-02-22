@@ -7,7 +7,7 @@ enum eSM // smoosh
 {
   /* */ SM_NONE=0,
 
-  /* */ SM_NOT_IN_into_JOIN,
+  /* */ SM_NOT_IN_into_KEYNOTEXISTS,
 
   /* */ SM_ENUMS
 };
@@ -16,7 +16,7 @@ static Stz* aTM[]
 {
   /*  */ "SM_NONE"_Stz,
 
-  /*  */ "SM_NOT_IN_into_JOIN"_Stz,
+  /*  */ "SM_NOT_IN_into_KEYNOTEXISTS"_Stz,
 
   /*  */ "SM_ENUMS"_Stz
 };

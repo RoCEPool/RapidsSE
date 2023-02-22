@@ -893,6 +893,10 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 //  bool bFold = pCI->G_bLocateCard(CK_FOLD,C_UNKNOWN,i_Fold);
 
   pCI->vRestart();
+  while (pCI->G_bEachMain(CK_FLAT))
+    pCI->G.pDeck->vRemoveDeleteChild(pCI->G.p_flat);
+
+  pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE)) {
 
     pCI->G.p_bounds         = pCI->G.p_table->pSub_bounds();

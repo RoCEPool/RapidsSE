@@ -6,6 +6,7 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
+#include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Fold.hpp"
 
@@ -174,6 +175,8 @@ void Bench::vSeries_MakeRunnable_recurse(void)
   // things before sub-queries
 
   SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
+
+  vTransform_StmColToTblCol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1485,19 +1488,31 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   //vFold_in_as_join("W_L_NC_NI"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
-  CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_join"_Stz,
-                               CK_WHERE, QO_NOT_IN_OP, SM_NOT_IN_into_JOIN);
+//  CarryForward* pCarryForward =
+//      pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_join"_Stz,
+//                               CK_WHERE, QO_NOT_IN_OP, SM_NOT_IN_into_KEYNOTEXISTS);
+
+  pFold->vFold_basic(m_pCI,"W_L_NC_NI_join"_Stz,CK_WHERE);
 
   m_pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smooshing
+
+  Smoosh* pSmoosh = new Smoosh();
+
+  pSmoosh->vNOT_IN_into_KEYNOTEXISTS(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
   m_pCI->G_vRestart();
-  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+
+  CarryForward* pCarryForward = new CarryForward;
+  pCarryForward->Table.m_bReproject = true;
 
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);

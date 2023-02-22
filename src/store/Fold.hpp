@@ -59,6 +59,8 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);
+
     CarryForward* pFold_exists(Stz* szFold, CardIter* pCI);
 
     CarryForward* pFold_from(Stz* szFold, CardIter* pCI);

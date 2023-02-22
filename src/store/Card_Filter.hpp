@@ -20,6 +20,7 @@ namespace STORE
     static void vCullUsedBounds(CardIter* pCI);
     static void vDeleteEmptyFilters(CardIter* pCI);
     static void vIndividuate_filter(CardIter* pCI);
+    static Card_Filter* pNew(Card_Constraint* p_constraint);
 
     void vAddPred(Card_PRED *p_PRED);
 
