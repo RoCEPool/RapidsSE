@@ -184,7 +184,7 @@ rows:
 
 SELECT TIME '23:59:01' - INTERVAL '-3:2:1' HOUR TO SECOND  FROM nation where n_nationkey = 2;
 rows:
-  (TIME '03:01:02)')
+  (TIME '03:01:02')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval negation
