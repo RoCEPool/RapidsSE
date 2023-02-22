@@ -145,9 +145,9 @@ rows:
   (TIME '05:32:59')
 
 // Time + Interval HMS (with fractional seconds)
-//SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM nation where n_nationkey = 2;
-//rows:
-// (TIME '05:32:59.456000')
+SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM nation where n_nationkey = 2;
+rows:
+ (TIME '05:32:59.456000')
 
 SELECT TIME '23:59:01' + INTERVAL '28' HOUR  FROM nation where n_nationkey = 2;
 rows:
@@ -157,6 +157,34 @@ SELECT INTERVAL '28' HOUR + TIME '23:59:01' FROM nation where n_nationkey = 2;
 rows:
  (TIME '03:59:01')
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Time - Time
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Time subtraction
+SELECT TIME '14:30:55' - TIME '04:30:56' FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '9:59:59' HOUR TO SECOND)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Time - Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT TIME '23:59:01' - INTERVAL '28' HOUR  FROM nation where n_nationkey = 2;
+rows:
+  (TIME '19:59:01')
+
+SELECT TIME '23:59:01' - INTERVAL '-28' HOUR  FROM nation where n_nationkey = 2;
+rows:
+  (TIME '03:59:01')
+
+SELECT TIME '23:59:01' - INTERVAL '8:3' HOUR TO MINUTE  FROM nation where n_nationkey = 2;
+rows:
+  (TIME '15:56:01')
+
+SELECT TIME '23:59:01' - INTERVAL '-3:2:1' HOUR TO SECOND  FROM nation where n_nationkey = 2;
+rows:
+  (TIME '03:01:02)')
 
 /*******************************************************************
 IN PROGRESS
@@ -173,7 +201,6 @@ rows:
 SELECT 2 * INTERVAL '1' YEAR FROM nation where n_nationkey = 2;
 rows:
 
-
 // Interval division /1 (integer)
 SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM nation where n_nationkey = 2;
 rows:
@@ -181,15 +208,6 @@ rows:
 
 // Date subtraction gives an interval days
 SELECT DATE '2000-03-31' - DATE '2000-02-28' FROM nation where n_nationkey = 2;
-rows:
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Time - Time
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// Time subtraction
-SELECT TIME '14:30:55' - TIME '04:30:56' FROM nation where n_nationkey = 2;
 rows:
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

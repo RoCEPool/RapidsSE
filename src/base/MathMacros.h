@@ -986,6 +986,70 @@
   }                                                                        \
 }
 
+#define _SUB_TMEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme1.m_uSecond*_C_1M) +                                    \
+              xTme1.m_uMicro;                                              \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+     iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                    \
+     i8 iMicros = iArg1 - iArg2;                                           \
+                                                                           \
+    _MICROS_TO_TIME;                                                       \
+  }                                                                        \
+}
+
+#define _SUB_TMETME(eErrorCode)                                            \
+  {                                                                        \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme1.m_uSecond*_C_1M) +                                    \
+              xTme1.m_uMicro;                                              \
+                                                                           \
+      iArg2 = ((xTme2.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme2.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme2.m_uSecond*_C_1M) +                                    \
+              xTme2.m_uMicro;                                              \
+                                                                           \
+     if (iArg1 < iArg2) {                                                  \
+       ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg2 - iArg1;                \
+       ivlArg1.m_xIvl.m_bIsNeg = 1;                                        \
+     }                                                                     \
+     else {                                                                \
+       ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 - iArg2;                \
+     }                                                                     \
+     ivlArg1.m_xIvl.m_eType =  IVL_HS;                                     \
+                                                                           \
+    *paW++ = ivlArg1.m_iAsI8;                                              \
+  }                                                                        \
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNKNOWN and ANY
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
