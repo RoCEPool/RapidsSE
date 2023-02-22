@@ -224,7 +224,7 @@ CardIter::CardIter(Bench* pBench)
   m_pExpr_fold = nullptr;
   m_pExpr_corr = nullptr;
 
-  m_pParamList = nullptr;
+  m_pCorrelation = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
