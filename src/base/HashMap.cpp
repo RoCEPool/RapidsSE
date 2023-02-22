@@ -150,6 +150,15 @@ void HashMap::vDeleteKey(void* pKey)
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
+      RASSERT(pIter->m_okLock.bIsLocked());
+      // drop lock
+      pIter->m_okLock.vDropRead();
+      // assert it is not locked
+      RASSERT( ! pIter->m_okLock.bIsLocked());
+
+      // How to ensure it is not paged out between unlock and delete?
+      // We need to unlock to check if anyone else has a lock on it..
+      // Can we check the number of read locks?
 
       if ( pPrevIter != nullptr )
         pPrevIter->m_pNext = pIter->m_pNext;
@@ -173,6 +182,26 @@ void HashMap::vDeleteKey(void* pKey)
   m_okLock.vDropWrite();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Drop read lock on this key                                                 */
+/*----------------------------------------------------------------------------*/
+void HashMap::vDropKeyLock(void* pKey)
+{
+  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
+
+  while ( pIter != nullptr ) {
+
+    if ( pIter->m_pKeyObject == pKey ) {
+      RASSERT(pIter->m_okLock.bIsLocked());
+      pIter->m_okLock.vDropRead();
+      return;
+    }
+    pIter = pIter->m_pNext;
+  }
+  NEVER_REACH;
+}
 /*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
@@ -225,6 +254,10 @@ void HashMap::vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
 #endif
 
   pEntry->m_pNext = pGetEntryAtIndex(uIndex);
+  // Grab a read lock, to prevent this entry from
+  // being paged out
+  pEntry->m_okLock.vGrabRead();
+
   vSetEntryAtIndex(pEntry, uIndex);
 
   m_uNoOfEntries++;
@@ -338,7 +371,13 @@ Object* HashMap::pValueAt(void* pKey)
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
+      // Grab HashMapEntry read lock, to prevent it from potentially
+      // being paged out immediately
+      pIter->m_okLock.vGrabRead();
+
+      // Release the HashMap lock
       m_okLock.vDropRead();
+
       return pIter->m_pValObject;
     }
 

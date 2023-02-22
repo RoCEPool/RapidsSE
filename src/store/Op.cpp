@@ -271,6 +271,11 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 //      pOperand = (Operand *) oBufferId.m_pvAsAddress;
 //    }
 //#endif
+  } else
+  {
+    // We are done with this buffer, release its lock so it is allowed to be paged out
+    // TODO: Arjun - Change to BufferId function
+    AM::pHashMap()->vDropKeyLock(pOperand);
   }
 
   vGrabTaskLock();

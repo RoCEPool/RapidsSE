@@ -44,7 +44,8 @@ void HashMapEntry::operator delete(void* pHashMapEntryAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HashMapEntry::HashMapEntry(void* pKey, Object* pValue)
-    : Object(CN_HASHMAPENTRY)
+: Object(CN_HASHMAPENTRY)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
 
@@ -62,7 +63,7 @@ HashMapEntry::HashMapEntry(void* pKey, Object* pValue)
 /*----------------------------------------------------------------------------*/
 HashMapEntry::~HashMapEntry(void) noexcept(false)
 {
-_precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

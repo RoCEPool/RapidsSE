@@ -146,21 +146,22 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  RowBuffer* pFullRiwBuffer = nullptr;
-  
+  RowBuffer* pFullRowBuffer = nullptr;
+
+  // TODO: Arjun - If buffer not in memory, it will return null. This is incorrect.
   RowBuffer* pRowBuffer = pRowBufferFromId() ?
                             _pRowBuffer(pRowBufferFromId()->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
-    pFullRiwBuffer = pRowBuffer;
+    pFullRowBuffer = pRowBuffer;
     pRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
   }
   
-  if (pFullRiwBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevLinkedBuffer());
+  if (pFullRowBuffer) {
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRowBuffer->pPrevLinkedBuffer());
     pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   
-  return pFullRiwBuffer;
+  return pFullRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +217,8 @@ void ToKeyHshRow::vNewRowBuffer(void)
   
   //  create a new buffer
   RowBuffer* pRowBuffer = new RowBuffer;
-  
+
+  // TODO: Arjun - Handle case when buffer not in memory..
   // link the new to old
   pRowBuffer->vNextLinkedBuffer(pRowBufferFromId());
   if (pRowBufferFromId())
