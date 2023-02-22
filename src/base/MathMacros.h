@@ -308,6 +308,8 @@
       else                                                                 \
         iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
     xDateTime.tm_year = xDte1.m_uYearDelta;                                \
     xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
     xDateTime.tm_mday = xDte1.m_uDay;                                      \
@@ -317,13 +319,13 @@
                                                                            \
    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                    \
                                                                            \
-   iSecondsSincePosixEpoch += iArg2/1000000;                               \
+   iSecondsSincePosixEpoch += iArg2/_C_1M;                                 \
                                                                            \
    aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
-     xDte2.m_uYearDelta = aLocalDateTime->tm_year;                         \
-     xDte2.m_uMonth     = aLocalDateTime->tm_mon + 1;                      \
-     xDte2.m_uDay       = aLocalDateTime->tm_mday;                         \
-     xDte2.m_uSpare       = 0;                                             \
+   xDte2.m_uYearDelta = aLocalDateTime->tm_year;                           \
+   xDte2.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
+   xDte2.m_uDay       = aLocalDateTime->tm_mday;                           \
+   xDte2.m_uSpare       = 0;                                               \
     *paW++ = xDte2.m_iAsI8;                                                \
   }                                                                        \
 }
@@ -376,6 +378,8 @@
         iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
       else                                                                 \
         iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
                                                                            \
     xDateTime.tm_year = xDte2.m_uYearDelta;                                \
     xDateTime.tm_mon  = xDte2.m_uMonth - 1;                                \

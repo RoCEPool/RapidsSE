@@ -347,9 +347,8 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    void* aCrwJ;"
       "\n    time_t iSecondsSincePosixEpoch;"
       "\n    struct tm* aLocalDateTime;"
-      "\n    struct tm xDateTime = {0};";
-  "\n"
-  "";
+      "\n"
+      "";
 
   StrLib::vAppendString(&azStr, azFrag);
 }

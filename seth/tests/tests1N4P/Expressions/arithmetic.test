@@ -130,6 +130,32 @@ SELECT DATE '2000-02-28' + INTERVAL '-1' DAY FROM nation where n_nationkey = 2;
 rows:
   (DATE '2000-02-27')
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval + time
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval HMS + time
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation where n_nationkey = 2;
+rows:
+  (TIME '05:32:59')
+
+// Time + Interval HMS
+SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM nation where n_nationkey = 2;
+rows:
+  (TIME '05:32:59')
+
+// Time + Interval HMS (with fractional seconds)
+//SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM nation where n_nationkey = 2;
+//rows:
+// (TIME '05:32:59.456000')
+
+SELECT TIME '23:59:01' + INTERVAL '28' HOUR  FROM nation where n_nationkey = 2;
+rows:
+  (TIME '03:59:01')
+
+SELECT INTERVAL '28' HOUR + TIME '23:59:01' FROM nation where n_nationkey = 2;
+rows:
+ (TIME '03:59:01')
 
 
 /*******************************************************************
@@ -182,23 +208,6 @@ rows:
 SELECT DATE '2000-03-31' - TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
 rows:
 
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Interval + time
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// Interval HMS + time
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation where n_nationkey = 2;
-rows:
-         
-// Time + Interval HMS
-SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM nation where n_nationkey = 2;
-rows:
-         
-// Time + Interval HMS (with fractional seconds)
-SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM nation where n_nationkey = 2;
-rows:
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval + Timestamp
