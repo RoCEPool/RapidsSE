@@ -61,6 +61,20 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI)
     return;
   }
 
+  if (bIsValue("notIn"_Stz)) {
+
+    vCard(CK_CMPPRED);
+    vValue("!="_Stz);
+    Card_Term* p_term_popped = _pCard_Term(pPopChild());
+    ASSERT(p_term_popped->bIsValue("__subquery0002"_Stz)); //temp
+    DELETE_CARD(p_term_popped);
+
+    Card_Term* p_term_head = _pCard_Term(pGetChild(0));
+    ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
+    p_term_head->vValue("$1"_Stz);
+    return;
+  }
+
   NEVER_REACH
 }
 

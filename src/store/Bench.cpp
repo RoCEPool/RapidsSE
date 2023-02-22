@@ -1161,7 +1161,8 @@ void Bench::vFlatten_32_W_A_NC_I(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_WHERE, QO_IN_OP);
+      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz,
+                               CK_WHERE, QO_IN_OP, TM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
@@ -1201,7 +1202,8 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_WHERE, QO_RELN_OP);
+      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz,
+                               CK_WHERE, QO_RELN_OP, TM_NONE);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1216,49 +1218,6 @@ void Bench::vFlatten_34_W_A_NC_ro(void)
 
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
-
-  // Table*
-//  i8 nTables = 0;
-//  while (m_pCI->G_bIsNextMain(CK_TABLE) && m_pCI->G_bEachMain(CK_TABLE)) {
-//    nTables++;
-//    m_pCI->G.p_table->vSmooth(m_pCI);
-//    m_pCI->vPrintBoard(__LINE__);
-//  }
-
-  // Where
-//  bool bSawWhere = false;
-//  if (m_pCI->G_bIsNextMain(CK_WHERE) && m_pCI->G_bEachMain(CK_WHERE)) {
-//    bSawWhere = true;
-//    m_pCI->G.p_where->vSmooth(m_pCI,/*bMorph_bolPred_To_cmpPred*/false,
-//                                    /*bReplace_sqCall_With_result*/true,
-//                                    /*nBumpBy*/1);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-
-  // GbyAgg_partition
-//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-//                                     /*nBumpBy*/1);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // GbyAgg_node
-//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-//                                     /*nBumpBy*/0);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  // GbyAgg_origin
-//  if (m_pCI->G_bIsNextMain(CK_GBYAGG) && m_pCI->G_bEachMain(CK_GBYAGG)) {
-//    m_pCI->G.p_gbyAgg->vSmooth(m_pCI,/*bInject_foldExpr*/false,
-//                                     /*nBumpBy*/0);
-//    m_pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1523,7 +1482,12 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
 
-  vFold_in_as_join("W_L_NC_NI"_Stz);
+  //vFold_in_as_join("W_L_NC_NI"_Stz);
+
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward =
+      pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_join"_Stz,
+                               CK_WHERE, QO_NOT_IN_OP, TM_NOT_IN_into_JOIN);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1532,64 +1496,68 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   // smoothing
 
   m_pCI->G_vRestart();
+  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
-  Card_Projection* p_projection_project = nullptr;
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_PROJECTION)) {
-
-    p_projection_project = _pCard_Projection(m_pCI->G.p_projection->pDupCardAndSubCards());
-
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-    if (CK_FOLD == m_pCI->G.e_MainCard)
-      break;
-    if (Card_Projection* p_projection_carry = m_pCI->G.p_MainCard->pSub_projection())
-      m_pCI->G.p_projection = p_projection_carry;
-  }
-
-  RASSERT(m_pCI->G_bEachMain(CK_TABLE));
-
-  m_pCI->G.p_table->vDump();
-
-  m_pCI->G.p_table->vSmooth(m_pCI);
-
-  m_pCI->G.p_project = new Card_Project(CK_PROJECT);
-
-  m_pCI->G.p_level = new Card_Level(AL_PARTITION);
-  m_pCI->G.p_project->vAppend(m_pCI->G.p_level);
-  m_pCI->G.p_project->vAppend(p_projection_project);
-
-  m_pCI->G_vInsertAfter(m_pCI->G.p_project,m_pCI->G.p_table);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_Table* p_table_joining = m_pCI->G.p_table;
-
-  Card_PRED* p_pred_joining = nullptr;
-
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    m_pCI->G.p_where->vDump();
-
-    if (p_pred_joining = m_pCI->G.p_boolCalc->pFindMarkedPred(MARK_AT)) {
-      m_pCI->G.p_boolCalc->vRemovePred(p_pred_joining);
-
-      p_table_joining->vAddPredToTableFilter(m_pCI,p_pred_joining);
-
-      // todo: HACK!
-      p_pred_joining->vDeleteAll();
-
-      p_pred_joining->vCard(CK_CMPPRED);
-      p_pred_joining->vValue("=="_Stz);
-      p_pred_joining->vAppend(new Card_Term("$a.1"_Stz));
-      p_pred_joining->vAppend(new Card_Term("$1"_Stz));
-
-      break;
-    }
-  }
-  Card_Where::vDeleteEmpyWhere(m_pCI);
+//  Card_Projection* p_projection_project = nullptr;
+//
+//  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_PROJECTION)) {
+//
+//    p_projection_project = _pCard_Projection(m_pCI->G.p_projection->pDupCardAndSubCards());
+//
+//  }
+//
+//  m_pCI->G_vRestart();
+//  while (m_pCI->G_bEachMain()) {
+//    if (CK_FOLD == m_pCI->G.e_MainCard)
+//      break;
+//    if (Card_Projection* p_projection_carry = m_pCI->G.p_MainCard->pSub_projection())
+//      m_pCI->G.p_projection = p_projection_carry;
+//  }
+//
+//  RASSERT(m_pCI->G_bEachMain(CK_TABLE));
+//
+//  m_pCI->G.p_table->vDump();
+//
+//  m_pCI->G.p_table->vSmooth(m_pCI);
+//
+//  m_pCI->G.p_project = new Card_Project(CK_PROJECT);
+//
+//  m_pCI->G.p_level = new Card_Level(AL_PARTITION);
+//  m_pCI->G.p_project->vAppend(m_pCI->G.p_level);
+//  m_pCI->G.p_project->vAppend(p_projection_project);
+//
+//  m_pCI->G_vInsertAfter(m_pCI->G.p_project,m_pCI->G.p_table);
+//
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  Card_Table* p_table_joining = m_pCI->G.p_table;
+//
+//  Card_PRED* p_pred_joining = nullptr;
+//
+//  while (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+//    m_pCI->G.p_where->vDump();
+//
+//    if (p_pred_joining = m_pCI->G.p_boolCalc->pFindMarkedPred(MARK_AT)) {
+//      m_pCI->G.p_boolCalc->vRemovePred(p_pred_joining);
+//
+//      p_table_joining->vAddPredToTableFilter(m_pCI,p_pred_joining);
+//
+//      // todo: HACK!
+//      p_pred_joining->vDeleteAll();
+//
+//      p_pred_joining->vCard(CK_CMPPRED);
+//      p_pred_joining->vValue("=="_Stz);
+//      p_pred_joining->vAppend(new Card_Term("$a.1"_Stz));
+//      p_pred_joining->vAppend(new Card_Term("$1"_Stz));
+//
+//      break;
+//    }
+//  }
+//  Card_Where::vDeleteEmpyWhere(m_pCI);
 
 
   m_pCI->vPrintBoard(__LINE__);
@@ -1608,6 +1576,10 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   m_pCI->G.pDeck->vClearMarksRecursive();
 
   m_pCI->vEndTransform();
+
+  delete pSmooth;
+  delete pCarryForward;
+  delete pFold;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1639,7 +1611,8 @@ void Bench::vFlatten_74_H_A_NC_ro(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_HAVING, QO_RELN_OP);
+      pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz,
+                               CK_HAVING, QO_RELN_OP, TM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
