@@ -571,8 +571,8 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
     if (QO_RELN_OP == eWhatOp)
       pCarryForward->Where_preAgg.bReplace_sqCall_With_result = true;
 
-    if (pCarryForward->GbyAgg.m_bSeen)
-      pCarryForward->GbyAgg.m_nBumpBy = 1;
+//    if (pCarryForward->GbyAgg.m_bSeen)
+//      pCarryForward->GbyAgg.m_nBumpBy = 1;
 
   }
 
