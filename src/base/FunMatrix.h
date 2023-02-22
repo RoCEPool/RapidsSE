@@ -217,12 +217,12 @@ static eDM eMacro_MulResult[DM_ENUMS][DM_ENUMS] = {
 // NEGATE
 
 static eDM eMacro_NegResult[DM_ENUMS] =
-    // NONE    BCD     BOL      DTE      FLT     INT     IVD     IVD     TME           TSP       VCH      UNK
-    { DM_NONE, DM_BCD, DM_NONE, DM_NONE, DM_FLT, DM_INT, DM_IVD, DM_IVD, DM_NONE/*?*/, DM_NONE,  DM_NONE, DM_NONE };
+    // NONE    BCD     BOL      DTE      FLT     INT     IVD     IVY     TME           TSP       VCH      UNK
+    { DM_NONE, DM_BCD, DM_NONE, DM_NONE, DM_FLT, DM_INT, DM_IVD, DM_IVY, DM_NONE/*?*/, DM_NONE,  DM_NONE, DM_NONE };
 
 static eFM eMacro_Neg[DM_ENUMS] =
-    // NONE    BCD         BOL       DTE       FLT          INT          IVD         IVY,        TME      TSP       VCH      UNK
-    { FM_OPR_INV, FM_NEG_BCD, FM_OPR_INV,  FM_OPR_INV,  FM_NEG_FLT,  FM_NEG_INT,  FM_OPR_INV,    FM_OPR_INV, FM_OPR_INV, FM_OPR_INV,  FM_OPR_INV, FM_OPR_INV };
+    // NONE       BCD         BOL          DTE          FLT          INT          IVD         IVY,        TME      TSP       VCH      UNK
+    { FM_OPR_INV, FM_NEG_BCD, FM_OPR_INV,  FM_OPR_INV,  FM_NEG_FLT,  FM_NEG_INT,  FM_NEG_IVL, FM_NEG_IVL, FM_OPR_INV, FM_OPR_INV,  FM_OPR_INV, FM_OPR_INV };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN

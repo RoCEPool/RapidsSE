@@ -63,6 +63,7 @@ enum eFM : u2 // function macros
   /*  */ FM_NEG_BCD,             // -bcd
   /*  */ FM_NEG_FLT,             // -flt
   /*  */ FM_NEG_INT,             // -int
+  /*  */ FM_NEG_IVL,             // -ivl
 
   // subtract
   /*  */ FM_SUB_ANYUNK,           // any + unk
@@ -406,6 +407,7 @@ static Stz* aFM[]
   /*  */ "_NEG_BCD"_Stz,
   /*  */ "_NEG_FLT"_Stz,
   /*  */ "_NEG_INT"_Stz,
+  /*  */ "_NEG_IVL"_Stz,
 
   // subtract
   /*  */ "_SUB_ANYUNK"_Stz,
