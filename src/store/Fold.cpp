@@ -220,8 +220,18 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   vSubQuery(pCI->pBoard()->pSubQuery());
 
+
+  i8 i_dup_from = 0;
+  if (pCI->G_bEachMain(CK_CORRELATION)) {
+    pCI->m_pCorrelation = pCI->G.pDeck->pSub_correlation();
+    i_dup_from = 1;
+  }
+
+
+
+
   // 3) get copy of sq
-  pCI->m_pCard_yanked = pCI->G.pDeck->pDupSubCards(0);
+  pCI->m_pCard_yanked = pCI->G.pDeck->pDupSubCards(i_dup_from);
 
   // 4) pop back to mq
   pCI->G_vPopIter();
