@@ -58,7 +58,6 @@ namespace STORE
     void vGroup_PreliminaryConversions(void);
 
 
-    void vGroup_ChooseEEops(void);
 
     void vGroup_CullBounds(void);
     void vGroup_Filters(void);
@@ -84,7 +83,6 @@ namespace STORE
 
     void vTransform_OuterQueryAnalysis(void);
 
-    void vTransform_MorphTableToEEop(void);
 
     void vTransform_CullNonusedBounds(void);
     void vTransform_CullUsedBoundsFromFilter(void);
@@ -96,26 +94,6 @@ namespace STORE
     void vTransform_TblColToStmCol(void);
     void vTransform_StmColToColNmOfKeyExists(void);
 
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // optimisations
-
-    void vOptimiseLoop(void);
-
-    bool bOptimise_CutSort(void);
-    bool bOptimise_DupFilter(void);
-    bool bOptimise_ElyFilters(void);
-    bool bOptimise_ElyProjections(void);
-    bool bOptimise_MinGroupby(void);
-    bool bOptimise_OtmCalculations(void);
-    bool bOptimise_PpnProjections(void);
-    bool bOptimise_RplAggregByOrdAgg(void);
-    bool bOptimise_RplAggregBySortOrdAgg(void);
-    bool bOptimise_RplMaxByTop(void);
-    bool bOptimise_RplScanByIndexScan(void);
-    bool bOptimise_RplSortDescLimitByTop(void);
-    bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
-    bool bOptimise_SeqJoinOrder(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
