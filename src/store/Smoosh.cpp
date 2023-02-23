@@ -52,7 +52,7 @@ void Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smoosh::vNOT_IN_into_KEYnotEXISTS(CardIter* pCI)
+void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 
@@ -88,14 +88,20 @@ void Smoosh::vNOT_IN_into_KEYnotEXISTS(CardIter* pCI)
 
   pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();
 
-  if (pCI->G.p_bolPred->bIsValue("in"_Stz))
+  if (pCI->G.p_bolPred->bIsValue("in"_Stz) || pCI->G.p_bolPred->bIsValue("exists"_Stz))
     pCI->G.p_table->vAppend(new Card_KeyExists);
   else
+  if (pCI->G.p_bolPred->bIsValue("notIn"_Stz) || pCI->G.p_bolPred->bIsValue("notExists"_Stz))
     pCI->G.p_table->vAppend(new Card_KeyNotExists);
 
   pCI->G.p_bolPred->vMorph_To_cmpPred(pCI,pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pCI->m_pCorrelation)
+    vDebugPoint();
 }
 
 /*============================================================================*/

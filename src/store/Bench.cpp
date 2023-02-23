@@ -938,53 +938,15 @@ void Bench::vFlatten_24_W_A_C_ro(void)
   m_pCI->vTransform(__func__, "((vFlatten_24_W_A_C_ro))"_Stz);
 
 
-//  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
-//  RASSERT(m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-//  if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-//    vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-//    NEVER_REACH
-//  }
-//  vTrace(">>>>>>>>> Found W_A_C_ro call:  %s %s %s\n"_Stz,m_pCI->m_sSqyArg.szStz(),m_pCI->m_sSqyRO.szStz(),m_pCI->m_sSqyNm.szStz());
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//
-//  m_pCI->G_vNewMember(CK_FOLD,"W_A_C_ro"_Stz);
-//  m_pCI->G.pDeck->vPush(m_pCI->G.p_fold);
-//
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // get copy of sq and push before mq
-//
-//  // x) push to sq
-//  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
-//    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
-//    NEVER_REACH
-//  }
-//
-//  i8 i_SqBoardNo = m_pCI->G.pBoard->i_Board();
-//
-//  m_pCI->m_pCorrelation = m_pCI->G.pDeck->pSub_correlation();
-//  m_pCI->m_pCard_copied = m_pCI->G.pDeck->pDupSubCards(1);
-//
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
-//
-//  // x) pop back to mq
-//  m_pCI->G_vPopIter();
-//
-//  m_pCI->G_vAppendNewChild(m_pCI->G.p_fold,CK_BOARDNO);
-//  m_pCI->G.p_boardNo->vValue(i_SqBoardNo);
-//
-//  m_pCI->G.pDeck->vPush(m_pCI->m_pCard_copied);
-//  m_pCI->G.pDeck->vReplaceChildWithItsSubs(m_pCI->m_pCard_copied);
-//  DELETE_CARD(m_pCI->m_pCard_copied);
-//
-//  m_pCI->G.pDeck->vRenumberRecursive();
-
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"24_W_A_C_ro"_Stz,CK_WHERE);
   m_pCI->vPrintBoard(__LINE__);
+
+
+
+
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert the parameterised aggreg-sq into a gbyAgg-sq gby correlation column
@@ -1273,59 +1235,68 @@ void Bench::vFlatten_40_W_L_C_E(void)
 
   m_pCI->vTransform(__func__, "((vFlatten_40_W_L_C_E))"_Stz);
 
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);
+  m_pCI->vPrintBoard(__LINE__);
+
   // W L C E
-  //             //
-  //             //
-  // T W A A A   // find W_L_C_E subquery call in mq:<where>/<boolCalc>
-  //   f         //
-  //   bc        //
-  //  @ro exists //
+//  //             //
+//  //             //
+//  // T W A A A   // find W_L_C_E subquery call in mq:<where>/<boolCalc>
+//  //   f         //
+//  //   bc        //
+//  //  @ro exists //
+//
+//  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
+//  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+//    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
+//      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
+//      NEVER_REACH
+//    }
+//  }
+//  vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyArg.szStz());
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // 2) push to sq
+//  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
+//    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
+//    NEVER_REACH
+//  }
+//
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+//    m_pCI->G_vMorphCard(m_pCI->G.p_filter,CK_CONSTRAINT);
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_INDEX,CK_CONSTRAINT)) {
+//    m_pCI->G.p_table->vRemoveChild(m_pCI->G.p_constraint);
+//    m_pCI->G.p_index->vAppend(m_pCI->G.p_constraint);
+//    m_pCI->G.p_index->Y_vSet(P_ChosenIndex);
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  // 3) get copy of sq:<table>/* into cc:<table>
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMain(CK_TABLE)) {
+//    m_pCI->G_vCopyCard(m_pCI->G.p_table);
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // 4) pop back to mq
+//  m_pCI->G_vPopIter();
+//
+//  m_pCI->G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
+//  m_pCI->G_vInsertBefore(m_pCI->G.p_fold,m_pCI->G.p_where);
 
-  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-      NEVER_REACH
-    }
-  }
-  vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyArg.szStz());
-  m_pCI->vPrintBoard(__LINE__);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // 2) push to sq
-  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
-    NEVER_REACH
-  }
 
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-    m_pCI->G_vMorphCard(m_pCI->G.p_filter,CK_CONSTRAINT);
-  }
-  m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_INDEX,CK_CONSTRAINT)) {
-    m_pCI->G.p_table->vRemoveChild(m_pCI->G.p_constraint);
-    m_pCI->G.p_index->vAppend(m_pCI->G.p_constraint);
-    m_pCI->G.p_index->Y_vSet(P_ChosenIndex);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-
-  // 3) get copy of sq:<table>/* into cc:<table>
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_TABLE)) {
-    m_pCI->G_vCopyCard(m_pCI->G.p_table);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // 4) pop back to mq
-  m_pCI->G_vPopIter();
-
-  m_pCI->G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
-  m_pCI->G_vInsertBefore(m_pCI->G.p_fold,m_pCI->G.p_where);
 
 
   // W L C E
@@ -1335,10 +1306,13 @@ void Bench::vFlatten_40_W_L_C_E(void)
   // T T F W A A A   // put cc:<table>/* before mq:<where>
   //   --sq          //
 
-  m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
-  m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYEXISTS);
+//  m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
+//  m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYEXISTS);
+//
+//  Card_Projection::vProjection_Analysis_v2(m_pCI);
 
-  Card_Projection::vProjection_Analysis_v2(m_pCI);
+  Smoosh* pSmoosh = new Smoosh;
+  pSmoosh->vInto_KEYnotEXISTS(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -1384,6 +1358,9 @@ void Bench::vFlatten_40_W_L_C_E(void)
   m_pCI->G.pDeck->vClearMarksRecursive();
 
   m_pCI->vEndTransform();
+
+  delete pSmoosh;
+  delete pFold;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1507,7 +1484,7 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
 
   Smoosh* pSmoosh = new Smoosh();
 
-  pSmoosh->vNOT_IN_into_KEYnotEXISTS(m_pCI);
+  pSmoosh->vInto_KEYnotEXISTS(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

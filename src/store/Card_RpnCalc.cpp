@@ -316,6 +316,9 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(void)
         p_cmpPred = new Card_CmpPred;
         p_cmpPred->vValue(p_term_next->sz());
         p_cmpPred->vTransferChildren(p_TermSeries);
+        if (! p_cmpPred->bIsValue("=="_Stz)) // todo: more work
+          p_cmpPred->vCard(CK_BOLPRED);
+        else
         if (p_cmpPred->bContains_Sqy_Call())
           p_cmpPred->vCard(CK_ROPRED);
         //p_boolCalc->vPush(p_cmpPred);
