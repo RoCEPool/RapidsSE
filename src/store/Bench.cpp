@@ -167,7 +167,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   m_pFlattening = new Flattening(m_pCI);
 
-  vSeries_Flatten_recurse();
+  m_pFlattening->vSeries_Flatten_recurse();
 
   delete m_pFlattening;
   m_pFlattening = nullptr;

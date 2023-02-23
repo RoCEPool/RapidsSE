@@ -46,7 +46,6 @@ namespace STORE
 
     void vSeries_PreparePipelines(void);
     void vSeries_MakeRunnable(void);
-    void vSeries_Flatten_recurse(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
 
@@ -58,9 +57,6 @@ namespace STORE
     void vGroup_MetaAnalysis(void);
     void vGroup_PreliminaryConversions(void);
 
-    void vGroup_PredicatePullup(void);
-    void vGroup_IndexBounds(void);
-    void vGroup_JoinOrdering(void);
 
     void vGroup_ChooseEEops(void);
 
@@ -83,20 +79,10 @@ namespace STORE
     void vTransform_IndexAnalysis(void);
     void vTransform_ProjectionAnalysis(void);
 
-    void vTransform_StmColToTblCol(void);
     void vTransform_RpnCalcToBoolCalc(void);
 
-    void vTransform_MarkCmpPredWrtTable(void);
-    void vTransform_CopyMarkedCmpPred(void);
-    void vTransform_CullMarkedCmpPred(void);
-    void vTransform_DeleteEmptyWhere(void);
-
-    void vTransform_JoinOrdering_originalModel(void);
-    void vTransform_PredicateReposition_originalModel(void);
-    void vTransform_DeriveBoundsFromFilter_originalModel(void);
 
     void vTransform_OuterQueryAnalysis(void);
-    void vTransform_FlattenByDecisionTree(void);
 
     void vTransform_MorphTableToEEop(void);
 
