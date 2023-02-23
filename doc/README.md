@@ -35,27 +35,65 @@ being packaged.
 5. Java 8 or later
 6. awk
 7. vim
+8. GNU coreutils (on MacOS)
 
 TexLive (or MacTex) can be left off if PDF documentation is not required.
 
 ### MacOS Installation
-1. Install Python3 if it is not already installed (try `which python3`): `brew install python3`
-2. Install Sphinx: `python3 -m pip install -U sphinx`
-3. Test the Sphinx is resolvable: `which sphinx-build`
-4. Install MacTex for building PDF documentation (approx 4 GB): `brew install mactex-no-gui` 
-5. Install Java if it is not already installed (try `which java`): `brew install java`
-6. Install awk if it is not already installed (try `which awk`): `brew install gawk`
-7. Install vim if it is not already installed (try `which vim`): `brew install vim`
-8. Restart your terminal
+1. Install the GNU coreutils package: `brew install coreutils`
+
+
+2. Install Python3 if it is not already installed (try `which python3`): `brew install python3`
+
+
+3. Test that python3 is resolvable: `which python3`
+   
+   If this doesn't work, first try restarting your terminal window as python3
+   may have been added to the `$PATH`. 
+   
+   If this still doesn't work then the python
+   `bin` directory will need to be added to your `$PATH`. How this is done depends
+   on how Python was installed and which shell (bash/zsh) you are using.
+
+
+4. Install Sphinx: `python3 -m pip install -U sphinx`
+ 
+
+5. Test the Sphinx is resolvable: `which sphinx-build`
+
+   If this doesn't work, first try restarting your terminal window as the
+   sphinx bin directory may have been added to the `$PATH`.
+
+   If this still doesn't work then the directory that sphinx was installed into
+   (which itself is dependent on your Python setup) will need to be added to 
+   your `$PATH`. How this is done depends on how Python was installed and which 
+   shell (bash/zsh) you are using.
+
+
+6. Install MacTex for building PDF documentation (approx 4 GB): `brew install mactex-no-gui` 
+
+
+7. Install Java if it is not already installed (try `which java`): `brew install java`
+
+
+8. Install awk if it is not already installed (try `which awk`): `brew install gawk`
+
+
+9. Install vim if it is not already installed (try `which vim`): `brew install vim`
+
+
+10. Restart your terminal
 
 ### Linux Installation
 Note: We use the PIP version of Sphinx to ensure that it is a recent version.
 1. Install Python3: `sudo yum install python3`
-2. Install Sphinx: `sudo python3 -m pip install -U sphinx`
-3. Install TexLive according to the instructions [here](https://www.tug.org/texlive/quickinstall.html).
-4. Install Java
-5. Install awk
-6. Install vim
+2. Test that `python3` is resolvable: `which python3`
+3. Install Sphinx: `sudo python3 -m pip install -U sphinx`
+4. Test that `sphinx-build` is resolvable: `which sphinx-build`
+5. Install TexLive according to the instructions [here](https://www.tug.org/texlive/quickinstall.html).
+6. Install Java
+7. Install awk
+8. Install vim
 
 Note2: On AWS the TexLive installation has been saved as a portable
 installation in an S3 bucket. It simply needs to be downloaded from S3,
