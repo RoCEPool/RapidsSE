@@ -358,6 +358,9 @@
       xDte2.m_uYearDelta +=  iArg1/12;                                     \
       xDte2.m_uMonth = iArg1%12;                                           \
     }                                                                      \
+    else {                                                                 \
+      xDte2.m_uMonth = iArg1;                                              \
+    }                                                                      \
     *paW++ = xDte2.m_iAsI8;                                                \
   }                                                                        \
 }
@@ -480,6 +483,80 @@
         wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
       }                                                                    \
       *paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                        \
+}
+
+#define _SUB_DTEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
+    xDateTime.tm_year = xDte1.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
+    xDateTime.tm_mday = xDte1.m_uDay;                                      \
+    xDateTime.tm_hour = 0;                                                 \
+    xDateTime.tm_min  = 0;                                                 \
+    xDateTime.tm_sec  = 0;                                                 \
+                                                                           \
+    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+                                                                           \
+    iSecondsSincePosixEpoch -= iArg2/_C_1M;                                \
+                                                                           \
+    aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                  \
+    xDte2.m_uYearDelta = aLocalDateTime->tm_year;                          \
+    xDte2.m_uMonth     = aLocalDateTime->tm_mon + 1;                       \
+    xDte2.m_uDay       = aLocalDateTime->tm_mday;                          \
+    xDte2.m_uSpare     = 0;                                                \
+                                                                           \
+    *paW++ = xDte2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _SUB_DTEIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+     aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                 \
+                                                                           \
+     xDte2.m_uYearDelta = xDte1.m_uYearDelta;                              \
+     xDte2.m_uMonth     = xDte1.m_uMonth;                                  \
+     xDte2.m_uDay       = xDte1.m_uDay;                                    \
+     xDte2.m_uSpare       = 0;                                             \
+                                                                           \
+    printf("MONTHS: %lld\n", iArg2);                                       \
+    iArg1 = xDte2.m_uYearDelta*12 + xDte2.m_uMonth - iArg2;                \
+    printf("MONTHS: %lld\n", iArg1);                                       \
+    xDte2.m_uYearDelta = iArg1/12;                                             \
+    xDte2.m_uMonth = iArg1%12;                                             \
+                                                                           \
+    *paW++ = xDte2.m_iAsI8;                                                \
   }                                                                        \
 }
 
