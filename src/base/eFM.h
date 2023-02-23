@@ -31,9 +31,13 @@ enum eFM : u2 // function macros
   /*  */ FM_ADD_INTINT,           // int + int
   /*  */ FM_ADD_IVDDTE,           // ivd + dte
   /*  */ FM_ADD_IVDTME,           // ivd + tme
+  /*  */ FM_ADD_IVDTSP,           // ivd + tsp
   /*  */ FM_ADD_IVYDTE,           // ivy + dte
+  /*  */ FM_ADD_IVYTSP,           // ivy + tsp
   /*  */ FM_ADD_IVLIVL,           // ivd + ivd
   /*  */ FM_ADD_TMEIVD,           // tme + ivd
+  /*  */ FM_ADD_TSPIVD,           // tsp + ivd
+  /*  */ FM_ADD_TSPIVY,           // tsp + ivd
   /*  */ FM_ADD_UNKANY,           // unk + any
 
   // divide
@@ -375,9 +379,13 @@ static Stz* aFM[]
   /*  */ "_ADD_INTINT"_Stz,
   /*  */ "_ADD_IVDDTE"_Stz,
   /*  */ "_ADD_IVDTME"_Stz,
+  /*  */ "_ADD_IVDTSP"_Stz,
   /*  */ "_ADD_IVYDTE"_Stz,
+  /*  */ "_ADD_IVYTSP"_Stz,
   /*  */ "_ADD_IVLIVL"_Stz,
   /*  */ "_ADD_TMEIVD"_Stz,
+  /*  */ "_ADD_TSPIVD"_Stz,
+  /*  */ "_ADD_TSPIVY"_Stz,
   /*  */ "_ADD_UNKANY"_Stz,
 
   // divide
