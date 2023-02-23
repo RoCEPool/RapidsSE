@@ -433,6 +433,56 @@
   }                                                                        \
 }
 
+#define _SUB_DTEDTE(eErrorCode)                                            \
+  {                                                                        \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      struct tm xDateTime1 = {0} ;                                         \
+                                                                           \
+      xDateTime1.tm_year = xDte1.m_uYearDelta;                             \
+      xDateTime1.tm_mon  = xDte1.m_uMonth - 1;                             \
+      xDateTime1.tm_mday = xDte1.m_uDay;                                   \
+      xDateTime1.tm_hour = 0;                                              \
+      xDateTime1.tm_min  = 0;                                              \
+      xDateTime1.tm_sec  = 0;                                              \
+                                                                           \
+      time_t iSecondsSincePosixEpoch1 = mktime(&xDateTime1);               \
+                                                                           \
+      struct tm xDateTime2 = {0} ;                                         \
+                                                                           \
+      xDateTime2.tm_year = xDte2.m_uYearDelta;                             \
+      xDateTime2.tm_mon  = xDte2.m_uMonth - 1;                             \
+      xDateTime2.tm_mday = xDte2.m_uDay;                                   \
+      xDateTime2.tm_hour = 0;                                              \
+      xDateTime2.tm_min  = 0;                                              \
+      xDateTime2.tm_sec  = 0;                                              \
+                                                                           \
+      time_t iSecondsSincePosixEpoch2 = mktime(&xDateTime2);               \
+                                                                           \
+      i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;   \
+                                                                           \
+      wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
+                                                                           \
+      if (iSeconds < 0) {                                                  \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  -1 * iSeconds * _C_1M;   \
+        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M;          \
+        wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
+      }                                                                    \
+      *paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                        \
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
