@@ -11,6 +11,7 @@
 #include "Fold.hpp"
 #include "Flattening.hpp"
 #include "Optimisations.hpp"
+#include "MakeWeavable.hpp"
 
 #include "CarryForward.hpp"
 #include "Error.hpp"
@@ -128,7 +129,10 @@ void Bench::vApplyTransformationMatrix(void)
   vSeries_MakeRunnable();
 
   vSeries_Optimisations();
-  vSeries_MakeWeavable();
+
+  MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
+  pMakeWeavable->vSeries_MakeWeavable();
+  delete pMakeWeavable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,23 +203,6 @@ void Bench::vSeries_Optimisations(void)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeWeavable(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vSeries(BK_SUBQUERY, 0, __func__);
-
-  vGroup_CullBounds();
-  vGroup_Filters();
-  vGroup_Staging();
-  vGroup_Partitioning();
-  vGroup_FinalAdjustments();
-
-  vEndSeries(BK_SUBQUERY, 0);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- group -------------------------------------------------------------------*/
@@ -265,58 +252,6 @@ void Bench::vGroup_PreliminaryConversions(void)
 
   //vTransform_StmColToTblCol_originalModel();
   vTransform_RpnCalcToBoolCalc();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_CullBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_CullNonusedBounds();
-  vTransform_CullUsedBoundsFromFilter();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_Filters(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_IndividuateFilter();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_Staging(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_ReinstateStages();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_Partitioning(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_AddPartitioning();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_FinalAdjustments(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_TblColToStmCol();
-  vTransform_StmColToColNmOfKeyExists();
 }
 
 
@@ -608,232 +543,6 @@ void Bench::vTransform_OuterQueryAnalysis(void)
 
     //m_pCI->vEndTransform();
 }
-
-/*----------------------------------------------------------------------------*/
-/* inspect filters and remove cmp predicates which are in bounds              */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_CullNonusedBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMain()) {
-
-    if (!(m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
-      continue;
-    if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
-      continue;
-
-    // have <bounds> & <filter> under <main>
-
-
-
-    Card_Index::vCullNonusedBounds(m_pCI);
-
-//    while ((m_pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
-//
-//      bool bChosenIndex = m_pCI->G.p_index->Y_bHas(P_ChosenIndex);
-//
-//      m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds();
-//      if (! m_pCI->G.p_bounds)
-//        continue;
-//
-//      CardIter xCI_bounds(m_pCI->G.p_bounds);
-//      while (xCI_bounds.bEachChild()) {
-//        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
-//          bFoundFirst = true;
-//          continue;
-//        }
-//
-//        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
-//      }
-//
-//      m_pCI->vPrintBoard(__LINE__);
-//      m_pCI->G.p_bounds->vCullBound(MARK_AT);
-//
-//    }
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* inspect filters and remove cmp predicates which are in bounds              */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_CullUsedBoundsFromFilter(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark any cmpPred that are a bound in bounds
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
-
-    if (! (m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)
-           ))
-      continue;
-    if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
-      continue;
-    if (! (m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      continue;
-
-    // have <bounds> & <filter> under <main>
-
-    CardIter xCR(m_pCI->G.p_constraint);
-    while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
-      if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
-        m_pCI->G.p_cmpPred->vMark1(MARK_AT);
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cull marked cmpPred from filter
-
-  m_pCI->G_vRestart();
-  Card_Constraint::vCullUsedBounds(m_pCI);
-
-//  while (m_pCI->G_bEachMain()) {
-//    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-//      m_pCI->G.p_filter->vCullPred(MARK_AT);
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete any filter if empty
-
-  m_pCI->G_vRestart();
-  Card_Filter::vDeleteEmptyFilters(m_pCI);
-
-//  while (m_pCI->G_bEachMain()) {
-//    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-//      m_pCI->G.p_MainCard->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
-//  }
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_IndividuateFilter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-
-  m_pCI->G_vRestart();
-  Card_Scan::vIndividuateFilter(m_pCI);
-
-  m_pCI->G_vRestart();
-  Card_IndexScan::vIndividuateFilter(m_pCI);
-
-  m_pCI->G_vRestart();
-  Card_IndexJoin::vIndividuateFilter(m_pCI);
-
-  m_pCI->G_vRestart();
-  Card_CrossJoin::vIndividuateFilter(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_TblColToStmCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "vTransform_TblColToStmCol"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_StmColToColNmOfKeyExists(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "((20))))"_Stz);
-
-  while (m_pCI->G_bEachMain()) {
-
-    if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
-           || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
-      continue;
-
-    m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
-
-    m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
-  }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* reinstate stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_ReinstateStages(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
-
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  Board::vReinstate_stages(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add partitioning                                                           */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_AddPartitioning(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "add partitioning"_Stz);
-
-  Board::vAdd_Partitioning(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-
 
 
 /*----------------------------------------------------------------------------*/

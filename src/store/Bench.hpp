@@ -47,7 +47,6 @@ namespace STORE
     void vSeries_PrepareSubQueries(void);
     void vSeries_MakeRunnable(void);
     void vSeries_Optimisations(void);
-    void vSeries_MakeWeavable(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // group
@@ -59,11 +58,6 @@ namespace STORE
 
 
 
-    void vGroup_CullBounds(void);
-    void vGroup_Filters(void);
-    void vGroup_Staging(void);
-    void vGroup_Partitioning(void);
-    void vGroup_FinalAdjustments(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // transform
@@ -84,15 +78,6 @@ namespace STORE
     void vTransform_OuterQueryAnalysis(void);
 
 
-    void vTransform_CullNonusedBounds(void);
-    void vTransform_CullUsedBoundsFromFilter(void);
-    void vTransform_IndividuateFilter(void);
-
-    void vTransform_ReinstateStages(void);
-    void vTransform_AddPartitioning(void);
-
-    void vTransform_TblColToStmCol(void);
-    void vTransform_StmColToColNmOfKeyExists(void);
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
