@@ -256,6 +256,11 @@ rows:
 // Timestamp subtraction
 SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
 rows:
+  (INTERVAL '32 9:59:59' DAY TO SECOND)
+
+SELECT TIMESTAMP '2000-02-28 04:30:56' - TIMESTAMP '2000-03-31 14:30:55' FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'32 9:59:59' DAY TO SECOND)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Timestamp
