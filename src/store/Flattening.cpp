@@ -9,6 +9,7 @@
 #include "Fold.hpp"
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
+#include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -492,3 +493,452 @@ void Flattening::vFlatten_74_H_A_NC_ro(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* apply the xyz set of transformations to all subPipe boards                 */
+/*----------------------------------------------------------------------------*/
+void Bench::vSeries_Flatten_recurse(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  // things before sub-queries
+
+  SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
+
+  vTransform_StmColToTblCol();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->vSubQueryIteration();
+  while (m_pCI->bEachSubQuery()) {
+
+//    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+//           pOuterQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->i_Caller()
+//           );
+
+    if (m_pCI->G.pSubQuery->i_Caller() != pOuterQuery->pBoard()->i_Board())
+      continue;
+
+    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+           pOuterQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->i_Caller()
+    );
+
+    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
+    vSeries_Flatten_recurse();
+    m_pCI->G_vPopIter();
+
+    vTransform_FlattenByDecisionTree();
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // things to do to this outer query after flattening it's sub-queries
+
+  vGroup_PredicatePullup();
+  vGroup_IndexBounds();
+  vGroup_JoinOrdering();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sub-query has been flattened
+
+  Card_Fold::vMorph_to_flat(m_pCI);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <stmColOdn> to <tblColOdn>                                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_StmColToTblCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
+
+  while (m_pCI->G_bEachMain())
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_FlattenByDecisionTree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
+
+  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ m_pFlattening->vFlatten_10_F();
+  else
+  if (m_pCI->G.pSubQuery->bViaWhere()) {
+    if (m_pCI->G.pSubQuery->bIsAggregation()) {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 20*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
+        else                                         /* W_A_C_ro   Q2,17 */ m_pFlattening->vFlatten_24_W_A_C_ro();
+      } else {                                                                  /* 30*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ m_pFlattening->vFlatten_32_W_A_NC_I();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
+        else                                         /* W_A_NC_ro    Q15 */ m_pFlattening->vFlatten_34_W_A_NC_ro();
+      }
+    } else {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 40*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ m_pFlattening->vFlatten_40_W_L_C_E();
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
+        else                                         /* W_L_C_ro         */ NEVER_REACH
+      } else {                                                                  /* 50*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ m_pFlattening->vFlatten_52_W_L_NC_I_join();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ m_pFlattening->vFlatten_53_W_L_NC_NI_join();
+        else                                         /* W_L_NC_ro        */ NEVER_REACH
+      }
+    }
+  }
+  else
+  if (m_pCI->G.pSubQuery->bViaHaving()) {
+    if (m_pCI->G.pSubQuery->bIsAggregation()) {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 60*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
+        else                                         /* H_A_C_ro         */ NEVER_REACH
+      } else {                                                                  /* 70*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
+        else                                         /* H_A_NC_ro    Q11 */ m_pFlattening->vFlatten_74_H_A_NC_ro();
+      }
+    } else {
+      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 80*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
+        else                                         /* H_L_C_ro         */ NEVER_REACH
+      } else {                                                                  /* 90*/
+        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
+        else                                         /* H_L_NC_ro        */ NEVER_REACH
+      }
+    }
+  }
+  else
+    NEVER_REACH;
+
+  m_pCI->vEndTransform();
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_PredicatePullup(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_MarkCmpPredWrtTable();
+  vTransform_CopyMarkedCmpPred();
+  vTransform_CullMarkedCmpPred();
+  vTransform_DeleteEmptyWhere();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_IndexBounds(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTransform_DeriveBoundsFromFilter_originalModel();
+}
+
+/*----------------------------------------------------------------------------*/
+/* join ordering of outer query                                               */
+/*----------------------------------------------------------------------------*/
+void Bench::vGroup_JoinOrdering(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
+    return;
+//  if (Card_Table::nTables_foldBreak(m_pCI) < 2)
+//    return;
+
+  vTransform_JoinOrdering_originalModel();
+  vTransform_PredicateReposition_originalModel();
+  vTransform_DeriveBoundsFromFilter_originalModel();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_MarkCmpPredWrtTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
+
+  m_pCI->vPrintBoard(__LINE__);
+  Card_Where::vMarkWherePredWrtTable(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_CopyMarkedCmpPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
+
+  m_pCI->G_vRestart();
+  Card_Where::vMoveWherePredToTableFilter(m_pCI);
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_CullMarkedCmpPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  m_pCI->G_vRestart();
+  Card_Where::vCullMarkedCmpPred(m_pCI);
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_DeleteEmptyWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  m_pCI->G_vRestart();
+  Card_Where::vDeleteEmpyWhere(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy <table>/<filter> up into <table>/<bounds>                             */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
+
+  Card_Table::vDeriveBoundsFromFilter(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                   vSeries_50_Join_Ordering */
+/*============================================================================*/
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_JoinOrdering_originalModel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  Card_Deck* pPipeline = m_pCI->G.pDeck;
+
+  Board* pBoard = new Board(aBK[BK_JOINORDERING],
+                            BK_JOINORDERING,
+                            C_UNKNOWN,
+                            m_pCI->m_pBench);
+  m_pCI->G_vPushBoard(pBoard);
+
+  // 1) Extract tableList from pipeline
+  m_pCI->G.p_tableList = Card_TableList::pExtract(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 2) Extract joinPredList from pipeline
+  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 3) Compute all possible join permutations
+  Card_JoinPermAll* p_joinPermAll =
+      Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
+
+  m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
+  CardIter xCI(p_joinPermAll);
+  while (xCI.G_bEachMain())
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 4) Remove invalid permutations
+  p_joinPermAll->vRemoveInvalid();
+  m_pCI->G.pDeck->vAppend(new Card_Section("Valid Permutations"_Stz));
+
+  xCI.vRestart();
+  while (xCI.G_bEachMain())
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // 5) Calculate join load
+  p_joinPermAll->vCalculateLoad(m_pCI->G.p_tableList);
+  m_pCI->G.pDeck->vAppend(new Card_Section("Join Loads"_Stz));
+  xCI.vRestart();
+  while (xCI.G_bEachMain())
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // get the join permutations strings
+  xCI.vRestart();
+  i8 iJoinPermutations = 0;
+  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
+    s256 sJoinOrder;
+    p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
+    //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
+    m_pOptimiser->vJoinPermutation(iJoinPermutations, sJoinOrder);
+    iJoinPermutations++;
+    DELETE_CARD(p_joinOrdering);
+  }
+  m_pOptimiser->vJoinPermutations(iJoinPermutations);
+
+
+  // 6) Pick final join ordering
+  Card_JoinOrdering* p_joinOrdering =
+      Card_JoinOrdering::pPick(p_joinPermAll);
+  m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
+  m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardAndSubCards());
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // get the final join ordering string
+  s256 sJoinOrder;
+  p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
+  //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
+  m_pOptimiser->vJoinOrder(sJoinOrder);
+
+  DELETE_CARD(p_joinPermAll);
+
+  pBoard = m_pCI->G.pBoard;
+  m_pCI->G_vPopIter();
+  vRemove(pBoard);
+  delete pBoard;
+
+  p_joinOrdering->vReorder(m_pCI->G.pDeck);
+  m_pCI->vPrintBoard(__LINE__);
+
+  DELETE_CARD(p_joinOrdering);
+
+  Card_Projection::vProjection_Analysis_v2(m_pCI);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Predicate Pullup                                                           */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform_PredicateReposition_originalModel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // At Mark Where Pred Wrt Table
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move At Marked Where Pred To Table Filter
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
+  }
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+  }
+
+  m_pCI->vPrintBoard();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete Empty Where
+
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+    m_pCI->G.p_table->vRemove_filter_IfEmpty(m_pCI->G.p_filter);
+  }
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
