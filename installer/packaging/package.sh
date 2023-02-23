@@ -20,8 +20,9 @@ set -Eeo pipefail
 #  NO_MOD_CHECK  - don't check for modified files that haven't been committed.
 #  NO_BUILD      - don't compile the software
 #  NO_SHELLCHECK - don't run shellcheck on the scripts beforehand.
-#  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD
-#  NO_DOCS       - don't build documentation
+#  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD.
+#  NO_DOCS       - don't build or package documentation.
+#  NO_DOC_BUILD  - don't build the documentation but continue to package it.
 
 ###############################################################################
 ### Constants                                                               ###
@@ -277,7 +278,10 @@ esac
 
 
   ### (Optional) Compile the documentation
-  if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+  if [[ ( -n "${NO_DOCS}"  &&  "${NO_DOCS}" -eq 1 ) ||  
+        ( -n "${NO_DOC_BUILD}"  &&  "${NO_DOC_BUILD}" -eq 1 ) ]] ; then
+    echo "Not compiling the documentation"
+  else
     echo "Compiling documentation"
     (
       cd "${DOC_DIR}"
@@ -299,6 +303,20 @@ esac
 
   "${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}"
 
+  
+  ### Create the standalone documentation bundle
+  if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+
+    # We use an extension of .tgz because Winzip can handle this automatically.
+    DOC_NAME="rapidsse-doc-${SE_VERSION_STR}"
+    DOC_OUTPUT_FILE="${DOC_NAME}.tgz"
+
+    echo
+    echo "Building standalone documentation"
+    echo
+    tar -C "${LAYOUT_DIR}" -cvzf "${OUTPUT_DIR}/${DOC_OUTPUT_FILE}" --transform="s,^doc/,${DOC_NAME}/," doc
+  fi
+
   ### Remove object files, bin dir and layout dir to reduce disk space requirements
   echo "Cleaning up"
   if [ -z "${KEEP_OBJECTS}" ]; then
@@ -313,12 +331,20 @@ esac
   # Generate checksum files
   (
     cd "${OUTPUT_DIR}"
-    md5sum  "${OUTPUT_FILE}" > "${CHECKSUM_MD5_FILE}"
-    sha1sum "${OUTPUT_FILE}" > "${CHECKSUM_SHA1_FILE}"
+    md5sum  "${OUTPUT_FILE}"      > "${CHECKSUM_MD5_FILE}"
+    sha1sum "${OUTPUT_FILE}"      > "${CHECKSUM_SHA1_FILE}"
+
+    if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+      md5sum  "${DOC_OUTPUT_FILE}" >> "${CHECKSUM_MD5_FILE}"
+      sha1sum "${DOC_OUTPUT_FILE}" >> "${CHECKSUM_SHA1_FILE}"
+    fi
+
     echo
-    echo "Installer checksums:"
-    echo -n "md5:   " && cat "${CHECKSUM_MD5_FILE}"
-    echo -n "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
+    echo "Artifact checksums:"
+    echo
+    echo "md5:   " && cat "${CHECKSUM_MD5_FILE}"
+    echo
+    echo "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
     echo
   )
 }

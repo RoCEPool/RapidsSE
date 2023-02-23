@@ -25,8 +25,8 @@ LATEX_INSTALLED     := $(shell command -v latex 2> /dev/null)
 LATEXMK_INSTALLED   := $(shell command -v latexmk 2> /dev/null)
 
 PDFTEX_PATH := $(shell command -v pdftex)
-PDFTEX_PATH := $(shell realpath $(PDFTEX_PATH))
-PDFTEX_PATH := $(shell dirname $(PDFTEX_PATH))
+PDFTEX_PATH := $(shell realpath $(PDFTEX_PATH) 2>/dev/null)
+PDFTEX_PATH := $(shell dirname $(PDFTEX_PATH) 2>/dev/null)
 
 export PATH := $(PATH):$(PDFTEX_PATH)
 
