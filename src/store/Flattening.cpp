@@ -502,7 +502,7 @@ void Flattening::vFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vSeries_Flatten_recurse(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   // things before sub-queries
 
@@ -559,7 +559,7 @@ void Bench::vSeries_Flatten_recurse(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_StmColToTblCol(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
 
@@ -574,7 +574,7 @@ void Bench::vTransform_StmColToTblCol(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_FlattenByDecisionTree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
 
@@ -655,7 +655,7 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vGroup_PredicatePullup(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vTransform_MarkCmpPredWrtTable();
   vTransform_CopyMarkedCmpPred();
@@ -669,7 +669,7 @@ void Bench::vGroup_PredicatePullup(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vGroup_IndexBounds(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   vTransform_DeriveBoundsFromFilter_originalModel();
 }
@@ -679,7 +679,7 @@ void Bench::vGroup_IndexBounds(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vGroup_JoinOrdering(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
@@ -696,7 +696,7 @@ void Bench::vGroup_JoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_MarkCmpPredWrtTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
@@ -714,7 +714,7 @@ void Bench::vTransform_MarkCmpPredWrtTable(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_CopyMarkedCmpPred(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
@@ -734,7 +734,7 @@ void Bench::vTransform_CopyMarkedCmpPred(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_CullMarkedCmpPred(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
@@ -751,7 +751,7 @@ void Bench::vTransform_CullMarkedCmpPred(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_DeleteEmptyWhere(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
@@ -766,7 +766,7 @@ void Bench::vTransform_DeleteEmptyWhere(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
 
@@ -786,7 +786,7 @@ void Bench::vTransform_DeriveBoundsFromFilter_originalModel(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_JoinOrdering_originalModel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
 
@@ -893,7 +893,7 @@ void Bench::vTransform_JoinOrdering_originalModel(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform_PredicateReposition_originalModel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
 
