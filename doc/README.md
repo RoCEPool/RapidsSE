@@ -88,12 +88,18 @@ TexLive (or MacTex) can be left off if PDF documentation is not required.
 Note: We use the PIP version of Sphinx to ensure that it is a recent version.
 1. Install Python3: `sudo yum install python3`
 2. Test that `python3` is resolvable: `which python3`
-3. Install Sphinx: `sudo python3 -m pip install -U sphinx`
-4. Test that `sphinx-build` is resolvable: `which sphinx-build`
-5. Install TexLive according to the instructions [here](https://www.tug.org/texlive/quickinstall.html).
-6. Install Java
-7. Install awk
-8. Install vim
+3. Test that `pip` is installed: `python3 -m pip -V`
+   1. If `pip` is not installed and you are on Ubuntu then use: `sudo apt install python3-pip` 
+4. Install Sphinx: `sudo python3 -m pip install -U sphinx`
+5. Test that `sphinx-build` is resolvable: `which sphinx-build`
+6. Test that `perl` is installed: `which perl`
+   1. If it isn't, use your distribution's package manager to install `perl`
+7. Install TexLive according to the instructions [here](https://www.tug.org/texlive/quickinstall.html).
+   Don't forget to set the `$PATH` variable as instructed
+8. Install Java
+9. Install awk
+10. Install vim
+11. Restart your terminal
 
 Note2: On AWS the TexLive installation has been saved as a portable
 installation in an S3 bucket. It simply needs to be downloaded from S3,
