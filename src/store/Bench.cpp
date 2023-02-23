@@ -958,37 +958,45 @@ void Bench::vFlatten_24_W_A_C_ro(void)
   // s                             //  ..]cmpPred ==
   // f                             //           $d.2  ((m_pCI->m_pTerm_corrCol))
   //                               //             %1
-  m_pCI->G_vRestart();
-  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER));
-  Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(m_pCI);
-  RASSERT(m_pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
-  Board::vFind_Correlation_Expr_Of_Correlation_Column(m_pCI);
-  RASSERT(m_pCI->m_pExpr_corr);    // eg L_PARTKEY
+//  m_pCI->G_vRestart();
+//  RASSERT(m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER));
+//  Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(m_pCI);
+//  RASSERT(m_pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
+//  Board::vFind_Correlation_Expr_Of_Correlation_Column(m_pCI);
+//  RASSERT(m_pCI->m_pExpr_corr);    // eg L_PARTKEY
+//
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  // T A A A P F T T T W A A A     //
+//  //   v v v                       //
+//  // T G G G P F T T T W A A A     // push corrPred <expr> into <gbyElist> and <aggElist>
+//
+//  RASSERT(m_pCI->G_bEachMain(CK_AGGREG));
+//  Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(m_pCI);
+//
+//  m_pCI->G.pDeck->vRenumberRecursive();
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  // T A A A P F T T T W A A A     //
+//  //         v                     //
+//  // T G G G P F T T T W A A A     // push corrPred <expr> into <projElist>
+//
+//  if (m_pCI->G_bIsNextMain(CK_PROJECT)) {
+//    RASSERT(m_pCI->G_bEachMain(CK_PROJECT));
+//    Board::vEnhance_sq_project_To_Include_Correlation_Column(m_pCI,"__SQCRLKEY"_Stz);
+//  }
+//  else {
+//
+//  }
+
+  Smoosh* pSmoosh = new Smoosh;
+  pSmoosh->vInto_GBYAGG(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 
-  // T A A A P F T T T W A A A     //
-  //   v v v                       //
-  // T G G G P F T T T W A A A     // push corrPred <expr> into <gbyElist> and <aggElist>
 
-  RASSERT(m_pCI->G_bEachMain(CK_AGGREG));
-  Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(m_pCI);
 
-  m_pCI->G.pDeck->vRenumberRecursive();
-  m_pCI->vPrintBoard(__LINE__);
 
-  // T A A A P F T T T W A A A     //
-  //         v                     //
-  // T G G G P F T T T W A A A     // push corrPred <expr> into <projElist>
-
-  if (m_pCI->G_bIsNextMain(CK_PROJECT)) {
-    RASSERT(m_pCI->G_bEachMain(CK_PROJECT));
-    Board::vEnhance_sq_project_To_Include_Correlation_Column(m_pCI,"__SQCRLKEY"_Stz);
-  }
-  else {
-
-  }
-  m_pCI->vPrintBoard(__LINE__);
 
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
   //Board::vDerive_foldElist_From_project_stream(m_pCI);
@@ -997,6 +1005,12 @@ void Bench::vFlatten_24_W_A_C_ro(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   //Card_Projection::vRelabelExpressions(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
+
+
+
+
+
+
 
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
@@ -1097,6 +1111,7 @@ void Bench::vFlatten_24_W_A_C_ro(void)
   m_pCI->vPrintBoard(__LINE__);
   m_pCI->vEndTransform();
 
+  delete pSmoosh;
   delete pFold;
 }
 

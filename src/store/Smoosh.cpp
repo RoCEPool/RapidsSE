@@ -52,6 +52,45 @@ void Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Smoosh::vInto_GBYAGG(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
+  pCI->G_vRestart();
+  RASSERT(pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER));
+  Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(pCI);
+  RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
+  Board::vFind_Correlation_Expr_Of_Correlation_Column(pCI);
+  RASSERT(pCI->m_pExpr_corr);    // eg L_PARTKEY
+
+  pCI->vPrintBoard(__LINE__);
+
+  // T A A A P F T T T W A A A     //
+  //   v v v                       //
+  // T G G G P F T T T W A A A     // push corrPred <expr> into <gbyElist> and <aggElist>
+
+  RASSERT(pCI->G_bEachMain(CK_AGGREG));
+  Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(pCI);
+
+  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vPrintBoard(__LINE__);
+
+  // T A A A P F T T T W A A A     //
+  //         v                     //
+  // T G G G P F T T T W A A A     // push corrPred <expr> into <projElist>
+
+  if (pCI->G_bIsNextMain(CK_PROJECT)) {
+    RASSERT(pCI->G_bEachMain(CK_PROJECT));
+    Board::vEnhance_sq_project_To_Include_Correlation_Column(pCI,"__SQCRLKEY"_Stz);
+  }
+  else {
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);

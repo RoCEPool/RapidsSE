@@ -27,6 +27,7 @@ namespace STORE
 
     void vSmoosh(CardIter* pCI, eSM eSmoosh);
 
+    void vInto_GBYAGG(CardIter* pCI);
     void vInto_KEYnotEXISTS(CardIter* pCI);
 
   private:
