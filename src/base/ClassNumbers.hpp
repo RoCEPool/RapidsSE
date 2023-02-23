@@ -107,6 +107,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
+  /* */ CN_FLATTENING,
   /* */ CN_FLTVAL,
   /* */ CN_FOLD,
   /* */ CN_FORMAT,
@@ -150,7 +151,6 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
-  /* */ CN_JOINORDERING,
 
   /* */ CN__K__,
   /* */ CN_KEY,
@@ -537,6 +537,7 @@ static Stz* aCN[]
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
+  /* */ "FLATTENING"_Stz,           // CN_FLATTENING
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FOLD_W_A_C_ro"_Stz,        // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -580,7 +581,6 @@ static Stz* aCN[]
   /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
-  /* */ "JOINORDERING"_Stz,         // CN_JOINORDERING
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY

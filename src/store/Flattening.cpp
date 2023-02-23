@@ -1,64 +1,45 @@
 /*============================================================================*/
-/* JoinOrdering.cpp -- JoinOrdering                                           */
+/* Flattening.cpp -- Flattening                                           */
 /*============================================================================*/
 
-#include "JoinOrdering.hpp"
+#include "Flattening.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, JoinOrdering, CN_JOINORDERING)
-__aNewFunction(JoinOrdering, CN_JOINORDERING)
-__vDeleteFunction(JoinOrdering, CN_JOINORDERING)
-__aFooterFunction(JoinOrdering)
+__pCastFunction(STORE, Flattening, CN_FLATTENING)
+__aNewFunction(Flattening, CN_FLATTENING)
+__vDeleteFunction(Flattening, CN_FLATTENING)
+__aFooterFunction(Flattening)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JoinOrdering::JoinOrdering(Card_Deck* p_deck)
-: Object(CN_JOINORDERING)
+Flattening::Flattening(CardIter* pCI)
+: Object(CN_FLATTENING)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENING, _FOOTER_);
 
-  m_p_deck       = p_deck;
+  m_pCI = pCI;
 
+  _checkInitialised_(CN_FLATTENING);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_FLATTENING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-JoinOrdering::~JoinOrdering(void) noexcept(false)
+Flattening::~Flattening(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENING, _FOOTER_);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Deck* JoinOrdering::p_deck(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  return m_p_deck;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::v_deck(Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_p_deck = p_deck;
-}
 
 /*============================================================================*/
 /* end                                                                        */

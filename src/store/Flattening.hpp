@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JoinOrdering.hpp -- Join Ordering                                          */
+/* Flattening.hpp -- Join Ordering                                          */
 /*============================================================================*/
 #pragma once
 
@@ -8,11 +8,11 @@
 
 namespace STORE
 {
-  class JoinOrdering : public Object
+  class Flattening : public Object
   {
   private:
 
-    Card_Deck* m_p_deck;
+    CardIter* m_pCI;
 
   protected:
     // must be last
@@ -22,17 +22,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    JoinOrdering(Card_Deck* p_deck);
-   ~JoinOrdering(void) noexcept(false);
-
-    Card_Deck* p_deck(void);
-    void v_deck(Card_Deck* p_deck);
+    Flattening(CardIter* pCI);
+   ~Flattening(void) noexcept(false);
 
   protected:
     Footer* aFooter(void);
   };
 
-  JoinOrdering* _pJoinOrdering(void* aAddr);
+  Flattening* _pFlattening(void* aAddr);
 }
 
 /*============================================================================*/

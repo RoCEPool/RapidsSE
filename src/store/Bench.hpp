@@ -124,11 +124,6 @@ namespace STORE
     void vFlatten_53_W_L_NC_NI_join(void);
     void vFlatten_74_H_A_NC_ro(void);
 
-    // folding
-    void vFold_exists(Stz* szFold, Fold* pFold=nullptr);
-    void vFold_from(Stz* szFold, Fold* pFold=nullptr);
-    void vFold_in_as_join(Stz* szFold, Fold* pFold=nullptr);
-    void vFold_subQuery(Stz* szFold, eCK eCardWithSQ, Fold* pFold=nullptr);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // optimisations
