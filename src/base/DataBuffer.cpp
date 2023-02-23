@@ -39,12 +39,17 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
-#ifdef WITH_BUFFER_ID
-  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-#endif
-#endif
+
+  if(eClassNo == CN_CRWBUFFER ||
+     eClassNo == CN_ROWBUFFER) {
+
+    m_oBufferId = AM::pFileMap()->oGetNewBufferId();
+
+    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+  } else {
+    m_oBufferId.m_iAsI8 = 0;
+  }
+
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
   
@@ -66,11 +71,10 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 DataBuffer::~DataBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-#ifdef WITH_BUFFER_ID
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
-#endif
-#endif
+
+  if(m_oBufferId.m_iAsI8 != 0)
+    AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
+
 }
 
 /*----------------------------------------------------------------------------*/

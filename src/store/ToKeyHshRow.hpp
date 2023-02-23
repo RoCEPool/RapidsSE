@@ -20,7 +20,7 @@ namespace STORE
     bool       m_bFirst;
     i8         m_i_Rec;
 
-    BufferId   m_oRowBufferId;
+    RowBuffer* m_pRowBuffer;
   
     //--
   
@@ -62,7 +62,7 @@ namespace STORE
 
     RowBuffer* pDanglingRowBuffer(void);
     RowBuffer* pFullRowBuffer(void);
-    RowBuffer* pRowBufferFromId(void);
+    RowBuffer* pRowBuffer(void);
 
     i8 iRowsProcessed(void);
     i8 iRowsInvalid(void);

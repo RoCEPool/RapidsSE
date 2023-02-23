@@ -42,10 +42,9 @@ CrwToRow::CrwToRow(StreamDef* pStreamDef)
 
   m_pStreamDef = pStreamDef;
 
-  RowBuffer* pRowBuffer = new RowBuffer;
-  m_oRowBufferId = pRowBuffer->oGetBufferId();
+  m_pRowBuffer = new RowBuffer;
 
-  pRowBuffer->vResolveRowPix(pStreamDef);
+  m_pRowBuffer->vResolveRowPix(pStreamDef);
   
   _checkInitialised_(CN_CRWTOROW);
 
@@ -59,7 +58,7 @@ CrwToRow::~CrwToRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  ASSERT(!pRowBufferFromId());
+  ASSERT(!m_pRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +73,7 @@ void CrwToRow::vRepair(Object* pObject)
 
   CrwToRow* pCrwToRow = _pCrwToRow(pObject);
 
-  RowBuffer* pRowBuffer = pCrwToRow->pRowBufferFromId();
+  RowBuffer* pRowBuffer = pCrwToRow->m_pRowBuffer;
 
   while (pRowBuffer) {
 
@@ -107,7 +106,7 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
 
     vAllotNewRow();
     
-    RowInflator::vInflate_AllColumns_into_RowBuffer(pRowBufferFromId(), pCrwHead);
+    RowInflator::vInflate_AllColumns_into_RowBuffer(m_pRowBuffer, pCrwHead);
   }
 
   return true;
@@ -120,9 +119,9 @@ RowBuffer* CrwToRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
-  RowBuffer* pDanglingRowBuffer = pRowBufferFromId();
+  RowBuffer* pDanglingRowBuffer = m_pRowBuffer;
 
-  m_oRowBufferId.m_iAsI8 = 0;
+  m_pRowBuffer = nullptr;
   
   return pDanglingRowBuffer;
 }
@@ -134,10 +133,10 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  if (!pRowBufferFromId())
+  if (!m_pRowBuffer)
     return nullptr;
   
-  RowBuffer* pScanRowBuffer = pRowBufferFromId();
+  RowBuffer* pScanRowBuffer = m_pRowBuffer;
   if (! pScanRowBuffer->pNextLinkedBuffer())
     return nullptr;
 
@@ -152,16 +151,6 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return RowBuffer address from its BufferId via the HashMap                 */
-/*----------------------------------------------------------------------------*/
-RowBuffer* CrwToRow::pRowBufferFromId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
-
-  return (RowBuffer*) BufferId::aAddressFromId(m_oRowBufferId);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -172,10 +161,10 @@ void CrwToRow::vAllotNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
-  if (pRowBufferFromId()->nFreeBytes() < C_MAX_RECORD)
+  if (m_pRowBuffer->nFreeBytes() < C_MAX_RECORD)
     vNewRowBuffer();
   
-  Row* pRow = pRowBufferFromId()->pAllotRow();
+  Row* pRow = m_pRowBuffer->pAllotRow();
   UNUSED(pRow);
 }
 
@@ -192,15 +181,15 @@ void CrwToRow::vNewRowBuffer(void)
   // initialise the column pix inside the new row buffer
   pNewRowBuffer->vInitPix(m_pStreamDef,false);
 
-  if (!pRowBufferFromId()) {
+  if (! m_pRowBuffer) {
     // set as head of empty row buffer chain
-    m_oRowBufferId = pNewRowBuffer->oGetBufferId();
+    m_pRowBuffer = pNewRowBuffer;
     return;
   }
 
   // add as head of existing row buffer chain
-  pNewRowBuffer->vNextLinkedBuffer(pRowBufferFromId());
-  m_oRowBufferId = pNewRowBuffer->oGetBufferId();
+  pNewRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
+  m_pRowBuffer = pNewRowBuffer;
 }
 
 /*============================================================================*/
