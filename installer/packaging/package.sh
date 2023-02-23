@@ -23,6 +23,7 @@ set -Eeo pipefail
 #  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD.
 #  NO_DOCS       - don't build or package documentation.
 #  NO_DOC_BUILD  - don't build the documentation but continue to package it.
+#  DEBUG_BUILD   - build RapidsSE in debug mode instead of release (the default)
 
 ###############################################################################
 ### Constants                                                               ###
@@ -247,6 +248,11 @@ esac
   if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ]
   then
 
+    BUILD_TARGET="release"
+    if [ -n "${DEBUG_BUILD}" ] && [ "${DEBUG_BUILD}" -eq 1 ]; then
+      BUILD_TARGET="debug"
+    fi
+
     gccVersion="$(gcc -dumpversion | cut -f1-2 -d.)"
     hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
 
@@ -265,13 +271,13 @@ esac
       echo "Using GCC version ${newestGccVer} from SCL"
       (
         cd "${SOURCE_DIR}"
-        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc)"
+        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc)" "${BUILD_TARGET}"
       )
 
     else
       (
         cd "${SOURCE_DIR}"
-        make clean && make -s  -j "$(nproc)"
+        make clean && make -s  -j "$(nproc)" "${BUILD_TARGET}"
       )
     fi
   fi
