@@ -37,7 +37,7 @@ enum eFM : u2 // function macros
   /*  */ FM_ADD_IVLIVL,           // ivd + ivd
   /*  */ FM_ADD_TMEIVD,           // tme + ivd
   /*  */ FM_ADD_TSPIVD,           // tsp + ivd
-  /*  */ FM_ADD_TSPIVY,           // tsp + ivd
+  /*  */ FM_ADD_TSPIVY,           // tsp + ivy
   /*  */ FM_ADD_UNKANY,           // unk + any
 
   // divide
