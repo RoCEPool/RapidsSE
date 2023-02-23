@@ -44,7 +44,7 @@ namespace STORE
     bool bApplyTransformationMatrix(eEC* peErrorCode);
     void vApplyTransformationMatrix(void);
 
-    void vSeries_PreparePipelines(void);
+    void vSeries_PrepareSubQueries(void);
     void vSeries_MakeRunnable(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);

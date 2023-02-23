@@ -255,6 +255,7 @@
 #include "Smoosh.hpp"
 #include "JoinOrdering.hpp"
 #include "Optimisations.hpp"
+#include "MakeWeavable.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -448,6 +449,7 @@ SizeHeap gxaSizeHeap[]
   { CN_LOGICUNIT,                sizeof(LogicUnit),          HT_T_MEDIUM  ,FILL },
 
   { CN__M__,                     'M' - ('A' - 1),            HT_INVALID   ,FILL },
+  { CN_MAKEWEAVABLE,             sizeof(MakeWeavable),       HT_T_TINY    ,FILL },
   { CN_MARKER,                   sizeof(Marker),             HT_T_TINY    ,FILL },
   { CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    ,FILL },
   { CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    ,FILL },

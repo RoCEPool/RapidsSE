@@ -124,7 +124,7 @@ void Bench::vApplyTransformationMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PreparePipelines();
+  vSeries_PrepareSubQueries();
   vSeries_MakeRunnable();
 
   vSeries_Optimisations();
@@ -134,7 +134,7 @@ void Bench::vApplyTransformationMatrix(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_PreparePipelines(void)
+void Bench::vSeries_PrepareSubQueries(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
