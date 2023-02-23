@@ -1214,15 +1214,6 @@ void Bench::vFlatten_40_W_L_C_E(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  // W L C E
-  // push a (linear correlated exists) sub-query before the main-query
-  // as a keyExists.  join ordering will be required to make it runnable
-  // (refer: Q4)
-
-  // assumptions
-  // A1) sq is a single <table>
-  // A2) will have index and bound [BVO: vSeries_42_Bound_Analysis]
-
   /* ARCHETYPE :
       select count(*)
         from orders
@@ -1239,121 +1230,9 @@ void Bench::vFlatten_40_W_L_C_E(void)
   pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);
   m_pCI->vPrintBoard(__LINE__);
 
-  // W L C E
-//  //             //
-//  //             //
-//  // T W A A A   // find W_L_C_E subquery call in mq:<where>/<boolCalc>
-//  //   f         //
-//  //   bc        //
-//  //  @ro exists //
-//
-//  // 1) find W_L_C_E subquery call in mq:<where>/<boolCalc>
-//  if (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-//    if (! Board::bFindAndMarkSubQryCall(m_pCI)) {
-//      vTrace("DID NOT FIND W_A_C_ro SubQuery call\n"_Stz);
-//      NEVER_REACH
-//    }
-//  }
-//  vTrace("Found W_L_C_E call to %s(%s)\n"_Stz,m_pCI->m_sSqyNm.szStz(),m_pCI->m_sSqyArg.szStz());
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  // 2) push to sq
-//  if (! m_pCI->G_bPushBoard(m_pCI->m_sSqyNm)) {
-//    vTrace("DID NOT FIND Board %s\n"_Stz,m_pCI->m_sSqyNm.szStz());
-//    NEVER_REACH
-//  }
-//
-//  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-//    m_pCI->G_vMorphCard(m_pCI->G.p_filter,CK_CONSTRAINT);
-//  }
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWith2Sub(CK_TABLE,CK_INDEX,CK_CONSTRAINT)) {
-//    m_pCI->G.p_table->vRemoveChild(m_pCI->G.p_constraint);
-//    m_pCI->G.p_index->vAppend(m_pCI->G.p_constraint);
-//    m_pCI->G.p_index->Y_vSet(P_ChosenIndex);
-//  }
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  // 3) get copy of sq:<table>/* into cc:<table>
-//  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMain(CK_TABLE)) {
-//    m_pCI->G_vCopyCard(m_pCI->G.p_table);
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  // 4) pop back to mq
-//  m_pCI->G_vPopIter();
-//
-//  m_pCI->G_vNewMember(CK_FOLD,"W_L_C_E"_Stz);
-//  m_pCI->G_vInsertBefore(m_pCI->G.p_fold,m_pCI->G.p_where);
-
-
-
-
-
-
-
-  // W L C E
-  //                 //
-  //       E-sqr->   // Insert sq table before fold
-  // --    ----mq--- //
-  // T T F W A A A   // put cc:<table>/* before mq:<where>
-  //   --sq          //
-
-//  m_pCI->G_vInsertBefore(m_pCI->m_pCard_copied,m_pCI->G.p_fold);
-//  m_pCI->G_vAppendNewChild(m_pCI->m_pCard_copied, CK_KEYEXISTS);
-//
-//  Card_Projection::vProjection_Analysis_v2(m_pCI);
-
   Smoosh* pSmoosh = new Smoosh;
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
-
   m_pCI->vPrintBoard(__LINE__);
-
-  // W L C E
-  //                 // Replace %1 parameter with calling argument
-  //                 //
-  // T T F W A A A   // %1 -> $t.n
-  //   b             //
-  //   %1->$t.c      //
-  //   ke            //
-
-//  Card_Term::bReplaceValueOfSub(m_pCI, m_pCI->m_pCard_copied,CK_TERM,"%1"_Stz,m_pCI->m_sSqyArg);
-//  Card_Term::bReplaceValueOfSub(m_pCI, m_pCI->G.p_table,CK_TERM,"%1"_Stz,m_pCI->m_sSqyArg);
-//  m_pCI->G_vCopyCard(nullptr);
-//  m_pCI->G.pDeck->vRenumberRecursive();
-//
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  // W L C E
-//  //                 // Cull @ro exists from <where>/<filter>
-//  //                 //
-//  // T T F W A A A   //
-//  //       f         //
-//  //       bc        //
-//  //      @ro exists //
-//
-//  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-//  }
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  // W L C E
-//  //                 // Delete potentially empty where
-//  //                 //
-//  // T T F A A A     //
-//  //                 //
-//
-//  m_pCI->G_vRestart();
-//  m_pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-//  m_pCI->vPrintBoard(__LINE__);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
