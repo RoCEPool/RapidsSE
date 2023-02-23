@@ -849,8 +849,6 @@ void Bench::vFlatten_10_F(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // F
-  // push a (from) sub-query before the main-query
-  // as an op-sequence
   // (refer: Q7,8,9)
 
   /*
@@ -1182,8 +1180,6 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // W L NC NI
-  // push a (linear non-correlated not in) sub-query before the main-query
-  // as a keyExists
   // (refer: Q16)
 
   /* ARCHETYPE :
@@ -1201,12 +1197,8 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
 
-  //vFold_in_as_join("W_L_NC_NI"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
-//  CarryForward* pCarryForward =
-//      pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_join"_Stz,
-//                               CK_WHERE, QO_NOT_IN_OP, SM_NOT_IN_into_KEYNOTEXISTS);
 
   pFold->vFold_basic(m_pCI,"W_L_NC_NI_join"_Stz,CK_WHERE);
 
@@ -1233,75 +1225,7 @@ void Bench::vFlatten_53_W_L_NC_NI_join(void)
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-//  Card_Projection* p_projection_project = nullptr;
-//
-//  if (m_pCI->G_bEachMainWithSub(CK_TABLE,CK_PROJECTION)) {
-//
-//    p_projection_project = _pCard_Projection(m_pCI->G.p_projection->pDupCardAndSubCards());
-//
-//  }
-//
-//  m_pCI->G_vRestart();
-//  while (m_pCI->G_bEachMain()) {
-//    if (CK_FOLD == m_pCI->G.e_MainCard)
-//      break;
-//    if (Card_Projection* p_projection_carry = m_pCI->G.p_MainCard->pSub_projection())
-//      m_pCI->G.p_projection = p_projection_carry;
-//  }
-//
-//  RASSERT(m_pCI->G_bEachMain(CK_TABLE));
-//
-//  m_pCI->G.p_table->vDump();
-//
-//  m_pCI->G.p_table->vSmooth(m_pCI);
-//
-//  m_pCI->G.p_project = new Card_Project(CK_PROJECT);
-//
-//  m_pCI->G.p_level = new Card_Level(AL_PARTITION);
-//  m_pCI->G.p_project->vAppend(m_pCI->G.p_level);
-//  m_pCI->G.p_project->vAppend(p_projection_project);
-//
-//  m_pCI->G_vInsertAfter(m_pCI->G.p_project,m_pCI->G.p_table);
-//
-//  m_pCI->vPrintBoard(__LINE__);
-//
-//  Card_Table* p_table_joining = m_pCI->G.p_table;
-//
-//  Card_PRED* p_pred_joining = nullptr;
-//
-//  while (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-//    m_pCI->G.p_where->vDump();
-//
-//    if (p_pred_joining = m_pCI->G.p_boolCalc->pFindMarkedPred(MARK_AT)) {
-//      m_pCI->G.p_boolCalc->vRemovePred(p_pred_joining);
-//
-//      p_table_joining->vAddPredToTableFilter(m_pCI,p_pred_joining);
-//
-//      // todo: HACK!
-//      p_pred_joining->vDeleteAll();
-//
-//      p_pred_joining->vCard(CK_CMPPRED);
-//      p_pred_joining->vValue("=="_Stz);
-//      p_pred_joining->vAppend(new Card_Term("$a.1"_Stz));
-//      p_pred_joining->vAppend(new Card_Term("$1"_Stz));
-//
-//      break;
-//    }
-//  }
-//  Card_Where::vDeleteEmpyWhere(m_pCI);
-
-
   m_pCI->vPrintBoard(__LINE__);
-
-
-//  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-//    m_pCI->G.p_where->Y_vSet(P_Smoothed);
-//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-//    if (0 == m_pCI->G.p_boolCalc->nChildCards())
-//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
-//  }
-//  m_pCI->vPrintBoard(__LINE__);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();
