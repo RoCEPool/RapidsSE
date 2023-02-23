@@ -86,6 +86,106 @@ void Smoosh::vInto_GBYAGG(CardIter* pCI)
 
   }
 
+
+
+
+
+
+
+  // T G G G P F T T T W A A A      //
+  //             s s s              // adjust stream ordinsla
+
+//  Card_Stream::vStream_AdjustLoHi(pCI);
+//  Board::vRenumberStmOdn(pCI);
+//  pCI->vPrintBoard(__LINE__);
+
+
+  pCI->G_vRestart();
+  RASSERT(pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+
+  RASSERT(pCI->G_bEachMain(CK_FOLD));
+
+  // Table*
+  i8 nTables = 0;
+  while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
+    nTables++;
+    pCI->G.p_table->vSmooth(pCI);
+    pCI->vPrintBoard(__LINE__);
+  }
+  pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert the mq to join to the gby correlation column streamed from sq
+
+  pCI->G_vRestart();
+
+  // v                             //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolCalc
+  // s                             //  ..]cmpPred ==
+  // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
+  //                               //             %1
+
+  RASSERT(pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
+  bool b = pCI->G.p_boolCalc->bYank_PRED(MARK_AT, pCI->G.p_PRED);
+  RASSERT(b);
+  RASSERT(pCI->G.p_PRED->Y_bHas(P_CorrPred));
+  pCI->vPrintBoard(__LINE__);
+
+  pCI->G.p_table->vRemove_filter_IfEmpty(pCI->G.p_filter);
+  pCI->vPrintBoard(__LINE__);
+
+  //                   v           //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolCalc
+  // s                 f           //  ..]cmpPred ==
+  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //                               //             %1
+
+  RASSERT(pCI->G_bEachMain(CK_FOLD));
+  RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  pCI->G.p_boolCalc->vBump_Rightwards(2);
+
+  pCI->G.p_boolCalc->vPush_Correlated_cmpPred_Onto_mq_boolCalc(pCI->G.p_PRED);
+  pCI->vPrintBoard(__LINE__);
+
+  //                   v           //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolCalc
+  // s                 f           //  ..]roPred <
+  // f                 bc          //           $a.5
+  //                               //           $b.1
+  //                               // __subquery0002
+
+  Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(pCI, pCI->G.p_boolCalc);
+  pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move the correlation predicate to table as a bounds
+
+  // TODO: this should be in two steps
+
+  pCI->G_vRestart();
+
+  //                   v           //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolCalc
+  // s                 f           //  ..]cmpPred ==
+  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //             b <-  cp          //             %1
+
+  RASSERT(pCI->G_bEachMain(CK_FOLD));
+  RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolCalc);
+  Board::vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
+  pCI->vPrintBoard(__LINE__);
+
+
+//  pCI->G_vRestart();
+//  if (pCI->G_bEachMain(CK_FOLD)) {
+//    if (pCI->G_bEachMain(CK_WHERE)) {
+//      // TODO:
+//      // R_vUTE_Unproject_foldExpr_After_where();
+//      R_vUTE_Bump_where_BaseOn_foldExpr();
+//    }
+//  }
+
 }
 
 /*----------------------------------------------------------------------------*/
