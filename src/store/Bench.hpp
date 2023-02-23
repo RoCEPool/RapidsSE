@@ -8,6 +8,7 @@
 
 namespace STORE
 {
+  class Flattening;
   class Fold;
 
   class Bench : public Object
@@ -24,6 +25,7 @@ namespace STORE
     i8           m_iOdnHi;
     char         m_cTableSyn;
 
+    Flattening*  m_pFlattening;
   public:
     CardIter*    m_pCI;
 

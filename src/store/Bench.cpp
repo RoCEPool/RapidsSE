@@ -42,6 +42,8 @@ Bench::Bench(Optimiser* pOptimiser)
   m_cTableSyn   = 'a';
 
   m_pCI = new CardIter(this);
+
+  m_pFlattening = nullptr;
   
   _checkInitialised_(CN_BENCH);
   
@@ -56,6 +58,8 @@ Bench::~Bench(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
   delete m_pCI;
   vDeleteAll();
+
+  delete m_pFlattening;
 }
 
 
@@ -161,7 +165,12 @@ void Bench::vSeries_MakeRunnable(void)
 
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
+  m_pFlattening = new Flattening(m_pCI);
+
   vSeries_Flatten_recurse();
+
+  delete m_pFlattening;
+  m_pFlattening = nullptr;
 
   vEndSeries(BK_SUBQUERY);
 }
@@ -731,11 +740,9 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  Flattening* pFlattening = new Flattening(m_pCI);
-
   m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
 
-  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ pFlattening->vFlatten_10_F();
+  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ m_pFlattening->vFlatten_10_F();
   else
   if (m_pCI->G.pSubQuery->bViaWhere()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
@@ -744,17 +751,17 @@ void Bench::vTransform_FlattenByDecisionTree(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                         /* W_A_C_ro   Q2,17 */ pFlattening->vFlatten_24_W_A_C_ro();
+        else                                         /* W_A_C_ro   Q2,17 */ m_pFlattening->vFlatten_24_W_A_C_ro();
       } else {                                                                  /* 30*/
              if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ pFlattening->vFlatten_32_W_A_NC_I();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ m_pFlattening->vFlatten_32_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                         /* W_A_NC_ro    Q15 */ pFlattening->vFlatten_34_W_A_NC_ro();
+        else                                         /* W_A_NC_ro    Q15 */ m_pFlattening->vFlatten_34_W_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 40*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ pFlattening->vFlatten_40_W_L_C_E();
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ m_pFlattening->vFlatten_40_W_L_C_E();
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
@@ -762,8 +769,8 @@ void Bench::vTransform_FlattenByDecisionTree(void)
       } else {                                                                  /* 50*/
              if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ pFlattening->vFlatten_52_W_L_NC_I_join();
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ pFlattening->vFlatten_53_W_L_NC_NI_join();
+        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ m_pFlattening->vFlatten_52_W_L_NC_I_join();
+        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ m_pFlattening->vFlatten_53_W_L_NC_NI_join();
         else                                         /* W_L_NC_ro        */ NEVER_REACH
       }
     }
@@ -782,7 +789,7 @@ void Bench::vTransform_FlattenByDecisionTree(void)
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                         /* H_A_NC_ro    Q11 */ pFlattening->vFlatten_74_H_A_NC_ro();
+        else                                         /* H_A_NC_ro    Q11 */ m_pFlattening->vFlatten_74_H_A_NC_ro();
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 80*/
@@ -805,7 +812,6 @@ void Bench::vTransform_FlattenByDecisionTree(void)
 
   m_pCI->vEndTransform();
 
-  delete pFlattening;
 }
 
 /*----------------------------------------------------------------------------*/
