@@ -52,7 +52,7 @@ Flattening::~Flattening(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_10_F(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -119,7 +119,7 @@ void Flattening::vFlatten_10_F(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_24_W_A_C_ro(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -162,7 +162,7 @@ void Flattening::vFlatten_24_W_A_C_ro(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_32_W_A_NC_I(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -210,7 +210,7 @@ void Flattening::vFlatten_32_W_A_NC_I(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_34_W_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -265,7 +265,7 @@ void Flattening::vFlatten_34_W_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_40_W_L_C_E(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -302,7 +302,7 @@ void Flattening::vFlatten_40_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_52_W_L_NC_I_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENING, _FOOTER_);
 
   vFlatten_53_W_L_NC_NI_exists();
 }
@@ -312,7 +312,7 @@ void Flattening::vFlatten_52_W_L_NC_I_exists(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_52_W_L_NC_I_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENING, _FOOTER_);
 
   vFlatten_53_W_L_NC_NI_join();
 }
@@ -322,7 +322,7 @@ void Flattening::vFlatten_52_W_L_NC_I_join(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_53_W_L_NC_NI_exists(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -377,7 +377,7 @@ void Flattening::vFlatten_53_W_L_NC_NI_exists(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_53_W_L_NC_NI_join(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -443,7 +443,7 @@ void Flattening::vFlatten_53_W_L_NC_NI_join(void)
 /*----------------------------------------------------------------------------*/
 void Flattening::vFlatten_74_H_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTENING,_FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
