@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Flattening.hpp -- Join Ordering                                          */
+/* Flattening.hpp -- Flattening                                               */
 /*============================================================================*/
 #pragma once
 
@@ -41,25 +41,6 @@ namespace STORE
     void vFlatten_74_H_A_NC_ro(void);
 
     void vTransform_StmColToTblCol(void);
-
-    // - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-
-    void vJoinOrdering(void);
-
-    void vGroup_PredicatePullup(void);
-    void vGroup_IndexBounds(void);
-    void vGroup_JoinOrdering(void);
-
-    void vTransform_MarkCmpPredWrtTable(void);
-    void vTransform_CopyMarkedCmpPred(void);
-    void vTransform_CullMarkedCmpPred(void);
-    void vTransform_DeleteEmptyWhere(void);
-
-    void vTransform_JoinOrdering_originalModel(void);
-    void vTransform_PredicateReposition_originalModel(void);
-    void vTransform_DeriveBoundsFromFilter_originalModel(void);
-
-
 
   protected:
     Footer* aFooter(void);

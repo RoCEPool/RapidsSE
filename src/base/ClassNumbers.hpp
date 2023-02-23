@@ -215,6 +215,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OPERANDWATCH,
   /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
+  /* */ CN_OPTIMISATIONS,
   /* */ CN_OPTIMISER,
   /* */ CN_OTHEROPERAND,
 
@@ -646,6 +647,7 @@ static Stz* aCN[]
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
   /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
+  /* */ "OPTIMISATIONS"_Stz,        // CN_OPTIMISATIONS
   /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 

@@ -254,6 +254,7 @@
 #include "Equivalence.hpp"
 #include "Smoosh.hpp"
 #include "JoinOrdering.hpp"
+#include "Optimisations.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -480,6 +481,7 @@ SizeHeap gxaSizeHeap[]
   { CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   ,FILL },
   { CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    ,FILL },
   { CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  ,FILL },
+  { CN_OPTIMISATIONS,            sizeof(Optimisations),      HT_T_TINY    ,FILL },
   { CN_OPTIMISER,                sizeof(Optimiser),          HT_T_MEDIUM  ,FILL },
   { CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    ,FILL },
 

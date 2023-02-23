@@ -25,9 +25,6 @@ namespace STORE
     JoinOrdering(CardIter* pCI);
    ~JoinOrdering(void) noexcept(false);
 
-
-    // - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-
     void vJoinOrdering(void);
 
     void vGroup_PredicatePullup(void);
@@ -42,8 +39,6 @@ namespace STORE
     void vTransform_JoinOrdering_originalModel(void);
     void vTransform_PredicateReposition_originalModel(void);
     void vTransform_DeriveBoundsFromFilter_originalModel(void);
-
-
 
   protected:
     Footer* aFooter(void);
