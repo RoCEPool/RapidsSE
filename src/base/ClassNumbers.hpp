@@ -250,6 +250,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PPYSET,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
+  /* */ CN_PREPARESUBQUERIES,
   /* */ CN_PRIMITIVENODE,
   /* */ CN_PROCEDURE,
   /* */ CN_PROFILE,
@@ -683,6 +684,7 @@ static Stz* aCN[]
   /* */ "PPYSET"_Stz,               // CN_PPYSET
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
+  /* */ "PREPARESUBQUERIES"_Stz,    // CN_PREPARESUBQUERIES
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROCEDURE"_Stz,            // CN_PROCEDURE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
