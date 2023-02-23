@@ -47,6 +47,17 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (bIsValue("exists"_Stz)) {
+
+    vCard(CK_CMPPRED);
+    vValue("=="_Stz);
+
+    Card_Term* p_term_one = _pCard_Term(pGetChild(1));
+    ASSERT(p_term_one->bIsValue("__subquery0002"_Stz)); //temp
+    p_term_one->vValue(p_term ? p_term->szValue() : "$1"_Stz);
+    return;
+  }
+
   if (bIsValue("in"_Stz)) {
 
     vCard(CK_CMPPRED);

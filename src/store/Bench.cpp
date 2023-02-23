@@ -1324,35 +1324,36 @@ void Bench::vFlatten_40_W_L_C_E(void)
   //   %1->$t.c      //
   //   ke            //
 
-  Card_Term::bReplaceValueOfSub(m_pCI, m_pCI->m_pCard_copied,CK_TERM,"%1"_Stz,m_pCI->m_sSqyArg);
-  m_pCI->G_vCopyCard(nullptr);
-  m_pCI->G.pDeck->vRenumberRecursive();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // W L C E
-  //                 // Cull @ro exists from <where>/<filter>
-  //                 //
-  // T T F W A A A   //
-  //       f         //
-  //       bc        //
-  //      @ro exists //
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
-  m_pCI->vPrintBoard(__LINE__);
-
-  // W L C E
-  //                 // Delete potentially empty where
-  //                 //
-  // T T F A A A     //
-  //                 //
-
-  m_pCI->G_vRestart();
-  m_pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
-  m_pCI->vPrintBoard(__LINE__);
+//  Card_Term::bReplaceValueOfSub(m_pCI, m_pCI->m_pCard_copied,CK_TERM,"%1"_Stz,m_pCI->m_sSqyArg);
+//  Card_Term::bReplaceValueOfSub(m_pCI, m_pCI->G.p_table,CK_TERM,"%1"_Stz,m_pCI->m_sSqyArg);
+//  m_pCI->G_vCopyCard(nullptr);
+//  m_pCI->G.pDeck->vRenumberRecursive();
+//
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  // W L C E
+//  //                 // Cull @ro exists from <where>/<filter>
+//  //                 //
+//  // T T F W A A A   //
+//  //       f         //
+//  //       bc        //
+//  //      @ro exists //
+//
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+//
+//  // W L C E
+//  //                 // Delete potentially empty where
+//  //                 //
+//  // T T F A A A     //
+//  //                 //
+//
+//  m_pCI->G_vRestart();
+//  m_pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+//  m_pCI->vPrintBoard(__LINE__);
 
   vIsFlat(true);
   m_pCI->G.pDeck->vClearMarksRecursive();

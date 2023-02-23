@@ -100,8 +100,25 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pCI->m_pCorrelation)
-    vDebugPoint();
+  if (! pCI->m_pCorrelation) {
+    pCI->G.pDeck->vRenumberRecursive();
+    return;
+  }
+
+  Card_Term::bReplaceValueOfSub(pCI, pCI->G.p_table,CK_TERM,"%1"_Stz,pCI->m_sSqyArg);
+  pCI->G_vCopyCard(nullptr);
+  
+  pCI->G_vRestart();
+  if (pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    pCI->G.p_boolCalc->vCullPred(MARK_AT);
+  }
+  
+  pCI->G_vRestart();
+  pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+
+  pCI->G.pDeck->vRenumberRecursive();
+//  pCI->vPrintBoard(__LINE__);
+
 }
 
 /*============================================================================*/
