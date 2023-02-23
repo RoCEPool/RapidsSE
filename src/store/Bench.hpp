@@ -44,7 +44,7 @@ namespace STORE
 
     void vSeries_PreparePipelines(void);
     void vSeries_MakeRunnable(void);
-    void vSeries_MakeRunnable_recurse(void);
+    void vSeries_Flatten_recurse(void);
     void vSeries_Optimisations(void);
     void vSeries_MakeWeavable(void);
 
@@ -55,12 +55,10 @@ namespace STORE
     void vGroup_CondenseInfo(void);
     void vGroup_MetaAnalysis(void);
     void vGroup_PreliminaryConversions(void);
-    void vGroup_FinalConversions(void);
 
     void vGroup_PredicatePullup(void);
     void vGroup_IndexBounds(void);
     void vGroup_JoinOrdering(void);
-    void vGroup_FlattenSubquery(void);
 
     void vGroup_ChooseEEops(void);
 

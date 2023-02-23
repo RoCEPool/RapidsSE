@@ -161,7 +161,7 @@ void Bench::vSeries_MakeRunnable(void)
 
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
-  vSeries_MakeRunnable_recurse();
+  vSeries_Flatten_recurse();
 
   vEndSeries(BK_SUBQUERY);
 }
@@ -169,7 +169,7 @@ void Bench::vSeries_MakeRunnable(void)
 /*----------------------------------------------------------------------------*/
 /* apply the xyz set of transformations to all subPipe boards                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable_recurse(void)
+void Bench::vSeries_Flatten_recurse(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -200,18 +200,16 @@ void Bench::vSeries_MakeRunnable_recurse(void)
     );
 
     m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-    vSeries_MakeRunnable_recurse();
+    vSeries_Flatten_recurse();
     m_pCI->G_vPopIter();
 
-    vGroup_FlattenSubquery();
+    vTransform_FlattenByDecisionTree();
 
     vDebugPoint();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
-
-  //vGroup_FinalConversions();
 
   vGroup_PredicatePullup();
   vGroup_IndexBounds();
@@ -295,12 +293,6 @@ void Bench::vGroup_CondenseInfo(void)
 void Bench::vGroup_MetaAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-/*
-  vTransform_TableAnalysis();
-  vTransform_StreamAnalysis();
-  vTransform_IndexAnalysis();
-  vTransform_ProjectionAnalysis();
-*/
 
   vTransform_TableAnalysis();
   vTransform_ProjectionAnalysis();
@@ -317,18 +309,6 @@ void Bench::vGroup_PreliminaryConversions(void)
   //vTransform_StmColToTblCol_originalModel();
   vTransform_RpnCalcToBoolCalc();
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_FinalConversions(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_StmColToTblCol();
-  //vTransform_RpnCalcToBoolCalc();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -369,17 +349,6 @@ void Bench::vGroup_JoinOrdering(void)
   vTransform_PredicateReposition_originalModel();
   vTransform_DeriveBoundsFromFilter_originalModel();
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_FlattenSubquery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_FlattenByDecisionTree();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
