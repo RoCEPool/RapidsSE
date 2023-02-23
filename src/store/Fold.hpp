@@ -59,6 +59,8 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vDerive_Correleted_fold_projection(CardIter* pCI);
+
     void vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);
 
     CarryForward* pFold_exists(Stz* szFold, CardIter* pCI);

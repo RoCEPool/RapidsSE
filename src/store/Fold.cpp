@@ -192,6 +192,22 @@ CarryForward* Fold::pFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Derive correlated fold projection                                          */
+/*----------------------------------------------------------------------------*/
+void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+
+  pCI->vRestart();
+
+  RASSERT(pCI->G_bEachMain(CK_FOLD));
+  Board::vDerive_fold_projection_From_projection(pCI);
+
+  pCI->G.pDeck->vRenumberRecursive();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
 void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
