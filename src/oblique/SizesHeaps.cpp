@@ -253,6 +253,7 @@
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
 #include "Smoosh.hpp"
+#include "JoinOrdering.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -409,22 +410,23 @@ SizeHeap gxaSizeHeap[]
   {CN_IOCOPY,                   sizeof(IoCopy),                 HT_T_TINY    , FILL },
   {CN_IVLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
-  {CN__J__,                     'J' - ('A' - 1),                HT_INVALID   , FILL },
-  {CN_JOB,                      sizeof(Job),                    HT_T_MEDIUM  , FILL },
-  {CN_JOBLIST,                  sizeof(JobList),                HT_T_TINY    , FILL },
-  {CN_JOBMETRICS,               sizeof(JobMetrics),             HT_T_LARGE   , FILL },
-  {CN_JOBREPORT,                sizeof(JobReport),              HT_T_TINY    , FILL },
-  {CN_JOBS,                     sizeof(Jobs),                   HT_T_TINY    , FILL },
+  { CN__J__,                     'J' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_JOB,                      sizeof(Job),                    HT_T_MEDIUM  , FILL },
+  { CN_JOBLIST,                  sizeof(JobList),                HT_T_TINY    , FILL },
+  { CN_JOBMETRICS,               sizeof(JobMetrics),             HT_T_LARGE   , FILL },
+  { CN_JOBREPORT,                sizeof(JobReport),              HT_T_TINY    , FILL },
+  { CN_JOBS,                     sizeof(Jobs),                   HT_T_TINY    , FILL },
+  { CN_JOINORDERING,             sizeof(JoinOrdering),           HT_T_TINY    , FILL },
 
-  {CN__K__,                     'K' - ('A' - 1),                HT_INVALID   , FILL },
-  {CN_KEY,                      sizeof(Key),                    HT_INVALID   , FILL },
+  { CN__K__,                     'K' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_KEY,                      sizeof(Key),                    HT_INVALID   , FILL },
 
-  {CN__L__,                     'L' - ('A' - 1),                HT_INVALID   , FILL },
-  {CN_LARGEPERSISTENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
-  {CN_LARGETRANSIENT,           sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
-  {CN_LARGEVIRTUAL,             sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
-  {CN_LGLBUFSET,                sizeof(LglBufSet),              HT_T_LARGE   , FILL },
-  {CN_LGLPTNMAP,                sizeof(LglPtnMap),              HT_T_LARGE   , FILL },
+  { CN__L__,                     'L' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_LARGEPERSISTENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
+  { CN_LARGETRANSIENT,           sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
+  { CN_LARGEVIRTUAL,             sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
+  { CN_LGLBUFSET,                sizeof(LglBufSet),              HT_T_LARGE   , FILL },
+  { CN_LGLPTNMAP,                sizeof(LglPtnMap),              HT_T_LARGE   , FILL },
   { CN_LICENCE,                  sizeof(Licence),            HT_T_TINY    ,FILL },
   { CN_LIMITS,                   sizeof(Limits),             HT_T_TINY    ,FILL },
   { CN_LISTEXONODE_t,            sizeof(ListExoNode_t<Object>), HT_T_TINY ,FILL },

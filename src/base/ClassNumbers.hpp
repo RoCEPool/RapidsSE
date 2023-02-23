@@ -151,6 +151,7 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
+  /* */ CN_JOINORDERING,
 
   /* */ CN__K__,
   /* */ CN_KEY,
@@ -581,6 +582,7 @@ static Stz* aCN[]
   /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
+  /* */ "JOINORDERING"_Stz,         // CN_JOINORDERING
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
