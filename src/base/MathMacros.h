@@ -550,10 +550,8 @@
      xDte2.m_uDay       = xDte1.m_uDay;                                    \
      xDte2.m_uSpare       = 0;                                             \
                                                                            \
-    printf("MONTHS: %lld\n", iArg2);                                       \
     iArg1 = xDte2.m_uYearDelta*12 + xDte2.m_uMonth - iArg2;                \
-    printf("MONTHS: %lld\n", iArg1);                                       \
-    xDte2.m_uYearDelta = iArg1/12;                                             \
+    xDte2.m_uYearDelta = iArg1/12;                                         \
     xDte2.m_uMonth = iArg1%12;                                             \
                                                                            \
     *paW++ = xDte2.m_iAsI8;                                                \
