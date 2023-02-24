@@ -34,10 +34,6 @@ namespace STORE
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // series
-    bool bApplyTransformationMatrix(eEC* peErrorCode);
-    void vApplyTransformationMatrix(void);
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

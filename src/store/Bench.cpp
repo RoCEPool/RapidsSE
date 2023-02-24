@@ -6,16 +6,6 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
-#include "Smoosh.hpp"
-#include "Smooth.hpp"
-#include "Fold.hpp"
-#include "Flattening.hpp"
-#include "Optimisations.hpp"
-#include "MakeWeavable.hpp"
-#include "PrepareSubQueries.hpp"
-
-#include "CarryForward.hpp"
-#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -62,87 +52,6 @@ Bench::~Bench(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- series ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* transform matrix                                                           */
-/*----------------------------------------------------------------------------*/
-bool Bench::bApplyTransformationMatrix(eEC* peErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  bool bClean = true;
-
-  //m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJECTION,0);
-  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  //m_pCardCtl->vPrintSubCards(CK_KEY, true);
-
-  try {
-    //m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
-        //CK_KEY, //CK_PROJECTION,
-        //CK_RPNCALC,
-    //                                          0);
-    m_pOptimiser->pCardCtl()->vSaveShorter();
-    m_pOptimiser->pCardCtl()->vSaveXhand();
-
-    vApplyTransformationMatrix();
-
-    bClean = true;
-  }
-
-  catch (Exception xException) {
-    // set peErrorCode
-    bClean = false;
-  }
-
-  catch (Error xError) {
-    *peErrorCode = xError.eErrorCode();
-    // todo: this should read xError.szErrorMsg()
-    //Stz* szError = xError.aErrorMsg();
-
-    bClean = false;
-  }
-
-  return bClean;
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the recursive transformation matrix                                  */
-/*----------------------------------------------------------------------------*/
-void Bench::vApplyTransformationMatrix(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  PrepareSubQueries* pPrepareSubQueries = new PrepareSubQueries(m_pCI);
-  pPrepareSubQueries->vSeries_PrepareSubQueries();
-  delete pPrepareSubQueries;
-
-  Flattening* pFlattening = new Flattening(m_pCI);
-  pFlattening->vSeries_Flatten_recurse();
-  delete pFlattening;
-
-  Optimisations* pOptimisations = new Optimisations(m_pCI);
-  pOptimisations->vGroup_ChooseEEops();
-  delete pOptimisations;
-
-  MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
-  pMakeWeavable->vSeries_MakeWeavable();
-  delete pMakeWeavable;
-}
-
-
-
-
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* add a new board                                                            */
@@ -361,10 +270,6 @@ void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
 
   vClearMarks();
 }
-
-
-
-
 
 
 /*----------------------------------------------------------------------------*/

@@ -32,6 +32,8 @@ namespace STORE
 
     s256         m_sJoinOrder; // join order string
 
+    CardIter*    m_pCI;
+
     // must be last
     Footer m_xFooter;
 
@@ -44,6 +46,9 @@ namespace STORE
    ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);
+
+    bool bApplyTransformationMatrix(eEC* peErrorCode);
+    void vApplyTransformationMatrix(void);
 
     Bench* pBench(void);
 
