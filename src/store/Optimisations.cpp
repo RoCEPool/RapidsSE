@@ -444,6 +444,60 @@ void Optimisations::vTransform_MorphTableToEEop(void)
   m_pCI->vEndTransform();
 }
 
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                      vSeries_80_Index_Scan */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Optimisations::vS80_T30_Morph_scan_To_indexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISATIONS,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
+    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
+      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
+
+      m_pCI->G.p_indexList->vChoose_index_For_indexScan();
+    }
+  }
+
+  m_pCI->vPrintBoard();
+
+  m_pCI->vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                 vSeries_90_Stream_Ordering */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Optimisations::vS90_T30_Derive_order(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
+
+
+  Board::vDerive_order(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

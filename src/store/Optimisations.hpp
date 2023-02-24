@@ -47,6 +47,9 @@ namespace STORE
     void vTransform_MorphTableToEEop(void);
 
 
+    void vS80_T30_Morph_scan_To_indexScan(void);
+    void vS90_T30_Derive_order(void);
+
   protected:
     Footer* aFooter(void);
   };

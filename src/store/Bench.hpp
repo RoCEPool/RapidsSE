@@ -44,21 +44,6 @@ namespace STORE
     void vSeries_Optimisations(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // group
-
-
-
-
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // transform
-
-
-
-
-
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
     bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
@@ -76,24 +61,6 @@ namespace STORE
 
     void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
-
-
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-
-    // vSeries_80_Index_Scan
-   void vS80_T30_Morph_scan_To_indexScan(void);
-
-    // vSeries_90_Stream_Ordering
-    void vS90_T30_Derive_order(void);
-
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   private:
     Footer* aFooter(void);
