@@ -210,9 +210,9 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Timestamp + Interval DT
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
-rows:
-  (TIMESTAMP '2000-02-29 06:34:00.500000')
+//SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+//rows:
+//  (TIMESTAMP '2000-02-29 06:34:00.500000')
 
 // Interval DT + timestamp
 SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;

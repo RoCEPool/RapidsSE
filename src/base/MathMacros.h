@@ -1228,17 +1228,19 @@
                                                                              \
       iSecondsSincePosixEpoch += iArg2/_C_1M;                                \
                                                                              \
-      aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
-      xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                           \
-      xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
-      xTsp2.m_uDay       = aLocalDateTime->tm_mday;                           \
-      xTsp2.m_uHour      = aLocalDateTime->tm_hour;                           \
-      xTsp2.m_uMinute    = aLocalDateTime->tm_min;                            \
-      xTsp2.m_uSecond    = aLocalDateTime->tm_sec;                            \
-      xTsp2.m_uMicro     = iArg2%_C_1M;                                       \
-                                                                              \
-      *paW++ = xTsp2.m_iAsI8;                                                 \
-  }                                                                        \
+      aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                  \
+      xTsp2.m_uLocal     = C_TSP_LOCAL;                                      \
+                                                                             \
+      xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                          \
+      xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                       \
+      xTsp2.m_uDay       = aLocalDateTime->tm_mday;                          \
+      xTsp2.m_uHour      = aLocalDateTime->tm_hour;                          \
+      xTsp2.m_uMinute    = aLocalDateTime->tm_min;                           \
+      xTsp2.m_uSecond    = aLocalDateTime->tm_sec;                           \
+      xTsp2.m_uMicro     = iArg2%_C_1M;                                      \
+                                                                             \
+      *paW++ = xTsp2.m_iAsI8;                                                \
+  }                                                                          \
 }
 
 #define _ADD_IVDTSP(eErrorCode)                                            \
@@ -1271,7 +1273,9 @@
                                                                             \
      iSecondsSincePosixEpoch += iArg1/_C_1M;                                \
                                                                            \
-     aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+     aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                 \
+                                                                           \
+     xTsp2.m_uLocal     = C_TSP_LOCAL;                                       \
      xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                           \
      xTsp1.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
      xTsp1.m_uDay       = aLocalDateTime->tm_mday;                           \
@@ -1314,6 +1318,7 @@
                                                                            \
     aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                  \
                                                                            \
+    xTsp2.m_uLocal     = C_TSP_LOCAL;                                      \                                                                        \
     xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                          \
     xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                       \
     xTsp2.m_uDay       = aLocalDateTime->tm_mday;                          \
@@ -1357,6 +1362,7 @@
                                                                            \
      aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                 \
                                                                            \
+     xTsp1.m_uLocal     = C_TSP_LOCAL;                                       \                                                                \
      xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                         \
      xTsp1.m_uMonth     = aLocalDateTime->tm_mon + 1;                      \
      xTsp1.m_uDay       = aLocalDateTime->tm_mday;                         \
