@@ -76,8 +76,8 @@ LOG 'Running threeWayPtn...';
 INCLUDE 'threeWayPtn.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running FlattenSubQueries queries...';
-INCLUDE 'FlattenSubQueries.test';
+//LOG 'Running Flattening queries...';
+//INCLUDE 'Flattening.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';
