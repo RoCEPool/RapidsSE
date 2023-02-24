@@ -285,9 +285,6 @@ SELECT DATE '2000-02-28' - INTERVAL '3' MONTH FROM nation where n_nationkey = 2;
 rows:
  (DATE '1999-11-28')
 
-/*******************************************************************
-IN PROGRESS
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval * Integer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -295,10 +292,30 @@ IN PROGRESS
 // Interval multiplication /1 (integer)
 SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation where n_nationkey = 2;
 rows:
+  (INTERVAL '2-4' YEAR TO MONTH)
 
 // Interval multiplication /4 (integer first)
 SELECT 2 * INTERVAL '1' YEAR FROM nation where n_nationkey = 2;
 rows:
+  (INTERVAL '2' YEAR)
+
+// Interval multiplication /1 (integer)
+SELECT INTERVAL '1 2' DAY TO HOUR * 2 FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '2 4' DAY TO HOUR)
+
+// Interval multiplication /4 (integer first)
+SELECT 2 * INTERVAL '32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+ (INTERVAL '64 19:59:58' DAY TO SECOND)
+
+SELECT 2 * INTERVAL -'32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+ (INTERVAL -'64 19:59:58' DAY TO SECOND)
+
+/*******************************************************************
+IN PROGRESS
+
 
 // Interval division /1 (integer)
 SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM nation where n_nationkey = 2;

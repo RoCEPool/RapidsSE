@@ -472,6 +472,8 @@
                                                                            \
       i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;   \
                                                                            \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
       wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
                                                                            \
       if (iSeconds < 0) {                                                  \
@@ -808,9 +810,9 @@
     }                                                                      \
   }
 
-/*
- INTERVALS
-*/
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INTERVALS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #define _ADD_IVLIVL(eErrorCode)                                            \
   {                                                                        \
@@ -834,6 +836,8 @@
                                                                            \
       iArg3 = iArg1 + iArg2;                                               \
                                                                            \
+      wIvlResult.m_iAsI8 = 0;                                              \
+                                                                           \
       if (iArg3 < 0) {                                                     \
         wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
@@ -843,7 +847,99 @@
         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                    \
       }                                                                    \
       wIvlResult.m_xIvl.m_eType =                                          \
-        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+      eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+    }                                                                      \
+    *paW++ = wIvlResult.m_iAsI8;                                           \
+  }
+
+#define _MUL_INTIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    iArg1 = *(--paW);                                                      \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      iArg3 = iArg1 * iArg2;                                               \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
+    }                                                                      \
+    *paW++ = wIvlResult.m_iAsI8;                                           \
+  }
+
+#define _MUL_INTIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    iArg1 = *(--paW);                                                      \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      iArg3 = iArg1 * iArg2;                                               \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
+    }                                                                      \
+    *paW++ = wIvlResult.m_iAsI8;                                           \
+  }
+
+#define _MUL_IVDINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      iArg3 = iArg1 * iArg2;                                               \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
+    }                                                                      \
+    *paW++ = wIvlResult.m_iAsI8;                                           \
+  }
+
+#define _MUL_IVYINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      iArg3 = iArg1 * iArg2;                                               \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
     }                                                                      \
     *paW++ = wIvlResult.m_iAsI8;                                           \
   }
@@ -887,6 +983,9 @@
         iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
                                                                            \
       iArg3 = iArg1 - iArg2;                                               \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+                                                                           \
       if (iArg3 < 0) {                                                     \
         wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
@@ -1229,7 +1328,7 @@
       iSecondsSincePosixEpoch += iArg2/_C_1M;                                \
                                                                              \
       aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                  \
-      xTsp2.m_uLocal     = C_TSP_LOCAL;                                      \
+      xTsp2.m_uLocal     = _C_TSP_LOCAL;                                     \
                                                                              \
       xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                          \
       xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                       \
@@ -1275,7 +1374,7 @@
                                                                            \
      aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                 \
                                                                            \
-     xTsp2.m_uLocal     = C_TSP_LOCAL;                                       \
+     xTsp2.m_uLocal     = _C_TSP_LOCAL;                                      \
      xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                           \
      xTsp1.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
      xTsp1.m_uDay       = aLocalDateTime->tm_mday;                           \
@@ -1318,7 +1417,7 @@
                                                                            \
     aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                  \
                                                                            \
-    xTsp2.m_uLocal     = C_TSP_LOCAL;                                      \                                                                        \
+    xTsp2.m_uLocal     = _C_TSP_LOCAL;                                     \
     xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                          \
     xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                       \
     xTsp2.m_uDay       = aLocalDateTime->tm_mday;                          \
@@ -1362,7 +1461,7 @@
                                                                            \
      aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                 \
                                                                            \
-     xTsp1.m_uLocal     = C_TSP_LOCAL;                                       \                                                                \
+     xTsp1.m_uLocal     = _C_TSP_LOCAL;                                    \
      xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                         \
      xTsp1.m_uMonth     = aLocalDateTime->tm_mon + 1;                      \
      xTsp1.m_uDay       = aLocalDateTime->tm_mday;                         \
