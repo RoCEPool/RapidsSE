@@ -33,6 +33,10 @@ Flattening::Flattening(CardIter* pCI)
 
   _checkInitialised_(CN_FLATTENING);
 
+  m_pCI->vUsingBoard(BK_SUBQUERY, 0);
+  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+
+
   _postcondition_(_ADDRESS_, _MAGIC_, CN_FLATTENING, _FOOTER_);
 }
 

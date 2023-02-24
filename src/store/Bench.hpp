@@ -21,7 +21,6 @@ namespace STORE
 
     bool m_bIsFlat;
 
-    Flattening*  m_pFlattening;
   public:
     CardIter*    m_pCI;
 
@@ -40,8 +39,6 @@ namespace STORE
     bool bApplyTransformationMatrix(eEC* peErrorCode);
     void vApplyTransformationMatrix(void);
 
-    void vSeries_MakeRunnable(void);
-    void vSeries_Optimisations(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

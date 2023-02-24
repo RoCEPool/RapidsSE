@@ -29,6 +29,8 @@ Optimisations::Optimisations(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
 
   m_pCI = pCI;
+  m_pCI->vUsingBoard(BK_SUBQUERY, 0);
+
 
   _checkInitialised_(CN_OPTIMISATIONS);
 

@@ -35,7 +35,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_pBench       = new Bench(this);
 
   m_pDissector   = new Dissector(m_pBench);
-  m_pTransformer = new Transformer(m_pBench);
   m_pWeaver      = new Weaver(m_pBench);
 
   m_sJoinOrder   = "(none)"_Stz;
@@ -64,7 +63,6 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pBench;
 
   delete m_pDissector;
-  delete m_pTransformer;
   delete m_pWeaver;
 
   Card::vCardLeaks();
@@ -308,7 +306,10 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
 
   Board* pBoard = m_pBench->pHead();
 
-  bool bClean = m_pTransformer->bTransform(peErrorCode);
+  //bool bClean = m_pTransformer->bTransform(peErrorCode);
+  bool bClean = m_pBench->bApplyTransformationMatrix(peErrorCode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bJoinOrder) {
     RASSERT(pInfoSet);
@@ -336,16 +337,6 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
    return bClean;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Transformer* Optimiser::pTransformer(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
-
-  return m_pTransformer;
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

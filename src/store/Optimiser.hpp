@@ -26,7 +26,6 @@ namespace STORE
   
     Bench*       m_pBench;
     Dissector*   m_pDissector;
-    Transformer* m_pTransformer;
     Weaver*      m_pWeaver;
 
     i8           m_nJoinPermutations;
@@ -67,7 +66,6 @@ namespace STORE
     void vQueryNm(Stz* szQueryNm);
 
     bool bTransform(eEC* peErrorCode, InfoSet* pInfoSet);
-    Transformer* pTransformer(void);
 
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
     void vPopBoard(void);

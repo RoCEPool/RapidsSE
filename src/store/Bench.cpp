@@ -42,8 +42,6 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_pCI = new CardIter(this);
 
-  m_pFlattening = nullptr;
-  
   _checkInitialised_(CN_BENCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
@@ -58,7 +56,6 @@ Bench::~Bench(void) noexcept(false)
   delete m_pCI;
   vDeleteAll();
 
-  delete m_pFlattening;
 }
 
 
@@ -126,71 +123,21 @@ void Bench::vApplyTransformationMatrix(void)
   pPrepareSubQueries->vSeries_PrepareSubQueries();
   delete pPrepareSubQueries;
 
-  vSeries_MakeRunnable();
+  Flattening* pFlattening = new Flattening(m_pCI);
+  pFlattening->vSeries_Flatten_recurse();
+  delete pFlattening;
 
-  vSeries_Optimisations();
+  Optimisations* pOptimisations = new Optimisations(m_pCI);
+  pOptimisations->vGroup_ChooseEEops();
+  delete pOptimisations;
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
   pMakeWeavable->vSeries_MakeWeavable();
   delete pMakeWeavable;
 }
 
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries_MakeRunnable(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vSeries(BK_SUBQUERY, 0, __func__);
-
-  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
-
-  m_pFlattening = new Flattening(m_pCI);
-
-  m_pFlattening->vSeries_Flatten_recurse();
-
-  delete m_pFlattening;
-  m_pFlattening = nullptr;
-
-  vEndSeries(BK_SUBQUERY);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries_Optimisations(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vSeries(BK_SUBQUERY, 0, __func__);
-
-  i8 i_Board = 0;
-
-  m_pCI->vUsingBoard(BK_SUBQUERY, i_Board);
-
-  Optimisations* pOptimisations = new Optimisations(m_pCI);
-
-  pOptimisations->vGroup_ChooseEEops();
-
-  delete pOptimisations;
-
-  vEndSeries(BK_SUBQUERY);
-}
 
 
-
-/*----------------------------------------------------------------------------*/
-/*-- group -------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- transform ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- other -------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 
 
