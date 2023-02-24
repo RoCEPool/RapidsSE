@@ -518,7 +518,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PPYSET,                   sizeof(PpySet),                 HT_T_SMALL   , FILL },
   { CN_PREDICATE,                sizeof(Predicate),              HT_T_TINY    , FILL },
   { CN_PREDICATEVEC,             sizeof(PredicateVec),           HT_T_MEDIUM  , FILL },
-  { CN_PREPARESUBQUERIES,        sizeof(PrepareSubQueries), HT_V_TINY    , FILL },
+  { CN_PREPARESUBQUERIES,        sizeof(PrepareSubQueries),      HT_T_TINY    , FILL },
   { CN_PRIMITIVENODE,            sizeof(PrimitiveNode),          HT_V_TINY    , FILL },
   { CN_PROCEDURE,                sizeof(Procedure),              HT_T_MEDIUM  , FILL },
   { CN_PROFILE,                  sizeof(Profile),                HT_T_MEDIUM  , FILL },

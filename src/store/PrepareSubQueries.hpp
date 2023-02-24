@@ -25,6 +25,27 @@ namespace STORE
     PrepareSubQueries(CardIter* pCI);
    ~PrepareSubQueries(void) noexcept(false);
 
+    void vSeries_PrepareSubQueries(void);
+
+    void vGroup_InitialAdjustments(void);
+    void vGroup_CondenseInfo(void);
+    void vGroup_MetaAnalysis(void);
+    void vGroup_PreliminaryConversions(void);
+
+    void vTransform_OuterQueryAnalysis(void);
+
+    void vTransform_MoveOn(void);
+    void vTransform_DeleteUnneeded(void);
+    void vTransform_ScanBecomesTable(void);
+    void vTransform_AddLevel(void);
+    void vTransform_NotOps(void);
+
+    void vTransform_TableAnalysis(void);
+    void vTransform_IndexAnalysis(void);
+    void vTransform_ProjectionAnalysis(void);
+
+    void vTransform_RpnCalcToBoolCalc(void);
+
 
   protected:
     Footer* aFooter(void);

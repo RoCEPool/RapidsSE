@@ -21,10 +21,6 @@ namespace STORE
 
     bool m_bIsFlat;
 
-    i8           m_iOdnLo;
-    i8           m_iOdnHi;
-    char         m_cTableSyn;
-
     Flattening*  m_pFlattening;
   public:
     CardIter*    m_pCI;
@@ -44,17 +40,12 @@ namespace STORE
     bool bApplyTransformationMatrix(eEC* peErrorCode);
     void vApplyTransformationMatrix(void);
 
-    void vSeries_PrepareSubQueries(void);
     void vSeries_MakeRunnable(void);
     void vSeries_Optimisations(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // group
 
-    void vGroup_InitialAdjustments(void);
-    void vGroup_CondenseInfo(void);
-    void vGroup_MetaAnalysis(void);
-    void vGroup_PreliminaryConversions(void);
 
 
 
@@ -62,20 +53,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // transform
 
-    void vTransform_MoveOn(void);
-    void vTransform_DeleteUnneeded(void);
-    void vTransform_ScanBecomesTable(void);
-    void vTransform_AddLevel(void);
-    void vTransform_NotOps(void);
 
-    void vTransform_TableAnalysis(void);
-    void vTransform_IndexAnalysis(void);
-    void vTransform_ProjectionAnalysis(void);
-
-    void vTransform_RpnCalcToBoolCalc(void);
-
-
-    void vTransform_OuterQueryAnalysis(void);
 
 
 
@@ -112,7 +90,6 @@ namespace STORE
     // vSeries_90_Stream_Ordering
     void vS90_T30_Derive_order(void);
 
-    void vST00_Begin(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

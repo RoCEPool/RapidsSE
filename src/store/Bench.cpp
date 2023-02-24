@@ -12,6 +12,7 @@
 #include "Flattening.hpp"
 #include "Optimisations.hpp"
 #include "MakeWeavable.hpp"
+#include "PrepareSubQueries.hpp"
 
 #include "CarryForward.hpp"
 #include "Error.hpp"
@@ -38,10 +39,6 @@ Bench::Bench(Optimiser* pOptimiser)
   m_cPrefix = ' ';
 
   m_bIsFlat = false;
-
-  m_iOdnLo      = 1;
-  m_iOdnHi      = C_UNKNOWN;
-  m_cTableSyn   = 'a';
 
   m_pCI = new CardIter(this);
 
@@ -125,7 +122,10 @@ void Bench::vApplyTransformationMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vSeries_PrepareSubQueries();
+  PrepareSubQueries* pPrepareSubQueries = new PrepareSubQueries(m_pCI);
+  pPrepareSubQueries->vSeries_PrepareSubQueries();
+  delete pPrepareSubQueries;
+
   vSeries_MakeRunnable();
 
   vSeries_Optimisations();
@@ -133,30 +133,6 @@ void Bench::vApplyTransformationMatrix(void)
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
   pMakeWeavable->vSeries_MakeWeavable();
   delete pMakeWeavable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries_PrepareSubQueries(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vSeries(BK_SUBQUERY, 0, __func__);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
-
-    vGroup_InitialAdjustments();
-    vGroup_CondenseInfo();
-    vGroup_MetaAnalysis();
-    vGroup_PreliminaryConversions();
-  }
-
-  vTransform_OuterQueryAnalysis();
-
-  vEndSeries(BK_SUBQUERY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,341 +185,8 @@ void Bench::vSeries_Optimisations(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_InitialAdjustments(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_MoveOn();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_CondenseInfo(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_DeleteUnneeded();
-  vTransform_ScanBecomesTable();
-  vTransform_AddLevel();
-  vTransform_NotOps();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_MetaAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  vTransform_TableAnalysis();
-  vTransform_ProjectionAnalysis();
-  vTransform_IndexAnalysis();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vGroup_PreliminaryConversions(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  //vTransform_StmColToTblCol_originalModel();
-  vTransform_RpnCalcToBoolCalc();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- transform ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* move all <absJoin>/<on> to <where>                                         */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_MoveOn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
-
-  Card_Where::vMove_All_on_To_where(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Condense Info                                                              */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_DeleteUnneeded(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All AbsJoin
-  Card_AbsJoin::vDeleteAllAbsJoin(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Combined
-  m_pCI->G_vRestart();
-  Card_Combined::vDeleteAllCombined(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Send
-  m_pCI->G_vRestart();
-  Card_Send::vDeleteAllSend(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Stage
-  m_pCI->G_vRestart();
-  Card_Stage::vDeleteAllStage(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Condense Info                                                              */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_ScanBecomesTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_SCAN))
-    Card_Scan::vScanBecomesTable(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Add Levels                                                                 */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_AddLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Not Ops                                                                    */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_NotOps(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
-    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table Analysis                                                             */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_TableAnalysis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Affix Table Syntax To All Table
-  Card_Table::vAffixTableSyn(m_pCI, &m_cTableSyn);
-
-//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-//    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Table Partition Under All Table
-  m_pCI->G_vRestart();
-  Card_Table::vProduceTablePtns(m_pCI);
-
-//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-//
-//    m_pCI->G.p_tablePtn = Card_TablePtn::pDerive(m_pCI->G.p_table);
-//    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
-//
-//    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-//    Table* pTable = AM::pTableFind(p_tableNm->sz());
-//
-//    m_pCI->G.p_size = Card_Size::pDerive(pTable);
-//    m_pCI->G.p_table->vAppend(m_pCI->G.p_size);
-//  }
-
-  m_pCI->vEndTransform();
-}
-/*----------------------------------------------------------------------------*/
-//void Bench::vS20b_T_Table_Analysis(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-//
-//  m_pCI->vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // Affix Table Syntax To All Table
-//
-//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-//    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // Produce Table Partition Under All Table
-//
-//  m_pCI->G_vRestart();
-//
-//  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))
-//    m_pCI->G.p_table->vProjectionAnalysis(this);
-//
-//
-//  m_pCI->vEndTransform();
-//}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_IndexAnalysis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "move @c predicates to a filter under table"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Append Index List Under All Table
-  Card_Table::vAppendIndexList(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Affix TblColOdn To All IdxCol
-
-  m_pCI->G_vRestart();
-  Card_Table::vAffixTableColOrd(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Projection Analysis                                                        */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_ProjectionAnalysis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  Card_Projection::vProjection_Analysis_v2(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_RpnCalcToBoolCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
-    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
-    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Analyse all sub-queries                                                    */
-/*----------------------------------------------------------------------------*/
-void Bench::vTransform_OuterQueryAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  //m_pCI->vTransform(__func__, "Analyse all sub-queries"_Stz);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-
-    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
-    pOuterQuery->vDisposition(QD_LINEAR);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMain()) {
-      if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
-        pOuterQuery->vDisposition(QD_AGGREGATION);
-        break;
-      }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for from calls to sub-queries
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMain(CK_CALL)) {
-
-//      Stz* szBoardNm = m_pCI->G.p_call->szValue();
-//      Board* pBoard = pGetBoard(szBoardNm);
-//      SubQuery *pSubQuery = pBoard->pSubQuery();
-//      pSubQuery->vCaller(m_pCI->G.i_Board);
-//      pSubQuery->vClause(QC_FROM_CLAUSE);
-
-      Board::vOuter_Query_Analysis_Of_from_call(m_pCI);
-      pOuterQuery->vSubQueries(pOuterQuery->nSubQueries() + 1);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for where calls to sub-queries
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-      Board::vOuter_Query_Analysis_Of_where_boolCalc(m_pCI);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for having calls to sub-queries
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
-      Board::vOuter_Query_Analysis_Of_having_boolCalc(m_pCI);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for parameters
-
-    m_pCI->G_vRestart();
-    i8 nParams = 0;
-    while (m_pCI->G_bEachMain(CK_CORRELATION))
-       nParams++;
-    pOuterQuery->vCorrCols(nParams);
-
-  }
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
-    pOuterQuery->vDump();
-  }
-
-    //m_pCI->vEndTransform();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- other -------------------------------------------------------------------*/
@@ -826,30 +469,6 @@ void Bench::vS90_T30_Derive_order(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vST00_Begin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (! m_pCI->m_pCardCtl->bBoardPrint())
-    return;
-
-  char* azSeparator = (char*)
-      "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-      "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-      "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>";
-
-  vTrace("\n%s\n%186s\n%s\n"_Stz,
-         azSeparator,
-         m_pCI->szXhand(),
-         azSeparator);
-
-  m_pCI->vXdesc(""_Stz);
-  m_pCI->vXform(""_Stz);
-}
 
 
 /*============================================================================*/
