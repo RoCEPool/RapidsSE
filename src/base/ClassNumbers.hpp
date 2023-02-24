@@ -303,6 +303,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RUWORK,
 
   /* */ CN__S__,
+  /* */ CN_SAWOPCARDS,
   /* */ CN_SCANNER,
   /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
@@ -736,6 +737,7 @@ static Stz* aCN[]
   /* */ "RUWORK"_Stz,               // CN_RUWORK
 
   /* */ "_S__"_Stz,                 // CN__S__
+  /* */ "SAWOPCARDS"_Stz,           // CN_SAWOPCARDS
   /* */ "SCANNER"_Stz,              // CN_SCANNER
   /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER

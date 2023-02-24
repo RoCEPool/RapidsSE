@@ -256,6 +256,7 @@
 #include "ApplyOptimisations.hpp"
 #include "MakeWeavable.hpp"
 #include "PrepareSubQueries.hpp"
+#include "SawOpCards.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -570,6 +571,7 @@ SizeHeap gxaSizeHeap[]
   { CN_RUWORK,                   0,/*sizeof(RU_Word)*/       HT_INVALID   ,FILL },
 
   { CN__S__,                     'S' - ('A' - 1),            HT_INVALID   ,FILL },
+  { CN_SAWOPCARDS,               sizeof(SawOpCards),         HT_T_TINY    ,FILL },
   { CN_SCANNER,                  sizeof(Scanner),            HT_T_TINY    ,FILL },
   { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,FILL },
   { CN_SCHEDULER,                sizeof(Scheduler),          HT_INVALID   ,FILL },

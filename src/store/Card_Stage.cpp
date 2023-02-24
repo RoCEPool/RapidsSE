@@ -74,40 +74,6 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   bool bSawScanOp = false;
   bool bSawSortOp = false;
 
-//  auto vAddCombined = [pCI] (Card* p_main, i8& ri_main) {
-//    Card_Combined* p_combined = new Card_Combined;
-//    if (C_UNKNOWN == ri_main) {
-//      pCI->G.pDeck->vAppend(p_combined);
-//      return;
-//    }
-//    pCI->G.pDeck->vInsertBefore(p_combined, p_main);
-//    ri_main++;
-//    RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
-//  };
-//
-//  auto vAddNext = [pCI] (Card* p_main, i8& ri_main, Stz* szNextValue) {
-//    Card_Next* p_next = new Card_Next;
-//    p_next->vValue(szNextValue);
-//    if (C_UNKNOWN == ri_main) {
-//      pCI->G.pDeck->vAppend(p_next);
-//      return;
-//    }
-//    pCI->G.pDeck->vInsertBefore(p_next, p_main);
-//    ri_main++;
-//    RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
-//  };
-//
-//  auto vAddStage = [pCI] (Card* p_main, i8& ri_main, eAL e_level_running, i8& nStages) {
-//    Card_Stage *p_stage = new Card_Stage;
-//    p_stage->vValueSprint("S%02lld"_Stz,++nStages);
-//    eYG eStageTopo = Card::eAggrLevelToStageTopology(e_level_running);
-//    Card_Topology *p_topology = new Card_Topology(eStageTopo);
-//    p_stage->vAppend(p_topology);
-//    pCI->G.pDeck->vInsertBefore(p_stage, p_main);
-//    ri_main++;
-//    RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
-//  };
-
   pCI->G_vRestart();
   while (pCI->G_bEachMain(CK_FOLD))
     pCI->G_vRemoveDeleteMain(CK_FOLD);
