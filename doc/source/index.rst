@@ -1,19 +1,17 @@
-======================================
-Welcome to the RapidsSE documentation!
-======================================
+======================
+RapidsSE Documentation
+======================
 
 .. only:: html
 
   |project| release |release| (|release_date|)
 
------------------
-Table of Contents
------------------
 
 .. toctree::
    :name: mastertoc
    :maxdepth: 2
    :numbered:
+   :caption: Table of Contents
 
    overview/index
    instMgmt/index

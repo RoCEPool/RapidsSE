@@ -10,3 +10,13 @@ table.docutils {
 table.centered tr th, table.centered tr td {
     text-align: center;
 }
+
+/* Make the caption "Table of Contents" look more like a heading */
+div#mastertoc p.caption {
+    margin-top: 50px;
+}
+div#mastertoc p.caption span.caption-text {
+    font-size: 180%;
+    font-family: Georgia, serif;
+    font-weight: normal;
+}

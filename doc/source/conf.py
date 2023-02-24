@@ -62,8 +62,11 @@ latex_engine = 'xelatex' # to support unicode characters
 #  https://stackoverflow.com/questions/5422997/sphinx-docs-remove-blank-pages-from-generated-pdfs?rq=1
 #  https://stackoverflow.com/questions/26120632/sphinx-remove-chapter-title-in-my-pdf-with-latexpdf?rq=1
 latex_elements = {
+  'papersize': 'a4paper',
   'extraclassoptions': 'openany,oneside'  # remove blank pages after title and TOC
 }
+
+latex_logo = '_static/logo.pdf'
 
 latex_show_pagerefs = True
 
