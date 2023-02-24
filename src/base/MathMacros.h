@@ -1215,30 +1215,29 @@
       else                                                                 \
         iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
-    struct tm xDateTime = {0} ;                                            \
+      struct tm xDateTime = {0} ;                                            \
                                                                            \
-    xDateTime.tm_year = xTsp1.m_uYearDelta;                                \
-    xDateTime.tm_mon  = xTsp1.m_uMonth - 1;                                \
-    xDateTime.tm_mday = xTsp1.m_uDay;                                      \
-    xDateTime.tm_hour = xTsp1.m_uHour;                                     \
-    xDateTime.tm_min  = xTsp1.m_uMinute;                                   \
-    xDateTime.tm_sec  = xTsp1.m_uSecond;                                   \
-                                                                           \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
-                                                                           \
-    iSecondsSincePosixEpoch += iArg2/_C_1M;                                \
-                                                                           \
-   aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
-   xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                           \
-   xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
-   xTsp2.m_uDay       = aLocalDateTime->tm_mday;                           \
-   xTsp2.m_uHour      = aLocalDateTime->tm_hour;                           \
-   xTsp2.m_uMinute    = aLocalDateTime->tm_min;                            \
-   xTsp2.m_uSecond    = aLocalDateTime->tm_sec;                            \
-   xTsp2.m_uSecond    = aLocalDateTime->tm_sec;                            \
-   xTsp2.m_uMicro     = iArg2%_C_1M;                                       \
-                                                                           \
-   *paW++ = xTsp2.m_iAsI8;                                                 \
+      xDateTime.tm_year = xTsp1.m_uYearDelta;                                \
+      xDateTime.tm_mon  = xTsp1.m_uMonth - 1;                                \
+      xDateTime.tm_mday = xTsp1.m_uDay;                                      \
+      xDateTime.tm_hour = xTsp1.m_uHour;                                     \
+      xDateTime.tm_min  = xTsp1.m_uMinute;                                   \
+      xDateTime.tm_sec  = xTsp1.m_uSecond;                                   \
+                                                                             \
+      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+                                                                             \
+      iSecondsSincePosixEpoch += iArg2/_C_1M;                                \
+                                                                             \
+      aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+      xTsp2.m_uYearDelta = aLocalDateTime->tm_year;                           \
+      xTsp2.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
+      xTsp2.m_uDay       = aLocalDateTime->tm_mday;                           \
+      xTsp2.m_uHour      = aLocalDateTime->tm_hour;                           \
+      xTsp2.m_uMinute    = aLocalDateTime->tm_min;                            \
+      xTsp2.m_uSecond    = aLocalDateTime->tm_sec;                            \
+      xTsp2.m_uMicro     = iArg2%_C_1M;                                       \
+                                                                              \
+      *paW++ = xTsp2.m_iAsI8;                                                 \
   }                                                                        \
 }
 
@@ -1259,30 +1258,29 @@
       else                                                                 \
         iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
-    struct tm xDateTime = {0} ;                                            \
+     struct tm xDateTime = {0} ;                                            \
+                                                                            \
+     xDateTime.tm_year = xTsp2.m_uYearDelta;                                \
+     xDateTime.tm_mon  = xTsp2.m_uMonth - 1;                                \
+     xDateTime.tm_mday = xTsp2.m_uDay;                                      \
+     xDateTime.tm_hour = xTsp2.m_uHour;                                     \
+     xDateTime.tm_min  = xTsp2.m_uMinute;                                   \
+     xDateTime.tm_sec  = xTsp2.m_uSecond;                                   \
+                                                                            \
+     time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+                                                                            \
+     iSecondsSincePosixEpoch += iArg1/_C_1M;                                \
                                                                            \
-    xDateTime.tm_year = xTsp2.m_uYearDelta;                                \
-    xDateTime.tm_mon  = xTsp2.m_uMonth - 1;                                \
-    xDateTime.tm_mday = xTsp2.m_uDay;                                      \
-    xDateTime.tm_hour = xTsp2.m_uHour;                                     \
-    xDateTime.tm_min  = xTsp2.m_uMinute;                                   \
-    xDateTime.tm_sec  = xTsp2.m_uSecond;                                   \
-                                                                           \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
-                                                                           \
-    iSecondsSincePosixEpoch += iArg1/_C_1M;                                \
-                                                                           \
-   aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
-   xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                           \
-   xTsp1.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
-   xTsp1.m_uDay       = aLocalDateTime->tm_mday;                           \
-   xTsp1.m_uHour      = aLocalDateTime->tm_hour;                           \
-   xTsp1.m_uMinute    = aLocalDateTime->tm_min;                            \
-   xTsp1.m_uSecond    = aLocalDateTime->tm_sec;                            \
-   xTsp1.m_uSecond    = aLocalDateTime->tm_sec;                            \
-   xTsp1.m_uMicro     = iArg1%_C_1M;                                       \
-                                                                           \
-   *paW++ = xTsp1.m_iAsI8;                                                 \
+     aLocalDateTime = localtime(&iSecondsSincePosixEpoch);                   \
+     xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                           \
+     xTsp1.m_uMonth     = aLocalDateTime->tm_mon + 1;                        \
+     xTsp1.m_uDay       = aLocalDateTime->tm_mday;                           \
+     xTsp1.m_uHour      = aLocalDateTime->tm_hour;                           \
+     xTsp1.m_uMinute    = aLocalDateTime->tm_min;                            \
+     xTsp1.m_uSecond    = aLocalDateTime->tm_sec;                            \
+     xTsp1.m_uMicro     = iArg1%_C_1M;                                       \
+                                                                             \
+     *paW++ = xTsp1.m_iAsI8;                                                 \
   }                                                                        \
 }
 
