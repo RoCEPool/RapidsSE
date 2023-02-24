@@ -14,6 +14,7 @@ namespace STORE
     void  operator delete(void*);
 
     static void vDeleteAllStage(CardIter* pCI);
+    static void vReinstate_stages(CardIter* pCI);
 
     Card_Stage(void);
    ~Card_Stage(void) noexcept(false);

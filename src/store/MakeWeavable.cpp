@@ -324,7 +324,7 @@ void MakeWeavable::vTransform_ReinstateStages(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  Board::vReinstate_stages(m_pCI);
+  Card_Stage::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform();
 }

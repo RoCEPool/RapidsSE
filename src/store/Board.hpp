@@ -269,8 +269,6 @@ namespace STORE
     static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
     static void vIndividuate_crossJoin_filter(CardIter* pCI);
 
-    // vSeries_Z0_Restate_Pipeline
-    static void vReinstate_stages(CardIter* pCI);
 
 
     i8  i_Board(void);
