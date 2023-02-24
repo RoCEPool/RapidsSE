@@ -12,6 +12,8 @@ namespace STORE
   {
   public:
 
+    eAL              m_eAggLevel;
+
     Card_Aggreg*     m_p_aggreg;
     Card_Filter*     m_p_filter;
     Card_GbyAgg*     m_p_gbyAgg;
@@ -31,10 +33,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SawOpCards(CardIter* pCI);
+    SawOpCards(void);
    ~SawOpCards(void) noexcept(false);
 
-    void vReset(void);
+    void vReset(eAL eAggLevel=AL_NONE);
+    void vSaw(Card_OP* p_card_OP);
 
   protected:
     Footer* aFooter(void);
