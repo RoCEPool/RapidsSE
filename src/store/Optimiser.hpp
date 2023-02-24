@@ -72,9 +72,7 @@ namespace STORE
     bool bTransform(eEC* peErrorCode, InfoSet* pInfoSet);
 
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
-    void vPopBoard(void);
-    void vPushBoard(Board* pBoard);
- 
+
     void vToPipeSpec(VertexSpec* pPipeSpec);
   
     Stz* szWeave(void);
