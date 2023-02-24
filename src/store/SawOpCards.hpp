@@ -12,6 +12,17 @@ namespace STORE
   {
   public:
 
+    Card_Aggreg*     m_p_aggreg;
+    Card_Filter*     m_p_filter;
+    Card_GbyAgg*     m_p_gbyAgg;
+    Card_Having*     m_p_having;
+    Card_IndexJoin*  m_p_indexJoin;
+    Card_IndexScan*  m_p_indexScan;
+    Card_Project*    m_p_project;
+    Card_Scan*       m_p_scan;
+    Card_Sort*       m_p_sort;
+    Card_Where*      m_p_where;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -22,6 +33,8 @@ namespace STORE
     
     SawOpCards(CardIter* pCI);
    ~SawOpCards(void) noexcept(false);
+
+    void vReset(void);
 
   protected:
     Footer* aFooter(void);

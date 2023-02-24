@@ -15,23 +15,24 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, SawOpCards, CN_APPLYOPTIMISATIONS)
-__aNewFunction(SawOpCards, CN_APPLYOPTIMISATIONS)
-__vDeleteFunction(SawOpCards, CN_APPLYOPTIMISATIONS)
+__pCastFunction(STORE, SawOpCards, CN_SAWOPCARDS)
+__aNewFunction(SawOpCards, CN_SAWOPCARDS)
+__vDeleteFunction(SawOpCards, CN_SAWOPCARDS)
 __aFooterFunction(SawOpCards)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SawOpCards::SawOpCards(CardIter* pCI)
-: Object(CN_APPLYOPTIMISATIONS)
+: Object(CN_SAWOPCARDS)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SAWOPCARDS, _FOOTER_);
 
+  vReset();
 
-  _checkInitialised_(CN_APPLYOPTIMISATIONS);
+  _checkInitialised_(CN_SAWOPCARDS);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_SAWOPCARDS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +40,7 @@ SawOpCards::SawOpCards(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 SawOpCards::~SawOpCards(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SAWOPCARDS, _FOOTER_);
 }
 
 
@@ -48,9 +49,23 @@ SawOpCards::~SawOpCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- SawOpCards  ----------------------------------------------------------*/
+/* reset                                                                      */
 /*----------------------------------------------------------------------------*/
+void SawOpCards::vReset(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SAWOPCARDS, _FOOTER_);
 
+  m_p_aggreg      = nullptr;
+  m_p_filter      = nullptr;
+  m_p_gbyAgg      = nullptr;
+  m_p_having      = nullptr;
+  m_p_indexJoin   = nullptr;
+  m_p_indexScan   = nullptr;
+  m_p_project     = nullptr;
+  m_p_scan        = nullptr;
+  m_p_sort        = nullptr;
+  m_p_where       = nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */
