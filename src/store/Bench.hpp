@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class Flattening;
+  class FlattenSubQueries;
   class Fold;
 
   class Bench : public Object

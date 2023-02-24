@@ -13,8 +13,8 @@
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Fold.hpp"
-#include "Flattening.hpp"
-#include "Optimisations.hpp"
+#include "FlattenSubQueries.hpp"
+#include "ApplyOptimisations.hpp"
 #include "MakeWeavable.hpp"
 #include "PrepareSubQueries.hpp"
 #include "CardIter.hpp"
@@ -157,13 +157,13 @@ void Optimiser::vApplyTransformationMatrix(void)
   pPrepareSubQueries->vSeries_PrepareSubQueries();
   delete pPrepareSubQueries;
 
-  Flattening* pFlattening = new Flattening(m_pCI);
-  pFlattening->vSeries_Flatten_recurse();
-  delete pFlattening;
+  FlattenSubQueries* pFlattenSubQueries = new FlattenSubQueries(m_pCI);
+  pFlattenSubQueries->vSeries_Flatten_recurse();
+  delete pFlattenSubQueries;
 
-  Optimisations* pOptimisations = new Optimisations(m_pCI);
-  pOptimisations->vGroup_ChooseEEops();
-  delete pOptimisations;
+  ApplyOptimisations* pApplyOptimisations = new ApplyOptimisations(m_pCI);
+  pApplyOptimisations->vGroup_ChooseEEops();
+  delete pApplyOptimisations;
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
   pMakeWeavable->vSeries_MakeWeavable();

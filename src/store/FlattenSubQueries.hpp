@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Flattening.hpp -- Flattening                                               */
+/* FlattenSubQueries.hpp -- FlattenSubQueries                                               */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class Flattening : public Object
+  class FlattenSubQueries : public Object
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Flattening(CardIter* pCI);
-   ~Flattening(void) noexcept(false);
+    FlattenSubQueries(CardIter* pCI);
+   ~FlattenSubQueries(void) noexcept(false);
 
     void vSeries_Flatten_recurse(void);
 
@@ -46,7 +46,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Flattening* _pFlattening(void* aAddr);
+  FlattenSubQueries* _pFlattenSubQueries(void* aAddr);
 }
 
 /*============================================================================*/

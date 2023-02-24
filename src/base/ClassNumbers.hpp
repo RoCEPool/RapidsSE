@@ -23,6 +23,7 @@ enum eCN : u2 // Class Number
   /* */ CN_AM,
   /* */ CN_ANSWERWL,
   /* */ CN_API,
+  /* */ CN_APPLYOPTIMISATIONS,
   /* */ CN_ARG,
   /* */ CN_ARRANGE,
   /* */ CN_ATOMIC,
@@ -107,7 +108,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
-  /* */ CN_FLATTENING,
+  /* */ CN_FLATTENSUBQUERIES,
   /* */ CN_FLTVAL,
   /* */ CN_FOLD,
   /* */ CN_FORMAT,
@@ -216,7 +217,6 @@ enum eCN : u2 // Class Number
   /* */ CN_OPERANDWATCH,
   /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
-  /* */ CN_OPTIMISATIONS,
   /* */ CN_OPTIMISER,
   /* */ CN_OTHEROPERAND,
 
@@ -456,6 +456,7 @@ static Stz* aCN[]
   /* */ "AM"_Stz,                   // CN_AM
   /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
+  /* */ "APPLYOPTIMISATIONS"_Stz,   // CN_APPLYOPTIMISATIONS
   /* */ "ARG"_Stz,                  // CN_ARG
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
@@ -540,7 +541,7 @@ static Stz* aCN[]
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
-  /* */ "FLATTENING"_Stz,           // CN_FLATTENING
+  /* */ "FLATTENSUBQUERIES"_Stz,    // CN_FLATTENSUBQUERIES
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FOLD_W_A_C_ro"_Stz,        // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -649,7 +650,6 @@ static Stz* aCN[]
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
   /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
-  /* */ "OPTIMISATIONS"_Stz,        // CN_OPTIMISATIONS
   /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 

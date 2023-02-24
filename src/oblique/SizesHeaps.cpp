@@ -248,12 +248,12 @@
 #include "Scope.hpp"
 #include "Fold.hpp"
 #include "Smooth.hpp"
-#include "Flattening.hpp"
+#include "FlattenSubQueries.hpp"
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
 #include "Smoosh.hpp"
 #include "JoinOrdering.hpp"
-#include "Optimisations.hpp"
+#include "ApplyOptimisations.hpp"
 #include "MakeWeavable.hpp"
 #include "PrepareSubQueries.hpp"
 
@@ -290,6 +290,7 @@ SizeHeap gxaSizeHeap[]
   { CN_AM,                       0,                          HT_INVALID   ,FILL },
   { CN_ANSWERWL,                 sizeof(AnswerWL),           HT_T_TINY    ,FILL },
   { CN_API,                      sizeof(Api),                HT_INVALID   ,FILL },
+  { CN_APPLYOPTIMISATIONS,       sizeof(ApplyOptimisations), HT_T_TINY    ,FILL },
   { CN_ARG,                      sizeof(Arg),                HT_T_TINY    ,FILL },
   { CN_ARRANGE,                  sizeof(Arrange),            HT_T_TINY    ,FILL },
   { CN_ATOMIC,                   sizeof(Atomic),             HT_INVALID   ,FILL },
@@ -364,27 +365,27 @@ SizeHeap gxaSizeHeap[]
   { CN_ENUMFLAGS,                sizeof(ClassFlags),             HT_T_TINY    , FILL },
   { CN_EQUIVALENCE,              sizeof(Equivalence),            HT_T_TINY    , FILL },
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),          HT_T_TINY    , FILL },
-  { CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
-  { CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
-  { CN_EXITOPERAND,              sizeof(ExitOperand),            HT_T_TINY    , FILL },
+  {CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
+  {CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
+  {CN_EXITOPERAND,              sizeof(ExitOperand),            HT_T_TINY    , FILL },
 
-  { CN__F__,                     'F' - ('A' - 1),                HT_INVALID   , FILL },
-  { CN_FIFO,                     sizeof(Fifo),                   HT_T_TINY    , FILL },
-  { CN_FILE,                     sizeof(File),                   HT_T_TINY    , FILL },
-  { CN_FILEMAP,                  sizeof(FileMap),                HT_INVALID   , FILL },
-  { CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
-  { CN_FLATTEN,                  sizeof(Flatten),                HT_T_TINY    , FILL },
-  { CN_FLATTENING,               sizeof(Flattening),             HT_T_TINY    , FILL },
-  { CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
-  { CN_FOLD,                     sizeof(Fold),                   HT_T_TINY    , FILL },
-  { CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
-  { CN_FREEPOOLBUFFER,           sizeof(PoolBuffer),/*yes*/      HT_INVALID   , FILL },
-  { CN_FREECHUNK,                sizeof(FreeChunk),              HT_INVALID   , FILL },
-  { CN_FREEDNOT,                 sizeof(FreedNot),               HT_INVALID   , FILL },
-  { CN_FREEITEM,                 0,                              HT_INVALID   , FILL },
-  { CN_FREQDIST,                 sizeof(FreqDist),               HT_T_SMALL   , FILL },
+  {CN__F__,                     'F' - ('A' - 1),                HT_INVALID   , FILL },
+  {CN_FIFO,                     sizeof(Fifo),                   HT_T_TINY    , FILL },
+  {CN_FILE,                     sizeof(File),                   HT_T_TINY    , FILL },
+  {CN_FILEMAP,                  sizeof(FileMap),                HT_INVALID   , FILL },
+  {CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
+  {CN_FLATTEN,                  sizeof(Flatten),                HT_T_TINY    , FILL },
+  {CN_FLATTENSUBQUERIES,        sizeof(FlattenSubQueries),      HT_T_TINY    , FILL },
+  {CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
+  {CN_FOLD,                     sizeof(Fold),                   HT_T_TINY    , FILL },
+  {CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
+  {CN_FREEPOOLBUFFER,           sizeof(PoolBuffer),/*yes*/      HT_INVALID   , FILL },
+  {CN_FREECHUNK,                sizeof(FreeChunk),              HT_INVALID   , FILL },
+  {CN_FREEDNOT,                 sizeof(FreedNot),               HT_INVALID   , FILL },
+  {CN_FREEITEM,                 0,                              HT_INVALID   , FILL },
+  {CN_FREQDIST,                 sizeof(FreqDist),               HT_T_SMALL   , FILL },
 
-  { CN__G__,                     'G' - ('A' - 1),                HT_INVALID   , FILL },
+  {CN__G__,                     'G' - ('A' - 1),                HT_INVALID   , FILL },
   { CN_GRID,                     sizeof(Grid),                   HT_T_TINY    , FILL },
 
   { CN__H__,                     'H' - ('A' - 1),            HT_INVALID   ,FILL },
@@ -473,27 +474,26 @@ SizeHeap gxaSizeHeap[]
   { CN_NUMBERING,                sizeof(Numbering),          HT_T_MEDIUM  ,FILL },
 
   { CN__O__,                     'O' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_OBJBUFFER,                sizeof(ObjBuffer),          HT_T_LARGE   ,FILL },
-  { CN_OBJECTSNAPSHOT,           sizeof(ObjectSnapshot),     HT_T_SMALL   ,FILL },
-  { CN_OBJTRACKER,               sizeof(ObjectTracker),      HT_T_MEDIUM  ,FILL },
-  { CN_OUTPUT,                   sizeof(Output),             HT_T_TINY    ,FILL },
-  { CN_OP,                       sizeof(Op),                 HT_T_TINY    ,FILL },
-  { CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    ,FILL },
-  { CN_OPERANDQUEUE,             sizeof(OperandQueue),       HT_T_TINY    ,FILL },
-  { CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   ,FILL },
-  { CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    ,FILL },
-  { CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  ,FILL },
-  { CN_OPTIMISATIONS,            sizeof(Optimisations),      HT_T_TINY    ,FILL },
-  { CN_OPTIMISER,                sizeof(Optimiser),          HT_T_MEDIUM  ,FILL },
-  { CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    ,FILL },
+  {CN_OBJBUFFER,                sizeof(ObjBuffer),          HT_T_LARGE   , FILL },
+  {CN_OBJECTSNAPSHOT,           sizeof(ObjectSnapshot),     HT_T_SMALL   , FILL },
+  {CN_OBJTRACKER,               sizeof(ObjectTracker),      HT_T_MEDIUM  , FILL },
+  {CN_OUTPUT,                   sizeof(Output),             HT_T_TINY    , FILL },
+  {CN_OP,                       sizeof(Op),                 HT_T_TINY    , FILL },
+  {CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    , FILL },
+  {CN_OPERANDQUEUE,             sizeof(OperandQueue),       HT_T_TINY    , FILL },
+  {CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   , FILL },
+  {CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    , FILL },
+  {CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  , FILL },
+  {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_MEDIUM  , FILL },
+  {CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    , FILL },
 
-  { CN__P__,                     'P' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
-  { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
-  { CN_PARAMSPEC,                sizeof(ParamSpec),          HT_T_TINY    ,FILL },
-  { CN_PARAMSSPEC,               sizeof(ParamsSpec),         HT_T_TINY    ,FILL },
-  { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
-  { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
+  {CN__P__,                     'P' - ('A' - 1),            HT_INVALID   , FILL },
+  {CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    , FILL },
+  {CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   , FILL },
+  {CN_PARAMSPEC,                sizeof(ParamSpec),          HT_T_TINY    , FILL },
+  {CN_PARAMSSPEC,               sizeof(ParamsSpec),         HT_T_TINY    , FILL },
+  {CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    , FILL },
+  {CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  , FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },

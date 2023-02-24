@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Optimisations.cpp -- Optimisations                                           */
+/* ApplyOptimisations.cpp -- ApplyOptimisations                                           */
 /*============================================================================*/
 
-#include "Optimisations.hpp"
+#include "ApplyOptimisations.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -15,34 +15,34 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Optimisations, CN_OPTIMISATIONS)
-__aNewFunction(Optimisations, CN_OPTIMISATIONS)
-__vDeleteFunction(Optimisations, CN_OPTIMISATIONS)
-__aFooterFunction(Optimisations)
+__pCastFunction(STORE, ApplyOptimisations, CN_APPLYOPTIMISATIONS)
+__aNewFunction(ApplyOptimisations, CN_APPLYOPTIMISATIONS)
+__vDeleteFunction(ApplyOptimisations, CN_APPLYOPTIMISATIONS)
+__aFooterFunction(ApplyOptimisations)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Optimisations::Optimisations(CardIter* pCI)
-: Object(CN_OPTIMISATIONS)
+ApplyOptimisations::ApplyOptimisations(CardIter* pCI)
+: Object(CN_APPLYOPTIMISATIONS)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   m_pCI = pCI;
   m_pCI->vUsingBoard(BK_SUBQUERY, 0);
 
 
-  _checkInitialised_(CN_OPTIMISATIONS);
+  _checkInitialised_(CN_APPLYOPTIMISATIONS);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Optimisations::~Optimisations(void) noexcept(false)
+ApplyOptimisations::~ApplyOptimisations(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 }
 
 
@@ -51,15 +51,15 @@ Optimisations::~Optimisations(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- Optimisations  ----------------------------------------------------------*/
+/*-- ApplyOptimisations  ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimisations::vGroup_ChooseEEops(void)
+void ApplyOptimisations::vGroup_ChooseEEops(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   vTransform_MorphTableToEEop();
 }
@@ -68,7 +68,7 @@ void Optimisations::vGroup_ChooseEEops(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimisations::vOptimiseLoop(void) {
+void ApplyOptimisations::vOptimiseLoop(void) {
 
   bool bOpts;
   i8 iOpts = 0;
@@ -105,7 +105,7 @@ void Optimisations::vOptimiseLoop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_CutSort(void) {
+bool ApplyOptimisations::bOptimise_CutSort(void) {
 
   NEVER_REACH
 
@@ -147,7 +147,7 @@ bool Optimisations::bOptimise_CutSort(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_DupFilter(void) {
+bool ApplyOptimisations::bOptimise_DupFilter(void) {
 
   // Query7, Query19
 
@@ -165,7 +165,7 @@ bool Optimisations::bOptimise_DupFilter(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_ElyFilters(void) {
+bool ApplyOptimisations::bOptimise_ElyFilters(void) {
 
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
@@ -181,7 +181,7 @@ bool Optimisations::bOptimise_ElyFilters(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_ElyProjections(void) {
+bool ApplyOptimisations::bOptimise_ElyProjections(void) {
 
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query14,
@@ -205,7 +205,7 @@ bool Optimisations::bOptimise_ElyProjections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_MinGroupby(void) {
+bool ApplyOptimisations::bOptimise_MinGroupby(void) {
 
   //
   // Query3, Query10, Query18
@@ -225,7 +225,7 @@ bool Optimisations::bOptimise_MinGroupby(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_OtmCalculations(void) {
+bool ApplyOptimisations::bOptimise_OtmCalculations(void) {
 
   // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
   //   Query19, Query20
@@ -243,7 +243,7 @@ bool Optimisations::bOptimise_OtmCalculations(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_PpnProjections(void) {
+bool ApplyOptimisations::bOptimise_PpnProjections(void) {
 
   // Query2, Query10
 
@@ -261,7 +261,7 @@ bool Optimisations::bOptimise_PpnProjections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_RplAggregByOrdAgg(void)
+bool ApplyOptimisations::bOptimise_RplAggregByOrdAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -323,7 +323,7 @@ bool Optimisations::bOptimise_RplAggregByOrdAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_RplAggregBySortOrdAgg(void) {
+bool ApplyOptimisations::bOptimise_RplAggregBySortOrdAgg(void) {
 
   return false;
 }
@@ -331,7 +331,7 @@ bool Optimisations::bOptimise_RplAggregBySortOrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_RplMaxByTop(void) {
+bool ApplyOptimisations::bOptimise_RplMaxByTop(void) {
 
   // Query15
 
@@ -350,7 +350,7 @@ bool Optimisations::bOptimise_RplMaxByTop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_RplScanByIndexScan(void) {
+bool ApplyOptimisations::bOptimise_RplScanByIndexScan(void) {
 
   // Query6, Query10, Query14 and Query15
 
@@ -389,7 +389,7 @@ bool Optimisations::bOptimise_RplScanByIndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_RplSortDescLimitByTop(void) {
+bool ApplyOptimisations::bOptimise_RplSortDescLimitByTop(void) {
 
   // Query10
 
@@ -404,7 +404,7 @@ bool Optimisations::bOptimise_RplSortDescLimitByTop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
+bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 
   // Query3
 
@@ -425,7 +425,7 @@ bool Optimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimisations::bOptimise_SeqJoinOrder(void) {
+bool ApplyOptimisations::bOptimise_SeqJoinOrder(void) {
 
   return false;
 }
@@ -435,9 +435,9 @@ bool Optimisations::bOptimise_SeqJoinOrder(void) {
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
-void Optimisations::vTransform_MorphTableToEEop(void)
+void ApplyOptimisations::vTransform_MorphTableToEEop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISATIONS,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
@@ -457,9 +457,9 @@ void Optimisations::vTransform_MorphTableToEEop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimisations::vS80_T30_Morph_scan_To_indexScan(void)
+void ApplyOptimisations::vS80_T30_Morph_scan_To_indexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISATIONS,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
 
@@ -486,9 +486,9 @@ void Optimisations::vS80_T30_Morph_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimisations::vS90_T30_Derive_order(void)
+void ApplyOptimisations::vS90_T30_Derive_order(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   m_pCI->vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
 

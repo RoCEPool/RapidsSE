@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Optimisations.hpp -- Join Ordering                                          */
+/* ApplyOptimisations.hpp -- Join Ordering                                          */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class Optimisations : public Object
+  class ApplyOptimisations : public Object
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Optimisations(CardIter* pCI);
-   ~Optimisations(void) noexcept(false);
+    ApplyOptimisations(CardIter* pCI);
+   ~ApplyOptimisations(void) noexcept(false);
 
     void vGroup_ChooseEEops(void);
 
@@ -54,7 +54,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Optimisations* _pOptimisations(void* aAddr);
+  ApplyOptimisations* _pApplyOptimisations(void* aAddr);
 }
 
 /*============================================================================*/
