@@ -56,7 +56,73 @@ FlattenSubQueries::~FlattenSubQueries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vSeries_Flatten_recurse(void)
+void FlattenSubQueries::vFlatten(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+
+  vFlatten_recurse();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FlattenSubQueries::vFlatten_recurse_v2(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+
+  // things before sub-queries
+
+  SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
+
+  vTransform_StmColToTblCol();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->vSubQueryIteration();
+  while (m_pCI->bEachSubQuery()) {
+
+//    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+//           pOuterQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+//           m_pCI->G.pSubQuery->i_Caller()
+//           );
+
+    if (m_pCI->G.pSubQuery->i_Caller() != pOuterQuery->pBoard()->i_Board())
+      continue;
+
+    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
+           pOuterQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->pBoard()->i_Board(),
+           m_pCI->G.pSubQuery->i_Caller()
+    );
+
+    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
+    vSeries_Flatten_recurse();
+    m_pCI->G_vPopIter();
+
+    vTransform_FlattenByDecisionTree();
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // things to do to this outer query after flattening it's sub-queries
+
+  JoinOrdering* pJoinOrdering = new JoinOrdering(m_pCI);
+
+  pJoinOrdering->vJoinOrdering();
+
+  delete pJoinOrdering;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sub-query has been flattened
+
+  Card_Fold::vMorph_to_flat(m_pCI);
+
+  vDebugPoint();
+}
+/*----------------------------------------------------------------------------*/
+void FlattenSubQueries::vFlatten_recurse(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
@@ -462,7 +528,16 @@ void FlattenSubQueries::vFlatten_52_W_L_NC_I_join(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
-  vFlatten_53_W_L_NC_NI_join();
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  i8 nTables = pFold->nTables_In_SubQuery(m_pCI,"52_W_L_NC_I_join"_Stz,CK_WHERE);
+
+  delete pFold;
+
+  if (1 == nTables)
+    vFlatten_53_W_L_NC_NI_join();
+  else
+    vFlatten_53_W_L_NC_NI_exists();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,28 +569,49 @@ void FlattenSubQueries::vFlatten_53_W_L_NC_NI_exists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
 
-  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
-  CarryForward* pCarryForward = pFold->pFold_exists("W_L_NC_NI"_Stz,m_pCI);
-
-  m_pCI->vPrintBoard(__LINE__);
+//  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+//  CarryForward* pCarryForward = pFold->pFold_exists("W_L_NC_NI"_Stz,m_pCI);
+//
+//  m_pCI->vPrintBoard(__LINE__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    m_pCI->G.p_where->Y_vSet(P_Smoothed);
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-    if (0 == m_pCI->G.p_boolCalc->nChildCards())
-      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
-  }
+//  m_pCI->G_vRestart();
+//  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+//    m_pCI->G.p_where->Y_vSet(P_Smoothed);
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//    if (0 == m_pCI->G.p_boolCalc->nChildCards())
+//      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
+//  }
+//  m_pCI->vPrintBoard(__LINE__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold
+
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+
+  pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_WHERE);
+  CarryForward* pCarryForward =
+      pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
+                               CK_WHERE, QO_IN_OP, SM_NONE);
+
   m_pCI->vPrintBoard(__LINE__);
+
+
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->G.pDeck->vClearMarksRecursive();
 
   m_pCI->vEndTransform();
 
+  delete pSmooth;
   delete pCarryForward;
   delete pFold;
 }

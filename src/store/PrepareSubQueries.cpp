@@ -29,6 +29,7 @@ PrepareSubQueries::PrepareSubQueries(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
 
   m_pCI = pCI;
+  m_cTableSyn = 'a';
 
   _checkInitialised_(CN_PREPARESUBQUERIES);
 
@@ -102,7 +103,7 @@ void PrepareSubQueries::vGroup_MetaAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
 
-  vTransform_TableAnalysis();
+  vTransform_TableAnalysis(&m_cTableSyn);
   vTransform_ProjectionAnalysis();
   vTransform_IndexAnalysis();
 }
@@ -290,7 +291,7 @@ void PrepareSubQueries::vTransform_NotOps(void)
 /*----------------------------------------------------------------------------*/
 /* Table Analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vTransform_TableAnalysis(void)
+void PrepareSubQueries::vTransform_TableAnalysis(char* acTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
 
@@ -298,8 +299,7 @@ void PrepareSubQueries::vTransform_TableAnalysis(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
-  char cTableSyn = 'a';
-  Card_Table::vAffixTableSyn(m_pCI, &cTableSyn);
+  Card_Table::vAffixTableSyn(m_pCI, acTableSyn);
 
 //  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
 //    m_pCI->G.p_table->vSet_Syn(&m_cTableSyn);

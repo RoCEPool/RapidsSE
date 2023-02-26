@@ -25,7 +25,10 @@ namespace STORE
     FlattenSubQueries(CardIter* pCI);
    ~FlattenSubQueries(void) noexcept(false);
 
-    void vSeries_Flatten_recurse(void);
+    void vFlatten(void);
+
+    void vFlatten_recurse(void);
+    void vFlatten_recurse_v2(void);
 
     void vTransform_FlattenByDecisionTree(void);
 

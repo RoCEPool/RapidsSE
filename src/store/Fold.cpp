@@ -297,13 +297,12 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   pCI->vPrintBoard(__LINE__);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* Fold a (not) exists                                                        */
 /*----------------------------------------------------------------------------*/
 CarryForward* Fold::pFold_exists(Stz* szFold, CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
 
   CarryForward* pCarryForward = new CarryForward;
 
@@ -606,6 +605,41 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   return pCarryForward;
 }
+
+/*----------------------------------------------------------------------------*/
+/* count number of tables in sub-query                                        */
+/*----------------------------------------------------------------------------*/
+i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+
+  vOuterQuery(pCI->pBoard()->pSubQuery());
+
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
+    if (! Board::bFindAndMarkSubQryCall(pCI)) {
+      vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
+      NEVER_REACH
+    }
+  }
+  vTrace(">>>>>>>>> Found %s call:  %s %s %s\n"_Stz, szFold,
+         pCI->m_sSqyArg.szStz(), pCI->m_sSqyRO.szStz(), pCI->m_sSqyNm.szStz());
+  pCI->vPrintBoard(__LINE__);
+
+  // 2) push to sq
+  if (! pCI->G_bPushBoard(pCI->m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->m_sSqyNm.szStz());
+    NEVER_REACH
+  }
+
+  i8 nTables = Card_Table::nTables(pCI);
+
+  // 4) pop back to mq
+  pCI->G_vPopIter();
+
+  return nTables;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

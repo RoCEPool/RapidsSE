@@ -14,6 +14,8 @@ namespace STORE
 
     CardIter* m_pCI;
 
+    char m_cTableSyn;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -40,7 +42,8 @@ namespace STORE
     void vTransform_AddLevel(void);
     void vTransform_NotOps(void);
 
-    void vTransform_TableAnalysis(void);
+    void vTransform_TableAnalysis(char* acTableSyn);
+
     void vTransform_IndexAnalysis(void);
     void vTransform_ProjectionAnalysis(void);
 

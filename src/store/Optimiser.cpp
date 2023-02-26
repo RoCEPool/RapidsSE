@@ -158,7 +158,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   delete pPrepareSubQueries;
 
   FlattenSubQueries* pFlattenSubQueries = new FlattenSubQueries(m_pCI);
-  pFlattenSubQueries->vSeries_Flatten_recurse();
+  pFlattenSubQueries->vFlatten();
   delete pFlattenSubQueries;
 
   ApplyOptimisations* pApplyOptimisations = new ApplyOptimisations(m_pCI);

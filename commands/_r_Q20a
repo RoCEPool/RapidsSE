@@ -2,6 +2,8 @@
 /* _r_Q20a -- TCPH query 20 (part a) test                                     */
 /*============================================================================*/
 
+// --initial _r_Q20a
+
 _r_schema
 
 create index P_idx0  on Part     (P_PARTKEY);
@@ -21,7 +23,7 @@ select
  where s_suppkey in ( /* Q20_1 */
                       select ps_suppkey
                         from PartSupp
-                       where ps_partkey NOT in ( /* Q20_1_1 */
+                       where ps_partkey in ( /* Q20_1_1 */
                                                  select p_partkey
                                                    from Part
                                                   where p_name like 'forest%'
