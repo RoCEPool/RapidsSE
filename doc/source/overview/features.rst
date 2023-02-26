@@ -49,14 +49,14 @@ change. Nor is this a complete list of future RapidsSE features.
 * Hashmap joins;
 * Data export;
 * Transactions;
-* Additional DML commands (INSERT, UPDATE, DELETE);
+* Additional DML commands (``INSERT``, ``UPDATE``, ``DELETE``);
 * Security (authentication & authorisation);
 * Optimised query compilation;
-* Further SELECT query support, including:
+* Further ``SELECT`` query support, including:
 
   * Outer joins;
-  * DISTINCT;
-  * UNION, INTERSECT;
+  * ``DISTINCT``;
+  * ``UNION``, ``INTERSECT``;
   * Windowing;
 
 * Ongoing query optimiser improvements;

@@ -45,10 +45,19 @@ software. A client can connect to any node in the cluster, and that node is
 responsible for managing the execution of that query across the cluster and
 returning responses back to the user.
 
-.. figure:: clusterModel.png
-   :align: center
+.. only:: html
 
-   The model of a RapidsSE cluster.
+  .. figure:: clusterModel.png
+     :align: center
+
+     The model of a RapidsSE cluster.
+
+.. only:: latex
+
+  .. figure:: clusterModel.pdf
+     :align: center
+
+     The model of a RapidsSE cluster.
 
 From a query execution perspective, the cluster model is peer-to-peer. There
 is no hierarchical order and each node is able to talk to every other node.
@@ -101,10 +110,19 @@ start all other remote nodes as well.
 Once started, each node in the cluster can establish a TCP/IP socket to every
 other node for control and data transfer purposes.
 
-.. figure:: nodeModel.png
-   :align: center
+.. only:: html
 
-   The model of a RapidsSE node.
+  .. figure:: nodeModel.png
+     :align: center
+
+     The model of a RapidsSE node.
+
+.. only:: latex
+
+  .. figure:: nodeModel.pdf
+     :align: center
+
+     The model of a RapidsSE node.
 
 Each RapidsSE node uses a shared memory segment as its memory allocation pool.
 The shared memory segment is used for storing table data, temporary query data
@@ -190,28 +208,53 @@ across all data partitions on a node or across all nodes in a cluster. At some
 point, pipelines that have a fan out will fan in to collect or aggregate the
 results before they are sent back to the user.
 
+.. only:: html
 
-.. figure:: pipelineExample.png
-   :align: left
-   :figwidth: 926px
+  .. figure:: pipelineExample.png
+     :align: left
+     :figwidth: 926px
 
-   Logical view of a pipeline.
+     Logical view of a pipeline.
 
-   This fictitious pipeline example shows that there are 3 tasks that first
-   execute on the originating node (the node that first received the query).
-   Each of these tasks is fed with data from the previous task.
+     This fictitious pipeline example shows that there are 3 tasks that first
+     execute on the originating node (the node that first received the query).
+     Each of these tasks is fed with data from the previous task.
 
-   After the 3rd task the data is distributed to 1 task on each partition on
-   each node in the cluster, parallelising that particular operation.
+     After the 3rd task the data is distributed to 1 task on each partition on
+     each node in the cluster, parallelising that particular operation.
 
-   The tasks on each partition are then fanned-in to a single task on each
-   node in the cluster (this example is a cluster of 2 nodes with 4
-   partitions on each node). These tasks might be aggregating results in
-   parallel on each node.
+     The tasks on each partition are then fanned-in to a single task on each
+     node in the cluster (this example is a cluster of 2 nodes with 4
+     partitions on each node). These tasks might be aggregating results in
+     parallel on each node.
 
-   The results of this then get sent back to a single task on the originating
-   node for further consolidation. A final task on this node may limit the
-   results, for example.
+     The results of this then get sent back to a single task on the originating
+     node for further consolidation. A final task on this node may limit the
+     results, for example.
+
+.. only:: latex
+
+  .. figure:: pipelineExample.pdf
+     :align: left
+     :figwidth: 926px
+
+     Logical view of a pipeline.
+
+     This fictitious pipeline example shows that there are 3 tasks that first
+     execute on the originating node (the node that first received the query).
+     Each of these tasks is fed with data from the previous task.
+
+     After the 3rd task the data is distributed to 1 task on each partition on
+     each node in the cluster, parallelising that particular operation.
+
+     The tasks on each partition are then fanned-in to a single task on each
+     node in the cluster (this example is a cluster of 2 nodes with 4
+     partitions on each node). These tasks might be aggregating results in
+     parallel on each node.
+
+     The results of this then get sent back to a single task on the originating
+     node for further consolidation. A final task on this node may limit the
+     results, for example.
 
 
 When a pipeline is being executed, all tasks in that pipeline execute
@@ -224,16 +267,31 @@ On each node in the cluster, each task can be executed by a different *thread*.
 This allows multiple parts of the pipeline to be executed in parallel, maximising
 the CPU usage on the node and shortening the query execution time.
 
-.. figure:: jobModel.png
-   :align: left
-   :figwidth: 1036px
+.. only:: html
 
-   Physical representation of jobs, tasks and threads.
+  .. figure:: jobModel.png
+     :align: left
+     :figwidth: 1036px
 
-   This figure represents two jobs being executed in the system (for example
-   two user queries). Jobs can run across all nodes in the cluster. Tasks for
-   each job can be spread amongst threads on the nodes they are assigned to.
-   The pipeline forms an independent logical connection between the tasks.
+     Physical representation of jobs, tasks and threads.
+
+     This figure represents two jobs being executed in the system (for example
+     two user queries). Jobs can run across all nodes in the cluster. Tasks for
+     each job can be spread amongst threads on the nodes they are assigned to.
+     The pipeline forms an independent logical connection between the tasks.
+
+.. only:: latex
+
+  .. figure:: jobModel.pdf
+     :align: left
+     :figwidth: 1036px
+
+     Physical representation of jobs, tasks and threads.
+
+     This figure represents two jobs being executed in the system (for example
+     two user queries). Jobs can run across all nodes in the cluster. Tasks for
+     each job can be spread amongst threads on the nodes they are assigned to.
+     The pipeline forms an independent logical connection between the tasks.
 
 A given thread may have multiple tasks ready to be executed. Generally each task
 is executed in a fair and round-robin nature. However control of the task
@@ -284,10 +342,20 @@ be created in order to break the problem down and solve a part of it.
 A SQL query undergoes these transformations from plain query text to a
 result set:
 
-.. figure:: sqlModel.png
-   :align: center
+.. only:: html
 
-   The transformations of a SQL query to user results.
+  .. figure:: sqlModel.png
+     :align: center
+
+     The transformations of a SQL query to user results.
+
+.. only:: latex
+
+  .. figure:: sqlModel.pdf
+     :align: center
+
+     The transformations of a SQL query to user results.
+
 
 Each of these stages are described further below.
 
