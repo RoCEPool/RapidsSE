@@ -313,7 +313,7 @@ void JoinOrdering::vTransform_PredicateReposition_originalModel(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
     m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
   }
 
@@ -324,7 +324,7 @@ void JoinOrdering::vTransform_PredicateReposition_originalModel(void)
 
   m_pCI->G_vRestart();
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
     m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
   }
 
@@ -332,7 +332,7 @@ void JoinOrdering::vTransform_PredicateReposition_originalModel(void)
 
   m_pCI->G_vRestart();
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
     m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
   }
 
@@ -344,7 +344,7 @@ void JoinOrdering::vTransform_PredicateReposition_originalModel(void)
 
   m_pCI->G_vRestart();
 
-  while (m_pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
     m_pCI->G.p_table->vRemove_filter_IfEmpty(m_pCI->G.p_filter);
   }
 

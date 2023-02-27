@@ -1,0 +1,57 @@
+/*============================================================================*/
+/* _r_Q22 -- TCPH query 22 test                                               */
+/*============================================================================*/
+
+// --initial _r_Q22
+
+_r_schema
+
+create index N_idx0  on Nation   (N_NATIONKEY);
+create index P_idx0  on Part     (P_PARTKEY);
+create index PS_idx0 on PartSupp (PS_PARTKEY);
+create index S_idx0  on Supplier (S_SUPPKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q22"
+select
+  cntrycode,
+  count(*)       as numcust,
+  sum(c_acctbal) as totacctbal
+  from
+       ( /* Q22_1: */
+         select substring(c_phone from 1 for 2) as cntrycode,
+                c_acctbal
+           from Customer
+          where
+                    substring(c_phone from 1 for 2)
+                      in ('13','31','23','29','30','18','17')
+
+                and
+                    c_acctbal >
+                      ( /* Q22_1_1: */
+                        select avg(c_acctbal)
+                          from Customer
+                         where     c_acctbal > 0.00
+                               and substring (c_phone from 1 for 2)
+                                    in ('13','31','23',
+                                        '29','30','18','17') )
+                and
+                    not exists
+                      ( /* Q22_1_2: */
+                        select *
+                          from Orders
+                          where O_CUSTKEY = C_CUSTKEY ) ) as custsale
+
+  group by cntrycode
+  order by cntrycode;
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

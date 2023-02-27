@@ -113,10 +113,11 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
        if (! p_term->bIsBoardNm(pCI))
          return C_CONTINUE_RECURSION;
 
+      Board* pBoard_save = pCI->G.pBoard;
+
       s256 sSubQueryNm = p_term->szValue();
       pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
 
-      Board* pBoard_save = pCI->G.pBoard;
       pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
       pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
 
@@ -125,6 +126,10 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
 
       pCI->G_vSetBoard(pBoard_save);
 
+      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+
+
+      pCI->vPrintBoard(__LINE__);
 
       vTransform_FlattenByDecisionTree();
 
@@ -138,7 +143,7 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
     bFound = false;
     bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
     vDebugPoint();
-  } while (m_pCI->G.p_boolCalc && bFound);
+  } while (bFound);
 
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

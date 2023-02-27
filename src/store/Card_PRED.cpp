@@ -340,7 +340,20 @@ char Card_PRED::cTable_WhichTableFor_Pred(Card_Deck* p_deck)
 
   Scope* pScope = new Scope;
 
-  for (i8 i_Main = 0; /* none */ ; i_Main++) {
+  i8 i_Main = 0;
+
+  i8 i_Fold = C_UNKNOWN;
+  for (i8 i_Test = 0 ; i_Test < p_deck->nChildCards() ; i_Test++) {
+    Card *pTestCard = p_deck->pGetChild(i_Test);
+
+    if (pTestCard->bIsCard(CK_FOLD))
+      i_Fold = i_Test;
+  }
+
+  if (C_UNKNOWN != i_Fold)
+    i_Main = i_Fold + 1;
+
+  for (/* none */ ; /* none */ ; i_Main++) {
     Card *pMainCard = p_deck->pGetChild(i_Main);
 
     if (CK_WHERE == pMainCard->eCard()) {

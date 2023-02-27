@@ -787,13 +787,13 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
       pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
       pCI->m_pTerm_1 = p_pred->pGetTerm(1);
       pCI->m_sSqyNm  = pCI->m_pTerm_1->szValue();
-      return C_CONTINUE_RECURSION;
+      return C_TERMINATE_RECURSION;
     }
 
     if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
       pCI->m_pTerm_2 = _pCard_Term(p_pred->pGet(2));
       pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
-      return C_CONTINUE_RECURSION;
+      return C_TERMINATE_RECURSION;
     }
 //    else
 //    if (p_pred->bIsCard(CK_ROPRED)) {
