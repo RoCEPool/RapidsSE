@@ -663,7 +663,7 @@ static Stz* aFM[]
   /*  */ "_GTA_UNKANY"_Stz,
   /*  */ "_GTA_VCHVCH"_Stz,
 
-  // less than
+  // less than equal
   /*  */ "_LE_ANYUNK"_Stz,
   /*  */ "_LE_BCDBCD"_Stz,
   /*  */ "_LE_BOLBOL"_Stz,
@@ -705,7 +705,7 @@ static Stz* aFM[]
   /*  */ "_LTA_UNKANY"_Stz,
   /*  */ "_LTA_VCHVCH"_Stz,
 
-    // not equal
+  // not equal
   /*  */ "_NE_ANYUNK"_Stz,
   /*  */ "_NE_BCDBCD"_Stz,
   /*  */ "_NE_BOLBOL"_Stz,
