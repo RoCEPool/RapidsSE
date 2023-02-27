@@ -322,15 +322,19 @@ SELECT 2 * INTERVAL -'32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 
 rows:
  (INTERVAL -'64 19:59:58' DAY TO SECOND)
 
-/*******************************************************************
-IN PROGRESS
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval / Integer
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Interval division /1 (integer)
 SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM nation where n_nationkey = 2;
 rows:
+ (INTERVAL '0-7' YEAR TO MONTH)
 
-*/
+// Interval division /2 (integer)
+SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM nation where n_nationkey = 2;
+rows:
+ (INTERVAL -'16 4:59:59.500000' DAY TO SECOND)
 
 drop table nation;
 success

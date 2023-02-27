@@ -46,6 +46,8 @@ enum eFM : u2 // function macros
   /*  */ FM_DIV_BCDBCD,           // bcd / bcd
   /*  */ FM_DIV_FLTFLT,           // flt / flt
   /*  */ FM_DIV_INTINT,           // int / int
+  /*  */ FM_DIV_IVDINT,           // ivd / int
+  /*  */ FM_DIV_IVYINT,           // ivy / int
   /*  */ FM_DIV_UNKANY,           // unk / any
 
   // modulo
@@ -404,6 +406,8 @@ static Stz* aFM[]
   /*  */ "_DIV_BCDBCD"_Stz,
   /*  */ "_DIV_FLTFLT"_Stz,
   /*  */ "_DIV_INTINT"_Stz,
+  /*  */ "_DIV_IVDINT"_Stz,
+  /*  */ "_DIV_IVYINT"_Stz,
   /*  */ "_DIV_UNKANY"_Stz,
 
   // modulo

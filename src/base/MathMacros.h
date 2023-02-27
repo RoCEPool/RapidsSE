@@ -898,6 +898,7 @@
         iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
                                                                            \
       i8 iMonths = iArg1 + iArg2;                                          \
+      printf("%lld %lld %lld\n", iArg1, iArg2, iMonths);                                        \
       eErrorCode = _OUT_OF_RANGE_IVY;                                      \
                                                                            \
       if(eErrorCode != EC_NONE)  {                                         \
@@ -922,6 +923,51 @@
    }                                                                       \
  }
 
+#define _DIV_IVDINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      i8 iMicros = iArg1 / iArg2;                                          \
+      printf("%lld %lld %lld\n", iArg1, iArg2, iMicros);   \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                    \
+      *paW++ = wIvlResult.m_iAsI8;                                         \
+    }                                                                      \
+  }
+
+#define _DIV_IVYINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      i8 iMonths = iArg1 / iArg2;                                          \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                    \
+     *paW++ = wIvlResult.m_iAsI8;                                          \
+   }                                                                       \
+  }
 
 
 #define _MUL_INTIVD(eErrorCode)                                            \
