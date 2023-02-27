@@ -210,6 +210,80 @@
     }                                                                       \
   }
 
+#define _BET_IVDIVD(eErrorCode)                                             \
+  {                                                                         \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
+    ivlArg2.m_iAsI8 = *(--paW);                                             \
+    ivlArg3.m_iAsI8 = *(--paW);                                             \
+                                                                            \
+    if (eErrorCode != EC_NONE ||                                            \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *paW++ = C_DATUM_NULL;                                                \
+    }                                                                       \
+    else {                                                                  \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
+      iArg3 = ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
+                                                                            \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+                                                                            \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+                                                                            \
+      if (ivlArg3.m_xIvl.m_bIsNeg)                                          \
+        iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+      printf("%lld %lld %lld\n", iArg1, iArg2, iArg3);                                                                      \
+      if (iArg1 > iArg2) {                                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (iArg1 < iArg3)                                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+#define _BET_IVYIVY(eErrorCode)                                             \
+  {                                                                         \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
+    ivlArg2.m_iAsI8 = *(--paW);                                             \
+    ivlArg3.m_iAsI8 = *(--paW);                                             \
+                                                                            \
+    if (eErrorCode != EC_NONE ||                                            \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *paW++ = C_DATUM_NULL;                                                \
+    }                                                                       \
+    else {                                                                  \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
+      iArg3 = ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
+                                                                            \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+                                                                            \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+                                                                            \
+     if (ivlArg3.m_xIvl.m_bIsNeg)                                           \
+       iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                  \
+                                                                            \
+      if (iArg1 > iArg2) {                                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (iArg1 < iArg3)                                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
 #define _BET_DTEDTE(eErrorCode)                                             \
   {                                                                         \
     xDte1.m_iAsI8 = *(--paW);                                               \

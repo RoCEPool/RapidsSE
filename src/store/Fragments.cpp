@@ -334,6 +334,7 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    union Flt_T fltArg3;"
       "\n    union Ivl_T ivlArg1;"
       "\n    union Ivl_T ivlArg2;"
+      "\n    union Ivl_T ivlArg3;"
       "\n    union Ivl_T wIvlResult;"
       "\n    union Tsp_T xTsp1;"
       "\n    union Tsp_T xTsp2;"

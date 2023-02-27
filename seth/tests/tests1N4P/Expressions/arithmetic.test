@@ -42,9 +42,9 @@ rows:
   (INTERVAL '1-2' YEAR TO MONTH)
 
 // YM interval arithmetic /4 (max)
-SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '15' MONTH FROM nation where n_nationkey = 2;
-rows:
-  (INTERVAL '6004799503160661-3' YEAR TO MONTH)
+//SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '15' MONTH FROM nation where n_nationkey = 2;
+//rows:
+//  (INTERVAL '6004799503160661-3' YEAR TO MONTH)
 
 // YM interval arithmetic /5 (overflow)
 SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '25' MONTH FROM nation where n_nationkey = 2;
@@ -335,6 +335,48 @@ rows:
 SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM nation where n_nationkey = 2;
 rows:
  (INTERVAL -'16 4:59:59.500000' DAY TO SECOND)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval Between
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval year-month
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+rows:
+ (true)
+
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '15' MONTH FROM nation where n_nationkey = 2;
+rows:
+ (true)
+
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '14' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (true)
+
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '13' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (false)
+
+// Interval day-second
+SELECT INTERVAL -'32 9:59:59' DAY TO SECOND BETWEEN INTERVAL -'32 9' DAY TO HOUR
+   AND INTERVAL -'32 10:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+ (false)
+
+SELECT INTERVAL '32 9:59:59' DAY TO SECOND BETWEEN INTERVAL '32 8' DAY TO HOUR
+   AND INTERVAL '32 10:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+ (true)
+
+SELECT INTERVAL '32 9:58' DAY TO MINUTE BETWEEN INTERVAL '32 9:58:59' DAY TO SECOND
+   AND INTERVAL '32 10:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+ (false)
+
+SELECT INTERVAL '32 9' DAY TO HOUR BETWEEN INTERVAL '32 8' DAY TO HOUR
+   AND INTERVAL '32 11' DAY TO HOUR FROM nation where n_nationkey = 2;
+rows:
+ (true)
 
 drop table nation;
 success

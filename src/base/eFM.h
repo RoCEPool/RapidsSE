@@ -106,6 +106,8 @@ enum eFM : u2 // function macros
   /*  */ FM_BET_DTEDTE,           // between dte dte
   /*  */ FM_BET_FLTFLT,           // between flt flt
   /*  */ FM_BET_INTINT,           // between int int
+  /*  */ FM_BET_IVDIVD,           // between ivd ivd
+  /*  */ FM_BET_IVYIVY,           // between ivy ivy
   /*  */ FM_BET_TMETME,           // between bcd bcd
   /*  */ FM_BET_TSPTSP,           // between tme tme
   /*  */ FM_BET_UNKANY,           // between unk any
@@ -466,6 +468,8 @@ static Stz* aFM[]
   /*  */ "_BET_DTEDTE"_Stz,
   /*  */ "_BET_FLTFLT"_Stz,
   /*  */ "_BET_INTINT"_Stz,
+  /*  */ "_BET_IVDIVD"_Stz,
+  /*  */ "_BET_IVYIVY"_Stz,
   /*  */ "_BET_TMETME"_Stz,
   /*  */ "_BET_TSPTSP"_Stz,
   /*  */ "_BET_UNKANY"_Stz,
