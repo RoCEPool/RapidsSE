@@ -1088,7 +1088,25 @@
    }                                                                       \
   }
 
-#define _NEG_IVL(eErrorCode)                                               \
+#define _NEG_IVD(eErrorCode)                                               \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        ivlArg1.m_xIvl.m_bIsNeg = 0;                                       \
+      else                                                                 \
+        ivlArg1.m_xIvl.m_bIsNeg = 1;                                       \
+                                                                           \
+      *paW++ = ivlArg1.m_iAsI8;                                            \
+   }                                                                       \
+ }
+
+#define _NEG_IVY(eErrorCode)                                               \
   {                                                                        \
     ivlArg1.m_iAsI8 = *(--paW);                                            \
                                                                            \

@@ -222,7 +222,7 @@ static eDM eMacro_NegResult[DM_ENUMS] =
 
 static eFM eMacro_Neg[DM_ENUMS] =
     // NONE       BCD         BOL          DTE          FLT          INT          IVD         IVY,        TME      TSP       VCH      UNK
-    { FM_OPR_INV, FM_NEG_BCD, FM_OPR_INV,  FM_OPR_INV,  FM_NEG_FLT,  FM_NEG_INT,  FM_NEG_IVL, FM_NEG_IVL, FM_OPR_INV, FM_OPR_INV,  FM_OPR_INV, FM_OPR_INV };
+    { FM_OPR_INV, FM_NEG_BCD, FM_OPR_INV,  FM_OPR_INV,  FM_NEG_FLT,  FM_NEG_INT,  FM_NEG_IVD, FM_NEG_IVY, FM_OPR_INV, FM_OPR_INV,  FM_OPR_INV, FM_OPR_INV };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
