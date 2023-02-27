@@ -103,7 +103,7 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
   do {
      m_pCI->vRestart();
 
-    if (! m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC))
       break;
 
     CardIter* pCI = m_pCI;
@@ -113,22 +113,18 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
        if (! p_term->bIsBoardNm(pCI))
          return C_CONTINUE_RECURSION;
 
-      Board* pBoard_save = pCI->G.pBoard;
-
       s256 sSubQueryNm = p_term->szValue();
-      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
 
+      Board* pOuterBoard_save = pCI->G.pBoard;
+      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
       pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse_v2(iDepth + 1);
+
       pCI->G_vPopIter();
-
-      pCI->G_vSetBoard(pBoard_save);
-
-      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
-
-
+      pCI->G_vSetBoard(pOuterBoard_save);
+      SubQuery* pSubQuery = pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       pCI->vPrintBoard(__LINE__);
 
       vTransform_FlattenByDecisionTree();
@@ -242,13 +238,13 @@ void FlattenSubQueries::vTransform_FlattenByDecisionTree(void)
   if (m_pCI->G.pSubQuery->bViaWhere()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 20*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
         else                                         /* W_A_C_ro   Q2,17 */ vFlatten_24_W_A_C_ro();
       } else {                                                                  /* 30*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_32_W_A_NC_I();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
@@ -256,13 +252,13 @@ void FlattenSubQueries::vTransform_FlattenByDecisionTree(void)
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 40*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFlatten_40_W_L_C_E();
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFlatten_40_W_L_C_E();
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
         else                                         /* W_L_C_ro         */ NEVER_REACH
       } else {                                                                  /* 50*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_join();
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_join();
@@ -274,13 +270,13 @@ void FlattenSubQueries::vTransform_FlattenByDecisionTree(void)
   if (m_pCI->G.pSubQuery->bViaHaving()) {
     if (m_pCI->G.pSubQuery->bIsAggregation()) {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 60*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
         else                                         /* H_A_C_ro         */ NEVER_REACH
       } else {                                                                  /* 70*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
@@ -288,13 +284,13 @@ void FlattenSubQueries::vTransform_FlattenByDecisionTree(void)
       }
     } else {
       if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 80*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
         else                                         /* H_L_C_ro         */ NEVER_REACH
       } else {                                                                  /* 90*/
-        if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
         else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH

@@ -53,7 +53,7 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
     vValue("=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
-    ASSERT(p_term_one->bIsValue("__subquery0002"_Stz)); //temp
+    ASSERT(StrLib::bBeginsWith(p_term_one->szValue()->azChar(),"__subquery")); //temp
     p_term_one->vValue(p_term ? p_term->szValue() : "$1"_Stz);
     return;
   }

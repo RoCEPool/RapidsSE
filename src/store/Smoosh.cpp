@@ -222,7 +222,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vRestart();
-  RASSERT(pCI->G_bEachMain(CK_WHERE));
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
   pCI->G.pDeck->vInsertBefore(pCI->G.p_table,pCI->G.p_where);
 
   pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();

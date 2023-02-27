@@ -799,7 +799,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 //    if (p_pred->bIsCard(CK_ROPRED)) {
 //    }
 
-    return C_CONTINUE_RECURSION;
+    return C_TERMINATE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

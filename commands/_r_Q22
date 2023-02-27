@@ -47,7 +47,7 @@ select
                           where O_CUSTKEY = C_CUSTKEY ) ) as custsale
 
   group by cntrycode
-  order by cntrycode;
+  order by cntrycode
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
