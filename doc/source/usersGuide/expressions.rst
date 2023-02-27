@@ -927,7 +927,6 @@ order of precedence, if required.
 
 .. table::
    :name: expr-operator-precedence-table
-   :class: longtable
 
    ======================================== ==================================
    Operator	                                Description

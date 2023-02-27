@@ -65,7 +65,6 @@ node as well as the number of disks and the throughput of each disk.
 
 .. table::
    :name: tpch-data-gen-times
-   :class: longtable
 
    ============ ========= =============== ========== ================ ====================
    Scale Factor Num Nodes Drives per Node Drive Type Total Num Chunks Data Generation Time

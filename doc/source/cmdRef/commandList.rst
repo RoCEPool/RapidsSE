@@ -41,10 +41,19 @@ node.
    :alt: A rule that contains a regular expression node
    :align: center
 
-.. note::
-   The :ref:`complete syntax tree <syntaxTree>` contains the full syntax for
-   all statements. Click on any of the syntax diagrams below to see them in
-   context in the full syntax tree.
+.. only:: html
+
+  .. note::
+     The :ref:`complete syntax tree <syntaxTree>` contains the full syntax for
+     all statements. Click on any of the syntax diagrams below to see them in
+     context in the full syntax tree.
+
+
+.. only:: latex
+
+  .. note::
+     The :ref:`complete syntax tree <syntaxTree>` contains the full syntax for
+     all statements.
 
 
 .. _countCmd:
@@ -55,10 +64,18 @@ Returns the number of rows in a given table across all nodes.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/countStmt.png
-   :alt: ``COUNT`` statement syntax
-   :align: center
-   :target: syntax-tree.html#countStmt
+.. only:: html
+
+  .. image:: /rr/diagram/countStmt.png
+     :alt: ``COUNT`` statement syntax
+     :align: center
+     :target: syntax-tree.html#countStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/countStmt.png
+     :alt: ``COUNT`` statement syntax
+     :align: center
 
 
 .. _createIndexCmd:
@@ -73,17 +90,32 @@ Creates an index on a table.
 
 .. rubric:: *CREATE INDEX* Syntax:
 
-.. image:: /rr/diagram/createIndexStmt.png
-   :alt: ``CREATE INDEX`` statement syntax
-   :align: center
-   :target: syntax-tree.html#createIndexStmt
+.. only:: html
 
-.. rubric:: *identifierList* definition:
+  .. image:: /rr/diagram/createIndexStmt.png
+     :alt: ``CREATE INDEX`` statement syntax
+     :align: center
+     :target: syntax-tree.html#createIndexStmt
 
-.. image:: /rr/diagram/identifierList.png
-   :alt: *identifierList* definition
-   :align: center
-   :target: syntax-tree.html#identifierList
+  .. rubric:: *identifierList* definition:
+
+  .. image:: /rr/diagram/identifierList.png
+     :alt: *identifierList* definition
+     :align: center
+     :target: syntax-tree.html#identifierList
+
+.. only:: latex
+
+  .. image:: /rr/diagram/createIndexStmt.png
+     :alt: ``CREATE INDEX`` statement syntax
+     :align: center
+
+  .. rubric:: *identifierList* definition:
+
+  .. image:: /rr/diagram/identifierList.png
+     :alt: *identifierList* definition
+     :align: center
+
 
 
 .. _createTableCmd:
@@ -104,33 +136,63 @@ table.
 
   :ref:`creatingTables`
 
-.. rubric:: Syntax:
 
-.. image:: /rr/diagram/createTableStmt.png
-   :alt: ``CREATE TABLE`` statement syntax
-   :align: center
-   :target: syntax-tree.html#createTableStmt
+.. only:: html
 
-.. rubric:: *columnDefinition* definition:
+  .. rubric:: Syntax:
 
-.. image:: /rr/diagram/columnDefinition.png
-   :alt: *columnDefinition* definition
-   :align: center
-   :target: syntax-tree.html#columnDefinition
+  .. image:: /rr/diagram/createTableStmt.png
+     :alt: ``CREATE TABLE`` statement syntax
+     :align: center
+     :target: syntax-tree.html#createTableStmt
 
-.. rubric:: *dataType* definition:
+  .. rubric:: *columnDefinition* definition:
 
-.. image:: ../rr/diagram/dataType.png
-   :alt: *dataType* definition
-   :align: center
-   :target: syntax-tree.html#dataType
+  .. image:: /rr/diagram/columnDefinition.png
+     :alt: *columnDefinition* definition
+     :align: center
+     :target: syntax-tree.html#columnDefinition
 
-.. rubric:: *identifierList* definition:
+  .. rubric:: *dataType* definition:
 
-.. image:: /rr/diagram/identifierList.png
-   :alt: *identifierList* definition
-   :align: center
-   :target: syntax-tree.html#identifierList
+  .. image:: ../rr/diagram/dataType.png
+     :alt: *dataType* definition
+     :align: center
+     :target: syntax-tree.html#dataType
+
+  .. rubric:: *identifierList* definition:
+
+  .. image:: /rr/diagram/identifierList.png
+     :alt: *identifierList* definition
+     :align: center
+     :target: syntax-tree.html#identifierList
+
+.. only:: latex
+
+  .. rubric:: Syntax:
+
+  .. image:: /rr/diagram/createTableStmt.png
+     :alt: ``CREATE TABLE`` statement syntax
+     :align: center
+
+  .. rubric:: *columnDefinition* definition:
+
+  .. image:: /rr/diagram/columnDefinition.png
+     :alt: *columnDefinition* definition
+     :align: center
+
+  .. rubric:: *dataType* definition:
+
+  .. image:: ../rr/diagram/dataType.png
+     :alt: *dataType* definition
+     :align: center
+
+  .. rubric:: *identifierList* definition:
+
+  .. image:: /rr/diagram/identifierList.png
+     :alt: *identifierList* definition
+     :align: center
+
 
 
 .. _dloadCmd:
@@ -158,10 +220,20 @@ sent across the network to the correct node that holds that partition.
 
 .. rubric:: *DLOAD* Syntax:
 
-.. image:: /rr/diagram/dloadStmt.png
-   :alt: ``DLOAD`` statement syntax
-   :align: center
-   :target: syntax-tree.html#dloadStmt
+.. only:: html
+
+  .. image:: /rr/diagram/dloadStmt.png
+     :alt: ``DLOAD`` statement syntax
+     :align: center
+     :target: syntax-tree.html#dloadStmt
+
+
+.. only:: latex
+
+  .. image:: /rr/diagram/dloadStmt.png
+     :alt: ``DLOAD`` statement syntax
+     :align: center
+
 
 Refer to the :ref:`loadCmd` command for the valid values of *<loadOption>*
 and *<loadValue>*.
@@ -192,10 +264,19 @@ Drops an index of a given name from a table.
 
 .. rubric:: *DROP INDEX* Syntax:
 
-.. image:: /rr/diagram/dropIndexStmt.png
-   :alt: ``DROP INDEX`` statement syntax
-   :align: center
-   :target: syntax-tree.html#dropIndexStmt
+.. only:: html
+
+  .. image:: /rr/diagram/dropIndexStmt.png
+     :alt: ``DROP INDEX`` statement syntax
+     :align: center
+     :target: syntax-tree.html#dropIndexStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/dropIndexStmt.png
+     :alt: ``DROP INDEX`` statement syntax
+     :align: center
+
 
 
 
@@ -211,10 +292,18 @@ Removes an existing table and all of its indexes and data.
 
 .. rubric:: *DROP TABLE* Syntax:
 
-.. image:: /rr/diagram/dropTableStmt.png
-   :alt: ``DROP TABLE`` statement syntax
-   :align: center
-   :target: syntax-tree.html#dropTableStmt
+.. only:: html
+
+  .. image:: /rr/diagram/dropTableStmt.png
+     :alt: ``DROP TABLE`` statement syntax
+     :align: center
+     :target: syntax-tree.html#dropTableStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/dropTableStmt.png
+     :alt: ``DROP TABLE`` statement syntax
+     :align: center
 
 
 
@@ -235,10 +324,19 @@ Load data into a table from a file on the current node only.
 
 .. rubric:: *LOAD* Syntax:
 
-.. image:: /rr/diagram/loadStmt.png
-   :alt: ``LOAD`` statement syntax
-   :align: center
-   :target: syntax-tree.html#loadStmt
+.. only:: html
+
+  .. image:: /rr/diagram/loadStmt.png
+     :alt: ``LOAD`` statement syntax
+     :align: center
+     :target: syntax-tree.html#loadStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/loadStmt.png
+     :alt: ``LOAD`` statement syntax
+     :align: center
+
 
 Options are specified in angle brackets and their values are surrounded by
 double quotes.
@@ -301,10 +399,18 @@ List and describe all of the columns that exist for a given table.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lsColStmt.png
-   :alt: ``LSCOL`` statement syntax
-   :align: center
-   :target: syntax-tree.html#lsColStmt
+.. only:: html
+
+  .. image:: /rr/diagram/lsColStmt.png
+     :alt: ``LSCOL`` statement syntax
+     :align: center
+     :target: syntax-tree.html#lsColStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/lsColStmt.png
+     :alt: ``LSCOL`` statement syntax
+     :align: center
 
 
 
@@ -316,10 +422,18 @@ Lists all of the indexes that have been created on a given table.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lsIdxStmt.png
-   :alt: ``LSIDX`` statement syntax
-   :align: center
-   :target: syntax-tree.html#lsIdxStmt
+.. only:: html
+
+  .. image:: /rr/diagram/lsIdxStmt.png
+     :alt: ``LSIDX`` statement syntax
+     :align: center
+     :target: syntax-tree.html#lsIdxStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/lsIdxStmt.png
+     :alt: ``LSIDX`` statement syntax
+     :align: center
 
 
 
@@ -331,10 +445,19 @@ Lists the columns of a given index on a particular table.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lsIdxColStmt.png
-   :alt: ``LSIDXCOL`` statement syntax
-   :align: center
-   :target: syntax-tree.html#lsIdxColStmt
+.. only:: html
+
+  .. image:: /rr/diagram/lsIdxColStmt.png
+     :alt: ``LSIDXCOL`` statement syntax
+     :align: center
+     :target: syntax-tree.html#lsIdxColStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/lsIdxColStmt.png
+     :alt: ``LSIDXCOL`` statement syntax
+     :align: center
+
 
 
 
@@ -346,10 +469,18 @@ Lists all of the tables in the default catalog and schema.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/lsTblStmt.png
-   :alt: ``LSTBL`` statement syntax
-   :align: center
-   :target: syntax-tree.html#lsTblStmt
+.. only:: html
+
+  .. image:: /rr/diagram/lsTblStmt.png
+     :alt: ``LSTBL`` statement syntax
+     :align: center
+     :target: syntax-tree.html#lsTblStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/lsTblStmt.png
+     :alt: ``LSTBL`` statement syntax
+     :align: center
 
 
 
@@ -362,10 +493,18 @@ Prints a string to stdout on the SE Prompt.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/printStmt.png
-   :alt: ``PRINT`` statement syntax
-   :align: center
-   :target: syntax-tree.html#printStmt
+.. only:: html
+
+  .. image:: /rr/diagram/printStmt.png
+     :alt: ``PRINT`` statement syntax
+     :align: center
+     :target: syntax-tree.html#printStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/printStmt.png
+     :alt: ``PRINT`` statement syntax
+     :align: center
 
 
 
@@ -393,140 +532,264 @@ This is broken down into the :ref:`command <selectCmdRef>` and the
 ``SELECT`` Command
 ``````````````````
 
-.. rubric:: Syntax:
+.. only:: html
 
-.. image:: /rr/diagram/selectQuery.png
-   :alt: ``SELECT`` statement syntax
-   :align: center
-   :target: syntax-tree.html#selectQuery
+  .. rubric:: Syntax:
 
-
-.. rubric:: *setExpr* definition:
-
-.. image:: /rr/diagram/setExpr.png
-   :alt: *setExpr* statement syntax
-   :align: center
-   :target: syntax-tree.html#setExpr
+  .. image:: /rr/diagram/selectQuery.png
+     :alt: ``SELECT`` statement syntax
+     :align: center
+     :target: syntax-tree.html#selectQuery
 
 
-.. rubric:: *selectExpr* definition:
+  .. rubric:: *setExpr* definition:
 
-.. image:: /rr/diagram/selectExpr.png
-   :alt: *selectExpr* statement syntax
-   :align: center
-   :target: syntax-tree.html#selectExpr
-
-
-.. rubric:: *queryHint* definition:
-
-.. image:: /rr/diagram/queryHint.png
-   :alt: *queryHint* statement syntax
-   :align: center
-   :target: syntax-tree.html#queryHint
+  .. image:: /rr/diagram/setExpr.png
+     :alt: *setExpr* statement syntax
+     :align: center
+     :target: syntax-tree.html#setExpr
 
 
-.. rubric:: *hint* definition:
+  .. rubric:: *selectExpr* definition:
 
-.. image:: /rr/diagram/hint.png
-   :alt: *hint* statement syntax
-   :align: center
-   :target: syntax-tree.html#hint
-
-
-.. rubric:: *corrClause* definition:
-
-.. image:: /rr/diagram/corrClause.png
-   :alt: *corrClause* statement syntax
-   :align: center
-   :target: syntax-tree.html#corrClause
+  .. image:: /rr/diagram/selectExpr.png
+     :alt: *selectExpr* statement syntax
+     :align: center
+     :target: syntax-tree.html#selectExpr
 
 
-.. rubric:: *withQuery* definition:
+  .. rubric:: *queryHint* definition:
 
-.. image:: /rr/diagram/withQuery.png
-   :alt: *withQuery* statement syntax
-   :align: center
-   :target: syntax-tree.html#withQuery
-
-
-.. rubric:: *tableExpr* definition:
-
-.. image:: /rr/diagram/tableExpr.png
-   :alt: *tableExpr* statement syntax
-   :align: center
-   :target: syntax-tree.html#tableExpr
+  .. image:: /rr/diagram/queryHint.png
+     :alt: *queryHint* statement syntax
+     :align: center
+     :target: syntax-tree.html#queryHint
 
 
-.. rubric:: *tableReference* definition:
+  .. rubric:: *hint* definition:
 
-.. image:: /rr/diagram/tableReference.png
-   :alt: *tableReference* statement syntax
-   :align: center
-   :target: syntax-tree.html#tableReference
-
-
-.. rubric:: *joinType* definition:
-
-.. image:: /rr/diagram/joinType.png
-   :alt: *joinType* statement syntax
-   :align: center
-   :target: syntax-tree.html#joinType
+  .. image:: /rr/diagram/hint.png
+     :alt: *hint* statement syntax
+     :align: center
+     :target: syntax-tree.html#hint
 
 
-.. rubric:: *selectList* definition:
+  .. rubric:: *corrClause* definition:
 
-.. image:: /rr/diagram/selectList.png
-   :alt: *selectList* statement syntax
-   :align: center
-   :target: syntax-tree.html#selectList
-
-
-.. rubric:: *selectListItem* definition:
-
-.. image:: /rr/diagram/selectListItem.png
-   :alt: *selectListItem* statement syntax
-   :align: center
-   :target: syntax-tree.html#selectListItem
+  .. image:: /rr/diagram/corrClause.png
+     :alt: *corrClause* statement syntax
+     :align: center
+     :target: syntax-tree.html#corrClause
 
 
-.. rubric:: *exprList* definition:
+  .. rubric:: *withQuery* definition:
 
-.. image:: /rr/diagram/exprList.png
-   :alt: *exprList* statement syntax
-   :align: center
-   :target: syntax-tree.html#exprList
-
-
-.. rubric:: *identifierList* definition:
-
-.. image:: /rr/diagram/identifierList.png
-   :alt: *identifierList* statement syntax
-   :align: center
-   :target: syntax-tree.html#identifierList
+  .. image:: /rr/diagram/withQuery.png
+     :alt: *withQuery* statement syntax
+     :align: center
+     :target: syntax-tree.html#withQuery
 
 
-.. rubric:: *orderByList* definition:
+  .. rubric:: *tableExpr* definition:
 
-.. image:: /rr/diagram/orderByList.png
-   :alt: *orderByList* statement syntax
-   :align: center
-   :target: syntax-tree.html#orderByList
-
-
-.. rubric:: *orderByListItem* definition:
-
-.. image:: /rr/diagram/orderByListItem.png
-   :alt: *orderByListItem* statement syntax
-   :align: center
-   :target: syntax-tree.html#orderByListItem
+  .. image:: /rr/diagram/tableExpr.png
+     :alt: *tableExpr* statement syntax
+     :align: center
+     :target: syntax-tree.html#tableExpr
 
 
-.. rubric:: *colAliases* definition:
+  .. rubric:: *tableReference* definition:
 
-.. image:: /rr/diagram/colAliases.png
-   :alt: *colAliases* statement syntax
-   :align: center
-   :target: syntax-tree.html#colAliases
+  .. image:: /rr/diagram/tableReference.png
+     :alt: *tableReference* statement syntax
+     :align: center
+     :target: syntax-tree.html#tableReference
+
+
+  .. rubric:: *joinType* definition:
+
+  .. image:: /rr/diagram/joinType.png
+     :alt: *joinType* statement syntax
+     :align: center
+     :target: syntax-tree.html#joinType
+
+
+  .. rubric:: *selectList* definition:
+
+  .. image:: /rr/diagram/selectList.png
+     :alt: *selectList* statement syntax
+     :align: center
+     :target: syntax-tree.html#selectList
+
+
+  .. rubric:: *selectListItem* definition:
+
+  .. image:: /rr/diagram/selectListItem.png
+     :alt: *selectListItem* statement syntax
+     :align: center
+     :target: syntax-tree.html#selectListItem
+
+
+  .. rubric:: *exprList* definition:
+
+  .. image:: /rr/diagram/exprList.png
+     :alt: *exprList* statement syntax
+     :align: center
+     :target: syntax-tree.html#exprList
+
+
+  .. rubric:: *identifierList* definition:
+
+  .. image:: /rr/diagram/identifierList.png
+     :alt: *identifierList* statement syntax
+     :align: center
+     :target: syntax-tree.html#identifierList
+
+
+  .. rubric:: *orderByList* definition:
+
+  .. image:: /rr/diagram/orderByList.png
+     :alt: *orderByList* statement syntax
+     :align: center
+     :target: syntax-tree.html#orderByList
+
+
+  .. rubric:: *orderByListItem* definition:
+
+  .. image:: /rr/diagram/orderByListItem.png
+     :alt: *orderByListItem* statement syntax
+     :align: center
+     :target: syntax-tree.html#orderByListItem
+
+
+  .. rubric:: *colAliases* definition:
+
+  .. image:: /rr/diagram/colAliases.png
+     :alt: *colAliases* statement syntax
+     :align: center
+     :target: syntax-tree.html#colAliases
+
+
+.. only:: latex
+
+  .. rubric:: Syntax:
+
+  .. image:: /rr/diagram/selectQuery.png
+     :alt: ``SELECT`` statement syntax
+     :align: center
+
+
+  .. rubric:: *setExpr* definition:
+
+  .. image:: /rr/diagram/setExpr.png
+     :alt: *setExpr* statement syntax
+     :align: center
+
+
+  .. rubric:: *selectExpr* definition:
+
+  .. image:: /rr/diagram/selectExpr.png
+     :alt: *selectExpr* statement syntax
+     :align: center
+
+
+  .. rubric:: *queryHint* definition:
+
+  .. image:: /rr/diagram/queryHint.png
+     :alt: *queryHint* statement syntax
+     :align: center
+
+
+  .. rubric:: *hint* definition:
+
+  .. image:: /rr/diagram/hint.png
+     :alt: *hint* statement syntax
+     :align: center
+
+
+  .. rubric:: *corrClause* definition:
+
+  .. image:: /rr/diagram/corrClause.png
+     :alt: *corrClause* statement syntax
+     :align: center
+
+
+  .. rubric:: *withQuery* definition:
+
+  .. image:: /rr/diagram/withQuery.png
+     :alt: *withQuery* statement syntax
+     :align: center
+
+
+  .. rubric:: *tableExpr* definition:
+
+  .. image:: /rr/diagram/tableExpr.png
+     :alt: *tableExpr* statement syntax
+     :align: center
+
+
+  .. rubric:: *tableReference* definition:
+
+  .. image:: /rr/diagram/tableReference.png
+     :alt: *tableReference* statement syntax
+     :align: center
+
+
+  .. rubric:: *joinType* definition:
+
+  .. image:: /rr/diagram/joinType.png
+     :alt: *joinType* statement syntax
+     :align: center
+
+
+  .. rubric:: *selectList* definition:
+
+  .. image:: /rr/diagram/selectList.png
+     :alt: *selectList* statement syntax
+     :align: center
+
+
+  .. rubric:: *selectListItem* definition:
+
+  .. image:: /rr/diagram/selectListItem.png
+     :alt: *selectListItem* statement syntax
+     :align: center
+
+
+  .. rubric:: *exprList* definition:
+
+  .. image:: /rr/diagram/exprList.png
+     :alt: *exprList* statement syntax
+     :align: center
+
+
+  .. rubric:: *identifierList* definition:
+
+  .. image:: /rr/diagram/identifierList.png
+     :alt: *identifierList* statement syntax
+     :align: center
+
+
+  .. rubric:: *orderByList* definition:
+
+  .. image:: /rr/diagram/orderByList.png
+     :alt: *orderByList* statement syntax
+     :align: center
+
+
+  .. rubric:: *orderByListItem* definition:
+
+  .. image:: /rr/diagram/orderByListItem.png
+     :alt: *orderByListItem* statement syntax
+     :align: center
+
+
+  .. rubric:: *colAliases* definition:
+
+  .. image:: /rr/diagram/colAliases.png
+     :alt: *colAliases* statement syntax
+     :align: center
+
 
 
 .. _selectExprRef:
@@ -534,30 +797,54 @@ This is broken down into the :ref:`command <selectCmdRef>` and the
 Expression Reference
 ````````````````````
 
-.. rubric:: *expr* definition:
+.. only:: html
 
-.. image:: /rr/diagram/expr.png
-   :alt: *expr* statement syntax
-   :align: center
-   :target: syntax-tree.html#expr
+  .. rubric:: *expr* definition:
 
-
-.. rubric:: *columnRef* definition:
-
-.. image:: /rr/diagram/columnRef.png
-   :alt: *columnRef* statement syntax
-   :align: center
-   :target: syntax-tree.html#columnRef
+  .. image:: /rr/diagram/expr.png
+     :alt: *expr* statement syntax
+     :align: center
+     :target: syntax-tree.html#expr
 
 
-.. rubric:: *columnWildcard* definition:
+  .. rubric:: *columnRef* definition:
 
-.. image:: /rr/diagram/columnWildcard.png
-   :alt: *columnWildcard* statement syntax
-   :align: center
-   :target: syntax-tree.html#columnWildcard
-   
-Refer to the :ref:`complete syntax tree <syntaxTree>` for further definitions 
+  .. image:: /rr/diagram/columnRef.png
+     :alt: *columnRef* statement syntax
+     :align: center
+     :target: syntax-tree.html#columnRef
+
+
+  .. rubric:: *columnWildcard* definition:
+
+  .. image:: /rr/diagram/columnWildcard.png
+     :alt: *columnWildcard* statement syntax
+     :align: center
+     :target: syntax-tree.html#columnWildcard
+
+.. only:: latex
+
+     .. rubric:: *expr* definition:
+
+  .. image:: /rr/diagram/expr.png
+     :alt: *expr* statement syntax
+     :align: center
+
+
+  .. rubric:: *columnRef* definition:
+
+  .. image:: /rr/diagram/columnRef.png
+     :alt: *columnRef* statement syntax
+     :align: center
+
+
+  .. rubric:: *columnWildcard* definition:
+
+  .. image:: /rr/diagram/columnWildcard.png
+     :alt: *columnWildcard* statement syntax
+     :align: center
+
+Refer to the :ref:`complete syntax tree <syntaxTree>` for further definitions
 of any rules.
 
 
@@ -775,11 +1062,19 @@ Causes the SE Prompt to sleep and not accept input for a given number of seconds
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/sleepStmt.png
-   :alt: ``SLEEP`` statement syntax
-   :align: center
-   :target: syntax-tree.html#sleepStmt
-   
+.. only:: html
+
+  .. image:: /rr/diagram/sleepStmt.png
+     :alt: ``SLEEP`` statement syntax
+     :align: center
+     :target: syntax-tree.html#sleepStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/sleepStmt.png
+     :alt: ``SLEEP`` statement syntax
+     :align: center
+
 
 
 .. _spaceCmd:
@@ -791,10 +1086,18 @@ cluster.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/spaceStmt.png
-   :alt: ``SPACE`` statement syntax
-   :align: center
-   :target: syntax-tree.html#spaceStmt
+.. only:: html
+
+  .. image:: /rr/diagram/spaceStmt.png
+     :alt: ``SPACE`` statement syntax
+     :align: center
+     :target: syntax-tree.html#spaceStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/spaceStmt.png
+     :alt: ``SPACE`` statement syntax
+     :align: center
 
 
 
@@ -807,10 +1110,18 @@ it is connected to the current node.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/statusStmt.png
-   :alt: ``STATUS`` statement syntax
-   :align: center
-   :target: syntax-tree.html#statusStmt
+.. only:: html
+
+  .. image:: /rr/diagram/statusStmt.png
+     :alt: ``STATUS`` statement syntax
+     :align: center
+     :target: syntax-tree.html#statusStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/statusStmt.png
+     :alt: ``STATUS`` statement syntax
+     :align: center
 
 
 
@@ -823,11 +1134,19 @@ against each node in the cluster.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/szIdxStmt.png
-   :alt: ``SZIDX`` statement syntax
-   :align: center
-   :target: syntax-tree.html#szIdxStmt
-   
+.. only:: html
+
+  .. image:: /rr/diagram/szIdxStmt.png
+     :alt: ``SZIDX`` statement syntax
+     :align: center
+     :target: syntax-tree.html#szIdxStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/szIdxStmt.png
+     :alt: ``SZIDX`` statement syntax
+     :align: center
+
 
 
 .. _sztblCmd:
@@ -839,11 +1158,19 @@ against each node in the cluster.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/szTblStmt.png
-   :alt: ``SZTBL`` statement syntax
-   :align: center
-   :target: syntax-tree.html#szTblStmt
-   
+.. only:: html
+
+  .. image:: /rr/diagram/szTblStmt.png
+     :alt: ``SZTBL`` statement syntax
+     :align: center
+     :target: syntax-tree.html#szTblStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/szTblStmt.png
+     :alt: ``SZTBL`` statement syntax
+     :align: center
+
    
 
 .. _truncateCmd:
@@ -854,11 +1181,19 @@ Removes all data from a table without dropping the table or its indexes.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/truncateStmt.png
-   :alt: ``TRUNCATE`` statement syntax
-   :align: center
-   :target: syntax-tree.html#truncateStmt
-   
+.. only:: html
+
+  .. image:: /rr/diagram/truncateStmt.png
+     :alt: ``TRUNCATE`` statement syntax
+     :align: center
+     :target: syntax-tree.html#truncateStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/truncateStmt.png
+     :alt: ``TRUNCATE`` statement syntax
+     :align: center
+
 
 
 
@@ -882,8 +1217,16 @@ it from any other snapshots.
 
 .. rubric:: Syntax:
 
-.. image:: /rr/diagram/unloadStmt.png
-   :alt: ``UNLOAD`` statement syntax
-   :align: center
-   :target: syntax-tree.html#unloadStmt
-   
+.. only:: html
+
+  .. image:: /rr/diagram/unloadStmt.png
+     :alt: ``UNLOAD`` statement syntax
+     :align: center
+     :target: syntax-tree.html#unloadStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/unloadStmt.png
+     :alt: ``UNLOAD`` statement syntax
+     :align: center
+
