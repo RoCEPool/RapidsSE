@@ -476,38 +476,56 @@
     }                                                                       \
   }
 
-#define _INX_INTINT(eErrorCode)                                             \
+#define _INX_IVDIVD(eErrorCode)                                             \
   {                                                                         \
     bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
     if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                    \
       *(paW++) = 0;                                                         \
     }                                                                       \
     else {                                                                  \
       iInCount = *(--paW);                                                  \
       while(iInCount--) {                                                   \
-        iArg2 = *(--paW);                                                   \
-        if (iArg1 == iArg2) {                                               \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
+        if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&        \
+             (ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros == ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros) ) \
+        {                                                                   \
            bFilterResult = 1;                                               \
            break;                                                           \
         }                                                                   \
       }                                                                     \
       while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
       }                                                                     \
       *(paW++) = bFilterResult;                                             \
     }                                                                       \
   }
 
-#define _INX_IVLIVL(eErrorCode)                                             \
-  {                                                                         \
-    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
-  }
-
 #define _INX_IVYIVY(eErrorCode)                                             \
   {                                                                         \
-    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
+    bFilterResult = 0;                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
+    if (eErrorCode != EC_NONE ||                                            \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
+        if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&        \
+             (ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths == ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths) ) \
+        {                                                                   \
+           bFilterResult = 1;                                               \
+           break;                                                           \
+        }                                                                   \
+      }                                                                     \
+      while(iInCount-- > 0) {                                               \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -557,6 +575,16 @@
   *(paW++) = iArg1;
 
 #define _DUP_INT(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_IVD(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_IVY(eErrorCode)                                                \
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
