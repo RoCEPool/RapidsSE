@@ -234,7 +234,7 @@
                                                                             \
       if (ivlArg3.m_xIvl.m_bIsNeg)                                          \
         iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
-      printf("%lld %lld %lld\n", iArg1, iArg2, iArg3);                                                                      \
+                                                                            \
       if (iArg1 > iArg2) {                                                  \
         *(paW++) = 0;                                                       \
       }                                                                     \

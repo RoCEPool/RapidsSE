@@ -378,6 +378,36 @@ SELECT INTERVAL '32 9' DAY TO HOUR BETWEEN INTERVAL '32 8' DAY TO HOUR
 rows:
  (true)
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval Comparisons
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Interval year-month
+SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '1' YEAR FROM nation where n_nationkey = 2;
+rows:
+  (true)
+
+SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '14' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (true)
+
+SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '14' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (false)
+
+// Interval day-second
+SELECT INTERVAL '32 9' DAY TO HOUR < INTERVAL '32 8' DAY TO HOUR FROM nation where n_nationkey = 2;
+rows:
+  (false)
+
+SELECT INTERVAL '32 9' DAY TO HOUR != INTERVAL '32 9' DAY TO HOUR FROM nation where n_nationkey = 2;
+rows:
+  (false)
+
+SELECT INTERVAL '32 9' DAY TO HOUR = INTERVAL '32 9' DAY TO HOUR FROM nation where n_nationkey = 2;
+rows:
+  (true)
+
 drop table nation;
 success
 
