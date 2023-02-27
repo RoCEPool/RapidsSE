@@ -28,6 +28,8 @@ suppress_warnings = ['toc.excluded']
 
 nitpicky = True
 
+today_fmt = '%d %B, %Y'
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 # https://alabaster.readthedocs.io/en/latest/customization.html
