@@ -23,11 +23,12 @@ select
  where s_suppkey in ( /* Q20_1 */
                       select ps_suppkey
                         from PartSupp
-                       where ps_partkey in ( /* Q20_1_1 */
-                                                 select p_partkey
-                                                   from Part
-                                                  where p_name like 'forest%'
-                                                 )
+                       where
+                             ps_partkey in ( /* Q20_1_1 */
+                                             select p_partkey
+                                               from Part
+                                              where p_name like 'forest%'
+                                             )
                        )
 ;
 

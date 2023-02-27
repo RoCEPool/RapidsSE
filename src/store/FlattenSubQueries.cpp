@@ -162,6 +162,8 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
 
   Card_Fold::vMorph_to_flat(m_pCI);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   vDebugPoint();
 }
 /*----------------------------------------------------------------------------*/
