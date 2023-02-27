@@ -24,7 +24,8 @@ select c_phone,
                      select *
                        from Orders
                       where O_CUSTKEY = C_CUSTKEY
-                        and O_SHIPPRIORITY > 0 )
+                        and O_SHIPPRIORITY > 0
+                   )
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -18,36 +18,34 @@ create index S_idx0  on Supplier (S_SUPPKEY);
 /weaved
 /pipelineName = "_r_Q22"
 select
-  cntrycode,
+  c_phone,
   count(*)       as numcust,
   sum(c_acctbal) as totacctbal
   from
        ( /* Q22_1: */
-         select substring(c_phone from 1 for 2) as cntrycode,
+         select c_phone,
                 c_acctbal
            from Customer
           where
-                    substring(c_phone from 1 for 2)
-                      in ('13','31','23','29','30','18','17')
-
+                c_acctbal >
+                            ( /* Q22_1_1: */
+                              select avg(c_acctbal)
+                                from Customer
+                               where
+                                     c_acctbal > 0.00
+                            )
                 and
-                    c_acctbal >
-                      ( /* Q22_1_1: */
-                        select avg(c_acctbal)
-                          from Customer
-                         where     c_acctbal > 0.00
-                               and substring (c_phone from 1 for 2)
-                                    in ('13','31','23',
-                                        '29','30','18','17') )
-                and
-                    not exists
-                      ( /* Q22_1_2: */
-                        select *
-                          from Orders
-                          where O_CUSTKEY = C_CUSTKEY ) ) as custsale
+                    exists
+                            ( /* Q22_1_2: */
+                              select *
+                                from Orders
+                               where O_CUSTKEY = C_CUSTKEY
+                               and O_SHIPPRIORITY > 0
+                            )
+       )
 
-  group by cntrycode
-  order by cntrycode
+  group by c_phone
+  order by c_phone
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

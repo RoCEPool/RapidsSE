@@ -83,22 +83,44 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query
 
-  m_pCI->vRestart();
-  while (m_pCI->G_bEachMain(CK_CALL)) {
-    Stz* szSubQueryNm = m_pCI->G.p_call->szValue();
-    m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(szSubQueryNm);
+  for (;;) {
 
-    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-    vFlatten_recurse_v2(iDepth + 1);
-    m_pCI->G_vPopIter();
+    m_pCI->vRestart();
+    if (! m_pCI->G_bEachMain(CK_CALL))
+      break;
 
-    vTransform_FlattenByDecisionTree();
+      s256 sSubQueryNm = m_pCI->G.p_call->szValue();
+
+      //    m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(szSubQueryNm);
+      //
+      //    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
+      //    vFlatten_recurse_v2(iDepth + 1);
+      //    m_pCI->G_vPopIter();
+      //
+      //    vTransform_FlattenByDecisionTree();
+
+      Board *pOuterBoard_save = m_pCI->G.pBoard;
+      m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
+      m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+
+      vFlatten_recurse_v2(iDepth + 1);
+
+      m_pCI->G_vPopIter();
+      m_pCI->G_vSetBoard(pOuterBoard_save);
+      SubQuery *pSubQuery = m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      m_pCI->vPrintBoard(__LINE__);
+
+      vTransform_FlattenByDecisionTree();
+
+      m_pCI->vPrintBoard(__LINE__);
 
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   bool bFound;
+
 
   do {
      m_pCI->vRestart();
