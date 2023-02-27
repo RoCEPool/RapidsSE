@@ -15,6 +15,7 @@ release = '1.1.0-dev0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+# https://www.mankier.com/1/sphinx-all
 
 root_doc = 'index'
 extensions = ['sphinx.ext.todo']
@@ -29,6 +30,7 @@ suppress_warnings = ['toc.excluded']
 nitpicky = True
 
 today_fmt = '%d %B, %Y'
+numfig = True   # https://stackoverflow.com/questions/2686310/referencing-figures-with-numbers-in-sphinx-and-restructuredtext
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -65,7 +67,10 @@ latex_engine = 'xelatex' # to support unicode characters
 #  https://stackoverflow.com/questions/26120632/sphinx-remove-chapter-title-in-my-pdf-with-latexpdf?rq=1
 latex_elements = {
   'papersize': 'a4paper',
-  'extraclassoptions': 'openany,oneside'  # remove blank pages after title and TOC
+#  'extraclassoptions': 'openany,oneside',       # remove blank pages after title, TOC and end of chapers
+  'fncychap': '\\usepackage[Rejne]{fncychap}',  # Nicer chapter headings
+  'preamble': r'''
+  ''',
 }
 
 latex_logo = '_static/logo.pdf'
