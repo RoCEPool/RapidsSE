@@ -345,7 +345,8 @@ void Constants::vAddConstantsCpp(void)
   /* 10 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Stz,   EC_FOLDER_NOT_EMPTY);
   /* 11 */ vAddConstant("EC_INDEX_EXISTS"_Stz,       EC_INDEX_EXISTS);
   /* 11 */ vAddConstant("EC_INTERNAL_ERROR"_Stz,             EC_INTERNAL_ERROR);
-  /* 11 */ vAddConstant("EC_INTERVAL_NOT_SUPPORTED"_Stz,          EC_INTERVAL_NOT_SUPPORTED);
+  /* 11 */ vAddConstant("EC_INTERVAL_NOT_SUPPORTED"_Stz,      EC_INTERVAL_NOT_SUPPORTED);
+  /* 11 */ vAddConstant("EC_INTERVAL_OUT_OF_RANGE"_Stz,       EC_INTERVAL_OUT_OF_RANGE);
 
   /* 12 */ vAddConstant("EC_INVALID_CLASS"_Stz,      EC_INVALID_CLASS);
   /* 13 */ vAddConstant("EC_INVALID_COLUMN"_Stz,     EC_INVALID_COLUMN);

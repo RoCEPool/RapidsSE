@@ -814,7 +814,70 @@
 // INTERVALS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _ADD_IVLIVL(eErrorCode)                                            \
+#define _OUT_OF_RANGE_IVY                                                 \
+(                                                                         \
+  (iMonths > 0 &&  iMonths > _C_IVL_MONTH_MAX ) ? EC_INTERVAL_OUT_OF_RANGE :      \
+  (iMonths < 0 &&  (-1*iMonths) > _C_IVL_MONTH_MAX ) ? EC_INTERVAL_OUT_OF_RANGE : \
+  EC_NONE                                                                 \
+)
+
+#define _OUT_OF_RANGE_IVD \
+(                                                                         \
+  (iMicros > 0 &&  iMicros > _C_IVL_USEC_MAX ) ? EC_INTERVAL_OUT_OF_RANGE :      \
+  (iMicros < 0 &&  (-1*iMicros) > _C_IVL_USEC_MAX ) ? EC_INTERVAL_OUT_OF_RANGE : \
+  EC_NONE                                                                 \
+  )
+
+
+
+#define _ADD_IVDIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+                                                                           \
+      i8 iMicros = iArg1 + iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+                                                                           \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMicros < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = -1*iMicros;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                \
+        }                                                                  \
+        wIvlResult.m_xIvl.m_eType =                                        \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
+   }                                                                       \
+ }
+
+
+#define _ADD_IVYIVY(eErrorCode)                                            \
   {                                                                        \
     ivlArg2.m_iAsI8 = *(--paW);                                            \
     ivlArg1.m_iAsI8 = *(--paW);                                            \
@@ -834,23 +897,32 @@
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
         iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
                                                                            \
-      iArg3 = iArg1 + iArg2;                                               \
+      i8 iMonths = iArg1 + iArg2;                                          \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
                                                                            \
-      wIvlResult.m_iAsI8 = 0;                                              \
-                                                                           \
-      if (iArg3 < 0) {                                                     \
-        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
+      if(eErrorCode != EC_NONE)  {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                    \
+                                                                           \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMonths < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iMonths;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                \
+        }                                                                  \
+        wIvlResult.m_xIvl.m_eType =                                        \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+        *paW++ = wIvlResult.m_iAsI8;                                       \
       }                                                                    \
-      wIvlResult.m_xIvl.m_eType =                                          \
-      eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
-    }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
-  }
+   }                                                                       \
+ }
+
+
 
 #define _MUL_INTIVD(eErrorCode)                                            \
   {                                                                        \
@@ -865,14 +937,21 @@
     else {                                                                 \
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
                                                                            \
-      iArg3 = iArg1 * iArg2;                                               \
+      i8 iMicros = iArg1 * iArg2;                                          \
                                                                            \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
-      wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;                \
-      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
     }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
   }
 
 #define _MUL_INTIVY(eErrorCode)                                            \
@@ -888,14 +967,21 @@
     else {                                                                 \
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
-      iArg3 = iArg1 * iArg2;                                               \
+      i8 iMonths = iArg1 * iArg2;                                          \
                                                                            \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
-      wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;                \
-      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
     }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
   }
 
 #define _MUL_IVDINT(eErrorCode)                                            \
@@ -911,14 +997,21 @@
     else {                                                                 \
       iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
                                                                            \
-      iArg3 = iArg1 * iArg2;                                               \
+      i8 iMicros = iArg1 * iArg2;                                          \
                                                                            \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
-      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
-      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
     }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
   }
 
 #define _MUL_IVYINT(eErrorCode)                                            \
@@ -934,14 +1027,21 @@
     else {                                                                 \
       iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
-      iArg3 = iArg1 * iArg2;                                               \
+      i8 iMonths = iArg1 * iArg2;                                          \
                                                                            \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
-      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
-      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                      \
-    }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
+                                                                           \
+      if(eErrorCode != EC_NONE)  {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
+       *paW++ = wIvlResult.m_iAsI8;                                        \
+     }                                                                     \
+   }                                                                       \
   }
 
 #define _NEG_IVL(eErrorCode)                                               \
@@ -962,7 +1062,54 @@
    }                                                                       \
  }
 
-#define _SUB_IVLIVL(eErrorCode)                                            \
+#define _SUB_IVDIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * iArg1;                                              \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * iArg2;                                              \
+                                                                           \
+      i8 iMicros = iArg1 - iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMicros < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = -1*iMicros;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                \
+       }                                                                   \
+       wIvlResult.m_xIvl.m_eType =                                         \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType]; \
+       *paW++ = wIvlResult.m_iAsI8;                                         \
+     }                                                                      \
+    }                                                                       \
+  }
+
+
+
+#define _SUB_IVYIVY(eErrorCode)                                            \
   {                                                                        \
     ivlArg2.m_iAsI8 = *(--paW);                                            \
     ivlArg1.m_iAsI8 = *(--paW);                                            \
@@ -977,27 +1124,34 @@
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+        iArg1 = (-1) * iArg1;                \
                                                                            \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+        iArg2 = (-1) * iArg2;                \
                                                                            \
-      iArg3 = iArg1 - iArg2;                                               \
+      i8 iMonths = iArg1 - iArg2;                                          \
                                                                            \
-      wIvlResult.m_iAsI8 = 0;                                              \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
                                                                            \
-      if (iArg3 < 0) {                                                     \
-        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iArg3;                 \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-         wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
-         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                   \
-      }                                                                    \
-      wIvlResult.m_xIvl.m_eType =                                          \
-        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
-    }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMonths < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iMonths;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                \
+       }                                                                   \
+       wIvlResult.m_xIvl.m_eType =                                         \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType]; \
+       *paW++ = wIvlResult.m_iAsI8;                                         \
+     }                                                                      \
+    }                                                                       \
   }
 
 // ignore NULLS

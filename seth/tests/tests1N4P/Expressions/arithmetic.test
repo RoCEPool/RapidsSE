@@ -41,6 +41,15 @@ SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
 rows:
   (INTERVAL '1-2' YEAR TO MONTH)
 
+// YM interval arithmetic /4 (max)
+//SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '15' MONTH FROM nation where n_nationkey = 2;
+//rows:
+//  (INTERVAL '6004799503160661-3' YEAR TO MONTH)
+
+// YM interval arithmetic /5 (overflow)
+SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '25' MONTH FROM nation where n_nationkey = 2;
+failure contains: 'EC_INTERVAL_OUT_OF_RANGE'
+
 // DT interval arithmetic of same type /1
 SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
 rows:

@@ -142,6 +142,7 @@ union Int_T {
 // The "__attribute__((__packed__))" is required to ensure each of the structures
 // are not padded out to 8 bytes each.
 //
+
 union Ivl_T {
   struct  __attribute__((__packed__)) {
     u8 m_eType    : 5 ; // 0..31, eIV enum
@@ -318,6 +319,9 @@ static const i8 _C_HOURS_PER_DAY = 24;
 
 static const i8 _C_TSP_LOCAL = 1;
 static const i8 _C_TSP_UTC   = 0;
+
+static const u8 _C_IVL_MONTH_MAX  = 72057594037927935; // (2^56 -1)
+static const u8 _C_IVL_USEC_MAX   = 72057594037927935; // (2^56 -1)
 
 static const i8 C_HEADLINE_OFS_WORDS = 0;
 static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;

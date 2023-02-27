@@ -34,7 +34,8 @@ enum eFM : u2 // function macros
   /*  */ FM_ADD_IVDTSP,           // ivd + tsp
   /*  */ FM_ADD_IVYDTE,           // ivy + dte
   /*  */ FM_ADD_IVYTSP,           // ivy + tsp
-  /*  */ FM_ADD_IVLIVL,           // ivd + ivd
+  /*  */ FM_ADD_IVDIVD,           // ivd + ivd
+  /*  */ FM_ADD_IVYIVY,           // ivy + ivy
   /*  */ FM_ADD_TMEIVD,           // tme + ivd
   /*  */ FM_ADD_TSPIVD,           // tsp + ivd
   /*  */ FM_ADD_TSPIVY,           // tsp + ivy
@@ -81,7 +82,8 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_DTEIVY,           // dte - ivy
   /*  */ FM_SUB_FLTFLT,           // flt - flt
   /*  */ FM_SUB_INTINT,           // int - int
-  /*  */ FM_SUB_IVLIVL,           // ivl - ivl
+  /*  */ FM_SUB_IVDIVD,           // ivd - ivd
+  /*  */ FM_SUB_IVYIVY,           // ivy - ivy
   /*  */ FM_SUB_TMEIVD,           // tme - ivd
   /*  */ FM_SUB_TMETME,           // tme - tme
   /*  */ FM_SUB_TSPTSP,           // tsp - tsp
@@ -390,7 +392,8 @@ static Stz* aFM[]
   /*  */ "_ADD_IVDTSP"_Stz,
   /*  */ "_ADD_IVYDTE"_Stz,
   /*  */ "_ADD_IVYTSP"_Stz,
-  /*  */ "_ADD_IVLIVL"_Stz,
+  /*  */ "_ADD_IVDIVD"_Stz,
+  /*  */ "_ADD_IVYIVY"_Stz,
   /*  */ "_ADD_TMEIVD"_Stz,
   /*  */ "_ADD_TSPIVD"_Stz,
   /*  */ "_ADD_TSPIVY"_Stz,
@@ -437,7 +440,8 @@ static Stz* aFM[]
   /*  */ "_SUB_DTEIVY"_Stz,
   /*  */ "_SUB_FLTFLT"_Stz,
   /*  */ "_SUB_INTINT"_Stz,
-  /*  */ "_SUB_IVLIVL"_Stz,
+  /*  */ "_SUB_IVDIVD"_Stz,
+  /*  */ "_SUB_IVYIVY"_Stz,
   /*  */ "_SUB_TMEIVD"_Stz,
   /*  */ "_SUB_TMETME"_Stz,
   /*  */ "_SUB_TSPTSP"_Stz,
