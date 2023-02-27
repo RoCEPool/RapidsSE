@@ -118,7 +118,7 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  if (pCarryForward->Project_postAgg.m_bSeen) {
+  if (pCarryForward->Project_postAgg.m_bSeen &&  pCI->G.p_having) {
     pCI->G.p_project->vInject_foldExpr(pCI);
     pCI->G.p_having->vAcclimate_foldExpr(pCI);
     pCI->G.p_projection = pCI->G.p_project->pSub_projection();

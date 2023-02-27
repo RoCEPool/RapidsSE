@@ -63,7 +63,7 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
     vCard(CK_CMPPRED);
     vValue("=="_Stz);
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(p_term_popped->bIsValue("__subquery0002"_Stz)); //temp
+    ASSERT(StrLib::bBeginsWith(p_term_popped->szValue()->azChar(),"__subquery")); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));

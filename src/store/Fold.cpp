@@ -233,6 +233,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
     NEVER_REACH
   }
 
+  pCI->vPrintBoard(__LINE__);
 
   vSubQuery(pCI->pBoard()->pSubQuery());
 

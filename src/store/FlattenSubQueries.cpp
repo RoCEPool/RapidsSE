@@ -60,13 +60,17 @@ void FlattenSubQueries::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
-  vFlatten_recurse();
+  m_pCI->G.pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
+  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+
+//  vFlatten_recurse();
+  vFlatten_recurse_v2(0);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_recurse_v2(void)
+void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
@@ -77,32 +81,71 @@ void FlattenSubQueries::vFlatten_recurse_v2(void)
   vTransform_StmColToTblCol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // flatten the sub-queries of this outer query
 
-  m_pCI->vSubQueryIteration();
-  while (m_pCI->bEachSubQuery()) {
-
-//    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
-//           pOuterQuery->pBoard()->i_Board(),
-//           m_pCI->G.pSubQuery->pBoard()->i_Board(),
-//           m_pCI->G.pSubQuery->i_Caller()
-//           );
-
-    if (m_pCI->G.pSubQuery->i_Caller() != pOuterQuery->pBoard()->i_Board())
-      continue;
-
-    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
-           pOuterQuery->pBoard()->i_Board(),
-           m_pCI->G.pSubQuery->pBoard()->i_Board(),
-           m_pCI->G.pSubQuery->i_Caller()
-    );
+  m_pCI->vRestart();
+  while (m_pCI->G_bEachMain(CK_CALL)) {
+    Stz* szSubQueryNm = m_pCI->G.p_call->szValue();
+    m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(szSubQueryNm);
 
     m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-    vSeries_Flatten_recurse();
+    vFlatten_recurse_v2(iDepth + 1);
     m_pCI->G_vPopIter();
 
     vTransform_FlattenByDecisionTree();
 
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  bool bFound;
+
+  do {
+     m_pCI->vRestart();
+
+    if (! m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
+      break;
+
+    CardIter* pCI = m_pCI;
+
+    auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
+    {
+       if (! p_term->bIsBoardNm(pCI))
+         return C_CONTINUE_RECURSION;
+
+      s256 sSubQueryNm = p_term->szValue();
+      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+
+      Board* pBoard_save = pCI->G.pBoard;
+      pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
+      pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
+
+      vFlatten_recurse_v2(iDepth + 1);
+      pCI->G_vPopIter();
+
+      pCI->G_vSetBoard(pBoard_save);
+
+
+      vTransform_FlattenByDecisionTree();
+
+      pCI->vPrintBoard(__LINE__);
+
+      bFound = true;
+      return C_TERMINATE_RECURSION;
+    };
+
+
+    bFound = false;
+    bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
     vDebugPoint();
+  } while (m_pCI->G.p_boolCalc && bFound);
+
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  m_pCI->vRestart();
+  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -153,7 +196,7 @@ void FlattenSubQueries::vFlatten_recurse(void)
     );
 
     m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-    vSeries_Flatten_recurse();
+    vFlatten_recurse();
     m_pCI->G_vPopIter();
 
     vTransform_FlattenByDecisionTree();
@@ -593,7 +636,7 @@ void FlattenSubQueries::vFlatten_53_W_L_NC_NI_exists(void)
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
 
-  pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_WHERE);
+  //pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_WHERE);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
                                CK_WHERE, QO_IN_OP, SM_NONE);

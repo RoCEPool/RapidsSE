@@ -191,6 +191,23 @@ Board* Bench::pGetBoard(Stz* szBoardNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get subquery of given name                                                 */
+/*----------------------------------------------------------------------------*/
+SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  Board* pBoard = pGetBoard(szSubQueryNm);
+  if (! pBoard)
+    return nullptr;
+
+  SubQuery* pSubQuery= pBoard->pSubQuery();
+
+  return pSubQuery;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is the bench flat?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Bench::bIsFlat(void)

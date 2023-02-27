@@ -46,6 +46,7 @@ namespace STORE
     Board* pGetBoard(eBK eBoard, i8 i_Board);
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
+    SubQuery* pGetSubQuery(Stz* szSubQueryNm);
     bool bIsFlat(void);
     void vIsFlat(bool bIsFlat);
     Optimiser* pOptimiser(void);

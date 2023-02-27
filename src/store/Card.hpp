@@ -347,7 +347,7 @@ namespace STORE
     void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
-    void vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
+    bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     Stz* szBearing(void);
     void vBearing(void);

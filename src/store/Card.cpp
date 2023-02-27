@@ -613,20 +613,23 @@ bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambd
 /*----------------------------------------------------------------------------*/
 /* visit all term sub-cards and apply lambda function                         */
 /*----------------------------------------------------------------------------*/
-void Card::vApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
+bool Card::bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bIsCard(CK_TERM)) {
     bool bContinue = bfLambdaFn(_pCard_Term(this));
     if (! bContinue)
-      return;
+      return false;
   }
 
   CardIter xCI(this);
   while (Card* pChildCard = xCI.pEachChild()) {
-    pChildCard->vApplyRecursive_term(bfLambdaFn);
+    if (! pChildCard->bApplyRecursive_term(bfLambdaFn))
+      return false;
   }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

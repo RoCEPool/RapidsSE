@@ -28,6 +28,7 @@ namespace STORE
     eRO  eEvalRelOp(void);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
+    bool bIsBoardNm(CardIter* pCI);
     bool bIsFoldExpr(void);
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $n
