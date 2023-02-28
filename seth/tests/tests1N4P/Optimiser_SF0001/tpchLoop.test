@@ -71,6 +71,9 @@ INCLUDE 'OptQ6.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+//
+// GOES IN A LOOP IN DEBUG
+//
 //LOG 'Running tpch query 7...';
 //INCLUDE 'OptQ7.test';
 //INCLUDE 'sleep.test';
@@ -81,7 +84,10 @@ INCLUDE 'sleep.test';
 //INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 9...';     ......MEMORY LEAK
+//
+// FILTER MISSING
+//
+//LOG 'Running tpch query 9...';
 //INCLUDE 'OptQ9.test';
 //INCLUDE 'sleep.test';
 
@@ -91,14 +97,17 @@ INCLUDE 'OptQ10.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 11...';   .....MISSING INDEX
+//
+// HAVING
+//
+//LOG 'Running tpch query 11...';
 //INCLUDE 'OptQ11.test';
 //INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 12...';
-//INCLUDE 'OptQ12.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 12...';
+INCLUDE 'OptQ12.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 13...';
@@ -111,6 +120,9 @@ INCLUDE 'OptQ14.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+//
+// VIEW
+//
 //LOG 'Running tpch query 15...';
 //INCLUDE 'OptQ15.test';
 //INCLUDE 'sleep.test';
@@ -137,10 +149,9 @@ INCLUDE 'sleep.test';
 //INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 19...';
-//INCLUDE 'OptQ19.test';
-//INCLUDE 'sleep.test';
-
+LOG 'Running tpch query 19...';
+INCLUDE 'OptQ19.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 20...';
