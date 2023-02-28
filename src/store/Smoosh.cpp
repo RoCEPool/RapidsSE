@@ -225,7 +225,10 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
   pCI->G.pDeck->vInsertBefore(pCI->G.p_table,pCI->G.p_where);
 
-  pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();
+  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
+  pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
+  //pCI->G.p_bolPred = pCI->G.p_boolCalc->pSub_bolPred();
+  pCI->G.p_bolPred = pCI->G.p_boolCalc->pBolPred_whichCallsSubQuery();
 
   if (pCI->G.p_bolPred->bIsValue("in"_Stz) || pCI->G.p_bolPred->bIsValue("exists"_Stz))
     pCI->G.p_table->vAppend(new Card_KeyExists);

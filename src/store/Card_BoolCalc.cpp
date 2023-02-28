@@ -53,6 +53,39 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_BolPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_BolPred* pBolPred = nullptr;
+
+  auto bLambdaFn = [&pBolPred](Card_PRED* p_pred, bool bUpwards)
+  {
+    p_pred->vDump();
+
+    if (! p_pred->bIsCard(CK_BOLPRED))
+      return C_CONTINUE_RECURSION;
+
+    if (p_pred->bContains_callToSubQuery()) {
+      pBolPred = _pCard_BolPred(p_pred);
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+
+  return pBolPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

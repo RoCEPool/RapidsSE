@@ -25,9 +25,9 @@ select
                 c_acctbal
            from Customer
           where
-              //substring (c_phone from 1 for 2)
-                //in ('13','31','23','29','30','18','17')
-          //and
+                substring (c_phone from 1 for 2)
+                  in ('13','31','23','29','30','18','17')
+            and
                 c_acctbal >
                             ( /* Q22_1_1: */
                               select avg(c_acctbal)

@@ -136,6 +136,23 @@ Card_PRED* Card_PRED::pContaining_MaybeBoundsOf_index(Card_Index* p_index,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_PRED::bContains_callToSubQuery(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  this->vDump();
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_TERM))
+    if (Card::bIsSubQueryName(xCI.G.p_term->szValue()))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

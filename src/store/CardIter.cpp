@@ -2459,8 +2459,6 @@ void CardIter::G_vPushBoard(Board* pBoard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G_vSetBoard(pBoard);
-
-  G.pSubQuery = G.pBoard->pSubQuery();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3069,6 +3067,7 @@ void CardIter::G_vSetBoard(Board* pBoard)
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
+  //G.pSubQuery = G.pBoard->pSubQuery();
 
   this->vChangeCard(G.pBoard->pDeck());
 }
