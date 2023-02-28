@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* _r_Q20x -- TCPH query 20 test                                              */
+/*============================================================================*/
+
+// --initial _r_Q20x
+
+_r_schema
+
+create index N_idx0  on Nation   (N_NATIONKEY);
+create index P_idx0  on Part     (P_PARTKEY);
+create index PS_idx0 on PartSupp (PS_PARTKEY);
+create index PS_idx1 on PartSupp (PS_SUPPKEY);
+create index S_idx0  on Supplier (S_SUPPKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q20x"
+select s_name,
+       s_address,
+       n_name
+  from Supplier
+     , Nation
+ where
+       s_suppkey in
+                    (
+                       select ps_suppkey
+                         from PartSupp
+                        where ps_partkey > 0
+                    )
+   and
+       s_nationkey = n_nationkey
+   and
+       n_name = 'IRAQ'
+ order by s_name
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

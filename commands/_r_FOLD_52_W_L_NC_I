@@ -17,9 +17,11 @@ _r_init
 select ps_suppkey
   from PartSupp
  where
-       ps_partkey in (select p_partkey
-                        from Part
-                       where p_name like 'forest%'
+       ps_partkey in
+                     (
+                       select p_partkey
+                         from Part
+                        where p_name like 'forest%'
                      )
 ;
 
