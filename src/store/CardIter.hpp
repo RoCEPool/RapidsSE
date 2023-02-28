@@ -188,12 +188,14 @@ namespace STORE
     bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
     bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
     bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    void G_vPopBoard(void);
     void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
     void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
     void G_vPushBoard(Board* pBoard);
+    void G_vPushBoard(Stz* szBoardNm);
     bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
     void G_vPushNewChild(Card* pParent, eCK eChild);

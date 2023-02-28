@@ -2318,12 +2318,6 @@ void CardIter::G_vPopIter(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-//  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
-//
-//  this->vCopyFrom(pTransformIterRestore->aXsentinels());
-//
-//  delete pTransformIterRestore;
-
   this->vRestore();
 }
 
@@ -2444,6 +2438,18 @@ void CardIter::vPrintBoard(i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
+void CardIter::G_vPushBoard(Stz* szBoardNm)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Board* pBoard = m_pBench->pGetBoard(szBoardNm);
+
+  G_vPushBoard(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
 void CardIter::G_vPushBoard(Board* pBoard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2452,11 +2458,9 @@ void CardIter::G_vPushBoard(Board* pBoard)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  G.pBoard = pBoard;
-//  G.pDeck  = G.pBoard->pDeck();
-//
-//  this->vChangeBoard(G.pBoard);
   G_vSetBoard(pBoard);
+
+  G.pSubQuery = G.pBoard->pSubQuery();
 }
 
 /*----------------------------------------------------------------------------*/
