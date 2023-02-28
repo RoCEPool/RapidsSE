@@ -139,7 +139,7 @@ end ;
 
 */
 
-// NOTE: CHANGED KET NOT EXISTS to KEY EXISTS for SF0001 data
+// NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
 
 pipeline Query22
 begin
