@@ -27,10 +27,9 @@ namespace STORE
 
     void vFlatten(void);
 
-    void vFlatten_recurse(void);
-    void vFlatten_recurse_v2(i8 iDepth);
+    void vFlatten_recurse(i8 iDepth);
 
-    void vTransform_FlattenByDecisionTree(void);
+    void vFlattenByDecisionTree(void);
 
     void vFlatten_10_F(void);
     void vFlatten_24_W_A_C_ro(void);

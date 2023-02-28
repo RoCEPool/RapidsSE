@@ -64,13 +64,13 @@ void FlattenSubQueries::vFlatten(void)
   m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 //  vFlatten_recurse();
-  vFlatten_recurse_v2(0);
+  vFlatten_recurse(0);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
+void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
@@ -91,27 +91,19 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
 
       s256 sSubQueryNm = m_pCI->G.p_call->szValue();
 
-      //    m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(szSubQueryNm);
-      //
-      //    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-      //    vFlatten_recurse_v2(iDepth + 1);
-      //    m_pCI->G_vPopIter();
-      //
-      //    vTransform_FlattenByDecisionTree();
-
       Board *pOuterBoard_save = m_pCI->G.pBoard;
       m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
       m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
-      vFlatten_recurse_v2(iDepth + 1);
+      vFlatten_recurse(iDepth + 1);
 
       m_pCI->G_vPopIter();
       m_pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery *pSubQuery = m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       m_pCI->vPrintBoard(__LINE__);
 
-      vTransform_FlattenByDecisionTree();
+    vFlattenByDecisionTree();
 
       m_pCI->vPrintBoard(__LINE__);
 
@@ -142,14 +134,14 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
       pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
       pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
 
-      vFlatten_recurse_v2(iDepth + 1);
+      vFlatten_recurse(iDepth + 1);
 
       pCI->G_vPopIter();
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       pCI->vPrintBoard(__LINE__);
 
-      vTransform_FlattenByDecisionTree();
+      vFlattenByDecisionTree();
 
       pCI->vPrintBoard(__LINE__);
 
@@ -189,67 +181,11 @@ void FlattenSubQueries::vFlatten_recurse_v2(i8 iDepth)
 
   vDebugPoint();
 }
-/*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_recurse(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
-
-  // things before sub-queries
-
-  SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
-
-  vTransform_StmColToTblCol();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCI->vSubQueryIteration();
-  while (m_pCI->bEachSubQuery()) {
-
-//    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
-//           pOuterQuery->pBoard()->i_Board(),
-//           m_pCI->G.pSubQuery->pBoard()->i_Board(),
-//           m_pCI->G.pSubQuery->i_Caller()
-//           );
-
-    if (m_pCI->G.pSubQuery->i_Caller() != pOuterQuery->pBoard()->i_Board())
-      continue;
-
-    vTrace("Orientation: OuterQuery %lld; SubQuery %lld, Caller %lld\n"_Stz,
-           pOuterQuery->pBoard()->i_Board(),
-           m_pCI->G.pSubQuery->pBoard()->i_Board(),
-           m_pCI->G.pSubQuery->i_Caller()
-    );
-
-    m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-    vFlatten_recurse();
-    m_pCI->G_vPopIter();
-
-    vTransform_FlattenByDecisionTree();
-
-    vDebugPoint();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // things to do to this outer query after flattening it's sub-queries
-
-  JoinOrdering* pJoinOrdering = new JoinOrdering(m_pCI);
-
-  pJoinOrdering->vJoinOrdering();
-
-  delete pJoinOrdering;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sub-query has been flattened
-
-  Card_Fold::vMorph_to_flat(m_pCI);
-
-  vDebugPoint();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vTransform_FlattenByDecisionTree(void)
+void FlattenSubQueries::vFlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
