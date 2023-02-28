@@ -51,6 +51,13 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inList
+    if (pTkn->bSame("inList"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // in
     if (pTkn->bSame("in"_Stz)) {
       pTkn = pTknVec->pNextToken();
@@ -98,11 +105,11 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ignore functions
     if (pTkn->bSame("EXTRACT_MINUTE"_Stz) || pTkn->bSame("EXTRACT_MONTH"_Stz) || pTkn->bSame("EXTRACT_SECOND"_Stz) ||
-        pTkn->bSame("EXTRACT_YEAR"_Stz)   || pTkn->bSame("IN"_Stz)            || pTkn->bSame("LIKE2"_Stz)          ||
-        pTkn->bSame("LIKE3"_Stz)          || pTkn->bSame("MATCHLEADING"_Stz)  || pTkn->bSame("MATCHMIDDLE"_Stz)    ||
-        pTkn->bSame("MATCHMIDDLE1"_Stz)   || pTkn->bSame("MATCHMIDDLE2"_Stz)  || pTkn->bSame("MATCHTRAILING"_Stz)  ||
-        pTkn->bSame("SUBSTRING2"_Stz)     || pTkn->bSame("SUBSTRING3"_Stz)    || pTkn->bSame("EXTRACT_DAY"_Stz)    ||
-        pTkn->bSame("EXTRACT_HOUR"_Stz)) {
+        pTkn->bSame("EXTRACT_YEAR"_Stz)   || pTkn->bSame("INLIST"_Stz)        || pTkn->bSame("IN"_Stz)             ||
+        pTkn->bSame("LIKE2"_Stz)          || pTkn->bSame("LIKE3"_Stz)          || pTkn->bSame("MATCHLEADING"_Stz)  ||
+        pTkn->bSame("MATCHMIDDLE"_Stz)    || pTkn->bSame("MATCHMIDDLE1"_Stz)   || pTkn->bSame("MATCHMIDDLE2"_Stz)  ||
+        pTkn->bSame("MATCHTRAILING"_Stz)  || pTkn->bSame("SUBSTRING2"_Stz)     || pTkn->bSame("SUBSTRING3"_Stz)    ||
+        pTkn->bSame("EXTRACT_DAY"_Stz)    || pTkn->bSame("EXTRACT_HOUR"_Stz)) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -659,7 +666,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("IN"_Stz)) {
+    if (pTkn->bSame("INLIST"_Stz) || pTkn->bSame("IN"_Stz)) {
       if (bGroupBy) {
         eError = EC_NOT_IMPLEMENTED;
         goto L_RETURN;

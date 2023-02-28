@@ -71,14 +71,14 @@ INCLUDE 'OptQ6.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 7...';
-//INCLUDE 'OptQ7.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 7...';
+INCLUDE 'OptQ7.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 8...';
-//INCLUDE 'OptQ8.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 8...';
+INCLUDE 'OptQ8.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 9...';     ......MEMORY LEAK
@@ -96,9 +96,9 @@ INCLUDE 'sleep.test';
 //INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running tpch query 12...';
-INCLUDE 'OptQ12.test';
-INCLUDE 'sleep.test';
+//LOG 'Running tpch query 12...';
+//INCLUDE 'OptQ12.test';
+//INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 13...';

@@ -25,6 +25,7 @@ namespace STORE
     bool           m_bCombinedOp;
     QueryNode*     m_pPrevStageMarker;
     bool           m_bInSubquery;
+    bool           m_bSubqueryRef;
     s32            m_sIndent;
     QueryNodeList* m_pColExprList;
 
