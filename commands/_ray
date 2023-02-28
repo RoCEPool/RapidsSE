@@ -4,19 +4,17 @@
 
 _r_schema
 
-create index PS_idx on PartSupp(PS_PARTKEY);
-
-/jobTags
 /transliterated
-/optimise
 /glean_interactive
 /weaved
-select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
-               from Part,
-                    PartSupp
-              where p_partkey  = ps_partkey
-                and p_brand = 'Brand#44'
-                and p_size < 10;
+/pipelineName = "_ray"
+select substring(c_phone from 1 for 2) as cntrycode
+  from Customer
+ where
+       substring (c_phone from 1 for 2)
+         in ('13','31','23','29','30','18','17')
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

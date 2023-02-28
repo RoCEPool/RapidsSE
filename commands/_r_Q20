@@ -22,17 +22,21 @@ select s_name, // board[0]
        s_nationkey
   from Supplier  // tblSyn a
    //, Nation    // tblSyn b
- where s_suppkey in ( /* Q20_1 -- 52_W_L_NC_I board[1] */
+ where
+       s_suppkey in
+                    ( /* Q20_1 -- 52_W_L_NC_I board[1] */
                       select ps_suppkey // tblSyn c
                         from PartSupp
                        where
-                             ps_partkey in ( /* Q20_1_1 -- 52_W_L_NC_I board[3] */
+                             ps_partkey in
+                                           ( /* Q20_1_1 -- 52_W_L_NC_I board[3] */
                                              select p_partkey // tblSyn e
                                                from Part
                                               where p_name like 'forest%'
-                                            )
+                                           )
                          and
-                             ps_availqty > ( /* Q20_1_2 -- 24_W_A_C_ro board[2] */
+                             ps_availqty >
+                                           ( /* Q20_1_2 -- 24_W_A_C_ro board[2] */
                                              select 0.5 * sum(l_quantity)
                                                from LineItem // tblSyn d
                                               where L_PARTKEY = PS_PARTKEY

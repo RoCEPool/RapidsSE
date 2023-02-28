@@ -1070,8 +1070,11 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
   }
 
   Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
-  if (! pCard_bounds)
-    return;
+  if (! pCard_bounds) {
+    pCard_bounds = pCard_KeyExists->pSub_bounds();
+    if (! pCard_bounds)
+      return;
+  }
 
   Card_EBound *pCard_ebound = pCard_bounds->pSub_eBound();
   if (! pCard_ebound)
