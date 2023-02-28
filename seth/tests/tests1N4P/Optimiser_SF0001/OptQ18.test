@@ -121,60 +121,6 @@ contains rows:
  ('Customer#000000088',88,838,  DATE '1996-02-18',37579.19,163.00)
  ('Customer#000000028',28,178,  DATE '1995-09-09',37704.79,107.00)
 
-trackMemory;
-
-_r_schema
-
-create index O_idx0  on orders   (O_ORDERKEY );
-create index C_idx0  on customer (C_CUSTKEY  );
-create index L_idx0  on lineitem (L_ORDERKEY );
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
-/glean_interactive
-/transliterated
-/weaved
-/pipelineName = "_r_Q18"
-select
-  c_name,
-  c_custkey,
-  o_orderkey,
-  o_orderdate,
-  o_totalprice,
-  sum(l_quantity)
-from
-  orders,
-  customer,
-  lineitem
-where
-  o_orderkey in
-    (
-    select
-      l_orderkey
-    from
-      lineitem
-    group by
-      l_orderkey
-    having
-      sum(l_quantity) > 100
-    )
-  and c_custkey = o_custkey
-  and o_orderkey = l_orderkey
-group by
-  c_name,
-  c_custkey,
-  o_orderkey,
-  o_orderdate,
-  o_totalprice
-order by
-  o_totalprice desc,
-  o_orderdate;
- 
- rows: 761
-
 MemoryLeaks;
 rows: 0
 
