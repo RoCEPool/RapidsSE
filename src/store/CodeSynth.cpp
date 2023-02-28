@@ -3282,7 +3282,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
-    if (pTkn->bSame("in"_Stz)) {
+    if (pTkn->bSame("inList"_Stz) || pTkn->bSame("in"_Stz)) {
       vPushFunc(pExprStack, pExprType, PE_INX);
       continue;
     }

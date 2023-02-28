@@ -151,6 +151,7 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bCombinedOp      = false;
   m_pPrevStageMarker = nullptr;
   m_bInSubquery      = false;
+  m_bSubqueryRef     = false;
   m_sIndent          = ""_Stz;
 
   m_pColExprList        = nullptr;
@@ -947,7 +948,12 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
       sPipeline->vCatSprint(" #%lld "_Stz, iInExprCount);
       GraphNav::bGlobalWalk(pLeftExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
-      sPipeline->vCatSprint(" in "_Stz);
+      if (pBackend->m_bSubqueryRef) {
+        sPipeline->vCatSprint(" in "_Stz);
+        pBackend->m_bSubqueryRef = false;
+      }
+      else
+        sPipeline->vCatSprint(" inList "_Stz);
 
       // TODO: CHECK THIS OUT
       return GraphNav::WALK_SKIP_CHILDREN;
@@ -1399,6 +1405,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
   if (SubqueryRefExpr::bIsOfType(pOrdinalExpr)) {
     sPipeline->vCatSprint(" %s "_Stz, SubqueryRefExpr::szTableAlias(pOrdinalExpr));
+    pBackend->m_bSubqueryRef = true;
     return GraphNav::WALK_CONTINUE;
   }
 
