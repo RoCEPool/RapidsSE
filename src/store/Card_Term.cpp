@@ -355,6 +355,7 @@ eTE Card_Term::eTermEval(void)
   else if (szTerm->bSame(">"_Stz))          return TE_COMPARE;
 
   else if (szTerm->bSame("between"_Stz))         return TE_BOOLFN;
+  else if (szTerm->bSame("inList"_Stz))          return TE_BOOLFN;
   else if (szTerm->bSame("isNull"_Stz))          return TE_BOOLFN;
   else if (szTerm->bSame("like2"_Stz))           return TE_BOOLFN;
   else if (szTerm->bSame("like3"_Stz))           return TE_BOOLFN;
