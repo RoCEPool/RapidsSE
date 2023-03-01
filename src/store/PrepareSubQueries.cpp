@@ -52,7 +52,7 @@ PrepareSubQueries::~PrepareSubQueries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vSeries_PrepareSubQueries(void)
+void PrepareSubQueries::vPrepareSubQueries(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
 
@@ -63,8 +63,8 @@ void PrepareSubQueries::vSeries_PrepareSubQueries(void)
     m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
 
     //vGroup_InitialAdjustments();
-    vTransform_MoveOn();
-    vTransform_ShortenQueryNames();
+    vMoveOn();
+    vShortenQueryNames();
 
     //vGroup_CondenseInfo();
     vTransform_DeleteUnneeded();
@@ -81,15 +81,19 @@ void PrepareSubQueries::vSeries_PrepareSubQueries(void)
     vTransform_RpnCalcToBoolCalc();
   }
 
-  vTransform_OuterQueryAnalysis();
+  vOuterQueryAnalysis();
 
   //vEndSeries(BK_SUBQUERY);
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* Analyse all sub-queries                                                    */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vTransform_OuterQueryAnalysis(void)
+void PrepareSubQueries::vOuterQueryAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
 
@@ -168,7 +172,7 @@ void PrepareSubQueries::vTransform_OuterQueryAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on> to <where>                                         */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vTransform_MoveOn(void)
+void PrepareSubQueries::vMoveOn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
 
@@ -182,7 +186,7 @@ void PrepareSubQueries::vTransform_MoveOn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vTransform_ShortenQueryNames(void)
+void PrepareSubQueries::vShortenQueryNames(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
 

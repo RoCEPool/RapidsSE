@@ -27,12 +27,13 @@ namespace STORE
     PrepareSubQueries(CardIter* pCI);
    ~PrepareSubQueries(void) noexcept(false);
 
-    void vSeries_PrepareSubQueries(void);
+    void vPrepareSubQueries(void);
 
-    void vTransform_OuterQueryAnalysis(void);
+  private:
+    void vOuterQueryAnalysis(void);
 
-    void vTransform_MoveOn(void);
-    void vTransform_ShortenQueryNames(void);
+    void vMoveOn(void);
+    void vShortenQueryNames(void);
     void vTransform_DeleteUnneeded(void);
     void vTransform_ScanBecomesTable(void);
     void vTransform_AddLevel(void);

@@ -154,7 +154,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
 
   PrepareSubQueries* pPrepareSubQueries = new PrepareSubQueries(m_pCI);
-  pPrepareSubQueries->vSeries_PrepareSubQueries();
+  pPrepareSubQueries->vPrepareSubQueries();
   delete pPrepareSubQueries;
 
   FlattenSubQueries* pFlattenSubQueries = new FlattenSubQueries(m_pCI);
