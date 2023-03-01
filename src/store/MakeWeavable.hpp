@@ -29,15 +29,13 @@ namespace STORE
 
   private:
 
-    void vTransform_CullNonusedBounds(void);
-    void vTransform_CullUsedBoundsFromFilter(void);
-    void vTransform_IndividuateFilter(void);
-
-    void vTransform_ReinstateStages(void);
-    void vTransform_AddPartitioning(void);
-
-    void vTransform_TblColToStmCol(void);
-    void vTransform_StmColToColNmOfKeyExists(void);
+    void vAddPartitioning(void);
+    void vCullNonusedBounds(void);
+    void vCullUsedBoundsFromFilter(void);
+    void vIndividuateFilter(void);
+    void vReinstateStages(void);
+    void vStmColToColNmOfKeyExists(void);
+    void vTblColToStmCol(void);
 
   protected:
     Footer* aFooter(void);

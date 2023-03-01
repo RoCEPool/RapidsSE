@@ -59,29 +59,48 @@ void MakeWeavable::vMakeWeavable(void)
 //  vSeries(BK_SUBQUERY, 0, __func__);
 
   //vGroup_CullBounds();
-  vTransform_CullNonusedBounds();
-  vTransform_CullUsedBoundsFromFilter();
+  vCullNonusedBounds();
+  vCullUsedBoundsFromFilter();
 
   //vGroup_Filters();
-  vTransform_IndividuateFilter();
+  vIndividuateFilter();
 
   //vGroup_Staging();
-  vTransform_ReinstateStages();
+  vReinstateStages();
 
   //vGroup_Partitioning();
-  vTransform_AddPartitioning();
+  vAddPartitioning();
 
   //vGroup_FinalAdjustments();
-  vTransform_TblColToStmCol();
-  vTransform_StmColToColNmOfKeyExists();
+  vTblColToStmCol();
+  vStmColToColNmOfKeyExists();
 
 //  vEndSeries(BK_SUBQUERY, 0);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add partitioning                                                           */
+/*----------------------------------------------------------------------------*/
+void MakeWeavable::vAddPartitioning(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "add partitioning"_Stz);
+
+  Board::vAdd_Partitioning(m_pCI);
+
+  m_pCI->vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/
 /* inspect filters and remove cmp predicates which are in bounds              */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_CullNonusedBounds(void)
+void MakeWeavable::vCullNonusedBounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
@@ -145,7 +164,7 @@ void MakeWeavable::vTransform_CullNonusedBounds(void)
 /*----------------------------------------------------------------------------*/
 /* inspect filters and remove cmp predicates which are in bounds              */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_CullUsedBoundsFromFilter(void)
+void MakeWeavable::vCullUsedBoundsFromFilter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
@@ -209,7 +228,7 @@ void MakeWeavable::vTransform_CullUsedBoundsFromFilter(void)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_IndividuateFilter(void)
+void MakeWeavable::vIndividuateFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
 
@@ -231,17 +250,20 @@ void MakeWeavable::vTransform_IndividuateFilter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_TblColToStmCol(void)
+void MakeWeavable::vReinstateStages(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "vTransform_TblColToStmCol"_Stz);
+  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
 
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
+  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
+  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  Card_Stage::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform();
 }
@@ -249,7 +271,7 @@ void MakeWeavable::vTransform_TblColToStmCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_StmColToColNmOfKeyExists(void)
+void MakeWeavable::vStmColToColNmOfKeyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
 
@@ -270,40 +292,20 @@ void MakeWeavable::vTransform_StmColToColNmOfKeyExists(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reinstate stages                                                           */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_ReinstateStages(void)
+void MakeWeavable::vTblColToStmCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
+  m_pCI->vTransform(__func__, "vTblColToStmCol"_Stz);
 
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_Stage::vReinstate_stages(m_pCI);
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain())
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
   m_pCI->vEndTransform();
 }
-
-/*----------------------------------------------------------------------------*/
-/* add partitioning                                                           */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vTransform_AddPartitioning(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "add partitioning"_Stz);
-
-  Board::vAdd_Partitioning(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-
-
 
 /*============================================================================*/
 /* end                                                                        */
