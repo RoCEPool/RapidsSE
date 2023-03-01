@@ -52,71 +52,30 @@ MakeWeavable::~MakeWeavable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vSeries_MakeWeavable(void)
+void MakeWeavable::vMakeWeavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
 //  vSeries(BK_SUBQUERY, 0, __func__);
 
-  vGroup_CullBounds();
-  vGroup_Filters();
-  vGroup_Staging();
-  vGroup_Partitioning();
-  vGroup_FinalAdjustments();
-
-//  vEndSeries(BK_SUBQUERY, 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vGroup_CullBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
+  //vGroup_CullBounds();
   vTransform_CullNonusedBounds();
   vTransform_CullUsedBoundsFromFilter();
-}
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vGroup_Filters(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
+  //vGroup_Filters();
   vTransform_IndividuateFilter();
-}
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vGroup_Staging(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
+  //vGroup_Staging();
   vTransform_ReinstateStages();
-}
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vGroup_Partitioning(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
+  //vGroup_Partitioning();
   vTransform_AddPartitioning();
-}
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vGroup_FinalAdjustments(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
+  //vGroup_FinalAdjustments();
   vTransform_TblColToStmCol();
   vTransform_StmColToColNmOfKeyExists();
+
+//  vEndSeries(BK_SUBQUERY, 0);
 }
 
 /*----------------------------------------------------------------------------*/

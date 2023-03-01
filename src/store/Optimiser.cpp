@@ -166,7 +166,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   delete pApplyOptimisations;
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
-  pMakeWeavable->vSeries_MakeWeavable();
+  pMakeWeavable->vMakeWeavable();
   delete pMakeWeavable;
 }
 

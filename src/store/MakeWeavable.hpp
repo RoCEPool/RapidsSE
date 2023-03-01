@@ -25,13 +25,9 @@ namespace STORE
     MakeWeavable(CardIter* pCI);
    ~MakeWeavable(void) noexcept(false);
 
-    void vSeries_MakeWeavable(void);
+    void vMakeWeavable(void);
 
-    void vGroup_CullBounds(void);
-    void vGroup_Filters(void);
-    void vGroup_Staging(void);
-    void vGroup_Partitioning(void);
-    void vGroup_FinalAdjustments(void);
+  private:
 
     void vTransform_CullNonusedBounds(void);
     void vTransform_CullUsedBoundsFromFilter(void);
