@@ -441,8 +441,7 @@ SELECT INTERVAL '31 5' DAY TO HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '3
 rows:
   (true)
 
-/*
-SELECT INTERVAL '9' HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '360' MINUTE)
+SELECT INTERVAL '9' HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '540' MINUTE)
   FROM nation where n_nationkey = 2;
 rows:
   (true)
@@ -451,7 +450,7 @@ SELECT INTERVAL '9' HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '360' HOUR, 
   FROM nation where n_nationkey = 2;
 rows:
   (false)
-*/
+
 drop table nation;
 success
 
