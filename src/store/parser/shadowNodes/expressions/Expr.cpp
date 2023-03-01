@@ -945,8 +945,12 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
         pNumerator = pCastExpr;
       }
 
-      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId) {
-        // Denominator needs to be cast
+      // If the denominator is not of the same type as the output
+      // then it needs to be cast. An exception here is an average
+      // of an interval. The denominator is always an integer.
+      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId &&
+          eAvgType != CT_INTERVAL_DT &&
+          eAvgType != CT_INTERVAL_YM ) {
         QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pDenominator, pRootNode);
 
         // Denominator was copied above, so clean up
