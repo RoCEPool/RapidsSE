@@ -44,6 +44,7 @@ namespace STORE
     static void vAddSteps_BucketGet(void);
     static void vAddSteps_BucketRecv(void);
     static void vAddSteps_BucketSend(void);
+    static void vAddSteps_BufferId(void);
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);

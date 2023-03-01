@@ -131,6 +131,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("BufferId[]"_Stz)) {
+    pCurrentWord->vEncodeCall("BufferId[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("CounterA[]"_Stz)) {
     pCurrentWord->vEncodeCall("CounterA[].set"_Stz);
     EXIT();

@@ -46,8 +46,11 @@
 
 : CrwBuffer[].pipeOut
 
-  CrwBuffer[]
-    nullptr to CrwBuffer[]
+  CrwBuffer[]\clear to BufferId[]
+
+  BufferId[].dropLock
+
+  BufferId[]\clear
 
   [op].pipeout
 ;
@@ -177,8 +180,11 @@
 
 : RowBuffer[].pipeOut
 
-  RowBuffer[]
-    nullptr to RowBuffer[]
+  RowBuffer[]\clear to BufferId[]
+
+  BufferId[].dropLock
+
+  BufferId[]\clear
 
   [op].pipeout
 ;

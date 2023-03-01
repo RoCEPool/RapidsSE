@@ -241,6 +241,15 @@ public:
   // BktMapRecv
   void vBktMapRecvPutParts(void);
 
+  // BufferId
+  void vBufferIdClear(void);
+  void vBufferIdDropLock(void);
+  void vBufferIdGet(void);
+  void vBufferIdGetAndClear(void);
+  void vBufferIdIsNotNull(void);
+  void vBufferIdIsNull(void);
+  void vBufferIdSet(void);
+
   // build
   void vBuildBranch(void);
   void vBuildDate(void);

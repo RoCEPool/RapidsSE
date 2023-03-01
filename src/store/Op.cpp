@@ -263,19 +263,11 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 
     AM::METRICS::vDerefMetrics((i8) pOperand, pOperand->eGetClassNo(), DR_ENQUEUE);
 
-//#ifdef WITH_BUFFER_ID
-//    if (1 == DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
-//      // Replace RowBuffer address with BufferId and append to queue
-//      DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
-//      BufferId oBufferId = pDataBuffer->oGetBufferId();
-//      pOperand = (Operand *) oBufferId.m_pvAsAddress;
-//    }
-//#endif
-  } else
-  {
-    // We are done with this buffer, release its lock so it is allowed to be paged out
-    // TODO: Arjun - Change to BufferId function
-    AM::pHashMap()->vDropKeyLock(pOperand);
+    // TODO: Arjun - Hack to convert Buffer address to BufferId before appending to queue
+    if (pOperand->eGetClassNo() == BASE::CN_ROWBUFFER ||
+        pOperand->eGetClassNo() == BASE::CN_CRWBUFFER) {
+      vTrace("vAppendLeft() got Crw/Row buffer\n"_Stz);
+    }
   }
 
   vGrabTaskLock();

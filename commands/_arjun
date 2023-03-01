@@ -139,9 +139,9 @@ dload lineitem paths
 
 tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
-_nation;
-load Nation   "<tpch_dir>/nation.<suffix>"   ;
-
+_orders
+load Orders   "<tpch_dir>/orders.<suffix>"   ;
+select * from orders;
 // Pipeline to page out row buffers
 /*
 pipeline __pageout
