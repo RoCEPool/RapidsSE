@@ -228,6 +228,19 @@ void Bench::vIsFlat(bool bIsFlat)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given name a known subquery?                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bIsSubQueryNm(Stz* szSubQueryNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pGetBoard(szSubQueryNm))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Optimiser* Bench::pOptimiser(void)

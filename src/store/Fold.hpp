@@ -55,9 +55,6 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    CarryForward* pFlatten_74_H_A_NC_ro(void);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vDerive_Correleted_fold_projection(CardIter* pCI);
 
@@ -69,6 +66,7 @@ namespace STORE
 
     CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
                                     eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh);
+
     i8 nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);
 
   protected:

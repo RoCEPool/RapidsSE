@@ -373,7 +373,7 @@ bool Card::bIsSubQueryName(BASE::Stz *szValue)
       StrLib::bBeginsWith(szValue->azChar(),"__sq"))
     return true;
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

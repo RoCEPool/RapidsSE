@@ -49,6 +49,7 @@ namespace STORE
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
     bool bIsFlat(void);
     void vIsFlat(bool bIsFlat);
+    bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
     char cPrefix(void);
     void vPrefix(char cPrefix);
