@@ -30,22 +30,17 @@ namespace STORE
     void vPrepareSubQueries(void);
 
   private:
-    void vOuterQueryAnalysis(void);
-
+    void vAddLevel(void);
+    void vDeleteUnneeded(void);
+    void vIndexAnalysis(void);
     void vMoveOn(void);
+    void vNotOps(void);
+    void vOuterQueryAnalysis(void);
+    void vProjectionAnalysis(void);
+    void vRpnCalcToBoolCalc(void);
+    void vScanBecomesTable(void);
     void vShortenQueryNames(void);
-    void vTransform_DeleteUnneeded(void);
-    void vTransform_ScanBecomesTable(void);
-    void vTransform_AddLevel(void);
-    void vTransform_NotOps(void);
-
-    void vTransform_TableAnalysis(char* acTableSyn);
-
-    void vTransform_IndexAnalysis(void);
-    void vTransform_ProjectionAnalysis(void);
-
-    void vTransform_RpnCalcToBoolCalc(void);
-
+    void vTableAnalysis(char* acTableSyn);
 
   protected:
     Footer* aFooter(void);
