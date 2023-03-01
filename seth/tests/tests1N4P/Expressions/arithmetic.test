@@ -476,6 +476,34 @@ failure contains: 'EC_NOT_IMPLEMENTED'
 SELECT CAST(INTERVAL '9' YEAR as FLOAT) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Min of Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MIN(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+failure contains: 'EC_NOT_IMPLEMENTED'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Max of Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT MIN(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+failure contains: 'EC_NOT_IMPLEMENTED'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Sum of Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT SUM(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+failure contains: 'EC_NOT_IMPLEMENTED'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Avg of Interval
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//SELECT AVG(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
 drop table nation;
 success
 
