@@ -567,7 +567,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
       pCI->G.p_type = _pCard_Type(pCI->G.p_expr->pSub_type()->pDupCardAndSubCards());
 
       pCI->G_vNewMember(CK_EXPR);
-      pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
+      pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
