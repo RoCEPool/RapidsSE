@@ -10,8 +10,7 @@ __TPCH_SCHEMA
 
 select * from dummy;
 
-// QUERY 2
-// modified psize = 15 to psize < 15 for SF0001
+// QUERY 8
 
 trackMemory;
 
@@ -19,59 +18,35 @@ trackMemory;
 /transliterated
 /weaved
 /pipelineName = "_tpch_debug"
-select
-  s_acctbal,
-  s_name,
-  n_name,
-  p_partkey,
-  p_mfgr,
-  s_address,
-  s_phone,
-  s_comment
-from
-  part,
-  supplier,
-  partsupp,
-  nation,
-  region
-where
-  p_partkey = ps_partkey
-  and s_suppkey = ps_suppkey
-  and p_size = 20
-  and p_type like '%STEEL'
-  and s_nationkey = n_nationkey
-  and n_regionkey = r_regionkey
-  and r_name = 'AFRICA'
-  and ps_supplycost =
-  (
-    select
-      min(ps_supplycost)
-    from
-      partsupp,
-      supplier,
-      nation,
-      region
-    where
-          P_PARTKEY = PS_PARTKEY
-      and s_suppkey   = ps_suppkey
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name      = 'AFRICA' )
+select o_year,
+   sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
+from (
+   select extract(year from o_orderdate) as o_year,
+     l_extendedprice * (1-l_discount) as volume,
+     n2.n_name as nation
+   from part, supplier, lineitem, orders, customer, nation n1, nation n2, region
+   where p_partkey = l_partkey
+     and s_suppkey = l_suppkey
+     and l_orderkey = o_orderkey
+     and o_custkey = c_custkey
+     and c_nationkey = n1.n_nationkey
+     and n1.n_regionkey = r_regionkey
+     and r_name = 'AMERICA'
+     and s_nationkey = n2.n_nationkey
+     and o_orderdate >= '1995-01-01'
+     and o_orderdate <= '1996-12-31'
+     and p_type = 'ECONOMY ANODIZED TIN'
+   ) as all_nations
 
-order by
-  s_acctbal desc,
-  n_name,
-  s_name,
-  p_partkey
-limit 100;
+   group by o_year
+   order by o_year;
 
 MemoryLeaks;
 
 /*
 Expected Result:
 
- (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
- (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
+ rows: (1996,0.00)
 */
 
 /*============================================================================*/
