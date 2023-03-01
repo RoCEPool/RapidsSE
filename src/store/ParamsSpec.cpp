@@ -35,6 +35,9 @@ ParamsSpec::ParamsSpec(void)
 ParamsSpec::~ParamsSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARAMSSPEC,_FOOTER_);
+
+  while (ParamSpec* pParamSpec = pPop())
+    delete pParamSpec;
 }
 
 
