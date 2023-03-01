@@ -358,15 +358,19 @@ bool Card::bIsSubQueryName(BASE::Stz *szValue)
 {
   _static_
 
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
+//  char acFirst  = szValue->azChar()[0];
+//  char acSecond = szValue->azChar()[1];
+//  char acThird  = szValue->azChar()[2];
+//  char acFourth = szValue->azChar()[3];
+//
+//  if ('_' == acFirst
+//      && '_' == acSecond
+//      && 's' == acThird
+//      && 'u' == acFourth)
+//    return true;
 
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 's' == acThird
-      && 'u' == acFourth)
+  if (StrLib::bBeginsWith(szValue->azChar(),"__subquery") ||
+      StrLib::bBeginsWith(szValue->azChar(),"__sq"))
     return true;
 
   return false;
