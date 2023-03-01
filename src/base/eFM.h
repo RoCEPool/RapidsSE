@@ -77,6 +77,10 @@ enum eFM : u2 // function macros
   /*  */ FM_NEG_IVD,             // -ivd
   /*  */ FM_NEG_IVY,             // -ivy
 
+  // not supported
+  /*  */ FM_OPR_NOTNOT,          // not supported
+  /*  */ FM_OPR_NOT,             // not supported
+
   // subtract
   /*  */ FM_SUB_ANYUNK,           // any + unk
   /*  */ FM_SUB_BCDBCD,           // bcd - bcd
@@ -439,6 +443,10 @@ static Stz* aFM[]
   /*  */ "_NEG_INT"_Stz,
   /*  */ "_NEG_IVD"_Stz,
   /*  */ "_NEG_IVY"_Stz,
+
+  // not supported
+  /*  */ "_OPR_NOTNOT"_Stz,
+  /*  */ "_OPR_NOT"_Stz,
 
   // subtract
   /*  */ "_SUB_ANYUNK"_Stz,

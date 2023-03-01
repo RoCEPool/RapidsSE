@@ -1086,6 +1086,24 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  NOT SUPPORTED
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _OPR_NOTNOT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    eErrorCode = EC_NOT_IMPLEMENTED;                                       \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _OPR_NOT(eErrorCode)                                               \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    eErrorCode = EC_NOT_IMPLEMENTED;                                       \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  INVALID TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _OPR_INVINV(eErrorCode)                                            \
