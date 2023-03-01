@@ -29,11 +29,6 @@ namespace STORE
 
     void vSeries_PrepareSubQueries(void);
 
-    void vGroup_InitialAdjustments(void);
-    void vGroup_CondenseInfo(void);
-    void vGroup_MetaAnalysis(void);
-    void vGroup_PreliminaryConversions(void);
-
     void vTransform_OuterQueryAnalysis(void);
 
     void vTransform_MoveOn(void);

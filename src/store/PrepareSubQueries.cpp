@@ -62,65 +62,29 @@ void PrepareSubQueries::vSeries_PrepareSubQueries(void)
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
 
-    vGroup_InitialAdjustments();
-    vGroup_CondenseInfo();
-    vGroup_MetaAnalysis();
-    vGroup_PreliminaryConversions();
+    //vGroup_InitialAdjustments();
+    vTransform_MoveOn();
+    vTransform_ShortenQueryNames();
+
+    //vGroup_CondenseInfo();
+    vTransform_DeleteUnneeded();
+    vTransform_ScanBecomesTable();
+    vTransform_AddLevel();
+    vTransform_NotOps();
+
+    //vGroup_MetaAnalysis();
+    vTransform_TableAnalysis(&m_cTableSyn);
+    vTransform_ProjectionAnalysis();
+    vTransform_IndexAnalysis();
+
+    //vGroup_PreliminaryConversions();
+    vTransform_RpnCalcToBoolCalc();
   }
 
   vTransform_OuterQueryAnalysis();
 
   //vEndSeries(BK_SUBQUERY);
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vGroup_InitialAdjustments(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
-
-  vTransform_MoveOn();
-  vTransform_ShortenQueryNames();
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vGroup_CondenseInfo(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
-
-  vTransform_DeleteUnneeded();
-  vTransform_ScanBecomesTable();
-  vTransform_AddLevel();
-  vTransform_NotOps();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vGroup_MetaAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
-
-  vTransform_TableAnalysis(&m_cTableSyn);
-  vTransform_ProjectionAnalysis();
-  vTransform_IndexAnalysis();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vGroup_PreliminaryConversions(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
-
-  //vTransform_StmColToTblCol_originalModel();
-  vTransform_RpnCalcToBoolCalc();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* Analyse all sub-queries                                                    */
@@ -447,8 +411,6 @@ void PrepareSubQueries::vTransform_RpnCalcToBoolCalc(void)
 
   m_pCI->vEndTransform();
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
