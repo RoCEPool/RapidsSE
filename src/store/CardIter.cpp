@@ -1131,6 +1131,25 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
+    vFocusOnMain();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.e_MainCard = CK_NONE;
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);

@@ -2,6 +2,9 @@
 /* _tpch_debug                                                                */
 /*============================================================================*/
 
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
 __TPCH_SCHEMA
 
 
@@ -9,6 +12,10 @@ __TPCH_SCHEMA
 // modified psize = 15 to psize < 15 for SF0001
 
 
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpch_debug"
 select
   s_acctbal,
   s_name,
@@ -42,11 +49,11 @@ where
       nation,
       region
     where
-      p_partkey = ps_partkey
-      and s_suppkey = ps_suppkey
+          P_PARTKEY = PS_PARTKEY
+      and s_suppkey   = ps_suppkey
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
-      and r_name = 'EUROPE' )
+      and r_name      = 'EUROPE' )
 
 order by
   s_acctbal desc,

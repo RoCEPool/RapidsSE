@@ -100,10 +100,17 @@ void Smoosh::vInto_GBYAGG(CardIter* pCI)
 //  pCI->vPrintBoard(__LINE__);
 
 
-  pCI->G_vRestart();
-  RASSERT(pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+  //pCI->G_vRestart();
+  //RASSERT(pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
 
-  RASSERT(pCI->G_bEachMain(CK_FOLD));
+
+  if (CK_PROJECT == pCI->G.e_MainCard || CK_GBYAGG == pCI->G.e_MainCard)
+    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+  else
+    NEVER_REACH
+
+  pCI->vRestart();
+  RASSERT(pCI->G_bEachMain_reverse(CK_FOLD));
 
   // Table*
   i8 nTables = 0;
