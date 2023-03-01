@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PrepareSubQueries.cpp -- PrepareSubQueries                                           */
+/* PrepareSubQueries.cpp -- PrepareSubQueries                                 */
 /*============================================================================*/
 
 #include "PrepareSubQueries.hpp"

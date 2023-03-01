@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FlattenSubQueries.cpp -- FlattenSubQueries                                               */
+/* FlattenSubQueries.cpp -- Flatten SubQueries                                */
 /*============================================================================*/
 
 #include "FlattenSubQueries.hpp"
@@ -78,7 +78,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 
   SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
 
-  vTransform_StmColToTblCol();
+  vStmColToTblCol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query
@@ -739,7 +739,7 @@ void FlattenSubQueries::vFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vTransform_StmColToTblCol(void)
+void FlattenSubQueries::vStmColToTblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 

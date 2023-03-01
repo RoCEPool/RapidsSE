@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FlattenSubQueries.hpp -- FlattenSubQueries                                               */
+/* FlattenSubQueries.hpp -- Flatten SubQueries                                */
 /*============================================================================*/
 #pragma once
 
@@ -27,6 +27,8 @@ namespace STORE
 
     void vFlatten(void);
 
+  private:
+
     void vFlatten_recurse(i8 iDepth);
 
     void vFlattenByDecisionTree(void);
@@ -42,7 +44,7 @@ namespace STORE
     void vFlatten_53_W_L_NC_NI_join(void);
     void vFlatten_74_H_A_NC_ro(void);
 
-    void vTransform_StmColToTblCol(void);
+    void vStmColToTblCol(void);
 
   protected:
     Footer* aFooter(void);
