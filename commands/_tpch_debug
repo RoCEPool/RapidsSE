@@ -8,6 +8,8 @@ tag default <suffix>   = "csv";
 __TPCH_SCHEMA
 
 
+select * from dummy;
+
 // QUERY 2
 // modified psize = 15 to psize < 15 for SF0001
 
