@@ -324,7 +324,7 @@ namespace STORE
 
     static bool bIsResultOrdinal(Stz* szValue);     // #n
 
-    static bool bIsSubQueryName(Stz* szValue);     // __subqueryN
+    static bool bIsSubQueryPattern(Stz* szValue);   // __subqueryN
 
     static bool bIsSqyColOrdinal(Stz* szValue);    // __n
 

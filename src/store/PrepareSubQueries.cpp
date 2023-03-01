@@ -61,10 +61,15 @@ void PrepareSubQueries::vPrepareSubQueries(void)
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
+    vShortenQueryNames();
+  }
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
 
     //vGroup_InitialAdjustments();
     vMoveOn();
-    vShortenQueryNames();
 
     //vGroup_CondenseInfo();
     vDeleteUnneeded();
@@ -314,21 +319,22 @@ void PrepareSubQueries::vShortenQueryNames(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
+  m_pCI->vTransform(__func__, "vShortenQueryNames"_Stz);
 
 
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
-  i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
-  sBoardNm.vSprint("__sq%02lld"_Stz,iSqNo);
-  m_pCI->G.pBoard->vBoardNm(sBoardNm);
-
+  if (Card::bIsSubQueryPattern(sBoardNm)) {
+    i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
+    sBoardNm.vSprint("__sq%02lld"_Stz, iSqNo);
+    m_pCI->G.pBoard->vBoardNm(sBoardNm);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   CardIter* pCI = m_pCI;
 
   auto bLambdaFn = [pCI](Card* p_card) {
-    if (! Card::bIsSubQueryName(p_card->szValue()))
+    if (! Card::bIsSubQueryPattern(p_card->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iSqNo = StrLib::iGleanInt(p_card->szValue()->azChar());

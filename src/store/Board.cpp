@@ -1115,7 +1115,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (Card::bIsSubQueryName(p_child->szValue())) {
+        if (pCI->m_pBench->bIsSubQueryNm(p_child->szValue())) {
           Card* p_arg = xCI.pPrevChild();
 
           Card_Term* p_term_new = new Card_Term("$2"_Stz);

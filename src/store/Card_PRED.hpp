@@ -16,7 +16,7 @@ namespace STORE
 
     bool bAllSubs_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
     Card_PRED* pContaining_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
-    bool bContains_callToSubQuery(void);
+    bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblColOdn(void);

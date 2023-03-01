@@ -216,7 +216,7 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
-Card_BoolCalc* Card_RpnCalc::pToBoolCalc(void)
+Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -316,7 +316,8 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(void)
         p_cmpPred = new Card_CmpPred;
         p_cmpPred->vValue(p_term_next->sz());
         p_cmpPred->vTransferChildren(p_TermSeries);
-        if (p_cmpPred->bContains_Sqy_Call())
+        p_cmpPred->vDump();
+        if (p_cmpPred->bContains_Sqy_Call(pCI))
           p_cmpPred->vCard(CK_ROPRED);
         else
         if (! p_cmpPred->bIsValue("=="_Stz)) // todo: more work

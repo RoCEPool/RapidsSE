@@ -136,7 +136,7 @@ Card_PRED* Card_PRED::pContaining_MaybeBoundsOf_index(Card_Index* p_index,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bContains_callToSubQuery(void)
+bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -144,7 +144,7 @@ bool Card_PRED::bContains_callToSubQuery(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (Card::bIsSubQueryName(xCI.G.p_term->szValue()))
+    if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_term->szValue()))
       return true;
 
   return false;

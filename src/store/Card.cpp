@@ -352,9 +352,9 @@ bool Card::bIsResultOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a subQuery name?                                                  */
+/* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsSubQueryName(BASE::Stz *szValue)
+bool Card::bIsSubQueryPattern(BASE::Stz *szValue)
 {
   _static_
 
@@ -373,7 +373,7 @@ bool Card::bIsSubQueryName(BASE::Stz *szValue)
       StrLib::bBeginsWith(szValue->azChar(),"__sq"))
     return true;
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

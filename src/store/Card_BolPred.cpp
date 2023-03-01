@@ -5,6 +5,7 @@
 #include "Card_BolPred.hpp"
 
 #include "Card_Term.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -53,7 +54,7 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
     vValue("=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
-    ASSERT(Card::bIsSubQueryName(p_term_one->szValue())); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szValue())); //temp
     p_term_one->vValue(p_term ? p_term->szValue() : "$1"_Stz);
     return;
   }
@@ -63,7 +64,7 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
     vCard(CK_CMPPRED);
     vValue("=="_Stz);
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(Card::bIsSubQueryName(p_term_popped->szValue())); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szValue())); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -77,7 +78,7 @@ void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
     vCard(CK_CMPPRED);
     vValue("=="_Stz);
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(Card::bIsSubQueryName(p_term_popped->szValue())); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szValue())); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));

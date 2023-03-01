@@ -125,14 +125,14 @@ bool Card_CmpPred::bCmpPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bContains_Sqy_Call(void)
+bool Card_CmpPred::bContains_Sqy_Call(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
   while (Card* p_card = xCI.pEachChild()) {
     if (p_card->bIsCard(CK_TERM) &&
-        Card::bIsSubQueryName(p_card->szValue()))
+        pCI->m_pBench->bIsSubQueryNm(p_card->szValue()))
       return true;
   }
 
