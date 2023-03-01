@@ -37,6 +37,7 @@ namespace STORE
     void vTransform_OuterQueryAnalysis(void);
 
     void vTransform_MoveOn(void);
+    void vTransform_ShortenQueryNames(void);
     void vTransform_DeleteUnneeded(void);
     void vTransform_ScanBecomesTable(void);
     void vTransform_AddLevel(void);

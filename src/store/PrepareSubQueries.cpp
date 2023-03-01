@@ -81,6 +81,8 @@ void PrepareSubQueries::vGroup_InitialAdjustments(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
 
   vTransform_MoveOn();
+  vTransform_ShortenQueryNames();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +214,46 @@ void PrepareSubQueries::vTransform_MoveOn(void)
 
   m_pCI->vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PrepareSubQueries::vTransform_ShortenQueryNames(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
+
+
+  s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
+  i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
+  sBoardNm.vSprint("__sq%02lld"_Stz,iSqNo);
+  m_pCI->G.pBoard->vBoardNm(sBoardNm);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  CardIter* pCI = m_pCI;
+
+  auto bLambdaFn = [pCI](Card* p_card) {
+    if (! Card::bIsSubQueryName(p_card->szValue()))
+      return C_CONTINUE_RECURSION;
+
+    i8 iSqNo = StrLib::iGleanInt(p_card->szValue()->azChar());
+
+    p_card->vValueSprint("__sq%02lld"_Stz, iSqNo);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE,bLambdaFn);
+
+
+  m_pCI->vEndTransform();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
