@@ -33,7 +33,6 @@ RapidsSE has the following minimum system requirements:
 
 .. csv-table:: Minimum RapidsSE requirements
    :name: minimum-requirements
-   :class: longtable
    :widths: 20, 80
 
    "**Nodes:**", "1 node"

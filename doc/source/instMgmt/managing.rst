@@ -22,7 +22,6 @@ below.
 
 .. table::
    :name: install-dir-desc
-   :class: longtable
    :widths: 20, 80
 
    ================== ===========================================================

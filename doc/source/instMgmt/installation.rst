@@ -227,7 +227,6 @@ advanced wizard modes is presented below:
 .. csv-table:: Installation Modes Compared
    :header: "Item", "Basic Mode (default)", "Advanced Mode", "Description"
    :name: installation-modes
-   :class: longtable
    :widths: 15, 15, 15, 55
 
    "Node names", "", "✅", "The prefix to be given to uniquely name each node. A

@@ -170,12 +170,12 @@ idiosyncratic code.
 
 Workloads within RapidsSE are defined in isolated units called *jobs*. A job can
 execute across any or all nodes in the cluster. Jobs are uniquely
-identifiable.
+identifiable within the system.
 
 The work that a job will do is defined by a *pipeline*. A pipeline may have been
 created dynamically (for example, to fulfill an external user's query), or it
-may be executing a previously defined pipeline (for example, reading and
-processing messages from other nodes in the cluster).
+may be executing a pipeline that has been previously defined and used multiple
+times (for example, reading and processing messages from other nodes in the cluster).
 
 A pipeline consists of a series of *tasks* connected together in a topology
 across the cluster. A pipeline that connects two tasks serves as a communication
@@ -184,15 +184,15 @@ Tasks can send data and/or control messages downstream through the pipeline to
 other tasks in response to its own activity.
 
 So a pipeline defines what tasks are run, where in the cluster they are run
-and in what order they are run. A pipeline could run purely on the local node,
-a remote node, or any or all of the nodes in the cluster depending on the
-nature of the work and the location of the data. A pipeline is not necessarily
-a linear sequence. It can fan out to multiple tasks (like a broadcast), fan in
-from multiple tasks to a single task (for example, when aggregating a value),
-and invoke other pipelines. Fanning out is useful for parallelising an operation
-across all data partitions on a node or across all nodes in a cluster. At some
-point, pipelines that have a fan out will fan in to collect or aggregate the
-results before they are sent back to the user.
+and in what order messages flow between them. A pipeline could run purely on
+the local node, a remote node, or any or all of the nodes in the cluster
+depending on the nature of the work and the location of the data. A pipeline
+is not necessarily a linear sequence. It can fan out to multiple tasks (like
+a broadcast), fan in from multiple tasks to a single task (for example, when
+aggregating a value), and invoke other pipelines. Fanning out is useful for
+parallelising an operation across all data partitions on a node or across all
+nodes in a cluster. At some point, pipelines that have a fan out will fan in
+to collect or aggregate the results before they are sent back to the user.
 
   The fictitious pipeline in figure :numref:`pipelineExampleFigure`
   example shows that there are 3 tasks that first
@@ -252,8 +252,10 @@ the CPU usage on the node and shortening the query execution time.
 
 
 A given thread may have multiple tasks ready to be executed. Generally each task
-is executed in a fair and round-robin nature. However control of the task
-scheduling and execution gives RapidsSE the power to prioritise any important
+is executed in a fair and round-robin nature. The thread will regularly change
+which task in its queue it is executing, giving the appearance that all tasks
+are being executed concurrently. This control of the task scheduling and
+execution gives RapidsSE the power to prioritise any important
 internal tasks where it is required. This could favour certain admin actions,
 or internal operations such that user queries are not impeded.
 
@@ -267,16 +269,26 @@ But if a RapidsSE thread has a queue of tasks to run, how does it ensure that
 all the tasks run fairly? After all, one long-running task could easily prevent
 other tasks in the thread's queue from being executed.
 
-RapidsSE solves this by breaking tasks down into a series of smaller executable
-sequences called *steps*. All tasks in RapidsSE are designed this way. While
-the instructions within a step cannot be interrupted, after a step completes a
-thread may choose to begin executing steps from the next task in its queue.
-Alternatively a task may indicate that it is no longer runnable, for example
-because it has no more data to work with. A thread may execute a number of
-steps from a task before switching execution to the next task in the queue.
-In this way, a single thread can be time-shared across many independent
-executable tasks. This allows every task in the system the fair ability to
-make forward progress.
+RapidsSE solves this by designing tasks as a series of small executable
+sequences called *steps*. All tasks in RapidsSE are designed this way.
+While a step is being executed by a thread it cannot be interrupted. All steps
+are designed to not take excessively long to execute or to block on I/O. After
+a step completes the thread may choose to stop executing that task and to
+begin executing steps from the next task in its queue. Alternatively, at the
+end of a step perhaps a task has finished its work and that task is no longer
+runnable (for example, maybe the task has no more data to work with).
+
+This natural breakpoint of finishing a step before a thread potentially changes
+which task it is executing means that the thread does not need to preempt the
+task and spend time saving its state. At the end of executing a step a task
+simply needs to remember which step it was due to execute next. This
+simplification saves much time and complexity compared to arbitrarily
+interrupting a task.
+
+A single thread may execute a number of steps from a task before deciding
+to switch execution to the next task in the queue. In this way, a single
+thread can be time-shared across many independent executable tasks. This
+allows every task in the system the fair ability to make forward progress.
 
 This is important when we consider concurrent workloads. Without a proper
 concurrency strategy a single very long running query could prevent subsequent
@@ -302,6 +314,7 @@ result set:
 
 .. figure:: sqlModel.*
    :align: center
+   :height: 454px
 
    The transformations of a SQL query to user results.
 

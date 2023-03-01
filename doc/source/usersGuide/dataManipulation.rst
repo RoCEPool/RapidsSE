@@ -63,7 +63,7 @@ Below are real world example load times for various scale factor and node
 configurations. Performance is affected by the number of cores in each
 node as well as the number of disks and the throughput of each disk.
 
-.. table::
+.. table:: TPC-H Data Generation Times
    :name: tpch-data-gen-times
 
    ============ ========= =============== ========== ================ ====================
