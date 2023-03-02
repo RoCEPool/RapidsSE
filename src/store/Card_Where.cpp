@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_Where.hpp"
+
+#include "Card_OuterJoin.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -118,6 +120,16 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 
     // remove LEFT_OUTER (temp)
     i8 nTrimed = p_rpnCalc_on->nTrimTerm("LEFT_OUTER"_Stz);
+    if (nTrimed) {
+
+      pCI->G_vPushIter();
+      if (pCI->G_bEachMain_reverse(CK_SCAN)) {
+        pCI->G.p_table = pCI->G.p_scan->pSub_table();
+        pCI->G_vNewMember(CK_OUTERJOIN, "left"_Stz);
+        pCI->G.p_table->vAppend(pCI->G.p_outerJoin);
+      }
+      pCI->G_vPopIter();
+    }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
     if (p_term_0->bSame("CROSS"_Stz))
