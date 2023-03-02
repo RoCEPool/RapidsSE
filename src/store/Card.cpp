@@ -3243,6 +3243,19 @@ Card_OuterColNm* Card::pSub_outerColNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_OuterJoin.hpp"
+Card_OuterJoin* Card::pSub_outerJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_OuterJoin* p_outerJoin =
+      _pCard_OuterJoin(pFindSubCard(CK_OUTERJOIN));
+  return p_outerJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Correlation.hpp"
 Card_Correlation* Card::pSub_correlation(void)
 {

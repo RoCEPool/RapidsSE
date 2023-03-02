@@ -45,6 +45,7 @@ namespace STORE
   class Card_CoPtnJoin;
   class Card_CoPtnJoinList;
   class Card_CoPtnPred;
+  class Card_Correlation;
   class Card_CrossJoin;
 
   class Card_Debug;
@@ -113,9 +114,9 @@ namespace STORE
   class Card_Order;
   class Card_OrPred;
   class Card_ObyElist;
-
   class Card_OuterColNm;
-  class Card_Correlation;
+  class Card_OuterJoin;
+
   class Card_PRED;
   class Card_Project;
   class Card_Projection;
@@ -540,6 +541,7 @@ namespace STORE
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_OuterColNm*    pSub_outerColNm(void);
+    Card_OuterJoin*     pSub_outerJoin(void);
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_Projection*    pSub_projection(void);
     Card_Reason*        pSub_reason(void);
