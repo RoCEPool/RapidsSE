@@ -185,19 +185,25 @@ void JoinOrdering::vTransform_JoinOrdering(void)
                             m_pCI->m_pBench);
   m_pCI->G_vPushBoard(pBoard);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline
+
   m_pCI->G.p_tableList = Card_TableList::pExtract(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) Extract joinPredList from pipeline
+
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3) Compute all possible join permutations
+
   Card_JoinPermAll* p_joinPermAll =
       Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
@@ -208,7 +214,9 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4) Remove invalid permutations
+
   p_joinPermAll->vRemoveInvalid();
   m_pCI->G.pDeck->vAppend(new Card_Section("Valid Permutations"_Stz));
 
@@ -218,7 +226,9 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) Calculate join load
+
   p_joinPermAll->vCalculateLoad(m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Loads"_Stz));
   xCI.vRestart();
@@ -242,7 +252,9 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   pOptimiser->vJoinPermutations(iJoinPermutations);
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 6) Pick final join ordering
+
   Card_JoinOrdering* p_joinOrdering =
       Card_JoinOrdering::pPick(p_joinPermAll);
   m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
@@ -256,6 +268,8 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
   pOptimiser->vJoinOrder(sJoinOrder);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   DELETE_CARD(p_joinPermAll);
 
   pBoard = m_pCI->G.pBoard;
@@ -267,6 +281,8 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   m_pCI->vPrintBoard(__LINE__);
 
   DELETE_CARD(p_joinOrdering);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Projection::vProjection_Analysis_v2(m_pCI);
 
