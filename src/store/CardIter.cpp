@@ -404,6 +404,7 @@ void CardIter::G_vClearMembers(void)
   G.p_coPtnJoinList    = nullptr;
   G.p_coPtnPred        = nullptr;
   G.p_coPtnPredList    = nullptr;
+  G.p_correlation      = nullptr;
   G.p_crossJoin        = nullptr;
   G.p_crossPtnJoin     = nullptr;
   G.p_crossPtnJoinList = nullptr;
@@ -457,8 +458,8 @@ void CardIter::G_vClearMembers(void)
   G.p_ordAgg           = nullptr;
   G.p_ordElmOdn        = nullptr;
   G.p_order            = nullptr;
-  G.p_outerColNm            = nullptr;
-  G.p_correlation        = nullptr;
+  G.p_outerColNm       = nullptr;
+  G.p_outerJoin        = nullptr;
   G.p_partition        = nullptr;
   G.p_permutation      = nullptr;
   G.p_permutation_low  = nullptr;
@@ -1618,6 +1619,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COPTNJOINLIST:    return G.p_coPtnJoinList;
     case CK_COPTNPRED:        return G.p_coPtnPred;
     case CK_COPTNPREDLIST:    return G.p_coPtnPredList;
+    case CK_CORRELATION:      return G.p_correlation;
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
     case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
@@ -1671,8 +1673,8 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_ORDAGG:           return G.p_ordAgg;
     case CK_ORDELMODN:        return G.p_ordElmOdn;
     case CK_ORDER:            return G.p_order;
-    case CK_OUTERCOLNM:            return G.p_outerColNm;
-    case CK_CORRELATION:        return G.p_correlation;
+    case CK_OUTERCOLNM:       return G.p_outerColNm;
+    case CK_OUTERJOIN:        return G.p_outerJoin;
     case CK_PARTITION:        return G.p_partition;
     case CK_PERMUTATION:      return G.p_permutation;
     case CK_PMZWHERE:         return G.p_pmzWhere;
@@ -2013,6 +2015,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COPTNJOINLIST:    return "G.p_coPtnJoinList"_Stz;
     case CK_COPTNPRED:        return "G.p_coPtnPred"_Stz;
     case CK_COPTNPREDLIST:    return "G.p_coPtnPredList"_Stz;
+    case CK_CORRELATION:      return "G.p_correlation"_Stz;
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
     case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
@@ -2065,8 +2068,8 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
     case CK_ORDELMODN:        return "G.p_ordElmOdn"_Stz;
     case CK_ORDER:            return "G.p_order"_Stz;
-    case CK_OUTERCOLNM:            return "G.p_outerColNm"_Stz;
-    case CK_CORRELATION:        return "G.p_correlation"_Stz;
+    case CK_OUTERCOLNM:       return "G.p_outerColNm"_Stz;
+    case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PMZWHERE:         return "G.p_pmzWhere"_Stz;
@@ -3243,6 +3246,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COPTNJOINLIST:    *((Card**)&G.p_coPtnJoinList)    = pCard; break;
     case CK_COPTNPRED:        *((Card**)&G.p_coPtnPred)        = pCard; break;
     case CK_COPTNPREDLIST:    *((Card**)&G.p_coPtnPredList)    = pCard; break;
+    case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
@@ -3297,7 +3301,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ORDELMODN:        *((Card**)&G.p_ordElmOdn)        = pCard; break;
     case CK_ORDER:            *((Card**)&G.p_order)            = pCard; break;
     case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
-    case CK_CORRELATION: *((Card**)&G.p_correlation)        = pCard; break;
+    case CK_OUTERJOIN:        *((Card**)&G.p_outerJoin)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PMZWHERE:         *((Card**)&G.p_pmzWhere)         = pCard; break;

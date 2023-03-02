@@ -153,6 +153,7 @@ namespace STORE
     Card_OrdElmOdn *        p_ordElmOdn;
     Card_Order *            p_order;
     Card_OuterColNm *       p_outerColNm;
+    Card_OuterJoin *        p_outerJoin;
 
     Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;
