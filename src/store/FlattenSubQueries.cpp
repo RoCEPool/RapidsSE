@@ -158,10 +158,46 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  m_pCI->vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
+  do {
+    m_pCI->vRestart();
 
-  }
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_HAVING, CK_BOOLCALC))
+      break;
+
+    CardIter* pCI = m_pCI;
+
+    auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
+    {
+      if (! p_term->bIsBoardNm(pCI))
+        return C_CONTINUE_RECURSION;
+
+      s256 sSubQueryNm = p_term->szValue();
+
+      Board* pOuterBoard_save = pCI->G.pBoard;
+      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
+      pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
+
+      vFlatten_recurse(iDepth + 1);
+
+      pCI->G_vPopIter();
+      pCI->G_vSetBoard(pOuterBoard_save);
+      SubQuery* pSubQuery = pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      pCI->vPrintBoard(__LINE__);
+
+      vFlattenByDecisionTree();
+
+      pCI->vPrintBoard(__LINE__);
+
+      bFound = true;
+      return C_TERMINATE_RECURSION;
+    };
+
+
+    bFound = false;
+    bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
+    vDebugPoint();
+  } while (bFound);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
