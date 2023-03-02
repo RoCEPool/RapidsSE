@@ -10,7 +10,7 @@ namespace STORE
   class PermGen : public Object
   {
   public:
-    static const i8 C_PERMGEN_ITEMS = 16;
+    static const i8 C_PERMGEN_ITEMS = 1024;
 
   private:
 

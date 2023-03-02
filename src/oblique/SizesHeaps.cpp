@@ -485,7 +485,7 @@ SizeHeap gxaSizeHeap[]
   {CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   , FILL },
   {CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    , FILL },
   {CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  , FILL },
-  {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_MEDIUM  , FILL },
+  {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_LARGE   , FILL },
   {CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    , FILL },
 
   {CN__P__,                     'P' - ('A' - 1),            HT_INVALID   , FILL },
@@ -498,7 +498,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
-  { CN_PERMGEN,                  sizeof(PermGen),            HT_T_TINY    ,FILL },
+  { CN_PERMGEN,                  sizeof(PermGen),            HT_T_LARGE   ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
   { CN_PIPEIN,                   sizeof(PipeIn),             HT_T_TINY    ,FILL },
