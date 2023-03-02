@@ -81,6 +81,12 @@ endif # UNAME_S
 endif # LATEXMK_INSTALLED
 
 
+# Purposely empty rules
+$(RR_GRAMMAR): ;
+$(RR_HTML_FRAG_GEN): ;
+$(RR_PDF_FRAG_GEN): ;
+%.rst: ;
+
 # synonym target
 rr: railroad ;
 
@@ -126,13 +132,13 @@ version:
 	@echo "done"
 	@echo
 
-html: checkSphinx version $(RR_INDEX_HTML) $(RR_HTML_FRAG) $(RST_FILES)
+html: checkSphinx version railroad
 	@echo "Building HTML documentation..."
 	@echo
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
-pdf: checkSphinx checkLatex $(RR_PDF_FRAG) $(RST_FILES)
+pdf: checkSphinx checkLatex railroad
 	@echo "Building PDF documentation..."
 	@echo
 	@LATEXMKOPTS="-interaction=nonstopmode" $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
