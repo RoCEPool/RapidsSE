@@ -27,18 +27,15 @@ namespace STORE
 
     void vJoinOrdering(void);
 
-    void vGroup_PredicatePullup(void);
-    void vGroup_IndexBounds(void);
-    void vGroup_JoinOrdering(void);
-
+  private:
     void vTransform_MarkCmpPredWrtTable(void);
     void vTransform_CopyMarkedCmpPred(void);
     void vTransform_CullMarkedCmpPred(void);
     void vTransform_DeleteEmptyWhere(void);
 
-    void vTransform_JoinOrdering_originalModel(void);
-    void vTransform_PredicateReposition_originalModel(void);
-    void vTransform_DeriveBoundsFromFilter_originalModel(void);
+    void vTransform_JoinOrdering(void);
+    void vTransform_PredicateReposition(void);
+    void vTransform_DeriveBoundsFromFilter(void);
 
   protected:
     Footer* aFooter(void);

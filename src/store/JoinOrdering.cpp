@@ -48,10 +48,6 @@ JoinOrdering::~JoinOrdering(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -59,51 +55,31 @@ void JoinOrdering::vJoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
 
-  vGroup_PredicatePullup();
-  vGroup_IndexBounds();
-  vGroup_JoinOrdering();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vGroup_PredicatePullup(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
-
+  //vGroup_PredicatePullup();
   vTransform_MarkCmpPredWrtTable();
   vTransform_CopyMarkedCmpPred();
   vTransform_CullMarkedCmpPred();
   vTransform_DeleteEmptyWhere();
-}
 
+  //vGroup_IndexBounds();
+  vTransform_DeriveBoundsFromFilter();
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vGroup_IndexBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
-
-  vTransform_DeriveBoundsFromFilter_originalModel();
-}
-
-/*----------------------------------------------------------------------------*/
-/* join ordering of outer query                                               */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vGroup_JoinOrdering(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
-
+  //vGroup_JoinOrdering();
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
 //  if (Card_Table::nTables_foldBreak(m_pCI) < 2)
 //    return;
 
-  vTransform_JoinOrdering_originalModel();
-  vTransform_PredicateReposition_originalModel();
-  vTransform_DeriveBoundsFromFilter_originalModel();
+  vTransform_JoinOrdering();
+  vTransform_PredicateReposition();
+  vTransform_DeriveBoundsFromFilter();
+
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -178,7 +154,7 @@ void JoinOrdering::vTransform_DeleteEmptyWhere(void)
 /*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_DeriveBoundsFromFilter_originalModel(void)
+void JoinOrdering::vTransform_DeriveBoundsFromFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
@@ -193,7 +169,7 @@ void JoinOrdering::vTransform_DeriveBoundsFromFilter_originalModel(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_JoinOrdering_originalModel(void)
+void JoinOrdering::vTransform_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
@@ -302,7 +278,7 @@ void JoinOrdering::vTransform_JoinOrdering_originalModel(void)
 /*----------------------------------------------------------------------------*/
 /* Predicate Pullup                                                           */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_PredicateReposition_originalModel(void)
+void JoinOrdering::vTransform_PredicateReposition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
