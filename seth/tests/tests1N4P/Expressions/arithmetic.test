@@ -501,8 +501,8 @@ failure contains: 'EC_NOT_IMPLEMENTED'
 //  Avg of Interval
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//SELECT AVG(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
-//failure contains: 'EC_NOT_IMPLEMENTED'
+SELECT AVG(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+failure contains: 'EC_NOT_IMPLEMENTED'
 
 drop table nation;
 success
