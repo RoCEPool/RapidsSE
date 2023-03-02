@@ -37,10 +37,10 @@ create table TABLE9 (
   ucolvc  VARCHAR(5)         //10
 );
 
-create index table9_pcol9 on table9(pcol9);
+create index table9_pcol9  on table9(pcol9);
 create index table9_ucolvc on table9(ucolvc);
-create index table9_colb9 on table9(colb9);
-create index table9_ucol on table9(ucol);
+create index table9_colb9  on table9(colb9);
+create index table9_ucol   on table9(ucol);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 

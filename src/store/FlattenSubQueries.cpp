@@ -421,6 +421,10 @@ void FlattenSubQueries::vFlatten_32_W_A_NC_I(void)
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
+
+  delete pCarryForward;
+  delete pSmooth;
+  delete pFold;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -681,6 +685,7 @@ void FlattenSubQueries::vFlatten_53_W_L_NC_NI_join(void)
 
   m_pCI->vEndTransform();
 
+  delete pSmoosh;
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
