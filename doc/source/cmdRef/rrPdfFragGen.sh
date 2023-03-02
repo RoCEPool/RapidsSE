@@ -49,6 +49,11 @@ END {
   print ".. image:: " imageFile
   print "${INDENT}" ":alt: ``" ruleName "`` rule syntax"
   print "${INDENT}" ":align: left"
+
+  if (imageFile == "/rr/diagram/expr.png") {
+    print "${INDENT}" ":height: 23.5cm"
+  }
+
   print ""
   print ""
 }
