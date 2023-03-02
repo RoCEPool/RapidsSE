@@ -36,7 +36,10 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
 : Operand(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
+
+  m_oNextBufferId.m_pvAsAddress = nullptr;
+  m_oPrevBufferId.m_pvAsAddress = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -287,8 +290,28 @@ void LinkedBuffer::vNextLinkedBuffer(LinkedBuffer* pNextBuffer)
 void LinkedBuffer::vNextLinkedBuffer(BufferNo tNextBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
   m_tNextBuffer = tNextBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer Id                                                         */
+/*----------------------------------------------------------------------------*/
+BufferId LinkedBuffer::oNextLinkedBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_oNextBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer Id                                                         */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vNextLinkedBufferId(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oNextBufferId = oBufferId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,6 +347,26 @@ void LinkedBuffer::vPrevLinkedBuffer(BufferNo tPrevBufferNo)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_tPrevBuffer = tPrevBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer Id                                                         */
+/*----------------------------------------------------------------------------*/
+BufferId LinkedBuffer::oPrevLinkedBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_oPrevBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer Id                                                         */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vPrevLinkedBufferId(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oPrevBufferId = oBufferId;
 }
 
 /*============================================================================*/

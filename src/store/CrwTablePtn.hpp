@@ -12,8 +12,11 @@ namespace STORE
     Bucket*   m_pBucket;    // bucket this partition belongs to
     LglPtn    m_tLglPtn;        // partition number (in grid)
 
+    // TODO: Arjun - m_pRootBuffer needs to be removed
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
+
+    BufferId m_oRootBufferId;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
     //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees

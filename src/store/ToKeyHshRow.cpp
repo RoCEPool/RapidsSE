@@ -148,7 +148,6 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 
   RowBuffer* pFullRowBuffer = nullptr;
 
-  // TODO: Arjun - If buffer not in memory, it will return null. This is incorrect.
   RowBuffer* pRowBuffer = m_pRowBuffer ?
                             _pRowBuffer(m_pRowBuffer->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
@@ -159,6 +158,10 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
   if (pFullRowBuffer) {
     RowBuffer* pPrevBuffer = _pRowBuffer(pFullRowBuffer->pPrevLinkedBuffer());
     pPrevBuffer->vNextLinkedBuffer(nullptr);
+
+    // TODO: Arjun - temp test to see if these pointers are needed later
+    pFullRowBuffer->vNextLinkedBuffer(nullptr);
+    pFullRowBuffer->vPrevLinkedBuffer(nullptr);
   }
   
   return pFullRowBuffer;
@@ -218,7 +221,6 @@ void ToKeyHshRow::vNewRowBuffer(void)
   //  create a new buffer
   RowBuffer* pRowBuffer = new RowBuffer;
 
-  // TODO: Arjun - Handle case when buffer not in memory..
   // link the new to old
   pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   if (m_pRowBuffer)

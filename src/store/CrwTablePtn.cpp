@@ -44,6 +44,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn, Bucket* pBucket)
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
+  m_oRootBufferId.m_pvAsAddress = nullptr;
 
   //m_pIndexTreeVec  = new IndexTreeVec;
 
@@ -99,17 +100,27 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
+    m_oRootBufferId = pCrwBuffer->oGetBufferId();
     m_pRootBuffer = pCrwBuffer;
   }
   else {
-    pCrwBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
-    pCrwBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
-    m_pCurrentBuffer->vNextLinkedBuffer(pCrwBuffer);
+    pCrwBuffer->vNextLinkedBufferId(m_pCurrentBuffer->oNextLinkedBufferId());
+    pCrwBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
+    m_pCurrentBuffer->vNextLinkedBufferId(pCrwBuffer->oGetBufferId());
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we are done with the current buffer, allow it to be paged out by dropping
+  // the lock
+
+  if(m_pCurrentBuffer)
+    AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
+  // Arjun Note - The last buffer to be set as m_pCurrentBuffer will remain locked after
+  // we finish inserting rows into this Table Ptn.
 }
 
 /*----------------------------------------------------------------------------*/
