@@ -115,6 +115,10 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     Card_RpnCalc *p_rpnCalc_on = pCI->G.p_on->pSub_rpnCalc();
     if (! p_rpnCalc_on->nChildCards())
       continue;
+
+    // remove LEFT_OUTER (temp)
+    i8 nTrimed = p_rpnCalc_on->nTrimTerm("LEFT_OUTER"_Stz);
+
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
     if (p_term_0->bSame("CROSS"_Stz))
       continue;

@@ -442,6 +442,25 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
   return p_boolCalc;
 }
 
+/*----------------------------------------------------------------------------*/
+/* remove any term with matching value                                        */
+/*----------------------------------------------------------------------------*/
+i8 Card_RpnCalc::nTrimTerm(Stz* szValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nTerms = 0;
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_TERM)) {
+    if (xCI.G.p_MainCard->bIsValue(szValue)) {
+      xCI.G_vRemoveDeleteMain(CK_TERM);
+      nTerms++;
+    }
+  }
+
+  return nTerms;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

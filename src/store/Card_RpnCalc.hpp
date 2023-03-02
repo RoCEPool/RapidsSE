@@ -26,6 +26,7 @@ namespace STORE
     bool bHasWhen(void);
     void vOntoStzList(StzList* pStzList);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
+    i8 nTrimTerm(Stz* szValue);
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);
