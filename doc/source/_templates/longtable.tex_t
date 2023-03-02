@@ -22,7 +22,8 @@
 <% if 'nocolorrows' in table.styles -%>
 \sphinxthistablewithnocolorrowsstyle
 <% endif -%>
-\small
+
+
 \begin{longtable}
 <%- if table.align in ('center', 'default') -%>
   [c]

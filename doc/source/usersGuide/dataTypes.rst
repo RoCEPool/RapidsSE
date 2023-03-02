@@ -152,7 +152,7 @@ operator. The supported explicit type conversions are listed below.
 
 .. table:: Explicit Type Casting Supported
    :name: explicit-type-casting-table
-   :class: longtable
+   :class: widetable centered
 
    +---------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
    | Source        |                                                      Target Expression Type                                                                              |
