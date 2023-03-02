@@ -43,6 +43,7 @@ namespace STORE
 
     void vAppendBuffer(DataBuffer* pDataBuffer);
     i8   nBuffers(void);
+    void vDropAllPagingLocks(void);
     void vDump(void);
 
 

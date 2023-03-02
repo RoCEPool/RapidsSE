@@ -174,6 +174,22 @@ i8 Bucket::nBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop all paging locks                                                      */
+/*----------------------------------------------------------------------------*/
+void Bucket::vDropAllPagingLocks(void)
+{
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vDropAllPagingLocks();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vDropAllPagingLocks();
+      break;
+    default:
+      NEVER_REACH;
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* dump the table                                                             */
 /*----------------------------------------------------------------------------*/
 void Bucket::vDump(void)

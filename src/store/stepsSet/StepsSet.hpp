@@ -2136,6 +2136,7 @@ void vDdlLockAssertNone(void);
   // table partition
   void vTablePtnAttemptGrabRead(void);
   void vTablePtnAttemptGrabWrite(void);
+  void vTablePtnCleanup(void);
   void vTablePtnDropRead(void);
   void vTablePtnDropWrite(void);
 

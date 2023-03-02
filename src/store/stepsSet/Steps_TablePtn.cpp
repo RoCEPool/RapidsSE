@@ -34,6 +34,7 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].appendBuffer"_Stz,     &Step::vTablePtnAppendBuffer);
   vAddStep("TablePtn[].attemptGrabRead"_Stz , &Step::vTablePtnAttemptGrabRead);
   vAddStep("TablePtn[].attemptGrabWrite"_Stz, &Step::vTablePtnAttemptGrabWrite);
+  vAddStep("TablePtn[].cleanup"_Stz,          &Step::vTablePtnCleanup);
   vAddStep("TablePtn[].dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("TablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
@@ -111,6 +112,21 @@ void Step::vTablePtnAttemptGrabWrite(void)
   
   m_pDataStack->vPushInt(bSuccess);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].cleanup -- drop locks that this task holds in the paging hashmap*/
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnCleanup(void)
+{
+  ENTRY();
+
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+
+  pTablePtn->vDropAllPagingLocks();
+
   EXIT();
 }
 

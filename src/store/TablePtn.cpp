@@ -109,6 +109,25 @@ TablePtn::~TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* drop all paging locks held                                                 */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDropAllPagingLocks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  Bucket *pBucket = nullptr;
+  i8 iNoBuckets = m_pBucketVec->nItems();
+
+  for (i8 iBktNo = 0; iBktNo < iNoBuckets; iBktNo++)
+  {
+    pBucket = m_pBucketVec->pGet(iBktNo);
+    if (pBucket) {
+      pBucket->vDropAllPagingLocks();
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropRead(void)

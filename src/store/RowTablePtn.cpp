@@ -122,6 +122,17 @@ i8 RowTablePtn::nBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop all paging locks                                                      */
+/*----------------------------------------------------------------------------*/
+void RowTablePtn::vDropAllPagingLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+
+  if(m_pCurrentBuffer)
+    AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the table                                                             */
 /*----------------------------------------------------------------------------*/
 void RowTablePtn::vDump(void)

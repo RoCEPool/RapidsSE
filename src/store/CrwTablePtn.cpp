@@ -139,6 +139,17 @@ i8 CrwTablePtn::nBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop all paging locks                                                      */
+/*----------------------------------------------------------------------------*/
+void CrwTablePtn::vDropAllPagingLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  if(m_pCurrentBuffer)
+    AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the table                                                             */
 /*----------------------------------------------------------------------------*/
 void CrwTablePtn::vDump(void)

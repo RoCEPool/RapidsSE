@@ -34,7 +34,8 @@ namespace STORE
 
     TablePtn(Table* pTable, LglPtn tLglPtn, PhyPtn tPhyPtn);
    ~TablePtn(void) noexcept(false);
-  
+
+    void vDropAllPagingLocks(void);
     void vDropRead(void);
     void vDropWrite();
     bool bGrabRead(void);
