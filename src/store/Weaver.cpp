@@ -431,11 +431,15 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   vRpnIndexJoin(sRpnExpr, p_index);
 
-  szOpArgs->vCatSprint("%s %s \"%s \""_Stz
-                       ,p_tableNm->szValue()
-                       ,p_indexNm->szValue()
-                       ,sRpnExpr.szStz());
-
+  if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
+    if (p_outerJoin->bIsValue("left"_Stz))
+      szOpArgs->vCatSprint("%s %s \"LEFT_OUTER %s \""_Stz,
+                           p_tableNm->szValue(), p_indexNm->szValue(), sRpnExpr.szStz());
+  }
+  else {
+    szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
+                         p_tableNm->szValue(), p_indexNm->szValue(), sRpnExpr.szStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

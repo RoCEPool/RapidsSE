@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_OuterJoin, CK_ON)
+__pCastFunction_Card(STORE, Card_OuterJoin, CK_OUTERJOIN)
 __aNewFunction(Card_OuterJoin, CN_CARD)
 __vDeleteFunction(Card_OuterJoin, CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_OuterJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OuterJoin::Card_OuterJoin(void)
-: Card_PRED(CK_ON)
+: Card_PRED(CK_OUTERJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
