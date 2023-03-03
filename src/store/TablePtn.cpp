@@ -415,6 +415,26 @@ DataBuffer* TablePtn::pRootBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get root crw buffer                                                        */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* TablePtn::pRootCrwBuffer(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  return m_pCrwTablePtn->pRootCrwBuffer();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root row buffer                                                        */
+/*----------------------------------------------------------------------------*/
+RowBuffer* TablePtn::pRootRowBuffer(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  return m_pRowTablePtn->pRootRowBuffer();
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate the table data                                                    */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vTruncate(void)
