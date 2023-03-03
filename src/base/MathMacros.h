@@ -1527,7 +1527,7 @@
       xDateTime.tm_hour = xTsp1.m_uHour;                                   \
       xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iArg2/_C_1M;                   \
-      xDateTime.tm_isdst = 0;                                              \
+      xDateTime.tm_isdst = -1;                                              \
                                                                            \
       time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                 \
                                                                            \
