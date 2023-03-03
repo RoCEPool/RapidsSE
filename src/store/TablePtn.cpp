@@ -400,6 +400,21 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove index                                                               */
+/*----------------------------------------------------------------------------*/
+DataBuffer* TablePtn::pRootBuffer(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->pRootCrwBuffer();
+    case CN_ROWTABLEPTN:
+      return m_pRowTablePtn->pRootRowBuffer();
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate the table data                                                    */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vTruncate(void)

@@ -12,9 +12,7 @@ namespace STORE
 
     i8         m_iLglBufferNo;
 
-    Bucket*    m_pCurBkt;
     DataBuffer* m_pCurBuffer;
-    i8         m_iCurBktNo;
     LglPtn      m_tCurPtnNo;
 
     // must be last
@@ -37,7 +35,6 @@ namespace STORE
     bool bSeek(i8 iBufferNo);
 
   private:
-    i8 iGetNextBucket(i8 iCurBktNo);
     Footer* aFooter(void);
   };
   
