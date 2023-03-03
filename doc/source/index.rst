@@ -22,5 +22,7 @@ RapidsSE Documentation
    compilation/index
    appendices/index
 
-* :ref:`genindex`
-* :ref:`search`
+.. only:: html
+
+  * :ref:`genindex`
+  * :ref:`search`
