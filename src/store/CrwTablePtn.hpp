@@ -43,6 +43,7 @@ namespace STORE
     bool bPopulateIndexTree(IndexTree* pIndexTree);
 
     CrwBuffer* pRootCrwBuffer(void);
+    BufferId oRootCrwBufferId(void);
     Table* pTable(void);
     void vTruncate(void);
 

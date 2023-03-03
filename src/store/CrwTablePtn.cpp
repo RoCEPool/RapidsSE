@@ -119,8 +119,6 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
-  // Arjun Note - The last buffer to be set as m_pCurrentBuffer will remain locked after
-  // we finish inserting rows into this Table Ptn.
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,6 +195,16 @@ CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   return m_pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+BufferId CrwTablePtn::oRootCrwBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  return m_oRootBufferId;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,6 +14,8 @@ namespace STORE
 
     RowBuffer* m_pRootBuffer;    // the data root buffer
     RowBuffer* m_pCurrentBuffer; // the data current buffer for insert
+
+    BufferId m_oRootBufferId;
           
     // must be last
     Footer m_xFooter;
@@ -33,6 +35,7 @@ namespace STORE
     LglPtn  tLglPtn(void);
 
     RowBuffer* pRootRowBuffer(void);
+    BufferId oRootRowBufferId(void);
     Table* pTable(void);
     void vTruncate(void);
     bool bVerifyTable(void);

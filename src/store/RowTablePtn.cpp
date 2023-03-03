@@ -49,6 +49,7 @@ RowTablePtn::RowTablePtn(Table* pTable, LglPtn tLglPtn, Bucket* pBucket)
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
+  m_oRootBufferId.m_pvAsAddress = nullptr;
 
   _checkInitialised_(CN_ROWTABLEPTN);
 
@@ -93,14 +94,22 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
+    m_oRootBufferId = pRowBuffer->oGetBufferId();
     m_pRootBuffer = pRowBuffer;
   }
   else {
-    pRowBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
-    pRowBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
-    m_pCurrentBuffer->vNextLinkedBuffer(pRowBuffer);
+    pRowBuffer->vNextLinkedBufferId(m_pCurrentBuffer->oNextLinkedBufferId());
+    pRowBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
+    m_pCurrentBuffer->vNextLinkedBufferId(pRowBuffer->oGetBufferId());
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we are done with the current buffer, allow it to be paged out by dropping
+  // the lock
+
+  if(m_pCurrentBuffer)
+    AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pRowBuffer;
@@ -166,6 +175,16 @@ RowBuffer* RowTablePtn::pRootRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
   
   return m_pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+BufferId RowTablePtn::oRootRowBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+
+  return m_oRootBufferId;
 }
 
 /*----------------------------------------------------------------------------*/
