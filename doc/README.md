@@ -94,6 +94,7 @@ Note: We use the PIP version of Sphinx to ensure that it is a recent version.
 5. Test that `sphinx-build` is resolvable: `which sphinx-build`
 6. Test that `perl` is installed: `which perl`
    1. If it isn't, use your distribution's package manager to install `perl`
+   2. You may need to install certain other perl packages. e.g. `yum install perl-Digest-MD5 perl-Env`
 7. Install TexLive according to the instructions [here](https://www.tug.org/texlive/quickinstall.html).
    Don't forget to set the `$PATH` variable as instructed
 8. Install Java
