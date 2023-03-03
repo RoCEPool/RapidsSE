@@ -77,6 +77,7 @@ latex_elements = {
 latex_logo = '_static/logo.pdf'
 
 latex_show_pagerefs = True
+latex_use_xindy = False   # xindy (indexes) doesn't run on CentOS 7 - requires newer glibc
 
 # -- Options for extensions --------------------------------------------------
 

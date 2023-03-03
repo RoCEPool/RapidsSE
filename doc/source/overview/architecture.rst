@@ -228,6 +228,7 @@ to collect or aggregate the results before they are sent back to the user.
   results, for example.
 
 .. _pipelineExampleFigure:
+
 .. figure:: pipelineExample.*
 
    Logical view of a pipeline.

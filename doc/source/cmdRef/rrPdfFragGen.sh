@@ -44,11 +44,6 @@ END {
 
   print ".. rubric:: " ruleName ":"
   print ""
-#  print ".. only:: latex"
-#  print ""
-#  print "   .. index::"
-#  print "      single: syntax element; " ruleName
-#  print ""
   print ".. _" ruleName "Syntax:"
   print ""
   print ".. image:: " imageFile
