@@ -1,3 +1,7 @@
+.. index::
+   single: syntax tree
+   single: Commands; syntax tree
+
 .. _syntaxTree:
 
 Syntax Tree

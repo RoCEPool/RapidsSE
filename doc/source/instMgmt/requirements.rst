@@ -4,10 +4,19 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: system requirements
+   single: requirements
+   single: installation; requirements
+
 .. _requirements:
 
 System Requirements
 ===================
+
+.. index::
+   single: operating systems supported
+   single: installation; supported operating systems
 
 .. _supportedOperatingSystems:
 
@@ -102,6 +111,9 @@ A comfortable environment for evaluating RapidsSE would meet all of the
    "**Shared Memory:**", "``/dev/shm`` should have at least 60GB allocated to it."
    "**Network:**", "10Gb ethernet"
 
+
+.. index::
+   single: installation; restrictions
 
 Restrictions
 ------------

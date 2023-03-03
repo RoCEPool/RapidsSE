@@ -4,6 +4,10 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: RapidsSE; architecture
+   single: architecture
+
 .. _architecture:
 
 RapidsSE Architecture
@@ -27,6 +31,10 @@ the model of the cluster before delving into the model within a node, the
 model of how work is executed within a node, and finally how all of this is
 put together to execute a user's SQL query.
 
+
+.. index::
+   single: RapidsSE; cluster model
+   single: cluster model
 
 .. _clusterArchitecture:
 
@@ -77,6 +85,10 @@ cluster. The shell scripts coordinate this by using public key SSH to remotely
 login to each node and start/stop each RapidsSE instance. This means that each
 machine in the cluster must be configured for password-less SSH access.
 
+
+.. index::
+   single: RapidsSE; node model
+   single: node model
 
 .. _nodeArchitecture:
 
@@ -157,6 +169,10 @@ memory model. This means that the execution of work within RapidsSE occurs in
 a highly deterministic way because there are no indeterminate pauses while the
 system searches for and cleans up memory.
 
+
+.. index::
+   single: RapidsSE; job model
+   single: job model
 
 .. _jobArchitecture:
 
@@ -296,6 +312,10 @@ short-lived queries from running to completion. The interleaving of steps in
 RapidsSE tasks allows both long and short-running queries to be treated fairly.
 
 
+
+.. index::
+   single: RapidsSE; SQL model
+   single: SQL model
 
 .. _sqlArchitecture:
 

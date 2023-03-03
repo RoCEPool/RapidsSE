@@ -1,5 +1,9 @@
 .. _aboutSE:
 
+.. index::
+   single: RapidsSE; about
+   single: about RapidsSE
+
 About RapidsSE
 ==============
 

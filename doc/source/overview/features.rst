@@ -1,3 +1,7 @@
+.. index::
+   single: RapidsSE; features
+   single: features of RapidsSE
+
 .. _features:
 
 Features of RapidsSE
@@ -32,6 +36,10 @@ In broad terms, RapidsSE supports the following command features. Refer to the
   * aggregates;
 
 * Distributed and single-origin :ref:`data loading <loadingData>`;
+
+.. index::
+   single: RapidsSE; roadmap
+   single: roadmap features
 
 Future Roadmap Features
 -----------------------

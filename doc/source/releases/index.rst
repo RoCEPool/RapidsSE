@@ -1,3 +1,7 @@
+.. index::
+   single: RapidsSE; releases
+   single: releases
+
 .. _releases:
 
 Releases

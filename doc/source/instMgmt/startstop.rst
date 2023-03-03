@@ -9,6 +9,11 @@
 Starting and Stopping RapidsSE
 ==============================
 
+.. index::
+   single: RapidsSE; starting
+   single: starting RapidsSE
+   single: managing RapidsSE; starting
+
 Starting RapidsSE
 -----------------
 After installing and configuring RapidsSE the cluster can be started. Each node
@@ -52,6 +57,10 @@ A successful startup of RapidsSE looks like the following:
    Waiting for the cluster to cross-connect...Done
    Cluster startup complete.
 
+.. index::
+   single: RapidsSE; stopping
+   single: stopping RapidsSE
+   single: managing RapidsSE; stopping
 
 Stopping RapidsSE
 -----------------
@@ -74,6 +83,10 @@ A successful stop of the cluster looks like this:
    Stopping all 2 nodes in the cluster. Waiting for them to shutdown.
    Stopped all nodes in the cluster.
 
+
+.. index::
+   single: SE Prompt; starting & stopping
+   single: managing RapidsSE; SE Prompt
 
 .. _sePrompt:
 

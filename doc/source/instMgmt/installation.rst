@@ -4,6 +4,10 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: RapidsSE; installation
+   single: installation
+
 .. _installation:
 
 Installation Instructions
@@ -26,6 +30,8 @@ the following steps:
 #.	Configuring the system firewall.
 #.	Ensuring the installation directory is writable.
 
+.. index::
+   pair: SSH; configuration
 
 Configuring SSH
 ```````````````
@@ -69,6 +75,10 @@ this. One simple way is as follows:
      ssh-copy-id -i id.rsa.pub localhost
 
 
+.. index::
+   single: shared memory; configuration (host)
+   single: configuration; shared memory (host)
+
 Configuring Shared Memory
 `````````````````````````
 RapidsSE uses shared memory to store all application and internal working data.
@@ -105,6 +115,10 @@ change this setting are:
 
 #. Repeat the previous steps for each node in the cluster.
 
+
+.. index::
+   pair: firewall; installation
+   single: configuration; firewall
 
 Configuring the Firewall
 ````````````````````````
@@ -157,12 +171,18 @@ On **Ubuntu 20**, the steps for adding a port to the firewall are as follows:
 #. Repeat the above commands on each node in the cluster.
 
 
+.. index::
+   single: installation; directory permissions
+
 Installation Directory Writability
 ``````````````````````````````````
 By default, RapidsSE will be installed to ``/opt/rapidsse``. If this default
 value is used then the parent directory, ``/opt``, must be writable on every
 node so that it can create the ``rapidsse`` subdirectory.
 
+
+.. index::
+   single: installation; media validation
 
 Validating the Installation Media
 ---------------------------------
@@ -193,6 +213,9 @@ utility to be present on the machine in order to decompress and run the
 subsequent stages of the installation.
 
 
+.. index::
+   single: installation; installer
+
 Interactive Installation & Configuration
 ````````````````````````````````````````
 When you run the RapidsSE installer without any arguments it will unpack itself
@@ -220,6 +243,9 @@ interactive wizard is to be used, as follows: ::
    Note that the first ``--`` before the ``--advanced`` is necessary to separate
    arguments for the installation wizard from arguments that may be given to the
    self-extracting run file itself.
+
+.. index::
+   single: installation; modes compared
 
 A summary of the information that is required in either the default (basic) or
 advanced wizard modes is presented below:
@@ -287,6 +313,8 @@ Refer to the section :ref:`considerationsInstaller` below for details and limita
 on how to set the shared memory, partitions and threads appropriately for your
 cluster.
 
+.. index::
+   single: installation; scripted
 
 Scripted Installation
 `````````````````````
@@ -309,6 +337,9 @@ environment being installed into, and then install the software onto each
 node. The ``cluster.config`` file specified will also be copied to each node
 so they are ready to run.
 
+
+.. index::
+   single: installation; arguments
 
 Installation Arguments
 ``````````````````````
@@ -361,6 +392,11 @@ For example, to run the installation wizard in advanced mode, specify it as foll
 
   ./rapids-<version>.run -- --advanced
 
+
+.. index::
+   single: installation; sizing considerations
+   single: RapidsSE; sizing considerations
+
 .. _considerationsInstaller:
 
 Considerations For Overriding Installer Settings
@@ -384,6 +420,10 @@ the ``--advanced`` command line parameter) or by manually altering the
 afterwards.
 
 Let’s consider how to size each of these parameters manually.
+
+.. index::
+   single: shared memory; configuration (RapidsSE)
+   single: configuration; shared memory (RapidsSE)
 
 .. rubric:: Shared Memory
    :name: sizing-shared-memory
@@ -425,6 +465,10 @@ then RapidsSE can only be allocated a shared memory reservation of 60GB,
 being 95% of the system’s RAM.
 
 
+.. index::
+   single: partitions; configuration
+   single: configuration; partitions
+
 .. rubric:: Partitions
    :name: sizing-partitions
 
@@ -453,6 +497,10 @@ partitions.
 *Example 3*: If a machine has 1 core then the recommendation is to use 1
 partition, being the lower limit.
 
+
+.. index::
+   single: threads; configuration
+   single: configuration; threads
 
 .. rubric:: Threads
    :name: sizing-threads

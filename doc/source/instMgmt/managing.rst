@@ -4,10 +4,18 @@
      :depth: 3
      :backlinks: none
 
+
+.. index::
+   single: RapidsSE; managing
+
 .. _managing:
 
 Managing RapidsSE
 =================
+
+.. index::
+   single: installation; directory contents
+   single: managing RapidsSE; directory contents
 
 .. _installationDir:
 
@@ -63,6 +71,10 @@ below.
    ================== ===========================================================
 
 
+.. index::
+   single: cluster status
+   single: managing RapidsSE; cluster status
+
 .. _clusterStatus:
 
 Checking The Cluster Status
@@ -99,6 +111,11 @@ An example of a stopped cluster looks like this:
    0 nodes out of 2 are running. 2 nodes are stopped.
 
 
+
+.. index::
+   single: cluster configuration
+   single: managing RapidsSE; cluster configuration
+
 .. _clusterConfig:
 
 Cluster Config
@@ -133,6 +150,10 @@ command line arguments. Each node is started independently this way.
 The ``cluster.config`` file can be saved and reused to automate the
 re-installation of the cluster without user interaction.
 
+
+.. index::
+   single: log files
+   single: managing RapidsSE; log files
 
 .. _logfiles:
 
@@ -191,6 +212,11 @@ manner. This can be significantly faster than starting a cluster and reloading
 all the schema and data as there is no parsing and statement execution involved.
 
 
+.. index::
+   single: unload, memory
+   single: memory unload
+   single: managing RapidsSE; memory unload
+
 .. _unload:
 
 Unload
@@ -237,6 +263,10 @@ filesystem paths that were specified during installation.
 Obsolete snapshots can simply be deleted from disk on each node in the cluster
 when they are no longer required.
 
+.. index::
+   single: reload, memory
+   single: memory reload
+   single: managing RapidsSE; memory reload
 
 .. _reload:
 
@@ -352,6 +382,9 @@ Here is what it looks like when it is run:
 The tables, indexes and data that were present at the time of the unload should
 now exist within RapidsSE.
 
+.. index::
+   single: security
+   single: managing RapidsSE; security
 
 .. _security:
 
@@ -360,6 +393,10 @@ Security
 RapidsSE does not currently have any authentication or authorization
 capabilities, though this is an important feature for a future release.
 
+
+.. index::
+   single: memory usage
+   single: managing RapidsSE; memory usage
 
 .. _monitoringMemoryUsage:
 

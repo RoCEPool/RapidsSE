@@ -9,6 +9,9 @@
 Data Manipulation
 =================
 
+.. index::
+   single: TPC-H; generating
+
 Generating TPC-H Data
 ---------------------
 The installation of RapidsSE includes a copy of ``dbgen`` – the utility for
@@ -97,6 +100,10 @@ extensions are desired, the --norename parameter can be given to the
 ``generateData.sh`` script file to skip this file renaming.
 
 
+.. index::
+   single: RapidsSE; loading data
+   single: loading data
+
 .. _loadingData:
 
 Loading Data
@@ -111,6 +118,11 @@ node.
 
 RapidsSE currently supports pipe-delimited or comma-delimited file formats
 such as that produced by the ``dbgen`` utility.
+
+.. index::
+   single: loading data; single node load
+   single: LOAD (command); overview
+   single: DML; load (single node)
 
 .. _singleNodeLoad:
 
@@ -133,6 +145,10 @@ The format for a single node load is as follows:
 
 Refer to the :ref:`load <loadCmd>` command in the :ref:`Command Reference <commandList>`.
 
+.. index::
+   single: loading data; distributed load
+   single: DLOAD (command); overview
+   single: DML; load (distributed)
 
 .. _distributedLoad:
 
@@ -165,6 +181,10 @@ This will cause RapidsSE to load ``<file1>``, ``<file2>``, ``<file3>`` and
 Refer to the :ref:`dload <dloadCmd>` command in the :ref:`Command Reference <commandList>`.
 
 
+.. index::
+   single: inserting data
+   single: DML; inserting data
+
 .. _insertingData:
 
 Inserting Data
@@ -172,12 +192,21 @@ Inserting Data
 RapidsSE does not currently support any form of INSERT command.
 
 
+.. index::
+   single: updating data
+   single: DML; updating data
+
 .. _updatingData:
 
 Updating Data
 -------------
 RapidsSE does not currently support any form of UPDATE command.
 
+
+.. index::
+   single: deleting data
+   single: DML; deleting data
+   single: DML; truncating tables
 
 .. _deletingData:
 

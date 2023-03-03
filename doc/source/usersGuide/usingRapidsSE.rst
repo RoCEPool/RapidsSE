@@ -4,6 +4,10 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: RapidsSE; using
+   single: using RapidsSE
+
 .. _usingSE:
 
 Using RapidsSE
@@ -11,6 +15,10 @@ Using RapidsSE
 This section describes the ways that users can interact with RapidsSE once
 it has been installed and started by an administrator. Further details on
 each of the components below can be found in the :ref:`interfaces` section.
+
+
+.. index::
+   single: SE Prompt; overview
 
 SE Prompt
 ---------
@@ -57,6 +65,8 @@ be produced:
    ERROR: Cannot start SE Prompt - RapidsSE is not running on this node.
 
 
+.. index::
+   single: SE Shell; overview
 
 SE Shell
 --------
@@ -77,6 +87,9 @@ SE Shell will be documented further once it is released.
 
 Further information on interfacing to RapidsSE with SE Shell can be found
 :ref:`here <seShellInterface>`.
+
+.. index::
+   single: JDBC driver; overview
 
 JDBC Driver
 -----------

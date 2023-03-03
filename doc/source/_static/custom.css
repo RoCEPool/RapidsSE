@@ -28,3 +28,8 @@ table.widetable tbody {
 table.widetable td {
     padding: 0.25em 0.4em;
 }
+
+/* The side bar has "Table of Contents" between "Navigation" and the first link. Hide it. */
+div.sphinxsidebarwrapper p.caption {
+    display: none
+}

@@ -1,3 +1,7 @@
+.. index::
+   single: sizing guide
+   single: installation; sizing guide
+
 .. _sizingGuide:
 
 Sizing Guide

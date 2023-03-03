@@ -1,3 +1,6 @@
+.. index::
+   single: RapidsSE; interfaces
+
 .. _interfaces:
 
 Interfaces
@@ -10,6 +13,10 @@ Interfaces
      :backlinks: none
 
 
+.. index::
+   single: interfaces; SE Shell
+   single: SE Shell; interface
+
 .. _seShellInterface:
 
 SE Shell
@@ -17,12 +24,20 @@ SE Shell
 Detailed information on this will be coming soon.
 
 
+.. index::
+   single: interfaces; JDBC driver
+   single: JDBC driver; interface
+
 .. _jdbcDriverInterface:
 
 JDBC Driver
 -----------
 The JDBC Driver will be documented further once it is released.
 
+
+.. index::
+   single: interfaces; wireline protocol
+   single: wireline protocol; interface
 
 .. _wirelineProtocolInterface:
 

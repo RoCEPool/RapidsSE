@@ -1,3 +1,7 @@
+.. index::
+   single: RapidsSE; commands
+   single: Commands; command list
+
 .. _commandList:
 
 Alphabetical Command List
@@ -56,10 +60,16 @@ node.
      all statements.
 
 
+
+.. index::
+   single: Commands; COUNT
+   single: COUNT (command); syntax
+
 .. _countCmd:
 
 ``COUNT``
 ---------
+
 Returns the number of rows in a given table across all nodes.
 
 .. rubric:: Syntax:
@@ -78,10 +88,16 @@ Returns the number of rows in a given table across all nodes.
      :align: center
 
 
+
+.. index::
+   single: Commands; CREATE INDEX
+   single: CREATE INDEX (command); syntax
+
 .. _createIndexCmd:
 
 ``CREATE INDEX``
 ----------------
+
 Creates an index on a table.
 
 .. seealso::
@@ -118,10 +134,15 @@ Creates an index on a table.
 
 
 
+.. index::
+   single: Commands; CREATE TABLE
+   single: CREATE TABLE (command); syntax
+
 .. _createTableCmd:
 
 ``CREATE TABLE``
 ----------------
+
 Creates a table in the default catalog and schema (``rapidsse.public``).
 
 If the ``PARTITION BY`` clause is not supplied then the table will
@@ -194,11 +215,15 @@ table.
      :align: center
 
 
+.. index::
+   single: Commands; DLOAD
+   single: DLOAD (command); syntax
 
 .. _dloadCmd:
 
 ``DLOAD``
 ---------
+
 Distributed load. Loads data from a given file (or files) on all nodes in the
 cluster into a table. Does not return until all files have been loaded. **The
 paths/files specified must exist in the same location on each node.**
@@ -252,10 +277,15 @@ the cluster into table ``table1``:
 
 
 
+.. index::
+   single: Commands; DROP INDEX
+   single: DROP INDEX (command); syntax
+
 .. _dropIndexCmd:
 
 ``DROP INDEX``
 ----------------
+
 Drops an index of a given name from a table.
 
 .. seealso::
@@ -280,10 +310,15 @@ Drops an index of a given name from a table.
 
 
 
+.. index::
+   single: Commands; DROP TABLE
+   single: DROP TABLE (command); syntax
+
 .. _dropTableCmd:
 
 ``DROP TABLE``
 ----------------
+
 Removes an existing table and all of its indexes and data.
 
 .. seealso::
@@ -307,10 +342,15 @@ Removes an existing table and all of its indexes and data.
 
 
 
+.. index::
+   single: Commands; LOAD
+   single: LOAD (command); syntax
+
 .. _loadCmd:
 
 ``LOAD``
 --------
+
 Load data into a table from a file on the current node only.
 
 
@@ -391,10 +431,15 @@ and use the ``#`` symbol as an escape character:
 
 
 
+.. index::
+   single: Commands; LSCOL
+   single: LSCOL (command); syntax
+
 .. _lscolCmd:
 
 ``LSCOL``
 ---------
+
 List and describe all of the columns that exist for a given table.
 
 .. rubric:: Syntax:
@@ -414,10 +459,15 @@ List and describe all of the columns that exist for a given table.
 
 
 
+.. index::
+   single: Commands; LSIDX
+   single: LSIDX (command); syntax
+
 .. _lsidxCmd:
 
 ``LSIDX``
 ---------
+
 Lists all of the indexes that have been created on a given table.
 
 .. rubric:: Syntax:
@@ -437,10 +487,15 @@ Lists all of the indexes that have been created on a given table.
 
 
 
+.. index::
+   single: Commands; LSIDXCOL
+   single: LSIDXCOL (command); syntax
+
 .. _lsidxcolCmd:
 
 ``LSIDXCOL``
 ------------
+
 Lists the columns of a given index on a particular table.
 
 .. rubric:: Syntax:
@@ -461,10 +516,15 @@ Lists the columns of a given index on a particular table.
 
 
 
+.. index::
+   single: Commands; LSTBL
+   single: LSTBL (command); syntax
+
 .. _lstblCmd:
 
 ``LSTBL``
 ---------
+
 Lists all of the tables in the default catalog and schema.
 
 .. rubric:: Syntax:
@@ -485,10 +545,15 @@ Lists all of the tables in the default catalog and schema.
 
 
 
+.. index::
+   single: Commands; PRINT
+   single: PRINT (command); syntax
+
 .. _printCmd:
 
 ``PRINT``
 ---------
+
 Prints a string to stdout on the SE Prompt.
 
 .. rubric:: Syntax:
@@ -509,10 +574,15 @@ Prints a string to stdout on the SE Prompt.
 
 
 
+.. index::
+   single: Commands; SELECT
+   single: SELECT (command); syntax
+
 .. _selectCmd:
 
 ``SELECT``
 ----------
+
 Reads data from a table and returns a result set.
 
 This is broken down into the :ref:`command <selectCmdRef>` and the
@@ -792,6 +862,10 @@ This is broken down into the :ref:`command <selectCmdRef>` and the
 
 
 
+.. index::
+   single: Commands; expressions
+   single: Expressions; syntax
+
 .. _selectExprRef:
 
 Expression Reference
@@ -848,10 +922,14 @@ Refer to the :ref:`complete syntax tree <syntaxTree>` for further definitions
 of any rules.
 
 
+.. index::
+   single: SQL; Supported operators
+
 .. _supportedSelectOperators:
 
 Supported SELECT Operators
 ``````````````````````````
+
 Note: In release v1.1, only limited ``SELECT`` statement functionality have
 been enabled. This is described in the table below. Additional ``SELECT``
 functionality will be enabled in subsequent releases.
@@ -888,10 +966,15 @@ functionality will be enabled in subsequent releases.
      - Enabled
 
 
+
+.. index::
+   single: Expressions; supported expressions
+
 .. _supportedSelectExprs:
 
 Supported Expressions
 `````````````````````
+
 Note: In release v1.1, only limited ``SELECT`` expressions have been enabled.
 This is described in the table below. Additional expression operators will be
 enabled in subsequent releases.
@@ -1054,10 +1137,15 @@ enabled in subsequent releases.
 
 
 
+.. index::
+   single: Commands; SLEEP
+   single: SLEEP (command); syntax
+
 .. _sleepCmd:
 
 ``SLEEP``
 ---------
+
 Causes the SE Prompt to sleep and not accept input for a given number of seconds.
 
 .. rubric:: Syntax:
@@ -1077,10 +1165,15 @@ Causes the SE Prompt to sleep and not accept input for a given number of seconds
 
 
 
+.. index::
+   single: Commands; SPACE
+   single: SPACE (command); syntax
+
 .. _spaceCmd:
 
 ``SPACE``
 ---------
+
 Shows the amount of memory that is free and being used by each node in the
 cluster.
 
@@ -1101,10 +1194,15 @@ cluster.
 
 
 
+.. index::
+   single: Commands; STATUS
+   single: STATUS (command); syntax
+
 .. _statusCmd:
 
 ``STATUS``
 ----------
+
 Returns a row for each node in the cluster indicating it’s health and whether
 it is connected to the current node.
 
@@ -1125,11 +1223,16 @@ it is connected to the current node.
 
 
 
+.. index::
+   single: Commands; SZIDX
+   single: SZIDX (command); syntax
+
 .. _szidxCmd:
 
 ``SZIDX``
 ----------
-Shows how much memory is being used to store the indexes for a given table 
+
+Shows how much memory is being used to store the indexes for a given table
 against each node in the cluster. 
 
 .. rubric:: Syntax:
@@ -1149,11 +1252,16 @@ against each node in the cluster.
 
 
 
+.. index::
+   single: Commands; SZTBL
+   single: SZTBL (command); syntax
+
 .. _sztblCmd:
 
 ``SZTBL``
 ----------
-Shows how much memory is being used to store the data for a given table 
+
+Shows how much memory is being used to store the data for a given table
 against each node in the cluster.
 
 .. rubric:: Syntax:
@@ -1173,10 +1281,15 @@ against each node in the cluster.
 
    
 
+.. index::
+   single: Commands; TRUNCATE
+   single: TRUNCATE (command); syntax
+
 .. _truncateCmd:
 
 ``TRUNCATE``
 ------------
+
 Removes all data from a table without dropping the table or its indexes.
 
 .. rubric:: Syntax:
@@ -1197,10 +1310,15 @@ Removes all data from a table without dropping the table or its indexes.
 
 
 
+.. index::
+   single: Commands; UNLOAD
+   single: UNLOAD (command); syntax
+
 .. _unloadCmd:
 
 ``UNLOAD``
 ----------
+
 Writes a snapshot of the data in RapidsSE (tables, index, row data, etc) to
 files on each node. The cluster must be quiesced (no other user activity)
 while this operation occurs. A name must be given to the snapshot to separate

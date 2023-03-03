@@ -4,6 +4,9 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: expressions; overview
+
 .. _expressions:
 
 Expressions
@@ -58,6 +61,10 @@ error indicating that there is a type mismatch in the expression on a
 particular operator.
 
 
+.. index::
+   single: expressions; nulls
+   single: nulls (expressions)
+
 .. _nulls:
 
 Nulls
@@ -82,6 +89,9 @@ will always be ``NULL`` regardless of the value of ``columnB``.
 
 Similarly, logical expression operators are also affected by ``NULL`` values
 too, as shown by the truth table below:
+
+.. index::
+   single: expressions; truth table
 
 .. _truthTableNulls:
 
@@ -108,6 +118,9 @@ will automatically be coerced to match other operands around it. For
 example, given the expression ``NULL + 1`` then the ``NULL`` will be treated
 as an integer data type to match the other integer operand ``1``.
 
+.. index::
+   single: expressions; literals
+   single: literals (expressions)
 
 .. _literals:
 
@@ -123,12 +136,19 @@ supported range can be represented. Meanwhile ``INTEGER`` has no fractional
 components, so a calculation involving it may lack the necessary accuracy.
 
 
+.. index::
+   single: BOOLEAN (expression literal)
+
 .. rubric:: ``BOOLEAN``
 
 ``BOOLEAN`` values are simply written as ``true`` or ``false``, case
 insensitive. Do not enclose them in quotes otherwise they will be treated
 as strings.
 
+
+.. index::
+   single: CHAR (expression literal)
+   single: VARCHAR (expression literal)
 
 .. rubric:: ``CHAR`` and ``VARCHAR``
 
@@ -139,6 +159,8 @@ then it must be escaped by repeating the same character.
 For example, the string ``Craig's cat`` would be represented in a literal as:
 ``'Craig''s cat'``.
 
+.. index::
+   single: DATE (expression literal)
 
 .. rubric:: ``DATE``
 
@@ -153,6 +175,8 @@ digits, and ``dd`` represents the day of the month in 2 digits. The ``DATE``
 keyword and a space must appear before the first single quote so that RapidsSE
 does not interpret the value as a string.
 
+.. index::
+   single: DECIMAL (expression literal)
 
 .. rubric:: ``DECIMAL``
 
@@ -169,6 +193,8 @@ Examples of ``DECIMAL`` literals include:
 
   ``123.``
 
+.. index::
+   single: FLOAT (expression literal)
 
 .. rubric:: ``FLOAT``
 
@@ -191,21 +217,25 @@ examples previously shown) include:
   ``12.3e+1``
 
 
+.. index::
+   single: INTEGER (expression literal)
+
 .. rubric:: ``INTEGER``
 
 An ``INTEGER`` literal is simply written as a whole number. For example ``123``
 or ``-24``. There is no fractional component or exponent.
 
 
-.. rubric:: ``INTERVAL YEAR TO MONTH``
+.. index::
+   single: INTERVALs (expression literal)
+
+.. rubric:: ``INTERVAL``
 
 RapidsSE does not currently support interval types.
 
 
-.. rubric:: ``INTERVAL DAY TO SECOND``
-
-RapidsSE does not currently support interval types.
-
+.. index::
+   single: TIME (expression literal)
 
 .. rubric:: ``TIME``
 
@@ -220,6 +250,9 @@ represents the minutes in 2 digits, and ``ss`` represents the whole in 2
 digits. The ``TIME`` keyword and a space must appear before the first
 single quote so that RapidsSE does not interpret the value as a string.
 
+
+.. index::
+   single: TIMESTAMP (expression literal)
 
 .. rubric:: ``TIMESTAMP``
 
@@ -253,6 +286,11 @@ Named References
 ----------------
 An expression can contain a reference by name to a value. This is often
 represented by a column reference or an alias reference.
+
+
+.. index::
+   single: expressions; column references
+   single: column references (expressions)
 
 .. _columnReference:
 
@@ -295,6 +333,10 @@ This is the above query re-written correctly:
 
   SELECT n.n_name FROM nation n ;             (CORRECT!)
 
+
+.. index::
+   single: expressions; aliases
+   single: aliases (expressions)
 
 .. _expressionAliases:
 
@@ -347,6 +389,10 @@ Typically expression aliases can be referenced in expressions in the
 typically not resolvable in a ``WHERE`` clause.
 
 
+.. index::
+   single: expressions; keywords
+   single: keywords (expressions)
+
 .. _exprKeywords:
 
 Keywords
@@ -354,6 +400,10 @@ Keywords
 RapidsSE does not currently support expression keywords such as ``NOW()``,
 ``CURRENT_TIMESTAMP`` or ``CURRENT_USER``.
 
+
+.. index::
+   single: expressions; supported operators
+   single: operators (expressions)
 
 .. _exprOperators:
 
@@ -373,6 +423,14 @@ to a boolean value.
 The syntax ``-->`` is used to indicate the resulting data type that will be 
 returned from the operator.
 
+
+.. index::
+   single: expressions; logical operators
+   single: logical operators (expressions)
+   single: AND (expression operator)
+   single: OR (expression operator)
+   single: XOR (expression operator)
+   single: NOT (expression operator)
 
 .. _logicalOperators:
 
@@ -402,6 +460,17 @@ The syntax for these operators are as follows:
 RapidsSE uses :ref:`three-valued logic <nulls>` when it comes to evaluating
 logical expressions that can contain ``NULL``\s. Refer to this
 :ref:`truth table <truthTableNulls>` for details.
+
+.. index::
+   single: expressions; mathematical operators
+   single: mathematical operators (expressions)
+   single: addition (expression operator)
+   single: subtraction (expression operator)
+   single: multiplication (expression operator)
+   single: division (expression operator)
+   single: modulus (expression operator)
+   single: unary plus (expression operator)
+   single: unary negation (expression operator)
 
 .. _mathematicalOperators:
 
@@ -441,6 +510,18 @@ The syntax for these operators are as follows:
                 + <numericExpr>    --> <numericValue>    (unary plus)
                 - <numericExpr>    --> <numericValue>    (unary negation)
 
+
+.. index::
+   single: expressions; comparison operators
+   single: comparison operators (expressions)
+   single: equality (expression operator)
+   single: inequality (expression operator)
+   single: less-than (expression operator)
+   single: less-than-or-equal-to (expression operator)
+   single: greater-than (expression operator)
+   single: greater-than-or-equal-to (expression operator)
+   single: IS NULL (expression operator)
+   single: BETWEEN (expression operator)
 
 .. _comparisonOperators:
 
@@ -493,6 +574,11 @@ The syntax for these operators are as follows:
    <booleanExpr> IS NOT NULL          --> <booleanValue>
    <expr> BETWEEN <expr> AND <expr>   --> <booleanValue>
 
+
+.. index::
+   single: expressions; conditional operators
+   single: conditional operators (expressions)
+   single: CASE (expression operator)
 
 .. _conditionalOperators:
 
@@ -570,6 +656,10 @@ can be returned. The data type of all ``THEN`` and ``ELSE`` expressions must
 be the same or :ref:`implicitly coercible <implicitTypeCoercion>`.
 
 
+.. index::
+   single: expressions; string operators
+   single: string operators (expressions)
+
 .. _stringOperators:
 
 String Operators
@@ -578,6 +668,9 @@ RapidsSE supports the following string operators:
 
 * ``LIKE``
 * ``SUBSTRING``
+
+.. index::
+   single: LIKE (expression operator)
 
 LIKE Operator
 :::::::::::::
@@ -647,6 +740,9 @@ Here are some examples using ``ESCAPE`` characters:
   'ab#%' LIKE 'ab###%' ESCAPE '#'     (returns true)
 
 
+.. index::
+   single: SUBSTRING (expression operator)
+
 SUBSTRING Operator
 ::::::::::::::::::
 The ``SUBSTRING`` operator returns a portion of a string value starting at a
@@ -669,6 +765,11 @@ The optional third parameter, also an integer, is the number of characters to
 be extracted. If this third parameter is left off then all characters until
 the end of the string will be returned.
 
+
+.. index::
+   single: expressions; date and time operators
+   single: date and time operators (expressions)
+   single: EXTRACT (expression operator)
 
 .. _datetimeOperators:
 
@@ -702,6 +803,15 @@ Examples:
   EXTRACT (DAY FROM timestamp '2023-01-20 14:23:54')    (returns 20)
   EXTRACT (YEAR FROM timestamp '2023-01-20 14:23:54')   (returns 2023)
 
+
+.. index::
+   single: expressions; aggregate operators
+   single: aggregate operators (expressions)
+   single: COUNT (expression operator)
+   single: MIN (expression operator)
+   single: MAX (expression operator)
+   single: SUM (expression operator)
+   single: AVG (expression operator)
 
 .. _aggregateOperators:
 
@@ -767,6 +877,11 @@ data type will be a ``DECIMAL``. However if the input data type is a ``FLOAT``
    ``COUNT(DISTINCT <expr>)``
 
 
+.. index::
+   single: expressions; casting operator
+   single: casting; operator
+   single: CAST (expression operator)
+
 .. _typeCastingOperators:
 
 Data Type Casting Operators
@@ -810,6 +925,10 @@ Example (3) shows a correction to example (2) where the entire ``col1 + 2``
 expression is converted to a ``VARCHAR``. This is the same as example (1).
 
 
+.. index::
+   single: expressions; subquery operators
+   single: subquery operators (expressions)
+
 .. _subqueryOperators:
 
 Subquery Operators
@@ -820,6 +939,9 @@ RapidsSE supports the following subquery expression operators:
 * ``IN``
 
 These subquery operators are described in the following sub-sections.
+
+.. index::
+   single: EXISTS (expression operator)
 
 EXISTS Operator
 :::::::::::::::
@@ -871,6 +993,9 @@ subquery (``e1.managerId``). So this subquery cannot be calculated ahead of
 time.
 
 
+.. index::
+   single: IN (expression operator)
+
 IN Operator
 :::::::::::
 The ``IN`` operator executes a subquery and returns a boolean value.
@@ -917,6 +1042,10 @@ results of the subquery and returns the employee name if the ``WHERE``
 predicate evaluates true. Note that this subquery is also an example of an
 uncorrelated subquery. It can be calculated once and the result can be reused.
 
+
+.. index::
+   single: expressions; order of precedence
+   single: order of precedence (expressions)
 
 Operator Order of Precedence
 ----------------------------

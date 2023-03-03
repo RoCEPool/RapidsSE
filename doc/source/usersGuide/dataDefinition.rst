@@ -4,6 +4,10 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: RapidsSE; DDL
+   single: DDL
+
 .. _dataDefinition:
 
 Data Definition
@@ -27,6 +31,11 @@ and schema, and can be qualified with these names.
 For example, a table ``t1`` can be fully qualified and referenced as
 ``rapids.public.t1``.
 
+
+.. index::
+   single: RapidsSE; tables
+   single: DDL; tables
+
 .. _tables:
 
 Tables
@@ -45,6 +54,12 @@ that can be worked on concurrently. Table indexes organise rows within each
 partition into an order based on values in particular columns. This allows
 queries to more quickly find particular rows it is interested in without having
 to scan all of the data.
+
+
+.. index::
+   single: RapidsSE; table partitioning
+   single: DDL; table partitioning
+   single: CREATE TABLE (command); partitioning
 
 .. _tablePartitioning:
 
@@ -94,6 +109,13 @@ automatically chosen as the partitioning column. For example:
 It is not possible to change the columns that a table is partitioned on without
 dropping and recreating the table.
 
+
+.. index::
+   single: RapidsSE; tables (creating)
+   single: DDL; creating tables
+   single: tables; creating
+   single: CREATE TABLE (command); overview
+
 .. _creatingTables:
 
 Creating Tables
@@ -142,6 +164,12 @@ and precision, etc.
   system does not currently obey these constraints that are specified.
 
 
+.. index::
+   single: RapidsSE; tables (dropping)
+   single: DDL; dropping tables
+   single: tables; dropping
+   single: DROP TABLE (command); overview
+
 .. _droppingTables:
 
 Dropping Tables
@@ -151,6 +179,11 @@ command removes the definition of the table as well as all data and indexes
 associated with that table.
 
 
+.. index::
+   single: RapidsSE; tables (altering)
+   single: DDL; altering tables
+   single: tables; altering
+
 .. _alteringTables:
 
 Altering Tables
@@ -158,6 +191,11 @@ Altering Tables
 RapidsSE does not support altering existing tables to add or remove columns,
 or alter column constraints.
 
+
+.. index::
+   single: RapidsSE; indexes
+   single: DDL; indexes
+   single: indexes; overview
 
 .. _indexes:
 
@@ -199,12 +237,25 @@ As an in-memory system, RapidsSE uses skiplists to implement indexes. These
 provide a reasonably low memory footprint and a good balance of insertion
 speed and search speed.
 
+.. index::
+   single: DDL; creating indexes
+   single: DDL; dropping indexes
+   single: indexes; creating
+   single: indexes; dropping
+   single: CREATE INDEX (command); overview
+   single: DROP INDEX (command); overview
+
 Indexes are created with the ``CREATE INDEX`` command and dropped with the
 ``DROP INDEX`` command.
 
 Dropping an index does not delete the data in the table, just that indexes
 way of ordering the data.
 
+
+.. index::
+   single: RapidsSE; privileges
+   single: DDL; privileges
+   single: security; privileges
 
 .. _privileges:
 

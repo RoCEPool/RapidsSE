@@ -1,3 +1,7 @@
+.. index::
+   single: RapidsSE; constraints
+   single: constraints of RapidsSE
+
 .. _constraints:
 
 Constraints and Limitations

@@ -4,10 +4,18 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: data types
+   single: RapidsSE; data types
+
 .. _dataTypes:
 
 Data Types
 ==========
+
+.. index::
+   single: data types; supported
+   single: RapidsSE; supported data types
 
 Supported Data Types
 --------------------
@@ -51,6 +59,11 @@ below.
    =============  ===========================================================================
 
 
+.. index::
+   single: data types; conversion
+   single: RapidsSE; type conversion
+   single: type conversion
+
 .. _typeConversion:
 
 Type Conversion
@@ -82,6 +95,11 @@ RapidsSE supports expression type conversion in two ways:
 
 This is described in the sections below.
 
+
+.. index::
+   single: data types; conversion (implicit)
+   single: RapidsSE; type conversion (implicit)
+   single: type conversion; implicit
 
 .. _implicitTypeCoercion:
 
@@ -139,6 +157,13 @@ In the case of coercing literals, it is possible that the coercion from the
 source to the target type may exceed the supported range of the target type.
 In that case an error is returned to the user.
 
+.. index::
+   single: data types; conversion (explicit)
+   single: data types; casting
+   single: RapidsSE; type conversion (explicit)
+   single: type conversion; explicit
+   single: casting; supported casts
+   single: expressions; casting
 
 .. _explicitTypeCasting:
 

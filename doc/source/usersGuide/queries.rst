@@ -4,12 +4,21 @@
      :depth: 3
      :backlinks: none
 
+.. index::
+   single: RapidsSE; queries
+   single: queries; overview
+
 .. _queries:
 
 Queries
 =======
 This section describes how to retrieve data from tables within RapidsSE.
 This is known as a query.
+
+
+.. index::
+   single: queries; form
+   single: SELECT (command); form
 
 .. _formOfASqlQuery:
 
@@ -35,6 +44,11 @@ following general form:
 These clauses are described in more detail in the sections below. Expressions
 are described :ref:`here <expressions>`. Detailed syntax of ``SELECT`` queries
 can be found in the :ref:`Command Reference <selectCmd>`.
+
+.. index::
+   single: RapidsSE; supported query clauses
+   single: queries; supported clauses
+   single: SQL; supported query clauses
 
 Supported Query Clauses
 -----------------------
@@ -62,6 +76,10 @@ RapidsSE does not currently support the following SQL clauses:
 
 Query Clauses
 -------------
+
+.. index::
+   single: queries; select list
+   single: select list
 
 .. _selectlist:
 
@@ -145,6 +163,10 @@ and this is the default behaviour when neither keyword is specified.
   supported.
 
 
+.. index::
+   single: queries; FROM clause
+   single: FROM (clause)
+
 .. _from:
 
 FROM Clause
@@ -191,6 +213,10 @@ by a space. For example:
 In the example above, the table ``really_long_table_name`` is aliased to ``t``
 for simplicity.
 
+
+.. index::
+   single: queries; JOIN clause
+   single: JOIN (clause)
 
 .. _join:
 
@@ -277,6 +303,10 @@ emitted.
    RapidsSE does not yet support any outer join.
 
 
+.. index::
+   single: queries; WHERE clause
+   single: WHERE (clause)
+
 .. _where:
 
 WHERE Clause
@@ -312,6 +342,10 @@ Because the ``WHERE`` clause is executed before any aggregations table place,
 it is an error to refer to any computed aggregated values in a ``WHERE``
 clause. Instead, use a ``HAVING`` clause.
 
+
+.. index::
+   single: queries; GROUP BY clause
+   single: GROUP BY (clause)
 
 .. _groupby:
 
@@ -367,6 +401,10 @@ For example, this query is disallowed:
   error: Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause;
 
 
+.. index::
+   single: queries; HAVING clause
+   single: HAVING (clause)
+
 .. _having:
 
 HAVING Clause
@@ -414,6 +452,13 @@ aggregated rows are then filtered according to the predicate in the
   GROUP BY a
   HAVING a > 0 AND a < 10 ;
 
+
+.. index::
+   single: queries; set operators
+   single: set operators
+   single: UNION (clause)
+   single: INTERSECT (clause)
+   single: EXCEPT (clause)
 
 .. _setoperators:
 
@@ -523,6 +568,10 @@ tables, but the data type does not match. Only columns ``b`` and ``d`` are
 suitable for the set operation.
 
 
+.. index::
+   single: queries; ORDER BY clause
+   single: ORDER BY (clause)
+
 .. _orderby:
 
 ORDER BY Clause
@@ -602,6 +651,10 @@ the query like this:
   RapidsSE supports ordering by multiple expressions, however it currently
   only supports ordering in the ascending direction only.
 
+
+.. index::
+   single: queries; LIMIT clause
+   single: LIMIT (clause)
 
 .. _limit:
 
@@ -688,6 +741,10 @@ the query like this:
   RapidsSE currently does not support the ``OFFSET`` clause.
 
 
+.. index::
+   single: queries; subqueries
+   single: subqueries
+   single: WITH (clause)
 
 .. _subqueries:
 
