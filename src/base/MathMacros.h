@@ -1527,6 +1527,7 @@
       xDateTime.tm_hour = xTsp1.m_uHour;                                   \
       xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iArg2/_C_1M;                   \
+      xDateTime.tm_isdst = 0;                                              \
                                                                            \
       time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                 \
                                                                            \
@@ -1567,6 +1568,7 @@
      xDateTime.tm_hour = xTsp2.m_uHour;                                    \
      xDateTime.tm_min  = xTsp2.m_uMinute;                                  \
      xDateTime.tm_sec  = xTsp2.m_uSecond + iArg1/_C_1M; ;                  \
+     xDateTime.tm_isdst = 0;                                               \
                                                                            \
      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                  \
                                                                            \
@@ -1607,9 +1609,9 @@
     xDateTime.tm_hour = xTsp1.m_uHour;                                     \
     xDateTime.tm_min  = xTsp1.m_uMinute;                                   \
     xDateTime.tm_sec  = xTsp1.m_uSecond;                                   \
+    xDateTime.tm_isdst = 0;                                                \
                                                                            \
     time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
-                                                                           \
                                                                            \
     xTsp2.m_uLocal     = _C_TSP_LOCAL;                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
@@ -1650,6 +1652,7 @@
      xDateTime.tm_hour = xTsp2.m_uHour;                                    \
      xDateTime.tm_min  = xTsp2.m_uMinute;                                  \
      xDateTime.tm_sec  = xTsp2.m_uSecond;                                  \
+     xDateTime.tm_isdst = 0;                                               \
                                                                            \
      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                  \
                                                                            \
@@ -1689,6 +1692,7 @@
      xDateTime1.tm_hour = xTsp1.m_uHour;                                   \
      xDateTime1.tm_min  = xTsp1.m_uMinute;                                 \
      xDateTime1.tm_sec  = xTsp1.m_uSecond;                                 \
+     xDateTime1.tm_isdst = 0;                                              \
                                                                            \
      time_t iSecondsSincePosixEpoch1 = mktime(&xDateTime1);                \
                                                                            \
