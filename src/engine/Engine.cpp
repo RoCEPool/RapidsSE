@@ -116,6 +116,8 @@ void Engine::vMainEntry(void)
 
   vPreliminary();
 
+  PermGen::vTest_Rotation(3);
+
   vRunCommandLine();
   
   vConcluding();

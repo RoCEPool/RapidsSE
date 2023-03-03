@@ -29,6 +29,11 @@ PermGen::PermGen(i8 nItems)
   for (i8 i_Item = 1; i_Item < C_PERMGEN_ITEMS; i_Item++)
     m_iaItem[i_Item] = 0;
 
+  for (i8 i_Rotate = 0; i_Rotate < C_PERMGEN_ITEMS; i_Rotate++)
+    m_iaRotate[i_Rotate] = -1;
+
+  m_i_Rotate = -1;
+
   _checkInitialised_(CN_PERMGEN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
@@ -65,8 +70,44 @@ void PermGen::vTest(i8 nItems)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PermGen::vTest_Rotation(i8 nItems)
+{
+  _static_
+
+  PermGen* pPermGen = new PermGen(nItems);
+
+  pPermGen->vInitRotations();
+
+  i8 nPermutations = 0;
+  while (pPermGen->bNextRotation())
+    nPermutations++;
+
+  vTrace("%lld permutations in a set of %lld items\n"_Stz,nPermutations,nItems);
+  delete pPermGen;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PermGen::vInitRotations(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++)
+    m_iaItem[i_Item] = i_Item;
+
+  for (i8 i_Rotate = 0; i_Rotate < m_nItems - 1; i_Rotate++)
+    m_iaRotate[i_Rotate] = 0;
+
+  m_i_Rotate = m_nItems - 2;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -143,6 +184,16 @@ bool PermGen::bNextPermutation(void)
   }
 
   NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool PermGen::bNextRotation(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMGEN, _FOOTER_);
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
