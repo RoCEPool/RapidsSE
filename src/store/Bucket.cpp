@@ -49,10 +49,10 @@ Bucket::Bucket(Table* pTable, LglPtn tLglPtn, eCN eKind)
 
   switch (m_eKind) {
     case CN_ROWTABLEPTN:
-      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tLglPtn,this);
+      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tLglPtn);
       break;
     case CN_CRWTABLEPTN:
-      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn,this);
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
       break;
     default: NEVER_REACH;
   }

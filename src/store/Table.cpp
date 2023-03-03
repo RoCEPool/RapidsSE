@@ -333,7 +333,7 @@ void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
   
   TablePtn* pTblPtn = pTablePtn(0);
   
-  pTblPtn->vAppendBuffer_replicated(pDataBuffer);
+  pTblPtn->vAppendBuffer(pDataBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

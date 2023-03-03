@@ -38,13 +38,12 @@ __aFooterFunction(RowTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowTablePtn::RowTablePtn(Table* pTable, LglPtn tLglPtn, Bucket* pBucket)
+RowTablePtn::RowTablePtn(Table* pTable, LglPtn tLglPtn)
 : Object(CN_ROWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 
   m_pTable    = pTable;
-  m_pBucket   = pBucket;
   m_tLglPtn    = tLglPtn;
 
   m_pRootBuffer    = nullptr;

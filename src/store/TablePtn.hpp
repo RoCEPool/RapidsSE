@@ -16,7 +16,6 @@ namespace STORE
     Lock   m_okLock;  // lock on the partition
     eCN    m_eKind;   // what kind of table partition
 
-    BucketVec*    m_pBucketVec;     // vector of buckets
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
 
     Table* m_pTable;  // table this partition belongs to
@@ -24,6 +23,11 @@ namespace STORE
 
     LglPtn m_tLglPtn;  // logical partition (in grid)
     PhyPtn m_tPhyPtn;  // physical partition (in grid)
+
+    union {
+      CrwTablePtn* m_pCrwTablePtn;
+      RowTablePtn* m_pRowTablePtn;
+    };
 
     // must be last
     Footer m_xFooter;
@@ -47,16 +51,8 @@ namespace STORE
 
     Table* pTable(void);
 
-    Bucket* pGetBucket(i8 i_Bucket);
-    void vSetBucket(i8 iBucket);
-
-    void vAddBucket(Table* pTable, LglPtn tLglPtn, eCN eKind);
-
-    void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);
-    void vAppendBuffer_replicated(DataBuffer* pDataBuffer);
-    i8   nBuckets(void);
     i8   nBuffers(void);
     void vDump(void);
     IndexTree* pIndexTree(i8 iIndexNo);

@@ -9,7 +9,6 @@ namespace STORE
   {
   private:
     Table* m_pTable;        // table this partition belongs to
-    Bucket*   m_pBucket;    // bucket this partition belongs to
     LglPtn    m_tLglPtn;        // partition number (in grid)
 
     // TODO: Arjun - m_pRootBuffer needs to be removed
@@ -28,7 +27,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CrwTablePtn(Table *pTable, LglPtn tLglPtn, Bucket *pBucket);
+    CrwTablePtn(Table *pTable, LglPtn tLglPtn);
    ~CrwTablePtn(void) noexcept(false);
   
 
