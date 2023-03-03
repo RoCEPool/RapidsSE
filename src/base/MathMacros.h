@@ -1526,17 +1526,19 @@
       xDateTime.tm_mday = xTsp1.m_uDay;                                    \
       xDateTime.tm_hour = xTsp1.m_uHour;                                   \
       xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
-      xDateTime.tm_sec  = xTsp1.m_uSecond + iArg2/_C_1M;                   \
-      xDateTime.tm_isdst = -1;                                              \
+      xDateTime.tm_sec  = xTsp1.m_uSecond ;                                \
                                                                            \
-      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                 \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
+      iSecondsSincePosixEpoch += iArg2/_C_1M;                              \
                                                                            \
-      xTsp2.m_uYearDelta = xDateTime.tm_year;                              \
-      xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                           \
-      xTsp2.m_uDay       = xDateTime.tm_mday;                              \
-      xTsp2.m_uHour      = xDateTime.tm_hour;                              \
-      xTsp2.m_uMinute    = xDateTime.tm_min;                               \
-      xTsp2.m_uSecond    = xDateTime.tm_sec;                               \
+      pDateTime = gmtime(&iSecondsSincePosixEpoch);                        \
+                                                                           \
+      xTsp2.m_uYearDelta = pDateTime->tm_year;                             \
+      xTsp2.m_uMonth     = pDateTime->tm_mon + 1;                          \
+      xTsp2.m_uDay       = pDateTime->tm_mday;                             \
+      xTsp2.m_uHour      = pDateTime->tm_hour;                             \
+      xTsp2.m_uMinute    = pDateTime->tm_min;                              \
+      xTsp2.m_uSecond    = pDateTime->tm_sec;                              \
       xTsp2.m_uMicro     = iArg2%_C_1M;                                    \
                                                                            \
       *paW++ = xTsp2.m_iAsI8;                                              \
