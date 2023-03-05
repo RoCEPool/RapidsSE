@@ -116,7 +116,7 @@ void Engine::vMainEntry(void)
 
   vPreliminary();
 
-  PermGen::vTest_Sample(5);
+  PermGen::vTest_Permutation_v2(8);
   //PermGen::vTest_Rotation(4);
 
   vRunCommandLine();

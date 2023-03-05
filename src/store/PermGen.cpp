@@ -21,23 +21,16 @@ PermGen::PermGen(i8 nItems)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  m_nItems = nItems;
+  m_nElements = nItems;
   m_nPermutations = 0;
 
   // initialise the sequencing array
   m_iaItem[0] = -1;
-  for (i8 i_Item = 1; i_Item < C_PERMGEN_ITEMS; i_Item++)
+  for (i8 i_Item = 1; i_Item < C_PERMGEN_ELEMENTS; i_Item++)
     m_iaItem[i_Item] = 0;
 
-  for (i8 i_Rotate = 0; i_Rotate < C_PERMGEN_ITEMS; i_Rotate++)
-    m_naRotated[i_Rotate] = -1;
-
-  for (i8 i_Position = 0; i_Position < C_PERMGEN_ITEMS; i_Position++)
-    m_iaSequence[i_Position] = i_Position;
-  for (i8 i_Position = 0; i_Position < C_PERMGEN_ITEMS; i_Position++)
-    m_iaResult[i_Position] = i_Position;
-
-  m_i_Level = -1;
+  for (i8 i_Position = 0; i_Position < C_PERMGEN_ELEMENTS; i_Position++)
+    m_iaElements[i_Position] = C_UNKNOWN;
 
   _checkInitialised_(CN_PERMGEN);
   
@@ -50,7 +43,6 @@ PermGen::PermGen(i8 nItems)
 PermGen::~PermGen(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +77,7 @@ void PermGen::vTest(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PermGen::vTest_Sample(i8 nItems)
+void PermGen::vTest_Permutation(i8 nItems)
 {
   _static_
 
@@ -95,7 +87,7 @@ void PermGen::vTest_Sample(i8 nItems)
   i8 i_Permutation = 0;
   for (; pPermGen->bNextPermutation(); i_Permutation++) {
 
-    pPermGen->vCalcSample(i_Permutation);
+    pPermGen->vCalcPermutation(i_Permutation);
 
     vTrace("%ll3d): "_Stz, i_Permutation);
 
@@ -106,11 +98,7 @@ void PermGen::vTest_Sample(i8 nItems)
     vTrace(" :: "_Stz);
     for (i8 i_Position = 0; i_Position < nItems; i_Position++)
       vTrace ("%s%lld"_Stz,
-              !i_Position ? " " : ", ", pPermGen->iSequence(i_Position));
-    vTrace(" ::: "_Stz);
-    for (i8 i_Position = 0; i_Position < nItems; i_Position++)
-      vTrace ("%s%lld"_Stz,
-              !i_Position ? " " : ", ", pPermGen->iResult(i_Position));
+              !i_Position ? " " : ", ", pPermGen->iElement(i_Position));
 
     vTrace("\n"_Stz);
   }
@@ -119,23 +107,32 @@ void PermGen::vTest_Sample(i8 nItems)
   delete pPermGen;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PermGen::vTest_Rotation(i8 nItems)
+void PermGen::vTest_Permutation_v2(i8 nItems)
 {
   _static_
 
   PermGen* pPermGen = new PermGen(nItems);
+  //pPermGen->vInitSample();
 
-  pPermGen->vInitRotations();
+  i8 nPermutations = IntLib::iFactorial(nItems);
+  i8 i_Permutation = 0;
+  for (i_Permutation = 0; i_Permutation < nPermutations; i_Permutation++) {
 
-  i8 nPermutations = 0;
-  while (pPermGen->bNextRotation())
-    nPermutations++;
+    pPermGen->vCalcPermutation(i_Permutation);
 
-  vTrace("%lld permutations in a set of %lld items\n"_Stz,nPermutations,nItems);
+    vTrace("%ll3d): "_Stz, i_Permutation);
+
+    for (i8 i_Position = 0; i_Position < nItems; i_Position++)
+      vTrace ("%s%lld"_Stz,
+              !i_Position ? " " : ", ", pPermGen->iElement(i_Position));
+
+    vTrace("\n"_Stz);
+  }
+
+  vTrace("%lld permutations in a set of %lld items\n"_Stz, nPermutations, nItems);
   delete pPermGen;
 }
 
@@ -147,33 +144,24 @@ void PermGen::vTest_Rotation(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PermGen::vInitRotations(void)
+void PermGen::vCalcPermutation(i8 i_Permutation)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMGEN, _FOOTER_);
 
-  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++)
-    m_iaItem[i_Item] = i_Item;
+  for (i8 i_Position = 0; i_Position < m_nElements; i_Position++) {
+    i8 i_Element = i_Position;
+    m_iaElements[i_Position] = i_Element;
+  }
 
-  for (i8 i_Rotate = 0; i_Rotate < m_nItems - 1; i_Rotate++)
-    m_naRotated[i_Rotate] = 0;
+  for (i8 i_Position = 0; i_Position < m_nElements - 1; i_Position++) {
+    i8 nTimesPositionRepeats = IntLib::iFactorial(m_nElements - i_Position - 1);
+    i8 i_NextElementOfPerm = (i_Permutation / nTimesPositionRepeats)
+                             % (m_nElements - i_Position);
 
-  m_i_Level = m_nItems - 2;
-}
+    IntLib::vRotate(m_iaElements, m_nElements, i_NextElementOfPerm);
+  }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void PermGen::vInitSample(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
-
-  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++)
-    m_iaItem[i_Item] = i_Item;
-
-//  for (i8 i_Rotate = 0; i_Rotate < m_nItems - 1; i_Rotate++)
-//    m_naRotated[i_Rotate] = 0;
-//
-//  m_i_Level = m_nItems - 2;
+  IntLib::vRotate(m_iaElements, m_nElements, 0);
 }
 
 
@@ -184,7 +172,7 @@ i8 PermGen::iItem(i8 i_Position)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  i8 i_Item = m_nItems - 1 - i_Position;
+  i8 i_Item = m_nElements - 1 - i_Position;
 
   return m_iaItem[i_Item];
 }
@@ -196,7 +184,7 @@ i8 PermGen::nItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  return m_nItems;
+  return m_nElements;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +200,7 @@ bool PermGen::bNextPermutation(void)
     // do ++[0] stepping, testing for a valid permutation of current subsequence
 
     for (;;) {
-      if (++m_iaItem[0] >= m_nItems)
+      if (++m_iaItem[0] >= m_nElements)
         break;
       if (bIsValidPermutation()) {
         m_nPermutations++;
@@ -229,10 +217,10 @@ bool PermGen::bNextPermutation(void)
 
     // ripple rightwards incrementing [i_Right] looking for next subsequence
     i8 i_Right;
-    for (i_Right = 1; i_Right < m_nItems; i_Right++) {
+    for (i_Right = 1; i_Right < m_nElements; i_Right++) {
 
       // continue looking for longer subsequence if subsequence at i_Right is exhausted
-      if (++m_iaItem[i_Right] >= m_nItems)
+      if (++m_iaItem[i_Right] >= m_nElements)
         continue;
 
       // found next subsequence at [i_Right]
@@ -247,70 +235,11 @@ bool PermGen::bNextPermutation(void)
     }
 
     // have we exhausted all possible sub-sequences?
-    if (i_Right >= m_nItems)
+    if (i_Right >= m_nElements)
       return false;
   }
 
   NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool PermGen::bNextRotation(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMGEN, _FOOTER_);
-
-//  return false;
-
-  if (! m_nPermutations) {
-    m_nPermutations++;
-    vPrint_rot("First"_Stz);
-    return true;
-  }
-
-  while (true) {
-
-    i8 nMaxRotatesAtLevel = m_nItems - m_i_Level - 1;
-    if (++m_naRotated[m_i_Level] <= nMaxRotatesAtLevel) {
-
-      IntLib::vRotate(m_iaItem, m_nItems, m_i_Level);
-      //vTrace("nMaxRotatesAtLevel[%lld] %lld\n"_Stz,m_i_Level,nMaxRotatesAtLevel);
-      //vPrint_rot("bNextRotation"_Stz);
-      m_nPermutations++;
-      vPrint_rot("SameL"_Stz);
-      return true;
-    }
-
-    vPrint_rot("\nStart"_Stz);
-
-    while (true) {
-
-//      IntLib::vRotate(m_iaItem, m_nItems, m_i_Level);
-//      ++m_naRotated[m_i_Level];
-
-      if (--m_i_Level < 0)
-        return false;
-
-      i8 nMaxRotatesAtLevel = m_nItems - m_i_Level - 1;
-      //vTrace("nMaxRotatesAtLevel[%lld] %lld\n"_Stz,m_i_Level,nMaxRotatesAtLevel);
-      if (++m_naRotated[m_i_Level] > nMaxRotatesAtLevel) {
-        continue;
-      }
-
-      IntLib::vRotate(m_iaItem, m_nItems, m_i_Level);
-      for (i8 i_reset = m_i_Level+1; i_reset < m_nItems; i_reset++)
-        m_naRotated[i_reset] = 0;
-
-      m_i_Level = m_nItems - 2;
-
-      m_nPermutations++;
-      vPrint_rot("LeftL"_Stz);
-
-      return true;
-    }
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,8 +259,8 @@ void PermGen::vPrint(Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  vTrace("%s: %lld items: "_Stz,szLabel,m_nItems);
-  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++)
+  vTrace("%s: %lld items: "_Stz, szLabel, m_nElements);
+  for (i8 i_Item = 0; i_Item < m_nElements; i_Item++)
     vTrace("%s%lld"_Stz, i_Item ? "," : "", m_iaItem[i_Item]);
   vTrace("\n"_Stz);
 }
@@ -339,54 +268,11 @@ void PermGen::vPrint(Stz* szLabel)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PermGen::vPrint_rot(Stz* szLabel)
+i8 PermGen::iElement(i8 i_Position)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  s32 sRot;
-
-  vTrace("[%lld / %lld items] %s: "_Stz,
-         m_nPermutations,m_nItems,szLabel);
-
-  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
-
-    if (i_Item < m_nItems - 1)
-      sRot.vSprint("r%lld%s"_Stz,
-                   m_naRotated[i_Item],
-                   i_Item == m_i_Level ? "~" : " "
-                   );
-    else
-      sRot = "##"_Stz;
-
-    vTrace("%s(%si%lld)"_Stz,
-             i_Item ? " " : "",
-             sRot.szStz(),
-             m_iaItem[i_Item]
-    );
-  }
-
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 PermGen::iResult(i8 i_Position)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
-
-  return m_iaResult[i_Position];
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 PermGen::iSequence(i8 i_Position)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
-
-  return m_iaSequence[i_Position];
+  return m_iaElements[i_Position];
 }
 
 
@@ -397,9 +283,11 @@ i8 PermGen::iSequence(i8 i_Position)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PermGen::vCalcSample(i8 i_Permutation)
+void PermGen::vCalcPermutation_showWorking(i8 i_Permutation)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  i8 m_iaSequence[C_PERMGEN_ELEMENTS]; // sequencing array of items
 
   i8 i5Fac = IntLib::iFactorial(5); // 120;
   i8 i4Fac = IntLib::iFactorial(4); // 24;
@@ -423,18 +311,17 @@ void PermGen::vCalcSample(i8 i_Permutation)
   i8 iSequence3 = (i_Permutation / n3Rep) % i_Col3Mod;
   i8 iSequence4 = 0;
 
-  for (i8 i_Position = 0; i_Position < m_nItems; i_Position++)
+  for (i8 i_Position = 0; i_Position < m_nElements; i_Position++)
     m_iaSequence[i_Position] = i_Position;
-  for (i8 i_Position = 0; i_Position < m_nItems; i_Position++)
-    m_iaResult[i_Position] = i_Position;
+  for (i8 i_Position = 0; i_Position < m_nElements; i_Position++)
+    m_iaElements[i_Position] = i_Position;
 
-  m_iaSequence[0] = iSequence0; IntLib::vRotate(m_iaResult,m_nItems,m_iaSequence[0]);
-  m_iaSequence[1] = iSequence1; IntLib::vRotate(m_iaResult,m_nItems,m_iaSequence[1]);
-  m_iaSequence[2] = iSequence2; IntLib::vRotate(m_iaResult,m_nItems,m_iaSequence[2]);
-  m_iaSequence[3] = iSequence3; IntLib::vRotate(m_iaResult,m_nItems,m_iaSequence[3]);
-  m_iaSequence[4] = iSequence4; IntLib::vRotate(m_iaResult,m_nItems,m_iaSequence[4]);
+  m_iaSequence[0] = iSequence0; IntLib::vRotate(m_iaElements, m_nElements, m_iaSequence[0]);
+  m_iaSequence[1] = iSequence1; IntLib::vRotate(m_iaElements, m_nElements, m_iaSequence[1]);
+  m_iaSequence[2] = iSequence2; IntLib::vRotate(m_iaElements, m_nElements, m_iaSequence[2]);
+  m_iaSequence[3] = iSequence3; IntLib::vRotate(m_iaElements, m_nElements, m_iaSequence[3]);
+  m_iaSequence[4] = iSequence4; IntLib::vRotate(m_iaElements, m_nElements, m_iaSequence[4]);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -443,9 +330,9 @@ bool PermGen::bIsValidPermutation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  for (i8 i_Item = 0; i_Item < m_nItems - 1; i_Item++) {
+  for (i8 i_Item = 0; i_Item < m_nElements - 1; i_Item++) {
     i8 iItem = m_iaItem[i_Item];
-    for (i8 i_Right = i_Item + 1; i_Right < m_nItems; i_Right++)
+    for (i8 i_Right = i_Item + 1; i_Right < m_nElements; i_Right++)
       if (iItem == m_iaItem[i_Right])
         return false;
   }
