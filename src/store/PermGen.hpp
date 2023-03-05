@@ -29,9 +29,9 @@ namespace STORE
 
     static void vTest_Permutation_v2(i8 nItems);
 
-    i8   iElement(i8 i_Position);
     void vCalcPermutation(i8 i_Permutation);
-    i8   nItems(void);
+    i8   iElement(i8 i_Position);
+    i8   nElements(void);
     i8   nPermutations(i8 nElements);
 
   private:

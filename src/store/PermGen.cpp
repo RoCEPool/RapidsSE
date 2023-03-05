@@ -101,11 +101,20 @@ void PermGen::vCalcPermutation(i8 i_Permutation)
   IntLib::vRotate(m_iaElements, m_nElements, 0);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 PermGen::iElement(i8 i_Position)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  return m_iaElements[i_Position];
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 PermGen::nItems(void)
+i8 PermGen::nElements(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
@@ -120,18 +129,6 @@ i8 PermGen::nPermutations(i8 nElements)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
   return IntLib::iFactorial(nElements);
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 PermGen::iElement(i8 i_Position)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
-
-  return m_iaElements[i_Position];
 }
 
 
