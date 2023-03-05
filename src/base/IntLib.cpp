@@ -476,6 +476,19 @@ i8 IntLib::iPow(i8 iArg, i8 iRaisedTo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rotate integer at given subscript to end of array                          */
+/*----------------------------------------------------------------------------*/
+void IntLib::vPrint(i8 iaArray[], i8 nElements)
+{
+  _static_
+
+  for (i8 i_Element = 0; i_Element < nElements; i_Element++)
+    vTrace ("%s%lld"_Stz,
+            !i_Element ? " " : ", ", iaArray[i_Element]);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the quartile of value given its maximum                             */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iQuartile(i8 iNumerator, i8 iDenominator)

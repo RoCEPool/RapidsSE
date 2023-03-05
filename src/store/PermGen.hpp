@@ -20,7 +20,8 @@ namespace STORE
     i8 m_iaItem[C_PERMGEN_ITEMS]; // sequencing array of items
     i8 m_naRotated[C_PERMGEN_ITEMS]; // rotation pivots of items
 
-    i8 m_iaSample[C_PERMGEN_ITEMS]; // sequencing array of items
+    i8 m_iaSequence[C_PERMGEN_ITEMS]; // sequencing array of items
+    i8 m_iaResult[C_PERMGEN_ITEMS]; // sequencing array of items
 
     // must be last
     Footer m_xFooter;
@@ -45,7 +46,8 @@ namespace STORE
     i8   nPermutations(void);
     void vPrint(Stz* szLabel);
     void vPrint_rot(Stz* szLabel);
-    i8   iSample(i8 i_Position);
+    i8   iResult(i8 i_Position);
+    i8   iSequence(i8 i_Position);
 
   private:
     void vCalcSample(i8 i_Permutation);
