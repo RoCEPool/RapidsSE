@@ -15,9 +15,6 @@ namespace STORE
   private:
 
     i8 m_nElements; // number of items
-    i8 m_nPermutations; // number of permutations so far
-    i8 m_iaItem[C_PERMGEN_ELEMENTS]; // sequencing array of items
-
     i8 m_iaElements[C_PERMGEN_ELEMENTS]; // sequenced array of elements
 
     // must be last
@@ -30,22 +27,15 @@ namespace STORE
     PermGen(i8 nItems);
    ~PermGen(void) noexcept(false);
 
-    static void vTest(i8 nItems);
-    static void vTest_Permutation(i8 nItems);
     static void vTest_Permutation_v2(i8 nItems);
 
     i8   iElement(i8 i_Position);
     void vCalcPermutation(i8 i_Permutation);
-    i8   iItem(i8 i_Position);
     i8   nItems(void);
-    bool bNextPermutation(void);
-    i8   nPermutations(void);
     i8   nPermutations(i8 nElements);
-    void vPrint(Stz* szLabel);
 
   private:
     void vCalcPermutation_showWorking(i8 i_Permutation);
-    bool bIsValidPermutation(void);
 
     Footer* aFooter(void);
   };

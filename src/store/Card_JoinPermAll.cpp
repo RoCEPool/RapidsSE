@@ -68,7 +68,7 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
     pPermGen->vCalcPermutation(i_Permutation);
 
     Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
-    p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
+    p_joinPermSeq->Y_vSet(P_Permutation, i_Permutation);
     p_joinPermAll->vAppendMain(p_joinPermSeq);
 
     p_joinPermSeq->vOnePermutedJoin(p_tableList,

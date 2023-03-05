@@ -80,46 +80,6 @@ Card_PtndJoinSet* Card_PtndJoinSet::pExtract(Card_CoPtnJoinList* p_coPtnJoinList
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_PtndJoinSet::vPermute(Card_Deck* pDeck)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  PermGen* pPermGen = new PermGen(nChildCards());
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  while (pPermGen->bNextPermutation()) {
-    Card_Permutation* p_permutation = new Card_Permutation;
-    pDeck->vAppendMain(p_permutation);
-    p_permutation->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
-
-    RASSERT(0 == p_subSet->nChildCards());
-    for (i8 i_Item = 0; i_Item < pPermGen->nItems(); i_Item++) {
-      i8 i_Child = pPermGen->iItem(i_Item);
-      Card* pCard_child = pGetChild(i_Child);
-      pDeck->vAppendMain(pCard_child->pDupCardAndSubCards());
-
-      Card_PtndJoin* p_ptndJoin = _pCard_PtndJoin(pCard_child);
-
-      // todo: ...
-      if (! p_ptndJoin->bMayFollowAfter(p_subSet)) {
-        pDeck->vAppendMain(new Card_Note("**DOESN'T FOLLOW**"_Stz));
-        p_permutation->Y_vSet(P_Invalid);
-        break;
-      }
-      p_subSet->vAppend(pCard_child);
-    }
-    p_subSet->vRemoveAll();
-  }
-
-  DELETE_CARD(p_subSet);
-
-  delete pPermGen;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

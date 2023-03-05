@@ -149,7 +149,7 @@ void Card_JoinPermSeq::vOnePermutedJoin(Card_TableList*    p_tableList,
 
   i8 nTables = p_tableList->nChildCards();
 
-  vTrace("%lld :"_Stz,pPermGen->nPermutations());
+  //vTrace("%lld :"_Stz,pPermGen->nPermutations());
   for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
 
     // get the ith table of this permutation
