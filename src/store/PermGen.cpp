@@ -255,6 +255,17 @@ i8 PermGen::nPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+i8 PermGen::nPermutations(i8 nElements)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  return IntLib::iFactorial(nElements);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void PermGen::vPrint(Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);

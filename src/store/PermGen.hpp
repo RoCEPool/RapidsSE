@@ -40,6 +40,7 @@ namespace STORE
     i8   nItems(void);
     bool bNextPermutation(void);
     i8   nPermutations(void);
+    i8   nPermutations(i8 nElements);
     void vPrint(Stz* szLabel);
 
   private:

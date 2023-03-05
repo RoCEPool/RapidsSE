@@ -153,7 +153,7 @@ void Card_JoinPermSeq::vOnePermutedJoin(Card_TableList*    p_tableList,
   for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
 
     // get the ith table of this permutation
-    i8 i_Table = pPermGen->iItem(i_Item);
+    i8 i_Table = pPermGen->iElement(i_Item);
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
     char cTblSyn_ith = p_table->cValue();
 

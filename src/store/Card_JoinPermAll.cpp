@@ -62,7 +62,10 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
   i8 nTables = p_tableList->nChildCards();
   PermGen* pPermGen = new PermGen(nTables);
 
-  while (pPermGen->bNextPermutation()) {
+  //while (pPermGen->bNextPermutation()) {
+  for (i8 i_Permutation = 0; i_Permutation < pPermGen->nPermutations(nTables); i_Permutation++) {
+
+    pPermGen->vCalcPermutation(i_Permutation);
 
     Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
     p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
@@ -77,6 +80,32 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 
   return p_joinPermAll;
 }
+/*----------------------------------------------------------------------------*/
+//Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableList,
+//                                                      Card_JoinPredList* p_joinPredList)
+//{
+//  _static_
+//
+//  Card_JoinPermAll* p_joinPermAll = new Card_JoinPermAll;
+//
+//  i8 nTables = p_tableList->nChildCards();
+//  PermGen* pPermGen = new PermGen(nTables);
+//
+//  while (pPermGen->bNextPermutation()) {
+//
+//    Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
+//    p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
+//    p_joinPermAll->vAppendMain(p_joinPermSeq);
+//
+//    p_joinPermSeq->vOnePermutedJoin(p_tableList,
+//                                    p_joinPredList,
+//                                    pPermGen);
+//  }
+//
+//  delete pPermGen;
+//
+//  return p_joinPermAll;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
