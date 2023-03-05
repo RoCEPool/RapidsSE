@@ -156,7 +156,7 @@ void PermGen::vCalcPermutation(i8 i_Permutation)
   for (i8 i_Position = 0; i_Position < m_nElements - 1; i_Position++) {
     i8 nTimesPositionRepeats = IntLib::iFactorial(m_nElements - i_Position - 1);
     i8 i_NextElementOfPerm = (i_Permutation / nTimesPositionRepeats)
-                             % (m_nElements - i_Position);
+                               % (m_nElements - i_Position);
 
     IntLib::vRotate(m_iaElements, m_nElements, i_NextElementOfPerm);
   }

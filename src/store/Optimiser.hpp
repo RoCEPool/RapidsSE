@@ -14,6 +14,9 @@ namespace STORE
 {
   class Optimiser : public Object
   {
+  public:
+    static const i8 C_PERMUTATIONS = 1024;
+
   private:
     s32          m_sQueryNm;
 
@@ -28,7 +31,7 @@ namespace STORE
     Weaver*      m_pWeaver;
 
     i8           m_nJoinPermutations;
-    s256         m_sJoinPermutation[PermGen::C_PERMGEN_ITEMS]; // join permutation string
+    s256         m_sJoinPermutation[C_PERMUTATIONS]; // join permutation string
 
     s256         m_sJoinOrder; // join order string
 

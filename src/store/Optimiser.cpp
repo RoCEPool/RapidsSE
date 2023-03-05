@@ -52,7 +52,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_nJoinPermutations = 0;
 
-  for (i8 iIndex = 0; iIndex < PermGen::C_PERMGEN_ITEMS; iIndex++) {
+  for (i8 iIndex = 0; iIndex < C_PERMUTATIONS; iIndex++) {
     m_sJoinPermutation[iIndex] = "(none)"_Stz;
   }
 
