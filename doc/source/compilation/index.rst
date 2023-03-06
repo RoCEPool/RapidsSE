@@ -78,7 +78,7 @@ tools and libraries. This requires a download of approximately **4GB**.
 
 .. code:: bash
 
-   sudo yum install perl-Digest-MD5 wget tar
+   sudo yum install perl-Digest-MD5 perl-Env wget tar
    cd /tmp
    wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
    tar xvzf install-tl-unx.tar.gz
