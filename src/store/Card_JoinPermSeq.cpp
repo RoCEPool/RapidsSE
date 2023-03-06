@@ -141,11 +141,13 @@ eXK Card_JoinPermSeq::eCastKind(Card_TableList* p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute one permuted join sequence                                         */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermSeq::vOnePermutedJoin(Card_TableList*    p_tableList,
+i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
                                         Card_JoinPredList* p_joinPredList,
                                         PermGen*           pPermGen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 iNotValid = C_UNKNOWN;
 
   i8 nTables = p_tableList->nChildCards();
 
@@ -212,6 +214,8 @@ void Card_JoinPermSeq::vOnePermutedJoin(Card_TableList*    p_tableList,
   }
 
   vTrace("\n"_Stz);
+
+  return iNotValid;
 }
 
 /*----------------------------------------------------------------------------*/

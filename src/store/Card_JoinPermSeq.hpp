@@ -23,7 +23,7 @@ namespace STORE
      eXK eCastKind(Card_TableList* p_tableList,
                    Card_JoinNext*  p_joinNext);
 
-     void vOnePermutedJoin(Card_TableList*    p_tableList,
+     i8 iOnePermutedJoin(Card_TableList*    p_tableList,
                            Card_JoinPredList* p_joinPredList,
                            PermGen*           pPermGen);
 

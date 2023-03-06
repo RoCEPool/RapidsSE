@@ -69,11 +69,15 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 
     Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
     p_joinPermSeq->Y_vSet(P_Permutation, i_Permutation);
-    p_joinPermAll->vAppendMain(p_joinPermSeq);
 
-    p_joinPermSeq->vOnePermutedJoin(p_tableList,
-                                    p_joinPredList,
-                                    pPermGen);
+    i8 iJoinInvalid = p_joinPermSeq->iOnePermutedJoin(p_tableList,
+                                                      p_joinPredList,
+                                                      pPermGen);
+
+    if (C_UNKNOWN != iJoinInvalid)
+      vTrace("INVALID JOIN %lld\n"_Stz,iJoinInvalid);
+
+    p_joinPermAll->vAppendMain(p_joinPermSeq);
   }
 
   delete pPermGen;
@@ -97,7 +101,7 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 //    p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
 //    p_joinPermAll->vAppendMain(p_joinPermSeq);
 //
-//    p_joinPermSeq->vOnePermutedJoin(p_tableList,
+//    p_joinPermSeq->iOnePermutedJoin(p_tableList,
 //                                    p_joinPredList,
 //                                    pPermGen);
 //  }
