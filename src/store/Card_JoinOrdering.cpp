@@ -302,6 +302,12 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
     CardIter xCI_deck(pDeck);
     if (xCI_deck.G_bEachMain(CK_FOLD))
       pAfter = xCI_deck.G.p_fold;
+
+    if (! pAfter) {
+      xCI_deck.vRestart();
+      if (xCI_deck.G_bEachMain(CK_CORRELATION))
+        pAfter = xCI_deck.G.p_correlation;
+    }
   }
 
   CardIter xCI_joinOrder(this);

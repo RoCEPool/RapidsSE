@@ -544,7 +544,7 @@ static Stz* aCN[]
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLATTENSUBQUERIES"_Stz,    // CN_FLATTENSUBQUERIES
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
-  /* */ "FOLD_W_A_C_ro"_Stz,        // CN_FOLD
+  /* */ "FOLD"_Stz,                 // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEPOOLBUFFER"_Stz,       // CN_FREEPOOLBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK

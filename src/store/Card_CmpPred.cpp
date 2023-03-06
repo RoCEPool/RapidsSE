@@ -195,7 +195,7 @@ Card_Term* Card_CmpPred::pExtractArgTerm(void)
     return _pCard_Term(p_child_0);
 
   else
-    NEVER_REACH;
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

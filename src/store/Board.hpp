@@ -243,7 +243,7 @@ namespace STORE
     static bool bFindAndMarkSubQryCall_originalModel(CardIter* pCI);
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
 
-    static void vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
+    static bool bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);
     static void vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI);
 
     static void vMorph_Table_To_EEop(CardIter* pCI);

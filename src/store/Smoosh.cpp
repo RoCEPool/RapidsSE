@@ -56,8 +56,10 @@ void Smoosh::vInto_GBYAGG(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
   pCI->G_vRestart();
-  RASSERT(pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER));
-  Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(pCI);
+  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
+   if (Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(pCI))
+     break;
+
   RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
   Board::vFind_Correlation_Expr_Of_Correlation_Column(pCI);
   RASSERT(pCI->m_pExpr_corr);    // eg L_PARTKEY
@@ -132,9 +134,9 @@ void Smoosh::vInto_GBYAGG(CardIter* pCI)
   // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
 
-  RASSERT(pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
-  bool b = pCI->G.p_boolCalc->bYank_PRED(MARK_AT, pCI->G.p_PRED);
-  RASSERT(b);
+  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
+    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, pCI->G.p_PRED))
+      break;
   RASSERT(pCI->G.p_PRED->Y_bHas(P_CorrPred));
   pCI->vPrintBoard(__LINE__);
 

@@ -815,14 +815,15 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI)
+bool Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI)
 {
   _static_
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold identify the <table>/<filter>/<boolCalc>/<cmpPred> which is correlated by parameter
+  bool bIsCorrPred = false;
 
-  auto bMarkCorrPred = [pCI](Card_PRED* p_pred, bool bUpwards)
+  auto bMarkCorrPred = [pCI,&bIsCorrPred](Card_PRED* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -830,7 +831,6 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
     if (! p_pred->bIsCard(CK_CMPPRED))
       return C_CONTINUE_RECURSION;
 
-    bool bIsCorrPred = false;
 //    CardIter xCI(p_pred);
 //    while ((pCI->G.p_term = _pCard_Term(xCI.pEachChild()))) {
 //
@@ -850,6 +850,7 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
     if (bIsCorrPred) {
       p_pred->vMark1(MARK_AT);
       p_pred->Y_vSet(P_CorrPred);
+      return C_TERMINATE_RECURSION;
     }
 
     return C_CONTINUE_RECURSION;
@@ -860,6 +861,8 @@ void Board::vIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
   pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
   bool bIgnore = pCI->G.p_PRED->bPredRecursive(bMarkCorrPred);
+
+  return bIsCorrPred;
 }
 
 /*----------------------------------------------------------------------------*/
