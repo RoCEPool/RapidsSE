@@ -328,6 +328,9 @@ fi
   chown -R root:root /usr/local/texlive
   chmod -R g-w /usr/local/texlive
 
+  # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=717268
+  /usr/local/texlive/bin/x86_64-linux/fmtutil-sys --all
+
   echo
   echo "Setting up TexLive environment variables"
   {
