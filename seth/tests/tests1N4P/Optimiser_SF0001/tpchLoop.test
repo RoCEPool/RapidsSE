@@ -86,12 +86,9 @@ INCLUDE 'sleep.test';
 //INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//
-// FILTER MISSING
-//
-//LOG 'Running tpch query 9...';
-//INCLUDE 'OptQ9.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 9...';
+INCLUDE 'OptQ9.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 10...';
