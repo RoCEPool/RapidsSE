@@ -257,6 +257,7 @@
 #include "MakeWeavable.hpp"
 #include "PrepareSubQueries.hpp"
 #include "SawOpCards.hpp"
+#include "Correlate.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -332,6 +333,7 @@ SizeHeap gxaSizeHeap[]
   { CN_COLUMN,                   sizeof(Column),           HT_T_TINY    , FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
+  { CN_CORRELATE,                sizeof(Correlate),          HT_T_TINY    ,FILL },
   { CN_CRVBUFFER,                sizeof(CrvBuffer),          HT_T_LARGE   ,FILL },
   { CN_CRWBUFFER,                sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },
   { CN_CRWTABLEPTN,              sizeof(CrwTablePtn),        HT_T_TINY    ,FILL },

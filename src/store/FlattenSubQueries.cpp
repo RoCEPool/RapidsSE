@@ -7,6 +7,7 @@
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "Fold.hpp"
+#include "Correlate.hpp"
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Optimiser.hpp"
@@ -399,15 +400,15 @@ void FlattenSubQueries::vFlatten_24_W_A_C_ro(void)
   pFold->vDerive_Correleted_fold_projection(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  Smoosh* pSmoosh = new Smoosh;
-  pSmoosh->vInto_GBYAGG(m_pCI);
+  Correlate* pCorrelate = new Correlate;
+  pCorrelate->vInto_GBYAGG(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.pDeck->vClearMarksRecursive();
   m_pCI->vPrintBoard(__LINE__);
   m_pCI->vEndTransform();
 
-  delete pSmoosh;
+  delete pCorrelate;
   delete pFold;
 }
 
