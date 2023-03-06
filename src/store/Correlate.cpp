@@ -52,7 +52,7 @@ void Correlate::vCorrelate(CardIter* pCI, eSM Correlate)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Correlate::vInto_GBYAGG(CardIter* pCI)
+void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
   pCI->G_vRestart();
@@ -89,11 +89,6 @@ void Correlate::vInto_GBYAGG(CardIter* pCI)
   }
 
 
-
-
-
-
-
   // T G G G P F T T T W A A A      //
   //             s s s              // adjust stream ordinsla
 
@@ -110,6 +105,10 @@ void Correlate::vInto_GBYAGG(CardIter* pCI)
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
   else
     NEVER_REACH
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
   pCI->vRestart();
   RASSERT(pCI->G_bEachMain_reverse(CK_FOLD));

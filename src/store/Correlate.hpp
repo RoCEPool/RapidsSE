@@ -27,7 +27,7 @@ namespace STORE
 
     void vCorrelate(CardIter* pCI, eSM eCorrelate);
 
-    void vInto_GBYAGG(CardIter* pCI);
+    void vViaPromotionInto_GBYAGG(CardIter* pCI);
 
   private:
     Footer* aFooter(void);
