@@ -107,6 +107,7 @@ class BuildRunner:
         instance_ids, ip_addrs = ec2.start_instances(self.config.get_build_instance(),
                                                      self.config.get_build_image(),
                                                      self.config.get_build_cloudinit(),
+                                                     self.config.get_build_iam_role_name(),
                                                      1,
                                                      name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
@@ -311,6 +312,28 @@ class BuildRunner:
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.debug(f"Successfully copied the installer checksums from {src} to {dest}")
+
+        # Finally copy the documentation as artifacts too
+        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.tgz")
+        src = f"{self.ip_addr}:{remote_filespec}"
+        dest = f"{str(self.artifact_path)}"
+
+        LOG.debug(f"About to copy the documentation from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+
+        except errors.SshError:
+            LOG.error(f"Error while copying the documentation from {src} to {dest}.")
+            raise
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the documentation from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.debug(f"Successfully copied the documentation from {src} to {dest}")
 
     def get_installer_path(self) -> pathlib.Path:
         """Returns the path of the local installer file"""

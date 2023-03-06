@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 
 # The intent of this script file is to compile RapidsSE and build an installer.
 # This script file is called by Bamboo after it has checked out the repository.
