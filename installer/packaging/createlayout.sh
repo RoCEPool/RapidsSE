@@ -88,7 +88,7 @@ if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
 
     # PDF documentation
     mkdir -p "${LAYOUT_DIR}/doc/pdf"
-    cp "${ROOT_DIR}/doc/build/latex/"*.pdf "${LAYOUT_DIR}/doc/pdf"
+    cp "${ROOT_DIR}/doc/build/latex/rapidsse-"*.pdf "${LAYOUT_DIR}/doc/pdf"
   fi
 fi
 

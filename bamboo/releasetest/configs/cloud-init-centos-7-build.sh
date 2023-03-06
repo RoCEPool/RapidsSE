@@ -329,6 +329,9 @@ fi
   chmod -R g-w /usr/local/texlive
 
   # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=717268
+  echo
+  echo "Rebuilding TeX fmts and Metafont bases"
+  echo
   /usr/local/texlive/bin/x86_64-linux/fmtutil-sys --all
 
   echo
@@ -346,7 +349,7 @@ fi
 
   echo
   echo "TexLive installation complete"
-) > "${TEXLIVE_OUTPUT}" &
+) &> "${TEXLIVE_OUTPUT}" &
 
 # Apply any package updates
 echo

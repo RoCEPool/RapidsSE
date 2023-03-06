@@ -249,6 +249,9 @@ class BuildRunner:
             with open(stderr_path, "w") as f:
                 f.write(stderr)
 
+    def __collect_cloud_init_output(self) -> None:
+        """Copy the /cloud-init-output.log file to the artifacts directory."""
+
     def __collect_installer(self) -> None:
         """Copy the installer from the remote machine to the artifacts directory
            and remember its location.
@@ -256,84 +259,49 @@ class BuildRunner:
 
         command_timeout = 60  # seconds
 
-        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.run")
+        remote_filespec = "/cloud-init-output.log"
         src = f"{self.ip_addr}:{remote_filespec}"
         dest = f"{str(self.artifact_path)}"
 
-        LOG.debug(f"About to copy the RapidsSE installer from {src} to {dest}")
+        LOG.debug(f"About to copy the cloud-init-log from {src} to {dest}")
 
         try:
             ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
 
         except errors.SshError:
-            LOG.error(f"Error while copying the RapidsSE installer from {src} to {dest}.")
+            LOG.error(f"Error while copying the cloud-init-log from {src} to {dest}.")
             raise
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Copying the RapidsSE installer from {src} to {dest} timed out after {e.timeout} seconds." \
+            msg = f"Copying the cloud-init-log from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
-        LOG.info(f"Successfully copied the RapidsSE installer from {src} to {dest}")
+        LOG.info(f"Successfully copied the cloud-init-log from {src} to {dest}")
 
-        for root, dirs, files in os.walk(str(self.artifact_path)):
-            if self.installer_path is not None:
-                break
-                
-            for name in files:
-                if fnmatch.fnmatch(name, C_INSTALLER_FILESPEC):
-                    self.installer_path = pathlib.Path(root) / name
-                    LOG.info(f"The RapidsSE installer is found at {str(self.installer_path)}")
-                    break
+        # Copy the tex-live output too
 
-        if self.installer_path is None:
-            msg = f"Could not find the RapidsSE installer in local directory: {str(self.artifact_path)}"
-            raise errors.ClusterError(msg)
-
-        # Now copy the checksums as artifacts too
-        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "checksum*")
+        remote_filespec = "/cloud-init-texlive.log"
         src = f"{self.ip_addr}:{remote_filespec}"
         dest = f"{str(self.artifact_path)}"
 
-        LOG.debug(f"About to copy the installer checksums from {src} to {dest}")
+        LOG.debug(f"About to copy the texlive log from {src} to {dest}")
 
         try:
             ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
 
         except errors.SshError:
-            LOG.error(f"Error while copying the installer checksums from {src} to {dest}.")
+            LOG.error(f"Error while copying the texlive log from {src} to {dest}.")
             raise
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Copying the installer checksums from {src} to {dest} timed out after {e.timeout} seconds." \
+            msg = f"Copying the texlive-log from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
-        LOG.debug(f"Successfully copied the installer checksums from {src} to {dest}")
-
-        # Finally copy the documentation as artifacts too
-        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.tgz")
-        src = f"{self.ip_addr}:{remote_filespec}"
-        dest = f"{str(self.artifact_path)}"
-
-        LOG.debug(f"About to copy the documentation from {src} to {dest}")
-
-        try:
-            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
-
-        except errors.SshError:
-            LOG.error(f"Error while copying the documentation from {src} to {dest}.")
-            raise
-
-        except subprocess.TimeoutExpired as e:
-            msg = f"Copying the documentation from {src} to {dest} timed out after {e.timeout} seconds." \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg, e.stdout, e.stderr) from e
-
-        LOG.debug(f"Successfully copied the documentation from {src} to {dest}")
+        LOG.info(f"Successfully copied the texlive log from {src} to {dest}")
 
     def get_installer_path(self) -> pathlib.Path:
         """Returns the path of the local installer file"""
