@@ -1775,7 +1775,7 @@
     xDateTime.tm_sec  = xTsp1.m_uSecond;                                   \
     xDateTime.tm_isdst = 0;                                                \
                                                                            \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
     xTsp2.m_uLocal     = _C_TSP_LOCAL;                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
@@ -1815,7 +1815,7 @@
      xDateTime1.tm_sec  = xTsp1.m_uSecond;                                 \
      xDateTime1.tm_isdst = 0;                                              \
                                                                            \
-     time_t iSecondsSincePosixEpoch1 = mktime(&xDateTime1);                \
+     time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);                \
                                                                            \
      xDateTime2.tm_year = xTsp2.m_uYearDelta;                              \
      xDateTime2.tm_mon  = xTsp2.m_uMonth - 1;                              \
@@ -1824,7 +1824,7 @@
      xDateTime2.tm_min  = xTsp2.m_uMinute;                                 \
      xDateTime2.tm_sec  = xTsp2.m_uSecond;                                 \
                                                                            \
-    time_t iSecondsSincePosixEpoch2 = mktime(&xDateTime2);                 \
+    time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);                 \
                                                                            \
     i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;     \
                                                                            \
