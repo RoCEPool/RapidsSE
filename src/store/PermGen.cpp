@@ -136,7 +136,8 @@ i8 PermGen::iNextValid(i8 i_Position, i8 i_StartingAt)
 
     vCalcPermutation(i_TestPermutation);
 
-    if (! m_pElementSeq->bSame(m_pInvalidSeq,i_Position))
+    i8 nLeading = i_Position + 1;
+    if (! m_pElementSeq->bSame(m_pInvalidSeq,nLeading))
       return i_TestPermutation;
 
     //vTrace("Permutation %lld is not valid\n"_Stz,i_TestPermutation);

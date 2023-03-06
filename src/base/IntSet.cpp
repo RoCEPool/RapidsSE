@@ -406,13 +406,13 @@ bool IntSet::bSame(IntSet* pArgSet, i8 nForItems)
   _precondition_(_ADDRESS_, _MAGIC_, CN_INTSET, _FOOTER_);
 
   i8 nInts_this = this->nInts();
-  i8 nInts_arg  = pArgSet->nInts();
-  if (nInts_arg != nInts_this)
-    return false;
+//  i8 nInts_arg  = pArgSet->nInts();
+//  if (nInts_arg != nInts_this)
+//    return false;
 
   i8 iCmp = MemLib::iCompareWords(m_pIntAry->aItemArea(),
                                   pArgSet->m_pIntAry->aItemArea(),
-                                  nForItems == C_UNKNOWN ? nInts_this : nForItems);
+                                  sizeof(i8) * (nForItems == C_UNKNOWN ? nInts_this : nForItems));
   if (0 == iCmp)
     return true;
 
