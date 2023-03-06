@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 # This script builds a RapidsSE installer.
 
 DIR=$(dirname "$0")

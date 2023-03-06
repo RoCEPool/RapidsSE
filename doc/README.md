@@ -97,7 +97,7 @@ Note: We use the PIP version of Sphinx to ensure that it is a recent version.
    2. You may need to install certain other perl packages. e.g. `yum install perl-Digest-MD5 perl-Env`
 7. Install TexLive according to the instructions [here](https://www.tug.org/texlive/quickinstall.html).
    Don't forget to set the `$PATH` variable as instructed
-8. Install Java
+8. Install Java (NB: not the headless variant)
 9. Install awk
 10. Install vim
 11. Restart your terminal
