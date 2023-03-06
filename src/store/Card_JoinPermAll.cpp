@@ -62,24 +62,31 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
   i8 nTables = p_tableList->nChildCards();
   PermGen* pPermGen = new PermGen(nTables);
 
-  //while (pPermGen->bNextPermutation()) {
-  for (i8 i_Permutation = 0; i_Permutation < pPermGen->nPermutations(nTables); i_Permutation++) {
+  i8 i_Permutation = 0;
+  while (i_Permutation < pPermGen->nPermutations(nTables)) {
 
     pPermGen->vCalcPermutation(i_Permutation);
 
     Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
     p_joinPermSeq->Y_vSet(P_Permutation, i_Permutation);
 
-    i8 iJoinInvalid = p_joinPermSeq->iOnePermutedJoin(p_tableList,
-                                                      p_joinPredList,
-                                                      pPermGen);
-
-    if (C_UNKNOWN == iJoinInvalid)
-      vTrace("VALID JOIN %lld\n"_Stz,iJoinInvalid);
-    else
-      vTrace("JOIN INVALID %lld\n"_Stz,iJoinInvalid);
+    i8 i_JoinInvalid = p_joinPermSeq->iOnePermutedJoin(p_tableList,
+                                                       p_joinPredList,
+                                                       pPermGen);
 
     p_joinPermAll->vAppendMain(p_joinPermSeq);
+
+    if (C_UNKNOWN == i_JoinInvalid) {
+      vTrace("VALID PERMUTATION %lld\n"_Stz, i_Permutation);
+      i_Permutation++;
+      continue;
+    }
+
+    vTrace("PERMUTATION INVALID %lld at %lld\n"_Stz, i_Permutation,i_JoinInvalid);
+
+    i_Permutation = pPermGen->iNextValid(i_JoinInvalid,i_Permutation);
+    vTrace("RESTARTING FROM %lld\n"_Stz, i_Permutation);
+    vDebugPoint();
   }
 
   delete pPermGen;

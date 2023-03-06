@@ -21,7 +21,8 @@ PermGen::PermGen(i8 nItems)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  m_pIntSet = new IntSet(nItems);
+  m_pElementSeq = new IntSet(nItems);
+  m_pInvalidSeq = new IntSet(nItems);
 
   _checkInitialised_(CN_PERMGEN);
   
@@ -35,7 +36,8 @@ PermGen::~PermGen(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  delete m_pIntSet;
+  delete m_pElementSeq;
+  delete m_pInvalidSeq;
 }
 
 
@@ -83,19 +85,19 @@ void PermGen::vCalcPermutation(i8 i_Permutation)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMGEN, _FOOTER_);
 
-  i8 m_nElements = m_pIntSet->nInts();
+  i8 m_nElements = m_pElementSeq->nInts();
 
-  m_pIntSet->vAscending();
+  m_pElementSeq->vAscending();
 
   for (i8 i_Position = 0; i_Position < m_nElements - 1; i_Position++) {
     i8 nTimesPositionRepeats = IntLib::iFactorial(m_nElements - i_Position - 1);
     i8 i_NextElementOfPerm = (i_Permutation / nTimesPositionRepeats)
                                % (m_nElements - i_Position);
 
-    m_pIntSet->vRotateToEnd(i_NextElementOfPerm);
+    m_pElementSeq->vRotateToEnd(i_NextElementOfPerm);
   }
 
-  m_pIntSet->vRotateToEnd(0);
+  m_pElementSeq->vRotateToEnd(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +107,7 @@ i8 PermGen::iElement(i8 i_Position)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  return m_pIntSet->iInt(i_Position);
+  return m_pElementSeq->iInt(i_Position);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +117,42 @@ i8 PermGen::nElements(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  return m_pIntSet->nInts();
+  return m_pElementSeq->nInts();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the next val;id permutation                                            */
+/*----------------------------------------------------------------------------*/
+i8 PermGen::iNextValid(i8 i_Position, i8 i_StartingAt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  m_pInvalidSeq->vCopy(m_pElementSeq);
+
+  i8 nMaxPermutations = nPermutations();
+  i8 i_TestPermutation = i_StartingAt + 1;
+
+  for (/*none*/; i_TestPermutation < nMaxPermutations; i_TestPermutation++) {
+
+    vCalcPermutation(i_TestPermutation);
+
+    if (! m_pElementSeq->bSame(m_pInvalidSeq,i_Position))
+      return i_TestPermutation;
+
+    //vTrace("Permutation %lld is not valid\n"_Stz,i_TestPermutation);
+  }
+
+  return nMaxPermutations;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 PermGen::nPermutations(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  return nPermutations(m_pElementSeq->nInts());
 }
 
 /*----------------------------------------------------------------------------*/
