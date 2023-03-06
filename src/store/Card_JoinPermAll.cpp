@@ -74,8 +74,10 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
                                                       p_joinPredList,
                                                       pPermGen);
 
-    if (C_UNKNOWN != iJoinInvalid)
-      vTrace("INVALID JOIN %lld\n"_Stz,iJoinInvalid);
+    if (C_UNKNOWN == iJoinInvalid)
+      vTrace("VALID JOIN %lld\n"_Stz,iJoinInvalid);
+    else
+      vTrace("JOIN INVALID %lld\n"_Stz,iJoinInvalid);
 
     p_joinPermAll->vAppendMain(p_joinPermSeq);
   }

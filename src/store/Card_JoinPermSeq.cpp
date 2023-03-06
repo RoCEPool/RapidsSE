@@ -159,9 +159,9 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
     char cTblSyn_ith = p_table->cValue();
 
-    if (i_Item)
-      vTrace(", "_Stz,i_Table);
-    vTrace("%c"_Stz, cTblSyn_ith);
+//    if (i_Item)
+//      vTrace(", "_Stz,i_Table);
+//    vTrace("%c"_Stz, cTblSyn_ith);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -210,12 +210,123 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     // join of ith table is not possible at this point
     p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
     Y_vSet(P_Invalid);
+
+    iNotValid = i_Item;
     break;
   }
 
-  vTrace("\n"_Stz);
+//  vTrace("\n"_Stz);
 
   return iNotValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute one permuted join sequence                                         */
+/*----------------------------------------------------------------------------*/
+i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
+                                         Card_JoinPredList* p_joinPredList,
+                                         PermGen*           pPermGen)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_NotValid = C_UNKNOWN;
+
+  i8 nTables = p_tableList->nChildCards();
+
+  i8 nCards = 0;
+  for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
+
+    // get the ith table of this permutation
+    i8 i_Table = pPermGen->iElement(i_Item);
+    Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
+    char cTblSyn_ith = p_table->cValue();
+
+//    if (i_Item)
+//      vTrace(", "_Stz,i_Table);
+//    vTrace("%c"_Stz, cTblSyn_ith);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (0 == nCards) {
+      //+ table is head/first of join sequence
+      nCards++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // table is next/subsequent of join sequence
+
+    bool bSupported = false;
+
+    // test each join predicate which uses the ith table to see if a join
+    // can be supported at this point in the sequence
+    CardIter xCI(p_joinPredList);
+    while (xCI.G_bEachMain(CK_CMPPRED)) {
+      if (! xCI.G.p_cmpPred->bUsesTable(cTblSyn_ith))
+        continue;
+
+      // have a join cmpPred which uses the ith table
+
+      // get the other table in the cmpPred
+      char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
+
+      if (bHasKnownJoin(cTblSyn_other)) {
+        bSupported = true;
+        nCards++;
+        break;
+      }
+    }
+
+    if (! bSupported) {
+      i_NotValid = i_Item;
+      break;
+    }
+  }
+
+//  vTrace("\n"_Stz);
+
+  for (i8 i_Item = 0; i_Item < nTables; i_Item++) {
+
+    // get the ith table of this permutation
+    i8 i_Table = pPermGen->iElement(i_Item);
+    Card_Table *p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
+    char cTblSyn_ith = p_table->cValue();
+
+    if (0 == i_Item) {
+      Card_JoinHead *p_joinHead = new Card_JoinHead;
+      p_joinHead->vValue(cTblSyn_ith);
+      vAppend(p_joinHead);
+    }
+    else {
+      Card_JoinNext *p_joinNext = new Card_JoinNext;
+      p_joinNext->vValue(cTblSyn_ith);
+      vAppend(p_joinNext);
+
+      if (i_NotValid == i_Item) {
+        p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+        Y_vSet(P_Invalid);
+        break;
+      }
+
+      CardIter xCI(p_joinPredList);
+      while (xCI.G_bEachMain(CK_CMPPRED)) {
+        if (! xCI.G.p_cmpPred->bUsesTable(cTblSyn_ith))
+          continue;
+
+        // have a join cmpPred which uses the ith table
+
+        // get the other table in the cmpPred
+        char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
+
+        if (bHasKnownJoin(cTblSyn_other)) {
+          p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardAndSubCards());
+          break;
+        }
+      }
+    }
+  }
+
+  return i_NotValid;
 }
 
 /*----------------------------------------------------------------------------*/

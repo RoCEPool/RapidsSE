@@ -27,6 +27,10 @@ namespace STORE
                            Card_JoinPredList* p_joinPredList,
                            PermGen*           pPermGen);
 
+     i8 iOnePermutedJoin_v2(Card_TableList*    p_tableList,
+                         Card_JoinPredList* p_joinPredList,
+                         PermGen*           pPermGen);
+
      bool bHasKnownJoin(char cTblSyn);
 
      bool bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg);
