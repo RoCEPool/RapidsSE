@@ -14,9 +14,6 @@ namespace STORE
 
   private:
 
-    i8 m_nElements; // number of items
-    i8 m_iaElements[C_PERMGEN_ELEMENTS]; // sequenced array of elements
-
     IntSet* m_pIntSet;
 
     // must be last
@@ -37,8 +34,6 @@ namespace STORE
     i8   nPermutations(i8 nElements);
 
   private:
-    void vCalcPermutation_showWorking(i8 i_Permutation);
-
     Footer* aFooter(void);
   };
 
