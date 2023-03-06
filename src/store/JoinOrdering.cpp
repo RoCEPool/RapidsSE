@@ -265,7 +265,7 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   // get the final join ordering string
   s256 sJoinOrder;
   p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
-  //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
+  vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
   pOptimiser->vJoinOrder(sJoinOrder);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -277,6 +277,7 @@ void JoinOrdering::vTransform_JoinOrdering(void)
   m_pCI->m_pBench->vRemove(pBoard);
   delete pBoard;
 
+  m_pCI->vPrintBoard(__LINE__);
   p_joinOrdering->vReorder(m_pCI->G.pDeck);
   m_pCI->vPrintBoard(__LINE__);
 
