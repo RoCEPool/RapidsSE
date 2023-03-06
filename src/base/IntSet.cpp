@@ -244,6 +244,23 @@ void IntSet::vSortDescend(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy source int set                                                        */
+/*----------------------------------------------------------------------------*/
+void IntSet::vCopy(IntSet* pSrcSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+
+  i8 nInts = pSrcSet->nInts();
+  vInts(nInts);
+
+  i8 nBytes = sizeof(i8) * nInts;
+  MemLib::vCopy(m_pIntAry->aItemArea(),
+                pSrcSet->m_pIntAry->aItemArea(),
+                nBytes,
+                CN_INTSET);
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete int array                                                           */
 /*----------------------------------------------------------------------------*/
 void IntSet::vDeleteAry(void)
@@ -327,6 +344,16 @@ i8 IntSet::nInts(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set number of ints                                                         */
+/*----------------------------------------------------------------------------*/
+void IntSet::vInts(i8 nInts)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+
+  m_pIntAry->vItems(nInts);
+}
+
+/*----------------------------------------------------------------------------*/
 /* a new int array                                                            */
 /*----------------------------------------------------------------------------*/
 void IntSet::vNewAry(i8 nInts)
@@ -357,6 +384,18 @@ void IntSet::vPrint(bool bNewLine)
 
   if (! bNewLine)
     vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rotate element at given subscript to end of the array                      */
+/*----------------------------------------------------------------------------*/
+void IntSet::vRotateToEnd(i8 i_at)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INTSET, _FOOTER_);
+
+  IntLib::vRotate(m_pIntAry->aItemArea(),
+                  m_pIntAry->nItems(),
+                  i_at);
 }
 
 /*----------------------------------------------------------------------------*/
