@@ -93,6 +93,8 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_IVYIVY,           // ivy - ivy
   /*  */ FM_SUB_TMEIVD,           // tme - ivd
   /*  */ FM_SUB_TMETME,           // tme - tme
+  /*  */ FM_SUB_TSPIVD,           // tsp - ivd
+  /*  */ FM_SUB_TSPIVY,           // tsp - ivy
   /*  */ FM_SUB_TSPTSP,           // tsp - tsp
   /*  */ FM_SUB_UNKANY,           // unk + any
 
@@ -460,6 +462,8 @@ static Stz* aFM[]
   /*  */ "_SUB_IVYIVY"_Stz,
   /*  */ "_SUB_TMEIVD"_Stz,
   /*  */ "_SUB_TMETME"_Stz,
+  /*  */ "_SUB_TSPIVD"_Stz,
+  /*  */ "_SUB_TSPIVY"_Stz,
   /*  */ "_SUB_TSPTSP"_Stz,
   /*  */ "_SUB_UNKANY"_Stz,
 

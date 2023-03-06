@@ -101,7 +101,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  typedef __darwin_time_t         time_t;"
       "\n"
       "\n  time_t mktime(struct tm *timeptr);"
-      "\n  time_t *gmtime(struct tm *timeptr);"
+      "\n  struct tm *gmtime(const time_t *clock);"
       "\n  time_t timegm(struct tm *timeptr);"
       "\n"
       "\n  struct tm {"
