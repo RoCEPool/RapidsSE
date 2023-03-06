@@ -46,6 +46,7 @@ namespace BASE
     void vNewAry(i8 nInts);
     void vPrint(bool bNewLine = true);
     void vRotateToEnd(i8 i_at);
+    bool bSame(IntSet* pArgSet, i8 nForItems=C_UNKNOWN);
     bool bSearch(i8 iInt);
 
     Footer* aFooter(void);
