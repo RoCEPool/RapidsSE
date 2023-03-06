@@ -319,6 +319,9 @@ fi
 
 # Install Tex Live in parallel in the background to /usr/local/texlive.
 # This is for generating PDF documentation.
+# Needs perl first.
+yum install -y perl
+
 (
   echo
   echo "*** Installing TexLive ***"
@@ -327,12 +330,6 @@ fi
   aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
   chown -R root:root /usr/local/texlive
   chmod -R g-w /usr/local/texlive
-
-  # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=717268
-  echo
-  echo "Rebuilding TeX fmts and Metafont bases"
-  echo
-  /usr/local/texlive/bin/x86_64-linux/fmtutil-sys --all
 
   echo
   echo "Setting up TexLive environment variables"
@@ -346,6 +343,12 @@ fi
     echo 'export PATH MANPATH INFOPATH'
     echo
   } >>/etc/profile.d/sh.local
+
+  # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=717268
+  echo
+  echo "Rebuilding TeX fmts and Metafont bases"
+  echo
+  /usr/local/texlive/bin/x86_64-linux/fmtutil-sys --all
 
   echo
   echo "TexLive installation complete"
