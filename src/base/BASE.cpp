@@ -197,22 +197,6 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
 
-#ifdef WITH_OPT_FLATTENING
-  vTrace("  WITH_OPT_FLATTENING\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_JOINORDER
-  vTrace("  WITH_OPT_JOINORDER\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_KEYEXISTS
-  vTrace("  WITH_OPT_KEYEXISTS\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_TOCOLNM
-  vTrace("  WITH_OPT_TOCOLNM\n"_Stz);
-#endif
-
 #ifdef WITH_RELEASE_VERSION
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
     return true;
@@ -298,22 +282,6 @@ void BASE::vTraceWith(void)
   
 #ifdef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_FLATTENING
-  vTrace("  WITH_OPT_FLATTENING\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_JOINORDER
-  vTrace("  WITH_OPT_JOINORDER\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_KEYEXISTS
-  vTrace("  WITH_OPT_KEYEXISTS\n"_Stz);
-#endif
-
-#ifdef WITH_OPT_TOCOLNM
-  vTrace("  WITH_OPT_TOCOLNM\n"_Stz);
 #endif
 
 #ifdef WITH_RELEASE_VERSION
@@ -405,22 +373,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
 
-#ifndef WITH_OPT_FLATTENING
-  vTrace("  WITH_OPT_FLATTENING\n"_Stz);
-#endif
-
-#ifndef WITH_OPT_JOINORDER
-  vTrace("  WITH_OPT_JOINORDER\n"_Stz);
-#endif
-
-#ifndef WITH_OPT_KEYEXISTS
-  vTrace("  WITH_OPT_KEYEXISTS\n"_Stz);
-#endif
-
-#ifndef WITH_OPT_TOCOLNM
-  vTrace("  WITH_OPT_TOCOLNM\n"_Stz);
-#endif
-
 #ifndef WITH_RELEASE_VERSION
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
     return true;
@@ -497,23 +449,6 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
-
-#ifndef WITH_OPT_FLATTENING
-  vTrace("  WITH_OPT_FLATTENING\n"_Stz);
-#endif
-
-#ifndef WITH_OPT_JOINORDER
-  vTrace("  WITH_OPT_JOINORDER\n"_Stz);
-#endif
-
-#ifndef WITH_OPT_KEYEXISTS
-  vTrace("  WITH_OPT_KEYEXISTS\n"_Stz);
-#endif
-
-#ifndef WITH_OPT_TOCOLNM
-  vTrace("  WITH_OPT_TOCOLNM\n"_Stz);
-#endif
-
 
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
