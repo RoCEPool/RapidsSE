@@ -135,6 +135,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_nDemonSleep      = 60;
   m_xSysArgs.m_bDerefMetrics    = false;
   m_xSysArgs.m_bDeveloper       = false;
+  m_xSysArgs.m_bDisableOptimiser  = false;
   m_xSysArgs.m_bDisablePromptCmds = false;
   m_xSysArgs.m_bDistJob         = false;
   m_xSysArgs.m_bDontFree        = false;
@@ -414,6 +415,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     if (szArg->bSame("--enableCommands"_Stz)) {
       m_xSysArgs.m_bDisablePromptCmds = false;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (szArg->bSame("--enableOptimiser"_Stz)) {
+      m_xSysArgs.m_bDisableOptimiser = false;
       continue;
     }
 

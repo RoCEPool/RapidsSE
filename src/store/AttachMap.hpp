@@ -125,6 +125,7 @@ namespace STORE
   
     i8   iCmdNoNext(void);
     b1   bDisablePromptCommands(void);
+    b1   bDisableOptimiser(void);
 
     eAC  eFindApi(Stz* aApiNm);
   
