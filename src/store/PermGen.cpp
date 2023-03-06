@@ -25,6 +25,8 @@ PermGen::PermGen(i8 nItems)
   for (i8 i_Position = 0; i_Position < C_PERMGEN_ELEMENTS; i_Position++)
     m_iaElements[i_Position] = C_UNKNOWN;
 
+  m_pIntSet = new IntSet(nItems);
+
   _checkInitialised_(CN_PERMGEN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
@@ -36,6 +38,8 @@ PermGen::PermGen(i8 nItems)
 PermGen::~PermGen(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  delete m_pIntSet;
 }
 
 /*----------------------------------------------------------------------------*/

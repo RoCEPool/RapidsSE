@@ -17,6 +17,8 @@ namespace STORE
     i8 m_nElements; // number of items
     i8 m_iaElements[C_PERMGEN_ELEMENTS]; // sequenced array of elements
 
+    IntSet* m_pIntSet;
+
     // must be last
     Footer m_xFooter;
 
