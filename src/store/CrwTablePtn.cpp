@@ -136,6 +136,16 @@ i8 CrwTablePtn::nBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset the current buffer ptr                                               */
+/*----------------------------------------------------------------------------*/
+void CrwTablePtn::vCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  m_pCurrentBuffer = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop all paging locks                                                      */
 /*----------------------------------------------------------------------------*/
 void CrwTablePtn::vDropAllPagingLocks(void)

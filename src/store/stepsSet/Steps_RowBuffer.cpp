@@ -19,6 +19,8 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
+  vAddStep("RowBuffer[].bufferId"_Stz,       &Step::vRowBufferGetBufferIdAsAddr);
+  vAddStep("RowBuffer[].nextBufferId"_Stz,    &Step::vRowBufferGetNextLinkedBufferId);
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
   vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
@@ -128,6 +130,35 @@ void Step::vRowBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBuffer);
 
   m_pLogicUnit->m_xpRowBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].bufferId -- fetch buffer id as address                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferGetBufferIdAsAddr(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBuffer;
+
+  m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].nextBufferId -- fetch next linked buffer id as address         */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferGetNextLinkedBufferId(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBuffer;
+  BufferId oNextBufferId = pRowBuffer->oNextLinkedBufferId();
+
+  m_pDataStack->vPushPtr((Object*)oNextBufferId.m_pvAsAddress);
 
   EXIT();
 }

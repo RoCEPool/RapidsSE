@@ -39,6 +39,7 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
   vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
+  vAddStep("TablePtn[].rootBufferId"_Stz ,    &Step::vTablePtnRootBufferId);
   vAddStep("TablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
   vAddStep("TablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
   vAddStep("TablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
@@ -125,7 +126,7 @@ void Step::vTablePtnCleanup(void)
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
-  pTablePtn->vDropAllPagingLocks();
+  pTablePtn->vCleanup();
 
   EXIT();
 }
@@ -209,6 +210,20 @@ void Step::vTablePtnRoot(void)
   
   //m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].rootBufferId -- get the tablePtn root buffer id                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnRootBufferId(void)
+{
+  ENTRY();
+
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+
+  m_pDataStack->vPushPtr((Object*)pTablePtn->oRootBufferId().m_pvAsAddress);
+
   EXIT();
 }
 

@@ -36,6 +36,8 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].flatten"_Stz,     &Step::vCrwBufferFlatten);
   vAddStep("CrwBuffer[]"_Stz,             &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
+  vAddStep("CrwBuffer[].bufferId"_Stz,    &Step::vCrwBufferGetBufferIdAsAddr);
+  vAddStep("CrwBuffer[].nextBufferId"_Stz, &Step::vCrwBufferGetNextLinkedBufferId);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[].inflate"_Stz,     &Step::vCrwBufferInflate);
@@ -162,6 +164,35 @@ void Step::vCrwBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
 
   m_pLogicUnit->m_xpCrwBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].bufferId -- fetch buffer id as address                         */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferGetBufferIdAsAddr(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
+
+  m_pDataStack->vPushPtr((Object*)pCrwBuffer->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].nextBufferId -- fetch next linked buffer id as address         */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferGetNextLinkedBufferId(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
+  BufferId oNextBufferId = pCrwBuffer->oNextLinkedBufferId();
+
+  m_pDataStack->vPushPtr((Object*)oNextBufferId.m_pvAsAddress);
 
   EXIT();
 }

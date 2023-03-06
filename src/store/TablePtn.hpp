@@ -39,7 +39,7 @@ namespace STORE
     TablePtn(Table* pTable, LglPtn tLglPtn, PhyPtn tPhyPtn);
    ~TablePtn(void) noexcept(false);
 
-    void vDropAllPagingLocks(void);
+    void vCleanup(void);
     void vDropRead(void);
     void vDropWrite();
     bool bGrabRead(void);
@@ -61,6 +61,7 @@ namespace STORE
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(i8 iIndexNo);
     DataBuffer* pRootBuffer(void);
+    BufferId oRootBufferId(void);
     CrwBuffer* pRootCrwBuffer(void);
     RowBuffer* pRootRowBuffer(void);
     void vAnalyze(i8& nBuffers, i8& nRows);

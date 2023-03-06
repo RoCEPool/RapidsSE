@@ -101,18 +101,20 @@ TablePtn::~TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* drop all paging locks held                                                 */
+/* drop all paging locks held and clear the current buffer ptr                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vDropAllPagingLocks(void)
+void TablePtn::vCleanup(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       m_pCrwTablePtn->vDropAllPagingLocks();
+      m_pCrwTablePtn->vCleanup();
       break;
     case CN_ROWTABLEPTN:
       m_pRowTablePtn->vDropAllPagingLocks();
+      m_pRowTablePtn->vCleanup();
       break;
     default:
       NEVER_REACH;
@@ -410,6 +412,21 @@ DataBuffer* TablePtn::pRootBuffer(void)
       return m_pCrwTablePtn->pRootCrwBuffer();
     case CN_ROWTABLEPTN:
       return m_pRowTablePtn->pRootRowBuffer();
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Root BufferID                                                              */
+/*----------------------------------------------------------------------------*/
+BufferId TablePtn::oRootBufferId(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->oRootCrwBufferId();
+    case CN_ROWTABLEPTN:
+      return m_pRowTablePtn->oRootRowBufferId();
     default: NEVER_REACH;
   }
 }

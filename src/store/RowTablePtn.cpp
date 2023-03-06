@@ -82,7 +82,7 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent
+  // mark rowBuffer as permanent
   pRowBuffer->vIsPermanent(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -127,6 +127,16 @@ i8 RowTablePtn::nBuffers(void)
     nBufferCount = m_pRootBuffer->nLinkedBufferCount();
   
   return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the current buffer ptr                                               */
+/*----------------------------------------------------------------------------*/
+void RowTablePtn::vCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+
+  m_pCurrentBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

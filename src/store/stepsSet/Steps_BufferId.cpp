@@ -107,9 +107,9 @@ void Step::vBufferIdSet(void)
 {
   ENTRY();
 
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
-  m_pLogicUnit->m_oBufferId.m_pvAsAddress = pDataBuffer->oGetBufferId().m_pvAsAddress;
-  ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
+  m_pLogicUnit->m_oBufferId.m_pvAsAddress = m_pDataStack->pPopPtr(__func__);
+  if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr)
+    ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
 
   EXIT();
 }

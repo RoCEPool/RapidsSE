@@ -152,7 +152,7 @@ void HashMap::vDeleteKey(void* pKey)
     if ( pIter->m_pKeyObject == pKey ) {
       RASSERT(pIter->m_okLock.bIsLocked());
       // drop lock
-      vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+      //vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
       pIter->m_okLock.vDropRead();
       // assert it is not locked
       RASSERT( ! pIter->m_okLock.bIsLocked());
@@ -197,7 +197,7 @@ void HashMap::vDropKeyLock(void* pKey)
     if ( pIter->m_pKeyObject == pKey ) {
       RASSERT(pIter->m_okLock.bIsLocked());
       pIter->m_okLock.vDropRead();
-      vTrace("Drop key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+      //vTrace("Drop key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
       return;
     }
     pIter = pIter->m_pNext;
