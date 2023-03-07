@@ -162,7 +162,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   delete pFlattenSubQueries;
 
   ApplyOptimisations* pApplyOptimisations = new ApplyOptimisations(m_pCI);
-  pApplyOptimisations->vGroup_ChooseEEops();
+  pApplyOptimisations->vOptimise();
   delete pApplyOptimisations;
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);

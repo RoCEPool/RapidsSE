@@ -25,7 +25,7 @@ namespace STORE
     ApplyOptimisations(CardIter* pCI);
    ~ApplyOptimisations(void) noexcept(false);
 
-    void vGroup_ChooseEEops(void);
+    void vOptimise(void);
 
     void vOptimiseLoop(void);
 
@@ -42,12 +42,11 @@ namespace STORE
     bool bOptimise_RplScanByIndexScan(void);
     bool bOptimise_RplSortDescLimitByTop(void);
     bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
-    bool bOptimise_SeqJoinOrder(void);
 
     void vTransform_MorphTableToEEop(void);
+    void vMorph_scan_To_indexScan(void);
 
 
-    void vS80_T30_Morph_scan_To_indexScan(void);
     void vS90_T30_Derive_order(void);
 
   protected:

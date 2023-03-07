@@ -50,20 +50,20 @@ void Correlate::vCorrelate(CardIter* pCI, eSM Correlate)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert call of subQuery to join of ordered subQuery                       */
 /*----------------------------------------------------------------------------*/
 void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
 
-  // Start with processing SQ (sub-query) prior to <fold> & outer-query
+  // Start with processing SQ (sub-query)
 
   //                              //
   // T T A A A P F T T W A A A    //
   //                              //
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify the correlation/argument column in a <table>/<filter> of the SQ
+  // identify correlation column in some SQ:<table>/<filter>/<boolCalc>//<cmpPred>
 
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolCalc
@@ -78,13 +78,14 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
-  // find the <op>/<projection>/<expr> which describes the corrCol
+  // find SQ:<op>/<projection>/<expr> which describes the correlation column
   Board::vFind_Correlation_Expr_Of_Correlation_Column(pCI);
   RASSERT(pCI->m_pExpr_corr);    // eg $15 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enrich the <aggreg> of SQ to be <gbyAgg>
+  // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
+  //   thereby producing ordered subQuery stream
 
   RASSERT(pCI->G_bEachMain(CK_AGGREG));
   Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(pCI);
@@ -92,7 +93,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // include corrPred <expr> into [<project>/<projection>] of SQ
+  // include correlation column SQ:[<project>/<projection>]
 
   if (pCI->G_bIsNextMain(CK_PROJECT)) {
     RASSERT(pCI->G_bEachMain(CK_PROJECT));
@@ -103,7 +104,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get final <op>/<projection> of SQ
+  // get final SQ:<op>/<projection>
 
   if (CK_PROJECT == pCI->G.e_MainCard || CK_GBYAGG == pCI->G.e_MainCard)
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
@@ -120,7 +121,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   // Now processing OQ (outer-query)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // re-project the leading <table>* sequence of the OQ
+  // re-project the leading OQ:<table>* sequence
 
   i8 nTables = 0;
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
@@ -134,7 +135,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   // subQuery subQuery subQuery subQuery subQuery subQuery subQuery subQuery
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  // Convert the OQ to join to the gby correlation column streamed from SQ
+  // Convert the OQ to join to the gby correlation column ordered streamed from SQ
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // yank the correlation predicate from SQ
@@ -153,7 +154,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   RASSERT(pCI->G.p_PRED->Y_bHas(P_CorrPred));
   pCI->vPrintBoard(__LINE__);
 
-  // tidy up empty filter
+  // tidy up empty SQ:<table>/<filter>
   pCI->G.p_table->vRemove_filter_IfEmpty(pCI->G.p_filter);
   pCI->vPrintBoard(__LINE__);
 

@@ -51,18 +51,20 @@ ApplyOptimisations::~ApplyOptimisations(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- ApplyOptimisations  ----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vGroup_ChooseEEops(void)
+void ApplyOptimisations::vOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   vTransform_MorphTableToEEop();
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- ApplyOptimisations ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +98,6 @@ void ApplyOptimisations::vOptimiseLoop(void) {
     bOpts |= bOptimise_RplScanByIndexScan();
     bOpts |= bOptimise_RplSortDescLimitByTop();
     bOpts |= bOptimise_RplSortLimitOnOriginByAllLevels();
-    bOpts |= bOptimise_SeqJoinOrder();
 
   } while (bOpts);
 
@@ -325,6 +326,7 @@ bool ApplyOptimisations::bOptimise_RplAggregByOrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool ApplyOptimisations::bOptimise_RplAggregBySortOrdAgg(void) {
 
+  // Query 3
   return false;
 }
 
@@ -422,15 +424,6 @@ bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_SeqJoinOrder(void) {
-
-  return false;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
@@ -457,7 +450,7 @@ void ApplyOptimisations::vTransform_MorphTableToEEop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vS80_T30_Morph_scan_To_indexScan(void)
+void ApplyOptimisations::vMorph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
