@@ -57,9 +57,9 @@ void ApplyOptimisations::vOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
-  vTransform_MorphTableToEEop();
+  vMorph_table_To_EEop();
+  //vMorph_scan_To_indexScan();
 }
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -428,7 +428,7 @@ bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vTransform_MorphTableToEEop(void)
+void ApplyOptimisations::vMorph_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 

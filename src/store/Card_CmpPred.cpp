@@ -425,6 +425,61 @@ bool Card_CmpPred::bMaybeBounds_v2(Card_Table* p_table, Card_Index* p_index,
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this cmpPred a possible bounds (based on given index) for table         */
+/*----------------------------------------------------------------------------*/
+bool Card_CmpPred::bMaybeBounds_v3(Card_Table* p_table, Card_Index* p_index)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_index)
+    return false;
+
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
+  Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
+
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+    // + term_0 is $c.n
+
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()) ||
+          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+        return true;
+
+      return false;
+    }
+    else {
+      // + only term_0 is $c.n
+
+      // ? is term_0:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()))
+        return true;
+
+      return false;
+    }
+  }
+  else
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    // + only term_1 is $c.n
+
+    // ? is term_0:$c.n an index column
+    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+      return true;
+
+    return false;
+  }
+
+  // + neither term_0 nor term_1 is $c.n
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bMaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds)

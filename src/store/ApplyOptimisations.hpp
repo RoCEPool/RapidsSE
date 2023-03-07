@@ -43,7 +43,7 @@ namespace STORE
     bool bOptimise_RplSortDescLimitByTop(void);
     bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
 
-    void vTransform_MorphTableToEEop(void);
+    void vMorph_table_To_EEop(void);
     void vMorph_scan_To_indexScan(void);
 
 
