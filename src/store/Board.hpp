@@ -240,7 +240,6 @@ namespace STORE
     static void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI);
     static void vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI, Stz* szAs);
 
-    static bool bFindAndMarkSubQryCall_originalModel(CardIter* pCI);
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
 
     static bool bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI);

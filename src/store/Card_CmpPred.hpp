@@ -23,7 +23,6 @@ namespace STORE
                   char cTblSyn_r, Card_TablePtn* p_tablePtn_r);
     Card_CmpPred* pCmpPredFindBound(Index* pIndex, ePB eBound);
     bool bCmpPredHasBounds(Index* pIndex);
-    bool bContains_Sqy_Call(CardIter* pCI);
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
     Card_Term* pExtractArgTerm(void);
     Card_Term* pExtractParamTerm(void);

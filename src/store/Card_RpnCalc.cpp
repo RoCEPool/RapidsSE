@@ -317,7 +317,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         p_cmpPred->vValue(p_term_next->sz());
         p_cmpPred->vTransferChildren(p_TermSeries);
         p_cmpPred->vDump();
-        if (p_cmpPred->bContains_Sqy_Call(pCI))
+        if (p_cmpPred->bContains_callToSubQuery(pCI))
           p_cmpPred->vCard(CK_ROPRED);
         else
         if (! p_cmpPred->bIsValue("=="_Stz)) // todo: more work
