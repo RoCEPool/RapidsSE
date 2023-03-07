@@ -56,25 +56,23 @@ Card_BOUND::~Card_BOUND(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a bound given cmpPred                                               */
+/* create a (e|l|u) index bound given PRED                                    */
 /*----------------------------------------------------------------------------*/
-Card_BOUND* Card_BOUND::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
-                                                  char cTblSyn)
+Card_BOUND* Card_BOUND::pCreateFrom_PRED(Card_PRED* p_PRED,
+                                         char cTblSyn_boundedTo)
 {
   _static_
 
   Card_Term* p_term;
 
-  RASSERT(p_cmpPred->bSame("=="_Stz));
+  Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_PRED->pGetChild(1));
 
-  Card_BOUND* p_bound = Card_BOUND::pBound_New(p_cmpPred->szValue());
-
-  Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+  Card_BOUND* p_bound = Card_BOUND::pBound_New(p_PRED->szValue());
 
   if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
     char cTblSyn_term_0 = Card::cTableColSyn(pTerm_0->szValue());
-    if (cTblSyn_term_0 == cTblSyn) {
+    if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
       p_term = new Card_Term(pTerm_1->sz());
@@ -83,7 +81,7 @@ Card_BOUND* Card_BOUND::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
     else
     if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
       char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
-      if (cTblSyn_term_1 == cTblSyn) {
+      if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = new Card_Term("$I1"_Stz);
         p_bound->vAppend(p_term);
         p_term = new Card_Term(pTerm_0->sz());
@@ -96,7 +94,7 @@ Card_BOUND* Card_BOUND::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
   else
   if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
-    if (cTblSyn_term_1 == cTblSyn) {
+    if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
       p_term = new Card_Term(pTerm_0->sz());
@@ -110,24 +108,8 @@ Card_BOUND* Card_BOUND::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
     NEVER_REACH
   }
 
-  p_term = new Card_Term(p_cmpPred->sz());
+  p_term = new Card_Term(p_PRED->sz());
   p_bound->vAppend(p_term);
-
-  return p_bound;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a bound given pred                                                  */
-/*----------------------------------------------------------------------------*/
-Card_BOUND* Card_BOUND::pBound_CreateFrom_PRED(Card_PRED* p_PRED, char cTblSyn)
-{
-  _static_
-
-  // todo: hack
-
-  Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_PRED);
-
-  Card_BOUND* p_bound = Card_BOUND::pBound_CreateFrom_cmpPred(p_cmpPred, cTblSyn);
 
   return p_bound;
 }

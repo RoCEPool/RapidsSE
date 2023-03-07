@@ -17,10 +17,8 @@ namespace STORE
     Card_BOUND(eCK eCard);
    ~Card_BOUND(void) noexcept(false);
 
-    static Card_BOUND*    pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
-                                                    char cTblSyn);
-    static Card_BOUND*    pBound_CreateFrom_PRED(Card_PRED* p_PRED,
-                                                 char cTblSyn);
+    static Card_BOUND*    pCreateFrom_PRED(Card_PRED* p_PRED,
+                                           char cTblSyn_boundedTo);
     static Card_BOUND*    pBound_New(Stz* szRelnOp);
   };
 

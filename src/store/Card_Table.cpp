@@ -302,7 +302,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
   }
   else
   if (p_PRED->bIsCard(CK_CMPPRED)) {
-    p_bound = Card_BOUND::pBound_CreateFrom_PRED(p_PRED, cTblSyn);
+    p_bound = Card_BOUND::pCreateFrom_PRED(p_PRED, cTblSyn);
     p_bounds->vAppend(p_bound);
   }
   else {
@@ -356,7 +356,7 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
       }
 
       char cTblSyn = this->cValue();
-      Card_BOUND *p_bound = Card_BOUND::pBound_CreateFrom_cmpPred(p_cmpPred, cTblSyn);
+      Card_BOUND *p_bound = Card_BOUND::pCreateFrom_PRED(p_cmpPred, cTblSyn);
       p_bounds->vAppend(p_bound);
 
       p_cmpPred->vMark1(MARK_UP);
@@ -417,7 +417,7 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
       }
 
       char cTblSyn = this->cValue();
-      Card_BOUND *p_bound = Card_BOUND::pBound_CreateFrom_cmpPred(p_cmpPred, cTblSyn);
+      Card_BOUND *p_bound = Card_BOUND::pCreateFrom_PRED(p_cmpPred, cTblSyn);
       p_bounds->vAppend(p_bound);
 
       p_cmpPred->vMark1(MARK_UP);
