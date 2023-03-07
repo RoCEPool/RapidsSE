@@ -91,6 +91,7 @@ public:
   void vAM_SuperDemonJobIdStore(void);
 
   void vAM_No_Free(void);
+  void vAM_OptimiserEnabled(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);
   void vAM_Show_Dir_Failure(void);
@@ -1987,7 +1988,6 @@ void vDdlLockAssertNone(void);
   void vStreamDefRhtNew(void);
   void vStreamDefRhtNewFromTable(void);
   void vStreamDefRhtPrint(void);
-  void vStreamDefRhtSelectColumns(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set
