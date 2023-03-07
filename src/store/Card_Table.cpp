@@ -154,11 +154,12 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
 //        pCI->G.p_MainCard->pSub_keyNotExists())
 //      continue;
 
-    bool bParamAllowedInBounds = false;
-    if (pCI->G.pSubQuery->bIsCorrelated() && pCI->G.pSubQuery->bByExists())
-      bParamAllowedInBounds = true;
+//    bool bParamAllowedInBounds = false;
+//    if (pCI->G.pSubQuery->bIsCorrelated() && pCI->G.pSubQuery->bByExists())
+//      bParamAllowedInBounds = true;
 
-    pCI->G.p_table->vBounds_DeriveFrom_filter(pCI->G.p_filter,bParamAllowedInBounds);
+    //pCI->G.p_table->vBounds_DeriveFrom_filter(pCI->G.p_filter,bParamAllowedInBounds);
+    pCI->G.p_table->vBounds_DeriveFrom_filter_v3(pCI->G.p_filter);
   }
 }
 
@@ -333,6 +334,66 @@ void Card_Table::vBounds_DeriveFrom_filter(Card_Filter* p_filter,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     auto bLambdaFn = [this, p_index, bParamAllowedInBounds](Card_PRED *p_pred_Of_filter, bool bUpwards) {
+      if (bUpwards)
+        return C_CONTINUE_RECURSION;
+
+      if (!p_pred_Of_filter->bIsCard(CK_CMPPRED))
+        return C_CONTINUE_RECURSION;
+
+      Card_CmpPred *p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
+
+      //if (!T_bCmpPred_MaybeBounds(p_cmpPred,this,bParamAllowedInBounds))
+      //if (!p_cmpPred->bMaybeBounds_v2(this, p_index, bParamAllowedInBounds))
+      if (!p_cmpPred->bMaybeBounds_v3(this, p_index))
+        return C_CONTINUE_RECURSION;
+
+      // - - - -
+
+      Card_Bounds *p_bounds = p_index->pSub_bounds();
+      if (!p_bounds) {
+        p_bounds = new Card_Bounds;
+        p_index->vAppend(p_bounds);
+      }
+
+      char cTblSyn = this->cValue();
+      Card_Bound *p_bound = Card_Bound::pBound_CreateFrom_cmpPred(p_cmpPred, cTblSyn);
+      p_bounds->vAppend(p_bound);
+
+      p_cmpPred->vMark1(MARK_UP);
+
+      return C_CONTINUE_RECURSION;
+    };
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    bool bIgnore = p_pred_ofFilter_ROOT->bPredRecursive(bLambdaFn);
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create bounds under table from filter                                      */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  RASSERT(1 == p_boolCalc->nChildCards());
+
+  Card_PRED* p_pred_ofFilter_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  // TODO: this is a hack to put bounds under one and only one index
+
+  Card_IndexList* p_indexList = this->pSub_indexList();
+  //Card_Index* p_index = this->pSub_index();
+
+  CardIter xCI(p_indexList);
+  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bLambdaFn = [this, p_index ](Card_PRED *p_pred_Of_filter, bool bUpwards) {
       if (bUpwards)
         return C_CONTINUE_RECURSION;
 
