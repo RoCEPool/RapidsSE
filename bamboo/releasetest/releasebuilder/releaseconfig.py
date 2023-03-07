@@ -46,6 +46,7 @@ class ReleaseConfig:
         # comes from here: https://stackoverflow.com/a/70375875
         self.parser = configparser.ConfigParser(strict=False,
                                                 empty_lines_in_values=False,
+                                                allow_no_value=True,
                                                 dict_type=ConfigParserMultiValues,
                                                 converters={"list": ConfigParserMultiValues.getlist})
         self.parser.read_file(open(path))

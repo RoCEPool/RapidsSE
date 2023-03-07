@@ -22,6 +22,7 @@ class HardwareConfig:
         # Method for reading multiple keys of the same name but with different values
         # comes from here: https://stackoverflow.com/a/70375875
         self.parser = configparser.ConfigParser(strict=True,
+                                                allow_no_value=True,
                                                 empty_lines_in_values=False)
         self.parser.read_file(open(path))
 

@@ -86,7 +86,10 @@ class TestRunner:
         if base_cluster_id < 1000:
             base_cluster_id = 1000
 
+
         for param in instance_params:
+            LOG.debug(f"InstanceRunner params: {str(param)}")
+
             test_name: str = param[0]
             image_id: str = param[1]
             cloud_init_path: pathlib.Path = param[2]
