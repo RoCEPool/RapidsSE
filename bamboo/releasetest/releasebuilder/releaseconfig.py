@@ -12,8 +12,20 @@ from pyutils.clusterconfig import ClusterConfig
 # to have multiple non-unique keys and get the values for this key
 # as a list.
 # Source: https://stackoverflow.com/a/70375875
+# Note: Modified to support values that are None or empty strings.
+#       These were being truncated otherwise.
+
 class ConfigParserMultiValues(OrderedDict):
+
     def __setitem__(self, key, value):
+        if key == "iamrolename":
+            # print(f"in __setitem__ : key = {key} ; value = {str(value)}")
+            # if key in self:
+            #     print(f"self[key] = {str(self[key])}")
+
+            if value == [''] or value == [None]:
+                value = ["xxxNonexxx"]
+
         if key in self and isinstance(value, list):
             self[key].extend(value)
         else:
@@ -21,7 +33,15 @@ class ConfigParserMultiValues(OrderedDict):
 
     @staticmethod
     def getlist(value):
-        return value.splitlines()
+        # print(f"Raw value = {str(value)}")
+
+        retval = []
+        for val in value.splitlines():
+            if val == "xxxNonexxx":
+                retval.append(None)
+            else:
+                retval.append(val)
+        return retval
 
 
 class ReleaseConfig:
