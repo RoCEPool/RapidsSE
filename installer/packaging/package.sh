@@ -313,14 +313,18 @@ esac
   ### Create the standalone documentation bundle
   if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
 
-    # We use an extension of .tgz because Winzip can handle this automatically.
     DOC_NAME="rapidsse-doc-${SE_VERSION_STR}"
-    DOC_OUTPUT_FILE="${DOC_NAME}.tgz"
+    DOC_OUTPUT_FILE="${DOC_NAME}.zip"
 
     echo
     echo "Building standalone documentation"
     echo
-    tar -C "${LAYOUT_DIR}" -cvzf "${OUTPUT_DIR}/${DOC_OUTPUT_FILE}" --transform="s,^doc/,${DOC_NAME}/," doc
+    (
+      cd "${LAYOUT_DIR}"
+      mkdir "${DOC_NAME}"
+      cp -r doc/* "${DOC_NAME}/"
+      zip -r "${OUTPUT_DIR}/${DOC_OUTPUT_FILE}" "${DOC_NAME}"
+    )
   fi
 
   ### Remove object files, bin dir and layout dir to reduce disk space requirements

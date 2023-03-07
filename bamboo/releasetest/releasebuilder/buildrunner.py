@@ -376,7 +376,7 @@ class BuildRunner:
         LOG.debug(f"Successfully copied the installer checksums from {src} to {dest}")
 
         # Finally copy the documentation as artifacts too
-        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.tgz")
+        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.zip")
         src = f"{self.ip_addr}:{remote_filespec}"
         dest = f"{str(self.artifact_path)}"
 
