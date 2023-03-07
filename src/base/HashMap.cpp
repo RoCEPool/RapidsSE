@@ -197,7 +197,10 @@ void HashMap::vDropKeyLock(void* pKey)
     if ( pIter->m_pKeyObject == pKey ) {
       RASSERT(pIter->m_okLock.bIsLocked());
       pIter->m_okLock.vDropRead();
-      //vTrace("Drop key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+      if(MY::pTask())
+        vTrace("Drop key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+      else
+        vTrace("Drop key %p read lock\n"_Stz, pIter->m_pKeyObject);
       return;
     }
     pIter = pIter->m_pNext;

@@ -3618,8 +3618,10 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       
       // permament crw buffers not to be deleted
-      if (pCrwBuffer->bIsPermanent())
+      if (pCrwBuffer->bIsPermanent()) {
+        AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
         break;
+      }
       
       delete pCrwBuffer;
       break;
@@ -3686,8 +3688,10 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
       // permanent row buffers not to be deleted
-      if (pRowBuffer->bIsPermanent())
+      if (pRowBuffer->bIsPermanent()) {
+        AM::pHashMap()->vDropKeyLock(pRowBuffer->oGetBufferId().m_pvAsAddress);
         break;
+      }
       pRowBuffer->vDecidedDelete();
       break;
     }
