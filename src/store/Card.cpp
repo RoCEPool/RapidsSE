@@ -2631,13 +2631,13 @@ Card_BoolCalc* Card::pSub_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Bound.hpp"
-Card_Bound* Card::pSub_bound(void)
+#include "Card_BOUND.hpp"
+Card_BOUND* Card::pSub_bound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Bound* p_bound =
-      _pCard_Bound(pFindSubCard(CK_BOUND));
+  Card_BOUND* p_bound =
+      _pCard_BOUND(pFindSubCard(CK_BOUND));
   return p_bound;
 }
 

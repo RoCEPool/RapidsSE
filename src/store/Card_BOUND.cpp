@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Bound.cpp -- Abstract Bound                                           */
+/* Card_BOUND.cpp -- Abstract Bound                                           */
 /*============================================================================*/
 
-#include "Card_Bound.hpp"
+#include "Card_BOUND.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "Card_LBound.hpp"
@@ -13,14 +13,14 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Bound, CK_BOUND)
-__aNewFunction(Card_Bound, CN_CARD)
-__vDeleteFunction(Card_Bound, CN_CARD)
+__pCastFunction_Card(STORE, Card_BOUND, CK_BOUND)
+__aNewFunction(Card_BOUND, CN_CARD)
+__vDeleteFunction(Card_BOUND, CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Bound::Card_Bound(void)
+Card_BOUND::Card_BOUND(void)
     : Card(CK_BOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -33,7 +33,7 @@ Card_Bound::Card_Bound(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Bound::Card_Bound(eCK eCard)
+Card_BOUND::Card_BOUND(eCK eCard)
 : Card(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -46,7 +46,7 @@ Card_Bound::Card_Bound(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Bound::~Card_Bound(void) noexcept(false)
+Card_BOUND::~Card_BOUND(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -58,14 +58,16 @@ Card_Bound::~Card_Bound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a bound given cmpPred                                               */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Card_Bound::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
-                                                 char cTblSyn)
+Card_BOUND* Card_BOUND::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
+                                                  char cTblSyn)
 {
   _static_
 
   Card_Term* p_term;
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_cmpPred->szValue());
+  RASSERT(p_cmpPred->bSame("=="_Stz));
+
+  Card_BOUND* p_bound = Card_BOUND::pBound_New(p_cmpPred->szValue());
 
   Card_Term* pTerm_0 = _pCard_Term(p_cmpPred->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_cmpPred->pGetChild(1));
@@ -117,7 +119,7 @@ Card_Bound* Card_Bound::pBound_CreateFrom_cmpPred(Card_CmpPred* p_cmpPred,
 /*----------------------------------------------------------------------------*/
 /* create a bound given pred                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Card_Bound::pBound_CreateFrom_PRED(Card_PRED* p_PRED, char cTblSyn)
+Card_BOUND* Card_BOUND::pBound_CreateFrom_PRED(Card_PRED* p_PRED, char cTblSyn)
 {
   _static_
 
@@ -125,7 +127,7 @@ Card_Bound* Card_Bound::pBound_CreateFrom_PRED(Card_PRED* p_PRED, char cTblSyn)
 
   Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_PRED);
 
-  Card_Bound* p_bound = Card_Bound::pBound_CreateFrom_cmpPred(p_cmpPred,cTblSyn);
+  Card_BOUND* p_bound = Card_BOUND::pBound_CreateFrom_cmpPred(p_cmpPred, cTblSyn);
 
   return p_bound;
 }
@@ -133,7 +135,7 @@ Card_Bound* Card_Bound::pBound_CreateFrom_PRED(Card_PRED* p_PRED, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* create a bound given cmpPred                                               */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
+Card_BOUND* Card_BOUND::pBound_New(Stz* szRelnOp)
 {
   _static_
 
