@@ -945,8 +945,12 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
         pNumerator = pCastExpr;
       }
 
-      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId) {
-        // Denominator needs to be cast
+      // If the denominator is not of the same type as the output
+      // then it needs to be cast. An exception here is an average
+      // of an interval. The denominator is always an integer.
+      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId &&
+          eAvgType != CT_INTERVAL_DT &&
+          eAvgType != CT_INTERVAL_YM ) {
         QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pDenominator, pRootNode);
 
         // Denominator was copied above, so clean up
@@ -1299,6 +1303,7 @@ TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMax
   // If there are multiple common coercible targets, this is the order of
   // data types that we will try to coerce to. They are tried from first
   // entry to the last.
+  // (Intervals are listed here, but they are handled independently).
   static TypeId aeCoercionOrdering[] = {
       /*  0 */ TypeId::xIdOf(CT_INTEGER),
       /*  1 */ TypeId::xIdOf(CT_DECIMAL),
@@ -1326,12 +1331,45 @@ TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMax
   };
 
   ASSERT(iNumAtMaxCount > 1);
+  TypeId xTargetType;
 
+  // Walk the ordered list of type preferences and find the first one that
+  // has the maximum count. This is our preferred type.
   for (i8 i = 0; i < sizeof(aeCoercionOrdering)/sizeof(aeCoercionOrdering[0]); i++) {
     i8 iIdx = aeCoercionOrdering[i].iIdVal();
     if (paiCoercibleTargets[iIdx] == iMaxCount) {
-      return aeCoercionOrdering[i];
+
+      xTargetType = aeCoercionOrdering[i];
+
+      // We will handle intervals independently.
+      if (xTargetType.eIVVal() != IV_NONE) {
+        break;
+      }
+
+      return xTargetType;
     }
+  }
+
+  if (xTargetType.eIVVal() != IV_NONE) {
+    // We are coercing to an interval, but there are likely multiple intervals
+    // which are compatible. We will choose the one with the smallest number of
+    // fields. e.g. an HOUR TO MINUTE interval covers 2 fields, but a DAY TO SECOND
+    // interval covers 4 fields.
+
+    eIV eCandidateIvlType = xTargetType.eIVVal();
+    i8  nCandidateFields = iIV_numFields[eCandidateIvlType];
+
+    for (i8 i=0; i<iArrLen; i++) {
+      if (paiCoercibleTargets[i] == iMaxCount) {
+        eIV eIvlType = TypeId(i).eIVVal();
+        if (eIvlType != IV_NONE && iIV_numFields[eIvlType] < nCandidateFields) {
+          nCandidateFields = iIV_numFields[eIvlType];
+          eCandidateIvlType = eIvlType;
+        }
+      }
+    }
+
+    return TypeId::xIdOf(eCandidateIvlType);
   }
 
   TypeId xInvalidId;

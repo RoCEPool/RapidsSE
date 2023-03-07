@@ -3,6 +3,52 @@
 /*============================================================================*/
 #pragma once
 
+// NOTE: THis should match eIV enums in eIV.H
+typedef enum eIVL // Interval Type
+{
+  /* 0  */ IVL_NONE=0,
+  /* 1  */ IVL_YM_START,
+  /* 2  */ IVL_YEAR,
+  /* 3  */ IVL_MONTH,
+  /* 4  */ IVL_YM,
+  /* 5  */ IVL_YM_END,
+  /* 6  */ IVL_DT_START,
+  /* 7  */ IVL_DAY,
+  /* 8  */ IVL_HOUR,
+  /* 9  */ IVL_MINUTE,
+  /* 10 */ IVL_SECOND,
+  /* 11 */ IVL_DH,
+  /* 12 */ IVL_DM,
+  /* 13 */ IVL_DS,
+  /* 14 */ IVL_HM,
+  /* 15 */ IVL_HS,
+  /* 16 */ IVL_MS,
+  /* 17 */ IVL_DT_END,
+  /* 18 */ IVL_ENUMS
+} eIVL;
+
+static eIVL eMacro_AddSubResultIVL[IVL_ENUMS][IVL_ENUMS] = {
+                   // IVL_NONE  IVL_YM_START IVL_YEAR  IVL_MONTH   IVL_YM    IVL_YM_END  IVL_DT_START IVL_DAY   IVL_HOUR    IVL_MINUTE  IVL_SECOND   IVL_DH      IVL_DM    IVL_DS      IVL_HM    IVL_HS    IVL_MS    IVL_DT_END
+/* IVL_NONE     */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM_START */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YEAR     */  { IVL_NONE, IVL_NONE,    IVL_YEAR, IVL_YM,     IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_MONTH    */  { IVL_NONE, IVL_NONE,    IVL_YM,   IVL_MONTH,  IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM       */  { IVL_NONE, IVL_NONE,    IVL_YM,   IVL_YM,     IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM_END   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_DT_START */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_DAY      */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DAY,  IVL_DH,     IVL_DM,     IVL_DS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_DM,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_HOUR     */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DH,   IVL_HOUR,   IVL_HM,     IVL_HS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_MINUTE   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_HM,     IVL_MINUTE, IVL_MS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_SECOND   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_MS,     IVL_SECOND,  IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_DH       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DH,   IVL_DH,     IVL_DM,     IVL_DS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_DS,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_DM       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_DM,     IVL_DM,     IVL_DS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_DM,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_DS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_DS,     IVL_DS,     IVL_DS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_DS,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_HM       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_HM,     IVL_HM,     IVL_HS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_HS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_HS,     IVL_HS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_MS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_MS,     IVL_MS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_DT_END   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    }
+};
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BCD
 union Bcd_T
@@ -96,6 +142,7 @@ union Int_T {
 // The "__attribute__((__packed__))" is required to ensure each of the structures
 // are not padded out to 8 bytes each.
 //
+
 union Ivl_T {
   struct  __attribute__((__packed__)) {
     u8 m_eType    : 5 ; // 0..31, eIV enum
@@ -263,6 +310,18 @@ enum eMC // meta code
 
   /* 16 */ MC_ENUMS,
 };
+
+static const i8 _C_1M = 1000000;
+static const i8 _C_SECS_PER_MIN = 60;
+static const i8 _C_SECS_PER_HR  = 3600;
+static const i8 _C_SECS_PER_DAY = 3600*24;
+static const i8 _C_HOURS_PER_DAY = 24;
+
+static const i8 _C_TSP_LOCAL = 1;
+static const i8 _C_TSP_UTC   = 0;
+
+static const u8 _C_IVL_MONTH_MAX  = 72057594037927935; // (2^56 -1)
+static const u8 _C_IVL_USEC_MAX   = 72057594037927935; // (2^56 -1)
 
 static const i8 C_HEADLINE_OFS_WORDS = 0;
 static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;

@@ -16,8 +16,8 @@ namespace BASE
     SP_Ivd(void);
     ~SP_Ivd(void) noexcept(false);
   
-    Stz* sz(i8 iIvl);
-    Stz* sz(i8 iIvl, i8 iScale);
+    Stz* sz(i8 iIvd);
+    Stz* sz(i8 iIvd, i8 iScale);
 
     Stz* szMax(void);
     Stz* szMid(void);

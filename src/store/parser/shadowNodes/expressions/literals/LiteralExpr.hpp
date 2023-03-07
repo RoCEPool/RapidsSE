@@ -36,6 +36,7 @@ namespace Parser
 
     // Returns true if an expression can be coerced to a given data type
     static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static b1 bIsImplicitlyCoercibleTo(eIV eCurrentIvl, eIV eTargetIvl);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
     static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);

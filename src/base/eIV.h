@@ -72,6 +72,48 @@ static Stz* aIV_field[]
     /* IV_ENUMS                       */ ""_Stz
 };
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if an interval is of a year-month category                    */
+/*----------------------------------------------------------------------------*/
+static b1 bIsYearMonthInterval(eIV eType)
+{
+  return eType > IV_SUBCATEGORY_YEARMONTH_START && eType < IV_SUBCATEGORY_YEARMONTH_END;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if an interval is of a day-time category                      */
+/*----------------------------------------------------------------------------*/
+static b1 bIsDayTimeInterval(eIV eType)
+{
+  return eType > IV_SUBCATEGORY_DAYTIME_START && eType < IV_SUBCATEGORY_DAYTIME_END;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of interval fields covered by a given interval type     */
+/*----------------------------------------------------------------------------*/
+static i8 iIV_numFields[]
+{
+  /* IV_NONE=0                      */ 0,
+  /* IV_SUBCATEGORY_YEARMONTH_START */ 0,
+  /* IV_YEAR                        */ 1,
+  /* IV_MONTH                       */ 1,
+  /* IV_YEAR_TO_MONTH               */ 2,
+  /* IV_SUBCATEGORY_YEARMONTH_END   */ 0,
+  /* IV_SUBCATEGORY_DAYTIME_START   */ 0,
+  /* IV_DAY                         */ 1,
+  /* IV_HOUR                        */ 1,
+  /* IV_MINUTE                      */ 1,
+  /* IV_SECOND                      */ 1,
+  /* IV_DAY_TO_HOUR                 */ 2,
+  /* IV_DAY_TO_MINUTE               */ 3,
+  /* IV_DAY_TO_SECOND               */ 4,
+  /* IV_HOUR_TO_MINUTE              */ 2,
+  /* IV_HOUR_TO_SECOND              */ 3,
+  /* IV_MINUTE_TO_SECOND            */ 2,
+  /* IV_SUBCATEGORY_DAYTIME_END     */ 0,
+  /* IV_ENUMS                       */ 0,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

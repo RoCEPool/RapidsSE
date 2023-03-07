@@ -288,6 +288,268 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _ADD_DTEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
+    xDateTime.tm_year = xDte1.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
+    xDateTime.tm_mday = xDte1.m_uDay;                                      \
+    xDateTime.tm_hour = 0;                                                 \
+    xDateTime.tm_min  = 0;                                                 \
+    xDateTime.tm_sec  = iArg2/_C_1M;                                       \
+                                                                           \
+   time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                    \
+                                                                           \
+   xDte2.m_uYearDelta = xDateTime.tm_year;                                 \
+   xDte2.m_uMonth     = xDateTime.tm_mon + 1;                              \
+   xDte2.m_uDay       = xDateTime.tm_mday;                                 \
+   xDte2.m_uSpare     = 0;                                                 \
+                                                                           \
+   *paW++ = xDte2.m_iAsI8;                                                 \
+  }                                                                        \
+}
+
+#define _ADD_DTEIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+     xDte2.m_uYearDelta = xDte1.m_uYearDelta;                              \
+     xDte2.m_uMonth     = xDte1.m_uMonth;                                  \
+     xDte2.m_uDay       = xDte1.m_uDay;                                    \
+     xDte2.m_uSpare       = 0;                                             \
+                                                                           \
+    iArg1 = xDte2.m_uMonth + iArg2;                                        \
+    if (iArg1 > 12) {                                                      \
+      xDte2.m_uYearDelta +=  iArg1/12;                                     \
+      xDte2.m_uMonth = iArg1%12;                                           \
+    }                                                                      \
+    else {                                                                 \
+      xDte2.m_uMonth = iArg1;                                              \
+    }                                                                      \
+    *paW++ = xDte2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _ADD_IVDDTE(eErrorCode)                                            \
+  {                                                                        \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
+    xDateTime.tm_year = xDte2.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xDte2.m_uMonth - 1;                                \
+    xDateTime.tm_mday = xDte2.m_uDay;                                      \
+    xDateTime.tm_hour = 0;                                                 \
+    xDateTime.tm_min  = 0;                                                 \
+    xDateTime.tm_sec  = iArg1/_C_1M;                                       \
+                                                                           \
+    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+                                                                           \
+    iSecondsSincePosixEpoch += iArg1/1000000;                              \
+                                                                           \
+    xDte1.m_uYearDelta = xDateTime.tm_year;                                \
+    xDte1.m_uMonth     = xDateTime.tm_mon + 1;                             \
+    xDte1.m_uDay       = xDateTime.tm_mday;                                \
+    xDte1.m_uSpare       = 0;                                              \
+    *paW++ = xDte1.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _ADD_IVYDTE(eErrorCode)                                            \
+  {                                                                        \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+     xDte1.m_uYearDelta = xDte2.m_uYearDelta;                              \
+     xDte1.m_uMonth     = xDte2.m_uMonth;                                  \
+     xDte1.m_uDay       = xDte2.m_uDay;                                    \
+     xDte1.m_uSpare       = 0;                                             \
+                                                                           \
+    iArg1 = xDte1.m_uMonth + iArg2;                                        \
+    if (iArg1 > 12) {                                                      \
+      xDte1.m_uYearDelta +=  iArg1/12;                                     \
+      xDte1.m_uMonth = iArg1%12;                                           \
+    }                                                                      \
+    *paW++ = xDte1.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _SUB_DTEDTE(eErrorCode)                                            \
+  {                                                                        \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      struct tm xDateTime1 = {0} ;                                         \
+                                                                           \
+      xDateTime1.tm_year = xDte1.m_uYearDelta;                             \
+      xDateTime1.tm_mon  = xDte1.m_uMonth - 1;                             \
+      xDateTime1.tm_mday = xDte1.m_uDay;                                   \
+      xDateTime1.tm_hour = 0;                                              \
+      xDateTime1.tm_min  = 0;                                              \
+      xDateTime1.tm_sec  = 0;                                              \
+                                                                           \
+      time_t iSecondsSincePosixEpoch1 = mktime(&xDateTime1);               \
+                                                                           \
+      struct tm xDateTime2 = {0} ;                                         \
+                                                                           \
+      xDateTime2.tm_year = xDte2.m_uYearDelta;                             \
+      xDateTime2.tm_mon  = xDte2.m_uMonth - 1;                             \
+      xDateTime2.tm_mday = xDte2.m_uDay;                                   \
+      xDateTime2.tm_hour = 0;                                              \
+      xDateTime2.tm_min  = 0;                                              \
+      xDateTime2.tm_sec  = 0;                                              \
+                                                                           \
+      time_t iSecondsSincePosixEpoch2 = mktime(&xDateTime2);               \
+                                                                           \
+      i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;   \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
+                                                                           \
+      if (iSeconds < 0) {                                                  \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  -1 * iSeconds * _C_1M;   \
+        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M;          \
+        wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
+      }                                                                    \
+      *paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                        \
+}
+
+#define _SUB_DTEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
+    xDateTime.tm_year = xDte1.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
+    xDateTime.tm_mday = xDte1.m_uDay;                                      \
+    xDateTime.tm_hour = 0;                                                 \
+    xDateTime.tm_min  = 0;                                                 \
+    xDateTime.tm_sec  = -iArg2/_C_1M;                                      \
+                                                                           \
+    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+                                                                           \
+    xDte2.m_uYearDelta = xDateTime.tm_year;                                \
+    xDte2.m_uMonth     = xDateTime.tm_mon + 1;                             \
+    xDte2.m_uDay       = xDateTime.tm_mday;                                \
+    xDte2.m_uSpare     = 0;                                                \
+                                                                           \
+    *paW++ = xDte2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _SUB_DTEIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+     xDte2.m_uYearDelta = xDte1.m_uYearDelta;                              \
+     xDte2.m_uMonth     = xDte1.m_uMonth;                                  \
+     xDte2.m_uDay       = xDte1.m_uDay;                                    \
+     xDte2.m_uSpare       = 0;                                             \
+                                                                           \
+    iArg1 = xDte2.m_uYearDelta*12 + xDte2.m_uMonth - iArg2;                \
+    xDte2.m_uYearDelta = iArg1/12;                                         \
+    xDte2.m_uMonth = iArg1%12;                                             \
+                                                                           \
+    *paW++ = xDte2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -537,11 +799,78 @@
     }                                                                      \
   }
 
-#define _ADD_IVLIVL(eErrorCode)                                            \
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INTERVALS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _OUT_OF_RANGE_IVY                                                 \
+(                                                                         \
+  (iMonths > 0 &&  iMonths > _C_IVL_MONTH_MAX ) ? EC_INTERVAL_OUT_OF_RANGE :      \
+  (iMonths < 0 &&  (-1*iMonths) > _C_IVL_MONTH_MAX ) ? EC_INTERVAL_OUT_OF_RANGE : \
+  EC_NONE                                                                 \
+)
+
+#define _OUT_OF_RANGE_IVD \
+(                                                                         \
+  (iMicros > 0 &&  iMicros > _C_IVL_USEC_MAX ) ? EC_INTERVAL_OUT_OF_RANGE :      \
+  (iMicros < 0 &&  (-1*iMicros) > _C_IVL_USEC_MAX ) ? EC_INTERVAL_OUT_OF_RANGE : \
+  EC_NONE                                                                 \
+  )
+
+
+
+#define _ADD_IVDIVD(eErrorCode)                                            \
   {                                                                        \
     ivlArg2.m_iAsI8 = *(--paW);                                            \
     ivlArg1.m_iAsI8 = *(--paW);                                            \
-    printf("type : %lld %lld\n", ivlArg1.m_xIvl.m_eType, ivlArg2.m_xIvl.m_eType);                                        \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+                                                                           \
+      i8 iMicros = iArg1 + iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+                                                                           \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMicros < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = -1*iMicros;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                \
+        }                                                                  \
+        wIvlResult.m_xIvl.m_eType =                                        \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
+   }                                                                       \
+ }
+
+
+#define _ADD_IVYIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
     if (eErrorCode != EC_NONE ||                                           \
         ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
@@ -557,18 +886,323 @@
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
         iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
                                                                            \
-      iArg3 = iArg1 + iArg2;                                               \
+      i8 iMonths = iArg1 + iArg2;                                          \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
                                                                            \
-      if (iArg3 < 0)      {                                                \
-          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1 * iArg3;             \
-          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+      if(eErrorCode != EC_NONE)  {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg3;                    \
+                                                                           \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMonths < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iMonths;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                \
+        }                                                                  \
+        wIvlResult.m_xIvl.m_eType =                                        \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];\
+        *paW++ = wIvlResult.m_iAsI8;                                       \
       }                                                                    \
-    wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                    \
+   }                                                                       \
+ }
+
+#define _DIV_IVDINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      i8 iMicros = iArg1 / iArg2;                                          \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                    \
+      *paW++ = wIvlResult.m_iAsI8;                                         \
+    }                                                                      \
+  }
+
+#define _DIV_IVYINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      i8 iMonths = iArg1 / iArg2;                                          \
+                                                                           \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                    \
+     *paW++ = wIvlResult.m_iAsI8;                                          \
+   }                                                                       \
+  }
+
+
+#define _MUL_INTIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    iArg1 = *(--paW);                                                      \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      i8 iMicros = iArg1 * iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _MUL_INTIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    iArg1 = *(--paW);                                                      \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      i8 iMonths = iArg1 * iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _MUL_IVDINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      i8 iMicros = iArg1 * iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _MUL_IVYINT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      i8 iMonths = iArg1 * iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
+                                                                           \
+      if(eErrorCode != EC_NONE)  {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+        wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                \
+        wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;              \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
+       *paW++ = wIvlResult.m_iAsI8;                                        \
+     }                                                                     \
+   }                                                                       \
+  }
+
+#define _NEG_IVD(eErrorCode)                                               \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        ivlArg1.m_xIvl.m_bIsNeg = 0;                                       \
+      else                                                                 \
+        ivlArg1.m_xIvl.m_bIsNeg = 1;                                       \
+                                                                           \
+      *paW++ = ivlArg1.m_iAsI8;                                            \
+   }                                                                       \
+ }
+
+#define _NEG_IVY(eErrorCode)                                               \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        ivlArg1.m_xIvl.m_bIsNeg = 0;                                       \
+      else                                                                 \
+        ivlArg1.m_xIvl.m_bIsNeg = 1;                                       \
+                                                                           \
+      *paW++ = ivlArg1.m_iAsI8;                                            \
+   }                                                                       \
+ }
+
+#define _SUB_IVDIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * iArg1;                                              \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * iArg2;                                              \
+                                                                           \
+      i8 iMicros = iArg1 - iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMicros < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = -1*iMicros;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                \
+       }                                                                   \
+       wIvlResult.m_xIvl.m_eType =                                         \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType]; \
+       *paW++ = wIvlResult.m_iAsI8;                                         \
+     }                                                                      \
+    }                                                                       \
+  }
+
+
+
+#define _SUB_IVYIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * iArg1;                \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * iArg2;                \
+                                                                           \
+      i8 iMonths = iArg1 - iArg2;                                          \
+                                                                           \
+      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
+                                                                           \
+      if (eErrorCode != EC_NONE) {                                         \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        wIvlResult.m_iAsI8 = 0;                                            \
+                                                                           \
+        if (iMonths < 0) {                                                 \
+          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iMonths;             \
+        }                                                                  \
+        else {                                                             \
+          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
+          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                \
+       }                                                                   \
+       wIvlResult.m_xIvl.m_eType =                                         \
+        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType]; \
+       *paW++ = wIvlResult.m_iAsI8;                                         \
+     }                                                                      \
+    }                                                                       \
   }
 
 // ignore NULLS
@@ -724,6 +1358,490 @@
     }                                                                      \
   }
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TIME
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _MICROS_TO_TIME                                                    \
+  {                                                                        \
+                                                                           \
+    xTme2.m_uHour   = (iMicros / (_C_SECS_PER_HR  * _C_1M)) % _C_HOURS_PER_DAY;  \
+    xTme2.m_uMinute = (iMicros % (_C_SECS_PER_HR  * _C_1M)) / (_C_SECS_PER_MIN * _C_1M);   \
+    xTme2.m_uSecond = (iMicros % (_C_SECS_PER_MIN * _C_1M)) / _C_1M;       \
+    xTme2.m_uMicro  = iMicros % _C_1M;                                     \
+    xTme2.m_uSpare = 0;                                                    \
+                                                                           \
+    *paW++ = xTme2.m_iAsI8;                                                \
+  }                                                                        \
+
+#define _ADD_TMEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme1.m_uSecond*_C_1M) +                                    \
+              xTme1.m_uMicro;                                              \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+     iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                    \
+     i8 iMicros = iArg1 + iArg2;                                           \
+                                                                           \
+    _MICROS_TO_TIME;                                                       \
+  }                                                                        \
+}
+
+#define _ADD_IVDTME(eErrorCode)                                            \
+  {                                                                        \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme2.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg2 = ((xTme2.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme2.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme2.m_uSecond*_C_1M) +                                    \
+              xTme2.m_uMicro;                                              \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+     iArg1 %= _C_SECS_PER_DAY  * _C_1M;                                    \
+     i8 iMicros = iArg1 + iArg2;                                           \
+                                                                           \
+    _MICROS_TO_TIME;                                                       \
+  }                                                                        \
+}
+
+#define _SUB_TMEIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme1.m_uSecond*_C_1M) +                                    \
+              xTme1.m_uMicro;                                              \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+     iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                    \
+     i8 iMicros = iArg1 - iArg2;                                           \
+                                                                           \
+    _MICROS_TO_TIME;                                                       \
+  }                                                                        \
+}
+
+#define _SUB_TMETME(eErrorCode)                                            \
+  {                                                                        \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme1.m_uSecond*_C_1M) +                                    \
+              xTme1.m_uMicro;                                              \
+                                                                           \
+      iArg2 = ((xTme2.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
+              (xTme2.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
+              (xTme2.m_uSecond*_C_1M) +                                    \
+              xTme2.m_uMicro;                                              \
+                                                                           \
+     if (iArg1 < iArg2) {                                                  \
+       ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg2 - iArg1;                \
+       ivlArg1.m_xIvl.m_bIsNeg = 1;                                        \
+     }                                                                     \
+     else {                                                                \
+       ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 - iArg2;                \
+       ivlArg1.m_xIvl.m_bIsNeg = 0;                                        \
+     }                                                                     \
+     ivlArg1.m_xIvl.m_eType =  IVL_HS;                                     \
+                                                                           \
+    *paW++ = ivlArg1.m_iAsI8;                                              \
+  }                                                                        \
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TIMESTAMP
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _ADD_TSPIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+      struct tm xDateTime = {0} ;                                          \
+                                                                           \
+      xDateTime.tm_year = xTsp1.m_uYearDelta;                              \
+      xDateTime.tm_mon  = xTsp1.m_uMonth - 1;                              \
+      xDateTime.tm_mday = xTsp1.m_uDay;                                    \
+      xDateTime.tm_hour = xTsp1.m_uHour;                                   \
+      xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
+      xDateTime.tm_sec  = xTsp1.m_uSecond ;                                \
+                                                                           \
+      i8 iSecs = iArg2/_C_1M;                                              \
+      i8 iMicroSecs = iArg2%_C_1M;                                         \
+      if (iArg2 < 0) {                                                      \
+        if (iMicroSecs != 0) {                                             \
+           iSecs = iSecs - 1;                                               \
+          iMicroSecs = _C_1M + iMicroSecs;                                 \
+        }                                                                  \
+      }                                                                    \
+                                                                           \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
+      iSecondsSincePosixEpoch += iSecs;                                    \
+                                                                           \
+      pDateTime = gmtime(&iSecondsSincePosixEpoch);                        \
+                                                                           \
+      xTsp2.m_uYearDelta = pDateTime->tm_year;                             \
+      xTsp2.m_uMonth     = pDateTime->tm_mon + 1;                          \
+      xTsp2.m_uDay       = pDateTime->tm_mday;                             \
+      xTsp2.m_uHour      = pDateTime->tm_hour;                             \
+      xTsp2.m_uMinute    = pDateTime->tm_min;                              \
+      xTsp2.m_uSecond    = pDateTime->tm_sec;                              \
+      xTsp2.m_uMicro     = iMicroSecs;                                     \
+                                                                           \
+      *paW++ = xTsp2.m_iAsI8;                                              \
+  }                                                                        \
+}
+
+#define _ADD_IVDTSP(eErrorCode)                                            \
+  {                                                                        \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp2.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+      struct tm xDateTime = {0} ;                                          \
+                                                                           \
+      i8 iSecs = iArg1/_C_1M;                                              \
+      i8 iMicroSecs = iArg1%_C_1M;                                         \
+      if (iArg1 < 0) {                                                     \
+        if (iMicroSecs != 0) {                                             \
+          iSecs = iSecs - 1;                                               \
+          iMicroSecs = _C_1M + iMicroSecs;                                 \
+        }                                                                  \
+      }                                                                    \
+                                                                           \
+     xDateTime.tm_year = xTsp2.m_uYearDelta;                               \
+     xDateTime.tm_mon  = xTsp2.m_uMonth - 1;                               \
+     xDateTime.tm_mday = xTsp2.m_uDay;                                     \
+     xDateTime.tm_hour = xTsp2.m_uHour;                                    \
+     xDateTime.tm_min  = xTsp2.m_uMinute;                                  \
+     xDateTime.tm_sec  = xTsp2.m_uSecond;                                  \
+                                                                           \
+                                                                           \
+     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                  \
+     iSecondsSincePosixEpoch += iSecs;                                     \
+                                                                           \
+     pDateTime = gmtime(&iSecondsSincePosixEpoch);                         \
+                                                                           \
+     xTsp1.m_uYearDelta = pDateTime->tm_year;                              \
+     xTsp1.m_uMonth     = pDateTime->tm_mon + 1;                           \
+     xTsp1.m_uDay       = pDateTime->tm_mday;                              \
+     xTsp1.m_uHour      = pDateTime->tm_hour;                              \
+     xTsp1.m_uMinute    = pDateTime->tm_min;                               \
+     xTsp1.m_uSecond    = pDateTime->tm_sec;                               \
+     xTsp1.m_uMicro     = iMicroSecs;                                      \
+                                                                           \
+     *paW++ = xTsp1.m_iAsI8;                                               \
+  }                                                                        \
+}
+
+#define _ADD_TSPIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                        \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
+    xDateTime.tm_year = xTsp1.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xTsp1.m_uMonth - 1 + iArg2;                        \
+    xDateTime.tm_mday = xTsp1.m_uDay;                                      \
+    xDateTime.tm_hour = xTsp1.m_uHour;                                     \
+    xDateTime.tm_min  = xTsp1.m_uMinute;                                   \
+    xDateTime.tm_sec  = xTsp1.m_uSecond;                                   \
+    xDateTime.tm_isdst = 0;                                                \
+                                                                           \
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
+                                                                           \
+    xTsp2.m_uLocal     = _C_TSP_LOCAL;                                     \
+    xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
+    xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
+    xTsp2.m_uDay       = xDateTime.tm_mday;                                \
+    xTsp2.m_uHour      = xDateTime.tm_hour;                                \
+    xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
+    xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
+    xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
+    xTsp2.m_uMicro     = 0;                                                \
+                                                                           \
+    *paW++ = xTsp2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _ADD_IVYTSP(eErrorCode)                                            \
+  {                                                                        \
+     xTsp2.m_iAsI8 = *(--paW);                                             \
+     ivlArg1.m_iAsI8 = *(--paW);                                           \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp2.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+     struct tm xDateTime = {0} ;                                           \
+                                                                           \
+     xDateTime.tm_year = xTsp2.m_uYearDelta;                               \
+     xDateTime.tm_mon  = xTsp2.m_uMonth - 1 + iArg1;                       \
+     xDateTime.tm_mday = xTsp2.m_uDay;                                     \
+     xDateTime.tm_hour = xTsp2.m_uHour;                                    \
+     xDateTime.tm_min  = xTsp2.m_uMinute;                                  \
+     xDateTime.tm_sec  = xTsp2.m_uSecond;                                  \
+     xDateTime.tm_isdst = 0;                                               \
+                                                                           \
+     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                  \
+                                                                           \
+     xTsp1.m_uLocal     = _C_TSP_LOCAL;                                    \
+     xTsp1.m_uYearDelta = xDateTime.tm_year;                               \
+     xTsp1.m_uMonth     = xDateTime.tm_mon + 1;                            \
+     xTsp1.m_uDay       = xDateTime.tm_mday;                               \
+     xTsp1.m_uHour      = xDateTime.tm_hour;                               \
+     xTsp1.m_uMinute    = xDateTime.tm_min;                                \
+     xTsp1.m_uSecond    = xDateTime.tm_sec;                                \
+     xTsp1.m_uSecond    = xDateTime.tm_sec;                                \
+     xTsp1.m_uMicro     = 0;                                               \
+                                                                           \
+     *paW++ = xTsp1.m_iAsI8;                                               \
+  }                                                                        \
+}
+
+#define _SUB_TSPIVD(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+                                                                           \
+      struct tm xDateTime = {0} ;                                          \
+                                                                           \
+      xDateTime.tm_year = xTsp1.m_uYearDelta;                              \
+      xDateTime.tm_mon  = xTsp1.m_uMonth - 1;                              \
+      xDateTime.tm_mday = xTsp1.m_uDay;                                    \
+      xDateTime.tm_hour = xTsp1.m_uHour;                                   \
+      xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
+      xDateTime.tm_sec  = xTsp1.m_uSecond ;                                \
+                                                                           \
+      i8 iSecs = iArg2/_C_1M;                                              \
+      i8 iMicroSecs = iArg2%_C_1M;                                         \
+      if (iArg2 > 0) {                                                     \
+        if (iMicroSecs != 0) {                                             \
+          iSecs++;                                                         \
+          iMicroSecs = _C_1M - iMicroSecs;                                 \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        iMicroSecs = iMicroSecs * -1;                                      \
+      }                                                                    \
+                                                                           \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
+      iSecondsSincePosixEpoch -= iSecs;                                    \
+                                                                           \
+      pDateTime = gmtime(&iSecondsSincePosixEpoch);                        \
+                                                                           \
+      xTsp2.m_uYearDelta = pDateTime->tm_year;                             \
+      xTsp2.m_uMonth     = pDateTime->tm_mon + 1;                          \
+      xTsp2.m_uDay       = pDateTime->tm_mday;                             \
+      xTsp2.m_uHour      = pDateTime->tm_hour;                             \
+      xTsp2.m_uMinute    = pDateTime->tm_min;                              \
+      xTsp2.m_uSecond    = pDateTime->tm_sec;                              \
+      xTsp2.m_uMicro     = iMicroSecs;                                     \
+                                                                           \
+      *paW++ = xTsp2.m_iAsI8;                                              \
+  }                                                                        \
+}
+
+#define _SUB_TSPIVY(eErrorCode)                                            \
+  {                                                                        \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+      else                                                                 \
+        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+                                                                           \
+    struct tm xDateTime = {0} ;                                            \
+                                                                           \
+    xDateTime.tm_year = xTsp1.m_uYearDelta;                                \
+    xDateTime.tm_mon  = xTsp1.m_uMonth - 1 - iArg2;                        \
+    xDateTime.tm_mday = xTsp1.m_uDay;                                      \
+    xDateTime.tm_hour = xTsp1.m_uHour;                                     \
+    xDateTime.tm_min  = xTsp1.m_uMinute;                                   \
+    xDateTime.tm_sec  = xTsp1.m_uSecond;                                   \
+    xDateTime.tm_isdst = 0;                                                \
+                                                                           \
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
+                                                                           \
+    xTsp2.m_uLocal     = _C_TSP_LOCAL;                                     \
+    xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
+    xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
+    xTsp2.m_uDay       = xDateTime.tm_mday;                                \
+    xTsp2.m_uHour      = xDateTime.tm_hour;                                \
+    xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
+    xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
+    xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
+    xTsp2.m_uMicro     = 0;                                                \
+                                                                           \
+    *paW++ = xTsp2.m_iAsI8;                                                \
+  }                                                                        \
+}
+
+#define _SUB_TSPTSP(eErrorCode)                                            \
+  {                                                                        \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp2.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+                                                                           \
+     struct tm xDateTime1 = {0} ;                                          \
+                                                                           \
+     struct tm xDateTime2 = {0} ;                                          \
+                                                                           \
+     xDateTime1.tm_year = xTsp1.m_uYearDelta;                              \
+     xDateTime1.tm_mon  = xTsp1.m_uMonth - 1 ;                             \
+     xDateTime1.tm_mday = xTsp1.m_uDay;                                    \
+     xDateTime1.tm_hour = xTsp1.m_uHour;                                   \
+     xDateTime1.tm_min  = xTsp1.m_uMinute;                                 \
+     xDateTime1.tm_sec  = xTsp1.m_uSecond;                                 \
+     xDateTime1.tm_isdst = 0;                                              \
+                                                                           \
+     time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);                \
+                                                                           \
+     xDateTime2.tm_year = xTsp2.m_uYearDelta;                              \
+     xDateTime2.tm_mon  = xTsp2.m_uMonth - 1;                              \
+     xDateTime2.tm_mday = xTsp2.m_uDay;                                    \
+     xDateTime2.tm_hour = xTsp2.m_uHour;                                   \
+     xDateTime2.tm_min  = xTsp2.m_uMinute;                                 \
+     xDateTime2.tm_sec  = xTsp2.m_uSecond;                                 \
+                                                                           \
+    time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);                 \
+                                                                           \
+    i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;     \
+                                                                           \
+    wIvlResult.m_xIvl.m_eType = IVL_DS;                                    \
+                                                                           \
+    if (iSeconds < 0) {                                                    \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  -1 * iSeconds * _C_1M;     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                      \
+    }                                                                      \
+    else {                                                                 \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M;            \
+      wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
+    }                                                                      \
+                                                                           \
+    *paW++ = wIvlResult.m_iAsI8;                                           \
+  }                                                                        \
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNKNOWN and ANY

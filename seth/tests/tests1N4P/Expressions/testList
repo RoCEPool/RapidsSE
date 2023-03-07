@@ -1,4 +1,4 @@
-// expressions tests
+arithmetic.test
 caseExpr.test
 likeExpr.test
 substringExpr.test

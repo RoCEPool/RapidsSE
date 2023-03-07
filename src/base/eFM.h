@@ -25,9 +25,20 @@ enum eFM : u2 // function macros
 
   /*  */ FM_ADD_ANYUNK,           // any + unk
   /*  */ FM_ADD_BCDBCD,           // bcd + bcd
+  /*  */ FM_ADD_DTEIVD,           // dte + ivd
+  /*  */ FM_ADD_DTEIVY,           // dte + ivy
   /*  */ FM_ADD_FLTFLT,           // flt + flt
   /*  */ FM_ADD_INTINT,           // int + int
-  /*  */ FM_ADD_IVLIVL,           // ivd + ivd
+  /*  */ FM_ADD_IVDDTE,           // ivd + dte
+  /*  */ FM_ADD_IVDTME,           // ivd + tme
+  /*  */ FM_ADD_IVDTSP,           // ivd + tsp
+  /*  */ FM_ADD_IVYDTE,           // ivy + dte
+  /*  */ FM_ADD_IVYTSP,           // ivy + tsp
+  /*  */ FM_ADD_IVDIVD,           // ivd + ivd
+  /*  */ FM_ADD_IVYIVY,           // ivy + ivy
+  /*  */ FM_ADD_TMEIVD,           // tme + ivd
+  /*  */ FM_ADD_TSPIVD,           // tsp + ivd
+  /*  */ FM_ADD_TSPIVY,           // tsp + ivy
   /*  */ FM_ADD_UNKANY,           // unk + any
 
   // divide
@@ -35,6 +46,8 @@ enum eFM : u2 // function macros
   /*  */ FM_DIV_BCDBCD,           // bcd / bcd
   /*  */ FM_DIV_FLTFLT,           // flt / flt
   /*  */ FM_DIV_INTINT,           // int / int
+  /*  */ FM_DIV_IVDINT,           // ivd / int
+  /*  */ FM_DIV_IVYINT,           // ivy / int
   /*  */ FM_DIV_UNKANY,           // unk / any
 
   // modulo
@@ -47,6 +60,10 @@ enum eFM : u2 // function macros
   /*  */ FM_MUL_BCDBCD,           // bcd * bcd
   /*  */ FM_MUL_FLTFLT,           // flt * flt
   /*  */ FM_MUL_INTINT,           // int * int
+  /*  */ FM_MUL_INTIVD,           // int * ivd
+  /*  */ FM_MUL_INTIVY,           // int * ivy
+  /*  */ FM_MUL_IVDINT,           // ivd * int
+  /*  */ FM_MUL_IVYINT,           // ivy * int
   /*  */ FM_MUL_UNKANY,           // unk + any
 
   // operation invalid
@@ -57,12 +74,28 @@ enum eFM : u2 // function macros
   /*  */ FM_NEG_BCD,             // -bcd
   /*  */ FM_NEG_FLT,             // -flt
   /*  */ FM_NEG_INT,             // -int
+  /*  */ FM_NEG_IVD,             // -ivd
+  /*  */ FM_NEG_IVY,             // -ivy
+
+  // not supported
+  /*  */ FM_OPR_NOTNOT,          // not supported
+  /*  */ FM_OPR_NOT,             // not supported
 
   // subtract
   /*  */ FM_SUB_ANYUNK,           // any + unk
   /*  */ FM_SUB_BCDBCD,           // bcd - bcd
+  /*  */ FM_SUB_DTEDTE,           // dte - dte
+  /*  */ FM_SUB_DTEIVD,           // dte - ivd
+  /*  */ FM_SUB_DTEIVY,           // dte - ivy
   /*  */ FM_SUB_FLTFLT,           // flt - flt
   /*  */ FM_SUB_INTINT,           // int - int
+  /*  */ FM_SUB_IVDIVD,           // ivd - ivd
+  /*  */ FM_SUB_IVYIVY,           // ivy - ivy
+  /*  */ FM_SUB_TMEIVD,           // tme - ivd
+  /*  */ FM_SUB_TMETME,           // tme - tme
+  /*  */ FM_SUB_TSPIVD,           // tsp - ivd
+  /*  */ FM_SUB_TSPIVY,           // tsp - ivy
+  /*  */ FM_SUB_TSPTSP,           // tsp - tsp
   /*  */ FM_SUB_UNKANY,           // unk + any
 
   // sum
@@ -80,6 +113,8 @@ enum eFM : u2 // function macros
   /*  */ FM_BET_DTEDTE,           // between dte dte
   /*  */ FM_BET_FLTFLT,           // between flt flt
   /*  */ FM_BET_INTINT,           // between int int
+  /*  */ FM_BET_IVDIVD,           // between ivd ivd
+  /*  */ FM_BET_IVYIVY,           // between ivy ivy
   /*  */ FM_BET_TMETME,           // between bcd bcd
   /*  */ FM_BET_TSPTSP,           // between tme tme
   /*  */ FM_BET_UNKANY,           // between unk any
@@ -359,9 +394,20 @@ static Stz* aFM[]
   // add
   /*  */ "_ADD_ANYUNK"_Stz,
   /*  */ "_ADD_BCDBCD"_Stz,
+  /*  */ "_ADD_DTEIVD"_Stz,
+  /*  */ "_ADD_DTEIVY"_Stz,
   /*  */ "_ADD_FLTFLT"_Stz,
   /*  */ "_ADD_INTINT"_Stz,
-  /*  */ "_ADD_IVLIVL"_Stz,
+  /*  */ "_ADD_IVDDTE"_Stz,
+  /*  */ "_ADD_IVDTME"_Stz,
+  /*  */ "_ADD_IVDTSP"_Stz,
+  /*  */ "_ADD_IVYDTE"_Stz,
+  /*  */ "_ADD_IVYTSP"_Stz,
+  /*  */ "_ADD_IVDIVD"_Stz,
+  /*  */ "_ADD_IVYIVY"_Stz,
+  /*  */ "_ADD_TMEIVD"_Stz,
+  /*  */ "_ADD_TSPIVD"_Stz,
+  /*  */ "_ADD_TSPIVY"_Stz,
   /*  */ "_ADD_UNKANY"_Stz,
 
   // divide
@@ -369,6 +415,8 @@ static Stz* aFM[]
   /*  */ "_DIV_BCDBCD"_Stz,
   /*  */ "_DIV_FLTFLT"_Stz,
   /*  */ "_DIV_INTINT"_Stz,
+  /*  */ "_DIV_IVDINT"_Stz,
+  /*  */ "_DIV_IVYINT"_Stz,
   /*  */ "_DIV_UNKANY"_Stz,
 
   // modulo
@@ -381,6 +429,10 @@ static Stz* aFM[]
   /*  */ "_MUL_BCDBCD"_Stz,
   /*  */ "_MUL_FLTFLT"_Stz,
   /*  */ "_MUL_INTINT"_Stz,
+  /*  */ "_MUL_INTIVD"_Stz,
+  /*  */ "_MUL_INTIVY"_Stz,
+  /*  */ "_MUL_IVDINT"_Stz,
+  /*  */ "_MUL_IVYINT"_Stz,
   /*  */ "_MUL_UNKANY"_Stz,
 
   // operation invalid
@@ -391,12 +443,28 @@ static Stz* aFM[]
   /*  */ "_NEG_BCD"_Stz,
   /*  */ "_NEG_FLT"_Stz,
   /*  */ "_NEG_INT"_Stz,
+  /*  */ "_NEG_IVD"_Stz,
+  /*  */ "_NEG_IVY"_Stz,
+
+  // not supported
+  /*  */ "_OPR_NOTNOT"_Stz,
+  /*  */ "_OPR_NOT"_Stz,
 
   // subtract
   /*  */ "_SUB_ANYUNK"_Stz,
   /*  */ "_SUB_BCDBCD"_Stz,
+  /*  */ "_SUB_DTEDTE"_Stz,
+  /*  */ "_SUB_DTEIVD"_Stz,
+  /*  */ "_SUB_DTEIVY"_Stz,
   /*  */ "_SUB_FLTFLT"_Stz,
   /*  */ "_SUB_INTINT"_Stz,
+  /*  */ "_SUB_IVDIVD"_Stz,
+  /*  */ "_SUB_IVYIVY"_Stz,
+  /*  */ "_SUB_TMEIVD"_Stz,
+  /*  */ "_SUB_TMETME"_Stz,
+  /*  */ "_SUB_TSPIVD"_Stz,
+  /*  */ "_SUB_TSPIVY"_Stz,
+  /*  */ "_SUB_TSPTSP"_Stz,
   /*  */ "_SUB_UNKANY"_Stz,
 
   // sum
@@ -414,6 +482,8 @@ static Stz* aFM[]
   /*  */ "_BET_DTEDTE"_Stz,
   /*  */ "_BET_FLTFLT"_Stz,
   /*  */ "_BET_INTINT"_Stz,
+  /*  */ "_BET_IVDIVD"_Stz,
+  /*  */ "_BET_IVYIVY"_Stz,
   /*  */ "_BET_TMETME"_Stz,
   /*  */ "_BET_TSPTSP"_Stz,
   /*  */ "_BET_UNKANY"_Stz,
@@ -605,7 +675,7 @@ static Stz* aFM[]
   /*  */ "_GTA_UNKANY"_Stz,
   /*  */ "_GTA_VCHVCH"_Stz,
 
-  // less than
+  // less than equal
   /*  */ "_LE_ANYUNK"_Stz,
   /*  */ "_LE_BCDBCD"_Stz,
   /*  */ "_LE_BOLBOL"_Stz,
@@ -647,7 +717,7 @@ static Stz* aFM[]
   /*  */ "_LTA_UNKANY"_Stz,
   /*  */ "_LTA_VCHVCH"_Stz,
 
-    // not equal
+  // not equal
   /*  */ "_NE_ANYUNK"_Stz,
   /*  */ "_NE_BCDBCD"_Stz,
   /*  */ "_NE_BOLBOL"_Stz,

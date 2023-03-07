@@ -1314,7 +1314,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' year AS INTERVAL YEAR TO MONTH)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS INTERVAL YEAR TO MONTH) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS INTERVAL YEAR TO MONTH)) ; type: INTERVAL YEAR TO MONTH
+      » column: (Expr = INTERVAL ''2-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''2-0'' YEAR TO MONTH) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1518,7 +1518,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL DAY TO HOUR)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL DAY TO HOUR) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL DAY TO HOUR)) ; type: INTERVAL DAY TO HOUR
+      » column: (Expr = INTERVAL ''2 0'' DAY TO HOUR ; Ordinal Expr = INTERVAL ''2 0'' DAY TO HOUR) ; type: INTERVAL DAY TO HOUR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1533,7 +1533,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL DAY TO MINUTE)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL DAY TO MINUTE) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL DAY TO MINUTE)) ; type: INTERVAL DAY TO MINUTE
+      » column: (Expr = INTERVAL ''2 0:0'' DAY TO MINUTE ; Ordinal Expr = INTERVAL ''2 0:0'' DAY TO MINUTE) ; type: INTERVAL DAY TO MINUTE
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1548,7 +1548,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL DAY TO SECOND)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL DAY TO SECOND) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL DAY TO SECOND)) ; type: INTERVAL DAY TO SECOND
+      » column: (Expr = INTERVAL ''2 0:0:0'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''2 0:0:0'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3467,7 +3467,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL YEAR TO MONTH) INTERVAL ''1'' YEAR  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' YEAR AS INTERVAL YEAR TO MONTH) ; Ordinal Expr = CAST(INTERVAL ''1'' YEAR AS INTERVAL YEAR TO MONTH)) ; type: INTERVAL YEAR TO MONTH
+      » column: (Expr = INTERVAL ''1-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-0'' YEAR TO MONTH) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')

@@ -1357,7 +1357,10 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     if (IntervalLiteral::bIsOfType(pOrdinalExpr)) {
       Ivl xIvl = IntervalLiteral::xValue(pOrdinalExpr);
-      sPipeline->vCatSprint(" %lld "_Stz, xIvl.operator i8());
+      if (xIvl.T.m_xIvl.m_eType < IV_SUBCATEGORY_YEARMONTH_END)
+        sPipeline->vCatSprint(" INTERVAL_YM %lld "_Stz, xIvl.operator i8());
+      else
+        sPipeline->vCatSprint(" INTERVAL_DT %lld "_Stz, xIvl.operator i8());
     }
 
     if (NullLiteral::bIsOfType(pOrdinalExpr)) {
