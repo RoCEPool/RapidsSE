@@ -3442,7 +3442,6 @@ bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;   
 bool AM::bDebugMode(void)     { return gpAttachMap->m_xSysArgs.m_bDebugMode;         }
 bool AM::bDeveloper(void)     { return gpAttachMap->m_xSysArgs.m_bDeveloper;         }
 bool AM::bDisableCmds(void)   { return gpAttachMap->m_xSysArgs.m_bDisablePromptCmds; }
-bool AM::bDisableOptimiser(void)   { return gpAttachMap->m_xSysArgs.m_bDisableOptimiser; }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->m_xSysArgs.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->m_xSysArgs.m_nDummySleep;        }
 i8   AM::nDummyThreads(void)  { return gpAttachMap->m_xSysArgs.m_nDummyThreads;      }

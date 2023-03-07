@@ -77,7 +77,6 @@ namespace STORE
     i8   m_nDemonSleep;      // sleep period for demons
     bool m_bDerefMetrics;    // collect deref metrics
     bool m_bDeveloper;       // user is a developer
-    bool m_bDisableOptimiser;// Disable optimiser
     bool m_bDisablePromptCmds;// Disable prompt commands
     bool m_bDistJob;         // dist job trace
     bool m_bDontFree;        // dont actually free objects back to heap

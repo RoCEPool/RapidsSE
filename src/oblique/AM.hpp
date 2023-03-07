@@ -708,7 +708,6 @@ namespace OBLIQUE
     static bool bDebugMode(void);
     static bool bDeveloper(void);
     static bool bDisableCmds(void);
-    static bool bDisableOptimiser(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
     static i8   nDummySleep(void);
