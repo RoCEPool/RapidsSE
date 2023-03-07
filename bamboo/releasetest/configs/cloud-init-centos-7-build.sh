@@ -344,13 +344,6 @@ yum install -y perl
     echo
   } >>/etc/profile.d/sh.local
 
-  # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=717268
-  source /etc/profile.d/sh.local
-  echo
-  echo "Rebuilding TeX fmts and Metafont bases"
-  echo
-  /usr/local/texlive/bin/x86_64-linux/fmtutil-sys --all
-
   echo
   echo "TexLive installation complete"
 ) &> "${TEXLIVE_OUTPUT}" &
