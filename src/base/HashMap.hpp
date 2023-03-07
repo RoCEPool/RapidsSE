@@ -51,6 +51,7 @@ namespace BASE
 
     void    vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
     void    vInsertKeyValue(void* pKey, Object* pValue);
+    bool    bIsLocked(void* pKey);
     void    vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
 //    void    vReHash(void);
     Object* pValueAt(void* pKey);

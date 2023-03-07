@@ -25,10 +25,14 @@ namespace BASE
     Table*     m_pTable_dbuff;
     StreamDef* m_pStreamDef_dbuff;
 
+    // TODO: Arjun - Hack till we figure out a better way to handle the lock problem
+    // during output operator
+    b8    m_bOutputQueue; // is this Buffer in the Output queue?
+
     tXN m_tTxnNo; // transaction number
 
 #ifdef WITH_BUFFER_ID
-    PadWord m__PadToCacheLine[17];
+    PadWord m__PadToCacheLine[16];
 #else
     PadWord m__PadToCacheLine[18];
 #endif
@@ -94,6 +98,10 @@ namespace BASE
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
+
+    bool bOutputQueued(void);
+
+    void vOutputQueued(bool bOutputQueued);
 
     void     vSetBufferNo(i8 iBufferNo);
 #ifdef WITH_BUFFER_ID

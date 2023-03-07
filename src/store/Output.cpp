@@ -200,10 +200,13 @@ void Output::vFilePath(Stz* szFilePath)
 void Output::vPipeToThis(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  if( ! BufferId::bIsBufferId(pOperand) &&
-     (pOperand->eGetClassNo() == BASE::CN_CRWBUFFER ||
-      pOperand->eGetClassNo() == BASE::CN_ROWBUFFER)){
+
+  RASSERT( ! BufferId::bIsBufferId(pOperand));
+
+  if(pOperand->eGetClassNo() == BASE::CN_CRWBUFFER ||
+      pOperand->eGetClassNo() == BASE::CN_ROWBUFFER){
     DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+    pDataBuffer->vOutputQueued(true);
     AM::pHashMap()->vDropKeyLock(pDataBuffer->oGetBufferId().m_pvAsAddress);
   }
   IGNORE_RETURN(m_pOutputQueue->iAppend(pOperand));

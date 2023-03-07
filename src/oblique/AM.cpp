@@ -3619,10 +3619,23 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
       // permament crw buffers not to be deleted
       if (pCrwBuffer->bIsPermanent()) {
-        AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this crwbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pCrwBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this crwbuffer
+        // should not have any locks on it
+
+        pCrwBuffer->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pCrwBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
-      
+
       delete pCrwBuffer;
       break;
     }
@@ -3689,9 +3702,23 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
       // permanent row buffers not to be deleted
       if (pRowBuffer->bIsPermanent()) {
-        AM::pHashMap()->vDropKeyLock(pRowBuffer->oGetBufferId().m_pvAsAddress);
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this rowbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pRowBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pRowBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this rowbuffer
+        // should not have any locks on it
+
+        pRowBuffer->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pRowBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
+
       pRowBuffer->vDecidedDelete();
       break;
     }

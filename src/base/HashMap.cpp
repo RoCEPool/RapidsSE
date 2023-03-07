@@ -150,12 +150,20 @@ void HashMap::vDeleteKey(void* pKey)
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
-      RASSERT(pIter->m_okLock.bIsLocked());
-      // drop lock
-      //vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
-      pIter->m_okLock.vDropRead();
-      // assert it is not locked
-      RASSERT( ! pIter->m_okLock.bIsLocked());
+      // Arjun Hack:check if this databuffer is part of m_pOutputQueue
+      // If it is, it should not be locked
+
+      DataBuffer *pDataBuffer = _pDataBuffer(pIter->m_pValObject);
+      if (pDataBuffer->bOutputQueued()) {
+        RASSERT( ! pIter->m_okLock.bIsLocked());
+      } else {
+        RASSERT(pIter->m_okLock.bIsLocked());
+        // drop lock
+        //vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+        pIter->m_okLock.vDropRead();
+        // assert it is not locked
+        RASSERT( ! pIter->m_okLock.bIsLocked());
+      }
 
       // How to ensure it is not paged out between unlock and delete?
       // We need to unlock to check if anyone else has a lock on it..
@@ -313,6 +321,32 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Is this HashMapEntry locked?                                               */
+/*----------------------------------------------------------------------------*/
+bool HashMap::bIsLocked(void* pKey)
+{
+  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+
+  m_okLock.vGrabRead();
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
+
+  while ( pIter != nullptr ) {
+
+    // Find the entry that matches this key
+    if ( pIter->m_pKeyObject == pKey ) {
+      m_okLock.vDropRead();
+      return pIter->m_okLock.bIsLocked();
+    }
+
+    pIter = pIter->m_pNext;
+  }
+
+  m_okLock.vDropRead();
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Create a new Slot array twice the size of the old one. Rehash and move all */
 /* key-value pairs in old slot array to new slot array. Delete old slot array */
 /*----------------------------------------------------------------------------*/
@@ -356,6 +390,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 //
 //  m_okLock.vDropWrite();
 //}
+
 /*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
 /*----------------------------------------------------------------------------*/
@@ -363,6 +398,7 @@ void HashMap::vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
 {
   m_pHashMapSlot->m_pEntry[uIndex] = pEntry;
 }
+
 /*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
 /*----------------------------------------------------------------------------*/
