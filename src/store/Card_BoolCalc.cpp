@@ -318,6 +318,11 @@ void Card_BoolCalc::vMarkWrt_table(Card_Deck* p_deck)
     if (p_card->bIsCard(CK_BOLPRED)) {
       p_card->vMark1('b');
       xCR.vDontDescend();
+      char cWhichTable = ((Card_PRED *) p_card)->cTable_WhichTableFor_Pred(p_deck);
+      if (C_UNKNOWN != cWhichTable) {
+        p_card->vMark1(MARK_AT);
+        p_card->vMark2(cWhichTable);
+      }
       continue;
     }
 
