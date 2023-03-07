@@ -55,30 +55,44 @@ void Correlate::vCorrelate(CardIter* pCI, eSM Correlate)
 void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
+
+  // Start with processing SQ (sub-query) prior to <fold> & outer-query
+
+  //                              //
+  // T T A A A P F T T W A A A    //
+  //                              //
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // identify the correlation/argument column in a <table>/<filter> of the SQ
+
+  //   v                          //  ]filter
+  // T T A A A P F T T W A A A    //  .]boolCalc
+  //   f                          //  ..]cmpPred ==
+  //   p                          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //                              //             %1
+
   pCI->G_vRestart();
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
    if (Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(pCI))
      break;
-
   RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
-  Board::vFind_Correlation_Expr_Of_Correlation_Column(pCI);
-  RASSERT(pCI->m_pExpr_corr);    // eg L_PARTKEY
-
   pCI->vPrintBoard(__LINE__);
 
-  // T A A A P F T T T W A A A     //
-  //   v v v                       //
-  // T G G G P F T T T W A A A     // push corrPred <expr> into <gbyElist> and <aggElist>
+  // find the <op>/<projection>/<expr> which describes the corrCol
+  Board::vFind_Correlation_Expr_Of_Correlation_Column(pCI);
+  RASSERT(pCI->m_pExpr_corr);    // eg $15 (L_PARTKEY)
+  pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // enrich the <aggreg> of SQ to be <gbyAgg>
 
   RASSERT(pCI->G_bEachMain(CK_AGGREG));
   Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(pCI);
-
   pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard(__LINE__);
 
-  // T A A A P F T T T W A A A     //
-  //         v                     //
-  // T G G G P F T T T W A A A     // push corrPred <expr> into <projElist>
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // include corrPred <expr> into [<project>/<projection>] of SQ
 
   if (pCI->G_bIsNextMain(CK_PROJECT)) {
     RASSERT(pCI->G_bEachMain(CK_PROJECT));
@@ -88,18 +102,8 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 
   }
 
-
-  // T G G G P F T T T W A A A      //
-  //             s s s              // adjust stream ordinsla
-
-//  Card_Stream::vStream_AdjustLoHi(pCI);
-//  Board::vRenumberStmOdn(pCI);
-//  pCI->vPrintBoard(__LINE__);
-
-
-  //pCI->G_vRestart();
-  //RASSERT(pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get final <op>/<projection> of SQ
 
   if (CK_PROJECT == pCI->G.e_MainCard || CK_GBYAGG == pCI->G.e_MainCard)
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
@@ -113,7 +117,11 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   pCI->vRestart();
   RASSERT(pCI->G_bEachMain_reverse(CK_FOLD));
 
-  // Table*
+  // Now processing OQ (outer-query)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // re-project the leading <table>* sequence of the OQ
+
   i8 nTables = 0;
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
     nTables++;
@@ -122,8 +130,14 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   }
   pCI->vPrintBoard(__LINE__);
 
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // subQuery subQuery subQuery subQuery subQuery subQuery subQuery subQuery
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  // Convert the OQ to join to the gby correlation column streamed from SQ
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // convert the mq to join to the gby correlation column streamed from sq
+  // yank the correlation predicate from SQ
 
   pCI->G_vRestart();
 
@@ -139,6 +153,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   RASSERT(pCI->G.p_PRED->Y_bHas(P_CorrPred));
   pCI->vPrintBoard(__LINE__);
 
+  // tidy up empty filter
   pCI->G.p_table->vRemove_filter_IfEmpty(pCI->G.p_filter);
   pCI->vPrintBoard(__LINE__);
 
@@ -148,9 +163,18 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
 
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   RASSERT(pCI->G_bEachMain(CK_FOLD));
+
+
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   pCI->G.p_boolCalc->vBump_Rightwards(2);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
   pCI->G.p_boolCalc->vPush_Correlated_cmpPred_Onto_mq_boolCalc(pCI->G.p_PRED);
   pCI->vPrintBoard(__LINE__);
@@ -168,7 +192,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
 
-  // TODO: this should be in two steps
+  // TODO: this should be done using standard predicate moving
 
   pCI->G_vRestart();
 
@@ -184,6 +208,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   Board::vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
   pCI->vPrintBoard(__LINE__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 //  pCI->G_vRestart();
 //  if (pCI->G_bEachMain(CK_FOLD)) {
@@ -195,7 +220,6 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 //  }
 
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
