@@ -64,6 +64,7 @@ enum eCN : u2 // Class Number
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
   /* */ CN_CONDITIONALQUERYNODEITER,
+  /* */ CN_CORRELATE,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTABLEPTN,
@@ -498,6 +499,7 @@ static Stz* aCN[]
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
+  /* */ "CORRELATE"_Stz,            // CN_CORRELATE
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN

@@ -244,6 +244,23 @@ void IntSet::vSortDescend(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy source int set                                                        */
+/*----------------------------------------------------------------------------*/
+void IntSet::vCopy(IntSet* pSrcSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+
+  i8 nInts = pSrcSet->nInts();
+  vInts(nInts);
+
+  i8 nBytes = sizeof(i8) * nInts;
+  MemLib::vCopy(m_pIntAry->aItemArea(),
+                pSrcSet->m_pIntAry->aItemArea(),
+                nBytes,
+                CN_INTSET);
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete int array                                                           */
 /*----------------------------------------------------------------------------*/
 void IntSet::vDeleteAry(void)
@@ -327,6 +344,16 @@ i8 IntSet::nInts(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set number of ints                                                         */
+/*----------------------------------------------------------------------------*/
+void IntSet::vInts(i8 nInts)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+
+  m_pIntAry->vItems(nInts);
+}
+
+/*----------------------------------------------------------------------------*/
 /* a new int array                                                            */
 /*----------------------------------------------------------------------------*/
 void IntSet::vNewAry(i8 nInts)
@@ -358,6 +385,40 @@ void IntSet::vPrint(bool bNewLine)
   if (! bNewLine)
     vTrace("\n"_Stz);
 }
+
+/*----------------------------------------------------------------------------*/
+/* rotate element at given subscript to end of the array                      */
+/*----------------------------------------------------------------------------*/
+void IntSet::vRotateToEnd(i8 i_at)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INTSET, _FOOTER_);
+
+  IntLib::vRotate(m_pIntAry->aItemArea(),
+                  m_pIntAry->nItems(),
+                  i_at);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this int set us same as argument                                   */
+/*----------------------------------------------------------------------------*/
+bool IntSet::bSame(IntSet* pArgSet, i8 nForItems)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INTSET, _FOOTER_);
+
+  i8 nInts_this = this->nInts();
+//  i8 nInts_arg  = pArgSet->nInts();
+//  if (nInts_arg != nInts_this)
+//    return false;
+
+  i8 iCmp = MemLib::iCompareWords(m_pIntAry->aItemArea(),
+                                  pArgSet->m_pIntAry->aItemArea(),
+                                  sizeof(i8) * (nForItems == C_UNKNOWN ? nInts_this : nForItems));
+  if (0 == iCmp)
+    return true;
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* use bsearch() function to test if int is in this SORTED set?               */

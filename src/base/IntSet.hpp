@@ -33,6 +33,7 @@ namespace BASE
     void vSort(void);
     void vSortDescend(void);
 
+    void vCopy(IntSet* pSrcSet);
     void vDeleteAry(void);
     Stz* szDesc(void);
     void vDesc(Stz* szDesc);
@@ -41,8 +42,11 @@ namespace BASE
     i8   iInt(i8 i_Int);
     void vInt(i8 i_Int, i8 iInt);
     i8   nInts(void);
+    void vInts(i8 nInts);
     void vNewAry(i8 nInts);
     void vPrint(bool bNewLine = true);
+    void vRotateToEnd(i8 i_at);
+    bool bSame(IntSet* pArgSet, i8 nForItems=C_UNKNOWN);
     bool bSearch(i8 iInt);
 
     Footer* aFooter(void);

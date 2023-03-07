@@ -14,8 +14,8 @@ namespace STORE
 
   private:
 
-    i8 m_nElements; // number of items
-    i8 m_iaElements[C_PERMGEN_ELEMENTS]; // sequenced array of elements
+    IntSet* m_pElementSeq;
+    IntSet* m_pInvalidSeq;
 
     // must be last
     Footer m_xFooter;
@@ -32,11 +32,11 @@ namespace STORE
     void vCalcPermutation(i8 i_Permutation);
     i8   iElement(i8 i_Position);
     i8   nElements(void);
+    i8   iNextValid(i8 i_Position, i8 i_StartingAt);
+    i8   nPermutations(void);
     i8   nPermutations(i8 nElements);
 
   private:
-    void vCalcPermutation_showWorking(i8 i_Permutation);
-
     Footer* aFooter(void);
   };
 
