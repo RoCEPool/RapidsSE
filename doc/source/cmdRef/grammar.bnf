@@ -1,0 +1,336 @@
+/*
+    This is the grammar file used for producing railroad (rr) diagrams for the
+    Command Reference documentation. It is in extended Backus-Naur form (eBNF).
+    It was originally converted from the ANTLR SQL grammar and then edited by
+    hand. This approach is for the following reasons:
+
+    1. Not all RapidsSE commands go through the ANTLR grammar.
+       So we need to specify their syntax somewhere to generate the rr diagrams.
+
+    2. We want to easily modify and regenerate the diagrams as the syntax changes.
+       So this needs to be as automated as possible.
+
+    3. We may want to hide certain syntactical features.
+       Even though we are repeating much of the ANTLR syntax, we can remove
+       or hide syntax we don't want to show.
+
+    4. We can simplify the grammar.
+       The ANTLR grammar is optimised for rule reuse and writing code for rules.
+       This produces rr diagrams that are much more difficult to read because
+       they are highly factored. Many parts of the grammar can be simplified for
+       reading purposes.
+
+    The tradeoff is that we need to maintain this grammar file for documentation
+    purposes as well as the main ANTLR grammar file for runtime purposes.
+
+    NOTE:
+      This file is processed to produce a series of *.png files, one for each rule.
+      If you change the name of a rule then the output filename will also change,
+      and this needs to be updated in the Command Reference section where it
+      references this static image filename.
+
+    This file was originally converted on from ANTLR format to EBNF on
+    Mon Jan 30, 2023, 11:43 (UTC+11) by antlr_4-to-w3c v0.62 which is
+    Copyright (c) 2011-2022 by Gunther Rademacher <grd@gmx.net>
+
+    Converted by the utility at: https://bottlecaps.de/convert/
+*/
+
+statement         ::= statementChoice ';'
+statementChoice   ::= (
+                        countStmt
+                      | createIndexStmt
+                      | createTableStmt
+                      | dloadStmt
+                      | dropIndexStmt
+                      | dropTableStmt
+                      | explainStmt
+                      | loadStmt
+                      | lsColStmt
+                      | lsIdxStmt
+                      | lsIdxColStmt
+                      | lsTblStmt
+                      | printStmt
+                      | selectQuery
+                      | sleepStmt
+                      | spaceStmt
+                      | statusStmt
+                      | szIdxStmt
+                      | szTblStmt
+                      | truncateStmt
+                      | unloadStmt
+                      )
+
+/*---------------------------------------------------------------------------*/
+/* EXPLAIN STATEMENT                                                         */
+/*---------------------------------------------------------------------------*/
+explainStmt       ::= 'EXPLAIN' explainOptions* selectQuery
+explainOptions    ::= explainStageList
+                    | 'WITH_NAMES'
+                    | 'WITH_TYPES'
+explainStageList  ::= 'STAGE' explainRange ( ',' explainRange )*
+explainRange      ::= explainRangeChoice ( ( 'TO' | '-' ) explainRangeChoice )?
+explainRangeChoice::= '*'
+                    | 'ALL'
+                    | integerLiteral
+                    | identifier
+
+/*---------------------------------------------------------------------------*/
+/* SELECT STATEMENT                                                          */
+/*---------------------------------------------------------------------------*/
+selectQuery       ::= queryHint*
+                      ( 'WITH' withQuery ( ',' withQuery )* )?
+                      setExpr
+                      ( 'ORDER BY' orderByList )?
+                      ( 'LIMIT' integerLiteral ( 'OFFSET' integerLiteral )? )?
+
+setExpr           ::= selectExpr
+                    | setExpr ( 'UNION' /*| 'EXCEPT' | 'INTERSECT'*/ ) /*( 'DISTINCT' | 'ALL' )?*/'ALL' corrClause? setExpr
+                    | '(' setExpr ')'
+
+selectExpr        ::= (
+                        'SELECT'
+                        ( 'ALL' /*| 'DISTINCT'*/ )?
+                        selectList
+                        'FROM' tableExpr
+                        ( 'WHERE' expr )?
+                        ( 'GROUP BY' exprList )?
+                        ( 'HAVING' expr )?
+                      )
+                    | '(' selectExpr ')'
+
+queryHint         ::= '/*+' hint? ( ',' hint )* '*/'
+hint              ::= hintName ( '=' hintValue | '='? '(' hintValue ( ',' hintValue )* ')' )?
+
+corrClause        ::= 'CORRESPONDING' ( 'BY' '(' identifierList ')' )?
+withQuery         ::= tableName colAliases? 'AS' '(' selectQuery ')'
+
+tableExpr         ::= tableReference ( 'AS'? tableAlias )?
+                    | tableExpr queryHint*
+                      (
+                        ( ',' | ( 'CROSS' /*| 'NATURAL' joinType?*/ ) 'JOIN' ) tableExpr
+                        | /*extended*/joinType? 'JOIN' tableExpr ( 'ON' expr | 'USING' '(' identifierList ')' )
+                      )
+                    | '(' ( selectQuery /*| valuesExpr*/ ) ')' ( 'AS'? tableAlias colAliases? )?
+tableReference    ::= ( ( catalogName '.' )? schemaName '.' )? tableName
+joinType          ::= 'INNER'
+/*                    | ( 'LEFT' | 'RIGHT' | 'FULL' ) 'OUTER'? */
+/*
+extendedJoinType  ::= joinType
+                    | 'SEMI'
+                    | 'ANTI'
+ */
+/*valuesExpr        ::= 'VALUES' '(' valueList ')' ( ',' '(' valueList ')' )* */
+
+
+selectList        ::= selectListItem ( ',' selectListItem )*
+selectListItem    ::= expr ( 'AS'? identifier )?
+                    | columnWildcard
+exprList          ::= expr ( ',' expr )*
+identifierList    ::= identifier ( ',' identifier )*
+orderByList       ::= orderByListItem ( ',' orderByListItem )*
+orderByListItem   ::= expr ( 'ASC' | 'DESC' )?
+colAliases        ::= '(' identifierList ')'
+/* valueList         ::= expr ( ',' expr )* */
+
+expr              ::= '(' expr ')'
+                    | literal
+/*                    | variableName */
+                    | columnRef
+
+                    | ( '-' | '+' ) expr
+                    | expr ( '*' | '/' | '%' ) expr
+                    | expr ( '+' | '-' | '||' ) expr
+                    | expr ( '<' | '<=' | '=' | '!=' | '<>' | '>=' | '>' ) expr
+                    | 'CAST' '(' expr ( 'AS' | ',' ) dataType ')'
+                    | '(' dataType ')' expr
+                    | 'CASE'
+                      expr? ( 'WHEN' expr 'THEN' expr )+
+                      ( 'ELSE' expr )?
+                      'END'
+                    | ( 'SUBSTRING' | 'SUBSTR' ) '('
+                        (   expr ',' expr ( ',' expr )?
+                          | expr 'FROM' expr ( 'FOR' expr )?
+                        ) ')'
+                    | 'EXTRACT' '(' ( 'SECOND' | 'MINUTE' | 'HOUR' | 'DAY' | 'MONTH' | 'YEAR' ) 'FROM' expr ')'
+                    | 'COUNT' '(' 'ALL'? '*' ')'
+                    | ( 'COUNT' | 'SUM' | 'AVG' | 'MIN' | 'MAX' ) '(' ( 'ALL' | 'DISTINCT' )? expr ')'
+                    | functionName '(' ( expr ( ',' expr )* )? ')'
+                    | expr 'IS' 'NOT'? 'NULL'
+                    | expr 'NOT'? 'LIKE' expr ( 'ESCAPE' expr )?
+                    | 'NOT'? 'EXISTS' '(' selectQuery ')'
+                    | expr 'NOT'? 'IN' '(' ( selectQuery | expr ( ',' expr )* )? ')'
+                    | expr 'NOT'? 'BETWEEN' expr 'AND' expr
+                    | expr ('NOT' | 'AND' | 'XOR' | 'OR' ) expr
+                    | '(' selectQuery ')'
+
+/*
+variableName      ::= 'CURRENT_CATALOG'
+                    | 'CURRENT_SCHEMA'
+                    | 'CURRENT_TIMESTAMP'
+                    | 'CURRENT_USER'
+
+*/
+columnRef         ::= ( ( ( catalogName '.' )? schemaName '.' )? tableName '.' )? columnName
+columnWildcard    ::= ( ( ( catalogName '.' )? schemaName '.' )? tableName '.' )? '*'
+functionName      ::= identifier
+
+catalogName       ::= identifier
+schemaName        ::= identifier
+tableName         ::= identifier
+tableAlias        ::= identifier
+columnName        ::= identifier
+/* collationName     ::= identifier */
+indexName         ::= identifier
+hintName          ::= identifier
+hintValue         ::= simpleLiteral | identifier /* | expr */
+precision         ::= integerLiteral
+scale             ::= integerLiteral
+size              ::= integerLiteral
+
+literal           ::= 'NULL'
+                    | booleanLiteral
+                    | signedIntegerLiteral
+                    | signedDecimalLiteral
+                    | signedFloatLiteral
+                    | dateLiteral
+                    | timeLiteral
+                    | stringLiteral
+                    | timestampLiteral
+/*                  | intervalLiteral */
+
+simpleLiteral     ::= 'NULL'
+                    | booleanLiteral
+                    | signedIntegerLiteral
+                    | signedDecimalLiteral
+                    | signedFloatLiteral
+                    | stringLiteral
+
+booleanLiteral    ::= 'TRUE'
+                    | 'FALSE'
+integerLiteral    ::= digit+
+signedIntegerLiteral
+                  ::= ( '+' | '-' )? integerLiteral
+decimalLiteral    ::= ( digit+ '.' | '.' digit ) digit*
+signedDecimalLiteral
+                  ::= ( '+' | '-' )? decimalLiteral
+floatLiteral      ::= ( decimalLiteral | digit+ ) ( 'e' | 'E' ) ( '+' | '-' )? digit+
+signedFloatLiteral::= ( '+' | '-' )? floatLiteral
+dateLiteral       ::= 'DATE' stringLiteral
+timeLiteral       ::= 'TIME' stringLiteral
+timestampLiteral  ::= 'TIMESTAMP' stringLiteral
+stringLiteral     ::= singleQuotedString | doubleQuotedString
+
+/*
+intervalLiteral   ::= sql92CalendarIntervalLiteral
+                    | sql92TimeIntervalLiteral
+
+sql92CalendarIntervalLiteral
+                  ::= 'INTERVAL' stringLiteral
+                      ( 'YEAR' ( '(' precision ')' )? ( 'TO' 'MONTH' )?
+                      | 'MONTH' ( '(' precision ')' )? )
+sql92TimeIntervalLiteral
+                  ::= 'INTERVAL' stringLiteral
+                      ( 'DAY' ( '(' precision ')' )? ( 'TO' ( 'HOUR' | 'MINUTE' | 'SECOND' ( '(' scale ')' )? ) )?
+                      | 'HOUR' ( '(' precision ')' )? ( 'TO' ( 'MINUTE' | 'SECOND' ( '(' scale ')' )? ) )?
+                      | 'MINUTE' ( '(' precision ')' )? ( 'TO' 'SECOND' ( '(' scale ')' )? )?
+                      | 'SECOND' ( '(' precision ( ',' scale )? ')' )? )
+*/
+
+/*---------------------------------------------------------------------------*/
+/* Other Statements                                                          */
+/*---------------------------------------------------------------------------*/
+
+countStmt         ::= 'COUNT' tableName
+
+createIndexStmt   ::= 'CREATE' 'UNIQUE'? 'INDEX' indexName 'ON' tableName  '(' identifierList ')'
+
+createTableStmt   ::= 'CREATE' 'TABLE' tableName
+                      '(' columnDefinition ( ',' columnDefinition )* ')'
+                      ( 'PARTITION' 'BY' '(' identifierList ')' /* | 'REPLICATED' */ )?
+columnDefinition  ::= columnName dataType ('NOT' 'NULL')?
+
+dloadStmt         ::= 'DLOAD' tableName
+                      'PATHS' ( '"' filePath '"' )+
+                      ( loadOption '=' '"' loadValue '"' )*
+
+dropIndexStmt     ::= 'DROP' 'INDEX' tableName indexName
+
+dropTableStmt     ::= 'DROP' 'TABLE' tableName
+
+loadStmt          ::= 'LOAD' tableName '"' filePath '"'
+                       ( loadOption '=' '"' loadValue '"' )*
+loadOption        ::= plainIdentifier
+loadValue         ::= plainIdentifier
+
+lsColStmt         ::= 'LSCOL' tableName
+
+lsIdxStmt         ::= 'LSIDX' tableName
+
+lsIdxColStmt      ::= 'LSIDXCOL' tableName indexName
+
+lsTblStmt         ::= 'LSTBL'
+
+printStmt         ::= 'PRINT' '"' dblQuotedStrContents '"'
+
+sleepStmt         ::= 'SLEEP' integerLiteral
+
+spaceStmt         ::= 'SPACE'
+
+statusStmt        ::= 'STATUS'
+
+szIdxStmt         ::= 'SZIDX' tableName indexName
+
+szTblStmt         ::= 'SZTBL' tableName
+
+truncateStmt      ::= 'TRUNCATE' tableName
+
+unloadStmt        ::= 'UNLOAD' '"' filename '"'
+
+
+/*---------------------------------------------------------------------------*/
+/* Basic elements (types, definitions, etc)                                  */
+/*---------------------------------------------------------------------------*/
+
+dataType          ::= 'BOOLEAN'
+                    | ( 'INTEGER' | 'FLOAT' ) /*( '(' precision ( 'BITS' | 'BYTES' | 'DIGITS' )? ')' )? */
+                    | 'DECIMAL' ( '(' precision ( ',' scale )? ')' )?
+                    | 'DATE'
+                    | 'TIME'
+                    | 'TIMESTAMP'
+                    | ( 'CHAR' | 'CHARACTER' ) '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' /*( 'COLLATE' collationName )?*/
+                    | ( ( /*( 'CHAR' | 'CHARACTER' ) 'VARYING'? |*/ 'VARCHAR' ) ( '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' )? ) /*( 'COLLATE' collationName )?*/
+/*                  | 'BINARY' '(' size ( 'BYTE' | 'BYTES' )? ')'   */
+/*                  | 'VARBINARY' ( '(' size ( 'BYTE' | 'BYTES' )? ')' )?  */
+/*                  | 'BLOB' */
+
+
+
+
+letter   ::= [a-zA-Z]  /* See also https://www.w3.org/TR/xml/#d0e804 */
+digit    ::= [0-9]
+identifier
+         ::= plainIdentifier
+           | backtickIdentifier
+           | dblQuotedidentifier
+plainIdentifier
+         ::= letter ( letter | digit | '_' )*
+backtickIdentifier
+         ::= '`' [^`]+ '`'
+dblQuotedidentifier
+         ::= '"' ( '""' | [^"] )+ '"'
+
+/* Any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+/* Ref: https://www.w3.org/TR/xml/#char32 */
+filePath ::= ( [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] )+
+
+/* Filenames cannot have a forward slash */
+filename ::= ( [#x20-#x2E] |[#x30-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] )+
+
+singleQuotedString
+         ::= "'" ( "''" | [^'] )* "'"
+doubleQuotedString
+         ::= '"' ( '""' | [^"] )* '"'
+
+dblQuotedStrContents
+                  ::= ( '""' | [^"] )*

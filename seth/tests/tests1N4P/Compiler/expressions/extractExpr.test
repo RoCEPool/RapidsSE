@@ -202,8 +202,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Extract from a computed expression
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL '3' DAY)) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL '3' DAY)) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL ''3'' DAY)) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM (rapidsse.public.extractTest.COL3 + (2 * INTERVAL ''3'' DAY))) ; Ordinal Expr = EXTRACT (YEAR FROM ($3 + (2 * INTERVAL ''3'' DAY)))) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
 
 // Extract from a subquery
 EXPLAIN SELECT EXTRACT (YEAR FROM (SELECT col3 FROM extractTest WHERE col1 = 0 LIMIT 1)) FROM extractTest;
@@ -279,8 +291,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Can extract year from an interval_ym
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (YEAR FROM COL6) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (YEAR FROM INTERVAL '3-2' YEAR TO MONTH) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
 
 // Can extract year from a NULL literal
 EXPLAIN SELECT EXTRACT (YEAR FROM NULL) FROM extractTest;
@@ -303,9 +327,8 @@ EXPLAIN SELECT EXTRACT (YEAR FROM COL4) FROM extractTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM TIME)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL4))'
 
 // Cannot extract year from an interval_dt
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (YEAR FROM COL7) FROM extractTest;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL7)'
+EXPLAIN SELECT EXTRACT (YEAR FROM INTERVAL '1 2' DAY TO HOUR) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // -----
 // Can extract month from a date
@@ -341,8 +364,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Can extract month from an interval_ym
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (MONTH FROM COL6) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (MONTH FROM INTERVAL '3-2' YEAR TO MONTH) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
 
 // Can extract month from a NULL literal
 EXPLAIN SELECT EXTRACT (MONTH FROM NULL) FROM extractTest;
@@ -365,9 +400,8 @@ EXPLAIN SELECT EXTRACT (MONTH FROM COL4) FROM extractTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MONTH FROM TIME)) in expression (EXTRACT (MONTH FROM rapidsse.public.extractTest.COL4))'
 
 // Cannot extract month from an interval_dt
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (MONTH FROM COL7) FROM extractTest;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MONTH FROM rapidsse.public.extractTest.COL7)'
+EXPLAIN SELECT EXTRACT (MONTH FROM INTERVAL '1 2' DAY TO HOUR) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // -----
 // Can extract day from a date
@@ -403,8 +437,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Can extract day from an interval_dt
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (DAY FROM COL7) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (DAY FROM INTERVAL '1 2' DAY TO HOUR) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
 
 // Can extract day from a NULL literal
 EXPLAIN SELECT EXTRACT (DAY FROM NULL) FROM extractTest;
@@ -427,9 +473,8 @@ EXPLAIN SELECT EXTRACT (DAY FROM COL4) FROM extractTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (DAY FROM TIME)) in expression (EXTRACT (DAY FROM rapidsse.public.extractTest.COL4))'
 
 // Cannot extract day from an interval_ym
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (DAY FROM COL6) FROM extractTest;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (DAY FROM rapidsse.public.extractTest.COL6)'
+EXPLAIN SELECT EXTRACT (DAY FROM INTERVAL '3-2' YEAR TO MONTH) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // -----
 // Can extract hour from a time
@@ -465,8 +510,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Can extract hour from an interval_dt
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (HOUR FROM COL7) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (HOUR FROM INTERVAL '1 2' DAY TO HOUR) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
 
 // Can extract hour from a NULL literal
 EXPLAIN SELECT EXTRACT (HOUR FROM NULL) FROM extractTest;
@@ -489,9 +546,8 @@ EXPLAIN SELECT EXTRACT (HOUR FROM COL3) FROM extractTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (HOUR FROM DATE)) in expression (EXTRACT (HOUR FROM rapidsse.public.extractTest.COL3))'
 
 // Cannot extract hour from an interval_ym
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (HOUR FROM COL6) FROM extractTest;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (HOUR FROM rapidsse.public.extractTest.COL6)'
+EXPLAIN SELECT EXTRACT (HOUR FROM INTERVAL '3-2' YEAR TO MONTH) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // -----
 // Can extract minute from a time
@@ -527,8 +583,24 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Can extract minute from an interval_dt
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (MINUTE FROM COL7) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (MINUTE FROM INTERVAL '1 2:3:4' DAY TO SECOND) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract minute from a day to hour interval
+EXPLAIN WITH_TYPES SELECT EXTRACT (MINUTE FROM INTERVAL '1 2' DAY TO HOUR) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // Can extract minute from a NULL literal
 EXPLAIN SELECT EXTRACT (MINUTE FROM NULL) FROM extractTest;
@@ -551,9 +623,8 @@ EXPLAIN SELECT EXTRACT (MINUTE FROM COL3) FROM extractTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MINUTE FROM DATE)) in expression (EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL3))'
 
 // Cannot extract minute from an interval_ym
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (MINUTE FROM COL6) FROM extractTest;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL6)'
+EXPLAIN SELECT EXTRACT (MINUTE FROM INTERVAL '1-2' YEAR TO MONTH) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // -----
 // Can extract second from a time
@@ -589,8 +660,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.extractTest)')
 
 // Can extract second from an interval_dt
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (SECOND FROM COL7) FROM extractTest;
+EXPLAIN WITH_TYPES SELECT EXTRACT (SECOND FROM INTERVAL '1 2:3:4.5' DAY TO SECOND) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.5'' DAY TO SECOND) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND)) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
 
 // Can extract second from a NULL literal
 EXPLAIN SELECT EXTRACT (SECOND FROM NULL) FROM extractTest;
@@ -613,10 +696,12 @@ EXPLAIN SELECT EXTRACT (SECOND FROM COL3) FROM extractTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (SECOND FROM DATE)) in expression (EXTRACT (SECOND FROM rapidsse.public.extractTest.COL3))'
 
 // Cannot extract second from an interval_ym
-// TODO: Enable when intervals are supported
-//EXPLAIN SELECT EXTRACT (SECOND FROM COL6) FROM extractTest;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (SECOND FROM rapidsse.public.extractTest.COL6)'
+EXPLAIN SELECT EXTRACT (SECOND FROM INTERVAL '1-2' YEAR TO MONTH) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
+// Cannot extract second from an day to minute interval
+EXPLAIN SELECT EXTRACT (SECOND FROM INTERVAL '1 2:3' DAY TO MINUTE) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // -----
 // Ensure extract of an year returns an integer

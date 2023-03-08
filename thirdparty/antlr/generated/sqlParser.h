@@ -64,26 +64,27 @@ public:
     RuleCreateIndexQuery = 29, RuleDropQuery = 30, RuleTruncateQuery = 31, 
     RuleTableDefinition = 32, RuleTablePartitioning = 33, RuleColumnDefinition = 34, 
     RuleColumnNameList = 35, RuleTableConstraint = 36, RuleIndexDefinition = 37, 
-    RuleIndexMethod = 38, RuleDataType = 39, RuleSqlDataType = 40, RuleFixedLenChar = 41, 
-    RuleVaryingLenChar = 42, RuleAsSubquery = 43, RuleSelectOrValues = 44, 
-    RuleSelectList = 45, RuleSelectListItem = 46, RuleGroupByList = 47, 
-    RuleGroupByListItem = 48, RuleOrderByList = 49, RuleOrderByListItem = 50, 
-    RuleJoinUsingList = 51, RuleJoinUsingListItem = 52, RuleCorrList = 53, 
-    RuleCorrListItem = 54, RuleColAliases = 55, RuleColAliasList = 56, RuleColAliasListItem = 57, 
-    RulePropertyList = 58, RuleProperty = 59, RuleValueList = 60, RulePredicate = 61, 
-    RuleJoinPredicate = 62, RuleCasePredicate = 63, RuleExpr = 64, RuleVariableName = 65, 
-    RuleColumnRef = 66, RuleColumnWildcard = 67, RuleClassName = 68, RuleFunctionName = 69, 
-    RuleMethodName = 70, RuleCatalogName = 71, RuleSchemaName = 72, RuleTableName = 73, 
-    RuleTableAlias = 74, RuleColumnName = 75, RuleColumnAlias = 76, RuleCollationName = 77, 
-    RuleIndexName = 78, RulePropertyName = 79, RuleHintName = 80, RuleExprHint = 81, 
-    RulePropertyValue = 82, RuleHintValue = 83, RuleIdentifier = 84, RuleQualifier = 85, 
-    RulePrecision = 86, RuleScale = 87, RuleSize = 88, RuleLiteral = 89, 
-    RuleSimpleLiteral = 90, RuleBooleanLiteral = 91, RuleIntegerLiteral = 92, 
-    RuleSignedIntegerLiteral = 93, RuleDecimalLiteral = 94, RuleSignedDecimalLiteral = 95, 
-    RuleFloatLiteral = 96, RuleSignedFloatLiteral = 97, RuleDateLiteral = 98, 
-    RuleTimeLiteral = 99, RuleTimestampLiteral = 100, RuleStringLiteral = 101, 
-    RuleIntervalLiteral = 102, RuleLooseInterval = 103, RuleSql92CalendarInterval = 104, 
-    RuleSql92TimeInterval = 105, RuleNonReservedWord = 106
+    RuleIndexMethod = 38, RuleDataType = 39, RuleSqlDataType = 40, RuleIntervalType = 41, 
+    RuleYearMonthIntervalType = 42, RuleDayTimeIntervalType = 43, RuleFixedLenChar = 44, 
+    RuleVaryingLenChar = 45, RuleAsSubquery = 46, RuleSelectOrValues = 47, 
+    RuleSelectList = 48, RuleSelectListItem = 49, RuleGroupByList = 50, 
+    RuleGroupByListItem = 51, RuleOrderByList = 52, RuleOrderByListItem = 53, 
+    RuleJoinUsingList = 54, RuleJoinUsingListItem = 55, RuleCorrList = 56, 
+    RuleCorrListItem = 57, RuleColAliases = 58, RuleColAliasList = 59, RuleColAliasListItem = 60, 
+    RulePropertyList = 61, RuleProperty = 62, RuleValueList = 63, RulePredicate = 64, 
+    RuleJoinPredicate = 65, RuleCasePredicate = 66, RuleExpr = 67, RuleVariableName = 68, 
+    RuleColumnRef = 69, RuleColumnWildcard = 70, RuleClassName = 71, RuleFunctionName = 72, 
+    RuleMethodName = 73, RuleCatalogName = 74, RuleSchemaName = 75, RuleTableName = 76, 
+    RuleTableAlias = 77, RuleColumnName = 78, RuleColumnAlias = 79, RuleCollationName = 80, 
+    RuleIndexName = 81, RulePropertyName = 82, RuleHintName = 83, RuleExprHint = 84, 
+    RulePropertyValue = 85, RuleHintValue = 86, RuleIdentifier = 87, RuleQualifier = 88, 
+    RulePrecision = 89, RuleScale = 90, RuleSize = 91, RuleLiteral = 92, 
+    RuleSimpleLiteral = 93, RuleBooleanLiteral = 94, RuleIntegerLiteral = 95, 
+    RuleSignedIntegerLiteral = 96, RuleDecimalLiteral = 97, RuleSignedDecimalLiteral = 98, 
+    RuleFloatLiteral = 99, RuleSignedFloatLiteral = 100, RuleDateLiteral = 101, 
+    RuleTimeLiteral = 102, RuleTimestampLiteral = 103, RuleStringLiteral = 104, 
+    RuleIntervalLiteral = 105, RuleYearMonthInterval = 106, RuleDayTimeInterval = 107, 
+    RuleNonReservedWord = 108
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -137,6 +138,9 @@ public:
   class IndexMethodContext;
   class DataTypeContext;
   class SqlDataTypeContext;
+  class IntervalTypeContext;
+  class YearMonthIntervalTypeContext;
+  class DayTimeIntervalTypeContext;
   class FixedLenCharContext;
   class VaryingLenCharContext;
   class AsSubqueryContext;
@@ -199,9 +203,8 @@ public:
   class TimestampLiteralContext;
   class StringLiteralContext;
   class IntervalLiteralContext;
-  class LooseIntervalContext;
-  class Sql92CalendarIntervalContext;
-  class Sql92TimeIntervalContext;
+  class YearMonthIntervalContext;
+  class DayTimeIntervalContext;
   class NonReservedWordContext; 
 
   class  StatementContext : public antlr4::ParserRuleContext {
@@ -1135,6 +1138,7 @@ public:
     antlr4::tree::TerminalNode *DATE();
     antlr4::tree::TerminalNode *TIME();
     antlr4::tree::TerminalNode *TIMESTAMP();
+    IntervalTypeContext *intervalType();
     FixedLenCharContext *fixedLenChar();
     VaryingLenCharContext *varyingLenChar();
     antlr4::tree::TerminalNode *BINARY();
@@ -1149,6 +1153,62 @@ public:
   };
 
   SqlDataTypeContext* sqlDataType();
+
+  class  IntervalTypeContext : public antlr4::ParserRuleContext {
+  public:
+    IntervalTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *INTERVAL();
+    YearMonthIntervalTypeContext *yearMonthIntervalType();
+    DayTimeIntervalTypeContext *dayTimeIntervalType();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  IntervalTypeContext* intervalType();
+
+  class  YearMonthIntervalTypeContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *year = nullptr;;
+    antlr4::Token *month = nullptr;;
+    YearMonthIntervalTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *YEAR();
+    PrecisionContext *precision();
+    antlr4::tree::TerminalNode *TO();
+    antlr4::tree::TerminalNode *MONTH();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  YearMonthIntervalTypeContext* yearMonthIntervalType();
+
+  class  DayTimeIntervalTypeContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *day = nullptr;;
+    antlr4::Token *hour = nullptr;;
+    antlr4::Token *min = nullptr;;
+    antlr4::Token *sec = nullptr;;
+    DayTimeIntervalTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DAY();
+    PrecisionContext *precision();
+    antlr4::tree::TerminalNode *TO();
+    antlr4::tree::TerminalNode *HOUR();
+    antlr4::tree::TerminalNode *MINUTE();
+    antlr4::tree::TerminalNode *SECOND();
+    ScaleContext *scale();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DayTimeIntervalTypeContext* dayTimeIntervalType();
 
   class  FixedLenCharContext : public antlr4::ParserRuleContext {
   public:
@@ -2467,9 +2527,8 @@ public:
   public:
     IntervalLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Sql92CalendarIntervalContext *sql92CalendarInterval();
-    Sql92TimeIntervalContext *sql92TimeInterval();
-    LooseIntervalContext *looseInterval();
+    YearMonthIntervalContext *yearMonthInterval();
+    DayTimeIntervalContext *dayTimeInterval();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -2478,26 +2537,12 @@ public:
 
   IntervalLiteralContext* intervalLiteral();
 
-  class  LooseIntervalContext : public antlr4::ParserRuleContext {
+  class  YearMonthIntervalContext : public antlr4::ParserRuleContext {
   public:
-    sqlParser::ExprContext *str = nullptr;;
-    LooseIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *INTERVAL();
-    ExprContext *expr();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  LooseIntervalContext* looseInterval();
-
-  class  Sql92CalendarIntervalContext : public antlr4::ParserRuleContext {
-  public:
+    antlr4::Token *neg = nullptr;;
     antlr4::Token *year = nullptr;;
     antlr4::Token *month = nullptr;;
-    Sql92CalendarIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    YearMonthIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INTERVAL();
     StringLiteralContext *stringLiteral();
@@ -2511,15 +2556,16 @@ public:
    
   };
 
-  Sql92CalendarIntervalContext* sql92CalendarInterval();
+  YearMonthIntervalContext* yearMonthInterval();
 
-  class  Sql92TimeIntervalContext : public antlr4::ParserRuleContext {
+  class  DayTimeIntervalContext : public antlr4::ParserRuleContext {
   public:
+    antlr4::Token *neg = nullptr;;
     antlr4::Token *day = nullptr;;
     antlr4::Token *hour = nullptr;;
     antlr4::Token *min = nullptr;;
     antlr4::Token *sec = nullptr;;
-    Sql92TimeIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    DayTimeIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INTERVAL();
     StringLiteralContext *stringLiteral();
@@ -2536,7 +2582,7 @@ public:
    
   };
 
-  Sql92TimeIntervalContext* sql92TimeInterval();
+  DayTimeIntervalContext* dayTimeInterval();
 
   class  NonReservedWordContext : public antlr4::ParserRuleContext {
   public:
@@ -2566,7 +2612,6 @@ public:
     antlr4::tree::TerminalNode *CURRENT_USER();
     antlr4::tree::TerminalNode *DATA();
     antlr4::tree::TerminalNode *DATE();
-    antlr4::tree::TerminalNode *DAY();
     antlr4::tree::TerminalNode *DAYS();
     antlr4::tree::TerminalNode *DECODE();
     antlr4::tree::TerminalNode *DELETE();
@@ -2582,7 +2627,6 @@ public:
     antlr4::tree::TerminalNode *FORMAT();
     antlr4::tree::TerminalNode *HASH();
     antlr4::tree::TerminalNode *HASHKEY();
-    antlr4::tree::TerminalNode *HOUR();
     antlr4::tree::TerminalNode *HOURS();
     antlr4::tree::TerminalNode *IFNULL();
     antlr4::tree::TerminalNode *INDEX();
@@ -2593,10 +2637,8 @@ public:
     antlr4::tree::TerminalNode *KEY();
     antlr4::tree::TerminalNode *LEFT();
     antlr4::tree::TerminalNode *LOOP();
-    antlr4::tree::TerminalNode *MINUTE();
     antlr4::tree::TerminalNode *MINUTES();
     antlr4::tree::TerminalNode *MONOTONIC();
-    antlr4::tree::TerminalNode *MONTH();
     antlr4::tree::TerminalNode *MONTHS();
     antlr4::tree::TerminalNode *NO();
     antlr4::tree::TerminalNode *NODE();
@@ -2612,7 +2654,6 @@ public:
     antlr4::tree::TerminalNode *REFERENCE();
     antlr4::tree::TerminalNode *RIGHT();
     antlr4::tree::TerminalNode *SCHEMA();
-    antlr4::tree::TerminalNode *SECOND();
     antlr4::tree::TerminalNode *SECONDS();
     antlr4::tree::TerminalNode *SET();
     antlr4::tree::TerminalNode *SKIPLIST();
@@ -2635,7 +2676,6 @@ public:
     antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *WEEKS();
     antlr4::tree::TerminalNode *WITH_NAMES();
-    antlr4::tree::TerminalNode *YEAR();
     antlr4::tree::TerminalNode *YEARS();
     antlr4::tree::TerminalNode *INTEGER();
     antlr4::tree::TerminalNode *DECIMAL();

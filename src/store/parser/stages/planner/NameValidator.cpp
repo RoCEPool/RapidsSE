@@ -2442,7 +2442,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       }
     }
 
-    eCT eType = Expr::xTypeId(pColExpr, pRootNode).eCTVal();
+    TypeId xTypeId = Expr::xTypeId(pColExpr, pRootNode);
 
     // This will check for eType == CT_NONE and nicely print the error
     try {
@@ -2456,9 +2456,9 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       throw;
     }
 
-    ASSERT(eType != CT_NONE);
+    ASSERT(xTypeId.eCTVal() != CT_NONE);
 
-    QueryNode* pTypeNode = SqlType::pCreate(TypeId::xIdOf(eType));
+    QueryNode* pTypeNode = SqlType::pCreate(xTypeId);
     b1 bNotNull = false;
     i8 iPrecision = -1;
     i8 iScale = -1;

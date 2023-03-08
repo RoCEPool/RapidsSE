@@ -11,6 +11,7 @@
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap2D.hpp"
 
 using namespace Parser;
 
@@ -21,30 +22,195 @@ static Stz* C_ADDITION_NAME_PREFIX = "AdditionExpr"_Stz;
 static Stz* C_ADDITION_DEFN = "/__root__/definitions/object/expr/operator/mathematical/addition"_Stz;
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the first operand.
-// * The top header row represents the type of the second operand.
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+//  - The first parameter represents the type of the first operand
+//  - The second parameter represents the type of the second operand
+//  - The third parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+//  - Multiple mappings may be made in one go using the eTM values to represent a set of types.
+static TypeMap2D* S_pTypeMap = (new TypeMap2D())
+    ->pAddSelfMapping(TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL),        TypeId::xIdOf(CT_UNKNOWN),            TypeId::xIdOf(CT_UNKNOWN))
 
-                 //   NONE     BOOLEAN  CHAR     DATE          DECIMAL     FLOAT       INTEGER       INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP     VARCHAR  UNKNOWN
-/*  0 NONE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/*  1 BOOLEAN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/*  2 CHAR       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/*  3 DATE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE/*?*/, CT_DATE,        CT_DATE,        CT_NONE/*?*/, CT_NONE,      CT_NONE, CT_NONE    },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_DECIMAL, CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_FLOAT,   CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE/*?*/, CT_NONE,    CT_NONE,    CT_INTEGER,   CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN },
-/*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE, CT_NONE, CT_DATE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTERVAL_DT, CT_NONE,        CT_TIME,      CT_TIMESTAMP, CT_NONE, CT_UNKNOWN },
-/*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE, CT_NONE, CT_DATE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_INTERVAL_YM, CT_TIME,      CT_TIMESTAMP, CT_NONE, CT_UNKNOWN },
-/*  9 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE/*?*/, CT_NONE,    CT_NONE,    CT_NONE/*?*/, CT_TIME,        CT_TIME,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_TIMESTAMP,   CT_TIMESTAMP,   CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/* 11 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/* 12 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_UNKNOWN, CT_UNKNOWN, CT_UNKNOWN,   CT_UNKNOWN,     CT_UNKNOWN,     CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN }
-};
+    ->pAddSelfMapping(TypeId::xIdOf(CT_FLOAT))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),          TypeId::xIdOf(CT_UNKNOWN),            TypeId::xIdOf(CT_UNKNOWN))
+
+    ->pAddSelfMapping(TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),        TypeId::xIdOf(CT_UNKNOWN),            TypeId::xIdOf(CT_UNKNOWN))
+
+    // Date
+    // A date can only be added with intervals containing year, month or day fields.
+    // Having extra fields (hours, mins, secs) is an error.
+    ->pAddMapping(TypeId::xIdOf(CT_DATE),         TM_ALL_YM_INTERVALS,                       TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(CT_DATE),           TypeId::xIdOf(IV_DAY),                TypeId::xIdOf(CT_DATE))
+
+    // Time
+    // A time can only be added with intervals containing hour, minute and second fields.
+    // Having extra fields (year, month days) is an error
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_HOUR),               TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_MINUTE),             TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_SECOND),             TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_HOUR_TO_MINUTE),     TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_HOUR_TO_SECOND),     TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_MINUTE_TO_SECOND),   TypeId::xIdOf(CT_TIME))
+
+    // Timestamp
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TM_ALL_YM_INTERVALS,                       TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TM_ALL_DT_INTERVALS,                       TypeId::xIdOf(CT_TIMESTAMP))
+
+    // Intervals + Date
+    ->pAddMapping(TM_ALL_YM_INTERVALS,                  TypeId::xIdOf(CT_DATE),              TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),             TypeId::xIdOf(CT_DATE),              TypeId::xIdOf(CT_DATE))
+
+    // Intervals + Time
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),            TypeId::xIdOf(CT_TIME),              TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),          TypeId::xIdOf(CT_TIME),              TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),          TypeId::xIdOf(CT_TIME),              TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),  TypeId::xIdOf(CT_TIME),              TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),  TypeId::xIdOf(CT_TIME),              TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND),TypeId::xIdOf(CT_TIME),              TypeId::xIdOf(CT_TIME))
+
+    // Intervals + Timestamp
+    ->pAddMapping(TM_ALL_YM_INTERVALS,                  TypeId::xIdOf(CT_TIMESTAMP),         TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TM_ALL_DT_INTERVALS,                  TypeId::xIdOf(CT_TIMESTAMP),         TypeId::xIdOf(CT_TIMESTAMP))
+
+    // Intervals + other Intervals
+    // There are lots of combinations here. Resulting type should contain the most and least significant
+    // fields from both operands.
+    // YM and DT intervals are not compatible.
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR),             TypeId::xIdOf(IV_YEAR),             TypeId::xIdOf(IV_YEAR))
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR),             TypeId::xIdOf(IV_MONTH),            TypeId::xIdOf(IV_YEAR_TO_MONTH))
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR),             TypeId::xIdOf(IV_YEAR_TO_MONTH),    TypeId::xIdOf(IV_YEAR_TO_MONTH))
+
+    ->pAddMapping(TypeId::xIdOf(IV_MONTH),            TypeId::xIdOf(IV_YEAR),             TypeId::xIdOf(IV_YEAR_TO_MONTH))
+    ->pAddMapping(TypeId::xIdOf(IV_MONTH),            TypeId::xIdOf(IV_MONTH),            TypeId::xIdOf(IV_MONTH))
+    ->pAddMapping(TypeId::xIdOf(IV_MONTH),            TypeId::xIdOf(IV_YEAR_TO_MONTH),    TypeId::xIdOf(IV_YEAR_TO_MONTH))
+
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR_TO_MONTH),    TypeId::xIdOf(IV_YEAR),             TypeId::xIdOf(IV_YEAR_TO_MONTH))
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR_TO_MONTH),    TypeId::xIdOf(IV_MONTH),            TypeId::xIdOf(IV_YEAR_TO_MONTH))
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR_TO_MONTH),    TypeId::xIdOf(IV_YEAR_TO_MONTH),    TypeId::xIdOf(IV_YEAR_TO_MONTH))
+
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+    
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_HOUR))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_HOUR_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_HOUR_TO_SECOND))
+
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY),              TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_HOUR),             TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_MINUTE),           TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_SECOND),           TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_HOUR),      TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_MINUTE),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_DAY_TO_SECOND),    TypeId::xIdOf(IV_DAY_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_HOUR_TO_SECOND),   TypeId::xIdOf(IV_HOUR_TO_SECOND))
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_MINUTE_TO_SECOND), TypeId::xIdOf(IV_MINUTE_TO_SECOND))
+
+    // Intervals + NULLs
+    ->pAddMapping(TM_ALL_YM_INTERVALS,                   TypeId::xIdOf(CT_UNKNOWN),          TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TM_ALL_DT_INTERVALS,                   TypeId::xIdOf(CT_UNKNOWN),          TypeId::xIdOf(CT_UNKNOWN))
+
+    // Nulls
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),          TypeId::xIdOf(CT_DECIMAL),          TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),          TypeId::xIdOf(CT_FLOAT),            TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),          TypeId::xIdOf(CT_INTEGER),          TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),        TM_ALL_YM_INTERVALS,                     TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),        TM_ALL_DT_INTERVALS,                     TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddSelfMapping(TypeId::xIdOf(CT_UNKNOWN))
+;
 
 // References:
 //  Exact numeric + exact numeric = exact numeric
@@ -68,7 +234,7 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 //    Numeric   *       Interval  = Interval
 //     - SQL standard 2008 (draft): Part 2 (Foundation), page 39 (table 7)
 //
-//  /*?*/
+//  Possible enhancements:
 //  Postgres seems to support other enhancements, marked as /*?*/ in the table above:
 //    Date      +       Time      = Timestamp
 //    Date      +       Integer   = Date  (integer is assumed to be in days)
@@ -196,13 +362,12 @@ TypeId AdditionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = AdditionExpr::pChild1(pExprNode);
   QueryNode* pChild2 = AdditionExpr::pChild2(pExprNode);
 
-  eCT eOperand1 = Expr::xTypeId(pChild1, pRootNode).eCTVal();
-  eCT eOperand2 = Expr::xTypeId(pChild2, pRootNode).eCTVal();
+  TypeId xType1 = Expr::xTypeId(pChild1, pRootNode);
+  TypeId xType2 = Expr::xTypeId(pChild2, pRootNode);
 
   // Lookup the type of the result
-  eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
-
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = S_pTypeMap->xLookup(xType1, xType2);
+  return xResult;
 }
 
 /*============================================================================*/

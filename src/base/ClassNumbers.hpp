@@ -98,6 +98,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXITOPERAND,
+  /* */ CN_EXTRACTMAP,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -399,6 +400,8 @@ enum eCN : u2 // Class Number
   /* */ CN_TUB,
   /* */ CN_TX,
   /* */ CN_TXSET,
+  /* */ CN_TYPEMAP1D,
+  /* */ CN_TYPEMAP2D,
 
   /* */ CN__U__,
   /* */ CN_UNITINT,
@@ -515,6 +518,7 @@ static Stz* aCN[]
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXITOPERAND"_Stz,          // CN_EXITOPERAND
+  /* */ "EXTRACTMAP"_Stz,          // CN_EXTRACTMAP
 
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
@@ -816,6 +820,8 @@ static Stz* aCN[]
   /* */ "TUB"_Stz,                  // CN_TUB
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET
+  /* */ "CN_TYPEMAP1D"_Stz,         // CN_TYPEMAP1D
+  /* */ "CN_TYPEMAP2D"_Stz,         // CN_TYPEMAP2D
 
   /* */ "_U__"_Stz,                 // CN__U__
   /* */ "UNITINT"_Stz,              // CN_UNITINT

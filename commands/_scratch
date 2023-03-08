@@ -1,13 +1,25 @@
 
-create table nation (
-	 N_NATIONKEY       INTEGER NOT NULL,
-	 N_NAME            CHAR(25) NOT NULL,
-	 N_REGIONKEY       INTEGER NOT NULL,
-	 N_COMMENT         VARCHAR(152)
-);
+_lineitem
 
-load nation "../DATA/Transliterate/nationAggGby.tbl";
+load lineitem "../TPCH/SF_0001/lineitem.csv";
 
-//SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+explain stage transliterate SELECT l_orderkey, l_shipdate from lineitem where
+  l_shipdate <= DATE '1998-12-01' - INTERVAL '60' DAY ;
 
-SELECT n_nationkey, SUM(n_regionkey + 3) FROM nation group by n_nationkey;
+  pipeline unamed
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker0383
+    stage stageMarker0383 on all partitions :
+      scan rapidsse public lineitem
+      | filter " type BOOLEAN  $11 DATE '1998-12-01'  1327104000000007  -  <=  "
+      | project " type INTEGER as l_orderkey $1 , type DATE as l_shipdate $11 "
+      | combined 0
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;

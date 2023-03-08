@@ -128,6 +128,7 @@ enum eEC : u2 // error codes
   EC_INSUFFICIENT_EXPRS,            // SQL Compiler Subsystem
   EC_INTERNAL_ERROR,
   EC_INTERVAL_NOT_SUPPORTED,
+  EC_INTERVAL_OUT_OF_RANGE,
   EC_INVALID_CLASS,
   EC_INVALID_COLUMN,
   EC_INVALID_COLUMNS_UNIQUE_INDEX,
@@ -146,6 +147,7 @@ enum eEC : u2 // error codes
   EC_INVALID_PIPELINE,
   EC_INVALID_INDEX_COLUMN,
   EC_INVALID_INSTANCE,
+  EC_INVALID_INTERVAL_FORMAT,      // SQL Compiler Subsystem
   EC_INVALID_SIZE,
   EC_INVALID_SYNTAX,
   EC_INVALID_TIME_FORMAT,           // SQL Compiler Subsystem
@@ -392,6 +394,7 @@ static Stz* aEC[] =
   /* EC_INSUFFICIENT_EXPRS            */ (Stz*)"EC_INSUFFICIENT_EXPRS",         // SQL Compiler Subsystem
   /* EC_INTERNAL_ERROR                */ (Stz*)"EC_INTERNAL_ERROR",
   /* EC_INTERVAL_NOT_SUPPORTED        */ (Stz*)"interval currently not supported",
+  /* EC_INTERVAL_OUT_OF_RANGE         */ (Stz*)"interval out of range",
   /* EC_INVALID_CLASS                 */ (Stz*)"invalid class",
   /* EC_INVALID_COLUMN                */ (Stz*)"invalid column",
   /* EC_INVALID_COLUMNS_UNIQUE_INDEX  */ (Stz*)"invalid columns for unique index (include all partitioning columns)",
@@ -410,6 +413,7 @@ static Stz* aEC[] =
   /* EC_INVALID_PIPELINE              */ (Stz*)"invalid pipeline",
   /* EC_INVALID_INDEX_COLUMN          */ (Stz*)"invalid index column",
   /* EC_INVALID_INSTANCE              */ (Stz*)"invalid instance",
+  /* EC_INVALID_INTERVAL_FORMAT       */ (Stz*)"EC_INVALID_INTERVAL_FORMAT",    // SQL Compiler Subsystem
   /* EC_INVALID_SIZE                  */ (Stz*)"invalid size",
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",        // SQL Compiler Subsystem
@@ -650,6 +654,7 @@ static Stz* aEC2[] = // error code
   /* EC_INSUFFICIENT_EXPRS            */ (Stz*)"EC_INSUFFICIENT_EXPRS",
   /* EC_INTERNAL_ERROR                */ (Stz*)"EC_INTERNAL_ERROR",
   /* EC_INTERVAL_NOT_SUPPORTED        */ (Stz*)"EC_INTERVAL_NOT_SUPPORTED",
+  /* EC_INTERVAL_OUT_OF_RANGE         */ (Stz*)"EC_INTERVAL_OUT_OF_RANGE",
   /* EC_INVALID_CLASS                 */ (Stz*)"EC_INVALID_CLASS",
   /* EC_INVALID_COLUMN                */ (Stz*)"EC_INVALID_COLUMN",
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ (Stz*)"EC_INVALID_COLUMNS_UNIQUE_INDEX",
@@ -668,6 +673,7 @@ static Stz* aEC2[] = // error code
   /* EC_INVALID_PIPELINE              */ (Stz*)"EC_INVALID_PIPELINE",
   /* EC_INVALID_INDEX_COLUMN          */ (Stz*)"EC_INVALID_INDEX_COLUMN",
   /* EC_INVALID_INSTANCE              */ (Stz*)"EC_INVALID_INSTANCE",
+  /* EC_INVALID_INTERVAL_FORMAT       */ (Stz*)"EC_INVALID_INTERVAL_FORMAT",        // SQL Compiler Subsystem
   /* EC_INVALID_SIZE                  */ (Stz*)"EC_INVALID_SIZE",
   /* EC_INVALID_SYNTAX                */ (Stz*)"EC_INVALID_SYNTAX",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",            // SQL Compiler Subsystem
@@ -918,6 +924,7 @@ static Stz* aErrorMsg[] =
   /* EC_INSUFFICIENT_EXPRS            */ (Stz*)"insufficient expressions specified",          // SQL Compiler Subsystem
   /* EC_INTERNAL_ERROR                */ (Stz*)"internal error",
   /* EC_INTERVAL_NOT_SUPPORTED        */ (Stz*)"interval currently not supported",
+  /* EC_INTERVAL_OUT_OF_RANGE         */ (Stz*)"interval out of range",
   /* EC_INVALID_CLASS                 */ (Stz*)"invalid class",
   /* EC_INVALID_COLUMN                */ (Stz*)"invalid column",
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ (Stz*)"invalid columns for unique index (include all partitioning columns)",
@@ -936,6 +943,7 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_PIPELINE              */ (Stz*)"invalid pipeline",
   /* EC_INVALID_INDEX_COLUMN          */ (Stz*)"invalid index column",
   /* EC_INVALID_INSTANCE              */ (Stz*)"invalid instance",
+  /* EC_INVALID_INTERVAL_FORMAT       */ (Stz*)"Invalid interval format",                   // SQL Compiler Subsystem
   /* EC_INVALID_SIZE                  */ (Stz*)"invalid size",
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss'",    // SQL Compiler Subsystem

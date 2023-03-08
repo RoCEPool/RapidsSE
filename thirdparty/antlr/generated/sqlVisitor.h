@@ -116,6 +116,12 @@ public:
 
     virtual antlrcpp::Any visitSqlDataType(sqlParser::SqlDataTypeContext *context) = 0;
 
+    virtual antlrcpp::Any visitIntervalType(sqlParser::IntervalTypeContext *context) = 0;
+
+    virtual antlrcpp::Any visitYearMonthIntervalType(sqlParser::YearMonthIntervalTypeContext *context) = 0;
+
+    virtual antlrcpp::Any visitDayTimeIntervalType(sqlParser::DayTimeIntervalTypeContext *context) = 0;
+
     virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *context) = 0;
 
     virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *context) = 0;
@@ -306,11 +312,9 @@ public:
 
     virtual antlrcpp::Any visitIntervalLiteral(sqlParser::IntervalLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitLooseInterval(sqlParser::LooseIntervalContext *context) = 0;
+    virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *context) = 0;
 
-    virtual antlrcpp::Any visitSql92CalendarInterval(sqlParser::Sql92CalendarIntervalContext *context) = 0;
-
-    virtual antlrcpp::Any visitSql92TimeInterval(sqlParser::Sql92TimeIntervalContext *context) = 0;
+    virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
 
     virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 

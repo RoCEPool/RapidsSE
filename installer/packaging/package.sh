@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 # This script builds a RapidsSE installer.
 
 DIR=$(dirname "$0")
@@ -20,7 +20,10 @@ set -Eeo pipefail
 #  NO_MOD_CHECK  - don't check for modified files that haven't been committed.
 #  NO_BUILD      - don't compile the software
 #  NO_SHELLCHECK - don't run shellcheck on the scripts beforehand.
-#  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD
+#  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD.
+#  NO_DOCS       - don't build or package documentation.
+#  NO_DOC_BUILD  - don't build the documentation but continue to package it.
+#  DEBUG_BUILD   - build RapidsSE in debug mode instead of release (the default)
 
 ###############################################################################
 ### Constants                                                               ###
@@ -30,6 +33,7 @@ readonly ROOT_DIR="$(realpath "${DIR}/../..")"
 readonly LAYOUT_DIR="${ROOT_DIR}/installer/layout"
 readonly OUTPUT_DIR="${ROOT_DIR}/installer/output"
 readonly SOURCE_DIR="${ROOT_DIR}/src"
+readonly DOC_DIR="${ROOT_DIR}/doc"
 readonly OBJECT_DIR="${ROOT_DIR}/build/obj"
 readonly BIN_DIR="${ROOT_DIR}/build/bin"
 
@@ -244,6 +248,11 @@ esac
   if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ]
   then
 
+    BUILD_TARGET="release"
+    if [ -n "${DEBUG_BUILD}" ] && [ "${DEBUG_BUILD}" -eq 1 ]; then
+      BUILD_TARGET="debug"
+    fi
+
     gccVersion="$(gcc -dumpversion | cut -f1-2 -d.)"
     hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
 
@@ -262,15 +271,28 @@ esac
       echo "Using GCC version ${newestGccVer} from SCL"
       (
         cd "${SOURCE_DIR}"
-        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc)"
+        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc) ${BUILD_TARGET}"
       )
 
     else
       (
         cd "${SOURCE_DIR}"
-        make clean && make -s  -j "$(nproc)"
+        make clean && make -s  -j "$(nproc)" "${BUILD_TARGET}"
       )
     fi
+  fi
+
+
+  ### (Optional) Compile the documentation
+  if [[ ( -n "${NO_DOCS}"  &&  "${NO_DOCS}" -eq 1 ) ||  
+        ( -n "${NO_DOC_BUILD}"  &&  "${NO_DOC_BUILD}" -eq 1 ) ]] ; then
+    echo "Not compiling the documentation"
+  else
+    echo "Compiling documentation"
+    (
+      cd "${DOC_DIR}"
+      make clean && make
+    )
   fi
 
 
@@ -287,6 +309,24 @@ esac
 
   "${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}"
 
+  
+  ### Create the standalone documentation bundle
+  if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+
+    DOC_NAME="rapidsse-doc-${SE_VERSION_STR}"
+    DOC_OUTPUT_FILE="${DOC_NAME}.zip"
+
+    echo
+    echo "Building standalone documentation"
+    echo
+    (
+      cd "${LAYOUT_DIR}"
+      mkdir "${DOC_NAME}"
+      cp -r doc/* "${DOC_NAME}/"
+      zip -r "${OUTPUT_DIR}/${DOC_OUTPUT_FILE}" "${DOC_NAME}"
+    )
+  fi
+
   ### Remove object files, bin dir and layout dir to reduce disk space requirements
   echo "Cleaning up"
   if [ -z "${KEEP_OBJECTS}" ]; then
@@ -301,12 +341,20 @@ esac
   # Generate checksum files
   (
     cd "${OUTPUT_DIR}"
-    md5sum  "${OUTPUT_FILE}" > "${CHECKSUM_MD5_FILE}"
-    sha1sum "${OUTPUT_FILE}" > "${CHECKSUM_SHA1_FILE}"
+    md5sum  "${OUTPUT_FILE}"      > "${CHECKSUM_MD5_FILE}"
+    sha1sum "${OUTPUT_FILE}"      > "${CHECKSUM_SHA1_FILE}"
+
+    if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+      md5sum  "${DOC_OUTPUT_FILE}" >> "${CHECKSUM_MD5_FILE}"
+      sha1sum "${DOC_OUTPUT_FILE}" >> "${CHECKSUM_SHA1_FILE}"
+    fi
+
     echo
-    echo "Installer checksums:"
-    echo -n "md5:   " && cat "${CHECKSUM_MD5_FILE}"
-    echo -n "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
+    echo "Artifact checksums:"
+    echo
+    echo "md5:   " && cat "${CHECKSUM_MD5_FILE}"
+    echo
+    echo "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
     echo
   )
 }

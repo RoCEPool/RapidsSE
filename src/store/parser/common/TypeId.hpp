@@ -25,8 +25,12 @@ namespace Parser
     i8 m_iId;
 
     public:
+    TypeId();   // constructs an invalid type
     explicit TypeId(i8 iId);    // no implicit conversions please
+    TypeId(const TypeId& xTypeId);    // copy constructor
 
+    TypeId& operator=(const TypeId& rhs);
+//    TypeId& operator=(const i8& rhs);
     b1 operator==(const TypeId& rhs);
     b1 operator!=(const TypeId& rhs);
 

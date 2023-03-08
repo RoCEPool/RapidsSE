@@ -100,7 +100,11 @@ def main() -> int:
                           result_path,
                           tags,
                           not no_build)
-    jobrunner.run_job()
+    try:
+        jobrunner.run_job()
+    except errors.Ec2InsufficientCapacity:
+        return 1
+
     return 0
 
 

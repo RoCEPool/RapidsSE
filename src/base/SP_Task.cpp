@@ -10,7 +10,7 @@
 
 #include "SP_Thread.hpp"
 #include "SP_Task.hpp"
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
 #include "SP_Job.hpp"
 #include "SP_Op.hpp"
 
@@ -67,10 +67,10 @@ Stz* SP_Task::sz(Task* pTask)
   
   if (TS_SLEEPING == pTask->eState() &&
       QK_SLEEPING_QUEUE == pTask->eQueue()) {
-    SP_Ivl spIvl;
+    SP_Ivd spIvd;
     vCatf(" wakeup %s"_Stz
     
-          ,spIvl.sz(pTask->oWakeup().m_wWakeup.T.m_iAsI8)
+          ,spIvd.sz(pTask->oWakeup().m_wWakeup.T.m_iAsI8)
           
           );
   }

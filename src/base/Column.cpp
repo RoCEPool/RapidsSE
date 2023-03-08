@@ -88,7 +88,7 @@ eCT Column::eColumnType(eDM eDatum)
     case DM_BCD     : return CT_DECIMAL;
     case DM_FLT     : return CT_FLOAT;
     case DM_INT     : return CT_INTEGER;
-    case DM_IVL     : return CT_INTERVAL_DT;
+    case DM_IVD     : return CT_INTERVAL_DT;
     case DM_IVY     : return CT_INTERVAL_YM;
     case DM_TME     : return CT_TIME;
     case DM_TSP     : return CT_TIMESTAMP;
@@ -110,8 +110,8 @@ eDM Column::eDatum(eCT eColumnType)
     case CT_DECIMAL     : return DM_BCD;
     case CT_FLOAT       : return DM_FLT;
     case CT_INTEGER     : return DM_INT;
-    case CT_INTERVAL_DT : return DM_IVL;
-    case CT_INTERVAL_YM : NEVER_REACH;
+    case CT_INTERVAL_DT : return DM_IVD;
+    case CT_INTERVAL_YM : return DM_IVY;
     case CT_TIME        : return DM_TME;
     case CT_TIMESTAMP   : return DM_TSP;
     case CT_VARCHAR     : return DM_VCH;
