@@ -56,9 +56,6 @@ void Card_KeyExists::vTableMorphsToKeyExists(STORE::CardIter *pCI)
   pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyExists);
   pCI->G.p_keyExists->vInsert(pCI->G.p_table);
 
-//  pCI->G.p_keyExists->vRemoveSub(pCI->G.p_index);
-//  pCI->G.p_keyExists->vAppend(pCI->G.p_index);
-
   pCI->G.p_MainCard = pCI->G.p_keyExists;
 
   pCI->G.p_filter = pCI->G.p_keyExists->pSub_filter();
