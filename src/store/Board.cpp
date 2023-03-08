@@ -1246,18 +1246,24 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
     if (p_pred->bIsCard(CK_BOLPRED)) {
+
+      if (! p_pred->bIsSubQueryOp())
+        return C_CONTINUE_RECURSION;
+
       Stz* szValue_pred = p_pred->szValue();
 
-      eQO eCalcOp = QO_NONE;
-           if (szValue_pred->bSame("exists"_Stz))    eCalcOp = QO_EXISTS_OP;
-      else if (szValue_pred->bSame("notExists"_Stz)) eCalcOp = QO_NOT_EXISTS_OP;
-      else if (szValue_pred->bSame("in"_Stz))        eCalcOp = QO_IN_OP;
-      else if (szValue_pred->bSame("notIn"_Stz))     eCalcOp = QO_NOT_IN_OP;
-      else return C_CONTINUE_RECURSION;
+//      eQO eSubQryOp = QO_NONE;
+//           if (szValue_pred->bSame("exists"_Stz))    eSubQryOp = QO_EXISTS_OP;
+//      else if (szValue_pred->bSame("notExists"_Stz)) eSubQryOp = QO_NOT_EXISTS_OP;
+//      else if (szValue_pred->bSame("in"_Stz))        eSubQryOp = QO_IN_OP;
+//      else if (szValue_pred->bSame("notIn"_Stz))     eSubQryOp = QO_NOT_IN_OP;
+//      else return C_CONTINUE_RECURSION;
+
+      eQO eSubQryOp = Card::eEvalSubQryOp(szValue_pred);
 
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCallOp(eCalcOp);
+      pSubQuery->vCallOp(eSubQryOp);
       return C_CONTINUE_RECURSION;
     }
 
@@ -1267,8 +1273,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
       Stz *szValue_pred = p_pred->szValue();
 
       eRO eRelnOp = RelOp::eDecode(szValue_pred);
-      if (RO_NONE == eRelnOp)
-        return C_CONTINUE_RECURSION;
+      RASSERT(RO_NONE != eRelnOp);
 
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);

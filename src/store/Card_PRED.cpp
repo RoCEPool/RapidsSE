@@ -223,34 +223,31 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this predicate a subquery operator?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsSubQueryOp(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card::bIsSubQueryOp(szValue()))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this predicate a possible join predicate                                */
 /*----------------------------------------------------------------------------*/
 bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (RO_NONE == eEvalRelOp(szValue()))
+  if (RO_NONE == eEvalRelnOp(szValue()))
     return false;
 
   if (bContains_callToSubQuery(pCI))
     return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* is this predicate a possible join predicate                                */
-/*----------------------------------------------------------------------------*/
-bool Card_PRED::bMaybeSubQueryPred(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    if (Card::bIsSubQueryOp(xCI.G.p_term->szValue()))
-      return true;
-
-  return false;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* is this predicate a possible join predicate                                */

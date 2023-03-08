@@ -271,7 +271,7 @@ eYG Card::eAggrLevelToStageTopology(eAL eLevel)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Card::eEvalRelOp(Stz* szValue)
+eRO Card::eEvalRelnOp(Stz* szValue)
 {
   _static_
 
@@ -285,6 +285,22 @@ eRO Card::eEvalRelOp(Stz* szValue)
 
   else return RO_NONE;
 }
+
+/*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO Card::eEvalSubQryOp(Stz* szValue)
+{
+  _static_
+
+       if (szValue->bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (szValue->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (szValue->bSame("in"_Stz))        return QO_IN_OP;
+  else if (szValue->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+
+  else return QO_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
@@ -381,7 +397,7 @@ bool Card::bIsRelnOp(Stz* szValue)
 {
   _static_
 
-  if (RO_NONE != Card::eEvalRelOp(szValue))
+  if (RO_NONE != Card::eEvalRelnOp(szValue))
     return true;
 
   return false;

@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "ePB.h"
 #include "eGC.h"
+#include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eYG.h"
@@ -315,7 +316,8 @@ namespace STORE
 
     static eYG  eAggrLevelToStageTopology(eAL eLevel);
 
-    static eRO  eEvalRelOp(Stz* szValue);
+    static eRO  eEvalRelnOp(Stz* szValue);
+    static eQO  eEvalSubQryOp(Stz* szValue);
 
     static i8   iGetColOdn(Stz* szValue);
 
