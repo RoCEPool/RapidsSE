@@ -186,16 +186,33 @@ void MakeWeavable::vCullUsedBoundsFromFilter(void)
       continue;
     if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
       continue;
-    if (! (m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+
+    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+
+      // have <bounds> & <filter> under <main>
+
+      CardIter xCR(m_pCI->G.p_filter);
+      while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
+        if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
+          m_pCI->G.p_cmpPred->vMark1(MARK_AT);
+      }
+
       continue;
-
-    // have <bounds> & <filter> under <main>
-
-    CardIter xCR(m_pCI->G.p_filter);
-    while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
-      if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
-        m_pCI->G.p_cmpPred->vMark1(MARK_AT);
     }
+
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+
+      // have <bounds> & <filter> under <main>
+
+      CardIter xCR(m_pCI->G.p_constraint);
+      while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
+        if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
+          m_pCI->G.p_cmpPred->vMark1(MARK_AT);
+      }
+
+      continue;
+    }
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -207,6 +224,8 @@ void MakeWeavable::vCullUsedBoundsFromFilter(void)
   while (m_pCI->G_bEachMain()) {
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
       m_pCI->G.p_filter->vCullPred(MARK_AT);
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
+      m_pCI->G.p_constraint->vCullPred(MARK_AT);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

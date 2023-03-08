@@ -79,6 +79,16 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
       p_size = _pCard_Size(p_size->pDup());
       p_table_dup->vAppend(p_size);
     }
+
+    if (Card_KeyExists* p_keyExists = p_table->pSub_keyExists()) {
+      p_keyExists = _pCard_KeyExists(p_keyExists->pDup());
+      p_table_dup->vAppend(p_keyExists);
+    }
+    else
+    if (Card_KeyNotExists* p_keyNotExists = p_table->pSub_keyNotExists()) {
+      p_keyNotExists = _pCard_KeyNotExists(p_keyNotExists->pDup());
+      p_table_dup->vAppend(p_keyNotExists);
+    }
   }
 
   return p_tableList;

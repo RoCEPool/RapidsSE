@@ -20,7 +20,7 @@ namespace STORE
     Card_BolPred* pBolPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vCopyMarkedPredToTable(Card_Deck* p_deck);
+    void vCopyMarkedPredsToTable(Card_Deck* p_deck);
     void vCullPred(char cWithMark);
     bool bCullPred(Card_PRED* p_pred, char cWithMark);
     Card_PRED* pFindMarkedPred(char cWithMark);

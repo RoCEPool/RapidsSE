@@ -142,8 +142,8 @@ eXK Card_JoinPermSeq::eCastKind(Card_TableList* p_tableList,
 /* compute one permuted join sequence                                         */
 /*----------------------------------------------------------------------------*/
 i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
-                                        Card_JoinPredList* p_joinPredList,
-                                        PermGen*           pPermGen)
+                                      Card_JoinPredList* p_joinPredList,
+                                      PermGen*           pPermGen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -167,9 +167,18 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
 
     if (0 == nChildCards()) {
       //+ table is head/first of join sequence
+
       Card_JoinHead *p_joinHead = new Card_JoinHead;
       p_joinHead->vValue(cTblSyn_ith);
       vAppend(p_joinHead);
+
+      if (p_table->pSub_keyExists() || p_table->pSub_keyNotExists()) {
+        p_joinHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
+        Y_vSet(P_Invalid);
+        iNotValid = i_Item;
+        break;
+      }
+
       continue;
     }
 

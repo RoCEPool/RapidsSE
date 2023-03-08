@@ -560,9 +560,10 @@ void Card::vAddPredUnder_main(Card_PRED *p_PRED)
   Card_Filter* p_filter = this->pSub_filter();
   if (! p_filter) {
     p_filter = _pCard_Filter(this->pAppendNewCardTail(CK_FILTER));
-    Card_Constraint* p_constraint = _pCard_Constraint(p_filter->pAppendNewCardTail(CK_CONSTRAINT));
+    //Card_Constraint* p_constraint = _pCard_Constraint(p_filter->pAppendNewCardTail(CK_CONSTRAINT));
 
-    p_constraint->vAppendNewCardTail(CK_BOOLCALC);
+    //p_constraint->vAppendNewCardTail(CK_BOOLCALC);
+    p_filter->vAppendNewCardTail(CK_BOOLCALC);
   }
 
   p_filter->vAddPred(p_PRED);

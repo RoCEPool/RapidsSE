@@ -78,7 +78,7 @@ void Card_IndexJoin::vTableMorphsToIndexJoin(STORE::CardIter *pCI)
   pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_indexJoin);
   pCI->G.p_indexJoin->vInsert(pCI->G.p_table);
 
-  //pCI->G.p_indexJoin->vRemoveSubCard(pCI->G.p_index);
+  //pCI->G.p_indexJoin->vRemoveSub(pCI->G.p_index);
   //pCI->G.p_indexJoin->vAppend(pCI->G.p_index);
 
   pCI->G.p_MainCard = pCI->G.p_indexJoin;

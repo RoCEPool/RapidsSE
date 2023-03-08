@@ -62,7 +62,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_foldBreak(CK_PROJECT));
 
 //  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
-//  pCI->G.p_where->vRemoveSubCard(pCI->G.p_constraint);
+//  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
 //
 //  //pCI->G.p_filter = Card_Filter::pNew(p_constraint);
 //  pCI->G.p_table->vAppend(pCI->G.p_constraint);
@@ -70,7 +70,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.pDeck->vRemove(pCI->G.p_table);
 
   pCI->G.p_term = pCI->G.p_project->pSub_term();
-  pCI->G.p_project->vRemoveSubCard(pCI->G.p_term);
+  pCI->G.p_project->vRemoveSub(pCI->G.p_term);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,7 +86,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
   pCI->G.pDeck->vInsertBefore(pCI->G.p_table,pCI->G.p_where);
 
-  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
+  //pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
   //pCI->G.p_bolPred = pCI->G.p_boolCalc->pSub_bolPred();
   pCI->G.p_bolPred = pCI->G.p_boolCalc->pBolPred_whichCallsSubQuery(pCI);
@@ -135,7 +135,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  RASSERT(pCI->G_bEachMain(CK_PROJECT));
 //
 //  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
-//  pCI->G.p_where->vRemoveSubCard(pCI->G.p_constraint);
+//  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
 //
 //  //pCI->G.p_filter = Card_Filter::pNew(p_constraint);
 //  pCI->G.p_table->vAppend(pCI->G.p_constraint);
@@ -143,7 +143,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  pCI->G.pDeck->vRemove(pCI->G.p_table);
 //
 //  pCI->G.p_term = pCI->G.p_project->pSub_term();
-//  pCI->G.p_project->vRemoveSubCard(pCI->G.p_term);
+//  pCI->G.p_project->vRemoveSub(pCI->G.p_term);
 //
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

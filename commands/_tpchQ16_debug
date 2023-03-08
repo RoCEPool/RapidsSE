@@ -19,7 +19,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_tpch_debug"
+/pipelineName = "_tpchQ16_debug"
 select
   p_brand,
   p_type,

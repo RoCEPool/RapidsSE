@@ -2,6 +2,8 @@
 /* _r_STREAM_ORDER -- stream order test                                       */
 /*============================================================================*/
 
+// --initial _r_STREAM_ORDER
+
 trackMemory;
 
 _r_schema

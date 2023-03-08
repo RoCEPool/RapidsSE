@@ -65,7 +65,7 @@ void JoinOrdering::vJoinOrdering(void)
 
   // move @ marked where predicates to table filter
   m_pCI->vTransform(__func__, "move @ marked where predicates to table filter"_Stz);
-  Card_Where::vMoveWherePredToTableFilter(m_pCI);
+  Card_Where::vMoveWherePredsToTableFilter(m_pCI);
   m_pCI->vEndTransform();
 
   // cull @ marked where predicates
@@ -184,6 +184,7 @@ void JoinOrdering::vReorderTables(void)
   i8 iJoinPermutations = 0;
   while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
     Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
+    //p_joinOrdering->vDump();
     s256 sJoinOrder;
     p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
     //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
@@ -260,7 +261,7 @@ void JoinOrdering::vPredicateReposition(void)
   m_pCI->G_vRestart();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredToTable(m_pCI->G.pDeck);
+    m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI->G.pDeck);
   }
 
   m_pCI->vPrintBoard();

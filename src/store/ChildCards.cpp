@@ -372,7 +372,7 @@ void ChildCards::vRemoveDeleteChild(Card* pChildCard)
 /*----------------------------------------------------------------------------*/
 /* remove given subCard (recursive)                                           */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vRemoveSubCard(Card* pSubCard)
+void ChildCards::vRemoveSub(Card* pSubCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -385,7 +385,7 @@ void ChildCards::vRemoveSubCard(Card* pSubCard)
       vRemove(pTestCard);
       break;
     }
-    pTestCard->vRemoveSubCard(pSubCard);
+    pTestCard->vRemoveSub(pSubCard);
   }
 
   delete pSubCard_I;

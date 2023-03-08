@@ -88,14 +88,14 @@ void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* move where predicate to table filter                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vMoveWherePredToTableFilter(CardIter* pCI) {
+void Card_Where::vMoveWherePredsToTableFilter(CardIter* pCI) {
 
   _static_
 
   pCI->G_vRestart();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
-    pCI->G.p_boolCalc->vCopyMarkedPredToTable(pCI->G.pDeck);
+    pCI->G.p_boolCalc->vCopyMarkedPredsToTable(pCI->G.pDeck);
   }
 }
 
@@ -236,8 +236,10 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Constraint* p_constraint = pSub_constraint())
-    p_constraint->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+//  if (Card_Constraint* p_constraint = pSub_constraint())
+//    p_constraint->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

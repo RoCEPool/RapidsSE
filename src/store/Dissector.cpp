@@ -393,17 +393,21 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
 
 //  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
 //  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
-//  pCard_Expr->vRemoveSubCard(pCard_RpnCalc);
+//  pCard_Expr->vRemoveSub(pCard_RpnCalc);
 //  DELETE_CARD(pCard_Expr);
 //  pCard_Filter->vAppend(pCard_RpnCalc);
 
   i8 i_Expr = 1;
   Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
-  Card_Constraint* pCard_Constraint = new Card_Constraint;
-  pCard_Constraint->vAppend(pCard_Expr);
+//  Card_Constraint* pCard_Constraint = new Card_Constraint;
+//  pCard_Constraint->vAppend(pCard_Expr);
+//  pCard_Filter->vAppend(pCard_Constraint);
 
-  pCard_Filter->vAppend(pCard_Constraint);
   Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
+  pCard_Expr->vRemoveSub(pCard_RpnCalc);
+  DELETE_CARD(pCard_Expr);
+
+  pCard_Filter->vAppend(pCard_RpnCalc);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

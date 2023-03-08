@@ -152,7 +152,7 @@ void Card_BoolCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCopyMarkedPredToTable(Card_Deck* p_deck)
+void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -400,17 +400,17 @@ void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
 
   Card* pParentCard = this->pFindParent(p_pred);
 
-  pParentCard->vRemoveSubCard(p_pred);
+  pParentCard->vRemoveSub(p_pred);
 
   if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
 
     if (0 == pParentCard->nChildCards()) {
-      this->vRemoveSubCard(pParentCard);
+      this->vRemoveSub(pParentCard);
     }
     else {
       Card* pSiblingCard = pParentCard->pGetChild(0);
       Card* pGrandCard = this->pFindParent((pParentCard));
-      pParentCard->vRemoveSubCard(pSiblingCard);
+      pParentCard->vRemoveSub(pSiblingCard);
       pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
     }
 

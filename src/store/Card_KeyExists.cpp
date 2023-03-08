@@ -49,17 +49,20 @@ void Card_KeyExists::vTableMorphsToKeyExists(STORE::CardIter *pCI)
 
   pCI->G.p_index->vSet_Choose_index();
 
-  pCI->G.p_table->vRemoveSubCard(pCI->G.p_keyExists);
+  pCI->G.p_table->vRemoveSub(pCI->G.p_keyExists);
 
   pCI->G.p_keyExists->vTransferChildren(pCI->G.p_table);
 
   pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_keyExists);
   pCI->G.p_keyExists->vInsert(pCI->G.p_table);
 
-//  pCI->G.p_keyExists->vRemoveSubCard(pCI->G.p_index);
+//  pCI->G.p_keyExists->vRemoveSub(pCI->G.p_index);
 //  pCI->G.p_keyExists->vAppend(pCI->G.p_index);
 
   pCI->G.p_MainCard = pCI->G.p_keyExists;
+
+  pCI->G.p_filter = pCI->G.p_keyExists->pSub_filter();
+  pCI->G.p_filter->vCard(CK_CONSTRAINT);
 }
 
 
