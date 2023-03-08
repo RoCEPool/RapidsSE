@@ -20,7 +20,8 @@ namespace STORE
     Card_Term* pGetFirstTerm_tblColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_boardNm(CardIter* pCI);
-    bool bMaybeBounds_v3(Card_Index* p_index);
+    bool bIsIndexBounds_v3(Card_Index* p_index);
+    bool bMaybeJoinPred(void);
     Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
     bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);

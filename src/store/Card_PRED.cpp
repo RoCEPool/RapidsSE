@@ -168,9 +168,9 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this predicate a possible bounds for given index                        */
+/* is this predicate a bounds for given index                                 */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bMaybeBounds_v3(Card_Index* p_index)
+bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -222,6 +222,28 @@ bool Card_PRED::bMaybeBounds_v3(Card_Index* p_index)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this predicate a possible join predicate                                */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bMaybeJoinPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
+  Card_Term* pTerm_0 = pGetTerm(0);
+  Card_Term* pTerm_1 = pGetTerm(1);
+
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue()) &&
+      Card::bIsTableColOrdinal(pTerm_1->szValue()))
+    // + term_0 and term_1 are $c.n
+    return true;
+
+  // + neither term_0 nor term_1 is $c.n
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
