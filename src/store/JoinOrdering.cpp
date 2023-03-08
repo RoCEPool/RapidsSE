@@ -55,101 +55,55 @@ void JoinOrdering::vJoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
 
-  //vGroup_PredicatePullup();
-  vTransform_MarkCmpPredWrtTable();
-  vTransform_CopyMarkedCmpPred();
-  vTransform_CullMarkedCmpPred();
-  vTransform_DeleteEmptyWhere();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Predicate Pull Up
 
-  //vGroup_IndexBounds();
+  // @ mark where predicates wrt. table
+  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+  m_pCI->G_vRestart();
+  Card_Where::vMarkWherePredWrtTable(m_pCI);
+  m_pCI->vEndTransform();
+
+  // move @ marked where predicates to table filter
+  m_pCI->vTransform(__func__, "move @ marked where predicates to table filter"_Stz);
+  m_pCI->G_vRestart();
+  Card_Where::vMoveWherePredToTableFilter(m_pCI);
+  m_pCI->vEndTransform();
+
+  // cull @ marked where predicates
+  m_pCI->vTransform(__func__, "cull @ marked where predicates"_Stz);
+  m_pCI->G_vRestart();
+  Card_Where::vCullMarkedCmpPred(m_pCI);
+  m_pCI->vEndTransform();
+
+  // delete empty where
+  m_pCI->vTransform(__func__, "delete empty where"_Stz);
+  m_pCI->G_vRestart();
+  Card_Where::vDeleteEmpyWhere(m_pCI);
+  m_pCI->vEndTransform();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Index Bounds
+
   vTransform_DeriveBoundsFromFilter();
 
-  //vGroup_JoinOrdering();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Join Ordering
+
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
-//  if (Card_Table::nTables_foldBreak(m_pCI) < 2)
-//    return;
 
   vTransform_JoinOrdering();
-  vTransform_PredicateReposition();
-  vTransform_DeriveBoundsFromFilter();
 
+  vTransform_PredicateReposition();
+
+  vTransform_DeriveBoundsFromFilter();
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_MarkCmpPredWrtTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // At Mark Where Pred Wrt Table
-
-  m_pCI->vPrintBoard(__LINE__);
-  Card_Where::vMarkWherePredWrtTable(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_CopyMarkedCmpPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Move At Marked Where Pred To Table Filter
-
-  m_pCI->G_vRestart();
-  Card_Where::vMoveWherePredToTableFilter(m_pCI);
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_CullMarkedCmpPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  m_pCI->G_vRestart();
-  Card_Where::vCullMarkedCmpPred(m_pCI);
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_DeleteEmptyWhere(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-
-  m_pCI->G_vRestart();
-  Card_Where::vDeleteEmpyWhere(m_pCI);
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /* copy <table>/<filter> up into <table>/<bounds>                             */
