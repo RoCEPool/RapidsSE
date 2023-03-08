@@ -29,9 +29,8 @@ namespace STORE
 
   private:
 
-    void vTransform_JoinOrdering(void);
-    void vTransform_PredicateReposition(void);
-    void vTransform_DeriveBoundsFromFilter(void);
+    void vReorderJoins(void);
+    void vPredicateReposition(void);
 
   protected:
     Footer* aFooter(void);

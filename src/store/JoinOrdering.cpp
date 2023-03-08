@@ -85,7 +85,10 @@ void JoinOrdering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Index Bounds
 
-  vTransform_DeriveBoundsFromFilter();
+  // derive bounds from filter
+  m_pCI->vTransform(__func__, "derive bounds from filter"_Stz);
+  Card_Table::vDeriveBoundsFromFilter(m_pCI);
+  m_pCI->vEndTransform();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering
@@ -93,41 +96,29 @@ void JoinOrdering::vJoinOrdering(void)
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
 
-  vTransform_JoinOrdering();
+  vReorderJoins();
 
-  vTransform_PredicateReposition();
+  vPredicateReposition();
 
-  vTransform_DeriveBoundsFromFilter();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* copy <table>/<filter> up into <table>/<bounds>                             */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_DeriveBoundsFromFilter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "Add <bounds> under each filtered <table>"_Stz);
-
+  // re-derive bounds from filter after join ordering
+  m_pCI->vTransform(__func__, "re-derive bounds from filter after join ordering"_Stz);
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
-
   m_pCI->vEndTransform();
 }
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_JoinOrdering(void)
+void JoinOrdering::vReorderJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
+  m_pCI->vTransform(__func__, "join ordering"_Stz);
 
   Optimiser* pOptimiser = m_pCI->m_pBench->pOptimiser();
 
@@ -247,13 +238,13 @@ void JoinOrdering::vTransform_JoinOrdering(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Predicate Pullup                                                           */
+/* Predicate repositioning post join ordering                                 */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vTransform_PredicateReposition(void)
+void JoinOrdering::vPredicateReposition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+  m_pCI->vTransform(__func__, "predicate repositioning post join ordering"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table
