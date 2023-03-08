@@ -247,7 +247,7 @@ createIndexStmt   ::= 'CREATE' 'UNIQUE'? 'INDEX' indexName 'ON' tableName  '(' i
 
 createTableStmt   ::= 'CREATE' 'TABLE' tableName
                       '(' columnDefinition ( ',' columnDefinition )* ')'
-                      ( 'PARTITION' 'BY' '(' identifierList ')' )?
+                      ( 'PARTITION' 'BY' '(' identifierList ')' /* | 'REPLICATED' */ )?
 columnDefinition  ::= columnName dataType ('NOT' 'NULL')?
 
 dloadStmt         ::= 'DLOAD' tableName

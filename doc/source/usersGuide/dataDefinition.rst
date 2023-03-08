@@ -123,28 +123,31 @@ Creating Tables
 Tables in RapidsSE are created with the ``CREATE TABLE`` command. A table
 must have a unique table name for the schema it is created in.
 
-A table can either be created as a clustered or a replicated table. By
-default tables are created as clustered tables. This means that the data in
-the table is split across partitions on all nodes in the cluster according to
-the values in the partitioning columns. A replicated table is one where the
-data is duplicated on each node in the cluster. Replicated tables are suitable
-for small dimension tables that can be joined with clustered fact tables
-concurrently on each node in the cluster.
+..
+  A table can either be created as a clustered or a replicated table. By
+  default tables are created as clustered tables. This means that the data in
+  the table is split across partitions on all nodes in the cluster according to
+  the values in the partitioning columns. A replicated table is one where the
+  data is duplicated on each node in the cluster. Replicated tables are suitable
+  for small dimension tables that can be joined with partitioned fact tables
+  concurrently on each node in the cluster.
 
-Replicated tables are specified by including the term ``REPLICATED`` after
-specifying the column definitions. For example:
+  Replicated tables are specified by including the term ``REPLICATED`` after
+  and outside the specification of the column definitions. For example:
 
-.. code:: sql
+  .. code:: sql
 
-   CREATE TABLE t1
-   (
-     col1 INTEGER,
-     col2 VARCHAR,
-     REPLICATED
-   ) ;
+     CREATE TABLE t1
+     (
+       col1 INTEGER,
+       col2 VARCHAR,
+     ) REPLICATED ;
 
-Regardless of whether the table is being created as a clustered or replicated
-table, the ``CREATE TABLE`` command executes on all nodes in the cluster. It
+  Regardless of whether the table is being created as a clustered or replicated
+  table, the ``CREATE TABLE`` command executes on all nodes in the cluster. It
+  is not possible to create a table local to one node only.
+
+The ``CREATE TABLE`` command executes on all nodes in the cluster. It
 is not possible to create a table local to one node only.
 
 When a table is being created the definitions for each column in the table
