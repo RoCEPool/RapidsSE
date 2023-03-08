@@ -76,7 +76,7 @@ void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
   _static_
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
-    pCI->G.p_boolCalc->vMarkWrt_table(pCI->G.pDeck);
+    pCI->G.p_boolCalc->vMarkWrt_table(pCI);
   }
 }
 

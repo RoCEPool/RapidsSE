@@ -307,7 +307,7 @@ void JoinOrdering::vTransform_PredicateReposition(void)
   m_pCI->vPrintBoard(__LINE__);
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI->G.pDeck);
+    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI);
   }
 
   m_pCI->vPrintBoard(__LINE__);
