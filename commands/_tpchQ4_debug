@@ -1,0 +1,53 @@
+/*============================================================================*/
+/* _tpchQ4_debug                                                              */
+/*============================================================================*/
+
+// --initial _tpchQ4_debug
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+select * from dummy;
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpchQ4_debug"
+select o_orderpriority,
+       count(*) as order_count
+  from
+       orders
+ where o_orderdate >= DATE '1993-07-01'
+   and o_orderdate <  DATE '1993-10-01'
+   and exists (
+                select
+                       *
+                  from
+                       lineitem
+                 where
+                       l_orderkey = o_orderkey
+                   and l_commitdate < l_receiptdate
+              )
+ group by o_orderpriority
+ order by o_orderpriority
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
