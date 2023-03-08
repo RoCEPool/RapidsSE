@@ -315,6 +315,8 @@ namespace STORE
 
     static eYG  eAggrLevelToStageTopology(eAL eLevel);
 
+    static eRO  eEvalRelOp(Stz* szValue);
+
     static i8   iGetColOdn(Stz* szValue);
 
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In

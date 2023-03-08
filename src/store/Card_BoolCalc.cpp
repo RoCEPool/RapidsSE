@@ -322,7 +322,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
-      char cWhichTable = ((Card_PRED *)p_card)->cTable_WhichTableFor_Pred(p_deck);
+      char cWhichTable = ((Card_PRED *)p_card)->cTable_WhichTableFor_Pred(pCI);
       if (C_UNKNOWN != cWhichTable) {
         p_card->vMark1(MARK_AT);
         p_card->vMark2(cWhichTable);
@@ -335,7 +335,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
-      char cWhichTable = ((Card_PRED *)p_card)->cTable_WhichTableFor_Pred(p_deck);
+      char cWhichTable = ((Card_PRED *)p_card)->cTable_WhichTableFor_Pred(pCI);
       if (C_UNKNOWN != cWhichTable) {
         p_card->vMark1(MARK_AT);
         p_card->vMark2(cWhichTable);

@@ -225,9 +225,22 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a possible join predicate                                */
 /*----------------------------------------------------------------------------*/
+bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this predicate a possible join predicate                                */
+/*----------------------------------------------------------------------------*/
 bool Card_PRED::bMaybeJoinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! bIsValue("=="_Stz))
+    return false;
 
   i8 nChildren = nChildCards();
   if (2 != nChildren)
@@ -350,9 +363,11 @@ bool Card_PRED::bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-char Card_PRED::cTable_WhichTableFor_Pred(Card_Deck* p_deck)
+char Card_PRED::cTable_WhichTableFor_Pred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Deck* p_deck = pCI->G.pDeck;
 
   Scope* pScope = new Scope;
 

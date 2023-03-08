@@ -269,6 +269,24 @@ eYG Card::eAggrLevelToStageTopology(eAL eLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Card::eEvalRelOp(Stz* szValue)
+{
+  _static_
+
+       if (szValue->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szValue->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szValue->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szValue->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szValue->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szValue->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szValue->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
 i8 Card::iGetColOdn(Stz* szValue)

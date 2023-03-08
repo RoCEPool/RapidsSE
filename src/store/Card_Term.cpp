@@ -204,17 +204,11 @@ eRO Card_Term::eEvalRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->sz();
+  Stz* szValue = this->szValue();
 
-  if (szTerm->bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (szTerm->bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (szTerm->bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (szTerm->bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (szTerm->bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (szTerm->bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (szTerm->bSame(">"_Stz))   return RO_GREATER_THAN;
+  eRO eRelOp = Card::eEvalRelOp(szValue);
 
-  else return RO_NONE;
+  return eRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
