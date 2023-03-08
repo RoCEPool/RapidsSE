@@ -29,7 +29,7 @@ namespace STORE
 
   private:
 
-    void vReorderJoins(void);
+    void vReorderTables(void);
     void vPredicateReposition(void);
 
   protected:

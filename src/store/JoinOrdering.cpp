@@ -56,47 +56,44 @@ void JoinOrdering::vJoinOrdering(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Predicate Pull Up
+  // Predicate Pull Up : move suitable where predicates to table filter
 
   // @ mark where predicates wrt. table
   m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
-  m_pCI->G_vRestart();
   Card_Where::vMarkWherePredWrtTable(m_pCI);
   m_pCI->vEndTransform();
 
   // move @ marked where predicates to table filter
   m_pCI->vTransform(__func__, "move @ marked where predicates to table filter"_Stz);
-  m_pCI->G_vRestart();
   Card_Where::vMoveWherePredToTableFilter(m_pCI);
   m_pCI->vEndTransform();
 
   // cull @ marked where predicates
   m_pCI->vTransform(__func__, "cull @ marked where predicates"_Stz);
-  m_pCI->G_vRestart();
   Card_Where::vCullMarkedCmpPred(m_pCI);
   m_pCI->vEndTransform();
 
   // delete empty where
   m_pCI->vTransform(__func__, "delete empty where"_Stz);
-  m_pCI->G_vRestart();
   Card_Where::vDeleteEmpyWhere(m_pCI);
   m_pCI->vEndTransform();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Index Bounds
+  // Index Bounds : move table filter predicates to table index bounds
 
-  // derive bounds from filter
-  m_pCI->vTransform(__func__, "derive bounds from filter"_Stz);
+  // derive index bounds from table filter
+  m_pCI->vTransform(__func__, "derive index bounds from table filter"_Stz);
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
   m_pCI->vEndTransform();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Join Ordering
+  // Join Ordering Proper
 
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
 
-  vReorderJoins();
+  // reorder the tables
+  vReorderTables();
 
   vPredicateReposition();
 
@@ -114,7 +111,7 @@ void JoinOrdering::vJoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vReorderJoins(void)
+void JoinOrdering::vReorderTables(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
