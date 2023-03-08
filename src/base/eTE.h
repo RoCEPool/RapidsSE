@@ -9,7 +9,6 @@ enum eTE // atom evaluation
 
   /* */ TE_AND,
   /* */ TE_BOOLFN,
-  /* */ TE_COMPARE,
   /* */ TE_EXECUTE,
   /* */ TE_EXISTS,
   /* */ TE_IN,
@@ -18,6 +17,7 @@ enum eTE // atom evaluation
   /* */ TE_NOTIN,
   /* */ TE_OR,
   /* */ TE_OTHER,
+  /* */ TE_RELNOP,
 
   /* */ TE_ENUMS
 };
@@ -28,7 +28,6 @@ static Stz* aTE[]
 
   /*  */ "TE_AND"_Stz,
   /*  */ "TE_BOOLFN"_Stz,
-  /*  */ "TE_COMPARE"_Stz,
   /*  */ "TE_EXECUTE"_Stz,
   /*  */ "TE_EXISTS"_Stz,
   /*  */ "TE_IN"_Stz,
@@ -37,6 +36,7 @@ static Stz* aTE[]
   /*  */ "TE_NOTIN"_Stz,
   /*  */ "TE_OR"_Stz,
   /*  */ "TE_OTHER"_Stz,
+  /*  */ "TE_RELNOP"_Stz,
 
   /*  */ "TE_ENUMS"_Stz
 };

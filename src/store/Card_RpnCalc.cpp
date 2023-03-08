@@ -310,7 +310,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         //p_boolCalc->vDump(0,"NOT"_Stz);
         break;
 
-      case TE_COMPARE:
+      case TE_RELNOP:
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;

@@ -339,7 +339,7 @@ eTE Card_Term::eTermEval(void)
   else if (szValue->bSame("notExists"_Stz))  return TE_NOTEXISTS;
   else if (szValue->bSame("notIn"_Stz))      return TE_NOTIN;
 
-  else if (Card::bIsRelnOp(szValue))         return TE_COMPARE;
+  else if (Card::bIsRelnOp(szValue))         return TE_RELNOP;
 
   else if (Card::bIsBoolFn(szValue))         return TE_BOOLFN;
 
