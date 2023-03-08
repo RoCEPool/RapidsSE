@@ -300,7 +300,7 @@ emitted.
 
 .. attention::
 
-   RapidsSE does not yet support any outer join.
+   RapidsSE does not yet support any joins.
 
 
 .. index::
