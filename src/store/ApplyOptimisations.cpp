@@ -58,7 +58,7 @@ void ApplyOptimisations::vOptimise(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
   vMorph_table_To_EEop();
-  //vMorph_scan_To_indexScan();
+  vMorph_scan_To_indexScan();
 }
 
 
