@@ -375,6 +375,19 @@ bool Card::bIsParamOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a relational operator?                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsRelnOp(Stz* szValue)
+{
+  _static_
+
+  if (RO_NONE != Card::eEvalRelOp(szValue))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsResultOrdinal(Stz* szValue)

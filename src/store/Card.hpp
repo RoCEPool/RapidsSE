@@ -319,13 +319,15 @@ namespace STORE
 
     static i8   iGetColOdn(Stz* szValue);
 
-    static bool bIsBoolFn(Stz* szValue);  // $In
+    static bool bIsBoolFn(Stz* szValue);
 
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In
 
     static bool bIsKeyOrdinal(Stz* szValue);       // #n
 
     static bool bIsParamOrdinal(Stz* szValue);     // $Pn
+
+    static bool bIsRelnOp(Stz* szValue);
 
     static bool bIsResultOrdinal(Stz* szValue);     // #n
 
