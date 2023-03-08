@@ -37,8 +37,6 @@ namespace STORE
 
     void vBounds_AddPred(Card_Index* p_index,
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
-    void vBounds_DeriveFrom_filter(Card_Filter* p_filter,
-                                   bool bParamAllowedInBounds);
     void vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter);
     Stz* szColNm(i8 i_Col_base0);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
