@@ -677,7 +677,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (! (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_ROPRED)))
+    if (! (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_ANYPRED)))
       return C_CONTINUE_RECURSION;
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
@@ -703,7 +703,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
       return C_TERMINATE_RECURSION;
     }
 //    else
-//    if (p_pred->bIsCard(CK_ROPRED)) {
+//    if (p_pred->bIsCard(CK_ANYPRED)) {
 //    }
 
     return C_TERMINATE_RECURSION;
@@ -1015,7 +1015,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
       return;
     }
     else
-    if (p_pred->bIsCard(CK_ROPRED)) {
+    if (p_pred->bIsCard(CK_ANYPRED)) {
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
@@ -1263,7 +1263,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_ROPRED)) {
+    if (p_pred->bIsCard(CK_ANYPRED)) {
       Stz *szValue_pred = p_pred->szValue();
 
       eRO eRelnOp = RelOp::eDecode(szValue_pred);

@@ -57,7 +57,7 @@ void Card_Fold::vBump_where_BaseOn_foldExpr(CardIter* pCI)
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_roPred = _pCard_RoPred(pCard);
+    pCI->G.p_roPred = _pCard_AnyPred(pCard);
 
 //    m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
 //    m_pTerm_0->vBump_StreamColOrdinal(nBumpRight);
@@ -79,7 +79,7 @@ void Card_Fold::vBump_where_BaseOn_foldExpr(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_ANYPRED, bLambdaFn);
 
   pCI->G.p_fold->Y_vSet(P_BumpedRight,nBumpRight);
   pCI->G.p_fold->Y_vCut(P_BumpRight);

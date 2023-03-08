@@ -97,7 +97,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   auto bLambdaFn_ro = [pCI,bBump](Card *pCard) {
 
-    pCI->G.p_roPred = _pCard_RoPred(pCard);
+    pCI->G.p_roPred = _pCard_AnyPred(pCard);
 
     if (bBump) {
       pCI->m_pTerm_0 = _pCard_Term(pCI->G.p_roPred->pGet(0));
@@ -118,7 +118,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_ROPRED, bLambdaFn_ro);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_ANYPRED, bLambdaFn_ro);
 
 
   if (! bBump)

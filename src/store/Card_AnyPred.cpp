@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_RoPred.cpp -- SubQuery call and Test Predicate                       */
+/* Card_AnyPred.cpp -- Any Predicate                                          */
 /*============================================================================*/
 
-#include "Card_RoPred.hpp"
+#include "Card_AnyPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_RoPred, CK_ROPRED)
-__aNewFunction(Card_RoPred, CN_CARD)
-__vDeleteFunction(Card_RoPred, CN_CARD)
+__pCastFunction_Card(STORE, Card_AnyPred, CK_ANYPRED)
+__aNewFunction(Card_AnyPred, CN_CARD)
+__vDeleteFunction(Card_AnyPred, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_RoPred::Card_RoPred(void)
-: Card_PRED(CK_ROPRED)
+Card_AnyPred::Card_AnyPred(void)
+: Card_PRED(CK_ANYPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_RoPred::Card_RoPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_RoPred::~Card_RoPred(void) noexcept(false)
+Card_AnyPred::~Card_AnyPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -37,16 +37,6 @@ Card_RoPred::~Card_RoPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RoPred::vMorph_To_bolPred(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vCard(CK_BOLPRED);
-}
 
 
 /*============================================================================*/

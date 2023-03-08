@@ -231,7 +231,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
     return false;
   }
   else
-  if (CK_ROPRED == eCard_pred) {
+  if (CK_ANYPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -349,7 +349,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       continue;
     }
 
-    if (p_card->bIsCard(CK_ROPRED))
+    if (p_card->bIsCard(CK_ANYPRED))
       continue;
 
     if (p_card->bIsCard(CK_TERM))

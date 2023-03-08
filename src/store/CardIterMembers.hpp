@@ -169,7 +169,7 @@ namespace STORE
 
     Card_Reason *           p_reason;
     Card_RelnOp *           p_relnOp;
-    Card_RoPred *           p_roPred;
+    Card_AnyPred *           p_roPred;
     Card_RpnCalc *          p_rpnCalc;
 
     Card_Scan *             p_scan;

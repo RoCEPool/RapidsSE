@@ -12,6 +12,7 @@ enum eCK // card kind
   /* */ CK_AGGREG,
   /* */ CK_AGGREGATES,
   /* */ CK_ANDPRED,
+  /* */ CK_ANYPRED,
   /* */ CK_AS,
 
   /* */ CK_BOARDNO,
@@ -127,7 +128,6 @@ enum eCK // card kind
   /* */ CK_RBOUND,
   /* */ CK_REASON,
   /* */ CK_RELNOP,
-  /* */ CK_ROPRED,
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
@@ -196,6 +196,7 @@ static Stz* aCK[]
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
+  /* */ "CK_ANYPRED"_Stz,      // CK_ANYPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOARDNO"_Stz,      // CK_BOARDNO
@@ -311,7 +312,6 @@ static Stz* aCK[]
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
   /* */ "CK_REASON"_Stz,       // CK_REASON
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
-  /* */ "CK_ROPRED"_Stz,       // CK_ROPRED
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
@@ -379,6 +379,7 @@ static Stz* aCK_short[]
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "andPred"_Stz,         // CK_ANDPRED
+  /* */ "anyPred"_Stz,         // CK_ANYPRED
   /* */ "as"_Stz,              // CK_AS
 
   /* */ "boardNo"_Stz,         // CK_BOARDNO
@@ -494,7 +495,6 @@ static Stz* aCK_short[]
   /* */ "rbound"_Stz,          // CK_RBOUND
   /* */ "reason"_Stz,          // CK_REASON
   /* */ "relnOp"_Stz,          // CK_RELNOP
-  /* */ "roPred"_Stz,          // CK_ROPRED
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
