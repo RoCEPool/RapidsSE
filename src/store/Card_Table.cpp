@@ -134,33 +134,12 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vRestart();
-  //while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_INDEXLIST)) {
-  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_INDEXLIST)) {
-//    if (pCI->G.p_MainCard->pSub_keyExists() ||
-//       pCI->G.p_MainCard->pSub_keyNotExists())
-//      continue;
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_INDEXLIST))
     pCI->G.p_indexList->vDeleteAllBounds();
-  }
-
-  // todo: ugh!
-  pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
 
   pCI->vRestart();
-  //while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
-  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-
-    // todo: hacked this out, will have implications
-//    if (pCI->G.p_MainCard->pSub_keyExists() ||
-//        pCI->G.p_MainCard->pSub_keyNotExists())
-//      continue;
-
-//    bool bParamAllowedInBounds = false;
-//    if (pCI->G.pSubQuery->bIsCorrelated() && pCI->G.pSubQuery->bByExists())
-//      bParamAllowedInBounds = true;
-
-    //pCI->G.p_table->vBounds_DeriveFrom_filter(pCI->G.p_filter,bParamAllowedInBounds);
+  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER))
     pCI->G.p_table->vBounds_DeriveFrom_filter_v3(pCI->G.p_filter);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
