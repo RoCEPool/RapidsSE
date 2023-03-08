@@ -315,9 +315,7 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
       if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
         return C_CONTINUE_RECURSION;
 
-      Card_CmpPred *p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
-
-      if (! p_cmpPred->bMaybeBounds_v3(p_index))
+      if (! p_pred_Of_filter->bMaybeBounds_v3(p_index))
         return C_CONTINUE_RECURSION;
 
       // - - - -
@@ -329,10 +327,10 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
       }
 
       char cTblSyn = this->cValue();
-      Card_BOUND *p_bound = Card_BOUND::pCreateFrom_PRED(p_cmpPred, cTblSyn);
+      Card_BOUND *p_bound = Card_BOUND::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
       p_bounds->vAppend(p_bound);
 
-      p_cmpPred->vMark1(MARK_UP);
+      p_pred_Of_filter->vMark1(MARK_UP);
 
       return C_CONTINUE_RECURSION;
     };

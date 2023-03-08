@@ -168,6 +168,62 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this predicate a possible bounds for given index                        */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bMaybeBounds_v3(Card_Index* p_index)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_index)
+    return false;
+
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
+  Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
+
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+    // + term_0 is $c.n
+
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()) ||
+          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+        return true;
+
+      return false;
+    }
+    else {
+      // + only term_0 is $c.n
+
+      // ? is term_0:$c.n an index column
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szValue()))
+        return true;
+
+      return false;
+    }
+  }
+  else
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    // + only term_1 is $c.n
+
+    // ? is term_0:$c.n an index column
+    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szValue()) )
+      return true;
+
+    return false;
+  }
+
+  // + neither term_0 nor term_1 is $c.n
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_PRED::pPredFindBound(Index* pIndex, ePB eBound)
