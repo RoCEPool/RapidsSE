@@ -2347,43 +2347,6 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for payload store for groupby                                */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vPayloadStore(IndexDef* pIndexDef) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  s4K  sCopy;
-
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // insert key in the payload");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aEntFound = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL,&aCombinedT->m_iErrorCode);");
-
-  vGenerateErrorCheck(" "_Stz);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound");
-
-
-  // calculate the payload address
-  if (pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + ((struct Ent_int*)aEntFound)->m_iIntElm0");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each projected column
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // populate the payload");
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate code for payload aggregates for groupby                           */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vPayloadAgg(void) {
@@ -5206,30 +5169,6 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for IN expr                                                  */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateInExpr(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    bFilterResult = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    iArg1 = *(--paW);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    iInCount = *(--paW);");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    while(iInCount--) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      iArg2 = *(--paW);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      if (iArg1 == iArg2) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n         bFilterResult = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n         break;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    while(iInCount-- > 0) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      iArg2 = *(--paW);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    *(paW++) = bFilterResult;");
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate code for check for process row                                    */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vGenerateProcessRow(Stz* sLabel)
@@ -5343,39 +5282,6 @@ void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 }
 
-/*----------------------------------------------------------------------------*/
-/* generate code for keyNotExists filter expression                           */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  // generate the code for the projected expressions
-  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef, ""_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate stencil cast
-  vGenerateStencilCast();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate code for the expression
-  vGenerateExprCode(m_pExprStack, ""_Stz);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! bFilterResult && bFilterResult != C_DATUM_NULL) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"KEY NOT EXISTS\\n\");");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_iProcessRow = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"KEY EXISTS\\n\");");
-  // go to next entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
-  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-}
 
 /*----------------------------------------------------------------------------*/
 /* generate the streamDef into a struct                                       */
@@ -5476,45 +5382,6 @@ void CodeSynth::vGenerateStruct(u8 uSelectColumns) {
 
   StrLib::vSprintCat((Stz *) m_caCode, "    };"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/* get infix for projection                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* CodeSynth::szInfix(TypedStack* pExprStack, i8 iProject)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  s256 sInfix;
-
-  TypeValueArea* pTypedCell = pExprStack->aPeekItem(iProject);
-
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *Tkn = _pToken(pTypedCell->pObj());
-    sInfix = Tkn->szChars();
-  } else {
-    sInfix = pTypedCell->szStz();
-  }
-
-  return sInfix;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get infix for projection                                                   */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vGetInfix(s4K &szInfix, TypedStack* pExprStack, i8 iProject)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  TypeValueArea* pTypedCell = pExprStack->aPeekItem(iProject);
-
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *Tkn = _pToken(pTypedCell->pObj());
-    szInfix = Tkn->szChars();
-  } else {
-    szInfix = pTypedCell->szStz();
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get working stack                                                          */

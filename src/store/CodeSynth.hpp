@@ -149,7 +149,6 @@ namespace STORE {
     void vGenerateInitVars(void);
 
     void vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
-    void vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);
     void vGenerateProcessRowJoin(Stz *sLabel);
@@ -181,7 +180,6 @@ namespace STORE {
     void vPayloadInsert(ePL ePayload, i8 iTopCount);
     void vPayloadKey(TypedStack* pExprStack);
     void vPayloadPopulate(ePL ePayload);
-    void vPayloadStore(IndexDef *pIndexDef);
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack);
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
@@ -200,11 +198,7 @@ namespace STORE {
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
     void vGenerateExpr(char *sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
-    void vGenerateInExpr(void);
 
-    Stz *szInfix(TypedStack *pExprStack, i8 iProject);
-
-    void vGetInfix(s4K &sInfix, TypedStack *pExprStack, i8 iProject);
     TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack);
 
     Footer *aFooter(void);

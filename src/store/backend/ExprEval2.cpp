@@ -273,7 +273,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       pIndexDef->vIndexNm("gby_idx"_Stz);
 
       // start with idx_col1 as the first column for indexes
-      // else it can class with COL1 of streamDefOut
+      // else it can clash with COL1 of streamDefOut
       sColumnNm.vSprint("IDX_COL%lld"_Stz, iProjectColumn-1);
       pColumnExpr->vColumnNm(sColumnNm);
 
