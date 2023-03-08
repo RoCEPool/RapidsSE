@@ -229,6 +229,12 @@ bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (RO_NONE == eEvalRelOp(szValue()))
+    return false;
+
+  if (bContains_callToSubQuery(pCI))
+    return false;
+
 
 }
 

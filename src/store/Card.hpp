@@ -319,6 +319,8 @@ namespace STORE
 
     static i8   iGetColOdn(Stz* szValue);
 
+    static bool bIsBoolFn(Stz* szValue);  // $In
+
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In
 
     static bool bIsKeyOrdinal(Stz* szValue);       // #n

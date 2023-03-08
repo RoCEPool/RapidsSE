@@ -299,6 +299,27 @@ i8 Card::iGetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a boolean function?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsBoolFn(Stz* szValue)
+{
+  _static_
+
+       if (szValue->bSame("between"_Stz))         return true;
+  else if (szValue->bSame("inList"_Stz))          return true;
+  else if (szValue->bSame("isNull"_Stz))          return true;
+  else if (szValue->bSame("like2"_Stz))           return true;
+  else if (szValue->bSame("like3"_Stz))           return true;
+  else if (szValue->bSame("matchLeading"_Stz))    return true;
+  else if (szValue->bSame("matchMiddle"_Stz))     return true;
+  else if (szValue->bSame("matchMiddle1"_Stz))    return true;
+  else if (szValue->bSame("matchTrailing"_Stz))   return true;
+
+  else return false;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsIndexColOrdinal(Stz* szValue)

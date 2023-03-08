@@ -327,36 +327,28 @@ eTE Card_Term::eTermEval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->sz();
+  Stz* szValue = this->szValue();
 
-       if (szTerm->bSame("and"_Stz))        return TE_AND;
-  else if (szTerm->bSame("or"_Stz))         return TE_OR;
-  else if (szTerm->bSame("not"_Stz))        return TE_NOT;
+       if (szValue->bSame("and"_Stz))        return TE_AND;
+  else if (szValue->bSame("or"_Stz))         return TE_OR;
+  else if (szValue->bSame("not"_Stz))        return TE_NOT;
 
-  else if (szTerm->bSame("}"_Stz))          return TE_EXECUTE;
-  else if (szTerm->bSame("exists"_Stz))     return TE_EXISTS;
-  else if (szTerm->bSame("in"_Stz))         return TE_IN;
-  else if (szTerm->bSame("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (szTerm->bSame("notIn"_Stz))      return TE_NOTIN;
+  else if (szValue->bSame("}"_Stz))          return TE_EXECUTE;
+  else if (szValue->bSame("exists"_Stz))     return TE_EXISTS;
+  else if (szValue->bSame("in"_Stz))         return TE_IN;
+  else if (szValue->bSame("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (szValue->bSame("notIn"_Stz))      return TE_NOTIN;
 
-  else if (szTerm->bSame("<"_Stz))          return TE_COMPARE;
-  else if (szTerm->bSame("<="_Stz))         return TE_COMPARE;
-  else if (szTerm->bSame("="_Stz))          return TE_COMPARE;
-  else if (szTerm->bSame("=="_Stz))         return TE_COMPARE;
-  else if (szTerm->bSame("!="_Stz))         return TE_COMPARE;
-  else if (szTerm->bSame("<>"_Stz))         return TE_COMPARE;
-  else if (szTerm->bSame(">="_Stz))         return TE_COMPARE;
-  else if (szTerm->bSame(">"_Stz))          return TE_COMPARE;
+  else if (szValue->bSame("<"_Stz))          return TE_COMPARE;
+  else if (szValue->bSame("<="_Stz))         return TE_COMPARE;
+  else if (szValue->bSame("="_Stz))          return TE_COMPARE;
+  else if (szValue->bSame("=="_Stz))         return TE_COMPARE;
+  else if (szValue->bSame("!="_Stz))         return TE_COMPARE;
+  else if (szValue->bSame("<>"_Stz))         return TE_COMPARE;
+  else if (szValue->bSame(">="_Stz))         return TE_COMPARE;
+  else if (szValue->bSame(">"_Stz))          return TE_COMPARE;
 
-  else if (szTerm->bSame("between"_Stz))         return TE_BOOLFN;
-  else if (szTerm->bSame("inList"_Stz))          return TE_BOOLFN;
-  else if (szTerm->bSame("isNull"_Stz))          return TE_BOOLFN;
-  else if (szTerm->bSame("like2"_Stz))           return TE_BOOLFN;
-  else if (szTerm->bSame("like3"_Stz))           return TE_BOOLFN;
-  else if (szTerm->bSame("matchLeading"_Stz))    return TE_BOOLFN;
-  else if (szTerm->bSame("matchMiddle"_Stz))     return TE_BOOLFN;
-  else if (szTerm->bSame("matchMiddle1"_Stz))    return TE_BOOLFN;
-  else if (szTerm->bSame("matchTrailing"_Stz))   return TE_BOOLFN;
+  else if (Card::bIsBoolFn(szValue))         return TE_BOOLFN;
 
   else return TE_OTHER;
 }
