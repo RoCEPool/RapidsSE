@@ -161,18 +161,21 @@ void Card_Filter::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nChildren = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChildCard = this->pGetChild(i_Child);
+  Card_BoolCalc* p_boolCalc = pSub_boolCalc();
+  p_boolCalc->vCullPred(cWithMark);
 
-    eCK eCard = pChildCard->eCard();
-    if (eCard != CK_BOOLCALC)
-      continue;
-
-    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
-
-    p_boolCalc->vCullPred(cWithMark);
-  }
+//  i8 nChildren = this->nChildCards();
+//  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+//    Card* pChildCard = this->pGetChild(i_Child);
+//
+//    eCK eCard = pChildCard->eCard();
+//    if (eCard != CK_BOOLCALC)
+//      continue;
+//
+//    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
+//
+//    p_boolCalc->vCullPred(cWithMark);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

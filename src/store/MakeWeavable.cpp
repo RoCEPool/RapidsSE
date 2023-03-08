@@ -186,12 +186,12 @@ void MakeWeavable::vCullUsedBoundsFromFilter(void)
       continue;
     if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
       continue;
-    if (! (m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
+    if (! (m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
       continue;
 
     // have <bounds> & <filter> under <main>
 
-    CardIter xCR(m_pCI->G.p_constraint);
+    CardIter xCR(m_pCI->G.p_filter);
     while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
       if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds))
         m_pCI->G.p_cmpPred->vMark1(MARK_AT);
@@ -202,12 +202,12 @@ void MakeWeavable::vCullUsedBoundsFromFilter(void)
   // cull marked cmpPred from filter
 
   m_pCI->G_vRestart();
-  Card_Constraint::vCullUsedBounds(m_pCI);
+//  Card_Constraint::vCullUsedBounds(m_pCI);
 
-//  while (m_pCI->G_bEachMain()) {
-//    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-//      m_pCI->G.p_filter->vCullPred(MARK_AT);
-//  }
+  while (m_pCI->G_bEachMain()) {
+    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+      m_pCI->G.p_filter->vCullPred(MARK_AT);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any filter if empty
@@ -280,7 +280,7 @@ void MakeWeavable::vStmColToColNmOfKeyExists(void)
   while (m_pCI->G_bEachMain()) {
 
     if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
-              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
+           || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
       continue;
 
     m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();

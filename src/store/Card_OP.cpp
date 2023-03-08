@@ -160,7 +160,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
     if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;

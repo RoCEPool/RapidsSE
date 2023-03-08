@@ -136,9 +136,9 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   pCI->vRestart();
   //while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_INDEXLIST)) {
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_INDEXLIST)) {
-    if (pCI->G.p_MainCard->pSub_keyExists() ||
-       pCI->G.p_MainCard->pSub_keyNotExists())
-      continue;
+//    if (pCI->G.p_MainCard->pSub_keyExists() ||
+//       pCI->G.p_MainCard->pSub_keyNotExists())
+//      continue;
     pCI->G.p_indexList->vDeleteAllBounds();
   }
 
