@@ -317,7 +317,7 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
 
       Card_CmpPred *p_cmpPred = _pCard_CmpPred(p_pred_Of_filter);
 
-      if (! p_cmpPred->bMaybeBounds_v3(this, p_index))
+      if (! p_cmpPred->bMaybeBounds_v3(p_index))
         return C_CONTINUE_RECURSION;
 
       // - - - -

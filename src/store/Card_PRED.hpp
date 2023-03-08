@@ -14,8 +14,6 @@ namespace STORE
     Card_PRED(eCK eCard, Stz* szValue);
    ~Card_PRED(void) noexcept(false);
 
-    bool bAllSubs_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
-    Card_PRED* pContaining_MaybeBoundsOf_index(Card_Index* p_index, bool bParamAllowedInBounds);
     bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
