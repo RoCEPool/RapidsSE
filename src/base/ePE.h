@@ -21,7 +21,7 @@ enum ePE // predicate expression
   /*   */ PE_MAX, // max
   /*   */ PE_MIN, // min
   /*   */ PE_MLE, // match leading ABD%
-  /*   */ PE_MMD , // match middle %ABC%
+  /*   */ PE_MMD, // match middle %ABC%
   /*   */ PE_MM1, // match with one % in the middle %ABC%DEF%
   /*   */ PE_MM2, // match with 2 % in the middle %ABC%DEF%GHI%
   /*   */ PE_MTR, // match trailing %ABC

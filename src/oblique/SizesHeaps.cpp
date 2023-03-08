@@ -170,6 +170,7 @@
 #include "Starter.hpp"
 #include "Statement.hpp"
 #include "Stencil.hpp"
+#include "Stencil_V2.hpp"
 #include "Steps.hpp"
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
@@ -203,6 +204,7 @@
 #include "Sends.hpp"
 
 #include "CodeSynth.hpp"
+#include "CodeSynth_V2.hpp"
 #include "Flatten.hpp"
 #include "Permit.hpp"
 #include "Totup.hpp"
@@ -330,6 +332,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),      HT_INVALID   , FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_MEDIUM  , FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),        HT_T_LARGE   , FILL },
+  { CN_CODESYNTH_V2,             sizeof(CodeSynth_V2),     HT_T_LARGE   , FILL },
   { CN_COLUMN,                   sizeof(Column),           HT_T_TINY    , FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
@@ -624,6 +627,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,FILL },
+  { CN_STENCIL_V2,               sizeof(Stencil_V2),            HT_T_SMALL   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },
   { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,FILL },
   { CN_STEPS,                    sizeof(Steps),              HT_T_LARGE   ,FILL },

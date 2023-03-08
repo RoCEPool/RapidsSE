@@ -61,6 +61,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
+  /* */ CN_CODESYNTH_V2,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
   /* */ CN_CONDITIONALQUERYNODEITER,
@@ -355,6 +356,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STATEMENT,
   /* */ CN_STATS,
   /* */ CN_STENCIL,
+  /* */ CN_STENCIL_V2,
   /* */ CN_STEP,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPS,
@@ -496,6 +498,7 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
+  /* */ "CODESYNTH_V2"_Stz,         // CN_CODESYNTH_V2
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
@@ -790,6 +793,7 @@ static Stz* aCN[]
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATS"_Stz,                // CN_STATS
   /* */ "STENCIL"_Stz,              // CN_STENCIL
+  /* */ "STENCIL_V2"_Stz,           // CN_STENCIL_V2
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPS"_Stz,                // CN_STEPS
