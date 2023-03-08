@@ -23,6 +23,7 @@ namespace STORE
     bool bIsIndexBounds_v3(Card_Index* p_index);
     bool bMaybeFilterPred(CardIter* pCI);
     bool bMaybeJoinPred(void);
+    bool bMaybeSubQueryPred(void);
     Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
     bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);

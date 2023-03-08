@@ -404,6 +404,21 @@ bool Card::bIsResultOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a sub-query operator?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSubQueryOp(Stz* szValue)
+{
+  _static_
+
+       if (szValue->bSame("exists"_Stz))    return true;
+  else if (szValue->bSame("notExists"_Stz)) return true;
+  else if (szValue->bSame("in"_Stz))        return true;
+  else if (szValue->bSame("notIn"_Stz))     return true;
+
+  else return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSubQueryPattern(BASE::Stz *szValue)
