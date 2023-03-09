@@ -85,11 +85,10 @@ void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc)
     if (! p_cmpPred->sz()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
       return true;
 
-    Card_Term* p_term_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-    Card_Term* p_term_1 = _pCard_Term(p_cmpPred->pGetChild(1));
+    Card_Term* p_term_0 = p_cmpPred->pGetTerm(0);
+    Card_Term* p_term_1 = p_cmpPred->pGetTerm(1);
 
-    if ( ! ( (*p_term_0->szValue()->azChar() == '$') &&
-             (*p_term_1->szValue()->azChar() == '$') ) )
+    if ( ! (p_term_0->bIsTblColOdn() && p_term_1->bIsTblColOdn()))
       return true;
 
     Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardAndSubCards());
