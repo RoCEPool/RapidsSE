@@ -231,7 +231,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
     return false;
   }
   else
-  if (CK_ROPRED == eCard_pred) {
+  if (CK_ANYPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -349,7 +349,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       continue;
     }
 
-    if (p_card->bIsCard(CK_ROPRED))
+    if (p_card->bIsCard(CK_ANYPRED))
       continue;
 
     if (p_card->bIsCard(CK_TERM))
@@ -451,43 +451,6 @@ bool Card_BoolCalc::bIsBraced(void)
   bApplyRecursive(CK_NONE,bTestBraced);
 
   return bBraced;
-}
-
-/*----------------------------------------------------------------------------*/
-/* resolve the parameters terms in given boolCalc                             */
-/*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vSubstitute_Parameters(Card_Correlation* p_paramList)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bfXYZ = [this,p_paramList](Card_PRED* p_pred, bool bUpwards)
-  {
-    if (! p_pred->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term = _pCard_Term(p_pred);
-    if (! Card::bIsParamOrdinal(p_term->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    Card_OuterColNm* p_outerColNm = _pCard_OuterColNm(p_paramList->pFindPpyRecursive(P_ParamOdn));
-    if (! p_outerColNm)
-      return false;
-
-    //Card_StmColOdn* p_stmColOrd = p_outerColNm->pSub_stmColOdn();
-    //M_vCard_Set_Value(p_term,p_stmColOrd->szValue(),MARK_CHANGED);
-    Card_TblColOdn* p_tblColOrd = p_outerColNm->pSub_tblColOdn();
-    p_term->vSetValueMark1(p_tblColOrd->szValue(), MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bfXYZ);
 }
 
 /*----------------------------------------------------------------------------*/

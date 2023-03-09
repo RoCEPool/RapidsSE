@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_RoPred.hpp -- Ro Test Predicate                                       */
+/* Card_AnyPred.hpp -- Any Predicate                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,20 +7,17 @@
 
 namespace STORE
 {
-  class Card_RoPred : public Card_PRED
+  class Card_AnyPred : public Card_PRED
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_RoPred(void);
-   ~Card_RoPred(void) noexcept(false);
-
-    void vMorph_To_bolPred(CardIter* pCI);
-
+    Card_AnyPred(void);
+   ~Card_AnyPred(void) noexcept(false);
   };
 
-  Card_RoPred* _pCard_RoPred(void* aAddr);
+  Card_AnyPred* _pCard_AnyPred(void* aAddr);
 }
 
 /*============================================================================*/

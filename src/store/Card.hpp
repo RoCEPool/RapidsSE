@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "ePB.h"
 #include "eGC.h"
+#include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eYG.h"
@@ -134,7 +135,7 @@ namespace STORE
   class Card_Send;
   class Card_Size;
   class Card_Sort;
-  class Card_RoPred;
+  class Card_AnyPred;
   class Card_Stage;
   class Card_StmCol;
   class Card_StmColNm;
@@ -315,7 +316,8 @@ namespace STORE
 
     static eYG  eAggrLevelToStageTopology(eAL eLevel);
 
-    static eRO  eEvalRelOp(Stz* szValue);
+    static eRO  eEvalRelnOp(Stz* szValue);
+    static eQO  eEvalSubQryOp(Stz* szValue);
 
     static i8   iGetColOdn(Stz* szValue);
 
@@ -330,6 +332,8 @@ namespace STORE
     static bool bIsRelnOp(Stz* szValue);
 
     static bool bIsResultOrdinal(Stz* szValue);     // #n
+
+    static bool bIsSubQueryOp(Stz* szValue);
 
     static bool bIsSubQueryPattern(Stz* szValue);   // __subqueryN
 
@@ -551,7 +555,7 @@ namespace STORE
     Card_PmzWhere*      pSub_pmzWhere(void);
     Card_Projection*    pSub_projection(void);
     Card_Reason*        pSub_reason(void);
-    Card_RoPred*        pSub_roPred(void);
+    Card_AnyPred*        pSub_roPred(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);

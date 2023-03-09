@@ -21,6 +21,8 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_boardNm(CardIter* pCI);
     bool bIsIndexBounds_v3(Card_Index* p_index);
+    bool bIsRelnOp(void);
+    bool bIsSubQueryOp(void);
     bool bMaybeFilterPred(CardIter* pCI);
     bool bMaybeJoinPred(void);
     Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);

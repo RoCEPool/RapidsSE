@@ -30,7 +30,6 @@ namespace STORE
     void vPushPred(Card_PRED* p_pred_toBeAdded);
     void vRemovePred(Card_PRED* p_pred);
     Card_PRED* pRootPred(void);
-    void vSubstitute_Parameters(Card_Correlation* p_paramList);
     bool bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked);
     bool bYank_PRED(char cWithMark, Card* p_test, Card_PRED*& p_pred_yanked);
 

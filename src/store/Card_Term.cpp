@@ -187,7 +187,7 @@ ePB Card_Term::eEvalBound(void)
     case RO_GREATER_THAN:  return PB_LBOUND;
 
     default:
-      vTrace("%s(%lld): unexpected eEvalRelOp %lld %s\n"_Stz
+      vTrace("%s(%lld): unexpected eEvalRelnOp %lld %s\n"_Stz
           ,__func__
           ,(i8)__LINE__
           ,(i8)eRelOp
@@ -206,7 +206,7 @@ eRO Card_Term::eEvalRelOp(void)
 
   Stz* szValue = this->szValue();
 
-  eRO eRelOp = Card::eEvalRelOp(szValue);
+  eRO eRelOp = Card::eEvalRelnOp(szValue);
 
   return eRelOp;
 }

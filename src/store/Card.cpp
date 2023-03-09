@@ -271,7 +271,7 @@ eYG Card::eAggrLevelToStageTopology(eAL eLevel)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Card::eEvalRelOp(Stz* szValue)
+eRO Card::eEvalRelnOp(Stz* szValue)
 {
   _static_
 
@@ -285,6 +285,22 @@ eRO Card::eEvalRelOp(Stz* szValue)
 
   else return RO_NONE;
 }
+
+/*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO Card::eEvalSubQryOp(Stz* szValue)
+{
+  _static_
+
+       if (szValue->bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (szValue->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (szValue->bSame("in"_Stz))        return QO_IN_OP;
+  else if (szValue->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+
+  else return QO_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
@@ -381,7 +397,7 @@ bool Card::bIsRelnOp(Stz* szValue)
 {
   _static_
 
-  if (RO_NONE != Card::eEvalRelOp(szValue))
+  if (RO_NONE != Card::eEvalRelnOp(szValue))
     return true;
 
   return false;
@@ -401,6 +417,21 @@ bool Card::bIsResultOrdinal(Stz* szValue)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a sub-query operator?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSubQueryOp(Stz* szValue)
+{
+  _static_
+
+       if (szValue->bSame("exists"_Stz))    return true;
+  else if (szValue->bSame("notExists"_Stz)) return true;
+  else if (szValue->bSame("in"_Stz))        return true;
+  else if (szValue->bSame("notIn"_Stz))     return true;
+
+  else return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1363,7 +1394,7 @@ bool Card::bIsPRED(void)
     case CK_BOLPRED:
     case CK_CMPPRED:
     case CK_ORPRED :
-    case CK_ROPRED:
+    case CK_ANYPRED:
       return true;
     default:
       return false;
@@ -3363,13 +3394,13 @@ Card_Reason* Card::pSub_reason(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_RoPred.hpp"
-Card_RoPred* Card::pSub_roPred(void)
+#include "Card_AnyPred.hpp"
+Card_AnyPred* Card::pSub_roPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_RoPred* p_roPred =
-      _pCard_RoPred(pFindSubCard(CK_ROPRED));
+  Card_AnyPred* p_roPred =
+      _pCard_AnyPred(pFindSubCard(CK_ANYPRED));
   return p_roPred;
 }
 

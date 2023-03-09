@@ -1804,7 +1804,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TERM:             return G.p_term;
     case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
-    case CK_ROPRED:           return G.p_roPred;
+    case CK_ANYPRED:           return G.p_roPred;
     case CK_TWIST:            return G.p_twist;
     case CK_TYPE:             return G.p_type;
     case CK_UBOUND:           return G.p_uBound;
@@ -2199,7 +2199,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOP:              return "G.p_top"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_ROPRED:           return "G.p_roPred"_Stz;
+    case CK_ANYPRED:           return "G.p_roPred"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UBOUND:           return "G.p_uBound"_Stz;
@@ -3431,7 +3431,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOP:              *((Card**)&G.p_top)              = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_ROPRED:           *((Card**)&G.p_roPred)           = pCard; break;
+    case CK_ANYPRED:           *((Card**)&G.p_roPred)           = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
