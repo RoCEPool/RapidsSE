@@ -232,6 +232,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   }
   else
   if (CK_ANYPRED == eCard_pred) {
+    RASSERT(p_pred->bIsRelnOp());
     if (cWithMark == p_pred->cMark1()) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -241,6 +242,9 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   }
   else
   if (CK_BOLPRED == eCard_pred) {
+    RASSERT(p_pred->bIsBoolFn() ||
+                p_pred->bIsRelnOp() ||
+                p_pred->bIsSubQueryOp());
     if (cWithMark == p_pred->cMark1()) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -318,6 +322,9 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
     }
 
     if (p_card->bIsCard(CK_BOLPRED)) {
+      RASSERT(((Card_PRED *)p_card)->bIsBoolFn() ||
+              ((Card_PRED *)p_card)->bIsRelnOp() ||
+              ((Card_PRED *)p_card)->bIsSubQueryOp());
       p_card->vMark1('b');
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
@@ -349,8 +356,10 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       continue;
     }
 
-    if (p_card->bIsCard(CK_ANYPRED))
+    if (p_card->bIsCard(CK_ANYPRED)) {
+      RASSERT(((Card_PRED *)p_card)->bIsRelnOp());
       continue;
+    }
 
     if (p_card->bIsCard(CK_TERM))
       continue;
