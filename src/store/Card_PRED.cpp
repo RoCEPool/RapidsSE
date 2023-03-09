@@ -237,6 +237,30 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a ootential join predicate?                                        */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsJoinPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! bIsValue("=="_Stz))
+    return false;
+
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  Card_Term* p_term_1 = pGetTerm(1);
+
+  if ( (p_term_0->bIsStmColOdn() || p_term_0->bIsTblColOdn()) &&
+       (p_term_1->bIsStmColOdn() || p_term_1->bIsTblColOdn()))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this predicate a relational operator?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_PRED::bIsRelnOp(void)
@@ -274,6 +298,8 @@ bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
 
   if (bContains_callToSubQuery(pCI))
     return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

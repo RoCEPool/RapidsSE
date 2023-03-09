@@ -265,7 +265,7 @@ bool Card_Term::bIsFoldExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a stream-column?                                              */
+/* is this term a stream-column? $n                                           */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsStmColOdn(void)
 {
@@ -277,7 +277,7 @@ bool Card_Term::bIsStmColOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a table-column?                                               */
+/* is this term a table-column? $n.c                                          */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsTblColOdn(void)
 {

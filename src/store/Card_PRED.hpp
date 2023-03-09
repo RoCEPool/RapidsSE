@@ -22,6 +22,7 @@ namespace STORE
     Card_Term* pGetTerm_boardNm(CardIter* pCI);
     bool bIsBoolFn(void);
     bool bIsIndexBounds_v3(Card_Index* p_index);
+    bool bIsJoinPred(void);
     bool bIsRelnOp(void);
     bool bIsSubQueryOp(void);
     bool bMaybeFilterPred(CardIter* pCI);
