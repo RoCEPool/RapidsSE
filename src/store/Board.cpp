@@ -660,7 +660,7 @@ void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI, Stz
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and mark call to the subquery referenced in pCI->G.p_boolCalc         */
+/* find and mark possible call to subquery referenced in pCI->G.p_boolCalc    */
 /*----------------------------------------------------------------------------*/
 bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 {
@@ -677,9 +677,6 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (! (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_ANYPRED)))
-      return C_CONTINUE_RECURSION;
-
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
     if (! (pCI->m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
@@ -690,6 +687,9 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     bFoundCall = true;
 
     if (p_pred->bIsValue("exists"_Stz) || p_pred->bIsValue("notExists"_Stz)) {
+
+      RASSERT(p_pred->bIsSubQueryOp());
+
       pCI->m_pTerm_0 = p_pred->pGetTerm(0);
       pCI->m_sSqyArg = pCI->m_pTerm_0->szValue();
       pCI->m_pTerm_1 = p_pred->pGetTerm(1);
@@ -698,13 +698,13 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     }
 
     if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
+      RASSERT(p_pred->bIsSubQueryOp());
       pCI->m_pTerm_2 = _pCard_Term(p_pred->pGet(2));
       pCI->m_sSqyArg = pCI->m_pTerm_2->szValue();
       return C_TERMINATE_RECURSION;
     }
-//    else
-//    if (p_pred->bIsCard(CK_ANYPRED)) {
-//    }
+
+    RASSERT(p_pred->bIsRelnOp());
 
     return C_TERMINATE_RECURSION;
   };
@@ -715,8 +715,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   if (bFoundCall)
     return true;
-
-  return bFoundCall;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

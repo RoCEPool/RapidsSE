@@ -223,6 +223,20 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this predicate a relational operator?                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsRelnOp(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card::bIsRelnOp(szValue()))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is this predicate a subquery operator?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_PRED::bIsSubQueryOp(void)

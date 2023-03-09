@@ -29,12 +29,7 @@ namespace STORE
 
     static Card_Where* pNewWhereConstruct(void);
 
-    void vBump_Rightwards(i8 nBumpBy);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vSmooth(CardIter* pCI,
-                 bool bMorph_bolPred_To_cmpPred,
-                 bool bReplace_sqCall_With_result,
-                 i8 nBumpBy);
+     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
   };
 
