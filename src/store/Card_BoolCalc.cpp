@@ -61,11 +61,6 @@ Card_BolPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(CardIter* pCI)
 
   auto bLambdaFn = [&pBolPred,pCI](Card_PRED* p_pred, bool bUpwards)
   {
-    p_pred->vDump();
-
-    if (! p_pred->bIsCard(CK_BOLPRED))
-      return C_CONTINUE_RECURSION;
-
     if (p_pred->bContains_callToSubQuery(pCI)) {
       pBolPred = _pCard_BolPred(p_pred);
       return C_TERMINATE_RECURSION;
@@ -76,7 +71,7 @@ Card_BolPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
+  Card_PRED* p_pred_ROOT = this->pRootPred();
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 
@@ -90,7 +85,7 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
+  Card_PRED* p_pred_ROOT = this->pRootPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -126,7 +121,7 @@ void Card_BoolCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(this->pGetChild(0));
+  Card_PRED* p_pred_ROOT = this->pRootPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -188,7 +183,7 @@ void Card_BoolCalc::vCullPred(char cWithMark)
   if (! this->nChildCards())
     return;
 
-  Card_PRED* pCard_pred = static_cast<Card_PRED*>(this->pGetChild(0));
+  Card_PRED* pCard_pred = this->pRootPred();
 
   while (pCard_pred &&
       bCullPred(pCard_pred, cWithMark) &&
