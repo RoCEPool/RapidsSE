@@ -4,26 +4,6 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-explain stage transliterate select n_name from nation where n_nationkey = 5;
-
-/ccode pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0559
-  stage stageMarker0559 on all partitions :
-    scan rapidsse public Nation
-    | filter " type BOOLEAN  $1 5  ==  "
-    | project " type VARCHAR as n_name $2 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-/*
 explain stage transliterate select sum(n_nationkey) from nation where n_nationkey = 5;
 
 /ccode pipeline unamed
@@ -51,5 +31,3 @@ explain stage transliterate select sum(n_nationkey) from nation where n_nationke
      | sink
      | stageStart
  end ;
-
-*/

@@ -1,0 +1,10 @@
+/*============================================================================*/
+/* __CS2: Code Synthesizer V2                                                 */
+/*============================================================================*/
+_nation
+_region
+/time load nation   "<tpch_dir>/nation.<suffix>";
+/time load region   "<tpch_dir>/region.<suffix>";
+
+/transliterated /weaved select * from nation, region where n_regionkey = r_regionkey;
+

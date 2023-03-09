@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* __CS2: Code Synthesizer V2                                                 */
+/*============================================================================*/
+_nation
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+explain stage transliterate select sum(n_nationKey) from nation group by n_regionKey;
+
+/ccode pipeline unamed
+begin
+ stage stageStart on origin :
+   start
+   | pulse once
+   | stageMarker0792
+ stage stageMarker0792 on all partitions :
+   scan rapidsse public Nation
+   | aggreg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | combined 0
+   | stageMarker0795
+ stage stageMarker0795 on all nodes :
+   aggreg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | combined 0
+   | stageMarker0801
+ stage stageMarker0801 on origin :
+   aggreg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | combined 0
+   | stageMarker0798
+ stage stageMarker0798 on origin :
+   project " type INTEGER $1 "
+   | combined 0
+   | stageLast
+ stage stageLast on origin :
+   output
+   | sink
+   | stageStart
+end ;
+
