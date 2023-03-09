@@ -868,61 +868,6 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vMove_corrPred_To_mq_table_As_bounds(CardIter* pCI, Card_BoolCalc *p_boolCalc)
-{
-  _static_
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  auto vMove = [pCI](Card_PRED* p_pred, Card_BoolCalc *p_boolCalc,
-                     auto&& vTwiddle /*oddity permits recursive lambda*/)
-  {
-    if (! p_pred->bIsPRED())
-      return; /* this effectively declares twiddle as void */
-
-    if (p_pred->bIsCard(CK_CMPPRED) && p_pred->Y_bHas(P_CorrPred)) {
-
-      Card_CmpPred* p_cmpPred = _pCard_CmpPred(p_pred);
-
-      p_boolCalc->vRemovePred(p_pred);
-
-      // todo: find table 'd'->'a' and add p_pred as bounds
-
-      Card_Table* p_table = Card_Table::pResolve_table_By_tblSyn(pCI, 'a',pCI->G.i_MainCard);
-
-      Card_Bounds* pBounds = Card_Bounds::pBounds_CreateFrom_cmpPred(p_cmpPred,'a');
-
-      //p_table->vAppend(pBounds);
-      Card_IndexList* p_indexList = p_table->pSub_indexList();
-      Card_Index* p_index = p_table->pSub_index();
-      p_index->vAppend(pBounds);
-
-      DELETE_CARD(p_pred);
-      return;
-
-    }
-
-    CardIter xCI(p_pred);
-    while (Card* p_child = xCI.pEachChild()) {
-      if (p_child->bIsPRED()) {
-        vTwiddle(static_cast<Card_PRED *>(p_child), p_boolCalc, vTwiddle);
-        continue;
-      }
-    }
-
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
-
-  vMove(p_PRED, p_boolCalc, vMove);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _static_
