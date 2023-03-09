@@ -225,18 +225,18 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
     }
     return false;
   }
+//  else
+//  if (CK_ANYPRED == eCard_pred) {
+//    RASSERT(p_pred->bIsRelnOp());
+//    if (cWithMark == p_pred->cMark1()) {
+//      this->vRemovePred(p_pred);
+//      delete p_pred;
+//      return true;
+//    }
+//    return false;
+//  }
   else
-  if (CK_ANYPRED == eCard_pred) {
-    RASSERT(p_pred->bIsRelnOp());
-    if (cWithMark == p_pred->cMark1()) {
-      this->vRemovePred(p_pred);
-      delete p_pred;
-      return true;
-    }
-    return false;
-  }
-  else
-  if (CK_BOLPRED == eCard_pred) {
+  if (CK_ANYPRED == eCard_pred || CK_BOLPRED == eCard_pred) {
     RASSERT(p_pred->bIsBoolFn() ||
                 p_pred->bIsRelnOp() ||
                 p_pred->bIsSubQueryOp());
@@ -321,8 +321,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 //      continue;
 //    }
 
-    if (p_card->bIsCard(CK_ANYPRED) ||
-        p_card->bIsCard(CK_BOLPRED)) {
+    if (p_card->bIsCard(CK_ANYPRED) || p_card->bIsCard(CK_BOLPRED)) {
       RASSERT(((Card_PRED *)p_card)->bIsBoolFn() ||
               ((Card_PRED *)p_card)->bIsRelnOp() ||
               ((Card_PRED *)p_card)->bIsSubQueryOp());

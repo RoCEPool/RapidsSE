@@ -1015,20 +1015,6 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
       }
       return;
     }
-//    else
-//    if (p_pred->bIsCard(CK_BOLPRED)) {
-//      RASSERT(p_pred->bIsBoolFn() ||
-//              //p_pred->bIsRelnOp() ||
-//              p_pred->bIsSubQueryOp());
-//      CardIter xCI(p_pred);
-//      while (Card* p_child = xCI.pEachChild()) {
-//        if (p_child->bIsPRED()) {
-//          vResolve(static_cast<Card_PRED *>(p_child), vResolve);
-//          continue;
-//        }
-//      }
-//      return;
-//    }
     else
     if (p_pred->bIsCard(CK_ANYPRED) || p_pred->bIsCard(CK_BOLPRED)) {
 
@@ -1253,8 +1239,21 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_BOLPRED)) {
+    if (p_pred->bIsCard(CK_ANYPRED) || p_pred->bIsCard(CK_BOLPRED)) {
       Stz* szValue_pred = p_pred->szValue();
+
+      if (p_pred->bIsRelnOp()) {
+
+        eRO eRelnOp = RelOp::eDecode(szValue_pred);
+        RASSERT(RO_NONE != eRelnOp);
+
+        pSubQuery->vCaller(pCI->G.i_Board);
+        pSubQuery->vClause(QC_WHERE_CLAUSE);
+        pSubQuery->vCallOp(QO_RELN_OP);
+        pSubQuery->vRelnOp(eRelnOp);
+        return C_CONTINUE_RECURSION;
+      }
+
       RASSERT(Card::bIsBoolFn(szValue_pred) || Card::bIsSubQueryOp(szValue_pred));
 
       eQO eSubQryOp = Card::eEvalSubQryOp(szValue_pred);
@@ -1268,19 +1267,6 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_ANYPRED)) {
-      RASSERT(p_pred->bIsRelnOp());
-      Stz *szValue_pred = p_pred->szValue();
-
-      eRO eRelnOp = RelOp::eDecode(szValue_pred);
-      RASSERT(RO_NONE != eRelnOp);
-
-      pSubQuery->vCaller(pCI->G.i_Board);
-      pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCallOp(QO_RELN_OP);
-      pSubQuery->vRelnOp(eRelnOp);
-      return C_CONTINUE_RECURSION;
-    }
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
