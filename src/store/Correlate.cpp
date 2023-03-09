@@ -151,7 +151,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
     if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, pCI->G.p_PRED))
       break;
-  RASSERT(pCI->G.p_PRED->Y_bHas(P_CorrPred));
+  RASSERT(pCI->G.p_PRED->Y_bHas(P_SqCorrPred));
   pCI->vPrintBoard(__LINE__);
 
   // tidy up empty SQ:<table>/<filter>
@@ -187,7 +187,8 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(pCI, pCI->G.p_boolCalc);
+  Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_a(pCI, pCI->G.p_boolCalc);
+  Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_b(pCI, pCI->G.p_boolCalc);
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

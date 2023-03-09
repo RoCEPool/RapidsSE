@@ -744,7 +744,7 @@ bool Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
     pCI->m_pTerm_corrCol = pTerm_corrCol;
 
     p_pred->vMark1(MARK_AT);
-    p_pred->Y_vSet(P_CorrPred);
+    p_pred->Y_vSet(P_SqCorrPred);
     return C_TERMINATE_RECURSION;
   };
 
@@ -888,7 +888,7 @@ void Board::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc *p_boolC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_a(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _static_
 
@@ -905,7 +905,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
 
       RASSERT(p_pred->bIsValue("=="_Stz));
 
-      if (! p_pred->Y_bHas(P_CorrPred))
+      if (! p_pred->Y_bHas(P_OqCorrTest))
         return;
 
       CardIter xCI(p_pred);
@@ -948,10 +948,60 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
     }
     else
     if (p_pred->bIsCard(CK_BOLPRED)) {
+      return;
+    }
+    else
+    if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
+      CardIter xCI(p_pred);
+      while (Card_PRED* p_PRED_child = static_cast<Card_PRED*>(xCI.pEachChild())) {
+        RASSERT(p_PRED_child->bIsPRED());
+        vResolve(p_PRED_child, vResolve);
+      }
+    }
+    else {
+      NEVER_REACH;
+    }
+
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  vResolve(p_PRED, vResolve);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_b(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+{
+  _static_
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
+                                    auto&& vResolve /*oddity permits recursive lambda*/)
+  {
+    if (! p_pred->bIsPRED())
+      return; /* this effectively declares resolve as void */
+
+    if (p_pred->bIsCard(CK_CMPPRED)) {
+      return;
+    }
+    else
+    if (p_pred->bIsCard(CK_BOLPRED)) {
+
+      if (! p_pred->bContains_callToSubQuery(pCI))
+        return;
 
       RASSERT(p_pred->bIsBoolFn() ||
               p_pred->bIsRelnOp() ||
               p_pred->bIsSubQueryOp());
+
+      RASSERT(! p_pred->Y_bHas(P_SqCorrPred));
+
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
