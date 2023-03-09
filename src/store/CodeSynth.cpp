@@ -3608,10 +3608,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
     vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
 
-/*
+
 #ifdef WITH_DEBUG_VERSION
 
-  TypedCell* pTypedCell;
+  TypeValueArea* pTypedCell;
+
+
+  vTrace("Expr: \"%s\"; eEK: %s\n"_Stz, sExpr, aEK[eExprKind]);
 
   // dump the TypeStack
   vTrace("--------------------------------------\n"_Stz);
@@ -3694,7 +3697,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 #endif
-*/
+
 
   delete pExprType;
 }
