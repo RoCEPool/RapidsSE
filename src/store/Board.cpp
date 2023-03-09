@@ -972,6 +972,8 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
 
     if (p_pred->bIsCard(CK_CMPPRED)) {
 
+      RASSERT(p_pred->bIsValue("=="_Stz));
+
       if (! p_pred->Y_bHas(P_CorrPred))
         return;
 
@@ -1015,6 +1017,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
     }
     else
     if (p_pred->bIsCard(CK_ANYPRED)) {
+      RASSERT(p_pred->bIsRelnOp());
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
