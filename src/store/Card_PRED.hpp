@@ -20,6 +20,7 @@ namespace STORE
     Card_Term* pGetFirstTerm_tblColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_boardNm(CardIter* pCI);
+    bool bIsBoolFn(void);
     bool bIsIndexBounds_v3(Card_Index* p_index);
     bool bIsRelnOp(void);
     bool bIsSubQueryOp(void);

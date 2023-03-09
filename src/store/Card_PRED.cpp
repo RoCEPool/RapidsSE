@@ -168,6 +168,20 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this predicate a bool fn?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsBoolFn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card::bIsBoolFn(szValue()))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is this predicate a bounds for given index                                 */
 /*----------------------------------------------------------------------------*/
 bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
@@ -234,7 +248,6 @@ bool Card_PRED::bIsRelnOp(void)
 
   return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* is this predicate a subquery operator?                                     */

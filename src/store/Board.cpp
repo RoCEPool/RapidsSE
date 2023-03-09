@@ -1249,6 +1249,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     if (p_pred->bIsCard(CK_BOLPRED)) {
       Stz* szValue_pred = p_pred->szValue();
+      RASSERT(Card::bIsBoolFn(szValue_pred) || Card::bIsSubQueryOp(szValue_pred));
 
       eQO eSubQryOp = Card::eEvalSubQryOp(szValue_pred);
       RASSERT(QO_NONE != eSubQryOp);
@@ -1262,6 +1263,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
     if (p_pred->bIsCard(CK_ANYPRED)) {
+      RASSERT(p_pred->bIsRelnOp());
       Stz *szValue_pred = p_pred->szValue();
 
       eRO eRelnOp = RelOp::eDecode(szValue_pred);
