@@ -1015,9 +1015,26 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
       }
       return;
     }
+//    else
+//    if (p_pred->bIsCard(CK_BOLPRED)) {
+//      RASSERT(p_pred->bIsBoolFn() ||
+//              //p_pred->bIsRelnOp() ||
+//              p_pred->bIsSubQueryOp());
+//      CardIter xCI(p_pred);
+//      while (Card* p_child = xCI.pEachChild()) {
+//        if (p_child->bIsPRED()) {
+//          vResolve(static_cast<Card_PRED *>(p_child), vResolve);
+//          continue;
+//        }
+//      }
+//      return;
+//    }
     else
-    if (p_pred->bIsCard(CK_ANYPRED)) {
-      RASSERT(p_pred->bIsRelnOp());
+    if (p_pred->bIsCard(CK_ANYPRED) || p_pred->bIsCard(CK_BOLPRED)) {
+
+      RASSERT(p_pred->bIsBoolFn() ||
+              p_pred->bIsRelnOp() ||
+              p_pred->bIsSubQueryOp());
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
@@ -1038,20 +1055,6 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
 
           p_pred->vRemoveChild(p_child);
           DELETE_CARD(p_child);
-        }
-      }
-      return;
-    }
-    else
-    if (p_pred->bIsCard(CK_BOLPRED)) {
-      RASSERT(p_pred->bIsBoolFn() ||
-              p_pred->bIsRelnOp() ||
-              p_pred->bIsSubQueryOp());
-      CardIter xCI(p_pred);
-      while (Card* p_child = xCI.pEachChild()) {
-        if (p_child->bIsPRED()) {
-          vResolve(static_cast<Card_PRED *>(p_child), vResolve);
-          continue;
         }
       }
       return;
