@@ -908,30 +908,6 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   L_RETURN:
 
-//#ifdef WITH_DEBUG_VERSION
-//  // dump the PreExp stack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("PREEXPSTACK:\n"_Stz);
-//  i8 nExpr = pPreExpStack->nItems() - 1;
-//
-//  while ( nExpr >= 0) {
-//    i8 iValue = pPreExpStack->iPeek(nExpr--);
-//    vTrace("%s\n"_Stz, aPE[iValue]);
-//  }
-//
-//  // dump the streamDefOut
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("STREAMDEFOUT:\n"_Stz);
-//  pStreamDefOut->vPrint();
-//
-//  // dump the indexDef
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("INDEXDEF:\n"_Stz);
-//  if (pIndexDef) {
-//    pIndexDef->vPrint();
-//  }
-//#endif
-
   delete pColumnExpr;
   delete pTknVec;
 
