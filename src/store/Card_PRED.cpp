@@ -180,6 +180,29 @@ bool Card_PRED::bIsBoolFn(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this a correlation predicate? (a predicate in a sub-query)              */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsCorrPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! bIsValue("=="_Stz))
+    return false;
+
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  Card_Term* p_term_1 = pGetTerm(1);
+
+  if ((p_term_0->bIsCorPrmOdn() && (p_term_1->bIsStmColOdn() || p_term_1->bIsTblColOdn())) ||
+      (p_term_1->bIsCorPrmOdn() && (p_term_0->bIsStmColOdn() || p_term_0->bIsTblColOdn())))
+    return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this predicate a bounds for given index                                 */

@@ -265,6 +265,18 @@ bool Card_Term::bIsFoldExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this term a parameter ordinal? %n                                       */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsCorPrmOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = Card::bIsCorrParamOrdinal(this->szValue());
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a stream-column? $n                                           */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsStmColOdn(void)

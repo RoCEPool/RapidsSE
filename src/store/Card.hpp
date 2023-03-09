@@ -324,9 +324,9 @@ namespace STORE
 
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In
 
-    static bool bIsKeyOrdinal(Stz* szValue);       // #n
+    static bool bIsKeyOrdinal(Stz* szValue);       // #Kn
 
-    static bool bIsParamOrdinal(Stz* szValue);     // $Pn
+    static bool bIsCorrParamOrdinal(Stz* szValue);     // %n
 
     static bool bIsRelnOp(Stz* szValue);
 

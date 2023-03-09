@@ -374,9 +374,9 @@ bool Card::bIsKeyOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a parameter ordinal?  (i.e. $Pn)                                  */
+/* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsParamOrdinal(Stz* szValue)
+bool Card::bIsCorrParamOrdinal(Stz* szValue)
 {
   _static_
 

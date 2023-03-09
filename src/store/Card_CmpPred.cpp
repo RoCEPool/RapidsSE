@@ -159,22 +159,24 @@ bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_cmpPred_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CmpPred::pExtractArgTerm(void)
+Card_Term* Card_CmpPred::pGetCorrCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nChildren = this->nChildCards();
-  if (2 != nChildren)
-    return nullptr;
+//  i8 nChildren = this->nChildCards();
+//  if (2 != nChildren)
+//    return nullptr;
+
+  RASSERT(bIsCorrPred());
 
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (Card::bIsParamOrdinal(p_child_0->szValue()))
+  if (Card::bIsCorrParamOrdinal(p_child_0->szValue()))
     return _pCard_Term(p_child_1);
 
   else
-  if (Card::bIsParamOrdinal(p_child_1->szValue()))
+  if (Card::bIsCorrParamOrdinal(p_child_1->szValue()))
     return _pCard_Term(p_child_0);
 
   else
@@ -194,11 +196,11 @@ Card_Term* Card_CmpPred::pExtractParamTerm(void)
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (Card::bIsParamOrdinal(p_child_0->szValue()))
+  if (Card::bIsCorrParamOrdinal(p_child_0->szValue()))
     return _pCard_Term(p_child_0);
 
   else
-  if (Card::bIsParamOrdinal(p_child_1->szValue()))
+  if (Card::bIsCorrParamOrdinal(p_child_1->szValue()))
     return _pCard_Term(p_child_1);
 
   else

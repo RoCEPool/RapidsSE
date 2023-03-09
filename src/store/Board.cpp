@@ -734,32 +734,18 @@ bool Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (! p_pred->bIsCard(CK_CMPPRED))
+    if (! p_pred->bIsCorrPred())
       return C_CONTINUE_RECURSION;
 
-//    CardIter xCI(p_pred);
-//    while ((pCI->G.p_term = _pCard_Term(xCI.pEachChild()))) {
-//
-//      // TODO: hack... %1 $n may not be in this order
-//      if (Card::bIsParamOrdinal(pCI->G.p_term->szValue())) {
-//        bIsCorrPred = true;
-//        m_pTerm_corrCol = _pCard_Term(xCI.pPrevChild());
-//        break;
-//      }
-//    }
+    p_pred->vDump();
+    bIsCorrPred = true;
 
-    if (Card_Term* pTerm_corrCol = static_cast<Card_CmpPred*>(p_pred)->pExtractArgTerm()) {
-      pCI->m_pTerm_corrCol = pTerm_corrCol;
-      bIsCorrPred = true;
-    }
+    Card_Term* pTerm_corrCol = static_cast<Card_CmpPred *>(p_pred)->pGetCorrCol();
+    pCI->m_pTerm_corrCol = pTerm_corrCol;
 
-    if (bIsCorrPred) {
-      p_pred->vMark1(MARK_AT);
-      p_pred->Y_vSet(P_CorrPred);
-      return C_TERMINATE_RECURSION;
-    }
-
-    return C_CONTINUE_RECURSION;
+    p_pred->vMark1(MARK_AT);
+    p_pred->Y_vSet(P_CorrPred);
+    return C_TERMINATE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -985,7 +971,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
         }
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (Card::bIsParamOrdinal(p_child->szValue())) {
+        if (Card::bIsCorrParamOrdinal(p_child->szValue())) {
           //R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
           p_child->vValue("$1"_Stz);  // TODO: hack!!
         }

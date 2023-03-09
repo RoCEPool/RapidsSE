@@ -24,7 +24,7 @@ namespace STORE
     Card_CmpPred* pCmpPredFindBound(Index* pIndex, ePB eBound);
     bool bCmpPredHasBounds(Index* pIndex);
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
-    Card_Term* pExtractArgTerm(void);
+    Card_Term* pGetCorrCol(void);
     Card_Term* pExtractParamTerm(void);
     char cGetTable_a(void);
     char cGetTable_b(void);

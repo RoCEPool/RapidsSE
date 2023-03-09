@@ -536,7 +536,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   Stz* szTerm = p_term->sz();
 
   // parameters are considered within scope
-  if (Card::bIsParamOrdinal(szTerm))
+  if (Card::bIsCorrParamOrdinal(szTerm))
     return true;
 
   // literals are considered within scope

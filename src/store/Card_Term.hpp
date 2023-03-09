@@ -30,6 +30,7 @@ namespace STORE
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
     bool bIsFoldExpr(void);
+    bool bIsCorPrmOdn(void); // $n
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);
