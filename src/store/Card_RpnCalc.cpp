@@ -316,12 +316,17 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         p_cmpPred = new Card_CmpPred;
         p_cmpPred->vValue(p_term_next->sz());
         p_cmpPred->vTransferChildren(p_TermSeries);
-        p_cmpPred->vDump();
-        if (p_cmpPred->bContains_callToSubQuery(pCI))
+        RASSERT(p_cmpPred->bIsRelnOp())
+        //p_cmpPred->vDump();
+        if (p_cmpPred->bContains_callToSubQuery(pCI)) {
           p_cmpPred->vCard(CK_ANYPRED);
+          RASSERT(p_cmpPred->bIsRelnOp())
+        }
         else
-        if (! p_cmpPred->bIsValue("=="_Stz)) // todo: more work
+        if (! p_cmpPred->bIsValue("=="_Stz)) { // todo: more work
           p_cmpPred->vCard(CK_BOLPRED);
+          RASSERT(p_cmpPred->bIsRelnOp())
+        }
         //p_boolCalc->vPush(p_cmpPred);
         p_boolCalc->vAppend(p_cmpPred);
         p_cmpPred = nullptr;
@@ -336,6 +341,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         p_bolPred = new Card_BolPred;
         p_bolPred->vValue(p_term_next->sz());
         p_bolPred->vTransferChildren(p_TermSeries);
+        RASSERT(p_bolPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_bolPred);
         p_bolPred = nullptr;
         DELETE_CARD(p_term_next);
@@ -349,6 +355,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           p_bolPred->vValue(p_term_next->sz());
           p_bolPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_bolPred);
+          RASSERT(p_bolPred->bIsSubQueryOp())
           p_bolPred = nullptr;
           DELETE_CARD(p_term_next);
           //p_boolCalc->vDump(0,"BOOLFN/IN"_Stz);
@@ -357,6 +364,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           p_bolPred = new Card_BolPred;
           p_bolPred->vValue("in"_Stz);
           p_bolPred->vTransferChildren(p_TermSeries);
+          RASSERT(p_bolPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_bolPred);
           p_bolPred = nullptr;
           DELETE_CARD(p_term_next);
@@ -370,6 +378,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           p_bolPred = new Card_BolPred;
           p_bolPred->vValue("in"_Stz);
           p_bolPred->vTransferChildren(p_TermSeries);
+          RASSERT(p_bolPred->bIsBoolFn())
           p_boolCalc->vAppend(p_bolPred);
           p_bolPred = nullptr;
           DELETE_CARD(p_term_next);
@@ -386,6 +395,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           p_bolPred = new Card_BolPred;
           p_bolPred->vValue(p_term_next->sz());
           p_bolPred->vTransferChildren(p_TermSeries);
+          RASSERT(p_bolPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_bolPred);
           p_bolPred = nullptr;
           DELETE_CARD(p_term_next);
@@ -397,6 +407,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         p_bolPred = new Card_BolPred;
         p_bolPred->vValue(p_term_next->sz());
         p_bolPred->vTransferChildren(p_TermSeries);
+        RASSERT(p_bolPred->bIsBoolFn())
         p_boolCalc->vAppend(p_bolPred);
         p_bolPred = nullptr;
         DELETE_CARD(p_term_next);
@@ -407,7 +418,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <termSeries>
 
       case TE_EXECUTE:
-      DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_next);
         break;
 
       case TE_OTHER:
