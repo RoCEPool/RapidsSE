@@ -1044,6 +1044,9 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
     }
     else
     if (p_pred->bIsCard(CK_BOLPRED)) {
+      RASSERT(p_pred->bIsBoolFn() ||
+              p_pred->bIsRelnOp() ||
+              p_pred->bIsSubQueryOp());
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
         if (p_child->bIsPRED()) {
