@@ -11,7 +11,6 @@
 #include "Card_AndPred.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_AnyPred.hpp"
 #include "Card_NotPred.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -243,7 +242,6 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
   Card_CmpPred* p_cmpPred = nullptr;
   Card_NotPred* p_notPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
-  Card_AnyPred*  p_roPred  = nullptr;
 
   Card*  p_childA  = nullptr;
   Card*  p_childB  = nullptr;
@@ -319,7 +317,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
         if (p_cmpPred->bContains_callToSubQuery(pCI)) {
-          p_cmpPred->vCard(CK_ANYPRED);
+          p_cmpPred->vCard(CK_BOLPRED);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         else

@@ -1394,7 +1394,6 @@ bool Card::bIsPRED(void)
     case CK_BOLPRED:
     case CK_CMPPRED:
     case CK_ORPRED :
-    case CK_ANYPRED:
       return true;
     default:
       return false;
@@ -3389,19 +3388,6 @@ Card_Reason* Card::pSub_reason(void)
   Card_Reason* p_reason =
       _pCard_Reason(pFindSubCard(CK_REASON));
   return p_reason;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_AnyPred.hpp"
-Card_AnyPred* Card::pSub_roPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_AnyPred* p_roPred =
-      _pCard_AnyPred(pFindSubCard(CK_ANYPRED));
-  return p_roPred;
 }
 
 /*----------------------------------------------------------------------------*/

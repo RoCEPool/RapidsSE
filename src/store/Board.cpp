@@ -1016,7 +1016,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred(CardIter* pCI, Car
       return;
     }
     else
-    if (p_pred->bIsCard(CK_ANYPRED) || p_pred->bIsCard(CK_BOLPRED)) {
+    if (p_pred->bIsCard(CK_BOLPRED)) {
 
       RASSERT(p_pred->bIsBoolFn() ||
               p_pred->bIsRelnOp() ||
@@ -1239,7 +1239,7 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_ANYPRED) || p_pred->bIsCard(CK_BOLPRED)) {
+    if (p_pred->bIsCard(CK_BOLPRED)) {
       Stz* szValue_pred = p_pred->szValue();
 
       if (p_pred->bIsRelnOp()) {

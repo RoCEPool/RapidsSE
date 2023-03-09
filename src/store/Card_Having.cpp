@@ -114,23 +114,23 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   auto bLambdaFn_ro = [pCI,bBump](Card *pCard)
   {
-    pCI->G.p_roPred = _pCard_AnyPred(pCard);
-    RASSERT(pCI->G.p_roPred->bIsRelnOp());
+//    pCI->G.p_bolPred = _pCard_BolPred(pCard);
+//    RASSERT(pCI->G.p_bolPred->bIsRelnOp() );
 
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
-    pCI->m_pTerm_1 = _pCard_Term(pCI->G.p_roPred->pGet(1));
-    pCI->G.p_roPred->vRemoveChild(pCI->m_pTerm_1);
+    pCI->m_pTerm_1 = _pCard_Term(pCard->pGet(1));
+    pCard->vRemoveChild(pCI->m_pTerm_1);
     DELETE_CARD(pCI->m_pTerm_1);
-    pCI->G_vAppendNewChild(pCI->G.p_roPred, CK_TERM, "$1"_Stz);
+    pCI->G_vAppendNewChild(pCard, CK_TERM, "$1"_Stz);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_ANYPRED, bLambdaFn_ro);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_BOLPRED, bLambdaFn_ro);
 }
 
 /*============================================================================*/
