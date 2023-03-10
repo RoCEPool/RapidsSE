@@ -256,14 +256,6 @@ namespace STORE
                                   Card_Next* p_next_prior,
                                   Card* p_main_curr);
 
-    // vSeries_26_SubQuery_Analysis
-    static void vOuter_Query_Analysis_Of_from_call(CardIter* pCI);
-    static void vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI);
-    static void vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI);
-
-
-
-
     // vSeries_A0_Make_Weavable
     static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
     static void vIndividuate_crossJoin_filter(CardIter* pCI);
