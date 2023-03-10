@@ -524,7 +524,7 @@ namespace STORE
     Card_JoinHead*      pSub_joinHead(void);
     Card_JoinNext*      pSub_joinNext(void);
     Card_JoinPermAll*   pSub_joinPermAll(void);
-    Card_JoinPermSeq*  pSub_joinPermList(void);
+    Card_JoinPermSeq*   pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);

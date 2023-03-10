@@ -1149,21 +1149,17 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
 {
   _static_
 
-  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
-
-
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
-
+  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards)
+  {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (p_pred->bIsCard(CK_TERM)) {
+    if (p_pred->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
-    }
 
     Stz* szValue_term = p_pred->szValue();
     eRO eRelnOp = RelOp::eDecode(szValue_term);
@@ -1175,9 +1171,10 @@ void Board::vOuter_Query_Analysis_Of_having_boolCalc(CardIter* pCI)
     if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
+    p_pred->Y_vSet(P_SubQryCall);
+
     Board* pSubBoard = pCI->m_pBench->pGetBoard(szSubBoardNm);
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
-
 
     pSubQuery->vCaller(pCI->G.i_Board);
     pSubQuery->vClause(QC_HAVING_CLAUSE);
@@ -1203,14 +1200,13 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards) {
-
+  auto bLambdaFn = [pCI](Card_PRED *p_pred, bool bUpwards)
+  {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (p_pred->bIsCard(CK_TERM)) {
+    if (p_pred->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
-    }
 
     Stz *szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
     if (! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
@@ -1222,37 +1218,32 @@ void Board::vOuter_Query_Analysis_Of_where_boolCalc(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (p_pred->bIsCard(CK_BOLPRED)) {
-      Stz* szValue_pred = p_pred->szValue();
+    RASSERT(p_pred->bIsCard(CK_BOLPRED));
 
-      if (p_pred->bIsRelnOp()) {
+    p_pred->Y_vSet(P_SubQryCall);
 
-        eRO eRelnOp = RelOp::eDecode(szValue_pred);
-        RASSERT(RO_NONE != eRelnOp);
+    Stz* szValue_pred = p_pred->szValue();
 
-        pSubQuery->vCaller(pCI->G.i_Board);
-        pSubQuery->vClause(QC_WHERE_CLAUSE);
-        pSubQuery->vCallOp(QO_RELN_OP);
-        pSubQuery->vRelnOp(eRelnOp);
-        return C_CONTINUE_RECURSION;
-      }
+    if (p_pred->bIsRelnOp()) {
 
-      RASSERT(Card::bIsBoolFn(szValue_pred) || Card::bIsSubQueryOp(szValue_pred));
-
-      eQO eSubQryOp = Card::eEvalSubQryOp(szValue_pred);
-      RASSERT(QO_NONE != eSubQryOp);
+      eRO eRelnOp = RelOp::eDecode(szValue_pred);
+      RASSERT(RO_NONE != eRelnOp);
 
       pSubQuery->vCaller(pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
-      pSubQuery->vCallOp(eSubQryOp);
+      pSubQuery->vCallOp(QO_RELN_OP);
+      pSubQuery->vRelnOp(eRelnOp);
       return C_CONTINUE_RECURSION;
     }
 
-    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
+    RASSERT(Card::bIsSubQueryOp(szValue_pred));
 
+    eQO eSubQryOp = Card::eEvalSubQryOp(szValue_pred);
+    RASSERT(QO_NONE != eSubQryOp);
 
-    //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
-
+    pSubQuery->vCaller(pCI->G.i_Board);
+    pSubQuery->vClause(QC_WHERE_CLAUSE);
+    pSubQuery->vCallOp(eSubQryOp);
     return C_CONTINUE_RECURSION;
   };
 
