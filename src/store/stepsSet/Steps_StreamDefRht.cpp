@@ -10,6 +10,7 @@
 
 #include "eYX.h"
 #include "ExprEval2.hpp"
+#include "ExprEval_V2.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"

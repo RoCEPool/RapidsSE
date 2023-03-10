@@ -10,6 +10,7 @@
 
 #include "eYX.h"
 #include "ExprEval2.hpp"
+#include "ExprEval_V2.hpp"
 
 #include "Op.hpp"
 #include "Job.hpp"
