@@ -401,7 +401,7 @@ void FlattenSubQueries::vFlatten_24_W_A_C_ro(void)
   m_pCI->vPrintBoard(__LINE__);
 
   Correlate* pCorrelate = new Correlate;
-  pCorrelate->vViaPromotionInto_GBYAGG(m_pCI);
+  pCorrelate->vVia_gbyAgg_Promotion(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.pDeck->vClearMarksRecursive();

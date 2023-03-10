@@ -50,9 +50,9 @@ void Correlate::vCorrelate(CardIter* pCI, eSM Correlate)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert call of subQuery to join of ordered subQuery                       */
+/* convert call of sub-query to correlated join to left sub-stream            */
 /*----------------------------------------------------------------------------*/
-void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
+void Correlate::vVia_gbyAgg_Promotion(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
 
@@ -73,13 +73,13 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 
   pCI->G_vRestart();
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
-   if (Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(pCI))
+   if (Board::bIdentify_Correlation_Key_Predicate(pCI))
      break;
   RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
-  Board::vFind_Correlation_Expr_Of_Correlation_Column(pCI);
+  Board::vIdentify_Expr_Of_Correlation_Key_Column(pCI);
   RASSERT(pCI->m_pExpr_corr);    // eg $15 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
@@ -88,7 +88,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   //   thereby producing ordered subQuery stream
 
   RASSERT(pCI->G_bEachMain(CK_AGGREG));
-  Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(pCI);
+  Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
   pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard(__LINE__);
 
@@ -97,7 +97,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
 
   if (pCI->G_bIsNextMain(CK_PROJECT)) {
     RASSERT(pCI->G_bEachMain(CK_PROJECT));
-    Board::vEnhance_sq_project_To_Include_Correlation_Column(pCI,"__SQCRLKEY"_Stz);
+    Board::vEnhance_sq_project_To_Include_Correlation_Key(pCI, "__SQCRLKEY"_Stz);
   }
   else {
 
@@ -151,7 +151,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
     if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, pCI->G.p_PRED))
       break;
-  RASSERT(pCI->G.p_PRED->Y_bHas(P_SqCorrPred));
+  RASSERT(pCI->G.p_PRED->Y_bHas(P_CrlKeyPred));
   pCI->vPrintBoard(__LINE__);
 
   // tidy up empty SQ:<table>/<filter>
@@ -177,7 +177,7 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
-  pCI->G.p_boolCalc->vPush_Correlated_cmpPred_Onto_mq_boolCalc(pCI->G.p_PRED);
+  pCI->G.p_boolCalc->vPush_CrlKeyPred_As_CrlKeyTest(pCI->G.p_PRED);
   pCI->vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
@@ -187,8 +187,8 @@ void Correlate::vViaPromotionInto_GBYAGG(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_a(pCI, pCI->G.p_boolCalc);
-  Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_b(pCI, pCI->G.p_boolCalc);
+  Board::vConvert_CrlPrmOdn_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
+  Board::vConvert_SubQryCall_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

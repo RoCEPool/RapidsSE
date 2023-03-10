@@ -54,7 +54,7 @@ void Card_StmCol::vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI)
   pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
 
   pCI->m_pExpr_corr->vMark1(MARK_AT);
-  pCI->m_pExpr_corr->Y_vSet(P_CorrExpr);
+  pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
 }
 
 /*============================================================================*/

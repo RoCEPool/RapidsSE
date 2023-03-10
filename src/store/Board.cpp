@@ -521,7 +521,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
+void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter* pCI)
 {
   _static_
 
@@ -538,7 +538,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
     pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
 
     pCI->G.p_key = new Card_Key;
-    pCI->G.p_key->Y_vSet(P_Injected);
+    pCI->G.p_key->Y_vSet(P_InjCrlKey);
     pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_projection);
 
 
@@ -573,7 +573,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
     }
 
-    pCI->G.p_expr->Y_vSet(P_Injected);
+    pCI->G.p_expr->Y_vSet(P_InjCrlKey);
     pCI->G.p_projection->vPush(pCI->G.p_expr);
 
 
@@ -606,7 +606,7 @@ void Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Column(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vEnhance_sq_project_To_Include_Correlation_Column(CardIter* pCI, Stz* szAs)
+void Board::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pCI, Stz* szAs)
 {
   _static_
 
@@ -721,7 +721,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI)
+bool Board::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
 {
   _static_
 
@@ -744,7 +744,7 @@ bool Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
     pCI->m_pTerm_corrCol = pTerm_corrCol;
 
     p_pred->vMark1(MARK_AT);
-    p_pred->Y_vSet(P_SqCorrPred);
+    p_pred->Y_vSet(P_CrlKeyPred);
     return C_TERMINATE_RECURSION;
   };
 
@@ -760,7 +760,7 @@ bool Board::bIdentify_Correlation_Column_In_cmpPred_Of_sq_boolCalc(CardIter* pCI
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI)
+void Board::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
 {
   _static_
 
@@ -771,7 +771,7 @@ void Board::vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI)
   pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
 
   pCI->m_pExpr_corr->vMark1(MARK_AT);
-  pCI->m_pExpr_corr->Y_vSet(P_CorrExpr);
+  pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
 }
 
 
@@ -888,7 +888,7 @@ void Board::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc *p_boolC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_a(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+void Board::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _static_
 
@@ -905,7 +905,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_a(CardIter* pCI, C
 
       RASSERT(p_pred->bIsValue("=="_Stz));
 
-      if (! p_pred->Y_bHas(P_OqCorrTest))
+      if (! p_pred->Y_bHas(P_CrlKeyTest))
         return;
 
       CardIter xCI(p_pred);
@@ -974,7 +974,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_a(CardIter* pCI, C
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_b(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+void Board::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _static_
 
@@ -1000,7 +1000,7 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_b(CardIter* pCI, C
               p_pred->bIsRelnOp() ||
               p_pred->bIsSubQueryOp());
 
-      RASSERT(! p_pred->Y_bHas(P_SqCorrPred));
+      RASSERT(! p_pred->Y_bHas(P_CrlKeyPred));
 
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
@@ -1022,6 +1022,8 @@ void Board::vResolve_SubqueryCall_In_mq_boolCalc_Into_cmpPred_b(CardIter* pCI, C
 
           p_pred->vRemoveChild(p_child);
           DELETE_CARD(p_child);
+
+          p_pred->Y_vSet(P_CrlRslTest);
         }
       }
       return;

@@ -274,7 +274,7 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_PRED* p_pred_corr =
-      static_cast<Card_PRED*>(pFindPpyRecursive(P_OqCorrTest, CK_CMPPRED));
+      static_cast<Card_PRED*>(pFindPpyRecursive(P_CrlRslTest, CK_CMPPRED));
 
   if (! p_pred_corr)
     return nullptr;
@@ -352,12 +352,12 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_PRED *p_PRED)
+void Card_BoolCalc::vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  p_PRED->Y_vCut(P_SqCorrPred);
-  p_PRED->Y_vSet(P_OqCorrTest);
+  p_PRED->Y_vCut(P_CrlKeyPred);
+  p_PRED->Y_vSet(P_CrlKeyTest);
 
   if (this->nChildCards()) {
     this->vPushPred(p_PRED);

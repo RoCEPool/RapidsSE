@@ -26,7 +26,7 @@ namespace STORE
     Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
     void vMarkWrt_table(CardIter* pCI);
-    void vPush_Correlated_cmpPred_Onto_mq_boolCalc(Card_PRED* p_PRED);
+    void vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED* p_PRED);
     void vPushPred(Card_PRED* p_pred_toBeAdded);
     void vRemovePred(Card_PRED* p_pred);
     Card_PRED* pRootPred(void);
