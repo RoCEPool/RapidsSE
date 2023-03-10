@@ -236,19 +236,22 @@ namespace STORE
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
-    static void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter* pCI);
-    static void vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pCI, Stz* szAs);
-
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
+
+
 
     static bool bIdentify_Correlation_Key_Predicate(CardIter* pCI);
     static void vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI);
-
-    static void vMorph_Table_To_EEop(CardIter* pCI);
-    static void vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc* p_boolCalc);
-
+    static void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter* pCI);
+    static void vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pCI, Stz* szAs);
     static void vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolCalc* p_boolCalc);
     static void vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_BoolCalc* p_boolCalc);
+    static void vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc* p_boolCalc);
+
+
+
+    static void vMorph_Table_To_EEop(CardIter* pCI);
+
 
     static i8 iStage_Partitioning(CardIter* pCI,
                                   Card* p_main_prior,
