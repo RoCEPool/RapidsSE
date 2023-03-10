@@ -10,6 +10,7 @@
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Optimiser.hpp"
+#include "OuterQuery.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -56,8 +57,6 @@ void PrepareSubQueries::vPrepareSubQueries(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
 
-  //vSeries(BK_SUBQUERY, 0, __func__);
-
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
@@ -86,9 +85,9 @@ void PrepareSubQueries::vPrepareSubQueries(void)
     vRpnCalcToBoolCalc();
   }
 
-  vOuterQueryAnalysis();
-
-  //vEndSeries(BK_SUBQUERY);
+  OuterQuery* pOuterQuery = new OuterQuery;
+  pOuterQuery->vQueryAnalysis(m_pCI);
+  delete pOuterQuery;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,78 +187,6 @@ void PrepareSubQueries::vNotOps(void)
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
     m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Analyse all sub-queries                                                    */
-/*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vOuterQueryAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
-
-  //m_pCI->vTransform(__func__, "Analyse all sub-queries"_Stz);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-
-    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
-    pOuterQuery->vDisposition(QD_LINEAR);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMain()) {
-      if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
-        pOuterQuery->vDisposition(QD_AGGREGATION);
-        break;
-      }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for from calls to sub-queries
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMain(CK_CALL)) {
-
-      Board::vOuter_Query_Analysis_Of_from_call(m_pCI);
-      pOuterQuery->vSubQueries(pOuterQuery->nSubQueries() + 1);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for where calls to sub-queries
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-      Board::vOuter_Query_Analysis_Of_where_boolCalc(m_pCI);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for having calls to sub-queries
-
-    m_pCI->vRestart();
-    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
-      Board::vOuter_Query_Analysis_Of_having_boolCalc(m_pCI);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // search for parameters
-
-    m_pCI->G_vRestart();
-    i8 nParams = 0;
-    while (m_pCI->G_bEachMain(CK_CORRELATION))
-      nParams++;
-    pOuterQuery->vCorrCols(nParams);
-
-  }
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
-    pOuterQuery->vDump();
-  }
-
-  //m_pCI->vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/

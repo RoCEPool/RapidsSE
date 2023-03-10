@@ -7,6 +7,8 @@
 
 namespace STORE
 {
+  class CardIter;
+
   class OuterQuery : public Object
   {
   private:
@@ -20,6 +22,8 @@ namespace STORE
     
     OuterQuery(void);
    ~OuterQuery(void) noexcept(false);
+
+    void vQueryAnalysis(CardIter* pCI);
 
   private:
     Footer* aFooter(void);

@@ -35,7 +35,6 @@ namespace STORE
     void vIndexAnalysis(void);
     void vMoveOn(void);
     void vNotOps(void);
-    void vOuterQueryAnalysis(void);
     void vProjectionAnalysis(void);
     void vRpnCalcToBoolCalc(void);
     void vScanBecomesTable(void);
