@@ -260,6 +260,7 @@
 #include "PrepareSubQueries.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
+#include "OuterQuery.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -492,6 +493,7 @@ SizeHeap gxaSizeHeap[]
   {CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  , FILL },
   {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_LARGE   , FILL },
   {CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    , FILL },
+  {BASE::CN_OUTERQUERY,         sizeof(OuterQuery),         HT_T_TINY    , FILL },
 
   {CN__P__,                     'P' - ('A' - 1),            HT_INVALID   , FILL },
   {CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    , FILL },
