@@ -73,13 +73,13 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   pCI->G_vRestart();
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
-   if (Board::bIdentify_Correlation_Key_Predicate(pCI))
+   if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
   RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
-  Board::vIdentify_Expr_Of_Correlation_Key_Column(pCI);
+  vIdentify_Expr_Of_Correlation_Key_Column(pCI);
   RASSERT(pCI->m_pExpr_corr);    // eg $15 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
@@ -88,7 +88,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //   thereby producing ordered subQuery stream
 
   RASSERT(pCI->G_bEachMain(CK_AGGREG));
-  Board::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
+  vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
   pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard(__LINE__);
 
@@ -97,7 +97,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   if (pCI->G_bIsNextMain(CK_PROJECT)) {
     RASSERT(pCI->G_bEachMain(CK_PROJECT));
-    Board::vEnhance_sq_project_To_Include_Correlation_Key(pCI, "__SQCRLKEY"_Stz);
+    vEnhance_sq_project_To_Include_Correlation_Key(pCI, "__SQCRLKEY"_Stz);
   }
   else {
 
@@ -187,8 +187,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  Board::vConvert_CrlPrmOdn_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
-  Board::vConvert_SubQryCall_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
+  vConvert_CrlPrmOdn_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
+  vConvert_SubQryCall_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -207,7 +207,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolCalc);
-  Board::vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
+  vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
