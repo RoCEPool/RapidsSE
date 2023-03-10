@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Correlate.hpp -- Correlate                                                 */
+/* CorrelatedJoin.hpp -- CorrelatedJoin                                                 */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace STORE
   class CardIter;
   class CarryForward;
 
-  class Correlate : public Object
+  class CorrelatedJoin : public Object
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Correlate(void);
-   ~Correlate(void) noexcept(false);
+    CorrelatedJoin(void);
+   ~CorrelatedJoin(void) noexcept(false);
 
     void vCorrelate(CardIter* pCI, eSM eCorrelate);
 
@@ -33,7 +33,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Correlate* _pCorrelate(void* aAddr);
+  CorrelatedJoin* _pCorrelatedJoin(void* aAddr);
 
 }
 

@@ -259,7 +259,7 @@
 #include "MakeWeavable.hpp"
 #include "PrepareSubQueries.hpp"
 #include "SawOpCards.hpp"
-#include "Correlate.hpp"
+#include "CorrelatedJoin.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -326,27 +326,27 @@ SizeHeap gxaSizeHeap[]
   { CN_CARDITERMEMBERS,          sizeof(CardIterMembers),  HT_T_SMALL   , FILL },
   { CN_CARRYFORWARD,             sizeof(CarryForward),     HT_T_TINY    , FILL },
   { CN_CATALOG,                  sizeof(Catalog),          HT_INVALID   , FILL },
-  { CN_CHARSER,                  sizeof(Charser),          HT_T_LARGE   , FILL },
-  { CN_CHILDEXIT,                sizeof(ChildExit),        HT_T_TINY    , FILL },
-  { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder), HT_T_LARGE   , FILL },
-  { CN_CMDLINEARGS,              sizeof(CmdLineArgs),      HT_INVALID   , FILL },
-  { CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_MEDIUM  , FILL },
-  { CN_CODESYNTH,                sizeof(CodeSynth),        HT_T_LARGE   , FILL },
-  { CN_CODESYNTH_V2,             sizeof(CodeSynth_V2),     HT_T_LARGE   , FILL },
-  { CN_COLUMN,                   sizeof(Column),           HT_T_TINY    , FILL },
-  { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
-  { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
-  { CN_CORRELATE,                sizeof(Correlate),          HT_T_TINY    ,FILL },
-  { CN_CRVBUFFER,                sizeof(CrvBuffer),          HT_T_LARGE   ,FILL },
-  { CN_CRWBUFFER,                sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },
-  { CN_CRWTABLEPTN,              sizeof(CrwTablePtn),        HT_T_TINY    ,FILL },
-  { CN_CRWTOROW,                 sizeof(CrwToRow),           HT_T_TINY    ,FILL },
-  { CN_CSVBUFFER,                sizeof(CsvBuffer),          HT_T_LARGE   ,FILL },
-  { CN_CSVMETA,                  sizeof(CsvMeta),            HT_T_TINY    , FILL },
+  {CN_CHARSER,                  sizeof(Charser),                  HT_T_LARGE   , FILL },
+  {CN_CHILDEXIT,                sizeof(ChildExit),                HT_T_TINY    , FILL },
+  {CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),         HT_T_LARGE   , FILL },
+  {CN_CMDLINEARGS,              sizeof(CmdLineArgs),              HT_INVALID   , FILL },
+  {CN_CODEBLOCK,                sizeof(CodeBlock),                HT_T_MEDIUM  , FILL },
+  {CN_CODESYNTH,                sizeof(CodeSynth),                HT_T_LARGE   , FILL },
+  {CN_CODESYNTH_V2,             sizeof(CodeSynth_V2),             HT_T_LARGE   , FILL },
+  {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
+  {CN_COMBINED,                 sizeof(Combined),                 HT_T_LARGE   , FILL },
+  {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
+  {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
+  {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
+  {CN_CRWBUFFER,                sizeof(CrwBuffer),                HT_T_LARGE   , FILL },
+  {CN_CRWTABLEPTN,              sizeof(CrwTablePtn),              HT_T_TINY    , FILL },
+  {CN_CRWTOROW,                 sizeof(CrwToRow),                 HT_T_TINY    , FILL },
+  {CN_CSVBUFFER,                sizeof(CsvBuffer),                HT_T_LARGE   , FILL },
+  {CN_CSVMETA,                  sizeof(CsvMeta),                  HT_T_TINY    , FILL },
 
-  { CN__D__,                     'D' - ('A' - 1),               HT_INVALID   , FILL },
-  { CN_DATATRANSIENT,            sizeof(Heap), /*correct*/   HT_INVALID   ,    FILL },
-  { CN_DDLLOCK,                  sizeof(DdlLock),               HT_T_TINY    , FILL },
+  {CN__D__,                     'D' - ('A' - 1),                  HT_INVALID   , FILL },
+  {CN_DATATRANSIENT,            sizeof(Heap), /*correct*/         HT_INVALID   , FILL },
+  {CN_DDLLOCK,                  sizeof(DdlLock),                  HT_T_TINY    , FILL },
   { CN_DECACNT,                  sizeof(DecaCnt),                HT_T_TINY    , FILL },
   { CN_DECIDER,                  sizeof(Decider),                HT_T_TINY    , FILL },
   { CN_DECK,                     sizeof(Deck),                   HT_T_SMALL   , FILL },

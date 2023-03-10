@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Correlate.cpp -- Correlate                                                 */
+/* CorrelatedJoin.cpp -- CorrelatedJoin                                                 */
 /*============================================================================*/
 
-#include "Correlate.hpp"
+#include "CorrelatedJoin.hpp"
 
 #include "CardIter.hpp"
 #include "CarryForward.hpp"
@@ -11,28 +11,28 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Correlate, CN_CORRELATE)
-__aNewFunction(Correlate, CN_CORRELATE)
-__vDeleteFunction(Correlate, CN_CORRELATE)
-__aFooterFunction(Correlate)
+__pCastFunction(STORE, CorrelatedJoin, CN_CORRELATEDJOIN)
+__aNewFunction(CorrelatedJoin, CN_CORRELATEDJOIN)
+__vDeleteFunction(CorrelatedJoin, CN_CORRELATEDJOIN)
+__aFooterFunction(CorrelatedJoin)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Correlate::Correlate(void)
-: Object(CN_CORRELATE)
+CorrelatedJoin::CorrelatedJoin(void)
+: Object(CN_CORRELATEDJOIN)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Correlate::~Correlate(void) noexcept(false)
+CorrelatedJoin::~CorrelatedJoin(void) noexcept(false)
 {
-_precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 }
 
 
@@ -43,18 +43,18 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Correlate::vCorrelate(CardIter* pCI, eSM Correlate)
+void CorrelatedJoin::vCorrelate(CardIter* pCI, eSM Correlate)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert call of sub-query to correlated join to left sub-stream            */
 /*----------------------------------------------------------------------------*/
-void Correlate::vVia_gbyAgg_Promotion(CardIter* pCI)
+void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
   // Start with processing SQ (sub-query)
 
