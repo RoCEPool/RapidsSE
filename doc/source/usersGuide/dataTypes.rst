@@ -55,8 +55,152 @@ below.
                   ``VARCHAR``, if specified, is currently ignored. No explicit character
                   encoding is currently supported. Multi-byte characters must fit within the
                   above byte limit.
-   ``INTERVAL``   Not yet supported
+   ``INTERVAL``   The range of intervals depends on the interval type:
+
+                  All year-month intervals (``YEAR``, ``MONTH`` and ``YEAR TO MONTH``) store
+                  their value internally in months. They have a range of ``-7.205759403792794e+16``
+                  to ``7.205759403792794e+16`` months, or ``-6,004,799,503,160,661`` to
+                  ``6,004,799,503,160,661`` years.
+
+                  All day-time intervals (``DAY``, ``HOUR``, ``MINUTE``, ``SECOND``, ``DAY TO HOUR``
+                  ``DAY TO MINUTE``, etc) store their value internally in microseconds. This
+                  equates as follows:
+
+                    | ``DAY``              : +/-        833,999 days
+                    | ``HOUR``             : +/-     20,015,998 hours
+                    | ``MINUTE``           : +/-  1,200,959,900 minutes
+                    | ``SECOND``           : +/- 72,057,594,037.927935 seconds
+                    | ``DAY TO HOUR``      : +/-        833,999 days, 22 hours
+                    | ``DAY TO MINUTE``    : +/-        833,999 days, 22 hours, 20 minutes
+                    | ``DAY TO SECOND``    : +/-        833,999 days, 22 hours, 20 minutes, 37.927935 seconds
+                    | ``HOUR TO MINUTE``   : +/-     20,015,998 hours, 20 minutes
+                    | ``HOUR TO SECOND``   : +/-     20,015,998 hours, 20 minutes, 37.927935 seconds
+                    | ``MINUTE TO SECOND`` : +/-  1,200,959,900 minutes, 37.927935 seconds
    =============  ===========================================================================
+
+
+.. index::
+   single: data types; intervals
+   single: intervals; overview
+
+.. _intervals:
+
+Intervals
+---------
+
+The ``INTERVAL`` data type is subtly different from other data types, and
+therefore deserves some careful explanation.
+
+
+.. index::
+   single: intervals; types
+
+Interval Types
+``````````````
+The ``INTERVAL`` type is often thought of as a single data type but it is
+not. Instead it is a collection of 13 separate data types that fall into
+two different categories: **year-month** intervals and **day-time** intervals. This
+distinction is shown in :numref:`interval-data-types-table` below.
+
+.. table:: Interval data types
+   :name: interval-data-types-table
+   :widths: 40, 60
+
+   ===================== ===================================
+   Category              SQL Type Name
+   ===================== ===================================
+   year-month intervals   | ``INTERVAL YEAR``
+                          | ``INTERVAL MONTH``
+                          | ``INTERVAL YEAR TO MONTH``
+   day-time intervals     | ``INTERVAL DAY``
+                          | ``INTERVAL HOUR``
+                          | ``INTERVAL MINUTE``
+                          | ``INTERVAL SECOND``
+                          | ``INTERVAL DAY TO HOUR``
+                          | ``INTERVAL DAY TO MINUTE``
+                          | ``INTERVAL DAY TO SECOND``
+                          | ``INTERVAL HOUR TO MINUTE``
+                          | ``INTERVAL HOUR TO SECOND``
+                          | ``INTERVAL MINUTE TO SECOND``
+   ===================== ===================================
+
+Interval data types within the same category are compatible. An ``INTERVAL YEAR``
+can be converted to an ``INTERVAL MONTH`` or ``INTERVAL YEAR TO MONTH``.
+Alternatively an ``INTERVAL MINUTE`` can be converted to an ``INTERVAL SECOND``.
+
+But interval data types from the two different categories are not compatible with
+each other. We cannot convert an ``INTERVAL MONTH`` to ``INTERVAL DAY`` because
+there are a variable number of days in a month. Expressions cannot mix interval
+types if they come from differing interval categories.
+
+Internally, RapidsSE stores all year-month intervals as a count of months. All
+day-time intervals are stored as a count of microseconds. This makes calculations
+involving intervals fast and it allows for RapidsSE to store a greater value
+range. If an interval value is being displayed and it's type contains multiple fields
+(e.g. a ``DAY TO MINUTE`` interval) then the interval value will be normalised for
+the smaller fields. For example, the microseconds value ``93,780,000,000`` that is
+stored in an ``INTERVAL DAY TO MINUTE`` will be displayed as 1 day, 2 hours, 3 minutes.
+That is, the minutes are normalised to the range [0-59] and hours are normalised to
+the range [0-23].
+
+
+.. index::
+   single: intervals; literal format
+
+.. _intervalLiterals:
+
+Interval Literal Format
+```````````````````````
+Interval literals are written as per the syntax diagrams below:
+
+.. figure:: /rr/diagram/sql92CalendarIntervalLiteral.png
+
+   SQL year-month interval literal syntax
+
+.. figure:: /rr/diagram/sql92TimeIntervalLiteral.png
+
+   SQL day-time interval literal syntax
+
+In each case the value of the interval is specified as a single quoted string.
+This single quoted string has the following rules:
+
+* An optional sign (``+`` or ``-``) may be placed immediately before the single
+  quoted string.
+* Alternatively, a sign character can be immediately placed inside the single
+  quoted string, however this is not recommended as it is less readable.
+* All values within the single quoted string are unsigned (that is, non-negative).
+* A dash is used to separate a year value and a month value.
+* A space is used to separate a day value from an hour value.
+* A colon (``:``) is used to separate hours, minutes or seconds from each other.
+* A seconds value may contain a decimal point and up to 6 decimal places,
+  representing microseconds.
+
+.. rubric:: Examples
+
+.. code:: sql
+
+   INTERVAL '1' YEAR
+   INTERVAL '2' MONTH
+   INTERVAL '1-2' YEAR TO MONTH
+   INTERVAL -'1-2' YEAR TO MONTH
+   INTERVAL '3' DAY
+   INTERVAL '4' HOUR
+   INTERVAL '5' MIN
+   INTERVAL '6' SECOND
+   INTERVAL '6.789012' SECOND
+   INTERVAL '3 4' DAY TO HOUR
+   INTERVAL '3 4:5' DAY TO MINUTE
+   INTERVAL '3 4:5:6' DAY TO SECOND
+   INTERVAL '3 4:5:6.789012' DAY TO SECOND
+   INTERVAL '4:5' HOUR TO MINUTE
+   INTERVAL '4:5:6.789012' HOUR TO SECOND
+   INTERVAL '5:6.789012' MINUTE TO SECOND
+   INTERVAL -'5:6.789012' MINUTE TO SECOND
+
+TODO: talk about how mixing interval types leads to the output interval type.
+TODO: talk about the supported expression operations involving intervals.
+TODO: +, -, \*, /, ivl + date/time/tsp, date/time/tsp - ivl, date/time/tsp - date/time/tsp.
+TODO: mention the constraint about not supporting intervals as a table column.
 
 
 .. index::

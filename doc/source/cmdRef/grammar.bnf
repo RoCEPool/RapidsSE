@@ -197,7 +197,7 @@ literal           ::= 'NULL'
                     | timeLiteral
                     | stringLiteral
                     | timestampLiteral
-/*                  | intervalLiteral */
+                    | intervalLiteral
 
 simpleLiteral     ::= 'NULL'
                     | booleanLiteral
@@ -221,21 +221,21 @@ timeLiteral       ::= 'TIME' stringLiteral
 timestampLiteral  ::= 'TIMESTAMP' stringLiteral
 stringLiteral     ::= singleQuotedString | doubleQuotedString
 
-/*
+
 intervalLiteral   ::= sql92CalendarIntervalLiteral
                     | sql92TimeIntervalLiteral
 
 sql92CalendarIntervalLiteral
-                  ::= 'INTERVAL' stringLiteral
-                      ( 'YEAR' ( '(' precision ')' )? ( 'TO' 'MONTH' )?
-                      | 'MONTH' ( '(' precision ')' )? )
+                  ::= 'INTERVAL' ( '+' | '-' )? singleQuotedString
+                      ( 'YEAR' ( 'TO' 'MONTH' )?
+                      | 'MONTH' )
 sql92TimeIntervalLiteral
-                  ::= 'INTERVAL' stringLiteral
-                      ( 'DAY' ( '(' precision ')' )? ( 'TO' ( 'HOUR' | 'MINUTE' | 'SECOND' ( '(' scale ')' )? ) )?
-                      | 'HOUR' ( '(' precision ')' )? ( 'TO' ( 'MINUTE' | 'SECOND' ( '(' scale ')' )? ) )?
-                      | 'MINUTE' ( '(' precision ')' )? ( 'TO' 'SECOND' ( '(' scale ')' )? )?
-                      | 'SECOND' ( '(' precision ( ',' scale )? ')' )? )
-*/
+                  ::= 'INTERVAL' ( '+' | '-' )? singleQuotedString
+                      ( 'DAY'  ( 'TO' ( 'HOUR' | 'MINUTE' | 'SECOND' ) )?
+                      | 'HOUR'  ( 'TO' ( 'MINUTE' | 'SECOND' ) )?
+                      | 'MINUTE'  ( 'TO' 'SECOND' )?
+                      | 'SECOND' ')' )
+
 
 /*---------------------------------------------------------------------------*/
 /* Other Statements                                                          */
@@ -300,6 +300,14 @@ dataType          ::= 'BOOLEAN'
                     | 'TIMESTAMP'
                     | ( 'CHAR' | 'CHARACTER' ) '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' /*( 'COLLATE' collationName )?*/
                     | ( ( /*( 'CHAR' | 'CHARACTER' ) 'VARYING'? |*/ 'VARCHAR' ) ( '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' )? ) /*( 'COLLATE' collationName )?*/
+                    | 'INTERVAL' (
+                          'YEAR' ('TO' 'MONTH')?
+                        | 'MONTH'
+                        | 'DAY' ('TO' 'HOUR' | 'TO' 'MINUTE' | 'TO' 'SECOND')?
+                        | 'HOUR' ('TO' 'MINUTE' | 'TO' 'SECOND')?
+                        | 'MINUTE' ('TO' 'SECOND')?
+                        | 'SECOND'
+                      )
 /*                  | 'BINARY' '(' size ( 'BYTE' | 'BYTES' )? ')'   */
 /*                  | 'VARBINARY' ( '(' size ( 'BYTE' | 'BYTES' )? ')' )?  */
 /*                  | 'BLOB' */
