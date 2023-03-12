@@ -122,38 +122,11 @@ void MakeWeavable::vCullNonusedBounds(void)
       continue;
 
     // have <bounds> & <filter> under <main>
-
-
-
     Card_Index::vCullNonusedBounds(m_pCI);
 
-//    while ((m_pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
-//
-//      bool bChosenIndex = m_pCI->G.p_index->Y_bHas(P_ChosenIndex);
-//
-//      m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds();
-//      if (! m_pCI->G.p_bounds)
-//        continue;
-//
-//      CardIter xCI_bounds(m_pCI->G.p_bounds);
-//      while (xCI_bounds.bEachChild()) {
-//        if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_EBOUND)) {
-//          bFoundFirst = true;
-//          continue;
-//        }
-//
-//        xCI_bounds.G.m_pChild->vMark1(MARK_AT);
-//      }
-//
-//      m_pCI->vPrintBoard(__LINE__);
-//      m_pCI->G.p_bounds->vCullBound(MARK_AT);
-//
-//    }
   }
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   m_pCI->vPrintBoard();
 
