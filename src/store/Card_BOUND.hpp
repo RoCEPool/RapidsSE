@@ -20,6 +20,10 @@ namespace STORE
     static Card_BOUND*    pCreateFrom_PRED(Card_PRED* p_PRED,
                                            char cTblSyn_boundedTo);
     static Card_BOUND*    pBound_New(Stz* szRelnOp);
+
+
+    Card_Term* pGetTerm(i8 i_Term);
+
   };
 
   Card_BOUND* _pCard_BOUND(void* aAddr);
