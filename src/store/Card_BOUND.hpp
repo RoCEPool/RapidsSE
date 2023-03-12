@@ -24,6 +24,10 @@ namespace STORE
 
     Card_Term* pGetTerm(i8 i_Term);
 
+    bool bIsEBound(void);
+    bool bIsLBound(void);
+    bool bIsUBound(void);
+
   };
 
   Card_BOUND* _pCard_BOUND(void* aAddr);

@@ -160,7 +160,44 @@ Card_Term* Card_BOUND::pGetTerm(i8 i_Term)
   return p_term;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BOUND::bIsEBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (bIsValue("=="_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BOUND::bIsLBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsValue(">"_Stz) || bIsValue(">="_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BOUND::bIsUBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsValue("<"_Stz) || bIsValue("<="_Stz))
+    return true;
+
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */
