@@ -967,6 +967,8 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
   Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
   if (pCard_bounds) {
     Card_BOUND* p_bound = (Card_BOUND*)pCard_bounds->pGetChild(0);
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
     i8 nSubs = p_bound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
       Card* pSubCard = p_bound->pGet(i_Sub);
@@ -992,6 +994,9 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 
   Card_LBound* p_lBound = pCard_Index->pSub_lBound();
   if (p_lBound) {
+
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
     i8 nSubs = p_lBound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
       Card* pSubCard = p_lBound->pGet(i_Sub);
@@ -1006,6 +1011,9 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 
   Card_UBound* p_uBound = pCard_Index->pSub_uBound();
   if (p_uBound) {
+
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
     i8 nSubs = p_uBound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
       Card* pSubCard = p_uBound->pGet(i_Sub);
@@ -1084,6 +1092,8 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
   if (! pCard_ebound)
     return;
 
+  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
   i8 nSubs = pCard_ebound->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
     Card *pSubCard = pCard_ebound->pGet(i_Sub);
@@ -1150,6 +1160,8 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
   Card_EBound *pCard_ebound = pCard_bounds->pSub_eBound();
   if (! pCard_ebound)
     return;
+
+  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
 
   i8 nSubs = pCard_ebound->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {

@@ -121,24 +121,27 @@ Card_BOUND* Card_BOUND::pBound_New(Stz* szRelnOp)
 {
   _static_
 
-  Stz* szBound = Card::szBound(szRelnOp);
-  Card_Term* p_term_bound = new Card_Term(szBound);
+//  Stz* szBound = Card::szBound(szRelnOp);
+//  Card_Term* p_term_bound = new Card_Term(szBound);
 
   if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
     Card_LBound* p_lBound =  new Card_LBound;
-    p_lBound->vAppend(p_term_bound);
+    p_lBound->vValue(szRelnOp);
+    //p_lBound->vAppend(p_term_bound);
     return p_lBound;
   }
 
   if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz)) {
     Card_UBound* p_uBound =  new Card_UBound;
-    p_uBound->vAppend(p_term_bound);
+    p_uBound->vValue(szRelnOp);
+    //p_uBound->vAppend(p_term_bound);
     return p_uBound;
   }
 
   if (szRelnOp->bSame("=="_Stz)) {
     Card_EBound* p_eBound =  new Card_EBound;
-    p_eBound->vAppend(p_term_bound);
+    p_eBound->vValue(szRelnOp);
+    //p_eBound->vAppend(p_term_bound);
     return p_eBound;
   }
 
