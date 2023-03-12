@@ -89,15 +89,15 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   //pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
   //pCI->G.p_bolPred = pCI->G.p_boolCalc->pSub_bolPred();
-  pCI->G.p_bolPred = pCI->G.p_boolCalc->pBolPred_whichCallsSubQuery(pCI);
+  pCI->G.p_cmpPred = pCI->G.p_boolCalc->pBolPred_whichCallsSubQuery(pCI);
 
-  if (pCI->G.p_bolPred->bIsValue("in"_Stz) || pCI->G.p_bolPred->bIsValue("exists"_Stz))
+  if (pCI->G.p_cmpPred->bIsValue("in"_Stz) || pCI->G.p_cmpPred->bIsValue("exists"_Stz))
     pCI->G.p_table->vAppend(new Card_KeyExists);
   else
-  if (pCI->G.p_bolPred->bIsValue("notIn"_Stz) || pCI->G.p_bolPred->bIsValue("notExists"_Stz))
+  if (pCI->G.p_cmpPred->bIsValue("notIn"_Stz) || pCI->G.p_cmpPred->bIsValue("notExists"_Stz))
     pCI->G.p_table->vAppend(new Card_KeyNotExists);
 
-  pCI->G.p_bolPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
+  pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
 

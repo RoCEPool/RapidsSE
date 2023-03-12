@@ -5,7 +5,6 @@
 #include "Card_BoolCalc.hpp"
 
 #include "Card_PRED.hpp"
-#include "Card_BolPred.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
@@ -53,16 +52,16 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_BolPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(CardIter* pCI)
+Card_CmpPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_BolPred* pBolPred = nullptr;
+  Card_CmpPred* pBolPred = nullptr;
 
   auto bLambdaFn = [&pBolPred,pCI](Card_PRED* p_pred, bool bUpwards)
   {
     if (p_pred->bContains_callToSubQuery(pCI)) {
-      pBolPred = _pCard_BolPred(p_pred);
+      pBolPred = _pCard_CmpPred(p_pred);
       return C_TERMINATE_RECURSION;
     }
 
@@ -225,18 +224,6 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
     }
     return false;
   }
-  else
-  if (CK_BOLPRED == eCard_pred) {
-    RASSERT(p_pred->bIsBoolFn() ||
-                p_pred->bIsRelnOp() ||
-                p_pred->bIsSubQueryOp());
-    if (cWithMark == p_pred->cMark1()) {
-      this->vRemovePred(p_pred);
-      delete p_pred;
-      return true;
-    }
-    return false;
-  }
 
   RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred || CK_NOTPRED == eCard_pred);
 
@@ -306,10 +293,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       continue;
     }
 
-    if (p_card->bIsCard(CK_BOLPRED) || p_card->bIsCard(CK_CMPPRED)) {
-//      RASSERT(((Card_PRED *)p_card)->bIsBoolFn() ||
-//              ((Card_PRED *)p_card)->bIsRelnOp() ||
-//              ((Card_PRED *)p_card)->bIsSubQueryOp());
+    if (p_card->bIsCard(CK_CMPPRED)) {
       p_card->vMark1('b');
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
@@ -321,19 +305,6 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       }
       continue;
     }
-
-//    if (p_card->bIsCard(CK_CMPPRED)) {
-//      p_card->vMark1('?');
-//      xCR.vDontDescend();
-//      if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
-//        continue;
-//      char cWhichTable = ((Card_PRED *)p_card)->cTable_WhichTableFor_Pred(pCI);
-//      if (C_UNKNOWN != cWhichTable) {
-//        p_card->vMark1(MARK_AT);
-//        p_card->vMark2(cWhichTable);
-//      }
-//      continue;
-//    }
 
     if (p_card->bIsCard(CK_ORPRED)) {
       p_card->vMark1('|');

@@ -17,7 +17,7 @@ namespace STORE
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
 
-    Card_BolPred* pBolPred_whichCallsSubQuery(CardIter* pCI);
+    Card_CmpPred* pBolPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vCopyMarkedPredsToTable(Card_Deck* p_deck);

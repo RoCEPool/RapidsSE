@@ -1603,10 +1603,6 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         vBoolPart(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         szRpnExpr->vCatSprint(" and"_Stz);
         break;
-      case CK_BOLPRED:
-        vBoolPart(szRpnExpr, _pCard_BolPred(pSubCard), 0);
-        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->sz());
-        break;
       case CK_CMPPRED:
         vBoolPart(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->sz());
@@ -1647,9 +1643,6 @@ void Weaver::vAndPred(Stz* szRpnExpr, Card_AndPred* pCard_AndPred, i8 i)
       case CK_ANDPRED:
         vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         break;
-      case CK_BOLPRED:
-        vBolPred(szRpnExpr, _pCard_BolPred(pSubCard), 0);
-        break;
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
@@ -1671,43 +1664,6 @@ void Weaver::vAndPred(Stz* szRpnExpr, Card_AndPred* pCard_AndPred, i8 i)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append <rpnExpr> for <bolPred>                                             */
-/*----------------------------------------------------------------------------*/
-void Weaver::vBolPred(Stz* szRpnExpr, Card_BolPred* pCard_BolPred, i8 i)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  i8 nSubCards = pCard_BolPred->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_BolPred->pGet(i_Child);
-
-    eCK eSubCard = pSubCard->eCard();
-
-    switch (eSubCard) {
-      case CK_ANDPRED:
-        vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
-        break;
-      case CK_BOLPRED:
-        vBolPred(szRpnExpr, _pCard_BolPred(pSubCard), 0);
-        break;
-      case CK_CMPPRED:
-        vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
-        break;
-      case CK_ORPRED:
-        vOrPred(szRpnExpr, _pCard_OrPred(pSubCard), 0);
-        break;
-       case CK_TERM:
-        vTermPred(szRpnExpr, _pCard_Term(pSubCard), 0);
-        break;
-      default:
-        NEVER_REACH
-    }
-  }
-
-  szRpnExpr->vCatSprint(" %s"_Stz, pCard_BolPred->sz());
-}
-
-/*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <predCmp>                                             */
 /*----------------------------------------------------------------------------*/
 void Weaver::vCmpPred(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred, i8 i)
@@ -1723,9 +1679,6 @@ void Weaver::vCmpPred(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred, i8 i)
     switch (eSubCard) {
       case CK_ANDPRED:
         vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
-        break;
-      case CK_BOLPRED:
-        vBolPred(szRpnExpr, _pCard_BolPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
@@ -1761,9 +1714,6 @@ void Weaver::vOrPred(Stz* szRpnExpr, Card_OrPred* pCard_OrPred, i8 i)
     switch (eSubCard) {
       case CK_ANDPRED:
         vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
-        break;
-      case CK_BOLPRED:
-        vBolPred(szRpnExpr, _pCard_BolPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
         vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);

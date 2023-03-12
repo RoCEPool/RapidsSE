@@ -130,7 +130,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_BOLPRED, bLambdaFn_ro);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_ro);
 }
 
 /*============================================================================*/

@@ -436,7 +436,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
     if (! p_pred->bIsPRED())
       return; /* this effectively declares resolve as void */
 
-    if (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_CMPPRED)) {
+    if (p_pred->bIsCard(CK_CMPPRED)) {
 
       if (! p_pred->Y_bHas(P_CrlKeyTest))
         return;
@@ -522,7 +522,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
 //      return;
 //    }
 //    else
-    if (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_CMPPRED)) {
+    if (p_pred->bIsCard(CK_CMPPRED)) {
 
       if (! p_pred->bContains_callToSubQuery(pCI))
         return;

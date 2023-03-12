@@ -6,7 +6,6 @@
 #include "Card_Term.hpp"
 #include "Card_BoolCalc.hpp"
 #include "CardIter.hpp"
-#include "Card_BolPred.hpp"
 #include "Card_RpnTerms.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_OrPred.hpp"
@@ -226,7 +225,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
   if (this->bHasWhen()) {
 
-    Card_BolPred*p_bolPred = new Card_BolPred;
+    Card_CmpPred*p_bolPred = new Card_CmpPred;
     p_bolPred->vTransferChildren(this);
 
     p_boolCalc->vAppend(p_bolPred);
@@ -238,7 +237,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
   Stz* szSqyNm;
   Card_AndPred* p_andPred = nullptr;
-  Card_BolPred* p_bolPred = nullptr;
+  Card_CmpPred* p_bolPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
   Card_NotPred* p_notPred = nullptr;
   Card_OrPred*  p_orPred  = nullptr;
@@ -317,12 +316,12 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
         if (p_cmpPred->bContains_callToSubQuery(pCI)) {
-          p_cmpPred->vCard(CK_BOLPRED);
+          p_cmpPred->vCard(CK_CMPPRED);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         else
         if (! p_cmpPred->bIsValue("=="_Stz)) { // todo: more work
-          p_cmpPred->vCard(CK_BOLPRED);
+          p_cmpPred->vCard(CK_CMPPRED);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         //p_boolCalc->vPush(p_cmpPred);
@@ -336,7 +335,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_EXISTS:
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
-        p_bolPred = new Card_BolPred;
+        p_bolPred = new Card_CmpPred;
         p_bolPred->vValue(p_term_next->sz());
         p_bolPred->vTransferChildren(p_TermSeries);
         RASSERT(p_bolPred->bIsSubQueryOp())
@@ -349,7 +348,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_IN:
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
-          p_bolPred = new Card_BolPred;
+          p_bolPred = new Card_CmpPred;
           p_bolPred->vValue(p_term_next->sz());
           p_bolPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_bolPred);
@@ -359,7 +358,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           //p_boolCalc->vDump(0,"BOOLFN/IN"_Stz);
         }
         else {
-          p_bolPred = new Card_BolPred;
+          p_bolPred = new Card_CmpPred;
           p_bolPred->vValue("in"_Stz);
           p_bolPred->vTransferChildren(p_TermSeries);
           RASSERT(p_bolPred->bIsSubQueryOp())
@@ -373,7 +372,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTIN:
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
-          p_bolPred = new Card_BolPred;
+          p_bolPred = new Card_CmpPred;
           p_bolPred->vValue("in"_Stz);
           p_bolPred->vTransferChildren(p_TermSeries);
           RASSERT(p_bolPred->bIsBoolFn())
@@ -390,7 +389,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           //p_boolCalc->vDump(0,"BOOLFN/NOTIN"_Stz);
         }
         else {
-          p_bolPred = new Card_BolPred;
+          p_bolPred = new Card_CmpPred;
           p_bolPred->vValue(p_term_next->sz());
           p_bolPred->vTransferChildren(p_TermSeries);
           RASSERT(p_bolPred->bIsSubQueryOp())
@@ -402,7 +401,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         break;
 
       case TE_BOOLFN:
-        p_bolPred = new Card_BolPred;
+        p_bolPred = new Card_CmpPred;
         p_bolPred->vValue(p_term_next->sz());
         p_bolPred->vTransferChildren(p_TermSeries);
         RASSERT(p_bolPred->bIsBoolFn())
@@ -437,7 +436,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
     p_boolCalc->vDump(0,"boolCalc"_Stz);
     p_TermSeries->vDump(0,"termSeries"_Stz);
 
-    p_bolPred = new Card_BolPred;
+    p_bolPred = new Card_CmpPred;
     p_bolPred->vTransferChildren(p_TermSeries);
 
     p_boolCalc->vAppend(p_bolPred);

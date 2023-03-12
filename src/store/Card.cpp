@@ -1391,7 +1391,6 @@ bool Card::bIsPRED(void)
 
   switch (m_eCard){
     case CK_ANDPRED:
-    case CK_BOLPRED:
     case CK_CMPPRED:
     case CK_ORPRED :
       return true;
@@ -2685,19 +2684,6 @@ Card_BoardNo* Card::pSub_boardNo(void)
   Card_BoardNo* p_boardNo =
       _pCard_BoardNo(pFindSubCard(CK_BOARDNO));
   return p_boardNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_BolPred.hpp"
-Card_BolPred* Card::pSub_bolPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BolPred* p_bolPred =
-      _pCard_BolPred(pFindSubCard(CK_BOLPRED));
-  return p_bolPred;
 }
 
 /*----------------------------------------------------------------------------*/
