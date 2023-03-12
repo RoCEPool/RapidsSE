@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BOUND.hpp -- Abstract Bound                                           */
+/* Card_Bound.hpp -- Abstract Bound                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_BOUND : public Card
+  class Card_Bound : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Card_BOUND(void);
-    Card_BOUND(eCK eCard);
-   ~Card_BOUND(void) noexcept(false);
+    Card_Bound(void);
+    Card_Bound(eCK eCard);
+   ~Card_Bound(void) noexcept(false);
 
-    static Card_BOUND*    pCreateFrom_PRED(Card_PRED* p_PRED,
+    static Card_Bound*    pCreateFrom_PRED(Card_PRED* p_PRED,
                                            char cTblSyn_boundedTo);
-    static Card_BOUND*    pBound_New(Stz* szRelnOp);
+    static Card_Bound*    pBound_New(Stz* szRelnOp);
 
 
     Card_Term* pGetTerm(i8 i_Term);
@@ -36,7 +36,7 @@ namespace STORE
 
   };
 
-  Card_BOUND* _pCard_BOUND(void* aAddr);
+  Card_Bound* _pCard_Bound(void* aAddr);
 }
 
 /*============================================================================*/

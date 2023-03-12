@@ -19,7 +19,7 @@ __vDeleteFunction(Card_EBound,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_EBound::Card_EBound(void)
-: Card_BOUND(CK_EBOUND)
+: Card_Bound(CK_EBOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

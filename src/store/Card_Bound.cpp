@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_BOUND.cpp -- Abstract Bound                                           */
+/* Card_Bound.cpp -- Abstract Bound                                           */
 /*============================================================================*/
 
-#include "Card_BOUND.hpp"
+#include "Card_Bound.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "Card_LBound.hpp"
@@ -14,14 +14,14 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_BOUND, CK_BOUND)
-__aNewFunction(Card_BOUND, CN_CARD)
-__vDeleteFunction(Card_BOUND, CN_CARD)
+__pCastFunction_Card(STORE, Card_Bound, CK_BOUND)
+__aNewFunction(Card_Bound, CN_CARD)
+__vDeleteFunction(Card_Bound, CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_BOUND::Card_BOUND(void)
+Card_Bound::Card_Bound(void)
     : Card(CK_BOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -34,7 +34,7 @@ Card_BOUND::Card_BOUND(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_BOUND::Card_BOUND(eCK eCard)
+Card_Bound::Card_Bound(eCK eCard)
 : Card(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -47,7 +47,7 @@ Card_BOUND::Card_BOUND(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_BOUND::~Card_BOUND(void) noexcept(false)
+Card_Bound::~Card_Bound(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -59,7 +59,7 @@ Card_BOUND::~Card_BOUND(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a (e|l|u) index bound given PRED                                    */
 /*----------------------------------------------------------------------------*/
-Card_BOUND* Card_BOUND::pCreateFrom_PRED(Card_PRED* p_PRED,
+Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
                                          char cTblSyn_boundedTo)
 {
   _static_
@@ -69,7 +69,7 @@ Card_BOUND* Card_BOUND::pCreateFrom_PRED(Card_PRED* p_PRED,
   Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_PRED->pGetChild(1));
 
-  Card_BOUND* p_bound = Card_BOUND::pBound_New(p_PRED->szValue());
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
 
   if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
     char cTblSyn_term_0 = Card::cTableColSyn(pTerm_0->szValue());
@@ -118,7 +118,7 @@ Card_BOUND* Card_BOUND::pCreateFrom_PRED(Card_PRED* p_PRED,
 /*----------------------------------------------------------------------------*/
 /* create a bound given cmpPred                                               */
 /*----------------------------------------------------------------------------*/
-Card_BOUND* Card_BOUND::pBound_New(Stz* szRelnOp)
+Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 {
   _static_
 
@@ -152,7 +152,7 @@ Card_BOUND* Card_BOUND::pBound_New(Stz* szRelnOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_BOUND::pGetTerm(i8 i_Term)
+Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -164,7 +164,7 @@ Card_Term* Card_BOUND::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BOUND::bIsEBound(void)
+bool Card_Bound::bIsEBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -177,7 +177,7 @@ bool Card_BOUND::bIsEBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BOUND::bIsLBound(void)
+bool Card_Bound::bIsLBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -190,7 +190,7 @@ bool Card_BOUND::bIsLBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BOUND::bIsUBound(void)
+bool Card_Bound::bIsUBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -203,7 +203,7 @@ bool Card_BOUND::bIsUBound(void)
 /*----------------------------------------------------------------------------*/
 /* get $In of ebound                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_BOUND::pGet_idxColOdn(void)
+Card_Term* Card_Bound::pGet_idxColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -219,7 +219,7 @@ Card_Term* Card_BOUND::pGet_idxColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* get $In of ebound                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* Card_BOUND::szGet_idxColOdn(void)
+Stz* Card_Bound::szGet_idxColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -234,7 +234,7 @@ Stz* Card_BOUND::szGet_idxColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_BOUND::pGet_tblColOdn(void)
+Card_Term* Card_Bound::pGet_tblColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -250,7 +250,7 @@ Card_Term* Card_BOUND::pGet_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card_BOUND::szGet_tblColOdn(void)
+Stz* Card_Bound::szGet_tblColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
