@@ -577,7 +577,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
     pCarryForward->Table.m_bReproject = true;
     //pCarryForward->Where_preAgg.m_nBumpBy = 1;
     if (QO_IN_OP == eWhatOp || QO_NOT_IN_OP == eWhatOp)
-      pCarryForward->Where_preAgg.m_bMorph_bolPred_To_cmpPred = true;
+      pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_Eq = true;
     else
     if (QO_RELN_OP == eWhatOp)
       pCarryForward->Where_preAgg.bReplace_sqCall_With_result = true;

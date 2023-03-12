@@ -52,16 +52,16 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(CardIter* pCI)
+Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpPred* pBolPred = nullptr;
+  Card_CmpPred* pCmpPred = nullptr;
 
-  auto bLambdaFn = [&pBolPred,pCI](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [&pCmpPred,pCI](Card_PRED* p_pred, bool bUpwards)
   {
     if (p_pred->bContains_callToSubQuery(pCI)) {
-      pBolPred = _pCard_CmpPred(p_pred);
+      pCmpPred = _pCard_CmpPred(p_pred);
       return C_TERMINATE_RECURSION;
     }
 
@@ -74,7 +74,7 @@ Card_CmpPred* Card_BoolCalc::pBolPred_whichCallsSubQuery(CardIter* pCI)
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
 
-  return pBolPred;
+  return pCmpPred;
 }
 
 /*----------------------------------------------------------------------------*/

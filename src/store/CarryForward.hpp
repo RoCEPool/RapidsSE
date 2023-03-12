@@ -30,7 +30,7 @@ namespace STORE
 
     struct {
       bool m_bSeen;
-      bool m_bMorph_bolPred_To_cmpPred;
+      bool m_bMorph_sqlOp_To_Eq;
       bool bReplace_sqCall_With_result;
     } Where_preAgg;
 
