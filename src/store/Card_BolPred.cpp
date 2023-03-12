@@ -41,56 +41,6 @@ Card_BolPred::~Card_BolPred(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_BolPred::vMorph_To_cmpPred(CardIter* pCI, Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsValue("exists"_Stz)) {
-
-    vCard(CK_CMPPRED);
-    vValue("=="_Stz);
-
-    Card_Term* p_term_one = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szValue())); //temp
-    p_term_one->vValue(p_term ? p_term->szValue() : "$1"_Stz);
-    return;
-  }
-
-  if (bIsValue("in"_Stz)) {
-
-    vCard(CK_CMPPRED);
-    vValue("=="_Stz);
-    Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szValue())); //temp
-    DELETE_CARD(p_term_popped);
-
-    Card_Term* p_term_head = _pCard_Term(pGetChild(0));
-    ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
-    p_term_head->vValue(p_term?p_term->szValue():"$1"_Stz);
-    return;
-  }
-
-  if (bIsValue("notIn"_Stz)) {
-
-    vCard(CK_CMPPRED);
-    vValue("=="_Stz);
-    Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szValue())); //temp
-    DELETE_CARD(p_term_popped);
-
-    Card_Term* p_term_head = _pCard_Term(pGetChild(0));
-    ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
-    p_term_head->vValue(p_term?p_term->szValue():"$1"_Stz);
-    return;
-  }
-
-  NEVER_REACH
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

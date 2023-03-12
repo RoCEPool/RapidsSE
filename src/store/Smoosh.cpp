@@ -97,7 +97,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   if (pCI->G.p_bolPred->bIsValue("notIn"_Stz) || pCI->G.p_bolPred->bIsValue("notExists"_Stz))
     pCI->G.p_table->vAppend(new Card_KeyNotExists);
 
-  pCI->G.p_bolPred->vMorph_To_cmpPred(pCI,pCI->G.p_term);
+  pCI->G.p_bolPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
 
@@ -170,7 +170,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  if (pCI->G.p_bolPred->bIsValue("notIn"_Stz) || pCI->G.p_bolPred->bIsValue("notExists"_Stz))
 //    pCI->G.p_table->vAppend(new Card_KeyNotExists);
 //
-//  pCI->G.p_bolPred->vMorph_To_cmpPred(pCI,pCI->G.p_term);
+//  pCI->G.p_bolPred->vMorph_SqlOp_To_Eq(pCI,pCI->G.p_term);
 //
 //  DELETE_CARD(pCI->G.p_term);
 //
