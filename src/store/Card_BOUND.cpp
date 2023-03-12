@@ -8,6 +8,7 @@
 #include "Card_LBound.hpp"
 #include "Card_UBound.hpp"
 #include "Card_EBound.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -197,6 +198,68 @@ bool Card_BOUND::bIsUBound(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get $In of ebound                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_BOUND::pGet_idxColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsIndexColOrdinal(p_term->szValue()))
+      return p_term;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get $In of ebound                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Card_BOUND::szGet_idxColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsIndexColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get $t.c of ebound                                                         */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_BOUND::pGet_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
+      return p_term;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get $t.c of ebound                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Card_BOUND::szGet_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
 }
 
 /*============================================================================*/

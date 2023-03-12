@@ -16,11 +16,6 @@ namespace STORE
     Card_EBound(void);
    ~Card_EBound(void) noexcept(false);
 
-    Card_Term* pGet_idxColOdn(void);
-    Stz* szGet_idxColOdn(void);
-
-    Card_Term* pGet_tblColOdn(void);
-    Stz* szGet_tblColOdn(void);
   };
 
   Card_EBound* _pCard_EBound(void* aAddr);

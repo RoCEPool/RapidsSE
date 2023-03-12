@@ -28,6 +28,12 @@ namespace STORE
     bool bIsLBound(void);
     bool bIsUBound(void);
 
+    Card_Term* pGet_idxColOdn(void);
+    Stz* szGet_idxColOdn(void);
+
+    Card_Term* pGet_tblColOdn(void);
+    Stz* szGet_tblColOdn(void);
+
   };
 
   Card_BOUND* _pCard_BOUND(void* aAddr);
