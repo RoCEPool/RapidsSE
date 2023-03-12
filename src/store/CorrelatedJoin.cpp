@@ -436,19 +436,19 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
     if (! p_pred->bIsPRED())
       return; /* this effectively declares resolve as void */
 
-    if (p_pred->bIsCard(CK_CMPPRED)) {
-
-      RASSERT(p_pred->bIsValue("=="_Stz));
+    if (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_CMPPRED)) {
 
       if (! p_pred->Y_bHas(P_CrlKeyTest))
         return;
 
+      RASSERT(p_pred->bIsValue("=="_Stz));
+
       CardIter xCI(p_pred);
       while (Card* p_child = xCI.pEachChild()) {
-        if (p_child->bIsPRED()) {
-          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
-          continue;
-        }
+//        if (p_child->bIsPRED()) {
+//          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
+//          continue;
+//        }
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
         if (Card::bIsCorrParamOrdinal(p_child->szValue())) {
@@ -479,10 +479,6 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         }
       }
-      return;
-    }
-    else
-    if (p_pred->bIsCard(CK_BOLPRED)) {
       return;
     }
     else
@@ -522,11 +518,11 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
     if (! p_pred->bIsPRED())
       return; /* this effectively declares resolve as void */
 
-    if (p_pred->bIsCard(CK_CMPPRED)) {
-      return;
-    }
-    else
-    if (p_pred->bIsCard(CK_BOLPRED)) {
+//    if (p_pred->bIsCard(CK_CMPPRED)) {
+//      return;
+//    }
+//    else
+    if (p_pred->bIsCard(CK_BOLPRED) || p_pred->bIsCard(CK_CMPPRED)) {
 
       if (! p_pred->bContains_callToSubQuery(pCI))
         return;
