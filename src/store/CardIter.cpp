@@ -1791,7 +1791,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TERM:             return G.p_term;
     case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
-    case CK_TWIST:            return G.p_twist;
     case CK_TYPE:             return G.p_type;
     case CK_UNIQUE:           return G.p_unique;
     case CK_WHERE:            return G.p_where;
@@ -2178,7 +2177,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOP:              return "G.p_top"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UNIQUE:           return "G.p_unique"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
@@ -3402,7 +3400,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOP:              *((Card**)&G.p_top)              = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;

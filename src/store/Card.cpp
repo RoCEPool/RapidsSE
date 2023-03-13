@@ -3548,19 +3548,6 @@ Card_Topology* Card::pSub_topology(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Twist.hpp"
-Card_Twist* Card::pSub_twist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Twist* p_twist =
-      _pCard_Twist(pFindSubCard(CK_TWIST));
-  return p_twist;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Type.hpp"
 Card_Type* Card::pSub_type(void)
 {
