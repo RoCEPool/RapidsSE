@@ -2845,19 +2845,6 @@ Card_Direction* Card::pSub_direction(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_EBound.hpp"
-Card_EBound* Card::pSub_eBound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_EBound* p_eBound =
-      _pCard_EBound(pFindSubCard(CK_EBOUND));
-  return p_eBound;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
 Card_Expr* Card::pSub_expr(void)
 {
@@ -3087,19 +3074,6 @@ Card_KeyNotExists* Card::pSub_keyNotExists(void)
   Card_KeyNotExists* p_keyNotExists =
       _pCard_KeyNotExists(pFindSubCard(CK_KEYNOTEXISTS));
   return p_keyNotExists;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_LBound.hpp"
-Card_LBound* Card::pSub_lBound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_LBound* p_lBound =
-      _pCard_LBound(pFindSubCard(CK_LBOUND));
-  return p_lBound;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3608,19 +3582,6 @@ Card_Type* Card::pSub_type(void)
   Card_Type* p_type =
       _pCard_Type(pFindSubCard(CK_TYPE));
   return p_type;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_UBound.hpp"
-Card_UBound* Card::pSub_uBound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_UBound* p_uBound =
-      _pCard_UBound(pFindSubCard(CK_UBOUND));
-  return p_uBound;
 }
 
 /*----------------------------------------------------------------------------*/

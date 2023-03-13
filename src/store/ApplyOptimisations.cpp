@@ -474,7 +474,8 @@ void ApplyOptimisations::vMorph_scan_To_indexScan(void)
 //      vDebugPoint();
 //    }
 
-    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
+    if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
+        m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
 
 
       m_pCI->G.p_scan->vCard(CK_INDEXSCAN);

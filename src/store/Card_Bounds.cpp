@@ -2,9 +2,8 @@
 /* Card_Bounds.cpp -- Join Predicate                                        */
 /*============================================================================*/
 
+#include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
-
-#include "Card_EBound.hpp"
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_Index.hpp"
@@ -58,7 +57,7 @@ Card_Bounds* Card_Bounds::pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
 
   Card_Bounds* p_bounds = new Card_Bounds;
 
-  Card_EBound* p_eBound = new Card_EBound;
+  Card_Bound* p_eBound = new Card_Bound("=="_Stz);
   p_bounds->vAppend(p_eBound);
 
 
@@ -95,7 +94,7 @@ eXK Card_Bounds::eCastKind_v2(Card_Index* p_index_r,
   p_tablePtn_r->vDump();
 
 
-  Card_EBound *p_ebound = pSub_eBound();
+  Card_Bound *p_ebound = pSub_bound();
 
   Card_Term* pIdxColOdn_inBounds = p_ebound->pGet_idxColOdn();
   Card_IdxCol *p_idxCol_inBounds =

@@ -138,7 +138,7 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
 
   CardIter xCI(this);
   while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_eBound()) {
+    if (p_index->pSub_bound() && p_index->pSub_bound()->bIsEBound()) {
       p_index->vSet_Choose_index();
       break;
     }

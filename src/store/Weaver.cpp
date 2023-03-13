@@ -992,37 +992,23 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_LBound* p_lBound = pCard_Index->pSub_lBound();
-  if (p_lBound) {
+  CardIter xCI(pCard_Index);
+  while (xCI.G_bEachMain(CK_BOUND)) {
 
-    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+    if (xCI.G.p_bound->bIsLBound() || xCI.G.p_bound->bIsUBound()) {
+      szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
 
-    i8 nSubs = p_lBound->nChildCards();
-    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card* pSubCard = p_lBound->pGet(i_Sub);
+      i8 nSubs = xCI.G.p_bound->nChildCards();
+      for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+        Card* pSubCard = xCI.G.p_bound->pGet(i_Sub);
 
-      if (! pSubCard->bIsCard(CK_TERM))
-        continue;
+        if (! pSubCard->bIsCard(CK_TERM))
+          continue;
 
-      Card_Term* p_term = _pCard_Term(pSubCard);
-      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
-    }
-  }
+        Card_Term* p_term = _pCard_Term(pSubCard);
+        szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
+      }
 
-  Card_UBound* p_uBound = pCard_Index->pSub_uBound();
-  if (p_uBound) {
-
-    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
-
-    i8 nSubs = p_uBound->nChildCards();
-    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card* pSubCard = p_uBound->pGet(i_Sub);
-
-      if (! pSubCard->bIsCard(CK_TERM))
-        continue;
-
-      Card_Term* p_term = _pCard_Term(pSubCard);
-      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
     }
   }
 }
@@ -1088,22 +1074,27 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
       return;
   }
 
-  Card_EBound *pCard_ebound = pCard_bounds->pSub_eBound();
-  if (! pCard_ebound)
-    return;
+  CardIter xCI(pCard_bounds);
+  while (xCI.G_bEachMain(CK_BOUND)) {
 
-  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
-
-  i8 nSubs = pCard_ebound->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card *pSubCard = pCard_ebound->pGet(i_Sub);
-
-    if (!pSubCard->bIsCard(CK_TERM))
+    if (! xCI.G.p_bound->bIsEBound())
       continue;
 
-    Card_Term *p_term = _pCard_Term(pSubCard);
-    szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+    i8 nSubs = xCI.G.p_bound->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card *pSubCard = xCI.G.p_bound->pGet(i_Sub);
+
+      if (!pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term *p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
+    }
   }
+
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1154,25 +1145,32 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
   }
 
   Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
-  if (! pCard_bounds)
-    return;
+  if (! pCard_bounds) {
+    pCard_bounds = p_keyNotExists->pSub_bounds();
+    if (! pCard_bounds)
+      return;
+  }
 
-  Card_EBound *pCard_ebound = pCard_bounds->pSub_eBound();
-  if (! pCard_ebound)
-    return;
+  CardIter xCI(pCard_bounds);
+  while (xCI.G_bEachMain(CK_BOUND)) {
 
-  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
-
-  i8 nSubs = pCard_ebound->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card *pSubCard = pCard_ebound->pGet(i_Sub);
-
-    if (!pSubCard->bIsCard(CK_TERM))
+    if (! xCI.G.p_bound->bIsEBound())
       continue;
 
-    Card_Term *p_term = _pCard_Term(pSubCard);
-    szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+    i8 nSubs = xCI.G.p_bound->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card *pSubCard = xCI.G.p_bound->pGet(i_Sub);
+
+      if (!pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term *p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
+    }
   }
+
 }
 
 /*----------------------------------------------------------------------------*/

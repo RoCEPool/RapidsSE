@@ -408,7 +408,6 @@ void CardIter::G_vClearMembers(void)
   G.p_crossPtnJoin     = nullptr;
   G.p_crossPtnJoinList = nullptr;
   G.p_direction        = nullptr;
-  G.p_eBound           = nullptr;
   G.p_expr             = nullptr;
   G.p_exprList         = nullptr;
   G.p_filter           = nullptr;
@@ -439,7 +438,6 @@ void CardIter::G_vClearMembers(void)
   G.p_key              = nullptr;
   G.p_keyExists        = nullptr;
   G.p_keyNotExists     = nullptr;
-  G.p_lBound           = nullptr;
   G.p_level            = nullptr;
   G.p_limit            = nullptr;
   G.p_load             = nullptr;
@@ -494,7 +492,6 @@ void CardIter::G_vClearMembers(void)
   G.p_topology         = nullptr;
   G.p_twist            = nullptr;
   G.p_type             = nullptr;
-  G.p_uBound           = nullptr;
   G.p_unique           = nullptr;
   G.p_where            = nullptr;
   G.p_xBound           = nullptr;
@@ -1718,7 +1715,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
     case CK_CROSSPTNJOINLIST: return G.p_crossPtnJoinList;
     case CK_DIRECTION:        return G.p_direction;
-    case CK_EBOUND:           return G.p_eBound;
     case CK_EXPR:             return G.p_expr;
     case CK_EXPRLIST:         return G.p_exprList;
     case CK_FILTER:           return G.p_filter;
@@ -1749,7 +1745,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_KEY:              return G.p_key;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
-    case CK_LBOUND:           return G.p_lBound;
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
     case CK_LOAD:             return G.p_load;
@@ -1803,7 +1798,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TOPOLOGY:         return G.p_topology;
     case CK_TWIST:            return G.p_twist;
     case CK_TYPE:             return G.p_type;
-    case CK_UBOUND:           return G.p_uBound;
     case CK_UNIQUE:           return G.p_unique;
     case CK_WHERE:            return G.p_where;
     case CK_XBOUND:           return G.p_xBound;
@@ -2112,7 +2106,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
     case CK_CROSSPTNJOINLIST: return "G.p_crossPtnJoinList"_Stz;
     case CK_DIRECTION:        return "G.p_direction"_Stz;
-    case CK_EBOUND:           return "G.p_eBound"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_EXPRLIST:         return "G.p_exprList"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
@@ -2142,7 +2135,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_KEY:              return "G.p_key"_Stz;
     case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
     case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
-    case CK_LBOUND:           return "G.p_lBound"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_LIMIT:            return "G.p_limit"_Stz;
     case CK_LOAD:             return "G.p_load"_Stz;
@@ -2196,7 +2188,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
     case CK_TWIST:            return "G.p_twist"_Stz;
     case CK_TYPE:             return "G.p_type"_Stz;
-    case CK_UBOUND:           return "G.p_uBound"_Stz;
     case CK_UNIQUE:           return "G.p_unique"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
     case CK_XBOUND:           return "G.p_xBound"_Stz;
@@ -3341,7 +3332,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
-    case CK_EBOUND:           *((Card**)&G.p_eBound)           = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_EXPRLIST:         *((Card**)&G.p_exprList)         = pCard; break;
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
@@ -3372,7 +3362,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
     case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard; break;
-    case CK_LBOUND:           *((Card**)&G.p_lBound)           = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard; break;
     case CK_LOAD:             *((Card**)&G.p_load)             = pCard; break;
@@ -3426,7 +3415,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
     case CK_TWIST:            *((Card**)&G.p_twist)            = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
-    case CK_UBOUND:           *((Card**)&G.p_uBound)           = pCard; break;
     case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
     case CK_XBOUND:           *((Card**)&G.p_xBound)           = pCard; break;

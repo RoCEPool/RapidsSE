@@ -92,7 +92,6 @@ namespace STORE
 
     Card_Direction *        p_direction;
 
-    Card_EBound *           p_eBound;
     Card_Expr *             p_expr;
     Card_ExprList *         p_exprList;
 
@@ -130,7 +129,6 @@ namespace STORE
     Card_KeyExists *        p_keyExists;
     Card_KeyNotExists *     p_keyNotExists;
 
-    Card_LBound *           p_lBound;
     Card_Level *            p_level;
     Card_Limit *            p_limit;
     Card_Load *             p_load;
@@ -193,8 +191,7 @@ namespace STORE
     Card_Twist *            p_twist;
     Card_Type *             p_type;
 
-    Card_UBound *           p_uBound;
-    Card_Unique *           p_unique;
+   Card_Unique *           p_unique;
 
     Card_Where *            p_where;
 

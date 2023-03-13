@@ -14,6 +14,7 @@ namespace STORE
     void  operator delete(void*);
 
     Card_Bound(void);
+    Card_Bound(Stz* szRelnOp);
     Card_Bound(eCK eCard);
    ~Card_Bound(void) noexcept(false);
 

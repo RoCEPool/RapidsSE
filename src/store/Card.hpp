@@ -52,7 +52,6 @@ namespace STORE
   class Card_Deck;
   class Card_Direction;
 
-  class Card_EBound;
   class Card_ELIST;
   class Card_Exists;
   class Card_Expr;
@@ -92,7 +91,6 @@ namespace STORE
   class Card_KeyExists;
   class Card_KeyNotExists;
 
-  class Card_LBound;
   class Card_Level;
   class Card_Limit;
   class Card_Load;
@@ -153,7 +151,6 @@ namespace STORE
   class Card_Twist;
   class Card_Type;
 
-  class Card_UBound;
   class Card_Unique;
 
   class Card_Where;
@@ -502,7 +499,6 @@ namespace STORE
     Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Direction*     pSub_direction(void);
-    Card_EBound*        pSub_eBound(void);
     Card_Expr*          pSub_expr(void);
     Card_ExprList*      pSub_exprList(void);
     Card_Filter*        pSub_filter(void);
@@ -526,7 +522,6 @@ namespace STORE
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
-    Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
     Card_Load*          pSub_load(void);
     Card_LoadJoined*    pSub_loadJoined(void);
@@ -565,7 +560,6 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
-    Card_UBound*        pSub_uBound(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
     Card_XBound*        pSub_xBound(void);

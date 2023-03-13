@@ -19,6 +19,7 @@
 
 #include "Card_BoardNo.hpp"
 #include "Card_BoolCalc.hpp"
+#include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 
 #include "Card_CalcOp.hpp"
@@ -45,7 +46,6 @@
 #include "Card_Deck.hpp"
 #include "Card_Direction.hpp"
 
-#include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ExprList.hpp"
@@ -84,7 +84,6 @@
 #include "Card_KeyExists.hpp"
 #include "Card_KeyNotExists.hpp"
 
-#include "Card_LBound.hpp"
 #include "Card_Level.hpp"
 #include "Card_Limit.hpp"
 #include "Card_LinksTo.hpp"
@@ -153,7 +152,6 @@
 #include "Card_Twist.hpp"
 #include "Card_Type.hpp"
 
-#include "Card_UBound.hpp"
 #include "Card_Unique.hpp"
 
 #include "Card_Where.hpp"

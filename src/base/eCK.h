@@ -43,7 +43,6 @@ enum eCK // card kind
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
 
-  /* */ CK_EBOUND,
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   /* */ CK_EXPRBOOL,
@@ -84,7 +83,6 @@ enum eCK // card kind
   /* */ CK_KEYEXISTS,
   /* */ CK_KEYNOTEXISTS,
 
-  /* */ CK_LBOUND,
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
   /* */ CK_LINKSTO,
@@ -154,7 +152,6 @@ enum eCK // card kind
   /* */ CK_TWIST,
   /* */ CK_TYPE,
 
-  /* */ CK_UBOUND,
   /* */ CK_UNIQUE,
 
   /* */ CK_WHERE,
@@ -225,7 +222,6 @@ static Stz* aCK[]
   /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
-  /* */ "CK_EBOUND"_Stz,       // CK_EBOUND
   /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
@@ -266,7 +262,6 @@ static Stz* aCK[]
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
   /* */ "CK_KEYNOTEXISTS"_Stz, // CK_KEYNOTEXISTS
 
-  /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
@@ -336,7 +331,6 @@ static Stz* aCK[]
   /* */ "CK_TWIST"_Stz,        // CK_TWIST
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
-  /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
@@ -406,7 +400,6 @@ static Stz* aCK_short[]
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
 
-  /* */ "ebound"_Stz,          // CK_EBOUND
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprBool"_Stz,        // CK_EXPRBOOL
@@ -447,7 +440,6 @@ static Stz* aCK_short[]
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
   /* */ "keyNotExists"_Stz,    // CK_KEYNOTEXISTS
 
-  /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
@@ -517,7 +509,6 @@ static Stz* aCK_short[]
   /* */ "twist"_Stz,           // CK_TWIST
   /* */ "type"_Stz,            // CK_TYPE
 
-  /* */ "ubound"_Stz,          // CK_UBOUND
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "where"_Stz,           // CK_WHERE
@@ -587,7 +578,6 @@ static Stz* aCK_notation[]
     /* */ "d"_Stz,            // CK_DECK
     /* */ "dir"_Stz,          // CK_DIRECTION
 
-    /* */ "eb"_Stz,           // CK_EBOUND
     /* */ "exi"_Stz,          // CK_EXISTS
     /* */ "ex"_Stz,           // CK_EXPR
     /* */ "exB"_Stz,          // CK_EXPRBOOL
@@ -628,7 +618,6 @@ static Stz* aCK_notation[]
     /* */ "kE"_Stz,           // CK_KEYEXISTS
     /* */ "kNE"_Stz,          // CK_KEYNOTEXISTS
 
-    /* */ "lb"_Stz,           // CK_LBOUND
     /* */ "lvl"_Stz,          // CK_LEVEL
     /* */ "lmt"_Stz,          // CK_LIMIT
     /* */ "lT"_Stz,           // CK_LINKSTO
@@ -699,7 +688,6 @@ static Stz* aCK_notation[]
     /* */ "tw"_Stz,          // CK_TWIST
     /* */ "ty"_Stz,          // CK_TYPE
 
-    /* */ "uB"_Stz,          // CK_UBOUND
     /* */ "u"_Stz,           // CK_UNIQUE
 
     /* */ "w"_Stz,           // CK_WHERE
