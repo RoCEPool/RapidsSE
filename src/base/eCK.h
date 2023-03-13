@@ -44,7 +44,6 @@ enum eCK // card kind
   /* */ CK_EXPRLIST,
 
   /* */ CK_FILTER,
-  /* */ CK_FILTELIST,
   /* */ CK_FLAT,
   /* */ CK_FOLD,
   /* */ CK_FOLDELIST,
@@ -205,8 +204,7 @@ static Stz* aCK[]
   /* */ "CK_EXPRLIST"_Stz,     // CK_EXPRLIST
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
-  /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
-  /* */ "CK_FLAT"_Stz,         // CK_FLAT
+   /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
   /* */ "CK_FOLDELIST"_Stz,    // CK_FOLDELIST
   /* */ "CK_FROM"_Stz,         // CK_FROM
@@ -366,7 +364,6 @@ static Stz* aCK_short[]
   /* */ "exprList"_Stz,        // CK_EXPRLIST
 
   /* */ "filter"_Stz,          // CK_FILTER
-  /* */ "filtElist"_Stz,       // CK_FILTELIST
   /* */ "flat"_Stz,            // CK_FLAT
   /* */ "fold"_Stz,            // CK_FOLD
   /* */ "foldElist"_Stz,       // CK_FOLDELIST
@@ -527,7 +524,6 @@ static Stz* aCK_notation[]
     /* */ "exL"_Stz,          // CK_EXPRLIST
 
     /* */ "f"_Stz,            // CK_FILTER
-    /* */ "fE"_Stz,           // CK_FILTELIST
     /* */ "fl"_Stz,           // CK_FLAT
     /* */ "fo"_Stz,           // CK_FOLD
     /* */ "foEL"_Stz,         // CK_FOLDELIST
