@@ -45,6 +45,29 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nChildren = this->nChildCards();
+  for (i8 i_idxCol = 0; i_idxCol < nChildren; i_idxCol++) {
+
+    pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
+    pCI->G.p_idxColNm = pCI->G.p_idxCol->pSub_idxColNm();
+
+    pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_colNm(pCI, pCI->G.p_idxColNm->szValue());
+    if (!pCI->G.p_expr)
+      continue;
+
+    pCI->G.p_key->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr);
+  }
+  //pCI->G.p_key->vDump();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
 void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)

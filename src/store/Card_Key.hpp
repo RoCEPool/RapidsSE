@@ -16,7 +16,7 @@ namespace STORE
     Card_Key(void);
    ~Card_Key(void) noexcept(false);
 
-    void vAdd_expr_BasedOn_expr(Card_Expr* p_expr);
+    void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr);
 
   };
 

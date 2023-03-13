@@ -19,6 +19,8 @@ namespace STORE
     static void vCullNonusedBounds(CardIter* pCI);
     static Card_Index* pDerive(Table* pTable);
 
+    void vAdd_key_exprs(CardIter* pCI);
+
     void vDeleteBounds(void);
     void vSet_Choose_index(void);
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);

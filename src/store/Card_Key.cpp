@@ -44,16 +44,16 @@ Card_Key::~Card_Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add a key expr to this key based on given projection expr                  */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vAdd_expr_BasedOn_expr(Card_Expr* p_expr)
+void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Expr = nChildCards();
+  i8 i_Key = nChildCards() + 1;
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumber(i_Expr+1,true);
+  p_expr_new->vRenumber(i_Key, true);
 
   p_expr_new->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
