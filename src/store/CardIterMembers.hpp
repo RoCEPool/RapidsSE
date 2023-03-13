@@ -135,8 +135,6 @@ namespace STORE
     Card_LoadPermSeq *      p_loadPermSeq;
     Card_LoadUnicast *      p_loadUnicast;
 
-    Card_Manner *           p_manner;
-
     Card_NCorrCols *        p_nCorrCols;
     Card_Next *             p_next;
     Card_Note *             p_note;

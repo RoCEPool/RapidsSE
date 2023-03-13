@@ -90,9 +90,7 @@ enum eCK // card kind
   /* */ CK_LOADPERMSEQ,
   /* */ CK_LOADUNICAST,
 
-  /* */ CK_MANNER,
-
-  /* */ CK_NCORRCOLS,
+   /* */ CK_NCORRCOLS,
   /* */ CK_NEXT,
   /* */ CK_NOTE,
   /* */ CK_NOTPRED,
@@ -259,8 +257,6 @@ static Stz* aCK[]
   /* */ "CK_LOADNETWORK"_Stz,  // CK_LOADNETWORK
   /* */ "CK_LOADPERMSEQ"_Stz,  // CK_LOADPERMSEQ
   /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
-
-  /* */ "CK_MANNER"_Stz,       // CK_MANNER
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
@@ -430,8 +426,6 @@ static Stz* aCK_short[]
   /* */ "loadPermSeq"_Stz,     // CK_LOADPERMSEQ
   /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST
 
-  /* */ "manner"_Stz,          // CK_MANNER
-
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "next"_Stz,            // CK_NEXT
   /* */ "note"_Stz,            // CK_NOTE
@@ -600,7 +594,6 @@ static Stz* aCK_notation[]
     /* */ "ldU"_Stz,          // CK_LOADUNICAST
 
     /* */ "mIJ"_Stz,          // CK_MAYBEINDEXJOIN
-    /* */ "mnr"_Stz,          // CK_MANNER
 
     /* */ "nCC"_Stz,          // CK_NCORRCOLS
     /* */ "n"_Stz,            // CK_NEXT

@@ -91,8 +91,6 @@
 #include "Card_LoadPermSeq.hpp"
 #include "Card_LoadUnicast.hpp"
 
-#include "Card_Manner.hpp"
-
 #include "Card_NCorrCols.hpp"
 #include "Card_Next.hpp"
 #include "Card_Note.hpp"

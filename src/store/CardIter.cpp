@@ -443,7 +443,6 @@ void CardIter::G_vClearMembers(void)
   G.p_loadNetwork      = nullptr;
   G.p_loadPermSeq      = nullptr;
   G.p_loadUnicast      = nullptr;
-  G.p_manner           = nullptr;
   G.p_nCorrCols        = nullptr;
   G.p_next             = nullptr;
   G.p_note             = nullptr;
@@ -1744,7 +1743,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LOADNETWORK:      return G.p_loadNetwork;
     case CK_LOADPERMSEQ:      return G.p_loadPermSeq;
     case CK_LOADUNICAST:      return G.p_loadUnicast;
-    case CK_MANNER:           return G.p_manner;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEXT:             return G.p_next;
     case CK_NOTE:             return G.p_note;
@@ -2127,12 +2125,11 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_LOADNETWORK:      return "G.p_loadNetwork"_Stz;
     case CK_LOADPERMSEQ:      return "G.p_loadPermSeq"_Stz;
     case CK_LOADUNICAST:      return "G.p_loadUnicast"_Stz;
-    case CK_MANNER:           return "G.p_manner"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
     case CK_NOTE:             return "G.p_note"_Stz;
     case CK_NOTPRED:          return "G.p_notPred"_Stz;
-     case CK_ON:               return "G.p_on"_Stz;
+    case CK_ON:               return "G.p_on"_Stz;
     case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
     case CK_ORDELMODN:        return "G.p_ordElmOdn"_Stz;
     case CK_ORDER:            return "G.p_order"_Stz;
@@ -3347,7 +3344,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LOADNETWORK:      *((Card**)&G.p_loadNetwork)      = pCard; break;
     case CK_LOADPERMSEQ:      *((Card**)&G.p_loadPermSeq)      = pCard; break;
     case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
-    case CK_MANNER:           *((Card**)&G.p_manner)           = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;

@@ -3132,19 +3132,6 @@ Card_LoadUnicast* Card::pSub_loadUnicast(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Manner.hpp"
-Card_Manner* Card::pSub_manner(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Manner* p_manner =
-      _pCard_Manner(pFindSubCard(CK_MANNER));
-  return p_manner;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_NCorrCols.hpp"
 Card_NCorrCols* Card::pSub_nCorrCols(void)
 {

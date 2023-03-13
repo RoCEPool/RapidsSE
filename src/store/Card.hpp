@@ -98,8 +98,6 @@ namespace STORE
   class Card_LoadPermSeq;
   class Card_LoadUnicast;
 
-  class Card_Manner;
-
   class Card_NCorrCols;
   class Card_Next;
   class Card_Note;
@@ -522,7 +520,6 @@ namespace STORE
     Card_LoadNetwork*   pSub_loadNetwork(void);
     Card_LoadPermSeq*   pSub_loadPermSeq(void);
     Card_LoadUnicast*   pSub_loadUnicast(void);
-    Card_Manner*        pSub_manner(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
