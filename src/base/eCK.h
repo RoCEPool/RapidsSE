@@ -112,7 +112,6 @@ enum eCK // card kind
 
   /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
-  /* */ CK_PMZWHERE,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
   /* */ CK_PTNCOL,
@@ -286,7 +285,6 @@ static Stz* aCK[]
 
   /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
-  /* */ "CK_PMZWHERE"_Stz,     // CK_PMZWHERE
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
   /* */ "CK_PTNCOL"_Stz,       // CK_PTNCOL
@@ -460,7 +458,6 @@ static Stz* aCK_short[]
 
   /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
-  /* */ "pmzWhere"_Stz,        // CK_PMZWHERE
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
   /* */ "ptnCol"_Stz,          // CK_PTNCOL
@@ -633,7 +630,6 @@ static Stz* aCK_notation[]
 
     /* */ "prt"_Stz,          // CK_PARTITION
     /* */ "pmut"_Stz,         // CK_PERMUTATION
-    /* */ "pW"_Stz,           // CK_PMZWHERE
     /* */ "pj"_Stz,           // CK_PROJECT
     /* */ "pjtn"_Stz,         // CK_PROJECTION
     /* */ "pC"_Stz,           // CK_PTNCOL

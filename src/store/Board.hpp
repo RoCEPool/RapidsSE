@@ -114,7 +114,6 @@
 #include "Card_Correlation.hpp"
 #include "Card_Partition.hpp"
 #include "Card_Permutation.hpp"
-#include "Card_PmzWhere.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 #include "Card_PtnCol.hpp"

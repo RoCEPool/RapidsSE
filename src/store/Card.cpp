@@ -3314,19 +3314,6 @@ Card_Correlation* Card::pSub_correlation(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_PmzWhere.hpp"
-Card_PmzWhere* Card::pSub_pmzWhere(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_PmzWhere* p_pmzWhere =
-      _pCard_PmzWhere(pFindSubCard(CK_PMZWHERE));
-  return p_pmzWhere;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Projection.hpp"
 Card_Projection* Card::pSub_projection(void)
 {
