@@ -67,6 +67,9 @@ namespace STORE
     Card_Term* m_pTerm_corrCol;
     Card_Term* m_pTerm_sqCall;
 
+    Card_Projection* m_Projection_running;
+    Card_Key*        m_Key_running;
+
     Card_Correlation* m_pCorrelation;
 
     s256 m_sT;

@@ -520,7 +520,10 @@ void CardIter::G_vClearRegisters(void)
   m_pTerm_0            = nullptr;
   m_pTerm_1            = nullptr;
   m_pTerm_2            = nullptr;
-  m_pTerm_corrCol     = nullptr;
+  m_pTerm_corrCol      = nullptr;
+
+  m_Projection_running = nullptr;
+  m_Key_running        = nullptr;
 
   G.sz_SubQueryNm      = nullptr;
 

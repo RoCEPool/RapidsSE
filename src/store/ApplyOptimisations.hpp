@@ -47,7 +47,7 @@ namespace STORE
     void vMorph_scan_To_indexScan(void);
 
 
-    void vS90_T30_Derive_order(void);
+    void vDerive_Projection_Keys(void);
 
   protected:
     Footer* aFooter(void);

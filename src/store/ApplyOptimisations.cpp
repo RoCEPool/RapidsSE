@@ -59,6 +59,8 @@ void ApplyOptimisations::vOptimise(void)
 
   vMorph_table_To_EEop();
   vMorph_scan_To_indexScan();
+
+  vDerive_Projection_Keys();
 }
 
 
@@ -377,7 +379,7 @@ bool ApplyOptimisations::bOptimise_RplScanByIndexScan(void) {
 //
 //      m_pCI->vPrintBoard(__LINE__);
 //
-//      vS90_T30_Derive_order();
+//      vDerive_Projection_Keys();
 //
 //      m_pCI->vPrintBoard(__LINE__);
 //
@@ -424,6 +426,69 @@ bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ApplyOptimisations::vDerive_Projection_Keys(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "Derive projection keys"_Stz);
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      case CK_AGGREG:      break;
+
+      case CK_GBYAGG:      break;
+
+      case CK_INDEXJOIN:   break;
+
+      case CK_INDEXSCAN:   break;
+
+      case CK_PROJECT:     break;
+
+      case CK_SORT:        break;
+
+      default:
+        break;
+    }
+
+  }
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ApplyOptimisations::vMorph_scan_To_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
+
+  m_pCI->G_vRestart();
+  if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
+
+    if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
+        m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
+
+
+      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
+
+      m_pCI->G.p_indexList->vChoose_index_For_indexScan();
+    }
+  }
+
+  m_pCI->vEndTransform();
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
@@ -438,79 +503,6 @@ void ApplyOptimisations::vMorph_table_To_EEop(void)
 
   m_pCI->vEndTransform();
 }
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                      vSeries_80_Index_Scan */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vMorph_scan_To_indexScan(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
-
-//    if (m_pCI->G.p_bounds->pSub_eBound()) {
-//      m_pCI->G.p_bounds->pSub_eBound()->vDump();
-//      vDebugPoint();
-//    }
-//    else
-//    if (m_pCI->G.p_bounds->pSub_lBound()) {
-//      m_pCI->G.p_bounds->pSub_lBound()->vDump();
-//      vDebugPoint();
-//    }
-//    else
-//    if (m_pCI->G.p_bounds->pSub_uBound()) {
-//      m_pCI->G.p_bounds->pSub_uBound()->vDump();
-//      vDebugPoint();
-//    }
-
-    if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
-        m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
-
-
-      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
-
-      m_pCI->G.p_indexList->vChoose_index_For_indexScan();
-    }
-  }
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                 vSeries_90_Stream_Ordering */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vS90_T30_Derive_order(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
-
-
-  Board::vDerive_order(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */
