@@ -20,7 +20,6 @@ enum eCK // card kind
   /* */ CK_CALL,
   /* */ CK_CANDINDEX,
   /* */ CK_CAST,
-  /* */ CK_CLAUSE,
   /* */ CK_CMPPRED,
   /* */ CK_COLNM,
   /* */ CK_COMBINED,
@@ -184,7 +183,6 @@ static Stz* aCK[]
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CAST"_Stz,         // CK_CAST
-  /* */ "CK_CLAUSE"_Stz,       // CK_CLAUSE
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_COLNM"_Stz,        // CK_COLNM
@@ -348,7 +346,6 @@ static Stz* aCK_short[]
   /* */ "call"_Stz,            // CK_CALL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cast"_Stz,            // CK_CAST
-  /* */ "clause"_Stz,          // CK_CLAUSE
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "colNm"_Stz,           // CK_COLNM
   /* */ "combined"_Stz,        // CK_COMBINED
@@ -509,10 +506,9 @@ static Stz* aCK_notation[]
     /* */ "bC"_Stz,           // CK_BOOLCALC
     /* */ "b"_Stz,            // CK_BOUNDS
 
-     /* */ "call"_Stz,         // CK_CALL
+    /* */ "call"_Stz,         // CK_CALL
     /* */ "cI"_Stz,           // CK_CANDINDEX
     /* */ "cast"_Stz,         // CK_CAST
-    /* */ "clause"_Stz,       // CK_CLAUSE
     /* */ "cP"_Stz,           // CK_CMPPRED
     /* */ "cmb"_Stz,          // CK_COMBINED
     /* */ "cNm"_Stz,          // CK_COLNM

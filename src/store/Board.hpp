@@ -23,7 +23,6 @@
 #include "Card_Call.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Cast.hpp"
-#include "Card_Clause.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_ColNm.hpp"
 #include "Card_Combined.hpp"

@@ -390,7 +390,6 @@ void CardIter::G_vClearMembers(void)
   G.p_bounds           = nullptr;
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
-  G.p_clause           = nullptr;
   G.p_cmpPred          = nullptr;
   G.p_colNm            = nullptr;
   G.p_combined         = nullptr;
@@ -1688,7 +1687,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_BOUNDS:           return G.p_bounds;
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
-    case CK_CLAUSE:           return G.p_clause;
     case CK_CMPPRED:          return G.p_cmpPred;
     case CK_COMMENT:          return G.p_comment;
     case CK_COLNM:            return G.p_colNm;
@@ -2069,7 +2067,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
     case CK_CAST:             return "G.p_cast"_Stz;
-    case CK_CLAUSE:           return "G.p_clause"_Stz;
     case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
     case CK_COLNM:            return "G.p_colNm"_Stz;
     case CK_COMBINED:         return "G.p_combined"_Stz;
@@ -3285,7 +3282,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
-    case CK_CLAUSE:           *((Card**)&G.p_clause)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;
     case CK_COLNM:            *((Card**)&G.p_colNm)            = pCard; break;
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
