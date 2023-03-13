@@ -50,7 +50,6 @@ namespace STORE
   class Card_Direction;
 
   class Card_ELIST;
-  class Card_Exists;
   class Card_Expr;
   class Card_ExprList;
 
