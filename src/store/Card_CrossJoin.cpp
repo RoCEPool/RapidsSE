@@ -74,9 +74,6 @@ void Card_CrossJoin::vTableMorphsToCrossJoin(STORE::CardIter *pCI)
     pCI->G_vNewMember(CK_BOUND);
     pCI->G.p_bounds->vAppend(pCI->G.p_bound);
 
-//    pCI->G_vNewMember(CK_TERM,"bound"_Stz);
-//    pCI->G.p_xBound->vAppend(pCI->G.p_term);
-
     pCI->G_vNewMember(CK_TERM,"$I1"_Stz);
     pCI->G.p_bound->vAppend(pCI->G.p_term);
 

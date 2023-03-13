@@ -494,7 +494,6 @@ void CardIter::G_vClearMembers(void)
   G.p_type             = nullptr;
   G.p_unique           = nullptr;
   G.p_where            = nullptr;
-  G.p_xBound           = nullptr;
 
   G.p_av_aggP          = nullptr;
   G.p_av_aggPN         = nullptr;
@@ -1800,7 +1799,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TYPE:             return G.p_type;
     case CK_UNIQUE:           return G.p_unique;
     case CK_WHERE:            return G.p_where;
-    case CK_XBOUND:           return G.p_xBound;
 
     case CK_AV_AGGP:          return G.p_av_aggP;
     case CK_AV_AGGPN:         return G.p_av_aggPN;
@@ -2190,7 +2188,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UNIQUE:           return "G.p_unique"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
-    case CK_XBOUND:           return "G.p_xBound"_Stz;
 
     case CK_AV_AGGP:          return "G.p_av_aggP"_Stz;
     case CK_AV_AGGPN:         return "G.p_av_aggPN"_Stz;
@@ -3417,7 +3414,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
-    case CK_XBOUND:           *((Card**)&G.p_xBound)           = pCard; break;
 
     case CK_AV_AGGP:          *((Card**)&G.p_av_aggP)          = pCard; break;
     case CK_AV_AGGPN:         *((Card**)&G.p_av_aggPN)         = pCard; break;

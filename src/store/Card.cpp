@@ -3610,19 +3610,6 @@ Card_Where* Card::pSub_where(void)
   return p_where;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_XBound.hpp"
-Card_XBound* Card::pSub_xBound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_XBound* p_xBound =
-      _pCard_XBound(pFindSubCard(CK_XBOUND));
-  return p_xBound;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* Aggregate View                                                             */
