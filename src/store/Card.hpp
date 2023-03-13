@@ -143,24 +143,6 @@ namespace STORE
 
   class Card_Where;
 
-  class Card_Av_AggP;
-  class Card_Av_AggPN;
-  class Card_Av_AggPNO;
-  class Card_Av_AggregP;
-  class Card_Av_AggregPN;
-  class Card_Av_AggregPNO;
-  class Card_Av_Filter;
-  class Card_Av_FilterProject;
-  class Card_Av_GbyAggP;
-  class Card_Av_GbyAggPN;
-  class Card_Av_GbyPNO;
-  class Card_Av_JoinSeries;
-  class Card_Av_Limit;
-  class Card_Av_Project;
-  class Card_Av_ScanJoinSeries;
-  class Card_Av_ScanOnly;
-  class Card_Av_Sort;
-
   class CardIter;
 }
 
@@ -541,25 +523,6 @@ namespace STORE
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    Card_Av_AggP*          pSub_avAggP(void);
-    Card_Av_AggPN*         pSub_avAggPN(void);
-    Card_Av_AggPNO*        pSub_avAggPNO(void);
-    Card_Av_AggregP*       pSub_avAggregP(void);
-    Card_Av_AggregPN*      pSub_avAggregPN(void);
-    Card_Av_AggregPNO*     pSub_avAggregPNO(void);
-    Card_Av_Filter*        pSub_avFilter(void);
-    Card_Av_FilterProject* pSub_avFilterProject(void);
-    Card_Av_GbyAggP*       pSub_avGbyAggP(void);
-    Card_Av_GbyAggPN*      pSub_avGbyAggPN(void);
-    Card_Av_GbyPNO*        pSub_avGbyPNO(void);
-    Card_Av_JoinSeries*    pSub_avJoinSeries(void);
-    Card_Av_Limit*         pSub_avLimit(void);
-    Card_Av_Project*       pSub_avProject(void);
-    Card_Av_ScanJoinSeries* pSub_avScanJoinSeries(void);
-    Card_Av_ScanOnly*      pSub_avScanOnly(void);
-    Card_Av_Sort*          pSub_avSort(void);
 
   private:
 
