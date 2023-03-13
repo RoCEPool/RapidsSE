@@ -15,7 +15,6 @@ namespace STORE
 
     Card_Bound(void);
     Card_Bound(Stz* szRelnOp);
-    Card_Bound(eCK eCard);
    ~Card_Bound(void) noexcept(false);
 
     static Card_Bound*    pCreateFrom_PRED(Card_PRED* p_PRED,
