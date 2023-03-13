@@ -1003,8 +1003,6 @@ enabled in subsequent releases.
      - Enabled
    * - ``TIMESTAMP``
      - Enabled
-   * - ``INTERVAL``
-     - **DISABLED**, interval types are not yet supported.
 
 
 .. list-table:: Supported :ref:`Logical Expression <logicalOperators>` Operator Summary

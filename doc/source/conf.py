@@ -70,7 +70,10 @@ latex_elements = {
   'papersize': 'a4paper',
 #  'extraclassoptions': 'openany,oneside',       # remove blank pages after title, TOC and end of chapers
   'fncychap': '\\usepackage[Rejne]{fncychap}',  # Nicer chapter headings
+
+  # Number headings below 3
   'preamble': r'''
+  \setcounter{secnumdepth}{5}
   ''',
 }
 

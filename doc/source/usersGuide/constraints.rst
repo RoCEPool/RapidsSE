@@ -85,3 +85,8 @@ RapidsSE has several system limitations. These are documented below:
 
     RapidsSE does not yet support unique indexes or primary keys, only
     non-unique indexes.
+
+13. **Interval columns**
+
+    RapidsSE does not support ``INTERVAL`` columns in ``CREATE TABLE`` statements,
+    however intervals are supported as literals and in expression calculations.

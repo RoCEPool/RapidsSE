@@ -99,8 +99,8 @@ Interval Types
 ``````````````
 The ``INTERVAL`` type is often thought of as a single data type but it is
 not. Instead it is a collection of 13 separate data types that fall into
-two different categories: **year-month** intervals and **day-time** intervals. This
-distinction is shown in :numref:`interval-data-types-table` below.
+two different interval categories: **year-month** intervals and **day-time**
+intervals. This distinction is shown in :numref:`interval-data-types-table` below.
 
 .. table:: Interval data types
    :name: interval-data-types-table
@@ -124,24 +124,28 @@ distinction is shown in :numref:`interval-data-types-table` below.
                           | ``INTERVAL MINUTE TO SECOND``
    ===================== ===================================
 
-Interval data types within the same category are compatible. An ``INTERVAL YEAR``
-can be converted to an ``INTERVAL MONTH`` or ``INTERVAL YEAR TO MONTH``.
+Interval data types within the same category are compatible and comparable. An
+``INTERVAL YEAR`` can be converted to an ``INTERVAL MONTH`` or ``INTERVAL YEAR TO MONTH``.
 Alternatively an ``INTERVAL MINUTE`` can be converted to an ``INTERVAL SECOND``.
 
 But interval data types from the two different categories are not compatible with
 each other. We cannot convert an ``INTERVAL MONTH`` to ``INTERVAL DAY`` because
-there are a variable number of days in a month. Expressions cannot mix interval
+there are a variable number of days in a month. This is why intervals are split into
+two distinct categories. Expressions involving intervals cannot mix interval
 types if they come from differing interval categories.
 
 Internally, RapidsSE stores all year-month intervals as a count of months. All
 day-time intervals are stored as a count of microseconds. This makes calculations
 involving intervals fast and it allows for RapidsSE to store a greater value
-range. If an interval value is being displayed and it's type contains multiple fields
-(e.g. a ``DAY TO MINUTE`` interval) then the interval value will be normalised for
-the smaller fields. For example, the microseconds value ``93,780,000,000`` that is
-stored in an ``INTERVAL DAY TO MINUTE`` will be displayed as 1 day, 2 hours, 3 minutes.
-That is, the minutes are normalised to the range [0-59] and hours are normalised to
-the range [0-23].
+range in a smaller amount of memory.
+
+The type of an interval ultimately affects how the value is displayed, as only those
+fields in the intervals type will be shown. If the type of an interval contains multiple
+fields (e.g. a ``DAY TO MINUTE`` interval) then the interval value will be normalised for
+the smaller fields and unbounded for the largest field. For example, the microseconds
+value ``93,780,000,000`` that is stored in an ``INTERVAL HOUR TO MINUTE`` will be displayed
+as 26 hours, 3 minutes. That is, the smallest field (minutes) is normalised to the range
+[0-59] but the largest field (hours) is unbounded.
 
 
 .. index::
@@ -197,10 +201,66 @@ This single quoted string has the following rules:
    INTERVAL '5:6.789012' MINUTE TO SECOND
    INTERVAL -'5:6.789012' MINUTE TO SECOND
 
-TODO: talk about how mixing interval types leads to the output interval type.
-TODO: talk about the supported expression operations involving intervals.
-TODO: +, -, \*, /, ivl + date/time/tsp, date/time/tsp - ivl, date/time/tsp - date/time/tsp.
-TODO: mention the constraint about not supporting intervals as a table column.
+
+.. index::
+   single: intervals; supported expression operators
+   single: expressions; interval supported operations
+
+.. _intervalSupportedOperators:
+
+Expression Operators Supporting Intervals
+`````````````````````````````````````````
+Intervals are supported in the operations show below. For simplicity, in this
+list ``INTERVAL`` is used to refer to any of the 13 varieties of interval types,
+``INTERVAL_DT`` is used to refer to any of the 10 day-time intervals variants
+and ``INTERVAL_YM`` is used to refer to any of the 3 year-month interval variants.
+Again, year-month and day-time intervals cannot be mixed in expressions because
+there is no valid conversion between the two categories.
+
+.. code:: sql
+
+   INTERVAL + INTERVAL
+   INTERVAL - INTERVAL
+   INTERVAL * INTEGER
+   INTEGER  * INTERVAL
+   INTERVAL / INTEGER
+
+   INTERVAL + DATE
+   DATE + INTERVAL
+   DATE - INTERVAL
+
+   INTERVAL_DT + TIME
+   TIME + INTERVAL_DT
+   TIME - INTERVAL_DT
+
+   INTERVAL + TIMESTAMP
+   TIMESTAMP + INTERVAL
+   TIMESTAMP - INTERVAL
+
+   DATE - DATE
+   TIME - TIME
+   TIMESTAMP - TIMESTAMP
+
+When an expression involves intervals of different types (but within the same
+category), the result may yield an interval of a type that encompasses all of
+the fields in the input interval types. For example, if an ``INTERVAL HOUR``
+and an ``INTERVAL SECOND`` were added together, the result would be an
+``INTERVAL HOUR TO SECOND`` so that it encompasses all of the fields of the
+two operands (the ``HOUR`` field and the ``SECOND`` field).
+
+Similarly, the addition of an ``INTERVAL HOUR TO SECOND`` and an
+``INTERVAL MINUTE`` would yield an ``INTERVAL HOUR TO SECOND`` because that
+already encompasses the ``MINUTE`` field of the second operand.
+
+
+.. index::
+   single: intervals; constraints
+
+Interval Constraints
+````````````````````
+RapidsSE currently does not support use of an interval data type as a column
+in a ``CREATE TABLE`` statement. Intervals can be specified as literal values
+or they may be the result of an expression calculation instead.
 
 
 .. index::
@@ -275,21 +335,51 @@ choose. This will result in an error to the user who should then either rewrite
 the query or use an CAST on the appropriate expression to make it clearer to
 the compiler how the expression is to be executed.
 
-.. csv-table:: Implicit Type Coercions Supported
-   :header: "Source Expression Type", "Can Be Converted To", "Comments / Limitations"
-   :widths: 25, 15, 60
+.. table:: Implicit Type Coercions Supported
+   :widths: 15, 40, 45
+   :class: longtable
 
-   "``INTEGER``", "``DECIMAL``", ""
-   "``INTEGER``", "``FLOAT``", ""
-   "``DECIMAL``", "``FLOAT``", ""
-   "``VARCHAR`` literal", "``INTEGER``",  "Only if the ``VARCHAR`` literal contains a valid ``INTEGER`` value. E.g. ``'123'``."
-   "``VARCHAR`` literal", "``DECIMAL``",  "Only if the ``VARCHAR`` literal contains a valid ``INTEGER`` or ``DECIMAL`` value. E.g. ``'123.45'``."
-   "``VARCHAR`` literal", "``FLOAT``",    "Only if the ``VARCHAR`` literal contains a valid ``INTEGER``, ``DECIMAL`` or ``FLOAT`` value. E.g. ``'123.45e0'``."
-   "``VARCHAR`` literal", "``DATE``",     "Only if the ``VARCHAR`` literal contains a valid ``DATE`` value. E.g. ``'2000-12-31'``."
-   "``VARCHAR`` literal", "``TIME``",     "Only if the ``VARCHAR`` literal contains a valid ``TIME`` value. E.g. ``'12:31:45'``."
-   "``VARCHAR`` literal", "``TIMESTAMP``","Only if the ``VARCHAR`` literal contains a valid ``TIMESTAMP`` value. E.g. ``'2000-12-31 12:31:45'``."
-   "``DATE``",            "``TIMESTAMP``", ""
-   "``BOOLEAN``",         "``VARCHAR``",   ""
+   ============================= ================================ ======================
+   Source Expression Type        Can Be Converted To              Comments / Limitations
+   ============================= ================================ ======================
+   ``INTEGER``                   ``DECIMAL`` or ``FLOAT```
+   ``DECIMAL``                   ``FLOAT``
+   ``VARCHAR`` literal           ``INTEGER``                      Only if the ``VARCHAR`` literal contains a valid ``INTEGER`` value. E.g. ``'123'``.
+   ``VARCHAR`` literal           ``DECIMAL``                      Only if the ``VARCHAR`` literal contains a valid ``INTEGER`` or ``DECIMAL`` value. E.g. ``'123.45'``.
+   ``VARCHAR`` literal           ``FLOAT``                        Only if the ``VARCHAR`` literal contains a valid ``INTEGER``, ``DECIMAL`` or ``FLOAT`` value. E.g. ``'123.45e0'``.
+   ``VARCHAR`` literal           ``DATE``                         Only if the ``VARCHAR`` literal contains a valid ``DATE`` value. E.g. ``'2000-12-31'``.
+   ``VARCHAR`` literal           ``TIME``                         Only if the ``VARCHAR`` literal contains a valid ``TIME`` value. E.g. ``'12:31:45'``.
+   ``VARCHAR`` literal           ``TIMESTAMP``                    Only if the ``VARCHAR`` literal contains a valid ``TIMESTAMP`` value. E.g. ``'2000-12-31 12:31:45'``.
+   ``DATE``                      ``TIMESTAMP``
+   ``BOOLEAN``                   ``VARCHAR``
+   ``INTERVAL YEAR``             ``INTERVAL YEAR TO MONTH``
+   ``INTERVAL MONTH``            ``INTERVAL YEAR TO MONTH``
+   ``INTERVAL DAY``              | ``INTERVAL DAY TO HOUR``
+                                 | ``INTERVAL DAY TO MINUTE``
+                                 | ``INTERVAL DAY TO SECOND``
+   ``INTERVAL HOUR``             | ``INTERVAL DAY TO HOUR``
+                                 | ``INTERVAL DAY TO MINUTE``
+                                 | ``INTERVAL DAY TO SECOND``
+                                 | ``INTERVAL HOUR TO MINUTE``
+                                 | ``INTERVAL HOUR TO SECOND``
+   ``INTERVAL MINUTE``           | ``INTERVAL DAY TO MINUTE``
+                                 | ``INTERVAL DAY TO SECOND``
+                                 | ``INTERVAL HOUR TO MINUTE``
+                                 | ``INTERVAL HOUR TO SECOND``
+                                 | ``INTERVAL MINUTE TO SECOND``
+   ``INTERVAL SECOND``           | ``INTERVAL DAY TO SECOND``
+                                 | ``INTERVAL HOUR TO SECOND``
+                                 | ``INTERVAL MINUTE TO SECOND``
+   ``INTERVAL DAY TO HOUR``      | ``INTERVAL DAY TO MINUTE``
+                                 | ``INTERVAL DAY TO SECOND``
+   ``INTERVAL DAY TO MINUTE``    | ``INTERVAL DAY TO SECOND``
+   ``INTERVAL HOUR TO MINUTE``   | ``INTERVAL DAY TO SECOND``
+                                 | ``INTERVAL DAY TO MINUTE``
+                                 | ``INTERVAL HOUR TO SECOND``
+   ``INTERVAL HOUR TO SECOND``   | ``INTERVAL DAY TO SECOND``
+   ``INTERVAL MINUTE TO SECOND`` | ``INTERVAL DAY TO SECOND``
+                                 | ``INTERVAL HOUR TO SECOND``
+   ============================= ================================ ======================
 
 If the source expression is a literal value then the SQL compiler will replace
 this value with the coerced value of the new type directly in the plan. If the
@@ -318,6 +408,11 @@ expression, the user may be able to resolve the ambiguity by explicitly
 converting operands in an expression. This can be done by using the ``CAST``
 operator. The supported explicit type conversions are listed below.
 
+.. note::
+   For simplicity, each of the 13 specific ``INTERVAL`` types are not shown.
+   Instead we are showing the category of interval they belong to (Day-Time
+   or Year-Month). All intervals within the same interval category are
+   convertable to each other.
 
 .. table:: Explicit Type Casting Supported
    :name: explicit-type-casting-table
@@ -331,7 +426,7 @@ operator. The supported explicit type conversions are listed below.
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``BOOLEAN``   |     Yes     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``CHAR``      |     ---     |   Yes    | Yes [3]_ |    Yes [3]_ | Yes [3]_  |   Yes [3]_  | Yes [3]_ [4]_    | Yes [3]_ [4]_    | Yes [3]_ |    Yes [3]_   |     Yes     |
+   | ``CHAR``      |     ---     |   Yes    | Yes [3]_ |    Yes [3]_ | Yes [3]_  |   Yes [3]_  |     ---          |     ---          | Yes [3]_ |    Yes [3]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``DATE``      |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |    Yes [1]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
@@ -341,17 +436,17 @@ operator. The supported explicit type conversions are listed below.
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``INTEGER``   |     ---     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``INTERVAL``  |     ---     | Yes [4]_ |   ---    |    ---      |    ---    |     ---     |   Yes [4]_       |     ---          |   ---    |      ---      |   Yes [4]_  |
+   | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     Yes          |     ---          |   ---    |      ---      |     ---     |
    | ``D-T``       |             |          |          |             |           |             |                  |                  |          |               |             |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``INTERVAL``  |     ---     | Yes [4]_ |   ---    |    ---      |    ---    |     ---     |     ---          |   Yes [4]_       |   ---    |      ---      |   Yes [4]_  |
+   | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     Yes          |   ---    |      ---      |     ---     |
    | ``Y-M``       |             |          |          |             |           |             |                  |                  |          |               |             |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``TIME``      |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |    Yes [2]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``TIMESTAMP`` |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |      Yes      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``VARCHAR``   |     ---     |   Yes    | Yes [3]_ |    Yes [3]_ | Yes [3]_  |   Yes [3]_  | Yes [3]_ [4]_    | Yes [3]_ [4]_    | Yes [3]_ |    Yes [3]_   |     Yes     |
+   | ``VARCHAR``   |     ---     |   Yes    | Yes [3]_ |    Yes [3]_ | Yes [3]_  |   Yes [3]_  |     ---          |     ---          | Yes [3]_ |    Yes [3]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
 
 
@@ -361,4 +456,3 @@ operator. The supported explicit type conversions are listed below.
        will reflect the local current date on the server.
 .. [3] The content of the CHAR or VARCHAR string must contain in string form a
        valid representation of a value of the target expression type.
-.. [4] Interval support will be provided in a future RapidsSE release.
