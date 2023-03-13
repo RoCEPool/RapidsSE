@@ -16,6 +16,8 @@ namespace STORE
     Card_Key(void);
    ~Card_Key(void) noexcept(false);
 
+    void vAdd_expr_BasedOn_expr(Card_Expr* p_expr);
+
   };
 
   Card_Key* _pCard_Key(void* aAddr);

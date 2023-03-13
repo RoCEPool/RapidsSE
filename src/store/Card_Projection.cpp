@@ -98,6 +98,24 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* re-projection                                                              */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(this == pCI->G.p_projection);
+
+  // within projection find the expr which has given colNm
+  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szColNm)) {
+    return _pCard_Expr(pCI->m_pCard_found);
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* re-projection                                                              */
+/*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pReProjection(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

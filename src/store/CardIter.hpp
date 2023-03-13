@@ -155,6 +155,9 @@ namespace STORE
     void vEndTransform(void);
 
     bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
+
+    bool G_bFindSubCard(eCK eMember, eCK eSub, eCK eGrandSub, Stz* szWithValue);
+
     void vFocusOnMain(void);
     void vForward(void);
 

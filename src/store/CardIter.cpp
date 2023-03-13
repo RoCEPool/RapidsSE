@@ -1619,6 +1619,33 @@ bool CardIter::G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find sub of member having grand-sub with given value                       */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bFindSubCard(eCK eMember, eCK eSub, eCK eGrandSub, Stz* szWithValue)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! (m_pCard_member = G_pGetMember(eMember))) {
+    m_pCard_found = nullptr;
+    return false;
+  }
+
+  for (;;) {
+    Card* p_sub;
+    Card* p_grandSub = m_pCard_member->pFindValueRecursive(eGrandSub,szWithValue,p_sub);
+    if (!p_grandSub)
+      break;
+    if (p_sub->bIsCard(eSub)) {
+      m_pCard_found = p_sub;
+      return true;
+    }
+  }
+
+  m_pCard_found = nullptr;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* focus on main                                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vFocusOnMain(void)

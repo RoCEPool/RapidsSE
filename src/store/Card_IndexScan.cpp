@@ -63,11 +63,38 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  // creates a new projection key
-  pCI->m_Key_running = nullptr;
+  pCI->G.p_indexList  = pSub_indexList();
+  pCI->G.p_index      = pCI->G.p_indexList->pFindChosenIndex();
+  pCI->G.p_idxColList = pCI->G.p_index->pSub_idxColList();
+
+  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_key        = pCI->G.p_projection->pSub_key();
+  if (pCI->G.p_key)
+    pCI->G.p_projection->vRemoveDeleteChild(pCI->G.p_key);
+  pCI->G.p_key = nullptr;
+
+  pCI->G.p_key = new Card_Key;
+
+  i8 nChildCards =  pCI->G.p_idxColList->nChildCards();
+  for (i8 i_idxCol = 0; i_idxCol < nChildCards; i_idxCol++) {
+
+    pCI->G.p_idxCol = _pCard_IdxCol(pCI->G.p_idxColList->pGetChild(i_idxCol));
+    pCI->G.p_idxColNm = pCI->G.p_idxCol->pSub_idxColNm();
+
+    pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_colNm(pCI,pCI->G.p_idxColNm->szValue());
+    if (! pCI->G.p_expr)
+      continue;
+
+    pCI->G.p_key->vAdd_expr_BasedOn_expr(pCI->G.p_expr);
+  }
+  //pCI->G.p_key->vDump();
+
+  //
+  pCI->G.p_projection->vAppend(pCI->G.p_key);
 
   // set running projection for use by next op
   pCI->m_Projection_running = pCI->G.p_projection;
+  pCI->m_Key_running = pCI->G.p_key;
 }
 
 /*============================================================================*/

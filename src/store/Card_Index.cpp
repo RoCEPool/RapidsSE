@@ -146,7 +146,6 @@ void Card_Index::vSet_Choose_index(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   this->Y_vSet(P_ChosenIndex);
-
 }
 
 /*----------------------------------------------------------------------------*/
