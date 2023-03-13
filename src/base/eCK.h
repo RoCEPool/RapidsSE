@@ -121,7 +121,6 @@ enum eCK // card kind
   /* */ CK_PTNDJOIN,
   /* */ CK_PTNDJOINSET,
 
-  /* */ CK_RBOUND,
   /* */ CK_REASON,
   /* */ CK_RELNOP,
   /* */ CK_RPNCALC,
@@ -297,8 +296,7 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
-  /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
-  /* */ "CK_REASON"_Stz,       // CK_REASON
+   /* */ "CK_REASON"_Stz,       // CK_REASON
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
@@ -473,7 +471,6 @@ static Stz* aCK_short[]
   /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
-  /* */ "rbound"_Stz,          // CK_RBOUND
   /* */ "reason"_Stz,          // CK_REASON
   /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
@@ -648,7 +645,6 @@ static Stz* aCK_notation[]
     /* */ "pJ"_Stz,           // CK_PTNDJOIN
     /* */ "pJS"_Stz,          // CK_PTNDJOINSET
 
-    /* */ "rB"_Stz,           // CK_RBOUND
     /* */ "rE"_Stz,           // CK_REASON
     /* */ "relOP"_Stz,        // CK_RELNOP
     /* */ "rOP"_Stz,          // CK_ROPRED
