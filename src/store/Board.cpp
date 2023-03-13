@@ -135,7 +135,7 @@ void Board::vDerive_group_order_For_gbyAgg(CardIter* pCI)
   _static_
 
   // todo: to be coded...
-
+/*
   //pCI->G.p_group = _pCard_Group(pCI->G.p_gbyAgg->pAppendNewCardTail(CK_GROUP));
 
   if ((pCI->G.p_group = pCI->G.p_gbyAgg->pSub_group()))
@@ -162,7 +162,7 @@ void Board::vDerive_group_order_For_gbyAgg(CardIter* pCI)
     pCI->G.p_ordElmOdn = _pCard_OrdElmOdn(pCI->G.p_order->pAppendNewCardTail(CK_ORDELMODN, szOrdElmOdn));
     pCI->G.p_ordElmOdn->vAppendNewCardTail(CK_DIRECTION,"ASC"_Stz);
   }
-
+*/
 }
 
 /*----------------------------------------------------------------------------*/

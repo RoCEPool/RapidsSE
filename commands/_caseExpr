@@ -1,0 +1,68 @@
+/*============================================================================*/
+/* _caseExpr                                                                  */
+/*============================================================================*/
+
+// --initial _caseExpr
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+
+load datums "../DATA/Datums/datums.csv" ;
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select * from dummy;
+
+
+trackMemory;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpchQ8_debug"
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+ rows: (1996,0.00)
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

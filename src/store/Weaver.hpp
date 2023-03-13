@@ -88,22 +88,10 @@ namespace STORE
     void vRpnCalc     (Stz* szRpnExpr, Card_RpnCalc*   pCard_RpnCalc);
     void vBoolCalc    (Stz* szRpnExpr, Card_BoolCalc*  pCard_BoolCalc);
     void vBoolPart    (Stz* szRpnExpr, Card*           p_part, i8 i);
-    void vOrPred      (Stz* szRpnExpr, Card_OrPred*    pCard_OrPred, i8 i);
-    void vAndPred     (Stz* szRpnExpr, Card_AndPred*   pCard_AndPred, i8 i);
-    void vCmpPred     (Stz* szRpnExpr, Card_CmpPred*   pCard_CmpPred, i8 i);
-    void vBolPred     (Stz* szRpnExpr, Card_BolPred*   pCard_BolPred, i8 i);
-    void vTermPred    (Stz* szRpnExpr, Card_Term*      pCard_Term, i8 i);
 
-    void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);
-    void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr);
-    void vPredAnd     (Stz* szRpnExpr, Card_AndPred*   pCard_PredAnd);
-    void vPredCmp     (Stz* szRpnExpr, Card_CmpPred*   pCard_PredCmp);
-
-    void vAggregates  (Stz* szRpnExpr, Card_Aggregates* pCard_Aggregates);
     void vAs          (Stz* szRpnExpr, Card_As*        pCard_As);
     void vTerm        (Stz* szRpnExpr, Card_Term*      pCard_Term);
     void vType        (Stz* szRpnExpr, Card_Type*      pCard_Type);
-
 
     void vConcat(Stz* aFormat, ...);
     void vConcat_vargs(Stz* aFormat, va_list xArgs);
@@ -114,7 +102,6 @@ namespace STORE
     void vPreStage(void);
   
     void vTabOp(void);
-    void vTabOp_commented(void);
     void vTabStage(void);
 
   private:

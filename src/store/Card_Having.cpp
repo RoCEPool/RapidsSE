@@ -114,9 +114,6 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   auto bLambdaFn_ro = [pCI,bBump](Card *pCard)
   {
-//    pCI->G.p_bolPred = _pCard_BolPred(pCard);
-//    RASSERT(pCI->G.p_bolPred->bIsRelnOp() );
-
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
@@ -130,7 +127,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_BOLPRED, bLambdaFn_ro);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_ro);
 }
 
 /*============================================================================*/

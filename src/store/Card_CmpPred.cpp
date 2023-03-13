@@ -361,12 +361,12 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
   CardIter xCI(p_bounds);
   while (Card* p_bound = xCI.pEachChild()) {
 
-    Card_Term* p_term_0 = _pCard_Term(p_bound->pGetChild(0));
-    //Stz* szBound = p_term_0->szValue();
+//    Card_Term* p_term_0 = _pCard_Term(p_bound->pGetChild(0));
+//    //Stz* szBound = p_term_0->szValue();
 
-    Stz* sz_bnd_idxColOdn = p_bound->pGetChild(1)->szValue();
-    Stz* sz_bnd_stmColOdn = p_bound->pGetChild(2)->szValue();
-    Stz* sz_bnd_rlnOpr    = p_bound->pGetChild(3)->szValue();
+    Stz* sz_bnd_idxColOdn = p_bound->pGetChild(0)->szValue();
+    Stz* sz_bnd_stmColOdn = p_bound->pGetChild(1)->szValue();
+    Stz* sz_bnd_rlnOpr    = p_bound->pGetChild(2)->szValue();
 
     Stz* sz_cmp_rlnOpr    = this->szValue();
     Stz* sz_cmp_arg_0     = this->pGetChild(0)->szValue();

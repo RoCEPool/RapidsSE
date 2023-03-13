@@ -11,22 +11,17 @@
 #include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
-#include "Card_Agg.hpp"
 #include "Card_Aggreg.hpp"
-#include "Card_Aggregates.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
-#include "Card_BoardNo.hpp"
-#include "Card_BolPred.hpp"
 #include "Card_BoolCalc.hpp"
+#include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 
-#include "Card_CalcOp.hpp"
 #include "Card_Call.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Cast.hpp"
-#include "Card_Clause.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_ColNm.hpp"
 #include "Card_Combined.hpp"
@@ -46,8 +41,6 @@
 #include "Card_Deck.hpp"
 #include "Card_Direction.hpp"
 
-#include "Card_EBound.hpp"
-#include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ExprList.hpp"
 
@@ -58,8 +51,6 @@
 #include "Card_From.hpp"
 
 #include "Card_GbyAgg.hpp"
-#include "Card_Genesis.hpp"
-#include "Card_Group.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
@@ -85,25 +76,19 @@
 #include "Card_KeyExists.hpp"
 #include "Card_KeyNotExists.hpp"
 
-#include "Card_LBound.hpp"
 #include "Card_Level.hpp"
 #include "Card_Limit.hpp"
-#include "Card_LinksTo.hpp"
 #include "Card_Load.hpp"
 #include "Card_LoadJoined.hpp"
 #include "Card_LoadNetwork.hpp"
 #include "Card_LoadPermSeq.hpp"
 #include "Card_LoadUnicast.hpp"
 
-#include "Card_Manner.hpp"
-
 #include "Card_NCorrCols.hpp"
 #include "Card_Next.hpp"
 #include "Card_Note.hpp"
 #include "Card_NotPred.hpp"
-#include "Card_NParmCols.hpp"
 
-#include "Card_ObyElist.hpp"
 #include "Card_On.hpp"
 #include "Card_OP.hpp"
 #include "Card_OrdAgg.hpp"
@@ -113,10 +98,8 @@
 #include "Card_OuterJoin.hpp"
 
 #include "Card_OuterColNm.hpp"
-#include "Card_Correlation.hpp"
 #include "Card_Partition.hpp"
 #include "Card_Permutation.hpp"
-#include "Card_PmzWhere.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 #include "Card_PtnCol.hpp"
@@ -125,9 +108,7 @@
 #include "Card_PtndJoin.hpp"
 #include "Card_PtndJoinSet.hpp"
 
-#include "Card_RBound.hpp"
 #include "Card_Reason.hpp"
-#include "Card_RelnOp.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_RpnTerms.hpp"
 
@@ -151,15 +132,11 @@
 #include "Card_Term.hpp"
 #include "Card_Top.hpp"
 #include "Card_Topology.hpp"
-#include "Card_Twist.hpp"
 #include "Card_Type.hpp"
 
-#include "Card_UBound.hpp"
 #include "Card_Unique.hpp"
 
 #include "Card_Where.hpp"
-
-#include "Card_XBound.hpp"
 
 #include "VertexSpec.hpp"
 #include "DeckSpec.hpp"
@@ -169,24 +146,6 @@
 #include "SubQuery.hpp"
 #include "Scope.hpp"
 
-
-#include "Card_Av_AggP.hpp"
-#include "Card_Av_AggPN.hpp"
-#include "Card_Av_AggPNO.hpp"
-#include "Card_Av_AggregP.hpp"
-#include "Card_Av_AggregPN.hpp"
-#include "Card_Av_AggregPNO.hpp"
-#include "Card_Av_Filter.hpp"
-#include "Card_Av_FilterProject.hpp"
-#include "Card_Av_GbyAggP.hpp"
-#include "Card_Av_GbyAggPN.hpp"
-#include "Card_Av_GbyPNO.hpp"
-#include "Card_Av_JoinSeries.hpp"
-#include "Card_Av_Limit.hpp"
-#include "Card_Av_Project.hpp"
-#include "Card_Av_ScanJoinSeries.hpp"
-#include "Card_Av_ScanOnly.hpp"
-#include "Card_Av_Sort.hpp"
 
 namespace STORE
 {

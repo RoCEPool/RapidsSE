@@ -13,7 +13,7 @@
 #include "Card_Index.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Bounds.hpp"
-#include "Card_BOUND.hpp"
+#include "Card_Bound.hpp"
 #include "Card_Term.hpp"
 #include "Card_TableNm.hpp"
 #include "PtnDef.hpp"
@@ -271,7 +271,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 
   char cTblSyn = this->cValue();
 
-  Card_BOUND* p_bound;
+  Card_Bound* p_bound;
   Card_PRED* p_childPRED;
   if (p_PRED->bIsCard(CK_ANDPRED)) {
     p_childPRED = (Card_PRED*)p_PRED->pGetChild(0);
@@ -281,7 +281,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
   }
   else
   if (p_PRED->bIsCard(CK_CMPPRED)) {
-    p_bound = Card_BOUND::pCreateFrom_PRED(p_PRED, cTblSyn);
+    p_bound = Card_Bound::pCreateFrom_PRED(p_PRED, cTblSyn);
     p_bounds->vAppend(p_bound);
   }
   else {
@@ -327,7 +327,7 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
       }
 
       char cTblSyn = this->cValue();
-      Card_BOUND *p_bound = Card_BOUND::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
+      Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
       p_bounds->vAppend(p_bound);
 
       p_pred_Of_filter->vMark1(MARK_UP);

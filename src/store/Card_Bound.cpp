@@ -1,0 +1,266 @@
+/*============================================================================*/
+/* Card_Bound.cpp -- Abstract Bound                                           */
+/*============================================================================*/
+
+#include "Card_Bound.hpp"
+#include "Card_CmpPred.hpp"
+#include "Card_Term.hpp"
+#include "CardIter.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction_Card(STORE, Card_Bound, CK_BOUND)
+__aNewFunction(Card_Bound, CN_CARD)
+__vDeleteFunction(Card_Bound, CN_CARD)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Bound::Card_Bound(void)
+    : Card(CK_BOUND)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Bound::Card_Bound(Stz* szRelnOp)
+    : Card(CK_BOUND)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vValue(szRelnOp);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Bound::~Card_Bound(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a (e|l|u) index bound given PRED                                    */
+/*----------------------------------------------------------------------------*/
+Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
+                                         char cTblSyn_boundedTo)
+{
+  _static_
+
+  Card_Term* p_term;
+
+  Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_PRED->pGetChild(1));
+
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
+
+  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+    char cTblSyn_term_0 = Card::cTableColSyn(pTerm_0->szValue());
+    if (cTblSyn_term_0 == cTblSyn_boundedTo) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bound->vAppend(p_term);
+      p_term = new Card_Term(pTerm_1->sz());
+      p_bound->vAppend(p_term);
+    }
+    else
+    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+      char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
+      if (cTblSyn_term_1 == cTblSyn_boundedTo) {
+        p_term = new Card_Term("$I1"_Stz);
+        p_bound->vAppend(p_term);
+        p_term = new Card_Term(pTerm_0->sz());
+        p_bound->vAppend(p_term);
+      } else {
+        NEVER_REACH
+      }
+    }
+  }
+  else
+  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
+    if (cTblSyn_term_1 == cTblSyn_boundedTo) {
+      p_term = new Card_Term("$I1"_Stz);
+      p_bound->vAppend(p_term);
+      p_term = new Card_Term(pTerm_0->sz());
+      p_bound->vAppend(p_term);
+    }
+    else {
+      NEVER_REACH
+    }
+  }
+  else {
+    NEVER_REACH
+  }
+
+  p_term = new Card_Term(p_PRED->sz());
+  p_bound->vAppend(p_term);
+
+  return p_bound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a bound given cmpPred                                               */
+/*----------------------------------------------------------------------------*/
+Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
+{
+  _static_
+
+//  Stz* szBound = Card::szBound(szRelnOp);
+//  Card_Term* p_term_bound = new Card_Term(szBound);
+
+  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
+    Card_Bound* p_lBound =  new Card_Bound(szRelnOp);
+    p_lBound->vValue(szRelnOp);
+    //p_lBound->vAppend(p_term_bound);
+    return p_lBound;
+  }
+
+  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz)) {
+    Card_Bound* p_uBound =  new Card_Bound(szRelnOp);
+    p_uBound->vValue(szRelnOp);
+    //p_uBound->vAppend(p_term_bound);
+    return p_uBound;
+  }
+
+  if (szRelnOp->bSame("=="_Stz)) {
+    Card_Bound* p_eBound =  new Card_Bound(szRelnOp);
+    p_eBound->vValue(szRelnOp);
+    //p_eBound->vAppend(p_term_bound);
+    return p_eBound;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGetTerm(i8 i_Term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term = _pCard_Term(pGetChild((i_Term)));
+
+  return p_term;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bIsEBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsValue("=="_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bIsLBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsValue(">"_Stz) || bIsValue(">="_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bIsUBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsValue("<"_Stz) || bIsValue("<="_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get $In of ebound                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGet_idxColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsIndexColOrdinal(p_term->szValue()))
+      return p_term;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get $In of ebound                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Bound::szGet_idxColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsIndexColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get $t.c of ebound                                                         */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGet_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
+      return p_term;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get $t.c of ebound                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Bound::szGet_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
+    if (Card::bIsTableColOrdinal(p_term->szValue()))
+      return p_term->szValue();
+
+  return nullptr;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

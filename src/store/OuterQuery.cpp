@@ -209,7 +209,7 @@ void OuterQuery::vAnalysis_Of_where_boolCalc(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    RASSERT(p_pred->bIsCard(CK_BOLPRED));
+    RASSERT(p_pred->bIsCard(CK_CMPPRED));
 
     p_pred->Y_vSet(P_SubQryCall);
 

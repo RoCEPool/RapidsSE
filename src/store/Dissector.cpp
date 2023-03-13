@@ -105,9 +105,6 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
     
   Stz* sBoardNm;
   if (C_UNKNOWN == i_SubPipeSpec) {
-//    if (MY::pJob()->bHasTag("<pipelineName>"_Stz))
-//      szPipelineNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
-//    else
     sBoardNm = "mainSQ"_Stz;
   }
   else {
@@ -142,7 +139,6 @@ void Dissector::vStage(i8 i_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
  
-  //Stz* szStageNm = m_pStageSpec->szStageNm();
   eYG eStageTopo = m_pStageSpec->eStageTopology();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -271,43 +267,16 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   // gbyElist : optional groupBy expression list
 
   if (pCard_RpnTerms->nItems()) {
-//    Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
-//    pCard_Aggreg->vAppend(pCard_ByList);
-//    pCard_Aggreg->vCard(CK_GBYAGG);
-//
-//    Card* p_dup = pCard_ByList->pDupCardAndSubCards();
-//    p_dup->vCard(CK_KEY);
-//    Card_Key* pCard_Key = _pCard_Key(p_dup);
-//    pCard_Aggreg->vAppend(pCard_Key);
-
-
     Card_Key* pCard_Key = pKey(pCard_RpnTerms);
     pCard_Aggreg->vAppend(pCard_Key);
     pCard_Aggreg->vCard(CK_GBYAGG);
-
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
-  
-//  Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
-//  pCard_Aggreg->vAppend(pCard_AggElist);
 
   Card_Projection* pCard_Projection = pProjection(pCard_RpnTerms);
   pCard_Aggreg->vAppend(pCard_Projection);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection : projection expression list
-
-//  Card* p_dup = pCard_AggElist->pDupCardAndSubCards();
-//  p_dup->vCard(CK_PROJECTION);
-//  Card_Projection* pCard_Projection = _pCard_Projection(p_dup);
-//  pCard_Aggreg->vAppend(pCard_Projection);
-
-//  Card* p_dup = pCard_Projection->pDupCardAndSubCards();
-//  p_dup->vCard(CK_AGGELIST);
-//  Card_AggElist* pCard_AggElist = _pCard_AggElist(p_dup);
-//  pCard_Aggreg->vAppend(pCard_AggElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -391,17 +360,8 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // filtElist : filter expression list
 
-//  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-//  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
-//  pCard_Expr->vRemoveSub(pCard_RpnCalc);
-//  DELETE_CARD(pCard_Expr);
-//  pCard_Filter->vAppend(pCard_RpnCalc);
-
   i8 i_Expr = 1;
   Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
-//  Card_Constraint* pCard_Constraint = new Card_Constraint;
-//  pCard_Constraint->vAppend(pCard_Expr);
-//  pCard_Filter->vAppend(pCard_Constraint);
 
   Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
   pCard_Expr->vRemoveSub(pCard_RpnCalc);
@@ -486,7 +446,6 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -665,9 +624,6 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
-//  Card_ProjElist* pCard_ProjElist = pProjElist(pCard_RpnTerms);
-//  pCard_Project->vAppend(pCard_ProjElist);
-
   Card_Projection* pCard_Projection = pProjection(pCard_RpnTerms);
   pCard_Project->vAppend(pCard_Projection);
 
@@ -682,14 +638,6 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   Card_RpnCalc* p_rpnCalc = pCard_Project->pSub_rpnCalc();
   if (p_rpnCalc && p_rpnCalc->Y_bHas(P_AggOp))
     pCard_Project->vCard(CK_AGGREG);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection : projection expression list
-
-//  Card* p_dup = pCard_Projection->pDupCardAndSubCards();
-//  p_dup->vCard(CK_PROJECTION);
-//  Card_ProjElist* pCard_ProjElist = _pCard_ProjElist(p_dup);
-//  pCard_Project->vAppend(pCard_ProjElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -783,24 +731,9 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
-//  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
-//  pCard_Sort->vAppend(pCard_ObyElist);
-
   Card_Key* pCard_Key = pKey(pCard_RpnTerms);
   pCard_Sort->vAppend(pCard_Key);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection : projection expression list
-
-//  Card* p_dup = pCard_ObyElist->pDupCardAndSubCards();
-//  p_dup->vCard(CK_KEY);
-//  Card_Key* pCard_Key = _pCard_Key(p_dup);
-//  pCard_Sort->vAppend(pCard_Key);
-
-//  Card* p_dup = pCard_Key->pDupCardAndSubCards();
-//  p_dup->vCard(CK_SBYELIST);
-//  Card_SbyElist* pCard_SbyElist = _pCard_SbyElist(p_dup);
-//  pCard_Sort->vAppend(pCard_SbyElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -857,16 +790,12 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,true,i_Expr);
     pCard_Expr->vCardNo(++i_CardNo);
-    //vAsEnsure(pCard_Expr);
 
     Card_As* p_as = pCard_Expr->pSub_as();
     if (p_as) {
       pCard_Expr->vRemoveChild(p_as);
       DELETE_CARD(p_as);
     }
-
-    //Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
-    //pCard_Expr->vAppend(pCard_Direction);
 
     pCard_Key->vAppend(pCard_Expr);
   }
@@ -941,21 +870,6 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   L_TYPE:
 
   // TYPE <type>
-//  Card_Term* pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
-//  eTE eTermEval = pCard_Term_popped->E_eTerm_TermEval();
-//  Stz* szTerm = pCard_Term_popped->sz();
-//
-//  RASSERT(szTerm->bSame("TYPE"_Stz));
-//  delete pCard_Term_popped;
-//  pCard_Term_popped = nullptr;
-//
-//  pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
-//  Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->sz());
-//  pCard_Expr->vAppend(pCard_Type);
-//
-//  delete pCard_Term_popped;
-//  pCard_Term_popped = nullptr;
-
   Card_Type* pCard_Type = pType(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_Type);
 
@@ -994,29 +908,6 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
 
 
-//  pCard_Term_head = pCard_RpnTerms->pHead();
-//  if (pCard_Term_head
-//      && pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
-//
-//    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
-//    pCard_Expr->vAppend(pCard_Aggregates);
-//
-//    pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
-//    delete pCard_Term_popped;
-//
-//    //HACK
-//    goto L_TYPE;
-//  }
-
-  // ensure as
-//  Card_As* pCard_As = pCard_Expr->pSub_as();
-//  if (! pCard_As) {
-//    s32 sAs;
-//    sAs.vSprint("__%lld"_Stz,ri_Expr);
-//    pCard_As = new Card_As(sAs);
-//    pCard_Expr->vAppend(pCard_As);
-//  }
-
   ri_Expr++;
   return pCard_Expr;
 }
@@ -1033,9 +924,6 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
 
-    //if (pCard_Term_popped->bIsValue(")"_Stz))
-    //  continue;
-    
     if (
            pCard_Term_popped->bIsValue("AGGREGATES"_Stz)
         || pCard_Term_popped->bIsValue("AS"_Stz)
@@ -1144,7 +1032,6 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
 
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
-  //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
   Card_Type* pCard_Type = new Card_Type(pCard_Term_type->sz());
 

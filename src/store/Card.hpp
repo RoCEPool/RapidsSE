@@ -22,23 +22,18 @@
 namespace STORE
 {
   class Card_AbsJoin;
-  class Card_Agg;
   class Card_Aggreg;
-  class Card_Aggregates;
   class Card_AndPred;
   class Card_As;
 
   class Card_BoardNo;
-  class Card_BolPred;
   class Card_BoolCalc;
-  class Card_BOUND;
+  class Card_Bound;
   class Card_Bounds;
 
-  class Card_CalcOp;
   class Card_CandIndex;
   class Card_Cast;
   class Card_CmpPred;
-  class Card_Clause;
   class Card_ColNm;
   class Card_Combined;
   class Card_Comment;
@@ -53,9 +48,7 @@ namespace STORE
   class Card_Deck;
   class Card_Direction;
 
-  class Card_EBound;
   class Card_ELIST;
-  class Card_Exists;
   class Card_Expr;
   class Card_ExprList;
 
@@ -66,8 +59,6 @@ namespace STORE
   class Card_From;
 
   class Card_GbyAgg;
-  class Card_Genesis;
-  class Card_Group;
 
   class Card_Hash;
   class Card_Having;
@@ -93,7 +84,6 @@ namespace STORE
   class Card_KeyExists;
   class Card_KeyNotExists;
 
-  class Card_LBound;
   class Card_Level;
   class Card_Limit;
   class Card_Load;
@@ -102,19 +92,15 @@ namespace STORE
   class Card_LoadPermSeq;
   class Card_LoadUnicast;
 
-  class Card_Manner;
-
   class Card_NCorrCols;
   class Card_Next;
   class Card_Note;
   class Card_NotPred;
-  class Card_NParmCols;
 
   class Card_On;
   class Card_OrdAgg;
   class Card_Order;
   class Card_OrPred;
-  class Card_ObyElist;
   class Card_OuterColNm;
   class Card_OuterJoin;
 
@@ -123,7 +109,6 @@ namespace STORE
   class Card_Projection;
   class Card_PtndJoin;
   class Card_PtndJoinSet;
-  class Card_PmzWhere;
 
   class Card_RBound;
   class Card_Reason;
@@ -154,30 +139,9 @@ namespace STORE
   class Card_Twist;
   class Card_Type;
 
-  class Card_UBound;
   class Card_Unique;
 
   class Card_Where;
-
-  class Card_XBound;
-
-  class Card_Av_AggP;
-  class Card_Av_AggPN;
-  class Card_Av_AggPNO;
-  class Card_Av_AggregP;
-  class Card_Av_AggregPN;
-  class Card_Av_AggregPNO;
-  class Card_Av_Filter;
-  class Card_Av_FilterProject;
-  class Card_Av_GbyAggP;
-  class Card_Av_GbyAggPN;
-  class Card_Av_GbyPNO;
-  class Card_Av_JoinSeries;
-  class Card_Av_Limit;
-  class Card_Av_Project;
-  class Card_Av_ScanJoinSeries;
-  class Card_Av_ScanOnly;
-  class Card_Av_Sort;
 
   class CardIter;
 }
@@ -486,17 +450,13 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    Card_Agg*           pSub_agg(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoardNo*       pSub_boardNo(void);
-    Card_BolPred*       pSub_bolPred(void);
     Card_BoolCalc*      pSub_boolCalc(void);
-    Card_BOUND*         pSub_bound(void);
+    Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_CalcOp*        pSub_calcOp(void);
     Card_Cast*          pSub_cast(void);
-    Card_Clause*        pSub_clause(void);
     Card_ColNm*         pSub_colNm(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Comment*       pSub_comment(void);
@@ -504,7 +464,6 @@ namespace STORE
     Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Direction*     pSub_direction(void);
-    Card_EBound*        pSub_eBound(void);
     Card_Expr*          pSub_expr(void);
     Card_ExprList*      pSub_exprList(void);
     Card_Filter*        pSub_filter(void);
@@ -513,8 +472,6 @@ namespace STORE
     Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
-    Card_Genesis*       pSub_genesis(void);
-    Card_Group*         pSub_group(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IdxColNm*      pSub_idxColNm(void);
     Card_Index*         pSub_index(void);
@@ -528,25 +485,21 @@ namespace STORE
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
-    Card_LBound*        pSub_lBound(void);
     Card_Level*         pSub_level(void);
     Card_Load*          pSub_load(void);
     Card_LoadJoined*    pSub_loadJoined(void);
     Card_LoadNetwork*   pSub_loadNetwork(void);
     Card_LoadPermSeq*   pSub_loadPermSeq(void);
     Card_LoadUnicast*   pSub_loadUnicast(void);
-    Card_Manner*        pSub_manner(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
-    Card_NParmCols*     pSub_nParmCols(void);
     Card_On*            pSub_on(void);
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
-    Card_PmzWhere*      pSub_pmzWhere(void);
     Card_Projection*    pSub_projection(void);
     Card_Reason*        pSub_reason(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
@@ -567,30 +520,9 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
-    Card_UBound*        pSub_uBound(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
-    Card_XBound*        pSub_xBound(void);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    Card_Av_AggP*          pSub_avAggP(void);
-    Card_Av_AggPN*         pSub_avAggPN(void);
-    Card_Av_AggPNO*        pSub_avAggPNO(void);
-    Card_Av_AggregP*       pSub_avAggregP(void);
-    Card_Av_AggregPN*      pSub_avAggregPN(void);
-    Card_Av_AggregPNO*     pSub_avAggregPNO(void);
-    Card_Av_Filter*        pSub_avFilter(void);
-    Card_Av_FilterProject* pSub_avFilterProject(void);
-    Card_Av_GbyAggP*       pSub_avGbyAggP(void);
-    Card_Av_GbyAggPN*      pSub_avGbyAggPN(void);
-    Card_Av_GbyPNO*        pSub_avGbyPNO(void);
-    Card_Av_JoinSeries*    pSub_avJoinSeries(void);
-    Card_Av_Limit*         pSub_avLimit(void);
-    Card_Av_Project*       pSub_avProject(void);
-    Card_Av_ScanJoinSeries* pSub_avScanJoinSeries(void);
-    Card_Av_ScanOnly*      pSub_avScanOnly(void);
-    Card_Av_Sort*          pSub_avSort(void);
 
   private:
 

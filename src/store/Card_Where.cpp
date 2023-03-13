@@ -241,9 +241,9 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_where->Y_vSet(P_Smoothed);
 
-  if (pCarryForward->Where_preAgg.m_bMorph_bolPred_To_cmpPred) {
-    pCI->G.p_bolPred = pCI->G.p_where->pSub_bolPred();
-    pCI->G.p_bolPred->vMorph_To_cmpPred(pCI);
+  if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_Eq) {
+    pCI->G.p_cmpPred = pCI->G.p_where->pSub_cmpPred();
+    pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI);
   }
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {

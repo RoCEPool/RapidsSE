@@ -458,7 +458,26 @@ void ApplyOptimisations::vMorph_scan_To_indexScan(void)
 
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
-    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
+
+//    if (m_pCI->G.p_bounds->pSub_eBound()) {
+//      m_pCI->G.p_bounds->pSub_eBound()->vDump();
+//      vDebugPoint();
+//    }
+//    else
+//    if (m_pCI->G.p_bounds->pSub_lBound()) {
+//      m_pCI->G.p_bounds->pSub_lBound()->vDump();
+//      vDebugPoint();
+//    }
+//    else
+//    if (m_pCI->G.p_bounds->pSub_uBound()) {
+//      m_pCI->G.p_bounds->pSub_uBound()->vDump();
+//      vDebugPoint();
+//    }
+
+    if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
+        m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
+
+
       m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
 
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();

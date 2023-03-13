@@ -68,17 +68,14 @@ void Card_CrossJoin::vTableMorphsToCrossJoin(STORE::CardIter *pCI)
     pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table,pCI->G.p_crossJoin);
     pCI->G.p_crossJoin->vInsert(pCI->G.p_table);
 
-    pCI->G_vNewMember(CK_BOUNDS);
+    pCI->G_vNewMember(CK_BOUNDS,"cross"_Stz);
     pCI->G.p_index->vAppend(pCI->G.p_bounds);
 
-    pCI->G_vNewMember(CK_XBOUND);
-    pCI->G.p_bounds->vAppend(pCI->G.p_xBound);
-
-    pCI->G_vNewMember(CK_TERM,"bound"_Stz);
-    pCI->G.p_xBound->vAppend(pCI->G.p_term);
+    pCI->G_vNewMember(CK_BOUND);
+    pCI->G.p_bounds->vAppend(pCI->G.p_bound);
 
     pCI->G_vNewMember(CK_TERM,"$I1"_Stz);
-    pCI->G.p_xBound->vAppend(pCI->G.p_term);
+    pCI->G.p_bound->vAppend(pCI->G.p_term);
 
     pCI->G.p_MainCard = pCI->G.p_crossJoin;
 }

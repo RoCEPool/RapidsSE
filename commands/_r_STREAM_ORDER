@@ -9,7 +9,7 @@ trackMemory;
 _r_schema
 
 create unique index O_idx0  on Orders   (O_ORDERKEY );
-create index L_idx0  on Lineitem (L_ORDERKEY );
+create        index L_idx0  on Lineitem (L_ORDERKEY );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -25,6 +25,7 @@ select o_orderkey, avg(l_extendedprice)
        O_ORDERKEY = L_ORDERKEY
    and o_orderkey < 100
    and o_orderkey > 3
+   //and o_orderkey = 50
    and o_totalPrice > 0.0
    and o_orderStatus = 'F'
  group by O_ORDERKEY
