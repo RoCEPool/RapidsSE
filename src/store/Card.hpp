@@ -64,7 +64,6 @@ namespace STORE
   class Card_From;
 
   class Card_GbyAgg;
-  class Card_Genesis;
   class Card_Group;
 
   class Card_Hash;
@@ -105,7 +104,6 @@ namespace STORE
   class Card_Next;
   class Card_Note;
   class Card_NotPred;
-  class Card_NParmCols;
 
   class Card_On;
   class Card_OrdAgg;
@@ -504,7 +502,6 @@ namespace STORE
     Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
-    Card_Genesis*       pSub_genesis(void);
     Card_Group*         pSub_group(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IdxColNm*      pSub_idxColNm(void);

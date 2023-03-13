@@ -101,7 +101,6 @@ namespace STORE
     Card_From *             p_from;
 
     Card_GbyAgg *           p_gbyAgg;
-    Card_Genesis *          p_genesis;
     Card_Group *            p_group;
 
     Card_Hash *             p_hash;

@@ -2920,19 +2920,6 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
   return p_gbyAgg;
 }
 
-//*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Genesis.hpp"
-Card_Genesis* Card::pSub_genesis(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Genesis* p_genesis =
-      _pCard_Genesis(pFindSubCard(CK_GENESIS));
-  return p_genesis;
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
