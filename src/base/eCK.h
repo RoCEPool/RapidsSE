@@ -95,7 +95,6 @@ enum eCK // card kind
   /* */ CK_NOTPRED,
   /* */ CK_NPARMCOLS,
 
-  /* */ CK_OBYELIST,
   /* */ CK_ON,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
@@ -262,7 +261,6 @@ static Stz* aCK[]
   /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
   /* */ "CK_NPARMCOLS"_Stz,    // CK_NPARMCOLS
 
-  /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_ON"_Stz,           // CK_ON
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
@@ -429,7 +427,6 @@ static Stz* aCK_short[]
   /* */ "notPred"_Stz,         // CK_NOTPRED
   /* */ "nParmCols"_Stz,       // CK_NPARMCOLS
 
-  /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
@@ -594,8 +591,7 @@ static Stz* aCK_notation[]
     /* */ "note"_Stz,         // CK_NOTE
     /* */ "nPC"_Stz,          // CK_NPARMCOLS
 
-    /* */ "oEL"_Stz,          // CK_OBYELIST
-    /* */ "on"_Stz,           // CK_ON
+     /* */ "on"_Stz,           // CK_ON
     /* */ "opt"_Stz,          // CK_OPTION
     /* */ "oA"_Stz,           // CK_ORDAGG
     /* */ "sOO"_Stz,          // CK_ORDELMODN

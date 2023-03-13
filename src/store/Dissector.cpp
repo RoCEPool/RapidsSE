@@ -783,24 +783,9 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
-//  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
-//  pCard_Sort->vAppend(pCard_ObyElist);
-
   Card_Key* pCard_Key = pKey(pCard_RpnTerms);
   pCard_Sort->vAppend(pCard_Key);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection : projection expression list
-
-//  Card* p_dup = pCard_ObyElist->pDupCardAndSubCards();
-//  p_dup->vCard(CK_KEY);
-//  Card_Key* pCard_Key = _pCard_Key(p_dup);
-//  pCard_Sort->vAppend(pCard_Key);
-
-//  Card* p_dup = pCard_Key->pDupCardAndSubCards();
-//  p_dup->vCard(CK_SBYELIST);
-//  Card_SbyElist* pCard_SbyElist = _pCard_SbyElist(p_dup);
-//  pCard_Sort->vAppend(pCard_SbyElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

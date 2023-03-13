@@ -107,7 +107,6 @@ namespace STORE
   class Card_OrdAgg;
   class Card_Order;
   class Card_OrPred;
-  class Card_ObyElist;
   class Card_OuterColNm;
   class Card_OuterJoin;
 
