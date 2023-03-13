@@ -2884,19 +2884,6 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Group.hpp"
-Card_Group* Card::pSub_group(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Group* p_group =
-      _pCard_Group(pFindSubCard(CK_GROUP));
-  return p_group;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_IdxColList.hpp"
 Card_IdxColList* Card::pSub_idxColList(void)
 {

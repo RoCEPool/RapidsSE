@@ -98,7 +98,6 @@ namespace STORE
     Card_From *             p_from;
 
     Card_GbyAgg *           p_gbyAgg;
-    Card_Group *            p_group;
 
     Card_Hash *             p_hash;
     Card_Having *           p_having;
