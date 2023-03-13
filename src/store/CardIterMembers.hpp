@@ -142,7 +142,6 @@ namespace STORE
     Card_Next *             p_next;
     Card_Note *             p_note;
     Card_NotPred *          p_notPred;
-    Card_NParmCols *        p_nParmCols;
 
     Card_On *               p_on;
     Card_OrdAgg *           p_ordAgg;

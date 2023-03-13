@@ -3207,18 +3207,6 @@ Card_NotPred* Card::pSub_notPred(void)
   return p_notPred;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_NParmCols.hpp"
-Card_NParmCols* Card::pSub_nParmCols(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_NParmCols* p_nParmCols =
-      _pCard_NParmCols(pFindSubCard(CK_NPARMCOLS));
-  return p_nParmCols;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

@@ -530,7 +530,6 @@ namespace STORE
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
-    Card_NParmCols*     pSub_nParmCols(void);
     Card_On*            pSub_on(void);
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_Order*         pSub_order(void);
