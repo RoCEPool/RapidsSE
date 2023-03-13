@@ -46,6 +46,18 @@ void Card_Sort::vComputeProjection(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* derive projection key                                                      */
+/*----------------------------------------------------------------------------*/
+void Card_Sort::vDerive_Projection_Key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // creates a new projection key
+
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

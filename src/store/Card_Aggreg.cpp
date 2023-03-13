@@ -72,6 +72,17 @@ void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* derive projection key                                                      */
+/*----------------------------------------------------------------------------*/
+void Card_Aggreg::vDerive_Projection_Key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // creates a new projection key
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vSmooth(CardIter* pCI)

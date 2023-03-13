@@ -26,6 +26,8 @@ namespace STORE
     void vComputeProjection(CardIter* pCI); // prototype
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
+    void vDerive_Projection_Key(CardIter* pCI);
+
     void vInject_foldExpr(CardIter* pCI);
     void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);

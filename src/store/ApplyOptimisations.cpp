@@ -440,21 +440,22 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
   m_pCI->vTransform(__func__, "Derive projection keys"_Stz);
 
   m_pCI->G_vRestart();
+
+  RASSERT(nullptr == m_pCI->m_Projection_running);
+  RASSERT(nullptr == m_pCI->m_Key_running);
+
   while (m_pCI->G_bEachMain()) {
+
+    m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection();
 
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_AGGREG:      break;
-
-      case CK_GBYAGG:      break;
-
-      case CK_INDEXJOIN:   break;
-
-      case CK_INDEXSCAN:   break;
-
-      case CK_PROJECT:     break;
-
-      case CK_SORT:        break;
+      case CK_AGGREG:    m_pCI->G.p_aggreg->vDerive_Projection_Key(m_pCI);    break;
+      case CK_GBYAGG:    m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);    break;
+      case CK_INDEXJOIN: m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI); break;
+      case CK_INDEXSCAN: m_pCI->G.p_indexScan->vDerive_Projection_Key(m_pCI); break;
+      case CK_PROJECT:   m_pCI->G.p_project->vDerive_Projection_Key(m_pCI);   break;
+      case CK_SORT:      m_pCI->G.p_sort->vDerive_Projection_Key(m_pCI);      break;
 
       default:
         break;

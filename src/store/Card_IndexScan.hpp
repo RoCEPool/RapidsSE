@@ -18,7 +18,7 @@ namespace STORE
 
     static void vIndividuateFilter(CardIter* pCI);
 
-    void vComputeProjection(CardIter* pCI); // prototype
+    void vDerive_Projection_Key(CardIter* pCI);
   };
 
   Card_IndexScan* _pCard_IndexScan(void* aAddr);

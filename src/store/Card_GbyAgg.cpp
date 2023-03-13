@@ -78,6 +78,17 @@ void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* derive projection key                                                      */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // creates a new projection key
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)

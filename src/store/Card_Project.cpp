@@ -173,6 +173,14 @@ void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* derive projection key                                                      */
+/*----------------------------------------------------------------------------*/
+void Card_Project::vDerive_Projection_Key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* inject fold expr into this project                                         */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vInject_foldExpr(CardIter* pCI)

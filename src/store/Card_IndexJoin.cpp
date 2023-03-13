@@ -42,6 +42,17 @@ Card_IndexJoin::~Card_IndexJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* derive projection key                                                      */
+/*----------------------------------------------------------------------------*/
+void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // extends the projection key
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* individuate filter                                                         */
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vIndividuateFilter(CardIter* pCI) {

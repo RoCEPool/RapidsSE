@@ -57,13 +57,18 @@ void Card_IndexScan::vIndividuateFilter(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
+/* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vComputeProjection(CardIter* pCI)
+void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
 
+  // creates a new projection key
+  pCI->m_Key_running = nullptr;
+
+  // set running projection for use by next op
+  pCI->m_Projection_running = pCI->G.p_projection;
+}
 
 /*============================================================================*/
 /* end                                                                        */

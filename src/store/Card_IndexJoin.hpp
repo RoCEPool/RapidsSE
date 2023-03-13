@@ -20,6 +20,8 @@ namespace STORE
 
     static void vTableMorphsToIndexJoin(CardIter* pCI);
 
+    void vDerive_Projection_Key(CardIter* pCI);
+
     void vComputeProjection(CardIter* pCI); // prototype
   };
 
