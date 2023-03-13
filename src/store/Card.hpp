@@ -22,7 +22,6 @@
 namespace STORE
 {
   class Card_AbsJoin;
-  class Card_Agg;
   class Card_Aggreg;
   class Card_Aggregates;
   class Card_AndPred;
@@ -473,14 +472,13 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    Card_Agg*           pSub_agg(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoardNo*       pSub_boardNo(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-     Card_Cast*          pSub_cast(void);
+    Card_Cast*          pSub_cast(void);
     Card_Clause*        pSub_clause(void);
     Card_ColNm*         pSub_colNm(void);
     Card_CmpPred*       pSub_cmpPred(void);

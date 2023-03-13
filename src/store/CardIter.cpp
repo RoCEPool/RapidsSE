@@ -383,7 +383,6 @@ void CardIter::G_vClearMembers(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   G.p_absJoin          = nullptr;
-  G.p_agg              = nullptr;
   G.p_aggreg           = nullptr;
   G.p_as               = nullptr;
   G.p_boolCalc         = nullptr;
@@ -1682,7 +1681,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return G.p_absJoin;
-    case CK_AGG:              return G.p_agg;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_AS:               return G.p_as;
     case CK_BOOLCALC:         return G.p_boolCalc;
@@ -2064,7 +2062,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
-    case CK_AGG:              return "G.p_agg"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
     case CK_AS:               return "G.p_as"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
@@ -3281,13 +3278,12 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
   switch (eMember) {
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
-    case CK_AGG:              *((Card**)&G.p_agg)              = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
-     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
+    case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
     case CK_CLAUSE:           *((Card**)&G.p_clause)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;

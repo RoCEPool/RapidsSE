@@ -63,7 +63,6 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *          p_absJoin;
-    Card_Agg *              p_agg;
     Card_Aggreg *           p_aggreg;
     Card_As *               p_as;
 

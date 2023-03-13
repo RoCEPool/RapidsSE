@@ -2637,19 +2637,6 @@ Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Agg.hpp"
-Card_Agg* Card::pSub_agg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Agg* p_agg =
-      _pCard_Agg(pFindSubCard(CK_AGG));
-  return p_agg;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Aggreg.hpp"
 Card_Aggreg* Card::pSub_aggreg(void)
 {
