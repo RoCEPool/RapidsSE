@@ -29,6 +29,8 @@ void Step::vAddSteps_TinyC(void)
   vAddStep("TinyC[].new"_Stz,          &Step::vTinyCNew);
   vAddStep("TinyC[].relocate"_Stz,     &Step::vTinyCRelocate);
   vAddStep("TinyC[].symbols"_Stz,      &Step::vTinyCSymbols);
+
+  vAddStep("TinyC[].compile_v2"_Stz,   &Step::vTinyCCompile_v2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +51,27 @@ void Step::vTinyCCompile(void)
   else
     m_pDataStack->vPushInt(false);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TinyC[].compile_v2 -- compile given source using TinyC                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTinyCCompile_v2(void)
+{
+  ENTRY();
+
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
+
+  Stencil_v2* pStencil;
+  pStencil = _pStencil_v2(m_pDataStack->pPopPtr(__func__));
+
+  bool bClean = pTinyC->bCompile(pStencil->szOpSource()->azChar());
+  if (bClean)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
   EXIT();
 }
 

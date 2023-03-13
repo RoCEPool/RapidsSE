@@ -1177,7 +1177,7 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* set up for indexJoin                                                       */
+/* set up for aggregate                                                       */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSetupAggreg(Combined* pCombined, Op* pOp) {
 

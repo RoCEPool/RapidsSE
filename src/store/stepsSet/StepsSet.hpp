@@ -1883,6 +1883,13 @@ void vDdlLockAssertNone(void);
   void vStencilSketch(void);
   void vStencilSourceFetch(void);
 
+  void vStencilDelete_v2(void);
+  void vStencilGet_v2(void);
+  void vStencilNew_v2(void);
+  void vStencilSetup_v2(void);
+  void vStencilSketch_v2(void);
+  void vStencilSourceFetch_v2(void);
+
   // steps
   void vStepsReset(void);
   void vStepsStart(void);
@@ -1978,6 +1985,8 @@ void vDdlLockAssertNone(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSelectColumns(void);
   void vStreamDefOutSet(void);
+
+  void vStreamDefOutGenerate_V2(void);
 
   // stream def Right
   void vStreamDefRhtDelete(void);
@@ -2320,6 +2329,8 @@ void vDdlLockAssertNone(void);
   void vTinyCNew(void);
   void vTinyCRelocate(void);
   void vTinyCSymbols(void);
+
+  void vTinyCCompile_v2(void);
 
   // to
   void vToBcd(void);

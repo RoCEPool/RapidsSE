@@ -54,6 +54,7 @@ assert::stack_0
   "OP_childSelectTest.sen"      include
   "OP_chunk.sen"                include
   "OP_combined.sen"             include
+  "OP_combined_v2.sen"          include
   "OP_compactIdx.sen"           include
   "OP_compactIndexPtn.sen"      include
   "OP_compilerOpEg.sen"         include
@@ -206,6 +207,7 @@ assert::stack_0
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
+  "OP_project_v2.sen"           include
   "OP_projValidation.sen"       include
   "OP_ptnMap.sen"               include
   "OP_pulse.sen"                include

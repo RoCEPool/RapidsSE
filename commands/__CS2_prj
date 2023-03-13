@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* __CS2: Code Synthesizer V2                                                 */
+/* __CS2_prj : Code Synthesizer V2                                            */
 /*============================================================================*/
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-explain stage transliterate select substring(n_name, 1) from nation where n_nationkey = 5;
+//explain stage transliterate select n_name from nation;
 
 /ccode pipeline unamed
 begin
@@ -14,9 +14,8 @@ begin
     | stageMarker0559
   stage stageMarker0559 on all partitions :
     scan rapidsse public Nation
-    | filter " type BOOLEAN  $1 5  ==  "
-    | project " type VARCHAR as n_name $2 "
-    | combined 0
+    | project_v2 " type VARCHAR as n_name $2 "
+    | combined_v2 0
     | stageLast
   stage stageLast on origin :
     output

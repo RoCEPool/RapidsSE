@@ -64,6 +64,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODESYNTH_V2,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
+  /* */ CN_COMBINEDSRC,
   /* */ CN_CONDITIONALQUERYNODEITER,
   /* */ CN_CORRELATEDJOIN,
   /* */ CN_CRVBUFFER,
@@ -321,6 +322,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
   /* */ CN_SHAPE,
+  /* */ CN_SHAPE_V2,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -502,6 +504,7 @@ static Stz* aCN[]
   /* */ "CODESYNTH_V2"_Stz,         // CN_CODESYNTH_V2
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
+  /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CORRELATEDJOIN"_Stz,       // CN_CORRELATEDJOIN
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
@@ -759,6 +762,7 @@ static Stz* aCN[]
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SHAPE"_Stz,                // CN_SHAPE
+  /* */ "SHAPE_V2"_Stz,             // CN_SHAPE_V2
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE

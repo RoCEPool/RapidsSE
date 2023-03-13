@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CodeSynth_V2.hpp -- Code Synthesizer Version 2                              */
+/* CodeSynth_v2.hpp -- Code Synthesizer Version 2                              */
 /*============================================================================*/
 #pragma once
 
@@ -14,14 +14,14 @@
 
 namespace STORE {
 
-  static const i8 C_FLATTEN_SOURCE_V2 = C_SIZE_LARGE_OBJECT - C_1KB;
+  static const i8 C_FLATTEN_SOURCE_v2 = C_SIZE_LARGE_OBJECT - C_1KB;
 
   //----------------------------------------------------------------------------
 
-  class CodeSynth_V2 : public Object {
+  class CodeSynth_v2 : public Object {
   private:
 
-    char m_caCode[C_FLATTEN_SOURCE_V2];
+    char m_caCode[C_FLATTEN_SOURCE_v2];
     char *m_azCodeCrs;
 
     TokenVec*   m_pTokenVec;
@@ -53,14 +53,14 @@ namespace STORE {
 
     void operator delete(void *);
 
-    CodeSynth_V2(void);
+    CodeSynth_v2(void);
 
-    CodeSynth_V2(StreamDef *pStreamDefOut, eSR eStencilTo);
+    CodeSynth_v2(StreamDef *pStreamDefOut, eSR eStencilTo);
 
-    CodeSynth_V2(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, IndexDef* pIndexDef,
+    CodeSynth_v2(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, IndexDef* pIndexDef,
               IntStack* pPreExpStack, eSR eStencilFrom, eSR eStencilTo);
 
-    ~CodeSynth_V2(void) noexcept(false);
+    ~CodeSynth_v2(void) noexcept(false);
 
     TypedStack *pInitStack(void);
 
@@ -75,9 +75,9 @@ namespace STORE {
 
     void vAppendFragment(Stz *szFragment, i8 *piLineNumber);
 
-    void vAppendFragment(CodeSynth_V2 *pFragment);
+    void vAppendFragment(CodeSynth_v2 *pFragment);
 
-    void vAppendFragment(CodeSynth_V2 *pFragment, i8 *piLineNumber);
+    void vAppendFragment(CodeSynth_v2 *pFragment, i8 *piLineNumber);
 
     char *azCode(void);
 
@@ -204,7 +204,7 @@ namespace STORE {
     Footer *aFooter(void);
   };
 
-  CodeSynth_V2 *_pCodeSynth_V2(void *aAddr);
+  CodeSynth_v2 *_pCodeSynth_v2(void *aAddr);
 
 }
 /*============================================================================*/

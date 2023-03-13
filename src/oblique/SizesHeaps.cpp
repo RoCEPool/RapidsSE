@@ -164,6 +164,7 @@
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
 #include "Shape.hpp"
+#include "Shape_v2.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
@@ -333,9 +334,10 @@ SizeHeap gxaSizeHeap[]
   {CN_CMDLINEARGS,              sizeof(CmdLineArgs),              HT_INVALID   , FILL },
   {CN_CODEBLOCK,                sizeof(CodeBlock),                HT_T_MEDIUM  , FILL },
   {CN_CODESYNTH,                sizeof(CodeSynth),                HT_T_LARGE   , FILL },
-  {CN_CODESYNTH_V2,             sizeof(CodeSynth_V2),             HT_T_LARGE   , FILL },
+  {CN_CODESYNTH_V2,             sizeof(CodeSynth_v2),             HT_T_LARGE   , FILL },
   {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
   {CN_COMBINED,                 sizeof(Combined),                 HT_T_LARGE   , FILL },
+  {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
   {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
   {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
@@ -593,6 +595,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SENDWL,          sizeof(SendWL),             HT_T_TINY    , FILL },
   { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
   { CN_SHAPE,           sizeof(Shape),              HT_T_TINY    , FILL },
+  { CN_SHAPE_V2,        sizeof(Shape_v2),           HT_T_TINY    , FILL },
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
   { CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
@@ -629,7 +632,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,FILL },
-  { CN_STENCIL_V2,               sizeof(Stencil_V2),            HT_T_SMALL   ,FILL },
+  { CN_STENCIL_V2,               sizeof(Stencil_v2),         HT_T_SMALL   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },
   { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,FILL },
   { CN_STEPS,                    sizeof(Steps),              HT_T_LARGE   ,FILL },
