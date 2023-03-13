@@ -158,7 +158,12 @@ begin
     | next
 
   stage S08 on origin :
-    project " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+    project " type DECIMAL as avg_yearly ) $1 sum "
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    project " type DECIMAL as avg_yearly $1 7.0 / "
     | combined 0
     | next
 

@@ -159,7 +159,12 @@ begin
     | next
 
   stage stageMarkerD on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerD_a on origin :
+    project " type DECIMAL as INNERRESULT $1 0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -245,14 +250,14 @@ begin
     | next
 
  stage stageMarkerD on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
-    | combined 0
-    | next broadcast
-
-  stage stageMarkerD on all partitions :
-    project " type DECIMAL as INNERRESULT )  $1 sum  0.000001  * "
+    project " type DECIMAL as INNERRESULT )  $1 sum "
     | combined 0
     | next
+
+ stage stageMarkerD_a on origin :
+    project " type DECIMAL as INNERRESULT $1 0.000001  *  "
+    | combined 0
+    | next broadcast
 
   stage stageMarkerE on all partitions :
     indexJoin supplier IxS_SUPPKEY "bound $I1"
@@ -432,7 +437,12 @@ begin
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    project " type DECIMAL as INNERRESULT )  $1 sum "
+    | combined 0
+    | next broadcast
+
+  stage S05 on origin :
+    project " type DECIMAL as INNERRESULT $1 0.000001  *  "
     | combined 0
     | next broadcast
 

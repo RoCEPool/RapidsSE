@@ -467,7 +467,7 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   // generate check for process row
   vGenerateProcessRow(sLabelLoop);
 
-  // generate the expression code
+  // generate the stacks for the expressions
   vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2427,6 +2427,8 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the post aggregation
+  RASSERT(!pPostStack || !pPostStack->nValues());
+
   if (pPostStack && pPostStack->nValues()) {
     vGenerateExprCode(pPostStack, ""_Stz);
   }
@@ -2638,6 +2640,7 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef, TypedStack* pPostStack, S
   StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
+  RASSERT(!pPostStack || !pPostStack->nValues());
   vPayloadToBuffer(pIndexDef, pPostStack);
 
   // go to next entry
@@ -3796,6 +3799,7 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the post aggregation
+    RASSERT(!pPostStack || !pPostStack->nValues());
     vGenerateExprCode(pPostStack, ""_Stz);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5097,6 +5101,7 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the post aggregation
+    RASSERT(!pPostStack || !pPostStack->nValues());
     vGenerateExprCode(pPostStack, ""_Stz);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
