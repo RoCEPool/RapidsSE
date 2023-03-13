@@ -2715,19 +2715,6 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CalcOp.hpp"
-Card_CalcOp* Card::pSub_calcOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CalcOp* p_calcOp =
-      _pCard_CalcOp(pFindSubCard(CK_CALCOP));
-  return p_calcOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Cast.hpp"
 Card_Cast* Card::pSub_cast(void)
 {

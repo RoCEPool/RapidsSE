@@ -389,7 +389,6 @@ void CardIter::G_vClearMembers(void)
   G.p_boolCalc         = nullptr;
   G.p_bound            = nullptr;
   G.p_bounds           = nullptr;
-  G.p_calcOp           = nullptr;
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
   G.p_clause           = nullptr;
@@ -1689,7 +1688,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUND:            return G.p_bound;
     case CK_BOUNDS:           return G.p_bounds;
-    case CK_CALCOP:           return G.p_calcOp;
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
     case CK_CLAUSE:           return G.p_clause;
@@ -2072,7 +2070,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUND:            return "G.p_bound"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
-    case CK_CALCOP:           return "G.p_calcOp"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
     case CK_CAST:             return "G.p_cast"_Stz;
     case CK_CLAUSE:           return "G.p_clause"_Stz;
@@ -3287,11 +3284,10 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGG:              *((Card**)&G.p_agg)              = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
-     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
+    case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
-    case CK_CALCOP:           *((Card**)&G.p_calcOp)           = pCard; break;
-    case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
+     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
     case CK_CLAUSE:           *((Card**)&G.p_clause)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard; break;

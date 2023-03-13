@@ -21,7 +21,6 @@
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 
-#include "Card_CalcOp.hpp"
 #include "Card_Call.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Cast.hpp"

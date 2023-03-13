@@ -71,7 +71,6 @@ namespace STORE
     Card_Bound *            p_bound;
     Card_Bounds *           p_bounds;
 
-    Card_CalcOp *           p_calcOp;
     Card_Call *             p_call;
     Card_Cast *             p_cast;
     Card_Clause *           p_clause;

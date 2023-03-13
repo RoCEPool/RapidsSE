@@ -18,7 +18,6 @@ enum eCK // card kind
   /* */ CK_BOUND,
   /* */ CK_BOUNDS,
 
-  /* */ CK_CALCOP,
   /* */ CK_CALL,
   /* */ CK_CANDINDEX,
   /* */ CK_CAST,
@@ -180,11 +179,10 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
-   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
-  /* */ "CK_CALCOP"_Stz,       // CK_CALCOP
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CAST"_Stz,         // CK_CAST
@@ -350,7 +348,6 @@ static Stz* aCK_short[]
   /* */ "bound"_Stz,           // CK_BOUND
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
-  /* */ "calcOp"_Stz,          // CK_CALCOP
   /* */ "call"_Stz,            // CK_CALL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cast"_Stz,            // CK_CAST
@@ -515,8 +512,7 @@ static Stz* aCK_notation[]
     /* */ "bC"_Stz,           // CK_BOOLCALC
     /* */ "b"_Stz,            // CK_BOUNDS
 
-    /* */ "cO"_Stz,           // CK_CALCOP
-    /* */ "call"_Stz,         // CK_CALL
+     /* */ "call"_Stz,         // CK_CALL
     /* */ "cI"_Stz,           // CK_CANDINDEX
     /* */ "cast"_Stz,         // CK_CAST
     /* */ "clause"_Stz,       // CK_CLAUSE

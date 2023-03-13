@@ -33,7 +33,6 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_CalcOp;
   class Card_CandIndex;
   class Card_Cast;
   class Card_CmpPred;
@@ -481,8 +480,7 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_CalcOp*        pSub_calcOp(void);
-    Card_Cast*          pSub_cast(void);
+     Card_Cast*          pSub_cast(void);
     Card_Clause*        pSub_clause(void);
     Card_ColNm*         pSub_colNm(void);
     Card_CmpPred*       pSub_cmpPred(void);
