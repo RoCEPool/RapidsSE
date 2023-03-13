@@ -2676,19 +2676,6 @@ Card_As* Card::pSub_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_BoardNo.hpp"
-Card_BoardNo* Card::pSub_boardNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BoardNo* p_boardNo =
-      _pCard_BoardNo(pFindSubCard(CK_BOARDNO));
-  return p_boardNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_BoolCalc.hpp"
 Card_BoolCalc* Card::pSub_boolCalc(void)
 {

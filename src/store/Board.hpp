@@ -17,7 +17,6 @@
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
-#include "Card_BoardNo.hpp"
 #include "Card_BoolCalc.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
@@ -111,7 +110,6 @@
 #include "Card_OuterJoin.hpp"
 
 #include "Card_OuterColNm.hpp"
-#include "Card_Correlation.hpp"
 #include "Card_Partition.hpp"
 #include "Card_Permutation.hpp"
 #include "Card_Project.hpp"

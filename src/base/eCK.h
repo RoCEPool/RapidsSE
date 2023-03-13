@@ -14,7 +14,6 @@ enum eCK // card kind
   /* */ CK_ANDPRED,
   /* */ CK_AS,
 
-  /* */ CK_BOARDNO,
   /* */ CK_BOOLCALC,
   /* */ CK_BOUND,
   /* */ CK_BOUNDS,
@@ -186,8 +185,7 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
-  /* */ "CK_BOARDNO"_Stz,      // CK_BOARDNO
-  /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
@@ -358,7 +356,6 @@ static Stz* aCK_short[]
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
 
-  /* */ "boardNo"_Stz,         // CK_BOARDNO
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
   /* */ "bound"_Stz,           // CK_BOUND
   /* */ "bounds"_Stz,          // CK_BOUNDS
@@ -530,7 +527,6 @@ static Stz* aCK_notation[]
     /* */ "aP"_Stz,           // CK_ANDPRED
     /* */ "as"_Stz,           // CK_AS
 
-    /* */ "bdNo"_Stz,         // CK_BOARDNO
     /* */ "bC"_Stz,           // CK_BOOLCALC
     /* */ "b"_Stz,            // CK_BOUNDS
 
