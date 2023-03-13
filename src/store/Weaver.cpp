@@ -745,6 +745,8 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
   Card_XBound* pCard_xBound = pCard_bounds->pSub_xBound();
   RASSERT(pCard_xBound);
 
+  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
   i8 nSubs = pCard_xBound->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubs; i_Child++) {
     Card* pChildCard = pCard_xBound->pGet(i_Child);
