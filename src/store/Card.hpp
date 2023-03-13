@@ -23,7 +23,6 @@ namespace STORE
 {
   class Card_AbsJoin;
   class Card_Aggreg;
-  class Card_Aggregates;
   class Card_AndPred;
   class Card_As;
 

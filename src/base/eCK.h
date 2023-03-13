@@ -9,7 +9,6 @@ enum eCK // card kind
 
   /* */ CK_ABSJOIN,
   /* */ CK_AGGREG,
-  /* */ CK_AGGREGATES,
   /* */ CK_ANDPRED,
   /* */ CK_AS,
 
@@ -169,7 +168,6 @@ static Stz* aCK[]
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
-  /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
@@ -329,7 +327,6 @@ static Stz* aCK_short[]
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
   /* */ "aggreg"_Stz,          // CK_AGGREG
-  /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
 
@@ -490,7 +487,6 @@ static Stz* aCK_notation[]
 
     /* */ "aJ"_Stz,           // CK_ABSJOIN
     /* */ "aR"_Stz,           // CK_AGGREG
-    /* */ "aggR"_Stz,         // CK_AGGREGATES
     /* */ "aP"_Stz,           // CK_ANDPRED
     /* */ "as"_Stz,           // CK_AS
 

@@ -979,29 +979,6 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
 
 
-//  pCard_Term_head = pCard_RpnTerms->pHead();
-//  if (pCard_Term_head
-//      && pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
-//
-//    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
-//    pCard_Expr->vAppend(pCard_Aggregates);
-//
-//    pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
-//    delete pCard_Term_popped;
-//
-//    //HACK
-//    goto L_TYPE;
-//  }
-
-  // ensure as
-//  Card_As* pCard_As = pCard_Expr->pSub_as();
-//  if (! pCard_As) {
-//    s32 sAs;
-//    sAs.vSprint("__%lld"_Stz,ri_Expr);
-//    pCard_As = new Card_As(sAs);
-//    pCard_Expr->vAppend(pCard_As);
-//  }
-
   ri_Expr++;
   return pCard_Expr;
 }
