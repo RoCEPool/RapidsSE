@@ -106,7 +106,7 @@ namespace BASE
     void     vSetBufferNo(i8 iBufferNo);
 #ifdef WITH_BUFFER_ID
     BufferId oGetBufferId(void);
-    void vSetBufferId(BufferId oBufferId);
+    void vSetBufferId(void* pIdAsAddr);
 #endif
   };
   

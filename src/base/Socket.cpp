@@ -379,7 +379,7 @@ Object* Socket::pObjectRecv(eCN eClass)
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);
       pDataBuffer->vSetBufferId(
-          AM::pFileMap()->oGetNewBufferId());
+          AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 
       AM::pHashMap()->vInsertKeyValue(
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,

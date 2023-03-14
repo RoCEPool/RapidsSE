@@ -443,11 +443,11 @@ BufferId DataBuffer::oGetBufferId(void)
 /*----------------------------------------------------------------------------*/
 /* set the buffer id                                                          */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vSetBufferId(BufferId oBufferId)
+void DataBuffer::vSetBufferId(void* pIdAsAddr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_oBufferId = oBufferId;
+  m_oBufferId.m_pvAsAddress = pIdAsAddr;
 }
 #endif
 

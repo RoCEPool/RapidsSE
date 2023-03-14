@@ -273,7 +273,7 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 
   // Reset the bufferId incase it was set to zero during a pageout
   // TODO: Arjun - Hack remove
-  pDataBuffer->vSetBufferId(oBufferId);
+  pDataBuffer->vSetBufferId(oBufferId.m_pvAsAddress);
 
   // Update hashmap with new address with this bufferId
 #ifdef WITH_HASHMAP
