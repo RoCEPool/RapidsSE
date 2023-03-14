@@ -441,8 +441,8 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_Projection_running);
-  RASSERT(nullptr == m_pCI->m_Key_running);
+  RASSERT(nullptr == m_pCI->m_pProjection_running);
+  RASSERT(nullptr == m_pCI->m_pKey_running);
 
   while (m_pCI->G_bEachMain()) {
 

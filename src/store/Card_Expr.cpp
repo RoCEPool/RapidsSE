@@ -188,6 +188,18 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Stz* Card_Expr::szProjectedCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szPrjCol = pSub_rpnCalc()->szProjectedCol();
+
+  return szPrjCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -197,7 +209,6 @@ void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
   else
     vValueSprint("$%lld"_Stz,i_Expr);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

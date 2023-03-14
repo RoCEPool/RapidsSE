@@ -23,6 +23,8 @@ namespace STORE
     Card_Expr* pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm);
     Card_Expr* pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblColOdn);
 
+    void vKeyProjection(CardIter* pCI);
+
     Card_Projection* pReProjection(void);
   };
 

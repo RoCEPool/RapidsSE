@@ -125,6 +125,18 @@ Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vKeyProjection(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nKeyExpr = pCI->m_pKey_running->nChildCards();
+  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
+    Card_Expr* p_expr_key = pCI->m_pKey_running->pGetExpr(i_KeyExpr);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* re-projection                                                              */

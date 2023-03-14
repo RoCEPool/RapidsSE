@@ -212,6 +212,27 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the one (and only) projected column from rpnCalc                       */
+/*----------------------------------------------------------------------------*/
+Stz* Card_RpnCalc::szProjectedCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (1 != this->nChildCards())
+    return nullptr;
+
+  Card_Term* p_term = this->pSub_term();
+
+  if (p_term->bIsStmColOdn() || p_term->bIsTblColOdn()) {
+    Stz *szVal = p_term->szValue();
+    return szVal;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
 Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)

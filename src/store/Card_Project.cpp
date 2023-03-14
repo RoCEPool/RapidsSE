@@ -178,6 +178,19 @@ void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
+  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection->vDelete_key(pCI);
+
+  // derive new <project>/<projection>/<key>
+  pCI->G.p_key = new Card_Key;
+  pCI->G.p_projection->vKeyProjection(pCI);
+  pCI->G.p_projection->vAppend(pCI->G.p_key);
+
+  // set running projection for use by next op
+  pCI->m_pProjection_running = pCI->G.p_projection;
+  pCI->m_pKey_running = pCI->G.p_key;
 }
 
 /*----------------------------------------------------------------------------*/

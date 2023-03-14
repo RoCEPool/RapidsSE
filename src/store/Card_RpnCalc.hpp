@@ -22,9 +22,10 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     Card_Term* pGetSingle_stmColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bIsBraced(void);
     bool bHasWhen(void);
+    bool bIsBraced(void);
     void vOntoStzList(StzList* pStzList);
+    Stz* szProjectedCol(void);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
     i8 nTrimTerm(Stz* szValue);
   };
