@@ -128,13 +128,92 @@ Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFindExpr_BasedOn_projectedCol(CardIter* pCI, Stz* szPrjCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  i8 nKeyExpr = nChildCards();
+  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
+    Card_Expr *p_expr_key = pGetExpr(i_KeyExpr);
+    Stz* szPrjCol_expr_key = p_expr_key->szProjectedCol();
+    if (szPrjCol_expr_key->bSame(szPrjCol))
+      return p_expr_key;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFind_expr_By_stmColOdn(CardIter* pCI, Stz* szStmColOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(this == pCI->G.p_projection);
+
+  // within projection find the expr which has given colNm
+  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szStmColOdn)) {
+    return _pCard_Expr(pCI->m_pCard_found);
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblColOdn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(this == pCI->G.p_projection);
+
+  // within projection find the expr which has given colNm
+  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szTblColOdn)) {
+    return _pCard_Expr(pCI->m_pCard_found);
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* derive the key projection of this projection (of running key)              */
+/*----------------------------------------------------------------------------*/
 void Card_Projection::vKeyProjection(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_Key* p_key_projection = pCI->G.p_projection->pSub_key();
+
   i8 nKeyExpr = pCI->m_pKey_running->nChildCards();
-  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
-    Card_Expr* p_expr_key = pCI->m_pKey_running->pGetExpr(i_KeyExpr);
+  for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
+    Card_Expr* p_expr_runkey = pCI->m_pKey_running->pGetExpr(i_RunKeyExpr);
+
+    Stz* szPrjCol_runkey = p_expr_runkey->szProjectedCol();
+
+    Card_Expr* p_expr_prjCol = pFindExpr_BasedOn_projectedCol(pCI,szPrjCol_runkey);
+    if (p_expr_prjCol) {
+      pCI->G.p_key->vAdd_key_expr_BasedOn_expr(p_expr_prjCol);
+    }
+
+
+//    if (Card::bIsStreamColOrdinal(szPrjCol_runkey)) {
+//      Card_Expr* p_expr_Projection = pFind_expr_By_stmColOdn(pCI, szPrjCol_runkey);
+//      if (p_expr_Projection) {
+//
+//      }
+//    }
+//    else
+//    if (Card::bIsTableColOrdinal(szPrjCol_runkey)) {
+//      Card_Expr* p_expr_Projection = pFind_expr_By_tblColOdn(pCI, szPrjCol_runkey);
+//      if (p_expr_Projection) {
+//
+//      }
+//    }
   }
 }
 

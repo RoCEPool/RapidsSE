@@ -21,6 +21,9 @@ namespace STORE
 
     void vDelete_key(CardIter* pCI);
     Card_Expr* pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm);
+    Card_Expr* pFindExpr_BasedOn_projectedCol(CardIter* pCI, Stz* szPrjCol);
+
+    Card_Expr* pFind_expr_By_stmColOdn(CardIter* pCI, Stz* szTblColOdn);
     Card_Expr* pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblColOdn);
 
     void vKeyProjection(CardIter* pCI);

@@ -448,7 +448,7 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_AGGREG:    m_pCI->G.p_aggreg->vDerive_Projection_Key(m_pCI);    break;
+      //case CK_AGGREG:    m_pCI->G.p_aggreg->vDerive_Projection_Key(m_pCI);    break;
       case CK_GBYAGG:    m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);    break;
       case CK_INDEXJOIN: m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI); break;
       case CK_INDEXSCAN: m_pCI->G.p_indexScan->vDerive_Projection_Key(m_pCI); break;
@@ -459,6 +459,7 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
         break;
     }
 
+    m_pCI->vPrintBoard(__LINE__);
   }
 
   m_pCI->vEndTransform();

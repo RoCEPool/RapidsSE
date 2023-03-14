@@ -6,6 +6,8 @@
 
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
+#include "Card_Term.hpp"
+#include "Card_StmColOdn.hpp"
 #include "Card_TblColOdn.hpp"
 #include "Card_Type.hpp"
 
@@ -58,7 +60,15 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr)
   p_expr_new->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->vAppend(p_expr->pSub_tblColOdn()->pDupCardAndSubCards());
+  if (p_expr->pSub_tblColOdn())
+    p_rpnCalc->vAppend(p_expr->pSub_tblColOdn()->pDupCardAndSubCards());
+  else
+  if (p_expr->pSub_stmColOdn())
+    p_rpnCalc->vAppend(p_expr->pSub_stmColOdn()->pDupCardAndSubCards());
+  else
+  if (p_expr->pSub_rpnCalc())
+    p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardAndSubCards());
+
 
   p_expr_new->vAppend(p_rpnCalc);
 
