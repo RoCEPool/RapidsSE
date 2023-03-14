@@ -50,6 +50,19 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 
   // extends the projection key
 
+  RASSERT(bSnap_Chosen_index(pCI));
+
+  // snap onto <indexJoin>/<projection>, delete existing <indexJoin>/<projection>/<key>
+  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection->vDelete_key(pCI);
+
+  pCI->G.p_key = _pCard_Key(pCI->m_Key_running->pDupCardAndSubCards());
+  pCI->G.p_projection->vAppend(pCI->G.p_key);
+  pCI->G.p_index->vAdd_key_exprs(pCI);
+
+  // set running projection for use by next op
+  pCI->m_Projection_running = pCI->G.p_projection;
+  pCI->m_Key_running = pCI->G.p_key;
 }
 
 /*----------------------------------------------------------------------------*/

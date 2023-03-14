@@ -71,8 +71,8 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 
   // derive new <indexScan>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
-  pCI->G.p_index->vAdd_key_exprs(pCI);
   pCI->G.p_projection->vAppend(pCI->G.p_key);
+  pCI->G.p_index->vAdd_key_exprs(pCI);
 
   // set running projection for use by next op
   pCI->m_Projection_running = pCI->G.p_projection;
