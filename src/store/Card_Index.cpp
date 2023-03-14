@@ -86,20 +86,11 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* produce composite <index> of table                                         */
 /*----------------------------------------------------------------------------*/
-Card_Index* Card_Index::pDerive(Table* pTable)
+Card_Index* Card_Index::pDerive(Index* pIndex)
 {
   _static_
 
-  if (!pTable)
-    return nullptr;
-
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  if (! pIdxVec)
-    return nullptr;
-
-  Index* pIndex = pIdxVec->pGet(0);
-
-  Card_Index*  p_index = new Card_Index;
+  Card_Index* p_index = new Card_Index;
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_indexNm->vValue(pIndex->szIndexNm());

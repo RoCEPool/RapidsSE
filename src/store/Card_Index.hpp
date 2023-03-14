@@ -17,7 +17,7 @@ namespace STORE
    ~Card_Index(void) noexcept(false);
 
     static void vCullNonusedBounds(CardIter* pCI);
-    static Card_Index* pDerive(Table* pTable);
+    static Card_Index* pDerive(Index* pIndex);
 
     void vAdd_key_exprs(CardIter* pCI);
 
