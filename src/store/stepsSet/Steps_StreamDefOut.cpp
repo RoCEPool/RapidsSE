@@ -10,7 +10,7 @@
 
 #include "eYX.h"
 #include "ExprEval2.hpp"
-#include "ExprEval_V2.hpp"
+#include "ExprEval_v2.hpp"
 
 #include "Op.hpp"
 #include "Job.hpp"
@@ -225,7 +225,7 @@ void Step::vStreamDefOutGenerate_V2(void)
 
   eEK eExprKind;
 
-  eEC eError = ExprEval_V2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
+  eEC eError = ExprEval_v2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
                                              pPreExpStack, eExprKind, sExpr, &m_pLogicUnit->m_uSelectColumns);
   m_pLogicUnit->m_eExprKind = eExprKind;
 
