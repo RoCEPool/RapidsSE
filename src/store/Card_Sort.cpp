@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Sort.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -53,10 +54,8 @@ void Card_Sort::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  // creates a new projection key
-
+  pCI->m_pKey_running = pSub_key();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

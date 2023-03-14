@@ -28,6 +28,7 @@ select o_orderkey,
    and o_orderkey < 100
    and o_orderkey > 3
  group by O_ORDERKEY
+ order by O_ORDERKEY
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

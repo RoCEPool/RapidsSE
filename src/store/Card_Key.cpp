@@ -4,6 +4,7 @@
 
 #include "Card_Key.hpp"
 
+#include "Card_Direction.hpp"
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
@@ -68,9 +69,10 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr)
   else
   if (p_expr->pSub_rpnCalc())
     p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardAndSubCards());
-
-
   p_expr_new->vAppend(p_rpnCalc);
+
+  Card_Direction* p_direction = new Card_Direction("ASC"_Stz);
+  p_expr_new->vAppend(p_direction);
 
   vAppend(p_expr_new);
 }
