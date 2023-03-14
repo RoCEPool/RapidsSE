@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __TPCS_SCHEMA -- create and load TPC-H tables                              */
+/* __TPCH_SCHEMA -- create and load TPC-H tables                              */
 /*============================================================================*/
 
 //                  -------------------- Scale Factor (SF) ---------------------
@@ -62,6 +62,7 @@ _          _          _          _           _              _
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 trackMemory;
+
 _customer
 _lineitem
 _nation_replicated
@@ -71,43 +72,43 @@ _part
 _region_replicated
 _supplier
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//customer
-CREATE INDEX IxC_CUSTKEY ON customer(C_CUSTKEY);
+// Customer
+create        index IxC_CUSTKEY     on Customer (C_CUSTKEY);
 
+// Lineitem
+create unique index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
+create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
+create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
+create        index IxL_PARTKEY     on Lineitem (L_PARTKEY);
+create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
 
-//lineitem
-CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
-CREATE INDEX IxL_SHIPDATE ON lineitem(L_SHIPDATE);
-CREATE INDEX IxL_SUPPKEY ON lineitem(L_SUPPKEY);
-CREATE INDEX IxL_PARTKEY ON lineitem(L_PARTKEY);
-CREATE INDEX IxL_RECEIPTDATE ON lineitem(L_RECEIPTDATE);
+// Nation
+create        index IxN_NATIONKEY   on Nation   (N_NATIONKEY);
+//create      index IxN_REGIONKEY   on Nation   (N_REGIONKEY);
 
+// Orders
+create        index IxO_CUSTKEY     on Orders   (O_CUSTKEY);
+create        index IxO_ORDERKEY    on Orders   (O_ORDERKEY);
+create        index IxO_ORDERDATE   on Orders   (O_ORDERDATE);
 
-//nation
-CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
-//CREATE INDEX IxN_REGIONKEY on NATION (N_REGIONKEY);
+// PartSupp
+create        index IxPS_PARTKEY    on PartSupp (PS_PARTKEY);
+create        index IxPS_SUPPKEY    on PartSupp (PS_SUPPKEY);
 
-//orders
-CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);
-CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
-CREATE INDEX IxO_ORDERDATE ON orders(O_ORDERDATE);
+// Part
+create        index IxP_PARTKEY     on part     (P_PARTKEY);
 
-//partsupp
-CREATE INDEX IxPS_PARTKEY ON partsupp(PS_PARTKEY);
-CREATE INDEX IxPS_SUPPKEY ON partsupp(PS_SUPPKEY);
+// Region
+create        index IxR_REGIONKEY   on Region   (R_REGIONKEY);
+create        index IxR_NAME        on Region   (R_NAME);
 
-//part
-CREATE INDEX IxP_PARTKEY ON part(P_PARTKEY);
-
-//region
-CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
-CREATE INDEX IxR_NAME on REGION (R_NAME);
-
-//supplier
-CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);
+// Supplier
+create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 /time loadReplicated region   "<tpch_dir>/region.<suffix>"   ;
 /time loadReplicated nation   "<tpch_dir>/nation.<suffix>"   ;
 /time load supplier           "<tpch_dir>/supplier.<suffix>" ;
