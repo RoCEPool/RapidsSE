@@ -63,20 +63,15 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_indexList  = pSub_indexList();
-  pCI->G.p_index      = pCI->G.p_indexList->pFindChosenIndex();
+  RASSERT(bSnap_Chosen_index(pCI));
 
+  // snap onto <indexScan>/<projection>, delete existing <indexScan>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_key        = pCI->G.p_projection->pSub_key();
-  if (pCI->G.p_key)
-    pCI->G.p_projection->vRemoveDeleteChild(pCI->G.p_key);
-  pCI->G.p_key = nullptr;
+  pCI->G.p_projection->vDelete_key(pCI);
 
+  // derive new <indexScan>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
-
   pCI->G.p_index->vAdd_key_exprs(pCI);
-
-  //
   pCI->G.p_projection->vAppend(pCI->G.p_key);
 
   // set running projection for use by next op

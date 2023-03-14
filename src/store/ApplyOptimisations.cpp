@@ -446,8 +446,6 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 
   while (m_pCI->G_bEachMain()) {
 
-    m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection();
-
     switch (m_pCI->G.e_MainCard) {
 
       case CK_AGGREG:    m_pCI->G.p_aggreg->vDerive_Projection_Key(m_pCI);    break;
@@ -464,6 +462,7 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
   }
 
   m_pCI->vEndTransform();
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

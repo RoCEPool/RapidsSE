@@ -152,7 +152,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn_recursive(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -196,6 +196,25 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bApplyRecursive(CK_TERM, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bSnap_Chosen_index(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_indexList = nullptr;
+  pCI->G.p_index = nullptr;
+
+  if (! (pCI->G.p_indexList = pSub_indexList()))
+    return false;
+
+  if (! (pCI->G.p_index = pCI->G.p_indexList->pFindChosenIndex()))
+    return false;
+
+  return true;
 }
 
 /*============================================================================*/

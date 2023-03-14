@@ -96,7 +96,20 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* re-projection                                                              */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vDelete_key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_key = pSub_key()))
+    vRemoveDeleteChild(pCI->G.p_key);
+
+  pCI->G.p_key = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
 {
