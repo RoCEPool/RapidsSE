@@ -171,7 +171,7 @@
 #include "Starter.hpp"
 #include "Statement.hpp"
 #include "Stencil.hpp"
-#include "Stencil_V2.hpp"
+#include "Stencil_v2.hpp"
 #include "Steps.hpp"
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
@@ -205,7 +205,7 @@
 #include "Sends.hpp"
 
 #include "CodeSynth.hpp"
-#include "CodeSynth_V2.hpp"
+#include "CodeSynth_v2.hpp"
 #include "Flatten.hpp"
 #include "Permit.hpp"
 #include "Totup.hpp"

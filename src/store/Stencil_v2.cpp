@@ -24,6 +24,8 @@
 #include "RowSingle.hpp"
 #include "IndexStream.hpp"
 
+#include "CodeSynthUtils.hpp"
+
 ShapeRef xaShapeRef_V2[]
 {
   { "none"_Stz         }, // LS_NONE
@@ -252,6 +254,18 @@ void Stencil_v2::vRepair(Object* pObject)
 void Stencil_v2::vCombine(bool bGenerateCCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+
+//  Experiment code for testing CodeSynthUtils::bExtract
+
+//  File* pFile = new File(this);
+//  bool bOpened = pFile->bOpenRead("../src/store/Fragments/Code.cpp"_Stz);
+//  RASSERT(bOpened);
+//
+//  s4K sCode;
+//
+//  CodeSynthUtils::bExtract(pFile, "function-vXYZ0"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+//  vTrace("Extracted code for function-vXYZ0 - \n"_Stz);
+//  vTrace("%s\n"_Stz, sCode.szStz());
 
   i8 iLineNumber = 1;
 

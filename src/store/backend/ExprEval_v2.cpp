@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ExprEval_V2.cpp -- Expression Evaluator Version 2                          */
+/* ExprEval_v2.cpp -- Expression Evaluator Version 2                          */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,14 +7,14 @@
 #include "IndexDef.hpp"
 #include "StreamDef.hpp"
 
-#include "ExprEval_V2.hpp"
+#include "ExprEval_v2.hpp"
 #include "SN_Dte.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval_V2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8* puSelectColumns)
+eEC ExprEval_v2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
 
@@ -214,7 +214,7 @@ eEC ExprEval_V2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr,
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval_V2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
+eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
                                  IntStack* pPreExpStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
@@ -917,7 +917,7 @@ eEC ExprEval_V2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
 /*----------------------------------------------------------------------------*/
 /* generate the streamDef for the join                                        */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval_V2::eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut)
+eEC ExprEval_v2::eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut)
 {
   _static_
 
@@ -949,7 +949,7 @@ eEC ExprEval_V2::eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefR
 /*----------------------------------------------------------------------------*/
 /* add column to streamDefOut                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval_V2::vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn) {
+void ExprEval_v2::vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn) {
 
   _static_
 
@@ -960,7 +960,7 @@ void ExprEval_V2::vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn) 
 /*----------------------------------------------------------------------------*/
 /* add column to streamDefOut                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval_V2::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn) {
+void ExprEval_v2::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn) {
 
   _static_
 
@@ -973,7 +973,7 @@ void ExprEval_V2::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column*
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void ExprEval_V2::vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix)
+void ExprEval_v2::vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix)
 {
 
   _static_

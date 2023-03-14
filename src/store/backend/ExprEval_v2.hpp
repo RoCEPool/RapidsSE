@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ExprEval_V2.hpp -- ExprEval Version 2                                      */
+/* ExprEval_v2.hpp -- ExprEval Version 2                                      */
 /*============================================================================*/
 #pragma once
 
@@ -13,7 +13,7 @@ namespace STORE
 {
   class StreamDef;
 
-  class ExprEval_V2
+  class ExprEval_v2
   {
   public:
 

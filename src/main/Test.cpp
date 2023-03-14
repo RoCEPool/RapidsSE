@@ -55,6 +55,8 @@
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 
+#include "CodeSynthUtils.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
 /*----------------------------------------------------------------------------*/
@@ -2082,6 +2084,17 @@ void vTest33(void)
 /*----------------------------------------------------------------------------*/
 void vTest34(void)
 {
+  vTrace("vTest34 -- Code Synthesiser utilities test\n"_Stz);
+
+  File* pFile = new File(nullptr);
+  bool bOpened = pFile->bOpenRead("../Fragments/Code.cpp"_Stz);
+  RASSERT(bOpened);
+
+  s4K sCode;
+
+  CodeSynthUtils::bExtract(pFile, "function-vXYZ0"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  vTrace("Extracted code for function-vXYZ0 - \n"_Stz);
+  vTrace("%s\n"_Stz, sCode.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
