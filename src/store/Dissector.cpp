@@ -776,7 +776,7 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
   i8 i_Expr = 1;
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
-    // GROUPBY
+    // AGGREGATES
     if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
       break;
     }
@@ -791,11 +791,11 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,true,i_Expr);
     pCard_Expr->vCardNo(++i_CardNo);
 
-    Card_As* p_as = pCard_Expr->pSub_as();
-    if (p_as) {
-      pCard_Expr->vRemoveChild(p_as);
-      DELETE_CARD(p_as);
-    }
+//    Card_As* p_as = pCard_Expr->pSub_as();
+//    if (p_as) {
+//      pCard_Expr->vRemoveChild(p_as);
+//      DELETE_CARD(p_as);
+//    }
 
     if (bAsc) {
       Card_Direction *p_direction = new Card_Direction("ASC"_Stz);

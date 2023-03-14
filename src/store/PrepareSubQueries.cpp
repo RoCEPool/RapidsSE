@@ -83,6 +83,9 @@ void PrepareSubQueries::vPrepareSubQueries(void)
 
     //vGroup_PreliminaryConversions();
     vRpnCalcToBoolCalc();
+    vAsReview();
+
+    vDebugPoint();
   }
 
   OuterQuery* pOuterQuery = new OuterQuery;
@@ -106,6 +109,18 @@ void PrepareSubQueries::vAddLevel(void)
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain())
     ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/* As review                                                                  */
+/*----------------------------------------------------------------------------*/
+void PrepareSubQueries::vAsReview(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+
+  m_pCI->vTransform(__func__, "as review"_Stz);
 
   m_pCI->vEndTransform();
 }

@@ -91,15 +91,19 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
   _static_
 
   Card_Index* p_index = new Card_Index;
+  IndexDef* pIndexDef = pIndex->pIndexDef();
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_indexNm->vValue(pIndex->szIndexNm());
   p_index->vAppend(p_indexNm);
 
+  if (pIndexDef->bIsUnique()) {
+    Card_Unique* p_unique = new Card_Unique;
+    p_index->vAppend(p_unique);
+  }
+
   Card_IdxColList* p_idxColList = new Card_IdxColList;
   p_index->vAppend(p_idxColList);
-
-  IndexDef* pIndexDef = pIndex->pIndexDef();
 
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
