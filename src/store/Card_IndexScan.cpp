@@ -63,7 +63,7 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(bSnap_Chosen_index(pCI));
+  RASSERT(bPeg_Chosen_index(pCI));
 
   // snap onto <indexScan>/<projection>, delete existing <indexScan>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();

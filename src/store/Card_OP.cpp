@@ -201,7 +201,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_OP::bSnap_Chosen_index(CardIter* pCI)
+bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -212,6 +212,32 @@ bool Card_OP::bSnap_Chosen_index(CardIter* pCI)
     return false;
 
   if (! (pCI->G.p_index = pCI->G.p_indexList->pFindChosenIndex()))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bPeg_Key(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! (pCI->G.p_key = pSub_key()))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bPeg_Projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! (pCI->G.p_projection = pSub_projection()))
     return false;
 
   return true;

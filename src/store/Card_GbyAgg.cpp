@@ -78,14 +78,23 @@ void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* derive projection key                                                      */
+/* create a new <gbyAgg>/<projection>/<key> by copying <gbyAgg>/<key>         */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  // creates a new projection key
+  RASSERT(bPeg_Projection(pCI));
+  pCI->G.p_projection->vDelete_key(pCI);
 
+  RASSERT(bPeg_Key(pCI));
+
+  pCI->G.p_key = _pCard_Key(pCI->G.p_key->pDupCardAndSubCards());
+  pCI->G.p_projection->vAppend(pCI->G.p_key);
+
+  // set running projection for use by next op
+  pCI->m_Projection_running = pCI->G.p_projection;
+  pCI->m_Key_running = pCI->G.p_key;
 }
 
 /*----------------------------------------------------------------------------*/

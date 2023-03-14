@@ -20,7 +20,9 @@ namespace STORE
    void vConvert_stmColOdn_To_tblColOdn_recursive(CardIter* pCI);
    void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
-   bool bSnap_Chosen_index(CardIter* pCI);
+   bool bPeg_Chosen_index(CardIter* pCI);
+   bool bPeg_Key(CardIter* pCI);
+   bool bPeg_Projection(CardIter* pCI);
   };
 
   Card_OP* _pCard_OP(void* aAddr);
