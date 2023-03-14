@@ -60,7 +60,7 @@ namespace STORE
     Card* pOp_Sort     (TagSet* pArgTags);
     Card* pOp_Start    (TagSet* pArgTags);
 
-    Card_Key*        pKey        (Card_RpnTerms* pCard_RpnTerms);
+    Card_Key*        pKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
     Card_Projection* pProjection (Card_RpnTerms* pCard_RpnTerms);
 
     Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);

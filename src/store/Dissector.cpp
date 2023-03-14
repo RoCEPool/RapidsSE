@@ -267,7 +267,7 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   // gbyElist : optional groupBy expression list
 
   if (pCard_RpnTerms->nItems()) {
-    Card_Key* pCard_Key = pKey(pCard_RpnTerms);
+    Card_Key* pCard_Key = pKey(pCard_RpnTerms,true);
     pCard_Aggreg->vAppend(pCard_Key);
     pCard_Aggreg->vCard(CK_GBYAGG);
   }
@@ -731,7 +731,7 @@ Card* Dissector::pOp_Sort(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
-  Card_Key* pCard_Key = pKey(pCard_RpnTerms);
+  Card_Key* pCard_Key = pKey(pCard_RpnTerms,false);
   pCard_Sort->vAppend(pCard_Key);
 
 
@@ -758,7 +758,7 @@ Card* Dissector::pOp_Start(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
-Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms)
+Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -795,6 +795,11 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms)
     if (p_as) {
       pCard_Expr->vRemoveChild(p_as);
       DELETE_CARD(p_as);
+    }
+
+    if (bAsc) {
+      Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
+      pCard_Expr->vAppend(p_direction);
     }
 
     pCard_Key->vAppend(pCard_Expr);

@@ -197,6 +197,12 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 
     Card_Expr* p_expr_prjCol = pFindExpr_BasedOn_projectedCol(pCI,szPrjCol_runkey);
     if (p_expr_prjCol) {
+
+      // annotation or direction in passing
+      if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {
+        p_expr_prjCol->vAppend(p_expr_runkey->pSub_direction()->pDupCardAndSubCards());
+      }
+
       pCI->G.p_key->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
     }
 
