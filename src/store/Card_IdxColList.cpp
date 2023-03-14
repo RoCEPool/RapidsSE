@@ -61,7 +61,7 @@ void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
     if (!pCI->G.p_expr)
       continue;
 
-    pCI->G.p_key->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr);
+    pCI->G.p_key->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr,true);
   }
   //pCI->G.p_key->vDump();
 }

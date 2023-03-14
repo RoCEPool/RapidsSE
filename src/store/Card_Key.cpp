@@ -49,7 +49,7 @@ Card_Key::~Card_Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a key expr to this key based on given projection expr                  */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr)
+void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -71,9 +71,10 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr)
     p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardAndSubCards());
   p_expr_new->vAppend(p_rpnCalc);
 
-  Card_Direction* p_direction = new Card_Direction("ASC"_Stz);
-  p_expr_new->vAppend(p_direction);
-
+  if (bAsc) {
+    Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
+    p_expr_new->vAppend(p_direction);
+  }
   vAppend(p_expr_new);
 }
 
