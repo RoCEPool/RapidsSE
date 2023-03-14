@@ -103,6 +103,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     m_pRootBuffer = pCrwBuffer;
   }
   else {
+    // TODO: Arjun - If we are doing a second insert, currentbuffer is null. Need to fix this.
     pCrwBuffer->vNextLinkedBufferId(m_pCurrentBuffer->oNextLinkedBufferId());
     pCrwBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
     m_pCurrentBuffer->vNextLinkedBufferId(pCrwBuffer->oGetBufferId());

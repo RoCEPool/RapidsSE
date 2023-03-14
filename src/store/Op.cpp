@@ -266,7 +266,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     // TODO: Arjun - Hack to convert Buffer address to BufferId before appending to queue
     if (pOperand->eGetClassNo() == BASE::CN_ROWBUFFER ||
         pOperand->eGetClassNo() == BASE::CN_CRWBUFFER) {
-      vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
+      //vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
       // Replace RowBuffer address with BufferId and append to queue
       DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
       BufferId oBufferId = pDataBuffer->oGetBufferId();

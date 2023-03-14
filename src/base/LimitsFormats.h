@@ -19,6 +19,7 @@ static const i8 C_MAX_LOG_FILES     = 4;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
 static const i8 C_MAX_LVL_LEVELS    = 6;
 static const i8 C_MAX_LVL_RATIO     = 6;
+static const d8 C_MAX_MEMORY_LIMIT  = 60;     // max memory usage % before page out demon kicks in (must be greater than 50%)
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;

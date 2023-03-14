@@ -84,6 +84,8 @@ void Step::vPageInPopRequest(void) {
 
   vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pDataBufferFromDisk->oGetBufferId().m_pvAsAddress);
 
+  AM::pHashMap()->vDropKeyLock(pDataBufferFromDisk->oGetBufferId().m_pvAsAddress);
+
   // Wake up task
   AM::vGrabTaskLock(pTask,(Stz*)__func__);
   AM::TASK::vTriggerBidingPageIn(pTask, this);

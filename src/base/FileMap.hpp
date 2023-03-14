@@ -34,6 +34,7 @@ namespace BASE
     BufferId oGetNewBufferId(void);
 #endif
     void vToDisk(Operand* pOperand);
+    void vToDisk(DataBuffer* pDataBuffer);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
 
   private:

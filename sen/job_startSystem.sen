@@ -134,11 +134,11 @@
   then
 
   // spawn page out demon
-  //STD_DEMONFORK_TAG pageOutDemonPipeline api::forkDemon not if
-  //  "Error Code %v" .printf
-  //else
-  //  AM::DEMON::tPageOutDemonJobId!
-  //then
+  STD_DEMONFORK_TAG pageOutDemonPipeline api::forkDemon not if
+    "Error Code %v" .printf
+  else
+    AM::DEMON::tPageOutDemonJobId!
+  then
 
   // spawn jobExit demon
   STD_DEMONFORK_TAG jobExitDemonPipeline api::forkDemon not if

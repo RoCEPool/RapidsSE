@@ -129,6 +129,27 @@ void FileMap::vToDisk(Operand* pOperand)
   m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Decide where on disk this buffer should be written to and write to disk    */
+/*----------------------------------------------------------------------------*/
+void FileMap::vToDisk(DataBuffer* pDataBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  //---------------------------------------------------------------------------
+  // Look at page no bits in buffer id and assign to corresponding PageFile
+
+  // To do once we have multiple page files...
+  // m_pPageFile[oBufferId.m_uPageFile];
+
+  //---------------------------------------------------------------------------
+  // Write to page file
+  RASSERT(CN_ROWBUFFER == pDataBuffer->eGetClassNo() ||
+          CN_CRWBUFFER == pDataBuffer->eGetClassNo());
+
+  m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
+}
+
 #ifdef WITH_BUFFER_ID
 /*----------------------------------------------------------------------------*/
 /* Find a free chunk in a page file and return that address                   */
@@ -146,10 +167,7 @@ BufferId FileMap::oGetNewBufferId(void)
   BufferId oFreeBufferId;
 
   u8 uFreeSubset = m_pPageFile->uNextFreeSubset();
-  if(uFreeSubset == C_DATUM_NULL) {
-    oFreeBufferId.m_iAsI8 = 0;
-    return oFreeBufferId;
-  }
+  RASSERT(uFreeSubset != C_DATUM_NULL);
 
   oFreeBufferId.m_uSeekOffset = uFreeSubset;
   oFreeBufferId.m_uPageFile = m_pPageFile->m_uPFIndex;

@@ -57,7 +57,7 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_szPFilePath = sPath;
   m_pFile = new File(this);
 //  m_uPFSize = C_SIZE_PAGE_FILE;
-  m_uPFSize = (u8) gxCmdLineArgs.m_xSysArgs.m_iRegionSize;
+  m_uPFSize = (u8) gxCmdLineArgs.m_xSysArgs.m_iRegionSize * 10;
   m_uFirstUsableByte = sizeof(C_MAGIC);
   m_uWilderness = 0;
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
@@ -270,6 +270,10 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
           pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
 
+
+  // Reset the bufferId incase it was set to zero during a pageout
+  // TODO: Arjun - Hack remove
+  pDataBuffer->vSetBufferId(oBufferId);
 
   // Update hashmap with new address with this bufferId
 #ifdef WITH_HASHMAP

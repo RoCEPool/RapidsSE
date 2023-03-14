@@ -12,7 +12,7 @@ namespace BASE
   class HashMap : public Object
   {
 
-  private:
+  public:
     Lock          m_okLock;        // lock for the entire hash map
     u8            m_uNoOfEntries;
 
