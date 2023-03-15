@@ -122,6 +122,36 @@ void PrepareSubQueries::vAsReview(void)
 
   m_pCI->vTransform(__func__, "as review"_Stz);
 
+  m_pCI->G_vRestart();
+
+  RASSERT(nullptr == m_pCI->m_pProjection_running);
+  RASSERT(nullptr == m_pCI->m_pKey_running);
+
+  while (m_pCI->G_bEachMain()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      case CK_GBYAGG:
+        m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
+        break;
+
+      case CK_INDEXJOIN:  break;
+      case CK_INDEXSCAN:  break;
+      case CK_PROJECT:    break;
+      case CK_SORT:       break;
+
+      case CK_TABLE:
+        m_pCI->m_pProjection_running = m_pCI->G.p_table->pSub_projection();
+        m_pCI->m_pKey_running = nullptr;
+        break;
+
+      default:
+        break;
+    }
+
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
   m_pCI->vEndTransform();
 }
 

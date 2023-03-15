@@ -159,6 +159,26 @@ i8 Card_ELIST::nExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFindExpr_BasedOn_projectedCol(CardIter* pCI, Stz* szPrjCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  i8 nKeyExpr = nChildCards();
+  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
+    Card_Expr *p_expr_key = pGetExpr(i_KeyExpr);
+    Stz* szPrjCol_expr_key = p_expr_key->szProjectedCol();
+    if (szPrjCol_expr_key->bSame(szPrjCol))
+      return p_expr_key;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)

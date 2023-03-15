@@ -223,14 +223,15 @@ Stz* Card_RpnCalc::szProjectedCol(void)
 
   Card_Term* p_term = this->pSub_term();
 
-  if (p_term->bIsStmColOdn() || p_term->bIsTblColOdn()) {
+  if (p_term->bIsKeyOdn()    ||
+      p_term->bIsStmColOdn() ||
+      p_term->bIsTblColOdn()) {
     Stz *szVal = p_term->szValue();
     return szVal;
   }
 
   return nullptr;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */

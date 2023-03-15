@@ -29,8 +29,9 @@ namespace STORE
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
-    bool bIsFoldExpr(void);
     bool bIsCorPrmOdn(void); // %n
+    bool bIsFoldExpr(void);
+    bool bIsKeyOdn(void);   // $Kn
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $c.n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);

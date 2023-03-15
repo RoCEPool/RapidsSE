@@ -200,6 +200,19 @@ Stz* Card_Expr::szProjectedCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Term* Card_Expr::szProjectedTerm(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* szPrjTerm = pSub_rpnCalc()->pGetTerm(0);
+
+  return szPrjTerm;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

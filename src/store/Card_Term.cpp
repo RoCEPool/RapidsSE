@@ -252,6 +252,18 @@ bool Card_Term::bIsBoardNm(STORE::CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this term a parameter ordinal? %n                                       */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsCorPrmOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = Card::bIsCorrParamOrdinal(this->szValue());
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term the fold expr?                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsFoldExpr(void)
@@ -265,16 +277,17 @@ bool Card_Term::bIsFoldExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a parameter ordinal? %n                                       */
+/* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsCorPrmOdn(void)
+bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Card::bIsCorrParamOrdinal(this->szValue());
+  bool b = Card::bIsKeyOrdinal(this->szValue());
 
   return b;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* is this term a stream-column? $n                                           */

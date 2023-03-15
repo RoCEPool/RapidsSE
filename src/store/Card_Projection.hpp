@@ -19,9 +19,10 @@ namespace STORE
     static void vProjection_Analysis_v2(CardIter* pCI);
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
+    void vAs_Review(CardIter* pCI);
+
     void vDelete_key(CardIter* pCI);
     Card_Expr* pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm);
-    Card_Expr* pFindExpr_BasedOn_projectedCol(CardIter* pCI, Stz* szPrjCol);
 
     Card_Expr* pFind_expr_By_stmColOdn(CardIter* pCI, Stz* szTblColOdn);
     Card_Expr* pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblColOdn);

@@ -96,6 +96,42 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* as review                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vAs_Review(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nPrjExpr = nChildCards();
+  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
+    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
+
+//    if (p_expr_prj->pSub_as())
+//      continue;
+
+    Stz* szPrjCol_prj = p_expr_prj->szProjectedCol();
+    if ((! szPrjCol_prj || (! Card::bIsKeyOrdinal(szPrjCol_prj))))
+      continue;
+
+    if ( (pCI->G.p_as = p_expr_prj->pSub_as()) ) {
+      p_expr_prj->vRemoveDeleteChild(pCI->G.p_as);
+      pCI->G.p_as = nullptr;
+    }
+
+    Card_Term* pTerm_prj = p_expr_prj->szProjectedTerm();
+    Card_Expr* p_expr_key = pCI->G.p_key->pGetExpr(pTerm_prj);
+
+    if (p_expr_key && (pCI->G.p_as = p_expr_key->pSub_as())) {
+      p_expr_prj->vAppend(pCI->G.p_as->pDupCardAndSubCards());
+    }
+
+    vDebugPoint();
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vDelete_key(CardIter* pCI)
@@ -120,25 +156,6 @@ Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
   // within projection find the expr which has given colNm
   if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szColNm)) {
     return _pCard_Expr(pCI->m_pCard_found);
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFindExpr_BasedOn_projectedCol(CardIter* pCI, Stz* szPrjCol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-
-  i8 nKeyExpr = nChildCards();
-  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
-    Card_Expr *p_expr_key = pGetExpr(i_KeyExpr);
-    Stz* szPrjCol_expr_key = p_expr_key->szProjectedCol();
-    if (szPrjCol_expr_key->bSame(szPrjCol))
-      return p_expr_key;
   }
 
   return nullptr;

@@ -21,6 +21,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     i8 nExpr(void);
+    Card_Expr* pFindExpr_BasedOn_projectedCol(CardIter* pCI, Stz* szPrjCol);
     Card_Expr* pGetExpr(i8 i_Expr);
     Card_Expr* pGetExpr(Card_Term* p_term);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
