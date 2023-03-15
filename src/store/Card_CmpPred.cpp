@@ -366,7 +366,7 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
 
     Stz* sz_bnd_idxColOdn = p_bound->pGetChild(0)->szValue();
     Stz* sz_bnd_stmColOdn = p_bound->pGetChild(1)->szValue();
-    Stz* sz_bnd_rlnOpr    = p_bound->pGetChild(2)->szValue();
+    Stz* sz_bnd_rlnOpr    = p_bound->szValue();
 
     Stz* sz_cmp_rlnOpr    = this->szValue();
     Stz* sz_cmp_arg_0     = this->pGetChild(0)->szValue();

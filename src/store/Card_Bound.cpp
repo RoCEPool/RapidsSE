@@ -108,8 +108,8 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     NEVER_REACH
   }
 
-  p_term = new Card_Term(p_PRED->sz());
-  p_bound->vAppend(p_term);
+//  p_term = new Card_Term(p_PRED->sz());
+//  p_bound->vAppend(p_term);
 
   return p_bound;
 }

@@ -827,6 +827,9 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
       Card_Term* p_term = _pCard_Term(pSubCard);
       szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
     }
+
+    szRpnExpr->vCatSprint(" %s"_Stz,p_bound->szValue());
+
     return;
   }
 
@@ -873,6 +876,8 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
       }
 
     }
+
+    szRpnExpr->vCatSprint(" %s"_Stz,xCI.G.p_bound->szValue());
   }
 }
 
@@ -914,6 +919,9 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
       Card_Term *p_term = _pCard_Term(pSubCard);
       szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
     }
+
+    szRpnExpr->vCatSprint(" %s"_Stz,xCI.G.p_bound->szValue());
+
   }
 }
 
@@ -989,6 +997,8 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
       Card_Term *p_term = _pCard_Term(pSubCard);
       szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
     }
+
+    szRpnExpr->vCatSprint(" %s"_Stz,xCI.G.p_bound->szValue());
   }
 
 }
