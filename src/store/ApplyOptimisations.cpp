@@ -64,6 +64,10 @@ void ApplyOptimisations::vOptimise(void)
 
   vCut_sort();
   vPromote_gbyAgg_To_ordAgg();
+
+  // --- --- --- --- --- --- ---
+
+  vEarly_projection();
 }
 
 
@@ -501,6 +505,22 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 
     m_pCI->vPrintBoard(__LINE__);
   }
+
+  m_pCI->vEndTransform();
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ApplyOptimisations::vEarly_projection(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "Early filter"_Stz);
+
+  m_pCI->G_vRestart();
+
 
   m_pCI->vEndTransform();
   vDebugPoint();
