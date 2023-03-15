@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  vEarly_projection();
+  vEarly_project();
 }
 
 
@@ -513,7 +513,7 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vEarly_projection(void)
+void ApplyOptimisations::vEarly_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
@@ -525,6 +525,36 @@ void ApplyOptimisations::vEarly_projection(void)
   RASSERT(nullptr == m_pCI->m_pKey_running);
 
   while (m_pCI->G_bEachMain_reverse()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      // -- -- -- -- -- -- --
+      case CK_GBYAGG:
+        m_pCI->G.p_gbyAgg->vEarly_project(m_pCI);
+        break;
+
+      // -- -- -- -- -- -- --
+      case CK_PROJECT:
+        m_pCI->G.p_project->vEarly_project(m_pCI);
+        break;
+
+      // -- -- -- -- -- -- --
+      case CK_INDEXJOIN:
+        m_pCI->G.p_indexJoin->vEarly_project(m_pCI);
+        break;
+
+      case CK_INDEXSCAN:
+        m_pCI->G.p_indexScan->vEarly_project(m_pCI);
+        break;
+
+      case CK_SCAN:
+        m_pCI->G.p_scan->vEarly_project(m_pCI);
+        break;
+
+      // -- -- -- -- -- -- --
+      default:
+        break;
+    }
 
   }
 

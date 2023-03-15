@@ -21,6 +21,9 @@ namespace STORE
     static void vScanBecomesTable(CardIter* pCI);
 
     void vComputeProjection(CardIter* pCI); // prototype
+
+    void vEarly_project(CardIter* pCI);
+
   };
 
   Card_Scan* _pCard_Scan(void* aAddr);

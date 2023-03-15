@@ -102,6 +102,15 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vEarly_project(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)

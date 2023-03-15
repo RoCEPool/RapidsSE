@@ -72,6 +72,16 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_IndexJoin::vEarly_project(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* individuate filter                                                         */
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vIndividuateFilter(CardIter* pCI) {

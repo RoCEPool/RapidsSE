@@ -45,7 +45,7 @@ namespace STORE
 
     void vCut_sort(void);
     void vDerive_Projection_Keys(void);
-    void vEarly_projection(void);
+    void vEarly_project(void);
     void vMorph_table_To_EEop(void);
     void vMorph_scan_To_indexScan(void);
     void vPromote_gbyAgg_To_ordAgg(void);
