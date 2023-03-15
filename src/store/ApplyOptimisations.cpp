@@ -521,8 +521,7 @@ void ApplyOptimisations::vEarly_project(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_pProjection_running);
-  RASSERT(nullptr == m_pCI->m_pKey_running);
+  RASSERT(nullptr == m_pCI->m_pProjection_carry);
 
   while (m_pCI->G_bEachMain_reverse()) {
 
@@ -556,6 +555,10 @@ void ApplyOptimisations::vEarly_project(void)
         break;
     }
 
+  }
+
+  if (m_pCI->m_pProjection_carry) {
+    DELETE_CARD(m_pCI->m_pProjection_carry);
   }
 
   m_pCI->vEndTransform();

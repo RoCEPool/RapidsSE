@@ -199,6 +199,48 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this op at node level                                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsNodeLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Level* p_level = pSub_level())
+    if (AL_NODE == p_level->Y_iGet(P_Level))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this op at origin level                                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsOriginLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Level* p_level = pSub_level())
+    if (AL_ORIGIN == p_level->Y_iGet(P_Level))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this op at partition level                                              */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsPartitionLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Level* p_level = pSub_level())
+    if (AL_PARTITION == p_level->Y_iGet(P_Level))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bPeg_Chosen_index(CardIter* pCI)

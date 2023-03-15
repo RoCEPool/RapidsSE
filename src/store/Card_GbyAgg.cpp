@@ -108,6 +108,14 @@ void Card_GbyAgg::vEarly_project(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (! bIsOriginLevel())
+    return;
+
+  RASSERT(! pCI->m_pProjection_carry);
+
+  // take a copy of this gbyAgg's projection
+  pCI->m_pProjection_carry =
+      _pCard_Projection(pSub_projection()->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/

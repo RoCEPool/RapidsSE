@@ -522,6 +522,8 @@ void CardIter::G_vClearRegisters(void)
   m_pTerm_2            = nullptr;
   m_pTerm_corrCol      = nullptr;
 
+  m_pProjection_carry   = nullptr;
+
   m_pProjection_running = nullptr;
   m_pKey_running        = nullptr;
 
