@@ -221,12 +221,12 @@ Stz* Card_RpnCalc::szProjectedCol(void)
   if (1 != this->nChildCards())
     return nullptr;
 
-  Card_Term* p_term = this->pSub_term();
+  Card* p_child0 = this->pGetChild(0);
+  Stz* szVal = p_child0->szValue();
 
-  if (p_term->bIsKeyOdn()    ||
-      p_term->bIsStmColOdn() ||
-      p_term->bIsTblColOdn()) {
-    Stz *szVal = p_term->szValue();
+  if (Card::bIsKeyOrdinal(szVal)       ||
+      Card::bIsStreamColOrdinal(szVal) ||
+      Card::bIsTableColOrdinal(szVal)) {
     return szVal;
   }
 
