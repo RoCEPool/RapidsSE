@@ -104,29 +104,39 @@ void Card_Projection::vAs_Review(CardIter* pCI)
 
   i8 nPrjExpr = nChildCards();
   for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
-    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
 
-//    if (p_expr_prj->pSub_as())
-//      continue;
+    // get <gbyAgg>/<projection>/<expr>
+    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
 
     Stz* szPrjCol_prj = p_expr_prj->szProjectedCol();
     if ((! szPrjCol_prj || (! Card::bIsKeyOrdinal(szPrjCol_prj))))
       continue;
 
-    if ( (pCI->G.p_as = p_expr_prj->pSub_as()) ) {
-      p_expr_prj->vRemoveDeleteChild(pCI->G.p_as);
-      pCI->G.p_as = nullptr;
-    }
+    // the <gbyAgg>/<projection>/<expr> is a single projected column
 
+    // get corresponding <gbyAgg>/<key>/<expr>
     Card_Term* pTerm_prj = p_expr_prj->szProjectedTerm();
     Card_Expr* p_expr_key = pCI->G.p_key->pGetExpr(pTerm_prj);
 
-    if (p_expr_key && (pCI->G.p_as = p_expr_key->pSub_as())) {
-      p_expr_prj->vAppend(pCI->G.p_as->pDupCardAndSubCards());
+    if (! p_expr_key)
+      continue;
+    else
+    if (p_expr_key->pSub_as()) {
+
+      if (p_expr_prj->pSub_as()) {
+        p_expr_key->vRemoveDeleteChild(pCI->G.p_as);
+        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardAndSubCards());
+      }
+      else {
+        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardAndSubCards());
+      }
+    }
+    else
+    if (p_expr_prj->pSub_as()) {
+      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardAndSubCards());
     }
 
     vDebugPoint();
-
   }
 
 }

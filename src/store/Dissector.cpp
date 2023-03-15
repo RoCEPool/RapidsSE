@@ -845,7 +845,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> [ AS <as> ] <calc>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
     pCard_Expr->vCardNo(++iCardNo);
-    vAsEnsure(pCard_Expr);
+    //vAsEnsure(pCard_Expr);
 
     pCard_Projection->vAppend(pCard_Expr);
   }
