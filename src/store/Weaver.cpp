@@ -840,7 +840,15 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  CardIter xCI(pCard_Index);
+
+  Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
+  if (! pCard_bounds) {
+    pCard_bounds = pCard_Index->pSub_bounds();
+    if (! pCard_bounds)
+      return;
+  }
+
+  CardIter xCI(pCard_bounds);
   while (xCI.G_bEachMain(CK_BOUND)) {
 
     if (xCI.G.p_bound->bIsLBound() || xCI.G.p_bound->bIsUBound()) {

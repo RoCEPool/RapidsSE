@@ -19,6 +19,18 @@ trackMemory;
 /transliterated
 /weaved
 /pipelineName = "_r_NATION_ALIAS"
+select n_name ,
+       n_regionkey
+  from nation
+ where n_nationkey < 10
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_NATION_ALIAS"
 SELECT n_regionkey        AS region ,
        COUNT(n_nationkey) AS nationcount
   FROM nation
