@@ -283,12 +283,15 @@ Card_Projection* Card_Projection::pToCarry_v2(Card_Key* p_key)
   i8 nKeyExpr = p_key->nChildCards();
   for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
 
-    Card_Expr *p_expr_key = pGetExpr(i_KeyExpr);
+    Card_Expr *p_expr_key = p_key->pGetExpr(i_KeyExpr);
 
-    Card_Expr *p_expr_carry = p_expr_key->pToCarry();
+    Card_Expr *p_expr_carry = p_expr_key->pToCarry_key();
 
     p_projection_carry->vAppend(p_expr_carry);
   }
+
+  p_projection_carry->vRenumberAllExpr();
+  p_projection_carry->vDump();
 
   return p_projection_carry;
 }

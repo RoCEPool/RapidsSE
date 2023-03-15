@@ -263,7 +263,7 @@ Card_TblColOdn* Card_Expr::pTblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pToCarry(void)
+Card_Expr* Card_Expr::pToCarry_key(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

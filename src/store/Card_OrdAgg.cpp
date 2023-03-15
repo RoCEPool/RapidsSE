@@ -57,14 +57,14 @@ void Card_OrdAgg::vEarly_project(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! bIsOriginLevel())
+  if (! bIsPartitionLevel())
     return;
 
   RASSERT(! pCI->m_pProjection_carry);
 
   // get the carry form of ordAgg's projection
   pCI->m_pProjection_carry =
-      pSub_projection()->pToCarry(pSub_key());
+      pSub_projection()->pToCarry_v2(pSub_key());
 }
 
 /*============================================================================*/

@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  vEarly_project();
+  //vEarly_project();
 }
 
 

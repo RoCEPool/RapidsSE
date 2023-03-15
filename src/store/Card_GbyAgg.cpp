@@ -108,7 +108,7 @@ void Card_GbyAgg::vEarly_project(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! bIsOriginLevel())
+  if (! bIsPartitionLevel())
     return;
 
   RASSERT(! pCI->m_pProjection_carry);

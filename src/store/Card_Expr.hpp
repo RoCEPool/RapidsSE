@@ -30,9 +30,7 @@ namespace STORE
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
     i8 iRpnCalc_WhichGbyKey(void);
     Card_TblColOdn* pTblColOdn(void);
-    Card_Expr* pToCarry(void);
-
-
+    Card_Expr* pToCarry_key(void);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);
