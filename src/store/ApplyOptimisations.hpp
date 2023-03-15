@@ -43,11 +43,11 @@ namespace STORE
     bool bOptimise_RplSortDescLimitByTop(void);
     bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
 
+    void vCut_sort(void);
+    void vDerive_Projection_Keys(void);
     void vMorph_table_To_EEop(void);
     void vMorph_scan_To_indexScan(void);
 
-
-    void vDerive_Projection_Keys(void);
 
   protected:
     Footer* aFooter(void);

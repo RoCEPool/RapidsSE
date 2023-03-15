@@ -61,6 +61,8 @@ void ApplyOptimisations::vOptimise(void)
   vMorph_scan_To_indexScan();
 
   vDerive_Projection_Keys();
+
+  vCut_sort();
 }
 
 
@@ -429,6 +431,43 @@ bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ApplyOptimisations::vCut_sort(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "Cut sort"_Stz);
+
+  m_pCI->G_vRestart();
+
+  RASSERT(nullptr == m_pCI->m_pProjection_running);
+  RASSERT(nullptr == m_pCI->m_pKey_running);
+
+  while (m_pCI->G_bEachMain()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      case CK_SORT:
+        m_pCI->G.p_sort->vCut_sort(m_pCI);
+        break;
+
+      default:
+        if (m_pCI->G.p_MainCard->pSub_projection()) {
+          m_pCI->m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
+          m_pCI->m_pKey_running = m_pCI->m_pProjection_running->pSub_key();
+        }
+        break;
+    }
+
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
+  m_pCI->vEndTransform();
+  vDebugPoint();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

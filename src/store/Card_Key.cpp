@@ -106,6 +106,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
       return false;
     }
   }
+  else
   if (p_type_arg) {
     return false;
   }
@@ -124,6 +125,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
       return false;
     }
   }
+  else
   if (p_rpnCalc_arg) {
     return false;
   }
@@ -142,6 +144,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
       return false;
     }
   }
+  else
   if (p_direction_arg) {
     return false;
   }

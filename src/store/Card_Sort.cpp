@@ -40,11 +40,21 @@ Card_Sort::~Card_Sort(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
+/* test & cut sort                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Sort::vComputeProjection(CardIter* pCI)
+void Card_Sort::vCut_sort(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! pCI->m_pKey_running)
+    return;
+
+  pCI->G.p_key = pSub_key();
+
+  if (! pCI->G.p_key->bIsEqual(pCI->m_pKey_running))
+    return;
+
+  pCI->G.pDeck->vRemoveDeleteChild(this);
 }
 
 /*----------------------------------------------------------------------------*/
