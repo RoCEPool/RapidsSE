@@ -1195,6 +1195,22 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reverse iterate thru main                                                  */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_reverse(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if ((G.p_MainCard = this->pEachChild_reverse())) {
+    vFocusOnMain();
+    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.e_MainCard = CK_NONE;
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -1213,7 +1229,6 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
   return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */

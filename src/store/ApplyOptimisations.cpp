@@ -521,6 +521,12 @@ void ApplyOptimisations::vEarly_projection(void)
 
   m_pCI->G_vRestart();
 
+  RASSERT(nullptr == m_pCI->m_pProjection_running);
+  RASSERT(nullptr == m_pCI->m_pKey_running);
+
+  while (m_pCI->G_bEachMain_reverse()) {
+
+  }
 
   m_pCI->vEndTransform();
   vDebugPoint();
