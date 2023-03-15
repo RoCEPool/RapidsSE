@@ -206,6 +206,9 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 
   Card_Key* p_key_projection = pCI->G.p_projection->pSub_key();
 
+  if (! pCI->m_pKey_running)
+    return;
+
   i8 nKeyExpr = pCI->m_pKey_running->nChildCards();
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
     Card_Expr* p_expr_runkey = pCI->m_pKey_running->pGetExpr(i_RunKeyExpr);
