@@ -852,7 +852,14 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
   while (xCI.G_bEachMain(CK_BOUND)) {
 
     if (xCI.G.p_bound->bIsLBound() || xCI.G.p_bound->bIsUBound()) {
-      szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+      if (xCI.G.p_bound->bIsLBound())
+        szRpnExpr->vCatSprint(" %s"_Stz,"LBOUND"_Stz);
+      else
+      if (xCI.G.p_bound->bIsUBound())
+        szRpnExpr->vCatSprint(" %s"_Stz,"UBOUND"_Stz);
+      else
+        szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
 
       i8 nSubs = xCI.G.p_bound->nChildCards();
       for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
