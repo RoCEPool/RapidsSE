@@ -1348,7 +1348,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     }
 
     if (FloatLiteral::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" %.9e "_Stz, FloatLiteral::dValue(pOrdinalExpr));
+      // We print with 40 digits because C_FLT_MAX specifies 39 digits.
+      // This is to avoid any errors with rounding the last decimal digit.
+      sPipeline->vCatSprint(" %.40e "_Stz, FloatLiteral::dValue(pOrdinalExpr));
     }
 
     if (IntegerLiteral::bIsOfType(pOrdinalExpr)) {
