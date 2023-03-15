@@ -24,6 +24,7 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasWhen(void);
     bool bIsBraced(void);
+    bool bIsEqual(Card_RpnCalc* p_rpnCalc_arg);
     void vOntoStzList(StzList* pStzList);
     Stz* szProjectedCol(void);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);

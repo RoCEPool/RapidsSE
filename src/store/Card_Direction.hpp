@@ -15,6 +15,9 @@ namespace STORE
   
     Card_Direction(Stz* szDirn);
    ~Card_Direction(void) noexcept(false);
+
+    bool bIsEqual(Card_Direction* p_direction_arg);
+
   };
 
   Card_Direction* _pCard_Direction(void* aAddr);

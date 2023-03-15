@@ -186,6 +186,27 @@ bool Card_RpnCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsEqual(Card_RpnCalc* p_rpnCalc_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+
+  if (nChildren != p_rpnCalc_arg->nChildCards())
+    return false;
+
+  for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
+    if (! this->pGetChild(i_Child)->bSame(
+            p_rpnCalc_arg->pGetChild(i_Child)->szValue()))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bHasWhen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

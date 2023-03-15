@@ -4,12 +4,13 @@
 
 #include "Card_Key.hpp"
 
+#include "Card_As.hpp"
 #include "Card_Direction.hpp"
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_Term.hpp"
 #include "Card_StmColOdn.hpp"
 #include "Card_TblColOdn.hpp"
+#include "Card_Term.hpp"
 #include "Card_Type.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +61,9 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 
   p_expr_new->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
+  if (Card_As* p_as = p_expr->pSub_as())
+    p_expr_new->vAppend(p_as->pDupCardAndSubCards());
+
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_tblColOdn())
     p_rpnCalc->vAppend(p_expr->pSub_tblColOdn()->pDupCardAndSubCards());
@@ -82,6 +86,71 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   }
   vAppend(p_expr_new);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Key::bIsEqual(Card_Key* p_key_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Type* p_type_this = pSub_type();
+  Card_Type* p_type_arg  = p_key_arg->pSub_type();
+
+  if (p_type_this) {
+    if (p_type_arg) {
+      if (! p_type_this->bIsEqual(p_type_arg))
+        return false;
+    }
+    else {
+      return false;
+    }
+  }
+  if (p_type_arg) {
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_RpnCalc* p_rpnCalc_this = pSub_rpnCalc();
+  Card_RpnCalc* p_rpnCalc_arg  = p_key_arg->pSub_rpnCalc();
+
+  if (p_rpnCalc_this) {
+    if (p_rpnCalc_arg) {
+      if (! p_rpnCalc_this->bIsEqual(p_rpnCalc_arg))
+        return false;
+    }
+    else {
+      return false;
+    }
+  }
+  if (p_rpnCalc_arg) {
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Direction* p_direction_this = pSub_direction();
+  Card_Direction* p_direction_arg  = p_key_arg->pSub_direction();
+
+  if (p_direction_this) {
+    if (p_direction_arg) {
+      if (! p_direction_this->bIsEqual(p_direction_arg))
+        return false;
+    }
+    else {
+      return false;
+    }
+  }
+  if (p_direction_arg) {
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  return true;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

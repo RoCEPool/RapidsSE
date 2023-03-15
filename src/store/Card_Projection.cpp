@@ -236,20 +236,6 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
       pCI->G.p_key->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
     }
 
-
-//    if (Card::bIsStreamColOrdinal(szPrjCol_runkey)) {
-//      Card_Expr* p_expr_Projection = pFind_expr_By_stmColOdn(pCI, szPrjCol_runkey);
-//      if (p_expr_Projection) {
-//
-//      }
-//    }
-//    else
-//    if (Card::bIsTableColOrdinal(szPrjCol_runkey)) {
-//      Card_Expr* p_expr_Projection = pFind_expr_By_tblColOdn(pCI, szPrjCol_runkey);
-//      if (p_expr_Projection) {
-//
-//      }
-//    }
   }
 }
 
