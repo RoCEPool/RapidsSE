@@ -63,6 +63,7 @@ void ApplyOptimisations::vOptimise(void)
   vDerive_Projection_Keys();
 
   vCut_sort();
+  vPromote_gbyAgg_To_ordAgg();
 }
 
 
@@ -543,6 +544,44 @@ void ApplyOptimisations::vMorph_table_To_EEop(void)
 
   m_pCI->vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ApplyOptimisations::vPromote_gbyAgg_To_ordAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "Promote gbyAgg to ordAgg"_Stz);
+
+  m_pCI->G_vRestart();
+
+  RASSERT(nullptr == m_pCI->m_pProjection_running);
+  RASSERT(nullptr == m_pCI->m_pKey_running);
+
+  while (m_pCI->G_bEachMain()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      case CK_GBYAGG:
+        m_pCI->G.p_gbyAgg->vPromote_gbyAgg_To_ordAgg(m_pCI);
+        break;
+
+      default:
+        if (m_pCI->G.p_MainCard->pSub_projection()) {
+          m_pCI->m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
+          m_pCI->m_pKey_running = m_pCI->m_pProjection_running->pSub_key();
+        }
+        break;
+    }
+
+    m_pCI->vPrintBoard(__LINE__);
+  }
+
+  m_pCI->vEndTransform();
+  vDebugPoint();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

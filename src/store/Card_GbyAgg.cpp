@@ -123,6 +123,32 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* promote gbyAgg to ordAgg                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vPromote_gbyAgg_To_ordAgg(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! (pCI->G.p_level = pSub_level()) )
+    return;
+
+  if (AL_PARTITION != pCI->G.p_level->Y_iGet(P_Level))
+    return;
+
+  if (! pCI->m_pKey_running)
+    return;
+
+  pCI->G.p_key = pSub_key();
+
+  if (! pCI->G.p_key->bIsEqual(pCI->m_pKey_running))
+    return;
+
+  vCard(CK_ORDAGG);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
