@@ -113,9 +113,10 @@ void Card_GbyAgg::vEarly_project(CardIter* pCI)
 
   RASSERT(! pCI->m_pProjection_carry);
 
-  // take a copy of this gbyAgg's projection
+  // get the carry form of gbyAgg's projection
   pCI->m_pProjection_carry =
-      _pCard_Projection(pSub_projection()->pDupCardAndSubCards());
+      pSub_projection()->pToCarry(pSub_key());
+
 }
 
 /*----------------------------------------------------------------------------*/

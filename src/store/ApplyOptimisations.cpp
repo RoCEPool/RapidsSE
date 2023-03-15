@@ -532,7 +532,11 @@ void ApplyOptimisations::vEarly_project(void)
         m_pCI->G.p_gbyAgg->vEarly_project(m_pCI);
         break;
 
-      // -- -- -- -- -- -- --
+      case CK_ORDAGG:
+        m_pCI->G.p_ordAgg->vEarly_project(m_pCI);
+        break;
+
+        // -- -- -- -- -- -- --
       case CK_PROJECT:
         m_pCI->G.p_project->vEarly_project(m_pCI);
         break;

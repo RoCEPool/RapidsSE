@@ -18,6 +18,8 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
 
+    void vEarly_project(CardIter* pCI);
+
   };
 
   Card_OrdAgg* _pCard_OrdAgg(void* aAddr);

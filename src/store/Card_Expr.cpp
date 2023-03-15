@@ -260,6 +260,18 @@ Card_TblColOdn* Card_Expr::pTblColOdn(void)
   return pTblColOdn;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pToCarry(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr_carry = _pCard_Expr(pDupCardAndSubCards());
+
+  return p_expr_carry;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

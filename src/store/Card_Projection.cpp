@@ -157,6 +157,27 @@ void Card_Projection::vDelete_key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFind_expr_By_col(CardIter* pCI, Stz* szCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card::bIsStreamColOrdinal(szCol)) {
+    Card_Expr* p_expr = pFind_expr_By_stmColOdn(pCI,szCol);
+    return p_expr;
+  }
+
+  if (Card::bIsTableColOrdinal(szCol)) {
+    Card_Expr* p_expr = pFind_expr_By_tblColOdn(pCI,szCol);
+    return p_expr;
+  }
+
+  Card_Expr* p_expr = pFind_expr_By_colNm(pCI,szCol);
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -170,7 +191,6 @@ Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
 
   return nullptr;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -246,7 +266,42 @@ Card_Projection* Card_Projection::pReProjection(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the carry form of this projection                                      */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pToCarry_v2(Card_Key* p_key)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // temp: take a copy of this projection
+  Card_Projection* p_projection_carry = new Card_Projection;
+
+  i8 nKeyExpr = p_key->nChildCards();
+  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
+
+    Card_Expr *p_expr_key = pGetExpr(i_KeyExpr);
+
+    Card_Expr *p_expr_carry = p_expr_key->pToCarry();
+
+    p_projection_carry->vAppend(p_expr_carry);
+  }
+
+  return p_projection_carry;
+}
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pToCarry(Card_Key* p_key)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // temp: take a copy of this projection
+  Card_Projection* p_projection_carry =
+      _pCard_Projection(pDupCardAndSubCards());
+
+  return p_projection_carry;
 }
 
 /*============================================================================*/

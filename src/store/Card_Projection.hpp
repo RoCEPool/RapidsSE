@@ -22,14 +22,18 @@ namespace STORE
     void vAs_Review(CardIter* pCI);
 
     void vDelete_key(CardIter* pCI);
-    Card_Expr* pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm);
 
+    Card_Expr* pFind_expr_By_col(CardIter* pCI, Stz* szCol);
+    Card_Expr* pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm);
     Card_Expr* pFind_expr_By_stmColOdn(CardIter* pCI, Stz* szTblColOdn);
     Card_Expr* pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblColOdn);
 
     void vKeyProjection(CardIter* pCI);
 
     Card_Projection* pReProjection(void);
+
+    Card_Projection* pToCarry(Card_Key* p_key);
+    Card_Projection* pToCarry_v2(Card_Key* p_key);
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

@@ -4,6 +4,8 @@
 
 #include "Card_OrdAgg.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -48,6 +50,22 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_OrdAgg::vEarly_project(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! bIsOriginLevel())
+    return;
+
+  RASSERT(! pCI->m_pProjection_carry);
+
+  // get the carry form of ordAgg's projection
+  pCI->m_pProjection_carry =
+      pSub_projection()->pToCarry(pSub_key());
+}
 
 /*============================================================================*/
 /* end                                                                        */
