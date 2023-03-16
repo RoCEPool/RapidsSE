@@ -279,21 +279,21 @@ namespace STORE
 
     static i8   iGetColOdn(Stz* szValue);
 
-    static bool bIsBoolFn(Stz* szValue);
+    static bool bIsBoolFn(Stz* szValue);           // between, ... matchTrailing
 
     static bool bIsIndexColOrdinal(Stz* szValue);  // $In
 
     static bool bIsKeyOrdinal(Stz* szValue);       // #Kn
 
-    static bool bIsCorrParamOrdinal(Stz* szValue);     // %n
+    static bool bIsCorrParamOrdinal(Stz* szValue); // %n
 
-    static bool bIsRelnOp(Stz* szValue);
+    static bool bIsRelnOp(Stz* szValue);           // <, <=, ... >
 
-    static bool bIsResultOrdinal(Stz* szValue);     // #n
+    static bool bIsResultOrdinal(Stz* szValue);    // #n
 
-    static bool bIsSubQueryOp(Stz* szValue);
+    static bool bIsSubQueryOp(Stz* szValue);       // exists, in, ...
 
-    static bool bIsSubQueryPattern(Stz* szValue);   // __subqueryN
+    static bool bIsSubQueryPattern(Stz* szValue);  // __subqueryN
 
     static bool bIsSqyColOrdinal(Stz* szValue);    // __n
 
