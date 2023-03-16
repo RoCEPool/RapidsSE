@@ -64,7 +64,7 @@ void Card_OrdAgg::vEarly_project(CardIter* pCI)
 
   // get the carry form of ordAgg's projection
   pCI->m_pProjection_carry =
-      pSub_projection()->pToCarry_v2(pSub_key());
+      pSub_projection()->pToCarry_v2(pCI,pSub_key());
 }
 
 /*============================================================================*/

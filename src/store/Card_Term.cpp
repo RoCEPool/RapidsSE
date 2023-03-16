@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Term.hpp"
+
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
 #include "CardIter.hpp"
@@ -212,6 +213,23 @@ eRO Card_Term::eEvalRelOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Expr* p_expr = nullptr;
+
+  if (bIsTblColOdn()) {
+    if (pCI->G_bResolveSubCard(CK_NONE,CK_TBLCOLODN,szValue(),pCI->i_Child()))
+      p_expr = _pCard_Expr(pCI->m_pCard_resolved);
+  }
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ordinal number                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Card_Term::iGetOdnNo(void)
@@ -246,6 +264,22 @@ bool Card_Term::bIsBoardNm(STORE::CardIter *pCI)
 
   Stz* szValue_term = szValue();
   if (pCI->G_bIsBoard(szValue_term))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a col ordinal? $n or $c.n                                     */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsStmColOdn())
+    return true;
+  else
+  if (bIsTblColOdn())
     return true;
 
   return false;

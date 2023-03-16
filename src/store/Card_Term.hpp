@@ -4,6 +4,9 @@
 #pragma once
 
 #include "Card.hpp"
+
+#include "Card_Expr.hpp"
+
 #include "eTE.h"
 
 namespace STORE
@@ -26,12 +29,14 @@ namespace STORE
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
+    Card_Expr* pExpr_For_col(CardIter* pCI);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
+    bool bIsColOdn(void);    // $n or $c.n
     bool bIsCorPrmOdn(void); // %n
     bool bIsFoldExpr(void);
-    bool bIsKeyOdn(void);   // $Kn
+    bool bIsKeyOdn(void);    // $Kn
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $c.n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);

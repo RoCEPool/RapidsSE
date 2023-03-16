@@ -4,6 +4,8 @@
 
 #include "Card_Projection.hpp"
 
+#include "Card_RpnCalc.hpp"
+
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +204,7 @@ Card_Expr* Card_Projection::pFind_expr_By_stmColOdn(CardIter* pCI, Stz* szStmCol
   RASSERT(this == pCI->G.p_projection);
 
   // within projection find the expr which has given colNm
-  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szStmColOdn)) {
+  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_STMCOLODN, szStmColOdn)) {
     return _pCard_Expr(pCI->m_pCard_found);
   }
 
@@ -216,10 +218,10 @@ Card_Expr* Card_Projection::pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblCol
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this == pCI->G.p_projection);
+  //RASSERT(this == pCI->G.p_projection);
 
   // within projection find the expr which has given colNm
-  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szTblColOdn)) {
+  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_TBLCOLODN, szTblColOdn)) {
     return _pCard_Expr(pCI->m_pCard_found);
   }
 
@@ -273,16 +275,15 @@ Card_Projection* Card_Projection::pReProjection(void)
 /*----------------------------------------------------------------------------*/
 /* get the carry form of this projection                                      */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pToCarry_v2(Card_Key* p_key)
+Card_Projection* Card_Projection::pToCarry_v2(CardIter* pCI, Card_Key* p_key)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  // temp: take a copy of this projection
+  // 1) make a copy of the key
   Card_Projection* p_projection_carry = new Card_Projection;
 
   i8 nKeyExpr = p_key->nChildCards();
   for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
-
     Card_Expr *p_expr_key = p_key->pGetExpr(i_KeyExpr);
 
     Card_Expr *p_expr_carry = p_expr_key->pToCarry_key();
@@ -290,6 +291,31 @@ Card_Projection* Card_Projection::pToCarry_v2(Card_Key* p_key)
     p_projection_carry->vAppend(p_expr_carry);
   }
 
+  p_projection_carry->vRenumberAllExpr();
+  p_projection_carry->vDump();
+
+  // 2) append the referenced col's of this projection
+  i8 nPrjExpr = nChildCards();
+  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
+    Card *pChild = pGetChild(i_PrjExpr);
+    if (! pChild->bIsCard(CK_EXPR))
+      break;
+
+    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
+
+    if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
+      i8 nRpnTerm = p_rpnCalc->nChildCards();
+      for (i8 i_RpnTerm = 0; i_RpnTerm < nRpnTerm; i_RpnTerm++) {
+        Card_Term *p_term_rpn = p_rpnCalc->pGetTerm(i_RpnTerm);
+
+        if (p_term_rpn->bIsColOdn()) {
+          if (! p_projection_carry->pFind_expr_By_col(pCI,p_term_rpn->szValue()))
+            if (Card_Expr *p_expr_col = p_term_rpn->pExpr_For_col(pCI))
+              p_projection_carry->vAppend(p_expr_col->pDupCardAndSubCards());
+        }
+      }
+    }
+  }
   p_projection_carry->vRenumberAllExpr();
   p_projection_carry->vDump();
 
