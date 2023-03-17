@@ -683,7 +683,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc
 
   Card_Term* p_term_tblColOdn = p_pred_corr->pGetFirstTerm_tblColOdn();
   char cTblSyn = p_term_tblColOdn->cGetTableSyn();
-  Card_Table* p_table = Card_Table::pResolve_table_By_tblSyn(pCI,cTblSyn,pCI->G.i_MainCard);
+  Card_Table* p_table = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
   p_table->vAdd_Pred_Under_filter(p_pred_corr);
 }

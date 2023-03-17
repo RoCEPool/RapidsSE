@@ -166,21 +166,25 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Table* Card_Table::pResolve_table_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
+Card_Table* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
 {
   _static_
 
   Card_Table* p_table = nullptr;
 
-  pCI->G_vPushIter();
+  if (C_UNKNOWN == i_Before)
+    i_Before = pCI->i_Child();
 
-  if (pCI->G_bResolveCard(CK_TABLE,cTblSyn,i_Before)) {
-    RASSERT(pCI->m_pCard_resolved->bIsCard(CK_TABLE));
-
-    p_table = _pCard_Table(pCI->m_pCard_resolved);
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+    if (pMain->bIsCard(CK_TABLE)) {
+      Card_Table* p_table_test = _pCard_Table(pMain);
+      if (cTblSyn == p_table_test->cValue()) {
+        p_table = p_table_test;
+        break;
+      }
+    }
   }
-
-  pCI->G_vPopIter();
 
   return p_table;
 }
