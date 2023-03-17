@@ -159,57 +159,19 @@ void Card_Projection::vDelete_key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFind_expr_By_col(CardIter* pCI, Stz* szCol)
+Card_Expr* Card_Projection::pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card::bIsStreamColOrdinal(szCol)) {
-    Card_Expr* p_expr = pFind_expr_By_stmColOdn(pCI,szCol);
-    return p_expr;
-  }
-
-  if (Card::bIsTableColOrdinal(szCol)) {
-    Card_Expr* p_expr = pFind_expr_By_tblColOdn(pCI,szCol);
-    return p_expr;
+  i8 nExpr = nChildCards();
+  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
+    Card_Expr* p_expr = pGetExpr(i_Expr);
+    if (p_expr->bIsProjectedCol(szCol))
+      return p_expr;
   }
 
   return nullptr;
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFind_expr_By_stmColOdn(CardIter* pCI, Stz* szStmColOdn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(this == pCI->G.p_projection);
-
-  // within projection find the expr which has given colNm
-  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_STMCOLODN, szStmColOdn)) {
-    return _pCard_Expr(pCI->m_pCard_found);
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFind_expr_By_tblColOdn(CardIter* pCI, Stz* szTblColOdn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //RASSERT(this == pCI->G.p_projection);
-
-  // within projection find the expr which has given colNm
-  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_TBLCOLODN, szTblColOdn)) {
-    return _pCard_Expr(pCI->m_pCard_found);
-  }
-
-  return nullptr;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* derive the key projection of this projection (of running key)              */
@@ -291,7 +253,7 @@ Card_Projection* Card_Projection::pToCarry_v2(CardIter* pCI, Card_Key* p_key)
         Card_Term *p_term_rpn = p_rpnCalc->pGetTerm(i_RpnTerm);
 
         if (p_term_rpn->bIsColOdn()) {
-          if (! p_projection_carry->pFind_expr_By_col(pCI,p_term_rpn->szValue()))
+          if (!p_projection_carry->pFind_expr_By_projectedCol(pCI, p_term_rpn->szValue()))
             if (Card_Expr *p_expr_col = p_term_rpn->pExpr_For_col(pCI))
               p_projection_carry->vAppend(p_expr_col->pDupCardAndSubCards());
         }

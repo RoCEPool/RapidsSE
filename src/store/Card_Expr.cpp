@@ -219,6 +219,8 @@ bool Card_Expr::bIsProjectedCol(Stz* szProjectedCol)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Stz* szPrjCol = this->szProjectedCol();
+  if (! szPrjCol)
+    return false;
 
   if (szPrjCol->bSame(szProjectedCol))
     return true;
