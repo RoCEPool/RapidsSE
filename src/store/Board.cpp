@@ -484,10 +484,17 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 {
   _static_
 
-  if (! pCI->G_bResolveSubCard(CK_PROJECTION,pCI->G.i_FoldCard))
+  pCI->G.p_projection = nullptr;
+  for (i8 i_Main = pCI->G.i_FoldCard - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+    if (pCI->G.p_projection = pMain->pSub_projection())
+      break;
+  }
+  if (! pCI->G.p_projection)
     return;
 
-  pCI->G.p_type = pCI->m_pCard_resolved->pSub_type();
+
+  pCI->G.p_type = pCI->G.p_projection->pSub_type();
 
 //  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
 //  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
