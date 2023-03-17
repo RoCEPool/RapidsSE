@@ -129,7 +129,6 @@ namespace STORE
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
-  class Card_TblColOdn;
   class Card_TblSyn;
   class Card_Term;
   class Card_Top;
@@ -511,7 +510,6 @@ namespace STORE
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
-    Card_TblColOdn*     pSub_tblColOdn(void);
     Card_TblSyn*        pSub_tblSyn(void);
     Card_Term*          pSub_term(void);
     Card_Top*           pSub_top(void);

@@ -3338,19 +3338,6 @@ Card_TablePtn* Card::pSub_tablePtn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_TblColOdn.hpp"
-Card_TblColOdn* Card::pSub_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_TblColOdn* p_tblColOdn =
-      _pCard_TblColOdn(pFindSubCard(CK_TBLCOLODN));
-  return p_tblColOdn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_TblSyn.hpp"
 Card_TblSyn* Card::pSub_tblSyn(void)
 {

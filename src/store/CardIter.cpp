@@ -474,7 +474,6 @@ void CardIter::G_vClearMembers(void)
   G.p_tableList        = nullptr;
   G.p_tableNm          = nullptr;
   G.p_tablePtn         = nullptr;
-  G.p_tblColOdn        = nullptr;
   G.p_term             = nullptr;
   G.p_top              = nullptr;
   G.p_topology         = nullptr;
@@ -1797,7 +1796,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TABLELIST:        return G.p_tableList;
     case CK_TABLENM:          return G.p_tableNm;
     case CK_TABLEPTN:         return G.p_tablePtn;
-    case CK_TBLCOLODN:        return G.p_tblColOdn;
     case CK_TERM:             return G.p_term;
     case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
@@ -2155,7 +2153,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
     case CK_TABLENM:          return "G.p_tableNm"_Stz;
     case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
-    case CK_TBLCOLODN:        return "G.p_tblColOdn"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOP:              return "G.p_top"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
@@ -3143,7 +3140,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
-    case CK_TBLCOLODN:        *((Card**)&G.p_tblColOdn)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOP:              *((Card**)&G.p_top)              = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;

@@ -294,18 +294,6 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_TblColOdn* Card_Expr::pTblColOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_TblColOdn* pTblColOdn = pSub_tblColOdn();
-
-  return pTblColOdn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pToCarry_key(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

@@ -222,7 +222,6 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
     xCI_expr.G.p_as        = nullptr;
     xCI_expr.G.p_boolCalc  = nullptr;
     xCI_expr.G.p_rpnCalc   = nullptr;
-    xCI_expr.G.p_tblColOdn = nullptr;
     xCI_expr.G.p_type      = nullptr;
 
     while (xCI_expr.G_bEachMain()) {
@@ -239,17 +238,6 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
 
     if (xCI_expr.G.p_as) {
       pStzList->vAppend(xCI_expr.G.p_as->szValue());
-    }
-//    if (xCI_expr.G.p_colNm) {
-//      if (! xCI_expr.G.p_as)
-//        pStzList->vAppend(xCI_expr.G.p_colNm->szValue());
-//    }
-//    pRibbon->vSprintList(pStzList, 20);
-//    pStzList->vRemoveAll();
-//
-//    pStzList->vAppend(" "_Stz);
-    if (xCI_expr.G.p_tblColOdn) {
-      pStzList->vAppend(xCI_expr.G.p_tblColOdn->szValue());
     }
     if (xCI_expr.G.p_type) {
       pStzList->vAppend(xCI_expr.G.p_type->szTypeShort()); //szValue());

@@ -164,12 +164,6 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if (! p_expr)
     return;
 
-//  Card_TblColOdn* p_tblColOdn = p_expr->pTblColOdn();
-//  if (! p_tblColOdn)
-//    return;
-//
-//   vSetValueMark1(p_tblColOdn->szValue(), MARK_CHANGED);
-
   if (Stz* szPrjCol = p_expr->szProjectedCol()) {
    vSetValueMark1(szPrjCol, MARK_CHANGED);
   }
