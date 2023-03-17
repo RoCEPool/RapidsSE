@@ -946,7 +946,7 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_INTERVAL_FORMAT       */ (Stz*)"Invalid interval format",                   // SQL Compiler Subsystem
   /* EC_INVALID_SIZE                  */ (Stz*)"invalid size",
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
-  /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss'",    // SQL Compiler Subsystem
+  /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
   /* EC_INVALID_TOKEN                 */ (Stz*)"Invalid token",
   /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",

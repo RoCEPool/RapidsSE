@@ -3458,8 +3458,12 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   // Read it into the local buffer. This will also strip off the outer quotes.
   s256 sBuf;
   vCleanString(pCtx, sBuf);
+  i8 nLen = sBuf.nLength();
 
-  if (sBuf.nLength() != 8) {
+  //hh:mm:ss.ffffff
+  //012345678901234
+
+  if (nLen < 8 || nLen > 15) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIME_FORMAT);
@@ -3489,6 +3493,7 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   i8 iHour = 0;
   i8 iMin  = 0;
   i8 iSec  = 0;
+  i8 iMicros = 0;
 
   iHour *= 10; iHour += StrLib::iDigitToI8(pcBuf[0]);
   iHour *= 10; iHour += StrLib::iDigitToI8(pcBuf[1]);
@@ -3505,10 +3510,25 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
     SemanticException::vThrow(EC_INVALID_TIME_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
 
+  // Any microseconds to extract?
+  if (nLen >= 10 && pcBuf[8] == '.') {
+    i8 i=9;
+    while (i < nLen && i < 15) {
+      iMicros *= 10;
+      iMicros += StrLib::iDigitToI8(pcBuf[i]);
+      ++i;
+    }
+
+    while (i < 15) {
+      iMicros *= 10;
+      ++i;
+    }
+  }
+
   ASSERT(sizeof(Dte) == C_BYTES_PER_WORD);
 
   Tme xVal;
-  xVal.vSet(iHour, iMin, iSec, 0);
+  xVal.vSet(iHour, iMin, iSec, iMicros);
   return xVal;
 }
 
