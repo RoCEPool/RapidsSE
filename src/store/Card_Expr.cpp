@@ -211,6 +211,20 @@ bool Card_Expr::bIsColOrdinal(void)
   return b;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsProjectedCol(Stz* szProjectedCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szPrjCol = this->szProjectedCol();
+
+  if (szPrjCol->bSame(szProjectedCol))
+    return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

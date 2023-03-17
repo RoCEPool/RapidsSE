@@ -27,6 +27,7 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     bool bIsCalcSequence(void);
     bool bIsColOrdinal(void);
+    bool bIsProjectedCol(Stz* szProjectedCol);
     Stz* szProjectedCol(void);
     Card_Term* szProjectedTerm(void);
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
