@@ -2868,19 +2868,6 @@ Card_IdxColList* Card::pSub_idxColList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_IdxColNm.hpp"
-Card_IdxColNm* Card::pSub_idxColNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_IdxColNm* p_idxColNm =
-      _pCard_IdxColNm(pFindSubCard(CK_IDXCOLNM));
-  return p_idxColNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Index.hpp"
 Card_Index* Card::pSub_index(void)
 {

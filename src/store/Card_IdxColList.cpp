@@ -55,10 +55,8 @@ void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
   for (i8 i_idxCol = 0; i_idxCol < nChildren; i_idxCol++) {
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
-    pCI->G.p_idxColNm = pCI->G.p_idxCol->pSub_idxColNm();
 
-    //pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_colNm(pCI, pCI->G.p_idxColNm->szValue());
-    pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_col(pCI, pCI->G.p_idxCol->szValue());
+     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_col(pCI, pCI->G.p_idxCol->szValue());
     if (!pCI->G.p_expr)
       continue;
 

@@ -103,7 +103,6 @@ namespace STORE
 
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
-    Card_IdxColNm *         p_idxColNm;
     Card_Index *            p_index;
     Card_IndexJoin *        p_indexJoin;
     Card_IndexList *        p_indexList;

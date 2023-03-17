@@ -415,7 +415,6 @@ void CardIter::G_vClearMembers(void)
   G.p_having           = nullptr;
   G.p_idxCol           = nullptr;
   G.p_idxColList       = nullptr;
-  G.p_idxColNm         = nullptr;
   G.p_index            = nullptr;
   G.p_indexJoin        = nullptr;
   G.p_indexList        = nullptr;
@@ -1740,7 +1739,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_HAVING:           return G.p_having;
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
-    case CK_IDXCOLNM:         return G.p_idxColNm;
     case CK_INDEX:            return G.p_index;
     case CK_INDEXJOIN:        return G.p_indexJoin;
     case CK_INDEXLIST:        return G.p_indexList;
@@ -2099,7 +2097,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_HASH:             return "G.p_hash"_Stz;
     case CK_HAVING:           return "G.p_having"_Stz;
     case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
-    case CK_IDXCOLNM:         return "G.p_idxColNm"_Stz;
     case CK_INDEX:            return "G.p_index"_Stz;
     case CK_INDEXJOIN:        return "G.p_indexJoin"_Stz;
     case CK_INDEXLIST:        return "G.p_indexList"_Stz;
@@ -3088,8 +3085,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
-    case CK_IDXCOLNM:         *((Card**)&G.p_idxColNm)         = pCard; break;
-    case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
+   case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
     case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;

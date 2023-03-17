@@ -10,7 +10,6 @@
 #include "Card_IndexNm.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
-#include "Card_IdxColNm.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/

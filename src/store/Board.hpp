@@ -56,7 +56,6 @@
 
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
-#include "Card_IdxColNm.hpp"
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexList.hpp"

@@ -8,7 +8,6 @@
 #include "Card_IndexNm.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
-#include "Card_IdxColNm.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -114,9 +113,9 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 
     p_idxColList->vAppend(p_idxCol);
 
-    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
-    p_idxColNm->vValue(pColumn->szColNm());
-    p_idxCol->vAppend(p_idxColNm);
+//    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
+//    p_idxColNm->vValue(pColumn->szColNm());
+//    p_idxCol->vAppend(p_idxColNm);
   }
 
   return p_index;

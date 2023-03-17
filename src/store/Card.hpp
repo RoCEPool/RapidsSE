@@ -64,7 +64,6 @@ namespace STORE
 
   class Card_IdxCol;
   class Card_IdxColList;
-  class Card_IdxColNm;
   class Card_Index;
   class Card_IndexJoin;
   class Card_IndexList;
@@ -473,8 +472,7 @@ namespace STORE
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_IdxColList*    pSub_idxColList(void);
-    Card_IdxColNm*      pSub_idxColNm(void);
-    Card_Index*         pSub_index(void);
+     Card_Index*         pSub_index(void);
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
