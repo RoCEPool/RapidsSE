@@ -224,16 +224,6 @@ namespace STORE
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     void G_vRemoveMain(eCK eCrossCheck);
-    bool G_bResolveCard(eCK eCard, i8 i_Before);
-    bool G_bResolveCard(eCK eCard,char cWithValue, i8 i_Before);
-    bool G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
-    bool G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
-    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, i8 i_Before);
-    bool G_bResolveCardWithSub(eCK eOfMainKind, eCK eAndSubKind, Card* pBefore);
-    bool G_bResolveSubCard(eCK eGrandSub, Stz* szWithValue, i8 i_Before);
-    bool G_bResolveSubCard(eCK eSub, eCK eGrandSub, Stz* szWithValue, i8 i_Before);
-    bool G_bResolveSubCard(eCK eSub, Stz* szSubValue, eCK eGrandSub, i8 i_Before);
-    bool G_bResolveSubCard(eCK eSub, i8 i_Before);
     void vRestart(void);
     void G_vRestart(void);
     void vRestore(void);
