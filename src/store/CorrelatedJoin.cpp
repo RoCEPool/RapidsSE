@@ -272,12 +272,25 @@ void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->m_pCard_found = pCI->G.p_projection->pFindValueRecursive(pCI->m_pTerm_corrCol->szValue(), pCI->m_pCard_parent);
-  pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
+  pCI->m_pExpr_corr = pCI->m_pTerm_corrCol->pExpr_For_col(pCI,pCI->G.i_MainCard+1);
 
   pCI->m_pExpr_corr->vMark1(MARK_AT);
   pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
 }
+/*----------------------------------------------------------------------------*/
+//void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
+//
+//  // find the <table>/<stream>/<stmColList>/<stmCol>
+//  //  corresponding to the correlated predicate
+//
+//  pCI->m_pCard_found = pCI->G.p_projection->pFindValueRecursive(pCI->m_pTerm_corrCol->szValue(), pCI->m_pCard_parent);
+//  pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
+//
+//  pCI->m_pExpr_corr->vMark1(MARK_AT);
+//  pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -455,28 +468,24 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           //R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
           p_child->vValue("$1"_Stz);  // TODO: hack!!
         }
-        else {
+        else
+        if (p_child->bIsCard(CK_TERM) && Card::bIsTableColOrdinal(p_child->szValue())) {
           Card_OuterColNm* p_outerColNm = pCI->m_pCorrelation->pSub_outerColNm();
-          Stz* szOuterColNm = p_outerColNm->szValue();
-          if (pCI->G_bResolveSubCard(CK_EXPR, CK_COLNM, szOuterColNm, pCI->G.i_MainCard)) {
 
-            if (pCI->m_pCard_resolved->bIsCard(CK_EXPR)) {
-              pCI->G.p_tblColOdn = pCI->G.p_expr->pSub_tblColOdn();
-              vDebugPoint();
+          // todo: hack
+          Card* p_card = p_outerColNm->pDupCardAndSubCards();
+          p_card->vCard(CK_TERM);
+          Card_Term* p_term = _pCard_Term(p_card);
 
-              p_child->vValue(pCI->G.p_tblColOdn->szValue());
+          Card_Expr* p_expr_otr = p_term->pExpr_For_colNm(pCI);
+          p_expr_otr->vDump();
+          Stz* szProjectedCol = p_expr_otr->szProjectedCol();
+          p_child->vValue(szProjectedCol);  // TODO: hack!!
 
-            }
-          }
-
-
-
-
-//          char cTblSyn = Card::cTableColSyn(p_child->szValue());
-//          cTblSyn = 'a'; // TODO: hack!!
-//          p_child->vSetTableColSyn(cTblSyn);
-
-
+          DELETE_CARD(p_term);
+        }
+        else {
+          NEVER_REACH
         }
       }
       return;
@@ -501,6 +510,85 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
   vResolve(p_PRED, vResolve);
 }
+/*----------------------------------------------------------------------------*/
+//void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  //
+//
+//  auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
+//                                    auto&& vResolve /*oddity permits recursive lambda*/)
+//  {
+//    if (! p_pred->bIsPRED())
+//      return; /* this effectively declares resolve as void */
+//
+//    if (p_pred->bIsCard(CK_CMPPRED)) {
+//
+//      if (! p_pred->Y_bHas(P_CrlKeyTest))
+//        return;
+//
+//      RASSERT(p_pred->bIsValue("=="_Stz));
+//
+//      CardIter xCI(p_pred);
+//      while (Card* p_child = xCI.pEachChild()) {
+////        if (p_child->bIsPRED()) {
+////          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
+////          continue;
+////        }
+//        // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
+//
+//        if (Card::bIsCorrParamOrdinal(p_child->szValue())) {
+//          //R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
+//          p_child->vValue("$1"_Stz);  // TODO: hack!!
+//        }
+//        else {
+//          Card_OuterColNm* p_outerColNm = pCI->m_pCorrelation->pSub_outerColNm();
+//          Stz* szOuterColNm = p_outerColNm->szValue();
+//          if (pCI->G_bResolveSubCard(CK_EXPR, CK_COLNM, szOuterColNm, pCI->G.i_MainCard)) {
+//
+//            if (pCI->m_pCard_resolved->bIsCard(CK_EXPR)) {
+//              pCI->G.p_tblColOdn = pCI->G.p_expr->pSub_tblColOdn();
+//              vDebugPoint();
+//
+//              p_child->vValue(pCI->G.p_tblColOdn->szValue());
+//
+//            }
+//          }
+//
+//
+//
+//
+////          char cTblSyn = Card::cTableColSyn(p_child->szValue());
+////          cTblSyn = 'a'; // TODO: hack!!
+////          p_child->vSetTableColSyn(cTblSyn);
+//
+//
+//        }
+//      }
+//      return;
+//    }
+//    else
+//    if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
+//      CardIter xCI(p_pred);
+//      while (Card_PRED* p_PRED_child = static_cast<Card_PRED*>(xCI.pEachChild())) {
+//        RASSERT(p_PRED_child->bIsPRED());
+//        vResolve(p_PRED_child, vResolve);
+//      }
+//    }
+//    else {
+//      NEVER_REACH;
+//    }
+//
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  Card_PRED* p_PRED = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+//
+//  vResolve(p_PRED, vResolve);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

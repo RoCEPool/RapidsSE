@@ -165,38 +165,79 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (! Card::bIsTableColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    //Stz* szStmColOdn = Card_StmColOdn::szResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+    if (Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI)) {
+      p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
+      return C_CONTINUE_RECURSION;
 
     Stz* szStmColOdn;
     s32 sColOfThisTable;
-    Stz* szTblColOdn = p_term->szValue();
-    if (! pCI->G_bResolveSubCard(CK_TBLCOLODN,szTblColOdn,pCI->G.i_MainCard)) {
 
-      if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
-        return C_CONTINUE_RECURSION;
-
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-      i8 nExpr_prior = pCI->G.p_projection->nChildCards();
-      i8 i_Col = p_term->iGetOdnNo();
-      sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
-
-      szStmColOdn = sColOfThisTable.szStz();
-    }
-    else {
-      //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
-
-      szStmColOdn = pCI->m_pCard_parent->szValue();
-    }
-
+    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+    i8 nExpr_prior = pCI->G.p_projection->nChildCards();
+    i8 i_Col = p_term->iGetOdnNo();
+    sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
+    szStmColOdn = sColOfThisTable.szStz();
     p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
-
     return C_CONTINUE_RECURSION;
+
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bApplyRecursive(CK_TERM, bLambdaFn);
 }
+/*----------------------------------------------------------------------------*/
+//void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [pCI](Card* pCard)
+//  {
+//    Card_Term* p_term = _pCard_Term(pCard);
+//
+//    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+//
+//    if (! Card::bIsTableColOrdinal(p_term->szValue()))
+//      return C_CONTINUE_RECURSION;
+//
+//    //Stz* szStmColOdn = Card_StmColOdn::szResolve_tblColOdn_Into_stmColOdn(pCI, p_term,pCI->G.i_MainCard+1);
+//
+//    Stz* szStmColOdn;
+//    s32 sColOfThisTable;
+//    Stz* szTblColOdn = p_term->szValue();
+//    if (! pCI->G_bResolveSubCard(CK_TBLCOLODN,szTblColOdn,pCI->G.i_MainCard)) {
+//
+//      if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
+//        return C_CONTINUE_RECURSION;
+//
+//      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+//      i8 nExpr_prior = pCI->G.p_projection->nChildCards();
+//      i8 i_Col = p_term->iGetOdnNo();
+//      sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
+//
+//      szStmColOdn = sColOfThisTable.szStz();
+//    }
+//    else {
+//      //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
+//
+//      szStmColOdn = pCI->m_pCard_parent->szValue();
+//    }
+//
+//    p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bApplyRecursive(CK_TERM, bLambdaFn);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this op at node level                                                   */

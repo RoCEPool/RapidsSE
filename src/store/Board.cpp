@@ -709,8 +709,8 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
       //p_stmCol_hash = p_stmColList_prior->pStmCol_FindBy_tblColOdn(szTblColOdn, i_StmCol);
       //p_hash = Card_Hash::pDerive(p_stmCol_hash);
 
-      RASSERT(pCI->G_bResolveSubCard(CK_STMCOL,CK_TBLCOLODN,szTblColOdn, pCI->G.i_MainCard+1));
-
+      //RASSERT(pCI->G_bResolveSubCard(CK_STMCOL,CK_TBLCOLODN,szTblColOdn, pCI->G.i_MainCard+1));
+      pCI->G.p_expr = p_term_hash->pExpr_For_col(pCI,pCI->G.i_MainCard+1);
       //p_hash = Card_Hash::pDerive(pCI->G.p_stmCol);
       p_hash = Card_Hash::pDerive(pCI->G.p_expr);
 

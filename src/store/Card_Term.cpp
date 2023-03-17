@@ -164,11 +164,16 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if (! p_expr)
     return;
 
-  Card_TblColOdn* p_tblColOdn = p_expr->pTblColOdn();
-  if (! p_tblColOdn)
-    return;
+//  Card_TblColOdn* p_tblColOdn = p_expr->pTblColOdn();
+//  if (! p_tblColOdn)
+//    return;
+//
+//   vSetValueMark1(p_tblColOdn->szValue(), MARK_CHANGED);
 
-   vSetValueMark1(p_tblColOdn->szValue(), MARK_CHANGED);
+  if (Stz* szPrjCol = p_expr->szProjectedCol()) {
+   vSetValueMark1(szPrjCol, MARK_CHANGED);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,19 +220,78 @@ eRO Card_Term::eEvalRelOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI)
+Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Expr* p_expr = nullptr;
+  if (C_UNKNOWN == i_Before)
+    i_Before = pCI->i_Child();
 
-  if (bIsTblColOdn()) {
-    if (pCI->G_bResolveSubCard(CK_NONE,CK_TBLCOLODN,szValue(),pCI->i_Child()))
-      p_expr = _pCard_Expr(pCI->m_pCard_resolved);
+  Card_Expr* p_expr_col = nullptr;
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+
+    if (Card_Projection* p_projection = pMain->pSub_projection()) {
+      i8 nChildren_prj = p_projection->nChildCards();
+      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
+        Card *pChild_prj = p_projection->pGetChild(i_Child);
+        if (pChild_prj->bIsCard(CK_EXPR)) {
+          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
+          if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
+            p_rpnCalc->vDump();
+            if (1 == p_rpnCalc->nChildCards() &&
+                p_rpnCalc->szProjectedCol()->bSame(this->szValue())) {
+              p_expr_col = p_expr_prj;
+              break;
+            }
+          }
+        }
+      }
+
+    }
   }
 
-  return p_expr;
+  return p_expr_col;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Term::pExpr_For_colNm(CardIter* pCI, i8 i_Before)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (C_UNKNOWN == i_Before)
+    i_Before = pCI->i_Child();
+
+  Card_Expr* p_expr_col = nullptr;
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+
+    if (Card_Projection* p_projection = pMain->pSub_projection()) {
+      i8 nChildren_prj = p_projection->nChildCards();
+      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
+        Card *pChild_prj = p_projection->pGetChild(i_Child);
+        if (pChild_prj->bIsCard(CK_EXPR)) {
+          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
+          if (Card_As* p_as = p_expr_prj->pSub_as()) {
+            p_as->vDump();
+            if (p_as->bIsValue(this->szValue())) {
+              p_expr_col = p_expr_prj;
+              break;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  return p_expr_col;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get ordinal number                                                         */
