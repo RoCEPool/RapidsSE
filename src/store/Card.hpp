@@ -284,6 +284,8 @@ namespace STORE
 
     static bool bIsKeyOrdinal(Stz* szValue);       // #Kn
 
+    static bool bIsColOrdinal(Stz* szValue); // %n
+
     static bool bIsCorrParamOrdinal(Stz* szValue); // %n
 
     static bool bIsRelnOp(Stz* szValue);           // <, <=, ... >

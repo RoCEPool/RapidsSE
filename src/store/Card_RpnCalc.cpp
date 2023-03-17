@@ -207,6 +207,27 @@ bool Card_RpnCalc::bIsEqual(Card_RpnCalc* p_rpnCalc_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsSingleCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  if (1 != nChildren)
+    return false;
+
+  Card* pChild = pGetChild(0);
+  Stz* szVal = pChild->szValue();
+
+  if (Card::bIsColOrdinal(szVal))
+    return true;
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bHasWhen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

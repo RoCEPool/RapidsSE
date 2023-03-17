@@ -374,6 +374,20 @@ bool Card::bIsKeyOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a column ordinal?  (i.e. $n or $c.n)                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsColOrdinal(Stz* szValue)
+{
+  _static_
+
+  if (Card::bIsStreamColOrdinal(szValue) || Card::bIsTableColOrdinal(szValue))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsCorrParamOrdinal(Stz* szValue)

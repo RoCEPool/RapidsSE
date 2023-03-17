@@ -25,6 +25,7 @@ namespace STORE
     bool bHasWhen(void);
     bool bIsBraced(void);
     bool bIsEqual(Card_RpnCalc* p_rpnCalc_arg);
+    bool bIsSingleCol(void);
     void vOntoStzList(StzList* pStzList);
     Stz* szProjectedCol(void);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
