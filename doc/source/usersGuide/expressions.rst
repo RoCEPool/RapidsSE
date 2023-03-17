@@ -310,12 +310,20 @@ A ``TIME`` literal is represented in the form:
 
 .. code:: sql
 
-   TIME 'hh:mm:ss'
+   TIME 'hh:mm:ss[.ffffff]'
 
-where ``hh`` represents the hour in 2 digit 24 hour representation, ``mm``
-represents the minutes in 2 digits, and ``ss`` represents the whole in 2
-digits. The ``TIME`` keyword and a space must appear before the first
+where the square brackets represent an optional part. In this definition
+``hh`` represents the hour in 2 digit 24 hour representation, ``mm``
+represents the minutes in 2 digits, ``ss`` represents the whole in 2
+digits, and ``.ffffff`` represents an optional period followed by up to 6
+decimal places of fractional seconds.
+The ``TIME`` keyword and a space must appear before the first
 single quote so that RapidsSE does not interpret the value as a string.
+
+.. note::
+   If trying to return a ``TIME`` value through a JDBC driver the fractional
+   seconds will be truncated. This is because the JDBC standard does not support
+   TIME values with fractional seconds.
 
 
 .. index::
@@ -330,6 +338,8 @@ A ``TIMESTAMP`` literal is represented in the form:
    TIMESTAMP 'yyyy-mm-dd hh:mm:ss[.ffffff]'
 
 where:
+  ``[`` and ``]`` represent an optionality of the enclosing content
+
   ``yyyy`` represents the year in 4 digits,
 
   ``mm`` represents the month in 2 digits,

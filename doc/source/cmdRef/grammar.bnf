@@ -195,7 +195,7 @@ literal           ::= 'NULL'
                     | signedFloatLiteral
                     | dateLiteral
                     | timeLiteral
-                    | stringLiteral
+                    | singleQuotedString
                     | timestampLiteral
                     | intervalLiteral
 
@@ -204,7 +204,7 @@ simpleLiteral     ::= 'NULL'
                     | signedIntegerLiteral
                     | signedDecimalLiteral
                     | signedFloatLiteral
-                    | stringLiteral
+                    | singleQuotedString
 
 booleanLiteral    ::= 'TRUE'
                     | 'FALSE'
@@ -216,9 +216,9 @@ signedDecimalLiteral
                   ::= ( '+' | '-' )? decimalLiteral
 floatLiteral      ::= ( decimalLiteral | digit+ ) ( 'e' | 'E' ) ( '+' | '-' )? digit+
 signedFloatLiteral::= ( '+' | '-' )? floatLiteral
-dateLiteral       ::= 'DATE' stringLiteral
-timeLiteral       ::= 'TIME' stringLiteral
-timestampLiteral  ::= 'TIMESTAMP' stringLiteral
+dateLiteral       ::= 'DATE' singleQuotedString
+timeLiteral       ::= 'TIME' singleQuotedString
+timestampLiteral  ::= 'TIMESTAMP' singleQuotedString
 stringLiteral     ::= singleQuotedString | doubleQuotedString
 
 
