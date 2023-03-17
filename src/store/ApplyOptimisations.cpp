@@ -129,27 +129,7 @@ bool ApplyOptimisations::bOptimise_CutSort(void) {
   // sbyElist matches the gbyElist of an earlier (on all partitions) stage
   //   including the direction
 
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_SORT)) {
-    Card_Order* p_order1 = m_pCI->G.p_sort->pSub_stream()->pSub_order();
-    if (! p_order1)
-      return false;
-
-    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
-      Card_Order *p_order2 = m_pCI->G.p_stream->pSub_order();
-      if (! p_order2)
-        return false;
-
-      // are the two order's the same?
-      if (p_order1->bValuesSameRecursive(p_order2)) {
-
-        m_pCI->G_vRemoveDeleteMain(CK_SORT);
-        return true;
-      }
-
-    }
-  }
-*/
+  */
 
   return false;
 }
