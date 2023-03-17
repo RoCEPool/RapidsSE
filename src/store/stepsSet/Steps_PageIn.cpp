@@ -78,13 +78,8 @@ void Step::vPageInPopRequest(void) {
 
   // Ask the FileMap to get the buffer from disk.
   DataBuffer* pDataBufferFromDisk = AM::pFileMap()->pDataBufferFromDisk(oBufferId);
-  RASSERT(pDataBufferFromDisk != nullptr);
-  RASSERT(pDataBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER ||
-          pDataBufferFromDisk->eGetClassNo() == BASE::CN_CRWBUFFER);
 
   vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pDataBufferFromDisk->oGetBufferId().m_pvAsAddress);
-
-  AM::pHashMap()->vDropKeyLock(pDataBufferFromDisk->oGetBufferId().m_pvAsAddress);
 
   // Wake up task
   AM::vGrabTaskLock(pTask,(Stz*)__func__);

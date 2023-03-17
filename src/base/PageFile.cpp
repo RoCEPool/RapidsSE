@@ -256,7 +256,7 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   }
 
   // Allocation metrics will get dirty due to this
-  // When freeing, we will be freeing a CN_ROWBUFFER instead of CN_PAGEINBUFFER
+  // When freeing, we will be freeing a Crw or Row buffer instead of CN_PAGEINBUFFER
   void* pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER);
 
 //lock
@@ -267,6 +267,11 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   ASSERT(bResult);
 
   DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(pPageInBuffer);
+
+  // Reset the BufferNo after it has been overwritten
+  i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+  pDataBuffer->vSetBufferNo(iPoolBufferNo);
+
   RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
           pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
 
@@ -276,13 +281,12 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   pDataBuffer->vSetBufferId(oBufferId.m_pvAsAddress);
 
   // Update hashmap with new address with this bufferId
-#ifdef WITH_HASHMAP
   AM::pHashMap()->vInsertKeyValue(
       (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
       (Object *) pDataBuffer);
-#endif
 
 //unlock
+  AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
   vTrace("Successfully read data buffer %p\n"_Stz, pDataBuffer);
 
   return pDataBuffer;
