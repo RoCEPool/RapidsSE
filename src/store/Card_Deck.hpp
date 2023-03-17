@@ -16,8 +16,11 @@ namespace STORE
     Card_Deck(void);
    ~Card_Deck(void) noexcept(false);
 
-    static void vApply(Card_JoinOrder* p_joinOrder);
-    static bool bOrder_Joins(CardIter* pCI);
+    Card_Expr* p_expr_fold(void);
+    i8 i_Fold(void);
+    Card_Fold* p_fold(void);
+    Card_Projection* p_projection_fold(void);
+
   };
 
   Card_Deck* _pCard_Deck(void* aAddr);
