@@ -435,14 +435,6 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
     Card_As* p_as = new Card_As(pColumn->szColNm());
     p_expr->vAppend(p_as);
 
-//    Card_ColNm* p_colNm = new Card_ColNm;
-//    p_colNm->vValue(pColumn->szColNm());
-//    p_expr->vAppend(p_colNm);
-
-//    Card_TblColOdn* p_tblColOdn = new Card_TblColOdn;
-//    p_tblColOdn->vValueSprint("$%c.%lld"_Stz,cValue(),i_Col+1);
-//    p_expr->vAppend(p_tblColOdn);
-
     Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
 
@@ -502,14 +494,6 @@ void Card_Table::vReProjection(CardIter* pCI)
 
     Card_As* p_as = new Card_As(pColumn->szColNm());
     p_expr->vAppend(p_as);
-
-//    Card_ColNm* p_colNm = new Card_ColNm;
-//    p_colNm->vValue(pColumn->szColNm());
-//    p_expr->vAppend(p_colNm);
-
-//    Card_TblColOdn* p_tblColOdn = new Card_TblColOdn;
-//    p_tblColOdn->vValueSprint("$%c.%lld"_Stz,cValue(),i_Col+1);
-//    p_expr->vAppend(p_tblColOdn);
 
     Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);

@@ -231,7 +231,6 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
           xCI_expr.G.p_MainCard->bIsCard(CK_AS)        ||
           xCI_expr.G.p_MainCard->bIsCard(CK_BOOLCALC)  ||
           xCI_expr.G.p_MainCard->bIsCard(CK_RPNCALC)   ||
-          xCI_expr.G.p_MainCard->bIsCard(CK_TBLCOLODN) ||
           xCI_expr.G.p_MainCard->bIsCard(CK_TYPE))) {
         vTrace("Unexpected %s"_Stz,xCI_expr.G.p_MainCard->szCardNm());
         NEVER_REACH
