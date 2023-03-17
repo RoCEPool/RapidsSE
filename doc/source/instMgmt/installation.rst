@@ -359,7 +359,7 @@ The RapidsSE installation file accepts the following arguments:
    "``--``", "Indicates that all arguments that follow are for the cluster
    installation setup script. This must be specified before any of the
    arguments below."
-   "``--interactive``", "Indicates that the installation wizard is not to
+   "``--script``", "Indicates that the installation wizard is not to
    prompt the user for input as this would break the ability to easily
    script the installation. Instead the installation will proceed or fail
    without user intervention.
@@ -370,22 +370,12 @@ The RapidsSE installation file accepts the following arguments:
    file to be specified, given by ``<file>``. The installation wizard will
    use this cluster configuration as a starting point, instead of prompting
    the user to enter values manually."
-   "``--basic``", "[Default] Minimises the number of questions that are
-   asked of the user when creating the cluster configuration. Instead the
-   installation wizard will inspect the capabilities of each node (CPUs,
-   memory, etc) and try to pick the most appropriate settings for the cluster.
-
-   Must not be specified with ``--advanced``."
    "``--advanced``
 
    ``--adv``", "Allows the user to enter all cluster configuration
    settings manually. The installation wizard will still set the default
    values based on the capabilities of each node (CPUs, memory, etc) but
-   the user is able to override these settings.
-
-   Must not be specified with ``--basic``."
-   "``--debug``", "Prints out lots of trace output to help narrow down
-   issues in the scripting."
+   the user is able to override these settings."
    "``--help``", "Prints out the command line arguments that are accepted."
 
 For example, to run the installation wizard in advanced mode, specify it as follows: ::

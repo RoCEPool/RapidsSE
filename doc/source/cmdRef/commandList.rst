@@ -7,14 +7,18 @@
 Alphabetical Command List
 =========================
 
-.. contents:: Contents of this section:
-   :depth: 1
-   :backlinks: none
+.. only:: html
+
+  .. contents:: Contents of this section:
+     :depth: 2
+     :backlinks: none
 
 
 RapidsSE has a number of internal commands that can be used to inspect and
-modify the system. These commands and their syntax are detailed below in
-alphabetical order.
+modify the system. These commands and their main syntax elements are detailed
+below in alphabetical order. Please note that this section does not show all
+the syntax elements for each command. For the complete syntax tree and all of the
+syntax definitions, please refer to the section :ref:`syntaxTree`.
 
 All RapidsSE commands are terminated with a semicolon, like this:
 
@@ -52,6 +56,10 @@ node.
      all statements. Click on any of the syntax diagrams below to see them in
      context in the full syntax tree.
 
+  .. note::
+     In this HTML documentation click on any syntax diagram below to be taken to the
+     corresponding diagram in the :ref:`syntaxTree`. From there you can click on
+     individual elements to be taken to their definition.
 
 .. only:: latex
 
@@ -627,23 +635,6 @@ This is broken down into the :ref:`command <selectCmdRef>` and the
      :align: center
      :target: syntax-tree.html#selectExpr
 
-
-  .. rubric:: *queryHint* definition:
-
-  .. image:: /rr/diagram/queryHint.png
-     :alt: *queryHint* statement syntax
-     :align: center
-     :target: syntax-tree.html#queryHint
-
-
-  .. rubric:: *hint* definition:
-
-  .. image:: /rr/diagram/hint.png
-     :alt: *hint* statement syntax
-     :align: center
-     :target: syntax-tree.html#hint
-
-
   .. rubric:: *corrClause* definition:
 
   .. image:: /rr/diagram/corrClause.png
@@ -761,21 +752,6 @@ This is broken down into the :ref:`command <selectCmdRef>` and the
   .. image:: /rr/diagram/selectExpr.png
      :alt: *selectExpr* statement syntax
      :align: center
-
-
-  .. rubric:: *queryHint* definition:
-
-  .. image:: /rr/diagram/queryHint.png
-     :alt: *queryHint* statement syntax
-     :align: center
-
-
-  .. rubric:: *hint* definition:
-
-  .. image:: /rr/diagram/hint.png
-     :alt: *hint* statement syntax
-     :align: center
-
 
   .. rubric:: *corrClause* definition:
 

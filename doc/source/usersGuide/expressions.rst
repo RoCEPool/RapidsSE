@@ -207,8 +207,16 @@ The exponent is always separated from the mantissa by an ``e`` or ``E``
 (case insensitive). This may be followed by a ``-`` or ``+`` before the
 exponent value is included.
 
+Typically a ``FLOAT`` is displayed with one digit to the left of a decimal
+point and the remaining digits to the right of the decimal point, however
+``FLOAT`` literals do not need to be specified that way. It is the presence
+of the ``e`` or ``E`` and an exponent value (even if the exponent is zero)
+that distinguishes a ``FLOAT`` from other numeric types.
+
 Examples of ``FLOAT`` literals (with values similar to the ``DECIMAL``
 examples previously shown) include:
+
+  ``1.2345e2``
 
   ``12345.e-2``
 
@@ -314,8 +322,8 @@ A ``TIME`` literal is represented in the form:
 
 where the square brackets represent an optional part. In this definition
 ``hh`` represents the hour in 2 digit 24 hour representation, ``mm``
-represents the minutes in 2 digits, ``ss`` represents the whole in 2
-digits, and ``.ffffff`` represents an optional period followed by up to 6
+represents the minutes in 2 digits, ``ss`` represents whole seconds in 2
+digits, and ``.ffffff`` represents an optional decimal point followed by up to 6
 decimal places of fractional seconds.
 The ``TIME`` keyword and a space must appear before the first
 single quote so that RapidsSE does not interpret the value as a string.
@@ -350,7 +358,7 @@ where:
 
   ``mm`` represents the minutes in 2 digits,
 
-  ``ss`` represents the whole in 2 digits, and
+  ``ss`` represents whole seconds in 2 digits, and
 
   ``ffffff`` represents the optional fractional microseconds. The decimal
   point and fractional component can be left off entirely.

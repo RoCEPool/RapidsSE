@@ -1,0 +1,28 @@
+{# This file dynamically adds in the link to genindex.html to the sidebar #}
+{% extends "!layout.html" %}
+
+{% block content %}
+{{ super() }}
+<script>
+    // Work out the path to the root of the site and use that to
+    // create a path to the genindex.html page.
+    var logo = document.querySelector('div.sphinxsidebar p.logo a');
+    var root = logo.href
+    var indexHref = root.substring(0, root.lastIndexOf('/') + 1) + "genindex.html"
+
+    <!-- Add a <li> to the sidebar -->
+    var list = document.querySelector('div.sphinxsidebar ul');
+
+    var indexLi = document.createElement('li');
+    indexLi.className = 'toctree-l1'
+
+    var indexA = document.createElement('a');
+    indexA.className = 'reference internal';
+    indexA.href = indexHref;
+    indexA.innerHTML = 'Index';
+
+    indexLi.appendChild(indexA);
+    list.appendChild(indexLi);
+</script>
+
+{% endblock %}

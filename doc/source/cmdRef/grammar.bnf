@@ -78,7 +78,7 @@ explainRangeChoice::= '*'
 /*---------------------------------------------------------------------------*/
 /* SELECT STATEMENT                                                          */
 /*---------------------------------------------------------------------------*/
-selectQuery       ::= queryHint*
+selectQuery       ::= /*queryHint* */
                       ( 'WITH' withQuery ( ',' withQuery )* )?
                       setExpr
                       ( 'ORDER BY' orderByList )?
@@ -99,9 +99,9 @@ selectExpr        ::= (
                       )
                     | '(' selectExpr ')'
 
-queryHint         ::= '/*+' hint? ( ',' hint )* '*/'
-hint              ::= hintName ( '=' hintValue | '='? '(' hintValue ( ',' hintValue )* ')' )?
-
+// queryHint         ::= '/*+' hint? ( ',' hint )* '*/'
+//hint              ::= hintName ( '=' hintValue | '='? '(' hintValue ( ',' hintValue )* ')' )?
+//
 corrClause        ::= 'CORRESPONDING' ( 'BY' '(' identifierList ')' )?
 withQuery         ::= tableName colAliases? 'AS' '(' selectQuery ')'
 
@@ -159,7 +159,7 @@ expr              ::= '(' expr ')'
                     | expr 'IS' 'NOT'? 'NULL'
                     | expr 'NOT'? 'LIKE' expr ( 'ESCAPE' expr )?
                     | 'NOT'? 'EXISTS' '(' selectQuery ')'
-                    | expr 'NOT'? 'IN' '(' ( selectQuery | expr ( ',' expr )* )? ')'
+                    | expr 'NOT'? 'IN' '(' ( selectQuery | expr ( ',' expr )* ) ')'
                     | expr 'NOT'? 'BETWEEN' expr 'AND' expr
                     | expr ('NOT' | 'AND' | 'XOR' | 'OR' ) expr
                     | '(' selectQuery ')'
@@ -182,8 +182,8 @@ tableAlias        ::= identifier
 columnName        ::= identifier
 /* collationName     ::= identifier */
 indexName         ::= identifier
-hintName          ::= identifier
-hintValue         ::= simpleLiteral | identifier /* | expr */
+//hintName          ::= identifier
+//hintValue         ::= simpleLiteral | identifier /* | expr */
 precision         ::= integerLiteral
 scale             ::= integerLiteral
 size              ::= integerLiteral
