@@ -131,13 +131,12 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     if (! Card::bIsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
-    Stz* szStmColOdn = p_term->szValue();
-    pCI->G_bResolveSubCard(CK_STMCOL, CK_STMCOLODN, szStmColOdn, i_Main + 1);
-
     Stz* szColNm = nullptr;
-    if (pCI->G.p_stmCol) {
-      Card_StmColNm* p_stmColNm = pCI->G.p_stmCol->pSub_stmColNm();
-      szColNm = p_stmColNm->szValue();
+
+    Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI,i_Main + 1);
+    if (p_expr_col) {
+      Card_As* p_as = p_expr_col->pSub_as();
+      szColNm = p_as->szValue();
     }
     else {
 

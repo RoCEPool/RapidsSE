@@ -788,7 +788,7 @@ void FlattenSubQueries::vStmColToTblCol(void)
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
 
   while (m_pCI->G_bEachMain())
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn_recursive(m_pCI);
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
 
   m_pCI->vEndTransform();
 }

@@ -16,8 +16,7 @@ namespace STORE
     void vAddLevel(void);
     void vAdd_Pred_Under_filter(Card_PRED *p_PRED);
     void vConvert_rpnCalc_To_boolCalc(CardIter* pCI);
-    void vConvert_stmColOdn_To_tblColOdn_original(CardIter* pCI);
-    void vConvert_stmColOdn_To_tblColOdn_recursive(CardIter* pCI);
+    void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
     bool bIsNodeLevel(void);

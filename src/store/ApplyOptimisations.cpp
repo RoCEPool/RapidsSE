@@ -271,40 +271,6 @@ bool ApplyOptimisations::bOptimise_RplAggregByOrdAgg(void)
   //  we can delete the aggregates on all nodes and on origin.
   //  This further aggregation is not required.
 
-  m_pCI->G.pDeck->vRenumberRecursive();
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    Card_Order* p_order1 = m_pCI->G.p_gbyAgg->pSub_stream()->pSub_order();
-
-    if (m_pCI->G_bResolveSubCard(CK_STREAM,m_pCI->G.i_MainCard)) {
-      Card_Order *p_order2 = m_pCI->G.p_stream->pSub_order();
-      if (! p_order2)
-        return false;
-
-      p_order1->vDump(0,"ORDER1"_Stz);
-      p_order2->vDump(0,"ORDER2"_Stz);
-
-      // are the two order's the same?
-      if (p_order1->bValuesSameRecursive(p_order2)) {
-        m_pCI->G.p_gbyAgg->vCard(CK_ORDAGG);
-
-        m_pCI->vPrintBoard(__LINE__);
-
-        RASSERT(m_pCI->G_bEachMain(CK_GBYAGG));
-        m_pCI->G_vRemoveDeleteMain(CK_GBYAGG);
-
-        m_pCI->vPrintBoard(__LINE__);
-
-        RASSERT(m_pCI->G_bEachMain(CK_GBYAGG));
-        m_pCI->G_vRemoveDeleteMain(CK_GBYAGG);
-
-        return true;
-      }
-    }
-  }
 */
 
   return false;

@@ -82,39 +82,7 @@ void Card_OP::vConvert_rpnCalc_To_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_stmColOdn_To_tblColOdn_original(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-    if (! Card::bIsStreamColOrdinal(p_term->szValue()))
-      return C_CONTINUE_RECURSION;
-
-    Stz* szStmColOdn = p_term->szValue();
-    if (! pCI->G_bResolveSubCard(CK_EXPR,szStmColOdn,CK_TBLCOLODN,pCI->G.i_MainCard))
-      return C_CONTINUE_RECURSION;
-
-    //RASSERT(pCI->m_pCard_parent->bIsCard(CK_STMCOL));
-
-    pCI->G.p_tblColOdn = pCI->m_pCard_resolved->pSub_tblColOdn();
-    p_term->vSetValueMark1(pCI->G.p_tblColOdn->szValue(), MARK_CHANGED);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bApplyRecursive(CK_TERM, bLambdaFn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_stmColOdn_To_tblColOdn_recursive(CardIter* pCI)
+void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
