@@ -132,8 +132,7 @@ namespace STORE
   class Card_Term;
   class Card_Top;
   class Card_Topology;
-  class Card_Twist;
-  class Card_Type;
+   class Card_Type;
 
   class Card_Unique;
 
@@ -512,7 +511,6 @@ namespace STORE
     Card_Term*          pSub_term(void);
     Card_Top*           pSub_top(void);
     Card_Topology*      pSub_topology(void);
-    Card_Twist*         pSub_twist(void);
     Card_Type*          pSub_type(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);

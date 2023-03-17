@@ -476,7 +476,6 @@ void CardIter::G_vClearMembers(void)
   G.p_term             = nullptr;
   G.p_top              = nullptr;
   G.p_topology         = nullptr;
-  G.p_twist            = nullptr;
   G.p_type             = nullptr;
   G.p_unique           = nullptr;
   G.p_where            = nullptr;
