@@ -206,7 +206,7 @@ bool Card_Expr::bIsColOrdinal(void)
 
   Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
 
-  bool b = p_rpnCalc->bIsStreamColOrdinal();
+  bool b = p_rpnCalc->bIsSingleCol();
 
   return b;
 }
