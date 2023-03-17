@@ -64,9 +64,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_expr_new->vAppend(p_as->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  if (p_expr->pSub_stmColOdn())
-    p_rpnCalc->vAppend(p_expr->pSub_stmColOdn()->pDupCardAndSubCards());
-  else
   if (p_expr->pSub_rpnCalc())
     p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardAndSubCards());
   p_expr_new->vAppend(p_rpnCalc);
