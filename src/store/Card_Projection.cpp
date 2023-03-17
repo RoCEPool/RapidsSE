@@ -187,7 +187,7 @@ Card_Expr* Card_Projection::pFind_expr_By_colNm(CardIter* pCI, Stz* szColNm)
   RASSERT(this == pCI->G.p_projection);
 
   // within projection find the expr which has given colNm
-  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_COLNM, szColNm)) {
+  if (pCI->G_bFindSubCard(CK_PROJECTION, CK_EXPR, CK_AS, szColNm)) {
     return _pCard_Expr(pCI->m_pCard_found);
   }
 

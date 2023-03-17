@@ -20,7 +20,6 @@ enum eCK // card kind
   /* */ CK_CANDINDEX,
   /* */ CK_CAST,
   /* */ CK_CMPPRED,
-  /* */ CK_COLNM,
   /* */ CK_COMBINED,
   /* */ CK_COMMENT,
   /* */ CK_CONSTRAINT,
@@ -162,7 +161,6 @@ static Stz* aCK[]
   /* */ "CK_CAST"_Stz,         // CK_CAST
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
-  /* */ "CK_COLNM"_Stz,        // CK_COLNM
   /* */ "CK_COMMENT"_Stz,      // CK_COMMENT
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_COPTNJOIN"_Stz,    // CK_COPTNJOIN
@@ -302,7 +300,6 @@ static Stz* aCK_short[]
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cast"_Stz,            // CK_CAST
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
-  /* */ "colNm"_Stz,           // CK_COLNM
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "comment"_Stz,         // CK_COMMENT
   /* */ "constraint"_Stz,      // CK_CONSTRAINT

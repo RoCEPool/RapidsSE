@@ -34,7 +34,6 @@ namespace STORE
   class Card_CandIndex;
   class Card_Cast;
   class Card_CmpPred;
-  class Card_ColNm;
   class Card_Combined;
   class Card_Comment;
   class Card_Constraint;
@@ -457,7 +456,6 @@ namespace STORE
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
     Card_Cast*          pSub_cast(void);
-    Card_ColNm*         pSub_colNm(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);

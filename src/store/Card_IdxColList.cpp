@@ -82,7 +82,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 
   CardIter xCI_p(p_projection);
   while (Card_Expr* expr_prj = _pCard_Expr(xCI_p.pEachChild())) {
-    if (expr_prj->pSub_colNm()->bSame(szColNm)) {
+    if (expr_prj->pSub_as()->bSame(szColNm)) {
 
 //        Card_TblColOdn* p_tblColOdn = expr_prj->pSub_tblColOdn();
 //        Stz* szTblColOdn = p_tblColOdn->sz();

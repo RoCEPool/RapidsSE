@@ -2685,19 +2685,6 @@ Card_Cast* Card::pSub_cast(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_ColNm.hpp"
-Card_ColNm* Card::pSub_colNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_ColNm* p_colNm =
-      _pCard_ColNm(pFindSubCard(CK_COLNM));
-  return p_colNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_CmpPred.hpp"
 Card_CmpPred* Card::pSub_cmpPred(void)
 {

@@ -73,7 +73,6 @@ namespace STORE
     Card_Call *             p_call;
     Card_Cast *             p_cast;
     Card_CmpPred *          p_cmpPred;
-    Card_ColNm *            p_colNm;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
     Card_Constraint *       p_constraint;

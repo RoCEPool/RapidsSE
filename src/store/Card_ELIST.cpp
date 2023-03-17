@@ -221,7 +221,6 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
     CardIter xCI_expr(xCI.G.p_expr);
     xCI_expr.G.p_as        = nullptr;
     xCI_expr.G.p_boolCalc  = nullptr;
-    xCI_expr.G.p_colNm     = nullptr;
     xCI_expr.G.p_rpnCalc   = nullptr;
     xCI_expr.G.p_tblColOdn = nullptr;
     xCI_expr.G.p_type      = nullptr;
@@ -231,7 +230,6 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
       if ( ! (
           xCI_expr.G.p_MainCard->bIsCard(CK_AS)        ||
           xCI_expr.G.p_MainCard->bIsCard(CK_BOOLCALC)  ||
-          xCI_expr.G.p_MainCard->bIsCard(CK_COLNM)     ||
           xCI_expr.G.p_MainCard->bIsCard(CK_RPNCALC)   ||
           xCI_expr.G.p_MainCard->bIsCard(CK_TBLCOLODN) ||
           xCI_expr.G.p_MainCard->bIsCard(CK_TYPE))) {
@@ -243,10 +241,10 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
     if (xCI_expr.G.p_as) {
       pStzList->vAppend(xCI_expr.G.p_as->szValue());
     }
-    if (xCI_expr.G.p_colNm) {
-      if (! xCI_expr.G.p_as)
-        pStzList->vAppend(xCI_expr.G.p_colNm->szValue());
-    }
+//    if (xCI_expr.G.p_colNm) {
+//      if (! xCI_expr.G.p_as)
+//        pStzList->vAppend(xCI_expr.G.p_colNm->szValue());
+//    }
 //    pRibbon->vSprintList(pStzList, 20);
 //    pStzList->vRemoveAll();
 //
