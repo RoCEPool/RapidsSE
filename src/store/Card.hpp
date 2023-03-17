@@ -120,7 +120,6 @@ namespace STORE
   class Card_Sort;
   class Card_Stage;
   class Card_StmCol;
-  class Card_StmColNm;
   class Card_StmColOdn;
   class Card_OrdElmOdn;
   class Card_SubQuery;
@@ -504,7 +503,6 @@ namespace STORE
     Card_Section*       pSub_section(void);
     Card_Size*          pSub_size(void);
     Card_StmCol*        pSub_stmCol(void);
-    Card_StmColNm*      pSub_stmColNm(void);
     Card_StmColOdn*     pSub_stmColOdn(void);
     Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
