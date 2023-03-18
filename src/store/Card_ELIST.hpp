@@ -15,8 +15,6 @@ namespace STORE
 
     void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
     void vBump_stmOdn_In_rpnCalc(CardIter* pCI);
-    i8 iRpnCalc_Has_stmOrdOdn(Card_OrdElmOdn* p_stmOrdOdn);
-
 
     void vBump_Rightwards(i8 nBumpBy);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);

@@ -3117,32 +3117,6 @@ Card_On* Card::pSub_on(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_OrdElmOdn.hpp"
-Card_OrdElmOdn* Card::pSub_ordElmOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_OrdElmOdn* p_streamOrdOdn =
-      _pCard_OrdElmOdn(pFindSubCard(CK_ORDELMODN));
-  return p_streamOrdOdn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Order.hpp"
-Card_Order* Card::pSub_order(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Order* p_order =
-      _pCard_Order(pFindSubCard(CK_ORDER));
-  return p_order;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_OuterColNm.hpp"
 Card_OuterColNm* Card::pSub_outerColNm(void)
 {

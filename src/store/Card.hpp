@@ -99,7 +99,6 @@ namespace STORE
   class Card_On;
   class Card_OrdAgg;
   class Card_OrdElmOdn;
-  class Card_Order;
   class Card_OrPred;
   class Card_OuterColNm;
   class Card_OuterJoin;
@@ -491,7 +490,6 @@ namespace STORE
     Card_NotPred*       pSub_notPred(void);
     Card_On*            pSub_on(void);
     Card_OrdElmOdn*     pSub_ordElmOdn(void);
-    Card_Order*         pSub_order(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
     Card_Projection*    pSub_projection(void);

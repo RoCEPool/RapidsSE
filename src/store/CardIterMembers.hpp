@@ -100,7 +100,7 @@ namespace STORE
 
     Card_Hash *             p_hash;
     Card_Having *           p_having;
-    Card_HshCol *           p_stmColOdn;
+    Card_HshCol *           p_hshCol;
 
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
@@ -137,8 +137,6 @@ namespace STORE
 
     Card_On *               p_on;
     Card_OrdAgg *           p_ordAgg;
-    Card_OrdElmOdn *        p_ordElmOdn;
-    Card_Order *            p_order;
     Card_OuterColNm *       p_outerColNm;
     Card_OuterJoin *        p_outerJoin;
 

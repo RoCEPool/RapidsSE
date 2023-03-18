@@ -90,8 +90,6 @@
 #include "Card_On.hpp"
 #include "Card_OP.hpp"
 #include "Card_OrdAgg.hpp"
-#include "Card_Order.hpp"
-#include "Card_OrdElmOdn.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_OuterJoin.hpp"
 
