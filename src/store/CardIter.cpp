@@ -138,8 +138,6 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
   m_pStreamDef = nullptr;
   m_pTable     = nullptr;
 
-  m_pCard_copied   = nullptr;
-  m_pCard_dup      = nullptr;
   m_pCard_new      = nullptr;
   m_pCard_yanked   = nullptr;
 
@@ -186,8 +184,6 @@ CardIter::CardIter(Bench* pBench)
   m_pStreamDef = nullptr;
   m_pTable     = nullptr;
 
-  m_pCard_copied   = nullptr;
-  m_pCard_dup      = nullptr;
   m_pCard_new      = nullptr;
   m_pCard_yanked   = nullptr;
 
@@ -518,21 +514,6 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear the general M registers if they match given pointer                  */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vCopyCard(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! pCard) {
-    m_pCard_copied = nullptr;
-    return;
-  }
-
-  m_pCard_copied = pCard->pDupCardAndSubCards();
-}
-
-/*----------------------------------------------------------------------------*/
 /* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
 eOA CardIter::eCueUser(Stz* szPrompt)
@@ -659,24 +640,6 @@ void CardIter::vDontDescend(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   G.m_bDontDescend = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vDuplicateMember(eCK eMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pMember  = G_pGetMember(eMember);
-
-  m_pCard_dup = pMember->pDupCardAndSubCards();
-
-  if (! bIsTracing())
-    return;
-
-  vTrace("  %s %s from %s\n"_Stz,
-         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
 }
 
 /*----------------------------------------------------------------------------*/

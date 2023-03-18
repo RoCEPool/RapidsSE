@@ -314,7 +314,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
     NEVER_REACH
   }
 
-  pCI->m_pCard_copied = pCI->G.pDeck->pDupSubCards(0);
+  pCI->m_pCard_yanked = pCI->G.pDeck->pDupSubCards(0);
 
   pCI->vPrintBoard(__LINE__);
 
@@ -323,9 +323,9 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   // x) pop back to mq
   pCI->G_vPopIter();
 
-  pCI->G.pDeck->vPush(pCI->m_pCard_copied);
-  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->m_pCard_copied);
-  DELETE_CARD(pCI->m_pCard_copied);
+  pCI->G.pDeck->vPush(pCI->m_pCard_yanked);
+  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->m_pCard_yanked);
+  DELETE_CARD(pCI->m_pCard_yanked);
 
   pCI->G.pDeck->vRemoveChild(pCI->G.p_call);
   DELETE_CARD(pCI->G.p_call);

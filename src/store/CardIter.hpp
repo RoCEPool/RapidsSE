@@ -20,6 +20,7 @@ namespace STORE
 
     // Xgearing
     Bench*      m_pBench;
+    CardCtl*    m_pCardCtl;
 
     i8          m_iXform;
     i8          m_iTrace;
@@ -39,10 +40,6 @@ namespace STORE
     StreamDef*  m_pStreamDef;
     Table*      m_pTable;
 
-    CardCtl*    m_pCardCtl;
-
-    Card* m_pCard_copied;
-    Card* m_pCard_dup;
     Card* m_pCard_new;
     Card* m_pCard_yanked;
 
@@ -55,12 +52,11 @@ namespace STORE
     Card_Term* m_pTerm_corrCol;
     Card_Term* m_pTerm_sqCall;
 
-    Card_Projection* m_pProjection_carry;
-
-    Card_Projection* m_pProjection_running;
-    Card_Key*        m_pKey_running;
-
     Card_Correlation* m_pCorrelation;
+    Card_Key*         m_pKey_running;
+    Card_Projection*  m_pProjection_carry;
+    Card_Projection*  m_pProjection_running;
+
 
   protected:
     // must be last
@@ -93,14 +89,12 @@ namespace STORE
     void G_vClearMembers(void);
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(Card* pCard);
-    void G_vCopyCard(Card* pCard);
     eOA  eCueUser(Stz* szPrompt);
 
     void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
     void vDontDescend(void);
-    void G_vDuplicateMember(eCK eMember);
 
     bool bEachBoard(void);
     Board* pEachBoard(void);
