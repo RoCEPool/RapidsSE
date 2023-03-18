@@ -30,7 +30,6 @@
 #include "Card_Correlation.hpp"
 #include "Card_CrossJoin.hpp"
 #include "Card_CrossPtnJoin.hpp"
-#include "Card_CrossPtnJoinList.hpp"
 #include "Card_CrossPtnPred.hpp"
 
 #include "Card_Debug.hpp"

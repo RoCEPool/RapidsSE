@@ -81,7 +81,6 @@ namespace STORE
     Card_Correlation *      p_correlation;
     Card_CrossJoin *        p_crossJoin;
     Card_CrossPtnJoin *     p_crossPtnJoin;
-    Card_CrossPtnJoinList * p_crossPtnJoinList;
 
     Card_Direction *        p_direction;
 
