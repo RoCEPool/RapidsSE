@@ -106,7 +106,6 @@ namespace STORE
   class Card_PRED;
   class Card_Project;
   class Card_Projection;
-  class Card_PtndJoin;
 
   class Card_RpnCalc;
   class Card_RpnTerms;

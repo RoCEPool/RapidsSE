@@ -449,7 +449,6 @@ void CardIter::G_vClearMembers(void)
   G.p_permutation      = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
-  G.p_ptndJoin         = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_scan             = nullptr;
   G.p_section          = nullptr;
@@ -1712,7 +1711,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PERMUTATION:      return G.p_permutation;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
-    case CK_PTNDJOIN:         return G.p_ptndJoin;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SCAN:             return G.p_scan;
     case CK_SECTION:          return G.p_section;
@@ -1873,7 +1871,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
     case CK_PROJECTION:       return "G.p_projection"_Stz;
-    case CK_PTNDJOIN:         return "G.p_ptndJoin"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SCAN:             return "G.p_scan"_Stz;
     case CK_SECTION:          return "G.p_section"_Stz;
@@ -2849,8 +2846,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
-    case CK_PTNDJOIN:         *((Card**)&G.p_ptndJoin)         = pCard; break;
-     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
+    case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard; break;
     case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
     case CK_SEND:             *((Card**)&G.p_send)             = pCard; break;

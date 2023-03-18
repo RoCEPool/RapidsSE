@@ -143,7 +143,6 @@ namespace STORE
     Card_Permutation *      p_permutation;
     Card_Project *          p_project;
     Card_Projection *       p_projection;
-    Card_PtndJoin *         p_ptndJoin;
 
     Card_RpnCalc *          p_rpnCalc;
 

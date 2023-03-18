@@ -94,7 +94,6 @@ enum eCK // card kind
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
-  /* */ CK_PTNDJOIN,
 
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
@@ -218,7 +217,6 @@ static Stz* aCK[]
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
-  /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
 
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
@@ -342,7 +340,6 @@ static Stz* aCK_short[]
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
-  /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN
 
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
