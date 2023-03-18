@@ -86,7 +86,6 @@
 
 #include "Card_OuterColNm.hpp"
 #include "Card_Partition.hpp"
-#include "Card_Permutation.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 

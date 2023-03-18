@@ -83,7 +83,6 @@ enum eCK // card kind
   /* */ CK_OUTERJOIN,
 
   /* */ CK_PARTITION,
-  /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
 
@@ -198,7 +197,6 @@ static Stz* aCK[]
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
   /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
-  /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
@@ -313,7 +311,6 @@ static Stz* aCK_short[]
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
   /* */ "partition"_Stz,       // CK_PARTITION
-  /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
 

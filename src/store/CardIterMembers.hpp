@@ -134,7 +134,6 @@ namespace STORE
     Card_OuterJoin *        p_outerJoin;
 
     Card_Partition *        p_partition;
-    Card_Permutation *      p_permutation;
     Card_Project *          p_project;
     Card_Projection *       p_projection;
 

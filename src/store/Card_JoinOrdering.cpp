@@ -8,7 +8,6 @@
 #include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
 #include "Card_JoinOrder.hpp"
-#include "Card_Permutation.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"

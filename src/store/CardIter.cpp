@@ -440,7 +440,6 @@ void CardIter::G_vClearMembers(void)
   G.p_outerColNm       = nullptr;
   G.p_outerJoin        = nullptr;
   G.p_partition        = nullptr;
-  G.p_permutation      = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
   G.p_rpnCalc          = nullptr;
@@ -1696,7 +1695,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
     case CK_PARTITION:        return G.p_partition;
-    case CK_PERMUTATION:      return G.p_permutation;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
     case CK_RPNCALC:          return G.p_rpnCalc;
@@ -1850,7 +1848,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_OUTERCOLNM:       return "G.p_outerColNm"_Stz;
     case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
     case CK_PARTITION:        return "G.p_partition"_Stz;
-    case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
     case CK_PROJECTION:       return "G.p_projection"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
@@ -2819,7 +2816,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
     case CK_OUTERJOIN:        *((Card**)&G.p_outerJoin)        = pCard; break;
     case CK_PARTITION:        *((Card**)&G.p_partition)        = pCard; break;
-    case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;

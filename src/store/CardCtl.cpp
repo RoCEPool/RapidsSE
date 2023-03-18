@@ -609,8 +609,6 @@ void CardCtl::vReset(void)
   vPrintValue(CK_ORPRED, false);
   vPrintProperties(CK_ORPRED, false);
 
-  vHeatNext(CK_PERMUTATION, true);
-
 //  vPrintByKind(CK_PROJECTION,true);
 //  vPrintSubCards(CK_PROJECTION, false);
 
