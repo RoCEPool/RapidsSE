@@ -181,13 +181,6 @@ namespace STORE
     static void vAdd_Partitioning(CardIter* pCI);
 
     static void vDerive_fold_projection_From_projection(CardIter* pCI);
-    static void vDerive_group_order_For_gbyAgg(CardIter* pCI);
-    static void vDerive_stream_order_For_gbyAgg(CardIter* pCI);
-    static void vDerive_stream_order_For_indexJoin(CardIter* pCI);
-    static void vDerive_stream_order_For_indexScan(CardIter* pCI);
-    static void vDerive_stream_order_For_project(CardIter* pCI);
-    static void vDerive_stream_order_For_sort(CardIter* pCI);
-    static void vDerive_order(CardIter* pCI);
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
