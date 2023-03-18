@@ -29,26 +29,29 @@ namespace STORE
     s256        m_sXform;
     s256        m_sXdesc;
 
-    s32         m_sSqyNm;
-    s32         m_sSqyArg;
-    s32         m_sSqyCol;
-    s32         m_sSqyRO;
-    s32         m_sSqyRsl;
+    struct {
+      s32        m_sSqyNm;
+      s32        m_sSqyArg;
+      s32        m_sSqyCol;
+      s32        m_sSqyRO;
+      s32        m_sSqyRsl;
+      Card_Term* m_pTerm_corrCol;
+      Card_Term* m_pTerm_sqCall;
+      Card_Correlation* m_pCorrelation;
+      Card_Expr* m_pExpr_fold;
+      Card_Expr* m_pExpr_corr;
+
+    } Sqy;
 
     Card* m_pCard_new;
     Card* m_pCard_yanked;
 
-    Card_Expr* m_pExpr_fold;
-    Card_Expr* m_pExpr_corr;
 
-    Card_Term* m_pTerm_corrCol;
-    Card_Term* m_pTerm_sqCall;
 
-    Card_Correlation* m_pCorrelation;
     Card_Key*         m_pKey_running;
-    Card_Projection*  m_pProjection_carry;
     Card_Projection*  m_pProjection_running;
 
+    Card_Projection*  m_pProjection_carry;
 
   protected:
     // must be last

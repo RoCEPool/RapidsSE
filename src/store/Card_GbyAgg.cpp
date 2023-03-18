@@ -133,8 +133,8 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_projection->vBump_keyOdn_In_rpnCalc(pCI);
   pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
 
-  Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI,pCI->m_pExpr_fold);
-  Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI,pCI->m_pExpr_fold);
+  Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(pCI,pCI->Sqy.m_pExpr_fold);
+  Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(pCI,pCI->Sqy.m_pExpr_fold);
 
   pCI->G.p_key->vRenumberAllExpr();
   pCI->G.p_projection->vRenumberAllExpr();

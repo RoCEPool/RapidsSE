@@ -247,7 +247,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   }
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
-    pCI->m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
+    pCI->Sqy.m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
   }
 
   pCI->G.pDeck->vRenumberRecursive();

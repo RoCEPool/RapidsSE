@@ -79,12 +79,12 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
    if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
-  RASSERT(pCI->m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
+  RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vIdentify_Expr_Of_Correlation_Key_Column(pCI);
-  RASSERT(pCI->m_pExpr_corr);    // eg $15 (L_PARTKEY)
+  RASSERT(pCI->Sqy.m_pExpr_corr);    // eg $15 (L_PARTKEY)
   pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -250,7 +250,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     bIsCorrPred = true;
 
     Card_Term* pTerm_corrCol = static_cast<Card_CmpPred *>(p_pred)->pGetCorrCol();
-    pCI->m_pTerm_corrCol = pTerm_corrCol;
+    pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
 
     p_pred->vMark1(MARK_AT);
     p_pred->Y_vSet(P_CrlKeyPred);
@@ -276,25 +276,11 @@ void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->m_pExpr_corr = pCI->m_pTerm_corrCol->pExpr_For_col(pCI,pCI->G.i_MainCard+1);
+  pCI->Sqy.m_pExpr_corr = pCI->Sqy.m_pTerm_corrCol->pExpr_For_col(pCI,pCI->G.i_MainCard+1);
 
-  pCI->m_pExpr_corr->vMark1(MARK_AT);
-  pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
+  pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
+  pCI->Sqy.m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
 }
-/*----------------------------------------------------------------------------*/
-//void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
-//
-//  // find the <table>/<stream>/<stmColList>/<stmCol>
-//  //  corresponding to the correlated predicate
-//
-//  pCI->m_pCard_found = pCI->G.p_projection->pFindValueRecursive(pCI->m_pTerm_corrCol->szValue(), pCI->m_pCard_parent);
-//  pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
-//
-//  pCI->m_pExpr_corr->vMark1(MARK_AT);
-//  pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -321,11 +307,11 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
 
 
     if (AL_PARTITION == pCI->G.e_Level) {
-      pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->m_pExpr_corr);
+      pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
       pCI->G.p_key->vAppend(pCI->G.p_expr);
     }
     else {
-      pCI->G.p_type = pCI->m_pExpr_corr->pSub_type();
+      pCI->G.p_type = pCI->Sqy.m_pExpr_corr->pSub_type();
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
@@ -337,7 +323,6 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_expr->vCardNo(0);
 
     if (AL_PARTITION == pCI->G.e_Level) {
-      //pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,pCI->m_pExpr_corr->szValue());
       pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,"__SQCRLKEY"_Stz);
     }
     else {
@@ -474,7 +459,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
         }
         else
         if (p_child->bIsCard(CK_TERM) && Card::bIsTableColOrdinal(p_child->szValue())) {
-          Card_OuterColNm* p_outerColNm = pCI->m_pCorrelation->pSub_outerColNm();
+          Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
           Card* p_card = p_outerColNm->pDupCardAndSubCards();

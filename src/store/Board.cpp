@@ -200,10 +200,10 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (! (pCI->m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
+    if (! (pCI->Sqy.m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
       return C_CONTINUE_RECURSION;
 
-    pCI->m_sSqyNm  = pCI->m_pTerm_sqCall->szValue();
+    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqCall->szValue();
     p_pred->vMark1(MARK_AT);
     bFoundCall = true;
 
@@ -211,14 +211,14 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
       RASSERT(p_pred->bIsSubQueryOp());
 
-      pCI->m_sSqyArg =  p_pred->pGetTerm(0)->szValue();
-      pCI->m_sSqyNm  = p_pred->pGetTerm(1)->szValue();
+      pCI->Sqy.m_sSqyArg =  p_pred->pGetTerm(0)->szValue();
+      pCI->Sqy.m_sSqyNm  = p_pred->pGetTerm(1)->szValue();
       return C_TERMINATE_RECURSION;
     }
 
     if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
       RASSERT(p_pred->bIsSubQueryOp());
-      pCI->m_sSqyArg = p_pred->pGetTerm(2)->szValue();
+      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(2)->szValue();
       return C_TERMINATE_RECURSION;
     }
 

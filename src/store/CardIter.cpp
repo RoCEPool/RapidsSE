@@ -175,17 +175,17 @@ CardIter::CardIter(Bench* pBench)
   m_pCard_new      = nullptr;
   m_pCard_yanked   = nullptr;
 
-  m_pExpr_fold = nullptr;
-  m_pExpr_corr = nullptr;
+  Sqy.m_pExpr_fold = nullptr;
+  Sqy.m_pExpr_corr = nullptr;
 
-  m_pCorrelation = nullptr;
+  Sqy.m_pCorrelation = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
   G.pSubQuery = nullptr;
-  m_pTerm_sqCall       = nullptr;
+  Sqy.m_pTerm_sqCall       = nullptr;
 
 
   G_vClearMembers();
@@ -444,7 +444,7 @@ void CardIter::G_vClearRegisters(void)
   G.p_SubMember        = nullptr;
   G.e_SubMember        = CK_NONE;
 
-  m_pTerm_corrCol      = nullptr;
+  Sqy.m_pTerm_corrCol      = nullptr;
 
   m_pProjection_carry   = nullptr;
 

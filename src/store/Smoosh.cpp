@@ -101,12 +101,12 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! pCI->m_pCorrelation) {
+  if (! pCI->Sqy.m_pCorrelation) {
     pCI->G.pDeck->vRenumberRecursive();
     return;
   }
 
-  Card_Term::bReplaceValueOfSub(pCI, pCI->G.p_table,CK_TERM,"%1"_Stz,pCI->m_sSqyArg);
+  Card_Term::bReplaceValueOfSub(pCI, pCI->G.p_table,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
 
   pCI->G_vRestart();
   if (pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {

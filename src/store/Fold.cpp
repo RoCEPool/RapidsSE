@@ -209,12 +209,12 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
     }
   }
   vTrace(">>>>>>>>> Found %s call:  %s %s %s\n"_Stz, szFold,
-         pCI->m_sSqyArg.szStz(), pCI->m_sSqyRO.szStz(), pCI->m_sSqyNm.szStz());
+         pCI->Sqy.m_sSqyArg.szStz(), pCI->Sqy.m_sSqyRO.szStz(), pCI->Sqy.m_sSqyNm.szStz());
   pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->m_sSqyNm.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNm.szStz());
     NEVER_REACH
   }
 
@@ -225,7 +225,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   i8 i_dup_from = 0;
   if (pCI->G_bEachMain(CK_CORRELATION)) {
-    pCI->m_pCorrelation = pCI->G.pDeck->pSub_correlation();
+    pCI->Sqy.m_pCorrelation = pCI->G.pDeck->pSub_correlation();
     i_dup_from = 1;
   }
 
@@ -267,12 +267,12 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 7) derive the fold (SQ result) expr
-  pCI->m_pExpr_fold = nullptr;
+  pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->G_vRestart();
   if (pCI->G_bEachMain(CK_FOLD)) {
     pCI->G.i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
-    pCI->m_pExpr_fold = pCI->G.p_expr;
+    pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
   pCI->vPrintBoard(__LINE__);
 
@@ -364,12 +364,12 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
     }
   }
   vTrace(">>>>>>>>> Found %s call:  %s %s %s\n"_Stz, szFold,
-         pCI->m_sSqyArg.szStz(), pCI->m_sSqyRO.szStz(), pCI->m_sSqyNm.szStz());
+         pCI->Sqy.m_sSqyArg.szStz(), pCI->Sqy.m_sSqyRO.szStz(), pCI->Sqy.m_sSqyNm.szStz());
   pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->m_sSqyNm.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNm.szStz());
     NEVER_REACH
   }
 
@@ -411,12 +411,12 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 7) derive the fold (SQ result) expr
-  pCI->m_pExpr_fold = nullptr;
+  pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->G_vRestart();
   if (pCI->G_bEachMain(CK_FOLD)) {
     pCI->G.i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
-    pCI->m_pExpr_fold = pCI->G.p_expr;
+    pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
   pCI->vPrintBoard(__LINE__);
 
@@ -468,12 +468,12 @@ i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
     }
   }
   vTrace(">>>>>>>>> Found %s call:  %s %s %s\n"_Stz, szFold,
-         pCI->m_sSqyArg.szStz(), pCI->m_sSqyRO.szStz(), pCI->m_sSqyNm.szStz());
+         pCI->Sqy.m_sSqyArg.szStz(), pCI->Sqy.m_sSqyRO.szStz(), pCI->Sqy.m_sSqyNm.szStz());
   pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->m_sSqyNm.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNm.szStz());
     NEVER_REACH
   }
 
