@@ -60,10 +60,10 @@ void Card_OrdAgg::vEarly_project(CardIter* pCI)
   if (! bIsPartitionLevel())
     return;
 
-  RASSERT(! pCI->m_pProjection_carry);
+  RASSERT(! pCI->EarlyProject.m_pProjection_carry);
 
   // get the carry form of ordAgg's projection
-  pCI->m_pProjection_carry =
+  pCI->EarlyProject.m_pProjection_carry =
       pSub_projection()->pToCarry_v2(pCI,pSub_key());
 }
 

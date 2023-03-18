@@ -46,12 +46,12 @@ void Card_Sort::vCut_sort(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! pCI->m_pKey_running)
+  if (! pCI->StreamOrder.m_pKey_running)
     return;
 
   pCI->G.p_key = pSub_key();
 
-  if (! pCI->G.p_key->bIsEqual(pCI->m_pKey_running))
+  if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pKey_running))
     return;
 
   pCI->G.pDeck->vRemoveDeleteChild(this);
@@ -64,7 +64,7 @@ void Card_Sort::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->m_pKey_running = pSub_key();
+  pCI->StreamOrder.m_pKey_running = pSub_key();
 }
 
 /*============================================================================*/

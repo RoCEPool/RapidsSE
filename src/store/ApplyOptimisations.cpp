@@ -394,8 +394,8 @@ void ApplyOptimisations::vCut_sort(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_pProjection_running);
-  RASSERT(nullptr == m_pCI->m_pKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
 
   while (m_pCI->G_bEachMain()) {
 
@@ -407,8 +407,8 @@ void ApplyOptimisations::vCut_sort(void)
 
       default:
         if (m_pCI->G.p_MainCard->pSub_projection()) {
-          m_pCI->m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
-          m_pCI->m_pKey_running = m_pCI->m_pProjection_running->pSub_key();
+          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
+          m_pCI->StreamOrder.m_pKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_key();
         }
         break;
     }
@@ -431,8 +431,8 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_pProjection_running);
-  RASSERT(nullptr == m_pCI->m_pKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
 
   while (m_pCI->G_bEachMain()) {
 
@@ -467,7 +467,7 @@ void ApplyOptimisations::vEarly_project(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_pProjection_carry);
+  RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_carry);
 
   while (m_pCI->G_bEachMain_reverse()) {
 
@@ -507,8 +507,8 @@ void ApplyOptimisations::vEarly_project(void)
 
   }
 
-  if (m_pCI->m_pProjection_carry) {
-    DELETE_CARD(m_pCI->m_pProjection_carry);
+  if (m_pCI->EarlyProject.m_pProjection_carry) {
+    DELETE_CARD(m_pCI->EarlyProject.m_pProjection_carry);
   }
 
   m_pCI->vEndTransform();
@@ -565,8 +565,8 @@ void ApplyOptimisations::vPromote_gbyAgg_To_ordAgg(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_pProjection_running);
-  RASSERT(nullptr == m_pCI->m_pKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
 
   while (m_pCI->G_bEachMain()) {
 
@@ -578,8 +578,8 @@ void ApplyOptimisations::vPromote_gbyAgg_To_ordAgg(void)
 
       default:
         if (m_pCI->G.p_MainCard->pSub_projection()) {
-          m_pCI->m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
-          m_pCI->m_pKey_running = m_pCI->m_pProjection_running->pSub_key();
+          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
+          m_pCI->StreamOrder.m_pKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_key();
         }
         break;
     }

@@ -28,7 +28,10 @@ namespace STORE
     s256        m_sXform;
     s256        m_sXdesc;
 
-    struct {
+    Card* m_pCard_new;
+
+    struct
+    {
       s32        m_sSqyNm;
       s32        m_sSqyArg;
       Card_Term* m_pTerm_corrCol;
@@ -39,13 +42,15 @@ namespace STORE
       Card*      m_pCard_sqCopy;
     } Sqy;
 
-    Card* m_pCard_new;
+    struct
+    {
+      Card_Key *m_pKey_running;
+      Card_Projection *m_pProjection_running;
+    } StreamOrder;
 
-
-    Card_Key*         m_pKey_running;
-    Card_Projection*  m_pProjection_running;
-
-    Card_Projection*  m_pProjection_carry;
+    struct {
+      Card_Projection *m_pProjection_carry;
+    } EarlyProject;
 
   protected:
     // must be last

@@ -446,10 +446,10 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
-  m_pProjection_carry   = nullptr;
+  EarlyProject.m_pProjection_carry   = nullptr;
 
-  m_pProjection_running = nullptr;
-  m_pKey_running        = nullptr;
+  StreamOrder.m_pProjection_running = nullptr;
+  StreamOrder.m_pKey_running        = nullptr;
 
   G.sz_SubQueryNm      = nullptr;
 

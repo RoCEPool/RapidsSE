@@ -97,8 +97,8 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
   pCI->G.p_projection->vAppend(pCI->G.p_key);
 
   // set running projection for use by next op
-  pCI->m_pProjection_running = pCI->G.p_projection;
-  pCI->m_pKey_running = pCI->G.p_key;
+  pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
+  pCI->StreamOrder.m_pKey_running = pCI->G.p_key;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,10 +111,10 @@ void Card_GbyAgg::vEarly_project(CardIter* pCI)
   if (! bIsPartitionLevel())
     return;
 
-  RASSERT(! pCI->m_pProjection_carry);
+  RASSERT(! pCI->EarlyProject.m_pProjection_carry);
 
   // get the carry form of gbyAgg's projection
-  pCI->m_pProjection_carry =
+  pCI->EarlyProject.m_pProjection_carry =
       pSub_projection()->pToCarry(pSub_key());
 
 }
@@ -153,12 +153,12 @@ void Card_GbyAgg::vPromote_gbyAgg_To_ordAgg(CardIter* pCI)
   if (AL_PARTITION != pCI->G.p_level->Y_iGet(P_Level))
     return;
 
-  if (! pCI->m_pKey_running)
+  if (! pCI->StreamOrder.m_pKey_running)
     return;
 
   pCI->G.p_key = pSub_key();
 
-  if (! pCI->G.p_key->bIsEqual(pCI->m_pKey_running))
+  if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pKey_running))
     return;
 
   vCard(CK_ORDAGG);

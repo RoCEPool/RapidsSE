@@ -124,8 +124,8 @@ void PrepareSubQueries::vAsReview(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->m_pProjection_running);
-  RASSERT(nullptr == m_pCI->m_pKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
 
   while (m_pCI->G_bEachMain()) {
 
@@ -141,8 +141,8 @@ void PrepareSubQueries::vAsReview(void)
       case CK_SORT:       break;
 
       case CK_TABLE:
-        m_pCI->m_pProjection_running = m_pCI->G.p_table->pSub_projection();
-        m_pCI->m_pKey_running = nullptr;
+        m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_table->pSub_projection();
+        m_pCI->StreamOrder.m_pKey_running = nullptr;
         break;
 
       default:
