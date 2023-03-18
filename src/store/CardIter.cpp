@@ -118,6 +118,9 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  m_pBench   = pBench;
+  m_pCardCtl = m_pBench->pCardCtl();
+
   G.m_pCard   = nullptr;
   G.m_i_Child = C_UNKNOWN;
   G.m_pChild  = nullptr;
@@ -126,17 +129,8 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
 
   G.m_bActive = false;
 
-  // members from Xgearing
-  m_pBench   = pBench;
-  m_pCardCtl = m_pBench->pCardCtl();
-
   m_iXform     = 0;
   m_iTrace     = 0;
-
-  m_pIndex     = nullptr;
-  m_pIndexDef  = nullptr;
-  m_pStreamDef = nullptr;
-  m_pTable     = nullptr;
 
   m_pCard_new      = nullptr;
   m_pCard_yanked   = nullptr;
@@ -149,7 +143,6 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
   G.pSubQuery = nullptr;
   G_vClearMembers();
   G_vClearRegisters();
-
 
   _checkInitialised_(CN_CARDITER);
 
@@ -164,6 +157,9 @@ CardIter::CardIter(Bench* pBench)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  m_pBench   = pBench;
+  m_pCardCtl = m_pBench->pCardCtl();
+
   G.m_pCard   = nullptr;
   G.m_i_Child = C_UNKNOWN;
   G.m_pChild  = nullptr;
@@ -172,17 +168,9 @@ CardIter::CardIter(Bench* pBench)
 
   G.m_bActive = false;
 
-  // members from Xgearing
-  m_pBench   = pBench;
-  m_pCardCtl = m_pBench->pCardCtl();
 
   m_iXform     = 0;
   m_iTrace     = 0;
-
-  m_pIndex     = nullptr;
-  m_pIndexDef  = nullptr;
-  m_pStreamDef = nullptr;
-  m_pTable     = nullptr;
 
   m_pCard_new      = nullptr;
   m_pCard_yanked   = nullptr;

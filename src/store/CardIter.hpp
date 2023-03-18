@@ -35,11 +35,6 @@ namespace STORE
     s32         m_sSqyRO;
     s32         m_sSqyRsl;
 
-    Index*      m_pIndex;
-    IndexDef*   m_pIndexDef;
-    StreamDef*  m_pStreamDef;
-    Table*      m_pTable;
-
     Card* m_pCard_new;
     Card* m_pCard_yanked;
 
