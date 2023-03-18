@@ -29,7 +29,6 @@
 #include "Card_CoPtnPred.hpp"
 #include "Card_Correlation.hpp"
 #include "Card_CrossJoin.hpp"
-#include "Card_CrossPtnPred.hpp"
 
 #include "Card_Debug.hpp"
 #include "Card_Deck.hpp"

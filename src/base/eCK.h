@@ -26,7 +26,6 @@ enum eCK // card kind
   /* */ CK_COPTNPRED,
   /* */ CK_CORRELATION,
   /* */ CK_CROSSJOIN,
-  /* */ CK_CROSSPTNPRED,
 
   /* */ CK_DEBUG,
   /* */ CK_DECK,
@@ -145,7 +144,6 @@ static Stz* aCK[]
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
   /* */ "CK_CORRELATION"_Stz,    // CK_CORRELATION
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
-  /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
@@ -264,7 +262,6 @@ static Stz* aCK_short[]
   /* */ "coPtnPred"_Stz,       // CK_COPTNPRED
   /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
-  /* */ "crossPtnPred"_Stz,    // CK_CROSSPTNPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "deck"_Stz,            // CK_DECK
