@@ -36,8 +36,6 @@ namespace STORE
 
     i8 m_nSubQueries;    // how many sub-queries under this one
 
-    Card_SubQuery* m_p_subQuery; // subset of cards which are this folded subquery
-
   protected:
     // must be last
     Footer m_xFooter;
@@ -48,9 +46,6 @@ namespace STORE
   
     SubQuery(Board* pBoard);
    ~SubQuery(void) noexcept(false);
-
-    void vAddCard(Card* pCard);
-    void vAddChildren(Card* pCard);
 
     Board* pBoard(void);
 
@@ -87,9 +82,6 @@ namespace STORE
 
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
-
-    Card_SubQuery* p_subQuery(void);
-    void v_subQuery(Card_SubQuery* p_subQuery);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);

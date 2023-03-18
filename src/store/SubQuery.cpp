@@ -38,8 +38,6 @@ SubQuery::SubQuery(Board* pBoard)
 
   m_nSubQueries = 0;
 
-  m_p_subQuery = nullptr;
-
   _checkInitialised_(CN_SUBQUERY);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
@@ -51,39 +49,12 @@ SubQuery::SubQuery(Board* pBoard)
 SubQuery::~SubQuery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  delete m_p_subQuery;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add given card to sub-query cards                                          */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vAddCard(Card* pCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  if (! m_p_subQuery)
-    m_p_subQuery = new Card_SubQuery;
-
-  m_p_subQuery->vAppend(pCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add children of given card to sub-query cards                              */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vAddChildren(Card* pCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
-
-  CardIter xCI(pCard);
-  while (xCI.G_bEachMain())
-    vAddCard(xCI.G.p_MainCard);
-}
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
@@ -359,26 +330,6 @@ void SubQuery::vRelnOp(eRO eRelnOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eRelnOp = eRelnOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_SubQuery* SubQuery::p_subQuery(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  return m_p_subQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void SubQuery::v_subQuery(Card_SubQuery* p_subQuery)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  m_p_subQuery = p_subQuery;
 }
 
 /*----------------------------------------------------------------------------*/
