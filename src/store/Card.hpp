@@ -35,11 +35,7 @@ namespace STORE
   class Card_Cast;
   class Card_CmpPred;
   class Card_Combined;
-  class Card_Comment;
   class Card_Constraint;
-  class Card_CoPtnJoin;
-  class Card_CoPtnJoinList;
-  class Card_CoPtnPred;
   class Card_Correlation;
   class Card_CrossJoin;
 
