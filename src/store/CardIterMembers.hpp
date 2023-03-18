@@ -151,7 +151,6 @@ namespace STORE
     Card_PtndJoin *         p_ptndJoin;
     Card_PtndJoinSet *      p_ptndJoinSet;
 
-    Card_Reason *           p_reason;
     Card_RpnCalc *          p_rpnCalc;
 
     Card_Scan *             p_scan;

@@ -109,8 +109,7 @@ namespace STORE
   class Card_PtndJoin;
   class Card_PtndJoinSet;
 
-  class Card_Reason;
-  class Card_RpnCalc;
+ class Card_RpnCalc;
   class Card_RpnTerms;
 
   class Card_Scan;
@@ -492,7 +491,6 @@ namespace STORE
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
     Card_Projection*    pSub_projection(void);
-    Card_Reason*        pSub_reason(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);

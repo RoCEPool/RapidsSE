@@ -3169,19 +3169,6 @@ Card_Projection* Card::pSub_projection(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Reason.hpp"
-Card_Reason* Card::pSub_reason(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Reason* p_reason =
-      _pCard_Reason(pFindSubCard(CK_REASON));
-  return p_reason;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_RpnCalc.hpp"
 Card_RpnCalc* Card::pSub_rpnCalc(void)
 {
