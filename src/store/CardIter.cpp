@@ -396,7 +396,6 @@ void CardIter::G_vClearMembers(void)
   G.p_coPtnJoin        = nullptr;
   G.p_coPtnJoinList    = nullptr;
   G.p_coPtnPred        = nullptr;
-  G.p_coPtnPredList    = nullptr;
   G.p_correlation      = nullptr;
   G.p_crossJoin        = nullptr;
   G.p_crossPtnJoin     = nullptr;
@@ -1658,7 +1657,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COPTNJOIN:        return G.p_coPtnJoin;
     case CK_COPTNJOINLIST:    return G.p_coPtnJoinList;
     case CK_COPTNPRED:        return G.p_coPtnPred;
-    case CK_COPTNPREDLIST:    return G.p_coPtnPredList;
     case CK_CORRELATION:      return G.p_correlation;
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
@@ -1819,7 +1817,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COPTNJOIN:        return "G.p_coPtnJoin"_Stz;
     case CK_COPTNJOINLIST:    return "G.p_coPtnJoinList"_Stz;
     case CK_COPTNPRED:        return "G.p_coPtnPred"_Stz;
-    case CK_COPTNPREDLIST:    return "G.p_coPtnPredList"_Stz;
     case CK_CORRELATION:      return "G.p_correlation"_Stz;
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
     case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
@@ -2793,8 +2790,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COPTNJOIN:        *((Card**)&G.p_coPtnJoin)        = pCard; break;
     case CK_COPTNJOINLIST:    *((Card**)&G.p_coPtnJoinList)    = pCard; break;
     case CK_COPTNPRED:        *((Card**)&G.p_coPtnPred)        = pCard; break;
-    case CK_COPTNPREDLIST:    *((Card**)&G.p_coPtnPredList)    = pCard; break;
-    case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
+     case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;

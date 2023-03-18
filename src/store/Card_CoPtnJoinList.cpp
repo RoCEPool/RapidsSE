@@ -43,37 +43,6 @@ Card_CoPtnJoinList::~Card_CoPtnJoinList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_CoPtnJoinList* Card_CoPtnJoinList::pExtract(Card_CoPtnPredList* p_coPtnPredList)
-{
-  _static_
-
-  Card_CoPtnJoinList* p_coPtnJoinList = new Card_CoPtnJoinList;
-
-  i8 nChildren = p_coPtnPredList->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CoPtnPred* p_coPtnPred =
-        _pCard_CoPtnPred(p_coPtnPredList->pGetChild(i_Child));
-
-    Card_SubSet* p_subSet = p_coPtnPred->pDupSubCards();
-
-    Card_CoPtnJoin* p_coPtnJoin = nullptr;
-    if (! (p_coPtnJoin = p_coPtnJoinList->pFind(p_coPtnPred)) ) {
-      p_coPtnJoin = new Card_CoPtnJoin;
-      p_coPtnJoinList->vAppend(p_coPtnJoin);
-    }
-
-    p_coPtnJoin->vTransferChildren(p_subSet);
-    DELETE_CARD(p_subSet);
-  }
-
-
-  return p_coPtnJoinList;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
