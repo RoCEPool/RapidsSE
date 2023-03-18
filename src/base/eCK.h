@@ -22,7 +22,6 @@ enum eCK // card kind
   /* */ CK_CMPPRED,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
-  /* */ CK_COPTNJOIN,
   /* */ CK_COPTNPRED,
   /* */ CK_CORRELATION,
   /* */ CK_CROSSJOIN,
@@ -140,7 +139,6 @@ static Stz* aCK[]
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
-  /* */ "CK_COPTNJOIN"_Stz,    // CK_COPTNJOIN
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
   /* */ "CK_CORRELATION"_Stz,    // CK_CORRELATION
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
@@ -258,7 +256,6 @@ static Stz* aCK_short[]
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
-  /* */ "coPtnJoin"_Stz,       // CK_COPTNJOIN
   /* */ "coPtnPred"_Stz,       // CK_COPTNPRED
   /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN

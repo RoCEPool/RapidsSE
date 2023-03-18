@@ -600,10 +600,6 @@ void CardCtl::vReset(void)
   //vPrintProperties(CK_CMPPRED, false);
 
 
-  vPrintSubShort(CK_COPTNJOIN,true);
-  vPrintSubCards(CK_COPTNJOIN,false);
-  vPrune(CK_COPTNJOIN,true);
-
 //  vPrintByKind(CK_KEY,true);
 //  vPrintSubCards(CK_KEY, false);
 
