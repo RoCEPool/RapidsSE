@@ -2712,19 +2712,6 @@ Card_CmpPred* Card::pSub_cmpPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Comment.hpp"
-Card_Comment* Card::pSub_comment(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Comment* p_comment =
-      _pCard_Comment(pFindSubCard(CK_COMMENT));
-  return p_comment;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Constraint.hpp"
 Card_Constraint* Card::pSub_constraint(void)
 {

@@ -450,7 +450,6 @@ namespace STORE
     Card_Bounds*        pSub_bounds(void);
     Card_Cast*          pSub_cast(void);
     Card_CmpPred*       pSub_cmpPred(void);
-    Card_Comment*       pSub_comment(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);

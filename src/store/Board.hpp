@@ -24,7 +24,6 @@
 #include "Card_Cast.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Combined.hpp"
-#include "Card_Comment.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_CoPtnJoin.hpp"
 #include "Card_CoPtnJoinList.hpp"

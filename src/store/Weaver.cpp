@@ -249,15 +249,6 @@ void Weaver::vOp(Card* pCard)
   else
     sOpNm = aCK_short[eCard];
 
-  Card_Comment* p_comment = pCard->pSub_comment();
-  if (p_comment) {
-    //vTabOp();
-    vConcat("      "_Stz);
-    vConcat("// %s"_Stz,
-            p_comment->szValue());
-    vEolOp();
-  }
-
   vTabOp();
   vConcat("%-9s %s"_Stz,
           sOpNm.azChar(),

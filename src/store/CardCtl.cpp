@@ -599,8 +599,6 @@ void CardCtl::vReset(void)
 
   //vPrintProperties(CK_CMPPRED, false);
 
-  vPrintName(CK_COMMENT,false);
-  vPrintProperties(CK_COMMENT,false);
 
   vPrintSubShort(CK_COPTNJOIN,true);
   vPrintSubCards(CK_COPTNJOIN,false);
