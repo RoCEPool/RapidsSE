@@ -133,7 +133,6 @@ namespace STORE
     Card_OuterColNm *       p_outerColNm;
     Card_OuterJoin *        p_outerJoin;
 
-    Card_Partition *        p_partition;
     Card_Project *          p_project;
     Card_Projection *       p_projection;
 

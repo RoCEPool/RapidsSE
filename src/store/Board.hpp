@@ -44,6 +44,7 @@
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
+#include "Card_HshCol.hpp"
 
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
@@ -85,7 +86,6 @@
 #include "Card_OuterJoin.hpp"
 
 #include "Card_OuterColNm.hpp"
-#include "Card_Partition.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 
@@ -98,7 +98,6 @@
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
-#include "Card_HshCol.hpp"
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
