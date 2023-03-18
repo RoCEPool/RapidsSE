@@ -397,7 +397,6 @@ void CardIter::G_vClearMembers(void)
   G.p_crossJoin        = nullptr;
   G.p_direction        = nullptr;
   G.p_expr             = nullptr;
-  G.p_exprList         = nullptr;
   G.p_filter           = nullptr;
   G.p_flat             = nullptr;
   G.p_fold             = nullptr;
@@ -1651,7 +1650,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_DIRECTION:        return G.p_direction;
     case CK_EXPR:             return G.p_expr;
-    case CK_EXPRLIST:         return G.p_exprList;
     case CK_FILTER:           return G.p_filter;
     case CK_FLAT:             return G.p_flat;
     case CK_FOLD:             return G.p_fold;
@@ -1804,7 +1802,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
     case CK_DIRECTION:        return "G.p_direction"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
-    case CK_EXPRLIST:         return "G.p_exprList"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
     case CK_FLAT:             return "G.p_flat"_Stz;
     case CK_FOLD:             return "G.p_fold"_Stz;
@@ -2770,8 +2767,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
-    case CK_EXPRLIST:         *((Card**)&G.p_exprList)         = pCard; break;
-    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;

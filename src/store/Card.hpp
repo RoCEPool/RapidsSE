@@ -44,7 +44,6 @@ namespace STORE
 
   class Card_ELIST;
   class Card_Expr;
-  class Card_ExprList;
 
   class Card_Filter;
   class Card_Flat;
@@ -448,7 +447,6 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
-    Card_ExprList*      pSub_exprList(void);
     Card_Filter*        pSub_filter(void);
     Card_Flat*          pSub_flat(void);
     Card_Fold*          pSub_fold(void);

@@ -29,7 +29,6 @@ enum eCK // card kind
   /* */ CK_DIRECTION,
 
   /* */ CK_EXPR,
-  /* */ CK_EXPRLIST,
 
   /* */ CK_FILTER,
   /* */ CK_FLAT,
@@ -142,7 +141,6 @@ static Stz* aCK[]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
-  /* */ "CK_EXPRLIST"_Stz,     // CK_EXPRLIST
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FLAT"_Stz,         // CK_FLAT
@@ -255,7 +253,6 @@ static Stz* aCK_short[]
   /* */ "direction"_Stz,       // CK_DIRECTION
 
   /* */ "expr"_Stz,            // CK_EXPR
-  /* */ "exprList"_Stz,        // CK_EXPRLIST
 
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "flat"_Stz,            // CK_FLAT
