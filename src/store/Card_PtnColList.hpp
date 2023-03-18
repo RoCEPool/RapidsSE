@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_StmCol.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {

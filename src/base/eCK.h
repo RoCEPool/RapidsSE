@@ -116,7 +116,6 @@ enum eCK // card kind
   /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STMCOL,
   /* */ CK_STMCOLNM,
   /* */ CK_STMCOLODN,
   /* */ CK_SUBQUERY,
@@ -255,7 +254,6 @@ static Stz* aCK[]
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
   /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
@@ -394,8 +392,7 @@ static Stz* aCK_short[]
   /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "stmCol"_Stz,          // CK_STMCOL
-  /* */ "stmColNm"_Stz,        // CK_STMCOLNM
+   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
   /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET

@@ -161,8 +161,7 @@ namespace STORE
     Card_Size *             p_size;
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
-    Card_StmCol *           p_stmCol;
-     Card_StmColOdn *        p_stmColOdn;
+    Card_StmColOdn *        p_stmColOdn;
     Card_SubQuery *         p_subQuery;
     Card_SubSet *           p_subSet;
 

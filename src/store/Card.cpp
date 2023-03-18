@@ -3247,19 +3247,6 @@ Card_Size* Card::pSub_size(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StmCol.hpp"
-Card_StmCol* Card::pSub_stmCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StmCol* p_streamCol =
-      _pCard_StmCol(pFindSubCard(CK_STMCOL));
-  return p_streamCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_StmColOdn.hpp"
 Card_StmColOdn* Card::pSub_stmColOdn(void)
 {

@@ -4,7 +4,6 @@
 
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
-#include "Card_StmCol.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 

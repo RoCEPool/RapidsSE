@@ -4,7 +4,6 @@
 
 #include "Card_Hash.hpp"
 
-#include "Card_StmCol.hpp"
 #include "Card_StmColOdn.hpp"
 #include "Card_Type.hpp"
 #include "Card_Expr.hpp"

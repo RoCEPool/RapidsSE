@@ -4,7 +4,6 @@
 
 #include "Card_ELIST.hpp"
 #include "Card_As.hpp"
-#include "Card_StmCol.hpp"
 #include "Card_OrdElmOdn.hpp"
 #include "CardIter.hpp"
 
