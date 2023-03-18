@@ -38,7 +38,6 @@ enum eCK // card kind
   /* */ CK_DIRECTION,
 
   /* */ CK_EXPR,
-  /* */ CK_EXPRBOOL,
   /* */ CK_EXPRLIST,
 
   /* */ CK_FILTER,
@@ -85,7 +84,6 @@ enum eCK // card kind
   /* */ CK_NEXT,
   /* */ CK_NOTE,
   /* */ CK_NOTPRED,
-  /* */ CK_NPARMCOLS,
 
   /* */ CK_ON,
   /* */ CK_OPTION,
@@ -124,7 +122,6 @@ enum eCK // card kind
   /* */ CK_TABLELIST,
   /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
-  /* */ CK_TBLCOLODN,
   /* */ CK_TBLSYN,
   /* */ CK_TERM,
   /* */ CK_TOP,
@@ -175,7 +172,6 @@ static Stz* aCK[]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
-  /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
   /* */ "CK_EXPRLIST"_Stz,     // CK_EXPRLIST
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
@@ -222,7 +218,6 @@ static Stz* aCK[]
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
   /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
-  /* */ "CK_NPARMCOLS"_Stz,    // CK_NPARMCOLS
 
   /* */ "CK_ON"_Stz,           // CK_ON
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -261,7 +256,6 @@ static Stz* aCK[]
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
-  /* */ "CK_TBLCOLODN"_Stz,    // CK_TBLCOLODN
   /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOP"_Stz,          // CK_TOP
@@ -311,8 +305,7 @@ static Stz* aCK_short[]
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
 
- /* */ "expr"_Stz,            // CK_EXPR
-  /* */ "exprBool"_Stz,        // CK_EXPRBOOL
+  /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprList"_Stz,        // CK_EXPRLIST
 
   /* */ "filter"_Stz,          // CK_FILTER
@@ -359,7 +352,6 @@ static Stz* aCK_short[]
   /* */ "next"_Stz,            // CK_NEXT
   /* */ "note"_Stz,            // CK_NOTE
   /* */ "notPred"_Stz,         // CK_NOTPRED
-  /* */ "nParmCols"_Stz,       // CK_NPARMCOLS
 
   /* */ "on"_Stz,              // CK_ON
   /* */ "option"_Stz,          // CK_OPTION
@@ -398,7 +390,6 @@ static Stz* aCK_short[]
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
-  /* */ "tblColOdn"_Stz,       // CK_TBLCOLODN
   /* */ "tblSyn"_Stz,          // CK_TBLSYN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "top"_Stz,             // CK_TOP
