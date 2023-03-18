@@ -86,8 +86,7 @@ enum eCK // card kind
   /* */ CK_NOTPRED,
 
   /* */ CK_ON,
-  /* */ CK_OPTION,
-  /* */ CK_ORDAGG,
+   /* */ CK_ORDAGG,
   /* */ CK_ORPRED,
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
@@ -217,7 +216,6 @@ static Stz* aCK[]
   /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
 
   /* */ "CK_ON"_Stz,           // CK_ON
-  /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
@@ -348,7 +346,6 @@ static Stz* aCK_short[]
   /* */ "notPred"_Stz,         // CK_NOTPRED
 
   /* */ "on"_Stz,              // CK_ON
-  /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   /* */ "orPred"_Stz,          // CK_ORPRED
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
