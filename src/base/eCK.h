@@ -17,7 +17,6 @@ enum eCK // card kind
   /* */ CK_BOUNDS,
 
   /* */ CK_CALL,
-  /* */ CK_CANDINDEX,
   /* */ CK_CAST,
   /* */ CK_CMPPRED,
   /* */ CK_COMBINED,
@@ -133,7 +132,6 @@ static Stz* aCK[]
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
-  /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CAST"_Stz,         // CK_CAST
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
@@ -249,7 +247,6 @@ static Stz* aCK_short[]
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "call"_Stz,            // CK_CALL
-  /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cast"_Stz,            // CK_CAST
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "combined"_Stz,        // CK_COMBINED

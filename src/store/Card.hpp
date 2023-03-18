@@ -31,7 +31,6 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_CandIndex;
   class Card_Cast;
   class Card_CmpPred;
   class Card_Combined;
