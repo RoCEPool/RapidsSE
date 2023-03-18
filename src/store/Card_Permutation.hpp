@@ -16,7 +16,6 @@ namespace STORE
     Card_Permutation(void);
    ~Card_Permutation(void) noexcept(false);
 
-    static void vRemoveInvalid(Card_Deck* pDeck);
   };
 
   Card_Permutation* _pCard_Permutation(void* aAddr);

@@ -10,7 +10,6 @@
 #include "Card_JoinOrder.hpp"
 #include "Card_Permutation.hpp"
 #include "Card_PtndJoin.hpp"
-#include "Card_PtndJoinSet.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
