@@ -85,7 +85,7 @@ enum eCK // card kind
   /* */ CK_NOTPRED,
 
   /* */ CK_ON,
-   /* */ CK_ORDAGG,
+  /* */ CK_ORDAGG,
   /* */ CK_ORPRED,
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
@@ -94,9 +94,6 @@ enum eCK // card kind
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
-  /* */ CK_PTNCOL,
-  /* */ CK_PTNCOLLIST,
-  /* */ CK_PTNCOLNM,
   /* */ CK_PTNDJOIN,
   /* */ CK_PTNDJOINSET,
 
@@ -222,9 +219,6 @@ static Stz* aCK[]
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
-  /* */ "CK_PTNCOL"_Stz,       // CK_PTNCOL
-  /* */ "CK_PTNCOLLIST"_Stz,   // CK_PTNCOLLIST
-  /* */ "CK_PTNCOLNM"_Stz,     // CK_PTNCOLNM
   /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
@@ -350,13 +344,10 @@ static Stz* aCK_short[]
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
-  /* */ "ptnCol"_Stz,          // CK_PTNCOL
-  /* */ "ptnColList"_Stz,      // CK_PTNCOLLIST
-  /* */ "ptnColNm"_Stz,        // CK_PTNCOLNM
   /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
-   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
+  /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
   /* */ "scan"_Stz,            // CK_SCAN

@@ -97,9 +97,6 @@
 #include "Card_Permutation.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
-#include "Card_PtnCol.hpp"
-#include "Card_PtnColList.hpp"
-#include "Card_PtnColNm.hpp"
 #include "Card_PtndJoin.hpp"
 #include "Card_PtndJoinSet.hpp"
 

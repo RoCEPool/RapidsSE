@@ -447,12 +447,8 @@ void CardIter::G_vClearMembers(void)
   G.p_outerJoin        = nullptr;
   G.p_partition        = nullptr;
   G.p_permutation      = nullptr;
-  G.p_permutation_low  = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
-  G.p_ptnCol           = nullptr;
-  G.p_ptnColList       = nullptr;
-  G.p_ptnColNm         = nullptr;
   G.p_ptndJoin         = nullptr;
   G.p_ptndJoinSet      = nullptr;
   G.p_rpnCalc          = nullptr;
@@ -1717,9 +1713,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PERMUTATION:      return G.p_permutation;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
-    case CK_PTNCOL:           return G.p_ptnCol;
-    case CK_PTNCOLLIST:       return G.p_ptnColList;
-    case CK_PTNCOLNM:         return G.p_ptnColNm;
     case CK_PTNDJOIN:         return G.p_ptndJoin;
     case CK_PTNDJOINSET:      return G.p_ptndJoinSet;
     case CK_RPNCALC:          return G.p_rpnCalc;
@@ -1882,9 +1875,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_PERMUTATION:      return "G.p_permutation"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
     case CK_PROJECTION:       return "G.p_projection"_Stz;
-    case CK_PTNCOL:           return "G.p_ptnCol"_Stz;
-    case CK_PTNCOLLIST:       return "G.p_ptnColList"_Stz;
-    case CK_PTNCOLNM:         return "G.p_ptnColNm"_Stz;
     case CK_PTNDJOIN:         return "G.p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "G.p_ptndJoinSet"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
@@ -2862,9 +2852,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PERMUTATION:      *((Card**)&G.p_permutation)      = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
-    case CK_PTNCOL:           *((Card**)&G.p_ptnCol)           = pCard; break;
-    case CK_PTNCOLLIST:       *((Card**)&G.p_ptnColList)       = pCard; break;
-    case CK_PTNCOLNM:         *((Card**)&G.p_ptnColNm)         = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&G.p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&G.p_ptndJoinSet)      = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;

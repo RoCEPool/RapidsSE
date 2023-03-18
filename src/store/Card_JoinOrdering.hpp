@@ -16,11 +16,7 @@ namespace STORE
     Card_JoinOrdering(void);
    ~Card_JoinOrdering(void) noexcept(false);
 
-    static Card_JoinOrdering* pCompute(Card_Deck* pDeck);
     static Card_JoinOrdering* pDerive(Card_JoinPermSeq* p_joinPermSeq);
-
-    static void vEstimateJoinedBuff(Card_Deck* pDeck, Card_TableList* p_tableList);
-    static void vEstimateNetwork(Card_Deck* pDeck);
 
     static Card_JoinOrdering* pPick(Card_JoinPermAll* p_joinPermAll);
 
