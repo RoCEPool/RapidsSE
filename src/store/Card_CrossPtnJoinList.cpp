@@ -5,7 +5,6 @@
 #include "Card_CrossPtnJoinList.hpp"
 
 #include "Card_CmpPred.hpp"
-#include "Card_CoPtnJoinList.hpp"
 #include "Card_CrossPtnJoin.hpp"
 #include "Card_JoinPredList.hpp"
 
@@ -42,33 +41,6 @@ Card_CrossPtnJoinList::~Card_CrossPtnJoinList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_CrossPtnJoinList* Card_CrossPtnJoinList::pExtract(Card_JoinPredList* p_joinPredList,
-                                                       Card_CoPtnJoinList* p_coPtnJoinList)
-{
-  _static_
-
-  Card_CrossPtnJoinList* p_crossPtnJoinList = new Card_CrossPtnJoinList;
-
-  i8 nChildren = p_joinPredList->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CmpPred* p_cmpPred =
-        _pCard_CmpPred(p_joinPredList->pGetChild(i_Child));
-
-    // todo: ...
-    if (p_coPtnJoinList->bHasEqPredCmp(p_cmpPred))
-      continue;
-
-    Card_CrossPtnJoin* p_crossPtnJoin = new Card_CrossPtnJoin;
-    p_crossPtnJoin->vAppend(p_cmpPred->pDupCardAndSubCards());
-    p_crossPtnJoinList->vAppend(p_crossPtnJoin);
-  }
-
-  return p_crossPtnJoinList;
-}
 
 
 /*============================================================================*/

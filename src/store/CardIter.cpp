@@ -1655,8 +1655,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
     case CK_COPTNJOIN:        return G.p_coPtnJoin;
-    case CK_COPTNJOINLIST:    return G.p_coPtnJoinList;
-    case CK_COPTNPRED:        return G.p_coPtnPred;
+     case CK_COPTNPRED:        return G.p_coPtnPred;
     case CK_CORRELATION:      return G.p_correlation;
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
@@ -1815,7 +1814,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COMBINED:         return "G.p_combined"_Stz;
     case CK_CONSTRAINT:       return "G.p_constraint"_Stz;
     case CK_COPTNJOIN:        return "G.p_coPtnJoin"_Stz;
-    case CK_COPTNJOINLIST:    return "G.p_coPtnJoinList"_Stz;
     case CK_COPTNPRED:        return "G.p_coPtnPred"_Stz;
     case CK_CORRELATION:      return "G.p_correlation"_Stz;
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
@@ -2788,9 +2786,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
     case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
     case CK_COPTNJOIN:        *((Card**)&G.p_coPtnJoin)        = pCard; break;
-    case CK_COPTNJOINLIST:    *((Card**)&G.p_coPtnJoinList)    = pCard; break;
     case CK_COPTNPRED:        *((Card**)&G.p_coPtnPred)        = pCard; break;
-     case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
+    case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
     case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_CROSSPTNJOINLIST: *((Card**)&G.p_crossPtnJoinList) = pCard; break;
