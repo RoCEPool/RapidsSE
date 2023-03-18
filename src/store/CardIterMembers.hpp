@@ -160,7 +160,6 @@ namespace STORE
     Card_Size *             p_size;
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
-    Card_SubQuery *         p_subQuery;
     Card_SubSet *           p_subSet;
 
     Card_Table *            p_table;

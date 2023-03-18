@@ -464,7 +464,6 @@ void CardIter::G_vClearMembers(void)
   G.p_size             = nullptr;
   G.p_sort             = nullptr;
   G.p_stage            = nullptr;
-  G.p_subQuery         = nullptr;
   G.p_subSet           = nullptr;
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
@@ -1684,6 +1683,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_GBYAGG:           return G.p_gbyAgg;
     case CK_HASH:             return G.p_hash;
     case CK_HAVING:           return G.p_having;
+    case CK_HSHCOL:           return G.p_hshCol;
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
     case CK_INDEX:            return G.p_index;
@@ -1714,7 +1714,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_NOTPRED:          return G.p_notPred;
     case CK_ON:               return G.p_on;
     case CK_ORDAGG:           return G.p_ordAgg;
-     case CK_OUTERCOLNM:       return G.p_outerColNm;
+    case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
     case CK_PARTITION:        return G.p_partition;
     case CK_PERMUTATION:      return G.p_permutation;
@@ -1733,8 +1733,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SIZE:             return G.p_size;
     case CK_SORT:             return G.p_sort;
     case CK_STAGE:            return G.p_stage;
-    case CK_HSHCOL:        return G.p_hshCol;
-    case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
@@ -1902,7 +1900,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_SIZE:             return "G.p_size"_Stz;
     case CK_SORT:             return "G.p_sort"_Stz;
     case CK_STAGE:            return "G.p_stage"_Stz;
-    case CK_SUBQUERY:         return "G.p_subQuery"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
@@ -2835,9 +2832,10 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
     case CK_HASH:             *((Card**)&G.p_hash)             = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
+    case CK_HSHCOL:           *((Card**)&G.p_hshCol)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
-   case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
+    case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
     case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
@@ -2884,8 +2882,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SIZE:             *((Card**)&G.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&G.p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&G.p_stage)            = pCard; break;
-    case CK_HSHCOL:        *((Card**)&G.p_hshCol)        = pCard; break;
-    case CK_SUBQUERY:         *((Card**)&G.p_subQuery)         = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;

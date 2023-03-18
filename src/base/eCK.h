@@ -113,7 +113,6 @@ enum eCK // card kind
   /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -245,7 +244,6 @@ static Stz* aCK[]
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -377,7 +375,6 @@ static Stz* aCK_short[]
   /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE

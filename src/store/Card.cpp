@@ -3234,19 +3234,6 @@ Card_Size* Card::pSub_size(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_SubQuery.hpp"
-Card_SubQuery* Card::pSub_subQuery(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_SubQuery* p_subQuery =
-      _pCard_SubQuery(pFindSubCard(CK_TABLE));
-  return p_subQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Table.hpp"
 Card_Table* Card::pSub_table(void)
 {

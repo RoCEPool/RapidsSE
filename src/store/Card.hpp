@@ -119,7 +119,6 @@ namespace STORE
   class Card_Size;
   class Card_Sort;
   class Card_Stage;
-  class Card_SubQuery;
   class Card_SubSet;
 
   class Card_TableList;
@@ -498,7 +497,6 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
     Card_Size*          pSub_size(void);
-    Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);

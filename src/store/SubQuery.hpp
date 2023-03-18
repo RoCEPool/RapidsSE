@@ -15,7 +15,6 @@ namespace STORE
 {
   class Board;
   class Card;
-  class Card_SubQuery;
   class Card_SubSet;
 
   class SubQuery : public Object
