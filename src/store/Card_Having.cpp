@@ -117,9 +117,9 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
 
-    pCI->m_pTerm_1 = _pCard_Term(pCard->pGet(1));
-    pCard->vRemoveChild(pCI->m_pTerm_1);
-    DELETE_CARD(pCI->m_pTerm_1);
+    Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
+    pCard->vRemoveChild(p_term_1);
+    DELETE_CARD(p_term_1);
     pCI->G_vAppendNewChild(pCard, CK_TERM, "$1"_Stz);
 
     return C_CONTINUE_RECURSION;

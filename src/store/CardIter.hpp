@@ -41,9 +41,6 @@ namespace STORE
     Card_Expr* m_pExpr_fold;
     Card_Expr* m_pExpr_corr;
 
-    Card_Term* m_pTerm_0;
-    Card_Term* m_pTerm_1;
-    Card_Term* m_pTerm_2;
     Card_Term* m_pTerm_corrCol;
     Card_Term* m_pTerm_sqCall;
 

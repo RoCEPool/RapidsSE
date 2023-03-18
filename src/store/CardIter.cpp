@@ -444,9 +444,6 @@ void CardIter::G_vClearRegisters(void)
   G.p_SubMember        = nullptr;
   G.e_SubMember        = CK_NONE;
 
-  m_pTerm_0            = nullptr;
-  m_pTerm_1            = nullptr;
-  m_pTerm_2            = nullptr;
   m_pTerm_corrCol      = nullptr;
 
   m_pProjection_carry   = nullptr;
