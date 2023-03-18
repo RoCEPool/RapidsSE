@@ -157,20 +157,11 @@ namespace STORE
 
     void vEndTransform(void);
 
-    bool G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard= CK_NONE);
-
-    bool G_bFindSubCard(eCK eMember, eCK eSub, eCK eGrandSub, Stz* szWithValue);
-
     void vFocusOnMain(void);
     void vForward(void);
 
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);
-
-    bool G_bHasPriorToMain(bool bUpdateMember = false);
-    bool G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
-    bool G_bHasSubsequentToMain(bool bUpdateMember = false);
-    bool G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
     void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
@@ -179,12 +170,6 @@ namespace STORE
     bool bIsTracing(void);
 
     bool bJustRestarted(void);
-
-    bool bLess(void);
-    bool G_bLocateCard(eCK eCard,  i8 i_After, i8& ri_Located);
-    bool G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
-    bool G_bLocateCard(eCK eCard, eCK eSubCard, Stz* szWithValue, i8 i_After);
-    bool G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     Stz* szMemberNm(eCK eMember);
     bool bMore(void);

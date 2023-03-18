@@ -1611,52 +1611,6 @@ void CardIter::vEndTransform(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find sub of member with given property                                     */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! (m_pCard_member = G_pGetMember(eMember))) {
-    m_pCard_found = nullptr;
-    return false;
-  }
-
-  if (! (m_pCard_found = m_pCard_member->pFindPpyRecursive(szPpy)))
-    return false;
-
-  G_vUpdateMember(m_pCard_found->eCard(), m_pCard_found, __func__);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find sub of member having grand-sub with given value                       */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bFindSubCard(eCK eMember, eCK eSub, eCK eGrandSub, Stz* szWithValue)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! (m_pCard_member = G_pGetMember(eMember))) {
-    m_pCard_found = nullptr;
-    return false;
-  }
-
-  for (;;) {
-    Card* p_sub;
-    Card* p_grandSub = m_pCard_member->pFindValueRecursive(eGrandSub,szWithValue,p_sub);
-    if (!p_grandSub)
-      break;
-    if (p_sub->bIsCard(eSub)) {
-      m_pCard_found = p_sub;
-      return true;
-    }
-  }
-
-  m_pCard_found = nullptr;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* focus on main                                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vFocusOnMain(void)
@@ -1804,83 +1758,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is there a card immediately before current main card?                      */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bHasPriorToMain(bool bUpdateMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if ((G.p_PriorToMain = this->pPrevChild())) {
-    G.e_PriorToMain = G.p_PriorToMain->eCard();
-    if (bUpdateMember)
-      G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
-    return true;
-  }
-
-  G.e_PriorToMain = CK_NONE;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is there a card immediately before current main which is of given kind?    */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if ((G.p_PriorToMain = this->pPrevChildIf(eOfPriorKind))) {
-    G.e_PriorToMain = G.p_PriorToMain->eCard();
-    if (bUpdateMember)
-      G_vUpdateMember(G.e_PriorToMain, G.p_PriorToMain, __func__);
-    return true;
-  }
-
-  G.e_PriorToMain = CK_NONE;
-  if (bUpdateMember)
-    G_vUpdateMember(eOfPriorKind, nullptr, __func__);
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is there a card immediately after current main card?                       */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bHasSubsequentToMain(bool bUpdateMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if ((G.p_SubsequentToMain = this->pNextChild())) {
-    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
-    if (bUpdateMember)
-      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
-    return true;
-  }
-
-  G.e_SubsequentToMain = CK_NONE;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is there a card immediately after current main which is of given kind?     */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if ((G.p_SubsequentToMain = this->pNextChildIf(eOfSubsequentKind))) {
-    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
-    if (bUpdateMember)
-      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
-    return true;
-  }
-
-  G.e_SubsequentToMain = CK_NONE;
-  if (bUpdateMember)
-    G_vUpdateMember(eOfSubsequentKind, nullptr, __func__);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vInsertAfter(Card* pCard, Card* pAfter)
@@ -1942,114 +1819,6 @@ bool CardIter::bJustRestarted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bLess(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(G.m_bActive);
-
-  if (G.m_i_Child - 1 >= 0)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate card (left-right) after given i_After                               */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bLocateCard(eCK eLocate, i8 i_After, i8& ri_Located)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  i8 nChildren = G.pDeck->nChildCards();
-  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
-    Card *pMain = G.pDeck->pGetChild(i_Main);
-
-    if (pMain->bIsCard(eLocate)) {
-      G.p_Located = pMain;
-      G.e_Located = eLocate;
-      ri_Located = i_Main;
-      return true;
-    }
-  }
-
-  G.p_Located = nullptr;
-  G.e_Located = CK_NONE;
-  ri_Located = C_UNKNOWN;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate card (left-right) after given i_After                               */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bLocateCard(eCK eLocate, Stz* szWithValue, i8 i_After)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  i8 nChildren = G.pDeck->nChildCards();
-  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
-    Card *pMain = G.pDeck->pGetChild(i_Main);
-
-    G.p_Located = pMain->pFindValueRecursive(eLocate,szWithValue,G.p_Located);
-    if (!G.p_Located)
-      continue;
-
-    G.e_Located = eLocate;
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate card (left-right) after given i_After                               */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bLocateCard(eCK eLocate, eCK eSubLocate, Stz* szWithValue, i8 i_After)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  i8 nChildren = G.pDeck->nChildCards();
-  for (i8 i_Main = i_After + 1; i_Main < nChildren; i_Main++) {
-    Card *pMain = G.pDeck->pGetChild(i_Main);
-
-    G.p_Located = pMain->pFindCardRecursive(eLocate);
-    if (! G.p_Located)
-      continue;
-
-    G.e_Located = eLocate;
-
-    G.p_SubLocated = G.p_Located->pFindValueRecursive(eSubLocate,szWithValue,G.p_SubLocatedParent);
-    if (G.p_SubLocated) {
-      G.e_SubLocated = eSubLocate;
-      G.e_SubLocatedParent = G.p_SubLocatedParent ? G.p_SubLocatedParent->eCard() : CK_NONE;
-      return true;
-    }
-
-  }
-
-  G.p_Located = nullptr;
-  G.e_Located = CK_NONE;
-  G.p_SubLocated = nullptr;
-  G.e_SubLocated = CK_NONE;
-  G.p_SubLocatedParent = nullptr;
-  G.e_SubLocatedParent = CK_NONE;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate card (left-right) after given card                                  */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* CardIter::szMemberNm(eCK eMember)
@@ -2089,6 +1858,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
     case CK_HASH:             return "G.p_hash"_Stz;
     case CK_HAVING:           return "G.p_having"_Stz;
+    case CK_HSHCOL:           return "G.p_hshCol"_Stz;
     case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
     case CK_INDEX:            return "G.p_index"_Stz;
     case CK_INDEXJOIN:        return "G.p_indexJoin"_Stz;
@@ -2139,7 +1909,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_SIZE:             return "G.p_size"_Stz;
     case CK_SORT:             return "G.p_sort"_Stz;
     case CK_STAGE:            return "G.p_stage"_Stz;
-    case CK_HSHCOL:        return "G.p_stmColOdn"_Stz;
     case CK_SUBQUERY:         return "G.p_subQuery"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
