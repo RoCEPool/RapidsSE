@@ -130,32 +130,17 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
 
-  Job* pJob = MY::pJob();
-//  TagSet* pJobTags = pJob->pJobTags();
-
   m_iXform     = 0;
   m_iTrace     = 0;
 
-  m_pPermGen   = nullptr;
-
-  m_pColumn    = nullptr;
-  m_pIdxVec    = nullptr;
   m_pIndex     = nullptr;
   m_pIndexDef  = nullptr;
   m_pStreamDef = nullptr;
   m_pTable     = nullptr;
 
-  m_pCard_child    = nullptr;
   m_pCard_copied   = nullptr;
   m_pCard_dup      = nullptr;
-  m_pCard_found    = nullptr;
-  m_pCard_located  = nullptr;
-  m_pCard_member   = nullptr;
   m_pCard_new      = nullptr;
-  m_pCard_parent   = nullptr;
-  m_pCard_popped   = nullptr;
-  m_pCard_resolved = nullptr;
-  m_pCard_temp     = nullptr;
   m_pCard_yanked   = nullptr;
 
 
@@ -193,32 +178,17 @@ CardIter::CardIter(Bench* pBench)
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
 
-  Job* pJob = MY::pJob();
-//  TagSet* pJobTags = pJob->pJobTags();
-
   m_iXform     = 0;
   m_iTrace     = 0;
 
-  m_pPermGen   = nullptr;
-
-  m_pColumn    = nullptr;
-  m_pIdxVec    = nullptr;
   m_pIndex     = nullptr;
   m_pIndexDef  = nullptr;
   m_pStreamDef = nullptr;
   m_pTable     = nullptr;
 
-  m_pCard_child    = nullptr;
   m_pCard_copied   = nullptr;
   m_pCard_dup      = nullptr;
-  m_pCard_found    = nullptr;
-  m_pCard_located  = nullptr;
-  m_pCard_member   = nullptr;
   m_pCard_new      = nullptr;
-  m_pCard_parent   = nullptr;
-  m_pCard_popped   = nullptr;
-  m_pCard_resolved = nullptr;
-  m_pCard_temp     = nullptr;
   m_pCard_yanked   = nullptr;
 
   m_pExpr_fold = nullptr;

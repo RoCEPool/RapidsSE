@@ -56,14 +56,18 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
-  // Start with processing SQ (sub-query)
+  // We have a flattened query.  It has a left-size SQ, and a right-side OQ
 
-  //                              //
+  //        SQ... ...OQ           //
   // T T A A A P F T T W A A A    //
   //                              //
 
+  // Start with processing left-side SQ (sub-query)
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify correlation column in some SQ:<table>/<filter>/<boolCalc>//<cmpPred>
+  // identify correlation key predicate in SQ:<table>/<filter>/<boolCalc>//<cmpPred>
+  //
 
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolCalc

@@ -34,10 +34,6 @@ namespace STORE
     s32         m_sSqyRO;
     s32         m_sSqyRsl;
 
-    PermGen*    m_pPermGen;
-
-    Column*     m_pColumn;
-    IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
     IndexDef*   m_pIndexDef;
     StreamDef*  m_pStreamDef;
@@ -45,17 +41,9 @@ namespace STORE
 
     CardCtl*    m_pCardCtl;
 
-    Card* m_pCard_child;
     Card* m_pCard_copied;
     Card* m_pCard_dup;
-    Card* m_pCard_found;
-    Card* m_pCard_located;
-    Card* m_pCard_member;
     Card* m_pCard_new;
-    Card* m_pCard_parent;
-    Card* m_pCard_popped;
-    Card* m_pCard_resolved;
-    Card* m_pCard_temp;
     Card* m_pCard_yanked;
 
     Card_Expr* m_pExpr_fold;
@@ -73,8 +61,6 @@ namespace STORE
     Card_Key*        m_pKey_running;
 
     Card_Correlation* m_pCorrelation;
-
-    s256 m_sT;
 
   protected:
     // must be last

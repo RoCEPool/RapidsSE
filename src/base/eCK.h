@@ -133,7 +133,7 @@ static Stz* aCK[]
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
-  /* */ "CK_CORRELATION"_Stz,    // CK_CORRELATION
+  /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
