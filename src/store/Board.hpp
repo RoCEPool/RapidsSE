@@ -116,7 +116,7 @@
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
-#include "Card_StmColOdn.hpp"
+#include "Card_HshCol.hpp"
 #include "Card_SubQuery.hpp"
 #include "Card_SubSet.hpp"
 

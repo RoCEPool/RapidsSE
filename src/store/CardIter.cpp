@@ -1784,7 +1784,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SIZE:             return G.p_size;
     case CK_SORT:             return G.p_sort;
     case CK_STAGE:            return G.p_stage;
-    case CK_STMCOLODN:        return G.p_stmColOdn;
+    case CK_HSHCOL:        return G.p_stmColOdn;
     case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
     case CK_TABLE:            return G.p_table;
@@ -2139,7 +2139,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_SIZE:             return "G.p_size"_Stz;
     case CK_SORT:             return "G.p_sort"_Stz;
     case CK_STAGE:            return "G.p_stage"_Stz;
-    case CK_STMCOLODN:        return "G.p_stmColOdn"_Stz;
+    case CK_HSHCOL:        return "G.p_stmColOdn"_Stz;
     case CK_SUBQUERY:         return "G.p_subQuery"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
     case CK_TABLE:            return "G.p_table"_Stz;
@@ -3124,7 +3124,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SIZE:             *((Card**)&G.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&G.p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&G.p_stage)            = pCard; break;
-    case CK_STMCOLODN:        *((Card**)&G.p_stmColOdn)        = pCard; break;
+    case CK_HSHCOL:        *((Card**)&G.p_stmColOdn)        = pCard; break;
     case CK_SUBQUERY:         *((Card**)&G.p_subQuery)         = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;

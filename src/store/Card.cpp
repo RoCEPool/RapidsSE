@@ -2855,6 +2855,19 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_HshCol.hpp"
+Card_HshCol* Card::pSub_hshCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_HshCol* p_hshCol =
+      _pCard_HshCol(pFindSubCard(CK_HSHCOL));
+  return p_hshCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_IdxColList.hpp"
 Card_IdxColList* Card::pSub_idxColList(void)
 {
@@ -3242,19 +3255,6 @@ Card_Size* Card::pSub_size(void)
   Card_Size* p_size =
       _pCard_Size(pFindSubCard(CK_SIZE));
   return p_size;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_StmColOdn.hpp"
-Card_StmColOdn* Card::pSub_stmColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StmColOdn* p_streamColOrd =
-      _pCard_StmColOdn(pFindSubCard(CK_STMCOLODN));
-  return p_streamColOrd;
 }
 
 /*----------------------------------------------------------------------------*/

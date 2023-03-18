@@ -4,7 +4,7 @@
 
 #include "Card_Hash.hpp"
 
-#include "Card_StmColOdn.hpp"
+#include "Card_HshCol.hpp"
 #include "Card_Type.hpp"
 #include "Card_Expr.hpp"
 
@@ -55,9 +55,9 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
   Card_Type* p_type = p_expr->pSub_type();
   p_hash->vAppend(p_type->pDupCardAndSubCards());
 
-  Card_StmColOdn* p_stmColOdn = new Card_StmColOdn;
-  p_stmColOdn->vValueSprint(p_expr->szValue());
-  p_hash->vAppend(p_stmColOdn);
+  Card_HshCol* p_hshCol = new Card_HshCol;
+  p_hshCol->vValueSprint(p_expr->szValue());
+  p_hash->vAppend(p_hshCol);
 
   return p_hash;
 }

@@ -61,6 +61,7 @@ namespace STORE
 
   class Card_Hash;
   class Card_Having;
+  class Card_HshCol;
 
   class Card_IdxCol;
   class Card_IdxColList;
@@ -97,6 +98,7 @@ namespace STORE
 
   class Card_On;
   class Card_OrdAgg;
+  class Card_OrdElmOdn;
   class Card_Order;
   class Card_OrPred;
   class Card_OuterColNm;
@@ -108,7 +110,6 @@ namespace STORE
   class Card_PtndJoin;
   class Card_PtndJoinSet;
 
-  class Card_RBound;
   class Card_Reason;
   class Card_RpnCalc;
   class Card_RpnTerms;
@@ -119,8 +120,6 @@ namespace STORE
   class Card_Size;
   class Card_Sort;
   class Card_Stage;
-  class Card_StmColOdn;
-  class Card_OrdElmOdn;
   class Card_SubQuery;
   class Card_SubSet;
 
@@ -131,7 +130,7 @@ namespace STORE
   class Card_Term;
   class Card_Top;
   class Card_Topology;
-   class Card_Type;
+  class Card_Type;
 
   class Card_Unique;
 
@@ -467,8 +466,9 @@ namespace STORE
     Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
+    Card_HshCol*        pSub_hshCol(void);
     Card_IdxColList*    pSub_idxColList(void);
-     Card_Index*         pSub_index(void);
+    Card_Index*         pSub_index(void);
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
@@ -500,7 +500,6 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
     Card_Size*          pSub_size(void);
-    Card_StmColOdn*     pSub_stmColOdn(void);
     Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);

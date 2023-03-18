@@ -373,9 +373,9 @@ void Weaver::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   Card_Type* p_type = pCard_Hash->pSub_type();
-  Card_StmColOdn* p_stmColOdn = pCard_Hash->pSub_stmColOdn();
+  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
 
-  szOpArgs->vCatSprint("\"type %s %s\""_Stz,p_type->szValue(),p_stmColOdn->szValue());
+  szOpArgs->vCatSprint("\"type %s %s\""_Stz,p_type->szValue(),p_hshCol->szValue());
 }
 
 /*----------------------------------------------------------------------------*/

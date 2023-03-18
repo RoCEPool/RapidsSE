@@ -100,6 +100,7 @@ namespace STORE
 
     Card_Hash *             p_hash;
     Card_Having *           p_having;
+    Card_HshCol *           p_stmColOdn;
 
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
@@ -161,7 +162,6 @@ namespace STORE
     Card_Size *             p_size;
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
-    Card_StmColOdn *        p_stmColOdn;
     Card_SubQuery *         p_subQuery;
     Card_SubSet *           p_subSet;
 

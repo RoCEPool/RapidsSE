@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StmColOdn.hpp -- Stream Column Ordinal                                */
+/* Card_HshCol.hpp -- Hash Column                                             */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,18 @@
 
 namespace STORE
 {
-  class Card_StmColOdn : public Card
+  class Card_HshCol : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StmColOdn(void);
-   ~Card_StmColOdn(void) noexcept(false);
+    Card_HshCol(void);
+   ~Card_HshCol(void) noexcept(false);
 
   };
 
-  Card_StmColOdn* _pCard_StmColOdn(void* aAddr);
+  Card_HshCol* _pCard_HshCol(void* aAddr);
 }
 
 /*============================================================================*/

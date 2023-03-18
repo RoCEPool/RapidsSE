@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_StmColOdn.cpp -- Stream Column Name                                    */
+/* Card_HshCol.cpp -- Hash Column                                             */
 /*============================================================================*/
 
-#include "Card_StmColOdn.hpp"
+#include "Card_HshCol.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_StmColOdn, CK_STMCOLODN)
-__aNewFunction(Card_StmColOdn, CN_CARD)
-__vDeleteFunction(Card_StmColOdn, CN_CARD)
+__pCastFunction_Card(STORE, Card_HshCol, CK_HSHCOL)
+__aNewFunction(Card_HshCol, CN_CARD)
+__vDeleteFunction(Card_HshCol, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StmColOdn::Card_StmColOdn(void)
-: Card(CK_STMCOLODN)
+Card_HshCol::Card_HshCol(void)
+: Card(CK_HSHCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -30,7 +30,7 @@ Card_StmColOdn::Card_StmColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StmColOdn::~Card_StmColOdn(void) noexcept(false)
+Card_HshCol::~Card_HshCol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

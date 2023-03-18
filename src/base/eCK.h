@@ -51,6 +51,7 @@ enum eCK // card kind
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
+  /* */ CK_HSHCOL,
 
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
@@ -116,8 +117,6 @@ enum eCK // card kind
   /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STMCOLNM,
-  /* */ CK_STMCOLODN,
   /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
 
@@ -189,6 +188,7 @@ static Stz* aCK[]
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
+  /* */ "CK_HSHCOL"_Stz,       // CK_HSHCOL
 
   /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
@@ -254,8 +254,6 @@ static Stz* aCK[]
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
-  /* */ "CK_STMCOLODN"_Stz,    // CK_STMCOLODN
   /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
@@ -327,6 +325,7 @@ static Stz* aCK_short[]
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
+  /* */ "hshCol"_Stz,          // CK_HSHCOL
 
   /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
@@ -392,8 +391,6 @@ static Stz* aCK_short[]
   /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
-  /* */ "stmColOdn"_Stz,       // CK_STMCOLODN
   /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
 
