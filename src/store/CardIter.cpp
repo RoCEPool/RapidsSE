@@ -133,7 +133,7 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
   m_iTrace     = 0;
 
   m_pCard_new      = nullptr;
-  m_pCard_yanked   = nullptr;
+  Sqy.m_pCard_sqCopy   = nullptr;
 
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
@@ -173,7 +173,7 @@ CardIter::CardIter(Bench* pBench)
   m_iTrace     = 0;
 
   m_pCard_new      = nullptr;
-  m_pCard_yanked   = nullptr;
+  Sqy.m_pCard_sqCopy   = nullptr;
 
   Sqy.m_pExpr_fold = nullptr;
   Sqy.m_pExpr_corr = nullptr;
