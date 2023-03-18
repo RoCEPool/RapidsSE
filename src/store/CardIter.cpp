@@ -398,7 +398,6 @@ void CardIter::G_vClearMembers(void)
   G.p_coPtnPred        = nullptr;
   G.p_correlation      = nullptr;
   G.p_crossJoin        = nullptr;
-  G.p_crossPtnJoin     = nullptr;
   G.p_direction        = nullptr;
   G.p_expr             = nullptr;
   G.p_exprList         = nullptr;
@@ -1657,8 +1656,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COPTNPRED:        return G.p_coPtnPred;
     case CK_CORRELATION:      return G.p_correlation;
     case CK_CROSSJOIN:        return G.p_crossJoin;
-    case CK_CROSSPTNJOIN:     return G.p_crossPtnJoin;
-    case CK_DIRECTION:        return G.p_direction;
+   case CK_DIRECTION:        return G.p_direction;
     case CK_EXPR:             return G.p_expr;
     case CK_EXPRLIST:         return G.p_exprList;
     case CK_FILTER:           return G.p_filter;
@@ -1815,8 +1813,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COPTNPRED:        return "G.p_coPtnPred"_Stz;
     case CK_CORRELATION:      return "G.p_correlation"_Stz;
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
-    case CK_CROSSPTNJOIN:     return "G.p_crossPtnJoin"_Stz;
-     case CK_DIRECTION:        return "G.p_direction"_Stz;
+    case CK_DIRECTION:        return "G.p_direction"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
     case CK_EXPRLIST:         return "G.p_exprList"_Stz;
     case CK_FILTER:           return "G.p_filter"_Stz;
@@ -2786,7 +2783,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COPTNPRED:        *((Card**)&G.p_coPtnPred)        = pCard; break;
     case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
-    case CK_CROSSPTNJOIN:     *((Card**)&G.p_crossPtnJoin)     = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
     case CK_EXPRLIST:         *((Card**)&G.p_exprList)         = pCard; break;

@@ -80,7 +80,6 @@ namespace STORE
     Card_CoPtnPred *        p_coPtnPred;
     Card_Correlation *      p_correlation;
     Card_CrossJoin *        p_crossJoin;
-    Card_CrossPtnJoin *     p_crossPtnJoin;
 
     Card_Direction *        p_direction;
 

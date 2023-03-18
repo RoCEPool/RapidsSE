@@ -604,10 +604,6 @@ void CardCtl::vReset(void)
   vPrintSubCards(CK_COPTNJOIN,false);
   vPrune(CK_COPTNJOIN,true);
 
-  vPrintSubShort(CK_CROSSPTNJOIN,true);
-  vPrintSubCards(CK_CROSSPTNJOIN,false);
-  vPrune(CK_CROSSPTNJOIN,true);
-
 //  vPrintByKind(CK_KEY,true);
 //  vPrintSubCards(CK_KEY, false);
 
