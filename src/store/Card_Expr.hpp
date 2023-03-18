@@ -18,9 +18,7 @@ namespace STORE
 
     //-----------------------------------------------------------
     static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
-    static Card_Expr* pGby_expr_From_stmCol(Card_StmCol* p_stmCol);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
-    static Card_Expr* pProj_expr_From_stmCol(Card_StmCol* p_stmCol);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);

@@ -353,7 +353,6 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
   Card_Hash* p_hash;
   Card_Term* p_term_hash;
   Stz* szTblColOdn;
-  Card_StmCol* p_stmCol_hash;
   i8 i_StmCol;
 
   eXK eCastKind = p_bounds_curr->eCastKind_v2(p_index_curr,

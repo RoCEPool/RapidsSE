@@ -424,10 +424,6 @@ void Card_Table::vProjectionAnalysis(CardIter* pCI)
     p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
     p_projection->vAppend(p_expr);
 
-//    Card_StmCol* p_stmCol = new Card_StmCol();
-//    p_stmCol->vValue(pColumn->szColNm());
-//    p_expr->vAppend(p_stmCol);
-
     Stz* szType = aCT[pColumn->eColumnType()];
     Card_Type *pCard_Type = new Card_Type(szType);
     p_expr->vAppend(pCard_Type);
@@ -483,10 +479,6 @@ void Card_Table::vReProjection(CardIter* pCI)
     Card_Expr* p_expr = new Card_Expr;
     p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
     p_projection->vAppend(p_expr);
-
-//    Card_StmCol* p_stmCol = new Card_StmCol();
-//    p_stmCol->vValue(pColumn->szColNm());
-//    p_expr->vAppend(p_stmCol);
 
     Stz* szType = aCT[pColumn->eColumnType()];
     Card_Type *pCard_Type = new Card_Type(szType);

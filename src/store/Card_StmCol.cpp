@@ -40,22 +40,6 @@ Card_StmCol::~Card_StmCol(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_StmCol::vFind_Correlation_Expr_Of_Correlation_Column(CardIter* pCI)
-{
-  _static_
-
-  // find the <table>/<stream>/<stmColList>/<stmCol>
-  //  corresponding to the correlated predicate
-
-  pCI->m_pCard_found = pCI->G.p_projection->pFindValueRecursive(pCI->m_pTerm_corrCol->szValue(), pCI->m_pCard_parent);
-  pCI->m_pExpr_corr = _pCard_Expr(pCI->m_pCard_parent);
-
-  pCI->m_pExpr_corr->vMark1(MARK_AT);
-  pCI->m_pExpr_corr->Y_vSet(P_CrlKeyExpr);
-}
 
 /*============================================================================*/
 /* end                                                                        */
