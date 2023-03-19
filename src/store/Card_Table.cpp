@@ -216,10 +216,10 @@ i8 Card_Table::nTables_foldBreak(CardIter* pCI)
   i8 nTables = 0;
 
   pCI->vRestart();
-  while (pCI->pEachChild()) {
-    if (pCI->G.m_pChild->bIsCard(CK_FOLD))
+  while (pCI->G_bEachMain()) {
+    if (pCI->G.p_MainCard->bIsCard(CK_FOLD))
       break;
-    if (pCI->G.m_pChild->bIsCard(CK_TABLE))
+    if (pCI->G.p_MainCard->bIsCard(CK_TABLE))
     nTables++;
   }
 
