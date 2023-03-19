@@ -170,10 +170,10 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
   CardIter xCI(p_idxColList);
-  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild())) {
+  while (xCI.G_bEachMain(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (p_idxCol->bSame(szTblColOdn))
+    if (xCI.G.p_idxCol->bSame(szTblColOdn))
       return true;
   }
 
