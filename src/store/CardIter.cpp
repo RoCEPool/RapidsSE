@@ -21,49 +21,6 @@ __aFooterFunction(CardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIter::CardIter(void)
-    : Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  G.m_pCard   = nullptr;
-  G.m_i_Child = C_UNKNOWN;
-  G.m_pChild  = nullptr;
-
-  G.m_bDontDescend = false;
-
-  G.m_bActive = false;
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CardIter::CardIter(eCN eClass)
-    : Object(eClass)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  G.m_pCard   = nullptr;
-  G.m_i_Child = C_UNKNOWN;
-  G.m_pChild  = nullptr;
-
-  G.m_bDontDescend = false;
-
-  G.m_bActive = false;
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 CardIter::CardIter(Card*  pCard)
 : Object(CN_CARDITER)
 {
@@ -89,64 +46,6 @@ CardIter::CardIter(CardIter* pCardIter_src)
   _precondition_(_MAGIC_,_FOOTER_);
 
   vSet(pCardIter_src);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CardIter::CardIter(eCN eClass, Card*  pCard)
-    : Object(eClass)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  G.m_pCard   = pCard;
-  G.m_i_Child = C_UNKNOWN;
-  G.m_pChild  = nullptr;
-
-  G.m_bActive = true;
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CardIter::CardIter(eCN eClass, Bench* pBench)
-    : Object(eClass)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  m_pBench   = pBench;
-  m_pCardCtl = m_pBench->pCardCtl();
-
-  G.m_pCard   = nullptr;
-  G.m_i_Child = C_UNKNOWN;
-  G.m_pChild  = nullptr;
-
-  G.m_bDontDescend = false;
-
-  G.m_bActive = false;
-
-  m_iXform     = 0;
-  m_iTrace     = 0;
-
-  m_pCard_new      = nullptr;
-  Sqy.m_pCard_sqCopy   = nullptr;
-
-
-  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
-
-  G.pBoard    = nullptr;
-  G.pDeck     = nullptr;
-  Sqy.m_pSubQuery = nullptr;
-  G_vClearMembers();
-  G_vClearRegisters();
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

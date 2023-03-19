@@ -64,12 +64,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CardIter(void);
-    CardIter(eCN eClass);
     CardIter(Card* pCard);
     CardIter(CardIter* pCardIter_src);
-    CardIter(eCN eClass, Card* pCard);
-    CardIter(eCN eClass, Bench* pBench);
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
