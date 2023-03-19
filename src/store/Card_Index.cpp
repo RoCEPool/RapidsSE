@@ -56,26 +56,26 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
 
   CardIter xCI_indexes(pCI->G.p_indexList);
 
-  while ((pCI->G.p_index = _pCard_Index(xCI_indexes.pEachChild(CK_INDEX)))) {
+  while (xCI_indexes.G_bEachMain(CK_INDEX)) {
 
-    bool bChosenIndex = pCI->G.p_index->Y_bHas(P_ChosenIndex);
+    bool bChosenIndex = xCI_indexes.G.p_index->Y_bHas(P_ChosenIndex);
 
-    pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
-    if (! pCI->G.p_bounds)
+    xCI_indexes.G.p_bounds = xCI_indexes.G.p_index->pSub_bounds();
+    if (! xCI_indexes.G.p_bounds)
       continue;
 
-    CardIter xCI_bounds(pCI->G.p_bounds);
+    CardIter xCI_bounds(xCI_indexes.G.p_bounds);
     while (xCI_bounds.G_bEachMain()) {
       if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.p_MainCard->bIsCard(CK_BOUND)) {
         bFoundFirst = true;
         continue;
       }
 
-      xCI_bounds.G.m_pChild->vMark1(MARK_AT);
+      xCI_bounds.G.p_MainCard->vMark1(MARK_AT);
     }
 
     pCI->vPrintBoard(__LINE__);
-    pCI->G.p_bounds->vCullBound(MARK_AT);
+    xCI_indexes.G.p_bounds->vCullBound(MARK_AT);
 
   }
 
