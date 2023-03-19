@@ -1487,8 +1487,8 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
   vStageFirst();
 
   CardIter xCI(m_pBoard->pDeck());
-  while (Card* pMainCard = xCI.pEachChild())
-    vCard(pMainCard);
+  while (xCI.G_bEachMain())
+    vCard(xCI.G.p_MainCard);
 
   vStageLast();
 
