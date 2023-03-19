@@ -421,17 +421,11 @@ void CardIter::G_vClearRegisters(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.p_Located          = nullptr;
-  G.e_Located          = CK_NONE;
   G.p_PriorToMain      = nullptr;
   G.e_PriorToMain      = CK_NONE;
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
   G.i_MainCard         = C_UNKNOWN;
-  G.p_SubLocated       = nullptr;
-  G.e_SubLocated       = CK_NONE;
-  G.p_SubLocatedParent = nullptr;
-  G.e_SubLocatedParent = CK_NONE;
   G.p_SubOfMain        = nullptr;
   G.e_SubOfMain        = CK_NONE;
   G.p_Sub2OfMain       = nullptr;
@@ -451,12 +445,9 @@ void CardIter::G_vClearRegisters(void)
   StreamOrder.m_pProjection_running = nullptr;
   StreamOrder.m_pKey_running        = nullptr;
 
-  G.sz_SubQueryNm      = nullptr;
-
   G.e_Level = AL_NONE;
 
-  G.i_stmColOdn = C_UNKNOWN;
-  G.i_FoldCard = C_UNKNOWN;
+  Sqy.m_i_FoldCard = C_UNKNOWN;
 
   G.p_PRED = nullptr;
 }

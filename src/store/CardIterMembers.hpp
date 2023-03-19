@@ -28,17 +28,11 @@ namespace STORE
     i8          i_SubQuery;
     SubQuery*   pSubQuery;
 
-    Card * p_Located;
-    eCK    e_Located;
     Card * p_PriorToMain;
     eCK    e_PriorToMain;
     Card * p_MainCard;
     eCK    e_MainCard;
     i8     i_MainCard;
-    Card * p_SubLocated;
-    eCK    e_SubLocated;
-    Card * p_SubLocatedParent;
-    eCK    e_SubLocatedParent;
     Card * p_SubOfMain;
     eCK    e_SubOfMain;
     Card * p_Sub2OfMain;
@@ -51,12 +45,9 @@ namespace STORE
     Card * p_SubMember;
     eCK    e_SubMember;
 
-    Stz*   sz_SubQueryNm;
 
     eAL    e_Level;
 
-    i8     i_stmColOdn;
-    i8     i_FoldCard;
 
     Card_PRED * p_PRED;
 
