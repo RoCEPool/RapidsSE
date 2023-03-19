@@ -98,10 +98,7 @@ namespace STORE
     Card* pEachChild(eCK eCard=CK_NONE);
     Card* pEachChild_foldBreak(void);
     Card* pEachChild_foldBreak(eCK eCard);
-    bool  bEachChild_reverse(void);
-    Card* pEachChild_reverse(void);
-    Card* pEachChild_reverse(i8& ri_Child);
-    Card* pEachChild_reverse(eCK eCard);
+    Card* pEachChild_reverse(eCK eCard=CK_NONE);
     Card* pEachChild_reverse_foldBreak(eCK eCard);
 
     bool G_bEachMain(void);
