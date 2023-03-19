@@ -618,26 +618,6 @@ Card* CardIter::pEachChild(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-//Card* CardIter::pEachChild_foldBreak(void)
-//{
-//  _precondition_( _MAGIC_, _FOOTER_);
-//
-//  RASSERT(G.m_bActive);
-//
-//  G.m_pChild = pEachChild();
-//
-//  if (G.m_pChild->bIsCard(CK_FOLD)) {
-//    G.m_pChild = nullptr;
-//    G.m_i_Child = C_UNKNOWN;
-//    return nullptr;
-//  }
-//
-//  return G.m_pChild;
-//}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild_foldBreak(eCK eCard)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -821,23 +801,6 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 
   G.e_MainCard = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reverse iterate thru main                                                  */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain_reverse(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if ((G.p_MainCard = this->pEachChild_reverse())) {
-    vFocusOnMain();
-    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-    return true;
-  }
-
-  G.e_MainCard = CK_NONE;
   return false;
 }
 
