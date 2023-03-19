@@ -96,9 +96,9 @@ namespace STORE
 
     bool  bEachChild(void);
     Card* pEachChild(void);
-    Card* pEachChild(i8& ri_Child);
-    Card* pEachChild(eCK eCard);
-    Card* pEachChild(eCK eCard, i8& ri_Main);
+    //Card* pEachChild(i8& ri_Child);
+    //Card* pEachChild(eCK eCard);
+    Card* pEachChild(eCK eCard);//, i8& ri_Main);
     Card* pEachChild(i8& ri_Main, eCK& reCard);
     Card* pEachChild_foldBreak(void);
     Card* pEachChild_foldBreak(eCK eCard);
