@@ -35,7 +35,7 @@ FlattenSubQueries::FlattenSubQueries(CardIter* pCI)
   _checkInitialised_(CN_FLATTENSUBQUERIES);
 
   m_pCI->vUsingBoard(BK_SUBQUERY, 0);
-  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+  m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
@@ -62,7 +62,7 @@ void FlattenSubQueries::vFlatten(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
 
   m_pCI->G.pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
-  m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+  m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 //  vFlatten_recurse();
   vFlatten_recurse(0);
@@ -77,7 +77,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 
   // things before sub-queries
 
-  SubQuery* pOuterQuery = m_pCI->G.pSubQuery;
+  SubQuery* pOuterQuery = m_pCI->Sqy.m_pSubQuery;
 
   vStmColToTblCol();
 
@@ -93,15 +93,15 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
       s256 sSubQueryNm = m_pCI->G.p_call->szValue();
 
       Board *pOuterBoard_save = m_pCI->G.pBoard;
-      m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
-      m_pCI->G_vPushBoard(m_pCI->G.pSubQuery->pBoard());
-      m_pCI->G.pSubQuery = m_pCI->G.pBoard->pSubQuery();
+      m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      m_pCI->G_vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
+      m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
       m_pCI->G_vPopIter();
       m_pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery *pSubQuery = m_pCI->G.pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       m_pCI->vPrintBoard(__LINE__);
 
     vFlattenByDecisionTree();
@@ -131,15 +131,15 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
       s256 sSubQueryNm = p_term->szValue();
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
-      pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
-      pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
+      pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
       pCI->G_vPopIter();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       pCI->vPrintBoard(__LINE__);
 
       vFlattenByDecisionTree();
@@ -175,15 +175,15 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
       s256 sSubQueryNm = p_term->szValue();
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
-      pCI->G_vPushBoard(pCI->G.pSubQuery->pBoard());
-      pCI->G.pSubQuery = pCI->G.pBoard->pSubQuery();
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
+      pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
       pCI->G_vPopIter();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->G.pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       pCI->vPrintBoard(__LINE__);
 
       vFlattenByDecisionTree();
@@ -228,67 +228,67 @@ void FlattenSubQueries::vFlattenByDecisionTree(void)
 
   m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
 
-  if (m_pCI->G.pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ vFlatten_10_F();
+  if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ vFlatten_10_F();
   else
-  if (m_pCI->G.pSubQuery->bViaWhere()) {
-    if (m_pCI->G.pSubQuery->bIsAggregation()) {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 20*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
+  if (m_pCI->Sqy.m_pSubQuery->bViaWhere()) {
+    if (m_pCI->Sqy.m_pSubQuery->bIsAggregation()) {
+      if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 20*/
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
         else                                         /* W_A_C_ro   Q2,17 */ vFlatten_24_W_A_C_ro();
       } else {                                                                  /* 30*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_32_W_A_NC_I();
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_32_W_A_NC_I();
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
         else                                         /* W_A_NC_ro    Q15 */ vFlatten_34_W_A_NC_ro();
       }
     } else {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 40*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFlatten_40_W_L_C_E();
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
+      if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 40*/
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFlatten_40_W_L_C_E();
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
         else                                         /* W_L_C_ro         */ NEVER_REACH
       } else {                                                                  /* 50*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_join();
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_join();
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_join();
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_join();
         else                                         /* W_L_NC_ro        */ NEVER_REACH
       }
     }
   }
   else
-  if (m_pCI->G.pSubQuery->bViaHaving()) {
-    if (m_pCI->G.pSubQuery->bIsAggregation()) {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 60*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
+  if (m_pCI->Sqy.m_pSubQuery->bViaHaving()) {
+    if (m_pCI->Sqy.m_pSubQuery->bIsAggregation()) {
+      if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 60*/
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
         else                                         /* H_A_C_ro         */ NEVER_REACH
       } else {                                                                  /* 70*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
         else                                         /* H_A_NC_ro    Q11 */ vFlatten_74_H_A_NC_ro();
       }
     } else {
-      if (m_pCI->G.pSubQuery->bIsCorrelated()) {                                /* 80*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
+      if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 80*/
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
         else                                         /* H_L_C_ro         */ NEVER_REACH
       } else {                                                                  /* 90*/
-             if (m_pCI->G.pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
-        else if (m_pCI->G.pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
         else                                         /* H_L_NC_ro        */ NEVER_REACH
       }
     }

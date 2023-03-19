@@ -140,7 +140,7 @@ CardIter::CardIter(eCN eClass, Bench* pBench)
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
-  G.pSubQuery = nullptr;
+  Sqy.m_pSubQuery = nullptr;
   G_vClearMembers();
   G_vClearRegisters();
 
@@ -179,12 +179,14 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_pExpr_corr = nullptr;
 
   Sqy.m_pCorrelation = nullptr;
+  Sqy.m_i_SubQuery = C_UNKNOWN;
+  Sqy.m_pSubQuery = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
-  G.pSubQuery = nullptr;
+  Sqy.m_pSubQuery = nullptr;
   Sqy.m_pTerm_sqCall       = nullptr;
 
 
@@ -1426,9 +1428,9 @@ SubQuery* CardIter::pEachSubQuery(void)
 
   i8 i_SubQuery;
 
-  G.pSubQuery = pEachSubQuery(i_SubQuery);
+  Sqy.m_pSubQuery = pEachSubQuery(i_SubQuery);
 
-  return G.pSubQuery;
+  return Sqy.m_pSubQuery;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1440,24 +1442,24 @@ SubQuery* CardIter::pEachSubQuery(i8& ri_SubQuery)
 
   //RASSERT(G.m_bActive);
 
-  if (C_UNKNOWN == G.i_SubQuery)
-    G.i_SubQuery = 0;
+  if (C_UNKNOWN == Sqy.m_i_SubQuery)
+    Sqy.m_i_SubQuery = 0;
   else
-    G.i_SubQuery++;
+    Sqy.m_i_SubQuery++;
 
-  if (G.i_SubQuery >= m_pBench->nBoards()) {
-    G.pSubQuery = nullptr;
+  if (Sqy.m_i_SubQuery >= m_pBench->nBoards()) {
+    Sqy.m_pSubQuery = nullptr;
     ri_SubQuery  = C_UNKNOWN;
-    G.i_SubQuery = 0;
+    Sqy.m_i_SubQuery = 0;
 
     return nullptr;
   }
 
-  Board* pSubBoard = m_pBench->pGetBoard(G.i_SubQuery);
-  G.pSubQuery = pSubBoard->pSubQuery();
-  ri_SubQuery = G.i_SubQuery;
+  Board* pSubBoard = m_pBench->pGetBoard(Sqy.m_i_SubQuery);
+  Sqy.m_pSubQuery = pSubBoard->pSubQuery();
+  ri_SubQuery = Sqy.m_i_SubQuery;
 
-  return G.pSubQuery;
+  return Sqy.m_pSubQuery;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2437,7 +2439,7 @@ void CardIter::G_vSetBoard(Board* pBoard)
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
-  //G.pSubQuery = G.pBoard->pSubQuery();
+  //Sqy.m_pSubQuery = G.pBoard->pSubQuery();
 
   this->vChangeCard(G.pBoard->pDeck());
 }
@@ -2465,7 +2467,7 @@ void CardIter::vSubQueryIteration(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  G.i_SubQuery = C_UNKNOWN;
+  Sqy.m_i_SubQuery = C_UNKNOWN;
 }
 
 

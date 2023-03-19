@@ -32,6 +32,9 @@ namespace STORE
 
     struct
     {
+      i8         m_i_SubQuery;
+      SubQuery*  m_pSubQuery;
+
       s32        m_sSqyNm;
       s32        m_sSqyArg;
       Card_Term* m_pTerm_corrCol;

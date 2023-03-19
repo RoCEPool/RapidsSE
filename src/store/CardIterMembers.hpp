@@ -25,8 +25,6 @@ namespace STORE
     i8          i_Board;
     Board*      pBoard;
     Card_Deck*  pDeck;
-    i8          i_SubQuery;
-    SubQuery*   pSubQuery;
 
     Card * p_MainCard;
     eCK    e_MainCard;
