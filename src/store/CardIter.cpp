@@ -618,22 +618,22 @@ Card* CardIter::pEachChild(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardIter::pEachChild_foldBreak(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(G.m_bActive);
-
-  G.m_pChild = pEachChild();
-
-  if (G.m_pChild->bIsCard(CK_FOLD)) {
-    G.m_pChild = nullptr;
-    G.m_i_Child = C_UNKNOWN;
-    return nullptr;
-  }
-
-  return G.m_pChild;
-}
+//Card* CardIter::pEachChild_foldBreak(void)
+//{
+//  _precondition_( _MAGIC_, _FOOTER_);
+//
+//  RASSERT(G.m_bActive);
+//
+//  G.m_pChild = pEachChild();
+//
+//  if (G.m_pChild->bIsCard(CK_FOLD)) {
+//    G.m_pChild = nullptr;
+//    G.m_i_Child = C_UNKNOWN;
+//    return nullptr;
+//  }
+//
+//  return G.m_pChild;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -662,6 +662,9 @@ Card* CardIter::pEachChild_foldBreak(eCK eCard)
       return nullptr;
     }
 
+    if (CK_NONE == eCard) {
+      return G.m_pChild;
+    }
 
     eCK eCardMain = G.m_pChild->eCard();
     if (eCardMain == eCard) {
