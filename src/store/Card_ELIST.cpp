@@ -41,20 +41,20 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+  while (xCI.G_bEachMain(CK_EXPR)) {
 
-    pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc();
+    xCI.G.p_rpnCalc = xCI.G.p_expr->pSub_rpnCalc();
 
-    if (! pCI->G.p_rpnCalc)
+    if (! xCI.G.p_rpnCalc)
       continue;
 
-    CardIter xCI2(pCI->G.p_rpnCalc);
-    while ((pCI->G.p_term = _pCard_Term(xCI2.pEachChild()))) {
-      Stz *szTerm = pCI->G.p_term->szValue();
+    CardIter xCI2(xCI.G.p_rpnCalc);
+    while ((xCI2.G_bEachMain(CK_TERM))) {
+      Stz *szTerm = xCI2.G.p_term->szValue();
 
       if (Card::bIsKeyOrdinal(szTerm)) {
-        pCI->G.p_term->vBump_KeyOrdinal();
-        pCI->G.p_term->vMark1(MARK_CHANGED);
+        xCI2.G.p_term->vBump_KeyOrdinal();
+        xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
     }
@@ -64,25 +64,25 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* pCI)
+void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while ((pCI->G.p_expr = _pCard_Expr(xCI.pEachChild()))) {
+  while (xCI.G_bEachMain(CK_EXPR)) {
 
-    pCI->G.p_rpnCalc =pCI->G.p_expr->pSub_rpnCalc();
+    xCI.G.p_rpnCalc = xCI.G.p_expr->pSub_rpnCalc();
 
-    if (! pCI->G.p_rpnCalc)
+    if (! xCI.G.p_rpnCalc)
       continue;
 
-    CardIter xCI2(pCI->G.p_rpnCalc);
-    while ((pCI->G.p_term = _pCard_Term(xCI2.pEachChild()))) {
-      Stz *szTerm = pCI->G.p_term->szValue();
+    CardIter xCI2(xCI.G.p_rpnCalc);
+    while (xCI2.G_bEachMain(CK_TERM)) {
+      Stz *szTerm = xCI2.G.p_term->szValue();
 
       if (Card::bIsStreamColOrdinal(szTerm)) {
-        pCI->G.p_term->vBump_StreamColOrdinal();
-        pCI->G.p_term->vMark1(MARK_CHANGED);
+        xCI2.G.p_term->vBump_StreamColOrdinal();
+        xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
     }
