@@ -85,8 +85,8 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
   CardIter xCI(pCI);
   xCI.vSet(pCI->G.i_MainCard,pCI->G.p_MainCard);
 
-  while (Card* p_card = xCI.pEachChild_reverse()) {
-    if (Card_Projection* p_projection = p_card->pSub_projection())
+  while (xCI.G_bEachMain_reverse()) {
+    if (Card_Projection* p_projection = xCI.G.p_MainCard->pSub_projection())
       return p_projection;
   }
 

@@ -59,7 +59,7 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
 
   CardIter xCI(p_deck);
 
-  if (! xCI.pEachChild_reverse(CK_FOLD))
+  if (! xCI.G_bEachMain_reverse(CK_FOLD))
     xCI.vRestart();
 
   while (xCI.G_bEachMain(CK_TABLE)) {
