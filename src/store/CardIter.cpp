@@ -822,7 +822,7 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild(eOfMainKind))) {
+  while (G_bEachMain(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -924,7 +924,7 @@ bool CardIter::G_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild(eOfMainKind))) {
+  while (G_bEachMain(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -962,7 +962,7 @@ bool CardIter::G_bEachMainWith3Sub(eCK eOfMainKind,
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild(eOfMainKind))) {
+  while (G_bEachMain(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -1004,7 +1004,7 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild())) {
+  while (G_bEachMain()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
@@ -1031,7 +1031,7 @@ bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild())) {
+  while (G_bEachMain()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1066,7 +1066,7 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild())) {
+  while (G_bEachMain()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -2095,7 +2095,7 @@ void CardIter::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  pEachChild();
+  G_bEachMain();
 
   if (bClearMembers)
     G_vClearMembers();
