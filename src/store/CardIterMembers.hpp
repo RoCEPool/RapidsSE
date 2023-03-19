@@ -38,10 +38,6 @@ namespace STORE
     Card * p_Sub3OfMain;
     eCK    e_Sub3OfMain;
 
-    Card * p_SubMember;
-    eCK    e_SubMember;
-
-
     eAL    e_Level;
 
 
@@ -157,7 +153,7 @@ namespace STORE
     CardIterMembers(void);
    ~CardIterMembers(void) noexcept(false);
 
-    void vCopyFrom(CardIterMembers* pXsentinals2);
+    void vCopyFrom(CardIterMembers* pMembers);
 
   private:
 

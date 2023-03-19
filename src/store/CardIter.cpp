@@ -431,8 +431,6 @@ void CardIter::G_vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
-  G.p_SubMember        = nullptr;
-  G.e_SubMember        = CK_NONE;
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
@@ -470,10 +468,6 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
   if (pCard == G.p_Sub3OfMain) {
     G.p_Sub3OfMain = nullptr;
     G.e_Sub3OfMain = CK_NONE;
-  }
-  if (pCard == G.p_SubMember) {
-    G.p_SubMember = nullptr;
-    G.e_SubMember = CK_NONE;
   }
 }
 
@@ -1894,75 +1888,6 @@ void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
   m_pCard_new->vValue(szValue);
 
   G_vAppendChild(eOf,eMember);
-}
-
-/*----------------------------------------------------------------------------*/
-/* search for sub of member                                                   */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Card* pMember = G_pGetMember(eMember);
-
-  bool b = G_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if ((G.p_SubMember = pMember->pFindSubCard(eSubCard))) {
-    G.e_SubMember = G.p_SubMember->eCard();
-    if (bUpdateMember)
-      G_vUpdateMember(G.e_SubMember, G.p_SubMember, __func__);
-    return true;
-  }
-
-  if (bUpdateMember)
-    G_vUpdateMember(eSubCard, nullptr, __func__);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Card* pMember = G_pGetMember(eMember);
-
-  bool b = G_bPlumbForSubValue(pMember, eSub, szValue, bUpdateMember);
-
-  return b;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if ((G.p_SubMember = pMember->pFindSubCard(eSub))) {
-    if (G.p_SubMember->bSame(szValue)) {
-      G.e_SubMember = G.p_SubMember->eCard();
-      if (bUpdateMember)
-        G_vUpdateMember(G.e_SubMember, G.p_SubMember, __func__);
-      return true;
-    }
-  }
-
-  if (bUpdateMember)
-    G_vUpdateMember(eSub, nullptr, __func__);
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

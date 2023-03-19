@@ -48,10 +48,10 @@ CardIterMembers::~CardIterMembers(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIterMembers::vCopyFrom(CardIterMembers* pXsentinals2)
+void CardIterMembers::vCopyFrom(CardIterMembers* pMembers)
 {
   MemLib::vCopy(this,
-                pXsentinals2,
+                pMembers,
                 sizeof(CardIterMembers),
                 CN_CARDITERMEMBERS);
 }

@@ -158,10 +158,6 @@ namespace STORE
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
 
-    bool G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
-    bool G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
-    bool G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
-    bool G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
     void G_vPopBoard(void);
     void G_vPopIter(void);
     Card* pPrevChild(void);
