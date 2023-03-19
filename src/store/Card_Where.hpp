@@ -25,7 +25,6 @@ namespace STORE
     static void vMarkWherePredWrtTable(CardIter* pCI);
     static void vMoveWherePredsToTableFilter(CardIter* pCI);
     static void vMove_All_on_To_where(CardIter* pCI);
-    static void vMoveWhereToTableAsConstraint(CardIter* pCI);
 
     static Card_Where* pNewWhereConstruct(void);
 

@@ -439,7 +439,6 @@ void CardIter::G_vClearRegisters(void)
   StreamOrder.m_pProjection_running = nullptr;
   StreamOrder.m_pKey_running        = nullptr;
 
-  G.e_Level = AL_NONE;
 
   Sqy.m_i_FoldCard = C_UNKNOWN;
 

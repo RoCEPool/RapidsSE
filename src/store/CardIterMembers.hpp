@@ -38,109 +38,105 @@ namespace STORE
     Card * p_Sub3OfMain;
     eCK    e_Sub3OfMain;
 
-    eAL    e_Level;
-
-
     Card_PRED * p_PRED;
 
     // - - - - - - - - - - - - - - - - - -
 
-    Card_AbsJoin *          p_absJoin;
-    Card_Aggreg *           p_aggreg;
-    Card_As *               p_as;
+    Card_AbsJoin *       p_absJoin;
+    Card_Aggreg *        p_aggreg;
+    Card_As *            p_as;
 
-    Card_BoolCalc *         p_boolCalc;
-    Card_Bound *            p_bound;
-    Card_Bounds *           p_bounds;
+    Card_BoolCalc *      p_boolCalc;
+    Card_Bound *         p_bound;
+    Card_Bounds *        p_bounds;
 
-    Card_Call *             p_call;
-    Card_Cast *             p_cast;
-    Card_CmpPred *          p_cmpPred;
-    Card_Combined *         p_combined;
-    Card_Constraint *       p_constraint;
-    Card_Correlation *      p_correlation;
-    Card_CrossJoin *        p_crossJoin;
+    Card_Call *          p_call;
+    Card_Cast *          p_cast;
+    Card_CmpPred *       p_cmpPred;
+    Card_Combined *      p_combined;
+    Card_Constraint *    p_constraint;
+    Card_Correlation *   p_correlation;
+    Card_CrossJoin *     p_crossJoin;
 
-    Card_Direction *        p_direction;
+    Card_Direction *     p_direction;
 
-    Card_Expr *             p_expr;
+    Card_Expr *          p_expr;
 
-    Card_Filter *           p_filter;
-    Card_Flat *             p_flat;
-    Card_Fold *             p_fold;
-    Card_FoldElist *        p_foldElist;
-    Card_From *             p_from;
+    Card_Filter *        p_filter;
+    Card_Flat *          p_flat;
+    Card_Fold *          p_fold;
+    Card_FoldElist *     p_foldElist;
+    Card_From *          p_from;
 
-    Card_GbyAgg *           p_gbyAgg;
+    Card_GbyAgg *        p_gbyAgg;
 
-    Card_Hash *             p_hash;
-    Card_Having *           p_having;
-    Card_HshCol *           p_hshCol;
+    Card_Hash *          p_hash;
+    Card_Having *        p_having;
+    Card_HshCol *        p_hshCol;
 
-    Card_IdxCol *           p_idxCol;
-    Card_IdxColList *       p_idxColList;
-    Card_Index *            p_index;
-    Card_IndexJoin *        p_indexJoin;
-    Card_IndexList *        p_indexList;
-    Card_IndexNm *          p_indexNm;
+    Card_IdxCol *        p_idxCol;
+    Card_IdxColList *    p_idxColList;
+    Card_Index *         p_index;
+    Card_IndexJoin *     p_indexJoin;
+    Card_IndexList *     p_indexList;
+    Card_IndexNm *       p_indexNm;
 
-    Card_IndexScan *        p_indexScan;
-    Card_JoinHead *         p_joinHead;
-    Card_JoinNext *         p_joinNext;
-    Card_JoinOrder *        p_joinOrder;
-    Card_JoinOrdering *     p_joinOrdering;
-    Card_JoinPermAll *      p_joinPermAll;
-    Card_JoinPermSeq *      p_joinPermSeq;
-    Card_JoinPredList *     p_joinPredList;
+    Card_IndexScan *     p_indexScan;
+    Card_JoinHead *      p_joinHead;
+    Card_JoinNext *      p_joinNext;
+    Card_JoinOrder *     p_joinOrder;
+    Card_JoinOrdering *  p_joinOrdering;
+    Card_JoinPermAll *   p_joinPermAll;
+    Card_JoinPermSeq *   p_joinPermSeq;
+    Card_JoinPredList *  p_joinPredList;
 
-    Card_Key *              p_key;
-    Card_KeyExists *        p_keyExists;
-    Card_KeyNotExists *     p_keyNotExists;
+    Card_Key *           p_key;
+    Card_KeyExists *     p_keyExists;
+    Card_KeyNotExists *  p_keyNotExists;
 
-    Card_Level *            p_level;
-    Card_Limit *            p_limit;
-    Card_Load *             p_load;
-    Card_LoadJoined *       p_loadJoined;
-    Card_LoadNetwork *      p_loadNetwork;
-    Card_LoadPermSeq *      p_loadPermSeq;
-    Card_LoadUnicast *      p_loadUnicast;
+    Card_Level *         p_level;
+    Card_Limit *         p_limit;
+    Card_Load *          p_load;
+    Card_LoadJoined *    p_loadJoined;
+    Card_LoadNetwork *   p_loadNetwork;
+    Card_LoadPermSeq *   p_loadPermSeq;
+    Card_LoadUnicast *   p_loadUnicast;
 
-    Card_NCorrCols *        p_nCorrCols;
-    Card_Next *             p_next;
-    Card_Note *             p_note;
-    Card_NotPred *          p_notPred;
+    Card_NCorrCols *     p_nCorrCols;
+    Card_Next *          p_next;
+    Card_Note *          p_note;
+    Card_NotPred *       p_notPred;
 
-    Card_On *               p_on;
-    Card_OrdAgg *           p_ordAgg;
-    Card_OuterColNm *       p_outerColNm;
-    Card_OuterJoin *        p_outerJoin;
+    Card_On *            p_on;
+    Card_OrdAgg *        p_ordAgg;
+    Card_OuterColNm *    p_outerColNm;
+    Card_OuterJoin *     p_outerJoin;
 
-    Card_Project *          p_project;
-    Card_Projection *       p_projection;
+    Card_Project *       p_project;
+    Card_Projection *    p_projection;
 
-    Card_RpnCalc *          p_rpnCalc;
+    Card_RpnCalc *       p_rpnCalc;
 
-    Card_Scan *             p_scan;
-    Card_Section *          p_section;
-    Card_Send *             p_send;
-    Card_Size *             p_size;
-    Card_Sort *             p_sort;
-    Card_Stage *            p_stage;
-    Card_SubSet *           p_subSet;
+    Card_Scan *          p_scan;
+    Card_Section *       p_section;
+    Card_Send *          p_send;
+    Card_Size *          p_size;
+    Card_Sort *          p_sort;
+    Card_Stage *         p_stage;
+    Card_SubSet *        p_subSet;
 
-    Card_Table *            p_table;
-    Card_TableList *        p_tableList;
-    Card_TableNm *          p_tableNm;
-    Card_TablePtn *         p_tablePtn;
-    Card_Term *             p_term;
-    Card_Top *              p_top;
-    Card_Topology *         p_topology;
-    Card_Type *             p_type;
+    Card_Table *         p_table;
+    Card_TableList *     p_tableList;
+    Card_TableNm *       p_tableNm;
+    Card_TablePtn *      p_tablePtn;
+    Card_Term *          p_term;
+    Card_Top *           p_top;
+    Card_Topology *      p_topology;
+    Card_Type *          p_type;
 
-    Card_Unique *           p_unique;
+    Card_Unique *        p_unique;
 
-    Card_Where *            p_where;
-
+    Card_Where *         p_where;
 
   private:
     // must be last

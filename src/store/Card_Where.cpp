@@ -162,37 +162,6 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move <where> to <table keyExists>/<constraint>                             */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vMoveWhereToTableAsConstraint(CardIter* pCI)
-{
-  _static_
-
-  pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
-  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
-  pCI->G.p_PRED->vMark1(MARK_AT);
-
-  pCI->G.p_subSet = pCI->G.p_boolCalc->pDupSubCards();
-  RASSERT(1 == pCI->G.p_subSet->nChildCards());
-  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_subSet->pPop());
-  DELETE_CARD(pCI->G.p_subSet);
-
-  if ((pCI->G.p_constraint = pCI->G.p_table->pSub_constraint())) {
-    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(pCI->G.p_PRED);
-  }
-  else {
-    pCI->G_vAppendNewChild(pCI->G.p_table,CK_CONSTRAINT);
-    pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,pCI->G.p_PRED);
-  }
-
-  pCI->G.p_filter = new Card_Filter;
-  pCI->G.p_table->vAppend(pCI->G.p_filter);
-  pCI->G.p_filter->vAppend(pCI->G.p_boolCalc->pDupCardAndSubCards());
-}
-
-/*----------------------------------------------------------------------------*/
 /* create new <where>/<constraint>/<expr $1>/<rpnCalc>                        */
 /*----------------------------------------------------------------------------*/
 Card_Where* Card_Where::pNewWhereConstruct(void)

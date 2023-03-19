@@ -297,7 +297,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_gbyAgg = _pCard_GbyAgg(pCI->G.p_MainCard);
 
     pCI->G.p_level = pCI->G.p_gbyAgg->pSub_level();
-    pCI->G.e_Level = (eAL) pCI->G.p_level->Y_iGet(P_Level);
+    eAL e_Level = (eAL) pCI->G.p_level->Y_iGet(P_Level);
 
     pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
 
@@ -306,7 +306,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_projection);
 
 
-    if (AL_PARTITION == pCI->G.e_Level) {
+    if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
       pCI->G.p_key->vAppend(pCI->G.p_expr);
     }
@@ -322,7 +322,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     // TODO: hack...
     pCI->G.p_expr->vCardNo(0);
 
-    if (AL_PARTITION == pCI->G.e_Level) {
+    if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,"__SQCRLKEY"_Stz);
     }
     else {
@@ -340,18 +340,11 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_projection->vPush(pCI->G.p_expr);
 
 
-    if (AL_PARTITION != pCI->G.e_Level) {
+    if (AL_PARTITION != e_Level) {
       pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
       //pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->G.p_key->Y_vSet(P_ProjBumped);
     }
-
-//    if (pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream()) {
-//      pCI->G.p_gbyAgg->vRemoveChild(pCI->G.p_stream);
-//      DELETE_CARD(pCI->G.p_stream);
-//    }
-//    pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-//    pCI->G.p_gbyAgg->vAppend(pCI->G.p_stream);
 
     pCI->G.p_key->vRenumberAllExpr();
     pCI->G.p_projection->vRenumberAllExpr();
