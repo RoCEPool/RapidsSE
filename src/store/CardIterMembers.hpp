@@ -11,20 +11,21 @@ namespace STORE
   class CardIterMembers : public Object
   {
   public:
+    i8          i_Board;
+    Board*      pBoard;
+    Card_Deck*  pDeck;
+
+    // - - - - - - - - - - - - -
+
     Card*  m_pCard;
     i8     m_i_Child;
     Card*  m_pChild;
 
     bool   m_bRecursed;
     bool   m_bDontDescend;
-
     bool   m_bActive;
 
     // - - - - - - - - - - - - -
-
-    i8          i_Board;
-    Board*      pBoard;
-    Card_Deck*  pDeck;
 
     Card * p_MainCard;
     eCK    e_MainCard;

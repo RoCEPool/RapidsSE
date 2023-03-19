@@ -90,16 +90,12 @@ namespace STORE
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
     void vDontDescend(void);
 
-    bool bEachBoard(void);
+    bool   bEachBoard(void);
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool  bEachChild(void);
-    Card* pEachChild(void);
-    //Card* pEachChild(i8& ri_Child);
-    //Card* pEachChild(eCK eCard);
-    Card* pEachChild(eCK eCard);//, i8& ri_Main);
-    Card* pEachChild(i8& ri_Main, eCK& reCard);
+    bool  bEachChild(eCK eCard=CK_NONE);
+    Card* pEachChild(eCK eCard=CK_NONE);
     Card* pEachChild_foldBreak(void);
     Card* pEachChild_foldBreak(eCK eCard);
     bool  bEachChild_reverse(void);
@@ -115,6 +111,7 @@ namespace STORE
     bool G_bEachMain_reverse(void);
     bool G_bEachMain_reverse(eCK eOfMainKind);
     bool G_bEachMain_reverse_foldBreak(eCK eOfMainKind);
+
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
     bool G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
     bool G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind);
