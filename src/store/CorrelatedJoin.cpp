@@ -471,7 +471,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
     else
     if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
       CardIter xCI(p_pred);
-      while (xCI.G_bEachMain())) {
+      while (xCI.G_bEachMain()) {
         RASSERT(xCI.G.p_PRED->bIsPRED());
         vResolve(xCI.G.p_PRED, vResolve);
       }

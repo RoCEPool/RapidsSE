@@ -452,8 +452,8 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
     }
 
     CardIter xCI(p_test);
-    while (Card* p_child = xCI.pEachChild()) {
-      if (bYank(p_boolCalc,cWithMark,p_child,p_pred_yanked,bYank)) {
+    while (xCI.G_bEachMain()) {
+      if (bYank(p_boolCalc,cWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
         RASSERT(p_pred_yanked);
         return true;
       }
@@ -467,9 +467,8 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
 
 
   CardIter xCI(this);
-
-  while (Card* p_child = xCI.pEachChild()) {
-    if (bYank(this,cWithMark,p_child,p_pred_yanked,bYank)) {
+  while (xCI.G_bEachMain()) {
+    if (bYank(this,cWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
       RASSERT(p_pred_yanked);
       return true;
     }
@@ -499,8 +498,8 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card* p_test,
   }
 
   CardIter xCI(this);
-  while (Card* p_child = xCI.pEachChild()) {
-    if (this->bYank_PRED(cWithMark, p_child, p_pred_yanked)) {
+  while (xCI.G_bEachMain()) {
+    if (this->bYank_PRED(cWithMark, xCI.G.p_MainCard, p_pred_yanked)) {
       RASSERT(p_pred_yanked);
       return true;
     }
