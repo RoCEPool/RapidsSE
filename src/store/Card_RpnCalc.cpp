@@ -86,14 +86,17 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
+  while (xCI.G_bEachMain(CK_TERM)) {
+
+    Card_Term* p_term = xCI.G.p_term;
 
     if (! xCI.bMore())
       break;
 
-    if (p_term->bSame("exists"_Stz)) {
+    if (xCI.G.p_term->bSame("exists"_Stz)) {
 
-      Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
+      RASSERT(xCI.G_bEachMain(CK_TERM));
+      Card_Term* p_term_next = xCI.G.p_term;
       if (p_term_next->bSame("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
@@ -103,9 +106,10 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       continue;
     }
 
-    if (p_term->bSame("in"_Stz)) {
+    if (xCI.G.p_term->bSame("in"_Stz)) {
 
-      Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
+      RASSERT(xCI.G_bEachMain(CK_TERM));
+      Card_Term* p_term_next = xCI.G.p_term;
       if (p_term_next->bSame("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
@@ -119,6 +123,45 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
   }
 
 }
+/*----------------------------------------------------------------------------*/
+//void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  CardIter xCI(this);
+//  while (xCI.G_bEachMain(CK_TERM)) {
+//
+//    if (! xCI.bMore())
+//      break;
+//
+//    if (xCI.G.p_term->bSame("exists"_Stz)) {
+//
+//      Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
+//      if (p_term_next->bSame("not"_Stz)) {
+//        xCI.vRewind();
+//        this->vRemoveChild(p_term_next);
+//        xCI.G.p_term->vValue("notExists"_Stz);
+//        continue;
+//      }
+//      continue;
+//    }
+//
+//    if (xCI.G.p_term->bSame("in"_Stz)) {
+//
+//      Card_Term* p_term_next = _pCard_Term(xCI.pEachChild());
+//      if (p_term_next->bSame("not"_Stz)) {
+//        xCI.vRewind();
+//        this->vRemoveChild(p_term_next);
+//        xCI.G.p_term->vValue("notIn"_Stz);
+//        DELETE_CARD(p_term_next);
+//        continue;
+//      }
+//      continue;
+//    }
+//
+//  }
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
