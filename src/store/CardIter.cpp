@@ -681,49 +681,6 @@ Card* CardIter::pEachChild_reverse(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pEachChild_reverse_foldBreak(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (C_UNKNOWN == G.m_i_Child)
-    G.m_i_Child = G.m_pCard->nChildCards() - 1;
-  else
-    G.m_i_Child--;
-
-  for (;;) {
-
-    if (G.m_i_Child < 0) {
-      G.m_pChild = nullptr;
-      return nullptr;
-    }
-
-    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
-
-    if (G.m_pChild->bIsCard(CK_FOLD)) {
-      G.m_pChild = nullptr;
-      G.m_i_Child = C_UNKNOWN;
-      return nullptr;
-    }
-
-    if (CK_NONE == eCard) {
-      return G.m_pChild;
-    }
-
-    eCK eCardMain = G.m_pChild->eCard();
-    if (eCardMain == eCard) {
-      return G.m_pChild;
-    }
-
-    G.m_i_Child--;
-  }
-
-  NEVER_REACH
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain(eCK eOfMainKind)
@@ -803,17 +760,42 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if ((G.p_MainCard = this->pEachChild_reverse_foldBreak(eOfMainKind))) {
+  if (C_UNKNOWN == G.m_i_Child)
+    G.m_i_Child = G.m_pCard->nChildCards() - 1;
+  else
+    G.m_i_Child--;
+
+  for (;;) {
+
+    if (G.m_i_Child < 0) {
+      G.m_pChild = nullptr;
+      return false;
+    }
+
+    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
+    if (G.m_pChild->bIsCard(CK_FOLD)) {
+      G.m_pChild = nullptr;
+      G.m_i_Child = C_UNKNOWN;
+      return false;
+    }
+
+    if (CK_NONE == eOfMainKind) {
+      return true;
+    }
+
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-    return true;
+
+    if (G.e_MainCard == eOfMainKind) {
+      return true;
+    }
+
+    G.m_i_Child--;
   }
 
-  G.e_MainCard = CK_NONE;
-  G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  return false;
+  NEVER_REACH
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
@@ -878,7 +860,7 @@ bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSub
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild_reverse_foldBreak(eOfMainKind))) {
+  while (G_bEachMain_reverse_foldBreak(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
