@@ -354,7 +354,6 @@ namespace STORE
     i8   iMark2(void);
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
-    void vMarkResetRecursive(void);
     bool bMerge(Card* pCard);
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
     void vMoveToLastChild(Card* pChildCard);

@@ -1490,22 +1490,6 @@ void Card::vMark2(char cMark2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset marks recursive                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vMarkResetRecursive(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_cMark1 = MARK_BLANK;
-  m_cMark2 = MARK_BLANK;
-
-  CardIter xCI(this);
-  while (xCI.bEachChild())
-    xCI.pChild()->vMarkResetRecursive();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* Merge given card with this card only if they are of the same type          */
 /*----------------------------------------------------------------------------*/
 bool Card::bMerge(Card* pCard)
