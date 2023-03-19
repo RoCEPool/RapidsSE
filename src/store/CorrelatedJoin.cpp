@@ -152,10 +152,11 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
 
+  Card_PRED* p_PRED_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
-    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, pCI->G.p_PRED))
+    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, p_PRED_corr))
       break;
-  RASSERT(pCI->G.p_PRED->Y_bHas(P_CrlKeyPred));
+  RASSERT(p_PRED_corr->Y_bHas(P_CrlKeyPred));
   pCI->vPrintBoard(__LINE__);
 
   // tidy up empty SQ:<table>/<filter>
@@ -181,7 +182,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
-  pCI->G.p_boolCalc->vPush_CrlKeyPred_As_CrlKeyTest(pCI->G.p_PRED);
+  pCI->G.p_boolCalc->vPush_CrlKeyPred_As_CrlKeyTest(p_PRED_corr);
   pCI->vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
@@ -260,8 +261,8 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-  pCI->G.p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
-  bool bIgnore = pCI->G.p_PRED->bPredRecursive(bMarkCorrPred);
+  Card_PRED* p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
+  bool bIgnore = p_PRED->bPredRecursive(bMarkCorrPred);
 
   return bIsCorrPred;
 }

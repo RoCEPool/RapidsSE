@@ -38,8 +38,6 @@ namespace STORE
     Card * p_Sub3OfMain;
     eCK    e_Sub3OfMain;
 
-    Card_PRED * p_PRED;
-
     // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *       p_absJoin;

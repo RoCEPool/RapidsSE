@@ -442,7 +442,6 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_i_FoldCard = C_UNKNOWN;
 
-  G.p_PRED = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
