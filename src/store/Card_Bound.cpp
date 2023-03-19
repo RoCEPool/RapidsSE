@@ -207,9 +207,9 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
-    if (Card::bIsIndexColOrdinal(p_term->szValue()))
-      return p_term;
+  while (xCI.G_bEachMain(CK_TERM))
+    if (Card::bIsIndexColOrdinal(xCI.G.p_term->szValue()))
+      return xCI.G.p_term;
 
   return nullptr;
 }
@@ -223,9 +223,9 @@ Stz* Card_Bound::szGet_idxColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
-    if (Card::bIsIndexColOrdinal(p_term->szValue()))
-      return p_term->szValue();
+  while (xCI.G_bEachMain(CK_TERM))
+    if (Card::bIsIndexColOrdinal(xCI.G.p_term->szValue()))
+      return xCI.G.p_term->szValue();
 
   return nullptr;
 }
@@ -238,9 +238,9 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
-    if (Card::bIsTableColOrdinal(p_term->szValue()))
-      return p_term;
+  while (xCI.G_bEachMain(CK_TERM))
+    if (Card::bIsTableColOrdinal(xCI.G.p_term->szValue()))
+      return xCI.G.p_term;
 
   return nullptr;
 }
@@ -254,9 +254,9 @@ Stz* Card_Bound::szGet_tblColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild(CK_TERM)))
-    if (Card::bIsTableColOrdinal(p_term->szValue()))
-      return p_term->szValue();
+  while (xCI.G_bEachMain(CK_TERM))
+    if (Card::bIsTableColOrdinal(xCI.G.p_term->szValue()))
+      return xCI.G.p_term->szValue();
 
   return nullptr;
 }
