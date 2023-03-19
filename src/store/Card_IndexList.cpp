@@ -94,9 +94,9 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->Y_bHas(P_ChosenIndex))
-      return p_index;
+  while (xCI.G_bEachMain(CK_INDEX)) {
+    if (xCI.G.p_index->Y_bHas(P_ChosenIndex))
+      return xCI.G.p_index;
   }
 
   return nullptr;
@@ -110,9 +110,9 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_bound() && p_index->pSub_bound()->bIsEBound()) {
-      p_index->vSet_Choose_index();
+  while (xCI.G_bEachMain(CK_INDEX)) {
+    if (xCI.G.p_index->pSub_bound() && xCI.G.p_index->pSub_bound()->bIsEBound()) {
+      xCI.G.p_index->vSet_Choose_index();
       break;
     }
   }
@@ -126,9 +126,9 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card_Index* p_index = _pCard_Index(xCI.pEachChild(CK_INDEX))) {
-    if (p_index->pSub_bounds()) {
-      p_index->vSet_Choose_index();
+  while (xCI.G_bEachMain(CK_INDEX)) {
+    if (xCI.G.p_index->pSub_bounds()) {
+      xCI.G.p_index->vSet_Choose_index();
       break;
     }
   }

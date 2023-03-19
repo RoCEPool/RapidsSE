@@ -567,12 +567,11 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   i8 nCount = 0;
 
-  while (Card* pCard = xBI.pEachChild()) {
-    eCK eCard = pCard->eCard();
+  while (xBI.G_bEachMain()) {
 
     // skip non-printable horizontal lines
-    if (pCardCtl->bHeatNext(eCard) &&
-        pCard->Y_bHas(pCardCtl->szHorizExclude(eCard))) {
+    if (pCardCtl->bHeatNext(xBI.G.e_MainCard) &&
+        xBI.G.p_MainCard->Y_bHas(pCardCtl->szHorizExclude(xBI.G.e_MainCard))) {
 
       while (Card* pNextMain = xBI.pNextChild()) {
         eCK eNextCard = pNextMain->eCard();
@@ -587,7 +586,7 @@ void Board::vPinCards(Ribbon* pRibbon)
     if (! nCount++)
       pSubRibbon->vLaneFirst();
     else
-    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(eCard))
+    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(xBI.G.e_MainCard))
       pSubRibbon->vHeatNext();
     else
       pSubRibbon->vLaneNext();
@@ -620,10 +619,10 @@ void Board::vPinCards(Ribbon* pRibbon)
 
     bool bPrune = false;
     eAL eLevel = AL_NONE;
-    Card_Level* p_level = pCard->pSub_level();
+    Card_Level* p_level = xBI.G.p_MainCard->pSub_level();
     if (p_level)
       eLevel = (eAL) p_level->Y_iGet(P_Level);
-    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
+    xBI.G.p_MainCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

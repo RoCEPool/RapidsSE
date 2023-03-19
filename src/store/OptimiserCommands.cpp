@@ -125,13 +125,12 @@ bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
 
   CardIter xCI(pDeck);
 
-  while (Card* pCard = xCI.pEachChild())
-  {
+  while (xCI.G_bEachMain()) {
     s256 sShort = "";
-    StrLib::vShortHand(sShort.azChar(), pCard->szCardNm()->azChar());
+    StrLib::vShortHand(sShort.azChar(), xCI.G.p_MainCard->szCardNm()->azChar());
     vTrace("%s "_Stz, sShort.azChar());
 
-    Card_TableNm* pCard_TableNm = pCard->pSub_tableNm();
+    Card_TableNm* pCard_TableNm = xCI.G.p_MainCard->pSub_tableNm();
     if(pCard_TableNm != nullptr)
     {
       Card* pTableCard = _pCard(pCard_TableNm);
