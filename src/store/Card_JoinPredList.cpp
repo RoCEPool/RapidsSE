@@ -56,8 +56,8 @@ Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
   CardIter xCI(p_deck);
-  while (Card* pMainCard = xCI.pEachChild()) {
-    if (Card_Filter *p_filter = pMainCard->pSub_filter()) {
+  while (xCI.G_bEachMain()) {
+    if (Card_Filter *p_filter = xCI.G.p_MainCard->pSub_filter()) {
       Card_BoolCalc *p_boolCalc = p_filter->pSub_boolCalc();
       p_joinPredList->vConcat(p_boolCalc);
     }

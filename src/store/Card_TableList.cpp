@@ -62,30 +62,30 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
   if (! xCI.pEachChild_reverse(CK_FOLD))
     xCI.vRestart();
 
-  while (Card_Table* p_table = _pCard_Table(xCI.pEachChild(CK_TABLE))) {
+  while (xCI.G_bEachMain(CK_TABLE)) {
 
-    Card* p_table_dup = _pCard_Table(p_table->pDup());
+    Card* p_table_dup = _pCard_Table(xCI.G.p_table->pDup());
     p_tableList->vAppend(p_table_dup);
 
-    if (Card_TableNm* p_tableNm = p_table->pSub_tableNm()) {
+    if (Card_TableNm* p_tableNm = xCI.G.p_table->pSub_tableNm()) {
       p_tableNm = _pCard_TableNm(p_tableNm->pDup());
       p_table_dup->vAppend(p_tableNm);
     }
-    if (Card_TablePtn* p_tablePtn = p_table->pSub_tablePtn()) {
+    if (Card_TablePtn* p_tablePtn = xCI.G.p_table->pSub_tablePtn()) {
       p_tablePtn = _pCard_TablePtn(p_tablePtn->pDup());
       p_table_dup->vAppend(p_tablePtn);
     }
-    if (Card_Size* p_size = p_table->pSub_size()) {
+    if (Card_Size* p_size = xCI.G.p_table->pSub_size()) {
       p_size = _pCard_Size(p_size->pDup());
       p_table_dup->vAppend(p_size);
     }
 
-    if (Card_KeyExists* p_keyExists = p_table->pSub_keyExists()) {
+    if (Card_KeyExists* p_keyExists = xCI.G.p_table->pSub_keyExists()) {
       p_keyExists = _pCard_KeyExists(p_keyExists->pDup());
       p_table_dup->vAppend(p_keyExists);
     }
     else
-    if (Card_KeyNotExists* p_keyNotExists = p_table->pSub_keyNotExists()) {
+    if (Card_KeyNotExists* p_keyNotExists = xCI.G.p_table->pSub_keyNotExists()) {
       p_keyNotExists = _pCard_KeyNotExists(p_keyNotExists->pDup());
       p_table_dup->vAppend(p_keyNotExists);
     }

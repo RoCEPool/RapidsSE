@@ -440,19 +440,14 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
       RASSERT(p_pred->bIsValue("=="_Stz));
 
       CardIter xCI(p_pred);
-      while (Card* p_child = xCI.pEachChild()) {
-//        if (p_child->bIsPRED()) {
-//          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
-//          continue;
-//        }
+      while (xCI.G_bEachMain()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (Card::bIsCorrParamOrdinal(p_child->szValue())) {
-          //R_vUTE_Resolve_Param_Ordinal(_pCard_Term(p_child));
-          p_child->vValue("$1"_Stz);  // TODO: hack!!
+        if (Card::bIsCorrParamOrdinal(xCI.G.p_MainCard->szValue())) {
+          xCI.G.p_MainCard->vValue("$1"_Stz);  // TODO: hack!!
         }
         else
-        if (p_child->bIsCard(CK_TERM) && Card::bIsTableColOrdinal(p_child->szValue())) {
+        if (xCI.G.p_MainCard->bIsCard(CK_TERM) && Card::bIsTableColOrdinal(xCI.G.p_MainCard->szValue())) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
@@ -463,7 +458,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_Expr* p_expr_otr = p_term->pExpr_For_colNm(pCI);
           p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->szProjectedCol();
-          p_child->vValue(szProjectedCol);  // TODO: hack!!
+          xCI.G.p_MainCard->vValue(szProjectedCol);  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }
@@ -527,24 +522,24 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
 
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
-      while (Card* p_child = xCI.pEachChild()) {
-        if (p_child->bIsPRED()) {
-          vResolve(static_cast<Card_PRED*>(p_child), vResolve);
+      while (xCI.G_bEachMain()) {
+        if (xCI.G.p_MainCard->bIsPRED()) {
+          vResolve(static_cast<Card_PRED*>(xCI.G.p_MainCard), vResolve);
           continue;
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (pCI->m_pBench->bIsSubQueryNm(p_child->szValue())) {
+        if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szValue())) {
           Card* p_arg = xCI.pPrevChild();
 
           Card_Term* p_term_new = new Card_Term("$2"_Stz);
-          p_pred->vInsertAfter(p_term_new,p_child);
+          p_pred->vInsertAfter(p_term_new,xCI.G.p_MainCard);
 
           p_pred->vRemoveChild(p_arg);
           DELETE_CARD(p_arg);
 
-          p_pred->vRemoveChild(p_child);
-          DELETE_CARD(p_child);
+          p_pred->vRemoveChild(xCI.G.p_MainCard);
+          DELETE_CARD(xCI.G.p_MainCard);
 
           p_pred->Y_vSet(P_CrlRslTest);
         }

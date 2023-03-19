@@ -243,9 +243,9 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
     return C_UNKNOWN;
 
   CardIter xCI(p_rpnCalc);
-  while (Card_Term* p_term = _pCard_Term(xCI.pEachChild())) {
-    if (Card::bIsKeyOrdinal(p_term->szValue())) {
-      i8 i_Key = Card::iGetColOdn(p_term->szValue());
+  while (xCI.G_bEachMain())  {
+    if (Card::bIsKeyOrdinal(xCI.G.p_term->szValue())) {
+      i8 i_Key = Card::iGetColOdn(xCI.G.p_term->szValue());
       return i_Key;
     }
   }
