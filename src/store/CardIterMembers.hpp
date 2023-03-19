@@ -28,8 +28,6 @@ namespace STORE
     i8          i_SubQuery;
     SubQuery*   pSubQuery;
 
-    Card * p_PriorToMain;
-    eCK    e_PriorToMain;
     Card * p_MainCard;
     eCK    e_MainCard;
     i8     i_MainCard;
@@ -39,8 +37,6 @@ namespace STORE
     eCK    e_Sub2OfMain;
     Card * p_Sub3OfMain;
     eCK    e_Sub3OfMain;
-    Card * p_SubsequentToMain;
-    eCK    e_SubsequentToMain;
 
     Card * p_SubMember;
     eCK    e_SubMember;

@@ -421,8 +421,6 @@ void CardIter::G_vClearRegisters(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.p_PriorToMain      = nullptr;
-  G.e_PriorToMain      = CK_NONE;
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
   G.i_MainCard         = C_UNKNOWN;
@@ -432,8 +430,6 @@ void CardIter::G_vClearRegisters(void)
   G.e_Sub2OfMain       = CK_NONE;
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
-  G.p_SubsequentToMain = nullptr;
-  G.e_SubsequentToMain = CK_NONE;
 
   G.p_SubMember        = nullptr;
   G.e_SubMember        = CK_NONE;
@@ -459,10 +455,6 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (pCard == G.p_PriorToMain) {
-    G.p_PriorToMain = nullptr;
-    G.e_PriorToMain = CK_NONE;
-  }
   if (pCard == G.p_MainCard) {
     G.p_MainCard = nullptr;
     G.e_MainCard = CK_NONE;
@@ -478,10 +470,6 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
   if (pCard == G.p_Sub3OfMain) {
     G.p_Sub3OfMain = nullptr;
     G.e_Sub3OfMain = CK_NONE;
-  }
-  if (pCard == G.p_SubsequentToMain) {
-    G.p_SubsequentToMain = nullptr;
-    G.e_SubsequentToMain = CK_NONE;
   }
   if (pCard == G.p_SubMember) {
     G.p_SubMember = nullptr;
@@ -2557,35 +2545,6 @@ void CardIter::vSubQueryIteration(void)
   G.i_SubQuery = C_UNKNOWN;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* is there a card immediately after current main card?                       */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bSubsequentToMain(bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if ((G.p_SubsequentToMain = this->pNextChild())) {
-    G.e_SubsequentToMain = G.p_SubsequentToMain->eCard();
-    if (bUpdateMember)
-      G_vUpdateMember(G.e_SubsequentToMain, G.p_SubsequentToMain, __func__);
-    return true;
-  }
-
-  G.e_SubsequentToMain = CK_NONE;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is there a card immediately after current main card?                       */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vSubsequentToMain(bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  bool b = G_bSubsequentToMain(bUpdateMember);
-  UNUSED(b);
-}
 
 /*----------------------------------------------------------------------------*/
 /* is tracing enabled?                                                        */

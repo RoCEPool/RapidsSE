@@ -199,8 +199,6 @@ namespace STORE
     void G_vSetBoard(Board* pBoard);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     void vSubQueryIteration(void);
-    bool G_bSubsequentToMain(bool bUpdateMember = false);
-    void G_vSubsequentToMain(bool bUpdateMember = false);
 
     void vTracer(Stz* szFormat, ...);
     void vTransform(const char* azFunc, Stz* szXdesc);
