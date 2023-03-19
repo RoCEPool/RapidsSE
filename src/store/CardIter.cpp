@@ -1098,66 +1098,6 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bEachSubQuery(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  //RASSERT(G.m_bActive);
-
-  if (pEachSubQuery())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-SubQuery* CardIter::pEachSubQuery(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  //RASSERT(G.m_bActive);
-
-  i8 i_SubQuery;
-
-  Sqy.m_pSubQuery = pEachSubQuery(i_SubQuery);
-
-  return Sqy.m_pSubQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-SubQuery* CardIter::pEachSubQuery(i8& ri_SubQuery)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  //RASSERT(G.m_bActive);
-
-  if (C_UNKNOWN == Sqy.m_i_SubQuery)
-    Sqy.m_i_SubQuery = 0;
-  else
-    Sqy.m_i_SubQuery++;
-
-  if (Sqy.m_i_SubQuery >= m_pBench->nBoards()) {
-    Sqy.m_pSubQuery = nullptr;
-    ri_SubQuery  = C_UNKNOWN;
-    Sqy.m_i_SubQuery = 0;
-
-    return nullptr;
-  }
-
-  Board* pSubBoard = m_pBench->pGetBoard(Sqy.m_i_SubQuery);
-  Sqy.m_pSubQuery = pSubBoard->pSubQuery();
-  ri_SubQuery = Sqy.m_i_SubQuery;
-
-  return Sqy.m_pSubQuery;
-}
-
-/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndTransform(void)

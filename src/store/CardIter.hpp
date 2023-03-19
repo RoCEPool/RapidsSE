@@ -115,10 +115,6 @@ namespace STORE
     bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
-    bool bEachSubQuery(void);
-    SubQuery* pEachSubQuery(void);
-    SubQuery* pEachSubQuery(i8& ri_SubQuery);
-
     void vEndTransform(void);
 
     void vFocusOnMain(void);
