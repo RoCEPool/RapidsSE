@@ -137,6 +137,8 @@ namespace STORE
 
     Card_Where *         p_where;
 
+    Card_PRED *          p_PRED;
+
   private:
     // must be last
     Footer m_xFooter;
