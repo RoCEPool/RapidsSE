@@ -1450,21 +1450,6 @@ void Card::vMark1(char cMark1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set mark1 conditionally recursive                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vMark1SetIfRecursive(char cIfMark, char cSetTo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (cIfMark == m_cMark1)
-    m_cMark1 = cSetTo;
-
-  CardIter xCI(this);
-  while (xCI.bEachChild())
-    xCI.pChild()->vMark1SetIfRecursive(cIfMark,cSetTo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get mark 2                                                                 */
 /*----------------------------------------------------------------------------*/
 char Card::cMark2(void)
@@ -1502,21 +1487,6 @@ void Card::vMark2(char cMark2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_cMark2 = cMark2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set mark2 conditionally recursive                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vMark2SetIfRecursive(char cIfMark, char cSetTo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (cIfMark == m_cMark2)
-    m_cMark2 = cSetTo;
-
-  CardIter xCI(this);
-  while (xCI.bEachChild())
-    xCI.pChild()->vMark2SetIfRecursive(cIfMark,cSetTo);
 }
 
 /*----------------------------------------------------------------------------*/

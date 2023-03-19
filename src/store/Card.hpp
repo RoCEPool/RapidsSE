@@ -350,12 +350,10 @@ namespace STORE
 
     char cMark1(void);
     void vMark1(char cMark1);
-    void vMark1SetIfRecursive(char cIfMark, char cSetTo);
     char cMark2(void);
     i8   iMark2(void);
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
-    void vMark2SetIfRecursive(char cIfMark, char cSetTo);
     void vMarkResetRecursive(void);
     bool bMerge(Card* pCard);
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
