@@ -1774,15 +1774,15 @@ Card* CardIter::pRecurseEach(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // descend into current child
 
-  if (G.m_pChild && (! G.m_bDontDescend) ) {
-    if (G.m_pChild->nChildCards()) {
+  if (G.p_MainCard && (! G.m_bDontDescend) ) {
+    if (G.p_MainCard->nChildCards()) {
 
       G.m_bRecursed = true;
       vPushRecurseIter();
-      vChangeCard(G.m_pChild);
-      G.m_pChild = pEachChild();
+      vChangeCard(G.p_MainCard);
+      G.p_MainCard = pEachChild();
 
-      return G.m_pChild;
+      return G.p_MainCard;
     }
   }
 
