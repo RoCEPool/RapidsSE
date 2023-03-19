@@ -94,7 +94,6 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool  bEachChild(eCK eCard=CK_NONE);
     Card* pEachChild(eCK eCard=CK_NONE);
     Card* pEachChild_foldBreak(eCK eCard=CK_NONE);
     Card* pEachChild_reverse(eCK eCard=CK_NONE);

@@ -41,6 +41,7 @@ namespace STORE
 
     Card_AbsJoin *       p_absJoin;
     Card_Aggreg *        p_aggreg;
+    Card_AndPred *       p_andPred;
     Card_As *            p_as;
 
     Card_BoolCalc *      p_boolCalc;
@@ -106,6 +107,7 @@ namespace STORE
 
     Card_On *            p_on;
     Card_OrdAgg *        p_ordAgg;
+    Card_OrPred *        p_orPred;
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 

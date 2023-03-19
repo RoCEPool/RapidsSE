@@ -65,9 +65,8 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
       continue;
 
     CardIter xCI_bounds(pCI->G.p_bounds);
-    while (xCI_bounds.bEachChild()) {
-      if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.m_pChild->bIsCard(CK_BOUND)) {
-        //RASSERT(((Card_Bound*)xCI_bounds.G.m_pChild)->bIsEBound());
+    while (xCI_bounds.G_bEachMain()) {
+      if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.p_MainCard->bIsCard(CK_BOUND)) {
         bFoundFirst = true;
         continue;
       }

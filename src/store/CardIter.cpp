@@ -239,6 +239,7 @@ void CardIter::G_vClearMembers(void)
 
   G.p_absJoin          = nullptr;
   G.p_aggreg           = nullptr;
+  G.p_andPred          = nullptr;
   G.p_as               = nullptr;
   G.p_boolCalc         = nullptr;
   G.p_bound            = nullptr;
@@ -291,6 +292,7 @@ void CardIter::G_vClearMembers(void)
   G.p_notPred          = nullptr;
   G.p_on               = nullptr;
   G.p_ordAgg           = nullptr;
+  G.p_orPred           = nullptr;
   G.p_outerColNm       = nullptr;
   G.p_outerJoin        = nullptr;
   G.p_project          = nullptr;
@@ -558,21 +560,6 @@ Board* CardIter::pEachBoard(i8& ri_Board)
   vChangeCard(G.pBoard->pDeck());
 
   return G.pBoard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bEachChild(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(G.m_bActive);
-
-  if (pEachChild(eCard))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1163,6 +1150,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_ABSJOIN:          return G.p_absJoin;
     case CK_AGGREG:           return G.p_aggreg;
+    case CK_ANDPRED:          return G.p_andPred;
     case CK_AS:               return G.p_as;
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUND:            return G.p_bound;
@@ -1215,6 +1203,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_NOTPRED:          return G.p_notPred;
     case CK_ON:               return G.p_on;
     case CK_ORDAGG:           return G.p_ordAgg;
+    case CK_ORPRED:           return G.p_orPred;
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
     case CK_PROJECT:          return G.p_project;
@@ -1315,6 +1304,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
 
     case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
     case CK_AGGREG:           return "G.p_aggreg"_Stz;
+    case CK_ANDPRED:          return "G.p_andPred"_Stz;
     case CK_AS:               return "G.p_as"_Stz;
     case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
     case CK_BOUND:            return "G.p_bound"_Stz;
@@ -1366,6 +1356,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_NOTPRED:          return "G.p_notPred"_Stz;
     case CK_ON:               return "G.p_on"_Stz;
     case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
+    case CK_ORPRED:           return "G.p_orPred"_Stz;
     case CK_OUTERCOLNM:       return "G.p_outerColNm"_Stz;
     case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
@@ -1782,12 +1773,12 @@ Card* CardIter::pRecurseEach(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visit next child
 
-  if (bEachChild())
-    return G.m_pChild;
+  if (G_bEachMain())
+    return G.p_MainCard;
 
   while (bPopRecurseIter()) {
-    if (bEachChild())
-      return G.m_pChild;
+    if (G_bEachMain())
+      return G.p_MainCard;
   }
 
   return nullptr;
@@ -2184,6 +2175,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
+    case CK_ANDPRED:          *((Card**)&G.p_andPred)          = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
@@ -2236,6 +2228,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard; break;
     case CK_ON:               *((Card**)&G.p_on)               = pCard; break;
     case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard; break;
+    case CK_ORPRED:           *((Card**)&G.p_orPred)           = pCard; break;
     case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
     case CK_OUTERJOIN:        *((Card**)&G.p_outerJoin)        = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;

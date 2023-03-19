@@ -124,8 +124,8 @@ void Card_Bounds::vCullBound(char cWithMark)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI_bounds(this);
-  while (xCI_bounds.bEachChild()) {
-    if (xCI_bounds.G.m_pChild->cMark1() != cWithMark)
+  while (xCI_bounds.G_bEachMain()) {
+    if (xCI_bounds.G.p_MainCard->cMark1() != cWithMark)
       continue;
 
     vRemoveChild(xCI_bounds.G.m_pChild);
