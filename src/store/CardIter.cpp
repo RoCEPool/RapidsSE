@@ -721,8 +721,11 @@ Card* CardIter::pEachChild_reverse_foldBreak(eCK eCard)
       return nullptr;
     }
 
+    if (CK_NONE == eCard) {
+      return G.m_pChild;
+    }
 
-      eCK eCardMain = G.m_pChild->eCard();
+    eCK eCardMain = G.m_pChild->eCard();
     if (eCardMain == eCard) {
       return G.m_pChild;
     }
@@ -733,23 +736,6 @@ Card* CardIter::pEachChild_reverse_foldBreak(eCK eCard)
   NEVER_REACH
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* step main register next main and update M member                           */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if ((G.p_MainCard = this->pEachChild())) {
-    vFocusOnMain();
-    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-    return true;
-  }
-
-  G.e_MainCard = CK_NONE;
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -766,23 +752,6 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 
   G.e_MainCard = CK_NONE;
   G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* step main register next main and update M member                           */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain_foldBreak(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if ((G.p_MainCard = this->pEachChild_foldBreak())) {
-    vFocusOnMain();
-    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-    return true;
-  }
-
-  G.e_MainCard = CK_NONE;
   return false;
 }
 
@@ -2271,6 +2240,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
   switch (eMember) {
 
+    case CK_NONE: break;
+
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
@@ -2286,7 +2257,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
-     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
     case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
