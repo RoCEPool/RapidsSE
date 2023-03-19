@@ -728,10 +728,34 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if ((G.p_MainCard = this->pEachChild(eOfMainKind)))
-    return true;
+  RASSERT(G.m_bActive);
 
-  return false;
+  if (C_UNKNOWN == G.m_i_Child)
+    G.m_i_Child = 0;
+  else
+    G.m_i_Child++;
+
+  for (;;) {
+
+    if (G.m_i_Child >= G.m_pCard->nChildCards()) {
+      G.p_MainCard = G.m_pChild  = nullptr;
+      G.m_bActive = false;
+      G_vUpdateMember(eOfMainKind, nullptr, __func__);
+      return false;
+    }
+
+    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
+    if (CK_NONE == eOfMainKind || eOfMainKind == G.m_pChild->eCard()) {
+      vFocusOnMain();
+      G_vUpdateMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+      return true;
+    }
+
+    G.m_i_Child++;
+  }
+
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
