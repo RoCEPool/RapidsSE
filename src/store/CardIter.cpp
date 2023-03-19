@@ -579,23 +579,20 @@ Card* CardIter::pEachChild(eCK eCard)
   for (;;) {
 
     if (G.m_i_Child >= G.m_pCard->nChildCards()) {
-      G.m_pChild  = nullptr;
-      //ri_Main   = C_UNKNOWN;
+      G.p_MainCard = G.m_pChild  = nullptr;
       G.m_bActive = false;
+      G_vUpdateMember(eCard, nullptr, __func__);
       return nullptr;
     }
 
-    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
 
-    if (CK_NONE == eCard) {
+    if (CK_NONE == eCard || eCard == G.m_pChild->eCard()) {
+      vFocusOnMain();
+      G_vUpdateMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
       return G.m_pChild;
     }
 
-    eCK eCardMain = G.m_pChild->eCard();
-    if (eCardMain == eCard) {
-      //ri_Main = G.m_i_Child;
-      return G.m_pChild;
-    }
     G.m_i_Child++;
   }
 
@@ -731,14 +728,9 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if ((G.p_MainCard = this->pEachChild(eOfMainKind))) {
-    vFocusOnMain();
-    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+  if ((G.p_MainCard = this->pEachChild(eOfMainKind)))
     return true;
-  }
 
-  G.e_MainCard = CK_NONE;
-  G_vUpdateMember(eOfMainKind, nullptr, __func__);
   return false;
 }
 
