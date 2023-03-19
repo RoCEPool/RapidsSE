@@ -705,8 +705,8 @@ bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambd
   }
 
   CardIter xCI(this);
-  while (Card* pChildCard = xCI.pEachChild()) {
-    bool bContinue = pChildCard->bApplyRecursive(eToSubs, bfLambdaFn);
+  while (xCI.G_bEachMain()) {
+    bool bContinue = xCI.G.p_MainCard->bApplyRecursive(eToSubs, bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -728,8 +728,8 @@ bool Card::bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaF
   }
 
   CardIter xCI(this);
-  while (Card* pChildCard = xCI.pEachChild()) {
-    if (! pChildCard->bApplyRecursive_term(bfLambdaFn))
+  while (xCI.G_bEachMain()) {
+    if (! xCI.G.p_MainCard->bApplyRecursive_term(bfLambdaFn))
       return false;
   }
 
@@ -1499,7 +1499,7 @@ bool Card::bMerge(Card* pCard)
   if(pCard->eCard() != m_eCard)
     return false;
 
-  while(Card* pSubCard = pCard->pPop()) {
+  while (Card* pSubCard = pCard->pPop()) {
     vPush(pSubCard);
   }
 
@@ -1516,9 +1516,8 @@ void Card::vMorphChildrenTo(eCK eFrom, eCK eTo)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (Card* pChildCard = xCI.pEachChild())
-    if (pChildCard->bIsCard(eFrom))
-      pChildCard->vCard(eTo);
+  while (xCI.G_bEachMain(eFrom))
+    xCI.G.p_MainCard->vCard(eTo);
 }
 
 /*----------------------------------------------------------------------------*/

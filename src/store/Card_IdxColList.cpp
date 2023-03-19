@@ -75,8 +75,8 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
   i8 i_ProjectionColNo = C_UNKNOWN;
 
   CardIter xCI(this);
-  while (Card_IdxCol* p_idxCol = _pCard_IdxCol(xCI.pEachChild(CK_IDXCOL))) {
-    Stz* szColNm = p_idxCol->sz();
+  while (xCI.G_bEachMain(CK_IDXCOL)) {
+    Stz* szColNm = xCI.G.p_idxCol->sz();
 
   CardIter xCI_p(p_projection);
   while (Card_Expr* expr_prj = _pCard_Expr(xCI_p.pEachChild())) {
@@ -84,7 +84,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 
         Stz* szPrjCol = expr_prj->szProjectedCol();
 
-        p_idxCol->vSetValueMark1(szPrjCol, MARK_CHANGED);
+      xCI.G.p_idxCol->vSetValueMark1(szPrjCol, MARK_CHANGED);
       }
     }
   }
