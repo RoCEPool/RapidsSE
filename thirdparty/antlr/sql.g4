@@ -452,49 +452,62 @@ dayTimeInterval   :
 // lexer ------------------------------------------------------
 
 nonReservedWord   :
-                    ANTLR | ASC
-                  | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
-                  | CATALOG | CHARS | COALESCE | CONCAT | CORRESPONDING | COUNT | CREATE
-                  | CURRENT_CATALOG | CURRENT_SCHEMA | CURRENT_TIMESTAMP | CURRENT_USER
-                  | DATA | DATE | DAYS | DECODE | DELETE | DESC | DETAIL | DIGITS | DROP
-                  | ESCAPE | EXCEPT | EXPLAIN | EXTRACT
-                  | FEDERATION | FORMAT
+                    ANTI | ANTLR | ASC
+                  | BIT | BITS | BLOCK | BLOOM | BTREE | BYTE | BYTES
+                  | CATALOG | CHARS | CONCAT
+                  | DATA | DAYS | DECODE | DESC | DETAIL | DIGITS
+                  | EXPLAIN
+                  | SQL_FALSE | FEDERATION | FORMAT
                   | HASH | HASHKEY | HOURS
-                  | IFNULL | INDEX | INSERT | INTO | IS
-                  | JOIN
+                  | IF | IFNULL | INDEX
                   | KEY
-                  | LEFT | LOOP
+                  | LIMIT | LOOP
                   | MINUTES | MONOTONIC | MONTHS
-                  | NO | NODE | NULLIF
-                  | OFFSET | OUTER | OVERLAY
-                  | PARTITION | POSITION | PRETTY
+                  | NODE | NOW
+                  | OFFSET
+                  | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE | RIGHT
-                  | SCHEMA | SECONDS | SET | SKIPLIST | STAGE | STATS
-                  | STATISTICS |SUBSTR | SUBSTRING
-                  | TABLE | TIME | TREE | TYPE
-                  | UNION | UNIQUE | UPDATE | USING
-                  | VALUE | VALUES | VARYING
-                  | WEEK | WEEKS | WITH_NAMES
+                  | REFERENCE
+                  | SCHEMA | SECONDS | SEMI | SKIPLIST | STAGE | STATS | STATISTICS
+                  | STATISTICS |SUBSTR
+                  | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
+                  | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
+                  | XOR
                   | YEARS
-                  | INTEGER | DECIMAL | FLOAT | TIMESTAMP | CHARACTER | CHAR | CHARS
-                  | BOOLEAN | BINARY | VARBINARY
                   ;
 
 ALL                   : A L L;
 AND                   : A N D;
-ANTI                  : A N T I;    // Reserved, to allow for specifying an anti join
+ANTI                  : A N T I;
 ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
 AVG                   : A V G;
 BETWEEN               : B E T W E E N;
+BINARY                : B I N A R Y;
+BIT                   : B I T;
+BITS                  : B I T S;
+BLOB                  : B L O B;
+BLOCK                 : B L O C K;
+BLOOM                 : B L O O M;
 BOTH                  : B O T H;
+BOOLEAN               : B O O L E A N;
+BTREE                 : B T R E E;
 BY                    : B Y;
+BYTE                  : B Y T E;
+BYTES                 : B Y T E S;
+CASE                  : C A S E;
+CAST                  : C A S T;
 CATALOG               : C A T A L O G;
+CHAR                  : C H A R;
+CHARS                 : C H A R S;
+CHARACTER             : C H A R A C T E R;
+COALESCE              : C O A L E S C E;
 COLLATE               : C O L L A T E;
+CONCAT                : C O N C A T;
 CORRESPONDING         : C O R R E S P O N D I N G;
+COUNT                 : C O U N T;
 CREATE                : C R E A T E;
 CROSS                 : C R O S S;
 CURRENT_CATALOG       : C U R R E N T '_' C A T A L O G;
@@ -503,28 +516,45 @@ CURRENT_TIMESTAMP     : C U R R E N T '_' T I M E S T A M P;
 CURRENT_USER          : C U R R E N T '_' U S E R;
 DATA                  : D A T A;
 DATE                  : D A T E;
+DAY                   : D A Y;
+DAYS                  : D A Y S;
+DECIMAL               : D E C I M A L;
+DECODE                : D E C O D E;
 DELETE                : D E L E T E;
 DESC                  : D E S C;
 DETAIL                : D E T A I L;
+DIGITS                : D I G I T S ;
 DISTINCT              : D I S T I N C T;
 DROP                  : D R O P;
+ELSE                  : E L S E;
+END                   : E N D;
 ESCAPE                : E S C A P E;
 EXCEPT                : E X C E P T;
+EXISTS                : E X I S T S;
 EXPLAIN               : E X P L A I N;
+EXTRACT               : E X T R A C T;
 SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;
+FLOAT                 : F L O A T;
 FOR                   : F O R;
 FORMAT                : F O R M A T;
 FULL                  : F U L L;
 FROM                  : F R O M;
 GROUP                 : G R O U P;
+HASH                  : H A S H;
 HASHKEY               : H A S H K E Y;
 HAVING                : H A V I N G;
+HOUR                  : H O U R;
+HOURS                 : H O U R S;
+IF                    : I F;
+IFNULL                : I F N U L L;
 IN                    : I N;
 INDEX                 : I N D E X;
 INNER                 : I N N E R;
 INSERT                : I N S E R T;
+INTEGER               : I N T E G E R;
 INTERSECT             : I N T E R S E C T;
+INTERVAL              : I N T E R V A L;
 INTO                  : I N T O;
 IS                    : I S;
 JOIN                  : J O I N;
@@ -533,15 +563,21 @@ LEADING               : L E A D I N G;
 LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
+LOOP                  : L O O P;
 MAX                   : M A X;
 MIN                   : M I N;
+MINUTE                : M I N U T E;
+MINUTES               : M I N U T E S;
 MONOTONIC             : M O N O T O N I C;
+MONTH                 : M O N T H;
+MONTHS                : M O N T H S;
 NATURAL               : N A T U R A L;
 NO                    : N O;
 NODE                  : N O D E;
 NOT                   : N O T;
 NOW                   : N O W;
 SQL_NULL              : N U L L;
+NULLIF                : N U L L I F;
 OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;
@@ -551,108 +587,63 @@ OVER                  : O V E R;
 OVERLAY               : O V E R L A Y;
 PARTITION             : P A R T I T I O N;
 PLACING               : P L A C I N G;
+POSITION              : P O S I T I O N;
 PRETTY                : P R E T T Y;
 PRIMARY               : P R I M A R Y;
+QUARTER               : Q U A R T E R;
+QUARTERS              : Q U A R T E R S;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
 RIGHT                 : R I G H T;
 ROW                   : R O W;
 SCHEMA                : S C H E M A;
+SECOND                : S E C O N D;
+SECONDS               : S E C O N D S;
 SELECT                : S E L E C T;
-SEMI                  : S E M I;      // Reserved, to allow for specifying a semi join
+SEMI                  : S E M I;
 SET                   : S E T;
+SKIPLIST              : S K I P L I S T;
 STAGE                 : S T A G E;
 STATS                 : S T A T S;
 STATISTICS            : S T A T I S T I C S;
+SUBSTR                : S U B S T R;
+SUBSTRING             : S U B S T R I N G;
 SUM                   : S U M;
 TABLE                 : T A B L E;
+TEXT                  : T E X T;
+THEN                  : T H E N;
+TIME                  : T I M E;
+TIMESTAMP             : T I M E S T A M P;
 TO                    : T O;
 TOP                   : T O P;
+TREE                  : T R E E;
+TRIM                  : T R I M;
 TRAILING              : T R A I L I N G;
 TRUNCATE              : T R U N C A T E;
 SQL_TRUE              : T R U E;
 TYPE                  : T Y P E;
+TYPEOF                : T Y P E O F;
 UNION                 : U N I O N;
 UNIQUE                : U N I Q U E;
 UPDATE                : U P D A T E;
 USING                 : U S I N G;
+VALUE                 : V A L U E;
 VALUES                : V A L U E S ;
+VARBINARY             : V A R B I N A R Y;
+VARCHAR               : V A R C H A R;
+VARYING               : V A R Y I N G;
+WEEK                  : W E E K;
+WEEKS                 : W E E K S;
+WHEN                  : W H E N;
 WHERE                 : W H E R E;
 WITH_NAMES            : W I T H '_' N A M E S;
 WITH_TYPES            : W I T H '_' T Y P E S;
 WITH                  : W I T H;
 XOR                   : X O R;
-
-BOOLEAN               : B O O L E A N;
-INTEGER               : I N T E G E R;
-DECIMAL               : D E C I M A L;
-FLOAT                 : F L O A T;
-TIME                  : T I M E;
-TIMESTAMP             : T I M E S T A M P;
-INTERVAL              : I N T E R V A L;
-CHAR                  : C H A R;
-CHARACTER             : C H A R A C T E R;
-VARCHAR               : V A R C H A R;
-TEXT                  : T E X T;
-BINARY                : B I N A R Y;
-VARBINARY             : V A R B I N A R Y;
-BLOB                  : B L O B;
-VARYING               : V A R Y I N G;
-BIT                   : B I T;
-BITS                  : B I T S;
-BYTE                  : B Y T E;
-BYTES                 : B Y T E S;
-CHARS                 : C H A R S;
-//DIGIT                 : D I G I T ;
-DIGITS                : D I G I T S ;
-
-CASE                  : C A S E;
-CAST                  : C A S T;
-COALESCE              : C O A L E S C E;
-CONCAT                : C O N C A T;
-COUNT                 : C O U N T;
-DECODE                : D E C O D E;
-EXTRACT               : E X T R A C T;
-EXISTS                : E X I S T S;
-IF                    : I F;
-IFNULL                : I F N U L L;
-NULLIF                : N U L L I F;
-POSITION              : P O S I T I O N;
-SUBSTR                : S U B S T R;
-SUBSTRING             : S U B S T R I N G;
-TRIM                  : T R I M;
-TYPEOF                : T Y P E O F;
-
-WHEN                  : W H E N;
-THEN                  : T H E N;
-ELSE                  : E L S E;
-END                   : E N D;
-
-DAY                   : D A Y;
-DAYS                  : D A Y S;
-HOUR                  : H O U R;
-HOURS                 : H O U R S;
-MINUTE                : M I N U T E;
-MINUTES               : M I N U T E S;
-MONTH                 : M O N T H;
-MONTHS                : M O N T H S;
-QUARTER               : Q U A R T E R;
-QUARTERS              : Q U A R T E R S;
-SECOND                : S E C O N D;
-SECONDS               : S E C O N D S;
-WEEK                  : W E E K;
-WEEKS                 : W E E K S;
 YEAR                  : Y E A R;
 YEARS                 : Y E A R S;
 
-BLOCK                 : B L O C K;
-BLOOM                 : B L O O M;
-BTREE                 : B T R E E;
-HASH                  : H A S H;
-LOOP                  : L O O P;
-SKIPLIST              : S K I P L I S T;
-TREE                  : T R E E;
-VALUE                 : V A L U E;
+
 
 fragment A            : 'a' | 'A';
 fragment B            : 'b' | 'B';
