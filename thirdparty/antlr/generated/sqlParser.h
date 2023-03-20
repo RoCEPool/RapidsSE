@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -17,39 +17,39 @@ public:
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     ALL = 21, AND = 22, ANTI = 23, ANTLR = 24, ANY = 25, AS = 26, ASC = 27, 
-    AVG = 28, BETWEEN = 29, BOTH = 30, BY = 31, CATALOG = 32, COLLATE = 33, 
-    CORRESPONDING = 34, CREATE = 35, CROSS = 36, CURRENT_CATALOG = 37, CURRENT_SCHEMA = 38, 
-    CURRENT_TIMESTAMP = 39, CURRENT_USER = 40, DATA = 41, DATE = 42, DELETE = 43, 
-    DESC = 44, DETAIL = 45, DISTINCT = 46, DROP = 47, ESCAPE = 48, EXCEPT = 49, 
-    EXPLAIN = 50, SQL_FALSE = 51, FEDERATION = 52, FOR = 53, FORMAT = 54, 
-    FULL = 55, FROM = 56, GROUP = 57, HASHKEY = 58, HAVING = 59, IN = 60, 
-    INDEX = 61, INNER = 62, INSERT = 63, INTERSECT = 64, INTO = 65, IS = 66, 
-    JOIN = 67, KEY = 68, LEADING = 69, LEFT = 70, LIKE = 71, LIMIT = 72, 
-    MAX = 73, MIN = 74, MONOTONIC = 75, NATURAL = 76, NO = 77, NODE = 78, 
-    NOT = 79, NOW = 80, SQL_NULL = 81, OFFSET = 82, ON = 83, OR = 84, ORDER = 85, 
-    OUTER = 86, OVER = 87, OVERLAY = 88, PARTITION = 89, PLACING = 90, PRETTY = 91, 
-    PRIMARY = 92, RECURSIVE = 93, REFERENCE = 94, RIGHT = 95, ROW = 96, 
-    SCHEMA = 97, SELECT = 98, SEMI = 99, SET = 100, STAGE = 101, STATS = 102, 
-    STATISTICS = 103, SUM = 104, TABLE = 105, TO = 106, TOP = 107, TRAILING = 108, 
-    TRUNCATE = 109, SQL_TRUE = 110, TYPE = 111, UNION = 112, UNIQUE = 113, 
-    UPDATE = 114, USING = 115, VALUES = 116, WHERE = 117, WITH_NAMES = 118, 
-    WITH_TYPES = 119, WITH = 120, XOR = 121, BOOLEAN = 122, INTEGER = 123, 
-    DECIMAL = 124, FLOAT = 125, TIME = 126, TIMESTAMP = 127, INTERVAL = 128, 
-    CHAR = 129, CHARACTER = 130, VARCHAR = 131, TEXT = 132, BINARY = 133, 
-    VARBINARY = 134, BLOB = 135, VARYING = 136, BIT = 137, BITS = 138, BYTE = 139, 
-    BYTES = 140, CHARS = 141, DIGITS = 142, CASE = 143, CAST = 144, COALESCE = 145, 
-    CONCAT = 146, COUNT = 147, DECODE = 148, EXTRACT = 149, EXISTS = 150, 
-    IF = 151, IFNULL = 152, NULLIF = 153, POSITION = 154, SUBSTR = 155, 
-    SUBSTRING = 156, TRIM = 157, TYPEOF = 158, WHEN = 159, THEN = 160, ELSE = 161, 
-    END = 162, DAY = 163, DAYS = 164, HOUR = 165, HOURS = 166, MINUTE = 167, 
-    MINUTES = 168, MONTH = 169, MONTHS = 170, QUARTER = 171, QUARTERS = 172, 
-    SECOND = 173, SECONDS = 174, WEEK = 175, WEEKS = 176, YEAR = 177, YEARS = 178, 
-    BLOCK = 179, BLOOM = 180, BTREE = 181, HASH = 182, LOOP = 183, SKIPLIST = 184, 
-    TREE = 185, VALUE = 186, IDENTIFIER = 187, PLAIN_IDENTIFIER = 188, BAKTIKD_IDENTIFIER = 189, 
-    DUBLQUOTED_IDENTIFIER = 190, STRING_LITERAL = 191, SINGLQUOTED_STRING = 192, 
-    DUBLQUOTED_STRING = 193, FLOAT_LITERAL = 194, DECIMAL_LITERAL = 195, 
-    INTEGER_LITERAL = 196, HINT_START = 197, HINT_END = 198, SLASH_COMMENT = 199, 
-    SQL_COMMENT = 200, BLOCK_COMMENT = 201, WHITESPACE = 202
+    AVG = 28, BETWEEN = 29, BINARY = 30, BIT = 31, BITS = 32, BLOB = 33, 
+    BLOCK = 34, BLOOM = 35, BOTH = 36, BOOLEAN = 37, BTREE = 38, BY = 39, 
+    BYTE = 40, BYTES = 41, CASE = 42, CAST = 43, CATALOG = 44, CHAR = 45, 
+    CHARS = 46, CHARACTER = 47, COALESCE = 48, COLLATE = 49, CONCAT = 50, 
+    CORRESPONDING = 51, COUNT = 52, CREATE = 53, CROSS = 54, CURRENT_CATALOG = 55, 
+    CURRENT_SCHEMA = 56, CURRENT_TIMESTAMP = 57, CURRENT_USER = 58, DATA = 59, 
+    DATE = 60, DAY = 61, DAYS = 62, DECIMAL = 63, DECODE = 64, DELETE = 65, 
+    DESC = 66, DETAIL = 67, DIGITS = 68, DISTINCT = 69, DROP = 70, ELSE = 71, 
+    END = 72, ESCAPE = 73, EXCEPT = 74, EXISTS = 75, EXPLAIN = 76, EXTRACT = 77, 
+    SQL_FALSE = 78, FEDERATION = 79, FLOAT = 80, FOR = 81, FORMAT = 82, 
+    FULL = 83, FROM = 84, GROUP = 85, HASH = 86, HASHKEY = 87, HAVING = 88, 
+    HOUR = 89, HOURS = 90, IF = 91, IFNULL = 92, IN = 93, INDEX = 94, INNER = 95, 
+    INSERT = 96, INTEGER = 97, INTERSECT = 98, INTERVAL = 99, INTO = 100, 
+    IS = 101, JOIN = 102, KEY = 103, LEADING = 104, LEFT = 105, LIKE = 106, 
+    LIMIT = 107, LOOP = 108, MAX = 109, MIN = 110, MINUTE = 111, MINUTES = 112, 
+    MONOTONIC = 113, MONTH = 114, MONTHS = 115, NATURAL = 116, NO = 117, 
+    NODE = 118, NOT = 119, NOW = 120, SQL_NULL = 121, NULLIF = 122, OFFSET = 123, 
+    ON = 124, OR = 125, ORDER = 126, OUTER = 127, OVER = 128, OVERLAY = 129, 
+    PARTITION = 130, PLACING = 131, POSITION = 132, PRETTY = 133, PRIMARY = 134, 
+    QUARTER = 135, QUARTERS = 136, RECURSIVE = 137, REFERENCE = 138, RIGHT = 139, 
+    ROW = 140, SCHEMA = 141, SECOND = 142, SECONDS = 143, SELECT = 144, 
+    SEMI = 145, SET = 146, SKIPLIST = 147, STAGE = 148, STATS = 149, STATISTICS = 150, 
+    SUBSTR = 151, SUBSTRING = 152, SUM = 153, TABLE = 154, TEXT = 155, THEN = 156, 
+    TIME = 157, TIMESTAMP = 158, TO = 159, TOP = 160, TREE = 161, TRIM = 162, 
+    TRAILING = 163, TRUNCATE = 164, SQL_TRUE = 165, TYPE = 166, TYPEOF = 167, 
+    UNION = 168, UNIQUE = 169, UPDATE = 170, USING = 171, VALUE = 172, VALUES = 173, 
+    VARBINARY = 174, VARCHAR = 175, VARYING = 176, WEEK = 177, WEEKS = 178, 
+    WHEN = 179, WHERE = 180, WITH_NAMES = 181, WITH_TYPES = 182, WITH = 183, 
+    XOR = 184, YEAR = 185, YEARS = 186, IDENTIFIER = 187, PLAIN_IDENTIFIER = 188, 
+    BAKTIKD_IDENTIFIER = 189, DUBLQUOTED_IDENTIFIER = 190, STRING_LITERAL = 191, 
+    SINGLQUOTED_STRING = 192, DUBLQUOTED_STRING = 193, FLOAT_LITERAL = 194, 
+    DECIMAL_LITERAL = 195, INTEGER_LITERAL = 196, HINT_START = 197, HINT_END = 198, 
+    SLASH_COMMENT = 199, SQL_COMMENT = 200, BLOCK_COMMENT = 201, WHITESPACE = 202
   };
 
   enum {
@@ -2588,104 +2588,69 @@ public:
   public:
     NonReservedWordContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ANTI();
     antlr4::tree::TerminalNode *ANTLR();
     antlr4::tree::TerminalNode *ASC();
     antlr4::tree::TerminalNode *BIT();
     antlr4::tree::TerminalNode *BITS();
     antlr4::tree::TerminalNode *BLOCK();
     antlr4::tree::TerminalNode *BLOOM();
-    antlr4::tree::TerminalNode *BOTH();
     antlr4::tree::TerminalNode *BTREE();
-    antlr4::tree::TerminalNode *BY();
     antlr4::tree::TerminalNode *BYTE();
     antlr4::tree::TerminalNode *BYTES();
     antlr4::tree::TerminalNode *CATALOG();
     antlr4::tree::TerminalNode *CHARS();
-    antlr4::tree::TerminalNode *COALESCE();
     antlr4::tree::TerminalNode *CONCAT();
-    antlr4::tree::TerminalNode *CORRESPONDING();
-    antlr4::tree::TerminalNode *COUNT();
-    antlr4::tree::TerminalNode *CREATE();
-    antlr4::tree::TerminalNode *CURRENT_CATALOG();
-    antlr4::tree::TerminalNode *CURRENT_SCHEMA();
-    antlr4::tree::TerminalNode *CURRENT_TIMESTAMP();
-    antlr4::tree::TerminalNode *CURRENT_USER();
     antlr4::tree::TerminalNode *DATA();
-    antlr4::tree::TerminalNode *DATE();
     antlr4::tree::TerminalNode *DAYS();
     antlr4::tree::TerminalNode *DECODE();
-    antlr4::tree::TerminalNode *DELETE();
     antlr4::tree::TerminalNode *DESC();
     antlr4::tree::TerminalNode *DETAIL();
     antlr4::tree::TerminalNode *DIGITS();
-    antlr4::tree::TerminalNode *DROP();
-    antlr4::tree::TerminalNode *ESCAPE();
-    antlr4::tree::TerminalNode *EXCEPT();
     antlr4::tree::TerminalNode *EXPLAIN();
-    antlr4::tree::TerminalNode *EXTRACT();
+    antlr4::tree::TerminalNode *SQL_FALSE();
     antlr4::tree::TerminalNode *FEDERATION();
     antlr4::tree::TerminalNode *FORMAT();
     antlr4::tree::TerminalNode *HASH();
     antlr4::tree::TerminalNode *HASHKEY();
     antlr4::tree::TerminalNode *HOURS();
+    antlr4::tree::TerminalNode *IF();
     antlr4::tree::TerminalNode *IFNULL();
     antlr4::tree::TerminalNode *INDEX();
-    antlr4::tree::TerminalNode *INSERT();
-    antlr4::tree::TerminalNode *INTO();
-    antlr4::tree::TerminalNode *IS();
-    antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *KEY();
-    antlr4::tree::TerminalNode *LEFT();
+    antlr4::tree::TerminalNode *LIMIT();
     antlr4::tree::TerminalNode *LOOP();
     antlr4::tree::TerminalNode *MINUTES();
     antlr4::tree::TerminalNode *MONOTONIC();
     antlr4::tree::TerminalNode *MONTHS();
-    antlr4::tree::TerminalNode *NO();
     antlr4::tree::TerminalNode *NODE();
-    antlr4::tree::TerminalNode *NULLIF();
+    antlr4::tree::TerminalNode *NOW();
     antlr4::tree::TerminalNode *OFFSET();
-    antlr4::tree::TerminalNode *OUTER();
-    antlr4::tree::TerminalNode *OVERLAY();
-    antlr4::tree::TerminalNode *PARTITION();
-    antlr4::tree::TerminalNode *POSITION();
+    antlr4::tree::TerminalNode *PLACING();
     antlr4::tree::TerminalNode *PRETTY();
     antlr4::tree::TerminalNode *QUARTER();
     antlr4::tree::TerminalNode *QUARTERS();
     antlr4::tree::TerminalNode *REFERENCE();
-    antlr4::tree::TerminalNode *RIGHT();
     antlr4::tree::TerminalNode *SCHEMA();
     antlr4::tree::TerminalNode *SECONDS();
-    antlr4::tree::TerminalNode *SET();
+    antlr4::tree::TerminalNode *SEMI();
     antlr4::tree::TerminalNode *SKIPLIST();
     antlr4::tree::TerminalNode *STAGE();
     antlr4::tree::TerminalNode *STATS();
     antlr4::tree::TerminalNode *STATISTICS();
     antlr4::tree::TerminalNode *SUBSTR();
-    antlr4::tree::TerminalNode *SUBSTRING();
-    antlr4::tree::TerminalNode *TABLE();
-    antlr4::tree::TerminalNode *TIME();
+    antlr4::tree::TerminalNode *TEXT();
+    antlr4::tree::TerminalNode *TOP();
     antlr4::tree::TerminalNode *TREE();
+    antlr4::tree::TerminalNode *TRUNCATE();
     antlr4::tree::TerminalNode *TYPE();
-    antlr4::tree::TerminalNode *UNION();
-    antlr4::tree::TerminalNode *UNIQUE();
-    antlr4::tree::TerminalNode *UPDATE();
-    antlr4::tree::TerminalNode *USING();
-    antlr4::tree::TerminalNode *VALUE();
-    antlr4::tree::TerminalNode *VALUES();
-    antlr4::tree::TerminalNode *VARYING();
+    antlr4::tree::TerminalNode *TYPEOF();
     antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *WEEKS();
     antlr4::tree::TerminalNode *WITH_NAMES();
+    antlr4::tree::TerminalNode *WITH_TYPES();
+    antlr4::tree::TerminalNode *XOR();
     antlr4::tree::TerminalNode *YEARS();
-    antlr4::tree::TerminalNode *INTEGER();
-    antlr4::tree::TerminalNode *DECIMAL();
-    antlr4::tree::TerminalNode *FLOAT();
-    antlr4::tree::TerminalNode *TIMESTAMP();
-    antlr4::tree::TerminalNode *CHARACTER();
-    antlr4::tree::TerminalNode *CHAR();
-    antlr4::tree::TerminalNode *BOOLEAN();
-    antlr4::tree::TerminalNode *BINARY();
-    antlr4::tree::TerminalNode *VARBINARY();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
