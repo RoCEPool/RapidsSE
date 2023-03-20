@@ -87,11 +87,11 @@ The RapidsSE dependencies can be installed with the following command:
 
   On CentOS 7, CentOS Stream 8 & 9, Red Hat Enterprise Linux 8:
 
-  ``sudo yum install bash gcc libatomic tar nmap-ncat iproute bc python3 gawk ncurses``
+  ``sudo yum install bash gcc libatomic tar nmap-ncat iproute bc python3 gawk ncurses parallel``
 
   On Ubuntu 18, 20 & 22:
 
-  ``sudo apt install bash gcc libatomic1 tar netcat iproute2 bc python3 gawk ncurses-bin``
+  ``sudo apt install bash gcc libatomic1 tar netcat iproute2 bc python3 gawk ncurses-bin parallel``
 
 
 Recommended Requirements

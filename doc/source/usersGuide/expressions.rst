@@ -207,8 +207,16 @@ The exponent is always separated from the mantissa by an ``e`` or ``E``
 (case insensitive). This may be followed by a ``-`` or ``+`` before the
 exponent value is included.
 
+Typically a ``FLOAT`` is displayed with one digit to the left of a decimal
+point and the remaining digits to the right of the decimal point, however
+``FLOAT`` literals do not need to be specified that way. It is the presence
+of the ``e`` or ``E`` and an exponent value (even if the exponent is zero)
+that distinguishes a ``FLOAT`` from other numeric types.
+
 Examples of ``FLOAT`` literals (with values similar to the ``DECIMAL``
 examples previously shown) include:
+
+  ``1.2345e2``
 
   ``12345.e-2``
 
@@ -231,7 +239,74 @@ or ``-24``. There is no fractional component or exponent.
 
 .. rubric:: ``INTERVAL``
 
-RapidsSE does not currently support interval types.
+An ``INTERVAL`` is represented in the form:
+
+.. code:: sql
+
+   INTERVAL '<value>' <interval_type>
+
+Where ``<interval_type>`` is one of:
+
+.. code:: sql
+
+   ``YEAR``
+   ``MONTH``
+   ``YEAR TO MONTH``
+   ``DAY``
+   ``HOUR``
+   ``MINUTE``
+   ``SECOND``
+   ``DAY TO HOUR``
+   ``DAY TO MINUTE``
+   ``DAY TO SECOND``
+   ``HOUR TO MINUTE``
+   ``HOUR TO SECOND``
+   ``MINUTE TO SECOND``
+
+And ``<value>`` is enclosed in single quotes and fits one of the following formats
+below (the enclosing quotes are also shown). Any ``<seconds>`` field includes
+optional fractional seconds up to 6 decimal places.
+
+  | ``'<years>'``
+  | ``'<months>'``
+  | ``'<years>-<months>'``
+  | ``'<days>'``
+  | ``'<hours>'``
+  | ``'<minutes>'``
+  | ``'<seconds>'``
+  | ``'<days> <hours>'``
+  | ``'<days> <hours>:<minutes>'``
+  | ``'<days> <hours>:<minutes>:<seconds>'``
+  | ``'<hours>:<minutes>'``
+  | ``'<hours>:<minutes>:<seconds>'``
+  | ``'<minutes>:<seconds>'``
+
+Examples of interval literals include:
+
+.. code:: sql
+
+   INTERVAL '1' YEAR
+   INTERVAL '2' MONTH
+   INTERVAL '1-2' YEAR TO MONTH
+   INTERVAL '3' DAY
+   INTERVAL '4' HOUR
+   INTERVAL '5' MIN
+   INTERVAL '6' SECOND
+   INTERVAL '6.789012' SECOND
+   INTERVAL '3 4' DAY TO HOUR
+   INTERVAL '3 4:5' DAY TO MINUTE
+   INTERVAL '3 4:5:6' DAY TO SECOND
+   INTERVAL '3 4:5:6.789012' DAY TO SECOND
+   INTERVAL '4:5' HOUR TO MINUTE
+   INTERVAL '4:5:6.789012' HOUR TO SECOND
+   INTERVAL '5:6.789012' MINUTE TO SECOND
+
+A negative interval value can be represented by placing the minus sign (``-``)
+immediately before the opening single quote. For example:
+
+.. code:: sql
+
+   INTERVAL -'1 2:3:4' DAY TO SECOND
 
 
 .. index::
@@ -243,12 +318,20 @@ A ``TIME`` literal is represented in the form:
 
 .. code:: sql
 
-   TIME 'hh:mm:ss'
+   TIME 'hh:mm:ss[.ffffff]'
 
-where ``hh`` represents the hour in 2 digit 24 hour representation, ``mm``
-represents the minutes in 2 digits, and ``ss`` represents the whole in 2
-digits. The ``TIME`` keyword and a space must appear before the first
+where the square brackets represent an optional part. In this definition
+``hh`` represents the hour in 2 digit 24 hour representation, ``mm``
+represents the minutes in 2 digits, ``ss`` represents whole seconds in 2
+digits, and ``.ffffff`` represents an optional decimal point followed by up to 6
+decimal places of fractional seconds.
+The ``TIME`` keyword and a space must appear before the first
 single quote so that RapidsSE does not interpret the value as a string.
+
+.. note::
+   If trying to return a ``TIME`` value through a JDBC driver the fractional
+   seconds will be truncated. This is because the JDBC standard does not support
+   TIME values with fractional seconds.
 
 
 .. index::
@@ -263,6 +346,8 @@ A ``TIMESTAMP`` literal is represented in the form:
    TIMESTAMP 'yyyy-mm-dd hh:mm:ss[.ffffff]'
 
 where:
+  ``[`` and ``]`` represent an optionality of the enclosing content
+
   ``yyyy`` represents the year in 4 digits,
 
   ``mm`` represents the month in 2 digits,
@@ -273,7 +358,7 @@ where:
 
   ``mm`` represents the minutes in 2 digits,
 
-  ``ss`` represents the whole in 2 digits, and
+  ``ss`` represents whole seconds in 2 digits, and
 
   ``ffffff`` represents the optional fractional microseconds. The decimal
   point and fractional component can be left off entirely.
@@ -855,8 +940,7 @@ receives. The ``COUNT(<expr>)`` form will only count the number of rows where
 
 The ``MIN`` and ``MAX`` aggregates work on a variety of data types, including
 numerics (``INTEGER``, ``DECIMAL`` and ``FLOAT``), datetimes (``DATE``, ``TIME``,
-``TIMESTAMP`` and intervals when supported) and string types (``CHAR`` and
-``VARCHAR``).
+``TIMESTAMP``) and string types (``CHAR`` and ``VARCHAR``).
 
 The ``SUM`` aggregate works on numeric data types and the returned data type
 is the same as the input data type. For example a ``SUM`` of a decimal

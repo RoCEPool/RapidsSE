@@ -4,10 +4,13 @@
 
 .. _syntaxTree:
 
-Syntax Tree
-===========
+Complete Syntax Tree
+====================
 
 The diagrams below represent the full syntax accepted by RapidsSE commands.
+Unlike the previous section, these are not grouped in any particular way.
+For a simplified set of the main syntax definitions for a given command
+please refer to the previous section :ref:`commandList`.
 
 .. only:: html
 

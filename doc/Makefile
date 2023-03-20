@@ -16,6 +16,7 @@ RR_HTML_FRAG     = source/cmdRef/rr.html.fragment
 RR_HTML_FRAG_GEN = source/cmdRef/rrHtmlFragGen.sh
 RR_PDF_FRAG      = source/cmdRef/rr.rst.fragment
 RR_PDF_FRAG_GEN  = source/cmdRef/rrPdfFragGen.sh
+RR_COMMON_ARGS   = -suppressebnf -nofactoring -noinline -color:\#FFE270 -offset:166 -width:750
 
 # Let's work out what OS we are on
 UNAME_S := $(shell uname -s)
@@ -106,7 +107,7 @@ $(RR_PDF_FRAG) : $(RR_INDEX_HTML) $(RR_PDF_FRAG_GEN)
 $(RR_INDEX_XHTML): $(RR_GRAMMAR)
 	@# Now build the version with svg images so we can just include the xhtml file
 	@echo "Building Command Reference railroad diagrams (SVG)"
-	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -width:700  -out:$(RR_INDEX_XHTML) "$(RR_GRAMMAR)"
+	@java -jar tools/rr/rr.war $(RR_COMMON_ARGS) -out:$(RR_INDEX_XHTML) "$(RR_GRAMMAR)"
 	@echo "Command Reference railroad diagrams (SVG) created at: $(RR_OUTPUT_DIR)"
 
 # Rule to generate the PDF railroad diagrams
@@ -114,7 +115,7 @@ $(RR_INDEX_HTML): $(RR_GRAMMAR)
 	@echo "Building Command Reference railroad diagrams (PNG)"
 	@mkdir -p "$(RR_OUTPUT_DIR)"
 	@# First build the one with png files so the documentation can include them
-	@java -jar tools/rr/rr.war -suppressebnf -nofactoring -noinline -color:#FFE270 -offset:166 -png -width:700 -out:$(RR_ZIPFILE) "$(RR_GRAMMAR)"
+	@java -jar tools/rr/rr.war $(RR_COMMON_ARGS) -png -out:$(RR_ZIPFILE) "$(RR_GRAMMAR)"
 	@unzip -o -d "$(RR_OUTPUT_DIR)" "$(RR_ZIPFILE)" > /dev/null
 	@rm -f "$(RR_ZIPFILE)"
 	@echo "Command Reference railroad diagrams (PNG) created at: $(RR_OUTPUT_DIR)"

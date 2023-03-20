@@ -47,7 +47,6 @@ html_theme_options = {
   'show_powered_by' : 'False',
   'show_relbars'    : 'True',
   'logo'            : 'logo200px.png',
-  'extra_nav_links' : {'Index': 'genindex.html'},
 }
 
 
@@ -70,7 +69,10 @@ latex_elements = {
   'papersize': 'a4paper',
 #  'extraclassoptions': 'openany,oneside',       # remove blank pages after title, TOC and end of chapers
   'fncychap': '\\usepackage[Rejne]{fncychap}',  # Nicer chapter headings
+
+  # Number headings below 3
   'preamble': r'''
+  \setcounter{secnumdepth}{5}
   ''',
 }
 

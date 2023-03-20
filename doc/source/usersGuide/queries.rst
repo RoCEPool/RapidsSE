@@ -792,9 +792,9 @@ less than the department average. The subquery is used in the ``JOIN`` clause.
   )
   SELECT name, salary
   FROM employees
-  JOIN average_salary_per_dept
+  JOIN deptSalaryAvg
   USING departmentId
-  WHERE employees.salary < dept_salary_avg.avgSalary ;
+  WHERE employees.salary < deptSalaryAvg.avgSalary ;
 
 The query below shows an example of defining a subquery in a ``FROM`` clause.
 This example uses the subquery to select the top 10 employees with the

@@ -1137,15 +1137,17 @@ if [ -d "${dirPath}" ]; then
   fi
 else
   isWritable=0
-  dname="${dirPath}"
+  dname="\$(dirname "${dirPath}")"
 
-  while [ "\${dname}" != "/"  ]; do
-    if [[ -d "\${dname}" && -w "\${dname}" ]]; then
-      isWritable=1
+  while true; do
+    if [ -d "\${dname}" ]; then
+      if [ -w "\${dname}" ]; then
+        isWritable=1
+      fi
       break
     fi
 
-    if [ "\$(dirname "\${dname}")" = "/" ]; then
+    if [ "\${dname}" = "/" ]; then
       break;
     fi
 
@@ -1373,15 +1375,17 @@ function validateInstallDirIsWritable() {
 				fi
 			else
         isWritable=0
-        dname="${dir}"
+        dname="\$(dirname "${dir}")"
 
-        while [ "\${dname}" != "/"  ]; do
-          if [[ -d "\${dname}" && -w "\${dname}" ]]; then
-            isWritable=1
+        while true; do
+          if [ -d "\${dname}" ]; then
+            if [ -w "\${dname}" ]; then
+              isWritable=1
+            fi
             break
           fi
 
-          if [ "\$(dirname "\${dname}")" = "/" ]; then
+          if [ "\${dname}" = "/" ]; then
             break;
           fi
 

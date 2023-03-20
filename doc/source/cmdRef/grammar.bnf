@@ -78,7 +78,7 @@ explainRangeChoice::= '*'
 /*---------------------------------------------------------------------------*/
 /* SELECT STATEMENT                                                          */
 /*---------------------------------------------------------------------------*/
-selectQuery       ::= queryHint*
+selectQuery       ::= /*queryHint* */
                       ( 'WITH' withQuery ( ',' withQuery )* )?
                       setExpr
                       ( 'ORDER BY' orderByList )?
@@ -99,9 +99,9 @@ selectExpr        ::= (
                       )
                     | '(' selectExpr ')'
 
-queryHint         ::= '/*+' hint? ( ',' hint )* '*/'
-hint              ::= hintName ( '=' hintValue | '='? '(' hintValue ( ',' hintValue )* ')' )?
-
+// queryHint         ::= '/*+' hint? ( ',' hint )* '*/'
+//hint              ::= hintName ( '=' hintValue | '='? '(' hintValue ( ',' hintValue )* ')' )?
+//
 corrClause        ::= 'CORRESPONDING' ( 'BY' '(' identifierList ')' )?
 withQuery         ::= tableName colAliases? 'AS' '(' selectQuery ')'
 
@@ -159,7 +159,7 @@ expr              ::= '(' expr ')'
                     | expr 'IS' 'NOT'? 'NULL'
                     | expr 'NOT'? 'LIKE' expr ( 'ESCAPE' expr )?
                     | 'NOT'? 'EXISTS' '(' selectQuery ')'
-                    | expr 'NOT'? 'IN' '(' ( selectQuery | expr ( ',' expr )* )? ')'
+                    | expr 'NOT'? 'IN' '(' ( selectQuery | expr ( ',' expr )* ) ')'
                     | expr 'NOT'? 'BETWEEN' expr 'AND' expr
                     | expr ('NOT' | 'AND' | 'XOR' | 'OR' ) expr
                     | '(' selectQuery ')'
@@ -182,8 +182,8 @@ tableAlias        ::= identifier
 columnName        ::= identifier
 /* collationName     ::= identifier */
 indexName         ::= identifier
-hintName          ::= identifier
-hintValue         ::= simpleLiteral | identifier /* | expr */
+//hintName          ::= identifier
+//hintValue         ::= simpleLiteral | identifier /* | expr */
 precision         ::= integerLiteral
 scale             ::= integerLiteral
 size              ::= integerLiteral
@@ -195,16 +195,16 @@ literal           ::= 'NULL'
                     | signedFloatLiteral
                     | dateLiteral
                     | timeLiteral
-                    | stringLiteral
+                    | singleQuotedString
                     | timestampLiteral
-/*                  | intervalLiteral */
+                    | intervalLiteral
 
 simpleLiteral     ::= 'NULL'
                     | booleanLiteral
                     | signedIntegerLiteral
                     | signedDecimalLiteral
                     | signedFloatLiteral
-                    | stringLiteral
+                    | singleQuotedString
 
 booleanLiteral    ::= 'TRUE'
                     | 'FALSE'
@@ -216,26 +216,26 @@ signedDecimalLiteral
                   ::= ( '+' | '-' )? decimalLiteral
 floatLiteral      ::= ( decimalLiteral | digit+ ) ( 'e' | 'E' ) ( '+' | '-' )? digit+
 signedFloatLiteral::= ( '+' | '-' )? floatLiteral
-dateLiteral       ::= 'DATE' stringLiteral
-timeLiteral       ::= 'TIME' stringLiteral
-timestampLiteral  ::= 'TIMESTAMP' stringLiteral
+dateLiteral       ::= 'DATE' singleQuotedString
+timeLiteral       ::= 'TIME' singleQuotedString
+timestampLiteral  ::= 'TIMESTAMP' singleQuotedString
 stringLiteral     ::= singleQuotedString | doubleQuotedString
 
-/*
+
 intervalLiteral   ::= sql92CalendarIntervalLiteral
                     | sql92TimeIntervalLiteral
 
 sql92CalendarIntervalLiteral
-                  ::= 'INTERVAL' stringLiteral
-                      ( 'YEAR' ( '(' precision ')' )? ( 'TO' 'MONTH' )?
-                      | 'MONTH' ( '(' precision ')' )? )
+                  ::= 'INTERVAL' ( '+' | '-' )? singleQuotedString
+                      ( 'YEAR' ( 'TO' 'MONTH' )?
+                      | 'MONTH' )
 sql92TimeIntervalLiteral
-                  ::= 'INTERVAL' stringLiteral
-                      ( 'DAY' ( '(' precision ')' )? ( 'TO' ( 'HOUR' | 'MINUTE' | 'SECOND' ( '(' scale ')' )? ) )?
-                      | 'HOUR' ( '(' precision ')' )? ( 'TO' ( 'MINUTE' | 'SECOND' ( '(' scale ')' )? ) )?
-                      | 'MINUTE' ( '(' precision ')' )? ( 'TO' 'SECOND' ( '(' scale ')' )? )?
-                      | 'SECOND' ( '(' precision ( ',' scale )? ')' )? )
-*/
+                  ::= 'INTERVAL' ( '+' | '-' )? singleQuotedString
+                      ( 'DAY'  ( 'TO' ( 'HOUR' | 'MINUTE' | 'SECOND' ) )?
+                      | 'HOUR'  ( 'TO' ( 'MINUTE' | 'SECOND' ) )?
+                      | 'MINUTE'  ( 'TO' 'SECOND' )?
+                      | 'SECOND' ')' )
+
 
 /*---------------------------------------------------------------------------*/
 /* Other Statements                                                          */
@@ -300,6 +300,14 @@ dataType          ::= 'BOOLEAN'
                     | 'TIMESTAMP'
                     | ( 'CHAR' | 'CHARACTER' ) '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' /*( 'COLLATE' collationName )?*/
                     | ( ( /*( 'CHAR' | 'CHARACTER' ) 'VARYING'? |*/ 'VARCHAR' ) ( '(' size /*( 'BYTE' | 'BYTES' | 'CHAR' | 'CHARS' )?*/ ')' )? ) /*( 'COLLATE' collationName )?*/
+                    | 'INTERVAL' (
+                          'YEAR' ('TO' 'MONTH')?
+                        | 'MONTH'
+                        | 'DAY' ('TO' 'HOUR' | 'TO' 'MINUTE' | 'TO' 'SECOND')?
+                        | 'HOUR' ('TO' 'MINUTE' | 'TO' 'SECOND')?
+                        | 'MINUTE' ('TO' 'SECOND')?
+                        | 'SECOND'
+                      )
 /*                  | 'BINARY' '(' size ( 'BYTE' | 'BYTES' )? ')'   */
 /*                  | 'VARBINARY' ( '(' size ( 'BYTE' | 'BYTES' )? ')' )?  */
 /*                  | 'BLOB' */
