@@ -49,6 +49,23 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Project* Card_Project::pNew_project(Card_Projection *p_projection)
+{
+  _static_
+
+  Card_Project* p_project = new Card_Project(CK_PROJECT);
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  p_project->vAppend(p_level);
+
+  p_project->vAppend(p_projection);
+
+  return p_project;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Project::vUnproject_foldExpr(CardIter* pCI)
 {
   _static_

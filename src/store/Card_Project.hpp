@@ -18,9 +18,10 @@ namespace STORE
     Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
 
-   static void vUnproject_foldExpr(CardIter* pCI);
+    static void vUnproject_foldExpr(CardIter* pCI);
     static void vUnproject_foldExpr(CardIter* pCI,
                                     CarryForward* pCarryForward);
+    static Card_Project* pNew_project(Card_Projection* p_prjection);
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype

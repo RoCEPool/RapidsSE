@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  //vEarly_project();
+  vEarly_project();
 }
 
 
@@ -480,6 +480,14 @@ void ApplyOptimisations::vEarly_project(void)
 
       case CK_ORDAGG:
         m_pCI->G.p_ordAgg->vEarly_project(m_pCI);
+
+        m_pCI->G.p_project = Card_Project::pNew_project(m_pCI->EarlyProject.m_pProjection_carry);
+        m_pCI->G.pDeck->vInsertBefore(m_pCI->G.p_project,m_pCI->G.p_ordAgg);
+        m_pCI->EarlyProject.m_pProjection_carry = nullptr;
+        m_pCI->vPrintBoard();
+
+        m_pCI->vRemoveChild(m_pCI->G.p_project);
+        DELETE_CARD(m_pCI->G.p_project);
         break;
 
         // -- -- -- -- -- -- --

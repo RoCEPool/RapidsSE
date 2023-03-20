@@ -223,45 +223,39 @@ Card_Projection* Card_Projection::pToCarry_v2(CardIter* pCI, Card_Key* p_key)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) make a copy of the key
+
   Card_Projection* p_projection_carry = new Card_Projection;
 
-  i8 nKeyExpr = p_key->nChildCards();
-  for (i8 i_KeyExpr = 0; i_KeyExpr < nKeyExpr; i_KeyExpr++) {
-    Card_Expr *p_expr_key = p_key->pGetExpr(i_KeyExpr);
-
-    Card_Expr *p_expr_carry = p_expr_key->pToCarry_key();
-
+  CardIter xCI_key(p_key);
+  while (xCI_key.G_bEachMain(CK_EXPR)) {
+    Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToCarry_key();
     p_projection_carry->vAppend(p_expr_carry);
   }
 
   p_projection_carry->vRenumberAllExpr();
-  p_projection_carry->vDump();
+  //p_projection_carry->vDump();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) append the referenced col's of this projection
-  i8 nPrjExpr = nChildCards();
-  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
-    Card *pChild = pGetChild(i_PrjExpr);
-    if (! pChild->bIsCard(CK_EXPR))
-      break;
 
-    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
+  CardIter xCI_projection(this);
+  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
 
-    if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
-      i8 nRpnTerm = p_rpnCalc->nChildCards();
-      for (i8 i_RpnTerm = 0; i_RpnTerm < nRpnTerm; i_RpnTerm++) {
-        Card_Term *p_term_rpn = p_rpnCalc->pGetTerm(i_RpnTerm);
+    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
+    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+        if (! xCI_rpnCalc.G.p_term->bIsColOdn())
+          continue;
+        if (p_projection_carry->pFind_expr_By_projectedCol(pCI, xCI_rpnCalc.G.p_term->szValue()))
+          continue;
 
-        if (p_term_rpn->bIsColOdn()) {
-          if (!p_projection_carry->pFind_expr_By_projectedCol(pCI, p_term_rpn->szValue()))
-            if (Card_Expr *p_expr_col = p_term_rpn->pExpr_For_col(pCI))
-              p_projection_carry->vAppend(p_expr_col->pDupCardAndSubCards());
-        }
-      }
+        if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))
+           p_projection_carry->vAppend(p_expr_col->pDupCardAndSubCards());
     }
   }
   p_projection_carry->vRenumberAllExpr();
-  p_projection_carry->vDump();
+  //p_projection_carry->vDump();
 
   return p_projection_carry;
 }
