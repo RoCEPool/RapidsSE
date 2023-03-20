@@ -26,26 +26,6 @@
 
 #include "CodeSynthUtils.hpp"
 
-ShapeRef xaShapeRef_V2[]
-{
-  { "none"_Stz         }, // LS_NONE
-  { "LS_INFLATE_T"_Stz }, // LS_INFLATE_T
-  { "LS_FILTER_T"_Stz  }, // LS_FILTER_T
-  { "LS_PROJECT_T"_Stz }, // LS_PROJECT_T
-  { "LS_JOIN_KEY"_Stz  }, // LS_JOIN_KEY
-  { "LS_JOIN"_Stz      }, // LS_JOIN
-  { "LS_INFLATE_J"_Stz }, // LS_INFLATE_J
-  { "LS_PROJECT_J"_Stz }, // LS_PROJECT_J
-  { "LS_AGG_KEY"_Stz   }, // LS_AGG_KEY
-  { "LS_AGG"_Stz       }, // LS_AGG
-  { "LS_fetch"_Stz     }, // LS_fetch
-  { "LS_PROJECT_H"_Stz }, // LS_PROJECT_H
-  { "LS_FILTER_H"_Stz  }, // LS_FILTER_H
-  { "LS_OUT_H"_Stz     }, // LS_OUT_H
-  
-  { nullptr            },
-};
-
 extern CmdLineArgs       gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
@@ -568,7 +548,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  OpSketch* pShape;
+  OpSketch* pOpSketch;
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil_v2 = SR_NONE;
@@ -625,9 +605,9 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code) if not already inflated
-    if ( ! bInflateGenerated ) {
+    if (!bInflateGenerated) {
 
-      RASSERT( ! m_xStageOps.m_bIndexScan );
+      RASSERT(!m_xStageOps.m_bIndexScan);
 
       if (m_xStageOps.m_bScan) {
 
@@ -641,160 +621,21 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
         m_pShapeROW = pSketchInflateRow(pStream, pOp);
 
         m_bRowBuffer = true;
-      }
-      else {
+      } else {
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSetupScan(pCombined, pStream, pOp);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupScan(pCombined, pStream, pOp);
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          m_pShapeROW = pSketchInflateRow(pStream, pOp);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        m_pShapeROW = pSketchInflateRow(pStream, pOp);
 
-          m_bRowBuffer = true;
+        m_bRowBuffer = true;
       }
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOp
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
-
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupAggreg(pCombined, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchProjectGby(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-      vAppend(pShape);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupEosPayload(pCombined, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosProjectGby(pCombined, pStream, pOp);
-      m_xStageOps.m_bGeneratePotTub = false;
-
-      ePrevStencil_v2 = SR_AT;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the filterOP
-    if (pOp->szOpNm()->bSame("filter"_Stz)) {
-
-      Op *pPrevOp = pStream->pGet(i_Op - 1);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      if ( ! pPrevOp->szOpNm()->bSame("aggreg"_Stz) ) {
-        pShape = pSketchFilter(pStream, pOp, ePrevStencil_v2, sLabelLoop);
-        vAppend(pShape);
-      }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the hashOP
-    if (pOp->szOpNm()->bSame("hash"_Stz)) {
-
-      if (m_xStageOps.m_bPayloadOp)
-        continue;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchLabel(pCombined, pStream, pOp);
-      vAppend(pShape);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the indexJoinOp
-    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupIndexJoin(pCombined, pStream, pOp);
-
-      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchIndexJoin(pCombined, pStream, pOp, ePrevStencil_v2, sLabel);
-      vAppend(pShape);
-
-      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
-      ePrevStencil_v2 = SR_TJ;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the keyExistsOP
-    if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupKeyExists(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil_v2, /* exists*/ true);
-      vAppend(pShape);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the keyNotExistsOP
-    if (pOp->szOpNm()->bSame("keyNotExists"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupKeyExists(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil_v2, /* exists*/ false);
-      vAppend(pShape);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the limitOP
-    if (pOp->szOpNm()->bSame("limit"_Stz)) {
-
-      pCombined->aCombinedT()->m_iLimitRows = 1;
-
-      // limit after a payload will move to EOSHandler
-      if (m_xStageOps.m_bPayloadOp) {
-        continue;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchLimit(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-      vAppend(pShape);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the orderByOp
-    if (pOp->szOpNm()->bSame("sort"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupSort(pCombined, pStream, pOp);
-
-      if (m_xStageOps.m_pPostProjectOp) {
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-        vAppend(pShape);
-
-      }
-      else {
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-        vAppend(pShape);
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupEosPayload(pCombined, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosSort(pCombined, pStream, pOp);
-      m_xStageOps.m_bGeneratePotTub = false;
-
-      ePrevStencil_v2 = SR_AT;
-
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -803,7 +644,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // project after sort will move to the EOS marker
-      if ( ! m_xStageOps.m_pPostProjectOp ) {
+      if (!m_xStageOps.m_pPostProjectOp) {
 
         // get the aggregate type stack
         pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -817,124 +658,19 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
           vSetupProjectExp(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          pShape = pSketchPrjExp(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-          vAppend(pShape);
+          pOpSketch = pSketchProject(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
+          vAppend(pOpSketch);
 
           ePrevStencil_v2 = SR_PT;
-        } else {
 
-          RASSERT(eExprKind == EK_AGGREG);
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSetupProjectAgg(pCombined, pStream, pOp);
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-          vAppend(pShape);
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSetupEosPayload(pCombined, pOp);
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSketchEosProjectAgg(pCombined, pStream, pOp, pShape->pCodeSynthA()->pInitStack());
-          m_xStageOps.m_bGeneratePotTub = false;
-
-          ePrevStencil_v2 = SR_AT;
+        }
+        else {
+          RASSERT(0);
         }
       }
 
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the ordAgg OP
-    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
-
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupOrdAgg(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-      vAppend(pShape);
-
-      sLabelOrdAgg.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-      sReturnLabel = "L_ReturnFinal"_Stz;
-      ePrevStencil_v2 = SR_AT;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the topOP
-    if (pOp->szOpNm()->bSame("top"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTop(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchTop(pCombined, pOp, ePrevStencil_v2, sLabelLoop);
-      vAppend(pShape);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupEosPayload(pCombined, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosTop(pCombined, pStream, pOp);
-      m_xStageOps.m_bGeneratePotTub = false;
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // synthesize code for allotting final tub row/ pot row
-  Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // synthesize code for allotting tub row
-
-  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  RASSERT(pStreamDefOut);
-
-  // get the row
-  RowPix* pRowPix = pStreamDefOut->pRowPix();
-
-  if (pCombined->aCombinedT()->m_iHashRows) {
-    pPot->vRowPix(pRowPix);
-  } else {
-    pTub->vRowPix(pRowPix);
-    pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
-  }
-
-  if (m_xStageOps.m_bGeneratePotTub) {
-
-    sLabel.vSprint("L_AddRowToTubPot"_Stz);
-
-    if (pCombined->aCombinedT()->m_iHashRows)
-      pShape = pSketchPot(pLastOp, ePrevStencil_v2, pPreExpStack, sLabel, sLabelLoop, sLabelOrdAgg);
-    else
-      pShape = pSketchTub(pLastOp, ePrevStencil_v2, pPreExpStack, sLabel, sLabelLoop, sLabelOrdAgg);
-
-    // add the shape to the stencil
-    vAppend(pShape);
-  }
-  else {
-    pShape = pSketchReturn();
-
-    // add the shape to the stencil
-    vAppend(pShape);
-  }
-
-  // generate empty func3 if we have already generated pot/tub
-  if ( m_xStageOps.m_bGeneratePotTub ) {
-
-    pCodeSynth = new CodeSynth_v2;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // append code for EOSMARKER handling
-    vAppendFuncEmpty(pCodeSynth, "EOSMARKER"_Stz, "iFun3"_Stz);
-
-    m_pShapeEOS->vCodeSynthA(pCodeSynth);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2384,7 +2120,7 @@ OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2392,7 +2128,6 @@ OpSketch* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pO
   s4K sLabelNext;
 
   i8 i_Op = pOp->i_Op();
-  CodeSynth_v2 *pCodeSynth;
 
   // get project expr from OP
   TagSet* pOpTags = pOp->pOpTags();
@@ -2402,36 +2137,24 @@ OpSketch* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pO
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  eEK eExprKind = pLogicUnit->m_eExprKind;
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
-  // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the streamDef
-  pCodeSynth = new CodeSynth_v2(pStreamDefOut, SR_PT);
-  pCodeSynth->vSynthStruct(0);
-  pShape->vStructSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the row projection
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_PT);
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(sProjectExpr, eExprKind, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
 
-  bool bSynthResult = pCodeSynth->bSynthPrjExp(sProjectExpr,
-                                                sLabel,
-                                                sLabelNext,
-                                                sLabelLoop);
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  RASSERT (bSynthResult);
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(pPreExpStack);
 
-  pShape->vCodeSynthA(pCodeSynth);
-
-  return pShape;
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/

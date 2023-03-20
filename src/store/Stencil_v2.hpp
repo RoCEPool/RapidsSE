@@ -136,6 +136,12 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
+
+    OpSketch* pSketchProject(Combined* pCombined, Stream* pStream, Op* pOp,
+                             eSR ePrevStencil_v2, Stz* sLabelLoop);
+
+
+
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack);
     void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -154,8 +160,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp,
-                                      eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchPot(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
