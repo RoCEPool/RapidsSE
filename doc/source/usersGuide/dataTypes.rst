@@ -259,8 +259,13 @@ already encompasses the ``MINUTE`` field of the second operand.
 Interval Constraints
 ````````````````````
 RapidsSE currently does not support use of an interval data type as a column
-in a ``CREATE TABLE`` statement. Intervals can be specified as literal values
-or they may be the result of an expression calculation instead.
+in a ``CREATE TABLE`` statement. This also means that they cannot be loaded
+from external data files with commands like ``LOAD`` or ``DLOAD``. Instead,
+intervals can be specified as literal values or they may be the result of an
+expression calculation instead.
+
+Interval expressions also currently cannot be used with aggregates (e.g. ``SUM``,
+``MIN``, ``MAX``, etc). This support will come in a later release.
 
 
 .. index::
@@ -436,10 +441,10 @@ operator. The supported explicit type conversions are listed below.
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``INTEGER``   |     ---     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     Yes          |     ---          |   ---    |      ---      |     ---     |
+   | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     |
    | ``D-T``       |             |          |          |             |           |             |                  |                  |          |               |             |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     Yes          |   ---    |      ---      |     ---     |
+   | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     |
    | ``Y-M``       |             |          |          |             |           |             |                  |                  |          |               |             |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``TIME``      |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |    Yes [2]_   |     Yes     |

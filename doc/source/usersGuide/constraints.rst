@@ -89,4 +89,11 @@ RapidsSE has several system limitations. These are documented below:
 13. **Interval columns**
 
     RapidsSE does not support ``INTERVAL`` columns in ``CREATE TABLE`` statements,
-    however intervals are supported as literals and in expression calculations.
+    however intervals are supported as literals and in expression calculations. This
+    constraint also means that intervals cannot be directly loaded with commands
+    like ``load`` and ``dload``.
+
+14. **Interval aggregates**
+
+    Aggregate expressions (``SUM``, ``MIN``, ``MAX``, etc) are not currently
+    supported on interval expressions.
