@@ -78,14 +78,19 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  pCI->vSave();
   Card_OP::vEarly_project_test(pCI);
+  pCI->vRestore();
 
   // todo: arrived back ...
 
-  Card_Project* p_project = new Card_Project(CK_PROJECT);
-  p_project->Y_vSet(P_Early);
+//  Card_Project* p_project = new Card_Project(CK_PROJECT);
+//  p_project->Y_vSet(P_Early);
+//
+//  pCI->G_vInsertAfter(p_project,this);
 
-  pCI->G_vInsertAfter(p_project,this);
+
+  //vProjectionAnalysis(pCI);
 
   vDebugPoint();
 }

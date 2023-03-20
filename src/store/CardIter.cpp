@@ -340,6 +340,8 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
+  ProjectionAnalysis.m_pProjection_running = nullptr;
+
   EarlyProject.m_pOP_root   = nullptr;
   EarlyProject.m_pProjection_reduced   = nullptr;
 

@@ -91,10 +91,12 @@ void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
 
   // todo: arrived back ...
 
-  Card_Project* p_project = new Card_Project(CK_PROJECT);
-  p_project->Y_vSet(P_Early);
+//  Card_Project* p_project = new Card_Project(CK_PROJECT);
+//  p_project->Y_vSet(P_Early);
+//
+//  pCI->G_vInsertAfter(p_project,this);
 
-  pCI->G_vInsertAfter(p_project,this);
+  //vProjectionAnalysis(pCI);
 
   vDebugPoint();
 }

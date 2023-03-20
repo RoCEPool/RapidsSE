@@ -48,6 +48,11 @@ namespace STORE
 
     struct
     {
+      Card_Projection *m_pProjection_running;
+    } ProjectionAnalysis;
+
+    struct
+    {
       Card_Key *m_pKey_running;
       Card_Projection *m_pProjection_running;
     } StreamOrder;
