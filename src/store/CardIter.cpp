@@ -643,43 +643,6 @@ Card* CardIter::pEachChild_foldBreak(eCK eCard)
   NEVER_REACH
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pEachChild_reverse(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (C_UNKNOWN == G.m_i_Child)
-    G.m_i_Child = G.m_pCard->nChildCards() - 1;
-  else
-    G.m_i_Child--;
-
-  for (;;) {
-
-    if (G.m_i_Child < 0) {
-      G.m_pChild = nullptr;
-      return nullptr;
-    }
-
-    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
-
-    if (CK_NONE == eCard) {
-      return G.m_pChild;
-    }
-
-    eCK eCardMain = G.m_pChild->eCard();
-    if (eCardMain == eCard) {
-      return G.m_pChild;
-    }
-
-    G.m_i_Child--;
-  }
-
-  NEVER_REACH
-}
-
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
@@ -742,16 +705,52 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
+  if (C_UNKNOWN == G.m_i_Child)
+    G.m_i_Child = G.m_pCard->nChildCards() - 1;
+  else
+    G.m_i_Child--;
+
+  for (;;) {
+
+    if (G.m_i_Child < 0) {
+      G.m_pChild = nullptr;
+      return false;
+    }
+
+    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-    return true;
+
+    if (CK_NONE == eOfMainKind) {
+      return true;
+    }
+
+    eCK eCardMain = G.m_pChild->eCard();
+    if (eCardMain == eOfMainKind) {
+      return G.m_pChild;
+    }
+
+    G.m_i_Child--;
   }
 
-  G.e_MainCard = CK_NONE;
-  G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  return false;
+  NEVER_REACH
 }
+/*----------------------------------------------------------------------------*/
+//bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
+//{
+//  _precondition_( _MAGIC_, _FOOTER_);
+//
+//  if ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
+//    vFocusOnMain();
+//    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+//    return true;
+//  }
+//
+//  G.e_MainCard = CK_NONE;
+//  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -832,7 +831,7 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
+  while (G_bEachMain_reverse(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
