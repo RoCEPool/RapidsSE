@@ -2588,7 +2588,6 @@ public:
   public:
     NonReservedWordContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ANTI();
     antlr4::tree::TerminalNode *ANTLR();
     antlr4::tree::TerminalNode *ASC();
     antlr4::tree::TerminalNode *BIT();
@@ -2633,7 +2632,6 @@ public:
     antlr4::tree::TerminalNode *REFERENCE();
     antlr4::tree::TerminalNode *SCHEMA();
     antlr4::tree::TerminalNode *SECONDS();
-    antlr4::tree::TerminalNode *SEMI();
     antlr4::tree::TerminalNode *SKIPLIST();
     antlr4::tree::TerminalNode *STAGE();
     antlr4::tree::TerminalNode *STATS();

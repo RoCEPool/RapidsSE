@@ -452,7 +452,7 @@ dayTimeInterval   :
 // lexer ------------------------------------------------------
 
 nonReservedWord   :
-                    ANTI | ANTLR | ASC
+                    ANTLR | ASC
                   | BIT | BITS | BLOCK | BLOOM | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | CONCAT
                   | DATA | DAYS | DECODE | DESC | DETAIL | DIGITS
@@ -468,7 +468,7 @@ nonReservedWord   :
                   | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE
-                  | SCHEMA | SECONDS | SEMI | SKIPLIST | STAGE | STATS | STATISTICS
+                  | SCHEMA | SECONDS | SKIPLIST | STAGE | STATS | STATISTICS
                   | STATISTICS |SUBSTR
                   | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
@@ -478,7 +478,7 @@ nonReservedWord   :
 
 ALL                   : A L L;
 AND                   : A N D;
-ANTI                  : A N T I;
+ANTI                  : A N T I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
 ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
@@ -600,7 +600,7 @@ SCHEMA                : S C H E M A;
 SECOND                : S E C O N D;
 SECONDS               : S E C O N D S;
 SELECT                : S E L E C T;
-SEMI                  : S E M I;
+SEMI                  : S E M I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
 SET                   : S E T;
 SKIPLIST              : S K I P L I S T;
 STAGE                 : S T A G E;
