@@ -53,7 +53,7 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vEarly_project(CardIter* pCI)
+void Card_OrdAgg::vEarly_project_recurse(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -68,7 +68,7 @@ void Card_OrdAgg::vEarly_project(CardIter* pCI)
   pCI->EarlyProject.m_pProjection_reduced =
       pSub_projection()->pToCarry_v2(pCI,pSub_key());
 
-  Card_OP::vEarly_project(pCI);
+  Card_OP::vEarly_project_test(pCI);
 
   // todo: arrived back ...
 }

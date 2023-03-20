@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  //vEarly_project();
+  //vEarly_project_recurse();
 }
 
 
@@ -475,12 +475,12 @@ void ApplyOptimisations::vEarly_project(void)
 
       // -- -- -- -- -- -- --
       case CK_GBYAGG:
-       m_pCI->G.p_gbyAgg->vEarly_project(m_pCI);
+        m_pCI->G.p_gbyAgg->vEarly_project_recurse(m_pCI);
         break;
 
       case CK_ORDAGG:
         m_pCI->EarlyProject.m_pOP_root = (Card_OP*)m_pCI->G.p_MainCard;
-        m_pCI->G.p_ordAgg->vEarly_project(m_pCI);
+        m_pCI->G.p_ordAgg->vEarly_project_recurse(m_pCI);
 
         m_pCI->G.p_project = Card_Project::pNew_project(m_pCI->EarlyProject.m_pProjection_reduced);
         m_pCI->G.pDeck->vInsertBefore(m_pCI->G.p_project,m_pCI->G.p_ordAgg);

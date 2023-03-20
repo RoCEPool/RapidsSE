@@ -164,11 +164,27 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vEarly_project(CardIter* pCI)
+void Card_OP::vEarly_project_test(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->EarlyProject.m_pProjection_reduced);
+
+  // we were on:
+  switch (pCI->G.e_MainCard) {
+
+    // temp: these terminate the leftwards recursion
+    case CK_INDEXSCAN:
+    case CK_PROJECT:
+    case CK_SCAN:
+      return;
+
+    default:
+      break;
+  }
+
+  if (! pCI->G_bEachMain_reverse())
+    return;
 
   while (pCI->G_bEachMain_reverse()) {
 
@@ -176,41 +192,41 @@ void Card_OP::vEarly_project(CardIter* pCI)
 
       // -- -- -- -- -- -- --
       case CK_GBYAGG:
-        break;
+        // temp: don't go any further
+        return;
 
       case CK_ORDAGG:
-        break;
-
-        // -- -- -- -- -- -- --
-      case CK_PROJECT:
-        pCI->G.p_project->vEarly_project(pCI);
-        break;
+        // temp: don't go any further
+        return;
 
       // -- -- -- -- -- -- --
+      case CK_PROJECT:
+        // recurse into...
+        pCI->G.p_project->vEarly_project_recurse(pCI);
+        return;
+
       case CK_INDEXJOIN:
-        pCI->G.p_indexJoin->vEarly_project(pCI);
-        break;
+        // recurse into...
+        pCI->G.p_indexJoin->vEarly_project_recurse(pCI);
+        return;
 
       case CK_INDEXSCAN:
-        pCI->G.p_indexScan->vEarly_project(pCI);
-        break;
+        // recurse into...
+        pCI->G.p_indexScan->vEarly_project_recurse(pCI);
+        return;
 
       case CK_SCAN:
-        pCI->G.p_scan->vEarly_project(pCI);
-        break;
+        // recurse into...
+        pCI->G.p_scan->vEarly_project_recurse(pCI);
+        return;
 
-        // -- -- -- -- -- -- --
+      // -- -- -- -- -- -- --
       default:
+        // repeat while so as to move to previous card
         break;
     }
-
   }
 
-  if (pCI->EarlyProject.m_pProjection_reduced) {
-    DELETE_CARD(pCI->EarlyProject.m_pProjection_reduced);
-  }
-
-  pCI->vEndTransform();
   vDebugPoint();
 }
 

@@ -19,7 +19,7 @@ namespace STORE
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
-    void vEarly_project(CardIter* pCI);
+    void vEarly_project_test(CardIter* pCI);
 
     bool bIsNodeLevel(void);
     bool bIsOriginLevel(void);

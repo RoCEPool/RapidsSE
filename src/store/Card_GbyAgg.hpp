@@ -26,7 +26,7 @@ namespace STORE
 
     void vDerive_Projection_Key(CardIter* pCI);
 
-    void vEarly_project(CardIter* pCI);
+    void vEarly_project_recurse(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
 

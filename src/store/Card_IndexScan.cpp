@@ -82,12 +82,15 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vEarly_project(CardIter* pCI)
+void Card_IndexScan::vEarly_project_recurse(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-}
+  Card_OP::vEarly_project_test(pCI);
 
+  // todo: arrived back ...
+
+}
 
 /*============================================================================*/
 /* end                                                                        */
