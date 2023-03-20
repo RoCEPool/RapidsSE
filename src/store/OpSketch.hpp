@@ -25,8 +25,14 @@ namespace STORE
   class OpSketch : public Object
   {
   private:
-  
-    eLS        m_eStencilSlot;
+
+    eLS  m_eStencilSlot;
+    eEK  m_eExpressionKind;
+
+    TokenVec* m_pTokenVec;
+
+    // expression string
+    s256 m_sExprString;
 
     // definitions
     StreamDef* m_pStreamDefLft;
@@ -36,6 +42,11 @@ namespace STORE
     // stencils
     eSR m_eStencilFrom;
     eSR m_eStencilTo;
+
+    // labels
+    s256 m_sLabelOp;
+    s256 m_sLabelNext;
+    s256 m_sLabelLoop;
 
     // expression stacks
     TypedStack* m_pExprStack;
@@ -71,11 +82,22 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
+    OpSketch(Stz* sEprStr, eSR eStencilIn, eSR eStencilOut,
+             StreamDef* pStreamDefIn, StreamDef* pStreamDefOut);
+
    ~OpSketch(void) noexcept(false);
-  
+
+    static void vMakeColumnNm(StreamDef *pStreamDef, Stz *szColumn, eSR eStencilRow, i8 i_Column);
+    static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+
+    void vGenerateExprStacks(IntStack* pPreExpStack);
+
     eLS eShape(void);
     void vShape(eLS eShape);
-  
+
+    void vSetLabels(Stz* OpLabel, Stz* sLabelNext, Stz* sLabelLoop);
+
     CodeSynth_v2* pStructSynthA(void);
     void vStructSynthA(CodeSynth_v2* pStructSynth);
 
@@ -90,6 +112,38 @@ namespace STORE
 
     CodeSynth_v2* pCodeSynthC(void);
     void vCodeSynthC(CodeSynth_v2* pCodeSynthC);
+
+  private:
+
+    void vGetValue(eDM eDatum, char *sValue, i8& iValue, d8& dValue);
+    void vInitAgg(ePE ePreExp);
+
+    void vPayloadAgg(void);
+
+    void vPayloadCreate(void);
+    void vPayloadInsert(ePL ePayload, i8 iTopCount);
+    void vPayloadKey(TypedStack* pExprStack);
+    void vPayloadPopulate(ePL ePayload);
+    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack);
+    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
+
+    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType,
+                     i8 i_Col, i8 iColPL, i8& i_DupCtr);
+    void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind,
+                        ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr);
+    void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
+    void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
+    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
+    void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
+    void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
+    void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, ePE ePreExp, eEK eExprKind, eDM eLiteral);
+    void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
+    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
+    void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
+
+    void vGenerateExpr(char *sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
+
+    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack);
 
   private:
   
