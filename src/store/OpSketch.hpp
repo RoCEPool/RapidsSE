@@ -29,8 +29,6 @@ namespace STORE
     eLS  m_eStencilSlot;
     eEK  m_eExprKind;
 
-    TokenVec* m_pTokenVec;
-
     // expression string
     s256 m_sExprString;
 
@@ -59,8 +57,6 @@ namespace STORE
 
     s256 m_sLowerPosition;
     s256 m_sUpperPosition;
-
-    IntStack*  m_pPreExpStack;
 
     i8 m_iLimitRows;
 
@@ -127,10 +123,9 @@ namespace STORE
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack);
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
-    void vPushAggCol(TypedStack *pExprStack, ePE ePreExp, eEK eExprKind, eDM eExprType,
+    void vPushAggCol(TypedStack *pExprStack, ePE ePreExp, eDM eExprType,
                      i8 i_Col, i8 iColPL, i8& i_DupCtr);
-    void vPushAssignCol(TypedStack* pExprStack, eEK eExprKind,
-                        ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr);
+    void vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
@@ -140,8 +135,6 @@ namespace STORE
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-
-    void vGenerateExpr(char *sExpr, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
 
     TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp);
 
