@@ -575,14 +575,16 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 
   RASSERT(G.xKid.m_bActive);
 
-  if (C_UNKNOWN == G.xKid.m_i_Child)
-    G.xKid.m_i_Child= 0;
-  else
-    G.xKid.m_i_Child++;
+//  if (C_UNKNOWN == G.xKid.m_i_Child)
+//    G.xKid.m_i_Child= 0;
+//  else
+//    G.xKid.m_i_Child++;
+
+  G.xKid.vBeginForward();
 
   for (;;) {
 
-    if (G.xKid.m_i_Child >= G.xKid.m_pCard->nChildCards()) {
+    if (! G.xKid.bInRange()) {
       G.p_MainCard = G.xKid.m_pChild  = nullptr;
       G.xKid.m_bActive = false;
       G_vUpdateMember(eOfMainKind, nullptr, __func__);
@@ -597,7 +599,7 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
       return true;
     }
 
-    G.xKid.m_i_Child++;
+    G.xKid.vForward();
   }
 
   NEVER_REACH
@@ -610,14 +612,16 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.xKid.m_i_Child)
-    G.xKid.m_i_Child= 0;
-  else
-    G.xKid.m_i_Child++;
+//  if (C_UNKNOWN == G.xKid.m_i_Child)
+//    G.xKid.m_i_Child= 0;
+//  else
+//    G.xKid.m_i_Child++;
+
+  G.xKid.vBeginForward();
 
   for (;;) {
 
-    if (G.xKid.m_i_Child >= G.xKid.m_pCard->nChildCards()) {
+    if (! G.xKid.bInRange()) {
       G.xKid.m_pChild = nullptr;
       return false;
     }
@@ -642,7 +646,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    G.xKid.m_i_Child++;
+    G.xKid.vForward();
   }
 
   NEVER_REACH
@@ -655,14 +659,16 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.xKid.m_i_Child)
-    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
-  else
-    G.xKid.m_i_Child--;
+//  if (C_UNKNOWN == G.xKid.m_i_Child)
+//    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
+//  else
+//    G.xKid.m_i_Child--;
+
+  G.xKid.vBeginReverse();
 
   for (;;) {
 
-    if (G.xKid.m_i_Child < 0) {
+    if (! G.xKid.bInRange()) {
       G.xKid.m_pChild = nullptr;
       return false;
     }
@@ -681,7 +687,7 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
       return G.xKid.m_pChild;
     }
 
-    G.xKid.m_i_Child--;
+    G.xKid.vReverse();
   }
 
   NEVER_REACH
@@ -694,14 +700,16 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.xKid.m_i_Child)
-    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
-  else
-    G.xKid.m_i_Child--;
+//  if (C_UNKNOWN == G.xKid.m_i_Child)
+//    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
+//  else
+//    G.xKid.m_i_Child--;
+
+  G.xKid.vBeginReverse();
 
   for (;;) {
 
-    if (G.xKid.m_i_Child < 0) {
+    if (! G.xKid.bInRange()) {
       G.xKid.m_pChild = nullptr;
       return false;
     }
@@ -725,8 +733,8 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    G.xKid.m_i_Child--;
-  }
+    G.xKid.vReverse();
+ }
 
   NEVER_REACH
 }
@@ -2354,7 +2362,7 @@ void Kid::vBeginReverse(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vFoward(void)
+void Kid::vForward(void)
 {
 
   m_i_Child++;
@@ -2380,6 +2388,28 @@ bool Kid::bInRange(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vSet(Card*  pCard)
+{
+
+  m_pCard   = pCard;
+  m_i_Child = C_UNKNOWN;
+  m_pChild  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vReset(void)
+{
+
+//  m_pCard   = nullptr;
+  m_i_Child = C_UNKNOWN;
+  m_pChild  = nullptr;
 }
 
 /*============================================================================*/

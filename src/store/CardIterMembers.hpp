@@ -22,10 +22,14 @@ namespace STORE
     void vBeginForward(void);
     void vBeginReverse(void);
 
-    void vFoward(void);
+    void vForward(void);
     void vReverse(void);
 
     bool bInRange(void);
+
+    void vSet(Card*  pCard);
+    void vReset(void);
+
   };
 
   class CardIterMembers : public Object
