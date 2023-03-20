@@ -259,23 +259,26 @@ void Card_OP::vEarly_project_test(CardIter* pCI)
   RASSERT(pCI->EarlyProject.m_pProjection_reduced);
 
   // we were on:
-  switch (pCI->G.e_MainCard) {
+//  switch (pCI->G.e_MainCard) {
+//
+//    // temp: these terminate the leftwards recursion
+//    case CK_INDEXSCAN:
+//    case CK_PROJECT:
+//    case CK_SCAN:
+//      return;
+//
+//    // these continue the leftwards recursion
+//    case CK_GBYAGG:
+//    case CK_INDEXJOIN:
+//    case CK_ORDAGG:
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
 
-    // temp: these terminate the leftwards recursion
-    case CK_INDEXSCAN:
-    case CK_PROJECT:
-    case CK_SCAN:
-      return;
-
-    // these continue the leftwards recursion
-    case CK_GBYAGG:
-    case CK_INDEXJOIN:
-    case CK_ORDAGG:
-      break;
-
-    default:
-      NEVER_REACH;
-  }
+  if (bIsEarlyLeaf(pCI))
+    return;
 
   while (pCI->G_bEachMain_reverse()) {
 
@@ -319,6 +322,44 @@ void Card_OP::vEarly_project_test(CardIter* pCI)
   }
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  Card* pChild_prev = pCI->pPrevChild();
+  eCK   eChild_prev = pChild_prev ? pChild_prev->eCard() : CK_NONE;
+
+  if (CK_NONE    == eChild_prev ||
+      CK_GBYAGG  == eChild_prev ||
+      CK_ORDAGG  == eChild_prev ||
+      CK_PROJECT == eChild_prev)
+    return true;
+
+  return false;
+//  switch (eCard) {
+//
+//    case CK_INDEXJOIN:
+//      if (CK_INDEXSCAN == eChild_prev || CK_SCAN == eChild_prev)
+//        return true;
+//      return false;
+//
+//    case CK_INDEXSCAN:
+//    case CK_SCAN:
+//      return true;
+//
+//
+//
+//    default:
+//      return false;
+//  }
+
 }
 
 /*----------------------------------------------------------------------------*/

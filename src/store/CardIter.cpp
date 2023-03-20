@@ -2328,7 +2328,7 @@ void Kid::vBeginReverse(void)
 {
 
   if (C_UNKNOWN == m_i_Child)
-    m_i_Child= m_pCard->nChildCards() - 1;
+    m_i_Child = m_pCard->nChildCards() - 1;
   else
     m_i_Child--;
 }
@@ -2349,7 +2349,7 @@ void Kid::vForward(void)
 void Kid::vReverse(void)
 {
 
-  m_i_Child++;
+  m_i_Child--;
 
 }
 
