@@ -8,26 +8,48 @@
 
 namespace STORE
 {
+  class Kid
+  {
+    friend class CardIter;
+  private:
+    Card*  m_pCard;
+    i8     m_i_Child;
+    Card*  m_pChild;
+
+    bool   m_bActive;
+
+  public:
+    void vBeginForward(void);
+    void vBeginReverse(void);
+
+    void vFoward(void);
+    void vReverse(void);
+
+    bool bInRange(void);
+  };
+
   class CardIterMembers : public Object
   {
+    friend class CardIter;
   public:
     i8          i_Board;
     Board*      pBoard;
     Card_Deck*  pDeck;
 
-    // - - - - - - - - - - - - -
+  // - - - - - - - - - - - - -
+  private:
+//    struct {
+//      i8     m_i_Child;
+//      Card*  m_pCard;
+//      Card*  m_pChild;
+//      bool   m_bActive;
+//    } xKid;
+    Kid xKid;
 
-    struct {
-      i8     m_i_Child;
-
-    } Kid;
-
-    Card*  m_pCard;
-    Card*  m_pChild;
-
+  // - - - - - - - - - - - - -
+  public:
     bool   m_bRecursed;
     bool   m_bDontDescend;
-    bool   m_bActive;
 
     // - - - - - - - - - - - - -
 

@@ -26,11 +26,11 @@ CardIter::CardIter(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  G.m_pCard   = pCard;
-  G.Kid.m_i_Child = C_UNKNOWN;
-  G.m_pChild  = nullptr;
+  G.xKid.m_pCard   = pCard;
+  G.xKid.m_i_Child = C_UNKNOWN;
+  G.xKid.m_pChild  = nullptr;
 
-  G.m_bActive = true;
+  G.xKid.m_bActive = true;
 
   _checkInitialised_(CN_CARDITER);
 
@@ -59,13 +59,13 @@ CardIter::CardIter(Bench* pBench)
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
 
-  G.m_pCard   = nullptr;
-  G.Kid.m_i_Child= C_UNKNOWN;
-  G.m_pChild  = nullptr;
+  G.xKid.m_pCard   = nullptr;
+  G.xKid.m_i_Child= C_UNKNOWN;
+  G.xKid.m_pChild  = nullptr;
 
   G.m_bDontDescend = false;
 
-  G.m_bActive = false;
+  G.xKid.m_bActive = false;
 
 
   m_iXform     = 0;
@@ -205,7 +205,7 @@ void CardIter::vChangeCard(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.m_pCard = pCard;
+  G.xKid.m_pCard = pCard;
 
   vRestart();
 }
@@ -217,7 +217,7 @@ i8 CardIter::i_Child(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return G.Kid.m_i_Child;
+  return G.xKid.m_i_Child;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,7 +227,7 @@ Card* CardIter::pChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return G.m_pChild;
+  return G.xKid.m_pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,7 +512,7 @@ bool CardIter::bEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  //RASSERT(G.m_bActive);
+  //RASSERT(G.xKid.m_bActive);
 
   if (pEachBoard())
     return true;
@@ -527,7 +527,7 @@ Board* CardIter::pEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  //RASSERT(G.m_bActive);
+  //RASSERT(G.xKid.m_bActive);
 
   i8 i_Board;
 
@@ -543,7 +543,7 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  //RASSERT(G.m_bActive);
+  //RASSERT(G.xKid.m_bActive);
 
   if (C_UNKNOWN == G.i_Board)
     G.i_Board = 0;
@@ -573,31 +573,31 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  if (C_UNKNOWN == G.Kid.m_i_Child)
-    G.Kid.m_i_Child= 0;
+  if (C_UNKNOWN == G.xKid.m_i_Child)
+    G.xKid.m_i_Child= 0;
   else
-    G.Kid.m_i_Child++;
+    G.xKid.m_i_Child++;
 
   for (;;) {
 
-    if (G.Kid.m_i_Child>= G.m_pCard->nChildCards()) {
-      G.p_MainCard = G.m_pChild  = nullptr;
-      G.m_bActive = false;
+    if (G.xKid.m_i_Child >= G.xKid.m_pCard->nChildCards()) {
+      G.p_MainCard = G.xKid.m_pChild  = nullptr;
+      G.xKid.m_bActive = false;
       G_vUpdateMember(eOfMainKind, nullptr, __func__);
       return false;
     }
 
-    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.Kid.m_i_Child);
+    G.p_MainCard = G.xKid.m_pChild = G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
 
-    if (CK_NONE == eOfMainKind || eOfMainKind == G.m_pChild->eCard()) {
+    if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.m_pChild->eCard()) {
       vFocusOnMain();
       G_vUpdateMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
       return true;
     }
 
-    G.Kid.m_i_Child++;
+    G.xKid.m_i_Child++;
   }
 
   NEVER_REACH
@@ -610,26 +610,26 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.Kid.m_i_Child)
-    G.Kid.m_i_Child= 0;
+  if (C_UNKNOWN == G.xKid.m_i_Child)
+    G.xKid.m_i_Child= 0;
   else
-    G.Kid.m_i_Child++;
+    G.xKid.m_i_Child++;
 
   for (;;) {
 
-    if (G.Kid.m_i_Child>= G.m_pCard->nChildCards()) {
-      G.m_pChild = nullptr;
+    if (G.xKid.m_i_Child >= G.xKid.m_pCard->nChildCards()) {
+      G.xKid.m_pChild = nullptr;
       return false;
     }
 
-    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.Kid.m_i_Child);
+    G.p_MainCard = G.xKid.m_pChild = G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
 
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
 
-    if (G.m_pChild->bIsCard(CK_FOLD)) {
-      G.m_pChild = nullptr;
-      G.Kid.m_i_Child= C_UNKNOWN;
+    if (G.xKid.m_pChild->bIsCard(CK_FOLD)) {
+      G.xKid.m_pChild = nullptr;
+      G.xKid.m_i_Child= C_UNKNOWN;
       return false;
     }
 
@@ -637,31 +637,16 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    eCK eCardMain = G.m_pChild->eCard();
+    eCK eCardMain = G.xKid.m_pChild->eCard();
     if (eCardMain == eOfMainKind) {
       return true;
     }
 
-    G.Kid.m_i_Child++;
+    G.xKid.m_i_Child++;
   }
 
   NEVER_REACH
 }
-/*----------------------------------------------------------------------------*/
-//bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
-//{
-//  _precondition_( _MAGIC_, _FOOTER_);
-//
-//  if ((G.p_MainCard = this->pEachChild_foldBreak(eOfMainKind))) {
-//    vFocusOnMain();
-//    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-//    return true;
-//  }
-//
-//  G.e_MainCard = CK_NONE;
-//  G_vUpdateMember(eOfMainKind, nullptr, __func__);
-//  return false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -670,19 +655,19 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.Kid.m_i_Child)
-    G.Kid.m_i_Child= G.m_pCard->nChildCards() - 1;
+  if (C_UNKNOWN == G.xKid.m_i_Child)
+    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
   else
-    G.Kid.m_i_Child--;
+    G.xKid.m_i_Child--;
 
   for (;;) {
 
-    if (G.Kid.m_i_Child< 0) {
-      G.m_pChild = nullptr;
+    if (G.xKid.m_i_Child < 0) {
+      G.xKid.m_pChild = nullptr;
       return false;
     }
 
-    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.Kid.m_i_Child);
+    G.p_MainCard = G.xKid.m_pChild = G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
 
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
@@ -691,31 +676,16 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
       return true;
     }
 
-    eCK eCardMain = G.m_pChild->eCard();
+    eCK eCardMain = G.xKid.m_pChild->eCard();
     if (eCardMain == eOfMainKind) {
-      return G.m_pChild;
+      return G.xKid.m_pChild;
     }
 
-    G.Kid.m_i_Child--;
+    G.xKid.m_i_Child--;
   }
 
   NEVER_REACH
 }
-/*----------------------------------------------------------------------------*/
-//bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
-//{
-//  _precondition_( _MAGIC_, _FOOTER_);
-//
-//  if ((G.p_MainCard = this->pEachChild_reverse(eOfMainKind))) {
-//    vFocusOnMain();
-//    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-//    return true;
-//  }
-//
-//  G.e_MainCard = CK_NONE;
-//  G_vUpdateMember(eOfMainKind, nullptr, __func__);
-//  return false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -724,23 +694,23 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.Kid.m_i_Child)
-    G.Kid.m_i_Child= G.m_pCard->nChildCards() - 1;
+  if (C_UNKNOWN == G.xKid.m_i_Child)
+    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
   else
-    G.Kid.m_i_Child--;
+    G.xKid.m_i_Child--;
 
   for (;;) {
 
-    if (G.Kid.m_i_Child< 0) {
-      G.m_pChild = nullptr;
+    if (G.xKid.m_i_Child < 0) {
+      G.xKid.m_pChild = nullptr;
       return false;
     }
 
-    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.Kid.m_i_Child);
+    G.p_MainCard = G.xKid.m_pChild = G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
 
-    if (G.m_pChild->bIsCard(CK_FOLD)) {
-      G.m_pChild = nullptr;
-      G.Kid.m_i_Child= C_UNKNOWN;
+    if (G.xKid.m_pChild->bIsCard(CK_FOLD)) {
+      G.xKid.m_pChild = nullptr;
+      G.xKid.m_i_Child= C_UNKNOWN;
       return false;
     }
 
@@ -755,7 +725,7 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    G.Kid.m_i_Child--;
+    G.xKid.m_i_Child--;
   }
 
   NEVER_REACH
@@ -1084,7 +1054,7 @@ void CardIter::vForward(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
   Card* pChild = pNextChild();
 
@@ -1098,7 +1068,7 @@ Card* CardIter::pGetChild(i8 i_Child)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = G.m_pCard->pGetChild(i_Child);
+  Card* pChild = G.xKid.m_pCard->pGetChild(i_Child);
 
   return pChild;
 }
@@ -1249,9 +1219,9 @@ bool CardIter::bJustRestarted(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.Kid.m_i_Child&&
-      nullptr == G.m_pChild &&
-      true == G.m_bActive)
+  if (C_UNKNOWN == G.xKid.m_i_Child &&
+      nullptr == G.xKid.m_pChild &&
+      true == G.xKid.m_bActive)
     return true;
 
   return false;
@@ -1356,9 +1326,9 @@ bool CardIter::bMore(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  if (G.Kid.m_i_Child+ 1 < G.m_pCard->nChildCards())
+  if (G.xKid.m_i_Child + 1 < G.xKid.m_pCard->nChildCards())
     return true;
 
   return false;
@@ -1395,14 +1365,14 @@ Card* CardIter::pNextChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  i8 i_Next = G.Kid.m_i_Child+ 1;
+  i8 i_Next = G.xKid.m_i_Child + 1;
 
-  if (i_Next >= G.m_pCard->nChildCards())
+  if (i_Next >= G.xKid.m_pCard->nChildCards())
     return nullptr;
 
-  Card* pNextMain = G.m_pCard->pGetChild(i_Next);
+  Card* pNextMain = G.xKid.m_pCard->pGetChild(i_Next);
 
   return pNextMain;
 }
@@ -1414,7 +1384,7 @@ Card* CardIter::pNextChildIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
   Card* pNextMain = this->pNextChild();
   if (! pNextMain || eCard != pNextMain->eCard())
@@ -1497,14 +1467,14 @@ Card* CardIter::pPrevChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  i8 i_Prev = G.Kid.m_i_Child- 1;
+  i8 i_Prev = G.xKid.m_i_Child - 1;
 
   if (i_Prev < 0)
     return nullptr;
 
-  Card* pChild = G.m_pCard->pGetChild(i_Prev);
+  Card* pChild = G.xKid.m_pCard->pGetChild(i_Prev);
 
   return pChild;
 }
@@ -1516,7 +1486,7 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
   Card* pPrevMain = this->pPrevChild();
   if (! pPrevMain || eCard != pPrevMain->eCard())
@@ -1769,12 +1739,12 @@ void CardIter::vRemoveChild(Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  if (pChild == G.m_pChild)
-    vRemoveCurr(G.m_pChild->eCard());
+  if (pChild == G.xKid.m_pChild)
+    vRemoveCurr(G.xKid.m_pChild->eCard());
   else
-    G.m_pCard->vRemoveChild(pChild);
+    G.xKid.m_pCard->vRemoveChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1784,7 +1754,7 @@ void CardIter::vRemoveDeleteChild(Card*& rpChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
   vRemoveChild(rpChild);
 
@@ -1800,15 +1770,15 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  RASSERT(eCrossCheck == G.m_pChild->eCard());
-  G.m_pCard->vRemoveChild(G.m_pChild);
-  G.Kid.m_i_Child--;
-  if (G.Kid.m_i_Child< G.m_pCard->nChildCards())
-    G.m_pChild = G.m_pCard->pGetChild(G.Kid.m_i_Child);
+  RASSERT(eCrossCheck == G.xKid.m_pChild->eCard());
+  G.xKid.m_pCard->vRemoveChild(G.xKid.m_pChild);
+  G.xKid.m_i_Child--;
+  if (G.xKid.m_i_Child < G.xKid.m_pCard->nChildCards())
+    G.xKid.m_pChild = G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
   else
-    G.m_pChild = nullptr;
+    G.xKid.m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1818,16 +1788,16 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  RASSERT(eCrossCheck == G.m_pChild->eCard());
-  G.m_pCard->vRemoveChild(G.m_pChild);
-  delete G.m_pChild;
-  G.Kid.m_i_Child--;
-  if (G.Kid.m_i_Child< G.m_pCard->nChildCards())
-    G.m_pChild = G.m_pCard->pGetChild(G.Kid.m_i_Child);
+  RASSERT(eCrossCheck == G.xKid.m_pChild->eCard());
+  G.xKid.m_pCard->vRemoveChild(G.xKid.m_pChild);
+  delete G.xKid.m_pChild;
+  G.xKid.m_i_Child--;
+  if (G.xKid.m_i_Child < G.xKid.m_pCard->nChildCards())
+    G.xKid.m_pChild = G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
   else
-    G.m_pChild = nullptr;
+    G.xKid.m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1862,9 +1832,9 @@ void CardIter::vRestart(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.Kid.m_i_Child= C_UNKNOWN;
-  G.m_pChild  = nullptr;
-  G.m_bActive = true;
+  G.xKid.m_i_Child= C_UNKNOWN;
+  G.xKid.m_pChild  = nullptr;
+  G.xKid.m_bActive = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1887,20 +1857,20 @@ void CardIter::vRewind(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  if (G.Kid.m_i_Child== 0) {
-    G.Kid.m_i_Child= C_UNKNOWN;
-    G.m_pChild = nullptr;
+  if (G.xKid.m_i_Child == 0) {
+    G.xKid.m_i_Child= C_UNKNOWN;
+    G.xKid.m_pChild = nullptr;
     return;
   }
 
-  G.Kid.m_i_Child--;
+  G.xKid.m_i_Child--;
 
-  if (G.Kid.m_i_Child< G.m_pCard->nChildCards())
-    G.m_pChild =  G.m_pCard->pGetChild(G.Kid.m_i_Child);
+  if (G.xKid.m_i_Child < G.xKid.m_pCard->nChildCards())
+    G.xKid.m_pChild =  G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
   else
-    G.m_pChild = nullptr;
+    G.xKid.m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1910,19 +1880,19 @@ Card* CardIter::pRewindChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (G.Kid.m_i_Child== 0) {
-    G.Kid.m_i_Child= C_UNKNOWN;
+  if (G.xKid.m_i_Child == 0) {
+    G.xKid.m_i_Child= C_UNKNOWN;
     return nullptr;
   }
 
-  G.Kid.m_i_Child--;
+  G.xKid.m_i_Child--;
 
-  if (G.Kid.m_i_Child< G.m_pCard->nChildCards())
-    G.m_pChild =  G.m_pCard->pGetChild(G.Kid.m_i_Child);
+  if (G.xKid.m_i_Child < G.xKid.m_pCard->nChildCards())
+    G.xKid.m_pChild =  G.xKid.m_pCard->pGetChild(G.xKid.m_i_Child);
   else
-    G.m_pChild = nullptr;
+    G.xKid.m_pChild = nullptr;
 
-  return G.m_pChild;
+  return G.xKid.m_pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1982,14 +1952,14 @@ void CardIter::vSet(Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  G.Kid.m_i_Child= G.m_pCard->iFindChild(pChild);
+  G.xKid.m_i_Child= G.xKid.m_pCard->iFindChild(pChild);
 
-  if (C_UNKNOWN == G.Kid.m_i_Child)
-    G.m_pChild = nullptr;
+  if (C_UNKNOWN == G.xKid.m_i_Child)
+    G.xKid.m_pChild = nullptr;
   else
-    G.m_pChild = pChild;
+    G.xKid.m_pChild = pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1999,11 +1969,11 @@ void CardIter::vSet(CardIter* pCardIter_src)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  G.m_pCard   = pCardIter_src->G.m_pCard;
-  G.Kid.m_i_Child= pCardIter_src->G.Kid.m_i_Child;
-  G.m_pChild  = pCardIter_src->G.m_pChild;
+  G.xKid.m_pCard   = pCardIter_src->G.xKid.m_pCard;
+  G.xKid.m_i_Child= pCardIter_src->G.xKid.m_i_Child;
+  G.xKid.m_pChild  = pCardIter_src->G.xKid.m_pChild;
 
-  G.m_bActive = pCardIter_src->G.m_bActive;
+  G.xKid.m_bActive = pCardIter_src->G.xKid.m_bActive;
 }
 
 
@@ -2014,10 +1984,10 @@ void CardIter::vSet(i8 iChild, Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.m_bActive);
+  RASSERT(G.xKid.m_bActive);
 
-  G.Kid.m_i_Child= iChild;
-  G.m_pChild = pChild;
+  G.xKid.m_i_Child= iChild;
+  G.xKid.m_pChild = pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2347,6 +2317,69 @@ void CardIter::vPushRecurseIter(void)
   RASSERT(G.m_bRecursed);
 
   vSave();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/*============================================================================*/
+/* Kid.cpp -- kid iterator                                                    */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vBeginForward(void)
+{
+
+  if (C_UNKNOWN == m_i_Child)
+    m_i_Child= 0;
+  else
+    m_i_Child++;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vBeginReverse(void)
+{
+
+  if (C_UNKNOWN == m_i_Child)
+    m_i_Child= m_pCard->nChildCards() - 1;
+  else
+    m_i_Child--;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vFoward(void)
+{
+
+  m_i_Child++;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vReverse(void)
+{
+
+  m_i_Child++;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Kid::bInRange(void)
+{
+  if (m_i_Child >= 0 && m_i_Child < m_pCard->nChildCards())
+    return true;
+
+  return false;
 }
 
 /*============================================================================*/

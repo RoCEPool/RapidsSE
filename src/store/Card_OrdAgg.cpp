@@ -70,6 +70,8 @@ void Card_OrdAgg::vEarly_project_recurse(CardIter* pCI)
   Card_OP::vEarly_project_test(pCI);
 
   // todo: arrived back ...
+
+  vDebugPoint();
 }
 
 /*============================================================================*/

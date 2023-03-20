@@ -128,8 +128,8 @@ void Card_Bounds::vCullBound(char cWithMark)
     if (xCI_bounds.G.p_MainCard->cMark1() != cWithMark)
       continue;
 
-    vRemoveChild(xCI_bounds.G.m_pChild);
-    DELETE_CARD(xCI_bounds.G.m_pChild);
+    vRemoveChild(xCI_bounds.G.p_MainCard);
+    DELETE_CARD(xCI_bounds.G.p_MainCard);
     xCI_bounds.vRewind();
   }
 }

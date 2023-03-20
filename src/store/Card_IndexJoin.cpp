@@ -82,6 +82,7 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   // todo: arrived back ...
 
+  vDebugPoint();
 }
 
 

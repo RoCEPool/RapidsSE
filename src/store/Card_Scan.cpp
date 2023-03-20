@@ -112,6 +112,7 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 
    // todo: arrived back ...
 
+   vDebugPoint();
  }
 
 /*============================================================================*/
