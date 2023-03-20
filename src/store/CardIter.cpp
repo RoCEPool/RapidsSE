@@ -565,85 +565,6 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pEachChild(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(G.m_bActive);
-
-  if (C_UNKNOWN == G.m_i_Child)
-    G.m_i_Child = 0;
-  else
-    G.m_i_Child++;
-
-  for (;;) {
-
-    if (G.m_i_Child >= G.m_pCard->nChildCards()) {
-      G.p_MainCard = G.m_pChild  = nullptr;
-      G.m_bActive = false;
-      G_vUpdateMember(eCard, nullptr, __func__);
-      return nullptr;
-    }
-
-    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
-
-    if (CK_NONE == eCard || eCard == G.m_pChild->eCard()) {
-      vFocusOnMain();
-      G_vUpdateMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
-      return G.m_pChild;
-    }
-
-    G.m_i_Child++;
-  }
-
-  NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pEachChild_foldBreak(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (C_UNKNOWN == G.m_i_Child)
-    G.m_i_Child = 0;
-  else
-    G.m_i_Child++;
-
-  for (;;) {
-
-    if (G.m_i_Child >= G.m_pCard->nChildCards()) {
-      G.m_pChild = nullptr;
-      return nullptr;
-    }
-
-    G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
-
-    if (G.m_pChild->bIsCard(CK_FOLD)) {
-      G.m_pChild = nullptr;
-      G.m_i_Child = C_UNKNOWN;
-      return nullptr;
-    }
-
-    if (CK_NONE == eCard) {
-      return G.m_pChild;
-    }
-
-    eCK eCardMain = G.m_pChild->eCard();
-    if (eCardMain == eCard) {
-      return G.m_pChild;
-    }
-
-    G.m_i_Child++;
-  }
-
-  NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain(eCK eOfMainKind)
@@ -687,16 +608,58 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if ((G.p_MainCard = this->pEachChild_foldBreak(eOfMainKind))) {
+  if (C_UNKNOWN == G.m_i_Child)
+    G.m_i_Child = 0;
+  else
+    G.m_i_Child++;
+
+  for (;;) {
+
+    if (G.m_i_Child >= G.m_pCard->nChildCards()) {
+      G.m_pChild = nullptr;
+      return false;
+    }
+
+    G.p_MainCard = G.m_pChild = G.m_pCard->pGetChild(G.m_i_Child);
+
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
-    return true;
+
+    if (G.m_pChild->bIsCard(CK_FOLD)) {
+      G.m_pChild = nullptr;
+      G.m_i_Child = C_UNKNOWN;
+      return false;
+    }
+
+    if (CK_NONE == eOfMainKind) {
+      return true;
+    }
+
+    eCK eCardMain = G.m_pChild->eCard();
+    if (eCardMain == eOfMainKind) {
+      return true;
+    }
+
+    G.m_i_Child++;
   }
 
-  G.e_MainCard = CK_NONE;
-  G_vUpdateMember(eOfMainKind, nullptr, __func__);
-  return false;
+  NEVER_REACH
 }
+/*----------------------------------------------------------------------------*/
+//bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
+//{
+//  _precondition_( _MAGIC_, _FOOTER_);
+//
+//  if ((G.p_MainCard = this->pEachChild_foldBreak(eOfMainKind))) {
+//    vFocusOnMain();
+//    G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
+//    return true;
+//  }
+//
+//  G.e_MainCard = CK_NONE;
+//  G_vUpdateMember(eOfMainKind, nullptr, __func__);
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -1761,7 +1724,7 @@ Card* CardIter::pRecurseEach(void)
       G.m_bRecursed = true;
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
-      G.p_MainCard = pEachChild();
+      G_bEachMain();
 
       return G.p_MainCard;
     }
