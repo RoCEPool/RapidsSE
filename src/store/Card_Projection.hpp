@@ -30,7 +30,7 @@ namespace STORE
     Card_Projection* pReProjection(void);
 
     Card_Projection* pToCarry(Card_Key* p_key);
-    Card_Projection* pToCarry_v2(CardIter* pCI, Card_Key* p_key);
+    Card_Projection* pToEarlyReduction(CardIter* pCI, Card_Key* p_key);
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

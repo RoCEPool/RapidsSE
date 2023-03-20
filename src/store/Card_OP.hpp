@@ -13,12 +13,15 @@ namespace STORE
     Card_OP(eCK eCard);
    ~Card_OP(void) noexcept(false);
 
+    static bool bIsOp(Card* pCard);
+
     void vAddLevel(void);
     void vAdd_Pred_Under_filter(Card_PRED *p_PRED);
     void vConvert_rpnCalc_To_boolCalc(CardIter* pCI);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
+    void vEarly_project_root(CardIter* pCI);
     void vEarly_project_test(CardIter* pCI);
 
     bool bIsNodeLevel(void);

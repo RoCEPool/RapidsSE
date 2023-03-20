@@ -66,7 +66,7 @@ void Card_OrdAgg::vEarly_project_recurse(CardIter* pCI)
 
   // get the carry form of ordAgg's projection
   pCI->EarlyProject.m_pProjection_reduced =
-      pSub_projection()->pToCarry_v2(pCI,pSub_key());
+      pSub_projection()->pToEarlyReduction(pCI, pSub_key());
 
   Card_OP::vEarly_project_test(pCI);
 

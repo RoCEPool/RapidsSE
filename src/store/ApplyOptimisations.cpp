@@ -469,33 +469,9 @@ void ApplyOptimisations::vEarly_project(void)
 
   RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_reduced);
 
-  while (m_pCI->G_bEachMain_reverse()) {
-
-    switch (m_pCI->G.e_MainCard) {
-
-      // -- -- -- -- -- -- --
-      case CK_GBYAGG:
-        m_pCI->G.p_gbyAgg->vEarly_project_recurse(m_pCI);
-        break;
-
-      case CK_ORDAGG:
-        m_pCI->EarlyProject.m_pOP_root = (Card_OP*)m_pCI->G.p_MainCard;
-        m_pCI->G.p_ordAgg->vEarly_project_recurse(m_pCI);
-
-        m_pCI->G.p_project = Card_Project::pNew_project(m_pCI->EarlyProject.m_pProjection_reduced);
-        m_pCI->G.pDeck->vInsertBefore(m_pCI->G.p_project,m_pCI->G.p_ordAgg);
-        m_pCI->EarlyProject.m_pProjection_reduced = nullptr;
-        m_pCI->vPrintBoard();
-
-        m_pCI->vRemoveChild(m_pCI->G.p_project);
-        DELETE_CARD(m_pCI->G.p_project);
-        break;
-
-      // -- -- -- -- -- -- --
-      default:
-        break;
-    }
-
+  if (m_pCI->G_bEachMain_reverse()) {
+    if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP)
+      m_pCI->G.p_OP->vEarly_project_root(m_pCI);
   }
 
   if (m_pCI->EarlyProject.m_pProjection_reduced) {

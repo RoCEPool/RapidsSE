@@ -217,28 +217,30 @@ Card_Projection* Card_Projection::pReProjection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the carry form of this projection                                      */
+/* get the reduced form of this projection for use with early project         */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pToCarry_v2(CardIter* pCI, Card_Key* p_key)
+Card_Projection* Card_Projection::pToEarlyReduction(CardIter* pCI, Card_Key* p_key)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) make a copy of the key
+  // this projection will be in a gbyAgg or ordAgg
 
-  Card_Projection* p_projection_carry = new Card_Projection;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) make a copy of the key as start of reduced projection
+
+  Card_Projection* p_projection_reduced = new Card_Projection;
 
   CardIter xCI_key(p_key);
   while (xCI_key.G_bEachMain(CK_EXPR)) {
     Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToCarry_key();
-    p_projection_carry->vAppend(p_expr_carry);
+    p_projection_reduced->vAppend(p_expr_carry);
   }
 
-  p_projection_carry->vRenumberAllExpr();
-  //p_projection_carry->vDump();
+  p_projection_reduced->vRenumberAllExpr();
+  //p_projection_reduced->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) append the referenced col's of this projection
+  // 2) append the referenced col's in rpnCalc of this projection into reduced projection
 
   CardIter xCI_projection(this);
   while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
@@ -247,17 +249,17 @@ Card_Projection* Card_Projection::pToCarry_v2(CardIter* pCI, Card_Key* p_key)
     while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
         if (! xCI_rpnCalc.G.p_term->bIsColOdn())
           continue;
-        if (p_projection_carry->pFind_expr_By_projectedCol(pCI, xCI_rpnCalc.G.p_term->szValue()))
+        if (p_projection_reduced->pFind_expr_By_projectedCol(pCI, xCI_rpnCalc.G.p_term->szValue()))
           continue;
 
         if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))
-           p_projection_carry->vAppend(p_expr_col->pDupCardAndSubCards());
+           p_projection_reduced->vAppend(p_expr_col->pDupCardAndSubCards());
     }
   }
-  p_projection_carry->vRenumberAllExpr();
-  //p_projection_carry->vDump();
+  p_projection_reduced->vRenumberAllExpr();
+  //p_projection_reduced->vDump();
 
-  return p_projection_carry;
+  return p_projection_reduced;
 }
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pToCarry(Card_Key* p_key)

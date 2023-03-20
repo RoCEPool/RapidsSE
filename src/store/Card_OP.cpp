@@ -32,6 +32,47 @@ Card_OP::~Card_OP(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsOp(Card* pCard)
+{
+  _static_
+
+  eCK eCard = pCard->eCard();
+
+  switch (eCard) {
+
+    case CK_AGGREG:
+    case CK_CROSSJOIN:
+    case CK_FILTER:
+    case CK_GBYAGG:
+    case CK_HAVING:
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_KEYEXISTS:
+    case CK_KEYNOTEXISTS:
+    case CK_LIMIT:
+    case CK_ORDAGG:
+    case CK_PROJECT:
+    case CK_WHERE:
+    case CK_SCAN:
+    case CK_SORT:
+    case CK_TOP:
+      return true;
+
+    default:
+      return false;
+  }
+
+}
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -159,6 +200,40 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bApplyRecursive(CK_TERM, bLambdaFn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vEarly_project_root(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  switch (pCI->G.e_MainCard) {
+
+    // -- -- -- -- -- -- --
+    case CK_GBYAGG:
+      pCI->G.p_gbyAgg->vEarly_project_recurse(pCI);
+      break;
+
+    case CK_ORDAGG:
+      pCI->EarlyProject.m_pOP_root = (Card_OP*)pCI->G.p_MainCard;
+      pCI->G.p_ordAgg->vEarly_project_recurse(pCI);
+
+      pCI->G.p_project = Card_Project::pNew_project(pCI->EarlyProject.m_pProjection_reduced);
+      pCI->G.pDeck->vInsertBefore(pCI->G.p_project, pCI->G.p_ordAgg);
+      pCI->EarlyProject.m_pProjection_reduced = nullptr;
+      pCI->vPrintBoard();
+
+      pCI->vRemoveChild(pCI->G.p_project);
+      DELETE_CARD(pCI->G.p_project);
+      break;
+
+      // -- -- -- -- -- -- --
+    default:
+      break;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
