@@ -512,8 +512,6 @@ bool CardIter::bEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  //RASSERT(G.xKid.m_bActive);
-
   if (pEachBoard())
     return true;
 
@@ -526,8 +524,6 @@ bool CardIter::bEachBoard(void)
 Board* CardIter::pEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-
-  //RASSERT(G.xKid.m_bActive);
 
   i8 i_Board;
 
@@ -542,8 +538,6 @@ Board* CardIter::pEachBoard(void)
 Board* CardIter::pEachBoard(i8& ri_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-
-  //RASSERT(G.xKid.m_bActive);
 
   if (C_UNKNOWN == G.i_Board)
     G.i_Board = 0;
@@ -574,11 +568,6 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
-
-//  if (C_UNKNOWN == G.xKid.m_i_Child)
-//    G.xKid.m_i_Child= 0;
-//  else
-//    G.xKid.m_i_Child++;
 
   G.xKid.vBeginForward();
 
@@ -611,11 +600,6 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-
-//  if (C_UNKNOWN == G.xKid.m_i_Child)
-//    G.xKid.m_i_Child= 0;
-//  else
-//    G.xKid.m_i_Child++;
 
   G.xKid.vBeginForward();
 
@@ -659,11 +643,6 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-//  if (C_UNKNOWN == G.xKid.m_i_Child)
-//    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
-//  else
-//    G.xKid.m_i_Child--;
-
   G.xKid.vBeginReverse();
 
   for (;;) {
@@ -699,11 +678,6 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-
-//  if (C_UNKNOWN == G.xKid.m_i_Child)
-//    G.xKid.m_i_Child= G.xKid.m_pCard->nChildCards() - 1;
-//  else
-//    G.xKid.m_i_Child--;
 
   G.xKid.vBeginReverse();
 

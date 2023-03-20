@@ -42,12 +42,6 @@ namespace STORE
 
   // - - - - - - - - - - - - -
   private:
-//    struct {
-//      i8     m_i_Child;
-//      Card*  m_pCard;
-//      Card*  m_pChild;
-//      bool   m_bActive;
-//    } xKid;
     Kid xKid;
 
   // - - - - - - - - - - - - -
