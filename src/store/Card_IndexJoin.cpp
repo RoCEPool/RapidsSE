@@ -82,6 +82,11 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   // todo: arrived back ...
 
+  Card_Project* p_project = new Card_Project(CK_PROJECT);
+  p_project->Y_vSet(P_Early);
+
+  pCI->G_vInsertAfter(p_project,this);
+
   vDebugPoint();
 }
 

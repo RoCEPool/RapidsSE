@@ -53,7 +53,7 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vEarly_project_recurse(CardIter* pCI)
+void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

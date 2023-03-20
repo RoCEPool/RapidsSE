@@ -104,7 +104,7 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vEarly_project_recurse(CardIter* pCI)
+void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

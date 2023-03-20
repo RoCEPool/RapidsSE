@@ -5,6 +5,7 @@
 #include "Card_IndexScan.hpp"
 #include "CardIter.hpp"
 #include "Card_Filter.hpp"
+#include "Card_Project.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -82,13 +83,18 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vEarly_project_recurse(CardIter* pCI)
+void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_OP::vEarly_project_test(pCI);
 
   // todo: arrived back ...
+
+  Card_Project* p_project = new Card_Project(CK_PROJECT);
+  p_project->Y_vSet(P_Early);
+
+  pCI->G_vInsertAfter(p_project,this);
 
   vDebugPoint();
 }

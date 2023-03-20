@@ -217,11 +217,11 @@ void Card_OP::vEarly_project_root(CardIter* pCI)
       break;
 
     case CK_GBYAGG:
-      pCI->G.p_gbyAgg->vEarly_project_recurse(pCI);
+      pCI->G.p_gbyAgg->vEarly_project_root(pCI);
       break;
 
     case CK_ORDAGG:
-      pCI->G.p_ordAgg->vEarly_project_recurse(pCI);
+      pCI->G.p_ordAgg->vEarly_project_root(pCI);
 
       pCI->G.p_project = Card_Project::pNew_project(pCI->EarlyProject.m_pProjection_reduced);
       pCI->G.pDeck->vInsertBefore(pCI->G.p_project, pCI->G.p_ordAgg);
@@ -306,12 +306,12 @@ void Card_OP::vEarly_project_test(CardIter* pCI)
 
       case CK_INDEXSCAN:
         // recurse into...
-        pCI->G.p_indexScan->vEarly_project_recurse(pCI);
+        pCI->G.p_indexScan->vEarly_project_leaf(pCI);
         return;
 
       case CK_SCAN:
         // recurse into...
-        pCI->G.p_scan->vEarly_project_recurse(pCI);
+        pCI->G.p_scan->vEarly_project_leaf(pCI);
         return;
 
       // -- -- -- -- -- -- --
