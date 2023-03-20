@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  vEarly_project();
+  //vEarly_project();
 }
 
 
@@ -467,7 +467,7 @@ void ApplyOptimisations::vEarly_project(void)
 
   m_pCI->G_vRestart();
 
-  RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_carry);
+  RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_reduced);
 
   while (m_pCI->G_bEachMain_reverse()) {
 
@@ -475,37 +475,20 @@ void ApplyOptimisations::vEarly_project(void)
 
       // -- -- -- -- -- -- --
       case CK_GBYAGG:
-        m_pCI->G.p_gbyAgg->vEarly_project(m_pCI);
+       m_pCI->G.p_gbyAgg->vEarly_project(m_pCI);
         break;
 
       case CK_ORDAGG:
+        m_pCI->EarlyProject.m_pOP_root = (Card_OP*)m_pCI->G.p_MainCard;
         m_pCI->G.p_ordAgg->vEarly_project(m_pCI);
 
-        m_pCI->G.p_project = Card_Project::pNew_project(m_pCI->EarlyProject.m_pProjection_carry);
+        m_pCI->G.p_project = Card_Project::pNew_project(m_pCI->EarlyProject.m_pProjection_reduced);
         m_pCI->G.pDeck->vInsertBefore(m_pCI->G.p_project,m_pCI->G.p_ordAgg);
-        m_pCI->EarlyProject.m_pProjection_carry = nullptr;
+        m_pCI->EarlyProject.m_pProjection_reduced = nullptr;
         m_pCI->vPrintBoard();
 
         m_pCI->vRemoveChild(m_pCI->G.p_project);
         DELETE_CARD(m_pCI->G.p_project);
-        break;
-
-        // -- -- -- -- -- -- --
-      case CK_PROJECT:
-        m_pCI->G.p_project->vEarly_project(m_pCI);
-        break;
-
-      // -- -- -- -- -- -- --
-      case CK_INDEXJOIN:
-        m_pCI->G.p_indexJoin->vEarly_project(m_pCI);
-        break;
-
-      case CK_INDEXSCAN:
-        m_pCI->G.p_indexScan->vEarly_project(m_pCI);
-        break;
-
-      case CK_SCAN:
-        m_pCI->G.p_scan->vEarly_project(m_pCI);
         break;
 
       // -- -- -- -- -- -- --
@@ -515,9 +498,10 @@ void ApplyOptimisations::vEarly_project(void)
 
   }
 
-  if (m_pCI->EarlyProject.m_pProjection_carry) {
-    DELETE_CARD(m_pCI->EarlyProject.m_pProjection_carry);
+  if (m_pCI->EarlyProject.m_pProjection_reduced) {
+    DELETE_CARD(m_pCI->EarlyProject.m_pProjection_reduced);
   }
+  m_pCI->EarlyProject.m_pOP_root = nullptr;
 
   m_pCI->vEndTransform();
   vDebugPoint();

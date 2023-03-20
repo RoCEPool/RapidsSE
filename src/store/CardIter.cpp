@@ -316,6 +316,7 @@ void CardIter::G_vClearMembers(void)
   G.p_unique           = nullptr;
   G.p_where            = nullptr;
 
+  G.p_OP               = nullptr;
   G.p_PRED             = nullptr;
 }
 
@@ -339,7 +340,8 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
-  EarlyProject.m_pProjection_carry   = nullptr;
+  EarlyProject.m_pOP_root   = nullptr;
+  EarlyProject.m_pProjection_reduced   = nullptr;
 
   StreamOrder.m_pProjection_running = nullptr;
   StreamOrder.m_pKey_running        = nullptr;
@@ -2136,7 +2138,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NONE: break;
 
     case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
-    case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard; break;
+    case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_ANDPRED:          *((Card**)&G.p_andPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
@@ -2150,17 +2153,21 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
     case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
     case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
-    case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard; break;
+    case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
-    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard; break;
+    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
     case CK_FROM:             *((Card**)&G.p_from)             = pCard; break;
-    case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard; break;
+    case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_HASH:             *((Card**)&G.p_hash)             = pCard; break;
-    case CK_HAVING:           *((Card**)&G.p_having)           = pCard; break;
+    case CK_HAVING:           *((Card**)&G.p_having)           = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_HSHCOL:           *((Card**)&G.p_hshCol)           = pCard; break;
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
@@ -2168,7 +2175,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
-    case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard; break;
+    case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_JOINHEAD:         *((Card**)&G.p_joinHead)         = pCard; break;
     case CK_JOINNEXT:         *((Card**)&G.p_joinNext)         = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
@@ -2177,8 +2185,10 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINPERMSEQ:      *((Card**)&G.p_joinPermSeq)      = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
-    case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard; break;
-    case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard; break;
+    case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard; break;
     case CK_LOAD:             *((Card**)&G.p_load)             = pCard; break;
@@ -2192,7 +2202,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
     case CK_ON:               *((Card**)&G.p_on)               = pCard; break;
-    case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard; break;
+    case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard;
+                              *((Card**)&G.p_OP)               = pCard;  break;
     case CK_ORPRED:           *((Card**)&G.p_orPred)           = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
     case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
@@ -2200,14 +2211,17 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
-    case CK_SCAN:             *((Card**)&G.p_scan)             = pCard; break;
+    case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
     case CK_SEND:             *((Card**)&G.p_send)             = pCard; break;
     case CK_SIZE:             *((Card**)&G.p_size)             = pCard; break;
-    case CK_SORT:             *((Card**)&G.p_sort)             = pCard; break;
+    case CK_SORT:             *((Card**)&G.p_sort)             = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_STAGE:            *((Card**)&G.p_stage)            = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
-    case CK_TABLE:            *((Card**)&G.p_table)            = pCard; break;
+    case CK_TABLE:            *((Card**)&G.p_table)            = pCard;
+                              *((Card**)&G.p_OP)               = pCard;break;
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
@@ -2216,7 +2230,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
     case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
-    case CK_WHERE:            *((Card**)&G.p_where)            = pCard; break;
+    case CK_WHERE:            *((Card**)&G.p_where)            = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
 
     default:
       NEVER_REACH

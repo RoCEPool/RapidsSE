@@ -111,12 +111,17 @@ void Card_GbyAgg::vEarly_project(CardIter* pCI)
   if (! bIsPartitionLevel())
     return;
 
-  RASSERT(! pCI->EarlyProject.m_pProjection_carry);
+  RASSERT(! pCI->EarlyProject.m_pProjection_reduced);
+
+  pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
 
   // get the carry form of gbyAgg's projection
-  pCI->EarlyProject.m_pProjection_carry =
+  pCI->EarlyProject.m_pProjection_reduced =
       pSub_projection()->pToCarry(pSub_key());
 
+  Card_OP::vEarly_project(pCI);
+
+  // todo: arrived back ...
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,12 +19,19 @@ namespace STORE
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
+    void vEarly_project(CardIter* pCI);
+
     bool bIsNodeLevel(void);
     bool bIsOriginLevel(void);
     bool bIsPartitionLevel(void);
+    bool bNeedsProjectionAnalysis(void);
+    bool bNeedsProjectionCorrection(void);
     bool bPeg_Chosen_index(CardIter* pCI);
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
+
+    void vProjectionAnalysis(CardIter* pCI);
+
   };
 
   Card_OP* _pCard_OP(void* aAddr);

@@ -137,6 +137,7 @@ namespace STORE
 
     Card_Where *         p_where;
 
+    Card_OP *            p_OP;
     Card_PRED *          p_PRED;
 
   private:

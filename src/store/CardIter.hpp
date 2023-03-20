@@ -53,7 +53,8 @@ namespace STORE
     } StreamOrder;
 
     struct {
-      Card_Projection *m_pProjection_carry;
+      Card_OP* m_pOP_root;
+      Card_Projection * m_pProjection_reduced;
     } EarlyProject;
 
   protected:

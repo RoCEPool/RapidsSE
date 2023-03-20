@@ -129,6 +129,7 @@ namespace STORE
 }
 
 static Stz* P_AggOp        = "bAggOp"_Stz;
+static Stz* P_Becomes      = "szBecomes"_Stz;
 static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 static Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
@@ -136,6 +137,7 @@ static Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
 static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 static Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
+static Stz* P_Early        = "bEarly"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Injected     = "bInjected"_Stz;
 static Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;

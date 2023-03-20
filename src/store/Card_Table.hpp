@@ -40,7 +40,6 @@ namespace STORE
     void vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter);
     Stz* szColNm(i8 i_Col_base0);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vProjectionAnalysis(CardIter* pCI);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(char* cTableSyn);
