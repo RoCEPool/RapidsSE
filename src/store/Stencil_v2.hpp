@@ -7,7 +7,7 @@
 #include "eLS.h"
 #include "CodeSynth_v2.hpp"
 #include "CombinedSrc.hpp"
-#include "Shape_v2.hpp"
+#include "OpSketch.hpp"
 #include "Combined.hpp"
 
 // information about the stage being combined and its Operators
@@ -47,9 +47,9 @@ struct stageOps_V2 {
 
 namespace STORE
 {
-static const i8 C_MAX_SHAPES_V2 = 32;
+static const i8 C_MAX_OPS_PER_STAGE = 32;
 
-  class Stencil_v2 : public VectorNL_t<CN_STENCIL_V2,Shape_v2,C_MAX_SHAPES_V2>
+  class Stencil_v2 : public VectorNL_t<CN_STENCIL_V2,OpSketch,C_MAX_OPS_PER_STAGE>
   {
   private:
   
@@ -62,6 +62,8 @@ static const i8 C_MAX_SHAPES_V2 = 32;
     TypedStack* m_pPostStack;
 
     stageOps_V2 m_xStageOps;
+
+    OpSketch     m_xOpSketch[C_MAX_OPS_PER_STAGE];
 
     CombinedSrc* m_pOpSource;
 
@@ -82,10 +84,10 @@ static const i8 C_MAX_SHAPES_V2 = 32;
     CodeSynth_v2* m_pEmptyFun1;
     CodeSynth_v2* m_pEmptyFun2;
 
-    Shape_v2*     m_pShapeCRW;
-    Shape_v2*     m_pShapeROW;
-    Shape_v2*     m_pShapeIDX;
-    Shape_v2*     m_pShapeEOS;
+    OpSketch*     m_pShapeCRW;
+    OpSketch*     m_pShapeROW;
+    OpSketch*     m_pShapeIDX;
+    OpSketch*     m_pShapeEOS;
 
     // must be last
     Footer m_xFooter;
@@ -139,29 +141,29 @@ static const i8 C_MAX_SHAPES_V2 = 32;
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
-    Shape_v2* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    Shape_v2* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
-    Shape_v2* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabel);
+    OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
+    OpSketch* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabel);
 
-    Shape_v2* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
-    Shape_v2* pSketchInflateRow(Stream* pStream, Op* pOp);
-    Shape_v2* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists);
-    Shape_v2* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);
-    Shape_v2* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    Shape_v2* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop);
-    Shape_v2* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
+    OpSketch* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
+    OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp);
+    OpSketch* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists);
+    OpSketch* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);
+    OpSketch* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop);
+    OpSketch* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
-    Shape_v2* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    Shape_v2* pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp,
+    OpSketch* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp,
                                       eSR ePrevStencil_v2, Stz* sLabelLoop);
-    Shape_v2* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
+    OpSketch* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil_v2, Stz* sLabelLoop);
-    Shape_v2* pSketchPot(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
+    OpSketch* pSketchPot(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
                       Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
-    Shape_v2* pSketchReturn(void);
-    Shape_v2* pSketchTub(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
+    OpSketch* pSketchReturn(void);
+    OpSketch* pSketchTub(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
                       Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
-    Shape_v2* pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 
     Footer* aFooter(void);

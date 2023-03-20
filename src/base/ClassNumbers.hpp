@@ -218,6 +218,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPERANDWATCH,
+  /* */ CN_OPSKETCH,
   /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
   /* */ CN_OPTIMISER,
@@ -322,7 +323,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
   /* */ CN_SHAPE,
-  /* */ CN_SHAPE_V2,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -658,6 +658,7 @@ static Stz* aCN[]
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
+  /* */ "OPSKETCH"_Stz,             // CN_OPSKETCH
   /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
   /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
@@ -762,7 +763,6 @@ static Stz* aCN[]
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SHAPE"_Stz,                // CN_SHAPE
-  /* */ "SHAPE_V2"_Stz,             // CN_SHAPE_V2
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
