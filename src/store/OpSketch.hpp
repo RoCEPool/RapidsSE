@@ -27,7 +27,7 @@ namespace STORE
   private:
 
     eLS  m_eStencilSlot;
-    eEK  m_eExpressionKind;
+    eEK  m_eExprKind;
 
     TokenVec* m_pTokenVec;
 
@@ -82,7 +82,7 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
-    OpSketch(Stz* sEprStr, eSR eStencilIn, eSR eStencilOut,
+    OpSketch(Stz* sEprStr, eEK eExprKind, eSR eStencilIn, eSR eStencilOut,
              StreamDef* pStreamDefIn, StreamDef* pStreamDefOut);
 
    ~OpSketch(void) noexcept(false);
@@ -127,9 +127,9 @@ namespace STORE
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack);
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
-    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType,
+    void vPushAggCol(TypedStack *pExprStack, ePE ePreExp, eEK eExprKind, eDM eExprType,
                      i8 i_Col, i8 iColPL, i8& i_DupCtr);
-    void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind,
+    void vPushAssignCol(TypedStack* pExprStack, eEK eExprKind,
                         ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
@@ -141,9 +141,9 @@ namespace STORE
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
-    void vGenerateExpr(char *sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
+    void vGenerateExpr(char *sExpr, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
 
-    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack);
+    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp);
 
   private:
   
