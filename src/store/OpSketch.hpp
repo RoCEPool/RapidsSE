@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Shape.hpp -- Stencil Shape                                                 */
+/* OpSketch.hpp -- Stencil Shape                                              */
 /*============================================================================*/
 #pragma once
 
@@ -22,17 +22,47 @@ namespace STORE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  class Shape_v2 : public Object
+  class OpSketch : public Object
   {
   private:
   
-    eLS        m_eShape;
+    eLS        m_eStencilSlot;
+
+    // definitions
+    StreamDef* m_pStreamDefLft;
+    StreamDef* m_pStreamDefOut;
+    IndexDef*  m_pIndexDef;
+
+    // stencils
+    eSR m_eStencilFrom;
+    eSR m_eStencilTo;
+
+    // expression stacks
+    TypedStack* m_pExprStack;
+    TypedStack* m_pNullStack;
+    TypedStack* m_pGbyStack;
+    TypedStack* m_pOrdAggStack;
+    TypedStack* m_pLowerStack;
+    TypedStack* m_pUpperStack;
+    TypedStack* m_pInitStack;
+
+    s256 m_sLowerPosition;
+    s256 m_sUpperPosition;
+
+    IntStack*  m_pPreExpStack;
+
+    i8 m_iLimitRows;
+
+    /////////////////////////////////
+    // TO GO
+    /////////////////////////////////
     CodeSynth_v2* m_pStructSynthA;
     CodeSynth_v2* m_pStructSynthB;
     CodeSynth_v2* m_pCodeSynthA;
     CodeSynth_v2* m_pCodeSynthB;
     CodeSynth_v2* m_pCodeSynthC;
-  
+    /////////////////////////////////
+
     // must be last
     Footer m_xFooter;
   
@@ -40,8 +70,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Shape_v2(void);
-   ~Shape_v2(void) noexcept(false);
+    OpSketch(void);
+   ~OpSketch(void) noexcept(false);
   
     eLS eShape(void);
     void vShape(eLS eShape);
@@ -65,8 +95,8 @@ namespace STORE
   
     Footer* aFooter(void);
   };
-  
-  Shape_v2* _pShape_v2(void* aAddr);
+
+  OpSketch* _pOpSketch(void* aAddr);
 }
 
 /*============================================================================*/

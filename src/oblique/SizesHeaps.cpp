@@ -159,12 +159,12 @@
 
 #include "SeApi.hpp"
 
+#include "OpSketch.hpp"
 #include "PtnDef.hpp"
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
 #include "Shape.hpp"
-#include "Shape_v2.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
@@ -491,6 +491,7 @@ SizeHeap gxaSizeHeap[]
   {CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    , FILL },
   {CN_OPERANDQUEUE,             sizeof(OperandQueue),       HT_T_TINY    , FILL },
   {CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   , FILL },
+  {CN_OPSKETCH,                 sizeof(OpSketch),           HT_T_TINY    , FILL },
   {CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    , FILL },
   {CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  , FILL },
   {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_LARGE   , FILL },
@@ -595,7 +596,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SENDWL,          sizeof(SendWL),             HT_T_TINY    , FILL },
   { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
   { CN_SHAPE,           sizeof(Shape),              HT_T_TINY    , FILL },
-  { CN_SHAPE_V2,        sizeof(Shape_v2),           HT_T_TINY    , FILL },
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
   { CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
@@ -632,7 +632,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,FILL },
-  { CN_STENCIL_V2,               sizeof(Stencil_v2),         HT_T_SMALL   ,FILL },
+  { CN_STENCIL_V2,               sizeof(Stencil_v2),         HT_T_MEDIUM  ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },
   { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,FILL },
   { CN_STEPS,                    sizeof(Steps),              HT_T_LARGE   ,FILL },

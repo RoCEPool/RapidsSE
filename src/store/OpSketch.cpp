@@ -1,48 +1,76 @@
 
 /*============================================================================*/
-/* Shape_v2.cpp -- Stencil Shape_v2                                                 */
+/* OpSketch.cpp -- Stencil Operator Sketch                                     */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "Shape_v2.hpp"
+#include "OpSketch.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Shape_v2,CN_SHAPE_V2)
-__aNewFunction(Shape_v2,CN_SHAPE_V2)
-__vDeleteFunction(Shape_v2,CN_SHAPE_V2)
-__aFooterFunction(Shape_v2)
+__pCastFunction(STORE,OpSketch,CN_OPSKETCH)
+__aNewFunction(OpSketch,CN_OPSKETCH)
+__vDeleteFunction(OpSketch,CN_OPSKETCH)
+__aFooterFunction(OpSketch)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Shape_v2::Shape_v2(void)
-: Object(CN_SHAPE_V2)
+OpSketch::OpSketch(void)
+: Object(CN_OPSKETCH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
-  
-  m_eShape        = LS_NONE;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  // definitions
+  m_pStreamDefLft = nullptr;
+  m_pStreamDefOut= nullptr;
+  m_pIndexDef= nullptr;
+
+  // stencils
+  m_eStencilFrom = SR_NONE;
+  m_eStencilTo   = SR_NONE;
+
+  // expression stacks
+  m_pExprStack   = nullptr;
+  m_pNullStack   = nullptr;
+  m_pGbyStack    = nullptr;
+  m_pOrdAggStack = nullptr;
+  m_pLowerStack  = nullptr;
+  m_pUpperStack  = nullptr;
+  m_pInitStack   = nullptr;
+
+  m_sLowerPosition = ""_Stz;
+  m_sUpperPosition = ""_Stz;
+
+  m_pPreExpStack = nullptr;;
+
+  m_iLimitRows = 0;
+
+  /////////////////////////////////
+  // TO GO
+  m_eStencilSlot  = LS_NONE;
   m_pStructSynthA = nullptr;
   m_pStructSynthB = nullptr;
   m_pCodeSynthA   = nullptr;
   m_pCodeSynthB   = nullptr;
   m_pCodeSynthC   = nullptr;
+  /////////////////////////////////
 
-  _checkInitialised_(CN_SHAPE_V2);
+  _checkInitialised_(CN_OPSKETCH);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape_v2::~Shape_v2(void) noexcept(false)
+OpSketch::~OpSketch(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   delete m_pStructSynthA;
   delete m_pStructSynthB;
@@ -60,21 +88,21 @@ Shape_v2::~Shape_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get Shape_v2 kind                                                          */
+/* get OpSketch kind                                                          */
 /*----------------------------------------------------------------------------*/
-eLS Shape_v2::eShape(void)
+eLS OpSketch::eShape(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  return m_eShape;
+  return m_eStencilSlot;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get structA synthesiser                                                    */
 /*----------------------------------------------------------------------------*/
-CodeSynth_v2* Shape_v2::pStructSynthA(void)
+CodeSynth_v2* OpSketch::pStructSynthA(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_pStructSynthA;
 }
@@ -82,9 +110,9 @@ CodeSynth_v2* Shape_v2::pStructSynthA(void)
 /*----------------------------------------------------------------------------*/
 /* set structA synthesiser                                                    */
 /*----------------------------------------------------------------------------*/
-void Shape_v2::vStructSynthA(CodeSynth_v2* pStructSynth)
+void OpSketch::vStructSynthA(CodeSynth_v2* pStructSynth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_pStructSynthA = pStructSynth;
 }
@@ -92,9 +120,9 @@ void Shape_v2::vStructSynthA(CodeSynth_v2* pStructSynth)
 /*----------------------------------------------------------------------------*/
 /* get structB synthesiser                                                    */
 /*----------------------------------------------------------------------------*/
-CodeSynth_v2* Shape_v2::pStructSynthB(void)
+CodeSynth_v2* OpSketch::pStructSynthB(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_pStructSynthB;
 }
@@ -102,9 +130,9 @@ CodeSynth_v2* Shape_v2::pStructSynthB(void)
 /*----------------------------------------------------------------------------*/
 /* set structB synthesiser                                                    */
 /*----------------------------------------------------------------------------*/
-void Shape_v2::vStructSynthB(CodeSynth_v2* pStructSynth)
+void OpSketch::vStructSynthB(CodeSynth_v2* pStructSynth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_pStructSynthB = pStructSynth;
 }
@@ -112,9 +140,9 @@ void Shape_v2::vStructSynthB(CodeSynth_v2* pStructSynth)
 /*----------------------------------------------------------------------------*/
 /* get code synthesiser A                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth_v2* Shape_v2::pCodeSynthA(void)
+CodeSynth_v2* OpSketch::pCodeSynthA(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_pCodeSynthA;
 }
@@ -122,9 +150,9 @@ CodeSynth_v2* Shape_v2::pCodeSynthA(void)
 /*----------------------------------------------------------------------------*/
 /* set code synthesiser A                                                     */
 /*----------------------------------------------------------------------------*/
-void Shape_v2::vCodeSynthA(CodeSynth_v2* pCodeSynthA)
+void OpSketch::vCodeSynthA(CodeSynth_v2* pCodeSynthA)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_pCodeSynthA = pCodeSynthA;
 }
@@ -132,9 +160,9 @@ void Shape_v2::vCodeSynthA(CodeSynth_v2* pCodeSynthA)
 /*----------------------------------------------------------------------------*/
 /* get code synthesiser B                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth_v2* Shape_v2::pCodeSynthB(void)
+CodeSynth_v2* OpSketch::pCodeSynthB(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_pCodeSynthB;
 }
@@ -142,9 +170,9 @@ CodeSynth_v2* Shape_v2::pCodeSynthB(void)
 /*----------------------------------------------------------------------------*/
 /* set code synthesiser B                                                     */
 /*----------------------------------------------------------------------------*/
-void Shape_v2::vCodeSynthB(CodeSynth_v2* pCodeSynthB)
+void OpSketch::vCodeSynthB(CodeSynth_v2* pCodeSynthB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_pCodeSynthB = pCodeSynthB;
 }
@@ -152,9 +180,9 @@ void Shape_v2::vCodeSynthB(CodeSynth_v2* pCodeSynthB)
 /*----------------------------------------------------------------------------*/
 /* get code synthesiser C                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth_v2* Shape_v2::pCodeSynthC(void)
+CodeSynth_v2* OpSketch::pCodeSynthC(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_pCodeSynthC;
 }
@@ -162,9 +190,9 @@ CodeSynth_v2* Shape_v2::pCodeSynthC(void)
 /*----------------------------------------------------------------------------*/
 /* set code synthesiser C                                                     */
 /*----------------------------------------------------------------------------*/
-void Shape_v2::vCodeSynthC(CodeSynth_v2* pCodeSynthC)
+void OpSketch::vCodeSynthC(CodeSynth_v2* pCodeSynthC)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_pCodeSynthC = pCodeSynthC;
 }

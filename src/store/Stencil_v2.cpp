@@ -145,7 +145,7 @@ Stencil_v2::Stencil_v2(void)
     m_pEmptyFun0   = new CodeSynth_v2;
     m_pEmptyFun1   = new CodeSynth_v2;
     m_pEmptyFun2   = new CodeSynth_v2;
-    m_pShapeEOS    = new Shape_v2;
+    m_pShapeEOS    = new OpSketch;
   }
   catch (LowMemory xLowMemory) {
 
@@ -309,7 +309,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append shapes
     for (i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
-      Shape_v2 *pShape = pGet(i_Shape);
+      OpSketch *pShape = pGet(i_Shape);
 
       if (pShape->pStructSynthA())
         m_pOpSource->vAppendFragment(pShape->pStructSynthA(), &iLineNumber);
@@ -353,7 +353,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // append shapes
       for (i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
-        Shape_v2 *pShape = pGet(i_Shape);
+        OpSketch *pShape = pGet(i_Shape);
 
         if (pShape->pStructSynthA())
           m_pOpSource->vAppendFragment(pShape->pStructSynthA(), &iLineNumber);
@@ -400,7 +400,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append shapes
     for (i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
-      Shape_v2 *pShape = pGet(i_Shape);
+      OpSketch *pShape = pGet(i_Shape);
 
       if (pShape->pStructSynthA())
         m_pOpSource->vAppendFragment(pShape->pStructSynthA(), &iLineNumber);
@@ -568,7 +568,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  Shape_v2* pShape;
+  OpSketch* pShape;
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil_v2 = SR_NONE;
@@ -1898,7 +1898,7 @@ void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabel)
+OpSketch* Stencil_v2::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabel)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1933,7 +1933,7 @@ Shape_v2* Stencil_v2::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op*
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for struct for streamDefRht
@@ -1962,11 +1962,11 @@ Shape_v2* Stencil_v2::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op*
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
+OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
-  Shape_v2* pShape;
+  OpSketch* pShape;
   CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
@@ -1990,7 +1990,7 @@ Shape_v2* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
 
   // create a new shape for this OP
-  pShape = new Shape_v2;
+  pShape = new OpSketch;
 
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
@@ -2019,11 +2019,11 @@ Shape_v2* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
 /*----------------------------------------------------------------------------*/
 /* sketch scan (inflate crw of crwBuffer)                                     */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
-  Shape_v2* pShape;
+  OpSketch* pShape;
   CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
@@ -2034,7 +2034,7 @@ Shape_v2* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // create a new shape for this OP
-  pShape = new Shape_v2;
+  pShape = new OpSketch;
 
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
@@ -2066,11 +2066,11 @@ Shape_v2* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
 /*----------------------------------------------------------------------------*/
 /* sketch inflate of row from rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
-  Shape_v2 *pShape;
+  OpSketch *pShape;
   CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
@@ -2080,7 +2080,7 @@ Shape_v2* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // create a new shape for this OP
-  pShape = new Shape_v2;
+  pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDefLft
@@ -2101,7 +2101,7 @@ Shape_v2* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch filter                                                              */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2116,7 +2116,7 @@ Shape_v2* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
   //bool bLastFilter = false;
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // get filter expr from OP
   TagSet* pOpTags = pOp->pOpTags();
@@ -2150,7 +2150,7 @@ Shape_v2* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
 /*----------------------------------------------------------------------------*/
 /* sketch keyExists                                                           */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists) {
+OpSketch* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2165,7 +2165,7 @@ Shape_v2* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op*
   //bool bLastFilter = false;
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // get filter expr from OP
   TagSet* pOpTags = pOp->pOpTags();
@@ -2207,7 +2207,7 @@ Shape_v2* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op*
 /*----------------------------------------------------------------------------*/
 /* sketch label                                                               */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2218,7 +2218,7 @@ Shape_v2* Stencil_v2::pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp
   i8 i_Op = pOp->i_Op();
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // form teh labels
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
@@ -2235,7 +2235,7 @@ Shape_v2* Stencil_v2::pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch limit                                                               */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+OpSketch* Stencil_v2::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2246,7 +2246,7 @@ Shape_v2* Stencil_v2::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp
   CodeSynth_v2 *pCodeSynth;
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // get limit from limitOp
   TagSet* pOpTags = pOp->pOpTags();
@@ -2275,7 +2275,7 @@ Shape_v2* Stencil_v2::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch ordered aggregate                                                   */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
+OpSketch* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                               eSR ePrevStencil_v2, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -2303,7 +2303,7 @@ Shape_v2* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pO
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef (aggregate)
@@ -2332,7 +2332,7 @@ Shape_v2* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
+OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                                   eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -2357,7 +2357,7 @@ Shape_v2* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
@@ -2384,7 +2384,7 @@ Shape_v2* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2407,7 +2407,7 @@ Shape_v2* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pO
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
@@ -2437,7 +2437,7 @@ Shape_v2* Stencil_v2::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch project group by expressions                                        */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
+OpSketch* Stencil_v2::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                                   eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -2464,7 +2464,7 @@ Shape_v2* Stencil_v2::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op
   Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
@@ -2490,7 +2490,7 @@ Shape_v2* Stencil_v2::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop) {
+OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2517,7 +2517,7 @@ Shape_v2* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp,
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
@@ -2541,7 +2541,7 @@ Shape_v2* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch top                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+OpSketch* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2552,7 +2552,7 @@ Shape_v2* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_
   CodeSynth_v2 *pCodeSynth;
 
   // create a new shape for this OP
-  Shape_v2 *pShape = new Shape_v2;
+  OpSketch *pShape = new OpSketch;
 
   // get opTags from OP
   TagSet* pOpTags = pOp->pOpTags();
@@ -2584,7 +2584,7 @@ Shape_v2* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_
 /*----------------------------------------------------------------------------*/
 /* sketch pot                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchPot(Op* pLastOp, eSR ePrevStencil_v2,
+OpSketch* Stencil_v2::pSketchPot(Op* pLastOp, eSR ePrevStencil_v2,
                            IntStack* pPreExpStack, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -2595,7 +2595,7 @@ Shape_v2* Stencil_v2::pSketchPot(Op* pLastOp, eSR ePrevStencil_v2,
   RASSERT(pStreamDefOut);
 
   // create a new shape
-  Shape_v2* pShape = new Shape_v2;
+  OpSketch* pShape = new OpSketch;
 
   CodeSynth_v2* pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
 
@@ -2612,12 +2612,12 @@ Shape_v2* Stencil_v2::pSketchPot(Op* pLastOp, eSR ePrevStencil_v2,
 /*----------------------------------------------------------------------------*/
 /* sketch return                                                              */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchReturn(void) {
+OpSketch* Stencil_v2::pSketchReturn(void) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   // create a new shape
-  Shape_v2* pShape = new Shape_v2;
+  OpSketch* pShape = new OpSketch;
 
   CodeSynth_v2* pCodeSynth = new CodeSynth_v2();
 
@@ -2629,7 +2629,7 @@ Shape_v2* Stencil_v2::pSketchReturn(void) {
 /*----------------------------------------------------------------------------*/
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape_v2* Stencil_v2::pSketchTub(Op* pLastOp, eSR ePrevStencil_v2,
+OpSketch* Stencil_v2::pSketchTub(Op* pLastOp, eSR ePrevStencil_v2,
                            IntStack* pPreExpStack, Stz* sLabel,
                            Stz* sLabelLoop, Stz* sLabelOrdAgg) {
 
@@ -2641,7 +2641,7 @@ Shape_v2* Stencil_v2::pSketchTub(Op* pLastOp, eSR ePrevStencil_v2,
   RASSERT(pStreamDefOut);
 
   // create a new shape
-  Shape_v2* pShape = new Shape_v2;
+  OpSketch* pShape = new OpSketch;
 
   CodeSynth_v2* pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
 
