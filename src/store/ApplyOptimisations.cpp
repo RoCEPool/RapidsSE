@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  //vEarly_project_recurse();
+  vEarly_projections();
 }
 
 
@@ -459,7 +459,7 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vEarly_project(void)
+void ApplyOptimisations::vEarly_projections(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
@@ -469,10 +469,12 @@ void ApplyOptimisations::vEarly_project(void)
 
   RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_reduced);
 
-  if (m_pCI->G_bEachMain_reverse()) {
-    if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP)
+  while (m_pCI->G_bEachMain_reverse())
+    if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot())
+      break;
+
+  if (m_pCI->G.p_MainCard && Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot())
       m_pCI->G.p_OP->vEarly_project_root(m_pCI);
-  }
 
   if (m_pCI->EarlyProject.m_pProjection_reduced) {
     DELETE_CARD(m_pCI->EarlyProject.m_pProjection_reduced);

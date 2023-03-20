@@ -24,6 +24,7 @@ namespace STORE
     void vEarly_project_root(CardIter* pCI);
     void vEarly_project_test(CardIter* pCI);
 
+    bool bIsEarlyRoot(void);
     bool bIsNodeLevel(void);
     bool bIsOriginLevel(void);
     bool bIsPartitionLevel(void);

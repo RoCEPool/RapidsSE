@@ -57,14 +57,13 @@ void Card_OrdAgg::vEarly_project_recurse(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! bIsPartitionLevel())
-    return;
+  RASSERT(bIsPartitionLevel());
 
   RASSERT(! pCI->EarlyProject.m_pProjection_reduced);
 
   pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
 
-  // get the carry form of ordAgg's projection
+  // get the reduced form of ordAgg's projection
   pCI->EarlyProject.m_pProjection_reduced =
       pSub_projection()->pToEarlyReduction(pCI, pSub_key());
 

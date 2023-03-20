@@ -17,8 +17,12 @@ namespace STORE
 
     // - - - - - - - - - - - - -
 
+    struct {
+      i8     m_i_Child;
+
+    } Kid;
+
     Card*  m_pCard;
-    i8     m_i_Child;
     Card*  m_pChild;
 
     bool   m_bRecursed;

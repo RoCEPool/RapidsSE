@@ -1077,7 +1077,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     vPrintErrorMarker(argv, i_Arg);
-    vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
+    vTrace("Unrecognized command line argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
   }
 
