@@ -30,6 +30,8 @@ namespace STORE
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
+    Card_Expr* pReProject(void);
+
     i8 iRpnCalc_WhichGbyKey(void);
     Card_Expr* pToCarry_key(void);
   };

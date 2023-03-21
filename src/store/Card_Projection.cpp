@@ -255,14 +255,19 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* re-projection                                                              */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pReProjection(void)
+Card_Projection* Card_Projection::pReProject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_Projection* p_projection_reproject = new Card_Projection;
 
-  return nullptr;
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR)) {
+    p_projection_reproject->vAppend(xCI_this.G.p_expr->pReProject());
+  }
+
+  return p_projection_reproject;
 }
-
 
 
 /*----------------------------------------------------------------------------*/

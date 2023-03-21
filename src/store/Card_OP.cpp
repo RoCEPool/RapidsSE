@@ -540,7 +540,7 @@ void Card_OP::vProjectionAnalysis(CardIter* pCI)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->ProjectionAnalysis.m_pProjection_running)
-    p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pDupCardAndSubCards());
+    p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pReProject());
   else
     p_projection = new Card_Projection;
 

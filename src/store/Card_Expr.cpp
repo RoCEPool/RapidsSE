@@ -251,6 +251,34 @@ void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pReProject(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr_reproject = new Card_Expr;
+
+  p_expr_reproject->vAppend(pSub_type()->pDupCardAndSubCards());
+  if (pSub_as())
+    p_expr_reproject->vAppend(pSub_as()->pDupCardAndSubCards());
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  p_expr_reproject->vAppend(p_rpnCalc);
+
+  if (bIsColOrdinal()) {
+    Card_Term *p_term = _pCard_Term(pProjectedTerm()->pDupCardAndSubCards());
+    p_rpnCalc->vAppend(p_term);
+  }
+  else {
+    Card_Term *p_term = new Card_Term(szValue());
+    p_rpnCalc->vAppend(p_term);
+  }
+
+  return p_expr_reproject;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
