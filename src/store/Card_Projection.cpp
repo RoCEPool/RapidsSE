@@ -60,7 +60,7 @@ Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_proje
         p_projection_early = new Card_Projection;
       p_projection_early->vAppend(xCI_reduced.G.p_expr->pDupCardAndSubCards());
       s32 sBecomes;
-      sBecomes.vSprint("%lld"_Stz,p_projection_early->nChildCards());
+      sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards());
       xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
     }
 
