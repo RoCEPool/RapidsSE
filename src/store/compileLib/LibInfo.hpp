@@ -3,11 +3,24 @@
 /*============================================================================*/
 #pragma once
 
+#include "eEC.h"
+
+namespace BASE { class Text; };
 namespace STORE
 {
   class LibInfo : public Object
   {
+    friend class CompileLib;
+
   private:
+    s256  m_sBaseName;
+    s256  m_sSrcFilePath;
+    s256  m_sObjFilePath;
+    s256  m_sLogFilePath;
+    s256  m_sDynLibPath;
+    void* m_pvDynLib;
+    eEC   m_eErrCode;
+    Text* m_pErrDetails;
 
     // must be last
     Footer m_xFooter;
@@ -19,7 +32,14 @@ namespace STORE
     LibInfo(void);
     ~LibInfo(void);
 
+    eEC  eErrCode();
+    Stz* szErrDetails();
+
     Footer* aFooter(void);
+
+  private:
+    void vClearErrors();
+    Stz* szBaseName();
   };
 
   LibInfo* _pLibInfo(void* aAddr);

@@ -4,8 +4,10 @@
 
 #include "BASE.h"
 #include "LibInfo.hpp"
+#include "Text.hpp"
 
 using namespace STORE;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -23,8 +25,11 @@ LibInfo::LibInfo()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
 
-  _checkInitialised_(CN_LIBINFO);
+  m_pvDynLib = nullptr;
+  m_eErrCode = EC_NONE;
+  m_pErrDetails = nullptr;
 
+  _checkInitialised_(CN_LIBINFO);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
 }
 
@@ -35,9 +40,64 @@ LibInfo::LibInfo()
 LibInfo::~LibInfo()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  ASSERT(m_pvDynLib == nullptr);
 
+  delete m_pErrDetails;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Public Functions---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Return the error code, or EC_NONE if there wasn't an error                 */
+/*----------------------------------------------------------------------------*/
+eEC LibInfo::eErrCode()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_eErrCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return any additional error details, or nullptr if there weren't any       */
+/*----------------------------------------------------------------------------*/
+Stz* LibInfo::szErrDetails()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  if (!m_pErrDetails) {
+    return nullptr;
+  }
+
+  return m_pErrDetails->szGet();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Return any additional error details, or nullptr if there weren't any       */
+/*----------------------------------------------------------------------------*/
+void LibInfo::vClearErrors()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  m_eErrCode = EC_NONE;
+
+  if (m_pErrDetails) {
+    delete m_pErrDetails;
+    m_pErrDetails = nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the name of the dynamic library being created (without extension)  */
+/*----------------------------------------------------------------------------*/
+Stz* LibInfo::szBaseName()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_sBaseName.szStz();
+}
 
 /*============================================================================*/
 /* end                                                                        */

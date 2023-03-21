@@ -14,13 +14,14 @@ namespace STORE
     CompileLib();   // No instantiating please, static only.
 
   public:
-    static void vInit();
+    static bool bInit();
     // TODO: list known compilers
 
-    static bool bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo);
-    static bool bDynamicLink(LibInfo* pLibInfo);
-    static bool bDynamicUnlink(LibInfo* pLibInfo);
-    static bool bDelete(LibInfo* pLibInfo);
+    static bool  bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo);
+    static bool  bDynamicLink(LibInfo* pLibInfo);
+    static void* pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo);
+    static bool  bDynamicUnlink(LibInfo* pLibInfo);
+    static bool  bDelete(LibInfo* pLibInfo);
   };
 } // STORE
 
