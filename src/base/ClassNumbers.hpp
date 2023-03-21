@@ -158,6 +158,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LARGEVIRTUAL,
   /* */ CN_LGLBUFSET,
   /* */ CN_LGLPTNMAP,
+  /* */ CN_LIBINFO,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
@@ -578,6 +579,7 @@ static Stz* aCN[]
   /* */ "LARGEVIRTUAL"_Stz,         // CN_LARGEVIRTUAL
   /* */ "LGLBUFSET"_Stz,            // CN_LGLBUFSET
   /* */ "LGLPTNMAP"_Stz,            // CN_LGLPTNMAP
+  /* */ "LIBINFO"_Stz,              // CN_LIBINFO
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
