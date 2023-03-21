@@ -12,7 +12,7 @@ namespace STORE
   {
     friend class CardIter;
   private:
-    Card*  m_pCard;
+    Card*  m_pParent;
     i8     m_i_Child;
     Card*  m_pChild;
 
@@ -22,12 +22,30 @@ namespace STORE
     void vBeginForward(void);
     void vBeginReverse(void);
 
+    void vFirst(void);
+    void vLast(void);
+    void vNext(void);
+    void vPrev(void);
+
+    Card* pParent(void);
+    Card* pChild(void);
+    Card* pChild(i8 i_Child);
+
+    Card* pFirstChild(void);
+    Card* pNextChild(void);
+    Card* pPrevChild(void);
+    Card* pLastChild(void);
+
+    bool bIsFirst(void);
+    bool bIsLast(void);
+
     void vForward(void);
     void vReverse(void);
 
     bool bInRange(void);
+    i8   nChildren(void);
 
-    void vSet(Card*  pCard);
+    void vParent(Card*  pParent);
     void vReset(void);
 
   };
