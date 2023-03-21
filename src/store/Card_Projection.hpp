@@ -16,6 +16,9 @@ namespace STORE
     Card_Projection(void);
    ~Card_Projection(void) noexcept(false);
 
+    static Card_Projection* pNew_projection_early(Card_Projection* p_projection_running,
+                                                  Card_Projection* p_projection_reduced);
+
     static void vProjection_Analysis_v2(CardIter* pCI);
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
@@ -24,6 +27,8 @@ namespace STORE
     void vDelete_key(CardIter* pCI);
 
     Card_Expr* pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol);
+
+    bool bHasSame(Card_Expr* p_expr_arg);
 
     void vKeyProjection(CardIter* pCI);
 

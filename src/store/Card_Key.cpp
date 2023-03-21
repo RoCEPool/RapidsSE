@@ -92,7 +92,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   if (p_type_this) {
     if (p_type_arg) {
-      if (! p_type_this->bIsEqual(p_type_arg))
+      if (!p_type_this->bIsSame(p_type_arg))
         return false;
     }
     else {
@@ -111,7 +111,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   if (p_rpnCalc_this) {
     if (p_rpnCalc_arg) {
-      if (! p_rpnCalc_this->bIsEqual(p_rpnCalc_arg))
+      if (!p_rpnCalc_this->bIsSame(p_rpnCalc_arg))
         return false;
     }
     else {

@@ -60,7 +60,7 @@ Stz* Card_Type::szTypeShort(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Type::bIsEqual(Card_Type* p_type_arg)
+bool Card_Type::bIsSame(Card_Type* p_type_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

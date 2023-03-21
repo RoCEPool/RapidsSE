@@ -193,6 +193,26 @@ bool Card_Expr::bIsProjectedCol(Stz* szProjectedCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Type* p_type_this = this->pSub_type();
+  Card_Type* p_type_arg  = p_expr_arg->pSub_type();
+  if (!p_type_this->bIsSame(p_type_arg))
+    return false;
+
+  Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
+  Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();
+  if (!p_rpnCalc_this->bIsSame(p_rpnCalc_arg))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Card_Expr::szProjectedCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

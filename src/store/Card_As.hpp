@@ -15,6 +15,8 @@ namespace STORE
   
     Card_As(Stz* szAs);
    ~Card_As(void) noexcept(false);
+
+    bool bIsSame(Card_As* p_as_arg);
   };
 
   Card_As* _pCard_As(void* aAddr);

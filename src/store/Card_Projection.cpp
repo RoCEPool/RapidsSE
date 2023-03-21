@@ -44,6 +44,31 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_projection,
+                                                        Card_Projection *p_projection_reduced)
+{
+  _static_
+
+  Card_Projection* p_projection_early = nullptr;
+
+  CardIter xCI_reduced(p_projection_reduced);
+  while (xCI_reduced.G_bEachMain(CK_EXPR)) {
+    if (p_projection->bHasSame(xCI_reduced.G.p_expr)) {
+      if (! p_projection_early)
+        p_projection_early = new Card_Projection;
+      p_projection_early->vAppend(xCI_reduced.G.p_expr->pDupCardAndSubCards());
+    }
+
+  }
+
+  //Card_Projection* p_projection_early = _pCard_Projection(p_projection_reduced->pDupCardAndSubCards());
+
+  return p_projection_early;
+}
+
+/*----------------------------------------------------------------------------*/
 /* projection analysis (post fold)                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
@@ -175,6 +200,21 @@ Card_Expr* Card_Projection::pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol
   }
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Projection::bHasSame(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR))
+    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+      return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

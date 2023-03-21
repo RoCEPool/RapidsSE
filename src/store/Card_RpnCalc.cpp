@@ -190,7 +190,7 @@ bool Card_RpnCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsEqual(Card_RpnCalc* p_rpnCalc_arg)
+bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
