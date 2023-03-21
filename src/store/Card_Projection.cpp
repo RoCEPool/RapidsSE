@@ -265,7 +265,9 @@ Card_Projection* Card_Projection::pReProject(void)
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR)) {
-    p_projection_reproject->vAppend(xCI_this.G.p_expr->pReProject());
+    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pReProject();
+    p_projection_reproject->vAppend(p_expr_reprojected);
+    p_expr_reprojected->vRenumber(p_projection_reproject->nChildCards());
   }
 
   return p_projection_reproject;
