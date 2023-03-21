@@ -90,7 +90,7 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 //  pCI->G_vInsertAfter(p_project,this);
 
 
-  //vProjectionAnalysis(pCI);
+  vProjectionAnalysis(pCI);
 
   vDebugPoint();
 }

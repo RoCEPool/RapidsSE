@@ -546,6 +546,8 @@ void Card_OP::vProjectionAnalysis(CardIter* pCI)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 
+  char cTblSyn = bIsCard(CK_TABLE) ? cValue() : pSub_table()->cValue();
+
   i8 i_Expr = p_projection->nExpr() + 1;
 
   i8 nCols = pStreamDef->nColumns();
@@ -567,7 +569,7 @@ void Card_OP::vProjectionAnalysis(CardIter* pCI)
     p_expr->vAppend(p_rpnCalc);
 
     Card_Term* p_term = new Card_Term;
-    p_term->vValueSprint("$%c.%lld"_Stz,cValue(),i_Col+1);
+    p_term->vValueSprint("$%c.%lld"_Stz,cTblSyn,i_Col+1);
     p_rpnCalc->vAppend(p_term);
   }
 
@@ -575,69 +577,6 @@ void Card_OP::vProjectionAnalysis(CardIter* pCI)
 
   pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
 }
-/*----------------------------------------------------------------------------*/
-//void Card_OP::vProjectionAnalysis(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  if (!bNeedsProjectionAnalysis() )
-//    return;
-//
-//  Card_Projection* p_projection;
-//
-//  if ((p_projection = pSub_projection()))
-//    vRemoveDeleteChild(p_projection);
-//
-//  if (pSub_keyExists() || pSub_keyNotExists()) {
-//    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
-//    vAppend(p_projection);
-//    pCI->G.p_projection = p_projection;
-//    return;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  pCI->G.p_tableNm = pSub_tableNm();
-//
-//  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
-//  StreamDef* pStreamDef = pTable->pStreamDef();
-//
-//  if (pCI->G.p_projection)
-//    p_projection = _pCard_Projection(pCI->G.p_projection->pDupCardAndSubCards());
-//  else
-//    p_projection = new Card_Projection;
-//
-//  //  --  --  --  --  --  --  --  --  --  --  --  --  --
-//
-//  i8 i_Expr = p_projection->nExpr() + 1;
-//
-//  i8 nCols = pStreamDef->nColumns();
-//  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-//    Column *pColumn = pStreamDef->pGetColumn(i_Col);
-//
-//    Card_Expr* p_expr = new Card_Expr;
-//    p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
-//    p_projection->vAppend(p_expr);
-//
-//    Stz* szType = aCT[pColumn->eColumnType()];
-//    Card_Type *pCard_Type = new Card_Type(szType);
-//    p_expr->vAppend(pCard_Type);
-//
-//    Card_As* p_as = new Card_As(pColumn->szColNm());
-//    p_expr->vAppend(p_as);
-//
-//    Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-//    p_expr->vAppend(p_rpnCalc);
-//
-//    Card_Term* p_term = new Card_Term;
-//    p_term->vValueSprint("$%c.%lld"_Stz,cValue(),i_Col+1);
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//
-//  vAppend(p_projection);
-//
-//  pCI->G.p_projection = p_projection;
-//}
 
 /*============================================================================*/
 /* end                                                                        */

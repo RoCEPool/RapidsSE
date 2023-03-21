@@ -98,6 +98,8 @@ void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
 
   //vProjectionAnalysis(pCI);
 
+  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+
   vDebugPoint();
 }
 
