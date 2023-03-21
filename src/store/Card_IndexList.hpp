@@ -23,6 +23,9 @@ namespace STORE
     Card_Index* pFindChosenIndex(void);
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
+
+    void vTermsBecome(Card_Projection* p_projection_reduced);
+
   };
 
   Card_IndexList* _pCard_IndexList(void* aAddr);

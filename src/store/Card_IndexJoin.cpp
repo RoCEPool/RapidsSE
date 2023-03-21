@@ -84,6 +84,13 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   // arrived back ...
 
+  pCI->G.p_filter = pSub_filter();
+  pCI->G.p_filter->vTermsBecome(pCI->EarlyProject.m_pProjection_reduced);
+
+  pCI->G.p_indexList = pSub_indexList();
+  pCI->G.p_indexList->vTermsBecome(pCI->EarlyProject.m_pProjection_reduced);
+
+
   pCI->G.p_projection = pSub_projection();
   Card_Project* p_project = Card_Project::pNew_project_early(pCI->G.p_projection,
                                                              pCI->EarlyProject.m_pProjection_reduced);

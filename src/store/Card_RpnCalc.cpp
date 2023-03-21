@@ -287,15 +287,8 @@ void Card_RpnCalc::vTermsBecome(Card_Projection* p_projection_reduced)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_TERM)) {
-
-    Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(xCI_this.G.p_term->szValue());
-    if (! p_expr_repl)
-      continue;
-
-    xCI_this.G.p_term->vValue(p_expr_repl->Y_szGet(P_Becomes));
-  }
-
+  while (xCI_this.G_bEachMain(CK_TERM))
+    xCI_this.G.p_term->vTermBecomes(p_projection_reduced);
 }
 
 /*----------------------------------------------------------------------------*/

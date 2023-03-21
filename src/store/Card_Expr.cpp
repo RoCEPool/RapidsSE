@@ -264,6 +264,11 @@ Card_Expr* Card_Expr::pReProject(void)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_expr_reproject->vAppend(p_rpnCalc);
 
+  if (Y_bHas(P_Becomes)) {
+    Card_Term *p_term = new Card_Term(Y_szGet(P_Becomes));
+    p_rpnCalc->vAppend(p_term);
+  }
+  else
   if (bIsColOrdinal()) {
     Card_Term *p_term = _pCard_Term(pProjectedTerm()->pDupCardAndSubCards());
     p_rpnCalc->vAppend(p_term);

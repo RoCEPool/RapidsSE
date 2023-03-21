@@ -42,6 +42,7 @@ namespace STORE
     bool bIsTblColOdn(void); // $c.n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);
     void vReplace_sqCall_With_sqResult(Stz* szStmColOdn);
+    void vTermBecomes(Card_Projection* p_projection_reduced);
     eTE  eTermEval(void);
   };
 

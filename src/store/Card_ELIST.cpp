@@ -251,12 +251,17 @@ void Card_ELIST::vTermsBecome(Card_Projection* p_projection_reduced)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_RpnCalc *p_rpnCalc = xCI_this.G.p_expr->pSub_rpnCalc();
+  CardIter xCI_expr(this);
+  while (xCI_expr.G_bEachMain(CK_EXPR)) {
+    Card_RpnCalc *p_rpnCalc = xCI_expr.G.p_expr->pSub_rpnCalc();
     if (!p_rpnCalc)
       continue;
     p_rpnCalc->vTermsBecome(p_projection_reduced);
+  }
+
+  CardIter xCI_key(this);
+  while (xCI_key.G_bEachMain(CK_KEY)) {
+    xCI_key.G.p_key->vTermsBecome(p_projection_reduced);
   }
 
 }

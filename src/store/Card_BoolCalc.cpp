@@ -396,6 +396,40 @@ Card_PRED* Card_BoolCalc::pRootPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vTermsBecome(Card_Projection* p_projection_reduced)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [this, p_projection_reduced](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+
+    Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(p_term->szValue());
+    if (! p_expr_repl)
+      return C_CONTINUE_RECURSION;
+
+    p_term->vValue(p_expr_repl->Y_szGet(P_Becomes));
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = pRootPred()->bPredRecursive(bLambdaFn);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bIsBraced(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
