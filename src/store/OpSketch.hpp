@@ -8,14 +8,9 @@
 
 namespace STORE
 {
-  // shape reference information
-  struct ShapeRef_v2
-  {
-    Stz* m_szInclude;
-  };
 
   // stencil row reference information
-  struct RowRef_v2
+  struct StencilRow
   {
     Stz* m_szInclude;
   };
