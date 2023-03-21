@@ -67,9 +67,21 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pCI->EarlyProject.m_pProjection_reduced =
       pSub_projection()->pToEarlyReduction(pCI, pSub_key());
 
+  pCI->vSave();
   Card_OP::vEarly_project_test(pCI);
+  pCI->vSave();
 
   // todo: arrived back ...
+
+  pCI->G.p_key = pSub_key();
+  pCI->G.p_key->vTermsBecome(pCI->EarlyProject.m_pProjection_reduced);
+
+
+  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection->vTermsBecome(pCI->EarlyProject.m_pProjection_reduced);
+
+  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
+
 
   vDebugPoint();
 }

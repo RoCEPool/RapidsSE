@@ -24,10 +24,11 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasWhen(void);
     bool bIsBraced(void);
-    bool bIsEqual(Card_RpnCalc* p_rpnCalc_arg);
+    bool bIsSame(Card_RpnCalc* p_rpnCalc_arg);
     bool bIsSingleCol(void);
     void vOntoStzList(StzList* pStzList);
     Stz* szProjectedCol(void);
+    void vTermsBecome(Card_Projection* p_projection_reduced);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
     i8 nTrimTerm(Stz* szValue);
   };

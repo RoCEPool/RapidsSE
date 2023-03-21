@@ -44,6 +44,34 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_projection,
+                                                        Card_Projection *p_projection_reduced)
+{
+  _static_
+
+  Card_Projection* p_projection_early = nullptr;
+
+  CardIter xCI_reduced(p_projection_reduced);
+  while (xCI_reduced.G_bEachMain(CK_EXPR)) {
+    if (Card_Expr* p_expr_has = p_projection->pHasSame(xCI_reduced.G.p_expr)) {
+      if (! p_projection_early)
+        p_projection_early = new Card_Projection;
+      p_projection_early->vAppend(xCI_reduced.G.p_expr->pDupCardAndSubCards());
+      s32 sBecomes;
+      sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards());
+      xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
+    }
+
+  }
+
+  //Card_Projection* p_projection_early = _pCard_Projection(p_projection_reduced->pDupCardAndSubCards());
+
+  return p_projection_early;
+}
+
+/*----------------------------------------------------------------------------*/
 /* projection analysis (post fold)                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
@@ -121,7 +149,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     // the <gbyAgg>/<projection>/<expr> is a single projected column
 
     // get corresponding <gbyAgg>/<key>/<expr>
-    Card_Term* pTerm_prj = p_expr_prj->szProjectedTerm();
+    Card_Term* pTerm_prj = p_expr_prj->pProjectedTerm();
     Card_Expr* p_expr_key = pCI->G.p_key->pGetExpr(pTerm_prj);
 
     if (! p_expr_key)
@@ -163,7 +191,7 @@ void Card_Projection::vDelete_key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol)
+Card_Expr* Card_Projection::pFind_expr_By_projectedCol(Stz* szCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -173,6 +201,21 @@ Card_Expr* Card_Projection::pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol
     if (p_expr->bIsProjectedCol(szCol))
       return p_expr;
   }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pHasSame(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR))
+    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+      return xCI_this.G.p_expr;
 
   return nullptr;
 }
@@ -220,6 +263,8 @@ Card_Projection* Card_Projection::pReProjection(void)
   return nullptr;
 }
 
+
+
 /*----------------------------------------------------------------------------*/
 /* get the reduced form of this projection for use with early project         */
 /*----------------------------------------------------------------------------*/
@@ -233,6 +278,7 @@ Card_Projection* Card_Projection::pToEarlyReduction(CardIter* pCI, Card_Key* p_k
   // 1) make a copy of the key as start of reduced projection
 
   Card_Projection* p_projection_reduced = new Card_Projection;
+  p_projection_reduced->Y_vSet(P_Reduced);
 
   CardIter xCI_key(p_key);
   while (xCI_key.G_bEachMain(CK_EXPR)) {
@@ -253,7 +299,7 @@ Card_Projection* Card_Projection::pToEarlyReduction(CardIter* pCI, Card_Key* p_k
     while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
         if (! xCI_rpnCalc.G.p_term->bIsColOdn())
           continue;
-        if (p_projection_reduced->pFind_expr_By_projectedCol(pCI, xCI_rpnCalc.G.p_term->szValue()))
+        if (p_projection_reduced->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szValue()))
           continue;
 
         if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))

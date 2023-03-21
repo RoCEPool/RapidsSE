@@ -49,19 +49,45 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Project* Card_Project::pNew_project(Card_Projection *p_projection)
+//Card_Project* Card_Project::pNew_project(Card_Projection *p_projection)
+//{
+//  _static_
+//
+//  Card_Project* p_project = new Card_Project(CK_PROJECT);
+//
+//  Card_Level* p_level = new Card_Level(AL_PARTITION);
+//  p_project->vAppend(p_level);
+//
+//  p_project->vAppend(p_projection);
+//
+//  return p_project;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Project* Card_Project::pNew_project_early(Card_Projection *p_projection,
+                                               Card_Projection *p_projection_reduced)
+
 {
   _static_
 
-  Card_Project* p_project = new Card_Project(CK_PROJECT);
+  Card_Project* p_project_early = new Card_Project(CK_PROJECT);
+  p_project_early->Y_vSet(P_Early);
 
   Card_Level* p_level = new Card_Level(AL_PARTITION);
-  p_project->vAppend(p_level);
+  p_project_early->vAppend(p_level);
 
-  p_project->vAppend(p_projection);
+  Card_Projection* p_projection_early = Card_Projection::pNew_projection_early(p_projection,
+                                                                               p_projection_reduced);
+  p_project_early->vAppend(p_projection_early);
 
-  return p_project;
+  // debug
+  p_project_early->vAppend(p_projection_reduced->pDupCardAndSubCards());
+
+  return p_project_early;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

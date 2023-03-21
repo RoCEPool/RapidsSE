@@ -2943,7 +2943,7 @@ bool StrLib::bIsEmpty(char* ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bIsEqual: is char an equal?                                                */
+/* bIsSame: is char an equal?                                                */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsEqual(const char c)
 {
