@@ -82,6 +82,9 @@ Card_Project* Card_Project::pNew_project_early(Card_Projection *p_projection,
                                                                                p_projection_reduced);
   p_project_early->vAppend(p_projection_early);
 
+  // debug
+  p_project_early->vAppend(p_projection_reduced->pDupCardAndSubCards());
+
   return p_project_early;
 }
 

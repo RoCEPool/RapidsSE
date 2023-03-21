@@ -92,9 +92,10 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   pCI->ProjectionAnalysis.m_pProjection_running = p_project->pSub_projection();
 
-  pCI->vPrintBoard();
 
   vProjectionAnalysis(pCI);
+
+  pCI->vPrintBoard();
 
   vDebugPoint();
 }

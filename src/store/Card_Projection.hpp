@@ -28,7 +28,7 @@ namespace STORE
 
     Card_Expr* pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol);
 
-    bool bHasSame(Card_Expr* p_expr_arg);
+    Card_Expr* pHasSame(Card_Expr* p_expr_arg);
 
     void vKeyProjection(CardIter* pCI);
 
