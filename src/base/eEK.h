@@ -19,7 +19,7 @@ enum eEK // expression kind
   /*   */ EK_SORT,       // sort
   /*   */ EK_TOP,        // top
 
-  /*10 */ ET_ENUMS
+  /*   */ ET_ENUMS
 };
 
 static Stz* aEK[]
@@ -33,12 +33,12 @@ static Stz* aEK[]
   /*   */ "HASH"_Stz,
   /*   */ "INDEXJOIN"_Stz,
   /*   */ "INDEXSCAN"_Stz,
-  /*   */ "EK_ORDGROUPBY"_Stz,
+  /*   */ "ORDGROUPBY"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SORT"_Stz,
   /*   */ "TOP"_Stz,
 
-  /*10 */ "ENUMS"_Stz
+  /*   */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

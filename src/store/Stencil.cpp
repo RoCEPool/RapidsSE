@@ -757,7 +757,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupSort(pCombined, pStream, pOp);
 
       if (m_xStageOps.m_pPostProjectOp) {
-
+        RASSERT(0);
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
         vAppend(pShape);
@@ -825,6 +825,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
           ePrevStencil = SR_AT;
         }
+      }
+      else {
+        RASSERT(0);
       }
 
     }
@@ -1484,6 +1487,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // create RowSingleP
   if (m_xStageOps.m_pPostProjectOp) {
+    RASSERT(0);
     pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
     pCombined->aCombinedT()->m_aRowCellArrayP =
         (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleP,
@@ -1760,6 +1764,8 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   if (m_xStageOps.m_pPostProjectOp) {
 
+    RASSERT(0);
+
     pLogicUnit = m_xStageOps.m_pPostProjectOp->pOpLogicUnit();
     pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
@@ -1810,8 +1816,10 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
-  if (m_xStageOps.m_pPostProjectOp)
+  if (m_xStageOps.m_pPostProjectOp) {
+    RASSERT(0);
     m_pShapeEOS->vCodeSynthC(pCodeSynth);
+  }
   else
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -3081,6 +3089,7 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
       // is this project after the sort ?
       if (m_xStageOps.m_iSortOp) {
+        RASSERT(0);
         m_xStageOps.m_pPostProjectOp = pOp;
       }
       m_xStageOps.m_iProjectOp++;

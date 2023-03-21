@@ -1003,11 +1003,6 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
         continue;
       }
 
-//      if (pTkn->bIsString()) {
-//        pExprStack->vPushPtr(pTkn);
-//        continue;
-//      }
-
       vPushRelational(pExprStack, pExprType, pTkn);
       continue;
     }
@@ -1028,9 +1023,6 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
   nExpr = pExprType->nItems();
   RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
-
-  //if (pExprStack == pPostStack)
-  //  pExprStack = m_pExprStack;
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
     vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
@@ -1239,13 +1231,6 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
                         xStencilRow[m_eStencilTo], sColumn.azChar());
 
   if (m_eExprKind == EK_AGGGBY) {
-//    if (bHashRows)
-//      sStructColumn.vSprint("p%s_pot->%s"_Stz,
-//                            xStencilRow[m_eStencilTo], sColumn.azChar());
-//    else
-//      sStructColumn.vSprint("p%s_tub->%s"_Stz,
-//                            xStencilRow[m_eStencilTo], sColumn.azChar());
-
     vInitAgg(ePreExp);
     sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
@@ -1746,21 +1731,9 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   // column ordinal relative to the left join table
   if (pTkn->szChars()->bContains("L"_Stz)) {
 
-    // RASSERT(0);
     // get the column ordinal
     sOrdinalColumn = pTkn->szChars() + 2;
     i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-//
-//    // look for the column in the streamDefLft
-//    if (i_ColumnOrdinal > nColumns)
-//      RASSERT(0);
-//
-//    // select left column
-//    vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
-//    pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
-//    //pExprStack->vPushStz(sColumn);
-
-//    return true;
   }
   else {
 
@@ -1780,25 +1753,6 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   // select left column
   vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
 
-  // push PSHCOL
-//  if ( m_eStencilFrom == SR_PL) {
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // is column in the key ?
-//    Column* pIndexColumn = m_pIndexDef->pFindColumn(pColumn->iColumnNo());
-//
-//    if (pIndexColumn) {
-//      RASSERT(m_pIndexDef->eKeyKind() == KE_INT);
-//      // get the index col no maching the streamDef column no
-//      i8 iIndexCol = m_pIndexDef->iGetColumn(pColumn->iColumnNo());
-//      sPush.vSprint("_PSH_COL(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0 + (%lld*8))"_Stz, iIndexCol);
-//      pExprStack->vPushStz(sPush);
-//    }
-//    else {
-//      sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-//      pExprStack->vPushStz(sPush);
-  //  }
-//  }
-//  else {
   sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
   pExprStack->vPushStz(sPush);
 
@@ -1988,12 +1942,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
     case EK_ORDGROUPBY:
       RASSERT(ePreExp == PE_GBY);
-
-//      if (m_pIndexDef->eKeyKind()) {
-//        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
-//        pExprStack->vPushStz(sPush);
-//      }
-
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
       pExprStack->vPushStz(sPush);
@@ -2029,14 +1977,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       break;
 
     case EK_INDEXSCAN:
-      // make the column name
-      //vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
-//      if (m_pIndexDef->nColumns() > 1) {
-//        vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
-//        RASSERT(m_pIndexDef->nColumns() == 1);
-//      }
-
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyT)\n"_Stz);
         pExprStack->vPushStz(sPush);
@@ -2055,7 +1995,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       break;
 
     case EK_PROJECT:
-
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -2064,15 +2003,12 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       break;
 
     case EK_HASH:
-
       // assign to iMixIn
       sPush.vSprint("_ASSIGN(iMixIn)\n"_Stz);
       pExprStack->vPushStz(sPush);
       break;
 
     case EK_SORT:
-      //RASSERT(ePreExp == PE_SRT);
-
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
         pExprStack->vPushStz(sPush);
@@ -2143,12 +2079,6 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // CASE EXPRESSIONS
     case PE_CSE:
-      //eExpr1 = (eDM)pTypeStack->iPop();
-      //eExpr2 = (eDM)pTypeStack->iPop();
-      //sOperation = aFM[eMacro_Inx[eExpr1][eExpr2]];
-      //sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
-      //pExprStack->vPushStz(sOperation);
-      //pTypeStack->vPush(DM_BOL);
       break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2337,18 +2267,7 @@ TypedStack* OpSketch::pWorkingStack(eEK m_eExprKind, ePE ePreExp)
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
-
-      //if (ePreExp == PE_GKY)
-      //  return m_pExprStack;
-
-//      if (ePreExp == PE_ALL ||
-//          ePreExp == PE_CNT ||
-//          ePreExp == PE_MIN ||
-//          ePreExp == PE_MAX ||
-//          ePreExp == PE_SUM) {
-//        return pPostStack;
-//      }
-//      else
+      else
         return m_pInitStack;
 
     case EK_AGGORD:

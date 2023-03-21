@@ -37,7 +37,6 @@ struct stageOps_V2 {
 
   Op* m_pCombinedOp;
   Op* m_pHavingFilterOp;
-  Op* m_pPostProjectOp;
   Op* m_pLimitOp;
 
   s256 m_sHashExpr;

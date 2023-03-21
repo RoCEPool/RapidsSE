@@ -13,7 +13,6 @@ enum eSR // stencil row
   /*    */ SR_PL,   // project PayLoad
   /*    */ SR_PT,   // project T
   /*    */ SR_TJ,   // join T with J
-  /*    */ SR_H,    // project of join
 
   /*    */ SR_ENUMS
 };
@@ -28,7 +27,6 @@ static Stz* aSR[]
   /*    */ "SR_PL"_Stz,
   /*    */ "SR_PT"_Stz,
   /*    */ "SR_TJ"_Stz,
-  /*    */ "SR_H"_Stz,
 
   /*    */ "ENUMS"_Stz
 };

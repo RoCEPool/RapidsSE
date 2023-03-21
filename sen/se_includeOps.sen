@@ -109,6 +109,7 @@ assert::stack_0
 
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
+  "OP_filter_v2.sen"            include
   "OP_flushDemon.sen"           include
   "OP_forkCommand.sen"          include
 

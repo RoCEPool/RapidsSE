@@ -697,6 +697,9 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
+//      if (AggregateExpr::bIsOfType(pExprNode)) {
+//        vTrace("Its an aggregate\n"_Stz);
+//      }
       RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
