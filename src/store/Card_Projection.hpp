@@ -23,17 +23,11 @@ namespace STORE
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
     void vAs_Review(CardIter* pCI);
-
     void vDelete_key(CardIter* pCI);
-
-    Card_Expr* pFind_expr_By_projectedCol(CardIter* pCI, Stz* szCol);
-
+    Card_Expr* pFind_expr_By_projectedCol(Stz* szCol);
     Card_Expr* pHasSame(Card_Expr* p_expr_arg);
-
     void vKeyProjection(CardIter* pCI);
-
     Card_Projection* pReProjection(void);
-
     Card_Projection* pToCarry(Card_Key* p_key);
     Card_Projection* pToEarlyReduction(CardIter* pCI, Card_Key* p_key);
   };

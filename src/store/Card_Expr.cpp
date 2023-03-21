@@ -225,7 +225,7 @@ Stz* Card_Expr::szProjectedCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Expr::szProjectedTerm(void)
+Card_Term* Card_Expr::pProjectedTerm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

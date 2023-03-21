@@ -228,8 +228,6 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
   //vPrintCard_bySettings(pRibbon, iDepth);
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
@@ -243,6 +241,24 @@ void Card_ELIST::vRenumberAllExpr(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
     xCI.G.p_expr->vRenumber(i_Expr++, bIsKeyExpr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_ELIST::vTermsBecome(Card_Projection* p_projection_reduced)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR)) {
+    Card_RpnCalc *p_rpnCalc = xCI_this.G.p_expr->pSub_rpnCalc();
+    if (!p_rpnCalc)
+      continue;
+    p_rpnCalc->vTermsBecome(p_projection_reduced);
+  }
+
 }
 
 /*============================================================================*/

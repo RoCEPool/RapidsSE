@@ -28,7 +28,7 @@ namespace STORE
     bool bIsProjectedCol(Stz* szProjectedCol);
     bool bIsSame(Card_Expr* pExpr_arg);
     Stz* szProjectedCol(void);
-    Card_Term* szProjectedTerm(void);
+    Card_Term* pProjectedTerm(void);
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
     i8 iRpnCalc_WhichGbyKey(void);
     Card_Expr* pToCarry_key(void);

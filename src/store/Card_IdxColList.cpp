@@ -55,7 +55,7 @@ void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_projectedCol(pCI, pCI->G.p_idxCol->szValue());
+     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_projectedCol(pCI->G.p_idxCol->szValue());
     if (!pCI->G.p_expr)
       continue;
 
