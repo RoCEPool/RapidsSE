@@ -14,8 +14,8 @@ namespace STORE
   private:
     Card*  m_pParent;
   public:
-    i8     m_i_Child;
     Card*  m_pChild;
+    i8     m_i_Child;
 
     bool   m_bActive;
 

@@ -27,8 +27,6 @@ CardIter::CardIter(Card*  pCard)
   _precondition_(_MAGIC_,_FOOTER_);
 
   G.xKid.vParent(pCard);
-  G.xKid.m_i_Child = C_UNKNOWN;
-  G.xKid.m_pChild  = nullptr;
 
   G.xKid.m_bActive = true;
 
@@ -60,8 +58,6 @@ CardIter::CardIter(Bench* pBench)
   m_pCardCtl = m_pBench->pCardCtl();
 
   G.xKid.vParent(nullptr);
-  G.xKid.m_i_Child= C_UNKNOWN;
-  G.xKid.m_pChild  = nullptr;
 
   G.m_bDontDescend = false;
 
@@ -227,7 +223,7 @@ Card* CardIter::pChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return G.xKid.m_pChild;
+  return G.xKid.pChild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2348,7 +2344,7 @@ Card* Kid::pParent(void)
 /*----------------------------------------------------------------------------*/
 Card* Kid::pChild(void)
 {
-  return m_pChild;
+  return pChild(m_i_Child);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2429,7 +2425,6 @@ bool Kid::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vForward(void)
 {
-
   m_i_Child++;
 }
 
@@ -2438,7 +2433,6 @@ void Kid::vForward(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vReverse(void)
 {
-
   m_i_Child--;
 }
 
