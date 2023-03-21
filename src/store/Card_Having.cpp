@@ -81,6 +81,9 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
+
+  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+
   pCI->G.pDeck->vRenumberRecursive();
 }
 

@@ -188,6 +188,8 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
     pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
   }
 
+  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+
   pCI->G.pDeck->vRenumberRecursive();
 }
 

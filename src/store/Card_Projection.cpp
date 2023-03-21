@@ -59,7 +59,9 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
 
   pCI->vRestart();
   pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection = nullptr;
+
   while (pCI->G_bEachMain()) {
+
     if (CK_FOLD == pCI->G.e_MainCard) {
       bPostFold = true;
       continue;
@@ -70,6 +72,8 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
       continue;
     }
 
+    if (pCI->G.p_MainCard->pSub_projection())
+      pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_MainCard->pSub_projection();
     if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
       pCI->G.p_projection->vRenumberAllExpr();
   }

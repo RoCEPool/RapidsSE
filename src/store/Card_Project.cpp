@@ -264,6 +264,9 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
   if (nBumpBy) {
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
   }
+
+  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,6 +281,9 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Project_postAgg.m_nBumpBy) {
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
+
+  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+
 }
 
 
