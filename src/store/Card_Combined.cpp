@@ -25,7 +25,7 @@ Card_Combined::Card_Combined(void)
 
   _checkInitialised_(CN_CARD);
 
-  vAppend(new Card_Term("0"_Stz));
+  vValue("0"_Stz);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

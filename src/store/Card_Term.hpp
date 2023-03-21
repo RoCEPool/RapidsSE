@@ -19,7 +19,7 @@ namespace STORE
 
     Card_Term(void);
     Card_Term(Card_Term* p_term_arg);
-    Card_Term(Stz* szTerm);
+    Card_Term(Stz* szTerm, Stz* szStem=nullptr);
    ~Card_Term(void) noexcept(false);
 
     static bool bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,

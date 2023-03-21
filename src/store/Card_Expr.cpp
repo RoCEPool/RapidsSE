@@ -51,16 +51,16 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  Card_Expr*    p_expr    = new Card_Expr;
+  Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue());
+  Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue(),pExpr_corr->pSub_term()->szValue());
 
-  p_expr->vAppend(p_type);
-  p_expr->vAppend(p_rpnCalc);
+  p_gbyExpr->vAppend(p_type);
+  p_gbyExpr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
-  return p_expr;
+  return p_gbyExpr;
 }
 
 /*----------------------------------------------------------------------------*/

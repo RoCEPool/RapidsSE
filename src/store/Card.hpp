@@ -155,6 +155,7 @@ static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_Smoothed     = "bSmoothed"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
+static Stz* P_Stem         = "szStem"_Stz;
 static Stz* P_SubQryCall   = "bSubQryCall"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 static Stz* P_Unproject    = "bUnproject"_Stz;

@@ -657,8 +657,7 @@ void Weaver::vRpnCombined(Stz* szRpnExpr, Card_Combined* pCard_Combined)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Term* pCard_Term = _pCard_Term(pCard_Combined->pGet(0));
-  szRpnExpr->vCatSprint("%s"_Stz,pCard_Term->sz());
+  szRpnExpr->vCatSprint("%s"_Stz,pCard_Combined->szValue());
 }
 
 /*----------------------------------------------------------------------------*/

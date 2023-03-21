@@ -48,12 +48,15 @@ Card_Term::Card_Term(Card_Term* p_term_arg)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Term::Card_Term(Stz* szTerm)
+Card_Term::Card_Term(Stz* szTerm, Stz* szStem)
 : Card(CK_TERM,szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
+
+  if (szStem)
+    Y_vSet(P_Stem,szStem);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
