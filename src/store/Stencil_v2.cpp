@@ -73,7 +73,6 @@ Stencil_v2::Stencil_v2(void)
 
   m_xStageOps.m_pCombinedOp     = nullptr;
   m_xStageOps.m_pHavingFilterOp = nullptr;
-  m_xStageOps.m_pPostProjectOp  = nullptr;
   m_xStageOps.m_pLimitOp        = nullptr;
 
   m_xStageOps.m_sLabelOrdAgg = ""_Stz;
@@ -645,29 +644,24 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // project after sort will move to the EOS marker
-      if (!m_xStageOps.m_pPostProjectOp) {
 
-        // get the aggregate type stack
-        pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+      // get the aggregate type stack
+      pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
-        // get the project kind
-        eExprKind = pLogicUnit->m_eExprKind;
+      // get the project kind
+      eExprKind = pLogicUnit->m_eExprKind;
 
-        if (eExprKind == EK_PROJECT) {
+      if (eExprKind == EK_PROJECT) {
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSetupProjectExp(pCombined, pStream, pOp);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupProjectExp(pCombined, pStream, pOp);
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          pOpSketch = pSketchProject(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
-          vAppend(pOpSketch);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pOpSketch = pSketchProject(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
+        vAppend(pOpSketch);
 
-          ePrevStencil_v2 = SR_PT;
+        ePrevStencil_v2 = SR_PT;
 
-        }
-        else {
-          RASSERT(0);
-        }
       }
     }
 
@@ -1245,15 +1239,6 @@ void Stencil_v2::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
   EntWrk::vEntDesc((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL,pIndexDef);
 
-  // create RowSingleP
-  if (m_xStageOps.m_pPostProjectOp) {
-    pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-    pCombined->aCombinedT()->m_aRowCellArrayP =
-        (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleP,
-                                          &pCombined->aCombinedT()->m_racStrAreaP);
-    pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
-  }
-
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
   delete *pLogicUnit->m_xpIndexDef;
@@ -1521,38 +1506,6 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   ePrevStencil_v2 = SR_PL;
 
-  if (m_xStageOps.m_pPostProjectOp) {
-
-    pLogicUnit = m_xStageOps.m_pPostProjectOp->pOpLogicUnit();
-    pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-    // get filter expr from OP
-    TagSet *pOpTags = m_xStageOps.m_pPostProjectOp->pOpTags();
-    sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
-    i_Op = m_xStageOps.m_pPostProjectOp->i_Op();
-
-    // get the aggregate type stack
-    IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the streamDef
-    pCodeSynth = new CodeSynth_v2(pStreamDefOut, SR_PT);
-    pCodeSynth->vSynthStruct(0);
-    m_pShapeEOS->vStructSynthB(pCodeSynth);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // payloadRow to Tub/Pot
-    pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil_v2, SR_PT);
-
-    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pPostProjectOp->szOpNm(), i_Op);
-    vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
-
-    pCodeSynth->bSynthPrjExp(sProjectExpr, sLabel, sLabelNext, "L_AdvanceNextRow"_Stz) ;
-    m_pShapeEOS->vCodeSynthB(pCodeSynth);
-
-    ePrevStencil_v2 = SR_PT;
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
@@ -1573,10 +1526,7 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
-  if (m_xStageOps.m_pPostProjectOp)
-    m_pShapeEOS->vCodeSynthC(pCodeSynth);
-  else
-    m_pShapeEOS->vCodeSynthB(pCodeSynth);
+  m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
   delete m_pPostStack;
@@ -2825,10 +2775,6 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
         m_xStageOps.m_bPayloadOp = true;
       }
 
-      // is this project after the sort ?
-      if (m_xStageOps.m_iSortOp) {
-        m_xStageOps.m_pPostProjectOp = pOp;
-      }
       m_xStageOps.m_iProjectOp++;
     }
 
