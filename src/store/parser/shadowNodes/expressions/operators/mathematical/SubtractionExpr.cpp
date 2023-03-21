@@ -357,12 +357,6 @@ TypeId SubtractionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   // Lookup the type of the result
   TypeId xResult = S_pTypeMap->xLookup(xType1, xType2);
 
-  // The subtraction operator can result in intervals being generated.
-  // These are temporarily disabled in releases until the feature is complete.
-  if (gpAttachMap->bDisablePromptCommands() && xResult.eIVVal() != IV_NONE) {
-    SemanticException::vThrow(EC_DISABLED_STATEMENT, ": INTERVAL type"_Stz);
-  }
-
   return xResult;
 }
 
