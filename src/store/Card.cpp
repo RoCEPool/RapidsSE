@@ -2277,6 +2277,28 @@ void Card::Y_vCutRecursive(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
+void Card::Y_vAll(Card* pCard_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  if (! pCard_arg->m_pProperties) {
+    if (m_pProperties) {
+      delete m_pProperties;
+      m_pProperties = nullptr;
+    }
+    return;
+  }
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vCopy(pCard_arg->m_pProperties);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
 char Card::Y_cGet(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -66,8 +66,6 @@ Card_Bounds* Card_Bounds::pBounds_Create_Eq_ForGivenCol(Stz* szTblColOdn)
   p_eBound->vAppend(p_term);
   p_term = new Card_Term(szTblColOdn);
   p_eBound->vAppend(p_term);
-//  p_term = new Card_Term("=="_Stz);
-//  p_eBound->vAppend(p_term);
 
   return p_bounds;
 }

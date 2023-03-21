@@ -18,6 +18,7 @@ namespace STORE
     void  operator delete(void*);
 
     Card_Term(void);
+    Card_Term(Card_Term* p_term_arg);
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
 

@@ -224,7 +224,7 @@ namespace STORE
     char m_cMark2;
 
     TagSet* m_pProperties;
-    PpySet  m_oPpySet;
+    //PpySet  m_oPpySet; // todo: remove PpySet
 
     Card* m_pLastPrintParent;
 
@@ -407,6 +407,7 @@ namespace STORE
     void Y_vCut(Stz* szPpyNm);
     void Y_vCutRecursive(Stz* szPpyNm);
 
+    void Y_vAll(Card* pCard_arg);
     char Y_cGet(i8 i_Ppy);
     char Y_cGet(Stz* szPpyNm);
     i8   Y_iGet(i8 i_Ppy);

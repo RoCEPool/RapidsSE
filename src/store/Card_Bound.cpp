@@ -108,8 +108,6 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     NEVER_REACH
   }
 
-//  p_term = new Card_Term(p_PRED->sz());
-//  p_bound->vAppend(p_term);
 
   return p_bound;
 }
@@ -121,8 +119,6 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 {
   _static_
 
-//  Stz* szBound = Card::szBound(szRelnOp);
-//  Card_Term* p_term_bound = new Card_Term(szBound);
 
   if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
     Card_Bound* p_lBound =  new Card_Bound(szRelnOp);
