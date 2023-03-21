@@ -39,7 +39,7 @@ Card_Term::Card_Term(Card_Term* p_term_arg)
 
   _checkInitialised_(CN_CARD);
 
-  //Y_vCopy(p_term_arg);
+  Y_vAll(p_term_arg);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -75,7 +75,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
-      p_term = new Card_Term(pTerm_1->sz());
+      p_term = new Card_Term(pTerm_1);
       p_bound->vAppend(p_term);
     }
     else
@@ -84,7 +84,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = new Card_Term("$I1"_Stz);
         p_bound->vAppend(p_term);
-        p_term = new Card_Term(pTerm_0->sz());
+        p_term = new Card_Term(pTerm_0);
         p_bound->vAppend(p_term);
       } else {
         NEVER_REACH
@@ -97,7 +97,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
-      p_term = new Card_Term(pTerm_0->sz());
+      p_term = new Card_Term(pTerm_0);
       p_bound->vAppend(p_term);
     }
     else {
