@@ -25,6 +25,7 @@
 #include "IndexStream.hpp"
 
 #include "CodeSynthUtils.hpp"
+#include "eSK.h"
 
 extern CmdLineArgs       gxCmdLineArgs;
 
@@ -2143,7 +2144,7 @@ OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* p
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sProjectExpr, eExprKind, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sProjectExpr, SK_PROJECT, eExprKind, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);

@@ -53,10 +53,10 @@ OpSketch::OpSketch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  m_eStencilSlot = LS_NONE;
-  m_eExprKind    = EK_NONE;
+  m_eSketchKind = SK_NONE;
+  m_eExprKind   = EK_NONE;
 
-  m_sExprString = ""_Stz;
+  m_sExprString  = ""_Stz;
 
   // definitions
   m_pStreamDefLft = nullptr;
@@ -103,15 +103,15 @@ OpSketch::OpSketch(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch::OpSketch(Stz* sExprStr, eEK eExprKind, eSR eStencilIn, eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut)
+OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eEK eExprKind, eSR eStencilIn, eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  m_eStencilSlot = LS_NONE;
-  m_eExprKind    = eExprKind;
+  m_eSketchKind = eSketchKind;
+  m_eExprKind   = eExprKind;
 
-  m_sExprString   = sExprStr;
+  m_sExprString  = sExprStr;
 
   // definitions
   m_pStreamDefLft = pStreamDefIn;
@@ -241,11 +241,11 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
 /*----------------------------------------------------------------------------*/
 /* get OpSketch kind                                                          */
 /*----------------------------------------------------------------------------*/
-eLS OpSketch::eShape(void)
+eSK OpSketch::eSketchKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  return m_eStencilSlot;
+  return m_eSketchKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1041,7 +1041,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
   TypeValueArea* pTypedCell;
 
   vTrace("\n*****************************************************\n"_Stz);
-  vTrace("* OP SKETCH: %15s                        *\n"_Stz, aEK[m_eExprKind]);
+  vTrace("* OP SKETCH: %15s                        *\n"_Stz, aSK[m_eSketchKind]);
   vTrace("*****************************************************\n"_Stz);
 
   // dump the TypeStack
@@ -1207,128 +1207,11 @@ void OpSketch::vInitAgg(ePE ePreExp)
     case PE_MAX:
       sOperation.vSprintCat("_PSH_NULL"_Stz);
       break;
-      /*
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case PE_MIN:
-          switch (eExprType) {
-            case DM_BCD:
-              iInitValue = Bcd::iMaxValue();
-              sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, iInitValue);
-              break;
-            case DM_BOL:
-              iInitValue = Bol::iMaxValue();
-              sOperation.vSprintCat("_PSH_BOL(%lld)"_Stz, iInitValue);
-              break;
-            case DM_DTE:
-              iInitValue = Dte::iMaxValue();
-              sOperation.vSprintCat("_PSH_DTE(%lld)"_Stz, iInitValue);
-              break;
-            case DM_FLT:
-              iInitValue = Flt::iMaxValue();
-              sOperation.vSprintCat("_PSH_FLT(%lld)"_Stz, iInitValue);
-              break;
-            case DM_INT:
-              iInitValue = Int::iMaxValue();
-              sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
-              break;
-            case DM_IVL:
-              iInitValue = Ivl::iMaxValue();
-              sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
-              break;
-            case DM_IVY:
-              iInitValue = Ivl::iMaxValue();
-              sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
-              break;
-            case DM_TME:
-              iInitValue = Tme::iMaxValue();
-              sOperation.vSprintCat("_PSH_TME(%lld)"_Stz, iInitValue);
-              break;
-            case DM_TSP:
-              iInitValue = Tsp::iMaxValue();
-              sOperation.vSprintCat("_PSH_TSP(%lld)"_Stz, iInitValue);
-              break;
-            case DM_VCH:
-              Vch::vMaxValue(sInitValue.azChar());
-              sOperation.vSprintCat("_PSH_VCH(\"%s\")"_Stz, sInitValue.azChar());
-              break;
-            case DM_UNK:
-            default:
-              NEVER_REACH;
-              break;
-          }
-          break;
-
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case PE_MAX:
-          switch(eExprType) {
-            case DM_BCD: iInitValue = Bcd::iMinValue();
-              sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, iInitValue);
-              break;
-            case DM_BOL: iInitValue = Bol::iMinValue();
-              sOperation.vSprintCat("_PSH_BOL(%lld)"_Stz, iInitValue);
-              break;
-            case DM_DTE: iInitValue = Dte::iMinValue();
-              sOperation.vSprintCat("_PSH_DTE(%lld)"_Stz, iInitValue);
-              break;
-              case DM_FLT: iInitValue = Flt::iMinValue();
-              sOperation.vSprintCat("_PSH_FLT(%lld)"_Stz, iInitValue);
-              break;
-            case DM_INT: iInitValue = Int::iMinValue();
-              sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
-              break;
-            case DM_IVL: iInitValue = Ivl::iMinValue();
-              sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
-              break;
-            case DM_IVY: iInitValue = Ivl::iMinValue();
-              sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
-              break;
-            case DM_TME: iInitValue = Tme::iMinValue();
-              sOperation.vSprintCat("_PSH_TME(%lld)"_Stz, iInitValue);
-              break;
-            case DM_TSP: iInitValue = Tsp::iMinValue();
-              sOperation.vSprintCat("_PSH_TSP(%lld)"_Stz, iInitValue);
-              break;
-            case DM_VCH: Vch::vMinValue(sInitValue.azChar());
-              sOperation.vSprintCat("_PSH_VCH(\"%s\")"_Stz, sInitValue.azChar());
-              break;
-            case DM_UNK:
-            default:
-              NEVER_REACH;
-              break;
-          }
-          break;
-    */
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PE_SUM:
       sOperation.vSprintCat("_PSH_NULL"_Stz);
       break;
-      /*
-      switch(eExprType) {
-        case DM_BCD:
-          xBcd.vSet(0,0);
-          sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, xBcd.T.m_iAsI8);
-          break;
-        case DM_FLT:
-          sOperation.vSprintCat("_PSH_FLT(0.0e+0)"_Stz);
-          break;
-        case DM_INT:
-          sOperation.vSprintCat("_PSH_INT(0)"_Stz);
-          break;
-        case DM_BOL:
-        case DM_DTE:
-        case DM_IVL:
-        case DM_IVY:
-        case DM_TME:
-        case DM_TSP:
-        case DM_UNK:
-        case DM_VCH:
-        default:
-          NEVER_REACH;
-      }
-      break;
-*/
 
     default:
       break;

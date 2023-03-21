@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* eLS.h -- Stencil Slot                                                      */
+/* eSK.h -- Sketch kind                                                       */
 /*============================================================================*/
 #pragma once
 
-enum eLS // stencil slot
+enum eSK // sketch kind
 {
-  /*  0 */ LS_NONE=0,
+  /*  0 */ SK_NONE=0,
   
-  /*    */ LS_INFLATE_T,
-  /*    */ LS_FILTER_T,
-  /*    */ LS_PROJECT_T,
+  /*    */ SK_INFLATE,
+  /*    */ SK_FILTER,
+  /*    */ SK_PROJECT,
 
-  /*    */ LS_ENUMS
+  /*    */ SK_ENUMS
 };
 
-static Stz* aLS[]
+static Stz* aSK[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "LS_INFLATE_T"_Stz,
-  /*    */ "LS_FILTER_T"_Stz,
-  /*    */ "LS_PROJECT_T"_Stz,
+  /*    */ "SK_INFLATE"_Stz,
+  /*    */ "SK_FILTER"_Stz,
+  /*    */ "SK_PROJECT"_Stz,
 
   /*    */ "ENUMS"_Stz
 };

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLS.h"
+#include "eSK.h"
 #include "CodeSynth_v2.hpp"
 
 namespace STORE
@@ -21,7 +21,7 @@ namespace STORE
   {
   private:
 
-    eLS  m_eStencilSlot;
+    eSK  m_eSketchKind;
     eEK  m_eExprKind;
 
     // expression string
@@ -73,7 +73,7 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
-    OpSketch(Stz* sEprStr, eEK eExprKind, eSR eStencilIn, eSR eStencilOut,
+    OpSketch(Stz* sEprStr, eSK eSketchKind, eEK eExprKind, eSR eStencilIn, eSR eStencilOut,
              StreamDef* pStreamDefIn, StreamDef* pStreamDefOut);
 
    ~OpSketch(void) noexcept(false);
@@ -84,8 +84,7 @@ namespace STORE
 
     void vGenerateExprStacks(IntStack* pPreExpStack);
 
-    eLS eShape(void);
-    void vShape(eLS eShape);
+    eSK eSketchKind(void);
 
     void vSetLabels(Stz* OpLabel, Stz* sLabelNext, Stz* sLabelLoop);
 

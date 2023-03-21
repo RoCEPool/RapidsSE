@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLS.h"
+#include "eSK.h"
 #include "CodeSynth.hpp"
 
 namespace STORE
@@ -25,8 +25,7 @@ namespace STORE
   class Shape : public Object
   {
   private:
-  
-    eLS        m_eShape;
+
     CodeSynth* m_pStructSynthA;
     CodeSynth* m_pStructSynthB;
     CodeSynth* m_pCodeSynthA;
@@ -42,9 +41,6 @@ namespace STORE
 
     Shape(void);
    ~Shape(void) noexcept(false);
-  
-    eLS eShape(void);
-    void vShape(eLS eShape);
   
     CodeSynth* pStructSynthA(void);
     void vStructSynthA(CodeSynth* pStructSynth);
