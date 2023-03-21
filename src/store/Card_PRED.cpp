@@ -61,7 +61,7 @@ bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  this->vDump();
+  //this->vDump();
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))

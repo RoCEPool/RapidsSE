@@ -89,9 +89,9 @@ eXK Card_Bounds::eCastKind_v2(Card_Index* p_index_r,
   Card_TablePtn*   p_tablePtn_l = p_table_l->pSub_tablePtn();
   Card_TablePtn*   p_tablePtn_r = p_table_r->pSub_tablePtn();
 
-  p_idxColList->vDump();
-  p_tablePtn_l->vDump();
-  p_tablePtn_r->vDump();
+  //p_idxColList->vDump();
+  //p_tablePtn_l->vDump();
+  //p_tablePtn_r->vDump();
 
 
   Card_Bound *p_ebound = pSub_bound();

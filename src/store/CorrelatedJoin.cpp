@@ -247,7 +247,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     if (! p_pred->bIsCorrPred())
       return C_CONTINUE_RECURSION;
 
-    p_pred->vDump();
+    //p_pred->vDump();
     bIsCorrPred = true;
 
     Card_Term* pTerm_corrCol = static_cast<Card_CmpPred *>(p_pred)->pGetCorrCol();
@@ -456,7 +456,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_Term* p_term = _pCard_Term(p_card);
 
           Card_Expr* p_expr_otr = p_term->pExpr_For_colNm(pCI);
-          p_expr_otr->vDump();
+          //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->szProjectedCol();
           xCI.G.p_MainCard->vValue(szProjectedCol);  // TODO: hack!!
 
@@ -578,7 +578,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc
   if (! p_pred_corr)
     return;
 
-  p_pred_corr->vDump();
+  //p_pred_corr->vDump();
 
   Card_Term* p_term_tblColOdn = p_pred_corr->pGetFirstTerm_tblColOdn();
   char cTblSyn = p_term_tblColOdn->cGetTableSyn();

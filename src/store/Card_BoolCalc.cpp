@@ -440,7 +440,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
                   Card_PRED*& p_pred_yanked,
                   auto&& bYank /*oddity permits recursive lambda*/)
   {
-    p_test->vDump();
+    //p_test->vDump();
 
     if (p_test->bIsPRED()) {
       if (p_test->cMark1() == cWithMark) {

@@ -58,7 +58,7 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
   bool bPostFold = false;
 
   pCI->vRestart();
-  pCI->G.p_projection = nullptr;
+  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection = nullptr;
   while (pCI->G_bEachMain()) {
     if (CK_FOLD == pCI->G.e_MainCard) {
       bPostFold = true;

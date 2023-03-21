@@ -233,7 +233,7 @@ Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
-            p_rpnCalc->vDump();
+            //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
                 p_rpnCalc->szProjectedCol()->bSame(this->szValue())) {
               p_expr_col = p_expr_prj;
@@ -271,7 +271,7 @@ Card_Expr* Card_Term::pExpr_For_colNm(CardIter* pCI, i8 i_Before)
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
-            p_as->vDump();
+            //p_as->vDump();
             if (p_as->bIsValue(this->szValue())) {
               p_expr_col = p_expr_prj;
               break;

@@ -341,7 +341,7 @@ i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
   Card_Table*      p_table_curr     = p_main_curr->pSub_table();
   Card_IndexList*  p_indexList_curr = p_main_curr->pSub_indexList();
 
-  p_indexList_curr->vDump();
+  //p_indexList_curr->vDump();
 
   Card_Index*      p_index_curr     = p_indexList_curr->pFindChosenIndex();
   Card_Bounds*     p_bounds_curr    = p_main_curr->pSub_bounds();
