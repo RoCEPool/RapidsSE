@@ -568,8 +568,10 @@ void Card_OP::vProjectionAnalysis(CardIter* pCI)
     Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
 
-    Card_Term* p_term = new Card_Term;
-    p_term->vValueSprint("$%c.%lld"_Stz,cTblSyn,i_Col+1);
+    s32 sCn;
+    sCn.vSprint("$%c.%lld"_Stz,cTblSyn,i_Col+1);
+
+    Card_Term* p_term = new Card_Term(sCn);
     p_rpnCalc->vAppend(p_term);
   }
 

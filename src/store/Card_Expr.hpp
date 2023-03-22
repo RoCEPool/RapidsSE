@@ -23,6 +23,7 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    Stz* szDollarOdn(void);
     bool bIsCalcSequence(void);
     bool bIsColOrdinal(void);
     bool bIsProjectedCol(Stz* szProjectedCol);
@@ -30,7 +31,7 @@ namespace STORE
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
-    Card_Expr* pReProject(void);
+    Card_Expr* pProjectRight(void);
 
     i8 iRpnCalc_WhichGbyKey(void);
     Card_Expr* pToCarry_key(void);

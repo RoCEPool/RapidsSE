@@ -92,50 +92,6 @@ Card_Project* Card_Project::pNew_project_early(Card_Projection *p_projection,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vUnproject_foldExpr(CardIter* pCI)
-{
-  _static_
-
-  //pCI->G.p_projection = pCI->G.p_project->pSub_projection();
-
-  Card_Project* p_project_unproject = new Card_Project(CK_PROJECT);
-  pCI->G.pDeck->vAppend(p_project_unproject);
-  p_project_unproject->Y_vSet(P_Unproject);
-
-  Card_Level* p_level = new Card_Level(AL_ORIGIN);
-  p_project_unproject->vAppend(p_level);
-  //pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
-
-  Card_Projection* p_projection_unproject = new Card_Projection;
-  p_project_unproject->vAppend(p_projection_unproject);
-
-  i8 i_Col = 0;
-  i8 nChildren_projection = pCI->G.p_projection->nChildCards();
-  for (i8 i_expr_projection = 0;
-       i_expr_projection < nChildren_projection;
-       i_expr_projection++) {
-
-    i_Col++;
-
-    pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_projection));
-    if (pCI->G.p_expr->bIsValue("$1"_Stz))
-      continue;
-
-    pCI->G.p_as = pCI->G.p_expr->pSub_as();
-
-    if (Card::bIsSqyColOrdinal(pCI->G.p_as->szValue()))
-      continue;
-
-    Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
-
-    p_projection_unproject->vAppend(p_expr_simple);
-  }
-
-  p_projection_unproject->vRenumberAllExpr();
-}
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Project::vUnproject_foldExpr(CardIter* pCI,
                                        CarryForward* pCarryForward)
 {

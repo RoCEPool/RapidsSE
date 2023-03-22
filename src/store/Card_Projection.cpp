@@ -58,7 +58,7 @@ Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_proje
     if (Card_Expr* p_expr_has = p_projection->pHasSame(xCI_reduced.G.p_expr)) {
       if (! p_projection_early)
         p_projection_early = new Card_Projection;
-      Card_Expr* p_expr_early = _pCard_Expr(xCI_reduced.G.p_expr->pReProject());
+      Card_Expr* p_expr_early = _pCard_Expr(xCI_reduced.G.p_expr->pProjectRight());
       p_projection_early->vAppend(p_expr_early);
       p_expr_early->vRenumber(p_projection_early->nChildCards());
       s32 sBecomes;
@@ -265,7 +265,7 @@ Card_Projection* Card_Projection::pReProject(void)
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pReProject();
+    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pProjectRight();
     p_projection_reproject->vAppend(p_expr_reprojected);
     p_expr_reprojected->vRenumber(p_projection_reproject->nChildCards());
   }

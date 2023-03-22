@@ -64,7 +64,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* form project expression from gby key expression                            */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
@@ -98,13 +98,15 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   //Card_Expr* p_expr_simple = _pCard_Expr(p_expr->pDupCardAndSubCards());
 
+  s32 sDn;
+  sDn.vSprint("$%lld"_Stz,i_Col);
+
   Card_Expr* p_expr_simple = new Card_Expr;
 
   p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term* p_term = new Card_Term;
-  p_term->vValueSprint("$%lld"_Stz,i_Col);
+  Card_Term* p_term = new Card_Term(sDn);
   p_rpnCalc->vAppend(p_term);
 
   p_expr_simple->vAppend(p_rpnCalc);
@@ -145,6 +147,20 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Expr::szDollarOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szVal = szValue();
+
+  RASSERT(Card::bIsStreamColOrdinal(szVal) || Card::bIsKeyOrdinal(szVal));
+
+  return szVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,9 +267,13 @@ void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pReProject(void)
+Card_Expr* Card_Expr::pProjectRight(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  /*
+   * produce the projection of this expression
+   */
 
   Card_Expr* p_expr_reproject = new Card_Expr;
 
@@ -265,16 +285,20 @@ Card_Expr* Card_Expr::pReProject(void)
   p_expr_reproject->vAppend(p_rpnCalc);
 
   if (Y_bHas(P_Becomes)) {
+    //+ becomes
     Card_Term *p_term = new Card_Term(Y_szGet(P_Becomes));
     p_rpnCalc->vAppend(p_term);
   }
   else
   if (bIsColOrdinal()) {
-    Card_Term *p_term = _pCard_Term(pProjectedTerm()->pDupCardAndSubCards());
+    //+ projection is same column ordinal
+    Card_Term* pPrjTerm = pProjectedTerm();
+    Card_Term *p_term = new Card_Term(pPrjTerm);
     p_rpnCalc->vAppend(p_term);
   }
   else {
-    Card_Term *p_term = new Card_Term(szValue());
+    //+ projection is $n/$Kn of this expression
+    Card_Term *p_term = new Card_Term(szDollarOdn());
     p_rpnCalc->vAppend(p_term);
   }
 

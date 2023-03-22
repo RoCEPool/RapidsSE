@@ -1168,16 +1168,16 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
   i8 nTokens = pTokenVec->nItems();
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
-    
-    Card_Term* pCard_Term = new Card_Term;
 
+    s256 sVal;
     if (pToken->eToken() == TN_STRING) {
-      sString.vSprint("'%s'"_Stz, pToken->szChars());
-      pCard_Term->vValue(sString);
+      sVal.vSprint("'%s'"_Stz, pToken->szChars());
     }
     else {
-      pCard_Term->vValue(pToken->szChars());
+      sVal = pToken->szChars();
     }
+
+    Card_Term* pCard_Term = new Card_Term(sVal);
 
     pCard_RpnTerms->vAppend(pCard_Term);
   }
