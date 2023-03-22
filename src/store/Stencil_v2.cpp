@@ -268,7 +268,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
   m_pOpSource->vAppendFragment(m_pPreliminary, &iLineNumber);
-
+/*
   if (m_xStageOps.m_bScan || m_bRowBuffer) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -436,6 +436,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
   // append banner tail
   m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
 
+ */
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to a file
 
@@ -552,7 +553,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil_v2 = SR_NONE;
-  eEK eExprKind = EK_NONE;
 
   m_szStageNm = pStream->pStage()->szStageNm();
 
@@ -586,7 +586,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("scan"_Stz))
       continue;
 
-    // skip indexscan OP
+    // generate code for indexScan OP
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -600,40 +600,27 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       continue;
     }
 
-    // get the streamDefOut and streamDefLft
-    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code) if not already inflated
     if (!bInflateGenerated) {
 
       RASSERT(!m_xStageOps.m_bIndexScan);
 
-      if (m_xStageOps.m_bScan) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupScan(pCombined, pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupScan(pCombined, pStream, pOp);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //m_pShapeROW = pSketchInflateRow(pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeROW = pSketchInflateRow(pStream, pOp);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchScan(pCombined, pStream, pOp);
+      vAppend(pOpSketch);
 
-        m_bRowBuffer = true;
-      } else {
+      m_bRowBuffer = true;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupScan(pCombined, pStream, pOp);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeROW = pSketchInflateRow(pStream, pOp);
-
-        m_bRowBuffer = true;
-      }
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
     }
@@ -641,17 +628,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // project after sort will move to the EOS marker
-
-      // get the aggregate type stack
-      pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
-
-      if (eExprKind == EK_PROJECT) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupProjectExp(pCombined, pStream, pOp);
@@ -662,7 +638,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
         ePrevStencil_v2 = SR_PT;
 
-      }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1714,9 +1689,9 @@ OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch scan (inflate crw of crwBuffer)                                     */
+/* sketch scan (inflate compact rows of crwBuffer)                            */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1724,7 +1699,8 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
-  s256 sReturnLabel;
+  s256 sLabelNext;
+  s256 sLabelLoop;
 
   // get the streamDefLft
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1735,29 +1711,17 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
 
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the streamDefLft
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, SR_IT);
-  pCodeSynth->vSynthStruct(0);
-  pShape->vStructSynthA(pCodeSynth);
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(""_Stz, SK_SCAN, SR_NONE, SR_NONE, pStreamDefLft, nullptr);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the row inflate
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
-  sReturnLabel.vSprint("L_InflateCrwRet"_Stz);
-  pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, m_xStageOps.m_sLabelOrdAgg, sReturnLabel, &uSelectColumns);
-  pShape->vCodeSynthA(pCodeSynth);
+  sLabelNext.vSprint("L_InflateCrwRet"_Stz);
+  sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the return from inflate
-  pCodeSynth = new CodeSynth_v2(nullptr, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
-  sLabel.vSprint("L_InflateCrwRet"_Stz);
-  sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-  pCodeSynth->vSynthInflateCrwRet(sLabel, sReturnLabel);
-  pShape->vCodeSynthB(pCodeSynth);
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  return pShape;
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1818,7 +1782,6 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  eEK eExprKind = pLogicUnit->m_eExprKind;
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1826,7 +1789,7 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
   Op *pNextOp = pStream->pGet(i_Op + 1);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sFilterExpr, SK_FILTER, EK_FILTER, ePrevStencil_v2, SR_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sFilterExpr, SK_FILTER, ePrevStencil_v2, SR_NONE, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
@@ -2094,13 +2057,12 @@ OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* p
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  eEK eExprKind = pLogicUnit->m_eExprKind;
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sProjectExpr, SK_PROJECT, eExprKind, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sProjectExpr, SK_PROJECT, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);

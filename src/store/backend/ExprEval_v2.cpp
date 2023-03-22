@@ -215,7 +215,7 @@ eEC ExprEval_v2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr,
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                 IntStack* pPreExpStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns)
+                                 IntStack* pPreExpStack, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
 
@@ -229,7 +229,7 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
   i8 i_ColumnOrdinal = C_UNKNOWN;
 
   bool bGroupBy = false;
-  eExprKind = EK_PROJECT;
+  bool bFilter = false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
@@ -257,8 +257,7 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a FILTER ?
     if (pTkn->bSame("FILTER"_Stz)) {
-
-      eExprKind = EK_FILTER;
+      bFilter = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -267,7 +266,6 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
 
-      eExprKind = EK_AGGGBY;
       bGroupBy = true;
       ePreExp = PE_GBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);
@@ -285,7 +283,6 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // is it an ORDGROUPBY ?
     if (pTkn->bSame("ORDGROUPBY"_Stz)) {
 
-      eExprKind = EK_AGGORD;
       bGroupBy = true;
       ePreExp = PE_GBY;
       pIndexDef->vIndexNm("ordgby_idx"_Stz);
@@ -303,7 +300,6 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // is it a SORT ?
     if (pTkn->bSame("SORT"_Stz)) {
 
-      eExprKind = EK_SORT;
       ePreExp = PE_SRT;
       pIndexDef->vIndexNm("srt_idx"_Stz);
 
@@ -320,7 +316,6 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // is it a TOP ?
     if (pTkn->bSame("TOP"_Stz)) {
 
-      eExprKind = EK_TOP;
       ePreExp = PE_TOP;
       pIndexDef->vIndexNm("top_idx"_Stz);
       pTkn = pTknVec->pNextToken();
@@ -536,35 +531,30 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     }
 
     if (pTkn->bSame("COUNT"_Stz)) {
-      eExprKind = EK_AGGREG;
       ePreExp = PE_CNT;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("COUNTALL"_Stz)) {
-      eExprKind = EK_AGGREG;
       ePreExp = PE_ALL;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MIN"_Stz)) {
-      eExprKind = EK_AGGREG;
       ePreExp = PE_MIN;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MAX"_Stz)) {
-      eExprKind = EK_AGGREG;
       ePreExp = PE_MAX;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("SUM"_Stz)) {
-      eExprKind = EK_AGGREG;
       ePreExp = PE_SUM;
       pTkn = pTknVec->pNextToken();
       continue;
@@ -886,7 +876,7 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eExprKind != EK_FILTER) {
+  if ( ! bFilter ) {
 
     // push the predicate expression
     pPreExpStack->vPush(ePreExp);
