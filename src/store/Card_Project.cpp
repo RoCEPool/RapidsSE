@@ -66,8 +66,7 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Project* Card_Project::pNew_project_early(Card_Projection *p_projection,
-                                               Card_Projection *p_projection_reduced)
+Card_Project* Card_Project::pNew_project_early(CardIter* pCI)
 
 {
   _static_
@@ -78,12 +77,11 @@ Card_Project* Card_Project::pNew_project_early(Card_Projection *p_projection,
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_project_early->vAppend(p_level);
 
-  Card_Projection* p_projection_early = Card_Projection::pNew_projection_early(p_projection,
-                                                                               p_projection_reduced);
+  Card_Projection* p_projection_early = Card_Projection::pNew_projection_early(pCI);
   p_project_early->vAppend(p_projection_early);
 
   // debug
-  p_project_early->vAppend(p_projection_reduced->pDupCardAndSubCards());
+  p_project_early->vAppend(pCI->EarlyProject.m_pProjection_needed->pDupCardAndSubCards());
 
   return p_project_early;
 }

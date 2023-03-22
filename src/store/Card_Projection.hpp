@@ -16,8 +16,7 @@ namespace STORE
     Card_Projection(void);
    ~Card_Projection(void) noexcept(false);
 
-    static Card_Projection* pNew_projection_early(Card_Projection* p_projection_running,
-                                                  Card_Projection* p_projection_reduced);
+    static Card_Projection* pNew_projection_early(CardIter* pCI);
 
     static void vProjection_Analysis_v2(CardIter* pCI);
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
@@ -27,7 +26,7 @@ namespace STORE
     Card_Expr* pFind_expr_By_projectedCol(Stz* szCol);
     Card_Expr* pHasSame(Card_Expr* p_expr_arg);
     void vKeyProjection(CardIter* pCI);
-    Card_Projection* pReProject(void);
+    Card_Projection* pReProject(Card_Projection *p_projection_reduced=nullptr);
     Card_Projection* pToCarry(Card_Key* p_key);
     Card_Projection* pToEarlyReduction(CardIter* pCI, Card_Key* p_key);
   };

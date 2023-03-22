@@ -59,12 +59,12 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 
   RASSERT(bIsPartitionLevel());
 
-  RASSERT(! pCI->EarlyProject.m_pProjection_reduced);
+  RASSERT(! pCI->EarlyProject.m_pProjection_needed);
 
   pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
 
   // get the reduced form of ordAgg's projection
-  pCI->EarlyProject.m_pProjection_reduced =
+  pCI->EarlyProject.m_pProjection_needed =
       pSub_projection()->pToEarlyReduction(pCI, pSub_key());
 
   pCI->vSave();
@@ -74,11 +74,11 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   // todo: arrived back ...
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_key->vTermsBecome(pCI->EarlyProject.m_pProjection_reduced);
+  pCI->G.p_key->vTermsBecome(pCI->EarlyProject.m_pProjection_needed);
 
 
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vTermsBecome(pCI->EarlyProject.m_pProjection_reduced);
+  pCI->G.p_projection->vTermsBecome(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
 

@@ -412,11 +412,14 @@ void Card_BoolCalc::vTermsBecome(Card_Projection* p_projection_reduced)
 
     Card_Term* p_term = _pCard_Term(p_pred);
 
-    Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(p_term->szValue());
-    if (! p_expr_repl)
-      return C_CONTINUE_RECURSION;
+//    Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(p_term->szValue());
+//    if (! p_expr_repl)
+//      return C_CONTINUE_RECURSION;
+//
+//    p_term->vValue(p_expr_repl->Y_szGet(P_Becomes));
+//
 
-    p_term->vValue(p_expr_repl->Y_szGet(P_Becomes));
+    p_term->vTermBecomes(p_projection_reduced);
 
     return C_CONTINUE_RECURSION;
   };

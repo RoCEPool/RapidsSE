@@ -33,6 +33,49 @@ Card_Expr::Card_Expr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Expr::Card_Expr(Card_Expr* p_expr_arg)
+: Card(CK_EXPR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Type*  p_type    = nullptr;
+  Card_As  *  p_as      = nullptr;
+  Card_Term*  p_term_0  = nullptr;
+
+  vDeconstruct(p_type,p_as,p_term_0);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr::Card_Expr(Card_Type*    p_type_arg,
+                     Card_As*      p_as_arg,
+                     Card_Term*    p_term_0_arg)
+: Card(CK_EXPR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Type*    p_type    = new Card_Type(p_type_arg);
+  Card_As  *    p_as      = new Card_As(p_as_arg);
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(p_term_0_arg);
+
+  vAppend(p_type);
+  vAppend(p_as);
+  vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Expr::~Card_Expr(void) noexcept(false)
@@ -152,6 +195,21 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Expr::vDeconstruct(Card_Type*&    rp_type,
+                             Card_As*&      rp_as,
+                             Card_Term*&    rp_term_0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  rp_type = pSub_type();
+  rp_as   = pSub_as();
+  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
+  rp_term_0  = p_rpnCalc ? p_rpnCalc->pSub_term() : nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Card_Expr::szDollarOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -250,6 +308,25 @@ Card_Term* Card_Expr::pProjectedTerm(void)
   return szPrjTerm;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vReconstruct(Card_Type*  p_type_arg,
+                             Card_As*    p_as_arg,
+                             Card_Term*  p_term_0_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRemoveDeleteAllChildren();
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = new Card_Term(p_term_0_arg);
+
+  vAppend(p_type_arg);
+  vAppend(p_as_arg);
+  vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -267,7 +344,7 @@ void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProjectRight(void)
+Card_Expr* Card_Expr::pProjectRight(Card_Projection *p_projection_reduced)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

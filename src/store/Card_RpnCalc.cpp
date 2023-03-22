@@ -200,8 +200,11 @@ bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
     return false;
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
-    if (! this->pGetChild(i_Child)->bSame(
-            p_rpnCalc_arg->pGetChild(i_Child)->szValue()))
+    Card_Term* p_term_this = this->pGetTerm(i_Child);
+    Stz* szThis = this->pGetChild(i_Child)->szValue();
+    Stz* szArg = p_rpnCalc_arg->pGetChild(i_Child)->szValue();
+
+    if (! szThis->bSame(szArg))
       return false;
   }
 

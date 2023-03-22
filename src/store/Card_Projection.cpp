@@ -46,31 +46,47 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_projection,
-                                                        Card_Projection *p_projection_reduced)
+Card_Projection* Card_Projection::pNew_projection_early(CardIter* pCI)
 {
   _static_
 
+  pCI->EarlyProject.m_pProjection_needed->vDump();
+
   Card_Projection* p_projection_early = nullptr;
 
-  CardIter xCI_reduced(p_projection_reduced);
+  CardIter xCI_reduced(pCI->EarlyProject.m_pProjection_needed);
   while (xCI_reduced.G_bEachMain(CK_EXPR)) {
-    if (! p_projection->pHasSame(xCI_reduced.G.p_expr))
-      continue;
+    xCI_reduced.G.p_expr->vDump();
+
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      if ((! pCI->ProjectionAnalysis.m_pProjection_running->pHasSame(xCI_reduced.G.p_expr)) &&
+          (! pCI->G.p_projection->pHasSame(xCI_reduced.G.p_expr)))
+        continue;
+    }
+    else {
+      if ((! pCI->G.p_projection->pHasSame(xCI_reduced.G.p_expr)))
+        continue;
+    }
 
     if (! p_projection_early)
       p_projection_early = new Card_Projection;
 
-    Card_Expr* p_expr_early = xCI_reduced.G.p_expr->pProjectRight();
+    if ((! xCI_reduced.G.p_expr->Y_szGet(P_Becomes)) ||
+        Card::bIsStreamColOrdinal(xCI_reduced.G.p_expr->Y_szGet(P_Becomes))) {
+      s32 sBecomes;
+      sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards()+1);
+      xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
+    }
+
+    Card_Expr* p_expr_early = xCI_reduced.G.p_expr->pProjectRight(pCI->EarlyProject.m_pProjection_needed);
     p_projection_early->vAppend(p_expr_early);
     p_expr_early->vRenumber(p_projection_early->nChildCards());
 
-    s32 sBecomes;
-    sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards());
-    xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
   }
 
   //Card_Projection* p_projection_early = _pCard_Projection(p_projection_reduced->pDupCardAndSubCards());
+
+  pCI->EarlyProject.m_pProjection_needed->vDump();
 
   return p_projection_early;
 }
@@ -259,7 +275,7 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* re-projection                                                              */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pReProject(void)
+Card_Projection* Card_Projection::pReProject(Card_Projection *p_projection_reduced)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -267,7 +283,7 @@ Card_Projection* Card_Projection::pReProject(void)
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pProjectRight();
+    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pProjectRight(p_projection_reduced);
     p_projection_reproject->vAppend(p_expr_reprojected);
     p_expr_reprojected->vRenumber(p_projection_reproject->nChildCards());
   }

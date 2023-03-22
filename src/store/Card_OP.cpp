@@ -223,9 +223,9 @@ void Card_OP::vEarly_project_root(CardIter* pCI)
     case CK_ORDAGG:
       pCI->G.p_ordAgg->vEarly_project_root(pCI);
 
-//      pCI->G.p_project = Card_Project::pNew_project(pCI->EarlyProject.m_pProjection_reduced);
+//      pCI->G.p_project = Card_Project::pNew_project(pCI->EarlyProject.m_pProjection_needed);
 //      pCI->G.pDeck->vInsertBefore(pCI->G.p_project, pCI->G.p_ordAgg);
-//      pCI->EarlyProject.m_pProjection_reduced = nullptr;
+//      pCI->EarlyProject.m_pProjection_needed = nullptr;
       pCI->vPrintBoard();
 
       pCI->vRemoveChild(pCI->G.p_project);
@@ -256,7 +256,7 @@ void Card_OP::vEarly_project_test(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->EarlyProject.m_pProjection_reduced);
+  RASSERT(pCI->EarlyProject.m_pProjection_needed);
 
   // we were on:
 //  switch (pCI->G.e_MainCard) {

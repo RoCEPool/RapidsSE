@@ -14,6 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_As(Stz* szAs);
+    Card_As(Card_As* p_as_arg);
    ~Card_As(void) noexcept(false);
 
     bool bIsSame(Card_As* p_as_arg);
