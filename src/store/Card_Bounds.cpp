@@ -134,6 +134,18 @@ void Card_Bounds::vCullBound(char cWithMark)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vTermsBecome(Card_Projection* p_projection_reduced)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_BOUND))
+    xCI.G.p_bound->vTermsBecome(p_projection_reduced);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

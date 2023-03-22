@@ -22,6 +22,8 @@ namespace STORE
                      Card_Term*& rp_left_column_to_be_hashed);
 
     void vCullBound(char cWithMark);
+
+    void vTermsBecome(Card_Projection* p_projection_reduced);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

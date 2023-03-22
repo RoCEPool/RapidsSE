@@ -438,6 +438,19 @@ void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vTermBecomes(Card_Projection* p_projection_reduced)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(szValue());
+  if (p_expr_repl)
+    vValue(p_expr_repl->Y_szGet(P_Becomes));
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
 eTE Card_Term::eTermEval(void)

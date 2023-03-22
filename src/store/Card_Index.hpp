@@ -24,6 +24,7 @@ namespace STORE
     void vDeleteBounds(void);
     void vSet_Choose_index(void);
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
+    void vTermsBecome(Card_Projection* p_projection_reduced);
   };
 
   Card_Index* _pCard_Index(void* aAddr);

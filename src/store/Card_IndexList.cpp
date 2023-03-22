@@ -134,6 +134,19 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vTermsBecome(Card_Projection* p_projection_reduced)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_INDEX))
+    xCI.G.p_index->vTermsBecome(p_projection_reduced);
+}
+
+
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

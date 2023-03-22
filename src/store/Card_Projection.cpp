@@ -58,7 +58,9 @@ Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_proje
     if (Card_Expr* p_expr_has = p_projection->pHasSame(xCI_reduced.G.p_expr)) {
       if (! p_projection_early)
         p_projection_early = new Card_Projection;
-      p_projection_early->vAppend(xCI_reduced.G.p_expr->pDupCardAndSubCards());
+      Card_Expr* p_expr_early = _pCard_Expr(xCI_reduced.G.p_expr->pReProject());
+      p_projection_early->vAppend(p_expr_early);
+      p_expr_early->vRenumber(p_projection_early->nChildCards());
       s32 sBecomes;
       sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards());
       xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
@@ -255,14 +257,21 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* re-projection                                                              */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pReProjection(void)
+Card_Projection* Card_Projection::pReProject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_Projection* p_projection_reproject = new Card_Projection;
 
-  return nullptr;
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR)) {
+    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pReProject();
+    p_projection_reproject->vAppend(p_expr_reprojected);
+    p_expr_reprojected->vRenumber(p_projection_reproject->nChildCards());
+  }
+
+  return p_projection_reproject;
 }
-
 
 
 /*----------------------------------------------------------------------------*/
