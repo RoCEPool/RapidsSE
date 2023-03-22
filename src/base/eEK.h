@@ -7,11 +7,11 @@ enum eEK // expression kind
 {
   /*   */ EK_NONE=0,
   /*   */ EK_AGGGBY,     // aggregate with group by
-  /*   */ EK_AGGORD,     // aggregate with ordered group by
+  /*   */ EK_AGGORD,     // ordered aggregate with group by
   /*   */ EK_AGGREG,     // projection with aggreagte
   /*   */ EK_FILTER,     // filter
   /*   */ EK_HASH,       // hash
-  /*   */ EK_INDEXJOIN,  // index scan
+  /*   */ EK_INDEXJOIN,  // index join
   /*   */ EK_INDEXSCAN,  // index scan
   /*   */ EK_PROJECT,    // projection
   /*   */ EK_SORT,       // sort

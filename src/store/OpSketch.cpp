@@ -54,7 +54,6 @@ OpSketch::OpSketch(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_eSketchKind = SK_NONE;
-  m_eExprKind   = EK_NONE;
 
   m_sExprString  = ""_Stz;
 
@@ -103,13 +102,12 @@ OpSketch::OpSketch(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eEK eExprKind, eSR eStencilIn, eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut)
+OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_eSketchKind = eSketchKind;
-  m_eExprKind   = eExprKind;
 
   m_sExprString  = sExprStr;
 
@@ -393,7 +391,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack
-  pExprStack = pWorkingStack(EK_NONE, ePreExp);
+  pExprStack = pWorkingStack(ePreExp);
 
   if (!pExprStack)
     pExprStack = m_pExprStack;
@@ -447,7 +445,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
         if (iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 */
-      if (ePreExp == PE_GBY && m_eExprKind == EK_AGGORD)
+      if (ePreExp == PE_GBY && m_eSketchKind == SK_AGGORD)
         if (iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 
@@ -465,7 +463,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack(ePreExp);
 
       continue;
     }
@@ -476,7 +474,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack(ePreExp);
       RASSERT(pExprStack == m_pGbyStack);
 
       continue;
@@ -488,7 +486,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack(ePreExp);
       RASSERT(pExprStack == m_pGbyStack);
 
       continue;
@@ -513,7 +511,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
       }
 */
 
-      if (m_eExprKind == EK_AGGORD) {
+      if (m_eSketchKind == EK_AGGORD) {
         if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
@@ -527,18 +525,16 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack( ePreExp);
 
       continue;
     }
 
     if (pTkn->bSame("sort"_Stz)) {
 
-      m_eExprKind = EK_SORT;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working stack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack(ePreExp);
 
       continue;
     }
@@ -547,11 +543,9 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
     // get the top expression
     if (pTkn->bSame("top"_Stz)) {
 
-      m_eExprKind = EK_TOP;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working stack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack(ePreExp);
 
       continue;
     }
@@ -560,11 +554,9 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
     // get the filter expression
     if (pTkn->bSame("filter"_Stz)) {
 
-      m_eExprKind = EK_FILTER;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working stack
-      pExprStack = pWorkingStack(m_eExprKind, ePreExp);
+      pExprStack = pWorkingStack(ePreExp);
 
       continue;
     }
@@ -640,13 +632,13 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
       if (sDollar[0] == '$') {
         char *sNext = (char*)(pTkn->szChars() + 1);
         if (StrLib::bIsDigit(sNext[0])) {
-          vPushOrdCol(pExprStack, pExprType, ePreExp, m_eExprKind, pTkn);
+          vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn);
           continue;
         }
         else {
           char *sNext = (char*)(pTkn->szChars() + 2);
           if (StrLib::bIsDigit(sNext[0])) {
-            vPushOrdCol(pExprStack, pExprType, ePreExp, m_eExprKind, pTkn);
+            vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn);
             continue;
           }
         }
@@ -834,57 +826,57 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(EK_NONE, ePreExp);
+      pExprStack = pWorkingStack( ePreExp);
 
       continue;
     }
 
     if (pTkn->bIsBoolean()) {
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_BOL);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_BOL);
       continue;
     }
 
     if (pTkn->bIsFloat()) {
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_FLT);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_FLT);
       continue;
     }
 
     if (pTkn->bIsInteger()) {
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_INT);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_INT);
       continue;
     }
 
     if (pTkn->bIsDecimal()) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // push token on the exprStack and type on the ExprType
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_BCD);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_BCD);
       continue;
     }
 
     if (pTkn->bSame("DATE"_Stz) ) {
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_DTE);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_DTE);
       continue;
     }
 
     if (pTkn->bSame("TIME"_Stz)) {
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_TME);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_TME);
       continue;
     }
 
     if (pTkn->bSame("TIMESTAMP"_Stz)) {
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_TSP);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_TSP);
       continue;
     }
 
     if (pTkn->bSame("null"_Stz) ) {
       pTkn = pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_UNK);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_UNK);
       continue;
     }
 
@@ -1020,7 +1012,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // push literal
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, m_eExprKind, DM_VCH);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
     }
     else {
       vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn);
@@ -1237,29 +1229,29 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
   sStructColumn.vSprint("p%s->%s"_Stz,
                         xStencilRow[m_eStencilTo], sColumn.azChar());
 
-  if (m_eExprKind == EK_AGGGBY) {
+  if (m_eSketchKind == EK_AGGGBY) {
     vInitAgg(ePreExp);
     sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
   } else {
     vInitAgg(ePreExp);
 
-    RASSERT(m_eExprKind == EK_AGGREG ||
-            m_eExprKind == EK_AGGORD)
+    RASSERT(m_eSketchKind == EK_AGGREG ||
+                m_eSketchKind == EK_AGGORD)
     sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
     m_pInitStack->vPushStr(sOperation);
   }
 
   switch (ePreExp) {
     case PE_ALL:
-      if (m_eExprKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_AGGGBY) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(m_eExprKind == EK_AGGREG ||
-                m_eExprKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == EK_AGGREG ||
+                    m_eSketchKind == EK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -1270,14 +1262,14 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_CNT:
-      if (m_eExprKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_AGGGBY) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(m_eExprKind == EK_AGGREG ||
-                m_eExprKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == EK_AGGREG ||
+                m_eSketchKind == EK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -1288,7 +1280,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_MIN:
-      if (m_eExprKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_AGGGBY) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1312,8 +1304,8 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         }
       }
       else {
-        RASSERT(m_eExprKind == EK_AGGREG ||
-                m_eExprKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == EK_AGGREG ||
+                m_eSketchKind == EK_AGGORD);
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
         sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
@@ -1331,7 +1323,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_MAX:
-      if (m_eExprKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_AGGGBY) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1355,8 +1347,8 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         }
       }
       else {
-        RASSERT(m_eExprKind == EK_AGGREG ||
-                m_eExprKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == EK_AGGREG ||
+                m_eSketchKind == EK_AGGORD);
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1375,14 +1367,14 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_SUM:
-      if (m_eExprKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_AGGGBY) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(m_eExprKind == EK_AGGREG ||
-                m_eExprKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == EK_AGGREG ||
+                m_eSketchKind == EK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -1563,7 +1555,7 @@ void OpSketch::vPushCount(TypedStack* pExprStack, IntStack* pTypeStack, Token* p
 /* push integer literal                                                       */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn,
-                                ePE ePreExp, eEK m_eExprKind, eDM eLiteral) {
+                                ePE ePreExp, eDM eLiteral) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1615,7 +1607,7 @@ void OpSketch::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token*
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
-      if (ePreExp == PE_EXP && m_eExprKind != EK_FILTER)
+      if (ePreExp == PE_EXP && m_eSketchKind != EK_FILTER)
         pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
       break;
     default:
@@ -1701,7 +1693,7 @@ void OpSketch::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK m_eExprKind, Token* pTkn) {
+void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1770,7 +1762,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
 
 
   if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
-      m_eExprKind != EK_FILTER && m_eExprKind != EK_SORT)
+      m_eSketchKind != EK_FILTER && m_eSketchKind != EK_SORT)
     pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 
   // push the type
@@ -1852,9 +1844,9 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
   eDM eDatum;
   Column* pColumn;
 
-  switch(m_eExprKind) {
+  switch(m_eSketchKind) {
 
-    case EK_AGGREG:
+    case SK_AGGREG:
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
@@ -1872,7 +1864,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       pExprStack->vPushStz(sPush);
       break;
 
-    case EK_AGGORD:
+    case SK_AGGORD:
 
       if (ePreExp == PE_GKY) {
         break;
@@ -1915,7 +1907,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
-    case EK_AGGGBY:
+    case SK_AGGGBY:
 
       if (ePreExp == PE_GKY) {
         break;
@@ -1960,11 +1952,11 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       pExprStack->vPushStz(sPush);
       break;
 
-    case EK_FILTER:
+    case SK_FILTER:
       pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       break;
 
-    case EK_INDEXJOIN:
+    case SK_INDEXJOIN:
       if (m_pIndexDef->nColumns() > 1) {
         vTrace("Warning: Multicolumn joins not supported\n"_Stz);
         RASSERT(m_pIndexDef->nColumns() == 1);
@@ -1980,7 +1972,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
-    case EK_INDEXSCAN:
+    case SK_INDEXSCAN:
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyT)\n"_Stz);
         pExprStack->vPushStz(sPush);
@@ -1998,7 +1990,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
-    case EK_PROJECT:
+    case SK_PROJECT:
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -2006,13 +1998,13 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       pExprStack->vPushStz(sPush);
       break;
 
-    case EK_HASH:
+    case SK_HASH:
       // assign to iMixIn
       sPush.vSprint("_ASSIGN(iMixIn)\n"_Stz);
       pExprStack->vPushStz(sPush);
       break;
 
-    case EK_SORT:
+    case SK_SORT:
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
         pExprStack->vPushStz(sPush);
@@ -2031,7 +2023,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
-    case EK_TOP:
+    case SK_TOP:
       if (m_pIndexDef->nColumns() > 1) {
         vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
         RASSERT(m_pIndexDef->nColumns() == 1);
@@ -2261,13 +2253,13 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
 /*----------------------------------------------------------------------------*/
 /* get working stack                                                          */
 /*----------------------------------------------------------------------------*/
-TypedStack* OpSketch::pWorkingStack(eEK m_eExprKind, ePE ePreExp)
+TypedStack* OpSketch::pWorkingStack( ePE ePreExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
-  switch(m_eExprKind) {
-    case EK_AGGGBY:
-    case EK_AGGREG:
+  switch(m_eSketchKind) {
+    case SK_AGGGBY:
+    case SK_AGGREG:
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
@@ -2277,22 +2269,22 @@ TypedStack* OpSketch::pWorkingStack(eEK m_eExprKind, ePE ePreExp)
 
       return m_pInitStack;
 
-    case EK_AGGORD:
+    case SK_AGGORD:
       if (ePreExp == PE_GBY)
         return m_pGbyStack;
       else
         return m_pExprStack;
 
-    case EK_FILTER:
-    case EK_HASH:
-    case EK_INDEXJOIN:
-    case EK_INDEXSCAN:
-    case EK_PROJECT:
-    case EK_SORT:
-    case EK_TOP:
+    case SK_FILTER:
+    case SK_HASH:
+    case SK_INDEXJOIN:
+    case SK_INDEXSCAN:
+    case SK_PROJECT:
+    case SK_SORT:
+    case SK_TOP:
       return m_pExprStack;
 
-    case EK_NONE:
+    case SK_NONE:
       return m_pExprStack;
 
     default:

@@ -1802,7 +1802,6 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  eEK eExprKind = pLogicUnit->m_eExprKind;
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1810,7 +1809,7 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
   Op *pNextOp = pStream->pGet(i_Op + 1);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sFilterExpr, SK_FILTER, EK_FILTER, ePrevStencil_v2, SR_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sFilterExpr, SK_FILTER, ePrevStencil_v2, SR_NONE, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
@@ -2078,13 +2077,12 @@ OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* p
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  eEK eExprKind = pLogicUnit->m_eExprKind;
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sProjectExpr, SK_PROJECT, eExprKind, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sProjectExpr, SK_PROJECT, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);

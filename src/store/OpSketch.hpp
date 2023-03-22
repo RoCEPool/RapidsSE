@@ -22,7 +22,6 @@ namespace STORE
   private:
 
     eSK  m_eSketchKind;
-    eEK  m_eExprKind;
 
     // expression string
     s256 m_sExprString;
@@ -73,7 +72,7 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
-    OpSketch(Stz* sEprStr, eSK eSketchKind, eEK eExprKind, eSR eStencilIn, eSR eStencilOut,
+    OpSketch(Stz* sEprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut,
              StreamDef* pStreamDefIn, StreamDef* pStreamDefOut);
 
    ~OpSketch(void) noexcept(false);
@@ -125,12 +124,12 @@ namespace STORE
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
     void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
     void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
-    void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, ePE ePreExp, eEK eExprKind, eDM eLiteral);
+    void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, ePE ePreExp, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
+    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
-    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp);
+    TypedStack* pWorkingStack(ePE ePreExp);
 
   private:
   
