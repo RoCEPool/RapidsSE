@@ -81,7 +81,7 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
+/* add an early project after this index scan                                 */
 /*----------------------------------------------------------------------------*/
 void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
 {
@@ -92,10 +92,10 @@ void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
   // todo: arrived back ...
 
   pCI->G.p_projection = pSub_projection();
-  Card_Project* p_project = Card_Project::pNew_project_early(pCI);
-  pCI->G_vInsertAfter(p_project,this);
+  Card_Project* p_project_early = Card_Project::pCraftNew_project_early(pCI);
+  pCI->G_vInsertAfter(p_project_early, this);
 
-  pCI->ProjectionAnalysis.m_pProjection_running = p_project->pSub_projection();
+  pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
 
   pCI->vPrintBoard();
 

@@ -94,7 +94,7 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   pCI->G.p_projection = pSub_projection();
   pCI->G.p_projection->vDump();
-  Card_Project* p_project = Card_Project::pNew_project_early(pCI);
+  Card_Project* p_project = Card_Project::pCraftNew_project_early(pCI);
   pCI->G_vInsertAfter(p_project,this);
 
   pCI->ProjectionAnalysis.m_pProjection_running = p_project->pSub_projection();

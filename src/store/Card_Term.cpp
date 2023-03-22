@@ -445,14 +445,14 @@ void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vTermBecomes(Card_Projection* p_projection_reduced)
+void Card_Term::vTermBecomes(Card_Projection* p_projection_needed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(szValue());
-  if (p_expr_repl) {
+  Card_Expr* p_expr_needed = p_projection_needed->pFind_expr_By_projectedCol(szValue());
+  if (p_expr_needed) {
     Stz* szStem = szValue();
-    Stz* szBecomes = p_expr_repl->Y_szGet(P_Becomes);
+    Stz* szBecomes = p_expr_needed->szValue();
 
     Y_vSet(P_Stem,szStem);
     vValue(szBecomes);

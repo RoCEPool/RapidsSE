@@ -285,13 +285,13 @@ Stz* Card_RpnCalc::szProjectedCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vTermsBecome(Card_Projection* p_projection_reduced)
+void Card_RpnCalc::vTermsBecome(Card_Projection* p_projection_needed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_TERM))
-    xCI_this.G.p_term->vTermBecomes(p_projection_reduced);
+    xCI_this.G.p_term->vTermBecomes(p_projection_needed);
 }
 
 /*----------------------------------------------------------------------------*/

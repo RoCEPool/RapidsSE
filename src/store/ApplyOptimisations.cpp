@@ -478,7 +478,7 @@ void ApplyOptimisations::vEarly_projections(void)
     }
 
   if (bEarlyRoot)
-      m_pCI->G.p_OP->vEarly_project_root(m_pCI);
+    m_pCI->G.p_OP->vEarly_project_root(m_pCI);
 
   if (m_pCI->EarlyProject.m_pProjection_needed) {
     DELETE_CARD(m_pCI->EarlyProject.m_pProjection_needed);

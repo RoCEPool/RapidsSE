@@ -66,7 +66,7 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Project* Card_Project::pNew_project_early(CardIter* pCI)
+Card_Project* Card_Project::pCraftNew_project_early(CardIter* pCI)
 
 {
   _static_
@@ -77,7 +77,7 @@ Card_Project* Card_Project::pNew_project_early(CardIter* pCI)
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_project_early->vAppend(p_level);
 
-  Card_Projection* p_projection_early = Card_Projection::pNew_projection_early(pCI);
+  Card_Projection* p_projection_early = Card_Projection::pCraftNew_projection_early(pCI);
   p_project_early->vAppend(p_projection_early);
 
   // debug
