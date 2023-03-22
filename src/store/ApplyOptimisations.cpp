@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  //vEarly_projections();
+  vEarly_projections();
   vDebugPoint();
 }
 
@@ -470,11 +470,14 @@ void ApplyOptimisations::vEarly_projections(void)
 
   RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_reduced);
 
+  bool bEarlyRoot = false;
   while (m_pCI->G_bEachMain_reverse())
-    if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot())
+    if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
+      bEarlyRoot = true;
       break;
+    }
 
-  if (m_pCI->G.p_MainCard && Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot())
+  if (bEarlyRoot)
       m_pCI->G.p_OP->vEarly_project_root(m_pCI);
 
   if (m_pCI->EarlyProject.m_pProjection_reduced) {

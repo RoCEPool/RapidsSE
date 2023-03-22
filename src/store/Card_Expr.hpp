@@ -34,7 +34,8 @@ namespace STORE
     Card_Expr* pProjectRight(void);
 
     i8 iRpnCalc_WhichGbyKey(void);
-    Card_Expr* pToCarry_key(void);
+    Card_Expr* pToReduce_prj(void);
+    Card_Expr* pToReduce_key(void);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);

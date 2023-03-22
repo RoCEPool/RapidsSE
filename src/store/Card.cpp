@@ -2556,6 +2556,9 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (szPpyNm->bSame(P_Stem))
+    vDebugPoint();
+
   if (! m_pProperties)
     m_pProperties = new TagSet;
 

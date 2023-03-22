@@ -286,7 +286,9 @@ Card_Expr* Card_Expr::pProjectRight(void)
 
   if (Y_bHas(P_Becomes)) {
     //+ becomes
+    Card_Term* pPrjTerm = pProjectedTerm();
     Card_Term *p_term = new Card_Term(Y_szGet(P_Becomes));
+    p_term->Y_vSet(P_Stem,pPrjTerm->szValue());
     p_rpnCalc->vAppend(p_term);
   }
   else
@@ -333,13 +335,25 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pToCarry_key(void)
+Card_Expr* Card_Expr::pToReduce_key(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Expr* p_expr_carry = _pCard_Expr(pDupCardAndSubCards());
+  Card_Expr* p_expr_key = _pCard_Expr(pDupCardAndSubCards());
 
-  return p_expr_carry;
+  return p_expr_key;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pToReduce_prj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr_prj = _pCard_Expr(pDupCardAndSubCards());
+
+  return p_expr_prj;
 }
 
 /*============================================================================*/

@@ -450,8 +450,11 @@ void Card_Term::vTermBecomes(Card_Projection* p_projection_reduced)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(szValue());
-  if (p_expr_repl)
+  if (p_expr_repl) {
+    Stz* szStem = szValue();
     vValue(p_expr_repl->Y_szGet(P_Becomes));
+    Y_vSet(P_Stem,szStem);
+  }
 }
 
 

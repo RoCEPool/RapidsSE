@@ -55,17 +55,19 @@ Card_Projection* Card_Projection::pNew_projection_early(Card_Projection *p_proje
 
   CardIter xCI_reduced(p_projection_reduced);
   while (xCI_reduced.G_bEachMain(CK_EXPR)) {
-    if (Card_Expr* p_expr_has = p_projection->pHasSame(xCI_reduced.G.p_expr)) {
-      if (! p_projection_early)
-        p_projection_early = new Card_Projection;
-      Card_Expr* p_expr_early = _pCard_Expr(xCI_reduced.G.p_expr->pProjectRight());
-      p_projection_early->vAppend(p_expr_early);
-      p_expr_early->vRenumber(p_projection_early->nChildCards());
-      s32 sBecomes;
-      sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards());
-      xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
-    }
+    if (! p_projection->pHasSame(xCI_reduced.G.p_expr))
+      continue;
 
+    if (! p_projection_early)
+      p_projection_early = new Card_Projection;
+
+    Card_Expr* p_expr_early = xCI_reduced.G.p_expr->pProjectRight();
+    p_projection_early->vAppend(p_expr_early);
+    p_expr_early->vRenumber(p_projection_early->nChildCards());
+
+    s32 sBecomes;
+    sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards());
+    xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
   }
 
   //Card_Projection* p_projection_early = _pCard_Projection(p_projection_reduced->pDupCardAndSubCards());
@@ -291,7 +293,7 @@ Card_Projection* Card_Projection::pToEarlyReduction(CardIter* pCI, Card_Key* p_k
 
   CardIter xCI_key(p_key);
   while (xCI_key.G_bEachMain(CK_EXPR)) {
-    Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToCarry_key();
+    Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToReduce_key();
     p_projection_reduced->vAppend(p_expr_carry);
   }
 
@@ -312,7 +314,7 @@ Card_Projection* Card_Projection::pToEarlyReduction(CardIter* pCI, Card_Key* p_k
           continue;
 
         if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))
-           p_projection_reduced->vAppend(p_expr_col->pDupCardAndSubCards());
+           p_projection_reduced->vAppend(p_expr_col->pToReduce_prj());
     }
   }
   p_projection_reduced->vRenumberAllExpr();
