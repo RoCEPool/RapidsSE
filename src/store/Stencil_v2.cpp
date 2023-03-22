@@ -605,31 +605,17 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
       RASSERT(!m_xStageOps.m_bIndexScan);
 
-      if (m_xStageOps.m_bScan) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupScan(pCombined, pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupScan(pCombined, pStream, pOp);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      m_pShapeROW = pSketchInflateRow(pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeROW = pSketchInflateRow(pStream, pOp);
+      m_bRowBuffer = true;
 
-        m_bRowBuffer = true;
-      } else {
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupScan(pCombined, pStream, pOp);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeROW = pSketchInflateRow(pStream, pOp);
-
-        m_bRowBuffer = true;
-      }
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
     }

@@ -876,7 +876,7 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     pTkn = pTknVec->pNextToken();
   }
 
-  if (! bFilter) {
+  if ( ! bFilter ) {
 
     // push the predicate expression
     pPreExpStack->vPush(ePreExp);
