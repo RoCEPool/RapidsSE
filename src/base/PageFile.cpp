@@ -61,6 +61,9 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_uFirstUsableByte = sizeof(C_MAGIC);
   m_uWilderness = 0;
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
+  MemLib::vZero(m_caBufferHeader, sizeof(m_caBufferHeader), CN_NONE);
+  m_aHeader = (Header*) & m_caBufferHeader[0];
+  m_pObject = reinterpret_cast<Object*>(m_aHeader);
 
   vInitialise();
 
@@ -233,7 +236,7 @@ void PageFile::vWriteDataBufferToPFile(DataBuffer* pDataBuffer)
 //lock
   m_pFile->vSeek(iSeekOffset);
 
-  bool bResult = m_pFile->bWriteBytes((void*)pDataBuffer,C_SIZE_POOL_BUFFER);
+  bool bResult = m_pFile->bWriteBytes((void*)pDataBuffer,C_SIZE_LARGE_OBJECT);//C_SIZE_LARGE_OBJECT
   RASSERT(bResult);
 
 //unlock
@@ -255,28 +258,49 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
     return nullptr;
   }
 
+//  vTrace("Object: %lld, Header: %lld, PoolBuffer: %lld, Databuffer: %lld, CrwBuffer: %lld, RowBuffer: %lld\n"_Stz,
+//         sizeof(Object), sizeof(Header), sizeof(PoolBuffer), sizeof(DataBuffer), sizeof(CrwBuffer), sizeof(RowBuffer));
+
+  i8 nSizeHeader = sizeof(Object);
+
+  //lock
+  m_pFile->vSeek(iSeekOffset);
+  bool bResult = m_pFile->nReadBytes((void*)m_aHeader,nSizeHeader);
+  RASSERT(bResult);
+  RASSERT(m_pObject->eGetClassNo() == CN_ROWBUFFER ||
+          m_pObject->eGetClassNo() == CN_CRWBUFFER);
+
+  // Allocate a Buffer from the Transient or Persistent Large Heap
+  // Depending on the persistent bit
+  void* pPageInBuffer = nullptr;
+
+  if(m_pObject->bGetPersistent()) {
+    pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER, true);
+  } else {
+    pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER, false);
+  }
   // Allocation metrics will get dirty due to this
   // When freeing, we will be freeing a Crw or Row buffer instead of CN_PAGEINBUFFER
-  void* pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER);
 
-//lock
-  m_pFile->vSeek(iSeekOffset);
+  MemLib::vCopy(pPageInBuffer, m_pObject, nSizeHeader, m_pObject->eGetClassNo());
+  void* pBody = aAdd<void *>(pPageInBuffer, nSizeHeader);
 
-  bool bResult = m_pFile->nReadBytes((void*)pPageInBuffer,C_SIZE_POOL_BUFFER);
+  i8 nSizeBody = ((i8) C_SIZE_LARGE_OBJECT) - nSizeHeader;
+
+  bResult = m_pFile->nReadBytes((void*)pBody,nSizeBody);
 
   ASSERT(bResult);
 
   DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(pPageInBuffer);
 
+  RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
+          pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
+
   // Reset the BufferNo after it has been overwritten
   i8 iPoolBufferNo = pDataBuffer->iBufferNo();
   pDataBuffer->vSetBufferNo(iPoolBufferNo);
 
-  RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
-          pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
-
-
-  // Reset the bufferId incase it was set to zero during a pageout
+  // Reset the bufferId in case it was set to zero during a pageout
   // TODO: Arjun - Hack remove
   pDataBuffer->vSetBufferId(oBufferId.m_pvAsAddress);
 

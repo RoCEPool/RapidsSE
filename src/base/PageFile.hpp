@@ -18,6 +18,9 @@ namespace BASE
     u8     m_uFirstUsableByte;    // Offset from start of file to the first writable byte
     u8     m_uLastUsableByte;     // Offset from start of file to the last writable byte
     u8     m_uWilderness;         // Subset to the start of free space wilderness (0,1,2...)
+    char    m_caBufferHeader[sizeof(Object)];
+    Header* m_aHeader;
+    Object* m_pObject;
 
     // must be last
     Footer m_xFooter;
