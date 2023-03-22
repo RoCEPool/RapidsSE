@@ -148,9 +148,13 @@ SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month fro
 rows:
   (DATE '2034-02-18')
 
-//SELECT INTERVAL '30' day + INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
-//rows:
-//  (DATE '2034-02-18')
+SELECT INTERVAL '30' day +  DATE '2023-02-16' from nation where n_nationkey = 2;
+rows:
+  (DATE '2023-03-18')
+
+SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
+rows:
+  (DATE '2034-01-16')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval + time
