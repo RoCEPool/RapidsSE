@@ -136,8 +136,13 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
 
+    OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp);
     OpSketch* pSketchProject(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil_v2, Stz* sLabelLoop);
+
+
+
 
 
 
@@ -146,11 +151,9 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
-    OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
+     OpSketch* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     OpSketch* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabel);
 
-    OpSketch* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
     OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp);
     OpSketch* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists);
     OpSketch* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);

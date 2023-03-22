@@ -268,7 +268,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
   m_pOpSource->vAppendFragment(m_pPreliminary, &iLineNumber);
-
+/*
   if (m_xStageOps.m_bScan || m_bRowBuffer) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -436,6 +436,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
   // append banner tail
   m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
 
+ */
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to a file
 
@@ -609,10 +610,14 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       vSetupScan(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
+      //m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      m_pShapeROW = pSketchInflateRow(pStream, pOp);
+      //m_pShapeROW = pSketchInflateRow(pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchScan(pCombined, pStream, pOp);
+      vAppend(pOpSketch);
 
       m_bRowBuffer = true;
 
@@ -1684,9 +1689,9 @@ OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch scan (inflate crw of crwBuffer)                                     */
+/* sketch scan (inflate compact rows of crwBuffer)                            */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1694,7 +1699,8 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
-  s256 sReturnLabel;
+  s256 sLabelNext;
+  s256 sLabelLoop;
 
   // get the streamDefLft
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1705,29 +1711,17 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
 
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the streamDefLft
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, SR_IT);
-  pCodeSynth->vSynthStruct(0);
-  pShape->vStructSynthA(pCodeSynth);
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(""_Stz, SK_SCAN, SR_NONE, SR_NONE, pStreamDefLft, nullptr);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the row inflate
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
-  sReturnLabel.vSprint("L_InflateCrwRet"_Stz);
-  pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, m_xStageOps.m_sLabelOrdAgg, sReturnLabel, &uSelectColumns);
-  pShape->vCodeSynthA(pCodeSynth);
+  sLabelNext.vSprint("L_InflateCrwRet"_Stz);
+  sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the return from inflate
-  pCodeSynth = new CodeSynth_v2(nullptr, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
-  sLabel.vSprint("L_InflateCrwRet"_Stz);
-  sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-  pCodeSynth->vSynthInflateCrwRet(sLabel, sReturnLabel);
-  pShape->vCodeSynthB(pCodeSynth);
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  return pShape;
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
