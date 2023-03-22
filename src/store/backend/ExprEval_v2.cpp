@@ -229,8 +229,8 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
   i8 i_ColumnOrdinal = C_UNKNOWN;
 
   bool bGroupBy = false;
+  bool bFilter = false;
 
-  eEK eExprKind = EK_NONE;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
   TokenVec *pTknVec = AM::TOKENISE::pTokeniseSen(sExpr);
@@ -257,7 +257,7 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a FILTER ?
     if (pTkn->bSame("FILTER"_Stz)) {
-      eExprKind = EK_FILTER;
+      bFilter = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -876,7 +876,7 @@ eEC ExprEval_v2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* 
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eExprKind != EK_FILTER) {
+  if (! bFilter) {
 
     // push the predicate expression
     pPreExpStack->vPush(ePreExp);
