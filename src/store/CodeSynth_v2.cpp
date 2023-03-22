@@ -3017,11 +3017,14 @@ void CodeSynth_v2::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprK
 
       if (ePreExp == PE_GKY)
         iGkyCols++;
-
+/*
       if (ePreExp == PE_GBY && eExprKind == EK_ORDGROUPBY)
         if (iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
-
+*/
+      if (ePreExp == PE_GBY && eExprKind == EK_AGGORD)
+        if (iGbyCols >= 2)
+          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 
       if (ePreExp != PE_GKY)
         i_Col++;
@@ -3044,7 +3047,6 @@ void CodeSynth_v2::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprK
 
     if (pTkn->bSame("groupby"_Stz)) {
 
-      eExprKind = EK_GROUPBY;
       iGbyCols = 0;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3057,7 +3059,6 @@ void CodeSynth_v2::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprK
 
     if (pTkn->bSame("ordGroupby"_Stz)) {
 
-      eExprKind = EK_ORDGROUPBY;
       iGbyCols = 0;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3073,7 +3074,7 @@ void CodeSynth_v2::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprK
       // push assign column
       vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
       iGbyCols++;
-
+/*
       if (eExprKind == EK_GROUPBY)
         eExprKind = EK_AGGGBY;
       else {
@@ -3084,6 +3085,12 @@ void CodeSynth_v2::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprK
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 
         eExprKind = EK_AGGORD;
+      }
+*/
+
+      if (eExprKind == EK_AGGORD) {
+        if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
+          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
 
       i_Col = 0;
@@ -4584,6 +4591,20 @@ void CodeSynth_v2::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack
         break;
       }
 
+      if (ePreExp == PE_GBY) {
+        vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+        sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef_v2[m_eStencilTo].m_szInclude, sColNm.azChar());
+        pExprStack->vPushStz(sPush);
+
+        sPush.vSprint("_PSH_COL(p%s->%s)\n"_Stz, xRowRef_v2[m_eStencilTo].m_szInclude, sColNm.azChar());
+        m_pOrdAggStack->vPushStz(sPush);
+        pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+        eDatum = Column::eDatum(pColumn->eColumnType());
+        sPush = aFM[eMacro_Eq[eDatum][eDatum]];
+        sPush.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+        m_pOrdAggStack->vPushStz(sPush);
+        break;
+      }
 
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
@@ -4620,6 +4641,26 @@ void CodeSynth_v2::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack
         break;
       }
 
+      if (ePreExp == PE_GBY) {
+        if (m_pIndexDef->eKeyKind()) {
+          sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
+          pExprStack->vPushStz(sPush);
+        }
+        else {
+          pColumn = m_pIndexDef->pGetColumn(i_Col);
+
+          if (pColumn->eColumnType() == CT_VARCHAR ||
+              pColumn->eColumnType() == CT_CHAR) {
+            sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
+          }
+          else {
+            sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkPL)\n"_Stz);
+          }
+          pExprStack->vPushStz(sPush);
+        }
+        break;
+      }
+
       // make the column name
       vMakeColumnNm(m_pStreamDefOut, sColNm, m_eStencilTo, i_Col);
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
@@ -4647,49 +4688,6 @@ void CodeSynth_v2::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack
       }
       else
         pPostStack->vReset();
-      break;
-
-    case EK_GROUPBY:
-      RASSERT(ePreExp == PE_GBY);
-
-      if (m_pIndexDef->eKeyKind()) {
-        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
-        pExprStack->vPushStz(sPush);
-      }
-      else {
-        pColumn = m_pIndexDef->pGetColumn(i_Col);
-
-        if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
-        }
-        else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkPL)\n"_Stz);
-        }
-        pExprStack->vPushStz(sPush);
-      }
-      break;
-
-    case EK_ORDGROUPBY:
-      RASSERT(ePreExp == PE_GBY);
-
-//      if (m_pIndexDef->eKeyKind()) {
-//        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
-//        pExprStack->vPushStz(sPush);
-//      }
-
-      vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-      sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef_v2[m_eStencilTo].m_szInclude, sColNm.azChar());
-      pExprStack->vPushStz(sPush);
-
-      sPush.vSprint("_PSH_COL(p%s->%s)\n"_Stz, xRowRef_v2[m_eStencilTo].m_szInclude, sColNm.azChar());
-      m_pOrdAggStack->vPushStz(sPush);
-      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-      eDatum = Column::eDatum(pColumn->eColumnType());
-      sPush = aFM[eMacro_Eq[eDatum][eDatum]];
-      sPush.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
-      m_pOrdAggStack->vPushStz(sPush);
-
       break;
 
     case EK_FILTER:
@@ -5399,8 +5397,8 @@ TypedStack* CodeSynth_v2::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* 
           ePreExp == PE_EXP)
         return m_pExprStack;
 
-      //if (ePreExp == PE_GKY)
-      //  return m_pExprStack;
+      if (ePreExp == PE_GBY)
+        return m_pGbyStack;
 
       if (ePreExp == PE_ALL ||
           ePreExp == PE_CNT ||
@@ -5421,11 +5419,10 @@ TypedStack* CodeSynth_v2::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* 
         return pPostStack;
       }
       else
+      if (ePreExp == PE_GBY)
+        return m_pGbyStack;
+      else
         return m_pExprStack;
-
-    case EK_GROUPBY:
-    case EK_ORDGROUPBY:
-      return m_pGbyStack;
 
     case EK_FILTER:
     case EK_HASH:

@@ -226,8 +226,10 @@ void Step::vStreamDefOutGenerate_V2(void)
   eEK eExprKind;
 
   eEC eError = ExprEval_v2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                             pPreExpStack, eExprKind, sExpr, &m_pLogicUnit->m_uSelectColumns);
-  m_pLogicUnit->m_eExprKind = eExprKind;
+                                             pPreExpStack, sExpr, &m_pLogicUnit->m_uSelectColumns);
+
+  // TODO: V2 - ALKA REMOVED m_eExprKind from LU
+  //m_pLogicUnit->m_eExprKind = eExprKind;
 
 #ifdef WITH_DEBUG_VERSION
 

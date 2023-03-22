@@ -886,25 +886,22 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eExprKind != EK_FILTER) {
+  // push the predicate expression
+  pPreExpStack->vPush(ePreExp);
 
-    // push the predicate expression
-    pPreExpStack->vPush(ePreExp);
+  // add the last column to the indexDef
+  if (ePreExp == PE_TOP) {
+    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
 
-    // add the last column to the indexDef
-    if (ePreExp == PE_TOP) {
-      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-
-      // set the column no in the indexDef w.r to the streamDef
-      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
-    }
-
-    RASSERT(pColumnExpr->eColumnType() != CT_NONE);
-
-    // add the last column to the streamDefOut
-    if (ePreExp != PE_SRT && ePreExp != PE_TOP)
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    // set the column no in the indexDef w.r to the streamDef
+    pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
   }
+
+  RASSERT(pColumnExpr->eColumnType() != CT_NONE);
+
+  // add the last column to the streamDefOut
+  if (ePreExp != PE_SRT && ePreExp != PE_TOP)
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
   L_RETURN:
 

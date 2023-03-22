@@ -10,11 +10,9 @@ enum eEK // expression kind
   /*   */ EK_AGGORD,     // aggregate with ordered group by
   /*   */ EK_AGGREG,     // projection with aggreagte
   /*   */ EK_FILTER,     // filter
-  /*   */ EK_GROUPBY,    // group by expression
   /*   */ EK_HASH,       // hash
   /*   */ EK_INDEXJOIN,  // index scan
   /*   */ EK_INDEXSCAN,  // index scan
-  /*   */ EK_ORDGROUPBY, // group by expression with ordAgg
   /*   */ EK_PROJECT,    // projection
   /*   */ EK_SORT,       // sort
   /*   */ EK_TOP,        // top
@@ -29,11 +27,9 @@ static Stz* aEK[]
   /*   */ "AGGORD"_Stz,
   /*   */ "AGGREG"_Stz,
   /*   */ "FILTER"_Stz,
-  /*   */ "GROUPBY"_Stz,
   /*   */ "HASH"_Stz,
   /*   */ "INDEXJOIN"_Stz,
   /*   */ "INDEXSCAN"_Stz,
-  /*   */ "ORDGROUPBY"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SORT"_Stz,
   /*   */ "TOP"_Stz,

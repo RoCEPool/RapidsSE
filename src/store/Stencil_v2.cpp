@@ -552,7 +552,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil_v2 = SR_NONE;
-  eEK eExprKind = EK_NONE;
 
   m_szStageNm = pStream->pStage()->szStageNm();
 
@@ -586,7 +585,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("scan"_Stz))
       continue;
 
-    // skip indexscan OP
+    // generate code for indexScan OP
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -599,9 +598,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       ePrevStencil_v2 = SR_IT;
       continue;
     }
-
-    // get the streamDefOut and streamDefLft
-    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code) if not already inflated
@@ -642,17 +638,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // project after sort will move to the EOS marker
-
-      // get the aggregate type stack
-      pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
-
-      if (eExprKind == EK_PROJECT) {
-
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupProjectExp(pCombined, pStream, pOp);
 
@@ -662,7 +647,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
         ePrevStencil_v2 = SR_PT;
 
-      }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

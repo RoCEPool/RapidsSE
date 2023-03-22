@@ -442,11 +442,14 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
       if (ePreExp == PE_GKY)
         iGkyCols++;
-
+/*
       if (ePreExp == PE_GBY && m_eExprKind == EK_ORDGROUPBY)
         if (iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
-
+*/
+      if (ePreExp == PE_GBY && m_eExprKind == EK_AGGORD)
+        if (iGbyCols >= 2)
+          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 
       if (ePreExp != PE_GKY)
         i_Col++;
@@ -469,7 +472,6 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
     if (pTkn->bSame("groupby"_Stz)) {
 
-      m_eExprKind = EK_GROUPBY;
       iGbyCols = 0;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -482,7 +484,6 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
     if (pTkn->bSame("ordGroupby"_Stz)) {
 
-      m_eExprKind = EK_ORDGROUPBY;
       iGbyCols = 0;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -498,7 +499,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
       // push assign column
       vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
       iGbyCols++;
-
+/*
       if (m_eExprKind == EK_GROUPBY)
         m_eExprKind = EK_AGGGBY;
       else {
@@ -509,6 +510,12 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 
         m_eExprKind = EK_AGGORD;
+      }
+*/
+
+      if (m_eExprKind == EK_AGGORD) {
+        if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
+          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
 
       i_Col = 0;
@@ -1871,6 +1878,20 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         break;
       }
 
+      if (ePreExp == PE_GBY) {
+        vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+        sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
+        pExprStack->vPushStz(sPush);
+
+        sPush.vSprint("_PSH_COL(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
+        m_pOrdAggStack->vPushStz(sPush);
+        pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+        eDatum = Column::eDatum(pColumn->eColumnType());
+        sPush = aFM[eMacro_Eq[eDatum][eDatum]];
+        sPush.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+        m_pOrdAggStack->vPushStz(sPush);
+        break;
+      }
 
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
@@ -1900,6 +1921,26 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         break;
       }
 
+      if (ePreExp == PE_GBY) {
+        if (m_pIndexDef->eKeyKind()) {
+          sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
+          pExprStack->vPushStz(sPush);
+        }
+        else {
+          pColumn = m_pIndexDef->pGetColumn(i_Col);
+
+          if (pColumn->eColumnType() == CT_VARCHAR ||
+              pColumn->eColumnType() == CT_CHAR) {
+            sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
+          }
+          else {
+            sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkPL)\n"_Stz);
+          }
+          pExprStack->vPushStz(sPush);
+        }
+        break;
+      }
+
       // make the column name
       vMakeColumnNm(m_pStreamDefOut, sColNm, m_eStencilTo, i_Col);
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
@@ -1917,43 +1958,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
 
       pExprStack->vPushStz(sPush);
-      break;
-
-    case EK_GROUPBY:
-      RASSERT(ePreExp == PE_GBY);
-
-      if (m_pIndexDef->eKeyKind()) {
-        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
-        pExprStack->vPushStz(sPush);
-      }
-      else {
-        pColumn = m_pIndexDef->pGetColumn(i_Col);
-
-        if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
-        }
-        else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkPL)\n"_Stz);
-        }
-        pExprStack->vPushStz(sPush);
-      }
-      break;
-
-    case EK_ORDGROUPBY:
-      RASSERT(ePreExp == PE_GBY);
-      vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-      sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
-      pExprStack->vPushStz(sPush);
-
-      sPush.vSprint("_PSH_COL(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
-      m_pOrdAggStack->vPushStz(sPush);
-      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-      eDatum = Column::eDatum(pColumn->eColumnType());
-      sPush = aFM[eMacro_Eq[eDatum][eDatum]];
-      sPush.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
-      m_pOrdAggStack->vPushStz(sPush);
-
       break;
 
     case EK_FILTER:
@@ -2267,15 +2271,17 @@ TypedStack* OpSketch::pWorkingStack(eEK m_eExprKind, ePE ePreExp)
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
-      else
-        return m_pInitStack;
+
+      if (ePreExp == PE_GBY)
+        return m_pGbyStack;
+
+      return m_pInitStack;
 
     case EK_AGGORD:
-      return m_pExprStack;
-
-    case EK_GROUPBY:
-    case EK_ORDGROUPBY:
-      return m_pGbyStack;
+      if (ePreExp == PE_GBY)
+        return m_pGbyStack;
+      else
+        return m_pExprStack;
 
     case EK_FILTER:
     case EK_HASH:
