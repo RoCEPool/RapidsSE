@@ -196,6 +196,11 @@ namespace STORE
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
 
+
+    Card_Expr* pDecodePriorExpr(Card_Term* p_term);
+    Card_Projection* pResolvePriorProjection(void);
+
+
   protected:
 
     bool bPopRecurseIter(void);

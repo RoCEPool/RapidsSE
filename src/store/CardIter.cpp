@@ -2276,6 +2276,38 @@ void CardIter::vXhand(const char* asXhand)
   G.pBoard->vXhand(asXhand);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* CardIter::pDecodePriorExpr(Card_Term* p_term)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card_Projection* p_projection_prior = pResolvePriorProjection();
+  if (! p_projection_prior)
+    return nullptr;
+
+  Card_Expr* p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
+
+  return p_expr_prior;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Projection* CardIter::pResolvePriorProjection(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card_Projection* p_projection_prior = Card_Projection::pResolvePriorProjection(this);
+
+  return p_projection_prior;
+}
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

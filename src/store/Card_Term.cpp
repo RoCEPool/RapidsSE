@@ -161,18 +161,9 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_Projection* p_projection_prior = Card_Projection::pResolvePriorProjection(pCI);
-  if (! p_projection_prior)
-    return;
-
-  Card_Expr* p_expr= p_projection_prior->pDecodeExpr(this);
-  if (! p_expr)
-    return;
-
-  if (Stz* szPrjCol = p_expr->szProjectedCol()) {
-   vSetValueMark1(szPrjCol, MARK_CHANGED);
-  }
-
+  if (Card_Expr* p_expr_prior = pCI->pDecodePriorExpr(this))
+    if (Stz* szPrjCol = p_expr_prior->szProjectedCol())
+      vSetValueMark1(szPrjCol, MARK_CHANGED);
 }
 
 /*----------------------------------------------------------------------------*/
