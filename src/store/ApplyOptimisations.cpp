@@ -464,9 +464,14 @@ void ApplyOptimisations::vEarly_projections(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "Early filter"_Stz);
+  m_pCI->vTransform(__func__, "Early projections"_Stz);
 
   m_pCI->G_vRestart();
+
+  m_pCI->G.pDeck->vRenumberRecursive();
+
+  m_pCI->vPrintBoard();
+
 
   RASSERT(nullptr == m_pCI->EarlyProject.m_pProjection_needed);
 

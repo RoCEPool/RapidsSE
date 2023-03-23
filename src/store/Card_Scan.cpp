@@ -112,8 +112,16 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 
    // todo: arrived back ...
 
+   pCI->G.p_projection = pSub_projection();
+   Card_Project* p_project_early = Card_Project::pCraftNew_project_early(pCI);
+   pCI->G_vInsertAfter(p_project_early, this);
+
+   pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
+
+   pCI->vPrintBoard();
+
    vDebugPoint();
- }
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -65,7 +65,7 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 
   pCI->G.p_key = pSub_key();
 
-  // get the reduced form of ordAgg's projection
+  // get the needed form of ordAgg's projection
   pCI->EarlyProject.m_pProjection_needed =
       pSub_projection()->pDeduceProjectionNeeded(pCI);
 

@@ -222,14 +222,6 @@ void Card_OP::vEarly_project_root(CardIter* pCI)
 
     case CK_ORDAGG:
       pCI->G.p_ordAgg->vEarly_project_root(pCI);
-
-//      pCI->G.p_project = Card_Project::pNew_project(pCI->EarlyProject.m_pProjection_needed);
-//      pCI->G.pDeck->vInsertBefore(pCI->G.p_project, pCI->G.p_ordAgg);
-//      pCI->EarlyProject.m_pProjection_needed = nullptr;
-      pCI->vPrintBoard();
-
-      pCI->vRemoveChild(pCI->G.p_project);
-      DELETE_CARD(pCI->G.p_project);
       break;
 
       // -- -- -- -- -- -- --
