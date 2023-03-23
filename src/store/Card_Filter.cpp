@@ -199,7 +199,7 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vTermsBecome(Card_Projection* p_projection_reduced)
+void Card_Filter::vFlipTerms(Card_Projection* p_projection_reduced)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -336,15 +336,36 @@ void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bIsKeyExpr)
-    vValueSprint("$K%lld"_Stz,i_Expr);
+    vRenumberAsKeyOdn(i_Expr);
   else
-    vValueSprint("$%lld"_Stz,i_Expr);
+    vRenumberAsStmColOdn(i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProjectRight(Card_Projection *p_projection_needed)
+void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$K%lld"_Stz,i_Expr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValueSprint("$%lld"_Stz,i_Expr);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pDeduce(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -358,7 +379,7 @@ Card_Expr* Card_Expr::pProjectRight(Card_Projection *p_projection_needed)
   Card_Term*    p_term_0;
 
   vDeconstruct(p_type,p_as,p_term_0);
-    p_rpnCalc = pSub_rpnCalc();
+  p_rpnCalc = pSub_rpnCalc();
 
 
   Card_Expr* p_expr_right = new Card_Expr;
@@ -368,13 +389,55 @@ Card_Expr* Card_Expr::pProjectRight(Card_Projection *p_projection_needed)
     p_expr_right->vAppend(p_as->pDupCardAndSubCards());
   p_expr_right->vAppend(p_rpnCalc->pDupCardAndSubCards());
 
-  if (p_projection_needed)
-    p_rpnCalc->vTermsBecome(p_projection_needed);
+  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
+    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+
+  return p_expr_right;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pReckon(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  /*
+   * produce the projection of this expression
+   */
+
+  Stz* szExpr_this_stmcol = szValue();
+  Card_Type*    p_type;
+  Card_As*      p_as;
+  Card_RpnCalc* p_rpnCalc;
+  Card_Term*    p_term_0;
+
+  vDeconstruct(p_type,p_as,p_term_0);
+    p_rpnCalc = pSub_rpnCalc();
+
+  Card_Expr* p_expr_right = new Card_Expr;
+
+  p_expr_right->vAppend(p_type->pDupCardAndSubCards());
+  if (p_as)
+    p_expr_right->vAppend(p_as->pDupCardAndSubCards());
+
+  Card_RpnCalc* p_rpnCalc_reckon = _pCard_RpnCalc(p_rpnCalc->pDupCardAndSubCards());
+  Card_Term* p_term_0_reckon = p_rpnCalc_reckon->pGetTerm(0);
+  if (p_term_0_reckon->Y_bHas(P_TblCol)) {
+    p_term_0_reckon->vValue(szExpr_this_stmcol);
+  }
+  else {
+    vDebugPoint();
+  }
+  p_expr_right->vAppend(p_rpnCalc_reckon);
+
+  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
+    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   return p_expr_right;
 }
 /*----------------------------------------------------------------------------*/
-//Card_Expr* Card_Expr::pProjectRight(Card_Projection *p_projection_needed)
+//Card_Expr* Card_Expr::pReckon(Card_Projection *p_projection_needed)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 //
@@ -395,7 +458,7 @@ Card_Expr* Card_Expr::pProjectRight(Card_Projection *p_projection_needed)
 //    //+ becomes
 //    Card_Term* pPrjTerm = pProjectedTerm();
 //    Card_Term *p_term = new Card_Term(Y_szGet(P_Becomes));
-//    p_term->Y_vSet(P_Stem,pPrjTerm->szValue());
+//    p_term->Y_vSet(P_TblCol,pPrjTerm->szValue());
 //    p_rpnCalc->vAppend(p_term);
 //  }
 //  else

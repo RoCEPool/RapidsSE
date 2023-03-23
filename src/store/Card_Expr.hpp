@@ -42,7 +42,10 @@ namespace STORE
                       Card_As*    p_as,
                       Card_Term*  p_term_0);
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
-    Card_Expr* pProjectRight(Card_Projection *p_projection_needed=nullptr);
+    void vRenumberAsKeyOdn(i8 i_Expr);
+    void vRenumberAsStmColOdn(i8 i_Expr);
+    Card_Expr* pDeduce(CardIter* pCI);
+    Card_Expr* pReckon(CardIter* pCI);
 
     i8 iRpnCalc_WhichGbyKey(void);
     Card_Expr* pToReduce_prj(void);

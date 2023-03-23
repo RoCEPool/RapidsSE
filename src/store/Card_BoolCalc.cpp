@@ -419,7 +419,7 @@ void Card_BoolCalc::vTermsBecome(Card_Projection* p_projection_reduced)
 //    p_term->vValue(p_expr_repl->Y_szGet(P_Becomes));
 //
 
-    p_term->vTermBecomes(p_projection_reduced);
+    p_term->vFlip(p_projection_reduced);
 
     return C_CONTINUE_RECURSION;
   };

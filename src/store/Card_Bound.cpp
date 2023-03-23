@@ -266,7 +266,7 @@ void Card_Bound::vTermsBecome(Card_Projection* p_projection_reduced)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    xCI.G.p_term->vTermBecomes(p_projection_reduced);
+    xCI.G.p_term->vFlip(p_projection_reduced);
 }
 
 

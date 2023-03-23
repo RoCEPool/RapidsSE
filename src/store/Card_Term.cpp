@@ -42,7 +42,7 @@ Card_Term::Card_Term(Stz* szTerm, Stz* szStem)
   _checkInitialised_(CN_CARD);
 
   if (szStem)
-    Y_vSet(P_Stem,szStem);
+    Y_vSet(P_TblCol, szStem);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -445,7 +445,7 @@ void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vTermBecomes(Card_Projection* p_projection_needed)
+void Card_Term::vFlip(Card_Projection* p_projection_needed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -454,7 +454,7 @@ void Card_Term::vTermBecomes(Card_Projection* p_projection_needed)
     Stz* szStem = szValue();
     Stz* szBecomes = p_expr_needed->szValue();
 
-    Y_vSet(P_Stem,szStem);
+    Y_vSet(P_TblCol, szStem);
     vValue(szBecomes);
   }
 }

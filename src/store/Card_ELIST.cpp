@@ -235,7 +235,7 @@ void Card_ELIST::vRenumberAllExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool bIsKeyExpr = (bIsCard(CK_KEY));
+  bool bIsKeyExpr = bIsCard(CK_KEY);
 
   i8 i_Expr = 1;
   CardIter xCI(this);
@@ -246,7 +246,7 @@ void Card_ELIST::vRenumberAllExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vTermsBecome(Card_Projection* p_projection_reduced)
+void Card_ELIST::vFlipTerms(Card_Projection* p_projection_reduced)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -256,12 +256,12 @@ void Card_ELIST::vTermsBecome(Card_Projection* p_projection_reduced)
     Card_RpnCalc *p_rpnCalc = xCI_expr.G.p_expr->pSub_rpnCalc();
     if (!p_rpnCalc)
       continue;
-    p_rpnCalc->vTermsBecome(p_projection_reduced);
+    p_rpnCalc->vFlipTerms(p_projection_reduced);
   }
 
   CardIter xCI_key(this);
   while (xCI_key.G_bEachMain(CK_KEY)) {
-    xCI_key.G.p_key->vTermsBecome(p_projection_reduced);
+    xCI_key.G.p_key->vFlipTerms(p_projection_reduced);
   }
 
 }

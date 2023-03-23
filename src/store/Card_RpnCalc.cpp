@@ -201,11 +201,18 @@ bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
     Card_Term* p_term_this = this->pGetTerm(i_Child);
-    Stz* szThis = this->pGetChild(i_Child)->szValue();
-    Stz* szArg = p_rpnCalc_arg->pGetChild(i_Child)->szValue();
+    Stz* szThis = p_term_this->szValue();
+    Card_Term* p_term_arg = p_rpnCalc_arg->pGetTerm(i_Child);
+    Stz* szArg = p_term_arg->szValue();
 
-    if (! szThis->bSame(szArg))
-      return false;
+    if (szThis->bSame(szArg))
+      continue;
+
+    Stz* szArg_tblCol = p_term_arg->Y_szGet(P_TblCol);
+    if (szArg_tblCol && szThis->bSame(szArg_tblCol))
+      continue;
+
+    return false;
   }
 
   return true;
@@ -285,13 +292,13 @@ Stz* Card_RpnCalc::szProjectedCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vTermsBecome(Card_Projection* p_projection_needed)
+void Card_RpnCalc::vFlipTerms(Card_Projection* p_projection_needed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_TERM))
-    xCI_this.G.p_term->vTermBecomes(p_projection_needed);
+    xCI_this.G.p_term->vFlip(p_projection_needed);
 }
 
 /*----------------------------------------------------------------------------*/

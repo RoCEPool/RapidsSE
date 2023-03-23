@@ -137,7 +137,7 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vTermsBecome(Card_Projection* p_projection_reduced)
+void Card_IndexList::vFlipTerms(Card_Projection* p_projection_reduced)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

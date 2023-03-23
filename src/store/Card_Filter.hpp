@@ -30,7 +30,7 @@ namespace STORE
     void vCullPred(char cWithMark);
     bool bIsEmpty(void);
 
-    void vTermsBecome(Card_Projection* p_projection_reduced);
+    void vFlipTerms(Card_Projection* p_projection_reduced);
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

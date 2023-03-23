@@ -513,7 +513,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vProjectionAnalysis(CardIter* pCI)
+void Card_OP::vProjectionDeduction(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -540,7 +540,7 @@ void Card_OP::vProjectionAnalysis(CardIter* pCI)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->ProjectionAnalysis.m_pProjection_running)
-    p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pReProject());
+    p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pDeduce(pCI));
   else
     p_projection = new Card_Projection;
 

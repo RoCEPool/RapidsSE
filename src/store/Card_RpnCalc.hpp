@@ -28,7 +28,7 @@ namespace STORE
     bool bIsSingleCol(void);
     void vOntoStzList(StzList* pStzList);
     Stz* szProjectedCol(void);
-    void vTermsBecome(Card_Projection* p_projection_needed);
+    void vFlipTerms(Card_Projection* p_projection_needed);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
     i8 nTrimTerm(Stz* szValue);
   };

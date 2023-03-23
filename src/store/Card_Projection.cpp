@@ -45,14 +45,15 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /* craft projection for a new early project to be inserted after current op   */
+/* from this denoted projection of current op                                 */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pCraftNew_projection_early(CardIter* pCI)
 {
   _static_
 
-  pCI->EarlyProject.m_pProjection_needed->vDump();
-
   Card_Projection* p_projection_early = new Card_Projection;
+
+  pCI->EarlyProject.m_pProjection_needed->vDump();
 
   CardIter xCI_projectionOfOp(pCI->G.p_projection);
   while (xCI_projectionOfOp.G_bEachMain(CK_EXPR)) {
@@ -63,7 +64,10 @@ Card_Projection* Card_Projection::pCraftNew_projection_early(CardIter* pCI)
     if (p_projection_early->pHasSame(xCI_projectionOfOp.G.p_expr))
       continue;
 
-    Card_Expr* p_expr_early = xCI_projectionOfOp.G.p_expr->pProjectRight(pCI->EarlyProject.m_pProjection_needed);
+    // denoted expr (of this denoted projection of denoted main op)
+    //   is needed and not yet in early projection
+
+    Card_Expr* p_expr_early = xCI_projectionOfOp.G.p_expr->pReckon(pCI);
     p_projection_early->vAppend(p_expr_early);
     p_expr_early->vRenumber(p_projection_early->nChildCards());
   }
@@ -106,7 +110,7 @@ Card_Projection* Card_Projection::pCraftNew_projection_early(CardIter* pCI)
 //      xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
 //    }
 //
-//    Card_Expr* p_expr_early = xCI_reduced.G.p_expr->pProjectRight(pCI->EarlyProject.m_pProjection_needed);
+//    Card_Expr* p_expr_early = xCI_reduced.G.p_expr->pReckon(pCI->EarlyProject.m_pProjection_needed);
 //    p_projection_early->vAppend(p_expr_early);
 //    p_expr_early->vRenumber(p_projection_early->nChildCards());
 //
@@ -144,7 +148,7 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
     }
 
     if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_table->vProjectionAnalysis(pCI);
+      pCI->G.p_table->vProjectionDeduction(pCI);
       continue;
     }
 
@@ -221,6 +225,65 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     vDebugPoint();
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* deduce reduced form of this projection needed for crafting early projects  */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pDeduceProjectionNeeded(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // this projection will be in a gbyAgg or ordAgg
+  RASSERT(pCI->G.p_MainCard->bIsCard(CK_GBYAGG) || pCI->G.p_MainCard->bIsCard(CK_ORDAGG));
+
+  Card_Projection* p_projection_needed = new Card_Projection;
+  p_projection_needed->Y_vSet(P_Needed);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) make a copy of the key as start of needed projection
+
+  CardIter xCI_key(pCI->G.p_key);
+  while (xCI_key.G_bEachMain(CK_EXPR)) {
+    Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToReduce_key();
+    p_projection_needed->vAppend(p_expr_carry);
+  }
+
+  p_projection_needed->vRenumberAllExpr();
+  //p_projection_needed->vDump();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) append the referenced col's in rpnCalc of this projection into needed projection
+
+  CardIter xCI_projection(this);
+  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
+
+    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
+    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+      if (! xCI_rpnCalc.G.p_term->bIsColOdn())
+        continue;
+      if (p_projection_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szValue()))
+        continue;
+
+      if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))
+        p_projection_needed->vAppend(p_expr_col->pToReduce_prj());
+    }
+  }
+  p_projection_needed->vRenumberAllExpr();
+  p_projection_needed->vDump();
+
+  return p_projection_needed;
+}
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pToCarry(Card_Key* p_key)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // temp: take a copy of this projection
+  Card_Projection* p_projection_carry =
+      _pCard_Projection(pDupCardAndSubCards());
+
+  return p_projection_carry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,80 +366,22 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* re-projection                                                              */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pReProject(Card_Projection *p_projection_needed)
+Card_Projection* Card_Projection::pDeduce(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Projection* p_projection_reproject = new Card_Projection;
+  Card_Projection* p_projection_deduced = new Card_Projection;
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_Expr* p_expr_reprojected = xCI_this.G.p_expr->pProjectRight(p_projection_needed);
-    p_projection_reproject->vAppend(p_expr_reprojected);
-    p_expr_reprojected->vRenumber(p_projection_reproject->nChildCards());
+    Card_Expr* p_expr_deduced = xCI_this.G.p_expr->pDeduce(pCI);
+    p_projection_deduced->vAppend(p_expr_deduced);
+    p_expr_deduced->vRenumber(p_projection_deduced->nChildCards());
   }
 
-  return p_projection_reproject;
+  return p_projection_deduced;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* get the reduced form of this projection for crafting early projects        */
-/*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pToProjectionNeeded(CardIter* pCI, Card_Key* p_key)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // this projection will be in a gbyAgg or ordAgg
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) make a copy of the key as start of needed projection
-
-  Card_Projection* p_projection_needed = new Card_Projection;
-  p_projection_needed->Y_vSet(P_Needed);
-
-  CardIter xCI_key(p_key);
-  while (xCI_key.G_bEachMain(CK_EXPR)) {
-    Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToReduce_key();
-    p_projection_needed->vAppend(p_expr_carry);
-  }
-
-  p_projection_needed->vRenumberAllExpr();
-  //p_projection_needed->vDump();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) append the referenced col's in rpnCalc of this projection into needed projection
-
-  CardIter xCI_projection(this);
-  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
-
-    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
-    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
-        if (! xCI_rpnCalc.G.p_term->bIsColOdn())
-          continue;
-        if (p_projection_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szValue()))
-          continue;
-
-        if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))
-           p_projection_needed->vAppend(p_expr_col->pToReduce_prj());
-    }
-  }
-  p_projection_needed->vRenumberAllExpr();
-  p_projection_needed->vDump();
-
-  return p_projection_needed;
-}
-/*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pToCarry(Card_Key* p_key)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // temp: take a copy of this projection
-  Card_Projection* p_projection_carry =
-      _pCard_Projection(pDupCardAndSubCards());
-
-  return p_projection_carry;
-}
 
 /*============================================================================*/
 /* end                                                                        */

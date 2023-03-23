@@ -933,6 +933,9 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
     pGetChild(i_Sub)->vDump(iDepth + 1);
+
+  if (0 == iDepth)
+    vTrace("$$\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2556,7 +2559,7 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (szPpyNm->bSame(P_Stem)) {
+  if (szPpyNm->bSame(P_TblCol)) {
     vDebugPoint();
     RASSERT(Card::bIsTableColOrdinal(szPpy));
   }
