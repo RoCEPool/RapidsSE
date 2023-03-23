@@ -39,7 +39,9 @@ namespace STORE
     void vNext(void);
     void vPrev(void);
     bool bEach(void);
+    bool bEach_reverse(void);
     bool bEach(eCK eCard);
+    bool bEach_reverse(eCK eCard);
 
     Card* pParent(void);
     Card* pChild(void);
