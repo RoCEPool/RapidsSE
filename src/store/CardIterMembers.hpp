@@ -28,6 +28,7 @@ namespace STORE
 //    void  operator delete(void*);
 
     Kid(void);
+    Kid(Card* pParent);
    ~Kid(void) noexcept(false);
 
     void vBeginForward(void);
@@ -37,11 +38,14 @@ namespace STORE
     void vLast(void);
     void vNext(void);
     void vPrev(void);
+    bool bEach(void);
+    bool bEach(eCK eCard);
 
     Card* pParent(void);
     Card* pChild(void);
     Card* pChild(i8 i_Child);
     eCK   eChild(void);
+    i8    i_Child(void);
 
     Card* pFirstChild(void);
     Card* pNextChild(void);

@@ -202,7 +202,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
 
     // get corresponding <gbyAgg>/<key>/<expr>
     Card_Term* pTerm_prj = p_expr_prj->pProjectedTerm();
-    Card_Expr* p_expr_key = pCI->G.p_key->pGetExpr(pTerm_prj);
+    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
 
     if (! p_expr_key)
       continue;
@@ -349,7 +349,7 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 
     Stz* szPrjCol_runkey = p_expr_runkey->szProjectedCol();
 
-    Card_Expr* p_expr_prjCol = pFindExpr_BasedOn_projectedCol(pCI,szPrjCol_runkey);
+    Card_Expr* p_expr_prjCol = pFindExpr(szPrjCol_runkey);
     if (p_expr_prjCol) {
 
       // annotation or direction in passing

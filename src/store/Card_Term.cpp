@@ -165,7 +165,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if (! p_projection_prior)
     return;
 
-  Card_Expr* p_expr= p_projection_prior->pGetExpr(this);
+  Card_Expr* p_expr= p_projection_prior->pDecodeExpr(this);
   if (! p_expr)
     return;
 
