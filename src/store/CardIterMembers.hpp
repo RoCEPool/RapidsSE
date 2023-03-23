@@ -31,6 +31,7 @@ namespace STORE
     Card* pParent(void);
     Card* pChild(void);
     Card* pChild(i8 i_Child);
+    eCK   eChild(void);
 
     Card* pFirstChild(void);
     Card* pNextChild(void);

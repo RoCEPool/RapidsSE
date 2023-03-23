@@ -580,7 +580,7 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 
     G.p_MainCard = G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
 
-    if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.m_pChild->eCard()) {
+    if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.eChild()) {
       vFocusOnMain();
       G_vUpdateMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
       return true;
@@ -613,7 +613,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
 
-    if (G.xKid.m_pChild->bIsCard(CK_FOLD)) {
+    if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
       G.xKid.m_pChild = nullptr;
       G.xKid.m_i_Child= C_UNKNOWN;
       return false;
@@ -623,7 +623,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    eCK eCardMain = G.xKid.m_pChild->eCard();
+    eCK eCardMain = G.xKid.eChild();
     if (eCardMain == eOfMainKind) {
       return true;
     }
@@ -659,9 +659,9 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
       return true;
     }
 
-    eCK eCardMain = G.xKid.m_pChild->eCard();
+    eCK eCardMain = G.xKid.eChild();
     if (eCardMain == eOfMainKind) {
-      return G.xKid.m_pChild;
+      return G.xKid.pChild();
     }
 
     G.xKid.vReverse();
@@ -688,7 +688,7 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 
     G.p_MainCard = G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
 
-    if (G.xKid.m_pChild->bIsCard(CK_FOLD)) {
+    if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
       G.xKid.m_pChild = nullptr;
       G.xKid.m_i_Child= C_UNKNOWN;
       return false;
@@ -1200,7 +1200,7 @@ bool CardIter::bJustRestarted(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (C_UNKNOWN == G.xKid.m_i_Child &&
-      nullptr == G.xKid.m_pChild &&
+      nullptr == G.xKid.pChild() &&
       true == G.xKid.m_bActive)
     return true;
 
@@ -1721,8 +1721,8 @@ void CardIter::vRemoveChild(Card* pChild)
 
   RASSERT(G.xKid.m_bActive);
 
-  if (pChild == G.xKid.m_pChild)
-    vRemoveCurr(G.xKid.m_pChild->eCard());
+  if (pChild == G.xKid.pChild())
+    vRemoveCurr(G.xKid.eChild());
   else
     G.xKid.pParent()->vRemoveChild(pChild);
 }
@@ -1752,8 +1752,12 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 
   RASSERT(G.xKid.m_bActive);
 
-  RASSERT(eCrossCheck == G.xKid.m_pChild->eCard());
-  G.xKid.pParent()->vRemoveChild(G.xKid.m_pChild);
+  RASSERT(eCrossCheck == G.xKid.eChild());
+
+  Card* pChild = G.xKid.pChild();
+
+  G.xKid.pParent()->vRemoveChild(pChild);
+
   G.xKid.m_i_Child--;
   if (G.xKid.m_i_Child < G.xKid.pParent()->nChildCards())
     G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
@@ -1770,9 +1774,14 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 
   RASSERT(G.xKid.m_bActive);
 
-  RASSERT(eCrossCheck == G.xKid.m_pChild->eCard());
-  G.xKid.pParent()->vRemoveChild(G.xKid.m_pChild);
-  delete G.xKid.m_pChild;
+  RASSERT(eCrossCheck == G.xKid.eChild());
+
+  Card* pChild = G.xKid.pChild();
+
+  G.xKid.pParent()->vRemoveChild(pChild);
+
+  delete pChild;
+
   G.xKid.m_i_Child--;
   if (G.xKid.m_i_Child < G.xKid.pParent()->nChildCards())
     G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
@@ -1872,7 +1881,7 @@ Card* CardIter::pRewindChild(void)
   else
     G.xKid.m_pChild = nullptr;
 
-  return G.xKid.m_pChild;
+  return G.xKid.pChild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1951,7 +1960,7 @@ void CardIter::vSet(CardIter* pCardIter_src)
 
   G.xKid.vParent(pCardIter_src->G.xKid.pParent());
   G.xKid.m_i_Child= pCardIter_src->G.xKid.m_i_Child;
-  G.xKid.m_pChild  = pCardIter_src->G.xKid.m_pChild;
+  G.xKid.m_pChild  = pCardIter_src->G.xKid.pChild();
 
   G.xKid.m_bActive = pCardIter_src->G.xKid.m_bActive;
 }
@@ -2355,12 +2364,26 @@ Card* Kid::pChild(i8 i_Child)
   i8 nChildren = m_pParent->nChildCards();
 
   if (i_Child >= 0 && i_Child < nChildren) {
-    Card* pChild = m_pChild->pGetChild(i_Child);
+    Card* pChild = m_pParent->pGetChild(i_Child);
     return pChild;
   }
 
   return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eCK Kid::eChild(void)
+{
+  Card* pChild = this->pChild();
+
+  if (pChild)
+    return pChild->eCard();
+
+  return CK_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
