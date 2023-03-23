@@ -23,7 +23,7 @@ namespace STORE
 
     void vCullBound(char cWithMark);
 
-    void vTermsBecome(Card_Projection* p_projection_reduced);
+    void vFlipTerms(Card_Projection* p_projection_reduced);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

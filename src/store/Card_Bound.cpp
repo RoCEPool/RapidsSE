@@ -233,10 +233,9 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    if (Card::bIsTableColOrdinal(xCI.G.p_term->szValue()))
-      return xCI.G.p_term;
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsTblColOdn())
+      return xKid.p_term();
 
   return nullptr;
 }
@@ -260,7 +259,7 @@ Stz* Card_Bound::szGet_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vTermsBecome(Card_Projection* p_projection_reduced)
+void Card_Bound::vFlipTerms(Card_Projection* p_projection_reduced)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

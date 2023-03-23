@@ -206,7 +206,7 @@ void Card_Filter::vFlipTerms(Card_Projection* p_projection_reduced)
   Card_BoolCalc* p_calcBool =
       _pCard_BoolCalc(this->pFindSubCard(CK_BOOLCALC));
 
-  p_calcBool->vTermsBecome(p_projection_reduced);
+  p_calcBool->vFlipTerms(p_projection_reduced);
 }
 
 

@@ -396,7 +396,7 @@ Card_PRED* Card_BoolCalc::pRootPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vTermsBecome(Card_Projection* p_projection_reduced)
+void Card_BoolCalc::vFlipTerms(Card_Projection* p_projection_reduced)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

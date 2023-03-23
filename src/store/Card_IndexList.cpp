@@ -143,7 +143,7 @@ void Card_IndexList::vFlipTerms(Card_Projection* p_projection_reduced)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_INDEX))
-    xCI.G.p_index->vTermsBecome(p_projection_reduced);
+    xCI.G.p_index->vFlipTerms(p_projection_reduced);
 }
 
 
