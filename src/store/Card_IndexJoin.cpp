@@ -72,6 +72,23 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexJoin::vEarly_project_check(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_index  = pCI->G.p_indexList->pFindChosenIndex();
+  pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
+  pCI->G.p_bound  = pCI->G.p_bounds->pSub_bound();
+
+
+
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
@@ -99,17 +116,76 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   pCI->vPrintBoard();
 
+
+  Card_Projection* p_projection_needed_save = pCI->EarlyProject.m_pProjection_needed;
+  pCI->EarlyProject.m_pProjection_needed = _pCard_Projection(p_projection_needed_save->pDupCardAndSubCards());
+  vEarly_project_check(pCI);
+
   Card_Project* p_project_early = Card_Project::pCraftNew_project_early(pCI);
   pCI->G_vInsertAfter(p_project_early, this);
 
+  delete pCI->EarlyProject.m_pProjection_needed;
+  pCI->EarlyProject.m_pProjection_needed = p_projection_needed_save;
+
   pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
+
+  pCI->vPrintBoard();
+
+
 
 
   pCI->vPrintBoard();
 
   vDebugPoint();
 }
-
+/*----------------------------------------------------------------------------*/
+//void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  pCI->vSave();
+//  Card_OP::vEarly_project_test(pCI);
+//  pCI->vRestore();
+//
+//  // arrived back ...
+//
+//  vProjectionDeduction(pCI);
+//
+//  pCI->vPrintBoard();
+//
+//  pCI->G.p_filter = pSub_filter();
+//  pCI->G.p_filter->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//
+//  pCI->G.p_indexList = pSub_indexList();
+//  pCI->G.p_indexList->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//
+//  pCI->G.p_projection = pSub_projection();
+//  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//
+//  pCI->vPrintBoard();
+//
+//  Card_Project* p_project_early = Card_Project::pCraftNew_project_early(pCI);
+//  pCI->G_vInsertAfter(p_project_early, this);
+//
+//  pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
+//
+//  pCI->vPrintBoard();
+//
+//
+//  pCI->G.p_index  = pCI->G.p_indexList->pFindChosenIndex();
+//  pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
+//  pCI->G.p_bound  = pCI->G.p_bounds->pSub_bound();
+//
+//  // double check early projection has bound column(s) of chosen index
+//
+//  pCI->vSave();
+//  vEarly_project_check(pCI);
+//  pCI->vRestore();
+//
+//  pCI->vPrintBoard();
+//
+//  vDebugPoint();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* individuate filter                                                         */

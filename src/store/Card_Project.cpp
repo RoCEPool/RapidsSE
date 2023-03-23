@@ -191,6 +191,47 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* early project check                                                        */
+/*----------------------------------------------------------------------------*/
+void Card_Project::vEarly_project_check(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(pCI->G.p_bound);
+
+
+  // todo: ...
+
+  Card_Term* p_term_bound = pCI->G.p_bound->pGet_tblColOdn();
+  p_term_bound->vDump();
+
+  Card* pPrevChild = pCI->pPrevChild();
+
+  if (pPrevChild->bIsCard(CK_INDEXJOIN)) {
+    pCI->G.p_indexJoin = _pCard_IndexJoin(pPrevChild);
+    pCI->G.p_projection = pCI->G.p_indexJoin->pSub_projection();
+
+    // todo: ...
+  }
+  else
+  if (pPrevChild->bIsCard(CK_INDEXSCAN)) {
+    pCI->G.p_indexScan = _pCard_IndexScan(pPrevChild);
+    pCI->G.p_projection = pCI->G.p_indexScan->pSub_projection();
+
+    // todo: ...
+  }
+  else
+  if (pPrevChild->bIsCard(CK_SCAN)) {
+    pCI->G.p_scan = _pCard_Scan(pPrevChild);
+    pCI->G.p_projection = pCI->G.p_scan->pSub_projection();
+
+    // todo: ...
+  }
+
+  // todo: ...
+}
+
+/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vEarly_project_recurse(CardIter* pCI)
