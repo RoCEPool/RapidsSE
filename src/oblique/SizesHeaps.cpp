@@ -262,6 +262,7 @@
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
 #include "OuterQuery.hpp"
+//#include "Kid.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -432,6 +433,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__K__,                     'K' - ('A' - 1),                HT_INVALID   , FILL },
   { CN_KEY,                      sizeof(Key),                    HT_INVALID   , FILL },
+  { CN_KID,                      sizeof(Kid),                    HT_T_TINY    , FILL },
 
   { CN__L__,                     'L' - ('A' - 1),                HT_INVALID   , FILL },
   { CN_LARGEPERSISTENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },

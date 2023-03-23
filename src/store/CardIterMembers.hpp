@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class Kid
+  class Kid //: public Object
   {
     //friend class CardIter;
   private:
@@ -19,7 +19,17 @@ namespace STORE
 
     bool   m_bActive;
 
+  private:
+//    // must be last
+//    Footer m_xFooter;
+
   public:
+//    void* operator new(size_t);
+//    void  operator delete(void*);
+
+    Kid(void);
+   ~Kid(void) noexcept(false);
+
     void vBeginForward(void);
     void vBeginReverse(void);
 
@@ -50,6 +60,9 @@ namespace STORE
     void vParent(Card*  pParent);
     void vReset(void);
 
+//  private:
+//
+//    Footer* aFooter(void);
   };
 
   class CardIterMembers : public Object
@@ -201,6 +214,8 @@ namespace STORE
 
     Footer* aFooter(void);
   } ;
+
+  Kid* _pKid(void* aAddr);
 
 }
 

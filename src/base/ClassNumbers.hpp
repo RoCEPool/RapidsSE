@@ -159,6 +159,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__K__,
   /* */ CN_KEY,
+  /* */ CN_KID,
 
   /* */ CN__L__,
   /* */ CN_LARGEPERSISTENT,
@@ -599,6 +600,7 @@ static Stz* aCN[]
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
+  /* */ "KID"_Stz,                  // CN_KID
 
   /* */ "_L__"_Stz,                 // CN__L__
   /* */ "LARGEPERSISTENT"_Stz,      // CN_LARGEPERSISTENT
