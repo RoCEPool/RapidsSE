@@ -616,7 +616,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       //m_pShapeROW = pSketchInflateRow(pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchScan(pCombined, pStream, pOp);
+      pOpSketch = pSketchInflateCrw(pCombined, pStream, pOp);
       vAppend(pOpSketch);
 
       m_bRowBuffer = true;
@@ -881,9 +881,9 @@ u8 Stencil_v2::uGetSelectColumns(Stream* pStream) {
       continue;
     }
 
-    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
-        pOp->szOpNm()->bSame("project"_Stz) ||
-        pOp->szOpNm()->bSame("ordagg"_Stz)) {
+    if (pOp->szOpNm()->bSame("aggreg_v2"_Stz) ||
+        pOp->szOpNm()->bSame("project_v2"_Stz) ||
+        pOp->szOpNm()->bSame("ordagg_v2"_Stz)) {
       LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
       uSelectColumns |= pLogicUnit->m_uSelectColumns;
       bProject = true;
@@ -1689,13 +1689,13 @@ OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch scan (inflate compact rows of crwBuffer)                            */
+/* sketch inflate compact rows of crwBuffer)                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
-  OpSketch* pShape;
+  OpSketch* pOpSketch;
   CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
@@ -1707,12 +1707,13 @@ OpSketch* Stencil_v2::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp)
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // create a new shape for this OP
-  pShape = new OpSketch;
+  pOpSketch = new OpSketch;
 
+  // get the columns to be selected
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(""_Stz, SK_SCAN, SR_NONE, SR_NONE, pStreamDefLft, nullptr);
+  pOpSketch = new OpSketch(""_Stz, SK_SCAN, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
 
   sLabel.vSprint("L_InflateT"_Stz);
   sLabelNext.vSprint("L_InflateCrwRet"_Stz);

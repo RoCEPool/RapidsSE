@@ -404,7 +404,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
 
 #ifdef WITH_DEBUG_VERSION
-        vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+//       vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 //
 //    // dump the TypeStack
 //    vTrace("--------------------------------------\n"_Stz);
