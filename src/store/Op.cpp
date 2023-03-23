@@ -119,7 +119,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  // TODO: Arjun - If Operand is a bufferId, don't do dereference it
   if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();

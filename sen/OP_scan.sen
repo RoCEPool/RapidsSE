@@ -71,6 +71,9 @@
     Marker[].newEosMarker
     Marker[].pipeOut
 
+    Marker[].newEndMarker
+    Marker[].pipeOut
+
   then
 
   true
@@ -109,6 +112,9 @@
 
     // pipe out an eos marker
     Marker[].newEosMarker
+    Marker[].pipeOut
+
+    Marker[].newEndMarker
     Marker[].pipeOut
 
   then
@@ -159,6 +165,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+// ": scan_EndMarker" .
+
+: scan_EndMarker \handler
+
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* scan request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : scan_op \operator
@@ -178,6 +196,7 @@
   find: scan_DataPulse         EV_M_DATAPULSE  [op].handler!
   find: scan_CrwBuffer         EV_D_CRWBUFFER  [op].handler!
   find: scan_StartMarker       EV_M_START      [op].handler!
+  find: scan_EndMarker         EV_M_END        [op].handler!
 
   op__loop
 
