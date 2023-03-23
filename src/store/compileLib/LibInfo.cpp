@@ -29,6 +29,11 @@ LibInfo::LibInfo()
   m_eErrCode = EC_NONE;
   m_pErrDetails = nullptr;
 
+  m_iCompileTime    = 0;
+  m_iDynLinkTime    = 0;
+  m_iDynUnlinkTime  = 0;
+  m_iDeleteTime     = 0;
+
   _checkInitialised_(CN_LIBINFO);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
 }

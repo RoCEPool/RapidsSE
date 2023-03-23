@@ -18,9 +18,15 @@ namespace STORE
     s256  m_sObjFilePath;
     s256  m_sLogFilePath;
     s256  m_sDynLibPath;
+
     void* m_pvDynLib;
     eEC   m_eErrCode;
     Text* m_pErrDetails;
+
+    i8    m_iCompileTime;
+    i8    m_iDynLinkTime;
+    i8    m_iDynUnlinkTime;
+    i8    m_iDeleteTime;
 
     // must be last
     Footer m_xFooter;

@@ -22,6 +22,9 @@ namespace STORE
     static void* pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo);
     static bool  bDynamicUnlink(LibInfo* pLibInfo);
     static bool  bDelete(LibInfo* pLibInfo);
+
+    // Temporary
+    static void  vTest(void);
   };
 } // STORE
 

@@ -47,6 +47,7 @@ extern i8   giProgressPoint;
 #include "Table.hpp"
 #include "TagConstants.h"
 #include "RowBuffer.hpp"
+#include "CompileLib.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -175,6 +176,14 @@ int main(int argc, char* argv[])
   // Set the default clock type for Hardware::iReadClock().
   // This needs to be done after IntLib::vInitGlobals() above.
   Hardware::vChooseClockType();
+
+  // Initialise and check for system compilers
+  if (!CompileLib::bInit()) {
+    Process::vExitStartup();
+  }
+
+  // Temporary
+  CompileLib::vTest();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
