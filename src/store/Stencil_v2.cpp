@@ -44,11 +44,9 @@ __aFooterFunction(Stencil_v2)
 Stencil_v2::Stencil_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
-    
-  m_ePattern     = LP_NONE;
+
   m_szStageNm    = ""_Stz;
   m_bRowBuffer   = false;
-  m_pPostStack   = nullptr;
 
   m_xStageOps.m_iAggregOp    = 0;
   m_xStageOps.m_iCombinedOp  = 0;
@@ -177,7 +175,6 @@ Stencil_v2::~Stencil_v2(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
-  delete m_pPostStack;
   delete m_pBannerHead;
   delete m_pBannerTail;
   delete m_pPreliminary;
@@ -500,26 +497,6 @@ Stz* Stencil_v2::szOpSource(void)
   char* azCode = m_pOpSource->azCode();
   
   return (Stz*)azCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stencil pattern                                                        */
-/*----------------------------------------------------------------------------*/
-eLP Stencil_v2::ePattern(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
-
-  return m_ePattern;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stencil pattern                                                        */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vPattern(eLP ePattern)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
-
-  m_ePattern = ePattern;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1305,7 +1282,7 @@ void Stencil_v2::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* 
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  pCodeSynth->vSynthEos(nullptr, m_pPostStack,sLabelNext);
+  pCodeSynth->vSynthEos(nullptr, nullptr,sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1335,15 +1312,11 @@ void Stencil_v2::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* 
     pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
   }
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true,
+    pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true,
                                   "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz,pInitStack);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz,
+    pCodeSynth->vSynthAllocTubRow(nullptr, true, "L_AddRowToTubPot"_Stz,
                                   "L_ReturnFinal"_Stz,""_Stz, pInitStack);
-
-  // delete the postStack. No longer needed
-  delete m_pPostStack;
-  m_pPostStack = nullptr;
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -1389,7 +1362,7 @@ void Stencil_v2::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* 
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack,sLabelNext);
+  pCodeSynth->vSynthEos(pIndexDef, nullptr,sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1420,15 +1393,11 @@ void Stencil_v2::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* 
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
+    pCodeSynth->vSynthAllocTubRow(nullptr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
-
-  // delete the postStack. No longer needed
-  delete m_pPostStack;
-  m_pPostStack = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
@@ -1474,7 +1443,7 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, sLabelNext);
+  pCodeSynth->vSynthEos(pIndexDef, nullptr, sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   Stz* sProjectExpr = ""_Stz;
@@ -1496,16 +1465,11 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-   // pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, ""_Stz);
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+   pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
+    pCodeSynth->vSynthAllocTubRow(nullptr, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
-
-  // delete the postStack. No longer needed
-  delete m_pPostStack;
-  m_pPostStack = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
@@ -1556,9 +1520,9 @@ void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocTubRow(nullptr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -2029,7 +1993,7 @@ OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  m_pPostStack = pCodeSynth->pSynthPrjAgg(sProjectExpr,
+  TypedStack* pPostStack = pCodeSynth->pSynthPrjAgg(sProjectExpr,
                                                  sLabel,
                                                  sLabelLoop);
 
@@ -2121,7 +2085,7 @@ OpSketch* Stencil_v2::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  m_pPostStack = pCodeSynth->pSynthAggGby(sProjectExpr,
+  TypedStack* pPostStack = pCodeSynth->pSynthAggGby(sProjectExpr,
                                           sLabel,
                                           sLabelLoop);
 
@@ -2242,12 +2206,8 @@ OpSketch* Stencil_v2::pSketchPot(Op* pLastOp, eSR ePrevStencil_v2,
 
   CodeSynth_v2* pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
 
-  pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
+  pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
   pShape->vCodeSynthB(pCodeSynth);
-
-  // delete the postStack. No longer needed
-  delete m_pPostStack;
-  m_pPostStack = nullptr;
 
   return pShape;
 }
@@ -2288,12 +2248,8 @@ OpSketch* Stencil_v2::pSketchTub(Op* pLastOp, eSR ePrevStencil_v2,
 
   CodeSynth_v2* pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
 
-  pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, sLabel, sLabelLoop, sLabelOrdAgg);
+  pCodeSynth->vSynthAllocTubRow(nullptr, false, sLabel, sLabelLoop, sLabelOrdAgg);
   pShape->vCodeSynthB(pCodeSynth);
-
-  // delete the postStack. No longer needed
-  delete m_pPostStack;
-  m_pPostStack = nullptr;
 
   return pShape;
 }

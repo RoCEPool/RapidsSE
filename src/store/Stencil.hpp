@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLP.h"
 #include "eSK.h"
 #include "CodeSynth.hpp"
 #include "Shape.hpp"
@@ -51,9 +50,6 @@ static const i8 C_MAX_SHAPES = 32;
   class Stencil : public VectorNL_t<CN_STENCIL,Shape,C_MAX_SHAPES>
   {
   private:
-  
-    eLP         m_ePattern;
-
     s256        m_szStageNm;
     bool        m_bScan;
     bool        m_bRowBuffer;
@@ -100,8 +96,6 @@ static const i8 C_MAX_SHAPES = 32;
   
     Stz* szOpSource(void);
 
-    eLP  ePattern(void);
-    void vPattern(eLP ePattern);
     void vPrint(void);
     void vSetup(Combined* pCombined, Stream* pStream);
     eEC  eSketch(Combined* pCombined, Stream* pStream);
