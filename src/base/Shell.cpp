@@ -38,9 +38,9 @@ i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
 {
   oSysCall.vClear();
 
-  char acSave[1024];
-  acSave[sizeof(acSave)-1] = 0;
-  strncpy(acSave,sCommand->azChar(), sizeof(acSave)-1);
+  //char acSave[1024];
+  //acSave[sizeof(acSave)-1] = 0;
+  //strncpy(acSave,sCommand->azChar(), sizeof(acSave)-1);
 
   //printf("COMMAND SHELL Execute: %s\n",sCommand->azChar() );
 

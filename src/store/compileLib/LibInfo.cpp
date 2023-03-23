@@ -27,7 +27,6 @@ LibInfo::LibInfo()
 
   m_pvDynLib = nullptr;
   m_eErrCode = EC_NONE;
-  m_pErrDetails = nullptr;
 
   m_iCompileTime    = 0;
   m_iDynLinkTime    = 0;
@@ -46,8 +45,6 @@ LibInfo::~LibInfo()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
   ASSERT(m_pvDynLib == nullptr);
-
-  delete m_pErrDetails;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,11 +66,7 @@ eEC LibInfo::eErrCode()
 Stz* LibInfo::szErrDetails()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
-  if (!m_pErrDetails) {
-    return nullptr;
-  }
-
-  return m_pErrDetails->szGet();
+  return m_sErrDetails.szStz();
 }
 
 
@@ -88,11 +81,7 @@ void LibInfo::vClearErrors()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
   m_eErrCode = EC_NONE;
-
-  if (m_pErrDetails) {
-    delete m_pErrDetails;
-    m_pErrDetails = nullptr;
-  }
+  m_sErrDetails.vReset();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -43,6 +43,7 @@ enum eEC : u2 // error codes
   EC_COLUMN_COUNT_MISMATCH,         // SQL Compiler Subsystem
   EC_COLUMN_TYPE_MISMATCH,          // SQL Compiler Subsystem
   EC_COMMAND_TOO_LONG,
+  EC_COMPILATION_FAILED,
   EC_CORRBY_COLUMN_NOT_FOUND,       // SQL Compiler Subsystem
   EC_CORRBY_COLUMN_TYPE_MISMATCH,   // SQL Compiler Subsystem
   EC_CORRBY_NO_COMMON_COLUMNS,      // SQL Compiler Subsystem
@@ -309,6 +310,7 @@ static Stz* aEC[] =
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",        // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",         // SQL Compiler Subsystem
   /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
+  /* EC_COMPILATION_FAILED            */ (Stz*)"EC_COMPILATION_FAILED",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",      // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",  // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",     // SQL Compiler Subsystem
@@ -568,6 +570,7 @@ static Stz* aEC2[] = // error code
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",          // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",           // SQL Compiler Subsystem
   /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
+  /* EC_COMPILATION_FAILED            */ (Stz*)"EC_COMPILATION_FAILED",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",        // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",    // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",       // SQL Compiler Subsystem
@@ -838,6 +841,7 @@ static Stz* aErrorMsg[] =
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"The number of columns of each subquery do not match",   // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"Column types do not match",                             // SQL Compiler Subsystem
   /* EC_COMMAND_TOO_LONG              */ (Stz*)"Command too long",
+  /* EC_COMPILATION_FAILED            */ (Stz*)"Query compilation failed",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"Column in CORRESPONDING BY list is not found in select list",   // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"Column in CORRESPONDING BY list has mismatched types in child queries", // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"No common column names of the subqueries could be found for the CORRESPONDING list",  // SQL Compiler Subsystem

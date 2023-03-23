@@ -6,6 +6,7 @@
 #include "CompileLib.hpp"
 #include "LibInfo.hpp"
 #include "eCB.h"
+#include "Shell.hpp"
 
 using namespace STORE;
 
@@ -21,6 +22,10 @@ static Stz* C_STARTUP_DIRS[] = {
 
 static eCB C_DEFAULT_COMPILER = CB_NONE;
 static i8  C_DEFAULT_COMPILER_VER = -1;
+
+/*----------------------------------------------------------------------------*/
+/*-- Public Functions---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* Initialise the CompileLib and look for all supported compilers.            */
@@ -53,8 +58,34 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo)
   ASSERT(szSource);
   ASSERT(szDynLibNm);
   ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
+  // Save the base name
+  pLibInfo->m_sBaseName.vCopy(szDynLibNm);
+
+  // Come up with file path for the source file and output file
+  pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.so"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+
+  // Write the source file to disk
+  if (!bWriteSrcToFile(szSource, pLibInfo)) {
+    return false;
+  }
+
+  // Build the compile command
+  vBuildGccCompileCommand(pLibInfo);
+
+  // Execute the compile command
+  if (!bCompileSrc(pLibInfo)) {
+    return false;
+  }
+
+  // Check that the library exists
+  ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +96,7 @@ bool CompileLib::bDynamicLink(LibInfo* pLibInfo)
   ASSERT(pLibInfo);
   pLibInfo->vClearErrors();
 
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,6 +106,7 @@ void* CompileLib::pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo)
 {
   ASSERT(pLibInfo);
   pLibInfo->vClearErrors();
+
 
 }
 
@@ -85,12 +118,13 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
   ASSERT(pLibInfo);
   pLibInfo->vClearErrors();
 
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Delete a shared object library & associated files. Returns true on success.*/
 /*----------------------------------------------------------------------------*/
-bool CompileLib::bDelete(LibInfo* pLibInfo)
+void CompileLib::vDelete(LibInfo* pLibInfo)
 {
   ASSERT(pLibInfo);
   pLibInfo->vClearErrors();
@@ -102,10 +136,6 @@ bool CompileLib::bDelete(LibInfo* pLibInfo)
     File::bRemove(pLibInfo->m_sDynLibPath.szStz(), true);
   }
 
-  // Remove object file, if exists
-  if (!pLibInfo->m_sObjFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sObjFilePath.szStz(), true);
-  }
   // Remove log file, if exists
   if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
     File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
@@ -127,25 +157,14 @@ void CompileLib::vTest()
 "#include \"primitives/BaseTypes_tcc.h\"\n"
 "\n"
 "// Declaration of a function inside SE\n"
-"namespace BASE\n"
-"{\n"
-"  class TickingDevice\n"
-"  {\n"
-"  public:\n"
-"    static extern i8 iGetTick(void);\n"
-"  };\n"
-"}\n"
+"extern void vTraceExternal(char* psFormat, ...);\n"
 "\n"
 "void vTestEntry(void)\n"
 "{\n"
 "  printf(\"Inside vTestEntry!\\n\");\n"
 "\n"
-"  i8 iTick = TickingDevice::iGetTick();\n"
-"  printtf(\"Got ticks = %lld\\n\", iTick);\n"
-"  i8 iTick = TickingDevice::iGetTick();\n"
-"  printtf(\"Got ticks = %lld\\n\", iTick);\n"
-"  i8 iTick = TickingDevice::iGetTick();\n"
-"  printtf(\"Got ticks = %lld\\n\", iTick);\n"
+"  char* psMsg = \"Calling into SE from a shared object!\\n\";\n"
+"  vTraceExternal(psMsg);\n"
 "\n"
 "  printf(\"Leaving vTestEntry!\\n\");\n"
 "}"_Stz;
@@ -161,9 +180,7 @@ void CompileLib::vTest()
   if (!bCompile(szSrc, szDynLibNm, pLibInfo)) {
     vTrace("Compilation failed\n"_Stz);
 
-    if (!CompileLib::bDelete(pLibInfo)) {
-      vTrace("Deletion failed\n"_Stz);
-    }
+    vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
@@ -171,9 +188,7 @@ void CompileLib::vTest()
   if (!bDynamicLink(pLibInfo)) {
     vTrace("Dynamic linking & loading failed\n"_Stz);
 
-    if (!CompileLib::bDelete(pLibInfo)) {
-      vTrace("Deletion failed\n"_Stz);
-    }
+    vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
@@ -184,7 +199,7 @@ void CompileLib::vTest()
   // also avoids compiler warnings if we simply try to cast the function ptr
   // to a void* for the assignment.
   // Reference: The Linux Programming Interface, Chapter 42.1.3
-  
+
   *(void **)(&pfTestFn) = pvSymbolAddr(szFuncNm, pLibInfo);
 
   if (!pfTestFn) {
@@ -194,9 +209,7 @@ void CompileLib::vTest()
       vTrace("Dynamic unlink failed\n"_Stz);
     }
 
-    if (!CompileLib::bDelete(pLibInfo)) {
-      vTrace("Deletion failed\n"_Stz);
-    }
+    vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
@@ -208,18 +221,96 @@ void CompileLib::vTest()
   if (!bDynamicUnlink(pLibInfo)) {
     vTrace("Dynamic unlinking failed\n"_Stz);
 
-    if (!CompileLib::bDelete(pLibInfo)) {
-      vTrace("Deletion failed\n"_Stz);
-    }
+    vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
 
   // Cleanup temporary files
-  if (!CompileLib::bDelete(pLibInfo)) {
-    vTrace("Deletion failed\n"_Stz);
-  }
+  vDelete(pLibInfo);
   delete pLibInfo;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Functions--------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Write the source string to a file as designated in pLibInfo                */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
+{
+  ASSERT(szSource);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_sSrcFilePath.bIsEmpty());
+
+  File* pSrcFile = new File(pLibInfo);
+  if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
+    pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+
+    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
+
+    delete pSrcFile;
+    return false;
+  }
+
+  if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
+    pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+
+    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
+
+    pSrcFile->vClose();
+    delete pSrcFile;
+    return false;
+  }
+
+  pSrcFile->vClose();
+  delete pSrcFile;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Write the source string to a file as designated in pLibInfo                */
+/*----------------------------------------------------------------------------*/
+void CompileLib::vBuildGccCompileCommand(LibInfo* pLibInfo, Stz* szGccPath)
+{
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_sSrcFilePath.bIsEmpty());
+  ASSERT(!pLibInfo->m_sDynLibPath.bIsEmpty());
+  ASSERT(!pLibInfo->m_sLogFilePath.bIsEmpty());
+  ASSERT(!pLibInfo->m_pvDynLib);
+
+  pLibInfo->m_sCompileCmd.vReset();
+
+  pLibInfo->m_sCompileCmd.vSprint("%s -std=c++11 -g -I../src -O3 -fpic -shared -o %s %s > %s 2>&1"_Stz,
+                                  szGccPath,
+                                  pLibInfo->m_sDynLibPath.szStz(),
+                                  pLibInfo->m_sSrcFilePath.szStz(),
+                                  pLibInfo->m_sLogFilePath.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Compile the source to a shared object. This blocks until it is complete.   */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bCompileSrc(LibInfo* pLibInfo)
+{
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_sCompileCmd.bIsEmpty());
+  ASSERT(!pLibInfo->m_pvDynLib);
+
+  SysCall oSysCall;
+  i8 iExitCode = Shell::iExecute(pLibInfo->m_sCompileCmd.szStz(), oSysCall);
+
+  if (iExitCode != 0) {
+    pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+    pLibInfo->m_sErrDetails.vSprint("Compilation failed with exit code %lld"_Stz, iExitCode);
+    return false;
+  }
+
+  return true;
 }
 
 /*============================================================================*/

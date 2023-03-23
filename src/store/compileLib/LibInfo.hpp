@@ -15,13 +15,14 @@ namespace STORE
   private:
     s256  m_sBaseName;
     s256  m_sSrcFilePath;
-    s256  m_sObjFilePath;
     s256  m_sLogFilePath;
     s256  m_sDynLibPath;
 
+    s256  m_sCompileCmd;
+
     void* m_pvDynLib;
     eEC   m_eErrCode;
-    Text* m_pErrDetails;
+    s2K   m_sErrDetails;
 
     i8    m_iCompileTime;
     i8    m_iDynLinkTime;

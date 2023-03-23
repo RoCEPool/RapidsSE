@@ -21,10 +21,15 @@ namespace STORE
     static bool  bDynamicLink(LibInfo* pLibInfo);
     static void* pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo);
     static bool  bDynamicUnlink(LibInfo* pLibInfo);
-    static bool  bDelete(LibInfo* pLibInfo);
+    static void  vDelete(LibInfo* pLibInfo);
 
     // Temporary
     static void  vTest(void);
+
+  private:
+    static bool bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo);
+    static void vBuildGccCompileCommand(LibInfo* pLibInfo, Stz* szGccPath = "gcc"_Stz);
+    static bool bCompileSrc(LibInfo* pLibInfo);
   };
 } // STORE
 
