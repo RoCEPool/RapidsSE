@@ -213,7 +213,7 @@ i8 CardIter::i_Child(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return G.xKid.m_i_Child;
+  return G.xKid.i_Child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,7 +578,7 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pChild();
 
     if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.eChild()) {
       vFocusOnMain();
@@ -607,7 +607,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pChild();
 
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
@@ -647,7 +647,7 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pChild();
 
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
@@ -682,10 +682,10 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pChild();
 
     if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
-      G.xKid.m_i_Child= C_UNKNOWN;
+      //G.xKid.m_i_Child = C_UNKNOWN;
       return false;
     }
 
