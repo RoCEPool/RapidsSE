@@ -213,6 +213,17 @@ void Card_Projection::vAs_Review(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pClone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return _pCard_Projection(pDupCardAndSubCards());
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* deduce reduced form of this projection needed for crafting early projects  */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pCraftProjectionNeeded(CardIter* pCI)

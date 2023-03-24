@@ -17,6 +17,8 @@ namespace STORE
     Card_Type(Card_Type* pType);
    ~Card_Type(void) noexcept(false);
 
+    Card_Type* pClone(void);
+
     bool bIsSame(Card_Type* p_type_arg);
 
     Stz* szTypeShort(void);

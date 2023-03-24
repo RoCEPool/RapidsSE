@@ -17,6 +17,7 @@ namespace STORE
     Card_As(Card_As* p_as_arg);
    ~Card_As(void) noexcept(false);
 
+    Card_As* pClone(void);
     bool bIsSame(Card_As* p_as_arg);
   };
 
