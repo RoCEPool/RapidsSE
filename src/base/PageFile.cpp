@@ -225,6 +225,15 @@ void PageFile::vWriteDataBufferToPFile(DataBuffer* pDataBuffer)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   BufferId oBufferId = pDataBuffer->oGetBufferId();
+  static bool bDump = 0;
+
+//  if((! bDump) && pDataBuffer->eGetClassNo() == CN_CRWBUFFER)
+//  {
+//    bDump = 1;
+//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+//    pCrwBuffer->bValidCrwBuffer();
+//    pCrwBuffer->vDump();
+//  }
 
   i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uSeekOffset * C_SIZE_POOL_BUFFER);
 
@@ -240,7 +249,7 @@ void PageFile::vWriteDataBufferToPFile(DataBuffer* pDataBuffer)
   RASSERT(bResult);
 
 //unlock
-  vTrace("Successfully wrote data buffer %p with BufferId %p\n"_Stz, pDataBuffer, oBufferId.m_pvAsAddress);
+  vTrace("Successfully wrote data buffer %p with BufferId %p type %s\n"_Stz, pDataBuffer, oBufferId.m_pvAsAddress, aCN[pDataBuffer->eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,10 +318,18 @@ DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
       (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
       (Object *) pDataBuffer);
 
+  static bool bDump = 0;
+
 //unlock
   AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
-  vTrace("Successfully read data buffer %p\n"_Stz, pDataBuffer);
-
+  vTrace("Successfully read data buffer %p with BufferId %p type %s\n"_Stz, pDataBuffer, oBufferId.m_pvAsAddress, aCN[pDataBuffer->eGetClassNo()]);
+//  if((! bDump))
+//  {
+    bDump = 1;
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+    RASSERT(pCrwBuffer->bValidCrwBuffer());
+//    pCrwBuffer->vDump();
+//  }
   return pDataBuffer;
 
 }

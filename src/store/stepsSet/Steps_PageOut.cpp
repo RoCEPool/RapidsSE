@@ -78,14 +78,14 @@ void Step::vPageOutCheckLowMemory(void) {
     return;
   }
   vTrace("PageOut Demon: Memory usage above %f%%, paging out buffers to free memory\n"_Stz, C_MAX_MEMORY_LIMIT);
-
+  
   // Figure out how many buffers to page out, to get down to 50% usage
   i8 nTotal = gpBufferPool->nBufferCount() * ((C_MAX_MEMORY_LIMIT - 50)/100);
 
   HashMap* pHashMap = AM::pHashMap();
   Paging::vRandomAlgo(pHashMap, nTotal);
 
-  RASSERT(gpBufferPool->dUsedSpacePercent() < 60);
+//  RASSERT(gpBufferPool->dUsedSpacePercent() < 60);
   vTrace("PageOut Demon: Freed up %lld buffers\n"_Stz, nTotal);
   vTrace("PageOut Demon: Current usage is %f%%\n"_Stz, gpBufferPool->dUsedSpacePercent());
 
