@@ -108,24 +108,27 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! bIsPartitionLevel())
-    return;
+  RASSERT(bIsPartitionLevel());
 
   RASSERT(! pCI->EarlyProject.m_pProjection_needed);
 
   pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
 
   pCI->G.p_key = pSub_key();
+  pCI->G.p_projection = pSub_projection();
 
   // get the needed form of ordAgg's projection
   pCI->EarlyProject.m_pProjection_needed =
-      pSub_projection()->pCraftProjectionNeeded(pCI);
+      pCI->G.p_projection->pCraftInitial_projection_needed(pCI);
 
-  pCI->vSave();
-  Card_OP::vEarly_project_test(pCI);
-  pCI->vSave();
+  vAppend(pCI->EarlyProject.m_pProjection_needed->pClone());
 
-  // todo: arrived back ...
+  pCI->vPrintBoard();
+
+  Card_OP::vEarly_project_backstep(pCI);
+
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
   pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
@@ -140,7 +143,43 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 
   pCI->vPrintBoard();
 
+  vDebugPoint();
 }
+/*----------------------------------------------------------------------------*/
+//void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  RASSERT(bIsPartitionLevel());
+//
+//  RASSERT(! pCI->EarlyProject.m_pProjection_needed);
+//
+//  pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
+//
+//  pCI->G.p_key = pSub_key();
+//
+//  // get the needed form of ordAgg's projection
+//  pCI->EarlyProject.m_pProjection_needed =
+//      pSub_projection()->pCraftInitial_projection_needed(pCI);
+//
+//  Card_OP::vEarly_project_backstep(pCI);
+//
+//  // todo: arrived back ...
+//  pCI->vPrintBoard();
+//
+//  pCI->G.p_key = pSub_key();
+//  pCI->G.p_key->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//
+//  pCI->vPrintBoard();
+//
+//  pCI->G.p_projection = pSub_projection();
+//  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//
+//  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
+//
+//  pCI->vPrintBoard();
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */

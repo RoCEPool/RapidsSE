@@ -64,16 +64,20 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
 
   pCI->G.p_key = pSub_key();
+  pCI->G.p_projection = pSub_projection();
 
   // get the needed form of ordAgg's projection
   pCI->EarlyProject.m_pProjection_needed =
-      pSub_projection()->pCraftProjectionNeeded(pCI);
+      pCI->G.p_projection->pCraftInitial_projection_needed(pCI);
 
-  pCI->vSave();
-  Card_OP::vEarly_project_test(pCI);
-  pCI->vSave();
+  vAppend(pCI->EarlyProject.m_pProjection_needed->pClone());
 
-  // todo: arrived back ...
+  pCI->vPrintBoard();
+
+  Card_OP::vEarly_project_backstep(pCI);
+
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
   pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();

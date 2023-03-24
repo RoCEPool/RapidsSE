@@ -464,7 +464,7 @@ void Card_Table::vSmooth(CardIter* pCI)
 
   pCI->G.p_table->Y_vSet(P_Smoothed);
 
-  pCI->G.p_table->vProduce_projection_Off_running(pCI);
+  pCI->G.p_table->vUpdate_projection_Off_running(pCI);
   pCI->G.pDeck->vRenumberRecursive();
 }
 
@@ -478,7 +478,7 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_table->Y_vSet(P_Smoothed);
 
   RASSERT(pCarryForward->Table.m_bReproject);
-  pCI->G.p_table->vProduce_projection_Off_running(pCI);
+  pCI->G.p_table->vUpdate_projection_Off_running(pCI);
   pCI->G.pDeck->vRenumberRecursive();
 }
 

@@ -133,7 +133,7 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
     }
 
     if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_table->vProduce_projection_Off_running(pCI);
+      pCI->G.p_table->vUpdate_projection_Off_running(pCI);
       continue;
     }
 
@@ -226,7 +226,7 @@ Card_Projection* Card_Projection::pClone(void)
 /*----------------------------------------------------------------------------*/
 /* deduce reduced form of this projection needed for crafting early projects  */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pCraftProjectionNeeded(CardIter* pCI)
+Card_Projection* Card_Projection::pCraftInitial_projection_needed(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

@@ -244,30 +244,11 @@ void Card_OP::vEarly_project_root(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vEarly_project_test(CardIter* pCI)
+void Card_OP::vEarly_project_backstep(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->EarlyProject.m_pProjection_needed);
-
-  // we were on:
-//  switch (pCI->G.e_MainCard) {
-//
-//    // temp: these terminate the leftwards recursion
-//    case CK_INDEXSCAN:
-//    case CK_PROJECT:
-//    case CK_SCAN:
-//      return;
-//
-//    // these continue the leftwards recursion
-//    case CK_GBYAGG:
-//    case CK_INDEXJOIN:
-//    case CK_ORDAGG:
-//      break;
-//
-//    default:
-//      NEVER_REACH;
-//  }
 
   if (bIsEarlyLeaf(pCI))
     return;
@@ -288,22 +269,30 @@ void Card_OP::vEarly_project_test(CardIter* pCI)
       // -- -- -- -- -- -- --
       case CK_PROJECT:
         // recurse into...
+        pCI->vSave();
         pCI->G.p_project->vEarly_project_recurse(pCI);
+        pCI->vRestore();
         return;
 
       case CK_INDEXJOIN:
         // recurse into...
-        pCI->G.p_indexJoin->vEarly_project_recurse(pCI);
+        pCI->vSave();
+        pCI->G.p_indexJoin->vEarly_project_recurse_add(pCI);
+        pCI->vRestore();
         return;
 
       case CK_INDEXSCAN:
         // recurse into...
-        pCI->G.p_indexScan->vEarly_project_leaf(pCI);
+        pCI->vSave();
+        pCI->G.p_indexScan->vEarly_project_leaf_add(pCI);
+        pCI->vRestore();
         return;
 
       case CK_SCAN:
         // recurse into...
-        pCI->G.p_scan->vEarly_project_leaf(pCI);
+        pCI->vSave();
+        pCI->G.p_scan->vEarly_project_leaf_add(pCI);
+        pCI->vRestore();
         return;
 
       // -- -- -- -- -- -- --
@@ -505,7 +494,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vProduce_projection_Off_running(CardIter* pCI)
+void Card_OP::vUpdate_projection_Off_running(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -517,10 +506,16 @@ void Card_OP::vProduce_projection_Off_running(CardIter* pCI)
   if ((p_projection = pSub_projection()))
     vRemoveDeleteChild(p_projection);
 
+  Card_Projection* p_projection_needed;
+  if ((p_projection_needed = pSub_projection()))
+    vRemoveChild(p_projection_needed);
+
   if (pSub_keyExists() || pSub_keyNotExists()) {
     p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pDupCardAndSubCards());
     vAppend(p_projection);
     pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
+    if (p_projection_needed)
+      vAppend(p_projection_needed);
     return;
   }
 
@@ -570,6 +565,9 @@ void Card_OP::vProduce_projection_Off_running(CardIter* pCI)
   vAppend(p_projection);
 
   pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
+
+  if (p_projection_needed)
+    vAppend(p_projection_needed);
 }
 
 /*============================================================================*/

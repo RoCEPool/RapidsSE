@@ -83,13 +83,13 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add an early project after this index scan                                 */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
+void Card_IndexScan::vEarly_project_leaf_add(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_OP::vEarly_project_test(pCI);
+  Card_OP::vEarly_project_backstep(pCI);
 
-  // todo: arrived back ...
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   pCI->G.p_projection = pSub_projection();
   Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);

@@ -22,7 +22,7 @@ namespace STORE
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
     void vEarly_project_root(CardIter* pCI);
-    void vEarly_project_test(CardIter* pCI);
+    void vEarly_project_backstep(CardIter* pCI);
 
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);
@@ -35,7 +35,7 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vProduce_projection_Off_running(CardIter* pCI);
+    void vUpdate_projection_Off_running(CardIter* pCI);
 
   };
 

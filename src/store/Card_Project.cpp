@@ -238,7 +238,7 @@ void Card_Project::vEarly_project_recurse(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_OP::vEarly_project_test(pCI);
+  Card_OP::vEarly_project_backstep(pCI);
 
   // todo: arrived back ...
 
