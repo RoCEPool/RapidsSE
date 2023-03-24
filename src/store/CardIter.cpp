@@ -607,7 +607,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
 
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
@@ -647,7 +647,7 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
 
     vFocusOnMain();
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
@@ -682,7 +682,7 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
       return false;
     }
 
-    G.p_MainCard = G.xKid.m_pChild = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
+    G.p_MainCard = G.xKid.pParent()->pGetChild(G.xKid.m_i_Child);
 
     if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
       G.xKid.m_i_Child= C_UNKNOWN;
@@ -1948,8 +1948,8 @@ void CardIter::vSet(i8 iChild, Card* pChild)
 
   RASSERT(G.xKid.m_bActive);
 
-  G.xKid.m_i_Child= iChild;
-  G.xKid.m_pChild = pChild;
+  G.xKid.m_i_Child = iChild;
+  //G.xKid.m_pChild = pChild;
 }
 
 /*----------------------------------------------------------------------------*/
