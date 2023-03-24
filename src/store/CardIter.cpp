@@ -1753,7 +1753,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 
   G.xKid.pParent()->vRemoveChild(pChild);
 
-  G.xKid.m_i_Child--;
+  G.xKid.vPrev();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1773,7 +1773,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 
   delete pChild;
 
-  G.xKid.m_i_Child--;
+  G.xKid.vPrev();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1808,7 +1808,7 @@ void CardIter::vRestart(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.m_i_Child = C_UNKNOWN;
+  G.xKid.vReset();
   G.xKid.m_bActive = true;
 }
 
@@ -2632,6 +2632,8 @@ void Kid::vParent(Card*  pParent)
 
   m_pParent = pParent;
   m_i_Child = C_UNKNOWN;
+
+  m_bActive = true;
  }
 
 /*----------------------------------------------------------------------------*/
@@ -2642,6 +2644,8 @@ void Kid::vReset(void)
 
 //  m_pParent   = nullptr;
   m_i_Child = C_UNKNOWN;
+
+  m_bActive = true;
 }
 
 /*============================================================================*/
