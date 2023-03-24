@@ -110,8 +110,14 @@ void PageFile::vInitFooter(void)
 /*----------------------------------------------------------------------------*/
 void PageFile::vInitMagic(void)
 {
-
   u8 uMagic = 0;
+  if(m_pFile->iSize() == 0) {
+    uMagic = C_MAGIC;
+    bool bResult = m_pFile->bWriteBytes(&uMagic,sizeof(C_MAGIC));
+    ASSERT(bResult);
+    return;
+  }
+
   m_pFile->vSeekStart();
   m_pFile->nReadBytes(&uMagic, sizeof(C_MAGIC));
 
