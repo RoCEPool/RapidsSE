@@ -61,8 +61,8 @@ void ApplyOptimisations::vOptimise(void)
   vMorph_scan_To_indexScan();
 
   vDerive_Projection_Keys();
-
   vCut_sort();
+
   vPromote_gbyAgg_To_ordAgg();
 
   // --- --- --- --- --- --- ---
