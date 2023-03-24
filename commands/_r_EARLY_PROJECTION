@@ -19,9 +19,11 @@ trackMemory;
 /transliterated
 /weaved
 /pipelineName = "_r_EARLY_PROJECTION"
-select o_orderkey,
+select
+       o_orderkey,
        avg(l_extendedprice)
-  from Orders,
+  from
+       Orders,
        Lineitem
  where
        O_ORDERKEY = L_ORDERKEY

@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* _r_EARLY_PROJECTION_2 -- early projection (test 2)                         */
+/*============================================================================*/
+
+// --initial _r_EARLY_PROJECTION_2
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+select * from dummy;
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_EARLY_PROJECTION_2"
+select
+       o_orderkey,
+       avg(l_extendedprice)
+  from
+       Customer,
+       Orders,
+       Lineitem
+ where
+       C_CUSTKEY  = O_ORDERKEY
+   and O_ORDERKEY = L_ORDERKEY
+
+   and c_custkey > 10
+
+ group by O_ORDERKEY
+ order by O_ORDERKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

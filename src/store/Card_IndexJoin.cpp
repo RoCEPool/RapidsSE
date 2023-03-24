@@ -136,7 +136,9 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   // arrived back ...
 
-  vProjectionDeduction(pCI);
+  pCI->vPrintBoard();
+
+  vProduce_projection_Off_running(pCI);
 
   pCI->vPrintBoard();
 
@@ -160,11 +162,6 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-
-
-
-  pCI->vPrintBoard();
-
   vDebugPoint();
 }
 /*----------------------------------------------------------------------------*/
@@ -178,7 +175,7 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 //
 //  // arrived back ...
 //
-//  vProjectionDeduction(pCI);
+//  vProduce_projection_Off_running(pCI);
 //
 //  pCI->vPrintBoard();
 //

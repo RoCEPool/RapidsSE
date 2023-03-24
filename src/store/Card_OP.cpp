@@ -505,7 +505,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vProjectionDeduction(CardIter* pCI)
+void Card_OP::vProduce_projection_Off_running(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

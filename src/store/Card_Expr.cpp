@@ -421,8 +421,8 @@ Card_Expr* Card_Expr::pDeduce(CardIter* pCI)
     p_expr_right->vAppend(p_as->pDupCardAndSubCards());
   p_expr_right->vAppend(p_rpnCalc->pDupCardAndSubCards());
 
-  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
-    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
+//    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   return p_expr_right;
 }
@@ -449,14 +449,14 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
 
   Card_Expr* p_expr_early = new Card_Expr;
 
-  p_expr_early->vAppend(p_type->pDupCardAndSubCards());
+  p_expr_early->vAppend(p_type->pClone());
   if (p_as)
-    p_expr_early->vAppend(p_as->pDupCardAndSubCards());
+    p_expr_early->vAppend(p_as->pClone());
 
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardAndSubCards());
   Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
   if (p_term_0_early->Y_bHas(P_TblCol)) {
-    p_term_0_early->vValue(szExpr_this_stmcol);
+    p_term_0_early->vValue(p_term_0_early->Y_szGet(P_TblCol));
   }
   else {
     vDebugPoint();
@@ -464,8 +464,8 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   p_term_0_early->vDump();
   p_expr_early->vAppend(p_rpnCalc_early);
 
-  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
-    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
+//    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   return p_expr_early;
 }

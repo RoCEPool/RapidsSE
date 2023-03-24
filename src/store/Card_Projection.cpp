@@ -133,7 +133,7 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
     }
 
     if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_table->vProjectionDeduction(pCI);
+      pCI->G.p_table->vProduce_projection_Off_running(pCI);
       continue;
     }
 
