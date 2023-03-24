@@ -57,6 +57,8 @@
 #include "Heart.h"
 
 #include "PromptHelper.hpp"
+#include "CompileLib.hpp"
+
 
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
@@ -1684,6 +1686,14 @@ void Engine::vStartSystem(void)
     vTrace("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
     
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
+
+  // Initialise and check for system compilers
+  if (!CompileLib::bInit()) {
+    Process::vExitStartup();
+  }
+
+  // Temporary
+  CompileLib::vTest();
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {

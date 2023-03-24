@@ -20,7 +20,7 @@ __aFooterFunction(LibInfo)
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LibInfo::LibInfo()
+LibInfo::LibInfo(bool bCollectStats)
 : Object(CN_LIBINFO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
@@ -28,10 +28,12 @@ LibInfo::LibInfo()
   m_pvDynLib = nullptr;
   m_eErrCode = EC_NONE;
 
-  m_iCompileTime    = 0;
-  m_iDynLinkTime    = 0;
-  m_iDynUnlinkTime  = 0;
-  m_iDeleteTime     = 0;
+  m_bCollectStats   = bCollectStats;
+  m_uCompileNanos    = 0;
+  m_uDynLinkNanos    = 0;
+  m_uSymAddrNanos    = 0;
+  m_uDynUnlinkNanos  = 0;
+  m_uDeleteNanos     = 0;
 
   _checkInitialised_(CN_LIBINFO);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
@@ -69,6 +71,50 @@ Stz* LibInfo::szErrDetails()
   return m_sErrDetails.szStz();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return the time taken to compile the shared object, in nanoseconds         */
+/*----------------------------------------------------------------------------*/
+u8 LibInfo::uCompileNanos()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_uCompileNanos;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the time taken to dynamically load the shared object, in nanoseconds*/
+/*----------------------------------------------------------------------------*/
+u8 LibInfo::uDynLinkNanos()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_uDynLinkNanos;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the time taken to resolve a symbol to an address, in nanoseconds    */
+/*----------------------------------------------------------------------------*/
+u8 LibInfo::uSymAddrNanos()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_uSymAddrNanos;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the time taken to dynamically unload the shared object, in nanos    */
+/*----------------------------------------------------------------------------*/
+u8 LibInfo::uDynUnlinkNanos()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_uDynUnlinkNanos;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the time taken to delete all library src/log/binary files, in nanos */
+/*----------------------------------------------------------------------------*/
+u8 LibInfo::uDeleteNanos()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
+  return m_uDeleteNanos;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private Functions -------------------------------------------------------*/

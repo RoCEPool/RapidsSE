@@ -2,11 +2,13 @@
 /* CompileLib.hpp - Dynamic code compiler and loader                          */
 /*============================================================================*/
 
+#include <dlfcn.h>
 #include "BASE.h"
 #include "CompileLib.hpp"
 #include "LibInfo.hpp"
 #include "eCB.h"
 #include "Shell.hpp"
+#include "SysCall.hpp"
 
 using namespace STORE;
 
@@ -61,6 +63,11 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo)
   ASSERT(!pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
+  u8 uStartTime;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
   // Save the base name
   pLibInfo->m_sBaseName.vCopy(szDynLibNm);
 
@@ -85,6 +92,10 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo)
   // Check that the library exists
   ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
 
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uCompileNanos = Hardware::uReadClock() - uStartTime;
+  }
+
   return true;
 }
 
@@ -94,7 +105,29 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo)
 bool CompileLib::bDynamicLink(LibInfo* pLibInfo)
 {
   ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
+  ASSERT(!pLibInfo->m_sDynLibPath.bIsEmpty());
   pLibInfo->vClearErrors();
+
+  u8 uStartTime = 0;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  pLibInfo->m_pvDynLib = dlopen(pLibInfo->m_sDynLibPath.azChar(), RTLD_NOW);
+
+  if (!pLibInfo->m_pvDynLib) {
+    pLibInfo->m_eErrCode = EC_DYN_LINK_FAILED;
+
+    pLibInfo->m_sErrDetails.vCopy((Stz*) dlerror());
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sDynLibPath.szStz());
+
+    return false;
+  }
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uDynLinkNanos = Hardware::uReadClock() - uStartTime;
+  }
 
   return true;
 }
@@ -105,9 +138,32 @@ bool CompileLib::bDynamicLink(LibInfo* pLibInfo)
 void* CompileLib::pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo)
 {
   ASSERT(pLibInfo);
+  ASSERT(pLibInfo->m_pvDynLib);
+  ASSERT(szSymbolNm);
   pLibInfo->vClearErrors();
 
+  u8 uStartTime;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
 
+  dlerror();  // resets any previous error
+  void* pvPtr = dlsym(pLibInfo->m_pvDynLib, szSymbolNm->azChar());
+
+  if (!pvPtr) {
+    pLibInfo->m_eErrCode = EC_DYN_SYM_RESOLVE_FAILED;
+
+    pLibInfo->m_sErrDetails.vCopy((Stz*) dlerror());
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s : %s"_Stz,
+                                       pLibInfo->m_sDynLibPath.szStz(),
+                                       szSymbolNm);
+  }
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uSymAddrNanos = Hardware::uReadClock() - uStartTime;
+  }
+
+  return pvPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +172,27 @@ void* CompileLib::pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo)
 bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
 {
   ASSERT(pLibInfo);
+  ASSERT(pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
+
+  u8 uStartTime;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  i8 iVal = dlclose(pLibInfo->m_pvDynLib);
+  if (iVal != 0) {
+    pLibInfo->m_eErrCode = EC_DYN_UNLINK_FAILED;
+
+    pLibInfo->m_sErrDetails.vCopy((Stz*) dlerror());
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sDynLibPath.szStz());
+  }
+
+  pLibInfo->m_pvDynLib = nullptr;
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uDynUnlinkNanos = Hardware::uReadClock() - uStartTime;
+  }
 
   return true;
 }
@@ -127,7 +203,13 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
 void CompileLib::vDelete(LibInfo* pLibInfo)
 {
   ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
+
+  u8 uStartTime;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
 
   ASSERT(pLibInfo->m_pvDynLib == nullptr);
 
@@ -135,6 +217,15 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
   if (!pLibInfo->m_sDynLibPath.bIsEmpty()) {
     File::bRemove(pLibInfo->m_sDynLibPath.szStz(), true);
   }
+
+#ifdef WITH_APPLE
+  // MacOS seems to drop a directory with symbols for the compiled shared library.
+  // This is the same name/path as the .so but with an additional extension .dSYM.
+  s256 sCmd;
+  sCmd.vSprint("rm -rf %s.dSYM"_Stz, pLibInfo->m_sDynLibPath.szStz());
+  SysCall oSysCall;
+  Shell::iExecute(sCmd.szStz(), oSysCall);
+#endif
 
   // Remove log file, if exists
   if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
@@ -144,6 +235,10 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
   // Remove source file, if exists
   if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
     File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+  }
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uDeleteNanos = Hardware::uReadClock() - uStartTime;
   }
 }
 
@@ -157,9 +252,13 @@ void CompileLib::vTest()
 "#include \"primitives/BaseTypes_tcc.h\"\n"
 "\n"
 "// Declaration of a function inside SE\n"
-"extern void vTraceExternal(char* psFormat, ...);\n"
+"// Note that the \"{}\" at the end is important as it\n"
+"// gives an implementation (and prevents a linker error)\n"
+"// but this implementation is shadowed by the real implementation\n"
+"// within SE. So only the real implementation is called.\n"
+"extern void vTraceExternal(char* psFormat, ...) {};\n"
 "\n"
-"void vTestEntry(void)\n"
+"extern \"C\" void vTestEntry(void)\n"
 "{\n"
 "  printf(\"Inside vTestEntry!\\n\");\n"
 "\n"
@@ -172,7 +271,7 @@ void CompileLib::vTest()
 
   static Stz* szDynLibNm = "test"_Stz;
   static Stz* szFuncNm = "vTestEntry"_Stz;
-  LibInfo* pLibInfo = new LibInfo();
+  LibInfo* pLibInfo = new LibInfo(true);
 
   // The function pointer we want to call in the shared library
   void (*pfTestFn)(void);
@@ -203,7 +302,7 @@ void CompileLib::vTest()
   *(void **)(&pfTestFn) = pvSymbolAddr(szFuncNm, pLibInfo);
 
   if (!pfTestFn) {
-    vTrace("Symbol resolution failed\n"_Stz);
+    vTrace("Symbol resolution failed of symbol %s\n"_Stz, szFuncNm);
 
     if (!CompileLib::bDynamicUnlink(pLibInfo)) {
       vTrace("Dynamic unlink failed\n"_Stz);
@@ -228,6 +327,20 @@ void CompileLib::vTest()
 
   // Cleanup temporary files
   vDelete(pLibInfo);
+
+  vTrace("\n  Compile time:  %lluns"
+         "\n  Dyn Link time: %lluns"
+         "\n  Sym Addr time: %lluns"
+         "\n  Dyn Unload   : %lluns"
+         "\n  Delete time  : %lluns"
+         "\n\n"_Stz,
+         pLibInfo->uCompileNanos(),
+         pLibInfo->uDynLinkNanos(),
+         pLibInfo->uSymAddrNanos(),
+         pLibInfo->uDynUnlinkNanos(),
+         pLibInfo->uDeleteNanos()
+  );
+
   delete pLibInfo;
 }
 

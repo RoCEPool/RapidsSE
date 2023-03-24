@@ -24,10 +24,12 @@ namespace STORE
     eEC   m_eErrCode;
     s2K   m_sErrDetails;
 
-    i8    m_iCompileTime;
-    i8    m_iDynLinkTime;
-    i8    m_iDynUnlinkTime;
-    i8    m_iDeleteTime;
+    bool  m_bCollectStats;
+    u8    m_uCompileNanos;
+    u8    m_uDynLinkNanos;
+    u8    m_uSymAddrNanos;
+    u8    m_uDynUnlinkNanos;
+    u8    m_uDeleteNanos;
 
     // must be last
     Footer m_xFooter;
@@ -36,11 +38,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    LibInfo(void);
+    LibInfo(bool bCollectStats=false);
     ~LibInfo(void);
 
     eEC  eErrCode();
     Stz* szErrDetails();
+    u8   uCompileNanos();
+    u8   uDynLinkNanos();
+    u8   uSymAddrNanos();
+    u8   uDynUnlinkNanos();
+    u8   uDeleteNanos();
 
     Footer* aFooter(void);
 

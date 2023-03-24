@@ -87,6 +87,9 @@ enum eEC : u2 // error codes
   EC_DIVIDE_BY_ZERO,
   EC_DUPLICATE_COLUMN,
   EC_DUPLICATE_KEY,
+  EC_DYN_LINK_FAILED,
+  EC_DYN_SYM_RESOLVE_FAILED,
+  EC_DYN_UNLINK_FAILED,
 
   /* _E_ */
   EC_ESCAPE_SINGLE_CHAR,            // SQL Compiler Subsystem
@@ -354,6 +357,9 @@ static Stz* aEC[] =
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
+  /* EC_DYN_LINK_FAILED               */ (Stz*)"EC_DYN_LINK_FAILED",
+  /* EC_DYN_SYM_RESOLVE_FAILED        */ (Stz*)"EC_DYN_SYM_RESOLVE_FAILED",
+  /* EC_DYN_UNLINK_FAILED             */ (Stz*)"EC_DYN_UNLINK_FAILED",
 
   /* _E_ */
   /* EC_ESCAPE_SINGLE_CHAR            */ (Stz*)"EC_ESCAPE_SINGLE_CHAR",           // SQL Compiler Subsystem
@@ -615,6 +621,9 @@ static Stz* aEC2[] = // error code
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"EC_DIVIDE_BY_ZERO",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"EC_DUPLICATE_COLUMN",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"EC_DUPLICATE_KEY",
+  /* EC_DYN_LINK_FAILED               */ (Stz*)"EC_DYN_LINK_FAILED",
+  /* EC_DYN_SYM_RESOLVE_FAILED        */ (Stz*)"EC_DYN_SYM_RESOLVE_FAILED",
+  /* EC_DYN_UNLINK_FAILED             */ (Stz*)"EC_DYN_UNLINK_FAILED",
 
   /* _E_ */
   /* EC_ESCAPE_SINGLE_CHAR            */ (Stz*)"EC_ESCAPE_SINGLE_CHAR",             // SQL Compiler Subsystem
@@ -886,6 +895,9 @@ static Stz* aErrorMsg[] =
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
+  /* EC_DYN_LINK_FAILED               */ (Stz*)"dynamic linking of query binary failed",
+  /* EC_DYN_SYM_RESOLVE_FAILED        */ (Stz*)"dynamic symbol resolution of query binary failed",
+  /* EC_DYN_UNLINK_FAILED             */ (Stz*)"dynamic unlinking of query binary failed",
 
   /* _E_ */
   /* EC_ESCAPE_SINGLE_CHAR            */ (Stz*)"ESCAPE clause can only contain a single character", // SQL Compiler Subsystem

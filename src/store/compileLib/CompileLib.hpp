@@ -28,7 +28,7 @@ namespace STORE
 
   private:
     static bool bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo);
-    static void vBuildGccCompileCommand(LibInfo* pLibInfo, Stz* szGccPath = "gcc"_Stz);
+    static void vBuildGccCompileCommand(LibInfo* pLibInfo, Stz* szGccPath = "g++"_Stz);
     static bool bCompileSrc(LibInfo* pLibInfo);
   };
 } // STORE
