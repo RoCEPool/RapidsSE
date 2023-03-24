@@ -613,7 +613,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
     G_vUpdateMember(G.e_MainCard, G.p_MainCard, __func__);
 
     if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
-      G.xKid.m_i_Child= C_UNKNOWN;
+      //G.xKid.m_i_Child= C_UNKNOWN;
       return false;
     }
 
@@ -1194,7 +1194,7 @@ bool CardIter::bJustRestarted(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (C_UNKNOWN == G.xKid.m_i_Child &&
+  if (C_UNKNOWN == G.xKid.i_Child() &&
       nullptr == G.xKid.pChild() &&
       true == G.xKid.m_bActive)
     return true;
@@ -1303,7 +1303,7 @@ bool CardIter::bMore(void)
 
   RASSERT(G.xKid.m_bActive);
 
-  if (G.xKid.m_i_Child + 1 < G.xKid.pParent()->nChildCards())
+  if (G.xKid.i_Child() + 1 < G.xKid.pParent()->nChildCards())
     return true;
 
   return false;
@@ -1342,7 +1342,7 @@ Card* CardIter::pNextChild(void)
 
   RASSERT(G.xKid.m_bActive);
 
-  i8 i_Next = G.xKid.m_i_Child + 1;
+  i8 i_Next = G.xKid.i_Child() + 1;
 
   if (i_Next >= G.xKid.pParent()->nChildCards())
     return nullptr;
@@ -1444,7 +1444,7 @@ Card* CardIter::pPrevChild(void)
 
   RASSERT(G.xKid.m_bActive);
 
-  i8 i_Prev = G.xKid.m_i_Child - 1;
+  i8 i_Prev = G.xKid.i_Child() - 1;
 
   if (i_Prev < 0)
     return nullptr;
