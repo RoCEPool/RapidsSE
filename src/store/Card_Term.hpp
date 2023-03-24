@@ -26,7 +26,9 @@ namespace STORE
 
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
+    Card_Term* pClone(void);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
+    void vEnsure_tblCol_flip(void);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     Card_Expr* pExpr_For_col(CardIter* pCI, i8 i_Before=C_UNKNOWN);
@@ -38,6 +40,7 @@ namespace STORE
     bool bIsCorPrmOdn(void); // %n
     bool bIsFoldExpr(void);
     bool bIsKeyOdn(void);    // $Kn
+    bool bIsSame(Card_Term* p_term_arg);
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $c.n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);

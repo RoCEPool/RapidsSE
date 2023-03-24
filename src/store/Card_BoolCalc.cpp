@@ -412,7 +412,7 @@ void Card_BoolCalc::vFlipTerms(Card_Projection* p_projection_reduced)
 
     Card_Term* p_term = _pCard_Term(p_pred);
 
-//    Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_By_projectedCol(p_term->szValue());
+//    Card_Expr* p_expr_repl = p_projection_reduced->pFind_expr_With_projectedCol(p_term->szValue());
 //    if (! p_expr_repl)
 //      return C_CONTINUE_RECURSION;
 //

@@ -230,7 +230,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* deduce reduced form of this projection needed for crafting early projects  */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pDeduceProjectionNeeded(CardIter* pCI)
+Card_Projection* Card_Projection::pCraftProjectionNeeded(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -245,12 +245,12 @@ Card_Projection* Card_Projection::pDeduceProjectionNeeded(CardIter* pCI)
 
   CardIter xCI_key(pCI->G.p_key);
   while (xCI_key.G_bEachMain(CK_EXPR)) {
-    Card_Expr *p_expr_carry = xCI_key.G.p_expr->pToReduce_key();
-    p_projection_needed->vAppend(p_expr_carry);
+    Card_Expr *p_expr_needed = xCI_key.G.p_expr->pClone(true);
+    p_projection_needed->vAppend(p_expr_needed);
   }
 
   p_projection_needed->vRenumberAllExpr();
-  //p_projection_needed->vDump();
+  p_projection_needed->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) append the referenced col's in rpnCalc of this projection into needed projection
@@ -266,7 +266,7 @@ Card_Projection* Card_Projection::pDeduceProjectionNeeded(CardIter* pCI)
         continue;
 
       if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))
-        p_projection_needed->vAppend(p_expr_col->pToReduce_prj());
+        p_projection_needed->vAppend(p_expr_col->pClone(true));
     }
   }
   p_projection_needed->vRenumberAllExpr();
@@ -310,6 +310,24 @@ Card_Expr* Card_Projection::pFind_expr_By_projectedCol(Stz* szCol)
   for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
     Card_Expr* p_expr = pGetExpr(i_Expr);
     if (p_expr->bIsProjectedCol(szCol))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFind_expr_With_projectedCol(Card_Term* p_term_col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(p_term_col->bIsColOdn());
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card_Expr* p_expr = xKid.p_expr();
+    if (p_expr->bHasProjectedCol(p_term_col))
       return p_expr;
   }
 

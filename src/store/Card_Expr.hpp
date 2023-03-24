@@ -26,6 +26,7 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
+    Card_Expr* pClone(bool bstmCol_flip);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vDeconstruct(Card_Type*& rp_type,
                       Card_As*&   rp_as,
@@ -35,6 +36,7 @@ namespace STORE
     bool bIsCalcSequence(void);
     bool bIsColOrdinal(void);
     bool bIsProjectedCol(Stz* szProjectedCol);
+    bool bHasProjectedCol(Card_Term* p_term_arg);
     bool bIsSame(Card_Expr* pExpr_arg);
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
@@ -48,8 +50,6 @@ namespace STORE
     Card_Expr* pReckon(CardIter* pCI);
 
     i8 iRpnCalc_WhichGbyKey(void);
-    Card_Expr* pToReduce_prj(void);
-    Card_Expr* pToReduce_key(void);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);

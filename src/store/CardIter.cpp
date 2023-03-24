@@ -2280,7 +2280,7 @@ void CardIter::vXhand(const char* asXhand)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pDecodePriorExpr_via_stmColOdn(Card_Term* p_term)
+Card_Expr* CardIter::pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 

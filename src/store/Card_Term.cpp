@@ -161,9 +161,26 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Expr* p_expr_prior = pCI->pDecodePriorExpr_via_stmColOdn(this))
+  if (Card_Expr* p_expr_prior = pCI->pResolvePriorExpr_With_ProjectedCol(this))
     if (Stz* szPrjCol = p_expr_prior->szProjectedCol())
       vSetValueMark1(szPrjCol, MARK_CHANGED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vEnsure_tblCol_flip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card::bIsTableColOrdinal(szValue()))
+    return;
+
+  RASSERT(Y_bHas(P_TblCol));
+
+  vValue(Y_szGet(P_TblCol));
+
+  Y_vCut(P_TblCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,6 +341,16 @@ bool Card_Term::bIsBoardNm(STORE::CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Term::pClone(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return _pCard_Term(pDupCardAndSubCards());
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a col ordinal? $n or $c.n                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsColOdn(void)
@@ -372,6 +399,18 @@ bool Card_Term::bIsKeyOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   bool b = Card::bIsKeyOrdinal(this->szValue());
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is                                                                         */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsSame(Card_Term* p_term_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = bIsValue(p_term_arg->szValue());
 
   return b;
 }

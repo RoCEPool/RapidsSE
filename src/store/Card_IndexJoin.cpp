@@ -87,7 +87,8 @@ void Card_IndexJoin::vEarly_project_check(CardIter* pCI)
   pCI->G.p_bound->vDump();
   pCI->G.p_term      = pCI->G.p_bound->pGet_tblColOdn();
 
-  //RASSERT( pCI->G.p_term);
+  RASSERT(pCI->G.p_term);
+  pCI->G.p_term->vDump();
 
   /*
    * todo:
@@ -96,6 +97,22 @@ void Card_IndexJoin::vEarly_project_check(CardIter* pCI)
    *    n: find defn expr for $t.c
    *       add expr (defn expr for $t.c) into needed projection
    */
+
+  if (! pCI->EarlyProject.m_pProjection_needed->pFind_expr_With_projectedCol(pCI->G.p_term)) {
+
+    pCI->EarlyProject.m_pProjection_needed->vDump();
+
+    if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(pCI->G.p_term)) {
+      p_expr_defn->vDump();
+      Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
+      pCI->EarlyProject.m_pProjection_needed->vAppend(p_expr_clone);
+      pCI->EarlyProject.m_pProjection_needed->vRenumberAllExpr();
+    }
+
+    pCI->EarlyProject.m_pProjection_needed->vDump();
+
+    vDebugPoint();
+  }
 
   vDebugPoint();
 }
@@ -107,6 +124,8 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  // save the current projection needed
+  //   we can restore to this save if projection needed get extended
   Card_Projection* p_projection_needed_save = pCI->EarlyProject.m_pProjection_needed;
   pCI->EarlyProject.m_pProjection_needed = _pCard_Projection(p_projection_needed_save->pDupCardAndSubCards());
   vEarly_project_check(pCI);

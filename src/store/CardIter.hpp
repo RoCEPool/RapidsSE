@@ -197,7 +197,7 @@ namespace STORE
     void vXhand(const char* asXhand);
 
 
-    Card_Expr* pDecodePriorExpr_via_stmColOdn(Card_Term* p_term);
+    Card_Expr* pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term);
     Card_Projection* pResolvePriorProjection(void);
 
 

@@ -1457,7 +1457,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
   }
 
-  if (!gxCmdLineArgs.bUserPrompt()) {
+  if (! gxCmdLineArgs.bUserPrompt()) {
     vTrace("\n"_Stz);
     vTrace("Args:\n"_Stz);
 
@@ -1521,6 +1521,8 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
 
     if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
+
+    if (m_xSysArgs.m_bInitial) vTrace("  --initial %s\n"_Stz,m_xSysArgs.m_sInitial.szStz());
 
     BASE::vTraceWith();
   }

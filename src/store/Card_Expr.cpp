@@ -181,6 +181,21 @@ void Card_Expr::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_clone = _pCard_Expr(pDupCardAndSubCards());
+
+  if (bStmCol_flip)
+    p_clone->pProjectedTerm()->vEnsure_tblCol_flip();
+
+  return p_clone;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -259,6 +274,23 @@ bool Card_Expr::bIsProjectedCol(Stz* szProjectedCol)
     return false;
 
   if (szPrjCol->bSame(szProjectedCol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bHasProjectedCol(Card_Term* p_term_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+ Card_Term* p_term_prj = this->pProjectedTerm();
+  if (! p_term_prj)
+    return false;
+
+  if (p_term_prj->bIsSame(p_term_arg))
     return true;
 
   return false;
@@ -500,30 +532,6 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
   }
 
   return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pToReduce_key(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr* p_expr_key = _pCard_Expr(pDupCardAndSubCards());
-
-  return p_expr_key;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pToReduce_prj(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr* p_expr_prj = _pCard_Expr(pDupCardAndSubCards());
-
-  return p_expr_prj;
 }
 
 /*============================================================================*/

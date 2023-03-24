@@ -67,7 +67,7 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 
   // get the needed form of ordAgg's projection
   pCI->EarlyProject.m_pProjection_needed =
-      pSub_projection()->pDeduceProjectionNeeded(pCI);
+      pSub_projection()->pCraftProjectionNeeded(pCI);
 
   pCI->vSave();
   Card_OP::vEarly_project_test(pCI);
