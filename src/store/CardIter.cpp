@@ -1834,13 +1834,14 @@ void CardIter::vRewind(void)
 
   RASSERT(G.xKid.m_bActive);
 
-  if (G.xKid.m_i_Child == 0) {
-    G.xKid.m_i_Child= C_UNKNOWN;
-    return;
-  }
+//  if (G.xKid.m_i_Child == 0) {
+//    G.xKid.m_i_Child = C_UNKNOWN;
+//    return;
+//  }
+//
+//  G.xKid.m_i_Child--;
 
-  G.xKid.m_i_Child--;
-
+  G.xKid.vPrev();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1850,12 +1851,14 @@ Card* CardIter::pRewindChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (G.xKid.m_i_Child == 0) {
-    G.xKid.m_i_Child= C_UNKNOWN;
-    return nullptr;
-  }
+//  if (G.xKid.m_i_Child == 0) {
+//    G.xKid.m_i_Child= C_UNKNOWN;
+//    return nullptr;
+//  }
+//
+//  G.xKid.m_i_Child--;
 
-  G.xKid.m_i_Child--;
+  G.xKid.vPrev();
 
   return G.xKid.pChild();
 }
@@ -1919,8 +1922,7 @@ void CardIter::vSet(Card* pChild)
 
   RASSERT(G.xKid.m_bActive);
 
-  G.xKid.m_i_Child = G.xKid.pParent()->iFindChild(pChild);
-
+  G.xKid.vChild(G.xKid.pParent()->iFindChild(pChild));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1931,7 +1933,7 @@ void CardIter::vSet(CardIter* pCardIter_src)
   _precondition_(_MAGIC_,_FOOTER_);
 
   G.xKid.vParent(pCardIter_src->G.xKid.pParent());
-  G.xKid.m_i_Child = pCardIter_src->G.xKid.m_i_Child;
+  G.xKid.vChild(pCardIter_src->G.xKid.i_Child());
 
   G.xKid.m_bActive = pCardIter_src->G.xKid.m_bActive;
 }
@@ -1940,13 +1942,13 @@ void CardIter::vSet(CardIter* pCardIter_src)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSet(i8 iChild, Card* pChild)
+void CardIter::vSet(i8 i_Child)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
 
-  G.xKid.m_i_Child = iChild;
+  G.xKid.vChild(i_Child);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2635,6 +2637,17 @@ void Kid::vParent(Card*  pParent)
 
   m_bActive = true;
  }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vChild(i8 i_Child)
+{
+
+  m_i_Child = i_Child;
+
+  //m_bActive = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

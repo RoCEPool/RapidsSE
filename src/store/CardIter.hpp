@@ -177,7 +177,7 @@ namespace STORE
     i8   iSentinalsDepth(void);
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
-    void vSet(i8 iChild, Card* pChild);
+    void vSet(i8 i_Child);
     void G_vSetBoard(Board* pBoard);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     void vSubQueryIteration(void);

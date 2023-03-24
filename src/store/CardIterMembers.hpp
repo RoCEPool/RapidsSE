@@ -65,6 +65,7 @@ namespace STORE
     i8   nChildren(void);
 
     void vParent(Card*  pParent);
+    void vChild(i8 i_Child);
     void vReset(void);
 
 //  private:
