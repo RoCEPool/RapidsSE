@@ -150,7 +150,7 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
   pCI->vPrintBoard();
 
 
-  Card_Project* p_project_early = Card_Project::pCraftNew_project_early(pCI);
+  Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
   pCI->G_vInsertAfter(p_project_early, this);
 
   delete pCI->EarlyProject.m_pProjection_needed;
@@ -193,7 +193,7 @@ void Card_IndexJoin::vEarly_project_recurse(CardIter* pCI)
 //
 //  pCI->vPrintBoard();
 //
-//  Card_Project* p_project_early = Card_Project::pCraftNew_project_early(pCI);
+//  Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
 //  pCI->G_vInsertAfter(p_project_early, this);
 //
 //  pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();

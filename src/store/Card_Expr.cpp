@@ -430,7 +430,7 @@ Card_Expr* Card_Expr::pDeduce(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pReckon(CardIter* pCI)
+Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -447,29 +447,30 @@ Card_Expr* Card_Expr::pReckon(CardIter* pCI)
   vDeconstruct(p_type,p_as,p_term_0);
     p_rpnCalc = pSub_rpnCalc();
 
-  Card_Expr* p_expr_right = new Card_Expr;
+  Card_Expr* p_expr_early = new Card_Expr;
 
-  p_expr_right->vAppend(p_type->pDupCardAndSubCards());
+  p_expr_early->vAppend(p_type->pDupCardAndSubCards());
   if (p_as)
-    p_expr_right->vAppend(p_as->pDupCardAndSubCards());
+    p_expr_early->vAppend(p_as->pDupCardAndSubCards());
 
-  Card_RpnCalc* p_rpnCalc_reckon = _pCard_RpnCalc(p_rpnCalc->pDupCardAndSubCards());
-  Card_Term* p_term_0_reckon = p_rpnCalc_reckon->pGetTerm(0);
-  if (p_term_0_reckon->Y_bHas(P_TblCol)) {
-    p_term_0_reckon->vValue(szExpr_this_stmcol);
+  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardAndSubCards());
+  Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
+  if (p_term_0_early->Y_bHas(P_TblCol)) {
+    p_term_0_early->vValue(szExpr_this_stmcol);
   }
   else {
     vDebugPoint();
   }
-  p_expr_right->vAppend(p_rpnCalc_reckon);
+  p_term_0_early->vDump();
+  p_expr_early->vAppend(p_rpnCalc_early);
 
   if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
     p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
-  return p_expr_right;
+  return p_expr_early;
 }
 /*----------------------------------------------------------------------------*/
-//Card_Expr* Card_Expr::pReckon(Card_Projection *p_projection_needed)
+//Card_Expr* Card_Expr::pCraft_expr_early(Card_Projection *p_projection_needed)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 //

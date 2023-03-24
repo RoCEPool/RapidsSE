@@ -47,27 +47,26 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /* craft projection for a new early project to be inserted after current op   */
 /* from this denoted projection of current op                                 */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pCraftNew_projection_early(CardIter* pCI)
+Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 {
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Projection* p_projection_early = new Card_Projection;
 
   pCI->EarlyProject.m_pProjection_needed->vDump();
 
-  CardIter xCI_projectionOfOp(pCI->G.p_projection);
-  while (xCI_projectionOfOp.G_bEachMain(CK_EXPR)) {
-    xCI_projectionOfOp.G.p_expr->vDump();
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    xKid.p_expr()->vDump();
 
-    if (! pCI->EarlyProject.m_pProjection_needed->pHasSame(xCI_projectionOfOp.G.p_expr))
+    if (! pCI->EarlyProject.m_pProjection_needed->pHasSame(xKid.p_expr()))
       continue;
-    if (p_projection_early->pHasSame(xCI_projectionOfOp.G.p_expr))
+    if (p_projection_early->pHasSame(xKid.p_expr()))
       continue;
 
     // denoted expr (of this denoted projection of denoted main op)
     //   is needed and not yet in early projection
 
-    Card_Expr* p_expr_early = xCI_projectionOfOp.G.p_expr->pReckon(pCI);
+    Card_Expr* p_expr_early = xKid.p_expr()->pCraft_expr_early(pCI);
     p_projection_early->vAppend(p_expr_early);
     p_expr_early->vRenumber(p_projection_early->nChildCards());
   }
@@ -78,47 +77,33 @@ Card_Projection* Card_Projection::pCraftNew_projection_early(CardIter* pCI)
   return p_projection_early;
 }
 /*----------------------------------------------------------------------------*/
-//Card_Projection* Card_Projection::pCraftNew_projection_early(CardIter* pCI)
+//Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 //{
 //  _static_
 //
+//  Card_Projection* p_projection_early = new Card_Projection;
+//
 //  pCI->EarlyProject.m_pProjection_needed->vDump();
 //
-//  Card_Projection* p_projection_early = nullptr;
+//  CardIter xCI_projectionOfOp(pCI->G.p_projection);
+//  while (xCI_projectionOfOp.G_bEachMain(CK_EXPR)) {
+//    xCI_projectionOfOp.G.p_expr->vDump();
 //
-//  CardIter xCI_reduced(pCI->EarlyProject.m_pProjection_needed);
-//  while (xCI_reduced.G_bEachMain(CK_EXPR)) {
-//    xCI_reduced.G.p_expr->vDump();
+//    if (! pCI->EarlyProject.m_pProjection_needed->pHasSame(xCI_projectionOfOp.G.p_expr))
+//      continue;
+//    if (p_projection_early->pHasSame(xCI_projectionOfOp.G.p_expr))
+//      continue;
 //
-//    if (pCI->ProjectionAnalysis.m_pProjection_running) {
-//      if ((! pCI->ProjectionAnalysis.m_pProjection_running->pHasSame(xCI_reduced.G.p_expr)) &&
-//          (! pCI->G.p_projection->pHasSame(xCI_reduced.G.p_expr)))
-//        continue;
-//    }
-//    else {
-//      if ((! pCI->G.p_projection->pHasSame(xCI_reduced.G.p_expr)))
-//        continue;
-//    }
+//    // denoted expr (of this denoted projection of denoted main op)
+//    //   is needed and not yet in early projection
 //
-//    if (! p_projection_early)
-//      p_projection_early = new Card_Projection;
-//
-//    if ((! xCI_reduced.G.p_expr->Y_szGet(P_Becomes)) ||
-//        Card::bIsStreamColOrdinal(xCI_reduced.G.p_expr->Y_szGet(P_Becomes))) {
-//      s32 sBecomes;
-//      sBecomes.vSprint("$%lld"_Stz,p_projection_early->nChildCards()+1);
-//      xCI_reduced.G.p_expr->Y_vSet(P_Becomes,sBecomes);
-//    }
-//
-//    Card_Expr* p_expr_early = xCI_reduced.G.p_expr->pReckon(pCI->EarlyProject.m_pProjection_needed);
+//    Card_Expr* p_expr_early = xCI_projectionOfOp.G.p_expr->pCraft_expr_early(pCI);
 //    p_projection_early->vAppend(p_expr_early);
 //    p_expr_early->vRenumber(p_projection_early->nChildCards());
-//
 //  }
 //
-//  //Card_Projection* p_projection_early = _pCard_Projection(p_projection_reduced->pDupCardAndSubCards());
 //
-//  pCI->EarlyProject.m_pProjection_needed->vDump();
+//  p_projection_early->vDump();
 //
 //  return p_projection_early;
 //}

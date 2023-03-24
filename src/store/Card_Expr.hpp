@@ -47,7 +47,7 @@ namespace STORE
     void vRenumberAsKeyOdn(i8 i_Expr);
     void vRenumberAsStmColOdn(i8 i_Expr);
     Card_Expr* pDeduce(CardIter* pCI);
-    Card_Expr* pReckon(CardIter* pCI);
+    Card_Expr* pCraft_expr_early(CardIter* pCI);
 
     i8 iRpnCalc_WhichGbyKey(void);
   };
