@@ -271,7 +271,7 @@ namespace STORE
 
     static bool bIsKeyOrdinal(Stz* szValue);       // #Kn
 
-    static bool bIsColOrdinal(Stz* szValue); // %n
+    static bool bIsColOrdinal(Stz* szValue);       // $n or $c.n
 
     static bool bIsCorrParamOrdinal(Stz* szValue); // %n
 

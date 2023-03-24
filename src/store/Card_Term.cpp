@@ -396,9 +396,13 @@ bool Card_Term::bIsTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Card::bIsTableColOrdinal(this->szValue());
+  if (Card::bIsTableColOrdinal(szValue()))
+    return true;
 
-  return b;
+  if (Y_bHas(P_TblCol) && Card::bIsTableColOrdinal(Y_szGet(P_TblCol)))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
