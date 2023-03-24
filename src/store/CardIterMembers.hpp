@@ -10,11 +10,9 @@ namespace STORE
 {
   class Kid //: public Object
   {
-    //friend class CardIter;
   private:
     Card*  m_pParent;
   public:
-    Card*  m_pChild;
     i8     m_i_Child;
 
     bool   m_bActive;

@@ -1808,8 +1808,7 @@ void CardIter::vRestart(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.m_i_Child= C_UNKNOWN;
-  G.xKid.m_pChild  = nullptr;
+  G.xKid.m_i_Child = C_UNKNOWN;
   G.xKid.m_bActive = true;
 }
 
@@ -1932,8 +1931,7 @@ void CardIter::vSet(CardIter* pCardIter_src)
   _precondition_(_MAGIC_,_FOOTER_);
 
   G.xKid.vParent(pCardIter_src->G.xKid.pParent());
-  G.xKid.m_i_Child= pCardIter_src->G.xKid.m_i_Child;
-  G.xKid.m_pChild  = pCardIter_src->G.xKid.pChild();
+  G.xKid.m_i_Child = pCardIter_src->G.xKid.m_i_Child;
 
   G.xKid.m_bActive = pCardIter_src->G.xKid.m_bActive;
 }
@@ -1949,7 +1947,6 @@ void CardIter::vSet(i8 iChild, Card* pChild)
   RASSERT(G.xKid.m_bActive);
 
   G.xKid.m_i_Child = iChild;
-  //G.xKid.m_pChild = pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2339,8 +2336,6 @@ Kid::Kid(void)
   m_pParent = nullptr;
   m_i_Child = C_UNKNOWN;
 
-  m_pChild = nullptr;
-
   m_bActive = false;
 
   _checkInitialised_(CN_KID);
@@ -2358,8 +2353,6 @@ Kid::Kid(Card* pParent)
 
   m_pParent = pParent;
   m_i_Child = C_UNKNOWN;
-
-  m_pChild = nullptr;
 
   m_bActive = false;
 
@@ -2637,10 +2630,9 @@ i8 Kid::nChildren(void)
 void Kid::vParent(Card*  pParent)
 {
 
-  m_pParent   = pParent;
+  m_pParent = pParent;
   m_i_Child = C_UNKNOWN;
-  m_pChild  = nullptr;
-}
+ }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -2650,7 +2642,6 @@ void Kid::vReset(void)
 
 //  m_pParent   = nullptr;
   m_i_Child = C_UNKNOWN;
-  m_pChild  = nullptr;
 }
 
 /*============================================================================*/
