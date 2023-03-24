@@ -383,12 +383,35 @@ failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval Day + time (invalid)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + TIME '04:30:56' FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' ; Ordinal Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'') ; type: TIME
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 // Time + Interval Day (invalid)
 EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1 2' DAY TO HOUR FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR) ; type: TIME
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 // Interval HMS + time
 EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation;
