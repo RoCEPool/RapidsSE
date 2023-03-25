@@ -112,7 +112,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
       case SK_PROJECT:
         break;
 
-      case SK_SCAN:
+      case SK_INFLATE_CRW:
         break;
 
       default:

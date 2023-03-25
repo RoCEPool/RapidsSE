@@ -1671,7 +1671,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(""_Stz, SK_SCAN, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
+  pOpSketch = new OpSketch(""_Stz, SK_INFLATE_CRW, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
 
   sLabel.vSprint("L_InflateT"_Stz);
   sLabelNext.vSprint("L_InflateCrwRet"_Stz);
