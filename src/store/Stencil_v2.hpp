@@ -57,8 +57,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     stageOps_V2 m_xStageOps;
 
-    OpSketch     m_xOpSketch[C_MAX_OPS_PER_STAGE];
-
     CombinedSrc* m_pOpSource;
 
     CodeSynth_v2* m_pBannerHead;

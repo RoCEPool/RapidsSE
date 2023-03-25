@@ -10,7 +10,7 @@ namespace STORE
   class CodeSynthUtils
   {
   public:
-    static bool bExtract(File* pFile, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode);
+    static bool bExtract(File* pFile, Stz* sLabel, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode);
   };
 }
 

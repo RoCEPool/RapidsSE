@@ -19,6 +19,9 @@ namespace STORE
 
   class OpSketch : public Object
   {
+
+    friend class CombinedSrc;
+
   private:
 
     eSK  m_eSketchKind;
@@ -36,7 +39,7 @@ namespace STORE
     eSR m_eStencilTo;
 
     // labels
-    s256 m_sLabelOp;
+    s256 m_sLabel;
     s256 m_sLabelNext;
     s256 m_sLabelLoop;
 
@@ -85,7 +88,7 @@ namespace STORE
 
     eSK eSketchKind(void);
 
-    void vSetLabels(Stz* OpLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
 
     CodeSynth_v2* pStructSynthA(void);
     void vStructSynthA(CodeSynth_v2* pStructSynth);

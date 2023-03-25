@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bExtract(File* pFile, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode)
+bool CodeSynthUtils::bExtract(File* pFile, Stz* sLabel, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode)
 {
 
   i8 nFileSize = pFile->iSize();
@@ -27,8 +27,10 @@ bool CodeSynthUtils::bExtract(File* pFile, Stz* szFunMkr, Stz* szStartMkr, Stz* 
   bool bFoundFunc = false;
   bool bFoundStart = false;
 
+  if ( ! sLabel->bSame(""_Stz) )
+    StrLib::vSprintCat(sCode->szStz(), "\n%s:\n"_Stz, sLabel->azChar());
+
   while (pFile->bReadLine(sLine)) {
-    //vTrace("%s\n"_Stz,sLine.szStz());
 
     // look for comments
     if (StrLib::bContains(sLine.azChar(), "//")) {
