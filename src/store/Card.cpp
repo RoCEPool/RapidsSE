@@ -1404,6 +1404,7 @@ bool Card::bIsProjecting(void)
     case CK_INDEXJOIN:
     case CK_INDEXSCAN:
     case CK_ORDAGG:
+    case CK_PROJECT:
     case CK_SCAN:
     case CK_TABLE:
       return true;
