@@ -165,19 +165,29 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (Y_bHas(P_BreakPt)) {
+    vDump();
+    vDebugPoint();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card* pCard)
+  auto bLambdaFn = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
-    if (! Card::bIsTableColOrdinal(p_term->szValue()))
+    if (Y_bHas(P_BreakPt)) {
+      vDebugPoint();
+    }
+
+    if (! p_term->bIsTblColOdn())
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI)) {
       p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+      vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
       return C_CONTINUE_RECURSION;
     }
 
@@ -193,6 +203,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
     szStmColOdn = sColOfThisTable.szStz();
     p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
+    vTrace("  TO %s\n"_Stz,szStmColOdn);
     return C_CONTINUE_RECURSION;
 
   };
@@ -200,6 +211,12 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bApplyRecursive(CK_TERM, bLambdaFn);
+
+  if (Y_bHas(P_BreakPt)) {
+    vDump();
+    vDebugPoint();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

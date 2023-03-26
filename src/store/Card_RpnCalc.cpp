@@ -274,17 +274,31 @@ Stz* Card_RpnCalc::szProjectedCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_Term* p_term_0 = this->pProjectedTerm();
+  if (! p_term_0)
+    return nullptr;
+
+  Stz* szVal = p_term_0->szValue();
+
+  return szVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the one (and only) projected column from rpnCalc                       */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnCalc::pProjectedTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   if (1 != this->nChildCards())
     return nullptr;
 
-  Card* p_child0 = this->pGetChild(0);
-  Stz* szVal = p_child0->szValue();
+  Card_Term* p_term_0 = this->pGetTerm(0);
 
-  if (Card::bIsKeyOrdinal(szVal)       ||
-      Card::bIsStreamColOrdinal(szVal) ||
-      Card::bIsTableColOrdinal(szVal)) {
-    return szVal;
-  }
+  if (p_term_0->bIsKeyOdn()    ||
+      p_term_0->bIsStmColOdn() ||
+      p_term_0->bIsTblColOdn())
+    return p_term_0;
 
   return nullptr;
 }

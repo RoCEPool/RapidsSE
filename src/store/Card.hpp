@@ -129,6 +129,7 @@ namespace STORE
 }
 
 static Stz* P_AggOp        = "bAggOp"_Stz;
+static Stz* P_BreakPt      = "bBreakPt"_Stz;
 static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 static Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;

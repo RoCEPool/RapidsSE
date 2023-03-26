@@ -273,6 +273,8 @@ void MakeWeavable::vStmColToColNmOfKeyExists(void)
 
   m_pCI->vTransform(__func__, "((20))))"_Stz);
 
+  m_pCI->vRestart();
+
   while (m_pCI->G_bEachMain()) {
 
     if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard

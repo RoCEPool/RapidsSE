@@ -99,12 +99,12 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-  pCI->G.p_filter->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+  //pCI->G.p_filter->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
-  pCI->G.p_indexList->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+  //pCI->G.p_indexList->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+  //pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->vPrintBoard();
 
@@ -121,55 +121,6 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   vDebugPoint();
 }
-/*----------------------------------------------------------------------------*/
-//void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  pCI->vSave();
-//  Card_OP::vEarly_project_backstep(pCI);
-//  pCI->vRestore();
-//
-//  // arrived back ...
-//
-//  vUpdate_projection_Off_running(pCI);
-//
-//  pCI->vPrintBoard();
-//
-//  pCI->G.p_filter = pSub_filter();
-//  pCI->G.p_filter->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-//
-//  pCI->G.p_indexList = pSub_indexList();
-//  pCI->G.p_indexList->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-//
-//  pCI->G.p_projection = pSub_projection();
-//  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-//
-//  pCI->vPrintBoard();
-//
-//  Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
-//  pCI->G_vInsertAfter(p_project_early, this);
-//
-//  pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
-//
-//  pCI->vPrintBoard();
-//
-//
-//  pCI->G.p_index  = pCI->G.p_indexList->pFindChosenIndex();
-//  pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
-//  pCI->G.p_bound  = pCI->G.p_bounds->pSub_bound();
-//
-//  // double check early projection has bound column(s) of chosen index
-//
-//  pCI->vSave();
-//  vEarly_project_check_transients(pCI);
-//  pCI->vRestore();
-//
-//  pCI->vPrintBoard();
-//
-//  vDebugPoint();
-//}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
