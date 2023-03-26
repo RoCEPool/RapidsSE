@@ -30,8 +30,6 @@ namespace STORE
     Card_Expr* pFind_expr_With_projectedCol(Card_Term* p_term_col);
     Card_Expr* pHasSame(Card_Expr* p_expr_arg);
     void vKeyProjection(CardIter* pCI);
-    Card_Projection* pDeduce(CardIter* pCI);
-    Card_Projection* pToCarry(Card_Key* p_key);
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

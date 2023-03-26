@@ -284,17 +284,6 @@ Card_Projection* Card_Projection::pCraftInitial_projection_needed(CardIter* pCI)
 
   return p_projection_needed;
 }
-/*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pToCarry(Card_Key* p_key)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // temp: take a copy of this projection
-  Card_Projection* p_projection_carry =
-      _pCard_Projection(pDupCardAndSubCards());
-
-  return p_projection_carry;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -390,26 +379,6 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* re-projection                                                              */
-/*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pDeduce(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Projection* p_projection_deduced = new Card_Projection;
-
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_Expr* p_expr_deduced = xCI_this.G.p_expr->pClone(false);
-    p_projection_deduced->vAppend(p_expr_deduced);
-    p_expr_deduced->vRenumber(p_projection_deduced->nChildCards());
-  }
-
-  return p_projection_deduced;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
