@@ -63,7 +63,7 @@ OpSketch::OpSketch(void)
   m_pIndexDef= nullptr;
 
   // labels
-  m_sLabelOp   = ""_Stz;
+  m_sLabel     = ""_Stz;
   m_sLabelNext = ""_Stz;
   m_sLabelLoop = ""_Stz;
 
@@ -117,7 +117,7 @@ OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilO
   m_pIndexDef     = nullptr;
 
   // labels
-  m_sLabelOp   = ""_Stz;
+  m_sLabel     = ""_Stz;
   m_sLabelNext = ""_Stz;
   m_sLabelLoop = ""_Stz;
 
@@ -1116,11 +1116,11 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vSetLabels(Stz* sLabelOp, Stz* sLabelNext, Stz* sLabelLoop) {
+void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
   
-  m_sLabelOp   = sLabelOp;
+  m_sLabel     = sLabel;
   m_sLabelNext = sLabelNext;
   m_sLabelLoop = sLabelLoop;
 }

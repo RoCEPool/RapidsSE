@@ -232,18 +232,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
-//  Experiment code for testing CodeSynthUtils::bExtract
-
-//  File* pFile = new File(this);
-//  bool bOpened = pFile->bOpenRead("../src/store/Fragments/Code.cpp"_Stz);
-//  RASSERT(bOpened);
-//
-//  s4K sCode;
-//
-//  CodeSynthUtils::bExtract(pFile, "function-vXYZ0"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-//  vTrace("Extracted code for function-vXYZ0 - \n"_Stz);
-//  vTrace("%s\n"_Stz, sCode.szStz());
-
+  /*
   i8 iLineNumber = 1;
 
   vAppendFuncHeader0();
@@ -265,7 +254,7 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
   m_pOpSource->vAppendFragment(m_pPreliminary, &iLineNumber);
-/*
+
   if (m_xStageOps.m_bScan || m_bRowBuffer) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -434,6 +423,11 @@ void Stencil_v2::vCombine(bool bGenerateCCode)
   m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
 
  */
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // synthesize the code for the combined operators
+  m_pOpSource->vSynthesizeCode(this);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to a file
 
@@ -1677,7 +1671,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(""_Stz, SK_SCAN, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
+  pOpSketch = new OpSketch(""_Stz, SK_INFLATE_CRW, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
 
   sLabel.vSprint("L_InflateT"_Stz);
   sLabelNext.vSprint("L_InflateCrwRet"_Stz);
