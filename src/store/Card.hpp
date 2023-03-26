@@ -351,6 +351,7 @@ namespace STORE
     bool bIsCommaSeparator(void);
     bool bIsConjunction(void);
     bool bIsPRED(void);
+    bool bIsProjecting(void);
     bool bIsValue(char cValue);
     bool bIsValue(Stz* szValue);
 

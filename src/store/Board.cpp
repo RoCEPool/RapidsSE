@@ -115,17 +115,6 @@ void Board::vAdd_Partitioning(CardIter* pCI)
 
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vDerive_fold_projection_From_projection(CardIter* pCI)
-{
-  _static_
-
-  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardAndSubCards());
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -144,9 +133,6 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
 
   pCI->G.p_type = pCI->G.p_projection->pSub_type();
-
-//  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
-//  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
 
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 

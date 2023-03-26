@@ -1387,6 +1387,42 @@ bool Card::bIsPRED(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card a projecting card ?                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsProjecting(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  switch (m_eCard) {
+
+    case CK_AGGREG:
+    case CK_CROSSJOIN:
+    case CK_FLAT:
+    case CK_FOLD:
+    case CK_GBYAGG:
+    case CK_HAVING:
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_ORDAGG:
+    case CK_SCAN:
+    case CK_TABLE:
+      return true;
+
+    case CK_FILTER:
+    case CK_KEYEXISTS:
+    case CK_KEYNOTEXISTS:
+    case CK_LIMIT:
+    case CK_SORT:
+    case CK_TOP:
+      return false;
+
+    default:
+      return false;
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* does this card have same value as argument?                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsValue(char cValue)

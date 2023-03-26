@@ -397,11 +397,11 @@ void FlattenSubQueries::vFlatten_24_W_A_C_ro(void)
   pFold->vFold_basic(m_pCI,"24_W_A_C_ro"_Stz,CK_WHERE);
   m_pCI->vPrintBoard(__LINE__);
 
-  pFold->vDerive_Correleted_fold_projection(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
-
   CorrelatedJoin* pCorrelatedJoin = new CorrelatedJoin;
   pCorrelatedJoin->vVia_gbyAgg_Promotion(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
+
+  pFold->vDerive_Correleted_fold_projection(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.pDeck->vClearMarksRecursive();

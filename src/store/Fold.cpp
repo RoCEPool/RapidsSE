@@ -185,8 +185,18 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 
   pCI->vRestart();
 
-  RASSERT(pCI->G_bEachMain(CK_FOLD));
-  Board::vDerive_fold_projection_From_projection(pCI);
+  while (pCI->G_bEachMain()) {
+
+    if (CK_FOLD == pCI->G.e_MainCard)
+      break;
+
+    if (Card_Projection* p_projection = pCI->G.p_MainCard->pSub_projection())
+      pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
+  }
+
+  RASSERT(CK_FOLD == pCI->G.e_MainCard);
+
+  pCI->G.p_fold->vAppend(pCI->ProjectionAnalysis.m_pProjection_running->pDupCardAndSubCards());
 
   pCI->G.pDeck->vRenumberRecursive();
 
