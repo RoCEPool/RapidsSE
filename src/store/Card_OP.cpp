@@ -572,6 +572,7 @@ void Card_OP::vUpdate_projection_Off_running(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
+    p_rpnCalc->Y_vSet(P_Type,szCT_char[eColumnType]);
 
     s32 sTblCol_from_SEmetadata;
     sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);

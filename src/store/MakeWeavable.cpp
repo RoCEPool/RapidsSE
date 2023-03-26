@@ -58,20 +58,15 @@ void MakeWeavable::vMakeWeavable(void)
 
 //  vSeries(BK_SUBQUERY, 0, __func__);
 
-  //vGroup_CullBounds();
   vCullNonusedBounds();
   vCullUsedBoundsFromFilter();
 
-  //vGroup_Filters();
   vIndividuateFilter();
 
-  //vGroup_Staging();
   vReinstateStages();
 
-  //vGroup_Partitioning();
   vAddPartitioning();
 
-  //vGroup_FinalAdjustments();
   vTblColToStmCol();
   vStmColToColNmOfKeyExists();
 
