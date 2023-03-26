@@ -855,7 +855,6 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   else
     pCard_Expr->vValueSprint("$%lld"_Stz,ri_Expr);
 
-  L_TYPE:
 
   // TYPE <type>
   Card_Type* pCard_Type = pType(pCard_RpnTerms);
@@ -872,9 +871,12 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
 
 
-  // <calcExpr>
+  // <rpnCalc>
   Card_RpnCalc* pCard_RpnCalc = pCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_RpnCalc);
+
+  pCard_RpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCard_Type->szValue())]);
+
 
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
@@ -884,6 +886,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
   }
+
 
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();

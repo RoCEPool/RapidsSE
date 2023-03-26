@@ -239,7 +239,7 @@ Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
 
-    pMain->vDump();
+    //pMain->vDump();
 
     if (Card_Projection* p_projection = pMain->pSub_projection()) {
       i8 nChildren_prj = p_projection->nChildCards();
@@ -248,7 +248,7 @@ Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
-            p_rpnCalc->vDump();
+            //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
                 p_rpnCalc->szProjectedCol()->bSame(this->szValue())) {
               p_expr_col = p_expr_prj;

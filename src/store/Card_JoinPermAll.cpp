@@ -77,15 +77,15 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
     p_joinPermAll->vAppendMain(p_joinPermSeq);
 
     if (C_UNKNOWN == i_JoinInvalid) {
-      vTrace("VALID PERMUTATION %lld\n"_Stz, i_Permutation);
+      //vTrace("VALID PERMUTATION %lld\n"_Stz, i_Permutation);
       i_Permutation++;
       continue;
     }
 
-    vTrace("PERMUTATION INVALID %lld at %lld\n"_Stz, i_Permutation,i_JoinInvalid);
+    //vTrace("PERMUTATION INVALID %lld at %lld\n"_Stz, i_Permutation,i_JoinInvalid);
 
     i_Permutation = pPermGen->iNextValid(i_JoinInvalid,i_Permutation);
-    vTrace("RESTARTING FROM %lld\n"_Stz, i_Permutation);
+    //vTrace("RESTARTING FROM %lld\n"_Stz, i_Permutation);
     vDebugPoint();
   }
 

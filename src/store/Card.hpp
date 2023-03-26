@@ -298,6 +298,8 @@ namespace STORE
 
     static eCK  eTo_eCK(Stz* szCardNm);
 
+    static eCT  eTo_eCT(Stz* szType);
+
     static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

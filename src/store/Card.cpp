@@ -572,6 +572,21 @@ eCK Card::eTo_eCK(Stz* szCardNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+eCT Card::eTo_eCT(Stz* szType)
+{
+  _static_
+
+  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
+    if (aCT[i_Type]->bSame(szType))
+      return (eCT)i_Type;
+
+  return CT_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* convert eYG to eAL                                                         */
 /*----------------------------------------------------------------------------*/
 eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)

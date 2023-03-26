@@ -38,7 +38,7 @@ static Stz* aCT[]
     /*  9 */ "TIME"_Stz,
     /* 10 */ "TIMESTAMP"_Stz,
     /* 11 */ "VARCHAR"_Stz,
-    /* 12 */ "NULL"_Stz,
+    /* 12 */ "UNKNOWN"_Stz,
     /* 13 */ "ENUMS"_Stz
 };
 
