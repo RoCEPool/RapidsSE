@@ -402,7 +402,7 @@ Card_Projection* Card_Projection::pDeduce(CardIter* pCI)
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_Expr* p_expr_deduced = xCI_this.G.p_expr->pDeduce(pCI);
+    Card_Expr* p_expr_deduced = xCI_this.G.p_expr->pClone(false);
     p_projection_deduced->vAppend(p_expr_deduced);
     p_expr_deduced->vRenumber(p_projection_deduced->nChildCards());
   }

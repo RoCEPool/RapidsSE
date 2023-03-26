@@ -391,40 +391,6 @@ void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
   vValueSprint("$%lld"_Stz,i_Expr);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pDeduce(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  /*
-   * produce the projection of this expression
-   */
-
-  Card_Type*    p_type;
-  Card_As*      p_as;
-  Card_RpnCalc* p_rpnCalc;
-  Card_Term*    p_term_0;
-
-  vDeconstruct(p_type,p_as,p_term_0);
-  p_rpnCalc = pSub_rpnCalc();
-
-
-  Card_Expr* p_expr_right = new Card_Expr;
-
-  p_expr_right->vAppend(p_type->pDupCardAndSubCards());
-  if (p_as)
-    p_expr_right->vAppend(p_as->pDupCardAndSubCards());
-  p_expr_right->vAppend(p_rpnCalc->pDupCardAndSubCards());
-
-//  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
-//    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
-  return p_expr_right;
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
