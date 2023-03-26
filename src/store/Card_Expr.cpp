@@ -66,7 +66,7 @@ Card_Expr::Card_Expr(Card_Type*    p_type_arg,
   Card_Type*    p_type    = new Card_Type(p_type_arg);
   Card_As  *    p_as      = new Card_As(p_as_arg);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(p_term_0_arg);
+  Card_Term*    p_term    = p_term_0_arg->pClone();
 
   vAppend(p_type);
   vAppend(p_as);
@@ -352,7 +352,7 @@ void Card_Expr::vReconstruct(Card_Type*  p_type_arg,
   vRemoveDeleteAllChildren();
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(p_term_0_arg);
+  Card_Term*    p_term    = p_term_0_arg->pClone();
 
   vAppend(p_type_arg);
   vAppend(p_as_arg);
@@ -464,51 +464,8 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   p_term_0_early->vDump();
   p_expr_early->vAppend(p_rpnCalc_early);
 
-//  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
-//    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
   return p_expr_early;
 }
-/*----------------------------------------------------------------------------*/
-//Card_Expr* Card_Expr::pCraft_expr_early(Card_Projection *p_projection_needed)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  /*
-//   * produce the projection of this expression
-//   */
-//
-//  Card_Expr* p_expr_reproject = new Card_Expr;
-//
-//  p_expr_reproject->vAppend(pSub_type()->pDupCardAndSubCards());
-//  if (pSub_as())
-//    p_expr_reproject->vAppend(pSub_as()->pDupCardAndSubCards());
-//
-//  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-//  p_expr_reproject->vAppend(p_rpnCalc);
-//
-//  if (Y_bHas(P_Becomes)) {
-//    //+ becomes
-//    Card_Term* pPrjTerm = pProjectedTerm();
-//    Card_Term *p_term = new Card_Term(Y_szGet(P_Becomes));
-//    p_term->Y_vSet(P_TblCol,pPrjTerm->szValue());
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//  else
-//  if (bIsColOrdinal()) {
-//    //+ projection is same column ordinal
-//    Card_Term* pPrjTerm = pProjectedTerm();
-//    Card_Term *p_term = new Card_Term(pPrjTerm);
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//  else {
-//    //+ projection is $n/$Kn of this expression
-//    Card_Term *p_term = new Card_Term(szDollarOdn());
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//
-//  return p_expr_reproject;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
