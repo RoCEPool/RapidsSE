@@ -1170,6 +1170,12 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   // try to coerce the necessary children and see if that allows the parent expr to return
   // a non-CT_NONE type.
 
+  // Notes:
+  // If there is no common type then we need to try changing individual children as there
+  // are some expressions where the children are different types (e.g. date + interval).
+  // In that case, we want to make as minimal a change as possible and see if it works.
+  // i.e. change one child at a time before considering combinations.
+
   // An array with an occurrence count for each coercible data type
   const i8 iArrLen = TypeSystem::iMaxTypeId() + 1;
   i8 aiCoercibleTargets[iArrLen];
@@ -1335,7 +1341,7 @@ TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMax
 
   // Walk the ordered list of type preferences and find the first one that
   // has the maximum count. This is our preferred type.
-  for (i8 i = 0; i < sizeof(aeCoercionOrdering)/sizeof(aeCoercionOrdering[0]); i++) {
+  for (u8 i = 0; i < sizeof(aeCoercionOrdering)/sizeof(aeCoercionOrdering[0]); i++) {
     i8 iIdx = aeCoercionOrdering[i].iIdVal();
     if (paiCoercibleTargets[iIdx] == iMaxCount) {
 
