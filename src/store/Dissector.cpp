@@ -1169,15 +1169,15 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
 
-    s256 sVal;
+    s256 sDissectedVal;
     if (pToken->eToken() == TN_STRING) {
-      sVal.vSprint("'%s'"_Stz, pToken->szChars());
+      sDissectedVal.vSprint("'%s'"_Stz, pToken->szChars());
     }
     else {
-      sVal = pToken->szChars();
+      sDissectedVal = pToken->szChars();
     }
 
-    Card_Term* pCard_Term = new Card_Term(sVal);
+    Card_Term* pCard_Term = new Card_Term(sDissectedVal);
 
     pCard_RpnTerms->vAppend(pCard_Term);
   }

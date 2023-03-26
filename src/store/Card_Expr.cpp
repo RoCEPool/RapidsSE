@@ -120,7 +120,6 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-//  Card_Term*    p_term    = new Card_Term(sKn.szStz());
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(sKn.szStz());
 
   p_expr->vAppend(p_type);
@@ -140,8 +139,6 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 {
   _static_
 
-  //Card_Expr* p_expr_simple = _pCard_Expr(p_expr->pDupCardAndSubCards());
-
   s32 sDn;
   sDn.vSprint("$%lld"_Stz,i_Col);
 
@@ -150,7 +147,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term* p_term = new Card_Term(sDn);
+  Card_Term* p_term = p_expr->pSub_term()->pClone(sDn);
   p_rpnCalc->vAppend(p_term);
 
   p_expr_simple->vAppend(p_rpnCalc);

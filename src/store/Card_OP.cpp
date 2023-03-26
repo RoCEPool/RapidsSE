@@ -573,10 +573,10 @@ void Card_OP::vUpdate_projection_Off_running(CardIter* pCI)
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
 
-    s32 sCn;
-    sCn.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
+    s32 sTblCol_from_SEmetadata;
+    sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
 
-    Card_Term *p_term = new Card_Term(sCn);
+    Card_Term *p_term = new Card_Term(sTblCol_from_SEmetadata);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
