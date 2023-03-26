@@ -97,7 +97,6 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  //Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue(),pExpr_corr->pSub_term()->szValue());
   Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
   p_gbyExpr->vAppend(p_type);
@@ -121,7 +120,8 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(sKn.szStz());
+//  Card_Term*    p_term    = new Card_Term(sKn.szStz());
+  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(sKn.szStz());
 
   p_expr->vAppend(p_type);
   if (p_as)
