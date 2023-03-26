@@ -14,6 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Projection(void);
+    Card_Projection(eCK eCard);
    ~Card_Projection(void) noexcept(false);
 
     Card_Projection* pCraft_projection_early(CardIter* pCI);

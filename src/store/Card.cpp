@@ -3034,6 +3034,19 @@ Card_NCorrCols* Card::pSub_nCorrCols(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Needed.hpp"
+Card_Needed* Card::pSub_needed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Needed* p_needed =
+      _pCard_Needed(pFindSubCard(CK_NEEDED));
+  return p_needed;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Next.hpp"
 Card_Next* Card::pSub_next(void)
 {

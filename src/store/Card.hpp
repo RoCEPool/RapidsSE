@@ -86,6 +86,7 @@ namespace STORE
   class Card_LoadUnicast;
 
   class Card_NCorrCols;
+  class Card_Needed;
   class Card_Next;
   class Card_Note;
   class Card_NotPred;
@@ -476,6 +477,7 @@ namespace STORE
     Card_LoadPermSeq*   pSub_loadPermSeq(void);
     Card_LoadUnicast*   pSub_loadUnicast(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
+    Card_Needed*        pSub_needed(void);
     Card_Next*          pSub_next(void);
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);

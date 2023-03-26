@@ -74,6 +74,7 @@
 #include "Card_LoadUnicast.hpp"
 
 #include "Card_NCorrCols.hpp"
+#include "Card_Needed.hpp"
 #include "Card_Next.hpp"
 #include "Card_Note.hpp"
 #include "Card_NotPred.hpp"
