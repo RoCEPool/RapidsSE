@@ -471,6 +471,29 @@ void Card_Term::vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! Y_bHas(P_Column)) {
+    vPrintCard_bySettings(pRibbon, iDepth);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //s256 sTerm;
+
+  //pRibbon->vSprintRight("%s"_Stz,sTerm.szStz());
+
+  //vPrintValue(pRibbon,iDepth);
+
+  vPrintCard_bySettings(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

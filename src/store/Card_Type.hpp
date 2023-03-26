@@ -21,6 +21,7 @@ namespace STORE
 
     bool bIsSame(Card_Type* p_type_arg);
 
+
     Stz* szTypeShort(void);
   };
 

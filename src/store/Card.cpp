@@ -1665,6 +1665,10 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
       _pCard_Table(this)->vPrint(pRibbon, iDepth);
       break;
 
+    case CK_TERM:
+      _pCard_Term(this)->vPrint(pRibbon, iDepth);
+      break;
+
     default:
       vPrintCard_bySettings(pRibbon, iDepth);
       break;
@@ -2596,6 +2600,26 @@ Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode enum                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (szEnum->bSame("eLevel"_Stz))      return aAL[iEnum];
+  if (szEnum->bSame("eSendKind"_Stz))   return aXK[iEnum];
+  if (szEnum->bSame("eStageTopo"_Stz))  return aYG[iEnum];
+  if (szEnum->bSame("eType"_Stz))       return aCT[iEnum];
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -3331,29 +3355,6 @@ Card_Where* Card::pSub_where(void)
   return p_where;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* Aggregate View                                                             */
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* decode enum                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (szEnum->bSame("eLevel"_Stz))      return aAL[iEnum];
-  if (szEnum->bSame("eStageTopo"_Stz))  return aYG[iEnum];
-  if (szEnum->bSame("eSendKind"_Stz))   return aXK[iEnum];
-
-  return nullptr; //"**unknown**"_Stz;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

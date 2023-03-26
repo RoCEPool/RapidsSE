@@ -133,6 +133,7 @@ static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_BreakPt      = "bBreakPt"_Stz;
 static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
+static Stz* P_Column       = "bColumn"_Stz;
 static Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
 static Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
 static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
@@ -160,6 +161,7 @@ static Stz* P_StmCol       = "szStmCol"_Stz;
 static Stz* P_SubQryCall   = "bSubQryCall"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 static Stz* P_TblCol       = "szTblCol"_Stz;
+static Stz* P_Type         = "szType"_Stz;
 static Stz* P_Unproject    = "bUnproject"_Stz;
 
 static Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;

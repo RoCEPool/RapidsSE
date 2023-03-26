@@ -33,6 +33,7 @@ namespace STORE
     eRO  eEvalRelOp(void);
     Card_Expr* pExpr_For_col(CardIter* pCI, i8 i_Before=C_UNKNOWN);
     Card_Expr* pExpr_For_colNm(CardIter* pCI, i8 i_Before=C_UNKNOWN);
+    void vFlip(Card_Projection* p_projection_needed);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
@@ -44,8 +45,8 @@ namespace STORE
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $c.n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vReplace_sqCall_With_sqResult(Stz* szStmColOdn);
-    void vFlip(Card_Projection* p_projection_needed);
     eTE  eTermEval(void);
   };
 
