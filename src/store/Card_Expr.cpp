@@ -97,7 +97,8 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue(),pExpr_corr->pSub_term()->szValue());
+  //Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue(),pExpr_corr->pSub_term()->szValue());
+  Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
   p_gbyExpr->vAppend(p_type);
   p_gbyExpr->vAppend(p_rpnCalc);
