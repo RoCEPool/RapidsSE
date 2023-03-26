@@ -353,6 +353,20 @@ Card_Term* Card_Term::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Term::pClone(Stz* szDiffValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term_clone = pClone();
+
+  p_term_clone->vValue(szDiffValue);
+
+  return p_term_clone;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a col ordinal? $n or $c.n                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsColOdn(void)
@@ -482,13 +496,12 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //s256 sTerm;
+  s256 sTerm = szValue();
+  s32 sType_short = Y_szGet(P_Type);
 
-  //pRibbon->vSprintRight("%s"_Stz,sTerm.szStz());
+  pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
-  //vPrintValue(pRibbon,iDepth);
-
-  vPrintCard_bySettings(pRibbon, iDepth);
+  //vPrintCard_bySettings(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/

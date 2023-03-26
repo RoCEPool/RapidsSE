@@ -562,21 +562,26 @@ void Card_OP::vUpdate_projection_Off_running(CardIter* pCI)
     p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
     p_projection->vAppend(p_expr);
 
-    Stz* szType = aCT[pColumn->eColumnType()];
+    eCT eColumnType = pColumn->eColumnType();
+    Stz *szType = aCT[eColumnType];
     Card_Type *pCard_Type = new Card_Type(szType);
     p_expr->vAppend(pCard_Type);
 
-    Card_As* p_as = new Card_As(pColumn->szColNm());
+    Card_As *p_as = new Card_As(pColumn->szColNm());
     p_expr->vAppend(p_as);
 
-    Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+    Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
 
     s32 sCn;
-    sCn.vSprint("$%c.%lld"_Stz,cTblSyn,i_Col+1);
+    sCn.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
 
-    Card_Term* p_term = new Card_Term(sCn);
+    Card_Term *p_term = new Card_Term(sCn);
     p_rpnCalc->vAppend(p_term);
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    p_term->Y_vSet(P_Column);
+    p_term->Y_vSet(P_Type,szCT_char[eColumnType]);
   }
 
   vAppend(p_projection);
