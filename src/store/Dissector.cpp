@@ -369,23 +369,6 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
 
   pCard_Filter->vAppend(pCard_RpnCalc);
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // TODO: Hacking the missing $P1 of an exists... chat w Alka
-
-
-  if (2 == pCard_RpnCalc->nChildCards() &&
-      pCard_RpnCalc->pGetChild(0)->bSame("$1"_Stz) &&
-      pCard_RpnCalc->pGetChild(1)->bSame("=="_Stz)) {
-    pCard_RpnCalc->vPush(new Card_Term("$P1"_Stz));
-  }
-  else
-  if (6 == pCard_RpnCalc->nChildCards() &&
-      pCard_RpnCalc->pGetChild(0)->bSame("$1"_Stz) &&
-      pCard_RpnCalc->pGetChild(1)->bSame("=="_Stz)) {
-    pCard_RpnCalc->vPush(new Card_Term("$P1"_Stz));
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?
   
