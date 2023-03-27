@@ -319,6 +319,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
       pCI->G.p_key->vAppend(pCI->G.p_expr);
 
+      if (pCI->G.p_expr->pSub_type())
+        pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
     }
     // TODO: hack...
     pCI->G.p_expr->vCardNo(0);
@@ -335,6 +337,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
+      if (pCI->G.p_expr->pSub_type())
+        pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
     }
 
     pCI->G.p_expr->Y_vSet(P_InjCrlKey);
@@ -386,6 +390,9 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,szAs);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
+
+  if (pCI->G.p_type)
+    pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added

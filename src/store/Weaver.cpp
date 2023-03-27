@@ -1256,6 +1256,11 @@ void Weaver::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
+  if (! pCard_RpnCalc->Y_bHas(P_Type)) {
+    pCard_RpnCalc->vDump();
+    RASSERT(pCard_RpnCalc->Y_bHas(P_Type));
+  }
+
   i8 nSubCards = pCard_RpnCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card* pCard = pCard_RpnCalc->pGet(i_Child);

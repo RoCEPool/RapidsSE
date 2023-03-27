@@ -79,8 +79,9 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
   p_expr_new->vAppend(p_rpnCalc_new);
 
   Card_Term* p_term_new = p_expr_fold->pSub_term()->pClone("$K1"_Stz);
-  if (p_expr_fold->pSub_term()->Y_bHas(P_Type))
-    p_rpnCalc_new->Y_vSet(P_Type,p_expr_fold->pSub_term()->Y_szGet(P_Type));
+  if (p_expr_fold->pSub_type())
+    p_rpnCalc_new->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_fold->pSub_type()->szValue())]);
+
   p_rpnCalc_new->vAppend(p_term_new);
 
   pCI->G.p_projection->vPush(p_expr_new);

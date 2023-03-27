@@ -90,37 +90,6 @@ Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 
   return p_projection_early;
 }
-/*----------------------------------------------------------------------------*/
-//Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
-//{
-//  _static_
-//
-//  Card_Projection* p_projection_early = new Card_Projection;
-//
-//  pCI->EarlyProject.m_pProjection_needed->vDump();
-//
-//  CardIter xCI_projectionOfOp(pCI->G.p_projection);
-//  while (xCI_projectionOfOp.G_bEachMain(CK_EXPR)) {
-//    xCI_projectionOfOp.G.p_expr->vDump();
-//
-//    if (! pCI->EarlyProject.m_pProjection_needed->pHasSame(xCI_projectionOfOp.G.p_expr))
-//      continue;
-//    if (p_projection_early->pHasSame(xCI_projectionOfOp.G.p_expr))
-//      continue;
-//
-//    // denoted expr (of this denoted projection of denoted main op)
-//    //   is needed and not yet in early projection
-//
-//    Card_Expr* p_expr_early = xCI_projectionOfOp.G.p_expr->pCraft_expr_early(pCI);
-//    p_projection_early->vAppend(p_expr_early);
-//    p_expr_early->vRenumber(p_projection_early->nChildCards());
-//  }
-//
-//
-//  p_projection_early->vDump();
-//
-//  return p_projection_early;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* projection analysis (post fold)                                            */

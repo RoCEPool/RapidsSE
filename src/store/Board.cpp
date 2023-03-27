@@ -145,6 +145,9 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz);
+
+  pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+
 }
 
 /*----------------------------------------------------------------------------*/
