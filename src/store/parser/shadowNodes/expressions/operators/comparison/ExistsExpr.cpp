@@ -101,6 +101,8 @@ TypeId ExistsExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
 
   // EXISTS clauses always return a boolean
   return TypeId::xIdOf(CT_BOOLEAN);

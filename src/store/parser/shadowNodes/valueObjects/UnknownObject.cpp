@@ -45,6 +45,7 @@ QueryNode* UnknownObject::pCreate()
 /*----------------------------------------------------------------------------*/
 void UnknownObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
+  UNUSED(pNode);
   UNUSED(pRootNode);
 
   sBuf.vConcat("NULL"_Stz);
