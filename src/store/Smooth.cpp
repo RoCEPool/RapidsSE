@@ -97,7 +97,9 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       pCI->vPrintBoard(__LINE__);
+
     }
+    pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_gbyAgg->pSub_projection();
   }
 
   // [project (avg)]

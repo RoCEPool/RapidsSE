@@ -333,7 +333,9 @@ void Weaver::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
   // filter : 0) filtElist
 
   s4K sRpnExpr;
-  
+
+  //pCard_Filter->vDump();
+
   vRpnFilter(sRpnExpr,pCard_Filter);
   
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
@@ -350,6 +352,9 @@ void Weaver::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
 
   //pCard_Aggreg->vDump();
   s4K sRpnExpr;
+
+  //pCard_AggGby->vDump();
+
 
   vRpnGbyAgg(sRpnExpr, pCard_AggGby);
 
@@ -1327,14 +1332,15 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         szRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:
-//        if (Card::bIsStreamColOrdinal(pSubCard->szValue()) ||
-//            Card::bIsTableColOrdinal(pSubCard->szValue())) {
-//
-//          if (!pSubCard->Y_bHas(P_Type)) {
-//            pSubCard->vDump();
-//            RASSERT(pSubCard->Y_bHas(P_Type));
-//          }
-//        }
+        if (Card::bIsStreamColOrdinal(pSubCard->szValue()) ||
+            Card::bIsTableColOrdinal(pSubCard->szValue())) {
+
+          if (!pSubCard->Y_bHas(P_Type)) {
+            p_part->vDump();
+            pSubCard->vDump();
+            RASSERT(pSubCard->Y_bHas(P_Type));
+          }
+        }
         szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->sz());
         break;
       default:

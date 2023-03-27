@@ -120,7 +120,15 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
       continue;
     }
 
-    pCI->G.p_MainCard->vDump();
+    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
+      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
+        pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
+      continue;
+    }
+
+
+
+    //pCI->G.p_MainCard->vDump();
 
     if (33 == pCI->G.p_MainCard->iCardNo())
       vDebugPoint();

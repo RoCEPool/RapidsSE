@@ -266,7 +266,8 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   while (pCI->G_bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      pCI->ProjectionAnalysis.m_pProjection_running =
+          pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
       break;
@@ -276,7 +277,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
-  pCI->G_vRestart();
+  pCI->vRestart();
   if (pCI->G_bEachMain(CK_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
@@ -408,7 +409,8 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   while (pCI->G_bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      pCI->ProjectionAnalysis.m_pProjection_running =
+          pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
       break;
@@ -418,7 +420,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
-  pCI->G_vRestart();
+  pCI->vRestart();
   if (pCI->G_bEachMain(CK_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);

@@ -587,9 +587,9 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
     if (xKid.p_term()->Y_bHas(P_Type))
       continue;
 
-    pCI->ProjectionAnalysis.m_pProjection_running->vDump();
+    //pCI->ProjectionAnalysis.m_pProjection_running->vDump();
 
-    xKid.p_term()->vDump();
+    //xKid.p_term()->vDump();
 
     Stz* szTermOdn = xKid.p_term()->szValue();
 
