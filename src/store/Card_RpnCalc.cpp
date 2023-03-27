@@ -602,6 +602,19 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card_RpnCalc::szP_Type(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szP_Type = Y_szGet(P_Type);
+  if (szP_Type)
+    return szP_Type;
+
+  return szCT_char[CT_NONE];
+}
 
 /*============================================================================*/
 /* end                                                                        */

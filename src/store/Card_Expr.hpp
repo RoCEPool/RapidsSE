@@ -52,6 +52,8 @@ namespace STORE
 
     void vTypes_For_stmColOdn(CardIter* pCI);
 
+    Stz* szP_Type(void);
+
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);

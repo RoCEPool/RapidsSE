@@ -479,6 +479,25 @@ void Card_Expr::vTypes_For_stmColOdn(CardIter* pCI)
   pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Expr::szP_Type(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szP_Type = nullptr;
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    szP_Type = p_boolCalc->szP_Type();
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    szP_Type = p_rpnCalc->szP_Type();
+
+  return szP_Type;
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
