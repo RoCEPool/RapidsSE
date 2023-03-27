@@ -581,12 +581,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       vSetupScan(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //m_pShapeROW = pSketchInflateRow(pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchInflateCrw(pCombined, pStream, pOp);
       vAppend(pOpSketch);
 
@@ -1680,6 +1674,9 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilStruct();
+
   return pOpSketch;
 }
 
@@ -1755,6 +1752,9 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilStruct();
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(pPreExpStack);
@@ -2031,6 +2031,9 @@ OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* p
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(pPreExpStack);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilStruct();
 
   return pOpSketch;
 }

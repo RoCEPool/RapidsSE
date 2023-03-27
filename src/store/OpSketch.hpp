@@ -38,6 +38,9 @@ namespace STORE
     eSR m_eStencilFrom;
     eSR m_eStencilTo;
 
+    // stencil sketch
+    s256 m_sStencil;
+
     // labels
     s256 m_sLabel;
     s256 m_sLabelNext;
@@ -85,6 +88,7 @@ namespace STORE
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
     void vGenerateExprStacks(IntStack* pPreExpStack);
+    void vGenerateStencilStruct(void);
 
     eSK eSketchKind(void);
 
