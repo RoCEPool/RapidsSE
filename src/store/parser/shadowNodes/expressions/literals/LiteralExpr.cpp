@@ -17,6 +17,8 @@
 #include "NullLiteral.hpp"
 #include "eCT.h"
 #include "TypeSystem.hpp"
+#include "ComparisonExpr.hpp"
+#include "TypeId.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -121,7 +123,8 @@ TypeId LiteralExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be implicitly coerced to a given data type     */
 /*----------------------------------------------------------------------------*/
-b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                         QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(LiteralExpr::bIsOfType(pExpr));
@@ -194,7 +197,7 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
 
     case CT_INTERVAL_DT:
     case CT_INTERVAL_YM:
-      if (bIsImplicitlyCoercibleTo(eCurrentIvlType, xTargetTypeId)) {
+      if (bIsImplicitlyCoercibleTo(eCurrentIvlType, xTargetTypeId, pParentExpr, pRootNode)) {
         return true;
       }
       break;
@@ -209,7 +212,8 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
 /*----------------------------------------------------------------------------*/
 /* Returns true if an interval can be implicitly coerced to another interval  */
 /*----------------------------------------------------------------------------*/
-b1 LiteralExpr::bIsImplicitlyCoercibleTo(eIV eCurrentIvl, TypeId xTargetTypeId)
+b1 LiteralExpr::bIsImplicitlyCoercibleTo(eIV eCurrentIvl, TypeId xTargetTypeId,
+                                         QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   eCT eTargetType = xTargetTypeId.eCTVal();
   eIV eTargetIvl  = xTargetTypeId.eIVVal();
@@ -224,11 +228,24 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(eIV eCurrentIvl, TypeId xTargetTypeId)
       case IV_HOUR:   // fall through
       case IV_MINUTE: // fall through
       case IV_SECOND:
+        // IMPORTANT: The coercion of single field intervals to an integer
+        // is only applicable in certain contexts. In this case, only applicable
+        // when occurring in a comparison with an integer. If we don't check for
+        // this and just apply it broadly then the system ends up accepting some
+        // blatently wrong expressions such as INTERVAL '1' YEAR + INTERVAL '1' DAY
+        // because it casts both of them to an integer.
+        //
         // NOTE: In the future we should support coercing an IV_SECOND to
         // a DECIMAL. But because our decimal handling only has scale of 2
         // we cannot handle the scale of 6 required for fractional seconds.
         // TODO: Also add a mapping of IV_SECOND to DECIMAL.
-        return (eTargetType == CT_INTEGER);
+        if (eTargetType == CT_INTEGER && pParentExpr && ComparisonExpr::bIsOfType(pParentExpr)) {
+          TypeId xType1 = Expr::xTypeId(_pQueryNode(pParentExpr->pFirstChild()), pRootNode);
+          TypeId xType2 = Expr::xTypeId(_pQueryNode(pParentExpr->pSecondChild()), pRootNode);
+
+          return (xType1.eCTVal() == CT_INTEGER || xType2.eCTVal() == CT_INTEGER);
+        }
+        return false;
 
       default:
         return false;

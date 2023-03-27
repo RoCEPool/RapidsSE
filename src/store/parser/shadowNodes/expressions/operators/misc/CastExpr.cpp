@@ -14,6 +14,7 @@
 #include "GraphNav.hpp"
 #include "TypeSystem.hpp"
 #include "TypeMap2D.hpp"
+#include "ComparisonExpr.hpp"
 
 using namespace Parser;
 
@@ -315,7 +316,8 @@ TypeId CastExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
-b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                      QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
@@ -382,7 +384,12 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
         case IV_HOUR:
         case IV_MINUTE:
         case IV_SECOND:
-          return  (eTargetTypeId == CT_INTEGER);
+          if (eTargetTypeId == CT_INTEGER && pParentExpr && ComparisonExpr::bIsOfType(pParentExpr)) {
+            TypeId xType1 = Expr::xTypeId(_pQueryNode(pParentExpr->pFirstChild()), pRootNode);
+            TypeId xType2 = Expr::xTypeId(_pQueryNode(pParentExpr->pSecondChild()), pRootNode);
+
+            return (xType1.eCTVal() == CT_INTEGER || xType2.eCTVal() == CT_INTEGER);
+          }
           // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
 
         default:

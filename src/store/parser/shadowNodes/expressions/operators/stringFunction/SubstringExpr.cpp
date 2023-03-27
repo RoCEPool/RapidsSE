@@ -288,7 +288,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   if (eStrSrcType != CT_CHAR &&
       eStrSrcType != CT_VARCHAR &&
       eStrSrcType != CT_UNKNOWN &&
-      Expr::bIsImplicitlyCoercibleTo(TypeId::xIdOf(CT_VARCHAR), pStrSrc, pRootNode)) {
+      Expr::bIsImplicitlyCoercibleTo(TypeId::xIdOf(CT_VARCHAR), pStrSrc, pSubstringExpr, pRootNode)) {
 
     // We don't need to worry about pStrSrc being a compound expression where a
     // lower branch of it requires coercion because we walk the expression graphs

@@ -37,7 +37,8 @@ namespace Parser
     static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if an expression can be coerced to a given data type via a cast
-    static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                       QueryNode* pParentExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
     static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
