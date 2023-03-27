@@ -372,9 +372,23 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
       }
       break;
 
-//    case CT_INTERVAL_YM:
-//    case CT_INTERVAL_DT:
-      // no implicit casts needed for intervals
+    case CT_INTERVAL_YM:
+    case CT_INTERVAL_DT:
+      // We support the casting of a single field interval to an integer.
+      switch (xCurrentType.eIVVal()) {
+        case IV_YEAR:
+        case IV_MONTH:
+        case IV_DAY:
+        case IV_HOUR:
+        case IV_MINUTE:
+        case IV_SECOND:
+          return  (eTargetTypeId == CT_INTEGER);
+          // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
+
+        default:
+          break;
+      }
+      break;
 
     default:
       break;

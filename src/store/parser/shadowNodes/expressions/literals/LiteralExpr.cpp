@@ -136,7 +136,6 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
   eCT eTargetType = xTargetTypeId.eCTVal();
 
   eIV eCurrentIvlType = xCurrentTypeId.eIVVal();
-  eIV eTargetIvlType  = xTargetTypeId.eIVVal();
 
 
   // We can always coerce the current type to itself
@@ -195,7 +194,7 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
 
     case CT_INTERVAL_DT:
     case CT_INTERVAL_YM:
-      if (bIsImplicitlyCoercibleTo(eCurrentIvlType, eTargetIvlType)) {
+      if (bIsImplicitlyCoercibleTo(eCurrentIvlType, xTargetTypeId)) {
         return true;
       }
       break;
@@ -210,158 +209,185 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
 /*----------------------------------------------------------------------------*/
 /* Returns true if an interval can be implicitly coerced to another interval  */
 /*----------------------------------------------------------------------------*/
-b1 LiteralExpr::bIsImplicitlyCoercibleTo(eIV eCurrentIvl, eIV eTargetIvl)
+b1 LiteralExpr::bIsImplicitlyCoercibleTo(eIV eCurrentIvl, TypeId xTargetTypeId)
 {
-  // We need to be careful about which interval types are compatible.
-  // The general rule is that we support coercing amongst the same
-  // interval class (day-time in this case) but the resulting type will
-  // be a superset of the individual interval types.
-  // Don't need to worry about coercing to the same type.
+  eCT eTargetType = xTargetTypeId.eCTVal();
+  eIV eTargetIvl  = xTargetTypeId.eIVVal();
 
-  // For starters, we cannot coerce a day-time interval to a year-month,
-  // and vice versa.
-  b1 bSameCategory = (bIsYearMonthInterval(eCurrentIvl) && bIsYearMonthInterval(eTargetIvl)) ||
-                     (bIsDayTimeInterval(eCurrentIvl) && bIsDayTimeInterval(eTargetIvl));
+  // Let's just separate whether the target type is another interval or not.
+  // First let's look at the non-interval mappings supported.
+  if (eTargetIvl == IV_NONE) {
+    switch (eCurrentIvl) {
+      case IV_YEAR:   // fall through
+      case IV_MONTH:  // fall through
+      case IV_DAY:    // fall through
+      case IV_HOUR:   // fall through
+      case IV_MINUTE: // fall through
+      case IV_SECOND:
+        // NOTE: In the future we should support coercing an IV_SECOND to
+        // a DECIMAL. But because our decimal handling only has scale of 2
+        // we cannot handle the scale of 6 required for fractional seconds.
+        // TODO: Also add a mapping of IV_SECOND to DECIMAL.
+        return (eTargetType == CT_INTEGER);
 
-  if (!bSameCategory) {
-    return false;
-  }
+      default:
+        return false;
+    }
 
-  switch (eCurrentIvl) {
-    case IV_YEAR:
-      switch (eTargetIvl) {
-        case IV_YEAR:
-        case IV_YEAR_TO_MONTH:
-          return true;
-        default:
-          return false;
-      }
+  } else {
+    // We need to be careful about which interval types are compatible.
+    // The general rule is that we support coercing amongst the same
+    // interval class (day-time in this case) but the resulting type will
+    // be a superset of the individual interval types.
+    // Don't need to worry about coercing to the same type.
 
-    case IV_MONTH:
-      switch (eTargetIvl) {
-        case IV_MONTH:
-        case IV_YEAR_TO_MONTH:
-          return true;
-        default:
-          return false;
-      }
+    // For starters, we cannot coerce a day-time interval to a year-month,
+    // and vice versa.
+    b1 bSameCategory = (bIsYearMonthInterval(eCurrentIvl) && bIsYearMonthInterval(eTargetIvl)) ||
+                       (bIsDayTimeInterval(eCurrentIvl) && bIsDayTimeInterval(eTargetIvl));
 
-    case IV_YEAR_TO_MONTH:
-      switch (eTargetIvl) {
-        case IV_YEAR_TO_MONTH:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_DAY:
-      switch (eTargetIvl) {
-        case IV_DAY:
-        case IV_DAY_TO_HOUR:
-        case IV_DAY_TO_MINUTE:
-        case IV_DAY_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_HOUR:
-      switch (eTargetIvl) {
-        case IV_HOUR:
-        case IV_DAY_TO_HOUR:
-        case IV_DAY_TO_MINUTE:
-        case IV_DAY_TO_SECOND:
-        case IV_HOUR_TO_MINUTE:
-        case IV_HOUR_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_MINUTE:
-      switch (eTargetIvl) {
-        case IV_MINUTE:
-        case IV_DAY_TO_MINUTE:
-        case IV_DAY_TO_SECOND:
-        case IV_HOUR_TO_MINUTE:
-        case IV_HOUR_TO_SECOND:
-        case IV_MINUTE_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_SECOND:
-      switch (eTargetIvl) {
-        case IV_SECOND:
-        case IV_DAY_TO_SECOND:
-        case IV_HOUR_TO_SECOND:
-        case IV_MINUTE_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_DAY_TO_HOUR:
-      switch (eTargetIvl) {
-        case IV_DAY_TO_HOUR:
-        case IV_DAY_TO_MINUTE:
-        case IV_DAY_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_DAY_TO_MINUTE:
-      switch (eTargetIvl) {
-        case IV_DAY_TO_MINUTE:
-        case IV_DAY_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_DAY_TO_SECOND:
-      switch (eTargetIvl) {
-        case IV_DAY_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_HOUR_TO_MINUTE:
-      switch (eTargetIvl) {
-        case IV_DAY_TO_SECOND:
-        case IV_DAY_TO_MINUTE:
-        case IV_HOUR_TO_MINUTE:
-        case IV_HOUR_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_HOUR_TO_SECOND:
-      switch (eTargetIvl) {
-        case IV_DAY_TO_SECOND:
-        case IV_HOUR_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    case IV_MINUTE_TO_SECOND:
-      switch (eTargetIvl) {
-        case IV_DAY_TO_SECOND:
-        case IV_HOUR_TO_SECOND:
-        case IV_MINUTE_TO_SECOND:
-          return true;
-        default:
-          return false;
-      }
-
-    default:
+    if (!bSameCategory) {
       return false;
+    }
+
+    switch (eCurrentIvl) {
+      case IV_YEAR:
+        switch (eTargetIvl) {
+          case IV_YEAR:
+          case IV_YEAR_TO_MONTH:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_MONTH:
+        switch (eTargetIvl) {
+          case IV_MONTH:
+          case IV_YEAR_TO_MONTH:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_YEAR_TO_MONTH:
+        switch (eTargetIvl) {
+          case IV_YEAR_TO_MONTH:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_DAY:
+        switch (eTargetIvl) {
+          case IV_DAY:
+          case IV_DAY_TO_HOUR:
+          case IV_DAY_TO_MINUTE:
+          case IV_DAY_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_HOUR:
+        switch (eTargetIvl) {
+          case IV_HOUR:
+          case IV_DAY_TO_HOUR:
+          case IV_DAY_TO_MINUTE:
+          case IV_DAY_TO_SECOND:
+          case IV_HOUR_TO_MINUTE:
+          case IV_HOUR_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_MINUTE:
+        switch (eTargetIvl) {
+          case IV_MINUTE:
+          case IV_DAY_TO_MINUTE:
+          case IV_DAY_TO_SECOND:
+          case IV_HOUR_TO_MINUTE:
+          case IV_HOUR_TO_SECOND:
+          case IV_MINUTE_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_SECOND:
+        switch (eTargetIvl) {
+          case IV_SECOND:
+          case IV_DAY_TO_SECOND:
+          case IV_HOUR_TO_SECOND:
+          case IV_MINUTE_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_DAY_TO_HOUR:
+        switch (eTargetIvl) {
+          case IV_DAY_TO_HOUR:
+          case IV_DAY_TO_MINUTE:
+          case IV_DAY_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_DAY_TO_MINUTE:
+        switch (eTargetIvl) {
+          case IV_DAY_TO_MINUTE:
+          case IV_DAY_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_DAY_TO_SECOND:
+        switch (eTargetIvl) {
+          case IV_DAY_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_HOUR_TO_MINUTE:
+        switch (eTargetIvl) {
+          case IV_DAY_TO_SECOND:
+          case IV_DAY_TO_MINUTE:
+          case IV_HOUR_TO_MINUTE:
+          case IV_HOUR_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_HOUR_TO_SECOND:
+        switch (eTargetIvl) {
+          case IV_DAY_TO_SECOND:
+          case IV_HOUR_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      case IV_MINUTE_TO_SECOND:
+        switch (eTargetIvl) {
+          case IV_DAY_TO_SECOND:
+          case IV_HOUR_TO_SECOND:
+          case IV_MINUTE_TO_SECOND:
+            return true;
+          default:
+            return false;
+        }
+
+      default:
+        NEVER_REACH
+    }
   }
+
+  return false;
 }
 
 
@@ -564,10 +590,30 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
 
     case CT_INTERVAL_DT:  // falls through
     case CT_INTERVAL_YM:
-      ASSERT(eTargetType == eCurrentType);
       xIvl = IntervalLiteral::xValue(pExpr);
-      xIvl.T.m_xIvl.m_eType = xTargetTypeId.eIVVal();
-      return IntervalLiteral::pCreate(xIvl);
+
+      if (eTargetType == eCurrentType) {
+        xIvl.T.m_xIvl.m_eType = xTargetTypeId.eIVVal();
+        return IntervalLiteral::pCreate(xIvl);
+
+      } else if (eTargetType == CT_INTEGER) {
+        // Extract the single field from the relevant intervals.
+        switch (xCurrentTypeId.eIVVal()) {
+          case IV_YEAR:   iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12; break;
+          case IV_MONTH:  iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths; break;
+          case IV_DAY:    iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_DAY); break;
+          case IV_HOUR:   iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_HR); break;
+          case IV_MINUTE: iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_MIN); break;
+          case IV_SECOND: iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M; break;
+
+          default:
+            NEVER_REACH
+        }
+
+        // Create the integer literal and return it.
+        pResultNode = IntegerLiteral::pCreate(iVal);
+        return pResultNode;
+      } // TODO: Support coercing the INTERVAL SECOND to a DECIMAL
 
 
     default:
