@@ -49,6 +49,9 @@ namespace STORE
     Card_Expr* pCraft_expr_early(CardIter* pCI);
 
     i8 iRpnCalc_WhichGbyKey(void);
+
+    void vTypes_For_stmColOdn(CardIter* pCI);
+
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);

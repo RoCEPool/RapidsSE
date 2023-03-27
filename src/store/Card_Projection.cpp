@@ -120,10 +120,28 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
       continue;
     }
 
-    if (pCI->G.p_MainCard->pSub_projection())
+    pCI->G.p_MainCard->vDump();
+
+    if (33 == pCI->G.p_MainCard->iCardNo())
+      vDebugPoint();
+
+    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+      if (pCI->ProjectionAnalysis.m_pProjection_running) {
+        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_key->vRenumberAllExpr();
+      }
+    }
+
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+      if (pCI->ProjectionAnalysis.m_pProjection_running) {
+        pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_projection->vRenumberAllExpr();
+      }
+
       pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_MainCard->pSub_projection();
-    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
-      pCI->G.p_projection->vRenumberAllExpr();
+    }
+
   }
 }
 
@@ -347,6 +365,17 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
     }
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vTypes_For_stmColOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    xKid.p_expr()->vTypes_For_stmColOdn(pCI);
 }
 
 /*============================================================================*/

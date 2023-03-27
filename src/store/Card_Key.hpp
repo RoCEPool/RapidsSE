@@ -19,6 +19,8 @@ namespace STORE
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
 
     bool bIsEqual(Card_Key* p_key_arg);
+
+    void vTypes_For_stmColOdn(CardIter *pCI);
   };
 
   Card_Key* _pCard_Key(void* aAddr);

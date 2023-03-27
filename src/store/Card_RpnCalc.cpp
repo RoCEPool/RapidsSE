@@ -572,6 +572,37 @@ i8 Card_RpnCalc::nTrimTerm(Stz* szValue)
   return nTerms;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+
+    if (! Card::bIsStreamColOrdinal(xKid.p_term()->szValue()))
+      continue;
+    if (xKid.p_term()->Y_bHas(P_Type))
+      continue;
+
+    pCI->ProjectionAnalysis.m_pProjection_running->vDump();
+
+    xKid.p_term()->vDump();
+
+    Stz* szTermOdn = xKid.p_term()->szValue();
+
+    Card_Expr* p_expr_found =
+        pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
+
+    xKid.p_term()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+  }
+
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

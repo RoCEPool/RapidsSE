@@ -32,6 +32,8 @@ namespace STORE
     void vFlipTerms(Card_Projection* p_projection_needed);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
     i8 nTrimTerm(Stz* szValue);
+    void vTypes_For_stmColOdn(CardIter* pCI);
+
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);

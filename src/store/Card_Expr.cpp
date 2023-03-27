@@ -94,6 +94,8 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
+  RASSERT(pExpr_corr->pSub_rpnCalc()->Y_bHas(P_Type));
+
   Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -463,6 +465,18 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
   }
 
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vTypes_For_stmColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_rpnCalc = pSub_rpnCalc();
+
+  pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
 }
 
 /*============================================================================*/

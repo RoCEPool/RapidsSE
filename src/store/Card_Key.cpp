@@ -11,6 +11,7 @@
 #include "Card_HshCol.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -147,6 +148,17 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vTypes_For_stmColOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    xKid.p_expr()->vTypes_For_stmColOdn(pCI);
 }
 
 

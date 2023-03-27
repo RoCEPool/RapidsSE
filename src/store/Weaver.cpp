@@ -1264,7 +1264,7 @@ void Weaver::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
   i8 nSubCards = pCard_RpnCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card* pCard = pCard_RpnCalc->pGet(i_Child);
-    
+
     eCK eCard = pCard->eCard();
     
     switch (eCard) {
@@ -1327,6 +1327,14 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         szRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:
+//        if (Card::bIsStreamColOrdinal(pSubCard->szValue()) ||
+//            Card::bIsTableColOrdinal(pSubCard->szValue())) {
+//
+//          if (!pSubCard->Y_bHas(P_Type)) {
+//            pSubCard->vDump();
+//            RASSERT(pSubCard->Y_bHas(P_Type));
+//          }
+//        }
         szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->sz());
         break;
       default:
@@ -1360,7 +1368,16 @@ void Weaver::vAs(Stz* szRpnExpr, Card_As* pCard_As)
 void Weaver::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
+
+  if (Card::bIsStreamColOrdinal(pCard_Term->szValue()) ||
+      Card::bIsTableColOrdinal(pCard_Term->szValue())) {
+
+    if (!pCard_Term->Y_bHas(P_Type)) {
+      pCard_Term->vDump();
+      RASSERT(pCard_Term->Y_bHas(P_Type));
+    }
+}
+
   szRpnExpr->vCatSprint(" %s"_Stz,pCard_Term->sz());
 }
 
